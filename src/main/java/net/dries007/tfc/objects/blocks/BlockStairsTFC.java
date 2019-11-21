@@ -46,7 +46,7 @@ public class BlockStairsTFC extends BlockStairs
         //noinspection ConstantConditions
         setHarvestLevel(baseBlock.getHarvestTool(baseBlock.getDefaultState()), baseBlock.getHarvestLevel(baseBlock.getDefaultState()));
         OreDictionaryHelper.register(this, "stair");
-        OreDictionaryHelper.registerRockType(this, type, rock, "stair");
+        OreDictionaryHelper.registerRockType(this, type, "stair");
     }
 
     public BlockStairsTFC(Tree wood)

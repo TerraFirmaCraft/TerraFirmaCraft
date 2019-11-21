@@ -408,9 +408,15 @@ public final class CommonEventHandler
                 TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
             }
 
-            // Check total players and reset calendar time ticking
+            // Check total players and reset player / calendar time ticking
             int players = event.player.world.playerEntities.size();
             CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, players > 0);
+
+            if (players <= 0)
+            {
+                // Force doDaylightCycle false if no players logged on
+                event.player.world.getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
+            }
         }
     }
 
@@ -419,7 +425,7 @@ public final class CommonEventHandler
     {
         if (event.player instanceof EntityPlayerMP)
         {
-            // Check total players and reset calendar time ticking
+            // Check total players and reset player / calendar time ticking
             List<EntityPlayer> players = event.player.world.playerEntities;
             int playerCount = players.size();
             // The player logging out doesn't count
@@ -428,6 +434,12 @@ public final class CommonEventHandler
                 playerCount--;
             }
             CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, playerCount > 0);
+
+            if (playerCount <= 0)
+            {
+                // Force doDaylightCycle false if no players logged on
+                event.player.world.getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
+            }
         }
     }
 
@@ -542,7 +554,7 @@ public final class CommonEventHandler
         if ("doDaylightCycle".equals(event.getRuleName()))
         {
             // This is only called on server, so it needs to sync to client
-            CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules.getBoolean("doDaylightCycle"));
+            CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules);
         }
         else if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
         {

@@ -25,7 +25,10 @@ public class Vein
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setLong("pos", vein.pos.toLong());
         nbt.setByte("grade", (byte) vein.grade.ordinal());
-        nbt.setString("type", vein.type.getRegistryName());
+        if (vein.type != null)
+        {
+            nbt.setString("type", vein.type.getRegistryName());
+        }
         return nbt;
     }
 

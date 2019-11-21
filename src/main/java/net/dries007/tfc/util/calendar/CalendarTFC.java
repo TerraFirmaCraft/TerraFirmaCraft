@@ -13,6 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -34,7 +35,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     public static final CalendarTFC INSTANCE = new CalendarTFC();
 
     /**
-     * Total time. Always returns the result of {@link World#getTotalWorldTime()}
+     * Total time. Always returns the result of {@link World#getTotalWorldTime()}. Only use for local time tracking.
      */
     public static final ICalendar TOTAL_TIME = () -> CalendarTFC.INSTANCE.worldTotalTime;
 
@@ -266,7 +267,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         }
 
         // Set calendar time based if time is advancing or not
-        if (doDaylightCycle)
+        if (doDaylightCycle && arePlayersLoggedOn)
         {
             calendarTime = worldTotalTime + calendarTimeOffset;
         }
@@ -324,9 +325,9 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         updateWorldDataAndSync(world);
     }
 
-    public void setDoDaylightCycle(World world, boolean doDaylightCycle)
+    public void setDoDaylightCycle(World world, GameRules rules)
     {
-        this.doDaylightCycle = doDaylightCycle;
+        this.doDaylightCycle = rules.getBoolean("doDaylightCycle");
 
         // Then update world data + clients
         updateWorldDataAndSync(world);
@@ -347,18 +348,24 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         data.getCalendar().reset(this);
         data.markDirty();
 
-        // At this point, the calendar may have updated - we need to update any ICalendarTickable tile entities
-        for (TileEntity tile : world.tickableTileEntities)
-        {
-            if (tile instanceof ICalendarTickable)
-            {
-                ((ICalendarTickable) tile).onCalendarUpdate();
-            }
-        }
-
-        // Sync to clients
         if (!world.isRemote)
         {
+            // At this point, the calendar may have updated - we need to update any ICalendarTickable tile entities
+            // We do this inside a scheduled task as for some reason this causes a CME on player login (pending testing, see #547)
+            if (world.getMinecraftServer() != null)
+            {
+                world.getMinecraftServer().addScheduledTask(() -> {
+                    for (TileEntity tile : world.tickableTileEntities)
+                    {
+                        if (tile instanceof ICalendarTickable)
+                        {
+                            ((ICalendarTickable) tile).onCalendarUpdate();
+                        }
+                    }
+                });
+            }
+
+            // Sync to clients
             TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
         }
     }

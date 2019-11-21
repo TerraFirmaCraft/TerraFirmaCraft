@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
+import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.gui.*;
@@ -96,13 +96,13 @@ public class TFCGuiHandler implements IGuiHandler
             case ANVIL_PLAN:
                 return new ContainerAnvilPlan(player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
             case KNAPPING_STONE:
-                return new ContainerKnapping(KnappingRecipe.Type.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingType.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
             case KNAPPING_CLAY:
-                return new ContainerKnapping(KnappingRecipe.Type.CLAY, player.inventory, stack.getItem() == Items.CLAY_BALL ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingType.CLAY, player.inventory, stack.getItem() == Items.CLAY_BALL ? stack : player.getHeldItemOffhand());
             case KNAPPING_LEATHER:
-                return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == Items.LEATHER ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingType.LEATHER, player.inventory, stack.getItem() == Items.LEATHER ? stack : player.getHeldItemOffhand());
             case KNAPPING_FIRE_CLAY:
-                return new ContainerKnapping(KnappingRecipe.Type.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingType.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
             case QUERN:
                 return new ContainerQuern(player.inventory, Helpers.getTE(world, pos, TEQuern.class));
             case CRUCIBLE:
@@ -162,13 +162,13 @@ public class TFCGuiHandler implements IGuiHandler
                 Rock rock = stack.getItem() instanceof IRockObject ? ((IRockObject) stack.getItem()).getRock(stack) :
                     ((IRockObject) player.getHeldItemOffhand().getItem()).getRock(player.getHeldItemOffhand());
                 //noinspection ConstantConditions
-                return new GuiKnapping(container, player, KnappingRecipe.Type.STONE, rock.getTexture());
+                return new GuiKnapping(container, player, KnappingType.STONE, rock.getTexture());
             case KNAPPING_CLAY:
-                return new GuiKnapping(container, player, KnappingRecipe.Type.CLAY, CLAY_TEXTURE);
+                return new GuiKnapping(container, player, KnappingType.CLAY, CLAY_TEXTURE);
             case KNAPPING_LEATHER:
-                return new GuiKnapping(container, player, KnappingRecipe.Type.LEATHER, LEATHER_TEXTURE);
+                return new GuiKnapping(container, player, KnappingType.LEATHER, LEATHER_TEXTURE);
             case KNAPPING_FIRE_CLAY:
-                return new GuiKnapping(container, player, KnappingRecipe.Type.FIRE_CLAY, FIRE_CLAY_TEXTURE);
+                return new GuiKnapping(container, player, KnappingType.FIRE_CLAY, FIRE_CLAY_TEXTURE);
             case QUERN:
                 return new GuiQuern(container, player.inventory, Helpers.getTE(world, pos, TEQuern.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CRUCIBLE:
