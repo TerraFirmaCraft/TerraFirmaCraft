@@ -48,8 +48,20 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
             throw new IllegalStateException("There can only be one.");
         }
         setMaxDamage(0);
-        //noinspection ConstantConditions
-        OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath(), "small");
+        if (ore.getMetal() != null)
+        {
+            //noinspection ConstantConditions
+            OreDictionaryHelper.register(this, "ore", ore.getMetal().getRegistryName().getPath(), "small");
+            if (ore.getMetal() == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
+            {
+                OreDictionaryHelper.register(this, "ore", "iron", "small");
+            }
+        }
+        else
+        {
+            //noinspection ConstantConditions
+            OreDictionaryHelper.register(this, "ore", ore.getRegistryName().getPath(), "small");
+        }
     }
 
     @Override

@@ -12,10 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -38,7 +35,8 @@ public class TEToolRack extends TileEntity
     {
         return item instanceof ItemMetalTool
             || item instanceof ItemTool
-            || item instanceof ItemBow;
+            || item instanceof ItemBow
+            || item instanceof ItemHoe;
     }
 
     public static boolean isItemEligible(@Nullable ItemStack item)
