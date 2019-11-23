@@ -90,7 +90,7 @@ public final class WorldRegenHandler
                 }
 
                 // Plants + crops. Only runs once (maximum) each year
-                if (CalendarTFC.CALENDAR_TIME.getMonthOfYear().isWithin(Month.APRIL, Month.JULY) && !chunkDataTFC.isSpawnProtected() && chunkDataTFC.getLastUpdateYear() < CalendarTFC.CALENDAR_TIME.getTotalYears())
+                if (CalendarTFC.CALENDAR_TIME.getMonthOfYear().isWithin(Month.APRIL, Month.JULY) && !chunkDataTFC.isSpawnProtected() && CalendarTFC.CALENDAR_TIME.getTotalYears() > chunkDataTFC.getLastUpdateYear())
                 {
                     if (RANDOM.nextInt(20) == 0)
                     {
