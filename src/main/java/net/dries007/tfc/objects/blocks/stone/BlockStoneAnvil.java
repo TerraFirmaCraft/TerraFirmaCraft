@@ -63,8 +63,8 @@ public class BlockStoneAnvil extends Block implements IRockObject
         super(Material.ROCK);
 
         setSoundType(SoundType.STONE);
-        setHardness(2.0F);
-        setResistance(10.0F);
+        setHardness(rock.getRockCategory().getHardness());
+        setResistance(rock.getRockCategory().getResistance());
         setHarvestLevel("pickaxe", 0);
 
         this.rock = rock;
