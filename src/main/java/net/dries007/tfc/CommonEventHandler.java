@@ -411,12 +411,6 @@ public final class CommonEventHandler
             // Check total players and reset player / calendar time ticking
             int players = event.player.world.playerEntities.size();
             CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, players > 0);
-
-            if (players <= 0)
-            {
-                // Force doDaylightCycle false if no players logged on
-                event.player.world.getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
-            }
         }
     }
 
@@ -434,12 +428,6 @@ public final class CommonEventHandler
                 playerCount--;
             }
             CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, playerCount > 0);
-
-            if (playerCount <= 0)
-            {
-                // Force doDaylightCycle false if no players logged on
-                event.player.world.getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
-            }
         }
     }
 

@@ -169,9 +169,5 @@ public enum VeinRegistry
         WorldGenOreVeins.CHUNK_RADIUS = 1 + (maxRadius >> 4);
         WorldGenOreVeins.NUM_ROLLS = 1 + (int) (0.5 + weightedVeinTypes.getTotalWeight());
         TerraFirmaCraft.getLog().info("Vein Registry Initialized, with {} veins, {} max radius, {} total weight", veinTypeRegistry.size(), maxRadius, weightedVeinTypes.getTotalWeight());
-        for (String s : veinTypeRegistry.keySet())
-        {
-            TerraFirmaCraft.getLog().info("Vein: " + s);
-        }
     }
 }
