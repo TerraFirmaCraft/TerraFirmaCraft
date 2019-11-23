@@ -12,7 +12,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -115,6 +114,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     private long playerTimeOffset, calendarTimeOffset;
     private int daysInMonth;
     private boolean doDaylightCycle, arePlayersLoggedOn;
+    private boolean cachedDoDaylightCycle; // The value of the command, as we override this when no players are logged on
 
     public CalendarTFC()
     {
@@ -124,6 +124,7 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         calendarTimeOffset = DEFAULT_CALENDAR_TIME_OFFSET;
         doDaylightCycle = true;
         arePlayersLoggedOn = false;
+        cachedDoDaylightCycle = true;
     }
 
     @Override
@@ -139,6 +140,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
         nbt.setBoolean("doDaylightCycle", doDaylightCycle);
         nbt.setBoolean("arePlayersLoggedOn", arePlayersLoggedOn);
+
+        nbt.setBoolean("cachedDoDaylightCycle", cachedDoDaylightCycle);
 
         return nbt;
     }
@@ -157,6 +160,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
             doDaylightCycle = nbt.getBoolean("doDaylightCycle");
             arePlayersLoggedOn = nbt.getBoolean("arePlayersLoggedOn");
 
+            cachedDoDaylightCycle = nbt.getBoolean("cachedDoDaylightCycle");
+
             // Re-calculate values
             playerTime = worldTotalTime + playerTimeOffset;
             calendarTime = worldTotalTime + calendarTimeOffset;
@@ -173,6 +178,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
         buffer.writeBoolean(doDaylightCycle);
         buffer.writeBoolean(arePlayersLoggedOn);
+
+        buffer.writeBoolean(cachedDoDaylightCycle);
     }
 
     public void read(ByteBuf buffer)
@@ -185,6 +192,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
         doDaylightCycle = buffer.readBoolean();
         arePlayersLoggedOn = buffer.readBoolean();
+
+        cachedDoDaylightCycle = buffer.readBoolean();
 
         // Re-calculate values
         playerTime = worldTotalTime + playerTimeOffset;
@@ -201,6 +210,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
         this.doDaylightCycle = resetTo.doDaylightCycle;
         this.arePlayersLoggedOn = resetTo.arePlayersLoggedOn;
+
+        this.cachedDoDaylightCycle = resetTo.cachedDoDaylightCycle;
 
         // Re-calculate values
         playerTime = worldTotalTime + playerTimeOffset;
@@ -327,8 +338,18 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
     public void setDoDaylightCycle(World world, GameRules rules)
     {
-        this.doDaylightCycle = rules.getBoolean("doDaylightCycle");
-
+        // Cached value is always what the gamerule should be
+        this.cachedDoDaylightCycle = rules.getBoolean("doDaylightCycle");
+        if (arePlayersLoggedOn)
+        {
+            this.doDaylightCycle = cachedDoDaylightCycle;
+        }
+        else
+        {
+            this.doDaylightCycle = false;
+            rules.setOrCreateGameRule("doDaylightCycle", "false");
+            TerraFirmaCraft.getLog().info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", cachedDoDaylightCycle);
+        }
         // Then update world data + clients
         updateWorldDataAndSync(world);
     }
@@ -336,6 +357,16 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     public void setArePlayersLoggedOn(World world, boolean arePlayersLoggedOn)
     {
         this.arePlayersLoggedOn = arePlayersLoggedOn;
+        if (arePlayersLoggedOn)
+        {
+            this.doDaylightCycle = cachedDoDaylightCycle;
+            world.getGameRules().setOrCreateGameRule("doDaylightCycle", Boolean.toString(cachedDoDaylightCycle));
+        }
+        else
+        {
+            this.doDaylightCycle = false;
+            world.getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
+        }
 
         // Then update world data + clients
         updateWorldDataAndSync(world);
@@ -350,20 +381,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
         if (!world.isRemote)
         {
-            // At this point, the calendar may have updated - we need to update any ICalendarTickable tile entities
-            // We do this inside a scheduled task as for some reason this causes a CME on player login (pending testing, see #547)
-            if (world.getMinecraftServer() != null)
-            {
-                world.getMinecraftServer().addScheduledTask(() -> {
-                    for (TileEntity tile : world.tickableTileEntities)
-                    {
-                        if (tile instanceof ICalendarTickable)
-                        {
-                            ((ICalendarTickable) tile).onCalendarUpdate();
-                        }
-                    }
-                });
-            }
+            // At this point, the calendar may have updated - we need to update any ICalendarTickable tile entities. This will update them on the next game tick to avoid any potential problems
+            CalendarEventHandler.NEEDS_TE_UPDATE = true;
 
             // Sync to clients
             TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));

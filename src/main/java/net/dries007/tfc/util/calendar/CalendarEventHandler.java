@@ -22,6 +22,8 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class CalendarEventHandler
 {
+    static boolean NEEDS_TE_UPDATE = false;
+
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event)
     {
@@ -29,6 +31,18 @@ public class CalendarEventHandler
         if (event.phase == TickEvent.Phase.START)
         {
             CalendarTFC.INSTANCE.setTotalTime(event.world.getTotalWorldTime());
+
+            if (NEEDS_TE_UPDATE)
+            {
+                NEEDS_TE_UPDATE = false;
+                for (TileEntity tile : event.world.tickableTileEntities)
+                {
+                    if (tile instanceof ICalendarTickable)
+                    {
+                        ((ICalendarTickable) tile).onCalendarUpdate();
+                    }
+                }
+            }
         }
     }
 
