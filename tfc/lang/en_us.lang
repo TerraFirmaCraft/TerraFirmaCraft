@@ -263,6 +263,9 @@ config.tfc.general.worldRegenerationSticksRocksModifier.tooltip=The weight for l
 config.tfc.general.foodDecayStackTime=Food Decay Stack Time
 config.tfc.general.foodDecayStackTime.tooltip=The number of hours to which initial food decay will be synced. When a food item is dropped, it's initial expiration date will be rounded to the closest multiple of this (in hours).
 
+config.tfc.general.foodPassiveExhaustionMultiplier=Hunger Passive Exhaustion Multiplier
+config.tfc.general.foodPassiveExhaustionMultiplier.tooltip=A multiplier for passive exhaustion (how fast your hunger decays. 0 = hunger doesn't decay passively, higher values = faster decay.
+
 config.tfc.general.oreDictIron=Iron Ore Dictionary in Wrought Iron
 config.tfc.general.oreDictIron.tooltip=Add iron ore dictionary to wrought iron items?
 
