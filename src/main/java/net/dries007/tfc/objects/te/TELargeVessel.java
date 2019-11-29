@@ -81,7 +81,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     @Nonnull
     public String getSealedDate()
     {
-        return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.INSTANCE.getDaysInMonth());
+        return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

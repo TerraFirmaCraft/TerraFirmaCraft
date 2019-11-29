@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -45,11 +44,7 @@ public class PacketCalendarUpdate implements IMessage
         @Override
         public IMessage onMessage(PacketCalendarUpdate message, MessageContext ctx)
         {
-            World world = TerraFirmaCraft.getProxy().getWorld(ctx);
-            if (world != null)
-            {
-                TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> CalendarTFC.INSTANCE.reset(message.instance));
-            }
+            TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> CalendarTFC.INSTANCE.resetTo(message.instance));
             return null;
         }
     }

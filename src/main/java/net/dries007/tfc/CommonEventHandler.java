@@ -5,8 +5,6 @@
 
 package net.dries007.tfc;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
@@ -376,9 +374,6 @@ public final class CommonEventHandler
             final EntityPlayerMP player = (EntityPlayerMP) event.player;
             player.inventoryContainer.addListener(new CapabilityContainerListener(player));
 
-            // World Data (Calendar) Sync Handler
-            CalendarTFC.INSTANCE.updatePlayer(player);
-
             // Food Stats
             FoodStats originalStats = player.getFoodStats();
             if (!(originalStats instanceof FoodStatsTFC))
@@ -407,27 +402,6 @@ public final class CommonEventHandler
             {
                 TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
             }
-
-            // Check total players and reset player / calendar time ticking
-            int players = event.player.world.playerEntities.size();
-            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, players > 0);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
-    {
-        if (event.player instanceof EntityPlayerMP)
-        {
-            // Check total players and reset player / calendar time ticking
-            List<EntityPlayer> players = event.player.world.playerEntities;
-            int playerCount = players.size();
-            // The player logging out doesn't count
-            if (players.contains(event.player))
-            {
-                playerCount--;
-            }
-            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, playerCount > 0);
         }
     }
 
@@ -539,12 +513,7 @@ public final class CommonEventHandler
     public static void onGameRuleChange(GameRuleChangeEvent event)
     {
         GameRules rules = event.getRules();
-        if ("doDaylightCycle".equals(event.getRuleName()))
-        {
-            // This is only called on server, so it needs to sync to client
-            CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules);
-        }
-        else if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
+        if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
         {
             // Natural regeneration should be disabled, allows TFC to have custom regeneration
             event.getRules().setOrCreateGameRule("naturalRegeneration", "false");
@@ -561,7 +530,7 @@ public final class CommonEventHandler
         {
             // Calendar Sync / Initialization
             CalendarWorldData data = CalendarWorldData.get(world);
-            CalendarTFC.INSTANCE.reset(data.getCalendar());
+            CalendarTFC.INSTANCE.resetTo(data.getCalendar());
             TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.INSTANCE));
         }
 
@@ -624,8 +593,8 @@ public final class CommonEventHandler
             if (hugeHeavyCount >= 1)
             {
                 // Add extra exhaustion from carrying a heavy item
-                // Equivalent to jumping once every two seconds (TFC reduces this, as most of exhaustion is passive)
-                event.player.addExhaustion(0.5f);
+                // This is equivalent to an additional 25% of passive exhaustion
+                event.player.addExhaustion(FoodStatsTFC.PASSIVE_EXHAUSTION * 20 * 0.25f / 0.4f);
             }
             if (hugeHeavyCount >= 2)
             {

@@ -120,7 +120,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Nonnull
     public String getSealedDate()
     {
-        return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.INSTANCE.getDaysInMonth());
+        return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

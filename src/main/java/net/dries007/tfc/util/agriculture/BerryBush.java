@@ -54,7 +54,7 @@ public enum BerryBush implements IBerryBush
         this.fruit = fruit;
         this.harvestMonthStart = harvestMonthStart;
         this.harvestingMonths = harvestingMonths;
-        this.growthTime = growthTime * CalendarTFC.INSTANCE.getDaysInMonth() * ICalendar.HOURS_IN_DAY;
+        this.growthTime = growthTime * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * ICalendar.HOURS_IN_DAY;
 
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
