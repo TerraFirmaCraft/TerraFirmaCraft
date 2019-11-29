@@ -22,11 +22,14 @@ import net.dries007.tfc.network.PacketCalendarUpdate;
 public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
 {
     public static final CalendarTFC INSTANCE = new CalendarTFC();
+
     /**
      * Player time. Advances when player sleeps, stops when no players are online
      * NOT synced with the daylight cycle.
+     * Used for almost everything that tracks time.
      */
     public static final ICalendar PLAYER_TIME = () -> CalendarTFC.INSTANCE.playerTime;
+
     /**
      * Calendar time. Advances when player sleeps, stops when doDaylightCycle is false
      * Synced with the daylight cycle
@@ -233,6 +236,10 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
     public void init(MinecraftServer server)
     {
         this.server = server;
+
+        // Initialize doDaylightCycle to false as the server is just starting
+        server.getEntityWorld().getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
+
         resetTo(CalendarWorldData.get(server.getEntityWorld()).getCalendar());
         TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
     }
@@ -263,7 +270,8 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
         // Preserve the current month, time of day, and position within the month
         long baseMonths = CalendarTFC.CALENDAR_TIME.getTotalMonths();
         long baseDayTime = calendarTime - (CalendarTFC.CALENDAR_TIME.getTotalDays() * ICalendar.TICKS_IN_DAY);
-        float monthPercent = (float) CalendarTFC.CALENDAR_TIME.getDayOfMonth() / daysInMonth;
+        // Minus one here because `getDayOfMonth` returns the player visible one (which adds one)
+        float monthPercent = (float) (CalendarTFC.CALENDAR_TIME.getDayOfMonth() - 1) / daysInMonth;
         int newDayOfMonth = (int) (monthPercent * newMonthLength);
 
         this.daysInMonth = newMonthLength;

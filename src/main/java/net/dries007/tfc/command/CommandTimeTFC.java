@@ -47,7 +47,7 @@ public class CommandTimeTFC extends CommandBase
                 }
                 else if ("monthlength".equals(args[1]))
                 {
-                    int newMonthLength = parseInt(args[1], 8, 128);
+                    int newMonthLength = parseInt(args[2], 8, 128);
                     CalendarTFC.INSTANCE.setMonthLength(newMonthLength);
                     notifyCommandListener(sender, this, "tfc.command.time.set_month_length", newMonthLength);
                 }
@@ -72,6 +72,10 @@ public class CommandTimeTFC extends CommandBase
             }
             else if ("add".equals(args[0]))
             {
+                if (args.length < 2)
+                {
+                    throw new WrongUsageException("tfc.command.time.usage_expected_second_argument_add");
+                }
                 long timeToAdd;
                 switch (args[1])
                 {
@@ -93,7 +97,11 @@ public class CommandTimeTFC extends CommandBase
             }
             else if ("query".equals(args[0]))
             {
-                if ("daytime".equals(args[1]))
+                if (args.length < 2)
+                {
+                    throw new WrongUsageException("tfc.command.time.usage_expected_second_argument_query");
+                }
+                else if ("daytime".equals(args[1]))
                 {
                     int daytime = (int) (sender.getEntityWorld().getWorldTime() % (24 * ICalendar.TICKS_IN_DAY));
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, daytime);
@@ -101,7 +109,7 @@ public class CommandTimeTFC extends CommandBase
                 }
                 else if ("day".equals(args[1]))
                 {
-                    int day = (int) ((sender.getEntityWorld().getWorldTime() / (24 * ICalendar.TICKS_IN_DAY)) % Integer.MAX_VALUE);
+                    int day = (int) (CalendarTFC.CALENDAR_TIME.getTotalDays() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, day);
                     notifyCommandListener(sender, this, "commands.time.query", day);
                 }
