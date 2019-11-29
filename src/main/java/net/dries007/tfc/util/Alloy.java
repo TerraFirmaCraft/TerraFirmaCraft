@@ -210,15 +210,19 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         if (metalMap.containsKey(metalToRemove))
         {
             double currentAmount = metalMap.get(metalToRemove);
+            int actualRemoveAmount;
             if (currentAmount > removeAmount)
             {
                 metalMap.put(metalToRemove, currentAmount - removeAmount);
-                return removeAmount;
+                actualRemoveAmount = removeAmount;
             }
             else
             {
-                return (int) metalMap.remove(metalToRemove).doubleValue();
+                actualRemoveAmount = (int) metalMap.remove(metalToRemove).doubleValue();
             }
+            totalAmount -= actualRemoveAmount;
+            updateSanitizedMap();
+            return actualRemoveAmount;
         }
         return 0;
     }
@@ -351,8 +355,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         if (this.metalMap.containsKey(recipe.getResult()))
         {
             Alloy other = new Alloy().add(this);
-            double resultAmount = other.metalMap.remove(recipe.getResult());
-            other.totalAmount -= resultAmount;
+            other.remove(recipe.getResult(), Integer.MAX_VALUE);
             return other.matchesRecipeExact(recipe);
         }
         return this.matchesRecipeExact(recipe);
