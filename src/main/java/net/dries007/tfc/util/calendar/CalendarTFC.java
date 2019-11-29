@@ -193,6 +193,14 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
             doDaylightCycle = nbt.getBoolean("doDaylightCycle");
             arePlayersLoggedOn = nbt.getBoolean("arePlayersLoggedOn");
+
+            // For versions < 0.27.x, in order to lessen the amount of world breakage that occurs
+            if (nbt.hasKey("worldTotalTime"))
+            {
+                long worldTotalTime = nbt.getLong("worldTotalTime");
+                playerTime = worldTotalTime + nbt.getLong("playerTimeOffset");
+                calendarTime = worldTotalTime + nbt.getLong("calendarTimeOffset");
+            }
         }
     }
 
