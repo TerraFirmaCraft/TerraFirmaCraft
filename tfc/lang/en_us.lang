@@ -1,4 +1,10 @@
 # Command
+tfc.command.time.usage=/timetfc [add|query|set] [args...]
+tfc.command.time.usage_expected_first_argument=Expected [add|query|set] after /timetfc
+tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
+tfc.command.time.usage_expected_second_argument_set=Expected [day|night}monthlength|<value>] after /timetfc set
+tfc.command.time.usage_expected_second_argument_add=Expected [day|night}monthlength|<value>] after /timetfc add
+tfc.command.time.set_month_length=Set Month Length to %d Days / Month
 
 # Gui
 
@@ -34,7 +40,8 @@ tfc.tooltip.calendar=Calendar
 tfc.tooltip.season=Season : %s
 tfc.tooltip.day=Day : %s
 tfc.tooltip.date=Date : %s
-tfc.tooltip.debug_times=TT: %d | PT: %d | CT: %d
+tfc.tooltip.calendar_full_date=%s %s %02d, %04d
+tfc.tooltip.debug_times=PT: %d | CT: %d
 tfc.tooltip.food_expiry_date=Expires on: %s
 tfc.tooltip.food_rotten=Rotten - I wouldn't eat that.
 tfc.tooltip.food_infinite_expiry=Never Expires
