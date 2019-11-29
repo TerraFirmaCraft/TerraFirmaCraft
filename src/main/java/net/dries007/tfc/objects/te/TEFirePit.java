@@ -25,7 +25,6 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
@@ -66,6 +65,8 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     @Override
     public void update()
     {
+        ICalendarTickable.super.update();
+
         if (!world.isRemote)
         {
             IBlockState state = world.getBlockState(pos);
@@ -158,17 +159,15 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                 cascadeFuelSlots();
             }
 
-            lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
             markDirtyFast();
         }
     }
 
     @Override
-    public void onCalendarUpdate()
+    public void onCalendarUpdate(long deltaPlayerTicks)
     {
-        long deltaPlayerTicks = CalendarTFC.PLAYER_TIME.getTicks() - lastPlayerTick;
         IBlockState state = world.getBlockState(pos);
-        if (deltaPlayerTicks == 0 && !state.getValue(LIT))
+        if (!state.getValue(LIT))
         {
             return;
         }
@@ -290,6 +289,18 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             default: // Other fuel slots + output slots
                 return false;
         }
+    }
+
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
     }
 
     public void onCreate(ItemStack log)

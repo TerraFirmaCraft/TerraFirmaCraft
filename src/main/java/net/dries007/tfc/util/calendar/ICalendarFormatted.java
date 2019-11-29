@@ -7,6 +7,8 @@ package net.dries007.tfc.util.calendar;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.world.World;
+
 import net.dries007.tfc.TerraFirmaCraft;
 
 public interface ICalendarFormatted extends ICalendar
@@ -50,7 +52,7 @@ public interface ICalendarFormatted extends ICalendar
     static String getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
         String monthName = TerraFirmaCraft.getProxy().getMonthName(month, false);
-        return String.format("%02d:%02d %s %02d, %04d", hour, minute, monthName, day, years);
+        return TerraFirmaCraft.getProxy().getDate(hour, minute, monthName, day, years);
     }
 
     @Nonnull
@@ -68,7 +70,7 @@ public interface ICalendarFormatted extends ICalendar
     long getTicks();
 
     /**
-     * Gets the number of days in a month, from the calendar's instance calues
+     * Gets the number of days in a month, from the calendar's instance values
      *
      * @return a number of days in a month
      */
@@ -76,7 +78,7 @@ public interface ICalendarFormatted extends ICalendar
 
     default String getTimeAndDate()
     {
-        return getTimeAndDate(getTicks(), CalendarTFC.INSTANCE.getDaysInMonth());
+        return getTimeAndDate(getTicks(), getDaysInMonth());
     }
 
     default String getSeasonDisplayName()
@@ -98,13 +100,24 @@ public interface ICalendarFormatted extends ICalendar
     }
 
     /**
+     * Get the equivalent total world time
+     * World time 0 = 6:00 AM, which is calendar time 6000
+     *
+     * @return a value in [0, 24000) which should match the result of {@link World#getWorldTime()}
+     */
+    default long getWorldTime()
+    {
+        return (getTicks() - (6 * ICalendar.TICKS_IN_HOUR)) % ICalendar.TICKS_IN_DAY;
+    }
+
+    /**
      * Calculate the total amount of months
      *
      * @return an amount of months
      */
     default long getTotalMonths()
     {
-        return getTicks() / (CalendarTFC.INSTANCE.getDaysInMonth() * TICKS_IN_DAY);
+        return getTicks() / (getDaysInMonth() * TICKS_IN_DAY);
     }
 
     /**
@@ -112,7 +125,7 @@ public interface ICalendarFormatted extends ICalendar
      */
     default Month getMonthOfYear()
     {
-        return getMonthOfYear(getTicks(), CalendarTFC.INSTANCE.getDaysInMonth());
+        return getMonthOfYear(getTicks(), getDaysInMonth());
     }
 
     /**
@@ -120,7 +133,7 @@ public interface ICalendarFormatted extends ICalendar
      */
     default int getDayOfMonth()
     {
-        return getDayOfMonth(getTicks(), CalendarTFC.INSTANCE.getDaysInMonth());
+        return getDayOfMonth(getTicks(), getDaysInMonth());
     }
 
     /**

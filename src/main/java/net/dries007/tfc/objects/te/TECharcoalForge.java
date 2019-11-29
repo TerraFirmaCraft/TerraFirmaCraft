@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -22,7 +23,6 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
@@ -61,10 +61,7 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
         burnTicks = 0;
         airTicks = 0;
 
-        for (int i = 0; i < cachedRecipes.length; i++)
-        {
-            cachedRecipes[i] = null;
-        }
+        Arrays.fill(cachedRecipes, null);
     }
 
     public void onAirIntake(int amount)
@@ -79,6 +76,8 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
     @Override
     public void update()
     {
+        ICalendarTickable.super.update();
+
         if (!world.isRemote)
         {
             IBlockState state = world.getBlockState(pos);
@@ -167,18 +166,15 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
             {
                 cascadeFuelSlots();
             }
-
-            lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
             markDirtyFast();
         }
     }
 
     @Override
-    public void onCalendarUpdate()
+    public void onCalendarUpdate(long deltaPlayerTicks)
     {
-        long deltaPlayerTicks = CalendarTFC.PLAYER_TIME.getTicks() - lastPlayerTick;
         IBlockState state = world.getBlockState(pos);
-        if (deltaPlayerTicks == 0 || !state.getValue(LIT))
+        if (!state.getValue(LIT))
         {
             return;
         }
@@ -294,6 +290,18 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
             // Extra slots - anything that can heat up and hold fluids
             return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         }
+    }
+
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
     }
 
     @Override

@@ -31,7 +31,10 @@ import net.dries007.tfc.objects.fluids.properties.MetalProperty;
  */
 public class Alloy implements INBTSerializable<NBTTagCompound>
 {
-    private final Object2DoubleMap<Metal> metalMap;
+    // We compare alloy ranges to an accuracy of +/- 0.05% Anything outside of this range is ignored
+    public static final double EPSILON = 0.0005;
+
+    private final Object2DoubleMap<Metal> metalMap, sanitizedMetalMap;
     private int totalAmount;
     private int maxAmount;
 
@@ -51,6 +54,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     public Alloy(int maxAmount)
     {
         this.metalMap = new Object2DoubleOpenHashMap<>();
+        this.sanitizedMetalMap = new Object2DoubleOpenHashMap<>();
         this.totalAmount = 0;
         this.maxAmount = maxAmount;
     }
@@ -164,8 +168,9 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
                     return this;
                 }
             }
-            metalMap.merge(metal, amount, (x, y) -> x + y);
+            metalMap.merge(metal, amount, Double::sum);
             totalAmount += amount;
+            updateSanitizedMap();
         }
         return this;
     }
@@ -193,7 +198,8 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     }
 
     /**
-     * Removes an amount of metal from the alloy.
+     * Removes an amount of a specific metal ingredient from the alloy.
+     * This will NOT removed the completed alloy. Use {@link Alloy#removeAlloy(int, boolean)} instead
      *
      * @param metalToRemove the metal component to remove
      * @param removeAmount  the amount to remove
@@ -229,7 +235,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     {
         if (simulate)
         {
-            return totalAmount < removeAmount ? totalAmount : removeAmount;
+            return Math.min(totalAmount, removeAmount);
         }
         if (removeAmount >= totalAmount)
         {
@@ -238,13 +244,20 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         }
         else
         {
+            Map<Metal, Double> resultMap = new Object2DoubleOpenHashMap<>(metalMap.size());
             for (Map.Entry<Metal, Double> entry : metalMap.entrySet())
             {
-                // Remove the amount of metal from each component
+                // Remove the amount of metal from each component, add the remainder (if it exists) into the result map
                 double remove = removeAmount * entry.getValue() / totalAmount;
-                metalMap.put(entry.getKey(), entry.getValue() - remove);
+                if (entry.getValue() > remove)
+                {
+                    resultMap.put(entry.getKey(), entry.getValue() - remove);
+                }
             }
             totalAmount -= removeAmount;
+            metalMap.clear();
+            metalMap.putAll(resultMap);
+            updateSanitizedMap();
             return removeAmount;
         }
     }
@@ -259,9 +272,15 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         return totalAmount;
     }
 
+    /**
+     * Returns a read-only copy of the metals in an alloy
+     * The alloy may also contain values with a % content less than epsilon, which are not visible in this view
+     *
+     * @return a map of metals -> unit values
+     */
     public Map<Metal, Double> getMetals()
     {
-        return metalMap;
+        return sanitizedMetalMap;
     }
 
     @Override
@@ -300,6 +319,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
                     this.metalMap.put(metal, amount);
                 }
             }
+            updateSanitizedMap();
         }
     }
 
@@ -310,6 +330,20 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     {
         metalMap.clear();
         totalAmount = 0;
+    }
+
+    /**
+     * The sanitized map is kept as a read-only view of the current alloy, with values < epsilon excluded
+     */
+    private void updateSanitizedMap()
+    {
+        sanitizedMetalMap.clear();
+        metalMap.forEach((metal, value) -> {
+            if (value > totalAmount * EPSILON)
+            {
+                sanitizedMetalMap.put(metal, value);
+            }
+        });
     }
 
     private boolean matchesRecipe(AlloyRecipe recipe)
@@ -328,14 +362,14 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     {
         // for each metal in the alloy, it needs to satisfy an ingredient
         // for each metal in the recipe, it needs to match with an alloy
-        for (Metal metal : Sets.union(recipe.getMetals().keySet(), metalMap.keySet()))
+        Map<Metal, Double> metals = getMetals();
+        for (Metal metal : Sets.union(recipe.getMetals().keySet(), metals.keySet()))
         {
-            if (!metalMap.containsKey(metal) ||
-                !recipe.getMetals().containsKey(metal) ||
-                !recipe.getMetals().get(metal).test(metalMap.get(metal) / totalAmount))
+            if (!metals.containsKey(metal) || !recipe.getMetals().containsKey(metal) || !recipe.getMetals().get(metal).test(metals.get(metal) / totalAmount))
+            {
                 return false;
+            }
         }
         return true;
     }
-
 }

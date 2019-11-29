@@ -5,59 +5,46 @@
 
 package net.dries007.tfc.util.calendar;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.tileentity.TileEntity;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
-import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import static net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class CalendarEventHandler
 {
-    static boolean NEEDS_TE_UPDATE = false;
-
+    /**
+     * Called from LOGICAL SERVER
+     * Responsible for primary time tracking for the calendar
+     * Synced to client every tick
+     *
+     * @param event {@link ServerTickEvent}
+     */
     @SubscribeEvent
-    public static void onWorldTick(TickEvent.WorldTickEvent event)
+    public static void onServerTick(ServerTickEvent event)
     {
-        // Does not get called on DEDICATED CLIENT
-        if (event.phase == TickEvent.Phase.START)
+        if (event.phase == Phase.START)
         {
-            CalendarTFC.INSTANCE.setTotalTime(event.world.getTotalWorldTime());
-
-            if (NEEDS_TE_UPDATE)
-            {
-                NEEDS_TE_UPDATE = false;
-                for (TileEntity tile : event.world.tickableTileEntities)
-                {
-                    if (tile instanceof ICalendarTickable)
-                    {
-                        ((ICalendarTickable) tile).onCalendarUpdate();
-                    }
-                }
-            }
+            CalendarTFC.INSTANCE.onTick();
         }
     }
 
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public static void onClientTick(TickEvent.ClientTickEvent event)
-    {
-        // On LOGICAL CLIENT, this will be overwritten by onWorldTick
-        // On DEDICATED CLIENT, this will be the sole time-tracking for each player
-        if (event.phase == TickEvent.Phase.START && !Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().player != null)
-        {
-            CalendarTFC.INSTANCE.setTotalTime(Minecraft.getMinecraft().world.getTotalWorldTime());
-        }
-    }
-
+    /**
+     * Disables the vanilla /time command as we replace it with one that takes into account the calendar
+     * @param event {@link CommandEvent}
+     */
     @SubscribeEvent
     public static void onCommandFire(CommandEvent event)
     {
@@ -76,29 +63,60 @@ public class CalendarEventHandler
     @SubscribeEvent
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
-        // Calculate time to adjust by
-        long newCalendarTime = (CalendarTFC.CALENDAR_TIME.getTotalDays() + 1) * ICalendar.TICKS_IN_DAY + CalendarTFC.WORLD_TIME_OFFSET;
-        long sleepTimeJump = newCalendarTime - CalendarTFC.CALENDAR_TIME.getTicks();
-        long newPlayerTime = CalendarTFC.PLAYER_TIME.getTicks() + sleepTimeJump;
-
-        // Increment offsets
-        CalendarTFC.INSTANCE.setCalendarTime(event.getEntityPlayer().getEntityWorld(), newCalendarTime);
-        CalendarTFC.INSTANCE.setPlayerTime(event.getEntityPlayer().getEntityWorld(), newPlayerTime);
+        // Update calendar to world time = 0
+        CalendarTFC.INSTANCE.setTimeFromWorldTime(0);
     }
 
     /**
-     * This is used to send updates to tile entities when a chunk loads, potentially after a long time.
+     * Fired on server only when a player logs out
+     *
+     * @param event {@link PlayerLoggedOutEvent}
      */
     @SubscribeEvent
-    public static void onChunkLoad(ChunkEvent.Load event)
+    public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
     {
-        for (TileEntity tile : event.getChunk().getTileEntityMap().values())
+        if (event.player instanceof EntityPlayerMP)
         {
-            if (tile instanceof ICalendarTickable)
+            // Check total players and reset player / calendar time ticking
+            List<EntityPlayer> players = event.player.world.playerEntities;
+            int playerCount = players.size();
+            // The player logging out doesn't count
+            if (players.contains(event.player))
             {
-                ((ICalendarTickable) tile).onCalendarUpdate();
+                playerCount--;
             }
+            CalendarTFC.INSTANCE.setPlayersLoggedOn(playerCount > 0);
         }
     }
 
+    /**
+     * Fired on server only when a player logs in
+     *
+     * @param event {@link PlayerLoggedInEvent}
+     */
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerLoggedInEvent event)
+    {
+        if (event.player instanceof EntityPlayerMP)
+        {
+            // Check total players and reset player / calendar time ticking
+            int players = event.player.world.playerEntities.size();
+            CalendarTFC.INSTANCE.setPlayersLoggedOn(players > 0);
+        }
+    }
+
+    /**
+     * Detects when a user manually changes `doDaylightCycle`, and updates the calendar accordingly
+     *
+     * @param event {@link GameRuleChangeEvent}
+     */
+    @SubscribeEvent
+    public static void onGameRuleChange(GameRuleChangeEvent event)
+    {
+        if ("doDaylightCycle".equals(event.getRuleName()))
+        {
+            // This is only called on server, so it needs to sync to client
+            CalendarTFC.INSTANCE.setDoDaylightCycle();
+        }
+    }
 }

@@ -184,7 +184,7 @@ public class ClientEvents
 
                 // Always add calendar info
                 list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
-                list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.TOTAL_TIME.getTicks(), CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
+                list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
 
                 if (chunkDataValid)
                 {
