@@ -25,6 +25,7 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
@@ -60,6 +61,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         burnTemperature = 0;
         burnTicks = 0;
         cachedRecipe = null;
+        lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override

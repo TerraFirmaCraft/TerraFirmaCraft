@@ -177,7 +177,7 @@ public class ClientEvents
                         GRAY, WHITE, ClimateTFC.getMonthlyTemp(blockpos),
                         WHITE, ClimateTFC.getActualTemp(blockpos)));
                 }
-                else
+                else if (mc.world.provider.getDimension() == 0)
                 {
                     list.add("Invalid Chunk Data (?)");
                 }

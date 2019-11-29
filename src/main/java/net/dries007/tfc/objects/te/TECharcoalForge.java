@@ -23,6 +23,7 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
@@ -60,6 +61,7 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
         burnTemperature = 0;
         burnTicks = 0;
         airTicks = 0;
+        lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
 
         Arrays.fill(cachedRecipes, null);
     }
