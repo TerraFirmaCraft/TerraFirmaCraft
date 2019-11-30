@@ -64,7 +64,10 @@ public class CalendarEventHandler
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
         // Update calendar to world time = 0
-        CalendarTFC.INSTANCE.setTimeFromWorldTime(0);
+        if (!event.getEntityPlayer().world.isRemote)
+        {
+            CalendarTFC.INSTANCE.setTimeFromWorldTime(0);
+        }
     }
 
     /**
