@@ -75,6 +75,7 @@ public class GuiButtonPlayerInventoryTab extends GuiButtonTFC
         x += newGuiLeft - guiLeft;
         iconX += newGuiLeft - guiLeft;
         guiLeft = newGuiLeft;
+        enabled = false;
     }
 
     public boolean isActive()
@@ -100,6 +101,7 @@ public class GuiButtonPlayerInventoryTab extends GuiButtonTFC
             // The icon
             drawScaledCustomSizeModalRect(iconX, iconY, iconU, iconV, 32, 32, 16, 16, 256, 256);
             mouseDragged(mc, mouseX, mouseY);
+            enabled = true;
         }
     }
 }
