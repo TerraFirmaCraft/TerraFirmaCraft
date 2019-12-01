@@ -700,6 +700,14 @@ public final class BlocksTFC
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == CLAY || type == CLAY_GRASS;
     }
 
+    public static boolean isGrowableSoil(IBlockState current)
+    {
+        if (current.getBlock() instanceof BlockPeat) return false;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        Rock.Type type = ((BlockRockVariant) current.getBlock()).getType();
+        return type == GRASS || type == DRY_GRASS || type == DIRT || type == CLAY || type == CLAY_GRASS;
+    }
+
     public static boolean isSoilOrGravel(IBlockState current)
     {
         if (current.getBlock() instanceof BlockPeat) return true;
