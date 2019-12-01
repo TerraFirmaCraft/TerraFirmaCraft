@@ -121,20 +121,28 @@ public class ClientEvents
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public static void onGuiButtonPress(GuiScreenEvent.ActionPerformedEvent.Post event)
+    public static void onGuiButtonPressPre(GuiScreenEvent.ActionPerformedEvent.Pre event)
     {
         if (event.getGui() instanceof GuiInventory)
         {
             if (event.getButton() instanceof GuiButtonPlayerInventoryTab)
             {
-                // This should generally be true, but check just in case something has disabled it
                 GuiButtonPlayerInventoryTab button = (GuiButtonPlayerInventoryTab) event.getButton();
-                if (button.isActive())
+                // This is to prevent the button from immediately firing after moving (enabled is set to false then)
+                if (button.isActive() && button.enabled)
                 {
                     TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(button.getGuiType()));
                 }
             }
+        }
+    }
 
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onGuiButtonPressPost(GuiScreenEvent.ActionPerformedEvent.Post event)
+    {
+        if (event.getGui() instanceof GuiInventory)
+        {
             // This is necessary to catch the resizing of the inventory gui when you open the recipe book
             for (GuiButton button : event.getButtonList())
             {
