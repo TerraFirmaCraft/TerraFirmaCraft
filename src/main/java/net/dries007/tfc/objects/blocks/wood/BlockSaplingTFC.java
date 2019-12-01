@@ -26,6 +26,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TETickCounter;
@@ -150,5 +151,12 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         // Remove the sapling first, since the tree generator isn't required to check for it
         world.setBlockToAir(blockPos);
         wood.makeTree(world, blockPos, random, false);
+    }
+
+    @Override
+    @Nonnull
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
+    {
+        return EnumPlantType.Plains;
     }
 }

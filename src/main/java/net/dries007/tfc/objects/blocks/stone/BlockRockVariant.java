@@ -325,7 +325,7 @@ public class BlockRockVariant extends Block implements IItemSize
         switch (plantable.getPlantType(world, pos.offset(direction)))
         {
             case Plains:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS;
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
             case Crop:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
             case Desert:
@@ -345,7 +345,7 @@ public class BlockRockVariant extends Block implements IItemSize
                             flag = true;
                         }
                 }
-                return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;// todo: dry grass?
+                return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;
             }
             case Nether:
                 return false;
