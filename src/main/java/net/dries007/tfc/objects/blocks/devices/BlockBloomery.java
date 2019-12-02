@@ -77,8 +77,8 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     static
     {
         Predicate<IBlockState> stoneMatcher = state -> state.getMaterial() == Material.ROCK && state.isNormalCube();
-        Predicate<IBlockState> insideChimney = state -> state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR;
-        Predicate<IBlockState> center = state -> state.getBlock() == BlocksTFC.CHARCOAL_PILE || state.getBlock() == BlocksTFC.BLOOM || state.getBlock() == Blocks.AIR;
+        Predicate<IBlockState> insideChimney = state -> state.getBlock() == BlocksTFC.MOLTEN || state.getMaterial().isReplaceable();
+        Predicate<IBlockState> center = state -> state.getBlock() == BlocksTFC.CHARCOAL_PILE || state.getBlock() == BlocksTFC.BLOOM || state.getMaterial().isReplaceable();
         BLOOMERY_BASE = new Multiblock()
             .match(new BlockPos(0, 0, 0), center)
             .match(new BlockPos(0, -1, 0), stoneMatcher);
