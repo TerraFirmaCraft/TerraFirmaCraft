@@ -38,7 +38,7 @@ public class CTBarrel
         if (fluidInput == null) throw new IllegalArgumentException("Fluid input must be non-null");
         if (itemInput instanceof ILiquidStack)
             throw new IllegalArgumentException("There is a fluid where it's supposed to be an item!");
-        IIngredient itemIngredient = CTHelper.getInternalIngredient(itemInput);
+        IIngredient itemIngredient = itemInput == null ? IIngredient.of(ItemStack.EMPTY) : CTHelper.getInternalIngredient(itemInput);
         IIngredient fluidIngredient = CTHelper.getInternalIngredient(fluidInput);
         ItemStack outputStack = itemOutput == null ? ItemStack.EMPTY : (ItemStack) itemOutput.getInternal();
         FluidStack outputFluid = fluidOutput == null ? null : (FluidStack) fluidOutput.getInternal();
