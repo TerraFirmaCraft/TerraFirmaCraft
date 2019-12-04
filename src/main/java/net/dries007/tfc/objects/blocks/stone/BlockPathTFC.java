@@ -29,8 +29,8 @@ public class BlockPathTFC extends BlockRockVariantFallable
     public BlockPathTFC(Rock.Type type, Rock rock)
     {
         super(type, rock);
-        //Since the only face that should block light is EnumFacing.DOWN and this blocks falls if not supported
-        //This don't need a light opacity.
+        setLightOpacity(255);
+        useNeighborBrightness = true;
     }
 
     @Override
