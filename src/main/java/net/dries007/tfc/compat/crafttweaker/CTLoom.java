@@ -49,7 +49,8 @@ public class CTLoom
             @Override
             public String describe()
             {
-                return "Adding loom recipe for " + outputStack.getDisplayName();
+                //noinspection ConstantConditions
+                return "Adding loom recipe " + recipe.getRegistryName().toString();
             }
         });
     }

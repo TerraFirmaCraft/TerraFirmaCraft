@@ -49,7 +49,8 @@ public class CTQuern
             @Override
             public String describe()
             {
-                return "Adding quern recipe for " + outputStack.getDisplayName();
+                //noinspection ConstantConditions
+                return "Adding quern recipe " + recipe.getRegistryName().toString();
             }
         });
     }

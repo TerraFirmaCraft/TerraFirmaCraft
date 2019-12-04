@@ -55,7 +55,8 @@ public class CTBarrel
             @Override
             public String describe()
             {
-                return "Adding barrel recipe for " + recipe.getResultName();
+                //noinspection ConstantConditions
+                return "Adding barrel recipe " + recipe.getRegistryName().toString();
             }
         });
     }

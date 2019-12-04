@@ -45,7 +45,8 @@ public class CTLeatherKnapping
             @Override
             public String describe()
             {
-                return "Adding leather knapping recipe for " + outputStack.getDisplayName();
+                //noinspection ConstantConditions
+                return "Adding leather knapping recipe " + recipe.getRegistryName().toString();
             }
         });
     }
