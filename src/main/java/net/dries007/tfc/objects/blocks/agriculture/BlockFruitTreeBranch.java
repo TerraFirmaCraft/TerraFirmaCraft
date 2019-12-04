@@ -19,6 +19,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -59,6 +60,7 @@ public class BlockFruitTreeBranch extends Block
         setHarvestLevel("axe", 0);
         setSoundType(SoundType.WOOD);
         this.tree = tree;
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
     @SuppressWarnings("deprecation")
