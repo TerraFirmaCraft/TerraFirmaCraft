@@ -146,6 +146,7 @@ public class TEBloomery extends TEInventory implements ITickable
     public void update()
     {
         if (world.isRemote) return;
+        IBlockState state = world.getBlockState(pos);
         if (--delayTimer <= 0)
         {
             delayTimer = 20;
@@ -156,27 +157,37 @@ public class TEBloomery extends TEInventory implements ITickable
             }
 
             int newMaxItems = BlocksTFC.BLOOMERY.getChimneyLevels(world, getInternalBlock()) * 8;
-            if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), world.getBlockState(pos).getValue(FACING)))
+            if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), direction))
             {
                 newMaxItems = 0;
             }
 
             maxFuel = newMaxItems;
             maxOre = newMaxItems;
+            boolean turnOff = false;
             while (maxOre < oreStacks.size())
             {
+                turnOff = true;
                 //Structure lost one or more chimney levels
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), oreStacks.get(0));
                 oreStacks.remove(0);
             }
             while (maxFuel < fuelStacks.size())
             {
+                turnOff = true;
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), fuelStacks.get(0));
                 fuelStacks.remove(0);
             }
-            if (maxOre <= 0)
+            // Structure became compromised, unlit if needed
+            if (turnOff && state.getValue(LIT))
             {
-                //Structure became compromised
+                burnTicksLeft = 0;
+                state = state.withProperty(LIT, false);
+                world.setBlockState(pos, state);
+            }
+            if (!BlocksTFC.BLOOMERY.canGateStayInPlace(world, pos, direction.getAxis()))
+            {
+                // Bloomery gate (the front facing) structure became compromised
                 world.destroyBlock(pos, true);
                 return;
             }
@@ -192,7 +203,6 @@ public class TEBloomery extends TEInventory implements ITickable
 
             updateSlagBlock(this.burnTicksLeft > 0);
         }
-        IBlockState state = world.getBlockState(pos);
         if (state.getValue(LIT))
         {
             if (--burnTicksLeft <= 0)
