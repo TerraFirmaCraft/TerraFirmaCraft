@@ -126,7 +126,8 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
         // Update the actual world times
         for (World world : server.worlds)
         {
-            world.setWorldTime(CalendarTFC.CALENDAR_TIME.getWorldTime());
+            long currentWorldTime = world.getWorldTime();
+            world.setWorldTime(currentWorldTime + timeJump);
         }
 
         TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
@@ -153,7 +154,8 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
         // Update the actual world times
         for (World world : server.worlds)
         {
-            world.setWorldTime(worldTimeToSetTo);
+            long currentWorldTime = world.getWorldTime();
+            world.setWorldTime(currentWorldTime + worldTimeJump);
         }
 
         TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
