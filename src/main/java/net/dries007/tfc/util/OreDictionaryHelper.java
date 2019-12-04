@@ -87,6 +87,9 @@ public class OreDictionaryHelper
         OreDictionary.registerOre("charcoal", new ItemStack(Items.COAL, 1, 1));
         OreDictionary.registerOre("fireStarter", new ItemStack(Items.FLINT_AND_STEEL, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("fireStarter", new ItemStack(Items.FIRE_CHARGE));
+
+        // Register a name without any items
+        OreDictionary.getOres("infiniteFire", true);
     }
 
     /**

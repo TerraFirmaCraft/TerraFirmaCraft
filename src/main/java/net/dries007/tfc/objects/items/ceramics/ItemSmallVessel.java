@@ -274,7 +274,11 @@ public class ItemSmallVessel extends ItemPottery
                 String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
                 if (isMolten())
                 {
-                    desc += " - " + I18n.format("tfc.tooltip.liquid");
+                    desc += I18n.format("tfc.tooltip.liquid");
+                }
+                else
+                {
+                    desc += I18n.format("tfc.tooltip.solid");
                 }
                 text.add(desc);
             }
@@ -340,7 +344,7 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if ((fluidMode || isInventoryEmpty()) && resource != null && FluidsTFC.getMetalFromFluid(resource.getFluid()) != null)
+            if ((fluidMode || isInventoryEmpty()) && resource != null)
             {
                 updateFluidData(resource);
                 fluidMode = true;
