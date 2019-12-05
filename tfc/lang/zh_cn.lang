@@ -5,6 +5,12 @@
 # 以及其他很多提出过建议和意见的朋友。
 
 # Command
+tfc.command.time.usage=/timetfc [add|query|set] [参数]
+tfc.command.time.usage_expected_first_argument=在 /timetfc 后应有 [add|query|set]
+tfc.command.time.usage_expected_second_argument_query=在 /timetfc query 后应有 [daytime|day|gametime|playerticks|calendarticks]
+tfc.command.time.usage_expected_second_argument_set=在 /timetfc set 后应有 [day|night}monthlength|<value>]
+tfc.command.time.usage_expected_second_argument_add=在 /timetfc add 后应有 [day|night}monthlength|<value>]
+tfc.command.time.set_month_length=将月长度设置为 %d 天/月
 
 # Gui
 
@@ -16,7 +22,8 @@ tfc.tooltip.oredictionaryentries=§f矿物词典名称：
 tfc.tooltip.metal=§f金属：§7%s
 tfc.tooltip.units=%d 单元
 tfc.tooltip.smelting=在 %s 中熔炼
-tfc.tooltip.liquid=液态
+tfc.tooltip.liquid= - 液态
+tfc.tooltip.solid= - 固态
 tfc.tooltip.barrel_empty=空
 tfc.tooltip.barrel_fluid=含 %1$d mB 的 %2$s
 tfc.tooltip.barrel_fluid_amount=%d mB
@@ -40,7 +47,8 @@ tfc.tooltip.calendar=日历
 tfc.tooltip.season=季节：%s
 tfc.tooltip.day=日：%s
 tfc.tooltip.date=日期：%s
-tfc.tooltip.debug_times=总刻：%d | 玩家刻：%d | 日历刻：%d
+tfc.tooltip.calendar_full_date=%s %s %02d, %04d
+tfc.tooltip.debug_times=玩家刻：%d | 日历刻：%d
 tfc.tooltip.food_expiry_date=于 %s 过期
 tfc.tooltip.food_rotten=腐烂了 - 我绝对不吃。
 tfc.tooltip.food_infinite_expiry=永不过期
