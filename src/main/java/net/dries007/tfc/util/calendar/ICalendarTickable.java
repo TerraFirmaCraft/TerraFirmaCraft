@@ -30,9 +30,9 @@ public interface ICalendarTickable extends ITickable
         {
             long playerTick = CalendarTFC.PLAYER_TIME.getTicks();
             long tickDelta = playerTick - getLastUpdateTick();
-            if (tickDelta != 0)
+            if (tickDelta != 1) // Expect 1 tick
             {
-                onCalendarUpdate(tickDelta);
+                onCalendarUpdate(tickDelta - 1);
             }
             setLastUpdateTick(playerTick);
         }
