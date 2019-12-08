@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -27,17 +28,26 @@ public class CalendarEventHandler
 {
     /**
      * Called from LOGICAL SERVER
-     * Responsible for primary time tracking for the calendar
-     * Synced to client every tick
+     * Responsible for primary time tracking for player time
+     * Synced to client every second
      *
      * @param event {@link ServerTickEvent}
      */
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent event)
     {
-        if (event.phase == Phase.START)
+        if (event.phase == Phase.END)
         {
-            CalendarTFC.INSTANCE.onTick();
+            CalendarTFC.INSTANCE.onServerTick();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onOverworldTick(TickEvent.WorldTickEvent event)
+    {
+        if (event.phase == Phase.END && event.world.provider.getDimension() == 0)
+        {
+            CalendarTFC.INSTANCE.onOverworldTick(event.world);
         }
     }
 
@@ -63,10 +73,11 @@ public class CalendarEventHandler
     @SubscribeEvent
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
-        // Update calendar to world time = 0
-        if (!event.getEntityPlayer().world.isRemote)
+        if (!event.getEntityPlayer().world.isRemote && !event.updateWorld())
         {
-            CalendarTFC.INSTANCE.setTimeFromWorldTime(0);
+            long currentWorldTime = event.getEntity().getEntityWorld().getWorldTime();
+            if (CalendarTFC.CALENDAR_TIME.getWorldTime() != currentWorldTime)
+                CalendarTFC.INSTANCE.setTimeFromWorldTime(currentWorldTime);
         }
     }
 

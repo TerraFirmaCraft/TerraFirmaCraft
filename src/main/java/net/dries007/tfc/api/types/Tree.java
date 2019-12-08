@@ -108,12 +108,13 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         return false;
     }
 
-    public void makeTree(World world, BlockPos pos, Random rand, boolean isWorldGen)
+    public boolean makeTree(World world, BlockPos pos, Random rand, boolean isWorldGen)
     {
         if (!world.isRemote)
         {
-            makeTree(((WorldServer) world).getStructureTemplateManager(), world, pos, rand, isWorldGen);
+            return makeTree(((WorldServer) world).getStructureTemplateManager(), world, pos, rand, isWorldGen);
         }
+        return false;
     }
 
     public boolean isValidLocation(float temp, float rain, float density)
