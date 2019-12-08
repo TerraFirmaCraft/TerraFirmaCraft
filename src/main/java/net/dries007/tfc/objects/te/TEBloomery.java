@@ -44,9 +44,9 @@ import static net.minecraft.block.BlockHorizontal.FACING;
 @ParametersAreNonnullByDefault
 public class TEBloomery extends TEInventory implements ICalendarTickable, ITickable
 {
-    //Gets the internal block, should be charcoal pile/bloom
+    // Gets the internal block, should be charcoal pile/bloom
     private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
-    //Gets the external block, the front of the facing to dump contents in world.
+    // Gets the external block, the front of the facing to dump contents in world.
     private static final Vec3i OFFSET_EXTERNAL = new Vec3i(-1, 0, 0);
     private List<ItemStack> oreStacks = new ArrayList<>();
     private List<ItemStack> fuelStacks = new ArrayList<>();
@@ -81,7 +81,6 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
             fuelStacks.add(new ItemStack(fuels.getCompoundTagAt(i)));
         }
         burnTicksLeft = tag.getLong("burnTicksLeft");
-        lastPlayerTick = tag.getLong("lastPlayerTick");
         super.readFromNBT(tag);
     }
 
@@ -102,7 +101,6 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
         }
         tag.setTag("fuels", fuels);
         tag.setLong("burnTicksLeft", burnTicksLeft);
-        tag.setLong("lastPlayerTick", lastPlayerTick);
         return super.writeToNBT(tag);
     }
 
@@ -141,7 +139,7 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
             while (maxOre < oreStacks.size())
             {
                 turnOff = true;
-                //Structure lost one or more chimney levels
+                // Structure lost one or more chimney levels
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), oreStacks.get(0));
                 oreStacks.remove(0);
             }
