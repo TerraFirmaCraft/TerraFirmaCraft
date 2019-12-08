@@ -330,10 +330,10 @@ public class ConfigTFC
         @Config.RequiresWorldRestart
         public boolean debugWorldGen = false;
 
-        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks"})
+        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents the period of the wave = the distance between hot and cold bands, in blocks"})
         @Config.RangeInt(min = 1_000, max = 1_000_000)
         @Config.LangKey("config." + MOD_ID + ".world.latitudeTemperatureModifier")
-        public int latitudeTemperatureModifier = 20_000;
+        public int latitudeTemperatureModifier = 40_000;
 
         @Config.Comment("The rarity for clay pits to occur. On average 1 / N chunks will have a clay deposit, if the chunk in question is valid for clay to spawn.")
         @Config.RangeInt(min = 1)
