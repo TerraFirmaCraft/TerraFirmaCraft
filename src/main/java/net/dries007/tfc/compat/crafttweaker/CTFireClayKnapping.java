@@ -45,7 +45,7 @@ public class CTFireClayKnapping
             @Override
             public String describe()
             {
-                return "Adding fire clay knapping recipe for " + outputStack.getDisplayName();
+                return "Adding fire clay knapping recipe " + recipe.getRegistryName();
             }
         });
     }

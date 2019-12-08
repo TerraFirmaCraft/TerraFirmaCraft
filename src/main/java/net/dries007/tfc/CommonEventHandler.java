@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -485,7 +486,10 @@ public final class CommonEventHandler
             float temperature = ClimateTFC.getAvgTemp(world, pos);
             Biome biome = world.getBiome(pos);
 
-            if (!animal.isValidSpawnConditions(biome, temperature, rainfall))
+            // Set entity pos before checking for collisions
+            event.getEntity().setPosition(event.getX(), event.getY(), event.getZ());
+
+            if (!animal.isValidSpawnConditions(biome, temperature, rainfall) || !((EntityLiving) event.getEntityLiving()).getCanSpawnHere())
             {
                 event.setResult(Event.Result.DENY);
             }
