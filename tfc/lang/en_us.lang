@@ -2,8 +2,8 @@
 tfc.command.time.usage=/timetfc [add|query|set] [args...]
 tfc.command.time.usage_expected_first_argument=Expected [add|query|set] after /timetfc
 tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
-tfc.command.time.usage_expected_second_argument_set=Expected [day|night}monthlength|<value>] after /timetfc set
-tfc.command.time.usage_expected_second_argument_add=Expected [day|night}monthlength|<value>] after /timetfc add
+tfc.command.time.usage_expected_second_argument_set=Expected [day|night|monthlength <value>] after /timetfc set
+tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years|] <value> after /timetfc add
 tfc.command.time.set_month_length=Set Month Length to %d Days / Month
 
 # Gui
