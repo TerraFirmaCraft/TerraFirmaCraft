@@ -135,15 +135,15 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
     /**
      * Jumps the calendar ahead to a world time.
+     * This does not automatically fix sync errors
      *
      * @param worldTimeToSetTo a world time, obtained from {@link World#getWorldTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
      */
     public void setTimeFromWorldTime(long worldTimeToSetTo)
     {
         // Calculate the offset to jump to
-        long worldTimeJump = worldTimeToSetTo - CalendarTFC.CALENDAR_TIME.getWorldTime();
-        // Ignore a tick difference of <= 1
-        if (worldTimeJump <= 1)
+        long worldTimeJump = (worldTimeToSetTo % ICalendar.TICKS_IN_DAY) - CalendarTFC.CALENDAR_TIME.getWorldTime();
+        if (worldTimeJump < 0)
         {
             worldTimeJump += ICalendar.TICKS_IN_DAY;
         }
@@ -255,23 +255,49 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
     }
 
     /**
-     * Called on server ticks, syncs to client each tick
-     * Grab the overworld from the server
+     * Called on server ticks, syncs to client
      */
-    public void onTick()
+    public void onServerTick()
     {
         if (arePlayersLoggedOn)
         {
             playerTime++;
-            if (doDaylightCycle)
-            {
-                calendarTime++;
-            }
         }
+        if (server.getTickCounter() % 20 == 0)
+        {
+            TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+        }
+    }
 
-        // In keeping with vanilla time tracking, this packet is sent every server tick
-        // This is the best way to guarantee that the calendar is synced
-        TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+    /**
+     * Called on each overworld tick, increments and syncs calendar time
+     */
+    public void onOverworldTick(World world)
+    {
+        if (doDaylightCycle)
+        {
+            calendarTime++;
+        }
+        long deltaWorldTime = (world.getWorldTime() % ICalendar.TICKS_IN_DAY) - CALENDAR_TIME.getWorldTime();
+        if (deltaWorldTime > 1 || deltaWorldTime < -1)
+        {
+            TerraFirmaCraft.getLog().info("World time and calendar time are out of sync by {} ticks, correcting!", deltaWorldTime);
+            if (deltaWorldTime < 0)
+            {
+                // Calendar is ahead, so jump world time
+                world.setWorldTime(world.getWorldTime() - deltaWorldTime);
+            }
+            else
+            {
+                // World time is ahead, so jump calendar
+                calendarTime += deltaWorldTime;
+            }
+            TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+        }
+        if (server.getTickCounter() % 20 == 0)
+        {
+            TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+        }
     }
 
     public void setMonthLength(int newMonthLength)

@@ -103,7 +103,7 @@ public class CommandTimeTFC extends CommandBase
                 }
                 else if ("daytime".equals(args[1]))
                 {
-                    int daytime = (int) (sender.getEntityWorld().getWorldTime() % (24 * ICalendar.TICKS_IN_DAY));
+                    int daytime = (int) (sender.getEntityWorld().getWorldTime() % ICalendar.TICKS_IN_DAY);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, daytime);
                     notifyCommandListener(sender, this, "commands.time.query", daytime);
                 }
