@@ -33,13 +33,16 @@ import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.fuel.FuelManager;
 
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 import static net.minecraft.block.BlockHorizontal.FACING;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class TEBloomery extends TEInventory implements ITickable
+public class TEBloomery extends TEInventory implements ICalendarTickable, ITickable
 {
     //Gets the internal block, should be charcoal pile/bloom
     private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
@@ -48,8 +51,9 @@ public class TEBloomery extends TEInventory implements ITickable
     private List<ItemStack> oreStacks = new ArrayList<>();
     private List<ItemStack> fuelStacks = new ArrayList<>();
 
-    private int maxFuel = 0, maxOre = 0, delayTimer = 0;
-    private long burnTicksLeft;
+    private int maxFuel = 0, maxOre = 0, delayTimer = 0; // Helper variables, not necessary to serialize
+    private long burnTicksLeft; // Ticks left to finish the current operation
+    private long lastPlayerTick; // Last player tick this bloomery was ticked (for purposes of catching up)
     private EnumFacing direction = null;
 
     private BlockPos internalBlock = null, externalBlock = null;
@@ -57,6 +61,7 @@ public class TEBloomery extends TEInventory implements ITickable
     public TEBloomery()
     {
         super(0);
+        lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
@@ -76,6 +81,7 @@ public class TEBloomery extends TEInventory implements ITickable
             fuelStacks.add(new ItemStack(fuels.getCompoundTagAt(i)));
         }
         burnTicksLeft = tag.getLong("burnTicksLeft");
+        lastPlayerTick = tag.getLong("lastPlayerTick");
         super.readFromNBT(tag);
     }
 
@@ -96,6 +102,7 @@ public class TEBloomery extends TEInventory implements ITickable
         }
         tag.setTag("fuels", fuels);
         tag.setLong("burnTicksLeft", burnTicksLeft);
+        tag.setLong("lastPlayerTick", lastPlayerTick);
         return super.writeToNBT(tag);
     }
 
@@ -106,46 +113,13 @@ public class TEBloomery extends TEInventory implements ITickable
         super.onBreakBlock(world, pos, state);
     }
 
-    public BlockPos getInternalBlock()
-    {
-        if (internalBlock == null)
-        {
-            internalBlock = pos.up(OFFSET_INTERNAL.getY())
-                .offset(direction, OFFSET_INTERNAL.getX())
-                .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
-        }
-        return internalBlock;
-    }
-
-    public BlockPos getExternalBlock()
-    {
-        if (externalBlock == null)
-        {
-            externalBlock = pos.up(OFFSET_EXTERNAL.getY())
-                .offset(direction, OFFSET_EXTERNAL.getX())
-                .offset(direction.rotateY(), OFFSET_EXTERNAL.getZ());
-        }
-        return externalBlock;
-    }
-
-    public boolean canIgnite()
-    {
-        if (world.isRemote) return false;
-        if (this.fuelStacks.size() < this.oreStacks.size() || this.oreStacks.isEmpty())
-            return false;
-
-        return isInternalBlockComplete();
-    }
-
-    public void onIgnite()
-    {
-        this.burnTicksLeft = ConfigTFC.GENERAL.bloomeryTime;
-    }
-
     @Override
     public void update()
     {
+        ICalendarTickable.super.update();
+
         if (world.isRemote) return;
+        IBlockState state = world.getBlockState(pos);
         if (--delayTimer <= 0)
         {
             delayTimer = 20;
@@ -156,27 +130,37 @@ public class TEBloomery extends TEInventory implements ITickable
             }
 
             int newMaxItems = BlocksTFC.BLOOMERY.getChimneyLevels(world, getInternalBlock()) * 8;
-            if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), world.getBlockState(pos).getValue(FACING)))
+            if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), direction))
             {
                 newMaxItems = 0;
             }
 
             maxFuel = newMaxItems;
             maxOre = newMaxItems;
+            boolean turnOff = false;
             while (maxOre < oreStacks.size())
             {
+                turnOff = true;
                 //Structure lost one or more chimney levels
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), oreStacks.get(0));
                 oreStacks.remove(0);
             }
             while (maxFuel < fuelStacks.size())
             {
+                turnOff = true;
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), fuelStacks.get(0));
                 fuelStacks.remove(0);
             }
-            if (maxOre <= 0)
+            // Structure became compromised, unlit if needed
+            if (turnOff && state.getValue(LIT))
             {
-                //Structure became compromised
+                burnTicksLeft = 0;
+                state = state.withProperty(LIT, false);
+                world.setBlockState(pos, state);
+            }
+            if (!BlocksTFC.BLOOMERY.canGateStayInPlace(world, pos, direction.getAxis()))
+            {
+                // Bloomery gate (the front facing) structure became compromised
                 world.destroyBlock(pos, true);
                 return;
             }
@@ -192,7 +176,6 @@ public class TEBloomery extends TEInventory implements ITickable
 
             updateSlagBlock(this.burnTicksLeft > 0);
         }
-        IBlockState state = world.getBlockState(pos);
         if (state.getValue(LIT))
         {
             if (--burnTicksLeft <= 0)
@@ -224,6 +207,70 @@ public class TEBloomery extends TEInventory implements ITickable
                 markDirty();
             }
         }
+    }
+
+    @Override
+    public void onCalendarUpdate(long playerTickDelta)
+    {
+        burnTicksLeft = Math.max(0, burnTicksLeft - playerTickDelta);
+    }
+
+    public boolean canIgnite()
+    {
+        if (world.isRemote) return false;
+        if (this.fuelStacks.size() < this.oreStacks.size() || this.oreStacks.isEmpty())
+            return false;
+
+        return isInternalBlockComplete();
+    }
+
+    public void onIgnite()
+    {
+        this.burnTicksLeft = ConfigTFC.GENERAL.bloomeryTime;
+    }
+
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
+    }
+
+    /**
+     * Gets the internal (charcoal pile / bloom) position
+     *
+     * @return BlockPos of the internal block
+     */
+    protected BlockPos getInternalBlock()
+    {
+        if (internalBlock == null)
+        {
+            internalBlock = pos.up(OFFSET_INTERNAL.getY())
+                .offset(direction, OFFSET_INTERNAL.getX())
+                .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
+        }
+        return internalBlock;
+    }
+
+    /**
+     * Gets the external (front facing) position
+     *
+     * @return BlockPos to dump items in world
+     */
+    protected BlockPos getExternalBlock()
+    {
+        if (externalBlock == null)
+        {
+            externalBlock = pos.up(OFFSET_EXTERNAL.getY())
+                .offset(direction, OFFSET_EXTERNAL.getX())
+                .offset(direction.rotateY(), OFFSET_EXTERNAL.getZ());
+        }
+        return externalBlock;
     }
 
     private void dumpItems()

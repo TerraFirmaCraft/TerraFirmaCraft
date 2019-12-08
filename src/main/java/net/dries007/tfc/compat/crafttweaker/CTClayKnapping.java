@@ -45,7 +45,8 @@ public class CTClayKnapping
             @Override
             public String describe()
             {
-                return "Adding clay knapping recipe for " + outputStack.getDisplayName();
+                //noinspection ConstantConditions
+                return "Adding clay knapping recipe " + recipe.getRegistryName().toString();
             }
         });
     }

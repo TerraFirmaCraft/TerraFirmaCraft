@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -114,5 +115,27 @@ public class BlockThatchBed extends BlockBed
     public boolean isBed(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable Entity player)
     {
         return true;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        EnumFacing enumfacing = state.getValue(FACING);
+        if (state.getValue(PART) == BlockBed.EnumPartType.FOOT)
+        {
+            if (!(worldIn.getBlockState(pos.offset(enumfacing)).getBlock() instanceof BlockThatchBed))
+            {
+                worldIn.setBlockToAir(pos);
+            }
+        }
+        else if (!(worldIn.getBlockState(pos.offset(enumfacing)).getBlock() instanceof BlockThatchBed))
+        {
+            if (!worldIn.isRemote)
+            {
+                this.dropBlockAsItem(worldIn, pos, state, 0);
+            }
+            worldIn.setBlockToAir(pos);
+        }
+
     }
 }
