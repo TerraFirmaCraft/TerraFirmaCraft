@@ -337,6 +337,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         }
     }
 
+
     public void debug()
     {
         TerraFirmaCraft.getLog().debug("Debugging Blast Furnace:");
@@ -386,7 +387,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         {
             ItemStack stack = entityItem.getItem();
             IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
-            if (FuelManager.isItemFuel(stack))
+            if (FuelManager.isItemBloomeryFuel(stack))
             {
                 // Add fuel
                 while (maxFuel > fuelStacks.size())
