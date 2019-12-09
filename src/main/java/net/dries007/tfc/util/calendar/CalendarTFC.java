@@ -274,7 +274,7 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
      */
     public void onOverworldTick(World world)
     {
-        if (doDaylightCycle)
+        if (doDaylightCycle && arePlayersLoggedOn)
         {
             calendarTime++;
         }
