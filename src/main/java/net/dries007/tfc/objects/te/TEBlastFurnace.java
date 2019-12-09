@@ -45,12 +45,12 @@ import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 public class TEBlastFurnace extends TEInventory implements ITickable, ITileFields
 {
     public static final int SLOT_TUYERE = 0;
-    public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3, FIELD_ORE_UNITS = 4;
+    public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3, FIELD_ORE_UNITS = 4, CHIMNEY_LEVELS = 5;
 
     private List<ItemStack> oreStacks = new ArrayList<>();
     private List<ItemStack> fuelStacks = new ArrayList<>();
 
-    private int maxFuel = 0, maxOre = 0, delayTimer = 0, meltAmount = 0;
+    private int maxFuel = 0, maxOre = 0, delayTimer = 0, meltAmount = 0, chimney = 0;
     private long burnTicksLeft = 0, airTicks = 0;
     private int fuelCount = 0, oreCount = 0, oreUnits; // Used to show on client's GUI how much ore/fuel TE has
 
@@ -156,7 +156,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     @Override
     public int getFieldCount()
     {
-        return 5;
+        return 6;
     }
 
     @Override
@@ -179,6 +179,9 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
             case FIELD_ORE_UNITS:
                 oreUnits = value;
                 return;
+            case CHIMNEY_LEVELS:
+                chimney = value;
+                return;
         }
         TerraFirmaCraft.getLog().warn("Illegal field id {} in TEBlastFurnace#setField", index);
     }
@@ -198,6 +201,8 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 return meltAmount;
             case FIELD_ORE_UNITS:
                 return oreUnits;
+            case CHIMNEY_LEVELS:
+                return chimney;
         }
         TerraFirmaCraft.getLog().warn("Illegal field id {} in TEBlastFurnace#getField", index);
         return 0;
@@ -214,7 +219,8 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
             {
                 delayTimer = 20;
                 // Update multiblock status
-                int newMaxItems = BlocksTFC.BLAST_FURNACE.getChimneyLevels(world, pos) * 4;
+                chimney = BlocksTFC.BLAST_FURNACE.getChimneyLevels(world, pos);
+                int newMaxItems = chimney * 4;
                 maxFuel = newMaxItems;
                 maxOre = newMaxItems;
                 while (maxOre < oreStacks.size())
@@ -227,12 +233,6 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 {
                     InventoryHelper.spawnItemStack(world, pos.north().getX(), pos.north().getY(), pos.north().getZ(), fuelStacks.get(0));
                     fuelStacks.remove(0);
-                }
-                if (newMaxItems <= 0)
-                {
-                    //Structure became compromised
-                    world.destroyBlock(pos, true);
-                    return;
                 }
                 addItemsFromWorld();
                 updateSlagBlock(state.getValue(LIT));
