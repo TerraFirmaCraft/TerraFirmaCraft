@@ -13,6 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -66,6 +67,7 @@ public class CommandTimeTFC extends CommandBase
                     {
                         resultWorldTime = parseInt(args[1], 0);
                     }
+                    setAllWorldTimes(server, resultWorldTime);
                     CalendarTFC.INSTANCE.setTimeFromWorldTime(resultWorldTime);
                     notifyCommandListener(sender, this, "commands.time.set", resultWorldTime);
                 }
@@ -176,5 +178,19 @@ public class CommandTimeTFC extends CommandBase
             }
         }
         return Collections.emptyList();
+    }
+
+    private void setAllWorldTimes(MinecraftServer server, long worldTime)
+    {
+        // Update the actual world times
+        for (World world : server.worlds)
+        {
+            long worldTimeJump = worldTime - (world.getWorldTime() % ICalendar.TICKS_IN_DAY);
+            if (worldTimeJump < 0)
+            {
+                worldTimeJump += ICalendar.TICKS_IN_DAY;
+            }
+            world.setWorldTime(world.getWorldTime() + worldTimeJump);
+        }
     }
 }

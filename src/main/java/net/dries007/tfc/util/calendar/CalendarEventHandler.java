@@ -77,7 +77,9 @@ public class CalendarEventHandler
         {
             long currentWorldTime = event.getEntity().getEntityWorld().getWorldTime();
             if (CalendarTFC.CALENDAR_TIME.getWorldTime() != currentWorldTime)
+            {
                 CalendarTFC.INSTANCE.setTimeFromWorldTime(currentWorldTime);
+            }
         }
     }
 
