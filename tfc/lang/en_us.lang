@@ -56,6 +56,7 @@ tfc.tooltip.plant_wet=%sToo wet%s
 tfc.tooltip.blast_furnace_ore_amount=Ore
 tfc.tooltip.blast_furnace_fuel_amount=Fuel
 tfc.tooltip.blast_furnace_melt_amount=Melt
+tfc.tooltip.blast_furnace_invalid_structure=Invalid Structure!
 tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
 tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
