@@ -274,7 +274,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                         ItemStack fuelStack = fuelStacks.get(0);
                         fuelStacks.remove(0);
                         Fuel fuel = FuelManager.getFuel(fuelStack);
-                        burnTicksLeft = fuel.getAmount();
+                        burnTicksLeft = (int) (Math.ceil(fuel.getAmount() / ConfigTFC.GENERAL.blastFurnaceConsumption));
                         burnTemperature = fuel.getTemperature();
                         this.markDirty();
                     }
