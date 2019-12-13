@@ -49,7 +49,7 @@
     "maximum_height": 128,
     "density": 70,
     "base_rocks": [
-      "tfc:gabbro",
+      "tfc:granite",
       "tfc:gneiss"
     ]
   },
