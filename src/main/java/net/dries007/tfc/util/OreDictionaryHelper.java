@@ -134,18 +134,18 @@ public class OreDictionaryHelper
             case BRICKS:
                 MAP.put(thing, toString(prefixParts, "stone", "brick"));
                 break;
-            case CLAY_GRASS:
-                MAP.put(thing, toString(prefixParts, "clay"));
-                MAP.put(thing, toString(prefixParts, "clay", "grass"));
-                break;
             case DRY_GRASS:
                 MAP.put(thing, toString(prefixParts, type, "dry"));
+                break;
+            case CLAY:
+            case CLAY_GRASS:
+                MAP.put(thing, toString(prefixParts, "block", type));
+                MAP.put(thing, toString(prefixParts, "block", type));
                 break;
             case SAND:
             case GRAVEL:
             case DIRT:
             case GRASS:
-            case CLAY:
             default:
                 MAP.put(thing, toString(prefixParts, type));
         }
