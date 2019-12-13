@@ -9,9 +9,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -144,7 +144,10 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(clayknapRecipes, KNAP_CLAY_UID);
-        registry.addRecipeCatalyst(new ItemStack(Items.CLAY_BALL), KNAP_CLAY_UID);
+        for (ItemStack stack : OreDictionary.getOres("clay"))
+        {
+            registry.addRecipeCatalyst(stack, KNAP_CLAY_UID);
+        }
 
         // Fire Clay Knapping
         List<KnappingRecipeWrapper> fireclayknapRecipes = TFCRegistries.KNAPPING.getValuesCollection().stream()
@@ -153,7 +156,10 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(fireclayknapRecipes, KNAP_FIRECLAY_UID);
-        registry.addRecipeCatalyst(new ItemStack(ItemsTFC.FIRE_CLAY), KNAP_FIRECLAY_UID);
+        for (ItemStack stack : OreDictionary.getOres("fireClay"))
+        {
+            registry.addRecipeCatalyst(stack, KNAP_FIRECLAY_UID);
+        }
 
         // Leather Knapping
         List<KnappingRecipeWrapper> leatherknapRecipes = TFCRegistries.KNAPPING.getValuesCollection().stream()
@@ -162,7 +168,10 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(leatherknapRecipes, KNAP_LEATHER_UID);
-        registry.addRecipeCatalyst(new ItemStack(Items.LEATHER), KNAP_LEATHER_UID);
+        for (ItemStack stack : OreDictionary.getOres("leather"))
+        {
+            registry.addRecipeCatalyst(stack, KNAP_LEATHER_UID);
+        }
 
         // Leather Knapping Recipes
         List<KnappingRecipeWrapper> stoneknapRecipes = TFCRegistries.KNAPPING.getValuesCollection().stream()
