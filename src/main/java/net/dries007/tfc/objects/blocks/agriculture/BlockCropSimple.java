@@ -7,12 +7,15 @@ package net.dries007.tfc.objects.blocks.agriculture;
 
 import java.util.Random;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -21,9 +24,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.skills.SimpleSkill;
+import net.dries007.tfc.util.skills.SkillTier;
+import net.dries007.tfc.util.skills.SkillType;
 
 @ParametersAreNonnullByDefault
 public abstract class BlockCropSimple extends BlockCropTFC
@@ -95,6 +102,34 @@ public abstract class BlockCropSimple extends BlockCropTFC
     }
 
     @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        // todo: in 1.14 change to use the apply skill loot table
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+
+        ItemStack seedStack = new ItemStack(ItemSeedsTFC.get(crop));
+        ItemStack foodStack = crop.getFoodDrop(state.getValue(getStageProperty()));
+        SimpleSkill skill = CapabilityPlayerData.getSkill(player, SkillType.AGRICULTURE);
+        if (skill != null)
+        {
+            foodStack.setCount(1 + RANDOM.nextInt(2 + (int) (6 * skill.getTotalLevel())));
+            if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
+            {
+                seedStack.setCount(2);
+            }
+            skill.add(0.04f);
+        }
+        if (!seedStack.isEmpty())
+        {
+            InventoryHelper.spawnItemStack(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, seedStack);
+        }
+        if (!foodStack.isEmpty())
+        {
+            InventoryHelper.spawnItemStack(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, foodStack);
+        }
+    }
+
+    @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
@@ -105,15 +140,6 @@ public abstract class BlockCropSimple extends BlockCropTFC
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         drops.clear();
-        drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
-
-        // todo: adjust food drops based on player agriculture skill. For now just go with 2 for initial balance
-        ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
-        if (!foodDrop.isEmpty())
-        {
-            foodDrop.setCount(2);
-            drops.add(foodDrop);
-        }
     }
 
     @Override

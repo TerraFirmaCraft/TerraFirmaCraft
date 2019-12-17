@@ -39,8 +39,8 @@ public class TFCKeybindings
     }
 
     @SideOnly(Side.CLIENT)
-    @SubscribeEvent()
-    public static void onKeyEvent(InputEvent.KeyInputEvent event)
+    @SubscribeEvent
+    public static void onKeyEvent(InputEvent event)
     {
         if (OPEN_CRAFTING_TABLE.isPressed())
         {

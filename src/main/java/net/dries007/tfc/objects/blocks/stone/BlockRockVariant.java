@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -21,7 +22,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -31,14 +31,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.objects.Gem;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
-import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -46,7 +46,7 @@ import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockRockVariant extends Block
+public class BlockRockVariant extends Block implements IItemSize
 {
     private static final Map<Rock, EnumMap<Rock.Type, BlockRockVariant>> TABLE = new HashMap<>();
 
@@ -146,7 +146,7 @@ public class BlockRockVariant extends Block
         }
         if (type != Rock.Type.SPIKE) //since spikes don't generate ItemBlocks
         {
-            OreDictionaryHelper.registerRockType(this, type, rock);
+            OreDictionaryHelper.registerRockType(this, type);
         }
     }
 
@@ -254,25 +254,6 @@ public class BlockRockVariant extends Block
     }
 
     @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        // call the default getDrops method in order to make sure quantityDropped
-        // and getItemDropped are still used for adding the rock drops.
-        super.getDrops(drops, world, pos, state, fortune);
-
-        // if the block is raw, then this block could also rarely drop gems
-        if (type == Rock.Type.RAW)
-        {
-            // roll must first pass the drop chance odds
-            if (RANDOM.nextDouble() < ConfigTFC.GENERAL.stoneGemDropChance)
-            {
-                // add one gem with a random grade and type to the list of drops
-                drops.add(ItemGem.get(Gem.getRandomDropGem(RANDOM), Gem.Grade.randomGrade(RANDOM), 1));
-            }
-        }
-    }
-
-    @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
         int beachDistance = 2;
@@ -344,7 +325,7 @@ public class BlockRockVariant extends Block
         switch (plantable.getPlantType(world, pos.offset(direction)))
         {
             case Plains:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS;
+                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
             case Crop:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
             case Desert:
@@ -364,7 +345,7 @@ public class BlockRockVariant extends Block
                             flag = true;
                         }
                 }
-                return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;// todo: dry grass?
+                return (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.SAND || type == Rock.Type.DRY_GRASS) && flag;
             }
             case Nether:
                 return false;
@@ -381,6 +362,20 @@ public class BlockRockVariant extends Block
     public Rock getRock()
     {
         return rock;
+    }
+
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.VERY_SMALL;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.HEAVY;
     }
 
     protected void onRockSlide(World world, BlockPos pos)

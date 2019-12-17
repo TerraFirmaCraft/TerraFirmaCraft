@@ -23,25 +23,23 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.AIR;
 import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
 
 /**
- * todo: clean up. This needs to be simplified a lot, or split up in functions with sensible variable names.
+ * todo: this is rewritten in 1.14 anyway
  */
 public class MapGenCavesTFC extends MapGenBase
 {
-    private final int[] rockLayer1;
     private final DataLayer[] stabilityLayer;
-
+    private int[] rockLayer1;
     private float rainfall = 0f;
 
-    public MapGenCavesTFC(int[] rockLayer1, DataLayer[] stabilityLayer)
+    public MapGenCavesTFC(DataLayer[] stabilityLayer)
     {
-        // todo: add settings?
-        this.rockLayer1 = rockLayer1;
         this.stabilityLayer = stabilityLayer;
     }
 
-    public void setRainfall(float rainfall)
+    public void setGenerationData(float rainfall, int[] rockLayer1)
     {
         this.rainfall = rainfall;
+        this.rockLayer1 = rockLayer1;
     }
 
     @Override

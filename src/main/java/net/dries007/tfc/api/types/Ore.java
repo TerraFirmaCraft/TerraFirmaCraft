@@ -10,16 +10,25 @@ import javax.annotation.Nullable;
 
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.util.Helpers;
+
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * todo: document API
  */
+@GameRegistry.ObjectHolder(MOD_ID)
 public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {
+    public static final Ore LIMONITE = Helpers.getNull();
+    public static final Ore MALACHITE = Helpers.getNull();
+    public static final Ore HEMATITE = Helpers.getNull();
+
     private final boolean graded;
     private final Metal metal;
     private final boolean canMelt;

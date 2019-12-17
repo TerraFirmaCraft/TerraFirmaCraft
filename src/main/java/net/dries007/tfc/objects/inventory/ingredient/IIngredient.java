@@ -26,11 +26,18 @@ import net.minecraftforge.oredict.OreDictionary;
 public interface IIngredient<T> extends Predicate<T>
 {
     IIngredient<?> EMPTY = input -> false;
+    IIngredient<?> ANY = input -> true;
 
     @SuppressWarnings("unchecked")
     static <P> IIngredient<P> empty()
     {
         return (IIngredient<P>) EMPTY;
+    }
+
+    @SuppressWarnings("unchecked")
+    static <P> IIngredient<P> any()
+    {
+        return (IIngredient<P>) ANY;
     }
 
     static IIngredient<ItemStack> of(@Nonnull Block predicateBlock)

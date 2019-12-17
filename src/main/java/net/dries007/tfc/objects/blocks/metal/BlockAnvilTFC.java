@@ -79,6 +79,13 @@ public class BlockAnvilTFC extends Block
         setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.NORTH));
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isFullBlock(IBlockState state)
+    {
+        return false;
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
@@ -90,6 +97,20 @@ public class BlockAnvilTFC extends Block
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(AXIS).getHorizontalIndex();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isBlockNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -122,12 +143,6 @@ public class BlockAnvilTFC extends Block
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return ItemAnvil.get(metal, Metal.ItemType.ANVIL);
-    }
-
-    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TEAnvilTFC te = Helpers.getTE(worldIn, pos, TEAnvilTFC.class);
@@ -136,6 +151,12 @@ public class BlockAnvilTFC extends Block
             te.onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return ItemAnvil.get(metal, Metal.ItemType.ANVIL);
     }
 
     @Override
@@ -224,6 +245,13 @@ public class BlockAnvilTFC extends Block
 
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         return false;
     }

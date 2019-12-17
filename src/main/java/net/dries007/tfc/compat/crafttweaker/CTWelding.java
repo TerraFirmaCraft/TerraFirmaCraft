@@ -52,7 +52,8 @@ public class CTWelding
             @Override
             public String describe()
             {
-                return "Adding welding recipe for " + outputStack.getDisplayName();
+                //noinspection ConstantConditions
+                return "Adding welding recipe " + recipe.getRegistryName().toString();
             }
         });
     }

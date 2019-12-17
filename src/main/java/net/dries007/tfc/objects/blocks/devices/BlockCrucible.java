@@ -16,10 +16,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -27,13 +31,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TECrucible;
 import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
-public class BlockCrucible extends Block implements IHeatConsumerBlock
+public class BlockCrucible extends Block implements IHeatConsumerBlock, IItemSize
 {
     private static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(0.0625, 0, 0.0625, 0.9375, 0.9375, 0.9375);
     private static final AxisAlignedBB AABB_LEGS = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.9375D, 0.125D, 0.9375D);
@@ -59,6 +66,20 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
         {
             tile.acceptHeat(temperature);
         }
+    }
+
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.HUGE;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() == null ? Weight.MEDIUM : Weight.HEAVY;
     }
 
     @SuppressWarnings("deprecation")
@@ -152,6 +173,17 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TECrucible te = Helpers.getTE(worldIn, pos, TECrucible.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (!worldIn.isRemote && !playerIn.isSneaking())
@@ -159,6 +191,23 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
             TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.CRUCIBLE);
         }
         return true;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        if (!worldIn.isRemote)
+        {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt != null)
+            {
+                TECrucible te = Helpers.getTE(worldIn, pos, TECrucible.class);
+                if (te != null)
+                {
+                    te.readFromItemTag(nbt);
+                }
+            }
+        }
     }
 
     @Override
@@ -185,5 +234,11 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TECrucible();
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        //breakBlock already handle this
     }
 }

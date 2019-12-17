@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks.stone;
 
 import java.util.Random;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -126,16 +127,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     }
 
     @Override
-    public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
-    {
-        if (!worldIn.isRemote && entityIn.canTrample(worldIn, this, pos, fallDistance)) // Forge: Move logic to Entity#canTrample
-        {
-            turnToDirt(worldIn, pos);
-        }
-        super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
-    }
-
-    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, MOISTURE);
@@ -144,13 +135,13 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return new ItemStack(Item.getItemFromBlock(this));
+        return new ItemStack(this);
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    public int damageDropped(IBlockState state)
     {
-        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
+        return 0;
     }
 
     public int getWaterScore(IBlockAccess world, BlockPos pos)
@@ -179,13 +170,47 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
         }
     }
 
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN))
+        {
+            turnToDirt(worldIn, pos);
+        }
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        super.onBlockAdded(worldIn, pos, state);
+        if (worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN))
+        {
+            turnToDirt(worldIn, pos);
+        }
+    }
+
+    @Nullable
+    @Override
+    public BlockPos getFallablePos(World world, BlockPos pos)
+    {
+        final BlockPos fallable = super.getFallablePos(world, pos);
+        if (fallable != null)
+        {
+            turnToDirt(world, pos);
+        }
+        return fallable;
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
+    }
+
     private boolean hasCrops(World worldIn, BlockPos pos)
     {
         Block block = worldIn.getBlockState(pos.up()).getBlock();
         return block instanceof IPlantable && canSustainPlant(worldIn.getBlockState(pos), worldIn, pos, EnumFacing.UP, (IPlantable) block);
     }
-
-    //todo: onBlockAdded turn back if solid above
-    //todo: neighborChanged turn back if solid above
-
 }

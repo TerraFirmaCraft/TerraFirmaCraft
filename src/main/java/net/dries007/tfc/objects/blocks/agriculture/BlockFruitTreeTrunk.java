@@ -19,6 +19,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -61,6 +62,7 @@ public class BlockFruitTreeTrunk extends Block
         setTickRandomly(true);
         setHarvestLevel("axe", 0);
         setSoundType(SoundType.WOOD);
+        Blocks.FIRE.setFireInfo(this, 5, 20);
         this.tree = tree;
         setDefaultState(blockState.getBaseState().withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(EAST, false).withProperty(WEST, false));
     }

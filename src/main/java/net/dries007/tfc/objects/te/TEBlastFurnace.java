@@ -39,7 +39,6 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
-import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 
 @ParametersAreNonnullByDefault
@@ -251,12 +250,12 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
             }
             if (meltAmount > 0)
             {
-                //Move already molten liquid metal to the crucible.
-                //This makes the effect of slow(not so much) filling up the crucible.
+                // Move already molten liquid metal to the crucible.
+                // This makes the effect of slowly filling up the crucible.
+                // Take into account full or non-existent (removed) crucibles
                 TECrucible te = Helpers.getTE(world, pos.down(), TECrucible.class);
-                if (te != null)
+                if (te != null && te.addMetal(Metal.PIG_IRON, 1) <= 0)
                 {
-                    te.addMetal(Metal.PIG_IRON, 1);
                     meltAmount -= 1;
                 }
             }
@@ -287,7 +286,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
 
                 if (temperature > 0 || burnTemperature > 0)
                 {
-                    float targetTemperature = Math.min(MAX_TEMPERATURE, burnTemperature + airTicks);
+                    float targetTemperature = burnTemperature + airTicks;
                     if (temperature < targetTemperature)
                     {
                         // Modifier for heating = 2x for bellows

@@ -38,40 +38,22 @@ public class CapabilityFood
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
      * That puts decay times at 25% - 100% of this value
-     * So meat / fruit will decay in ~4 days, grains take ~16 days
+     * So meat / fruit will decay in ~5 days, grains take ~20 days
      * Other modifiers are applied on top of that
      */
-    public static final int DEFAULT_ROT_TICKS = ICalendar.TICKS_IN_DAY * 16;
-
-    public static final IFoodTrait.Impl SMOKED = new IFoodTrait.Impl("smoked", 0.5f);
-    public static final IFoodTrait.Impl BRINED = new IFoodTrait.Impl("brined", 0.5f);
-    public static final IFoodTrait.Impl SALTED = new IFoodTrait.Impl("salted", 0.75f);
-    public static final IFoodTrait.Impl PICKLED = new IFoodTrait.Impl("pickled", 0.75f);
-    public static final IFoodTrait.Impl PRESERVED = new IFoodTrait.Impl("preserved", 0.5f);
-
-    private static final Map<String, IFoodTrait> TRAITS = new HashMap<>();
-    private static boolean markNonDecayingStacks = true;
+    public static final int DEFAULT_ROT_TICKS = ICalendar.TICKS_IN_DAY * 22;
 
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IFood.class, new DumbStorage<>(), FoodHandler::new);
-
-        TRAITS.put("smoked", SMOKED);
-        TRAITS.put("brined", BRINED);
-        TRAITS.put("salted", SALTED); // todo: In 1.7.10 this was 0.5 for uncooked meat, 0.75 for cooked. Requires a custom class.
-        TRAITS.put("pickled", PICKLED); // todo: same as above
-        TRAITS.put("preserved", PRESERVED); // Used by large vessels
     }
 
     public static void init()
     {
         // Add custom vanilla food instances
         CUSTOM_FOODS.put(IIngredient.of(Items.ROTTEN_FLESH), () -> new FoodHandler(null, new float[] {0, 0, 0, 0, 0}, 0, 0, Float.POSITIVE_INFINITY));
-    }
-
-    public static Map<String, IFoodTrait> getTraits()
-    {
-        return TRAITS;
+        CUSTOM_FOODS.put(IIngredient.of(Items.GOLDEN_APPLE), () -> new FoodHandler(null, new float[] {0, 0, 2, 2, 0}, 3, 12, 0));
+        CUSTOM_FOODS.put(IIngredient.of(Items.GOLDEN_CARROT), () -> new FoodHandler(null, new float[] {0.5f, 0, 1.2f, 1.2f, 0}, 2, 5, 0));
     }
 
     /**
@@ -79,7 +61,7 @@ public class CapabilityFood
      * Do NOT just directly apply the trait, as that can lead to strange interactions with decay dates / creation dates
      * This calculates a creation date that interpolates between no preservation (if the food is rotten), to full preservation (if the food is new)
      */
-    public static void applyTrait(IFood instance, IFoodTrait trait)
+    public static void applyTrait(IFood instance, FoodTrait trait)
     {
         if (!instance.getTraits().contains(trait))
         {
@@ -91,7 +73,7 @@ public class CapabilityFood
         }
     }
 
-    public static void applyTrait(ItemStack stack, IFoodTrait trait)
+    public static void applyTrait(ItemStack stack, FoodTrait trait)
     {
         IFood food = stack.getCapability(CAPABILITY, null);
         if (!stack.isEmpty() && food != null)
@@ -104,7 +86,7 @@ public class CapabilityFood
      * Helper method to handle removing a trait to a food item.
      * Do NOT just directly remove the trait, as that can lead to strange interactions with decay dates / creation dates
      */
-    public static void removeTrait(IFood instance, IFoodTrait trait)
+    public static void removeTrait(IFood instance, FoodTrait trait)
     {
         if (instance.getTraits().contains(trait))
         {
@@ -116,7 +98,7 @@ public class CapabilityFood
         }
     }
 
-    public static void removeTrait(ItemStack stack, IFoodTrait trait)
+    public static void removeTrait(ItemStack stack, FoodTrait trait)
     {
         IFood food = stack.getCapability(CAPABILITY, null);
         if (!stack.isEmpty() && food != null)
@@ -178,6 +160,61 @@ public class CapabilityFood
             }
         }
         return null;
+    }
+
+    /**
+     * Merge two food itemstacks into one, if possible
+     *
+     * @param inputStack the input stack to be merged
+     * @param mergeStack the output stack that will receive the merging operation
+     * @return ItemStack.EMPTY if everything was merged or leftover inputStack
+     */
+    public static ItemStack mergeStack(ItemStack inputStack, ItemStack mergeStack)
+    {
+        if (!inputStack.isEmpty() && !mergeStack.isEmpty()
+            && mergeStack.getCount() < mergeStack.getMaxStackSize()
+            && mergeStack.isItemEqual(inputStack))
+        {
+            IFood food1Cap = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
+            IFood food2Cap = mergeStack.getCapability(CapabilityFood.CAPABILITY, null);
+            if (food1Cap != null && food2Cap != null)
+            {
+                long fallbackDate1 = food1Cap.getCreationDate();
+                long fallbackDate2 = food2Cap.getCreationDate();
+                long earliest = Math.min(fallbackDate1, fallbackDate2);
+                food1Cap.setCreationDate(earliest);
+                food2Cap.setCreationDate(earliest);
+
+                // Tried using ItemHandlerHelper#canItemStacksStack(mergeStack, inputStack)
+                // but for some reason, most of the times ItemStack#areCapsCompatible returned false
+                // Even when both had the exactly same capability serialization (eg: the bellow function returns true).
+                // For now, the bellow check works as intended.
+                if (food1Cap.serializeNBT().equals(food2Cap.serializeNBT()))
+                {
+                    int merge = Math.min(mergeStack.getMaxStackSize(), mergeStack.getCount() + inputStack.getCount());
+                    inputStack.shrink(merge - mergeStack.getCount());
+                    mergeStack.setCount(merge);
+
+                    if (inputStack.isEmpty())
+                    {
+                        // Successfully merged into mergeStack
+                        return ItemStack.EMPTY;
+                    }
+                    else
+                    {
+                        // Could merge partially, reverting only the remainder inputStack
+                        food1Cap.setCreationDate(fallbackDate1);
+                    }
+                }
+                else
+                {
+                    // Can't stack even after creation date update, reverting
+                    food1Cap.setCreationDate(fallbackDate1);
+                    food2Cap.setCreationDate(fallbackDate2);
+                }
+            }
+        }
+        return inputStack;
     }
 
     /**

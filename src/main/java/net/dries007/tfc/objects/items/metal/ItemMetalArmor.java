@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.forge.ForgeableHandler;
@@ -55,7 +56,9 @@ public class ItemMetalArmor extends ItemArmorTFC implements IMetalItem, IItemSiz
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        return type.getSmeltAmount();
+        if (!isDamageable() || !stack.isItemDamaged()) return type.getSmeltAmount();
+        double d = (stack.getMaxDamage() - stack.getItemDamage()) / (double) stack.getMaxDamage() - .10;
+        return d < 0 ? 0 : MathHelper.floor(type.getSmeltAmount() * d);
     }
 
     @Override

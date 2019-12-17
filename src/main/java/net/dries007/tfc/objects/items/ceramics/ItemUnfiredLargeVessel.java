@@ -25,6 +25,6 @@ public class ItemUnfiredLargeVessel extends ItemPottery
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.MEDIUM;
     }
 }

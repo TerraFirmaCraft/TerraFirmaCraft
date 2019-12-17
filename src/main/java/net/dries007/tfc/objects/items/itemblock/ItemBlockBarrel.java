@@ -32,10 +32,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
@@ -93,11 +92,20 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
                     nbt.setTag("inventory", new ItemStackHandler(3).serializeNBT());
 
-                    nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
+                    nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
                     ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);
-                    player.setHeldItem(hand, stack);
+                    player.getHeldItem(hand).shrink(1);
+                    if (player.getHeldItem(hand).isEmpty())
+                    {
+                        player.setHeldItem(hand, stack);
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(player, stack);
+                    }
+
                     return EnumActionResult.SUCCESS;
                 }
             }
@@ -185,7 +193,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
                     nbt.setTag("inventory", new ItemStackHandler(3).serializeNBT());
 
-                    nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
+                    nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
                     ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);
@@ -195,19 +203,5 @@ public class ItemBlockBarrel extends ItemBlockTFC
             }
         }
         return super.onItemRightClick(worldIn, player, hand);
-    }
-
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.HUGE;
-    }
-
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
     }
 }

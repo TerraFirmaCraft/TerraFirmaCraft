@@ -23,8 +23,8 @@ import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
@@ -37,6 +37,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.proxy.IProxy;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
@@ -44,7 +45,7 @@ import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
-@SuppressWarnings("DefaultAnnotationParam")
+@SuppressWarnings({"DefaultAnnotationParam", "unused"})
 @Mod(modid = MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
 @Mod.EventBusSubscriber
 public final class TerraFirmaCraft
@@ -140,8 +141,8 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketBellowsUpdate.Handler(), PacketBellowsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketFoodStatsUpdate.Handler(), PacketFoodStatsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketFoodStatsReplace.Handler(), PacketFoodStatsReplace.class, ++id, Side.CLIENT);
+        network.registerMessage(new PacketPlayerDataUpdate.Handler(), PacketPlayerDataUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketLargeVesselUpdate.Handler(), PacketLargeVesselUpdate.class, ++id, Side.CLIENT);
-        network.registerMessage(new PacketSkillsUpdate.Handler(), PacketSkillsUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
         VeinRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
@@ -152,7 +153,7 @@ public final class TerraFirmaCraft
         CapabilityForgeable.preInit();
         CapabilityFood.preInit();
         CapabilityEgg.preInit();
-        CapabilityPlayerSkills.preInit();
+        CapabilityPlayerData.preInit();
         CapabilityDamageResistance.preInit();
         CapabilityMetalItem.preInit();
 
@@ -202,9 +203,10 @@ public final class TerraFirmaCraft
     }
 
     @Mod.EventHandler
-    public void onServerAboutToStart(FMLServerAboutToStartEvent event)
+    public void onLoadComplete(FMLLoadCompleteEvent event)
     {
-        // Latest possible point to stop creating non-decaying stacks
+        // This is the latest point that we can possibly stop creating non-decaying stacks on both server + client
+        // It should be safe to use as we're only using it internally
         FoodHandler.setNonDecaying(false);
     }
 
@@ -217,12 +219,14 @@ public final class TerraFirmaCraft
         }
 
         event.registerServerCommand(new CommandStripWorld());
-        event.registerServerCommand(new CommandGenTree());
         event.registerServerCommand(new CommandHeat());
+        event.registerServerCommand(new CommandSkill());
         event.registerServerCommand(new CommandTimeTFC());
         event.registerServerCommand(new CommandFindVeins());
-        event.registerServerCommand(new CommandNutrients());
         event.registerServerCommand(new CommandDebugInfo());
+
+        // Initialize calendar for the current server
+        CalendarTFC.INSTANCE.init(event.getServer());
     }
 
     @Mod.EventHandler

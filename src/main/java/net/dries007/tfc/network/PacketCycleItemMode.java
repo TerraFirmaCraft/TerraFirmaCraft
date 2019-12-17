@@ -7,7 +7,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
 import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 
 public class PacketCycleItemMode implements IMessageEmpty

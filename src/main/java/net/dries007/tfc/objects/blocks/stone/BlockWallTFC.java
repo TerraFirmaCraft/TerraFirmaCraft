@@ -40,7 +40,7 @@ public class BlockWallTFC extends BlockWall
 
         parent = modelBlock;
         OreDictionaryHelper.register(this, "wall");
-        OreDictionaryHelper.registerRockType(this, modelBlock.type, modelBlock.rock, "wall");
+        OreDictionaryHelper.registerRockType(this, modelBlock.type, "wall");
     }
 
     @Override

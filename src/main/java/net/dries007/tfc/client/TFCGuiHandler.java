@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerHorseChest;
 import net.minecraft.item.ItemStack;
@@ -21,19 +20,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
+import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.gui.*;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.container.*;
 import net.dries007.tfc.objects.entity.animal.AbstractHorseTFC;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.*;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -96,13 +95,13 @@ public class TFCGuiHandler implements IGuiHandler
             case ANVIL_PLAN:
                 return new ContainerAnvilPlan(player.inventory, Helpers.getTE(world, pos, TEAnvilTFC.class));
             case KNAPPING_STONE:
-                return new ContainerKnapping(KnappingRecipe.Type.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingType.STONE, player.inventory, stack.getItem() instanceof ItemRock ? stack : player.getHeldItemOffhand());
             case KNAPPING_CLAY:
-                return new ContainerKnapping(KnappingRecipe.Type.CLAY, player.inventory, stack.getItem() == Items.CLAY_BALL ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingType.CLAY, player.inventory, OreDictionaryHelper.doesStackMatchOre(stack, "clay") ? stack : player.getHeldItemOffhand());
             case KNAPPING_LEATHER:
-                return new ContainerKnapping(KnappingRecipe.Type.LEATHER, player.inventory, stack.getItem() == Items.LEATHER ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingType.LEATHER, player.inventory, OreDictionaryHelper.doesStackMatchOre(stack, "leather") ? stack : player.getHeldItemOffhand());
             case KNAPPING_FIRE_CLAY:
-                return new ContainerKnapping(KnappingRecipe.Type.FIRE_CLAY, player.inventory, stack.getItem() == ItemsTFC.FIRE_CLAY ? stack : player.getHeldItemOffhand());
+                return new ContainerKnapping(KnappingType.FIRE_CLAY, player.inventory, OreDictionaryHelper.doesStackMatchOre(stack, "fireClay") ? stack : player.getHeldItemOffhand());
             case QUERN:
                 return new ContainerQuern(player.inventory, Helpers.getTE(world, pos, TEQuern.class));
             case CRUCIBLE:
@@ -140,10 +139,8 @@ public class TFCGuiHandler implements IGuiHandler
         switch (type)
         {
             case NEST_BOX:
-                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
-            case LOG_PILE:
-                return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
             case SMALL_VESSEL:
+            case LOG_PILE:
                 return new GuiContainerTFC(container, player.inventory, SMALL_INVENTORY_BACKGROUND);
             case SMALL_VESSEL_LIQUID:
                 return new GuiLiquidTransfer(container, player, player.getHeldItemMainhand().getItem() instanceof ItemSmallVessel);
@@ -164,13 +161,13 @@ public class TFCGuiHandler implements IGuiHandler
                 Rock rock = stack.getItem() instanceof IRockObject ? ((IRockObject) stack.getItem()).getRock(stack) :
                     ((IRockObject) player.getHeldItemOffhand().getItem()).getRock(player.getHeldItemOffhand());
                 //noinspection ConstantConditions
-                return new GuiKnapping(container, player, KnappingRecipe.Type.STONE, rock.getTexture());
+                return new GuiKnapping(container, player, KnappingType.STONE, rock.getTexture());
             case KNAPPING_CLAY:
-                return new GuiKnapping(container, player, KnappingRecipe.Type.CLAY, CLAY_TEXTURE);
+                return new GuiKnapping(container, player, KnappingType.CLAY, CLAY_TEXTURE);
             case KNAPPING_LEATHER:
-                return new GuiKnapping(container, player, KnappingRecipe.Type.LEATHER, LEATHER_TEXTURE);
+                return new GuiKnapping(container, player, KnappingType.LEATHER, LEATHER_TEXTURE);
             case KNAPPING_FIRE_CLAY:
-                return new GuiKnapping(container, player, KnappingRecipe.Type.FIRE_CLAY, FIRE_CLAY_TEXTURE);
+                return new GuiKnapping(container, player, KnappingType.FIRE_CLAY, FIRE_CLAY_TEXTURE);
             case QUERN:
                 return new GuiQuern(container, player.inventory, Helpers.getTE(world, pos, TEQuern.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CRUCIBLE:
@@ -192,8 +189,8 @@ public class TFCGuiHandler implements IGuiHandler
                 {
                     ContainerHorseInventoryTFC containerHITFC = (ContainerHorseInventoryTFC) container;
                     AbstractHorseTFC horse = containerHITFC.getHorse();
-                    int invSize = y; // horse data trick
-                    return new GuiScreenHorseInventoryTFC(player.inventory, new ContainerHorseChest(horse.getHorseChest().getName(), invSize), horse);
+                    // Use the y value as an id
+                    return new GuiScreenHorseInventoryTFC(player.inventory, new ContainerHorseChest(horse.getHorseChest().getName(), y), horse);
                 }
                 return null;
             case CHEST:

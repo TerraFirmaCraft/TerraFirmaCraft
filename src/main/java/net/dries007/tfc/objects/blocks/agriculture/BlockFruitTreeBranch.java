@@ -19,7 +19,9 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -58,6 +60,7 @@ public class BlockFruitTreeBranch extends Block
         setHarvestLevel("axe", 0);
         setSoundType(SoundType.WOOD);
         this.tree = tree;
+        Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
     @SuppressWarnings("deprecation")
@@ -160,7 +163,22 @@ public class BlockFruitTreeBranch extends Block
     @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return rand.nextInt(10) > 5 - fortune ? Item.getItemFromBlock(BlockFruitTreeSapling.get(tree)) : Items.AIR;
+        return Items.AIR;
+    }
+
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
+    {
+        ItemStack stack = player.getHeldItemMainhand();
+        if (stack.getItem().getToolClasses(stack).contains("axe") || stack.getItem().getToolClasses(stack).contains("saw"))
+        {
+            if (!worldIn.isRemote && RANDOM.nextBoolean())
+            {
+                ItemStack dropStack = new ItemStack(BlockFruitTreeSapling.get(tree));
+                InventoryHelper.spawnItemStack(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, dropStack);
+            }
+        }
+        super.onBlockHarvested(worldIn, pos, state, player);
     }
 
     @Override

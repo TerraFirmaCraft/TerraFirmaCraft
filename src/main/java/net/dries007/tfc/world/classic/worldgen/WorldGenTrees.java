@@ -11,7 +11,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
@@ -44,7 +43,8 @@ public class WorldGenTrees implements IWorldGenerator
 
             // Use air, so it doesn't replace other replaceable world gen
             // This matches the check in BlockPlacedItemFlat for if the block can stay
-            if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP))
+            // Also, only add on soil, since this is called by the world regen handler later
+            if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
             {
                 world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
                 TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
@@ -78,7 +78,9 @@ public class WorldGenTrees implements IWorldGenerator
 
         int stickDensity = 3 + (int) (4f * density + 1.5f * trees.size());
         if (trees.isEmpty())
+        {
             stickDensity = 1 + (int) (1.5f * density);
+        }
         generateLooseSticks(random, chunkX, chunkZ, world, stickDensity);
 
         // This is to avoid giant regions of no trees whatsoever.
@@ -100,7 +102,7 @@ public class WorldGenTrees implements IWorldGenerator
             return;
         }
 
-        final int treesPerChunk = (int) (MathHelper.clamp(density, 0.1, 0.9) * 20f - 2);
+        final int treesPerChunk = (int) (density * 16 - 2);
         final int maxTrees = Math.min(trees.size(), Math.min(5, (int) (1 + (density + diversity) * 2.5f)));
         trees = trees.subList(0, maxTrees);
 

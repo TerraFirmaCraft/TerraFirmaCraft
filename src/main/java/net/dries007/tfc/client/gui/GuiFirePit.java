@@ -9,9 +9,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.objects.te.TEFirePit;
 
-import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 public class GuiFirePit extends GuiContainerTE<TEFirePit>
@@ -29,9 +29,13 @@ public class GuiFirePit extends GuiContainerTE<TEFirePit>
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         // Draw the fire / burn time indicator
-        int temperature = (int) (51 * tile.getField(TEFirePit.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
+        int temperature = (int) (51 * tile.getField(TEFirePit.FIELD_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
+            if (temperature > 51)
+            {
+                temperature = 51;
+            }
             drawTexturedModalRect(guiLeft + 30, guiTop + 66 - temperature, 176, 0, 15, 5);
         }
     }

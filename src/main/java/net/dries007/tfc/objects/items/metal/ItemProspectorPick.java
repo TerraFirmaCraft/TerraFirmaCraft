@@ -22,16 +22,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.SkillType;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.skills.ProspectingSkill;
+import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
@@ -59,8 +59,12 @@ public class ItemProspectorPick extends ItemMetalTool
 
             if (!worldIn.isRemote)
             {
-                float falseNegativeChance = 0.3f;
-                ProspectingSkill skill = CapabilityPlayerSkills.getSkill(player, SkillType.PROSPECTING);
+                float falseNegativeChance = 0.3f; //Classic value was random(100) >= (60 + rank)
+                ProspectingSkill skill = CapabilityPlayerData.getSkill(player, SkillType.PROSPECTING);
+                if (skill != null)
+                {
+                    falseNegativeChance = 0.3f - (0.1f * skill.getTier().ordinal());
+                }
 
                 // Damage item and set cooldown
                 player.getHeldItem(hand).damageItem(1, player);
@@ -125,7 +129,7 @@ public class ItemProspectorPick extends ItemMetalTool
                         {
                             for (ProspectResult debugResult : results)
                             {
-                                player.sendStatusMessage(new TextComponentString(debugResult.ore.getDisplayName() + ": " + String.format("%.02f", debugResult.score)), false);
+                                TerraFirmaCraft.getLog().debug(debugResult.ore.getDisplayName() + ": " + String.format("%.02f", debugResult.score));
                             }
                         }
                     }
@@ -183,8 +187,8 @@ public class ItemProspectorPick extends ItemMetalTool
             if (vein.isOreBlock(blockState))
             {
                 Block block = blockState.getBlock();
-                if (vein.ore != null)
-                    if (vein.ore.isGraded() && !ignoreGrade)
+                if (vein.getOre() != null)
+                    if (vein.getOre().isGraded() && !ignoreGrade)
                         return new ItemStack(block.getItemDropped(blockState, null, 0), 1, block.getMetaFromState(blockState));
                     else
                         return new ItemStack(block.getItemDropped(blockState, null, 0), 1, 0);

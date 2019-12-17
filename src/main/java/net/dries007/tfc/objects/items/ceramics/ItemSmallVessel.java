@@ -37,8 +37,11 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
@@ -58,39 +61,6 @@ public class ItemSmallVessel extends ItemPottery
     {
         this.glazed = glazed;
         setHasSubtypes(glazed);
-    }
-
-    @Nullable
-    @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack)
-    {
-        // Intentionally sync item handler logic, heat will get synced "accidentally"
-        NBTTagCompound nbt = new NBTTagCompound();
-        NBTTagCompound stackNbt = stack.getTagCompound();
-        if (stackNbt != null)
-        {
-            nbt.setTag("stack", nbt);
-        }
-        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (inventory instanceof IMoldHandler)
-        {
-            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
-        }
-        return nbt;
-    }
-
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        super.readNBTShareTag(stack, nbt == null ? null : nbt.getCompoundTag("stack"));
-        if (nbt != null)
-        {
-            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (inventory instanceof IMoldHandler)
-            {
-                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
-            }
-        }
     }
 
     @Override
@@ -150,6 +120,38 @@ public class ItemSmallVessel extends ItemPottery
         }
     }
 
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt == null)
+        {
+            nbt = new NBTTagCompound();
+            stack.setTagCompound(nbt);
+        }
+        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inventory instanceof IMoldHandler)
+        {
+            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
+        }
+        return nbt;
+    }
+
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        super.readNBTShareTag(stack, nbt);
+        if (nbt != null)
+        {
+            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (inventory instanceof IMoldHandler)
+            {
+                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
+            }
+        }
+    }
+
     @Override
     public boolean canStack(ItemStack stack)
     {
@@ -182,7 +184,7 @@ public class ItemSmallVessel extends ItemPottery
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.VERY_LARGE;
+        return Size.SMALL;
     }
 
     @Nonnull
@@ -240,14 +242,14 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public float getTemperature()
         {
-            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.TOTAL_TIME.getTicks() - lastUpdateTick);
+            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.PLAYER_TIME.getTicks() - lastUpdateTick);
         }
 
         @Override
         public void setTemperature(float temperature)
         {
             this.temperature = temperature;
-            this.lastUpdateTick = CalendarTFC.TOTAL_TIME.getTicks();
+            this.lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
         }
 
         @Override
@@ -272,7 +274,11 @@ public class ItemSmallVessel extends ItemPottery
                 String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
                 if (isMolten())
                 {
-                    desc += " - " + I18n.format("tfc.tooltip.liquid");
+                    desc += I18n.format("tfc.tooltip.liquid");
+                }
+                else
+                {
+                    desc += I18n.format("tfc.tooltip.solid");
                 }
                 text.add(desc);
             }
@@ -338,9 +344,10 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource != null && FluidsTFC.getMetalFromFluid(resource.getFluid()) != null)
+            if ((fluidMode || isInventoryEmpty()) && resource != null)
             {
                 updateFluidData(resource);
+                fluidMode = true;
                 return tank.fill(resource, doFill);
             }
             return 0;
@@ -351,7 +358,9 @@ public class ItemSmallVessel extends ItemPottery
         public FluidStack drain(FluidStack resource, boolean doDrain)
         {
             if (getFluidMode() == Mode.LIQUID_MOLTEN)
+            {
                 return tank.drain(resource, doDrain);
+            }
             return null;
         }
 
@@ -360,7 +369,9 @@ public class ItemSmallVessel extends ItemPottery
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
             if (getFluidMode() == Mode.LIQUID_MOLTEN)
+            {
                 return tank.drain(maxDrain, doDrain);
+            }
             return null;
         }
 
@@ -370,7 +381,7 @@ public class ItemSmallVessel extends ItemPottery
             IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
-                CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
+                CapabilityFood.applyTrait(cap, FoodTrait.PRESERVED);
             }
             super.setStackInSlot(slot, stack);
         }
@@ -384,7 +395,7 @@ public class ItemSmallVessel extends ItemPottery
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (cap != null)
                 {
-                    CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
+                    CapabilityFood.applyTrait(cap, FoodTrait.PRESERVED);
                 }
             }
             return super.insertItem(slot, stack, simulate);
@@ -397,9 +408,20 @@ public class ItemSmallVessel extends ItemPottery
             IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
-                CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
+                CapabilityFood.removeTrait(cap, FoodTrait.PRESERVED);
             }
             return super.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+        {
+            IItemSize size = CapabilityItemSize.getIItemSize(stack);
+            if (size != null)
+            {
+                return size.getSize(stack).isSmallerThan(Size.LARGE) && size.getWeight(stack).isSmallerThan(Weight.HEAVY);
+            }
+            return false;
         }
 
         @Override
@@ -417,7 +439,7 @@ public class ItemSmallVessel extends ItemPottery
             }
             else
             {
-                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
+                nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
             }
 
             if (fluidMode)
@@ -471,6 +493,18 @@ public class ItemSmallVessel extends ItemPottery
                     heatCapacity = metal.getSpecificHeat();
                 }
             }
+        }
+
+        private boolean isInventoryEmpty()
+        {
+            for (int i = 0; i < getSlots(); i++)
+            {
+                if (!getStackInSlot(i).isEmpty())
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 

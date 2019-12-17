@@ -25,10 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -72,59 +69,100 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
             }
         };
 
-    private static final Multiblock BLOOMERY_CHIMNEY, BLOOMERY_BASE, GATE_NORTH, GATE_SOUTH, GATE_EAST, GATE_WEST;
+    private static final Multiblock BLOOMERY_CHIMNEY; // Helper for determining how high the chimney is
+    private static final Multiblock[] BLOOMERY_BASE; // If one of those is true, bloomery is formed and can operate (has at least one chimney)
+    private static final Multiblock GATE_Z, GATE_X; // Determines if the gate can stay in place
 
     static
     {
         Predicate<IBlockState> stoneMatcher = state -> state.getMaterial() == Material.ROCK && state.isNormalCube();
-        Predicate<IBlockState> insideChimney = state -> state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR;
-        Predicate<IBlockState> center = state -> state.getBlock() == BlocksTFC.CHARCOAL_PILE || state.getBlock() == BlocksTFC.BLOOM || state.getBlock() == Blocks.AIR;
-        BLOOMERY_BASE = new Multiblock()
+        Predicate<IBlockState> insideChimney = state -> state.getBlock() == BlocksTFC.MOLTEN || state.getMaterial().isReplaceable();
+        Predicate<IBlockState> center = state -> state.getBlock() == BlocksTFC.CHARCOAL_PILE || state.getBlock() == BlocksTFC.BLOOM || state.getMaterial().isReplaceable();
+
+        // Bloomery center is the charcoal pile pos
+        BLOOMERY_BASE = new Multiblock[4];
+        BLOOMERY_BASE[EnumFacing.NORTH.getHorizontalIndex()] = new Multiblock()
             .match(new BlockPos(0, 0, 0), center)
-            .match(new BlockPos(0, -1, 0), stoneMatcher);
+            .match(new BlockPos(0, -1, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), state -> state.getBlock() == BlocksTFC.BLOOMERY)
+            .match(new BlockPos(1, 0, 1), stoneMatcher)
+            .match(new BlockPos(-1, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 1, 1), stoneMatcher)
+            .match(new BlockPos(0, 1, -1), stoneMatcher)
+            .match(new BlockPos(1, 1, 0), stoneMatcher)
+            .match(new BlockPos(-1, 1, 0), stoneMatcher)
+            .match(new BlockPos(0, -1, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher)
+            .match(new BlockPos(1, 0, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher);
+
+        BLOOMERY_BASE[EnumFacing.SOUTH.getHorizontalIndex()] = new Multiblock()
+            .match(new BlockPos(0, 0, 0), center)
+            .match(new BlockPos(0, -1, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), state -> state.getBlock() == BlocksTFC.BLOOMERY)
+            .match(new BlockPos(1, 0, -1), stoneMatcher)
+            .match(new BlockPos(-1, 0, -1), stoneMatcher)
+            .match(new BlockPos(0, 1, 1), stoneMatcher)
+            .match(new BlockPos(0, 1, -1), stoneMatcher)
+            .match(new BlockPos(1, 1, 0), stoneMatcher)
+            .match(new BlockPos(-1, 1, 0), stoneMatcher)
+            .match(new BlockPos(0, -1, -1), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(1, 0, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher);
+
+        BLOOMERY_BASE[EnumFacing.WEST.getHorizontalIndex()] = new Multiblock()
+            .match(new BlockPos(0, 0, 0), center)
+            .match(new BlockPos(0, -1, 0), stoneMatcher)
+            .match(new BlockPos(1, 0, 0), state -> state.getBlock() == BlocksTFC.BLOOMERY)
+            .match(new BlockPos(1, 0, -1), stoneMatcher)
+            .match(new BlockPos(1, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 1, 1), stoneMatcher)
+            .match(new BlockPos(0, 1, -1), stoneMatcher)
+            .match(new BlockPos(1, 1, 0), stoneMatcher)
+            .match(new BlockPos(-1, 1, 0), stoneMatcher)
+            .match(new BlockPos(1, -1, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher);
+
+        BLOOMERY_BASE[EnumFacing.EAST.getHorizontalIndex()] = new Multiblock()
+            .match(new BlockPos(0, 0, 0), center)
+            .match(new BlockPos(0, -1, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), state -> state.getBlock() == BlocksTFC.BLOOMERY)
+            .match(new BlockPos(-1, 0, -1), stoneMatcher)
+            .match(new BlockPos(-1, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 1, 1), stoneMatcher)
+            .match(new BlockPos(0, 1, -1), stoneMatcher)
+            .match(new BlockPos(1, 1, 0), stoneMatcher)
+            .match(new BlockPos(-1, 1, 0), stoneMatcher)
+            .match(new BlockPos(-1, -1, 0), stoneMatcher)
+            .match(new BlockPos(0, 0, 1), stoneMatcher)
+            .match(new BlockPos(0, 0, -1), stoneMatcher)
+            .match(new BlockPos(1, 0, 0), stoneMatcher);
+
+
         BLOOMERY_CHIMNEY = new Multiblock()
             .match(new BlockPos(0, 0, 0), insideChimney)
             .match(new BlockPos(1, 0, 0), stoneMatcher)
             .match(new BlockPos(-1, 0, 0), stoneMatcher)
             .match(new BlockPos(0, 0, 1), stoneMatcher)
             .match(new BlockPos(0, 0, -1), stoneMatcher);
-        //Only one of the gates will return true if the structure is built right
-        GATE_NORTH = new Multiblock()
-            .match(new BlockPos(0, 0, 1), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
-            .match(new BlockPos(1, 0, 1), stoneMatcher)
-            .match(new BlockPos(-1, 0, 1), stoneMatcher)
-            .match(new BlockPos(0, 1, 1), stoneMatcher)
-            .match(new BlockPos(0, -1, 1), stoneMatcher)
-            .match(new BlockPos(0, 0, -1), stoneMatcher)
+
+        // Gate center is the bloomery gate block
+        GATE_Z = new Multiblock()
+            .match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
             .match(new BlockPos(1, 0, 0), stoneMatcher)
-            .match(new BlockPos(-1, 0, 0), stoneMatcher);
-        GATE_SOUTH = new Multiblock()
-            .match(new BlockPos(0, 0, -1), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
-            .match(new BlockPos(1, 0, -1), stoneMatcher)
-            .match(new BlockPos(-1, 0, -1), stoneMatcher)
-            .match(new BlockPos(0, 1, -1), stoneMatcher)
-            .match(new BlockPos(0, -1, -1), stoneMatcher)
-            .match(new BlockPos(0, 0, 1), stoneMatcher)
-            .match(new BlockPos(1, 0, 0), stoneMatcher)
-            .match(new BlockPos(-1, 0, 0), stoneMatcher);
-        GATE_WEST = new Multiblock()
-            .match(new BlockPos(1, 0, 0), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
-            .match(new BlockPos(1, 0, -1), stoneMatcher)
-            .match(new BlockPos(1, 0, 1), stoneMatcher)
-            .match(new BlockPos(1, 1, 0), stoneMatcher)
-            .match(new BlockPos(1, -1, 0), stoneMatcher)
+            .match(new BlockPos(-1, 0, 0), stoneMatcher)
+            .match(new BlockPos(0, 1, 0), stoneMatcher)
+            .match(new BlockPos(0, -1, 0), stoneMatcher);
+
+        GATE_X = new Multiblock()
+            .match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
             .match(new BlockPos(0, 0, 1), stoneMatcher)
             .match(new BlockPos(0, 0, -1), stoneMatcher)
-            .match(new BlockPos(-1, 0, 0), stoneMatcher);
-        GATE_EAST = new Multiblock()
-            .match(new BlockPos(-1, 0, 0), state -> state.getBlock() == BlocksTFC.BLOOMERY || state.getBlock() == Blocks.AIR)
-            .match(new BlockPos(-1, 0, -1), stoneMatcher)
-            .match(new BlockPos(-1, 0, 1), stoneMatcher)
-            .match(new BlockPos(-1, 1, 0), stoneMatcher)
-            .match(new BlockPos(-1, -1, 0), stoneMatcher)
-            .match(new BlockPos(0, 0, 1), stoneMatcher)
-            .match(new BlockPos(0, 0, -1), stoneMatcher)
-            .match(new BlockPos(1, 0, 0), stoneMatcher);
+            .match(new BlockPos(0, 1, 0), stoneMatcher)
+            .match(new BlockPos(0, -1, 0), stoneMatcher);
     }
 
     public BlockBloomery()
@@ -153,22 +191,21 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
         return 3;
     }
 
+    public boolean canGateStayInPlace(World world, BlockPos pos, EnumFacing.Axis axis)
+    {
+        if (axis == EnumFacing.Axis.X)
+        {
+            return GATE_X.test(world, pos);
+        }
+        else
+        {
+            return GATE_Z.test(world, pos);
+        }
+    }
+
     public boolean isFormed(World world, BlockPos centerPos, EnumFacing facing)
     {
-        if (!BLOOMERY_BASE.test(world, centerPos)) return false;
-        if (getChimneyLevels(world, centerPos) == 0) return false;
-        switch (facing)
-        {
-            case NORTH:
-                return GATE_NORTH.test(world, centerPos);
-            case SOUTH:
-                return GATE_SOUTH.test(world, centerPos);
-            case EAST:
-                return GATE_EAST.test(world, centerPos);
-            case WEST:
-                return GATE_WEST.test(world, centerPos);
-        }
-        return false;
+        return BLOOMERY_BASE[facing.getHorizontalIndex()].test(world, centerPos);
     }
 
     @Override
@@ -288,7 +325,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     @Override
     public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) && getAValidFacing(worldIn, pos) != null;
+        return super.canPlaceBlockAt(worldIn, pos) && (canGateStayInPlace(worldIn, pos, EnumFacing.Axis.Z) || canGateStayInPlace(worldIn, pos, EnumFacing.Axis.X));
     }
 
     @Override
@@ -307,7 +344,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
                 if (!state.getValue(LIT) && te.canIgnite())
                 {
                     ItemStack held = player.getHeldItem(hand);
-                    if (ItemFireStarter.canIgnite(held))
+                    if (ItemFireStarter.onIgnition(held))
                     {
                         worldIn.setBlockState(pos, state.withProperty(LIT, true).withProperty(OPEN, false));
                         te.onIgnite();
@@ -324,12 +361,38 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     @Nonnull
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        EnumFacing placeDirection = getAValidFacing(worldIn, pos);
-        if (placeDirection != null)
+        EnumFacing placeDirection;
+        float wrappedRotation = MathHelper.wrapDegrees(placer.rotationYaw);
+        if (canGateStayInPlace(worldIn, pos, EnumFacing.Axis.X))
         {
-            return this.getDefaultState().withProperty(FACING, placeDirection);
+            // Grab the player facing (in X axis, so, EAST or WEST)
+            if (wrappedRotation < 0.0F)
+            {
+                placeDirection = EnumFacing.EAST;
+            }
+            else
+            {
+                placeDirection = EnumFacing.WEST;
+            }
         }
-        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+        else if (canGateStayInPlace(worldIn, pos, EnumFacing.Axis.Z))
+        {
+            // Grab the player facing (in Z axis, so, NORTH or SOUTH)
+            if (wrappedRotation > 90.0F || wrappedRotation < -90.0F)
+            {
+                placeDirection = EnumFacing.NORTH;
+            }
+            else
+            {
+                placeDirection = EnumFacing.SOUTH;
+            }
+        }
+        else
+        {
+            // Cannot place, skip
+            return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+        }
+        return this.getDefaultState().withProperty(FACING, placeDirection);
     }
 
     @Override
@@ -355,18 +418,5 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEBloomery();
-    }
-
-    @Nullable
-    private EnumFacing getAValidFacing(World world, BlockPos pos)
-    {
-        for (EnumFacing facing : EnumFacing.HORIZONTALS)
-        {
-            if (isFormed(world, pos.offset(facing), facing))
-            {
-                return facing;
-            }
-        }
-        return null;
     }
 }

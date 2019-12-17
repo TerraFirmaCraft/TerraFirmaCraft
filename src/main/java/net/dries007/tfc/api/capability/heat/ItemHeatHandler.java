@@ -57,7 +57,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     @Override
     public float getTemperature()
     {
-        return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.TOTAL_TIME.getTicks() - lastUpdateTick);
+        return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.PLAYER_TIME.getTicks() - lastUpdateTick);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     public void setTemperature(float temperature)
     {
         this.temperature = temperature;
-        this.lastUpdateTick = CalendarTFC.TOTAL_TIME.getTicks();
+        this.lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
         }
         else
         {
-            nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
+            nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
         }
         return nbt;
     }

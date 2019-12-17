@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.capability.skill;
+package net.dries007.tfc.api.capability.player;
 
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -18,16 +18,18 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.network.PacketSkillsUpdate;
+import net.dries007.tfc.network.PacketPlayerDataUpdate;
+import net.dries007.tfc.util.skills.Skill;
+import net.dries007.tfc.util.skills.SkillType;
 
-public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompound>, IPlayerSkills
+public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound>, IPlayerData
 {
     private final Map<String, Skill> skills;
     private final EntityPlayer player;
 
     private ChiselMode chiselMode = ChiselMode.SMOOTH;
 
-    public PlayerSkillsHandler(EntityPlayer player)
+    public PlayerDataHandler(EntityPlayer player)
     {
         this.skills = SkillType.createSkillMap(this);
         this.player = player;
@@ -73,20 +75,6 @@ public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompou
         this.chiselMode = chiselMode;
     }
 
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityPlayerSkills.CAPABILITY;
-    }
-
-    @Nullable
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityPlayerSkills.CAPABILITY ? (T) this : null;
-    }
-
     @Nonnull
     @Override
     public EntityPlayer getPlayer()
@@ -94,11 +82,25 @@ public class PlayerSkillsHandler implements ICapabilitySerializable<NBTTagCompou
         return player;
     }
 
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityPlayerData.CAPABILITY;
+    }
+
+    @Nullable
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityPlayerData.CAPABILITY ? (T) this : null;
+    }
+
     public void updateAndSync()
     {
         if (getPlayer() instanceof EntityPlayerMP)
         {
-            TerraFirmaCraft.getNetwork().sendTo(new PacketSkillsUpdate(serializeNBT()), (EntityPlayerMP) getPlayer());
+            TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(serializeNBT()), (EntityPlayerMP) getPlayer());
         }
     }
 }

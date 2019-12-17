@@ -19,13 +19,19 @@ buildscript {
             name = "forge"
             url = "https://files.minecraftforge.net/maven"
         }
+        maven {
+            name = "curseforge"
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
 // Go Forge go!
 apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "com.matthewprenger.cursegradle"
 
 // Load properties file, easier to manage versions of required dependencies
 file "build.properties" withReader {
@@ -50,21 +56,31 @@ file "build.properties" withReader {
  *    The version number is a sacred tool that a computer must understand and be able to compare to see what's what.
  *    `-SNAPSHOT` or `.rc0v14s4dffds2` communicates nothing useful.
  */
-version = "0.23.9" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
+version = "0.27.7" // To be clear, you can edit this if you are submitting a patch PR, or if you are merging a feature into master.
 if (System.getenv().BUILD_NUMBER != null) version += "." + System.getenv().BUILD_NUMBER
 
 group = "net.dries007.tfc" // According to java standards, as I have control over this domain. If you fork this and release your own version, change this.
 archivesBaseName = "TerraFirmaCraft" // Jar filename. The final result must match ^[\w-\.]+$. (Alphanumerical + `_-.`)
 sourceCompatibility = targetCompatibility = "1.8" // We require Java 8
 
-ext.getChangeLog = { -> // Create a new function that gets the changelog from git (used for updates json file)
-    def outStream = new ByteArrayOutputStream()
-    exec { // todo: make this not crash and burn for people who don't have git in their path. (poor Windows users...)
-        executable = 'git'
-        args = ['log', '-n', '1', "--format='%B'"]
-        standardOutput = outStream
+String runGitCommand(String cmd_args)
+{
+    // Create a new function that gets the changelog from git (used for updates json file)
+    try
+    {
+        def outStream = new ByteArrayOutputStream()
+        exec {
+            executable = 'git'
+            args(cmd_args.split(' '))
+            standardOutput = outStream
+        }
+        return outStream.toString().replaceAll("^\\s*'\\s*|\\s*'\\s*\$", "").replaceAll("[\\r\\n]+", "\n")
     }
-    return outStream.toString().replaceAll("^\\s*'\\s*|\\s*'\\s*\$", "").replaceAll("[\\r\\n]+", "\n")
+    catch (exception)
+    {
+        logger.warn("No changelog due to error with git command line. Ignoring...", exception)
+        return "<ERROR>"
+    }
 }
 
 minecraft { // Only change any of this with prior approval from the dev team!
@@ -81,7 +97,7 @@ repositories {
         url = "https://maven.blamejared.com/"
     }
     maven {
-    // location of the maven that hosts JEI files
+        // location of the maven that hosts JEI files
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
@@ -134,7 +150,7 @@ processResources {
             json = new JsonSlurper().parseText(updateFile.getText())
         } else {
             def builder = new JsonBuilder()
-            json = builder(homepage: "https://tfc.dries007.net", promos: new HashMap<>()) // defaults: Again, change if you fork & release
+            json = builder(homepage: "https://tng.terrafirmacraft.com", promos: new HashMap<>()) // defaults: Again, change if you fork & release
         }
         //noinspection GroovyAssignabilityCheck
         json['promos'][project.minecraft.version + '-latest'] = project.version
@@ -143,7 +159,7 @@ processResources {
         if (!json.containsKey(project.minecraft.version)) json.put(project.minecraft.version, new HashMap<>())
         //noinspection GroovyAssignabilityCheck
         def version = json[project.minecraft.version]
-        version.put(project.version, getChangeLog())
+        version.put(project.version, runGitCommand("log -n 1 --format='%B'"))
         updateFile.write JsonOutput.prettyPrint(JsonOutput.toJson(json)) // Pretty print cause why not, it's a small file anyway.
     }
 }
@@ -161,7 +177,8 @@ artifacts {
 project.tasks.withType(Jar) { jarTask -> // For all jar tasks
     jarTask.manifest {
         attributes 'FMLAT': 'tfc_at.cfg' // See FML source code
-        // todo: add git information about branch, repo, last commit, hash, etc...
+        attributes 'GIT_HASH': runGitCommand("log -n 1 --format='%H'")
+        attributes 'GIT_SUBJECT': runGitCommand("log -n 1 --format='%s'")
     }
     // Add "MC${mcversion}" to the jar, so the name ends up `TerraFirmaCraft-MC1.12.2-0.0.0.0.jar`
     // This didn't used to have the `MC` prefix, but it confuses some hosting websites as the actual version numbers then.
@@ -184,4 +201,24 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 // Only really relevant on the build server, but usable in dev also.
 // Makes it so you don't have to add the sign task in the command line, building will do.
 if (project.hasProperty("signjar.keystore"))
+{
     build.dependsOn signJar
+    // Makes curseforge upload the signed jar
+    tasks.curseforge.mustRunAfter signJar
+    tasks.curseforge.dependsOn build
+}
+
+// Allow automatic uploading to curseforge
+curseforge {
+    // Read api key from jenkins. If not here, this should just exit
+    apiKey = project.hasProperty('curseforge.apiKey.dries007') ? project['curseforge.apiKey.dries007'] : 'KAPUT'
+    project {
+        id = '302973'
+        changelog = 'Detailed changelogs can be found at https://jenkins.dries007.net/TerraFirmaCraft\n\n[This was an automatic build]'
+        releaseType = 'beta'
+        addGameVersion "${mcVersion}"
+    }
+    options {
+        javaVersionAutoDetect = false
+    }
+}

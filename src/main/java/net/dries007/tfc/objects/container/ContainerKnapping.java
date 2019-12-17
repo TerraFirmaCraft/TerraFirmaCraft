@@ -17,8 +17,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.api.recipes.knapping.IKnappingType;
 import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
+import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.slot.SlotKnappingOutput;
 import net.dries007.tfc.util.Helpers;
@@ -28,12 +28,12 @@ import net.dries007.tfc.util.SimpleCraftMatrix;
 public class ContainerKnapping extends ContainerItemStack implements IButtonHandler
 {
     private final SimpleCraftMatrix matrix;
-    private final IKnappingType type;
+    private final KnappingType type;
     private final ItemStack stackCopy;
     public boolean requiresReset;
     private boolean hasBeenModified;
 
-    public ContainerKnapping(IKnappingType type, InventoryPlayer playerInv, ItemStack stack)
+    public ContainerKnapping(KnappingType type, InventoryPlayer playerInv, ItemStack stack)
     {
         super(playerInv, stack);
         this.itemIndex += 1;
@@ -52,14 +52,17 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
 
         if (!hasBeenModified)
         {
-            ItemStack stack = player.isCreative() || type.consumeAfterComplete() ? this.stack : Helpers.consumeItem(this.stack, type.getAmountToConsume());
-            if (isOffhand)
+            if (!player.isCreative() && !type.consumeAfterComplete())
             {
-                player.setHeldItem(EnumHand.OFF_HAND, stack);
-            }
-            else
-            {
-                player.setHeldItem(EnumHand.MAIN_HAND, stack);
+                ItemStack consumedStack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
+                if (isOffhand)
+                {
+                    player.setHeldItem(EnumHand.OFF_HAND, consumedStack);
+                }
+                else
+                {
+                    player.setHeldItem(EnumHand.MAIN_HAND, consumedStack);
+                }
             }
             hasBeenModified = true;
         }
@@ -72,18 +75,6 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
             if (recipe != null)
             {
                 slot.putStack(recipe.getOutput(this.stackCopy));
-                if (type.consumeAfterComplete())
-                {
-                    ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
-                    if (isOffhand)
-                    {
-                        player.setHeldItem(EnumHand.OFF_HAND, stack);
-                    }
-                    else
-                    {
-                        player.setHeldItem(EnumHand.MAIN_HAND, stack);
-                    }
-                }
             }
             else
             {
@@ -102,6 +93,7 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
             if (!player.world.isRemote)
             {
                 ItemHandlerHelper.giveItemToPlayer(player, stack);
+                consumeIngredientStackAfterComplete();
             }
         }
         super.onContainerClosed(player);
@@ -135,14 +127,27 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
     {
         matrix.setAll(false);
         requiresReset = true;
+        consumeIngredientStackAfterComplete();
     }
 
     private KnappingRecipe getMatchingRecipe()
     {
-        return TFCRegistries.KNAPPING.getValuesCollection()
-            .stream()
-            .filter(x -> x.getType() == type && matrix.matches(x.getMatrix()))
-            .findFirst()
-            .orElse(null);
+        return TFCRegistries.KNAPPING.getValuesCollection().stream().filter(x -> x.getType() == type && matrix.matches(x.getMatrix())).findFirst().orElse(null);
+    }
+
+    private void consumeIngredientStackAfterComplete()
+    {
+        if (type.consumeAfterComplete())
+        {
+            ItemStack stack = Helpers.consumeItem(this.stack, type.getAmountToConsume());
+            if (isOffhand)
+            {
+                player.setHeldItem(EnumHand.OFF_HAND, stack);
+            }
+            else
+            {
+                player.setHeldItem(EnumHand.MAIN_HAND, stack);
+            }
+        }
     }
 }

@@ -8,8 +8,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -29,11 +29,11 @@ public class ChiselModeOverlay
             return;
         }
 
-        IPlayerSkills capability = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+        IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
         if (capability == null)
             return;
 
-        IPlayerSkills.ChiselMode chiselMode = capability.getChiselMode();
+        IPlayerData.ChiselMode chiselMode = capability.getChiselMode();
 
 
     }

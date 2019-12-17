@@ -12,9 +12,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
-import net.dries007.tfc.api.capability.skill.Skill;
-import net.dries007.tfc.api.capability.skill.SkillTier;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
 public class ProspectingSkill extends Skill
 {
@@ -23,7 +21,7 @@ public class ProspectingSkill extends Skill
     private final Set<BlockPos> foundPositions;
     private int level;
 
-    public ProspectingSkill(IPlayerSkills rootSkills)
+    public ProspectingSkill(IPlayerData rootSkills)
     {
         super(rootSkills);
         this.foundPositions = new HashSet<>(40);
@@ -33,13 +31,29 @@ public class ProspectingSkill extends Skill
     @Nonnull
     public SkillTier getTier()
     {
-        return SkillTier.valueOf(level % 5);
+        return SkillTier.valueOf(level / 5);
     }
 
     @Override
     public float getLevel()
     {
-        return (level % 5) / 5.0f;
+        // checks >=20 for full progress bar in MASTER tier.
+        return level >= 20 ? 1.0F : (level % 5) / 5.0f;
+    }
+
+    @Override
+    public void setTotalLevel(double value)
+    {
+        if (value < 0)
+        {
+            value = 0;
+        }
+        if (value > 1)
+        {
+            value = 1;
+        }
+        level = (int) (value * 20);
+        updateAndSync();
     }
 
     @Override

@@ -47,6 +47,7 @@ public abstract class BlockSlabTFC extends BlockSlab
         Block c = BlockRockVariant.get(rock, type);
         //noinspection ConstantConditions
         setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
+        useNeighborBrightness = true;
     }
 
     private BlockSlabTFC(Tree wood)
@@ -55,6 +56,7 @@ public abstract class BlockSlabTFC extends BlockSlab
         Block c = BlockPlanksTFC.get(wood);
         //noinspection ConstantConditions
         setHarvestLevel(c.getHarvestTool(c.getDefaultState()), c.getHarvestLevel(c.getDefaultState()));
+        useNeighborBrightness = true;
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
 
@@ -233,7 +235,7 @@ public abstract class BlockSlabTFC extends BlockSlab
             doubleSlab.halfSlab = this;
             halfSlab = this;
             OreDictionaryHelper.register(this, "slab");
-            OreDictionaryHelper.registerRockType(this, type, rock, "slab");
+            OreDictionaryHelper.registerRockType(this, type, "slab");
         }
 
         public Half(Tree wood)

@@ -19,7 +19,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -35,6 +34,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
+import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
@@ -108,17 +108,6 @@ public class BlockLogPile extends Block implements ILightableBlock
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        // This can't use breakBlock as it needs to not drop when broken in order to create a charcoal pile
-        if (!worldIn.isRemote && te instanceof TEInventory)
-        {
-            ((TEInventory) te).onBreakBlock(worldIn, pos, state);
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
@@ -129,22 +118,18 @@ public class BlockLogPile extends Block implements ILightableBlock
             // 2. Try and light the TE
             // 3. Open the GUI
             ItemStack stack = player.getHeldItem(hand);
-            if (stack.getItem() == Items.FLINT_AND_STEEL && !state.getValue(LIT) && side == EnumFacing.UP)
+            if (!state.getValue(LIT) && side == EnumFacing.UP && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos) && ItemFireStarter.onIgnition(stack))
             {
                 // Light the Pile
-                if (world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
+                if (!world.isRemote)
                 {
-                    if (!world.isRemote)
-                    {
-                        world.setBlockState(pos, state.withProperty(LIT, true));
-                        te.light();
-                        world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
-                        world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    }
-                    return true;
+                    world.setBlockState(pos, state.withProperty(LIT, true));
+                    te.light();
+                    world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
+                    world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
+                return true;
             }
-
             if (!player.isSneaking() && !state.getValue(LIT))
             {
                 if (!world.isRemote)
@@ -170,21 +155,20 @@ public class BlockLogPile extends Block implements ILightableBlock
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
-        return new BlockStateContainer(this, AXIS, LIT);
+        // This can't use breakBlock as it needs to not drop when broken in order to create a charcoal pile
+        if (!worldIn.isRemote && te instanceof TEInventory)
+        {
+            ((TEInventory) te).onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    protected BlockStateContainer createBlockState()
     {
-        TELogPile tile = Helpers.getTE(world, pos, TELogPile.class);
-        if (tile != null)
-        {
-            return side == EnumFacing.DOWN || tile.countLogs() == 16;
-        }
-        return super.isSideSolid(state, world, pos, side);
+        return new BlockStateContainer(this, AXIS, LIT);
     }
 
     @Override

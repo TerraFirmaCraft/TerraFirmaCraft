@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.api.recipes.knapping;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -17,10 +15,10 @@ import net.dries007.tfc.util.SimpleCraftMatrix;
  */
 public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRecipe>
 {
-    private final IKnappingType type;
+    private final KnappingType type;
     private final SimpleCraftMatrix matrix;
 
-    protected KnappingRecipe(IKnappingType type, boolean outsideSlotRequired, String... pattern)
+    protected KnappingRecipe(KnappingType type, boolean outsideSlotRequired, String... pattern)
     {
         this.matrix = new SimpleCraftMatrix(outsideSlotRequired, pattern);
         this.type = type;
@@ -33,47 +31,8 @@ public abstract class KnappingRecipe extends IForgeRegistryEntry.Impl<KnappingRe
 
     public abstract ItemStack getOutput(ItemStack input);
 
-    public IKnappingType getType()
+    public KnappingType getType()
     {
         return this.type;
-    }
-
-    /**
-     * Default TFC knapping types. Feel free to implement your own.
-     */
-    public enum Type implements IKnappingType
-    {
-        STONE(1, false),
-        CLAY(5, true),
-        FIRE_CLAY(5, true),
-        LEATHER(1, false);
-
-        private final int amountToConsume;
-        private boolean consumeAfterComplete;
-
-        Type(int amountToConsume, boolean consumeAfterComplete)
-        {
-            this.amountToConsume = amountToConsume;
-            this.consumeAfterComplete = consumeAfterComplete;
-        }
-
-        @Nonnull
-        @Override
-        public String getName()
-        {
-            return name();
-        }
-
-        @Override
-        public int getAmountToConsume()
-        {
-            return amountToConsume;
-        }
-
-        @Override
-        public boolean consumeAfterComplete()
-        {
-            return consumeAfterComplete;
-        }
     }
 }

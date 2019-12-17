@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSnow;
@@ -41,6 +42,7 @@ import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemBrickTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.items.rock.ItemRockToolHead;
+import net.dries007.tfc.objects.items.wood.ItemBoatTFC;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 import net.dries007.tfc.objects.items.wood.ItemLumberTFC;
 import net.dries007.tfc.objects.items.wood.ItemWoodenBucket;
@@ -56,8 +58,6 @@ import static net.dries007.tfc.util.Helpers.getNull;
 @GameRegistry.ObjectHolder(MOD_ID)
 public final class ItemsTFC
 {
-    public static final ItemDebug WAND = getNull();
-    public static final ItemFireStarter FIRESTARTER = getNull();
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
     public static final Item HANDSTONE = getNull();
@@ -120,8 +120,6 @@ public final class ItemsTFC
 
     public static final ItemTFC MORTAR = getNull();
 
-    public static final ItemSnow SNOW = getNull();
-
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();
 
@@ -154,7 +152,7 @@ public final class ItemsTFC
         Builder<Item> simpleItems = ImmutableList.builder();
 
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
-        simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT, "mortar"), CT_MISC));
         register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
 
         {
@@ -210,7 +208,10 @@ public final class ItemsTFC
             simpleItems.add(register(r, slab.getRegistryName().getPath(), new ItemSlabTFC(slab, slab, slab.doubleSlab), CT_DECORATIONS));
 
         for (Tree wood : TFCRegistries.TREES.getValuesCollection())
+        {
             simpleItems.add(register(r, "wood/lumber/" + wood.getRegistryName().getPath(), new ItemLumberTFC(wood), CT_WOOD));
+            simpleItems.add(register(r, "wood/boat/" + wood.getRegistryName().getPath(), new ItemBoatTFC(wood), CT_WOOD));
+        }
 
         for (RockCategory cat : TFCRegistries.ROCK_CATEGORIES.getValuesCollection())
         {
@@ -316,7 +317,8 @@ public final class ItemsTFC
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
         event.getRegistry().registerAll(
             new ItemSnow(Blocks.SNOW_LAYER).setRegistryName("minecraft", "snow_layer"),
-            new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch")
+            new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"),
+            new ItemGlassBottleTFC().setRegistryName(Items.GLASS_BOTTLE.getRegistryName()).setTranslationKey("glassBottle")
         );
     }
 

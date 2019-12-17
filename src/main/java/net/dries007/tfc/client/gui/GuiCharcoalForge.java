@@ -11,9 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 
-import static net.dries007.tfc.api.capability.heat.CapabilityItemHeat.MAX_TEMPERATURE;
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SideOnly(Side.CLIENT)
@@ -32,9 +32,13 @@ public class GuiCharcoalForge extends GuiContainerTE<TECharcoalForge>
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         // Draw the temperature indicator
-        int temperature = (int) (51 * tile.getField(TECharcoalForge.FIELD_TEMPERATURE) / MAX_TEMPERATURE);
+        int temperature = (int) (51 * tile.getField(TECharcoalForge.FIELD_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
+            if (temperature > 51)
+            {
+                temperature = 51;
+            }
             drawTexturedModalRect(guiLeft + 8, guiTop + 66 - temperature, 176, 0, 15, 5);
         }
     }

@@ -141,13 +141,13 @@ public class EntityFallingBlockTFC extends Entity
             // On ground
             if (!failedBreakCheck)
             {
-                if (!world.isAirBlock(pos) && IFallingBlock.canFallThrough(world, pos))
+                if (!world.isAirBlock(pos) && IFallingBlock.canFallThrough(world, pos, state.getMaterial()))
                 {
                     world.destroyBlock(pos, true);
                     failedBreakCheck = true;
                     return;
                 }
-                else if (!world.isAirBlock(pos.down()) && IFallingBlock.canFallThrough(world, pos.down()))
+                else if (!world.isAirBlock(pos.down()) && IFallingBlock.canFallThrough(world, pos.down(), state.getMaterial()))
                 {
                     world.destroyBlock(pos.down(), true);
                     failedBreakCheck = true;
@@ -165,7 +165,7 @@ public class EntityFallingBlockTFC extends Entity
 
             setDead();
 
-            if (!IFallingBlock.canFallThrough(world, pos.down()))
+            if (IFallingBlock.canFallThrough(world, pos, state.getMaterial()))
             {
                 if (!world.isRemote)
                 {
@@ -192,7 +192,7 @@ public class EntityFallingBlockTFC extends Entity
                     }
                 }
             }
-            else if (world.getGameRules().getBoolean("doEntityDrops"))
+            else if (world.getGameRules().getBoolean("doEntityDrops") && !world.isRemote)
             {
                 falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
             }

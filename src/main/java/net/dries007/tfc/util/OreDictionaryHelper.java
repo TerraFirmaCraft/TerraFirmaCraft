@@ -23,8 +23,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.types.Rock;
 
-import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
-
 /**
  * This is not the best example of good coding practice, but I do think it works rather well.
  * The reason for the delayed registration it because now the helper's functions can be called in the constructor of
@@ -68,9 +66,9 @@ public class OreDictionaryHelper
         register(new Thing(thing, meta), parts);
     }
 
-    public static void registerRockType(Block thing, Rock.Type type, Rock rock, Object... prefixParts)
+    public static void registerRockType(Block thing, Rock.Type type, Object... prefixParts)
     {
-        registerRockType(new Thing(thing), type, rock, prefixParts);
+        registerRockType(new Thing(thing), type, prefixParts);
     }
 
     public static void registerDamageType(Item thing, DamageType type)
@@ -87,6 +85,11 @@ public class OreDictionaryHelper
         // Vanilla ore dict values
         OreDictionary.registerOre("clay", Items.CLAY_BALL);
         OreDictionary.registerOre("charcoal", new ItemStack(Items.COAL, 1, 1));
+        OreDictionary.registerOre("fireStarter", new ItemStack(Items.FLINT_AND_STEEL, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("fireStarter", new ItemStack(Items.FIRE_CHARGE));
+
+        // Register a name without any items
+        OreDictionary.getOres("infiniteFire", true);
     }
 
     /**
@@ -114,56 +117,37 @@ public class OreDictionaryHelper
         MAP.put(thing, toString(parts));
     }
 
-    @SuppressWarnings("ConstantConditions")
-    private static void registerRockType(Thing thing, Rock.Type type, Rock rock, Object... prefixParts)
+    private static void registerRockType(Thing thing, Rock.Type type, Object... prefixParts)
     {
         switch (type)
         {
             case RAW:
                 MAP.put(thing, toString(prefixParts, "stone"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath()));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath()));
                 break;
             case SMOOTH:
                 MAP.put(thing, toString(prefixParts, "stone"));
                 MAP.put(thing, toString(prefixParts, "stone", "polished"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath()));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath(), "polished"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath()));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath(), "polished"));
                 break;
             case COBBLE:
                 MAP.put(thing, toString(prefixParts, "cobblestone"));
-                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRegistryName().getPath()));
-                MAP.put(thing, toString(prefixParts, "cobblestone", rock.getRockCategory().getRegistryName().getPath()));
                 break;
             case BRICKS:
                 MAP.put(thing, toString(prefixParts, "stone", "brick"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRegistryName().getPath(), "brick"));
-                MAP.put(thing, toString(prefixParts, "stone", rock.getRockCategory().getRegistryName().getPath(), "brick"));
-                break;
-            case CLAY_GRASS:
-                MAP.put(thing, toString(prefixParts, "clay"));
-                MAP.put(thing, toString(prefixParts, "clay", rock.getRegistryName().getPath()));
-                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory().getRegistryName().getPath()));
-                MAP.put(thing, toString(prefixParts, "clay", "grass"));
-                MAP.put(thing, toString(prefixParts, "clay", rock.getRegistryName().getPath(), "grass"));
-                MAP.put(thing, toString(prefixParts, "clay", rock.getRockCategory().getRegistryName().getPath(), "grass"));
                 break;
             case DRY_GRASS:
                 MAP.put(thing, toString(prefixParts, type, "dry"));
-                MAP.put(thing, toString(prefixParts, type, rock.getRegistryName().getPath(), "dry"));
-                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory().getRegistryName().getPath(), "dry"));
+                break;
+            case CLAY:
+            case CLAY_GRASS:
+                MAP.put(thing, toString(prefixParts, "block", type));
+                MAP.put(thing, toString(prefixParts, "block", type));
                 break;
             case SAND:
             case GRAVEL:
             case DIRT:
             case GRASS:
-            case CLAY:
             default:
                 MAP.put(thing, toString(prefixParts, type));
-                MAP.put(thing, toString(prefixParts, type, rock.getRegistryName().getPath()));
-                MAP.put(thing, toString(prefixParts, type, rock.getRockCategory().getRegistryName().getPath()));
         }
     }
 
@@ -177,25 +161,37 @@ public class OreDictionaryHelper
         {
             block = thing;
             item = null;
-            meta = WILDCARD_VALUE;
+            meta = 0;
         }
 
         private Thing(Item thing)
         {
-            this(thing, WILDCARD_VALUE);
+            this(thing, -1);
         }
 
         private Thing(Item thing, int meta)
         {
+            block = null;
             item = thing;
             this.meta = meta;
-            block = null;
         }
 
         private ItemStack toItemStack()
         {
-            //noinspection ConstantConditions
-            return (block == null) ? new ItemStack(item, 1, meta) : new ItemStack(block, 1, meta);
+            if (block != null)
+            {
+                return new ItemStack(block, 1, meta);
+            }
+            else if (item != null)
+            {
+                int meta = this.meta;
+                if (meta == -1 && item.isDamageable())
+                {
+                    meta = OreDictionary.WILDCARD_VALUE;
+                }
+                return new ItemStack(item, 1, meta);
+            }
+            return ItemStack.EMPTY;
         }
     }
 }

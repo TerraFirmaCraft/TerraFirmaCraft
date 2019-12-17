@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -24,7 +25,6 @@ import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
-import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
@@ -52,30 +52,41 @@ public class WorldGenLooseRocks implements IWorldGenerator
         if (chunkGenerator instanceof ChunkGenTFC && world.provider.getDimension() == 0)
         {
             final BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
-            ChunkDataTFC chunkData = ChunkDataTFC.get(world, chunkBlockPos);
-            if (!chunkData.isInitialized()) return;
+            final ChunkDataTFC baseChunkData = ChunkDataTFC.get(world, chunkBlockPos);
 
-            // Set constant values here
+            // Get the proper list of veins
+            List<Vein> veins = Collections.emptyList();
             int xoff = chunkX * 16 + 8;
             int zoff = chunkZ * 16 + 8;
-            // Get the proper list of veins
-            List<Vein> veins;
+
             if (generateOres)
             {
+                // Grab 2x2 area
+                ChunkDataTFC[] chunkData = {
+                    baseChunkData, // This chunk
+                    ChunkDataTFC.get(world, chunkBlockPos.add(16, 0, 0)),
+                    ChunkDataTFC.get(world, chunkBlockPos.add(0, 0, 16)),
+                    ChunkDataTFC.get(world, chunkBlockPos.add(16, 0, 16))
+                };
+                if (!chunkData[0].isInitialized())
+                {
+                    return;
+                }
+
+                int lowestYScan = world.getTopSolidOrLiquidBlock(chunkBlockPos).getY() - 35; // Same as in 1.7.10, 35 below the surface
+
                 veins = WorldGenOreVeins.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
                 if (!veins.isEmpty())
                 {
                     veins.removeIf(v -> {
-                        if (!v.type.hasLooseRocks()) return true;
-
-                        int minScanY = (WorldTypeTFC.ROCKLAYER2 + WorldTypeTFC.ROCKLAYER3) / 2;
-                        int maxScanY = WorldTypeTFC.SEALEVEL + chunkData.getSeaLevelOffset(v.pos);
-
-                        // This is intensive and a painful check to have to do, but unfortunately necessary. In 1.14 this will be gone.
-                        // todo change this to the sanity check impl in GoldPan and Sluice after merge
-                        for (BlockPos.MutableBlockPos pos : BlockPos.getAllInBoxMutable(xoff - 7, minScanY, zoff - 7, xoff + 22, maxScanY, zoff + 22))
+                        if (!v.getType().hasLooseRocks() || v.getHighestY() < lowestYScan)
                         {
-                            if (v.type.isOreBlock(world.getBlockState(pos)))
+                            return true;
+                        }
+                        for (ChunkDataTFC data : chunkData)
+                        {
+                            // No need to check for initialized chunk data, ores will be empty.
+                            if (data.getGeneratedVeins().contains(v))
                             {
                                 return false;
                             }
@@ -83,10 +94,6 @@ public class WorldGenLooseRocks implements IWorldGenerator
                         return true;
                     });
                 }
-            }
-            else
-            {
-                veins = Collections.emptyList();
             }
 
             for (int i = 0; i < ConfigTFC.WORLD.looseRocksFrequency * factor; i++)
@@ -96,8 +103,8 @@ public class WorldGenLooseRocks implements IWorldGenerator
                     0,
                     zoff + random.nextInt(16)
                 );
-                Rock rock = chunkData.getRock1(pos);
-                generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, random), rock);
+                Rock rock = baseChunkData.getRock1(pos);
+                generateRock(world, pos.up(world.getTopSolidOrLiquidBlock(pos).getY()), getRandomVein(veins, pos, random), rock);
             }
         }
     }
@@ -106,7 +113,8 @@ public class WorldGenLooseRocks implements IWorldGenerator
     {
         // Use air, so it doesn't replace other replaceable world gen
         // This matches the check in BlockPlacedItemFlat for if the block can stay
-        if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isFullBlock())
+        // Also, only add on soil, since this is called by the world regen handler later
+        if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
         {
             world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState(), 2);
             TEPlacedItemFlat tile = Helpers.getTE(world, pos, TEPlacedItemFlat.class);
@@ -115,7 +123,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 ItemStack stack = ItemStack.EMPTY;
                 if (vein != null)
                 {
-                    stack = vein.type.getLooseRockItem();
+                    stack = vein.getType().getLooseRockItem();
                 }
                 if (stack.isEmpty())
                 {
@@ -127,11 +135,15 @@ public class WorldGenLooseRocks implements IWorldGenerator
     }
 
     @Nullable
-    private Vein getRandomVein(List<Vein> veins, Random rand)
+    private Vein getRandomVein(List<Vein> veins, BlockPos pos, Random rand)
     {
         if (!veins.isEmpty() && rand.nextDouble() < 0.4)
         {
-            return veins.get(rand.nextInt(veins.size()));
+            Vein vein = veins.get(rand.nextInt(veins.size()));
+            if (vein.inRange(pos.getX(), pos.getZ(), 8))
+            {
+                return vein;
+            }
         }
         return null;
     }

@@ -43,7 +43,6 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:melon_seeds"));
             modRegistry.remove(new ResourceLocation("minecraft:melon_block"));
             modRegistry.remove(new ResourceLocation("minecraft:pumpkin_seeds"));
-            modRegistry.remove(new ResourceLocation("minecraft:lit_pumpkin"));
             modRegistry.remove(new ResourceLocation("minecraft:golden_apple"));
             modRegistry.remove(new ResourceLocation("minecraft:glowstone"));
             modRegistry.remove(new ResourceLocation("minecraft:furnace"));
@@ -71,6 +70,9 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:anvil"));
             modRegistry.remove(new ResourceLocation("minecraft:painting"));
             modRegistry.remove(new ResourceLocation("minecraft:torch"));
+            modRegistry.remove(new ResourceLocation("minecraft:shield"));
+            modRegistry.remove(new ResourceLocation("minecraft:shears"));
+            modRegistry.remove(new ResourceLocation("minecraft:lead"));
 
             //breakydowny, buildyupy things.
             modRegistry.remove(new ResourceLocation("minecraft:wheat"));

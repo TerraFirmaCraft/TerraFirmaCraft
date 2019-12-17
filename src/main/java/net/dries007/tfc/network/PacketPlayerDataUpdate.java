@@ -14,18 +14,18 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 
-public class PacketSkillsUpdate implements IMessage
+public class PacketPlayerDataUpdate implements IMessage
 {
     private NBTTagCompound skillsNbt;
 
     @SuppressWarnings("unused")
     @Deprecated
-    public PacketSkillsUpdate() {}
+    public PacketPlayerDataUpdate() {}
 
-    public PacketSkillsUpdate(NBTTagCompound skillsNbt)
+    public PacketPlayerDataUpdate(NBTTagCompound skillsNbt)
     {
         this.skillsNbt = skillsNbt;
     }
@@ -42,16 +42,16 @@ public class PacketSkillsUpdate implements IMessage
         ByteBufUtils.writeTag(buf, skillsNbt);
     }
 
-    public static final class Handler implements IMessageHandler<PacketSkillsUpdate, IMessage>
+    public static final class Handler implements IMessageHandler<PacketPlayerDataUpdate, IMessage>
     {
         @Override
-        public IMessage onMessage(PacketSkillsUpdate message, MessageContext ctx)
+        public IMessage onMessage(PacketPlayerDataUpdate message, MessageContext ctx)
         {
             TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    IPlayerSkills skills = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+                    IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
                     if (skills != null)
                     {
                         skills.deserializeNBT(message.skillsNbt);

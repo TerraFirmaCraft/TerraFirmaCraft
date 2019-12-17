@@ -20,10 +20,9 @@ import net.dries007.tfc.util.Helpers;
 
 public class ItemBlockTorch extends ItemBlockTFC
 {
-
-    public ItemBlockTorch(Block b)
+    public ItemBlockTorch(Block block)
     {
-        super(b);
+        super(block);
     }
 
     @Override
@@ -42,24 +41,32 @@ public class ItemBlockTorch extends ItemBlockTFC
                 {
                     TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
                     if (te != null)
+                    {
                         te.light();
+                    }
                     // This happens automatically for Pit Kiln
                     if (!Blocks.FIRE.canPlaceBlockAt(world, pos))
+                    {
                         world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
+                    }
                 }
                 else if (state.getBlock() == BlocksTFC.PIT_KILN)
                 {
                     TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
                     if (te != null)
+                    {
                         te.tryLight();
+                    }
                 }
                 entityItem.setDead();
             }
             else
             {
                 if (Math.random() <= 0.1)
+                {
                     world.spawnParticle(EnumParticleTypes.LAVA, entityItem.posX, entityItem.posY, entityItem.posZ,
                         -0.5F + Math.random(), -0.5F + Math.random(), -0.5F + Math.random());
+                }
                 entityItem.getEntityData().setInteger("torchCount", count + 1);
             }
         }

@@ -60,7 +60,7 @@ public class ClimateHelper
         final float currentMonthFactor = monthFactor(regionalTemp, CalendarTFC.CALENDAR_TIME.getMonthOfYear(), z);
         final float nextMonthFactor = monthFactor(regionalTemp, CalendarTFC.CALENDAR_TIME.getMonthOfYear().next(), z);
 
-        final float delta = (float) CalendarTFC.CALENDAR_TIME.getDayOfMonth() / CalendarTFC.INSTANCE.getDaysInMonth();
+        final float delta = (float) CalendarTFC.CALENDAR_TIME.getDayOfMonth() / CalendarTFC.CALENDAR_TIME.getDaysInMonth();
         // Affine combination to smooth temperature transition
         return currentMonthFactor * (1 - delta) + nextMonthFactor * delta;
     }

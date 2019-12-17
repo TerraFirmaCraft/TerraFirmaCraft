@@ -19,7 +19,6 @@ public class SlotKnappingOutput extends SlotItemHandler
     public SlotKnappingOutput(IItemHandler inventory, int idx, int x, int y, Runnable onSlotTake)
     {
         super(inventory, idx, x, y);
-
         this.onSlotTake = onSlotTake;
     }
 

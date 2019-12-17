@@ -13,64 +13,66 @@ import net.dries007.tfc.api.types.Ore;
 
 public class VeinCluster extends Vein
 {
-    private final double verticalModifier;
-    private final double horizontalModifier;
-
     private final Cluster[] spawnPoints;
 
     public VeinCluster(BlockPos pos, VeinType veinType, Ore.Grade grade, Random rand)
     {
         super(pos, veinType, grade);
 
-        this.horizontalModifier = (1.5 - rand.nextDouble()) * veinType.size.radius;
-        this.verticalModifier = (1.5 - rand.nextDouble()) * veinType.size.radius;
+        // Individual vein width is 60% - 100% of type width (it must fit exactly inside the circle described by width)
+        double maxWidth = (0.6 + rand.nextDouble() * 0.4) * veinType.getWidth();
+        double maxHeight = (0.6 + rand.nextDouble() * 0.4) * veinType.getHeight();
 
-        int clusters = veinType.shape.minClusters;
-        if (veinType.shape.maxClusters > clusters)
-        {
-            clusters += rand.nextInt(veinType.shape.maxClusters - veinType.shape.minClusters);
-        }
+        int clusters = 4 + rand.nextInt(5);
+        double maxClusterSize = 0.6 * maxWidth;
         spawnPoints = new Cluster[clusters];
-        spawnPoints[0] = new Cluster(pos, 0.6 + 0.5 * rand.nextDouble());
+        spawnPoints[0] = new Cluster(pos, maxClusterSize * (0.6 + 0.4 * rand.nextDouble()));
         for (int i = 1; i < clusters; i++)
         {
             final BlockPos clusterPos = pos.add(
-                1.5 * horizontalModifier * (0.5 - rand.nextDouble()),
-                1.5 * verticalModifier * (0.5 - rand.nextDouble()),
-                1.5 * horizontalModifier * (0.5 - rand.nextDouble())
+                maxWidth * 0.4 * rand.nextDouble(),
+                maxHeight * 0.4 * rand.nextDouble(),
+                maxWidth * 0.4 * rand.nextDouble()
             );
-            spawnPoints[i] = new Cluster(clusterPos, 0.3 + 0.5 * rand.nextDouble());
+            spawnPoints[i] = new Cluster(clusterPos, maxClusterSize * (0.4 + 0.6 * rand.nextDouble()));
         }
     }
 
     @Override
-    public double getChanceToGenerate(BlockPos pos1)
+    public double getChanceToGenerate(BlockPos pos)
     {
         double shortestRadius = -1;
-
         for (Cluster c : spawnPoints)
         {
-            final double dx = Math.pow(c.pos.getX() - pos1.getX(), 2);
-            final double dy = Math.pow(c.pos.getY() - pos1.getY(), 2);
-            final double dz = Math.pow(c.pos.getZ() - pos1.getZ(), 2);
-
-            final double radius = (dx + dz) / Math.pow(c.size * horizontalModifier, 2) + dy / Math.pow(c.size * verticalModifier, 2);
-
-            if (shortestRadius == -1 || radius < shortestRadius) shortestRadius = radius;
+            double radius = pos.distanceSq(c.pos) / c.radiusSq;
+            if (shortestRadius == -1 || radius < shortestRadius)
+            {
+                shortestRadius = radius;
+            }
         }
-        return type.density * type.size.densityModifier * (1.0 - shortestRadius);
+        if (shortestRadius < 0.8)
+        {
+            return type.getDensity();
+        }
+        else if (shortestRadius < 1)
+        {
+            return type.getDensity() * (1 - shortestRadius) / 0.2;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
-    private final class Cluster
+    private static final class Cluster
     {
         final BlockPos pos;
-        final double size;
+        final double radiusSq;
 
-        Cluster(BlockPos pos, double size)
+        Cluster(BlockPos pos, double radius)
         {
             this.pos = pos;
-            this.size = size;
+            this.radiusSq = radius * radius;
         }
-
     }
 }

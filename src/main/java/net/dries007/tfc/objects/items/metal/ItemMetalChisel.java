@@ -24,8 +24,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills;
-import net.dries007.tfc.api.capability.skill.IPlayerSkills.ChiselMode;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;

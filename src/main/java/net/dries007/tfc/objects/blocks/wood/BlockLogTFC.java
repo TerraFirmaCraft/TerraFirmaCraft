@@ -212,13 +212,13 @@ public class BlockLogTFC extends BlockLog implements IItemSize
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.NORMAL;
+        return Size.LARGE;
     }
 
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.MEDIUM;
+        return Weight.LIGHT;
     }
 
     private boolean removeTree(World world, BlockPos pos, @Nullable EntityPlayer player, ItemStack stack, boolean stoneTool)

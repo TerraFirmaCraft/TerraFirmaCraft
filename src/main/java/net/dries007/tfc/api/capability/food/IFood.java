@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -45,7 +46,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     long getCreationDate();
 
     /**
-     * Sets the creation date. DO NOT USE TO PRESERVE FOOD! Use {@link IFoodTrait} instead
+     * Sets the creation date. DO NOT USE TO PRESERVE FOOD! Use {@link FoodTrait} instead
      *
      * @param creationDate A calendar time
      */
@@ -103,7 +104,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      * @return the traits of the food
      */
     @Nonnull
-    List<IFoodTrait> getTraits();
+    List<FoodTrait> getTraits();
 
     /**
      * Tooltip added to the food item
@@ -117,7 +118,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     {
         if (isRotten())
         {
-            text.add(I18n.format("tfc.tooltip.food_rotten"));
+            text.add(TextFormatting.RED + I18n.format("tfc.tooltip.food_rotten"));
         }
         else
         {
@@ -125,36 +126,38 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
 
             if (rottenDate == Long.MAX_VALUE)
             {
-                text.add(I18n.format("tfc.tooltip.food_infinite_expiry"));
+                text.add(TextFormatting.GOLD + I18n.format("tfc.tooltip.food_infinite_expiry"));
             }
             else
             {
                 // Calculate the date to display in calendar time
                 long rottenCalendarTime = rottenDate - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
-                text.add(I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.INSTANCE.getDaysInMonth())));
+                text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
 
-                // Show nutrient values if not rotten
-                for (Nutrient nutrient : Nutrient.values())
+                if (ConfigTFC.GENERAL.debug)
                 {
-                    float amount = getNutrient(stack, nutrient);
-                    if (amount > 0)
+                    // todo: make this 1) use color, 2) only show if sneaking (to avoid tooltip clutter), 3) only show if skill is high enough
+                    // i.e. lowest level shows category, i.e. "Category: Grain"
+                    // next level shows which nutrients it has, i.e. "Category: Grain, Nutrients: Carbohydrates, Fat"
+                    // final level shows exact values, i.e. "Category: Grain, Nutrients: Carbohydrates (1.5), Fat (3.0)"
+                    for (Nutrient nutrient : Nutrient.values())
                     {
-                        text.add(nutrient.name().toLowerCase() + ": " + amount);
+                        float amount = getNutrient(stack, nutrient);
+                        if (amount > 0)
+                        {
+                            text.add(nutrient.name().toLowerCase() + ": " + amount);
+                        }
                     }
                 }
             }
         }
-        // todo: make this respect skills tiers
-        // i.e. lowest level shows category, i.e. "Category: Grain"
-        // next level shows which nutrients it has, i.e. "Category: Grain, Nutrients: Carbohydrates, Fat"
-        // final level shows exact values, i.e. "Category: Grain, Nutrients: Carbohydrates (1.5), Fat (3.0)"
         if (ConfigTFC.GENERAL.debug)
         {
             text.add("Created at " + getCreationDate());
         }
 
         // Add info for each trait
-        for (IFoodTrait trait : getTraits())
+        for (FoodTrait trait : getTraits())
         {
             trait.addTraitInfo(stack, text);
         }

@@ -36,7 +36,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         FoodHandler.markStacksNonDecaying = markStacksNonDecaying;
     }
 
-    private final List<IFoodTrait> foodTraits;
+    private final List<FoodTrait> foodTraits;
     private final float[] nutrients;
     private final float decayModifier;
     private final float water;
@@ -134,7 +134,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     {
         // Decay modifiers are higher = shorter
         float mod = decayModifier * (float) ConfigTFC.GENERAL.foodDecayModifier;
-        for (IFoodTrait trait : foodTraits)
+        for (FoodTrait trait : foodTraits)
         {
             mod *= trait.getDecayModifier();
         }
@@ -150,7 +150,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
 
     @Nonnull
     @Override
-    public List<IFoodTrait> getTraits()
+    public List<FoodTrait> getTraits()
     {
         return foodTraits;
     }
@@ -176,7 +176,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         nbt.setLong("creationDate", getCreationDate());
         // Traits are sorted so they match when trying to stack them
         NBTTagList traitList = new NBTTagList();
-        for (IFoodTrait trait : foodTraits)
+        for (FoodTrait trait : foodTraits)
         {
             traitList.appendTag(new NBTTagString(trait.getName()));
         }
@@ -199,7 +199,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             NBTTagList traitList = nbt.getTagList("traits", 8 /* String */);
             for (int i = 0; i < traitList.tagCount(); i++)
             {
-                foodTraits.add(CapabilityFood.getTraits().get(traitList.getStringTagAt(i)));
+                foodTraits.add(FoodTrait.getTraits().get(traitList.getStringTagAt(i)));
             }
         }
         else

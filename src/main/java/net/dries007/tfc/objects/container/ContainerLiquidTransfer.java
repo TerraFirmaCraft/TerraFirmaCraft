@@ -52,10 +52,10 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
                     if (fStack != null && outFluidHandler.fill(fStack, false) == 1)
                     {
                         outFluidHandler.fill(capFluidHandler.drain(1, true), true);
-                    }
 
-                    // Copy the input temperature onto the output temperature
-                    ((IMoldHandler) outFluidHandler).setTemperature(((IMoldHandler) capFluidHandler).getTemperature());
+                        // Copy the input temperature onto the output temperature
+                        ((IMoldHandler) outFluidHandler).setTemperature(((IMoldHandler) capFluidHandler).getTemperature());
+                    }
                 }
             }
         }

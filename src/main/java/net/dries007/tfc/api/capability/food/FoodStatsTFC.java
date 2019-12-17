@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.api.capability.food;
 
+import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -25,12 +26,15 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketFoodStatsUpdate;
-import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
 public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 {
-    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 second
+    public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
+    public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for vanilla sources of exhaustion (we use passive exhaustion to keep hunger decaying even when not sprinting everywhere. That said, vanilla exhaustion should be reduced to compensate
+    public static final float PASSIVE_EXHAUSTION = 20f * 4f / (2.5f * ICalendar.TICKS_IN_DAY); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
+    public static final DamageSource DEHYDRATION = (new DamageSource("dehydration")).setDamageBypassesArmor().setDamageIsAbsolute(); // Same as starvation, but another message on death
 
     private final EntityPlayer sourcePlayer;
     private final FoodStats originalStats;
@@ -46,10 +50,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         this.nutrients = new float[Nutrient.TOTAL];
         this.thirst = MAX_PLAYER_THIRST;
 
-        for (int i = 0; i < nutrients.length; i++)
-        {
-            nutrients[i] = 0.8f * MAX_PLAYER_NUTRIENTS;
-        }
+        Arrays.fill(nutrients, 0.8f * MAX_PLAYER_NUTRIENTS);
     }
 
     @Override
@@ -142,15 +143,30 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
         else
         {
+            // Passive exhaustion
+            originalStats.addExhaustion(PASSIVE_EXHAUSTION * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier);
+
             // Same check as the original food stats, so hunger, thirst, and nutrition loss are synced
             if (originalStats.foodExhaustionLevel >= 4.0F)
             {
                 addThirst(-(float) ConfigTFC.GENERAL.playerThirstModifier);
 
                 // Nutrition only decays when food decays. The base ratio (in config), is 0.8 nutrition / haunch
-                for (int i = 0; i < nutrients.length; i++)
+                if (getSaturationLevel() <= 0f)
                 {
-                    addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+                    for (int i = 0; i < nutrients.length; i++)
+                    {
+                        addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
+                    }
+                }
+            }
+
+            if (difficulty == EnumDifficulty.PEACEFUL)
+            {
+                // Copied from vanilla's food stats, so we consume food in peaceful mode (would normally be part of the super.onUpdate call
+                if (originalStats.foodExhaustionLevel > 4.0F)
+                {
+                    setFoodLevel(Math.max(getFoodLevel() - 1, 0));
                 }
             }
         }
@@ -187,7 +203,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                     if (thirst <= 0f)
                     {
                         // Hurt the player, same as starvation
-                        player.attackEntityFrom(DamageSource.STARVE, 1);
+                        player.attackEntityFrom(DEHYDRATION, 1);
                     }
                 }
                 else if (thirst < 20f)
@@ -254,7 +270,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     @Override
     public void addExhaustion(float exhaustion)
     {
-        originalStats.addExhaustion(exhaustion);
+        originalStats.addExhaustion(EXHAUSTION_MULTIPLIER * exhaustion);
     }
 
     @Override
@@ -297,13 +313,13 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     @Override
     public boolean attemptDrink(float value, boolean simulate)
     {
-        int ticksPassed = (int) (CalendarTFC.TOTAL_TIME.getTicks() - lastDrinkTick);
+        int ticksPassed = (int) (sourcePlayer.world.getTotalWorldTime() - lastDrinkTick);
         if (ticksPassed >= 20 && thirst < MAX_PLAYER_THIRST)
         {
-            // One drink every so often
-            lastDrinkTick = CalendarTFC.TOTAL_TIME.getTicks();
             if (!simulate)
             {
+                // One drink every so often
+                lastDrinkTick = sourcePlayer.world.getTotalWorldTime();
                 addThirst(value);
             }
             return true;

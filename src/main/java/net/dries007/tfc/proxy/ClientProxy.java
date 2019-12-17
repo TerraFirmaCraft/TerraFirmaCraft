@@ -86,4 +86,12 @@ public class ClientProxy implements IProxy
         }
         return I18n.format("tfc.enum.day." + CalendarTFC.DAY_NAMES[(int) (totalDays % 7)]);
     }
+
+    @Nonnull
+    @Override
+    public String getDate(int hour, int minute, String monthName, int day, long years)
+    {
+        // We call an additional String.format for the time, because vanilla doesn't support %02d format specifiers
+        return I18n.format("tfc.tooltip.calendar_full_date", String.format("%02d:%02d", hour, minute), monthName, day, years);
+    }
 }
