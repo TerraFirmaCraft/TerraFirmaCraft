@@ -23,7 +23,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData.ChiselMode;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -160,7 +162,7 @@ public class ItemMetalChisel extends ItemMetalTool
             return null;
 
         // get the capability that tells us the current player selected mode for chiseling
-        IPlayerSkills capability = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+        IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
 
         // if the capability for chisel modes is gone there's nothing the chisel can do.
         if (capability == null)

@@ -6,7 +6,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.skill.CapabilityPlayerSkills;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 
 public class PacketCycleItemMode implements IMessageEmpty
@@ -22,11 +23,11 @@ public class PacketCycleItemMode implements IMessageEmpty
                 {
                     if (player.getHeldItemMainhand().getItem() instanceof ItemMetalChisel)
                     {
-                        IPlayerSkills capability = player.getCapability(CapabilityPlayerSkills.CAPABILITY, null);
+                        IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
 
                         if (capability != null)
                         {
-                            IPlayerSkills.ChiselMode mode = capability.getChiselMode();
+                            IPlayerData.ChiselMode mode = capability.getChiselMode();
                             capability.setChiselMode(mode.getNextMode());
                             capability.updateAndSync();
                         }
