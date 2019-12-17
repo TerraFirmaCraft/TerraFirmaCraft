@@ -97,6 +97,6 @@ public class ProspectingSkill extends Skill
         // New position, so add skill and send update
         foundPositions.add(pos);
         level++;
-        rootSkills.updateAndSync();
+        updateAndSync();
     }
 }
