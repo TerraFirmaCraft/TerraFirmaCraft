@@ -8,18 +8,6 @@
     {
       "type": "forge:ore_dict",
       "ore": "flourCornmeal"
-    },
-    {
-      "type": "forge:ore_dict",
-      "ore": "flourCornmeal"
-    },
-    {
-      "type": "forge:ore_dict",
-      "ore": "flourCornmeal"
-    },
-    {
-      "type": "forge:ore_dict",
-      "ore": "flourCornmeal"
     }
   ],
   "result": {

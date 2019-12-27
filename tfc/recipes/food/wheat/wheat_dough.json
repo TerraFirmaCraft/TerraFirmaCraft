@@ -7,15 +7,11 @@
     },
     {
       "type": "forge:ore_dict",
-      "ore": "flourCornmeal"
-    },
-    {
-      "type": "forge:ore_dict",
-      "ore": "flourCornmeal"
+      "ore": "flourWheat"
     }
   ],
   "result": {
-    "item": "tfc:food/cornmeal_dough",
-    "count": 1
+    "item": "tfc:food/wheat_dough",
+    "count": 2
   }
 }

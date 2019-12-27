@@ -7,15 +7,11 @@
     },
     {
       "type": "forge:ore_dict",
-      "ore": "flourRye"
-    },
-    {
-      "type": "forge:ore_dict",
-      "ore": "flourRye"
+      "ore": "flourOat"
     }
   ],
   "result": {
-    "item": "tfc:food/rye_dough",
-    "count": 1
+    "item": "tfc:food/oat_dough",
+    "count": 2
   }
 }
