@@ -48,6 +48,17 @@ public abstract class EntityAnimalOviparous extends EntityAnimalTFC
     }
 
     /**
+     * Ignore fall damage like vanilla chickens. Implemented here because all TFC Oviparous animals don't take fall damage.
+     * Ostriches would escape fall damage too.
+     * @param distance
+     * @param damageMultiplier
+     */
+
+    @Override
+    public void fall(float distance, float damageMultiplier) {} //disable fall damage like vanilla
+
+
+    /**
      * Check if this female is ready to lay eggs
      *
      * @return true if ready
