@@ -119,7 +119,7 @@ public final class DefaultRecipes
             // todo: curdled milk -> cheese (use an empty IIngredient for the item)
 
             // Instant recipes: set the duration to 0
-            new BarrelRecipeFluidMixing(IIngredient.of(FRESH_WATER.get(), 10), new IngredientFluidItem(SALT_WATER.get(), 1), new FluidStack(BRINE.get(), 10), 0).setRegistryName("brining"),
+            new BarrelRecipeFluidMixing(IIngredient.of(VINEGAR.get(), 9), new IngredientFluidItem(SALT_WATER.get(), 1), new FluidStack(BRINE.get(), 10), 0).setRegistryName("brining"),
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 500), IIngredient.of("dustFlux"), new FluidStack(LIMEWATER.get(), 500), ItemStack.EMPTY, 0).setRegistryName("limewater"),
             // todo: curdled milk (make it a simpler calculation)
 
