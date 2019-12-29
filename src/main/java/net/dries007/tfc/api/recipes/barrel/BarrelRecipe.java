@@ -198,7 +198,15 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     {
         if (isValidInput(inputFluid, inputStack))
         {
-            return Math.min(inputFluid.amount / this.inputFluid.getAmount(), inputStack.getCount() / this.inputStack.getAmount());
+            if (this.inputFluid.getAmount() == 0 ) {
+                return inputStack.getCount() / this.inputStack.getAmount();
+            }
+            else if (this.inputStack.getAmount() == 0) {
+                return inputFluid.amount / this.inputFluid.getAmount();
+            }
+            else {
+                return Math.min(inputFluid.amount / this.inputFluid.getAmount(), inputStack.getCount() / this.inputStack.getAmount());
+            }
         }
         return 0;
     }

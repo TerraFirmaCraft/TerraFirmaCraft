@@ -35,7 +35,7 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     @Override
     public boolean testIgnoreCount(ItemStack stack)
     {
-        if (stack != null && !stack.isEmpty())
+        if (stack != null && (!stack.isEmpty() || inputStack.isEmpty()))
         {
             if (inputStack.getItem() == stack.getItem())
             {
