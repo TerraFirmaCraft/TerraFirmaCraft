@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XFX",
-    "XUX",
+    "XRX",
+    "XBX",
     " X "
   ],
   "key": {
@@ -10,11 +10,11 @@
       "type": "forge:ore_dict",
       "ore": "ingotWroughtIron"
     },
-    "F": {
-      "item": "tfc:metal/double_ingot/red_steel"
+    "R": {
+      "item": "tfc:metal/bucket/red_steel"
     },
-    "U": {
-      "item": "tfc:metal/double_ingot/blue_steel"
+    "B": {
+      "item": "tfc:metal/bucket/blue_steel"
     }
   },
   "result": {
