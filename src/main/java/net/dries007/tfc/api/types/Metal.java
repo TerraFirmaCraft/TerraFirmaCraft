@@ -37,6 +37,10 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     public static final Metal BISMUTH_BRONZE = Helpers.getNull();
     @GameRegistry.ObjectHolder("tfc:black_bronze")
     public static final Metal BLACK_BRONZE = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:blue_steel")
+    public static final Metal BLUE_STEEL = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:red_steel")
+    public static final Metal RED_STEEL = Helpers.getNull();
 
     private final Tier tier;
     private final float specificHeat;
@@ -223,7 +227,9 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         UNFINISHED_BOOTS(true, 200),
         BOOTS(true, 3, 400, ItemMetalArmor::new),
 
-        SHIELD(true, 400, ItemMetalShield::new);
+        SHIELD(true, 400, ItemMetalShield::new),
+
+        BUCKET(true, 200, ItemBucket::new);
 
         public static Item create(Metal metal, ItemType type)
         {
