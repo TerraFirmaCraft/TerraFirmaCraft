@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -37,6 +38,7 @@ import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTorch;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
+import net.dries007.tfc.objects.items.metal.ItemMetalBucket;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.objects.items.rock.ItemBrickTFC;
@@ -125,6 +127,11 @@ public final class ItemsTFC
 
     public static final ItemWoodenBucket WOODEN_BUCKET = getNull();
 
+    @GameRegistry.ObjectHolder("metal/bucket/blue_steel")
+    public static final ItemMetalBucket BLUE_STEEL_BUCKET = getNull();
+    @GameRegistry.ObjectHolder("metal/bucket/red_steel")
+    public static final ItemMetalBucket RED_STEEL_BUCKET = getNull();
+
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
@@ -154,6 +161,8 @@ public final class ItemsTFC
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
         simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT, "mortar"), CT_MISC));
         register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
+        register(r, "metal/bucket/blue_steel", new ItemMetalBucket(Metal.BLUE_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
+        register(r, "metal/bucket/red_steel", new ItemMetalBucket(Metal.RED_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
 
         {
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
@@ -187,7 +196,7 @@ public final class ItemsTFC
         {
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
-                if (type.hasType(metal))
+                if (type != Metal.ItemType.BUCKET && type.hasType(metal)) // buckets registered separately
                 {
                     simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), Metal.ItemType.create(metal, type), CT_METAL));
                 }
@@ -300,7 +309,6 @@ public final class ItemsTFC
         // todo: flint & steel? Higher durability versions for different metals (iron/steels)?
         // todo: fluid glass bottles? (alcohols/water/vinegar/brine)
         // todo: minecart with chest (so the chest dropped is the right kind of wood)
-        // todo: custom buckets: steel (infinite/classic/source)
         // todo: mortar
 
         // todo: quiver
