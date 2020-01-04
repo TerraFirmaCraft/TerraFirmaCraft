@@ -229,7 +229,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
 
         SHIELD(true, 400, ItemMetalShield::new),
 
-        BUCKET(true, 200, ItemBucket::new);
+        BUCKET(false, 200, ItemMetalBucket::new);
 
         public static Item create(Metal metal, ItemType type)
         {
@@ -278,6 +278,9 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             if (!metal.usable)
             {
                 return this == ItemType.INGOT;
+            } else if (this == ItemType.BUCKET)
+            {
+                return metal == BLUE_STEEL || metal == RED_STEEL;
             }
             return !this.isToolItem() || metal.getToolMetal() != null;
         }

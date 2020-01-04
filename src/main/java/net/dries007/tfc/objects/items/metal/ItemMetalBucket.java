@@ -44,12 +44,12 @@ import static net.minecraftforge.fluids.FluidRegistry.LAVA;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemBucket extends ItemMetal
+public class ItemMetalBucket extends ItemMetal // quite a bit copied out of ItemWoodenBucket
 {
     private static final int CAPACITY = Fluid.BUCKET_VOLUME;
 
-    public ItemBucket(Metal metal, Metal.ItemType itemType) {
-        super(metal, itemType);
+    public ItemMetalBucket(Metal metal, Metal.ItemType type) {
+        super(metal, type);
         setHasSubtypes(true);
     }
 
@@ -178,7 +178,8 @@ public class ItemBucket extends ItemMetal
         } else if (metal.equals(RED_STEEL)) {
             return FluidsTFC.getAllWrappers().stream().filter(x -> x.get(DrinkableProperty.DRINKABLE) != null).map(FluidWrapper::get).collect(Collectors.toSet());
         }
-        else return (Set<Fluid>)Collections.EMPTY_SET;
+        else //noinspection unchecked
+        return (Set<Fluid>) Collections.EMPTY_SET; // No other metal buckets implemented
     }
 
     @Override
