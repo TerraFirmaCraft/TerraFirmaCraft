@@ -306,7 +306,6 @@ public final class ItemsTFC
         // todo: flint & steel? Higher durability versions for different metals (iron/steels)?
         // todo: fluid glass bottles? (alcohols/water/vinegar/brine)
         // todo: minecart with chest (so the chest dropped is the right kind of wood)
-        // todo: custom buckets: steel (infinite/classic/source)
         // todo: mortar
 
         // todo: quiver
