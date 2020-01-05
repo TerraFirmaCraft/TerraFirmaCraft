@@ -11,6 +11,7 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandler;
 import net.dries007.tfc.objects.fluids.properties.DrinkableProperty;
 import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
+
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -48,7 +49,8 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
 {
     private static final int CAPACITY = Fluid.BUCKET_VOLUME;
 
-    public ItemMetalBucket(Metal metal, Metal.ItemType type) {
+    public ItemMetalBucket(Metal metal, Metal.ItemType type)
+    {
         super(metal, type);
         setHasSubtypes(true);
     }
@@ -170,16 +172,20 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
         }
     }
 
-    public Set<Fluid> getValidFluids () {
-        if (metal.equals(BLUE_STEEL)) {
+    public Set<Fluid> getValidFluids()
+    {
+        if (metal.equals(BLUE_STEEL))
+        {
             Set<Fluid> blueFluids = FluidsTFC.getAllMetalFluids().stream().map(FluidWrapper::get).collect(Collectors.toSet());
             blueFluids.add(LAVA);
             return blueFluids;
-        } else if (metal.equals(RED_STEEL)) {
+        }
+        else if (metal.equals(RED_STEEL))
+        {
             return FluidsTFC.getAllWrappers().stream().filter(x -> x.get(DrinkableProperty.DRINKABLE) != null).map(FluidWrapper::get).collect(Collectors.toSet());
         }
         else //noinspection unchecked
-        return (Set<Fluid>) Collections.EMPTY_SET; // No other metal buckets implemented
+            return (Set<Fluid>) Collections.EMPTY_SET; // No other metal buckets implemented
     }
 
     @Override
