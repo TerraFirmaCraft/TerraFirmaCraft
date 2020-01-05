@@ -323,7 +323,6 @@ public final class ItemsTFC
             new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"),
             new ItemGlassBottleTFC().setRegistryName(Items.GLASS_BOTTLE.getRegistryName()).setTranslationKey("glassBottle")
         );
-        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Items.EGG), () -> new ItemHeatHandler(null, 1, 480));
     }
 
     public static void init()

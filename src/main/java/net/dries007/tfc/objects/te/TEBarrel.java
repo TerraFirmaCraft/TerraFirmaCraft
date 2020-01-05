@@ -261,8 +261,10 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                         world.notifyBlockUpdate(pos, state, state, 3);
                         onSealed(); //run the sealed check again in case we have a new valid recipe.
                     }
-                    else recipe = null;
-
+                    else
+                    {
+                        recipe = null;
+                    }
                 }
             }
 
