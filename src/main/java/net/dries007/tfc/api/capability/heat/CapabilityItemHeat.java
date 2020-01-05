@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -36,6 +37,8 @@ public final class CapabilityItemHeat
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IItemHeat.class, new DumbStorage<>(), ItemHeatHandler::new);
+        //register heat on vanilla egg for cooking
+        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Items.EGG), () -> new ItemHeatHandler(null, 1, 480));
     }
 
     /**
