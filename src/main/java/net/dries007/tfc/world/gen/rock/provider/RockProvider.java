@@ -21,8 +21,8 @@ import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraftforge.common.util.LazyOptional;
 
-import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.types.TFCTypeManager;
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
@@ -42,7 +42,7 @@ public class RockProvider
     public static RockProvider getProvider(World world)
     {
         AbstractChunkProvider chunkProvider = world.getChunkProvider();
-        // Chunk provider can be null during the attach capabilities event somehow
+        // Chunk provider can be null during the attach capabilities event
         if (chunkProvider != null)
         {
             ChunkGenerator<?> chunkGenerator = chunkProvider.getChunkGenerator();
@@ -123,14 +123,16 @@ public class RockProvider
         Rock[] middleLayer = new Rock[256];
         Rock[] topLayer = new Rock[256];
 
+        List<Rock> orderedRocks = TFCTypeManager.ROCKS.getOrderedValues();
+        int totalSize = orderedRocks.size();
         int chunkX = pos.getXStart(), chunkZ = pos.getZStart();
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
-                bottomLayer[x + 16 * z] = TFCRegistries.ROCKS.getValue(bottomRockFactory.getValue(chunkX + x, chunkZ + z));
-                middleLayer[x + 16 * z] = TFCRegistries.ROCKS.getValue(middleRockFactory.getValue(chunkX + x, chunkZ + z));
-                topLayer[x + 16 * z] = TFCRegistries.ROCKS.getValue(topRockFactory.getValue(chunkX + x, chunkZ + z));
+                bottomLayer[x + 16 * z] = orderedRocks.get(bottomRockFactory.getValue(chunkX + x, chunkZ + z) % totalSize);
+                middleLayer[x + 16 * z] = orderedRocks.get(middleRockFactory.getValue(chunkX + x, chunkZ + z) % totalSize);
+                topLayer[x + 16 * z] = orderedRocks.get(topRockFactory.getValue(chunkX + x, chunkZ + z) % totalSize);
 
                 // todo: create offsets
             }

@@ -19,7 +19,7 @@ archivesBaseName = 'tfc'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190817-1.14.3'
+    mappings channel: 'snapshot', version: '20191101-1.14.3'
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
     runs {
@@ -33,7 +33,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                tfcworld {
+                tfc {
                     source sourceSets.main
                 }
             }
@@ -49,7 +49,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                tfcworld {
+                tfc {
                     source sourceSets.main
                 }
             }
@@ -58,5 +58,5 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.0.49'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.1.109'
 }

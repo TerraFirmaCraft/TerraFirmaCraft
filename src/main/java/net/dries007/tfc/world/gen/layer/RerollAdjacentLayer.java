@@ -9,6 +9,7 @@ import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IC0Transformer;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
+// todo: use this to make rock layers more distinct
 public class RerollAdjacentLayer implements ICastleTransformer
 {
     private final IC0Transformer baseLayer;

@@ -24,6 +24,7 @@ import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 
+import imageutil.Images;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.gen.TFCGenerationSettings;
 import test.LayerTests;
@@ -189,48 +190,16 @@ public class TFCLayerUtil
         List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
         int layerCount = 0;
 
-        // Fake Biome Map
-
         for (int layer = 0; layer < 3; layer++)
         {
+            IMAGES.color(Images.Colors.LINEAR_GRAY);
 
-            mainLayer = FakeLandLayer.INSTANCE.apply(contextFactory.apply(1000L));
+            mainLayer = RockSeedLayer.INSTANCE.apply(contextFactory.apply(1000L));
 
-            IMAGES.color(LayerTests::elevationColor);
+            mainLayer = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1001L), mainLayer);
+            IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
 
-            mainLayer = ElevationLayer.INSTANCE.apply(contextFactory.apply(1009L), mainLayer);
-            IMAGES.draw("layer_biome_fake_" + ++layerCount, mainLayer, 0, 0, -40, -40, 40, 40);
-
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1010L), mainLayer);
-            IMAGES.size(160).draw("layer_biome_fake_" + ++layerCount, mainLayer, -80, -80, -80, -80, 80, 80);
-
-            mainLayer = BiomeLayer.INSTANCE.apply(contextFactory.apply(1011L), mainLayer);
-            IMAGES.color(LayerTests::biomeColor).size(160).draw("layer_biome_fake_" + ++layerCount, mainLayer, 0, 0, -80, -80, 80, 80);
-
-            // Fake Biome Map => Rock Category / Rocks
-            layerCount = 0;
-
-            mainLayer = BiomeRockCategoryLayer.INSTANCE.apply(contextFactory.apply(1012L), mainLayer);
-            IMAGES.color(LayerTests::rockCategoryColor).draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -80, -80, 80, 80);
-
-            mainLayer = RockLayer.INSTANCE.apply(contextFactory.apply(1013L + layer), mainLayer);
-            IMAGES.color(LayerTests::rockColor).draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -80, -80, 80, 80);
-
-            // These layers match the ones in the biome layers, so the final result will be in line with the biome borders
-
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1012L), mainLayer);
-            IMAGES.size(320).draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -160, -160, 160, 160);
-
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1014L), mainLayer);
-            IMAGES.size(640).draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-            for (int i = 0; i < settings.getBiomeZoomLevel(); i++)
-            {
-                mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), mainLayer);
-                IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-            }
-
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 6; i++)
             {
                 mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1024L), mainLayer);
                 IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);

@@ -5,29 +5,34 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.blocks.stone.StoneBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.objectholders.TypedItemTable;
-import net.dries007.tfc.util.types.StoneBlockType;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.objects.items.TFCItems.ITEMS;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("ALL")
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TFCBlocks
 {
@@ -59,14 +64,20 @@ public final class TFCBlocks
     public static final BlockIceTFC SEA_ICE = getNull();
     */
 
-    public static final TypedItemTable<Rock, StoneBlockType, StoneBlock> ROCK = new TypedItemTable<>(StoneBlock.class, ForgeRegistries.BLOCKS);
+    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MOD_ID);
+
+    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCKS = Arrays.stream(Rock.Default.values())
+        .collect(Collectors.toMap(rock -> rock,
+            rock -> Arrays.stream(Rock.BlockType.values())
+                .collect(Collectors.toMap(type -> type, type ->
+                {
+                    String name = ("rock/" + type.name() + "/" + rock.name()).toLowerCase();
+                    RegistryObject<Block> block = BLOCKS.register(name, () -> type.create(rock));
+                    ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+                    return block;
+                }))));
 
     private static final Logger LOGGER = LogManager.getLogger();
-
-    public static void reloadAllHolders()
-    {
-        ROCK.reload();
-    }
 
     /*
     // All these are for use in model registration. Do not use for block lookups.
@@ -76,7 +87,7 @@ public final class TFCBlocks
     private static ImmutableList<ItemBlockBarrel> allBarrelItemBlocks;
 
     private static ImmutableList<BlockFluidBase> allFluidBlocks;
-    private static ImmutableList<StoneBlock> allBlockRockVariants;
+    private static ImmutableList<RockVariantBlock> allBlockRockVariants;
     private static ImmutableList<BlockOreTFC> allOreBlocks;
     private static ImmutableList<BlockWallTFC> allWallBlocks;
     private static ImmutableList<BlockLogTFC> allLogBlocks;
@@ -125,7 +136,7 @@ public final class TFCBlocks
         return allFluidBlocks;
     }
 
-    public static ImmutableList<StoneBlock> getAllBlockRockVariants()
+    public static ImmutableList<RockVariantBlock> getAllBlockRockVariants()
     {
         return allBlockRockVariants;
     }
@@ -252,10 +263,10 @@ public final class TFCBlocks
     */
 
     @SubscribeEvent
-    @SuppressWarnings("ConstantConditions")
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
         LOGGER.info("Registering Blocks");
+
         // This is called here because it needs to wait until Metal registry has fired
         //FluidsTFC.registerFluids();
 
@@ -312,13 +323,13 @@ public final class TFCBlocks
 
 
         {
-            for (StoneBlockType type : StoneBlockType.values())
-            {
-                for (Rock rock : TFCRegistries.ROCKS.getValues())
-                {
-                    register(r, ROCK.add(rock, type, type.create(rock)), "rock/" + type.name().toLowerCase() + "/" + rock.getRegistryName().getPath());
-                }
-            }
+            //for (Rock.BlockType type : Rock.BlockType.values())
+            //{
+            //    for (Rock.Default rock : Rock.Default.values())
+            //    {
+            //        register(r, ROCKS.add(type.create(rock)), ("rock/" + type.name() + "/" + rock.name()).toLowerCase());
+            //    }
+            //}
             //allBlockRockVariants.forEach(x ->
             //{
             //    if (x.getType() == Rock.Type.SAND)
@@ -326,6 +337,9 @@ public final class TFCBlocks
             //    else
             //        normalItemBlocks.add(new ItemBlockTFC(x));
             //});
+
+            // Dirt
+
         }
 
 
@@ -427,7 +441,7 @@ public final class TFCBlocks
             // Walls
             for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                    b.add(register(r, ("wall/" + type.name() + "/" + rock.getRegistryName().getPath()).toLowerCase(), new BlockWallTFC(StoneBlock.get(rock, type)), CT_DECORATIONS));
+                    b.add(register(r, ("wall/" + type.name() + "/" + rock.getRegistryName().getPath()).toLowerCase(), new BlockWallTFC(RockVariantBlock.get(rock, type)), CT_DECORATIONS));
             // Stairs
             for (Rock.Type type : new Rock.Type[] {SMOOTH, COBBLE, BRICKS})
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
@@ -657,29 +671,29 @@ public final class TFCBlocks
 
     //public static boolean isRawStone(BlockState current)
     //{
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type == RAW;
     //}
 //
     //public static boolean isClay(IBlockState current)
     //{
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type == CLAY || type == CLAY_GRASS;
     //}
 //
     //public static boolean isDirt(IBlockState current)
     //{
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type == DIRT;
     //}
 //
     //public static boolean isSand(IBlockState current)
     //{
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type == SAND;
     //}
 //
@@ -688,38 +702,38 @@ public final class TFCBlocks
     //public static boolean isSoil(IBlockState current)
     //{
     //    if (current.getBlock() instanceof BlockPeat) return true;
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type == GRASS || type == DRY_GRASS || type == DIRT || type == CLAY || type == CLAY_GRASS;
     //}
 //
     //public static boolean isSoilOrGravel(IBlockState current)
     //{
     //    if (current.getBlock() instanceof BlockPeat) return true;
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL;
     //}
 //
     //public static boolean isGrass(IBlockState current)
     //{
     //    if (current.getBlock() instanceof BlockPeatGrass) return true;
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type.isGrass;
     //}
 //
     //public static boolean isDryGrass(IBlockState current)
     //{
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type == DRY_GRASS;
     //}
 //
     //public static boolean isGround(IBlockState current)
     //{
-    //    if (!(current.getBlock() instanceof StoneBlock)) return false;
-    //    Rock.Type type = ((StoneBlock) current.getBlock()).getType();
+    //    if (!(current.getBlock() instanceof RockVariantBlock)) return false;
+    //    Rock.Type type = ((RockVariantBlock) current.getBlock()).getType();
     //    return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL || type == RAW || type == SAND;
     //}
 

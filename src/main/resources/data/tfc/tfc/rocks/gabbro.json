@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "blocks": {
+    "raw": "tfc:rock/raw/gabbro",
+    "smooth": "tfc:rock/smooth/gabbro",
+    "cobble": "tfc:rock/cobble/gabbro",
+    "bricks": "tfc:rock/bricks/gabbro",
+    "gravel": "tfc:rock/gravel/gabbro"
+  },
+  "category": "metamorphic"
+}

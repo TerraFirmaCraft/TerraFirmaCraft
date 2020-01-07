@@ -10,8 +10,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
-import net.dries007.tfc.util.DumbStorage;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.NoopStorage;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -23,6 +23,6 @@ public class ChunkDataCapability
 
     public static void setup()
     {
-        CapabilityManager.INSTANCE.register(ChunkData.class, new DumbStorage<>(), ChunkData::new);
+        CapabilityManager.INSTANCE.register(ChunkData.class, new NoopStorage<>(), ChunkData::new);
     }
 }

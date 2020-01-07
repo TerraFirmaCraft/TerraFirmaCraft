@@ -19,7 +19,7 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.VoroniZoomLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import net.minecraft.world.gen.layer.traits.IC1Transformer;
+import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
 
 import imageutil.Images;
 import net.dries007.tfc.world.gen.layer.*;
@@ -49,7 +49,7 @@ public class LayerTests
         isTestMode = true;
         IMAGES.enable();
 
-        boolean testBiomes = true, testRocks = true, findSpawnBiomes = false, drawHugeArea = true;
+        boolean testBiomes = false, testRocks = true, findSpawnBiomes = false, drawHugeArea = false;
 
         long seed = System.currentTimeMillis();
 
@@ -214,66 +214,82 @@ public class LayerTests
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
 
-        IAreaFactory<LazyArea> mainLayer;
+        IAreaFactory<LazyArea> rockSeedLayer, biomeLayer;
         List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
         int layerCount = 0;
 
-        // Fake Biome Map
+        // Rock Seed Areas
+        rockSeedLayer = InitRockLayer.INSTANCE.apply(contextFactory.apply(1000L));
+        IMAGES.size(32).color(Images.Colors.DISCRETE_20).draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -16, -16, 16, 16);
 
-        for (int layer = 0; layer < 1; layer++)
+        rockSeedLayer = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.size(128).draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -64, -64, 64, 64);
+
+        rockSeedLayer = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.size(128).draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -64, -64, 64, 64);
+
+        rockSeedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.size(640).draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -320, -320, 320, 320);
+
+        rockSeedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -320, -320, 320, 320);
+
+        rockSeedLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -320, -320, 320, 320);
+
+        rockSeedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -320, -320, 320, 320);
+
+        rockSeedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -320, -320, 320, 320);
+
+        rockSeedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -320, -320, 320, 320);
+
+        rockSeedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), rockSeedLayer);
+        IMAGES.draw("layer_rock_seed_" + ++layerCount, rockSeedLayer, 0, 20, -320, -320, 320, 320);
+
+        // Fake Biome Map (for rock layer assignment based on biome edges
+        layerCount = 0;
+        biomeLayer = FakeLandLayer.INSTANCE.apply(contextFactory.apply(1000L));
+
+        biomeLayer = ElevationLayer.INSTANCE.apply(contextFactory.apply(1009L), biomeLayer);
+        IMAGES.draw("layer_fake_biome_" + ++layerCount, biomeLayer, 0, 0, -40, -40, 40, 40);
+
+        biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1010L), biomeLayer);
+        IMAGES.size(160).draw("layer_fake_biome_" + ++layerCount, biomeLayer, -80, -80, -80, -80, 80, 80);
+
+        IMAGES.color(LayerTests::biomeColor);
+        layerCount = 0;
+
+        biomeLayer = BiomeLayer.INSTANCE.apply(contextFactory.apply(1011L), biomeLayer);
+        IMAGES.size(160).draw("layer_fake_biome_" + ++layerCount, biomeLayer, 0, 0, -80, -80, 80, 80);
+
+        biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1012L), biomeLayer);
+        IMAGES.size(320).draw("layer_fake_biome_" + ++layerCount, biomeLayer, 0, 0, -160, -160, 160, 160);
+
+        biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1014L), biomeLayer);
+        IMAGES.size(640).draw("layer_fake_biome_" + ++layerCount, biomeLayer, 0, 0, -320, -320, 320, 320);
+
+        biomeLayer = EdgeBiomeLayer.INSTANCE.apply(contextFactory.apply(1017L), biomeLayer);
+        IMAGES.draw("layer_fake_biome_" + ++layerCount, biomeLayer, 0, 0, -320, -320, 320, 320);
+
+        for (int i = 0; i < settings.getBiomeZoomLevel(); i++)
         {
-            mainLayer = FakeLandLayer.INSTANCE.apply(contextFactory.apply(1000L));
-
-            IMAGES.color(LayerTests::elevationColor);
-
-            mainLayer = ElevationLayer.INSTANCE.apply(contextFactory.apply(1009L), mainLayer);
-            IMAGES.draw("layer_biome_fake_" + ++layerCount, mainLayer, 0, 0, -40, -40, 40, 40);
-
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1010L), mainLayer);
-            IMAGES.size(160).draw("layer_biome_fake_" + ++layerCount, mainLayer, -80, -80, -80, -80, 80, 80);
-
-            mainLayer = BiomeLayer.INSTANCE.apply(contextFactory.apply(1011L), mainLayer);
-            IMAGES.color(LayerTests::biomeColor).size(160).draw("layer_biome_fake_" + ++layerCount, mainLayer, 0, 0, -80, -80, 80, 80);
-
-            // Fake Biome Map => Rock Category / Rocks
-            layerCount = 0;
-
-            mainLayer = BiomeRockCategoryLayer.INSTANCE.apply(contextFactory.apply(1012L), mainLayer);
-            IMAGES.color(LayerTests::rockCategoryColor).draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -80, -80, 80, 80);
-
-            mainLayer = RockLayer.INSTANCE.apply(contextFactory.apply(1013L + layer), mainLayer);
-            IMAGES.color(LayerTests::rockColor).draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -80, -80, 80, 80);
-
-            // These layers match the ones in the biome layers, so the final result will be in line with the biome borders
-
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1012L), mainLayer);
-            IMAGES.size(320).draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -160, -160, 160, 160);
-
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1014L), mainLayer);
-            IMAGES.size(640).draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-            for (int i = 0; i < settings.getBiomeZoomLevel(); i++)
-            {
-                mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), mainLayer);
-                IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-            }
-
-            for (int i = 0; i < 2; i++)
-            {
-                mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1024L), mainLayer);
-                IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-            }
-
-            mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1025L), mainLayer);
-            IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-            IAreaFactory<LazyArea> areaFactoryActual = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1029L), mainLayer);
-            IMAGES.size(1280).draw("layer_rock_" + ++layerCount, areaFactoryActual, 0, 0, -640, -640, 640, 640);
-
-            completedLayers.add(mainLayer);
+            biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), biomeLayer);
+            IMAGES.draw("layer_fake_biome_" + ++layerCount, biomeLayer, 0, 0, -320, -320, 320, 320);
         }
 
-        return completedLayers;
+        for (int i = 0; i < 2; i++)
+        {
+            biomeLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1024L), biomeLayer);
+            IMAGES.draw("layer_fake_biome_" + ++layerCount, biomeLayer, 0, 0, -320, -320, 320, 320);
+        }
+
+        IAreaFactory<LazyArea> areaFactoryActual = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1029L), biomeLayer);
+        IMAGES.size(1280).draw("layer_fake_biome_" + ++layerCount, areaFactoryActual, 0, 0, -640, -640, 640, 640);
+
+        return null;
     }
 
     public static Color biomeColor(double val, double min, double max)
@@ -403,16 +419,14 @@ public class LayerTests
         Stone(RockCategory cat) {this.cat = cat;}
     }
 
-    enum RockLayer implements IC1Transformer
+    enum InitRockLayer implements IAreaTransformer0
     {
         INSTANCE;
 
-        private static final int[][] values = Arrays.stream(RockCategory.values()).map(x -> Arrays.stream(Stone.values()).filter(y -> y.cat == x).mapToInt(Enum::ordinal).toArray()).toArray(int[][]::new);
-
         @Override
-        public int apply(INoiseRandom context, int value)
+        public int apply(INoiseRandom context, int x, int z)
         {
-            return values[value][context.random(values[value].length)];
+            return context.random(20);
         }
     }
 
@@ -425,7 +439,7 @@ public class LayerTests
 
         public int getBiomeZoomLevel()
         {
-            return 4;
+            return 5;
         }
     }
 }

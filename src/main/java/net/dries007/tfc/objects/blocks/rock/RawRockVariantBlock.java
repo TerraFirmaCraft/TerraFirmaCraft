@@ -3,20 +3,19 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.stone;
+package net.dries007.tfc.objects.blocks.rock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.types.Rock;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RawStoneBlock extends StoneBlock// implements ICollapsableBlock
+public class RawRockVariantBlock extends RockVariantBlock// implements ICollapsableBlock
 {
-    public RawStoneBlock(Rock rock, Properties properties)
+    public RawRockVariantBlock(Properties properties)
     {
-        super(rock, properties);
+        super(properties);
     }
 
     //@Override

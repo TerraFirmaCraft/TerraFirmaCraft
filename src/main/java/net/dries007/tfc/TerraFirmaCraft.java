@@ -8,15 +8,14 @@ package net.dries007.tfc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.world.TFCWorldType;
-import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 
 @Mod(TerraFirmaCraft.MOD_ID)
-public class TerraFirmaCraft
+public final class TerraFirmaCraft
 {
     public static final String MOD_ID = "tfc";
 
@@ -38,18 +37,15 @@ public class TerraFirmaCraft
 
     private final TFCWorldType worldType;
 
-    @SubscribeEvent
-    public void setup(FMLCommonSetupEvent event)
-    {
-        ChunkDataCapability.setup();
-    }
-
     public TerraFirmaCraft()
     {
         LOGGER.info("TFC Constructor");
         LOGGER.debug("Debug Logging Enabled");
 
         INSTANCE = this;
+
         worldType = new TFCWorldType();
+
+        TFCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }
