@@ -13,14 +13,14 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.IItemProvider;
 
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
-import net.dries007.tfc.util.types.StoneBlockType;
 
 public final class TFCItemGroup extends ItemGroup
 {
-    public static final ItemGroup ROCK_BLOCKS = new TFCItemGroup("rock.blocks", () -> TFCBlocks.ROCK.get(Rock.GRANITE, StoneBlockType.RAW, 1));
+    public static final ItemGroup ROCK_BLOCKS = new TFCItemGroup("rock.blocks", TFCBlocks.ROCKS.get(Rock.Default.GRANITE).get(Rock.BlockType.RAW).get());
     //public static final ItemGroup ROCK_ITEMS = new TFCItemGroup("rock.items", "tfc:ore/tetrahedrite");
     //public static final ItemGroup WOOD = new TFCItemGroup("wood", "tfc:wood/log/pine");
     //public static final ItemGroup DECORATIONS = new TFCItemGroup("decorations", "tfc:wall/cobble/granite");
@@ -35,6 +35,11 @@ public final class TFCItemGroup extends ItemGroup
 
     private final Supplier<ItemStack> iconSupplier;
     private ItemStack stack;
+
+    private TFCItemGroup(String label, IItemProvider iconProvider)
+    {
+        this(label, () -> new ItemStack(iconProvider));
+    }
 
     private TFCItemGroup(String label, Supplier<ItemStack> iconSupplier)
     {

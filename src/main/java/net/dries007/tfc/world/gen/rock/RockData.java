@@ -5,21 +5,20 @@
 
 package net.dries007.tfc.world.gen.rock;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.types.TFCTypeManager;
 
 public class RockData implements INBTSerializable<CompoundNBT>
 {
@@ -54,23 +53,20 @@ public class RockData implements INBTSerializable<CompoundNBT>
     {
         CompoundNBT nbt = new CompoundNBT();
 
-        // Record the raw int values
-        nbt.putIntArray("bottomLayer", Arrays.stream(bottomLayer).mapToInt(TFCRegistries.ROCKS::getID).toArray());
-        nbt.putIntArray("middleLayer", Arrays.stream(middleLayer).mapToInt(TFCRegistries.ROCKS::getID).toArray());
-        nbt.putIntArray("topLayer", Arrays.stream(topLayer).mapToInt(TFCRegistries.ROCKS::getID).toArray());
-
-        // Record a map from registry name -> int for loading, since int ids aren't stable
-        Set<ResourceLocation> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).map(ForgeRegistryEntry::getRegistryName).collect(Collectors.toSet());
+        // Record a map from bytes -> rocks (pallet, similar to vanilla world save format)
+        List<Rock> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
         ListNBT pallet = new ListNBT();
-        int index = 0;
-        for (ResourceLocation rock : uniqueRocks)
+        byte index = 0;
+        for (Rock rock : uniqueRocks)
         {
-            CompoundNBT entry = new CompoundNBT();
-            entry.putInt("key", TFCRegistries.ROCKS.getID(rock));
-            entry.putString("val", rock.toString());
-            pallet.add(index++, entry);
+            pallet.add(index, new StringNBT(rock.getId().toString()));
         }
         nbt.put("pallet", pallet);
+
+        // Record the raw byte values
+        nbt.putByteArray("bottomLayer", createRockByteArray(topLayer, uniqueRocks));
+        nbt.putByteArray("middleLayer", createRockByteArray(middleLayer, uniqueRocks));
+        nbt.putByteArray("topLayer", createRockByteArray(bottomLayer, uniqueRocks));
 
         return nbt;
     }
@@ -81,17 +77,36 @@ public class RockData implements INBTSerializable<CompoundNBT>
         if (nbt != null)
         {
             // Build pallet
-            ListNBT pallet = nbt.getList("pallet", 10);
-            Map<Integer, Rock> palletMap = new HashMap<>();
+            ListNBT pallet = nbt.getList("pallet", 8 /* String */);
+            List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
             for (int i = 0; i < pallet.size(); i++)
             {
-                CompoundNBT entry = pallet.getCompound(i);
-                palletMap.put(entry.getInt("key"), TFCRegistries.ROCKS.getValue(new ResourceLocation(entry.getString("val"))));
+                uniqueRocks.add(TFCTypeManager.ROCKS.get(new ResourceLocation(pallet.getString(i))));
             }
 
-            bottomLayer = Arrays.stream(nbt.getIntArray("bottomLayer")).mapToObj(palletMap::get).toArray(Rock[]::new);
-            middleLayer = Arrays.stream(nbt.getIntArray("middleLayer")).mapToObj(palletMap::get).toArray(Rock[]::new);
-            topLayer = Arrays.stream(nbt.getIntArray("topLayer")).mapToObj(palletMap::get).toArray(Rock[]::new);
+            bottomLayer = createRockArray(nbt.getByteArray("bottomLayer"), uniqueRocks);
+            middleLayer = createRockArray(nbt.getByteArray("middleLayer"), uniqueRocks);
+            topLayer = createRockArray(nbt.getByteArray("topLayer"), uniqueRocks);
         }
+    }
+
+    private byte[] createRockByteArray(Rock[] rocks, List<Rock> uniqueRocks)
+    {
+        byte[] bytes = new byte[rocks.length];
+        for (int i = 0; i < rocks.length; i++)
+        {
+            bytes[i] = (byte) uniqueRocks.indexOf(rocks[i]);
+        }
+        return bytes;
+    }
+
+    private Rock[] createRockArray(byte[] bytes, List<Rock> pallet)
+    {
+        Rock[] rocks = new Rock[bytes.length];
+        for (int i = 0; i < bytes.length; i++)
+        {
+            rocks[i] = pallet.get(bytes[i]);
+        }
+        return rocks;
     }
 }

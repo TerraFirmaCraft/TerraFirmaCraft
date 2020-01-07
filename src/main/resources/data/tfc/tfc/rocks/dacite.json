@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "blocks": {
+    "raw": "tfc:rock/raw/dacite",
+    "smooth": "tfc:rock/smooth/dacite",
+    "cobble": "tfc:rock/cobble/dacite",
+    "bricks": "tfc:rock/bricks/dacite",
+    "gravel": "tfc:rock/gravel/dacite"
+  },
+  "category": "metamorphic"
+}

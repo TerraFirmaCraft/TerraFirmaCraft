@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "blocks": {
+    "raw": "tfc:rock/raw/quartzite",
+    "smooth": "tfc:rock/smooth/quartzite",
+    "cobble": "tfc:rock/cobble/quartzite",
+    "bricks": "tfc:rock/bricks/quartzite",
+    "gravel": "tfc:rock/gravel/quartzite"
+  },
+  "category": "metamorphic"
+}

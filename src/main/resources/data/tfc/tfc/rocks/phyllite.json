@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "blocks": {
+    "raw": "tfc:rock/raw/phyllite",
+    "smooth": "tfc:rock/smooth/phyllite",
+    "cobble": "tfc:rock/cobble/phyllite",
+    "bricks": "tfc:rock/bricks/phyllite",
+    "gravel": "tfc:rock/gravel/phyllite"
+  },
+  "category": "metamorphic"
+}

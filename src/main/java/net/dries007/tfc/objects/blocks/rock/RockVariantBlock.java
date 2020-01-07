@@ -3,26 +3,22 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.stone;
+package net.dries007.tfc.objects.blocks.rock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.types.Rock;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class StoneBlock extends Block
+public class RockVariantBlock extends Block
 {
-    protected final Rock rock;
-
-    public StoneBlock(Rock rock, Properties properties)
+    public RockVariantBlock(Properties properties)
     {
         super(properties);
 
-        this.rock = rock;
         //switch (type)
         //{
         //    case BRICKS:
@@ -64,11 +60,6 @@ public class StoneBlock extends Block
         //        break;
         //}
         //OreDictionaryHelper.registerRockType(this, type, rock);
-    }
-
-    public Rock getRock()
-    {
-        return rock;
     }
 
     //protected void onRockSlide(World world, BlockPos pos)

@@ -5,105 +5,97 @@
 
 package net.dries007.tfc.api.types;
 
+import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.util.NonNullFunction;
 
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.objects.blocks.rock.RawRockVariantBlock;
+import net.dries007.tfc.objects.blocks.rock.RockVariantBlock;
 import net.dries007.tfc.world.gen.rock.RockCategory;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
-public class Rock extends ForgeRegistryEntry<Rock>
+@ParametersAreNonnullByDefault
+public class Rock extends TFCType
 {
-    @ObjectHolder("tfc:granite")
-    public static final Rock GRANITE = Helpers.getNull();
-    @ObjectHolder("tfc:basalt")
-    public static final Rock BASALT = Helpers.getNull();
+    private final RockCategory category;
+    private final Map<BlockType, Block> blockVariants;
 
-    private final RockCategory rockCategory;
-    private final ResourceLocation textureLocation;
-    private final boolean isFluxStone;
-
-    public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory, boolean isFluxStone)
+    public Rock(RockCategory category, Map<BlockType, Block> blockVariants)
     {
-        //noinspection ConstantConditions
-        if (rockCategory == null)
-        {
-            throw new IllegalArgumentException("Rock category is not allowed to be null (on rock " + name + ")");
-        }
+        this.category = category;
+        this.blockVariants = blockVariants;
+    }
 
-        setRegistryName(name);
-        this.rockCategory = rockCategory;
-        this.textureLocation = new ResourceLocation(MOD_ID, "textures/blocks/stonetypes/raw/" + name.getPath() + ".png");
-        this.isFluxStone = isFluxStone;
+    @Nonnull
+    public Block getBlock(BlockType type)
+    {
+        return blockVariants.get(type);
+    }
+
+    @Nonnull
+    public RockCategory getCategory()
+    {
+        return category;
     }
 
     /**
-     * Used for knapping GUI
-     *
-     * @return a texture resource location
+     * Default rocks that are used for block registration calls.
+     * Not extensible.
      */
-    public ResourceLocation getTexture()
+    public enum Default
     {
-        return textureLocation;
+        GRANITE,
+        DIORITE,
+        GABBRO,
+        SHALE,
+        CLAYSTONE,
+        ROCKSALT,
+        LIMESTONE,
+        CONGLOMERATE,
+        DOLOMITE,
+        CHERT,
+        CHALK,
+        RHYOLITE,
+        BASALT,
+        ANDESITE,
+        DACITE,
+        QUARTZITE,
+        SLATE,
+        PHYLLITE,
+        SCHIST,
+        GNEISS,
+        MARBLE,
     }
 
-    public RockCategory getCategory()
+    /**
+     * The block types that are used to create rock/type permutations
+     * Extensible via addons
+     */
+    public enum BlockType
     {
-        return rockCategory;
-    }
+        RAW(rock -> new RawRockVariantBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        SMOOTH(rock -> new RockVariantBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        COBBLE(rock -> new RockVariantBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        BRICKS(rock -> new RockVariantBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        GRAVEL(rock -> new RockVariantBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).sound(SoundType.STONE).hardnessAndResistance(0.8f).harvestLevel(0).harvestTool(ToolType.SHOVEL)));
 
-    public boolean isFluxStone()
-    {
-        return isFluxStone;
-    }
+        private final NonNullFunction<Default, Block> blockFactory;
 
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public String toString()
-    {
-        return getRegistryName().getPath();
-    }
-
-    /*
-    public enum ToolType
-    {
-        AXE(ItemRockAxe::new, " X   ", "XXXX ", "XXXXX", "XXXX ", " X   "),
-        SHOVEL(ItemRockShovel::new, "XXX", "XXX", "XXX", "XXX", " X "),
-        HOE(ItemRockHoe::new, "XXXXX", "   XX"),
-        KNIFE(ItemRockKnife::new, "X ", "XX", "XX", "XX", "XX"),
-        JAVELIN(ItemRockJavelin::new, "XXX  ", "XXXX ", "XXXXX", " XXX ", "  X  "),
-        HAMMER(ItemRockHammer::new, "XXXXX", "XXXXX", "  X  ");
-
-        private final Function<RockCategory, Item> supplier;
-        private final String[] pattern;
-
-        ToolType(@Nonnull Function<RockCategory, Item> supplier, String... pattern)
+        BlockType(NonNullFunction<Default, Block> blockFactory)
         {
-            this.supplier = supplier;
-            this.pattern = pattern;
+            this.blockFactory = blockFactory;
         }
 
-        public Item create(RockCategory category)
+        @Nonnull
+        public Block create(Default rock)
         {
-            return supplier.apply(category);
+            return blockFactory.apply(rock);
         }
-
-        public String[] getPattern()
-        {
-            return pattern;
-        }
-    }
-    */
-
-
-    public enum FallingBlockType
-    {
-        NO_FALL,
-        FALL_VERTICAL,
-        FALL_HORIZONTAL
     }
 }

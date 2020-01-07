@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "blocks": {
+    "raw": "tfc:rock/raw/granite",
+    "smooth": "tfc:rock/smooth/granite",
+    "cobble": "tfc:rock/cobble/granite",
+    "bricks": "tfc:rock/bricks/granite",
+    "gravel": "tfc:rock/gravel/granite"
+  },
+  "category": "metamorphic"
+}

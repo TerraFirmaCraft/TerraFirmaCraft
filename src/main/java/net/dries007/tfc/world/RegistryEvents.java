@@ -21,6 +21,9 @@ import net.dries007.tfc.world.gen.TFCOverworldChunkGenerator;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+/**
+ * World gen registry events, for things that need registering
+ */
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class RegistryEvents
 {

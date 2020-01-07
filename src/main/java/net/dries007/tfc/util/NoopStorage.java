@@ -16,7 +16,7 @@ import net.minecraftforge.common.capabilities.Capability;
  *
  * @param <T> The capability class
  */
-public final class DumbStorage<T> implements Capability.IStorage<T>
+public final class NoopStorage<T> implements Capability.IStorage<T>
 {
     @Nullable
     @Override
@@ -26,7 +26,5 @@ public final class DumbStorage<T> implements Capability.IStorage<T>
     }
 
     @Override
-    public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt)
-    {
-    }
+    public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt) {}
 }

@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "blocks": {
+    "raw": "tfc:rock/raw/diorite",
+    "smooth": "tfc:rock/smooth/diorite",
+    "cobble": "tfc:rock/cobble/diorite",
+    "bricks": "tfc:rock/bricks/diorite",
+    "gravel": "tfc:rock/gravel/diorite"
+  },
+  "category": "metamorphic"
+}

@@ -28,8 +28,6 @@ import net.minecraft.world.gen.Heightmap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.blocks.TFCBlocks;
-import net.dries007.tfc.util.types.StoneBlockType;
 import net.dries007.tfc.world.biome.TFCBiome;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.provider.TFCBiomeProvider;
@@ -61,13 +59,14 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         }
     });
 
+    // Noise
     private final INoise2D temperatureNoise;
     private final INoise2D rainfallNoise;
     private final Map<TFCBiome, INoise2D> biomeNoiseMap;
+
+    // Generators / Providers
     private final TFCBiomeProvider biomeProvider;
-
     private final WorleyCaveCarver worleyCaveCarver;
-
     private final RockProvider rockProvider;
 
     public TFCOverworldChunkGenerator(IWorld world, BiomeProvider biomeProvider, TFCGenerationSettings settings)
@@ -94,6 +93,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator);
 
         // Rock Layer Provider
+        // todo: initialize this with the biome provider in sync (i.e. generate all layers here and pass them in?)
         this.rockProvider = new RockProvider(world, settings);
     }
 
@@ -142,14 +142,14 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 {
                     pos.setPos(x, y, z);
                     BlockState state = chunk.getBlockState(pos);
-                    StoneBlockType type = null;
+                    Rock.BlockType type = null;
                     if (state.getBlock() == Blocks.GRAVEL)
                     {
-                        type = StoneBlockType.GRAVEL;
+                        type = Rock.BlockType.GRAVEL;
                     }
                     else if (state.getBlock() == Blocks.STONE)
                     {
-                        type = StoneBlockType.RAW;
+                        type = Rock.BlockType.RAW;
                     }
                     if (type != null)
                     {
@@ -166,7 +166,8 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                         {
                             rock = rockData.getTopLayer(x, z);
                         }
-                        BlockState replacement = TFCBlocks.ROCK.get(rock, type).getDefaultState();
+                        // todo: require rock type RAW / GRAVEL
+                        BlockState replacement = rock.getBlock(type).getDefaultState();
                         chunk.setBlockState(pos, replacement, false);
                     }
                 }
@@ -212,7 +213,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                     {
                         // Get the biome at the position and add it to the height biome map
                         TFCBiome biomeAt = spreadBiomes[(x + xOffset) + 24 * (z + zOffset)];
-                        heightBiomeMap.mergeDouble(biomeAt, PARABOLIC_FIELD[xOffset + 9 * zOffset], (a, b) -> a + b);
+                        heightBiomeMap.mergeDouble(biomeAt, PARABOLIC_FIELD[xOffset + 9 * zOffset], Double::sum);
                     }
                 }
 

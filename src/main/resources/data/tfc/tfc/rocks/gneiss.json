@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "blocks": {
+    "raw": "tfc:rock/raw/gneiss",
+    "smooth": "tfc:rock/smooth/gneiss",
+    "cobble": "tfc:rock/cobble/gneiss",
+    "bricks": "tfc:rock/bricks/gneiss",
+    "gravel": "tfc:rock/gravel/gneiss"
+  },
+  "category": "metamorphic"
+}
