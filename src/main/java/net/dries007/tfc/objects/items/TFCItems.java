@@ -11,18 +11,14 @@ import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
 
 import net.dries007.tfc.TerraFirmaCraft;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-@ObjectHolder(MOD_ID)
 public final class TFCItems
 {
     /*
@@ -103,7 +99,6 @@ public final class TFCItems
 
     public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MOD_ID);
 
-
     //private static ImmutableList<Item> allSimpleItems;
     //private static ImmutableList<ItemOreTFC> allOreItems;
     //private static ImmutableList<ItemGem> allGemItems;
@@ -123,7 +118,6 @@ public final class TFCItems
     //    return allGemItems;
     //}
 
-    @SuppressWarnings("ConstantConditions")
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
