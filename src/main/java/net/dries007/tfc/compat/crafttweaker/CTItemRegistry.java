@@ -38,6 +38,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class CTItemRegistry
 {
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerItemSize(crafttweaker.api.item.IIngredient input, String inputSize, String inputWeight)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -54,7 +55,6 @@ public class CTItemRegistry
         {
             CraftTweakerAPI.apply(new IAction()
             {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void apply()
                 {
@@ -71,6 +71,7 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerItemMetal(crafttweaker.api.item.IIngredient input, String metalStr, int amount, boolean canMelt)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -90,7 +91,6 @@ public class CTItemRegistry
         {
             CraftTweakerAPI.apply(new IAction()
             {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void apply()
                 {
@@ -107,6 +107,7 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerItemHeat(crafttweaker.api.item.IIngredient input, float heatCapacity, float meltTemp, boolean forgeable)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -147,6 +148,7 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerFood(crafttweaker.api.item.IIngredient input, float[] nutrients, float calories, float water, float decay)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -162,7 +164,6 @@ public class CTItemRegistry
         {
             CraftTweakerAPI.apply(new IAction()
             {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void apply()
                 {
@@ -179,6 +180,7 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerArmor(crafttweaker.api.item.IIngredient input, float crushingModifier, float piercingModifier, float slashingModifier)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -193,7 +195,6 @@ public class CTItemRegistry
         {
             CraftTweakerAPI.apply(new IAction()
             {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void apply()
                 {

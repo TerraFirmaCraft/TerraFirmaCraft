@@ -43,7 +43,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     private final float calories;
 
     private long creationDate;
-    private boolean isNonDecaying;
+    private boolean isNonDecaying; // This is intentionally not serialized, as we don't want it to preserve over `ItemStack.copy()` operations
 
     public FoodHandler()
     {
@@ -130,7 +130,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     @Override
-    public float getDecayModifier()
+    public float getDecayDateModifier()
     {
         // Decay modifiers are higher = shorter
         float mod = decayModifier * (float) ConfigTFC.GENERAL.foodDecayModifier;
@@ -212,7 +212,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
 
     private long calculateRottenDate(long creationDateIn)
     {
-        float decayMod = getDecayModifier();
+        float decayMod = getDecayDateModifier();
         if (decayMod == Float.POSITIVE_INFINITY)
         {
             // Infinite decay modifier
