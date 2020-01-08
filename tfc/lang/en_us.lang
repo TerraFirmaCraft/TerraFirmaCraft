@@ -56,6 +56,7 @@ tfc.tooltip.plant_wet=%sToo wet%s
 tfc.tooltip.blast_furnace_ore_amount=Ore
 tfc.tooltip.blast_furnace_fuel_amount=Fuel
 tfc.tooltip.blast_furnace_melt_amount=Melt
+tfc.tooltip.blast_furnace_invalid_structure=Invalid Structure!
 tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
 tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
@@ -177,6 +178,9 @@ config.tfc.general.torchTime.tooltip=Number of ticks required for a torch to bur
 
 config.tfc.general.bloomeryTime=Bloomery Time
 config.tfc.general.bloomeryTime.tooltip=Number of ticks required for a bloomery to complete. (1000 = 1 in game hour = 50 seconds), default is 15 hours.
+
+config.tfc.general.blastFurnaceConsumption=Blast Furnace Consumption
+config.tfc.general.blastFurnaceConsumption.tooltip=How fast the blast furnace consume fuels (compared to the charcoal forge).
 
 config.tfc.general.plantGrowthRate=Plant Growth Rate
 config.tfc.general.plantGrowthRate.tooltip=Percentage chance that plants will grow each update. Smaller number = slower.
