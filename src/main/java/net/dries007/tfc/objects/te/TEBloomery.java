@@ -296,7 +296,7 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
         for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getInternalBlock().up(), getInternalBlock().add(1, 4, 1)), EntitySelectors.IS_ALIVE))
         {
             ItemStack stack = entityItem.getItem();
-            if (FuelManager.isItemFuel(stack))
+            if (FuelManager.isItemBloomeryFuel(stack))
             {
                 // Add fuel
                 while (fuelStacks.size() < maxFuel)

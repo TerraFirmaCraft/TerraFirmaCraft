@@ -67,6 +67,7 @@ public class CapabilityFood
         {
             if (!instance.isRotten())
             {
+                // Applied decay DATE modifier = 1 / decay mod
                 instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), 1f / trait.getDecayModifier()));
             }
             instance.getTraits().add(trait);
@@ -92,6 +93,7 @@ public class CapabilityFood
         {
             if (!instance.isRotten())
             {
+                // Removed trait = 1 / apply trait
                 instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), trait.getDecayModifier()));
             }
             instance.getTraits().remove(trait);
@@ -116,14 +118,16 @@ public class CapabilityFood
      * @param newStack the new stack
      * @return the modified stack, for chaining
      */
-    public static ItemStack updateFoodDecay(ItemStack oldStack, ItemStack newStack)
+    public static ItemStack updateFoodFromPrevious(ItemStack oldStack, ItemStack newStack)
     {
         IFood oldCap = oldStack.getCapability(CapabilityFood.CAPABILITY, null);
         IFood newCap = newStack.getCapability(CapabilityFood.CAPABILITY, null);
         if (oldCap != null && newCap != null)
         {
-            // This is similar to the trait applied, except it's the inverse, since decay mod performs a 1 / x
-            float decayDelta = oldCap.getDecayModifier() / newCap.getDecayModifier();
+            // Copy traits from old stack to new stack
+            newCap.getTraits().addAll(oldCap.getTraits());
+            // Applied trait decay DATE modifier = new / old
+            float decayDelta = newCap.getDecayDateModifier() / oldCap.getDecayDateModifier();
             newCap.setCreationDate(calculateNewCreationDate(oldCap.getCreationDate(), decayDelta));
         }
         return newStack;
@@ -131,7 +135,7 @@ public class CapabilityFood
 
     /**
      * Call this from any function that is meant to create a new item stack.
-     * In MOST cases, you should use {@link CapabilityFood#updateFoodDecay(ItemStack, ItemStack)}, as the decay should transfer from input -> output
+     * In MOST cases, you should use {@link CapabilityFood#updateFoodFromPrevious(ItemStack, ItemStack)}, as the decay should transfer from input -> output
      * This is only for where there is no input. (i.e. on a direct {@code stack.copy()} from non-food inputs
      *
      * @param stack the new stack
@@ -234,11 +238,14 @@ public class CapabilityFood
      * = (1 - p) * T + p * (Ci + d)
      * via 1. > (1 - p) * T + p * T = T
      * QED
+     *
+     * @param ci The initial creation date
+     * @param p The decay date modifier (1 / standard decay modifier)
+     * @return cf the final creation date
      */
     private static long calculateNewCreationDate(long ci, float p)
     {
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * CalendarTFC.PLAYER_TIME.getTicks() + p * ci);
     }
-
 }

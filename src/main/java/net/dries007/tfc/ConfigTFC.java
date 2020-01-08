@@ -112,6 +112,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.bloomeryTime")
         public int bloomeryTime = 15000;
 
+        @Config.Comment("How fast the blast furnace consume fuels (compared to the charcoal forge).")
+        @Config.RangeDouble(min = 0.1D)
+        @Config.LangKey("config." + MOD_ID + ".general.blastFurnaceConsumption")
+        public double blastFurnaceConsumption = 4;
+
         @Config.Comment("Percentage chance that plants will grow each update. Smaller number = slower.")
         @Config.RangeDouble(min = 0d, max = 1d)
         @Config.LangKey("config." + MOD_ID + ".general.plantGrowthRate")

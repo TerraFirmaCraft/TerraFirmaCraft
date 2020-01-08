@@ -65,6 +65,11 @@ public class GuiBlastFurnace extends GuiContainerTE<TEBlastFurnace>
         fontRenderer.drawString(I18n.format(MOD_ID + ".tooltip.blast_furnace_ore_amount"), guiLeft + 40, guiTop + 17, 0x000000);
         fontRenderer.drawString(I18n.format(MOD_ID + ".tooltip.blast_furnace_fuel_amount"), guiLeft + 40, guiTop + 35, 0x000000);
         fontRenderer.drawString(I18n.format(MOD_ID + ".tooltip.blast_furnace_melt_amount"), guiLeft + 40, guiTop + 53, 0x000000);
+
+        if (tile.getField(TEBlastFurnace.CHIMNEY_LEVELS) < 1)
+        {
+            fontRenderer.drawString(I18n.format(MOD_ID + ".tooltip.blast_furnace_invalid_structure"), guiLeft + 40, guiTop + 71, 0xDC2400);
+        }
     }
 
     @Override
