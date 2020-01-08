@@ -53,7 +53,7 @@ public class ShapelessDamageFoodRecipe extends ShapelessDamageRecipe
                 }
             }
         }
-        return foodStack != null ? CapabilityFood.updateFoodDecay(foodStack, out) : ItemStack.EMPTY;
+        return foodStack != null ? CapabilityFood.updateFoodFromPrevious(foodStack, out) : ItemStack.EMPTY;
     }
 
     public static class Factory implements IRecipeFactory

@@ -60,7 +60,7 @@ public class HeatRecipeSimple extends HeatRecipe
                 // Copy heat if possible
                 outputHeat.setTemperature(heat.getTemperature());
             }
-            return CapabilityFood.updateFoodDecay(input, outputStack);
+            return CapabilityFood.updateFoodFromPrevious(input, outputStack);
         }
         return ItemStack.EMPTY;
     }
