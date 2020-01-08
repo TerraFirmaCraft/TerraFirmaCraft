@@ -77,8 +77,10 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
                     OreDictionaryHelper.register(this, "gem", "lapis");
                     break;
                 case "bituminous_coal":
-                case "lignite":
                     OreDictionaryHelper.register(this, "gem", "coal");
+                    break;
+                case "lignite":
+                    OreDictionaryHelper.register(this, "gem", "lignite");
                     break;
                 default:
                     OreDictionaryHelper.register(this, "gem", ore);

@@ -15,7 +15,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -49,7 +48,7 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
         Predicate<IBlockState> ironSheetMatcher = state -> (state.getBlock() instanceof BlockMetalSheet)
             && ((BlockMetalSheet) state.getBlock()).getMetal() == Metal.WROUGHT_IRON;
         BLAST_FURNACE_CHIMNEY = new Multiblock()
-            .match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.MOLTEN || state.getBlock() == Blocks.AIR)
+            .match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.MOLTEN || state.getMaterial().isReplaceable())
             .match(new BlockPos(0, 0, 1), stoneMatcher)
             .match(new BlockPos(0, 0, -1), stoneMatcher)
             .match(new BlockPos(1, 0, 0), stoneMatcher)
@@ -80,6 +79,13 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
         setHarvestLevel("pickaxe", 0);
     }
 
+    /**
+     * Structural check of the blast furnace. Any value > 0 means this blast furnace can work
+     *
+     * @param world the world obj to check on the structrue
+     * @param pos   this block pos
+     * @return [0, 5] where 0 means this blast furnace can't operate.
+     */
     public int getChimneyLevels(World world, BlockPos pos)
     {
         for (int i = 1; i < 6; i++)
@@ -118,15 +124,6 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
             te.onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
-    {
-        if (!super.canPlaceBlockAt(worldIn, pos))
-            return false;
-
-        return getChimneyLevels(worldIn, pos) > 0;
     }
 
     @Override
