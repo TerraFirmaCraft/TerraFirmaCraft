@@ -22,6 +22,7 @@ import net.minecraft.world.gen.structure.template.Template;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.blocks.wood.BlockLeavesTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSaplingTFC;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -53,12 +54,13 @@ public final class StructureHelper
 
                 if ((!placementIn.getIgnoreStructureBlock() || block1 != Blocks.STRUCTURE_BLOCK) && (structureboundingbox == null || structureboundingbox.isVecInside(blockpos)))
                 {
-                    IBlockState iblockstate = template$blockinfo1.blockState.withMirror(placementIn.getMirror());
-                    IBlockState iblockstate1 = iblockstate.withRotation(placementIn.getRotation());
+                    IBlockState stateToPlace = template$blockinfo1.blockState.withMirror(placementIn.getMirror()).withRotation(placementIn.getRotation());
+                    IBlockState stateToReplace = worldIn.getBlockState(blockpos);
 
-                    if (worldIn.getBlockState(blockpos).getMaterial().isReplaceable() || worldIn.getBlockState(blockpos).getBlock() instanceof BlockLeavesTFC)
-                        worldIn.setBlockState(blockpos, iblockstate1, 2);
-
+                    if (stateToReplace.getMaterial().isReplaceable() || stateToReplace.getBlock() instanceof BlockLeavesTFC || stateToReplace.getBlock() instanceof BlockSaplingTFC)
+                    {
+                        worldIn.setBlockState(blockpos, stateToPlace, 2);
+                    }
                 }
             }
         }
