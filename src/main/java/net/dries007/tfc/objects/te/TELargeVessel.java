@@ -192,7 +192,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
         if (sizeCap != null)
         {
-            return sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE);
+            return sizeCap.getSize(stack).isSmallerThan(Size.LARGE);
         }
         return true;
     }
