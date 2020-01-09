@@ -19,12 +19,14 @@ import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.util.IFallingBlock;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockPathTFC extends BlockRockVariantFallable
 {
     private static final AxisAlignedBB GRASS_PATH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
+    private static final AxisAlignedBB FLIPPED_AABB = new AxisAlignedBB(0.0D, 0.9375D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockPathTFC(Rock.Type type, Rock rock)
     {
@@ -65,26 +67,30 @@ public class BlockPathTFC extends BlockRockVariantFallable
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        this.updateBlockState(worldIn, pos);
+        if (worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN) && !(worldIn.getBlockState(pos.up()).getBlock() instanceof IFallingBlock))
+        {
+            turnToDirt(worldIn, pos);
+        }
     }
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         super.onBlockAdded(worldIn, pos, state);
-        this.updateBlockState(worldIn, pos);
+        if (worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN))
+        {
+            turnToDirt(worldIn, pos);
+        }
     }
 
-    private void updateBlockState(World worldIn, BlockPos pos)
+    private void turnToDirt(World world, BlockPos pos)
     {
-        if (worldIn.getBlockState(pos.up()).getMaterial().isSolid())
+        world.setBlockState(pos, get(rock, Rock.Type.DIRT).getDefaultState());
+        AxisAlignedBB axisalignedbb = FLIPPED_AABB.offset(pos);
+        for (Entity entity : world.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb))
         {
-            worldIn.setBlockState(pos, BlockRockVariant.get(rock, Rock.Type.DIRT).getDefaultState());
-            for (Entity entity : worldIn.getEntitiesWithinAABBExcludingEntity(null, GRASS_PATH_AABB.offset(pos)))
-            {
-                double initialOffset = Math.min(GRASS_PATH_AABB.offset(pos).maxY - GRASS_PATH_AABB.offset(pos).minY, GRASS_PATH_AABB.offset(pos).maxY - entity.getEntityBoundingBox().minY);
-                entity.setPositionAndUpdate(entity.posX, entity.posY + initialOffset + 0.001D, entity.posZ);
-            }
+            double d0 = Math.min(axisalignedbb.maxY - axisalignedbb.minY, axisalignedbb.maxY - entity.getEntityBoundingBox().minY);
+            entity.setPositionAndUpdate(entity.posX, entity.posY + d0 + 0.001D, entity.posZ);
         }
     }
 }
