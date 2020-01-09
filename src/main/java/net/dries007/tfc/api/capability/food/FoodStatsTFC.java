@@ -143,8 +143,8 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
         else
         {
-            // Passive exhaustion
-            originalStats.addExhaustion(PASSIVE_EXHAUSTION * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier);
+            // Passive exhaustion - call the source player instead of the local method
+            player.addExhaustion(PASSIVE_EXHAUSTION * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier);
 
             // Same check as the original food stats, so hunger, thirst, and nutrition loss are synced
             if (originalStats.foodExhaustionLevel >= 4.0F)
