@@ -95,12 +95,4 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     {
         return capability == CapabilityPlayerData.CAPABILITY ? (T) this : null;
     }
-
-    public void updateAndSync()
-    {
-        if (getPlayer() instanceof EntityPlayerMP)
-        {
-            TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(serializeNBT()), (EntityPlayerMP) getPlayer());
-        }
-    }
 }
