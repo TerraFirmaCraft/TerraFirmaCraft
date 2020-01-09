@@ -5,12 +5,9 @@
 
 package net.dries007.tfc.objects.items.metal;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandler;
-import net.dries007.tfc.objects.fluids.properties.DrinkableProperty;
-import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockStaticLiquid;
@@ -32,16 +29,16 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Collectors;
+import mcp.MethodsReturnNonnullByDefault;
 
 import static net.dries007.tfc.api.types.Metal.BLUE_STEEL;
 import static net.dries007.tfc.api.types.Metal.RED_STEEL;
-import static net.minecraftforge.fluids.FluidRegistry.LAVA;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -80,14 +77,14 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
                         stack.shrink(1);
                         if (stack.isEmpty())
                         {
-                            return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
+                            return new ActionResult<>(EnumActionResult.SUCCESS, result.getResult());
                         }
                         if (!playerIn.isCreative())
                         {
                             // In creative, buckets function but don't give new items
                             ItemHandlerHelper.giveItemToPlayer(playerIn, result.getResult());
                         }
-                        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }
                 else
@@ -128,12 +125,12 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
                             }
                         }
                         worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }
             }
         }
-        return ActionResult.newResult(EnumActionResult.PASS, stack);
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     @Override
@@ -174,18 +171,23 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
 
     public Set<Fluid> getValidFluids()
     {
+        String[] fluidNames = {};
+
         if (metal.equals(BLUE_STEEL))
         {
-            Set<Fluid> blueFluids = FluidsTFC.getAllMetalFluids().stream().map(FluidWrapper::get).collect(Collectors.toSet());
-            blueFluids.add(LAVA);
-            return blueFluids;
+            fluidNames = ConfigTFC.GENERAL.blueSteelBucketWhitelist;
         }
         else if (metal.equals(RED_STEEL))
         {
-            return FluidsTFC.getAllWrappers().stream().filter(x -> x.get(DrinkableProperty.DRINKABLE) != null).map(FluidWrapper::get).collect(Collectors.toSet());
+            fluidNames = ConfigTFC.GENERAL.redSteelBucketWhitelist;
+        } // No other metal buckets implemented
+
+        Set<Fluid> validFluids = new HashSet<>();
+        for (String fluidName : fluidNames)
+        {
+            validFluids.add(FluidRegistry.getFluid(fluidName));
         }
-        else //noinspection unchecked
-            return (Set<Fluid>) Collections.EMPTY_SET; // No other metal buckets implemented
+        return validFluids;
     }
 
     @Override

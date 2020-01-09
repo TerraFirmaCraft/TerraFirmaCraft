@@ -97,14 +97,14 @@ public class ItemWoodenBucket extends ItemTFC
                         stack.shrink(1);
                         if (stack.isEmpty())
                         {
-                            return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
+                            return new ActionResult<>(EnumActionResult.SUCCESS, result.getResult());
                         }
                         if (!playerIn.isCreative())
                         {
                             // In creative, buckets function but don't give new items
                             ItemHandlerHelper.giveItemToPlayer(playerIn, result.getResult());
                         }
-                        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }
                 else
@@ -145,12 +145,12 @@ public class ItemWoodenBucket extends ItemTFC
                             }
                         }
                         worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }
             }
         }
-        return ActionResult.newResult(EnumActionResult.PASS, stack);
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     @Override

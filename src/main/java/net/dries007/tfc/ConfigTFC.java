@@ -82,6 +82,14 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.woodenBucketWhitelist")
         public String[] woodenBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar"};
 
+        @Config.Comment("List of fluids allowed to be picked up by blue steel bucket")
+        @Config.LangKey("config." + MOD_ID + ".general.blueSteelBucketWhitelist")
+        public String[] blueSteelBucketWhitelist = new String[] {"lava"};
+
+        @Config.Comment("List of fluids allowed to be picked up by red steel bucket")
+        @Config.LangKey("config." + MOD_ID + ".general.redSteelBucketWhitelist")
+        public String[] redSteelBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water"};
+
         @Config.Comment("Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")

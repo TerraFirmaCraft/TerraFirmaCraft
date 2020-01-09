@@ -279,7 +279,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             {
                 return this == ItemType.INGOT;
             }
-            else if (this == ItemType.BUCKET)
+            else if (this == ItemType.BUCKET) //only these two metals for buckets
             {
                 return metal == BLUE_STEEL || metal == RED_STEEL;
             }

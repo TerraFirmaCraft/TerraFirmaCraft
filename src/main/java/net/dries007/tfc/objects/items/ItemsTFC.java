@@ -127,7 +127,9 @@ public final class ItemsTFC
 
     public static final ItemWoodenBucket WOODEN_BUCKET = getNull();
 
+    @GameRegistry.ObjectHolder("metal/bucket/blue_steel")
     public static final ItemMetalBucket BLUE_STEEL_BUCKET = getNull();
+    @GameRegistry.ObjectHolder("metal/bucket/red_steel")
     public static final ItemMetalBucket RED_STEEL_BUCKET = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
@@ -159,8 +161,8 @@ public final class ItemsTFC
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
         simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT, "mortar"), CT_MISC));
         register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
-        register(r, "blue_steel_bucket", new ItemMetalBucket(Metal.BLUE_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
-        register(r, "red_steel_bucket", new ItemMetalBucket(Metal.RED_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
+        register(r, "metal/bucket/blue_steel", new ItemMetalBucket(Metal.BLUE_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
+        register(r, "metal/bucket/red_steel", new ItemMetalBucket(Metal.RED_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
 
         {
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
@@ -194,7 +196,7 @@ public final class ItemsTFC
         {
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
-                if (type != Metal.ItemType.BUCKET && type.hasType(metal))
+                if (type != Metal.ItemType.BUCKET && type.hasType(metal)) // buckets registered separately
                 {
                     simpleItems.add(register(r, "metal/" + type.name().toLowerCase() + "/" + metal.getRegistryName().getPath(), Metal.ItemType.create(metal, type), CT_METAL));
                 }
