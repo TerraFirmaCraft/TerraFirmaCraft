@@ -5,7 +5,10 @@
 
 package net.dries007.tfc.objects.container;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -14,13 +17,12 @@ import net.dries007.tfc.objects.te.TEFirePit;
 
 import static net.dries007.tfc.objects.te.TEFirePit.*;
 
+@ParametersAreNonnullByDefault
 public class ContainerFirePit extends ContainerTE<TEFirePit>
 {
-    private static final int[] SLOT_SHIFT_ORDER = {SLOT_FUEL_INPUT, SLOT_ITEM_INPUT};
-
     public ContainerFirePit(InventoryPlayer playerInv, TEFirePit te)
     {
-        super(playerInv, te, true);
+        super(playerInv, te);
     }
 
     @Override
@@ -41,8 +43,8 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
     }
 
     @Override
-    protected int[] getSlotShiftOrder(int containerSlots)
+    protected boolean transferStackIntoContainer(ItemStack stack, int containerSlots)
     {
-        return SLOT_SHIFT_ORDER;
+        return !mergeItemStack(stack, SLOT_FUEL_INPUT, SLOT_ITEM_INPUT + 1, false);
     }
 }

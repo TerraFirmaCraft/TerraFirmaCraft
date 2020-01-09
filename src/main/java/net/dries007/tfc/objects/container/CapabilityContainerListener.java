@@ -65,7 +65,7 @@ public class CapabilityContainerListener implements IContainerListener
         return nbt;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static void applyCapabilityData(ItemStack stack, NBTTagCompound nbt)
     {
         CAPABILITIES.forEach((name, cap) -> {
@@ -92,21 +92,21 @@ public class CapabilityContainerListener implements IContainerListener
     public void sendAllContents(final Container container, final NonNullList<ItemStack> items)
     {
         // Filter out any items from the list that shouldn't be synced
-        final NonNullList<ItemStack> syncableItemsList = NonNullList.withSize(items.size(), ItemStack.EMPTY);
-        for (int index = 0; index < syncableItemsList.size(); index++)
+        final NonNullList<ItemStack> filteredItems = NonNullList.withSize(items.size(), ItemStack.EMPTY);
+        for (int index = 0; index < items.size(); index++)
         {
-            final ItemStack stack = syncableItemsList.get(index);
+            final ItemStack stack = items.get(index);
             if (shouldSyncItem(stack))
             {
-                syncableItemsList.set(index, stack);
+                filteredItems.set(index, stack);
             }
             else
             {
-                syncableItemsList.set(index, ItemStack.EMPTY);
+                filteredItems.set(index, ItemStack.EMPTY);
             }
         }
 
-        final PacketCapabilityContainerUpdate message = new PacketCapabilityContainerUpdate(container.windowId, syncableItemsList);
+        final PacketCapabilityContainerUpdate message = new PacketCapabilityContainerUpdate(container.windowId, filteredItems);
         if (message.hasData())
         {
             TerraFirmaCraft.getNetwork().sendTo(message, player);
