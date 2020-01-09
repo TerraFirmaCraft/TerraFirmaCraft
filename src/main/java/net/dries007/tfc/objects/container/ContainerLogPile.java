@@ -21,8 +21,6 @@ import net.dries007.tfc.objects.te.TELogPile;
 @MethodsReturnNonnullByDefault
 public class ContainerLogPile extends ContainerTE<TELogPile>
 {
-    private static final int[] SLOT_SHIFT_ORDER = new int[] {0, 1, 2, 3};
-
     public ContainerLogPile(InventoryPlayer playerInv, TELogPile te)
     {
         super(playerInv, te);
@@ -46,12 +44,6 @@ public class ContainerLogPile extends ContainerTE<TELogPile>
             addSlotToContainer(new SlotCallback(inventory, 2, 71, 41, tile));
             addSlotToContainer(new SlotCallback(inventory, 3, 89, 41, tile));
         }
-    }
-
-    @Override
-    protected int[] getSlotShiftOrder(int containerSlots)
-    {
-        return SLOT_SHIFT_ORDER;
     }
 
     @Override

@@ -19,7 +19,7 @@ public class ContainerCrucible extends ContainerTE<TECrucible>
 {
     public ContainerCrucible(InventoryPlayer playerInv, TECrucible tile)
     {
-        super(playerInv, tile, true, 26);
+        super(playerInv, tile, 26);
     }
 
     @Override
