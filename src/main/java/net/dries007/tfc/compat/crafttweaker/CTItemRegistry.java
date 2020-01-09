@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageResistance;
@@ -39,6 +38,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class CTItemRegistry
 {
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerItemSize(crafttweaker.api.item.IIngredient input, String inputSize, String inputWeight)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -55,7 +55,6 @@ public class CTItemRegistry
         {
             CraftTweakerAPI.apply(new IAction()
             {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void apply()
                 {
@@ -72,6 +71,7 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerItemMetal(crafttweaker.api.item.IIngredient input, String metalStr, int amount, boolean canMelt)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -91,7 +91,6 @@ public class CTItemRegistry
         {
             CraftTweakerAPI.apply(new IAction()
             {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void apply()
                 {
@@ -108,6 +107,7 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerItemHeat(crafttweaker.api.item.IIngredient input, float heatCapacity, float meltTemp, boolean forgeable)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -148,6 +148,7 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerFood(crafttweaker.api.item.IIngredient input, float[] nutrients, float calories, float water, float decay)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -163,7 +164,6 @@ public class CTItemRegistry
         {
             CraftTweakerAPI.apply(new IAction()
             {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void apply()
                 {
@@ -180,6 +180,7 @@ public class CTItemRegistry
     }
 
     @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerArmor(crafttweaker.api.item.IIngredient input, float crushingModifier, float piercingModifier, float slashingModifier)
     {
         if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
@@ -194,7 +195,6 @@ public class CTItemRegistry
         {
             CraftTweakerAPI.apply(new IAction()
             {
-                @SuppressWarnings("unchecked")
                 @Override
                 public void apply()
                 {
@@ -211,15 +211,19 @@ public class CTItemRegistry
     }
 
     @ZenMethod
-    public static void registerFuel(IItemStack itemStack, int burnTicks, float temperature, boolean forgeFuel)
+    public static void registerFuel(crafttweaker.api.item.IIngredient itemInput, int burnTicks, float temperature, boolean forgeFuel, boolean bloomeryFuel)
     {
-        if (itemStack == null) throw new IllegalArgumentException("Item not allowed to be empty!");
+        if (itemInput == null) throw new IllegalArgumentException("Item not allowed to be empty!");
+        if (itemInput instanceof ILiquidStack)
+            throw new IllegalArgumentException("There is a fluid where it's supposed to be an item!");
         if (burnTicks <= 0 || temperature <= 0)
             throw new IllegalArgumentException("Temp and burn ticks must be higher than 0!");
-        ItemStack stack = ((ItemStack) itemStack.getInternal());
-        if (FuelManager.isItemFuel(stack))
+        //noinspection unchecked
+        IIngredient<ItemStack> ing = CTHelper.getInternalIngredient(itemInput);
+        Fuel fuel = new Fuel(ing, burnTicks, temperature, forgeFuel, bloomeryFuel);
+        if (FuelManager.canRegister(fuel))
         {
-            throw new IllegalStateException("Fuel stack registered more than once!");
+            throw new IllegalStateException("Fuel already registered!");
         }
         else
         {
@@ -228,14 +232,14 @@ public class CTItemRegistry
                 @Override
                 public void apply()
                 {
-                    Fuel fuel = new Fuel(stack, burnTicks, temperature, forgeFuel);
+
                     FuelManager.addFuel(fuel);
                 }
 
                 @Override
                 public String describe()
                 {
-                    return "Registered fuel stats for " + stack.getDisplayName();
+                    return "Registered fuel stats";
                 }
             });
         }

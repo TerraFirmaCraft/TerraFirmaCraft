@@ -310,6 +310,7 @@ public final class ItemsTFC
         OreDictionaryHelper.init();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerVanillaOverrides(RegistryEvent.Register<Item> event)
     {

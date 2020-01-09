@@ -83,11 +83,12 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     float getCalories();
 
     /**
-     * Gets the current decay modifier, including traits
+     * Gets the current decay date modifier, including traits
+     * Note: there's a difference between the DECAY modifier, and the DECAY DATE modifier, in that they are reciprocals of eachother
      *
      * @return a value between 0 and infinity (0 = instant decay, infinity = never decay)
      */
-    float getDecayModifier();
+    float getDecayDateModifier();
 
     /**
      * Called from {@link net.dries007.tfc.CommonEventHandler#attachItemCapabilities(AttachCapabilitiesEvent)}
