@@ -121,13 +121,13 @@ public abstract class ContainerItemStack extends Container
         }
     }
 
-    protected abstract void addContainerSlots();
-
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer playerIn)
+    public boolean canInteractWith(EntityPlayer playerIn)
     {
         return true;
     }
+
+    protected abstract void addContainerSlots();
 
     protected void addPlayerInventorySlots(InventoryPlayer playerInv)
     {
