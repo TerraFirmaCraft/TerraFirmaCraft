@@ -240,7 +240,7 @@ public class ItemMetalChisel extends ItemMetalTool
         return block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, metadata, player);
     }
 
-    private static boolean hasHammerForChisel(@Nonnull EntityPlayer player)
+    public static boolean hasHammerForChisel(@Nonnull EntityPlayer player)
     {
         // offhand always counts as a hammer slot
         if (OreDictionaryHelper.doesStackMatchOre(player.inventory.offHandInventory.get(0), "hammer"))
