@@ -10,6 +10,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -85,6 +86,14 @@ public class ItemMetalChisel extends ItemMetalTool
         {
             // replace the block with a new block
             worldIn.setBlockState(pos, newState);
+
+            // spawn a slab if necessary
+            IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (capability != null)
+            {
+                if (capability.getChiselMode() == ChiselMode.SLAB)
+                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(newState.getBlock(), 1));
+            }
 
             // use tool
             player.getHeldItem(hand).damageItem(1, player);
