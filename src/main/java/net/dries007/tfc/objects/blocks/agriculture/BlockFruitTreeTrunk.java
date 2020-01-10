@@ -30,6 +30,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.IFruitTree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -50,7 +51,6 @@ public class BlockFruitTreeTrunk extends Block
     private static final AxisAlignedBB CONNECTION_S_AABB = new AxisAlignedBB(0.3125D, 0.375D, 0.6875D, 0.0D, 0.625D, 1.0D);
     private static final AxisAlignedBB CONNECTION_W_AABB = new AxisAlignedBB(0.0D, 0.375D, 0.3125D, 0.3125D, 0.625D, 0.6875D);
     private static final AxisAlignedBB CONNECTION_E_AABB = new AxisAlignedBB(0.6875D, 0.375D, 0.3125D, 1.0D, 0.625D, 0.6875D);
-
 
 
     public static BlockFruitTreeTrunk get(IFruitTree tree)
@@ -282,6 +282,17 @@ public class BlockFruitTreeTrunk extends Block
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (!BlocksTFC.isGrowableSoil(worldIn.getBlockState(pos.down())))
+        {
+            worldIn.destroyBlock(pos, false);
         }
     }
 
