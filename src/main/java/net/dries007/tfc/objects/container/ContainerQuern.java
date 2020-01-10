@@ -18,7 +18,7 @@ public class ContainerQuern extends ContainerTE<TEQuern>
 {
     public ContainerQuern(InventoryPlayer playerInv, TEQuern te)
     {
-        super(playerInv, te, true);
+        super(playerInv, te);
     }
 
     @Override

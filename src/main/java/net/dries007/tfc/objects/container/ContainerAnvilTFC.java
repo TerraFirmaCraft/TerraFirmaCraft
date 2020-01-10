@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.container;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -32,13 +33,12 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.client.gui.GuiAnvilTFC.*;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
 
+@ParametersAreNonnullByDefault
 public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButtonHandler
 {
-    private static final int[] SLOT_SHIFT_ORDER = {SLOT_FLUX, SLOT_HAMMER, SLOT_INPUT_1, SLOT_INPUT_2};
-
     public ContainerAnvilTFC(InventoryPlayer playerInv, TEAnvilTFC te)
     {
-        super(playerInv, te, true, 26);
+        super(playerInv, te, 26);
     }
 
     @Override
@@ -78,12 +78,6 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
             addSlotToContainer(new SlotCallback(inventory, SLOT_HAMMER, 129, 68, tile));
             addSlotToContainer(new SlotCallback(inventory, SLOT_FLUX, 147, 68, tile));
         }
-    }
-
-    @Override
-    protected int[] getSlotShiftOrder(int containerSlots)
-    {
-        return SLOT_SHIFT_ORDER;
     }
 
     private boolean attemptWork()
@@ -156,4 +150,11 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
         }
     }
 
+    @Override
+    protected boolean transferStackIntoContainer(ItemStack stack, int containerSlots)
+    {
+        return !mergeItemStack(stack, SLOT_FLUX, SLOT_FLUX + 1, false) &&
+            !mergeItemStack(stack, SLOT_HAMMER, SLOT_HAMMER + 1, false) &&
+            !mergeItemStack(stack, SLOT_INPUT_1, SLOT_INPUT_2 + 1, false);
+    }
 }

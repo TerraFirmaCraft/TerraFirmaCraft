@@ -52,55 +52,51 @@ public class ContainerChestTFC extends Container
         }
     }
 
+    /**
+     * Copied from {@link ContainerTE}
+     */
     @Override
     @Nonnull
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
-        //Copy from ContainerTE
-
         // Slot that was clicked
         Slot slot = inventorySlots.get(index);
-        if (slot == null || !slot.getHasStack())
-            return ItemStack.EMPTY;
-
-        ItemStack stack = slot.getStack();
-        ItemStack stackCopy = stack.copy();
-
-        // Transfer out of the container
-        int containerSlots = inventorySlots.size() - player.inventory.mainInventory.size();
-        if (index < containerSlots)
+        if (slot != null && slot.getHasStack())
         {
-            if (!this.mergeItemStack(stack, containerSlots, inventorySlots.size(), true))
+            ItemStack stack = slot.getStack();
+            ItemStack stackCopy = stack.copy();
+
+            // Transfer out of the container
+            int containerSlots = inventorySlots.size() - player.inventory.mainInventory.size();
+            if (index < containerSlots)
+            {
+                if (!mergeItemStack(stack, containerSlots, inventorySlots.size(), true))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            // Transfer into the container
+            else if (!mergeItemStack(stack, 0, containerSlots, false))
             {
                 return ItemStack.EMPTY;
             }
-        }
-        // Transfer into the container
-        else
-        {
-            for (int i = 0; i < containerSlots; i++)
-            {
-                if (inventorySlots.get(i).isItemValid(stack))
-                {
-                    this.mergeItemStack(stack, i, i + 1, false);
-                }
-            }
-        }
 
-        if (stack.getCount() == 0)
-        {
-            slot.putStack(ItemStack.EMPTY);
+            if (stack.getCount() == 0)
+            {
+                slot.putStack(ItemStack.EMPTY);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+            if (stack.getCount() == stackCopy.getCount())
+            {
+                return ItemStack.EMPTY;
+            }
+            slot.onTake(player, stack);
+            return stackCopy;
         }
-        else
-        {
-            slot.onSlotChanged();
-        }
-        if (stack.getCount() == stackCopy.getCount())
-        {
-            return ItemStack.EMPTY;
-        }
-        slot.onTake(player, stack);
-        return stackCopy;
+        return ItemStack.EMPTY;
     }
 
     /**

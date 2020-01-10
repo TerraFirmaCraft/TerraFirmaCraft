@@ -34,7 +34,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodTrait;
@@ -116,38 +115,6 @@ public class ItemSmallVessel extends ItemPottery
                 {
                     items.add(new ItemStack(this, 1, color.getDyeDamage()));
                 }
-            }
-        }
-    }
-
-    @Nullable
-    @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack)
-    {
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null)
-        {
-            nbt = new NBTTagCompound();
-            stack.setTagCompound(nbt);
-        }
-        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (inventory instanceof IMoldHandler)
-        {
-            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
-        }
-        return nbt;
-    }
-
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        super.readNBTShareTag(stack, nbt);
-        if (nbt != null)
-        {
-            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (inventory instanceof IMoldHandler)
-            {
-                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
             }
         }
     }

@@ -461,14 +461,16 @@ public final class CommonEventHandler
         }
     }
 
+    /**
+     * Only fired on server
+     */
     @SubscribeEvent
     public static void onContainerOpen(PlayerContainerEvent.Open event)
     {
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
             // Capability Sync Handler
-            final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
-            event.getContainer().addListener(new CapabilityContainerListener(player));
+            event.getContainer().addListener(new CapabilityContainerListener((EntityPlayerMP) event.getEntityPlayer()));
         }
     }
 
