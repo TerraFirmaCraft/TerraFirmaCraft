@@ -98,45 +98,17 @@ public class ItemMetalChisel extends ItemMetalTool
     }
 
     /**
-     * Calculates the block that would be set in the specified position if the chisel were used.<br>
-     * <br>
-     * the logic for determining chisel results is complicated. Here's an overview:<br>
-     * <br>
-     * // we always get the state from looking at the world<br>
+     * Calculates the block that would be set in the specified position if the chisel were used.
+     * In most conditions will return null. If not null, then a successful chisel operation can be completed.
+     * <br><br>
+     * code logic overview for finding result state:<br>
      * state = world.getStateAt(pos)<br>
-     * <br>
-     * // this part can be skipped by caching state + pos to a resultBlock<br>
      * block = state.getBlock()<br>
      * itemStack = block.getPickBlock(state, pos)<br>
      * resultStack = CraftingInventory.getResult(itemStack)<br>
      * resultBlock = (resultStack.getItem() as ItemBlock).getBlock()<br>
-     * <br>
-     * // we always calculate the placement state from the block as the glance<br>
-     * // moves around<br>
      * resultState = resultBlock.getPlacementState()<br>
      * <br>
-     * On the topic of caching results:<br>
-     * The problem that needed to be solved was that this function calculates
-     * the resulting block using inventory crafting, without any form of gui. The
-     * client has to render boxes that tells the player how their chisel will
-     * affect the block. That box has to be rendered every frame, and could change
-     * every frame based on what block the player was looking at, what chisel mode
-     * the player is in, the all the details concerning how the player is looking
-     * at the block.<br>
-     * The solution was to cache the results of the transformation from source
-     * block state and pos to the result block type. This way, the calculation only
-     * ever needs to be done once every time the player looks at a new block. The
-     * result can still differ using the getPlacementState() function, but the game
-     * doesn't have to do the expensive call to check crafting results any more.<br>
-     * It should be noted that the cache should only be used on client side
-     * for the rendering calls. The server side must do its own calculation so that
-     * it is certain that the result is valid, and it doesn't ever need to do that
-     * calculation more than once. The client side needs the results all the time
-     * though, so it uses an un-synced capability that maps from player to cache. <br>
-     * The cache is also affected by chiselMode, so the entire key for the
-     * cached block type result is (pos, state, chiselMode). When this method is
-     * called from the client, and not every one of these arguments match, the
-     * cache is recalculated.
      *
      * @param player  player who clicked on the block
      * @param worldIn world the block is in
