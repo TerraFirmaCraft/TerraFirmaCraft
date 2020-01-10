@@ -29,13 +29,13 @@ public class TFCKeybindings
 {
     private static final KeyBinding OPEN_CRAFTING_TABLE = new KeyBinding("tfc.key.craft", KeyConflictContext.IN_GAME, Keyboard.KEY_C, MOD_NAME);
     private static final KeyBinding PLACE_BLOCK = new KeyBinding("tfc.key.placeblock", KeyConflictContext.IN_GAME, Keyboard.KEY_V, MOD_NAME);
-    private static final KeyBinding CHANGE_CHISEL_MODE = new KeyBinding("tfc.key.chiselmode", KeyConflictContext.IN_GAME, Keyboard.KEY_M, MOD_NAME);
+    private static final KeyBinding CHANGE_ITEM_MODE = new KeyBinding("tfc.key.itemmode", KeyConflictContext.IN_GAME, Keyboard.KEY_M, MOD_NAME);
 
     public static void init()
     {
         ClientRegistry.registerKeyBinding(OPEN_CRAFTING_TABLE);
         ClientRegistry.registerKeyBinding(PLACE_BLOCK);
-        ClientRegistry.registerKeyBinding(CHANGE_CHISEL_MODE);
+        ClientRegistry.registerKeyBinding(CHANGE_ITEM_MODE);
     }
 
     @SideOnly(Side.CLIENT)
@@ -50,7 +50,7 @@ public class TFCKeybindings
         {
             TerraFirmaCraft.getNetwork().sendToServer(new PacketPlaceBlockSpecial());
         }
-        if (CHANGE_CHISEL_MODE.isPressed())
+        if (CHANGE_ITEM_MODE.isPressed())
         {
             TerraFirmaCraft.getNetwork().sendToServer(new PacketCycleItemMode());
         }
