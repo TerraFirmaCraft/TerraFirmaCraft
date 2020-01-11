@@ -228,6 +228,18 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
         }
     }
 
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
+    }
+
     public void onCreate()
     {
         burnTicks = 200;
@@ -292,18 +304,6 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
             // Extra slots - anything that can heat up and hold fluids
             return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
         }
-    }
-
-    @Override
-    public long getLastUpdateTick()
-    {
-        return lastPlayerTick;
-    }
-
-    @Override
-    public void setLastUpdateTick(long tick)
-    {
-        this.lastPlayerTick = tick;
     }
 
     @Override

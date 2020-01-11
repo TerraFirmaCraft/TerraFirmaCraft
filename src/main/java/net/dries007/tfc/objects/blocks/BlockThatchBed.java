@@ -58,6 +58,28 @@ public class BlockThatchBed extends BlockBed
     }
 
     @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        EnumFacing enumfacing = state.getValue(FACING);
+        if (state.getValue(PART) == BlockBed.EnumPartType.FOOT)
+        {
+            if (!(worldIn.getBlockState(pos.offset(enumfacing)).getBlock() instanceof BlockThatchBed))
+            {
+                worldIn.setBlockToAir(pos);
+            }
+        }
+        else if (!(worldIn.getBlockState(pos.offset(enumfacing)).getBlock() instanceof BlockThatchBed))
+        {
+            if (!worldIn.isRemote)
+            {
+                this.dropBlockAsItem(worldIn, pos, state, 0);
+            }
+            worldIn.setBlockToAir(pos);
+        }
+
+    }
+
+    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(BlocksTFC.THATCH);
@@ -115,27 +137,5 @@ public class BlockThatchBed extends BlockBed
     public boolean isBed(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable Entity player)
     {
         return true;
-    }
-
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        EnumFacing enumfacing = state.getValue(FACING);
-        if (state.getValue(PART) == BlockBed.EnumPartType.FOOT)
-        {
-            if (!(worldIn.getBlockState(pos.offset(enumfacing)).getBlock() instanceof BlockThatchBed))
-            {
-                worldIn.setBlockToAir(pos);
-            }
-        }
-        else if (!(worldIn.getBlockState(pos.offset(enumfacing)).getBlock() instanceof BlockThatchBed))
-        {
-            if (!worldIn.isRemote)
-            {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
-            }
-            worldIn.setBlockToAir(pos);
-        }
-
     }
 }

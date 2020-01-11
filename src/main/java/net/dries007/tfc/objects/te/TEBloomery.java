@@ -213,6 +213,18 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
         burnTicksLeft = Math.max(0, burnTicksLeft - playerTickDelta);
     }
 
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
+    }
+
     public boolean canIgnite()
     {
         if (world.isRemote) return false;
@@ -225,18 +237,6 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     public void onIgnite()
     {
         this.burnTicksLeft = ConfigTFC.GENERAL.bloomeryTime;
-    }
-
-    @Override
-    public long getLastUpdateTick()
-    {
-        return lastPlayerTick;
-    }
-
-    @Override
-    public void setLastUpdateTick(long tick)
-    {
-        this.lastPlayerTick = tick;
     }
 
     /**

@@ -50,13 +50,6 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     }
 
     @Override
-    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
-    {
-        // Trigger the collapsing mechanic!
-        checkCollapsingArea(worldIn, pos);
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
@@ -64,40 +57,16 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        ItemStack stack = playerIn.getHeldItem(hand);
-        if (OreDictionaryHelper.doesStackMatchOre(stack, "hammer") && worldIn.isAirBlock(pos.up()))
-        {
-            if (!worldIn.isRemote)
-            {
-                // Create a stone anvil
-                BlockStoneAnvil block = BlockStoneAnvil.get(this.rock);
-                if (block != null)
-                {
-                    worldIn.setBlockState(pos, block.getDefaultState());
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        super.getDrops(drops, world, pos, state, fortune);
-        // Raw rocks drop random gems
-        if (RANDOM.nextDouble() < ConfigTFC.GENERAL.stoneGemDropChance)
-        {
-            drops.add(ItemGem.get(Gem.getRandomDropGem(RANDOM), Gem.Grade.randomGrade(RANDOM), 1));
-        }
-    }
-
-    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(CAN_FALL) ? 0 : 1;
+    }
+
+    @Override
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
+    {
+        // Trigger the collapsing mechanic!
+        checkCollapsingArea(worldIn, pos);
     }
 
     @SuppressWarnings("deprecation")
@@ -124,9 +93,40 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     }
 
     @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack stack = playerIn.getHeldItem(hand);
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "hammer") && worldIn.isAirBlock(pos.up()))
+        {
+            if (!worldIn.isRemote)
+            {
+                // Create a stone anvil
+                BlockStoneAnvil block = BlockStoneAnvil.get(this.rock);
+                if (block != null)
+                {
+                    worldIn.setBlockState(pos, block.getDefaultState());
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, CAN_FALL);
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        super.getDrops(drops, world, pos, state, fortune);
+        // Raw rocks drop random gems
+        if (RANDOM.nextDouble() < ConfigTFC.GENERAL.stoneGemDropChance)
+        {
+            drops.add(ItemGem.get(Gem.getRandomDropGem(RANDOM), Gem.Grade.randomGrade(RANDOM), 1));
+        }
     }
 
     @Override

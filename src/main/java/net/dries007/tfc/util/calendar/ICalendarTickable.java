@@ -40,6 +40,7 @@ public interface ICalendarTickable extends ITickable
 
     /**
      * Called when the calendar updates (either player or calendar time)
+     *
      * @param playerTickDelta the difference in player ticks observed between last tick and this tick
      */
     void onCalendarUpdate(long playerTickDelta);

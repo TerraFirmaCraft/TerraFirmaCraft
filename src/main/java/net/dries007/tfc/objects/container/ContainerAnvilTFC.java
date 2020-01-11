@@ -80,6 +80,14 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
         }
     }
 
+    @Override
+    protected boolean transferStackIntoContainer(ItemStack stack, int containerSlots)
+    {
+        return !mergeItemStack(stack, SLOT_FLUX, SLOT_FLUX + 1, false) &&
+            !mergeItemStack(stack, SLOT_HAMMER, SLOT_HAMMER + 1, false) &&
+            !mergeItemStack(stack, SLOT_INPUT_1, SLOT_INPUT_2 + 1, false);
+    }
+
     private boolean attemptWork()
     {
         // This only runs on server
@@ -148,13 +156,5 @@ public class ContainerAnvilTFC extends ContainerTE<TEAnvilTFC> implements IButto
                 return false;
             }
         }
-    }
-
-    @Override
-    protected boolean transferStackIntoContainer(ItemStack stack, int containerSlots)
-    {
-        return !mergeItemStack(stack, SLOT_FLUX, SLOT_FLUX + 1, false) &&
-            !mergeItemStack(stack, SLOT_HAMMER, SLOT_HAMMER + 1, false) &&
-            !mergeItemStack(stack, SLOT_INPUT_1, SLOT_INPUT_2 + 1, false);
     }
 }
