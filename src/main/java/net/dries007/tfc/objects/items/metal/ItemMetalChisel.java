@@ -1,7 +1,13 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.items.metal;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -26,85 +32,20 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.player.IPlayerData;
-import net.dries007.tfc.api.capability.player.IPlayerData.ChiselMode;
+import net.dries007.tfc.api.recipes.ChiselRecipe;
+import net.dries007.tfc.api.recipes.ChiselRecipe.Mode;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.container.ContainerEmpty;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@ParametersAreNonnullByDefault
 public class ItemMetalChisel extends ItemMetalTool
 {
     private static final int[] STAIR_PATTERN_INDICES = {0, 3, 4, 6, 7, 8};
     private static final int[] SLAB_PATTERN_INDICES = {0, 1, 2};
 
     private static final int COOLDOWN = 10; // todo: make optional cooldown scale by metal tier or tool speed
-
-    public ItemMetalChisel(Metal metal, Metal.ItemType type)
-    {
-        super(metal, type);
-    }
-
-    /**
-     * attempts to change a block in place using the chisel.
-     * If the chiselMode is stair and the block can be crafted into a stair, it will be turned into that stair.
-     * If the chiselMode is slab and the block can be crafted into a slab, it will be crafted into a slab.
-     * If the chiselMode is polish and the block is a TFC Raw stone, it will be crafted into a polished stone.
-     *
-     * @param player  player player who clicked on the block
-     * @param worldIn world the block is in
-     * @param pos     pos of block interacted with
-     * @param hand    hand that was used to interact with the block
-     * @param facing  side of block that was hit
-     * @param hitX    hit position on block : x dimension
-     * @param hitY    hit position on block : y dimension
-     * @param hitZ    hit position on block : z dimension
-     * @return SUCCESS if the block was chiseled, FAIL if no block was changed
-     */
-    @Override
-    @Nonnull
-    public EnumActionResult onItemUse(
-        @Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos,
-        @Nonnull EnumHand hand, @Nonnull EnumFacing facing,
-        float hitX, float hitY, float hitZ)
-    {
-        // Find the block to place for this action
-        IBlockState newState = getChiselResultState(player, worldIn, pos, facing, hitX, hitY, hitZ);
-
-        // no new block means no updates
-        if (newState == null)
-            return EnumActionResult.FAIL;
-
-        // play a sound matching the new block
-        SoundType soundType = newState.getBlock().getSoundType(newState, worldIn, pos, player);
-        worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, 1.0f, soundType.getPitch());
-
-        // only update the world state on the server side
-        if (!worldIn.isRemote)
-        {
-            // replace the block with a new block
-            worldIn.setBlockState(pos, newState);
-
-            // spawn a slab if necessary
-            IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
-            if (capability != null)
-            {
-                if (capability.getChiselMode() == ChiselMode.SLAB)
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(newState.getBlock(), 1));
-            }
-
-            // use tool
-            player.getHeldItem(hand).damageItem(1, player);
-
-            // if setting is on for chisel cooldown, trigger cooldown
-            if (ConfigTFC.GENERAL.chiselDelay)
-                player.getCooldownTracker().setCooldown(this, COOLDOWN);
-        }
-
-        return EnumActionResult.SUCCESS;
-    }
 
     /**
      * Calculates the block that would be set in the specified position if the chisel were used.
@@ -123,64 +64,67 @@ public class ItemMetalChisel extends ItemMetalTool
      * @param worldIn world the block is in
      * @param pos     pos of block interacted with
      * @param facing  side of block that was hit
-     * @param hitX    hit position on block : x dimension
-     * @param hitY    hit position on block : y dimension
-     * @param hitZ    hit position on block : z dimension
      * @return null if the operation would not succeed. resulting state for if it would succeed.
      */
-    public static IBlockState getChiselResultState(
-        @Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing facing,
-        float hitX, float hitY, float hitZ)
+    @Nullable
+    public static IBlockState getChiselResultState(EntityPlayer player, World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         // no chiseling if no hammer is present
-        if (!hasHammerForChisel(player))
-            return null;
-
-        IBlockState state = worldIn.getBlockState(pos);
-
-        // no chiseling for raw stone that is blocked
-        if (isRawAndBlocked(worldIn, state, pos))
-            return null;
-
-        // get the capability that tells us the current player selected mode for chiseling
-        IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
-
-        // if the capability for chisel modes is gone there's nothing the chisel can do.
-        if (capability == null)
-            return null;
-
-        // get the type of block and metadata according to the state and capability
-        int[] newMetadataPtr = new int[] {-1};
-        Block newBlock = getBlockAndMetadata(player, worldIn, pos, capability.getChiselMode(), state, newMetadataPtr);
-
-        if (newBlock == null || newMetadataPtr[0] == -1)
-            return null;
-
-        return getPlacementState(worldIn, pos, facing, hitX, hitY, hitZ, player, newBlock, newMetadataPtr[0]);
-    }
-
-
-    private static Block getBlockAndMetadata(
-        @Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos,
-        @Nonnull ChiselMode chiselMode, IBlockState targetState, int[] metadataPtr)
-    {
-        Block newBlock = null;
-        int newMetadata = -1;
-
-        if (chiselMode == ChiselMode.SMOOTH)
+        if (hasHammerForChisel(player))
         {
-            if (BlocksTFC.isRawStone(targetState))
+            IBlockState state = worldIn.getBlockState(pos);
+
+            // no chiseling for raw stone that is blocked
+            if (!isRawAndBlocked(worldIn, state, pos))
             {
-                BlockRockRaw rawBlock = (BlockRockRaw) targetState.getBlock();
-                newBlock = BlockRockVariant.get(rawBlock.getRock(), Rock.Type.SMOOTH);
-                newMetadata = 0;
+                // get the capability that tells us the current player selected mode for chiseling
+                IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+                if (capability != null)
+                {
+                    return getRecipeResult(player, worldIn, pos, facing, capability.getChiselMode(), state, hitX, hitY, hitZ);
+                }
             }
         }
-        else if (chiselMode == ChiselMode.SLAB || chiselMode == ChiselMode.STAIR)
+        return null;
+    }
+
+    public static boolean hasHammerForChisel(EntityPlayer player)
+    {
+        // offhand always counts as a hammer slot
+        if (OreDictionaryHelper.doesStackMatchOre(player.inventory.offHandInventory.get(0), "hammer"))
+            return true;
+
+        // config alters whether toolbar counts as a hammer slot or not.
+        if (!ConfigTFC.GENERAL.requireHammerInOffHand)
         {
-            ItemStack resultItemStack = findCraftingResult(worldIn, targetState.getBlock().getPickBlock(
-                targetState, null, worldIn, pos, player),
-                (chiselMode == ChiselMode.SLAB ? SLAB_PATTERN_INDICES : STAIR_PATTERN_INDICES));
+            for (int i = 0; i < 9; i++)
+            {
+                if (OreDictionaryHelper.doesStackMatchOre(player.inventory.mainInventory.get(i), "hammer"))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Nullable
+    @SuppressWarnings("deprecation")
+    private static IBlockState getRecipeResult(EntityPlayer player, World worldIn, BlockPos pos, EnumFacing facing, Mode chiselMode, IBlockState targetState, float hitX, float hitY, float hitZ)
+    {
+        if (chiselMode == Mode.SMOOTH)
+        {
+            ChiselRecipe recipe = ChiselRecipe.get(targetState);
+            if (recipe != null)
+            {
+                return recipe.getOutputState();
+            }
+        }
+        else if (chiselMode == Mode.SLAB || chiselMode == Mode.STAIR)
+        {
+            ItemStack targetStack = targetState.getBlock().getPickBlock(targetState, null, worldIn, pos, player);
+            ItemStack resultItemStack = findCraftingResult(worldIn, targetStack, (chiselMode == Mode.SLAB ? SLAB_PATTERN_INDICES : STAIR_PATTERN_INDICES));
 
             if (resultItemStack != null)
             {
@@ -190,21 +134,14 @@ public class ItemMetalChisel extends ItemMetalTool
                 {
                     block = ((ItemBlock) resultItem).getBlock();
 
-                    if ((chiselMode == ChiselMode.SLAB && block instanceof BlockSlab)
-                        || (chiselMode == ChiselMode.STAIR && block instanceof BlockStairs))
+                    if ((chiselMode == Mode.SLAB && block instanceof BlockSlab) || (chiselMode == Mode.STAIR && block instanceof BlockStairs))
                     {
-                        newBlock = block;
-                        newMetadata = resultItemStack.getMetadata();
+                        return block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, resultItemStack.getMetadata(), player);
                     }
                 }
             }
         }
-
-        if (newBlock == null || newMetadata == -1)
-            return null;
-
-        metadataPtr[0] = newMetadata;
-        return newBlock;
+        return null;
     }
 
     /**
@@ -239,37 +176,6 @@ public class ItemMetalChisel extends ItemMetalTool
         return null;
     }
 
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    private static IBlockState getPlacementState(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing facing,
-                                                 float hitX, float hitY, float hitZ, @Nonnull EntityPlayer player, @Nonnull Block block, int metadata)
-    {
-        if (facing.getAxis().getPlane() != EnumFacing.Plane.VERTICAL)
-            hitY = 1 - hitY;
-        return block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, metadata, player);
-    }
-
-    public static boolean hasHammerForChisel(@Nonnull EntityPlayer player)
-    {
-        // offhand always counts as a hammer slot
-        if (OreDictionaryHelper.doesStackMatchOre(player.inventory.offHandInventory.get(0), "hammer"))
-            return true;
-
-        // config alters whether toolbar counts as a hammer slot or not.
-        if (!ConfigTFC.GENERAL.requireHammerInOffHand)
-        {
-            for (int i = 0; i < 9; i++)
-            {
-                if (OreDictionaryHelper.doesStackMatchOre(player.inventory.mainInventory.get(i), "hammer"))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     private static boolean isRawAndBlocked(World world, IBlockState state, BlockPos pos)
     {
         if (!BlocksTFC.isRawStone(state))
@@ -282,5 +188,58 @@ public class ItemMetalChisel extends ItemMetalTool
 
         return BlocksTFC.isRawStone(above1) && BlocksTFC.isRawStone(above2);
 
+    }
+
+    public ItemMetalChisel(Metal metal, Metal.ItemType type)
+    {
+        super(metal, type);
+    }
+
+    /**
+     * attempts to change a block in place using the chisel.
+     * If the chiselMode is stair and the block can be crafted into a stair, it will be turned into that stair.
+     * If the chiselMode is slab and the block can be crafted into a slab, it will be crafted into a slab.
+     * If the chiselMode is polish and the block is a TFC Raw stone, it will be crafted into a polished stone.
+     *
+     * @return SUCCESS if the block was chiseled, FAIL if no block was changed
+     */
+    @Override
+    @Nonnull
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        // Find the block to place for this action
+        IBlockState newState = getChiselResultState(player, worldIn, pos, facing, hitX, hitY, hitZ);
+        if (newState != null)
+        {
+            // play a sound matching the new block
+            SoundType soundType = newState.getBlock().getSoundType(newState, worldIn, pos, player);
+            worldIn.playSound(player, pos, soundType.getHitSound(), SoundCategory.BLOCKS, 1.0f, soundType.getPitch());
+
+            // only update the world state on the server side
+            if (!worldIn.isRemote)
+            {
+                // replace the block with a new block
+                worldIn.setBlockState(pos, newState);
+
+                // spawn a slab if necessary
+                IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+                if (capability != null)
+                {
+                    if (capability.getChiselMode() == Mode.SLAB)
+                    {
+                        InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(newState.getBlock(), 1));
+                    }
+                }
+
+                player.getHeldItem(hand).damageItem(1, player);
+                if (ConfigTFC.GENERAL.chiselDelay)
+                {
+                    // if setting is on for chisel cooldown, trigger cooldown
+                    player.getCooldownTracker().setCooldown(this, COOLDOWN);
+                }
+            }
+            return EnumActionResult.SUCCESS;
+        }
+        return EnumActionResult.FAIL;
     }
 }

@@ -20,6 +20,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
 import net.dries007.tfc.api.recipes.AlloyRecipe;
+import net.dries007.tfc.api.recipes.ChiselRecipe;
 import net.dries007.tfc.api.recipes.LoomRecipe;
 import net.dries007.tfc.api.recipes.WeldingRecipe;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
@@ -59,6 +60,7 @@ public final class Registries
         newRegistry(BARREL_RECIPE, BarrelRecipe.class, false);
         newRegistry(LOOM_RECIPE, LoomRecipe.class, false);
         newRegistry(QUERN_RECIPE, QuernRecipe.class, false);
+        newRegistry(CHISEL_RECIPE, ChiselRecipe.class, false);
     }
 
     /**
