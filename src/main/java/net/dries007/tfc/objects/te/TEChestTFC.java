@@ -79,57 +79,6 @@ public class TEChestTFC extends TileEntityChest implements ISlotCallback
         return block instanceof BlockChestTFC && ((BlockChestTFC) block).wood == getWood() && ((BlockChest) block).chestType == getChestType();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    @Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            if (doubleChestHandler == null || doubleChestHandler.needsRefresh())
-            {
-                doubleChestHandler = TFCDoubleChestItemHandler.get(this);
-            }
-            if (doubleChestHandler != null && doubleChestHandler != TFCDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
-            {
-                return (T) doubleChestHandler;
-            }
-        }
-        return super.getCapability(capability, facing);
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack)
-    {
-        // Blocks input from hopper
-        IItemSize cap = CapabilityItemSize.getIItemSize(stack);
-        if (cap != null)
-        {
-            return cap.getSize(stack).isSmallerThan(Size.LARGE);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean isItemValid(int slot, @Nonnull ItemStack stack)
-    {
-        return isItemValidForSlot(slot, stack);
-    }
-
     @Override
     public void update()
     {
@@ -213,5 +162,56 @@ public class TEChestTFC extends TileEntityChest implements ISlotCallback
                 lidAngle = 0.0F;
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @Nullable
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            if (doubleChestHandler == null || doubleChestHandler.needsRefresh())
+            {
+                doubleChestHandler = TFCDoubleChestItemHandler.get(this);
+            }
+            if (doubleChestHandler != null && doubleChestHandler != TFCDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
+            {
+                return (T) doubleChestHandler;
+            }
+        }
+        return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    @Nonnull
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack)
+    {
+        // Blocks input from hopper
+        IItemSize cap = CapabilityItemSize.getIItemSize(stack);
+        if (cap != null)
+        {
+            return cap.getSize(stack).isSmallerThan(Size.LARGE);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+    {
+        return isItemValidForSlot(slot, stack);
     }
 }

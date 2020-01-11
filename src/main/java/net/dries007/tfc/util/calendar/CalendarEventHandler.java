@@ -53,6 +53,7 @@ public class CalendarEventHandler
 
     /**
      * Disables the vanilla /time command as we replace it with one that takes into account the calendar
+     *
      * @param event {@link CommandEvent}
      */
     @SubscribeEvent

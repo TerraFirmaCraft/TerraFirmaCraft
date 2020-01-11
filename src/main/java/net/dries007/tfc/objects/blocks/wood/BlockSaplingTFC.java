@@ -134,6 +134,13 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     }
 
     @Override
+    @Nonnull
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
+    {
+        return EnumPlantType.Plains;
+    }
+
+    @Override
     public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b)
     {
         return true;
@@ -149,12 +156,5 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
     {
         wood.makeTree(world, blockPos, random, false);
-    }
-
-    @Override
-    @Nonnull
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Plains;
     }
 }

@@ -219,6 +219,18 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     }
 
     @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
+    }
+
+    @Override
     public void setAndUpdateSlots(int slot)
     {
         this.markDirty();
@@ -291,18 +303,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             default: // Other fuel slots + output slots
                 return false;
         }
-    }
-
-    @Override
-    public long getLastUpdateTick()
-    {
-        return lastPlayerTick;
-    }
-
-    @Override
-    public void setLastUpdateTick(long tick)
-    {
-        this.lastPlayerTick = tick;
     }
 
     public void onCreate(ItemStack log)

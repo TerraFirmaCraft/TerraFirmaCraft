@@ -240,7 +240,7 @@ public class CapabilityFood
      * QED
      *
      * @param ci The initial creation date
-     * @param p The decay date modifier (1 / standard decay modifier)
+     * @param p  The decay date modifier (1 / standard decay modifier)
      * @return cf the final creation date
      */
     private static long calculateNewCreationDate(long ci, float p)
