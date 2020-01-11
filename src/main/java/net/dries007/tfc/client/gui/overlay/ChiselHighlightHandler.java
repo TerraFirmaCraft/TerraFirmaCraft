@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.gui.overlay;
 
 import net.minecraft.block.BlockSlab;
@@ -27,46 +32,38 @@ public class ChiselHighlightHandler
     @SubscribeEvent
     public static void drawBlockHighlightEvent(DrawBlockHighlightEvent event)
     {
-        // check if there is a chisel in the player's hand
-        // if no chisel, don't render anything.
-        if (!(event.getPlayer().getHeldItemMainhand().getItem() instanceof ItemMetalChisel))
-            return;
-
-        EntityPlayer player = event.getPlayer();
-        RayTraceResult traceResult = event.getTarget();
-        BlockPos pos = traceResult.getBlockPos();
-
-        // Get the state that the chisel would turn the block into if it clicked
-        IBlockState newState = ItemMetalChisel.getChiselResultState(
-            player, player.world, pos, traceResult.sideHit,
-            (float) traceResult.hitVec.x - pos.getX(),
-            (float) traceResult.hitVec.y - pos.getY(),
-            (float) traceResult.hitVec.z - pos.getZ());
-
-        if (newState == null)
-            return;
-
-        AxisAlignedBB box = getBox(player, pos, event.getPartialTicks()).grow(0.001);
-
-        double offsetX = 0, offsetY = 0, offsetZ = 0;
-
-        if (newState.getBlock() instanceof BlockStairs)
+        // check if there is a chisel in the player's hand. if no chisel, don't render anything.
+        if (event.getPlayer().getHeldItemMainhand().getItem() instanceof ItemMetalChisel)
         {
-            offsetY = (newState.getValue(BlockStairs.HALF) == BlockStairs.EnumHalf.TOP) ? -0.5 : 0.5;
+            EntityPlayer player = event.getPlayer();
+            RayTraceResult traceResult = event.getTarget();
+            BlockPos pos = traceResult.getBlockPos();
 
-            EnumFacing facing = newState.getValue(BlockStairs.FACING);
+            // Get the state that the chisel would turn the block into if it clicked
+            IBlockState newState = ItemMetalChisel.getChiselResultState(player, player.world, pos, traceResult.sideHit, (float) traceResult.hitVec.x - pos.getX(), (float) traceResult.hitVec.y - pos.getY(), (float) traceResult.hitVec.z - pos.getZ());
+            if (newState != null)
+            {
+                AxisAlignedBB box = getBox(player, pos, event.getPartialTicks()).grow(0.001);
+                double offsetX = 0, offsetY = 0, offsetZ = 0;
 
-            offsetX = -facing.getXOffset() * 0.5;
-            offsetZ = -facing.getZOffset() * 0.5;
+                if (newState.getBlock() instanceof BlockStairs)
+                {
+                    EnumFacing facing = newState.getValue(BlockStairs.FACING);
+
+                    offsetY = (newState.getValue(BlockStairs.HALF) == BlockStairs.EnumHalf.TOP) ? -0.5 : 0.5;
+                    offsetX = -facing.getXOffset() * 0.5;
+                    offsetZ = -facing.getZOffset() * 0.5;
+                }
+                else if (newState.getBlock() instanceof BlockSlab)
+                {
+                    offsetY = (newState.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP) ? -0.5 : 0.5;
+                }
+
+                box = box.intersect(box.offset(offsetX, offsetY, offsetZ));
+
+                drawBox(box);
+            }
         }
-        else if (newState.getBlock() instanceof BlockSlab)
-        {
-            offsetY = (newState.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP) ? -0.5 : 0.5;
-        }
-
-        box = box.intersect(box.offset(offsetX, offsetY, offsetZ));
-
-        drawBox(box, 1, 0, 0, 0.8F, 5.0F);
     }
 
     private static AxisAlignedBB getBox(EntityPlayer player, BlockPos pos, double partialTicks)
@@ -78,15 +75,15 @@ public class ChiselHighlightHandler
         return new AxisAlignedBB(pos).offset(-dx, -dy, -dz);
     }
 
-    private static void drawBox(AxisAlignedBB box, float red, float green, float blue, float alpha, float lineWidth)
+    private static void drawBox(AxisAlignedBB box)
     {
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.glLineWidth(lineWidth);
+        GlStateManager.glLineWidth((float) 5.0);
         GlStateManager.disableTexture2D();
         GlStateManager.depthMask(false);
 
-        RenderGlobal.drawSelectionBoundingBox(box, red, green, blue, alpha);
+        RenderGlobal.drawSelectionBoundingBox(box, 1f, 0f, 0f, 0.8f);
 
         GlStateManager.depthMask(true);
         GlStateManager.enableTexture2D();

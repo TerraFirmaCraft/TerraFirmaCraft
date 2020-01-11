@@ -1,10 +1,9 @@
-package net.dries007.tfc.objects.container;
-
 /*
- * Part of the AlcatrazCore mod by AlcatrazEscapee
- * Work under Copyright. Licensed under the GPL-3.0.
- * See the project LICENSE.md for more information.
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
  */
+
+package net.dries007.tfc.objects.container;
 
 import javax.annotation.Nullable;
 

@@ -42,6 +42,7 @@ public class TFCKeybindings
     @SubscribeEvent
     public static void onKeyEvent(InputEvent event)
     {
+        // todo: move this to a button on the inventory GUI
         if (OPEN_CRAFTING_TABLE.isPressed())
         {
             TerraFirmaCraft.getNetwork().sendToServer(new PacketOpenCraftingGui());
