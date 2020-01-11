@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -20,8 +21,12 @@ import net.dries007.tfc.util.skills.SkillType;
 
 public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound>, IPlayerData
 {
+    private static final String CHISEL_MODE_KEY = "chiselMode";
+
     private final Map<String, Skill> skills;
     private final EntityPlayer player;
+
+    private ChiselMode chiselMode = ChiselMode.SMOOTH;
 
     public PlayerDataHandler(EntityPlayer player)
     {
@@ -34,6 +39,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     {
         NBTTagCompound nbt = new NBTTagCompound();
         skills.forEach((k, v) -> nbt.setTag(k, v.serializeNBT()));
+        nbt.setTag(CHISEL_MODE_KEY, new NBTTagByte((byte) chiselMode.ordinal()));
         return nbt;
     }
 
@@ -43,6 +49,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
         if (nbt != null)
         {
             skills.forEach((k, v) -> v.deserializeNBT(nbt.getCompoundTag(k)));
+            chiselMode = ChiselMode.values()[nbt.getByte(CHISEL_MODE_KEY)];
         }
     }
 
@@ -52,6 +59,19 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     public <S extends Skill> S getSkill(SkillType<S> skillType)
     {
         return (S) skills.get(skillType.getName());
+    }
+
+    @Override
+    @Nonnull
+    public ChiselMode getChiselMode()
+    {
+        return chiselMode;
+    }
+
+    @Override
+    public void setChiselMode(@Nonnull ChiselMode chiselMode)
+    {
+        this.chiselMode = chiselMode;
     }
 
     @Nonnull
