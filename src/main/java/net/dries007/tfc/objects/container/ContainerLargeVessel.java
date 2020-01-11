@@ -20,7 +20,7 @@ public class ContainerLargeVessel extends ContainerTE<TELargeVessel> implements 
 {
     public ContainerLargeVessel(InventoryPlayer playerInv, TELargeVessel tile)
     {
-        super(playerInv, tile, true);
+        super(playerInv, tile);
     }
 
     @Override

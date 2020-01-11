@@ -31,7 +31,6 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
     protected final T tile;
     protected final EntityPlayer player;
 
-    private final boolean shouldSyncCaps;
     private final boolean shouldSyncFields;
     private final int yOffset; // The number of pixels higher than normal (If the gui is larger than normal, see Anvil)
 
@@ -39,19 +38,13 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
 
     protected ContainerTE(InventoryPlayer playerInv, T tile)
     {
-        this(playerInv, tile, false, 0);
+        this(playerInv, tile, 0);
     }
 
-    protected ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps)
-    {
-        this(playerInv, tile, shouldSyncCaps, 0);
-    }
-
-    protected ContainerTE(InventoryPlayer playerInv, T tile, boolean shouldSyncCaps, int yOffset)
+    protected ContainerTE(InventoryPlayer playerInv, T tile, int yOffset)
     {
         this.tile = tile;
         this.player = playerInv.player;
-        this.shouldSyncCaps = shouldSyncCaps;
         this.shouldSyncFields = tile instanceof ITileFields;
         this.yOffset = yOffset;
 
@@ -66,14 +59,7 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
         {
             detectAndSendFieldChanges();
         }
-        if (shouldSyncCaps)
-        {
-            detectAndSendAllChanges();
-        }
-        else
-        {
-            super.detectAndSendChanges();
-        }
+        super.detectAndSendChanges();
     }
 
     @Override
@@ -90,53 +76,44 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
     @Nonnull
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
-        // Instead of overriding this, consider overriding transferIntoContainer if that is the only necessary change
-
         // Slot that was clicked
         Slot slot = inventorySlots.get(index);
-        if (slot == null || !slot.getHasStack())
-            return ItemStack.EMPTY;
-
-        ItemStack stack = slot.getStack();
-        ItemStack stackCopy = stack.copy();
-
-        // Transfer out of the container
-        int containerSlots = inventorySlots.size() - player.inventory.mainInventory.size();
-        if (index < containerSlots)
+        if (slot != null && slot.getHasStack())
         {
-            if (!this.mergeItemStack(stack, containerSlots, inventorySlots.size(), true))
+            ItemStack stack = slot.getStack();
+            ItemStack stackCopy = stack.copy();
+
+            // Transfer out of the container
+            int containerSlots = inventorySlots.size() - player.inventory.mainInventory.size();
+            if (index < containerSlots)
+            {
+                if (transferStackOutOfContainer(stack, containerSlots))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            // Transfer into the container
+            else if (transferStackIntoContainer(stack, containerSlots))
             {
                 return ItemStack.EMPTY;
             }
-            // This is already called in SlotCallback (which should be used by the Container anyway)
-            //tile.setAndUpdateSlots(index);
-        }
-        // Transfer into the container
-        else
-        {
-            for (int i : getSlotShiftOrder(containerSlots))
-            {
-                if (inventorySlots.get(i).isItemValid(stack))
-                {
-                    this.mergeItemStack(stack, i, i + 1, false);
-                }
-            }
-        }
 
-        if (stack.getCount() == 0)
-        {
-            slot.putStack(ItemStack.EMPTY);
+            if (stack.getCount() == 0)
+            {
+                slot.putStack(ItemStack.EMPTY);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+            if (stack.getCount() == stackCopy.getCount())
+            {
+                return ItemStack.EMPTY;
+            }
+            slot.onTake(player, stack);
+            return stackCopy;
         }
-        else
-        {
-            slot.onSlotChanged();
-        }
-        if (stack.getCount() == stackCopy.getCount())
-        {
-            return ItemStack.EMPTY;
-        }
-        slot.onTake(player, stack);
-        return stackCopy;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -152,26 +129,6 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
     }
 
     protected abstract void addContainerSlots();
-
-    protected void detectAndSendAllChanges()
-    {
-        for (int i = 0; i < inventorySlots.size(); ++i)
-        {
-            ItemStack stack = inventorySlots.get(i).getStack();
-            ItemStack newStack = inventoryItemStacks.get(i);
-
-            if (!ItemStack.areItemStacksEqual(newStack, stack))
-            {
-                newStack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-                inventoryItemStacks.set(i, newStack);
-
-                for (IContainerListener listener : listeners)
-                {
-                    listener.sendSlotContents(this, i, newStack);
-                }
-            }
-        }
-    }
 
     protected void detectAndSendFieldChanges()
     {
@@ -208,11 +165,17 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
         }
     }
 
-    /**
-     * Helper method for overriding just container insertion priority
-     * The method {@link ContainerTE#transferStackInSlot(EntityPlayer, int)} will search through slots given by this order.
-     * Slots with constrained input should be first, general purpose slots later in order to have the best shift-click experience
-     */
+    protected boolean transferStackOutOfContainer(ItemStack stack, int containerSlots)
+    {
+        return !mergeItemStack(stack, containerSlots, inventorySlots.size(), true);
+    }
+
+    protected boolean transferStackIntoContainer(ItemStack stack, int containerSlots)
+    {
+        return !mergeItemStack(stack, 0, containerSlots, false);
+    }
+
+    @Deprecated
     protected int[] getSlotShiftOrder(int containerSlots)
     {
         return IntStream.range(0, containerSlots).toArray();
