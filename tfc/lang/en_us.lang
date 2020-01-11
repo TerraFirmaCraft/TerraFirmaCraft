@@ -120,6 +120,7 @@ tfc.enum.skilltier.master=Master
 ## Keybindings
 tfc.key.craft=Crafting GUI
 tfc.key.placeblock=Place Item Holder Block
+tfc.key.itemmode=Change Item Mode
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
@@ -265,6 +266,12 @@ config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will 
 
 config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
+
+config.tfc.general.requireHammerInOffHand=Chisel requires hammer in offhand
+config.tfc.general.requireHammerInOffHand.tooltip=If true, hammer must be in offhand for chisel use. If false, hammer can be in offhand or toolbar.
+
+config.tfc.general.chiselDelay=Chisel has a delay
+config.tfc.general.chiselDelay.tooltip=Does the chisel have a delay on use?
 
 config.tfc.general.worldRegenerationMinimumTime=World Regeneration Min Time
 config.tfc.general.worldRegenerationMinimumTime.tooltip=The minimum time for a chunk to be unoccupied for it's resources to begin to naturally regenerate. (In days). After this amount, regeneration will scale up based on how long since this duration, up to a maximum of 4x
