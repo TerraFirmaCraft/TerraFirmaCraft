@@ -79,9 +79,7 @@ public enum Crop implements ICrop
         this.maxRain = maxRain;
 
         this.growthStages = growthStages;
-        // The value stored it measured in hours, the input value is in months
-        // todo: the input should be in days instead of months
-        this.growthTime = growthTime * ICalendar.HOURS_IN_DAY * CalendarTFC.CALENDAR_TIME.getDaysInMonth();
+        this.growthTime = growthTime; // This is measured in % of months
 
         this.type = type;
     }
@@ -89,7 +87,7 @@ public enum Crop implements ICrop
     @Override
     public float getGrowthTime()
     {
-        return growthTime;
+        return growthTime * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * ICalendar.TICKS_IN_DAY;
     }
 
     @Override
