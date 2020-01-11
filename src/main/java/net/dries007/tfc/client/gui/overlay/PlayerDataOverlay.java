@@ -28,6 +28,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
+import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -35,6 +38,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 public final class PlayerDataOverlay
 {
     private static final ResourceLocation ICONS = new ResourceLocation(MOD_ID, "textures/gui/overlay/icons.png");
+    private static final ResourceLocation MC_ICONS = new ResourceLocation("minecraft:textures/gui/icons.png");
     private static final PlayerDataOverlay INSTANCE = new PlayerDataOverlay();
 
     public static PlayerDataOverlay getInstance() { return INSTANCE; }
@@ -117,7 +121,7 @@ public final class PlayerDataOverlay
             fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, Color.white.getRGB());
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            mc.renderEngine.bindTexture(new ResourceLocation("minecraft:textures/gui/icons.png"));
+            mc.renderEngine.bindTexture(MC_ICONS);
 
             //Draw experience bar when not riding anything, riding a non-living entity such as a boat/minecart, or riding a pig.
             if (!(player.getRidingEntity() instanceof EntityLiving))
@@ -168,7 +172,47 @@ public final class PlayerDataOverlay
                 fontrenderer.drawString(mountHealthString, mid + 47 - (fontrenderer.getStringWidth(mountHealthString) / 2), armorRowHeight + 2, Color.white.getRGB());
             }
 
-            mc.renderEngine.bindTexture(new ResourceLocation("minecraft:textures/gui/icons.png"));
+            mc.renderEngine.bindTexture(MC_ICONS);
+        }
+
+        int itemModeY = sr.getScaledHeight() - 21;
+        int itemModeX = mid + 100;
+
+        // draw chisel mode if main hand item is tfc chisel
+        if (player.getHeldItemMainhand().getItem() instanceof ItemMetalChisel)
+        {
+            int iconU = 0;
+
+            if (ItemMetalChisel.hasHammerForChisel(player))
+            {
+                IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+                if (capability != null)
+                {
+                    switch (capability.getChiselMode())
+                    {
+                        case SMOOTH:
+                            iconU = 0;
+                            break;
+                        case STAIR:
+                            iconU = 20;
+                            break;
+                        case SLAB:
+                            iconU = 40;
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                // todo: display missing hammer art
+                iconU = 60;
+            }
+
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            mc.renderEngine.bindTexture(ICONS);
+            this.drawTexturedModalRect(itemModeX, itemModeY, iconU, 58, 20, 20);
+            mc.renderEngine.bindTexture(MC_ICONS);
         }
     }
 

@@ -268,6 +268,14 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.foodDecayStackTime")
         public int foodDecayStackTime = 6;
 
+        @Config.Comment("If true, hammer must be in offhand for chisel use. If false, hammer can be in offhand or toolbar.")
+        @Config.LangKey("config." + MOD_ID + ".general.requireHammerInOffHand")
+        public boolean requireHammerInOffHand = true;
+
+        @Config.Comment("Does the chisel have a delay on use?")
+        @Config.LangKey("config." + MOD_ID + ".general.chiselDelay")
+        public boolean chiselDelay = false;
+
         @Config.Comment("Add iron ore dictionary to wrought iron items?")
         @Config.LangKey("config." + MOD_ID + ".general.oreDictIron")
         public boolean oreDictIron = false;
