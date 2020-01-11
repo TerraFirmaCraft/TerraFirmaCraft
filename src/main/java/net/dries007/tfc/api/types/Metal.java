@@ -194,7 +194,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         AXE_HEAD(true, 100, true, "X XXX", "    X", "     ", "    X", "X XXX"),
         HOE(true, 100, ItemMetalHoe::new),
         HOE_HEAD(true, 100, true, "XXXXX", "     ", "  XXX", "XXXXX"),
-        CHISEL(true, 100, ItemMetalTool::new),
+        CHISEL(true, 100, ItemMetalChisel::new),
         CHISEL_HEAD(true, 100, true, "X X", "X X", "X X", "X X", "X X"),
         SWORD(true, 100, ItemMetalTool::new),
         SWORD_BLADE(true, 100, true, "XXX  ", "XX   ", "X   X", "X  XX", " XXXX"),
