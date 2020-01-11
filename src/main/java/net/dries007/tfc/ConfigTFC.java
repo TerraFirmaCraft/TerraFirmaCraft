@@ -287,6 +287,10 @@ public class ConfigTFC
         @Config.Comment("The time required for a charcoal pit to complete")
         @Config.LangKey("config." + MOD_ID + ".general.charcoalPitTime")
         public int charcoalPitTime = 18_000;
+
+        @Config.Comment("The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.")
+        @Config.LangKey("config." + MOD_ID + ".general.defaultMonthLength")
+        public int defaultMonthLength = 8;
     }
 
     public static class ClientCFG

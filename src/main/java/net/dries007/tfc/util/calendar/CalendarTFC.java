@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 
@@ -50,9 +51,6 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
             return CalendarTFC.INSTANCE.daysInMonth;
         }
     };
-
-    public static final int DEFAULT_DAYS_IN_MONTH = 8;
-    public static final int DEFAULT_CALENDAR_TIME_OFFSET = (5 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
 
     public static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
     public static final Map<String, String> BIRTHDAYS = new HashMap<>();
@@ -108,9 +106,9 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
     public CalendarTFC()
     {
         // Initialize to default values
-        daysInMonth = DEFAULT_DAYS_IN_MONTH;
+        daysInMonth = ConfigTFC.GENERAL.defaultMonthLength;
         playerTime = 0;
-        calendarTime = DEFAULT_CALENDAR_TIME_OFFSET;
+        calendarTime = (5 * daysInMonth * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
         doDaylightCycle = true;
         arePlayersLoggedOn = false;
     }

@@ -29,6 +29,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -190,7 +191,7 @@ public class BlockQuern extends Block implements IItemSize
                                 {
                                     if (!inventory.getStackInSlot(TEQuern.SLOT_INPUT).isEmpty())
                                     {
-                                        playerIn.setHeldItem(EnumHand.MAIN_HAND, inventory.extractItem(TEQuern.SLOT_INPUT, inventory.getStackInSlot(TEQuern.SLOT_INPUT).getCount(), false));
+                                        ItemHandlerHelper.giveItemToPlayer(playerIn, inventory.extractItem(TEQuern.SLOT_INPUT, inventory.getStackInSlot(TEQuern.SLOT_INPUT).getCount(), false));
                                         teQuern.setAndUpdateSlots(TEQuern.SLOT_INPUT);
                                         return true;
                                     }
@@ -199,13 +200,13 @@ public class BlockQuern extends Block implements IItemSize
                                 {
                                     if (!inventory.getStackInSlot(TEQuern.SLOT_OUTPUT).isEmpty())
                                     {
-                                        playerIn.setHeldItem(EnumHand.MAIN_HAND, inventory.extractItem(TEQuern.SLOT_OUTPUT, inventory.getStackInSlot(TEQuern.SLOT_OUTPUT).getCount(), false));
+                                        ItemHandlerHelper.giveItemToPlayer(playerIn, inventory.extractItem(TEQuern.SLOT_OUTPUT, inventory.getStackInSlot(TEQuern.SLOT_OUTPUT).getCount(), false));
                                         teQuern.setAndUpdateSlots(TEQuern.SLOT_OUTPUT);
                                         return true;
                                     }
                                     else if (inventory.getStackInSlot(TEQuern.SLOT_INPUT).isEmpty()) //Prevents taking  handstone out if has input
                                     {
-                                        playerIn.setHeldItem(EnumHand.MAIN_HAND, inventory.extractItem(TEQuern.SLOT_HANDSTONE, inventory.getStackInSlot(TEQuern.SLOT_HANDSTONE).getCount(), false));
+                                        ItemHandlerHelper.giveItemToPlayer(playerIn, inventory.extractItem(TEQuern.SLOT_HANDSTONE, inventory.getStackInSlot(TEQuern.SLOT_HANDSTONE).getCount(), false));
                                         teQuern.setAndUpdateSlots(TEQuern.SLOT_HANDSTONE);
                                         return true;
                                     }
@@ -222,9 +223,13 @@ public class BlockQuern extends Block implements IItemSize
                             if (teQuern.isItemValid(TEQuern.SLOT_HANDSTONE, stack) && !teQuern.hasHandstone())
                             {
                                 if (stack.getCount() == 1)
+                                {
                                     playerIn.setHeldItem(EnumHand.MAIN_HAND, teQuern.insertOrSwapItem(TEQuern.SLOT_HANDSTONE, stack));
+                                }
                                 else
+                                {
                                     playerIn.addItemStackToInventory(teQuern.insertOrSwapItem(TEQuern.SLOT_HANDSTONE, stack.splitStack(1)));
+                                }
                                 teQuern.setAndUpdateSlots(TEQuern.SLOT_HANDSTONE);
                                 world.playSound(null, pos, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 1, 1);
                                 return true;
