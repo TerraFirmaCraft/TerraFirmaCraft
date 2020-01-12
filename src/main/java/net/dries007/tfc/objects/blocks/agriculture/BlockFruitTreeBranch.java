@@ -44,11 +44,11 @@ public class BlockFruitTreeBranch extends Block
      * 0 = no connection
      * 1 = connected, use vertical model
      * 2 = connected=, use horizontal model */
-    public static final PropertyInteger NORTH = PropertyInteger.create("n", 0, 2);
-    public static final PropertyInteger EAST = PropertyInteger.create("e", 0, 2);
-    public static final PropertyInteger SOUTH = PropertyInteger.create("s", 0, 2);
-    public static final PropertyInteger WEST = PropertyInteger.create("w", 0, 2);
-    public static final PropertyInteger UP = PropertyInteger.create("u", 0, 2);
+    public static final PropertyInteger NORTH = PropertyInteger.create("north", 0, 2);
+    public static final PropertyInteger EAST = PropertyInteger.create("east", 0, 2);
+    public static final PropertyInteger SOUTH = PropertyInteger.create("south", 0, 2);
+    public static final PropertyInteger WEST = PropertyInteger.create("west", 0, 2);
+    public static final PropertyInteger UP = PropertyInteger.create("up", 0, 2);
 
     private static final AxisAlignedBB TRUNK_N_AABB = new AxisAlignedBB(0.375D, 0.375D, 0.375D, 0.625D, 0.625D, 1.0D);
     private static final AxisAlignedBB TRUNK_E_AABB = new AxisAlignedBB(0.0D, 0.375D, 0.375D, 0.625D, 0.625D, 0.625D);
