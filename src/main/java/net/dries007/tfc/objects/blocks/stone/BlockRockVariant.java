@@ -368,14 +368,14 @@ public class BlockRockVariant extends Block implements IItemSize
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.VERY_SMALL;
+        return Size.SMALL;
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.MEDIUM;
     }
 
     protected void onRockSlide(World world, BlockPos pos)
