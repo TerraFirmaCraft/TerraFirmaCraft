@@ -124,9 +124,9 @@ public interface IAnimalTFC
     default Age getAge()
     {
         long deltaDays = CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay();
-        if (ConfigTFC.GENERAL.enableAnimalAging && deltaDays > getDaysToAdulthood() * ConfigTFC.GENERAL.factorAnimalAging)
+        if (getAdultFamiliarityCap() > 0 && ConfigTFC.GENERAL.enableAnimalAging && deltaDays > getDaysToAdulthood() * ConfigTFC.GENERAL.factorAnimalAging)
         {
-            return Age.OLD;
+            return Age.OLD; // if enabled, only for familiarizable animals
         }
         else if (deltaDays > getDaysToAdulthood())
         {
