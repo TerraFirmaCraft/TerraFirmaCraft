@@ -5,7 +5,10 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -57,6 +60,7 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIRunAroundLikeCrazyTFC;
 
+@SuppressWarnings("WeakerAccess")
 public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryChangedListener, IJumpingMount
 {
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute(null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
@@ -115,9 +119,27 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome)
     {
-        return temperature > -20 && temperature < 20 && rainfall > 75;
+        return 100;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 2;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     public boolean isTame()

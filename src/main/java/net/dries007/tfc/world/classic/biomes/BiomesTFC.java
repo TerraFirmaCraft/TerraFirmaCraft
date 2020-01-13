@@ -8,6 +8,7 @@ package net.dries007.tfc.world.classic.biomes;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.RegistryEvent;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.objects.entity.animal.EntityBearTFC;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -64,6 +66,11 @@ public final class BiomesTFC
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep Ocean").setBaseHeight(-3.2f).setHeightVariation(-2.49999f).setBaseBiome("tfc:ocean")), false, false, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-2.4f).setHeightVariation(-2.5990001f).setBaseBiome("tfc:ocean"), 4, 5), false, false, BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
 
+        // Register creatures for respawn in specific biomes
+        MOUNTAINS.getSpawnableList(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
+        MOUNTAINS_EDGE.getSpawnableList(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
+        HIGH_HILLS.getSpawnableList(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
+        HIGH_HILLS_EDGE.getSpawnableList(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
     }
 
     public static boolean isOceanicBiome(int id)
