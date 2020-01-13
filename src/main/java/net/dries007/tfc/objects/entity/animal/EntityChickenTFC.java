@@ -7,11 +7,14 @@ package net.dries007.tfc.objects.entity.animal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,9 +75,27 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome)
     {
-        return temperature > 18 && rainfall > 350;
+        return 100;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.MALE_AND_FEMALES.getRule();
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     @Override

@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -31,7 +30,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
@@ -82,11 +80,9 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
-import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
-import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -477,26 +473,6 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onLivingSpawnEvent(LivingSpawnEvent.CheckSpawn event)
     {
-        // Check creature spawning
-        if (event.getEntity() instanceof IAnimalTFC)
-        {
-            IAnimalTFC animal = (IAnimalTFC) event.getEntity();
-            World world = event.getWorld();
-            BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
-
-            float rainfall = ChunkDataTFC.getRainfall(world, pos);
-            float temperature = ClimateTFC.getAvgTemp(world, pos);
-            Biome biome = world.getBiome(pos);
-
-            // Set entity pos before checking for collisions
-            event.getEntity().setPosition(event.getX(), event.getY(), event.getZ());
-
-            if (!animal.isValidSpawnConditions(biome, temperature, rainfall) || !((EntityLiving) event.getEntityLiving()).getCanSpawnHere())
-            {
-                event.setResult(Event.Result.DENY);
-            }
-        }
-
         // Stop mob spawning in thatch - the list of non-spawnable light-blocking, non-collidable blocks is hardcoded in WorldEntitySpawner#canEntitySpawnBody
         BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
         if (event.getWorld().getBlockState(pos).getBlock() == BlocksTFC.THATCH || event.getWorld().getBlockState(pos.up()).getBlock() == BlocksTFC.THATCH)

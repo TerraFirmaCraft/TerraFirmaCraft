@@ -7,28 +7,23 @@ package net.dries007.tfc.objects.entity.animal;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-public interface IAnimalTFC
+/**
+ * Interface for animals with gender, familiarity and aging
+ */
+public interface IAnimalTFC extends ICreatureTFC
 {
-    /**
-     * Check if this animal can spawn in said conditions
-     *
-     * @param biome       the biome in chunk that is trying to spawn this animal
-     * @param temperature the average temperature of this region
-     * @param rainfall    the average rainfall of this region
-     * @return true if this animal can be spawn in this conditions
-     */
-    boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall);
-
     /**
      * Get this animal gender, female or male
      *
@@ -251,5 +246,98 @@ public interface IAnimalTFC
     enum Type
     {
         MAMMAL, OVIPAROUS
+    }
+
+    /**
+     * Helper enum with some default grouping rules for animals
+     */
+    enum AnimalGroupingRules
+    {
+        MOTHER_AND_CHILDREN_OR_SOLO_MALE // One individual group = male / Two or more = Mother and children
+            {
+                @Override
+                public BiConsumer<List<EntityLiving>, Random> getRule()
+                {
+                    return (entityLivings, random) ->
+                    {
+                        for (int i = 0; i < entityLivings.size(); i++)
+                        {
+                            EntityLiving living = entityLivings.get(i);
+                            if (living instanceof IAnimalTFC)
+                            {
+                                IAnimalTFC animal = (IAnimalTFC) living;
+                                if (i == 0)
+                                {
+                                    // Mother
+                                    int lifeTimeDays = (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - animal.getDaysToAdulthood());
+                                    animal.setGender(entityLivings.size() > 1 ? Gender.FEMALE : Gender.MALE);
+                                    animal.setBirthDay(lifeTimeDays);
+                                }
+                                else
+                                {
+                                    // Children
+                                    int lifeTimeDays = random.nextInt(animal.getDaysToAdulthood()) + (int) (CalendarTFC.PLAYER_TIME.getTotalDays());
+                                    animal.setBirthDay(lifeTimeDays);
+                                }
+                            }
+                        }
+                    };
+                }
+            },
+        ELDER_AND_POPULATION // First always adult
+            {
+                @Override
+                public BiConsumer<List<EntityLiving>, Random> getRule()
+                {
+                    return (entityLivings, random) ->
+                    {
+                        for (int i = 0; i < entityLivings.size(); i++)
+                        {
+                            EntityLiving living = entityLivings.get(i);
+                            if (living instanceof IAnimalTFC)
+                            {
+                                IAnimalTFC animal = (IAnimalTFC) living;
+                                if (i == 0)
+                                {
+                                    // Elder
+                                    int lifeTimeDays = (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - animal.getDaysToAdulthood());
+                                    animal.setBirthDay(lifeTimeDays);
+                                }
+                            }
+                        }
+                    };
+                }
+            },
+        MALE_AND_FEMALES // One adult male (or solo males) + random females
+            {
+                @Override
+                public BiConsumer<List<EntityLiving>, Random> getRule()
+                {
+                    return (entityLivings, random) ->
+                    {
+                        for (int i = 0; i < entityLivings.size(); i++)
+                        {
+                            EntityLiving living = entityLivings.get(i);
+                            if (living instanceof IAnimalTFC)
+                            {
+                                IAnimalTFC animal = (IAnimalTFC) living;
+                                if (i == 0)
+                                {
+                                    // Male
+                                    int lifeTimeDays = (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - animal.getDaysToAdulthood());
+                                    animal.setGender(Gender.MALE);
+                                    animal.setBirthDay(lifeTimeDays);
+                                }
+                                else
+                                {
+                                    animal.setGender(Gender.FEMALE);
+                                }
+                            }
+                        }
+                    };
+                }
+            };
+
+        abstract BiConsumer<List<EntityLiving>, Random> getRule();
     }
 }

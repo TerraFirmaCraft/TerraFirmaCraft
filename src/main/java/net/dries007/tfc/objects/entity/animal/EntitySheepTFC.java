@@ -8,11 +8,14 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntitySheep;
@@ -43,7 +46,6 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -74,10 +76,27 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome)
     {
-        return (temperature > -20 && temperature < 0 && rainfall > 100) ||
-            (temperature > -10 && rainfall > 100 && biome == BiomesTFC.MOUNTAINS);
+        return 100;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     @Override

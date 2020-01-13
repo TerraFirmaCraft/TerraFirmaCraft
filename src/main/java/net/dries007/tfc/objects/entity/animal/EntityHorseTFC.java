@@ -40,6 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 public class EntityHorseTFC extends AbstractHorseTFC
 {
     private static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
@@ -101,7 +102,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
     public void setHorseArmorStack(ItemStack itemStackIn)
     {
         HorseArmorType horsearmortype = HorseArmorType.getByItemStack(itemStackIn);
-        this.dataManager.set(HORSE_ARMOR, Integer.valueOf(horsearmortype.getOrdinal()));
+        this.dataManager.set(HORSE_ARMOR, horsearmortype.getOrdinal());
         this.dataManager.set(HORSE_ARMOR_STACK, itemStackIn);
         this.resetTexturePrefix();
 
@@ -271,8 +272,8 @@ public class EntityHorseTFC extends AbstractHorseTFC
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(HORSE_VARIANT, Integer.valueOf(0));
-        this.dataManager.register(HORSE_ARMOR, Integer.valueOf(HorseArmorType.NONE.getOrdinal()));
+        this.dataManager.register(HORSE_VARIANT, 0);
+        this.dataManager.register(HORSE_ARMOR, HorseArmorType.NONE.getOrdinal());
         this.dataManager.register(HORSE_ARMOR_STACK, ItemStack.EMPTY);
     }
 

@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 public class EntityDonkeyTFC extends AbstractChestHorseTFC
 {
     public static void registerFixesDonkeyTFC(DataFixer fixer)
