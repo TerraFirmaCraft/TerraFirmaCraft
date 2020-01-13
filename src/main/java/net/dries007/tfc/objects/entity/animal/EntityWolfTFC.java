@@ -112,6 +112,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         {
             EntityWolfTFC baby = new EntityWolfTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             UUID uuid = this.getOwnerId();
             if (uuid != null)
             {
@@ -120,6 +121,12 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
             }
             this.world.spawnEntity(baby);
         }
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
     }
 
     @Override

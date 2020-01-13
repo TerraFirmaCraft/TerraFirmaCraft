@@ -58,6 +58,16 @@ public interface IAnimalTFC
     void setBirthDay(int value);
 
     /**
+     * What is the maximum familiarity obtainable for adults of this animal?
+     *
+     * @return 0 if not familiarizable at all, ]0, 1] for a cap
+     */
+    default float getAdultFamiliarityCap()
+    {
+        return 0;
+    }
+
+    /**
      * Returns the familiarity of this animal
      *
      * @return float value between 0-1.

@@ -32,8 +32,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.player.IPlayerData;
-import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
+import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -228,7 +228,7 @@ public final class PlayerDataOverlay
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             mc.renderEngine.bindTexture(ICONS);
-            this.drawTexturedModalRect(itemModeX, itemModeY, iconU, 58, 20, 20);
+            drawTexturedModalRect(itemModeX, itemModeY, iconU, 58, 20, 20);
             mc.renderEngine.bindTexture(MC_ICONS);
         }
     }
@@ -271,8 +271,14 @@ public final class PlayerDataOverlay
                     GL11.glScalef(0.33F, 0.33F, 0.33F);
 
                     float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
-                    if (familiarity >= 0.3F)
+                    if (familiarity >= animal.getAdultFamiliarityCap() && animal.getAge() != IAnimalTFC.Age.CHILD)
                     {
+                        // Render a red-ish outline for adults that cannot be familiarized more
+                        drawTexturedModalRect(-8, 0, 132, 40, 16, 16);
+                    }
+                    else if (familiarity >= 0.3F)
+                    {
+                        // Render a white outline for the when the familiarity stopped decaying
                         drawTexturedModalRect(-8, 0, 112, 40, 16, 16);
                     }
                     else

@@ -13,6 +13,9 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+/**
+ * Implements pregnancy for mammals in TFC
+ */
 @ParametersAreNonnullByDefault
 public abstract class EntityAnimalMammal extends EntityAnimalTFC
 {
