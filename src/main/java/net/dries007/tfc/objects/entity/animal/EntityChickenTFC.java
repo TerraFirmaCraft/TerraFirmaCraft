@@ -220,6 +220,12 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     }
 
     @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.45F;
+    }
+
+    @Override
     public List<ItemStack> getProducts()
     {
         List<ItemStack> eggs = new ArrayList<>();
@@ -229,7 +235,9 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
             IEgg cap = egg.getCapability(CapabilityEgg.CAPABILITY, null);
             if (cap != null)
             {
-                cap.setFertilized(new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
+                EntityChickenTFC chick = new EntityChickenTFC(this.world);
+                chick.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                cap.setFertilized(chick, DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
         eggs.add(egg);

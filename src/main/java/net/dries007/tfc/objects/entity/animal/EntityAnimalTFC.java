@@ -258,7 +258,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 
         if (!itemstack.isEmpty())
         {
-            if (this.isFood(itemstack) && player.isSneaking())
+            if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
                 if (this.isHungry())
                 {
@@ -267,7 +267,12 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, itemstack);
-                        this.setFamiliarity(this.getFamiliarity() + 0.06f);
+                        float familiarity = this.getFamiliarity() + 0.06f;
+                        if (this.getAge() != Age.CHILD)
+                        {
+                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                        }
+                        this.setFamiliarity(familiarity);
                         world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
                     }
                     return true;

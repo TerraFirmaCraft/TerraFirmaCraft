@@ -118,15 +118,21 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         {
             EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), this.getDyeColor());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);
         }
-
     }
 
     @Override
     public long gestationDays()
     {
         return DAYS_TO_FULL_GESTATION;
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
     }
 
     public EnumDyeColor getDyeColor()

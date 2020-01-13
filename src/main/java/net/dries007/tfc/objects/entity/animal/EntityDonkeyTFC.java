@@ -57,6 +57,7 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
             {
                 baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
                 baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
                 this.world.spawnEntity(baby);
             }
         }
@@ -77,6 +78,12 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         {
             return this.canMate() && ((AbstractHorseTFC) otherAnimal).canMate() && super.canMateWith(otherAnimal);
         }
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
     }
 
     @Override
