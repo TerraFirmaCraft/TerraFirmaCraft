@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,20 +67,6 @@ public abstract class BlockCropSimple extends BlockCropTFC
                 worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) + 1), 2);
             }
         }
-    }
-
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(getStageProperty(), meta & 7).withProperty(WILD, meta > 7);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(getStageProperty()) + (state.getValue(WILD) ? 8 : 0);
     }
 
     @Override
@@ -148,5 +135,49 @@ public abstract class BlockCropSimple extends BlockCropTFC
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return CROPS_AABB[state.getValue(getStageProperty())];
+    }
+
+    public static BlockCropSimple create(ICrop crop, boolean isPickable)
+    {
+        switch (crop.getMaxStage() + 1)
+        {
+            case 5:
+                return new BlockCropSimple(crop, isPickable)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_5;
+                    }
+                };
+            case 6:
+                return new BlockCropSimple(crop, isPickable)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_6;
+                    }
+                };
+            case 7:
+                return new BlockCropSimple(crop, isPickable)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_7;
+                    }
+                };
+            case 8:
+                return new BlockCropSimple(crop, isPickable)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_8;
+                    }
+                };
+        }
+        throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
     }
 }

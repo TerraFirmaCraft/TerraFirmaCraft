@@ -28,18 +28,16 @@ import net.dries007.tfc.objects.te.TECropSpreading;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.util.agriculture.Crop.STAGE_8;
-
 @ParametersAreNonnullByDefault
-public class BlockCropSpreading extends BlockCropTFC
+public abstract class BlockCropSpreading extends BlockCropTFC
 {
     private static final int MAX_SPREAD_AGE = 16;
 
-    public BlockCropSpreading(ICrop crop)
+    protected BlockCropSpreading(ICrop crop)
     {
         super(crop);
 
-        setDefaultState(getBlockState().getBaseState().withProperty(WILD, false).withProperty(STAGE_8, 0));
+        setDefaultState(getBlockState().getBaseState().withProperty(WILD, false).withProperty(getStageProperty(), 0));
     }
 
     @Override
@@ -55,14 +53,14 @@ public class BlockCropSpreading extends BlockCropTFC
             TECropSpreading tile = Helpers.getTE(worldIn, pos, TECropSpreading.class);
             if (tile != null)
             {
-                int currentGrowthStage = state.getValue(STAGE_8);
+                int currentGrowthStage = state.getValue(getStageProperty());
                 // Should the crop grow at all?
                 if (tile.getBaseAge() + currentGrowthStage < MAX_SPREAD_AGE)
                 {
                     if (currentGrowthStage < tile.getMaxGrowthStage())
                     {
                         // grow normally
-                        worldIn.setBlockState(pos, state.withProperty(STAGE_8, currentGrowthStage + 1));
+                        worldIn.setBlockState(pos, state.withProperty(getStageProperty(), currentGrowthStage + 1));
                     }
                     else
                     {
@@ -86,7 +84,7 @@ public class BlockCropSpreading extends BlockCropTFC
                             if (stateDown.getBlock().canSustainPlant(stateDown, worldIn, newPos.down(), EnumFacing.UP, this))
                             {
                                 // Spawn a crop on the new block
-                                worldIn.setBlockState(newPos, getDefaultState().withProperty(STAGE_8, currentGrowthStage / 2));
+                                worldIn.setBlockState(newPos, getDefaultState().withProperty(getStageProperty(), currentGrowthStage / 2));
                                 TECropSpreading newTile = Helpers.getTE(worldIn, newPos, TECropSpreading.class);
                                 if (newTile != null)
                                 {
@@ -100,20 +98,6 @@ public class BlockCropSpreading extends BlockCropTFC
                 }
             }
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return getDefaultState().withProperty(WILD, meta > 7).withProperty(STAGE_8, meta & 7);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(STAGE_8) + (state.getValue(WILD) ? 8 : 0);
     }
 
     @Override
@@ -132,7 +116,7 @@ public class BlockCropSpreading extends BlockCropTFC
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, WILD, STAGE_8);
+        return new BlockStateContainer(this, WILD, getStageProperty());
     }
 
     @Override
@@ -145,7 +129,7 @@ public class BlockCropSpreading extends BlockCropTFC
             drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
         }
         // todo: adjust food drops based on player agriculture skill. For now just go with 2 for initial balance
-        ItemStack foodDrop = crop.getFoodDrop(state.getValue(STAGE_8));
+        ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
         if (!foodDrop.isEmpty())
         {
             foodDrop.setCount(2);
@@ -172,12 +156,6 @@ public class BlockCropSpreading extends BlockCropTFC
     }
 
     @Override
-    public PropertyInteger getStageProperty()
-    {
-        return STAGE_8;
-    }
-
-    @Override
     protected ItemStack getDeathItem(TETickCounter cropTE)
     {
         if (crop instanceof TECropSpreading && ((TECropSpreading) cropTE).isSeedPlant())
@@ -185,5 +163,49 @@ public class BlockCropSpreading extends BlockCropTFC
             return super.getDeathItem(cropTE);
         }
         return ItemStack.EMPTY;
+    }
+
+    public static BlockCropSpreading create(ICrop crop)
+    {
+        switch (crop.getMaxStage() + 1)
+        {
+            case 5:
+                return new BlockCropSpreading(crop)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_5;
+                    }
+                };
+            case 6:
+                return new BlockCropSpreading(crop)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_6;
+                    }
+                };
+            case 7:
+                return new BlockCropSpreading(crop)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_7;
+                    }
+                };
+            case 8:
+                return new BlockCropSpreading(crop)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_8;
+                    }
+                };
+        }
+        throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
     }
 }

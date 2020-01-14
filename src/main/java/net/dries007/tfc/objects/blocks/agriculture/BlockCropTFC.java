@@ -42,8 +42,18 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public abstract class BlockCropTFC extends BlockBush implements IGrowable
 {
+    // stage properties
+    public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
+    public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
+    public static final PropertyInteger STAGE_6 = PropertyInteger.create("stage", 0, 5);
+    public static final PropertyInteger STAGE_5 = PropertyInteger.create("stage", 0, 4);
+
     /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */
     public static final PropertyBool WILD = PropertyBool.create("wild");
+
+    // binary flags for state and metadata conversion
+    private static final int META_WILD = 8;
+    private static final int META_GROWTH = 7;
 
     private static final Map<ICrop, BlockCropTFC> MAP = new HashMap<>();
 
@@ -89,6 +99,20 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(WILD, (meta & META_WILD) > 0).withProperty(getStageProperty(), meta & META_GROWTH);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(getStageProperty()) + (state.getValue(WILD) ? META_WILD : 0);
     }
 
     @Override
