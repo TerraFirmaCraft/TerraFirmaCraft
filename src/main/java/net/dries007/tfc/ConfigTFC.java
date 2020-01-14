@@ -312,7 +312,7 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.enableAnimalAging")
         public boolean enableAnimalAging = true;
 
-        @Config.Comment("How fast animals became old?")
+        @Config.Comment("How long until animals became old (in factor to adulthood)?")
         @Config.RangeDouble(min = 1, max = 50)
         @Config.LangKey("config." + MOD_ID + ".general.factorAnimalAging")
         public double factorAnimalAging = 3;
