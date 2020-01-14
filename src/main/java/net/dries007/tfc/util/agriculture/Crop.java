@@ -8,7 +8,6 @@ package net.dries007.tfc.util.agriculture;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -47,11 +46,6 @@ public enum Crop implements ICrop
     JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
     PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING),
     MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING);
-
-    public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
-    public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
-    public static final PropertyInteger STAGE_6 = PropertyInteger.create("stage", 0, 5);
-    public static final PropertyInteger STAGE_5 = PropertyInteger.create("stage", 0, 4);
 
     private final Supplier<ItemStack> foodDrop;
     private final Supplier<ItemStack> foodDropEarly;
@@ -127,49 +121,11 @@ public enum Crop implements ICrop
     {
         if (type == SIMPLE || type == PICKABLE)
         {
-            switch (growthStages)
-            {
-                case 5:
-                    return new BlockCropSimple(this, type == PICKABLE)
-                    {
-                        @Override
-                        public PropertyInteger getStageProperty()
-                        {
-                            return STAGE_5;
-                        }
-                    };
-                case 6:
-                    return new BlockCropSimple(this, type == PICKABLE)
-                    {
-                        @Override
-                        public PropertyInteger getStageProperty()
-                        {
-                            return STAGE_6;
-                        }
-                    };
-                case 7:
-                    return new BlockCropSimple(this, type == PICKABLE)
-                    {
-                        @Override
-                        public PropertyInteger getStageProperty()
-                        {
-                            return STAGE_7;
-                        }
-                    };
-                case 8:
-                    return new BlockCropSimple(this, type == PICKABLE)
-                    {
-                        @Override
-                        public PropertyInteger getStageProperty()
-                        {
-                            return STAGE_8;
-                        }
-                    };
-            }
+            return BlockCropSimple.create(this, type == PICKABLE);
         }
         else if (type == SPREADING)
         {
-            return new BlockCropSpreading(this);
+            return BlockCropSpreading.create(this);
         }
         throw new IllegalStateException("Invalid growthstage property " + growthStages + " for crop");
     }
