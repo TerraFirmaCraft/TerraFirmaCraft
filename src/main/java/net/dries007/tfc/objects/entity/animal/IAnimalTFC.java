@@ -269,15 +269,16 @@ public interface IAnimalTFC extends ICreatureTFC
                                 if (i == 0)
                                 {
                                     // Mother
-                                    int lifeTimeDays = (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - animal.getDaysToAdulthood());
+                                    int lifeTimeDays = animal.getDaysToAdulthood() + random.nextInt((int) Math.max(1, animal.getDaysToAdulthood() * (ConfigTFC.GENERAL.factorAnimalAging - 1)));
                                     animal.setGender(entityLivings.size() > 1 ? Gender.FEMALE : Gender.MALE);
-                                    animal.setBirthDay(lifeTimeDays);
+                                    animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                                 }
                                 else
                                 {
                                     // Children
-                                    int lifeTimeDays = random.nextInt(animal.getDaysToAdulthood()) + (int) (CalendarTFC.PLAYER_TIME.getTotalDays());
-                                    animal.setBirthDay(lifeTimeDays);
+                                    int lifeTimeDays = random.nextInt(animal.getDaysToAdulthood());
+                                    animal.setGender(Gender.fromBool(random.nextBoolean()));
+                                    animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                                 }
                             }
                         }
@@ -300,8 +301,15 @@ public interface IAnimalTFC extends ICreatureTFC
                                 if (i == 0)
                                 {
                                     // Elder
-                                    int lifeTimeDays = (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - animal.getDaysToAdulthood());
-                                    animal.setBirthDay(lifeTimeDays);
+                                    int lifeTimeDays = animal.getDaysToAdulthood() + random.nextInt((int) Math.max(1, animal.getDaysToAdulthood() * (ConfigTFC.GENERAL.factorAnimalAging)));
+                                    animal.setGender(Gender.fromBool(random.nextBoolean()));
+                                    animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
+                                }
+                                else
+                                {
+                                    int lifeTimeDays = random.nextInt((int) Math.max(1, animal.getDaysToAdulthood() * (ConfigTFC.GENERAL.factorAnimalAging - 1)));
+                                    animal.setGender(Gender.fromBool(random.nextBoolean()));
+                                    animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                                 }
                             }
                         }
@@ -324,13 +332,15 @@ public interface IAnimalTFC extends ICreatureTFC
                                 if (i == 0)
                                 {
                                     // Male
-                                    int lifeTimeDays = (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - animal.getDaysToAdulthood());
+                                    int lifeTimeDays = animal.getDaysToAdulthood() + random.nextInt((int) Math.max(1, animal.getDaysToAdulthood() * (ConfigTFC.GENERAL.factorAnimalAging - 1)));
                                     animal.setGender(Gender.MALE);
-                                    animal.setBirthDay(lifeTimeDays);
+                                    animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                                 }
                                 else
                                 {
+                                    int lifeTimeDays = random.nextInt((int) Math.max(1, animal.getDaysToAdulthood() * (ConfigTFC.GENERAL.factorAnimalAging - 1)));
                                     animal.setGender(Gender.FEMALE);
+                                    animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                                 }
                             }
                         }
