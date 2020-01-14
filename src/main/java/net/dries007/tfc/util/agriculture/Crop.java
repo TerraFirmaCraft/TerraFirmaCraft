@@ -24,53 +24,116 @@ import static net.dries007.tfc.util.agriculture.Crop.CropType.*;
 
 public enum Crop implements ICrop
 {
-    BARLEY(Food.BARLEY, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    MAIZE(Food.MAIZE, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
-    OAT(Food.OAT, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    RICE(Food.RICE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    RYE(Food.RYE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    WHEAT(Food.WHEAT, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    BEET(Food.BEET, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    CABBAGE(Food.CABBAGE, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
-    CARROT(Food.CARROT, 5f, 35f, 100f, 400f, 5, 0.5f, SIMPLE),
-    GARLIC(Food.GARLIC, 5f, 35f, 100f, 400f, 5, 0.5f, SIMPLE),
-    GREEN_BEAN(Food.GREEN_BEAN, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    ONION(Food.ONION, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    POTATO(Food.POTATO, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    SOYBEAN(Food.SOYBEAN, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    SQUASH(Food.SQUASH, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING),
-    SUGARCANE(Food.SUGARCANE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    TOMATO(Food.TOMATO, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
-    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING),
-    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING);
+    // todo: unique rain tolerances for each crop
+    BARLEY(Food.BARLEY,
+        new Range(0, 4, 35, 40),
+        new Range(100, 400, 50),
+        8, 0.5f, SIMPLE),
+    MAIZE(Food.MAIZE,
+        new Range(0, 8, 35, 40),
+        new Range(100, 400, 50),
+        6, 0.5f, SIMPLE),
+    OAT(Food.OAT,
+        new Range(0, 4, 35, 40),
+        new Range(100, 400, 50),
+        8, 0.5f, SIMPLE),
+    RICE(Food.RICE,
+        new Range(0, 4, 35, 40),
+        new Range(100, 400, 50),
+        8, 0.5f, SIMPLE),
+    RYE(Food.RYE,
+        new Range(0, 4, 35, 40),
+        new Range(100, 400, 50),
+        8, 0.5f, SIMPLE),
+    WHEAT(Food.WHEAT,
+        new Range(0, 4, 35, 40),
+        new Range(100, 400, 50),
+        8, 0.5f, SIMPLE),
+    BEET(Food.BEET,
+        new Range(0, 5, 35, 40), // todo: unique temp range for beets
+        new Range(100, 400, 50),
+        7, 0.5f, SIMPLE),
+    CABBAGE(Food.CABBAGE,
+        new Range(0, 10, 35, 40),
+        new Range(100, 400, 50),
+        6, 0.5f, SIMPLE),
+    CARROT(Food.CARROT,
+        new Range(0, 8, 35, 40),
+        new Range(100, 400, 50),
+        5, 0.5f, SIMPLE),
+    GARLIC(Food.GARLIC,
+        new Range(0, 8, 35, 40),
+        new Range(100, 400, 50),
+        5, 0.5f, SIMPLE),
+    GREEN_BEAN(Food.GREEN_BEAN,
+        new Range(0, 8, 35, 40),
+        new Range(100, 400, 50),
+        7, 0.5f, SIMPLE),
+    ONION(Food.ONION,
+        new Range(0, 8, 35, 40),
+        new Range(100, 400, 50),
+        7, 0.5f, SIMPLE),
+    POTATO(Food.POTATO,
+        new Range(0, 4, 35, 40),
+        new Range(100, 400, 50),
+        7, 0.5f, SIMPLE),
+    SOYBEAN(Food.SOYBEAN,
+        new Range(0, 8, 35, 40),
+        new Range(100, 400, 50),
+        7, 0.5f, SIMPLE),
+    SQUASH(Food.SQUASH,
+        new Range(0, 8, 35, 40),
+        new Range(100, 400, 50),
+        8, 0.5f, SPREADING),
+    SUGARCANE(Food.SUGARCANE,
+        new Range(12, 18, 35, 40),
+        new Range(100, 400, 50),
+        8, 0.5f, SIMPLE),
+    TOMATO(Food.TOMATO,
+        new Range(0, 8, 35, 40),
+        new Range(100, 400, 50),
+        8, 0.5f, SIMPLE),
+    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)),
+        new Range(4, 12, 35, 40),
+        new Range(100, 400, 50),
+        7, 0.5f, SIMPLE),
+    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)),
+        new Range(4, 12, 35, 40),
+        new Range(100, 400, 50),
+        7, 0.5f, SIMPLE),
+    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY,
+        new Range(5, 10, 35, 40),
+        new Range(100, 400, 50),
+        6, 0.5f, SIMPLE),
+    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY,
+        new Range(0, 5, 35, 40), // todo: unique temp range for pumpkins
+        new Range(100, 400, 50),
+        8, 0.5f, SPREADING),
+    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY,
+        new Range(0, 5, 35, 40),  // todo: unique temp range for melons
+        new Range(100, 400, 50),
+        8, 0.5f, SPREADING);
 
     private final Supplier<ItemStack> foodDrop;
     private final Supplier<ItemStack> foodDropEarly;
-    private final float minTemp;
-    private final float maxTemp;
-    private final float minRain;
-    private final float maxRain;
+    private final Range tempRange;
+    private final Range rainRange;
     private final int growthStages;
     private final float growthTime;
     private final CropType type;
 
-    Crop(Food foodDrop, float minTemp, float maxTemp, float minRain, float maxRain, int growthStages, float growthTime, CropType type)
+    Crop(Food foodDrop, Range tempRange, Range rainRange, int growthStages, float growthTime, CropType type)
     {
-        this(() -> new ItemStack(ItemFoodTFC.get(foodDrop)), () -> ItemStack.EMPTY, minTemp, maxTemp, minRain, maxRain, growthStages, growthTime, type);
+        this(() -> new ItemStack(ItemFoodTFC.get(foodDrop)), () -> ItemStack.EMPTY, tempRange, rainRange, growthStages, growthTime, type);
     }
 
-    Crop(Supplier<ItemStack> foodDrop, Supplier<ItemStack> foodDropEarly, float minTemp, float maxTemp, float minRain, float maxRain, int growthStages, float growthTime, CropType type)
+    Crop(Supplier<ItemStack> foodDrop, Supplier<ItemStack> foodDropEarly, Range tempRange, Range rainRange, int growthStages, float growthTime, CropType type)
     {
         this.foodDrop = foodDrop;
         this.foodDropEarly = foodDropEarly;
 
-        this.minTemp = minTemp;
-        this.maxTemp = maxTemp;
-        this.minRain = minRain;
-        this.maxRain = maxRain;
+        this.tempRange = tempRange;
+        this.rainRange = rainRange;
 
         this.growthStages = growthStages;
         this.growthTime = growthTime; // This is measured in % of months
@@ -93,13 +156,13 @@ public enum Crop implements ICrop
     @Override
     public boolean isValidConditions(float temperature, float rainfall)
     {
-        return minTemp - 5 < temperature && temperature < maxTemp + 5 && minRain - 50 < rainfall && rainfall < maxRain + 50;
+        return tempRange.minAlive < temperature && temperature < tempRange.maxAlive && rainRange.minAlive < rainfall && rainfall < rainRange.maxAlive;
     }
 
     @Override
     public boolean isValidForGrowth(float temperature, float rainfall)
     {
-        return minTemp < temperature && temperature < maxTemp && minRain < rainfall && rainfall < maxRain;
+        return tempRange.minGrow < temperature && temperature < tempRange.maxGrow && rainRange.minGrow < rainfall && rainfall < rainRange.maxGrow;
     }
 
     @Nonnull
@@ -133,5 +196,23 @@ public enum Crop implements ICrop
     enum CropType
     {
         SIMPLE, PICKABLE, SPREADING
+    }
+
+    private static class Range
+    {
+        public final float minAlive, maxAlive, minGrow, maxGrow;
+
+        public Range(float minGrow, float maxGrow, float tolerance)
+        {
+            this(minGrow - tolerance, minGrow, maxGrow, maxGrow + tolerance);
+        }
+
+        public Range(float minAlive, float minGrow, float maxGrow, float maxAlive)
+        {
+            this.minAlive = minAlive;
+            this.minGrow = minGrow;
+            this.maxGrow = maxGrow;
+            this.maxAlive = maxAlive;
+        }
     }
 }
