@@ -136,6 +136,9 @@ public class ItemMetalChisel extends ItemMetalTool
 
                     if ((chiselMode == Mode.SLAB && block instanceof BlockSlab) || (chiselMode == Mode.STAIR && block instanceof BlockStairs))
                     {
+                        if (facing.getAxis().getPlane() != EnumFacing.Plane.VERTICAL)
+                            hitY = 1 - hitY;
+
                         return block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, resultItemStack.getMetadata(), player);
                     }
                 }
