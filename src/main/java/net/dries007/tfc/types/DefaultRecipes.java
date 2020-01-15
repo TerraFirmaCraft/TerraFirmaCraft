@@ -131,7 +131,8 @@ public final class DefaultRecipes
             // this ratio works for 9b + 1b = 10b (full barrel) of brine/milk_vinegar, but leaves odd ninths of fluid around for other mixtures.
             //  previous todo had "make it a simpler calculation"
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 500), IIngredient.of("dustFlux"), new FluidStack(LIMEWATER.get(), 500), ItemStack.EMPTY, 0).setRegistryName("limewater"),
-
+            new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 200), IIngredient.of("dustSalt"), new FluidStack(SALT_WATER.get(), 200), ItemStack.EMPTY, 0).setRegistryName("salt_water"),
+            
             new BarrelRecipeTemperature(IIngredient.of(FRESH_WATER.get(), 1), 50).setRegistryName("fresh_water_cooling"),
             new BarrelRecipeTemperature(IIngredient.of(SALT_WATER.get(), 1), 50).setRegistryName("salt_water_cooling")
         );
