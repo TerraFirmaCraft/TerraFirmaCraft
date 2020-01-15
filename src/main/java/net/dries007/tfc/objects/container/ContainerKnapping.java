@@ -130,6 +130,30 @@ public class ContainerKnapping extends ContainerItemStack implements IButtonHand
         consumeIngredientStackAfterComplete();
     }
 
+    /**
+     * Used in client to check a slot state in the matrix
+     * JEI won't cause issues anymore see https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/718
+     *
+     * @param index the slot index
+     * @return the boolean state for the checked slot
+     */
+    public boolean getSlotState(int index)
+    {
+        return matrix.get(index);
+    }
+
+    /**
+     * Used in client to set a slot state in the matrix
+     * JEI won't cause issues anymore see https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/718
+     *
+     * @param index the slot index
+     * @param value the value you wish to set the state to
+     */
+    public void setSlotState(int index, boolean value)
+    {
+        matrix.set(index, value);
+    }
+
     private KnappingRecipe getMatchingRecipe()
     {
         return TFCRegistries.KNAPPING.getValuesCollection().stream().filter(x -> x.getType() == type && matrix.matches(x.getMatrix())).findFirst().orElse(null);
