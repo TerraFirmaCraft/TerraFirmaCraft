@@ -101,43 +101,6 @@ public abstract class BlockCropSpreading extends BlockCropTFC
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        // Seed dropping happens here because it needs to access the TE, which is gone by the time getDrops is called
-        TECropSpreading tile = Helpers.getTE(worldIn, pos, TECropSpreading.class);
-        if (tile != null && tile.isSeedPlant())
-        {
-            InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemSeedsTFC.get(crop)));
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, WILD, getStageProperty());
-    }
-
-    @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        drops.clear();
-        TECropSpreading tile = Helpers.getTE(world, pos, TECropSpreading.class);
-        if (tile != null && tile.isSeedPlant())
-        {
-            drops.add(new ItemStack(ItemSeedsTFC.get(crop)));
-        }
-        // todo: adjust food drops based on player agriculture skill. For now just go with 2 for initial balance
-        ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
-        if (!foodDrop.isEmpty())
-        {
-            foodDrop.setCount(2);
-            drops.add(foodDrop);
-        }
-    }
-
-    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         TECropSpreading tile = Helpers.getTE(worldIn, pos, TECropSpreading.class);
@@ -153,16 +116,6 @@ public abstract class BlockCropSpreading extends BlockCropTFC
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TECropSpreading();
-    }
-
-    @Override
-    protected ItemStack getDeathItem(TETickCounter cropTE)
-    {
-        if (crop instanceof TECropSpreading && ((TECropSpreading) cropTE).isSeedPlant())
-        {
-            return super.getDeathItem(cropTE);
-        }
-        return ItemStack.EMPTY;
     }
 
     public static BlockCropSpreading create(ICrop crop)

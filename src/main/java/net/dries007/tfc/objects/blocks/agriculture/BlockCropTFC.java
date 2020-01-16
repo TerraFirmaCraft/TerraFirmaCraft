@@ -19,16 +19,20 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
@@ -36,11 +40,26 @@ import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.skills.SimpleSkill;
+import net.dries007.tfc.util.skills.SkillTier;
+import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
 public abstract class BlockCropTFC extends BlockBush implements IGrowable
 {
+    // model boxes
+    private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.125D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.25D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.375D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.625D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.75D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.875D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D)
+    };
+
     // stage properties
     public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
     public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
@@ -115,6 +134,13 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     }
 
     @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, getStageProperty(), WILD);
+    }
+
+    @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         super.updateTick(worldIn, pos, state, random);
@@ -151,6 +177,36 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     }
 
     @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        EntityPlayer player = harvesters.get();
+        ItemStack seedStack = new ItemStack(ItemSeedsTFC.get(crop));
+        ItemStack foodStack = crop.getFoodDrop(state.getValue(getStageProperty()));
+
+        // if player and skills are present, update skills and increase amounts of items depending on skill
+        if (player != null)
+        {
+            SimpleSkill skill = CapabilityPlayerData.getSkill(player, SkillType.AGRICULTURE);
+
+            if (skill != null)
+            {
+                foodStack.setCount(1 + RANDOM.nextInt(2 + (int) (6 * skill.getTotalLevel())));
+                if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
+                {
+                    seedStack.setCount(2);
+                }
+                skill.add(0.04f);
+            }
+        }
+
+        // add items to drop
+        if (!foodStack.isEmpty())
+            drops.add(foodStack);
+        if (!seedStack.isEmpty())
+            drops.add(seedStack);
+    }
+
+    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
@@ -158,6 +214,14 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         {
             tile.resetCounter();
         }
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return CROPS_AABB[state.getValue(getStageProperty())];
     }
 
     @Override
