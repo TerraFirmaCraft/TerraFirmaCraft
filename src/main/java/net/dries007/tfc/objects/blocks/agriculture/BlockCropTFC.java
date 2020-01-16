@@ -35,7 +35,6 @@ import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -127,10 +126,14 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
             TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
             if (te != null)
             {
-                if (te.getTicksSinceUpdate() > crop.getGrowthTime() && crop.isValidForGrowth(temp, rainfall))
+                if (crop.isValidForGrowth(temp, rainfall))
                 {
-                    grow(worldIn, random, pos, state);
-                    te.resetCounter();
+                    // for every growth time, grow the plant
+                    while (te.getTicksSinceUpdate() > crop.getGrowthTime())
+                    {
+                        grow(worldIn, random, pos, worldIn.getBlockState(pos));
+                        te.reduceCounter((long) crop.getGrowthTime());
+                    }
                 }
 
                 // If not valid conditions, die
