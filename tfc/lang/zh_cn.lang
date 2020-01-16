@@ -1,15 +1,15 @@
 # Contributions
 # 感谢为中文本地化贡献力量的所有人。
 # 初稿：青乌 人间之蟹 gdufw hidfug HeartyYF
-# 校对：hidfug HeartyYF zhanj xwjcool123
+# 校对：hidfug HeartyYF zhanj xwjcool123 3TUSK wje5
 # 以及其他很多提出过建议和意见的朋友。
 
 # Command
 tfc.command.time.usage=/timetfc [add|query|set] [参数]
 tfc.command.time.usage_expected_first_argument=在 /timetfc 后应有 [add|query|set]
 tfc.command.time.usage_expected_second_argument_query=在 /timetfc query 后应有 [daytime|day|gametime|playerticks|calendarticks]
-tfc.command.time.usage_expected_second_argument_set=在 /timetfc set 后应有 [day|night}monthlength|<value>]
-tfc.command.time.usage_expected_second_argument_add=在 /timetfc add 后应有 [day|night}monthlength|<value>]
+tfc.command.time.usage_expected_second_argument_set=在 /timetfc set 后应有 [day|night|monthlength <value>]
+tfc.command.time.usage_expected_second_argument_add=在 /timetfc add 后应有 [days|months|years] <value>
 tfc.command.time.set_month_length=将月长度设置为 %d 天/月
 
 # Gui
@@ -36,9 +36,9 @@ tfc.tooltip.workable=可加工
 tfc.tooltip.danger=危险！！
 tfc.tooltip.anvil_plan=目标
 tfc.tooltip.anvil_tier_too_low=此砧等级过低！
-tfc.tooltip.anvil_no_flux=砧里没有焊剂！
+tfc.tooltip.anvil_no_flux=砧里没有助焊剂！
 tfc.tooltip.anvil_too_cold=物品不够热，无法开工！
-tfc.tooltip.anvil_no_hammer=砧里没有锤子！
+tfc.tooltip.anvil_no_hammer=砧里没有锤！
 tfc.tooltip.crucible_result=产物：
 tfc.tooltip.barrel_seal=密封桶
 tfc.tooltip.barrel_unseal=启封桶
@@ -47,7 +47,7 @@ tfc.tooltip.calendar=日历
 tfc.tooltip.season=季节：%s
 tfc.tooltip.day=日：%s
 tfc.tooltip.date=日期：%s
-tfc.tooltip.calendar_full_date=%s %s %02d, %04d
+tfc.tooltip.calendar_full_date=%4$04d 年 %2$s %3$02d 日 %1$s
 tfc.tooltip.debug_times=玩家刻：%d | 日历刻：%d
 tfc.tooltip.food_expiry_date=于 %s 过期
 tfc.tooltip.food_rotten=腐烂了 - 我绝对不吃。
@@ -62,6 +62,7 @@ tfc.tooltip.plant_wet=%s过湿%s
 tfc.tooltip.blast_furnace_ore_amount=矿石
 tfc.tooltip.blast_furnace_fuel_amount=燃料
 tfc.tooltip.blast_furnace_melt_amount=熔化
+tfc.tooltip.blast_furnace_invalid_structure=无效的结构！
 tfc.tooltip.large_vessel_seal=密封大缸
 tfc.tooltip.large_vessel_unseal=启封大缸
 tfc.tooltip.goldpan.chunkworked=这片地区似乎已被过度开采。你或许发现不了什么。
@@ -74,7 +75,7 @@ tfc.tooltip.animal.lowfamiliarity=这只动物和你的亲密度太低，不能�
 tfc.tooltip.animal.pregnant=这只动物怀孕了！
 tfc.tooltip.animal.resting=这只动物今天交配过了，正在休息。
 
-tfc.tooltip.animal.milk.male=这是公牛！
+tfc.tooltip.animal.milk.male=这是头公牛！
 tfc.tooltip.animal.milk.old=这头牛太老，不产奶了。
 tfc.tooltip.animal.milk.child=这头牛还小，没开始产奶。
 tfc.tooltip.animal.milk.lowfamiliarity=这头牛和你的亲密度太低，不让你挤奶。
@@ -125,6 +126,7 @@ tfc.enum.skilltier.master=大师
 ## Keybindings
 tfc.key.craft=合成面板
 tfc.key.placeblock=在方块上放置物品
+tfc.key.itemmode=切换物品模式
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=生成模糊化半径
@@ -151,28 +153,28 @@ config.tfc.general.debug.tooltip=各种调试选项。激活一些额外的调�
 config.tfc.general.removeVanillaRecipes=移除原版合成配方
 config.tfc.general.removeVanillaRecipes.tooltip=启用/禁用原版配方移除。false = 保留所有原版配方。
 
-config.tfc.general.removeVanillaLoots=移除原版掠夺表
-config.tfc.general.removeVanillaLoots.tooltip=启用/禁用与群峦传说冲突的原版掠夺表入口（例如马铃薯）。false = 保留这些掠夺表。
+config.tfc.general.removeVanillaLoots=移除原版战利品表
+config.tfc.general.removeVanillaLoots.tooltip=启用/禁用与群峦传说冲突的原版战利品表项（例如马铃薯）。false = 保留这些战利品表。
 
 config.tfc.general.leafStickDropChance=树叶掉落木棍几率
-config.tfc.general.leafStickDropChance.tooltip=破坏树叶正常掉落木棍的几率
+config.tfc.general.leafStickDropChance.tooltip=破坏树叶时正常掉落木棍的几率
 
 config.tfc.general.leafStickDropChanceBonus=树叶额外掉落木棍几率
-config.tfc.general.leafStickDropChanceBonus.tooltip=破坏树叶额外掉落木棍的几率
+config.tfc.general.leafStickDropChanceBonus.tooltip=破坏树叶时额外掉落木棍的几率
 
-config.tfc.general.leafStickDropChanceBonusClasses=工具类树叶掉落木棍几率
-config.tfc.general.leafStickDropChanceBonusClasses.tooltip=使用对应工具破坏树叶额外掉落木棍的几率
+config.tfc.general.leafStickDropChanceBonusClasses=树叶工具类掉落木棍几率
+config.tfc.general.leafStickDropChanceBonusClasses.tooltip=使用对应工具破坏树叶时额外掉落木棍的几率
 
 config.tfc.general.stoneGemDropChance=岩石掉落宝石几率
 config.tfc.general.stoneGemDropChance.tooltip=任何宝石从未加工岩石中掉落的几率
 
-config.tfc.general.temperatureModifierGlobal=全局温度修改
+config.tfc.general.temperatureModifierGlobal=全局温度修正值
 config.tfc.general.temperatureModifierGlobal.tooltip=修改物品获得和失去热量的速度。较小的值 = 较慢的温度变化。
 
-config.tfc.general.temperatureModifierHeating=加热温度修改
+config.tfc.general.temperatureModifierHeating=加热温度修正值
 config.tfc.general.temperatureModifierHeating.tooltip=修改设施（如木炭炉，篝火）获得和失去热量的速度。较小的值 = 较慢的温度变化。
 
-config.tfc.general.foodDecayModifier=食物腐烂修改
+config.tfc.general.foodDecayModifier=食物腐烂修正值
 config.tfc.general.foodDecayModifier.tooltip=食物腐烂的速度。较大的值 = 较快的腐烂速度。设置为 0 永不腐烂。
 
 config.tfc.general.pitKilnTime=坑窑时间
@@ -184,22 +186,25 @@ config.tfc.general.torchTime.tooltip=火炬燃烧殆尽所需要的刻数（1000
 config.tfc.general.bloomeryTime=炼铁炉时间
 config.tfc.general.bloomeryTime.tooltip=炼铁炉完成所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 15 小时。
 
-config.tfc.general.plantGrowthRate=植物生长比率
+config.tfc.general.blastFurnaceConsumption=高炉消耗速度
+config.tfc.general.blastFurnaceConsumption.tooltip=高炉消耗燃料的速度（与木炭炉相比）。
+
+config.tfc.general.plantGrowthRate=植物生长速度
 config.tfc.general.plantGrowthRate.tooltip=每次更新植物的百分比生长机会。较小的值 = 较慢。
 
-config.tfc.general.fireStarterChance=起火器成功机率
-config.tfc.general.fireStarterChance.tooltip=起火器成功的机率
+config.tfc.general.fireStarterChance=起火器成功几率
+config.tfc.general.fireStarterChance.tooltip=起火器成功生火的几率
 
-config.tfc.general.playerNutritionDecayModifier=玩家营养衰退修改
+config.tfc.general.playerNutritionDecayModifier=玩家营养衰退修正值
 config.tfc.general.playerNutritionDecayModifier.tooltip=修改玩家营养值衰退的速度
 
-config.tfc.general.playerMinHealthModifier=玩家最低生命值修改
+config.tfc.general.playerMinHealthModifier=玩家最低生命修正值
 config.tfc.general.playerMinHealthModifier.tooltip=在低营养下玩家能保持的最低生命值。
 
-config.tfc.general.playerMaxHealthModifier=玩家最高生命值修改
+config.tfc.general.playerMaxHealthModifier=玩家最高生命修正值
 config.tfc.general.playerMaxHealthModifier.tooltip=在高营养下玩家能获得的最高生命值。
 
-config.tfc.general.playerThirstModifier=玩家口渴值衰退修改
+config.tfc.general.playerThirstModifier=玩家口渴衰退修正值
 config.tfc.general.playerThirstModifier.tooltip=修改玩家口渴的速度。
 
 config.tfc.general.playerNaturalRegenerationModifier=玩家自然恢复速度
@@ -208,8 +213,8 @@ config.tfc.general.playerNaturalRegenerationModifier.tooltip=修改玩家自然�
 config.tfc.general.collapseChance=岩石塌方几率
 config.tfc.general.collapseChance.tooltip=挖掘未加工岩石引发塌方的几率。
 
-config.tfc.general.propagateCollapseChance=塌方传播几率
-config.tfc.general.propagateCollapseChance.tooltip=塌方的方块传播塌方的几率。受与塌方中心距离影响。
+config.tfc.general.propagateCollapseChance=塌方扩散几率
+config.tfc.general.propagateCollapseChance.tooltip=塌方的方块扩散塌方的几率。受与塌方中心距离影响。
 
 config.tfc.general.slashingDamageSources=砍击伤害来源
 config.tfc.general.slashingDamageSources.tooltip=伤害来源类型将默认为砍击伤害。
@@ -268,10 +273,16 @@ config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=若为 true，将�
 config.tfc.general.peacefulDifficultyPassiveRegeneration=和平难度被动恢复
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饱食度，口渴值？
 
-config.tfc.general.worldRegenerationMinimumTime=世界重生最小时间
-config.tfc.general.worldRegenerationMinimumTime.tooltip=区块空闲以开始自然再生资源所需的最短时间（以天为单位）。在此之后，资源再生将根据自此时间以来持续的时间加速，最高可达 4 倍T.
+config.tfc.general.requireHammerInOffHand=凿要求副手锤
+config.tfc.general.requireHammerInOffHand.tooltip=若为 true，使用凿时锤必须在副手。若为 false，锤可以在副手或物品栏中。
 
-config.tfc.general.worldRegenerationSticksRocksModifier=地表物资重生修改
+config.tfc.general.chiselDelay=凿延迟
+config.tfc.general.chiselDelay.tooltip=使用凿时应有延迟吗？
+
+config.tfc.general.worldRegenerationMinimumTime=世界再生最小时间
+config.tfc.general.worldRegenerationMinimumTime.tooltip=区块空闲以开始自然再生资源所需的最短时间（以天为单位）。在此之后，资源再生将根据自此时间以来持续的时间加速，最高可达 4 倍.
+
+config.tfc.general.worldRegenerationSticksRocksModifier=地表资源再生修正值
 config.tfc.general.worldRegenerationSticksRocksModifier.tooltip=地表上碎石和木棍再生的数目。
 
 config.tfc.general.foodDecayStackTime=食物腐烂叠加时间
@@ -292,8 +303,11 @@ config.tfc.general.spawnProtectionEnable.tooltip=在玩家附近区块内的敌�
 config.tfc.general.spawnProtectionMinY=区块生成保护最低 Y 值
 config.tfc.general.spawnProtectionMinY.tooltip=区块生成保护的最低 Y 值。（在该高度以下的区域不受区块生成保护的限制）
 
-config.tfc.general.charcoalPitTime=木炭炉时间
-config.tfc.general.charcoalPitTime.tooltip=木炭炉完成所需要的刻数。
+config.tfc.general.charcoalPitTime=木炭坑时间
+config.tfc.general.charcoalPitTime.tooltip=木炭坑完成所需要的刻数。
+
+config.tfc.general.defaultMonthLength=默认月长度
+config.tfc.general.defaultMonthLength.tooltip=当新建世界时默认的月长度（以天为单位）。通过使用 /timetfc 命令可以修改已存在的世界的月长度。
 
 
 ## Client Config
@@ -334,7 +348,7 @@ config.tfc.world.cyclicTemperatureRegions.tooltip=控制循环温度区域的出
 config.tfc.world.debugWorldGen=调试模式（危险）
 config.tfc.world.debugWorldGen.tooltip=调试世界生成 [危险] 你的世界将会受到影响！不要在你正常的世界里使用！
 
-config.tfc.world.latitudeTemperatureModifier=纬度温度修改
+config.tfc.world.latitudeTemperatureModifier=纬度温度修正值
 config.tfc.world.latitudeTemperatureModifier.tooltip=控制温度区域的大小。每个温度区域的大小由正弦波确定。波周期的一半 = 热带和冷带之间的距离，以方块为单位
 
 config.tfc.world.clayRarity=粘土矿床稀有度
@@ -528,7 +542,7 @@ jei.category.tfc.knap.clay=粘土塑形
 jei.category.tfc.knap.fireclay=耐火粘土塑形
 jei.category.tfc.knap.leather=皮革塑形
 jei.category.tfc.knap.stone=石子塑形
-jei.category.tfc.loom=织布机配方
+jei.category.tfc.loom=织机配方
 jei.category.tfc.quern=手推磨配方
 jei.category.tfc.welding=焊接配方
 
@@ -597,7 +611,7 @@ tile.tfc.charcoal_forge.name=木炭炉
 tile.tfc.peat.name=泥炭
 tile.tfc.peat_grass.name=长草的泥炭
 tile.tfc.thatch.name=干草块
-tile.tfc.firepit.name=壁炉
+tile.tfc.firepit.name=篝火
 tile.tfc.bellows.name=风箱
 tile.tfc.crucible.name=坩埚
 tile.tfc.torch.name=火炬
@@ -616,7 +630,7 @@ tile.tfc.raw.granite.name=未加工花岗岩
 tile.tfc.raw.diorite.name=未加工闪长岩
 tile.tfc.raw.gabbro.name=未加工辉长岩
 tile.tfc.raw.shale.name=未加工页岩
-tile.tfc.raw.claystone.name=未加工泥岩
+tile.tfc.raw.claystone.name=未加工粘土岩
 tile.tfc.raw.rocksalt.name=未加工盐岩
 tile.tfc.raw.limestone.name=未加工石灰岩
 tile.tfc.raw.conglomerate.name=未加工砾岩
@@ -637,7 +651,7 @@ tile.tfc.smooth.granite.name=平滑花岗岩
 tile.tfc.smooth.diorite.name=平滑闪长岩
 tile.tfc.smooth.gabbro.name=平滑辉长岩
 tile.tfc.smooth.shale.name=平滑页岩
-tile.tfc.smooth.claystone.name=平滑泥岩
+tile.tfc.smooth.claystone.name=平滑粘土岩
 tile.tfc.smooth.rocksalt.name=平滑盐岩
 tile.tfc.smooth.limestone.name=平滑石灰岩
 tile.tfc.smooth.conglomerate.name=平滑砾岩
@@ -658,7 +672,7 @@ tile.tfc.cobble.granite.name=花岗岩圆石
 tile.tfc.cobble.diorite.name=闪长岩圆石
 tile.tfc.cobble.gabbro.name=辉长岩圆石
 tile.tfc.cobble.shale.name=页岩圆石
-tile.tfc.cobble.claystone.name=泥岩圆石
+tile.tfc.cobble.claystone.name=粘土岩圆石
 tile.tfc.cobble.rocksalt.name=盐岩圆石
 tile.tfc.cobble.limestone.name=石灰岩圆石
 tile.tfc.cobble.conglomerate.name=砾岩圆石
@@ -679,7 +693,7 @@ tile.tfc.bricks.granite.name=花岗岩砖块
 tile.tfc.bricks.diorite.name=闪长岩砖块
 tile.tfc.bricks.gabbro.name=辉长岩砖块
 tile.tfc.bricks.shale.name=页岩砖块
-tile.tfc.bricks.claystone.name=泥岩砖块
+tile.tfc.bricks.claystone.name=粘土岩砖块
 tile.tfc.bricks.rocksalt.name=盐岩砖块
 tile.tfc.bricks.limestone.name=石灰岩砖块
 tile.tfc.bricks.conglomerate.name=砾岩砖块
@@ -700,7 +714,7 @@ tile.tfc.sand.granite.name=花岗岩沙子
 tile.tfc.sand.diorite.name=闪长岩沙子
 tile.tfc.sand.gabbro.name=辉长岩沙子
 tile.tfc.sand.shale.name=页岩沙子
-tile.tfc.sand.claystone.name=泥岩沙子
+tile.tfc.sand.claystone.name=粘土岩沙子
 tile.tfc.sand.rocksalt.name=盐岩沙子
 tile.tfc.sand.limestone.name=石灰岩沙子
 tile.tfc.sand.conglomerate.name=砾岩沙子
@@ -721,7 +735,7 @@ tile.tfc.gravel.granite.name=花岗岩沙砾
 tile.tfc.gravel.diorite.name=闪长岩沙砾
 tile.tfc.gravel.gabbro.name=辉长岩沙砾
 tile.tfc.gravel.shale.name=页岩沙砾
-tile.tfc.gravel.claystone.name=泥岩沙砾
+tile.tfc.gravel.claystone.name=粘土岩沙砾
 tile.tfc.gravel.rocksalt.name=盐岩沙砾
 tile.tfc.gravel.limestone.name=石灰岩沙砾
 tile.tfc.gravel.conglomerate.name=砾岩沙砾
@@ -742,7 +756,7 @@ tile.tfc.dirt.granite.name=花岗岩泥土
 tile.tfc.dirt.diorite.name=闪长岩泥土
 tile.tfc.dirt.gabbro.name=辉长岩泥土
 tile.tfc.dirt.shale.name=页岩泥土
-tile.tfc.dirt.claystone.name=泥岩泥土
+tile.tfc.dirt.claystone.name=粘土岩泥土
 tile.tfc.dirt.rocksalt.name=盐岩泥土
 tile.tfc.dirt.limestone.name=石灰岩泥土
 tile.tfc.dirt.conglomerate.name=砾岩泥土
@@ -763,7 +777,7 @@ tile.tfc.grass.granite.name=长草的花岗岩泥土
 tile.tfc.grass.diorite.name=长草的闪长岩泥土
 tile.tfc.grass.gabbro.name=长草的辉长岩泥土
 tile.tfc.grass.shale.name=长草的页岩泥土
-tile.tfc.grass.claystone.name=长草的泥岩泥土
+tile.tfc.grass.claystone.name=长草的粘土岩泥土
 tile.tfc.grass.rocksalt.name=长草的盐岩泥土
 tile.tfc.grass.limestone.name=长草的石灰岩泥土
 tile.tfc.grass.conglomerate.name=长草的砾岩泥土
@@ -784,7 +798,7 @@ tile.tfc.clay_grass.granite.name=长草的花岗岩粘土
 tile.tfc.clay_grass.diorite.name=长草的闪长岩粘土
 tile.tfc.clay_grass.gabbro.name=长草的辉长岩粘土
 tile.tfc.clay_grass.shale.name=长草的页岩粘土
-tile.tfc.clay_grass.claystone.name=长草的泥岩粘土
+tile.tfc.clay_grass.claystone.name=长草的粘土岩粘土
 tile.tfc.clay_grass.rocksalt.name=长草的盐岩粘土
 tile.tfc.clay_grass.limestone.name=长草的石灰岩粘土
 tile.tfc.clay_grass.conglomerate.name=长草的砾岩粘土
@@ -805,7 +819,7 @@ tile.tfc.clay.granite.name=花岗岩粘土
 tile.tfc.clay.diorite.name=闪长岩粘土
 tile.tfc.clay.gabbro.name=辉长岩粘土
 tile.tfc.clay.shale.name=页岩粘土
-tile.tfc.clay.claystone.name=泥岩粘土
+tile.tfc.clay.claystone.name=粘土岩粘土
 tile.tfc.clay.rocksalt.name=盐岩粘土
 tile.tfc.clay.limestone.name=石灰岩粘土
 tile.tfc.clay.conglomerate.name=砾岩粘土
@@ -826,7 +840,7 @@ tile.tfc.dry_grass.granite.name=长草的干燥花岗岩
 tile.tfc.dry_grass.diorite.name=长草的干燥闪长岩
 tile.tfc.dry_grass.gabbro.name=长草的干燥辉长岩
 tile.tfc.dry_grass.shale.name=长草的干燥页岩
-tile.tfc.dry_grass.claystone.name=长草的干燥泥岩
+tile.tfc.dry_grass.claystone.name=长草的干燥粘土岩
 tile.tfc.dry_grass.rocksalt.name=长草的干燥盐岩
 tile.tfc.dry_grass.limestone.name=长草的干燥石灰岩
 tile.tfc.dry_grass.conglomerate.name=长草的干燥砾岩
@@ -848,7 +862,7 @@ tile.tfc.path.granite.name=花岗岩径
 tile.tfc.path.diorite.name=闪长岩径
 tile.tfc.path.gabbro.name=辉长岩径
 tile.tfc.path.shale.name=页岩径
-tile.tfc.path.claystone.name=泥岩径
+tile.tfc.path.claystone.name=粘土岩径
 tile.tfc.path.rocksalt.name=盐岩径
 tile.tfc.path.limestone.name=石灰岩径
 tile.tfc.path.conglomerate.name=砾岩径
@@ -870,7 +884,7 @@ tile.tfc.farmland.granite.name=花岗岩耕地
 tile.tfc.farmland.diorite.name=闪长岩耕地
 tile.tfc.farmland.gabbro.name=辉长岩耕地
 tile.tfc.farmland.shale.name=页岩耕地
-tile.tfc.farmland.claystone.name=泥岩耕地
+tile.tfc.farmland.claystone.name=粘土岩耕地
 tile.tfc.farmland.rocksalt.name=盐岩耕地
 tile.tfc.farmland.limestone.name=石灰岩耕地
 tile.tfc.farmland.conglomerate.name=砾岩耕地
@@ -892,7 +906,7 @@ tile.tfc.stairs.smooth.granite.name=平滑花岗岩楼梯
 tile.tfc.stairs.smooth.diorite.name=平滑闪长岩楼梯
 tile.tfc.stairs.smooth.gabbro.name=平滑辉长岩楼梯
 tile.tfc.stairs.smooth.shale.name=平滑页岩楼梯
-tile.tfc.stairs.smooth.claystone.name=平滑黏土岩楼梯
+tile.tfc.stairs.smooth.claystone.name=平滑粘土岩楼梯
 tile.tfc.stairs.smooth.rocksalt.name=平滑盐岩楼梯
 tile.tfc.stairs.smooth.limestone.name=平滑石灰岩楼梯
 tile.tfc.stairs.smooth.conglomerate.name=平滑砾岩楼梯
@@ -913,7 +927,7 @@ tile.tfc.stairs.cobble.granite.name=花岗岩圆石楼梯
 tile.tfc.stairs.cobble.diorite.name=闪长岩圆石楼梯
 tile.tfc.stairs.cobble.gabbro.name=辉长岩圆石楼梯
 tile.tfc.stairs.cobble.shale.name=页岩圆石楼梯
-tile.tfc.stairs.cobble.claystone.name=黏土岩圆石楼梯
+tile.tfc.stairs.cobble.claystone.name=粘土岩圆石楼梯
 tile.tfc.stairs.cobble.rocksalt.name=盐岩圆石楼梯
 tile.tfc.stairs.cobble.limestone.name=石灰岩圆石楼梯
 tile.tfc.stairs.cobble.conglomerate.name=砾岩圆石楼梯
@@ -934,7 +948,7 @@ tile.tfc.stairs.bricks.granite.name=花岗岩砖块楼梯
 tile.tfc.stairs.bricks.diorite.name=闪长岩砖块楼梯
 tile.tfc.stairs.bricks.gabbro.name=辉长岩砖块楼梯
 tile.tfc.stairs.bricks.shale.name=页岩砖块楼梯
-tile.tfc.stairs.bricks.claystone.name=黏土岩砖块楼梯
+tile.tfc.stairs.bricks.claystone.name=粘土岩砖块楼梯
 tile.tfc.stairs.bricks.rocksalt.name=盐岩砖块楼梯
 tile.tfc.stairs.bricks.limestone.name=石灰岩砖块楼梯
 tile.tfc.stairs.bricks.conglomerate.name=砾岩砖块楼梯
@@ -956,7 +970,7 @@ tile.tfc.slab.smooth.granite.name=平滑花岗岩台阶
 tile.tfc.slab.smooth.diorite.name=平滑闪长岩台阶
 tile.tfc.slab.smooth.gabbro.name=平滑辉长岩台阶
 tile.tfc.slab.smooth.shale.name=平滑页岩台阶
-tile.tfc.slab.smooth.claystone.name=平滑黏土岩台阶
+tile.tfc.slab.smooth.claystone.name=平滑粘土岩台阶
 tile.tfc.slab.smooth.rocksalt.name=平滑盐岩台阶
 tile.tfc.slab.smooth.limestone.name=平滑石灰岩台阶
 tile.tfc.slab.smooth.conglomerate.name=平滑砾岩台阶
@@ -977,7 +991,7 @@ tile.tfc.slab.cobble.granite.name=花岗岩圆石台阶
 tile.tfc.slab.cobble.diorite.name=闪长岩圆石台阶
 tile.tfc.slab.cobble.gabbro.name=辉长岩圆石台阶
 tile.tfc.slab.cobble.shale.name=页岩圆石台阶
-tile.tfc.slab.cobble.claystone.name=黏土岩圆石台阶
+tile.tfc.slab.cobble.claystone.name=粘土岩圆石台阶
 tile.tfc.slab.cobble.rocksalt.name=盐岩圆石台阶
 tile.tfc.slab.cobble.limestone.name=石灰岩圆石台阶
 tile.tfc.slab.cobble.conglomerate.name=砾岩圆石台阶
@@ -998,7 +1012,7 @@ tile.tfc.slab.bricks.granite.name=花岗岩砖块台阶
 tile.tfc.slab.bricks.diorite.name=闪长岩砖块台阶
 tile.tfc.slab.bricks.gabbro.name=辉长岩砖块台阶
 tile.tfc.slab.bricks.shale.name=页岩砖块台阶
-tile.tfc.slab.bricks.claystone.name=黏土岩砖块台阶
+tile.tfc.slab.bricks.claystone.name=粘土岩砖块台阶
 tile.tfc.slab.bricks.rocksalt.name=盐岩砖块台阶
 tile.tfc.slab.bricks.limestone.name=石灰岩砖块台阶
 tile.tfc.slab.bricks.conglomerate.name=砾岩砖块台阶
@@ -1020,7 +1034,7 @@ tile.tfc.double_slab.smooth.granite.name=双平滑花岗岩台阶
 tile.tfc.double_slab.smooth.diorite.name=双平滑闪长岩台阶
 tile.tfc.double_slab.smooth.gabbro.name=双平滑辉长岩台阶
 tile.tfc.double_slab.smooth.shale.name=双平滑页岩台阶
-tile.tfc.double_slab.smooth.claystone.name=双平滑黏土岩台阶
+tile.tfc.double_slab.smooth.claystone.name=双平滑粘土岩台阶
 tile.tfc.double_slab.smooth.rocksalt.name=双平滑盐岩台阶
 tile.tfc.double_slab.smooth.limestone.name=双平滑石灰岩台阶
 tile.tfc.double_slab.smooth.conglomerate.name=双平滑砾岩台阶
@@ -1041,7 +1055,7 @@ tile.tfc.double_slab.cobble.granite.name=双花岗岩圆石台阶
 tile.tfc.double_slab.cobble.diorite.name=双闪长岩圆石台阶
 tile.tfc.double_slab.cobble.gabbro.name=双辉长岩圆石台阶
 tile.tfc.double_slab.cobble.shale.name=双页岩圆石台阶
-tile.tfc.double_slab.cobble.claystone.name=双黏土岩圆石台阶
+tile.tfc.double_slab.cobble.claystone.name=双粘土岩圆石台阶
 tile.tfc.double_slab.cobble.rocksalt.name=双盐岩圆石台阶
 tile.tfc.double_slab.cobble.limestone.name=双石灰岩圆石台阶
 tile.tfc.double_slab.cobble.conglomerate.name=双砾岩圆石台阶
@@ -1062,7 +1076,7 @@ tile.tfc.double_slab.bricks.granite.name=双花岗岩砖块台阶
 tile.tfc.double_slab.bricks.diorite.name=双闪长岩砖块台阶
 tile.tfc.double_slab.bricks.gabbro.name=双辉长岩砖块台阶
 tile.tfc.double_slab.bricks.shale.name=双页岩砖块台阶
-tile.tfc.double_slab.bricks.claystone.name=双黏土岩砖块台阶
+tile.tfc.double_slab.bricks.claystone.name=双粘土岩砖块台阶
 tile.tfc.double_slab.bricks.rocksalt.name=双盐岩砖块台阶
 tile.tfc.double_slab.bricks.limestone.name=双石灰岩砖块台阶
 tile.tfc.double_slab.bricks.conglomerate.name=双砾岩砖块台阶
@@ -1220,41 +1234,41 @@ tile.tfc.ore.sylvite.shale.name=页岩钾石盐
 tile.tfc.ore.borax.shale.name=页岩硼砂
 tile.tfc.ore.olivine.shale.name=页岩橄榄石
 tile.tfc.ore.lapis_lazuli.shale.name=页岩青金石
-tile.tfc.ore.native_copper.claystone.name=黏土岩原生铜
-tile.tfc.ore.native_gold.claystone.name=黏土岩原生金
-tile.tfc.ore.native_platinum.claystone.name=黏土岩原生铂
-tile.tfc.ore.hematite.claystone.name=黏土岩赤铁矿
-tile.tfc.ore.native_silver.claystone.name=黏土岩原生银
-tile.tfc.ore.cassiterite.claystone.name=黏土岩锡石
-tile.tfc.ore.galena.claystone.name=黏土岩方铅矿
-tile.tfc.ore.bismuthinite.claystone.name=黏土岩辉铋矿
-tile.tfc.ore.garnierite.claystone.name=黏土岩绿镍矿
-tile.tfc.ore.malachite.claystone.name=黏土岩孔雀石
-tile.tfc.ore.magnetite.claystone.name=黏土岩磁铁矿
-tile.tfc.ore.limonite.claystone.name=黏土岩褐铁矿
-tile.tfc.ore.sphalerite.claystone.name=黏土岩闪锌矿
-tile.tfc.ore.tetrahedrite.claystone.name=黏土岩黝铜矿
-tile.tfc.ore.bituminous_coal.claystone.name=黏土岩烟煤
-tile.tfc.ore.lignite.claystone.name=黏土岩褐煤
-tile.tfc.ore.kaolinite.claystone.name=黏土岩高岭石
-tile.tfc.ore.gypsum.claystone.name=黏土岩石膏
-tile.tfc.ore.satinspar.claystone.name=黏土岩纤维石膏
-tile.tfc.ore.selenite.claystone.name=黏土岩透石膏
-tile.tfc.ore.graphite.claystone.name=黏土岩石墨
-tile.tfc.ore.kimberlite.claystone.name=黏土岩金伯利岩
-tile.tfc.ore.petrified_wood.claystone.name=黏土岩硅化木
-tile.tfc.ore.sulfur.claystone.name=黏土岩硫磺
-tile.tfc.ore.jet.claystone.name=黏土岩黑玉
-tile.tfc.ore.microcline.claystone.name=黏土岩微斜长石
-tile.tfc.ore.pitchblende.claystone.name=黏土岩沥青铀矿
-tile.tfc.ore.cinnabar.claystone.name=黏土岩朱砂
-tile.tfc.ore.cryolite.claystone.name=黏土岩冰晶石
-tile.tfc.ore.saltpeter.claystone.name=黏土岩硝石
-tile.tfc.ore.serpentine.claystone.name=黏土岩蛇纹石
-tile.tfc.ore.sylvite.claystone.name=黏土岩钾石盐
-tile.tfc.ore.borax.claystone.name=黏土岩硼砂
-tile.tfc.ore.olivine.claystone.name=黏土岩橄榄石
-tile.tfc.ore.lapis_lazuli.claystone.name=黏土岩青金石
+tile.tfc.ore.native_copper.claystone.name=粘土岩原生铜
+tile.tfc.ore.native_gold.claystone.name=粘土岩原生金
+tile.tfc.ore.native_platinum.claystone.name=粘土岩原生铂
+tile.tfc.ore.hematite.claystone.name=粘土岩赤铁矿
+tile.tfc.ore.native_silver.claystone.name=粘土岩原生银
+tile.tfc.ore.cassiterite.claystone.name=粘土岩锡石
+tile.tfc.ore.galena.claystone.name=粘土岩方铅矿
+tile.tfc.ore.bismuthinite.claystone.name=粘土岩辉铋矿
+tile.tfc.ore.garnierite.claystone.name=粘土岩绿镍矿
+tile.tfc.ore.malachite.claystone.name=粘土岩孔雀石
+tile.tfc.ore.magnetite.claystone.name=粘土岩磁铁矿
+tile.tfc.ore.limonite.claystone.name=粘土岩褐铁矿
+tile.tfc.ore.sphalerite.claystone.name=粘土岩闪锌矿
+tile.tfc.ore.tetrahedrite.claystone.name=粘土岩黝铜矿
+tile.tfc.ore.bituminous_coal.claystone.name=粘土岩烟煤
+tile.tfc.ore.lignite.claystone.name=粘土岩褐煤
+tile.tfc.ore.kaolinite.claystone.name=粘土岩高岭石
+tile.tfc.ore.gypsum.claystone.name=粘土岩石膏
+tile.tfc.ore.satinspar.claystone.name=粘土岩纤维石膏
+tile.tfc.ore.selenite.claystone.name=粘土岩透石膏
+tile.tfc.ore.graphite.claystone.name=粘土岩石墨
+tile.tfc.ore.kimberlite.claystone.name=粘土岩金伯利岩
+tile.tfc.ore.petrified_wood.claystone.name=粘土岩硅化木
+tile.tfc.ore.sulfur.claystone.name=粘土岩硫磺
+tile.tfc.ore.jet.claystone.name=粘土岩黑玉
+tile.tfc.ore.microcline.claystone.name=粘土岩微斜长石
+tile.tfc.ore.pitchblende.claystone.name=粘土岩沥青铀矿
+tile.tfc.ore.cinnabar.claystone.name=粘土岩朱砂
+tile.tfc.ore.cryolite.claystone.name=粘土岩冰晶石
+tile.tfc.ore.saltpeter.claystone.name=粘土岩硝石
+tile.tfc.ore.serpentine.claystone.name=粘土岩蛇纹石
+tile.tfc.ore.sylvite.claystone.name=粘土岩钾石盐
+tile.tfc.ore.borax.claystone.name=粘土岩硼砂
+tile.tfc.ore.olivine.claystone.name=粘土岩橄榄石
+tile.tfc.ore.lapis_lazuli.claystone.name=粘土岩青金石
 tile.tfc.ore.native_copper.rocksalt.name=盐岩原生铜
 tile.tfc.ore.native_gold.rocksalt.name=盐岩原生金
 tile.tfc.ore.native_platinum.rocksalt.name=盐岩原生铂
@@ -2071,25 +2085,25 @@ tile.tfc.wood.barrel.rosewood.sealed.name=蔷薇木桶（密封）
 tile.tfc.wood.barrel.blackwood.sealed.name=黑檀木桶（密封）
 tile.tfc.wood.barrel.palm.sealed.name=棕榈木桶（密封）
 
-tile.tfc.wood.loom.ash.name=黑梣木织布机
-tile.tfc.wood.loom.aspen.name=山杨木织布机
-tile.tfc.wood.loom.birch.name=白桦木织布机
-tile.tfc.wood.loom.chestnut.name=栗木织布机
-tile.tfc.wood.loom.douglas_fir.name=花旗松木织布机
-tile.tfc.wood.loom.hickory.name=山核桃木织布机
-tile.tfc.wood.loom.maple.name=枫木织布机
-tile.tfc.wood.loom.oak.name=白橡木织布机
-tile.tfc.wood.loom.pine.name=松木织布机
-tile.tfc.wood.loom.sequoia.name=红杉木织布机
-tile.tfc.wood.loom.spruce.name=云杉木织布机
-tile.tfc.wood.loom.sycamore.name=悬铃木织布机
-tile.tfc.wood.loom.white_cedar.name=香柏木织布机
-tile.tfc.wood.loom.willow.name=柳木织布机
-tile.tfc.wood.loom.kapok.name=木棉木织布机
-tile.tfc.wood.loom.acacia.name=金合欢木织布机
-tile.tfc.wood.loom.rosewood.name=蔷薇木织布机
-tile.tfc.wood.loom.blackwood.name=黑檀木织布机
-tile.tfc.wood.loom.palm.name=棕榈木织布机
+tile.tfc.wood.loom.ash.name=黑梣木织机
+tile.tfc.wood.loom.aspen.name=山杨木织机
+tile.tfc.wood.loom.birch.name=白桦木织机
+tile.tfc.wood.loom.chestnut.name=栗木织机
+tile.tfc.wood.loom.douglas_fir.name=花旗松木织机
+tile.tfc.wood.loom.hickory.name=山核桃木织机
+tile.tfc.wood.loom.maple.name=枫木织机
+tile.tfc.wood.loom.oak.name=白橡木织机
+tile.tfc.wood.loom.pine.name=松木织机
+tile.tfc.wood.loom.sequoia.name=红杉木织机
+tile.tfc.wood.loom.spruce.name=云杉木织机
+tile.tfc.wood.loom.sycamore.name=悬铃木织机
+tile.tfc.wood.loom.white_cedar.name=香柏木织机
+tile.tfc.wood.loom.willow.name=柳木织机
+tile.tfc.wood.loom.kapok.name=木棉木织机
+tile.tfc.wood.loom.acacia.name=金合欢木织机
+tile.tfc.wood.loom.rosewood.name=蔷薇木织机
+tile.tfc.wood.loom.blackwood.name=黑檀木织机
+tile.tfc.wood.loom.palm.name=棕榈木织机
 
 tile.tfc.wood.support.ash.name=黑梣木支撑梁
 tile.tfc.wood.support.aspen.name=山杨木支撑梁
@@ -2115,7 +2129,7 @@ tile.tfc.wall.cobble.granite.name=花岗岩圆石墙
 tile.tfc.wall.cobble.diorite.name=闪长岩圆石墙
 tile.tfc.wall.cobble.gabbro.name=辉长岩圆石墙
 tile.tfc.wall.cobble.shale.name=页岩圆石墙
-tile.tfc.wall.cobble.claystone.name=黏土岩圆石墙
+tile.tfc.wall.cobble.claystone.name=粘土岩圆石墙
 tile.tfc.wall.cobble.rocksalt.name=盐岩圆石墙
 tile.tfc.wall.cobble.limestone.name=石灰岩圆石墙
 tile.tfc.wall.cobble.conglomerate.name=砾岩圆石墙
@@ -2136,7 +2150,7 @@ tile.tfc.wall.bricks.granite.name=花岗岩砖块墙
 tile.tfc.wall.bricks.diorite.name=闪长岩砖块墙
 tile.tfc.wall.bricks.gabbro.name=辉长岩砖块墙
 tile.tfc.wall.bricks.shale.name=页岩砖块墙
-tile.tfc.wall.bricks.claystone.name=黏土岩砖块墙
+tile.tfc.wall.bricks.claystone.name=粘土岩砖块墙
 tile.tfc.wall.bricks.rocksalt.name=盐岩砖块墙
 tile.tfc.wall.bricks.limestone.name=石灰岩砖块墙
 tile.tfc.wall.bricks.conglomerate.name=砾岩砖块墙
@@ -2157,7 +2171,7 @@ tile.tfc.wall.smooth.granite.name=平滑花岗岩墙
 tile.tfc.wall.smooth.diorite.name=平滑闪长岩墙
 tile.tfc.wall.smooth.gabbro.name=平滑辉长岩墙
 tile.tfc.wall.smooth.shale.name=平滑页岩墙
-tile.tfc.wall.smooth.claystone.name=平滑黏土岩墙
+tile.tfc.wall.smooth.claystone.name=平滑粘土岩墙
 tile.tfc.wall.smooth.rocksalt.name=平滑盐岩墙
 tile.tfc.wall.smooth.limestone.name=平滑石灰岩墙
 tile.tfc.wall.smooth.conglomerate.name=平滑砾岩墙
@@ -2408,7 +2422,7 @@ tile.tfc.stone.button.granite.name=花岗岩按钮
 tile.tfc.stone.button.diorite.name=闪长岩按钮
 tile.tfc.stone.button.gabbro.name=辉长岩按钮
 tile.tfc.stone.button.shale.name=页岩按钮
-tile.tfc.stone.button.claystone.name=黏土岩按钮
+tile.tfc.stone.button.claystone.name=粘土岩按钮
 tile.tfc.stone.button.rocksalt.name=盐岩按钮
 tile.tfc.stone.button.limestone.name=石灰岩按钮
 tile.tfc.stone.button.conglomerate.name=砾岩按钮
@@ -2612,7 +2626,7 @@ item.tfc.rock.granite.name=花岗岩石子
 item.tfc.rock.diorite.name=闪长岩石子
 item.tfc.rock.gabbro.name=辉长岩石子
 item.tfc.rock.shale.name=页岩石子
-item.tfc.rock.claystone.name=黏土岩石子
+item.tfc.rock.claystone.name=粘土岩石子
 item.tfc.rock.rocksalt.name=盐岩石子
 item.tfc.rock.limestone.name=石灰岩石子
 item.tfc.rock.conglomerate.name=砾岩石子
@@ -2635,7 +2649,7 @@ item.tfc.brick.granite.name=花岗岩砖
 item.tfc.brick.diorite.name=闪长岩砖
 item.tfc.brick.gabbro.name=辉长岩砖
 item.tfc.brick.shale.name=页岩砖
-item.tfc.brick.claystone.name=黏土岩砖
+item.tfc.brick.claystone.name=粘土岩砖
 item.tfc.brick.rocksalt.name=盐岩砖
 item.tfc.brick.limestone.name=石灰岩砖
 item.tfc.brick.conglomerate.name=砾岩砖
@@ -3229,6 +3243,8 @@ item.tfc.metal.boots.steel.name=钢靴
 item.tfc.metal.boots.black_steel.name=黑钢靴
 item.tfc.metal.boots.blue_steel.name=蓝钢靴
 item.tfc.metal.boots.red_steel.name=红钢靴
+item.tfc.metal.bucket.blue_steel.name=蓝钢桶
+item.tfc.metal.bucket.red_steel.name=红钢桶
 item.tfc.metal.helmet.bismuth_bronze.name=铋铜头盔
 item.tfc.metal.helmet.black_bronze.name=黑铜头盔
 item.tfc.metal.helmet.bronze.name=青铜头盔
@@ -3376,10 +3392,10 @@ item.tfc.metal.unshaped.unknown.name=未成形未知合金
 item.tfc.metal.ingot.unknown.name=未知合金锭
 
 item.tfc.goldpan.empty.name=空的淘金盘
-item.tfc.goldpan.sand.name=带沙子的淘金盘
-item.tfc.goldpan.clay.name=带粘土的淘金盘
-item.tfc.goldpan.dirt.name=带污垢的淘金盘
-item.tfc.goldpan.gravel.name=带沙砾的淘金盘
+item.tfc.goldpan.sand.name=装有沙子的淘金盘
+item.tfc.goldpan.clay.name=装有粘土的淘金盘
+item.tfc.goldpan.dirt.name=装有泥土的淘金盘
+item.tfc.goldpan.gravel.name=装有沙砾的淘金盘
 
 
 item.tfc.powder.flux.name=助焊剂
