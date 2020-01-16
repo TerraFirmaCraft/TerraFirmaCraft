@@ -127,8 +127,7 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
             TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
             if (te != null)
             {
-                long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-                if (hours > crop.getGrowthTime() && crop.isValidForGrowth(temp, rainfall))
+                if (te.getTicksSinceUpdate() > crop.getGrowthTime() && crop.isValidForGrowth(temp, rainfall))
                 {
                     grow(worldIn, random, pos, state);
                     te.resetCounter();
