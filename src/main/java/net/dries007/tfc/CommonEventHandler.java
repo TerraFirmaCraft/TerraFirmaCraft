@@ -117,16 +117,31 @@ public final class CommonEventHandler
     }
 
     /**
-     * Make leaves drop sticks
+     * Update harvesting tool before it takes damage
      */
+    @SubscribeEvent
+    public static void breakEvent(BlockEvent.BreakEvent event)
+    {
+        final EntityPlayer player = event.getPlayer();
+        if (player != null)
+        {
+            IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (cap != null)
+            {
+                cap.setHarvestingTool(player.getHeldItemMainhand());
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
     {
-        final EntityPlayer harvester = event.getHarvester();
-        final ItemStack heldItem = harvester == null ? ItemStack.EMPTY : harvester.getHeldItemMainhand();
+        final EntityPlayer player = event.getHarvester();
+        final ItemStack heldItem = player == null ? ItemStack.EMPTY : player.getHeldItemMainhand();
         final IBlockState state = event.getState();
         final Block block = state.getBlock();
 
+        // Make leaves drop sticks
         if (!event.isSilkTouching() && block instanceof BlockLeaves)
         {
             // Done via event so it applies to all leaves.
@@ -138,6 +153,26 @@ public final class CommonEventHandler
             if (Constants.RNG.nextFloat() < chance)
             {
                 event.getDrops().add(new ItemStack(Items.STICK));
+            }
+        }
+
+        // Apply durability modifier on tools
+        if (player != null)
+        {
+            ItemStack tool = ItemStack.EMPTY;
+            IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (cap != null)
+            {
+                tool = cap.getHarvestingTool();
+            }
+            if (tool != ItemStack.EMPTY)
+            {
+                float skillModifier = SmithingSkill.getSkillBonus(tool, SmithingSkill.Type.TOOLS) / 2.0F;
+                if (skillModifier > 0 && Constants.RNG.nextFloat() < skillModifier)
+                {
+                    // Up to 50% negating damage, for double durability
+                    player.setHeldItem(EnumHand.MAIN_HAND, tool);
+                }
             }
         }
     }
