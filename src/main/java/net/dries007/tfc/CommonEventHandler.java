@@ -10,6 +10,7 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -269,6 +270,19 @@ public final class CommonEventHandler
     public static void onLivingHurt(LivingHurtEvent event)
     {
         float actualDamage = event.getAmount();
+        // Add damage bonus for weapons
+        Entity entity = event.getSource().getTrueSource();
+        if (entity instanceof EntityLivingBase)
+        {
+            EntityLivingBase damager = (EntityLivingBase) entity;
+            ItemStack stack = damager.getHeldItemMainhand();
+            float skillModifier = SmithingSkill.getSkillBonus(stack, SmithingSkill.Type.WEAPONS);
+            if (skillModifier > 0)
+            {
+                // Up to 1.5x damage
+                actualDamage *= 1 + (skillModifier / 2.0F);
+            }
+        }
         // Modifier for damage type + damage resistance
         actualDamage *= DamageType.getModifier(event.getSource(), event.getEntityLiving());
         if (event.getEntityLiving() instanceof EntityPlayer)
