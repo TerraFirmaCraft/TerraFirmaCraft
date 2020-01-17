@@ -39,6 +39,8 @@ import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarFormatted;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SimpleSkill;
 import net.dries007.tfc.util.skills.SkillTier;
@@ -146,30 +148,50 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         super.updateTick(worldIn, pos, state, random);
         if (!worldIn.isRemote)
         {
-            // Attempt to grow
-            float temp = ClimateTFC.getActualTemp(worldIn, pos);
-            float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
             TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
             if (te != null)
             {
-                if (crop.isValidForGrowth(temp, rainfall))
+                boolean isAlive = true;
+                while (te.getTicksSinceUpdate() > crop.getGrowthTime() && isAlive)
                 {
-                    // for every growth time, grow the plant
-                    while (te.getTicksSinceUpdate() > crop.getGrowthTime())
+                    te.reduceCounter((long) crop.getGrowthTime());
+
+                    // find the time in calendar time that this crop should have tried to grow
+                    ICalendarFormatted prevCalendar = new ICalendarFormatted()
+                    {
+                        @Override
+                        public long getTicks()
+                        {
+                            return CalendarTFC.CALENDAR_TIME.getTicks() - te.getTicksSinceUpdate();
+                        }
+
+                        @Override
+                        public long getDaysInMonth()
+                        {
+                            return CalendarTFC.CALENDAR_TIME.getDaysInMonth();
+                        }
+                    };
+
+                    // find stats for the time in which the crop would have grown
+                    float temp = ClimateTFC.getActualTemp(worldIn, pos, prevCalendar);
+                    float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
+
+                    // check if the crop could grow, if so, grow
+                    if (crop.isValidForGrowth(temp, rainfall))
                     {
                         grow(worldIn, random, pos, worldIn.getBlockState(pos));
-                        te.reduceCounter((long) crop.getGrowthTime());
                     }
-                }
 
-                // If not valid conditions, die
-                if (!crop.isValidConditions(temp, rainfall))
-                {
-                    worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
-                    TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
-                    if (tilePlaced != null)
+                    // If not valid conditions, die
+                    if (!crop.isValidConditions(temp, rainfall))
                     {
-                        tilePlaced.setStack(getDeathItem(te));
+                        worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+                        TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
+                        if (tilePlaced != null)
+                        {
+                            tilePlaced.setStack(getDeathItem(te));
+                        }
+                        isAlive = false;
                     }
                 }
             }
