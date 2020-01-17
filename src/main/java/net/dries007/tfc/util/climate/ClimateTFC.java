@@ -9,6 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarFormatted;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -18,47 +20,77 @@ public final class ClimateTFC
 
     public static float getActualTemp(World world, BlockPos pos)
     {
+        return getActualTemp(world, pos, CalendarTFC.CALENDAR_TIME);
+    }
+
+    public static float getActualTemp(World world, BlockPos pos, ICalendarFormatted moment)
+    {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.actualTemp(data.getRegionalTemp(), pos.getY(), pos.getZ());
+            return ClimateHelper.actualTemp(data.getRegionalTemp(), pos.getY(), pos.getZ(), moment);
         }
-        return getActualTemp(pos);
+        return getActualTemp(pos, moment);
     }
 
     public static float getActualTemp(BlockPos pos)
     {
-        return ClimateHelper.actualTemp(CACHE.get(pos).getRegionalTemp(), pos.getY(), pos.getZ());
+        return getActualTemp(pos, CalendarTFC.CALENDAR_TIME);
+    }
+
+    public static float getActualTemp(BlockPos pos, ICalendarFormatted moment)
+    {
+        return ClimateHelper.actualTemp(CACHE.get(pos).getRegionalTemp(), pos.getY(), pos.getZ(), moment);
     }
 
     public static float getDailyTemp(World world, BlockPos pos)
     {
+        return getDailyTemp(world, pos, CalendarTFC.CALENDAR_TIME);
+    }
+
+    public static float getDailyTemp(World world, BlockPos pos, ICalendarFormatted moment)
+    {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.dailyTemp(data.getRegionalTemp(), pos.getZ());
+            return ClimateHelper.dailyTemp(data.getRegionalTemp(), pos.getZ(), moment);
         }
-        return getDailyTemp(pos);
+        return getDailyTemp(pos, moment);
     }
 
     public static float getDailyTemp(BlockPos pos)
     {
-        return ClimateHelper.dailyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ());
+        return getDailyTemp(pos, CalendarTFC.CALENDAR_TIME);
+    }
+
+    public static float getDailyTemp(BlockPos pos, ICalendarFormatted moment)
+    {
+        return ClimateHelper.dailyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ(), moment);
     }
 
     public static float getMonthlyTemp(World world, BlockPos pos)
     {
+        return getMonthlyTemp(world, pos, CalendarTFC.CALENDAR_TIME);
+    }
+
+    public static float getMonthlyTemp(World world, BlockPos pos, ICalendarFormatted moment)
+    {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.monthlyTemp(data.getRegionalTemp(), pos.getZ());
+            return ClimateHelper.monthlyTemp(data.getRegionalTemp(), pos.getZ(), moment);
         }
-        return getMonthlyTemp(pos);
+        return getMonthlyTemp(pos, moment);
     }
 
     public static float getMonthlyTemp(BlockPos pos)
     {
-        return ClimateHelper.monthlyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ());
+        return getMonthlyTemp(pos, CalendarTFC.CALENDAR_TIME);
+    }
+
+    public static float getMonthlyTemp(BlockPos pos, ICalendarFormatted moment)
+    {
+        return ClimateHelper.monthlyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ(), moment);
     }
 
     public static float getAvgTemp(World world, BlockPos pos)
