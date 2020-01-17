@@ -190,10 +190,13 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
 
             if (skill != null)
             {
-                foodStack.setCount(1 + RANDOM.nextInt(2 + (int) (6 * skill.getTotalLevel())));
-                if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
+                if (!foodStack.isEmpty())
                 {
-                    seedStack.setCount(2);
+                    foodStack.setCount(1 + RANDOM.nextInt(2 + (int) (6 * skill.getTotalLevel())));
+                    if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
+                    {
+                        seedStack.setCount(2);
+                    }
                 }
                 skill.add(0.04f);
             }
