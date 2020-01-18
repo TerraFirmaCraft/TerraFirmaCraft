@@ -39,8 +39,6 @@ import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendarFormatted;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SimpleSkill;
 import net.dries007.tfc.util.skills.SkillTier;
