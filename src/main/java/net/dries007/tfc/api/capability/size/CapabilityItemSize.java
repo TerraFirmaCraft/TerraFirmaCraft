@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockLadder;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
@@ -44,7 +45,12 @@ public final class CapabilityItemSize
         CUSTOM_ITEMS.put(IIngredient.of(Items.COAL), () -> new ItemSizeHandler(Size.SMALL, Weight.MEDIUM, true));
         CUSTOM_ITEMS.put(IIngredient.of(Items.STICK), ItemStickCapability::new);
         CUSTOM_ITEMS.put(IIngredient.of(Items.CLAY_BALL), () -> new ItemSizeHandler(Size.SMALL, Weight.LIGHT, true));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.BED), () -> new ItemSizeHandler(Size.LARGE, Weight.MEDIUM, false));
         CUSTOM_ITEMS.put(IIngredient.of(Items.MINECART), () -> new ItemSizeHandler(Size.VERY_LARGE, Weight.HEAVY, false));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.ARMOR_STAND), () -> new ItemSizeHandler(Size.LARGE, Weight.LIGHT, true));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.CAULDRON), () -> new ItemSizeHandler(Size.SMALL, Weight.MEDIUM, true));
+        CUSTOM_ITEMS.put(IIngredient.of(Blocks.TRIPWIRE_HOOK), () -> new ItemSizeHandler(Size.VERY_SMALL, Weight.LIGHT, true));
+        //todo: figure out how to get tripwire hooks back to 64 stack size
     }
 
     /**
