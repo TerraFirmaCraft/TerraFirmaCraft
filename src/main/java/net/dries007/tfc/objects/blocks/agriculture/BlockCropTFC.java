@@ -156,24 +156,8 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
                 {
                     te.reduceCounter((long) crop.getGrowthTime());
 
-                    // find the time in calendar time that this crop should have tried to grow
-                    ICalendarFormatted prevCalendar = new ICalendarFormatted()
-                    {
-                        @Override
-                        public long getTicks()
-                        {
-                            return CalendarTFC.CALENDAR_TIME.getTicks() - te.getTicksSinceUpdate();
-                        }
-
-                        @Override
-                        public long getDaysInMonth()
-                        {
-                            return CalendarTFC.CALENDAR_TIME.getDaysInMonth();
-                        }
-                    };
-
                     // find stats for the time in which the crop would have grown
-                    float temp = ClimateTFC.getActualTemp(worldIn, pos, prevCalendar);
+                    float temp = ClimateTFC.getActualTemp(worldIn, pos, -te.getTicksSinceUpdate());
                     float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
 
                     // check if the crop could grow, if so, grow
