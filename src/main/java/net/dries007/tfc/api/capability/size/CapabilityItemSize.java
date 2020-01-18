@@ -44,6 +44,7 @@ public final class CapabilityItemSize
         CUSTOM_ITEMS.put(IIngredient.of(Items.COAL), () -> new ItemSizeHandler(Size.SMALL, Weight.MEDIUM, true));
         CUSTOM_ITEMS.put(IIngredient.of(Items.STICK), ItemStickCapability::new);
         CUSTOM_ITEMS.put(IIngredient.of(Items.CLAY_BALL), () -> new ItemSizeHandler(Size.SMALL, Weight.LIGHT, true));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.MINECART), () -> new ItemSizeHandler(Size.VERY_LARGE, Weight.HEAVY, false));
     }
 
     /**
