@@ -9,8 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendarFormatted;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -20,77 +18,77 @@ public final class ClimateTFC
 
     public static float getActualTemp(World world, BlockPos pos)
     {
-        return getActualTemp(world, pos, CalendarTFC.CALENDAR_TIME);
+        return getActualTemp(world, pos, 0);
     }
 
-    public static float getActualTemp(World world, BlockPos pos, ICalendarFormatted moment)
+    public static float getActualTemp(World world, BlockPos pos, long timeOffset)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.actualTemp(data.getRegionalTemp(), pos.getY(), pos.getZ(), moment);
+            return ClimateHelper.actualTemp(data.getRegionalTemp(), pos.getY(), pos.getZ(), timeOffset);
         }
-        return getActualTemp(pos, moment);
+        return getActualTemp(pos, timeOffset);
     }
 
     public static float getActualTemp(BlockPos pos)
     {
-        return getActualTemp(pos, CalendarTFC.CALENDAR_TIME);
+        return getActualTemp(pos, 0);
     }
 
-    public static float getActualTemp(BlockPos pos, ICalendarFormatted moment)
+    public static float getActualTemp(BlockPos pos, long timeOffset)
     {
-        return ClimateHelper.actualTemp(CACHE.get(pos).getRegionalTemp(), pos.getY(), pos.getZ(), moment);
+        return ClimateHelper.actualTemp(CACHE.get(pos).getRegionalTemp(), pos.getY(), pos.getZ(), timeOffset);
     }
 
     public static float getDailyTemp(World world, BlockPos pos)
     {
-        return getDailyTemp(world, pos, CalendarTFC.CALENDAR_TIME);
+        return getDailyTemp(world, pos, 0);
     }
 
-    public static float getDailyTemp(World world, BlockPos pos, ICalendarFormatted moment)
+    public static float getDailyTemp(World world, BlockPos pos, long timeOffset)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.dailyTemp(data.getRegionalTemp(), pos.getZ(), moment);
+            return ClimateHelper.dailyTemp(data.getRegionalTemp(), pos.getZ(), timeOffset);
         }
-        return getDailyTemp(pos, moment);
+        return getDailyTemp(pos, timeOffset);
     }
 
     public static float getDailyTemp(BlockPos pos)
     {
-        return getDailyTemp(pos, CalendarTFC.CALENDAR_TIME);
+        return getDailyTemp(pos, 0);
     }
 
-    public static float getDailyTemp(BlockPos pos, ICalendarFormatted moment)
+    public static float getDailyTemp(BlockPos pos, long timeOffset)
     {
-        return ClimateHelper.dailyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ(), moment);
+        return ClimateHelper.dailyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ(), timeOffset);
     }
 
     public static float getMonthlyTemp(World world, BlockPos pos)
     {
-        return getMonthlyTemp(world, pos, CalendarTFC.CALENDAR_TIME);
+        return getMonthlyTemp(world, pos, 0);
     }
 
-    public static float getMonthlyTemp(World world, BlockPos pos, ICalendarFormatted moment)
+    public static float getMonthlyTemp(World world, BlockPos pos, long timeOffset)
     {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.monthlyTemp(data.getRegionalTemp(), pos.getZ(), moment);
+            return ClimateHelper.monthlyTemp(data.getRegionalTemp(), pos.getZ(), timeOffset);
         }
-        return getMonthlyTemp(pos, moment);
+        return getMonthlyTemp(pos, timeOffset);
     }
 
     public static float getMonthlyTemp(BlockPos pos)
     {
-        return getMonthlyTemp(pos, CalendarTFC.CALENDAR_TIME);
+        return getMonthlyTemp(pos, 0);
     }
 
-    public static float getMonthlyTemp(BlockPos pos, ICalendarFormatted moment)
+    public static float getMonthlyTemp(BlockPos pos, long timeOffset)
     {
-        return ClimateHelper.monthlyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ(), moment);
+        return ClimateHelper.monthlyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ(), timeOffset);
     }
 
     public static float getAvgTemp(World world, BlockPos pos)

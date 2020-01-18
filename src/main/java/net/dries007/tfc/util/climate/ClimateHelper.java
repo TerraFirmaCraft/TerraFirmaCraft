@@ -10,6 +10,8 @@ import java.util.Random;
 import net.minecraft.util.math.MathHelper;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 import net.dries007.tfc.util.calendar.Month;
 
@@ -22,18 +24,18 @@ public class ClimateHelper
     /**
      * @return The month adjusted temperature. This gets the base temperature, before daily / hourly changes
      */
-    public static float actualTemp(float regionalTemp, int y, int z, ICalendarFormatted moment)
+    public static float actualTemp(float regionalTemp, int y, int z, long timeOffset)
     {
-        return dailyTemp(regionalTemp, z, moment) - heightFactor(y);
+        return dailyTemp(regionalTemp, z, timeOffset) - heightFactor(y);
     }
 
     /**
      * @return The exact temperature for a location, including day + hour variation, without height adjustment
      */
-    public static float dailyTemp(float regionalTemp, int z, ICalendarFormatted moment)
+    public static float dailyTemp(float regionalTemp, int z, long timeOffset)
     {
         // Hottest part of the day at 12, coldest at 0
-        int hourOfDay = moment.getHourOfDay();
+        int hourOfDay = ICalendarFormatted.getHourOfDay(CalendarTFC.CALENDAR_TIME.getTicks() + timeOffset);
         if (hourOfDay > 12)
         {
             // Range: 0 - 12
@@ -43,24 +45,27 @@ public class ClimateHelper
         float hourModifier = 1f - (hourOfDay / 6f);
 
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
-        long day = moment.getTotalDays();
+        long day = ICalendar.getTotalDays(CalendarTFC.CALENDAR_TIME.getTicks() + timeOffset);
         RANDOM.setSeed(day);
         // Range: -1 - 1
         final float dailyModifier = RANDOM.nextFloat() - RANDOM.nextFloat();
 
         // Max daily / hourly variance is +/- 4 C
-        return monthlyTemp(regionalTemp, z, moment) + (dailyModifier + 0.3f * hourModifier) * 3f;
+        return monthlyTemp(regionalTemp, z, timeOffset) + (dailyModifier + 0.3f * hourModifier) * 3f;
     }
 
     /**
      * @return The month adjusted temperature. This gets the base temperature, before daily / hourly changes
      */
-    public static float monthlyTemp(float regionalTemp, int z, ICalendarFormatted moment)
+    public static float monthlyTemp(float regionalTemp, int z, long timeOffset)
     {
-        final float currentMonthFactor = monthFactor(regionalTemp, moment.getMonthOfYear(), z);
-        final float nextMonthFactor = monthFactor(regionalTemp, moment.getMonthOfYear().next(), z);
+        long time = CalendarTFC.CALENDAR_TIME.getTicks() + timeOffset;
+        Month monthOfYear = ICalendarFormatted.getMonthOfYear(time, CalendarTFC.CALENDAR_TIME.getDaysInMonth());
 
-        final float delta = (float) moment.getDayOfMonth() / moment.getDaysInMonth();
+        final float currentMonthFactor = monthFactor(regionalTemp, monthOfYear, z);
+        final float nextMonthFactor = monthFactor(regionalTemp, monthOfYear.next(), z);
+
+        final float delta = (float) ICalendarFormatted.getDayOfMonth(time, CalendarTFC.CALENDAR_TIME.getDaysInMonth()) / CalendarTFC.CALENDAR_TIME.getDaysInMonth();
         // Affine combination to smooth temperature transition
         return currentMonthFactor * (1 - delta) + nextMonthFactor * delta;
     }
