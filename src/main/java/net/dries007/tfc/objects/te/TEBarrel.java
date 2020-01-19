@@ -414,9 +414,10 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
      * Called to get the NBTTagCompound that is put on Barrel Items.
      * This happens when a sealed Barrel was broken.
      *
+     * Public access needed from BlockBarrel during getPickBlock
      * @return An NBTTagCompound containing inventory and tank data.
      */
-    private NBTTagCompound getItemTag()
+    public NBTTagCompound getItemTag()
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
