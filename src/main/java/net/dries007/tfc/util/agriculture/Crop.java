@@ -84,7 +84,7 @@ public enum Crop implements ICrop
     SQUASH(Food.SQUASH,
         new Range(0, 8, 35, 40),
         new Range(100, 400, 50),
-        8, 0.5f, SPREADING),
+        8, 0.5f, SIMPLE),
     SUGARCANE(Food.SUGARCANE,
         new Range(12, 18, 35, 40),
         new Range(100, 400, 50),
@@ -108,11 +108,11 @@ public enum Crop implements ICrop
     PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY,
         new Range(0, 5, 35, 40), // todo: unique temp range for pumpkins
         new Range(100, 400, 50),
-        8, 0.5f, SPREADING),
+        8, 0.5f, SIMPLE),
     MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY,
         new Range(0, 5, 35, 40),  // todo: unique temp range for melons
         new Range(100, 400, 50),
-        8, 0.5f, SPREADING);
+        8, 0.5f, SIMPLE);
 
     private final Supplier<ItemStack> foodDrop;
     private final Supplier<ItemStack> foodDropEarly;
