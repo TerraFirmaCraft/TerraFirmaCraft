@@ -161,7 +161,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             {
                 stack = cap.getHarvestingTool();
             }
-            if (stack == ItemStack.EMPTY)
+            if (stack.isEmpty())
             {
                 stack = player.getHeldItemMainhand();
             }

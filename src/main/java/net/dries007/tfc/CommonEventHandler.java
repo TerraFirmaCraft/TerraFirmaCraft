@@ -166,7 +166,7 @@ public final class CommonEventHandler
             {
                 tool = cap.getHarvestingTool();
             }
-            if (tool != ItemStack.EMPTY)
+            if (!tool.isEmpty())
             {
                 float skillModifier = SmithingSkill.getSkillBonus(tool, SmithingSkill.Type.TOOLS) / 2.0F;
                 if (skillModifier > 0 && Constants.RNG.nextFloat() < skillModifier)
