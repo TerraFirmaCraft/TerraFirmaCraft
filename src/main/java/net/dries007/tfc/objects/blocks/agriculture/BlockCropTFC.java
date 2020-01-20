@@ -146,30 +146,34 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         super.updateTick(worldIn, pos, state, random);
         if (!worldIn.isRemote)
         {
-            // Attempt to grow
-            float temp = ClimateTFC.getActualTemp(worldIn, pos);
-            float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
             TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
             if (te != null)
             {
-                if (crop.isValidForGrowth(temp, rainfall))
+                boolean isAlive = true;
+                while (te.getTicksSinceUpdate() > crop.getGrowthTime() && isAlive)
                 {
-                    // for every growth time, grow the plant
-                    while (te.getTicksSinceUpdate() > crop.getGrowthTime())
+                    te.reduceCounter((long) crop.getGrowthTime());
+
+                    // find stats for the time in which the crop would have grown
+                    float temp = ClimateTFC.getActualTemp(worldIn, pos, -te.getTicksSinceUpdate());
+                    float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
+
+                    // check if the crop could grow, if so, grow
+                    if (crop.isValidForGrowth(temp, rainfall))
                     {
                         grow(worldIn, random, pos, worldIn.getBlockState(pos));
-                        te.reduceCounter((long) crop.getGrowthTime());
                     }
-                }
 
-                // If not valid conditions, die
-                if (!crop.isValidConditions(temp, rainfall))
-                {
-                    worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
-                    TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
-                    if (tilePlaced != null)
+                    // If not valid conditions, die
+                    if (!crop.isValidConditions(temp, rainfall))
                     {
-                        tilePlaced.setStack(getDeathItem(te));
+                        worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+                        TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
+                        if (tilePlaced != null)
+                        {
+                            tilePlaced.setStack(getDeathItem(te));
+                        }
+                        isAlive = false;
                     }
                 }
             }

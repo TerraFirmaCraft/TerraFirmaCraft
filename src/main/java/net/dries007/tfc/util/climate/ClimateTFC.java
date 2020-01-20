@@ -18,47 +18,77 @@ public final class ClimateTFC
 
     public static float getActualTemp(World world, BlockPos pos)
     {
+        return getActualTemp(world, pos, 0);
+    }
+
+    public static float getActualTemp(World world, BlockPos pos, long timeOffset)
+    {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.actualTemp(data.getRegionalTemp(), pos.getY(), pos.getZ());
+            return ClimateHelper.actualTemp(data.getRegionalTemp(), pos.getY(), pos.getZ(), timeOffset);
         }
-        return getActualTemp(pos);
+        return getActualTemp(pos, timeOffset);
     }
 
     public static float getActualTemp(BlockPos pos)
     {
-        return ClimateHelper.actualTemp(CACHE.get(pos).getRegionalTemp(), pos.getY(), pos.getZ());
+        return getActualTemp(pos, 0);
+    }
+
+    public static float getActualTemp(BlockPos pos, long timeOffset)
+    {
+        return ClimateHelper.actualTemp(CACHE.get(pos).getRegionalTemp(), pos.getY(), pos.getZ(), timeOffset);
     }
 
     public static float getDailyTemp(World world, BlockPos pos)
     {
+        return getDailyTemp(world, pos, 0);
+    }
+
+    public static float getDailyTemp(World world, BlockPos pos, long timeOffset)
+    {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.dailyTemp(data.getRegionalTemp(), pos.getZ());
+            return ClimateHelper.dailyTemp(data.getRegionalTemp(), pos.getZ(), timeOffset);
         }
-        return getDailyTemp(pos);
+        return getDailyTemp(pos, timeOffset);
     }
 
     public static float getDailyTemp(BlockPos pos)
     {
-        return ClimateHelper.dailyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ());
+        return getDailyTemp(pos, 0);
+    }
+
+    public static float getDailyTemp(BlockPos pos, long timeOffset)
+    {
+        return ClimateHelper.dailyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ(), timeOffset);
     }
 
     public static float getMonthlyTemp(World world, BlockPos pos)
     {
+        return getMonthlyTemp(world, pos, 0);
+    }
+
+    public static float getMonthlyTemp(World world, BlockPos pos, long timeOffset)
+    {
         ChunkDataTFC data = ChunkDataTFC.get(world, pos);
         if (data.isInitialized())
         {
-            return ClimateHelper.monthlyTemp(data.getRegionalTemp(), pos.getZ());
+            return ClimateHelper.monthlyTemp(data.getRegionalTemp(), pos.getZ(), timeOffset);
         }
-        return getMonthlyTemp(pos);
+        return getMonthlyTemp(pos, timeOffset);
     }
 
     public static float getMonthlyTemp(BlockPos pos)
     {
-        return ClimateHelper.monthlyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ());
+        return getMonthlyTemp(pos, 0);
+    }
+
+    public static float getMonthlyTemp(BlockPos pos, long timeOffset)
+    {
+        return ClimateHelper.monthlyTemp(CACHE.get(pos).getRegionalTemp(), pos.getZ(), timeOffset);
     }
 
     public static float getAvgTemp(World world, BlockPos pos)
