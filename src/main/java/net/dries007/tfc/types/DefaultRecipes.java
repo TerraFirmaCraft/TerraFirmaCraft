@@ -125,7 +125,7 @@ public final class DefaultRecipes
             new BarrelRecipe(IIngredient.of(CURDLED_MILK.get(), 625), IIngredient.of(ItemStack.EMPTY), null, new ItemStack(ItemFoodTFC.get(Food.CHEESE), 2), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("cheese"),
 
             // Instant recipes: set the duration to 0
-            new BarrelRecipeFluidMixing(IIngredient.of(VINEGAR.get(), 9), new IngredientFluidItem(SALT_WATER.get(), 1), new FluidStack(BRINE.get(), 10), 0).setRegistryName("brine"),
+            new BarrelRecipeFluidMixing(IIngredient.of(SALT_WATER.get(), 9), new IngredientFluidItem(VINEGAR.get(), 1), new FluidStack(BRINE.get(), 10), 0).setRegistryName("brine"),
             new BarrelRecipeFluidMixing(IIngredient.of(MILK.get(), 9), new IngredientFluidItem(VINEGAR.get(), 1), new FluidStack(MILK_VINEGAR.get(), 10), 0).setRegistryName("milk_vinegar"),
             // todo: net instead of ratios for curdled milk/brine? Classic would get 2000mb brine from 1000mb vinegar + 1000mb salt water, this gets 10/9 or 1111mb
             // this ratio works for 9b + 1b = 10b (full barrel) of brine/milk_vinegar, but leaves odd ninths of fluid around for other mixtures.
