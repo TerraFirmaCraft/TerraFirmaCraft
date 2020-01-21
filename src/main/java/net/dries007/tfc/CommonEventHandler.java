@@ -270,12 +270,12 @@ public final class CommonEventHandler
                 event.addCapability(CapabilityItemSize.KEY, sizeHandler);
                 if (sizeHandler instanceof IItemSize)
                 {
-                    // Only modify the stack size if we're shrinking the size (i.e. don't make unstackable items stackable
+                    // Only modify the stack size if the item was stackable in the first place
+                    // Note: this is called in many cases BEFORE all custom capabilities are added.
                     int prevStackSize = stack.getMaxStackSize();
-                    int replacedStackSize = ((IItemSize) sizeHandler).getStackSize(stack);
-                    if (prevStackSize > replacedStackSize)
+                    if (prevStackSize != 1)
                     {
-                        item.setMaxStackSize(replacedStackSize);
+                        item.setMaxStackSize(((IItemSize) sizeHandler).getStackSize(stack));
                     }
                 }
             }
