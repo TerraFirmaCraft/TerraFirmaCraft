@@ -5,12 +5,15 @@
 
 package net.dries007.tfc.objects.items.metal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -43,6 +46,57 @@ public class ItemMetalTool extends ItemMetal
     private final int areaOfEffect;
     private final float attackSpeed;
     private float efficiency;
+
+    @Override
+    public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment)
+    {
+        if (enchantment.type == EnumEnchantmentType.WEAPON)
+        {
+            return isWeapon();
+        }
+        else if (enchantment.type == EnumEnchantmentType.DIGGER)
+        {
+            return isTool();
+        }
+        return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    private boolean isWeapon()
+    {
+        switch (type)
+        {
+            case AXE:
+            case SWORD:
+            case MACE:
+            case KNIFE:
+            case HAMMER:
+            case JAVELIN:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private boolean isTool()
+    {
+        switch (type)
+        {
+            case PICK:
+            case HAMMER:
+            case KNIFE:
+            case AXE:
+            case HOE:
+            case SAW:
+            case CHISEL:
+            case SCYTHE:
+            case SHEARS:
+            case SHOVEL:
+            case PROPICK:
+                return true;
+            default:
+                return false;
+        }
+    }
 
     public ItemMetalTool(Metal metal, Metal.ItemType type)
     {
