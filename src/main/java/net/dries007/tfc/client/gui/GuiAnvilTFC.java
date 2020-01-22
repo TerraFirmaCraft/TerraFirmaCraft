@@ -94,6 +94,11 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
     {
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
+        if (Helpers.isJEIEnabled())
+        {
+            drawTexturedModalRect(guiLeft + 26, guiTop + 24, 0, 192, 9, 14);
+        }
+
         // Draw the progress indicators
         int progress = tile.getWorkingProgress();
         drawTexturedModalRect(guiLeft + 13 + progress, guiTop + 100, 176, 0, 5, 5);
