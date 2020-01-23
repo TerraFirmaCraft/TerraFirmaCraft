@@ -14,7 +14,10 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
@@ -83,6 +86,7 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
+import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
@@ -605,9 +609,7 @@ public final class CommonEventHandler
             if (hugeHeavyCount >= 2)
             {
                 // Player is barely able to move
-                event.player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 25, 125, false, false));
-                event.player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 25, 2, false, false));
-                event.player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 25, -125, false, false));
+                event.player.addPotionEffect(new PotionEffect(PotionEffectsTFC.OVERBURDENED, 25, 125, false, false));
             }
         }
     }

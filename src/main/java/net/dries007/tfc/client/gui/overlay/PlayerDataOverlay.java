@@ -37,7 +37,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @SideOnly(Side.CLIENT)
 public final class PlayerDataOverlay
 {
-    private static final ResourceLocation ICONS = new ResourceLocation(MOD_ID, "textures/gui/overlay/icons.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(MOD_ID, "textures/gui/icons/overlay.png");
     private static final ResourceLocation MC_ICONS = new ResourceLocation("minecraft:textures/gui/icons.png");
     private static final PlayerDataOverlay INSTANCE = new PlayerDataOverlay();
 
