@@ -42,9 +42,17 @@ public class HeatRecipeMetalMelting extends HeatRecipe
         if (metalObject != null)
         {
             Metal metal = metalObject.getMetal(input);
-            if (metal != null && metalObject.canMelt(input))
+            if (metal != null)
             {
-                return new FluidStack(FluidsTFC.getFluidFromMetal(metal), metalObject.getSmeltAmount(input));
+                if (metalObject.canMelt(input))
+                {
+                    return new FluidStack(FluidsTFC.getFluidFromMetal(metal), metalObject.getSmeltAmount(input));
+                }
+                else
+                {
+                    // Melt into unknown alloy so items aren't simply voided and becomes something
+                    return new FluidStack(FluidsTFC.getFluidFromMetal(Metal.UNKNOWN), metalObject.getSmeltAmount(input));
+                }
             }
         }
         return null;
