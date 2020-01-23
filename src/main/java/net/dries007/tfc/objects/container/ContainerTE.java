@@ -59,7 +59,22 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
         {
             detectAndSendFieldChanges();
         }
-        super.detectAndSendChanges();
+        for (int i = 0; i < inventorySlots.size(); ++i)
+        {
+            ItemStack stack = inventorySlots.get(i).getStack();
+            ItemStack newStack = inventoryItemStacks.get(i);
+
+            if (!ItemStack.areItemStacksEqual(newStack, stack))
+            {
+                newStack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+                inventoryItemStacks.set(i, newStack);
+
+                for (IContainerListener listener : listeners)
+                {
+                    listener.sendSlotContents(this, i, newStack);
+                }
+            }
+        }
     }
 
     @Override
