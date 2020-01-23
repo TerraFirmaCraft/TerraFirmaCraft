@@ -3726,4 +3726,8 @@ entity.horsetfc.name=Horse
 entity.donkeytfc.name=Donkey
 entity.muletfc.name=Mule
 
+#TFC death messages
 death.attack.dehydration=%1$s died of dehydration
+
+#Effects
+effectsTFC.overburdened=Overburdened
