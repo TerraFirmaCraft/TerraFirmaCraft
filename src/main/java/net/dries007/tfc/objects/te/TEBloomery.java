@@ -199,6 +199,7 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
 
                 oreStacks.clear();
                 fuelStacks.clear();
+                cachedRecipe = null; // Clear recipe
 
                 updateSlagBlock(false);
                 world.setBlockState(pos, state.withProperty(LIT, false));
