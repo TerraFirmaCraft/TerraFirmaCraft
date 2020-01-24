@@ -23,8 +23,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeableMeasurableMetal;
-import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
-import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipeMeasurable;
@@ -213,14 +211,7 @@ public final class DefaultRecipes
     public static void onRegisterBlastFurnaceRecipeEvent(RegistryEvent.Register<BlastFurnaceRecipe> event)
     {
         event.getRegistry().registerAll(
-            new BlastFurnaceRecipe(new ResourceLocation(MOD_ID, "pig_iron"), Metal.PIG_IRON, stack -> {
-                IMetalItem metalItem = CapabilityMetalItem.getMetalItem(stack);
-                if (metalItem != null && (metalItem.getMetal(stack) == Metal.WROUGHT_IRON || metalItem.getMetal(stack) == Metal.PIG_IRON))
-                {
-                    return metalItem.getSmeltAmount(stack);
-                }
-                return 0;
-            }, IIngredient.of("dustFlux"))
+            new BlastFurnaceRecipe(new ResourceLocation(MOD_ID, "pig_iron"), Metal.PIG_IRON, Metal.WROUGHT_IRON, IIngredient.of("dustFlux"))
         );
     }
 

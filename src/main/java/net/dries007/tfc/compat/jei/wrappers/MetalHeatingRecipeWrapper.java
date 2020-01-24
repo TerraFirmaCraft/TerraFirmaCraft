@@ -63,7 +63,7 @@ public class MetalHeatingRecipeWrapper implements IRecipeWrapper
     {
         float x = 60f;
         float y = 4f;
-        String text = Heat.getTooltip(meltingTemp);
+        String text = Heat.getTooltipAlternate(meltingTemp);
         x = x - minecraft.fontRenderer.getStringWidth(text) / 2.0f;
         minecraft.fontRenderer.drawString(text, x, y, 0xFFFFFF, false);
     }

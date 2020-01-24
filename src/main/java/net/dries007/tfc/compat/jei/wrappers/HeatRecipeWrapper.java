@@ -25,7 +25,7 @@ public class HeatRecipeWrapper extends SimpleRecipeWrapper
     {
         float x = 60f;
         float y = 4f;
-        String text = Heat.getTooltip(recipe.getTransformTemp());
+        String text = Heat.getTooltipAlternate(recipe.getTransformTemp());
         x = x - minecraft.fontRenderer.getStringWidth(text) / 2.0f;
         minecraft.fontRenderer.drawString(text, x, y, 0xFFFFFF, false);
     }
