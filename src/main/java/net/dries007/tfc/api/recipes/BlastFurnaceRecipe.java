@@ -17,6 +17,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.objects.items.metal.ItemIngot;
 
 public class BlastFurnaceRecipe extends IForgeRegistryEntry.Impl<BlastFurnaceRecipe>
 {
@@ -59,5 +60,15 @@ public class BlastFurnaceRecipe extends IForgeRegistryEntry.Impl<BlastFurnaceRec
     public boolean isValidAdditive(ItemStack stack)
     {
         return additive.testIgnoreCount(stack);
+    }
+
+    /**
+     * For JEI only, gets an ingot of this recipe metal
+     *
+     * @return itemstack containing ingot of the specified metal
+     */
+    public ItemStack getOutput()
+    {
+        return new ItemStack(ItemIngot.get(output, Metal.ItemType.INGOT));
     }
 }

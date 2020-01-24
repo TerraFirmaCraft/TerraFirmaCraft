@@ -65,6 +65,24 @@ public class BloomeryRecipe extends IForgeRegistryEntry.Impl<BloomeryRecipe>
         return bloom;
     }
 
+    /**
+     * Used in JEI, gets a bloom with 100 units
+     *
+     * @return Bloom itemstack containing 100 units
+     */
+    public ItemStack getOutput()
+    {
+        ItemStack bloom = new ItemStack(ItemsTFC.UNREFINED_BLOOM);
+        IForgeable cap = bloom.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+        if (cap instanceof IForgeableMeasurableMetal)
+        {
+            ((IForgeableMeasurableMetal) cap).setMetalAmount(100);
+            ((IForgeableMeasurableMetal) cap).setMetal(metal);
+            cap.setTemperature(cap.getMeltTemp() - 1);
+        }
+        return bloom;
+    }
+
     public boolean isValidInput(ItemStack inputItem)
     {
         IMetalItem metalItem = CapabilityMetalItem.getMetalItem(inputItem);
