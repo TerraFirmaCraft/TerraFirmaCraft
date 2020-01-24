@@ -94,8 +94,8 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
      * Add metal to an alloy from an item stack
      * Note if the an item doesn't match a heat recipe it will be ignored
      *
-     * @param stack      an item stack
-     * @param deviceTier the tier of the device doing the heating
+     * @param stack       an item stack
+     * @param deviceTier  the tier of the device doing the heating
      * @param temperature the temperature to melt items
      * @return the alloy, for method chaining
      */

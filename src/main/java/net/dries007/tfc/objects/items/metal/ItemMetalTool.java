@@ -47,57 +47,6 @@ public class ItemMetalTool extends ItemMetal
     private final float attackSpeed;
     private float efficiency;
 
-    @Override
-    public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment)
-    {
-        if (enchantment.type == EnumEnchantmentType.WEAPON)
-        {
-            return isWeapon();
-        }
-        else if (enchantment.type == EnumEnchantmentType.DIGGER)
-        {
-            return isTool();
-        }
-        return super.canApplyAtEnchantingTable(stack, enchantment);
-    }
-
-    private boolean isWeapon()
-    {
-        switch (type)
-        {
-            case AXE:
-            case SWORD:
-            case MACE:
-            case KNIFE:
-            case HAMMER:
-            case JAVELIN:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    private boolean isTool()
-    {
-        switch (type)
-        {
-            case PICK:
-            case HAMMER:
-            case KNIFE:
-            case AXE:
-            case HOE:
-            case SAW:
-            case CHISEL:
-            case SCYTHE:
-            case SHEARS:
-            case SHOVEL:
-            case PROPICK:
-                return true;
-            default:
-                return false;
-        }
-    }
-
     public ItemMetalTool(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
@@ -391,10 +340,61 @@ public class ItemMetalTool extends ItemMetal
     }
 
     @Override
+    public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment)
+    {
+        if (enchantment.type == EnumEnchantmentType.WEAPON)
+        {
+            return isWeapon();
+        }
+        else if (enchantment.type == EnumEnchantmentType.DIGGER)
+        {
+            return isTool();
+        }
+        return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
     public boolean canStack(ItemStack stack)
     {
         return false;
     }
 
     public double getAttackDamage() { return this.attackDamage; }
+
+    private boolean isWeapon()
+    {
+        switch (type)
+        {
+            case AXE:
+            case SWORD:
+            case MACE:
+            case KNIFE:
+            case HAMMER:
+            case JAVELIN:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private boolean isTool()
+    {
+        switch (type)
+        {
+            case PICK:
+            case HAMMER:
+            case KNIFE:
+            case AXE:
+            case HOE:
+            case SAW:
+            case CHISEL:
+            case SCYTHE:
+            case SHEARS:
+            case SHOVEL:
+            case PROPICK:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
