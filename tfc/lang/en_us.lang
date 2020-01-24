@@ -3705,8 +3705,11 @@ item.tfc.crop.product.jute.name=Jute
 item.tfc.crop.product.jute_fiber.name=Jute Fiber
 item.tfc.crop.product.burlap_cloth.name=Burlap Cloth
 
-item.tfc.bloom.unrefined.name=Raw Iron Bloom
-item.tfc.bloom.refined.name=Refined Iron Bloom
+item.tfc.bloom.unrefined.unknown.name=Raw Bloom
+item.tfc.bloom.refined.unknown.name=Refined Bloom
+
+item.tfc.bloom.unrefined.wrought_iron.name=Raw Iron Bloom
+item.tfc.bloom.refined.wrought_iron.name=Refined Iron Bloom
 
 item.tfc.animal.product.wool.name=Wool
 item.tfc.animal.product.wool_yarn.name=Wool Yarn
