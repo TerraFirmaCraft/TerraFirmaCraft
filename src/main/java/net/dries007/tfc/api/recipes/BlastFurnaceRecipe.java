@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.api.recipes;
 
-import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -13,12 +12,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.items.metal.ItemIngot;
 
+@SuppressWarnings("WeakerAccess")
 public class BlastFurnaceRecipe extends IForgeRegistryEntry.Impl<BlastFurnaceRecipe>
 {
     @Nullable
@@ -28,33 +30,37 @@ public class BlastFurnaceRecipe extends IForgeRegistryEntry.Impl<BlastFurnaceRec
     }
 
     protected Metal output;
-    protected Function<ItemStack, Integer> supplier;
+    protected Metal input;
     protected IIngredient<ItemStack> additive;
 
     /**
      * Creates a new blast furnace recipe
      *
      * @param output   the metal output of this recipe
-     * @param supplier a function to return how much metal content a itemstack can wield (return 0 if ingredient is not meltable to this metal)
+     * @param input    the metal input of this recipe
      * @param additive additive to make this recipe (for pig iron, this means flux)
      */
-    public BlastFurnaceRecipe(ResourceLocation name, Metal output, Function<ItemStack, Integer> supplier, IIngredient<ItemStack> additive)
+    public BlastFurnaceRecipe(ResourceLocation name, Metal output, Metal input, IIngredient<ItemStack> additive)
     {
         this.output = output;
-        this.supplier = supplier;
+        this.input = input;
         this.additive = additive;
 
         setRegistryName(name);
     }
 
+    @Nullable
     public FluidStack getOutput(ItemStack stack)
     {
-        return new FluidStack(FluidsTFC.getFluidFromMetal(output), supplier.apply(stack));
+        IMetalItem metal = CapabilityMetalItem.getMetalItem(stack);
+        int value = metal != null && metal.getMetal(stack) == input ? metal.getSmeltAmount(stack) : 0;
+        return value > 0 ? new FluidStack(FluidsTFC.getFluidFromMetal(output), value) : null;
     }
 
     public boolean isValidInput(ItemStack stack)
     {
-        return supplier.apply(stack) > 0;
+        IMetalItem metal = CapabilityMetalItem.getMetalItem(stack);
+        return metal != null && metal.getMetal(stack) == input;
     }
 
     public boolean isValidAdditive(ItemStack stack)

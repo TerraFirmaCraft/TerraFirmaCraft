@@ -23,6 +23,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -381,7 +382,11 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         BlastFurnaceRecipe recipe = BlastFurnaceRecipe.get(stack);
         if (recipe != null)
         {
-            alloy.add(recipe.getOutput(stack));
+            FluidStack output = recipe.getOutput(stack);
+            if (output != null)
+            {
+                alloy.add(output);
+            }
         }
     }
 
