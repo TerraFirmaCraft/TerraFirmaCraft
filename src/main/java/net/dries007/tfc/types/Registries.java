@@ -59,6 +59,7 @@ public final class Registries
         newRegistry(QUERN_RECIPE, QuernRecipe.class, false);
         newRegistry(CHISEL_RECIPE, ChiselRecipe.class, false);
         newRegistry(BLOOMERY_RECIPE, BloomeryRecipe.class, false);
+        newRegistry(BLAST_FURNACE_RECIPE, BlastFurnaceRecipe.class, false);
     }
 
     /**

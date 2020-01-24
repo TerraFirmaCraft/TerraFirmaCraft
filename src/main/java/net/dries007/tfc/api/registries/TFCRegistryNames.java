@@ -31,4 +31,5 @@ public final class TFCRegistryNames
     public static final ResourceLocation QUERN_RECIPE = new ResourceLocation(MOD_ID, "quern_recipe");
     public static final ResourceLocation CHISEL_RECIPE = new ResourceLocation(MOD_ID, "chisel_recipe");
     public static final ResourceLocation BLOOMERY_RECIPE = new ResourceLocation(MOD_ID, "bloomery_recipe");
+    public static final ResourceLocation BLAST_FURNACE_RECIPE = new ResourceLocation(MOD_ID, "blast_furnace_recipe");
 }
