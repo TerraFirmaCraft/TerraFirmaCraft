@@ -30,6 +30,7 @@ import net.minecraftforge.common.IPlantable;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.util.IFallingBlock;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -159,7 +160,17 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
         return score > 1 ? MAX_MOISTURE : Math.round(score * MAX_MOISTURE);
     }
 
-    public void turnToDirt(World world, BlockPos pos)
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN) && !(worldIn.getBlockState(pos.up()).getBlock() instanceof IFallingBlock))
+        {
+            turnToDirt(worldIn, pos);
+        }
+    }
+
+    private void turnToDirt(World world, BlockPos pos)
     {
         world.setBlockState(pos, get(rock, Rock.Type.DIRT).getDefaultState());
         AxisAlignedBB axisalignedbb = FLIPPED_AABB.offset(pos);
@@ -167,16 +178,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
         {
             double d0 = Math.min(axisalignedbb.maxY - axisalignedbb.minY, axisalignedbb.maxY - entity.getEntityBoundingBox().minY);
             entity.setPositionAndUpdate(entity.posX, entity.posY + d0 + 0.001D, entity.posZ);
-        }
-    }
-
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN))
-        {
-            turnToDirt(worldIn, pos);
         }
     }
 

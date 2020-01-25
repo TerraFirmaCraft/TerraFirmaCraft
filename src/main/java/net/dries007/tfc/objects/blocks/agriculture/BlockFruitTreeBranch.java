@@ -15,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -39,9 +40,29 @@ public class BlockFruitTreeBranch extends Block
     /* Facing of this branch */
     public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
-    private static final AxisAlignedBB VERTICAL_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 1.0D, 0.6875D);
-    private static final AxisAlignedBB HORIZONTAL_Z_AABB = new AxisAlignedBB(0.375D, 0.375D, 0.0D, 0.625, 0.625, 1.0D);
-    private static final AxisAlignedBB HORIZONTAL_X_AABB = new AxisAlignedBB(0.0D, 0.375D, 0.375D, 1.0D, 0.625, 0.625);
+    /* Connection sides
+     * 0 = no connection
+     * 1 = connected, use vertical model
+     * 2 = connected=, use horizontal model */
+    public static final PropertyInteger NORTH = PropertyInteger.create("north", 0, 2);
+    public static final PropertyInteger EAST = PropertyInteger.create("east", 0, 2);
+    public static final PropertyInteger SOUTH = PropertyInteger.create("south", 0, 2);
+    public static final PropertyInteger WEST = PropertyInteger.create("west", 0, 2);
+    public static final PropertyInteger UP = PropertyInteger.create("up", 0, 2);
+
+    private static final AxisAlignedBB TRUNK_N_AABB = new AxisAlignedBB(0.375D, 0.375D, 0.375D, 0.625D, 0.625D, 1.0D);
+    private static final AxisAlignedBB TRUNK_E_AABB = new AxisAlignedBB(0.0D, 0.375D, 0.375D, 0.625D, 0.625D, 0.625D);
+    private static final AxisAlignedBB TRUNK_S_AABB = new AxisAlignedBB(0.375D, 0.375D, 0.0D, 0.625D, 0.625D, 0.625D);
+    private static final AxisAlignedBB TRUNK_W_AABB = new AxisAlignedBB(0.375D, 0.375D, 0.375D, 1.0D, 0.625D, 0.625D);
+
+
+    private static final AxisAlignedBB TRUNK_U_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 1.0D, 0.6875D);
+
+    private static final AxisAlignedBB CONNECTION_N_AABB = new AxisAlignedBB(0.3125D, 0.375D, 0.0D, 0.0D, 0.625D, 0.3125D);
+    private static final AxisAlignedBB CONNECTION_S_AABB = new AxisAlignedBB(0.3125D, 0.375D, 0.6875D, 0.0D, 0.625D, 1.0D);
+    private static final AxisAlignedBB CONNECTION_W_AABB = new AxisAlignedBB(0.0D, 0.375D, 0.3125D, 0.3125D, 0.625D, 0.6875D);
+    private static final AxisAlignedBB CONNECTION_E_AABB = new AxisAlignedBB(0.6875D, 0.375D, 0.3125D, 1.0D, 0.625D, 0.6875D);
+
 
     private static final Map<IFruitTree, BlockFruitTreeBranch> MAP = new HashMap<>();
 
@@ -61,6 +82,7 @@ public class BlockFruitTreeBranch extends Block
         setSoundType(SoundType.WOOD);
         this.tree = tree;
         Blocks.FIRE.setFireInfo(this, 5, 20);
+        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(NORTH, 0).withProperty(EAST, 0).withProperty(SOUTH, 0).withProperty(WEST, 0).withProperty(UP, 0));
     }
 
     @SuppressWarnings("deprecation")
@@ -88,8 +110,47 @@ public class BlockFruitTreeBranch extends Block
     @Nonnull
     public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
+        int connectedValue;
         EnumFacing face = getFacing(worldIn, pos);
-        return face != null ? state.withProperty(FACING, face) : state.withProperty(FACING, EnumFacing.UP);
+        if (face == null || face == EnumFacing.UP || face == EnumFacing.DOWN)
+        {
+            // Vertical branch
+            state = state.withProperty(FACING, EnumFacing.UP);
+            connectedValue = 1;
+        }
+        else
+        {
+            // Horizontal branch
+            state = state.withProperty(FACING, face);
+            connectedValue = 2;
+        }
+        for (EnumFacing facing : EnumFacing.VALUES)
+        {
+            if (worldIn.getBlockState(pos.offset(facing)).getBlock() instanceof BlockFruitTreeLeaves)
+            {
+                if (facing == EnumFacing.NORTH)
+                {
+                    state = state.withProperty(NORTH, connectedValue);
+                }
+                else if (facing == EnumFacing.SOUTH)
+                {
+                    state = state.withProperty(SOUTH, connectedValue);
+                }
+                else if (facing == EnumFacing.EAST)
+                {
+                    state = state.withProperty(EAST, connectedValue);
+                }
+                else if (facing == EnumFacing.WEST)
+                {
+                    state = state.withProperty(WEST, connectedValue);
+                }
+                else if (facing == EnumFacing.UP)
+                {
+                    state = state.withProperty(UP, connectedValue);
+                }
+            }
+        }
+        return state;
     }
 
     @SuppressWarnings("deprecation")
@@ -118,19 +179,42 @@ public class BlockFruitTreeBranch extends Block
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        EnumFacing face = getFacing(source, pos);
-        if (face == null) return VERTICAL_AABB;
-        switch (face)
+        state = getActualState(state, source, pos);
+        AxisAlignedBB finalAABB;
+        switch (state.getValue(FACING))
         {
             case NORTH:
-            case SOUTH:
-                return HORIZONTAL_Z_AABB;
+                finalAABB = TRUNK_N_AABB;
+                break;
             case EAST:
+                finalAABB = TRUNK_E_AABB;
+                break;
+            case SOUTH:
+                finalAABB = TRUNK_S_AABB;
+                break;
             case WEST:
-                return HORIZONTAL_X_AABB;
+                finalAABB = TRUNK_W_AABB;
+                break;
             default:
-                return VERTICAL_AABB;
+                finalAABB = TRUNK_U_AABB;
         }
+        if (state.getValue(NORTH) > 0)
+        {
+            finalAABB = finalAABB.union(CONNECTION_N_AABB);
+        }
+        if (state.getValue(EAST) > 0)
+        {
+            finalAABB = finalAABB.union(CONNECTION_E_AABB);
+        }
+        if (state.getValue(SOUTH) > 0)
+        {
+            finalAABB = finalAABB.union(CONNECTION_S_AABB);
+        }
+        if (state.getValue(WEST) > 0)
+        {
+            finalAABB = finalAABB.union(CONNECTION_W_AABB);
+        }
+        return finalAABB;
     }
 
     @Override
@@ -185,7 +269,7 @@ public class BlockFruitTreeBranch extends Block
     @Nonnull
     public BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, NORTH, EAST, SOUTH, WEST, UP);
     }
 
     @Override
