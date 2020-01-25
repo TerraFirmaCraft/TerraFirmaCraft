@@ -100,9 +100,9 @@ public class BlockLogPile extends Block implements ILightableBlock
         {
             worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + rand.nextFloat(), pos.getY() + 1, pos.getZ() + rand.nextFloat(),
                 0f, 0.1f + 0.1f * rand.nextFloat(), 0f);
-            if (rand.nextDouble() < 0.4D)
+            if (worldIn.getTotalWorldTime() % 80 == 0)
             {
-                worldIn.playSound((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.5F, 0.6F, false);
+                worldIn.playSound((double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.5F, 0.6F, false);
             }
         }
     }
