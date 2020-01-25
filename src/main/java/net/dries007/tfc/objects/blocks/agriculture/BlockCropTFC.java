@@ -180,7 +180,7 @@ public abstract class BlockCropTFC extends BlockBush
 
     public void die(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        worldIn.setBlockState(pos, BlockCropDead.get(crop).getDefaultState());
+        worldIn.setBlockState(pos, BlockCropDead.get(crop).getDefaultState().withProperty(BlockCropDead.WILD, state.getValue(WILD)));
     }
 
     @Override
