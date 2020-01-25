@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -36,8 +35,8 @@ import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
+import net.dries007.tfc.objects.te.TECropBase;
 import net.dries007.tfc.objects.te.TEPlacedItemFlat;
-import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SimpleSkill;
@@ -46,7 +45,7 @@ import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public abstract class BlockCropTFC extends BlockBush implements IGrowable
+public abstract class BlockCropTFC extends BlockBush
 {
     // model boxes
     private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
@@ -73,6 +72,8 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     private static final int META_WILD = 8;
     private static final int META_GROWTH = 7;
 
+    // static field and methods for conversion from crop to Block
+
     private static final Map<ICrop, BlockCropTFC> MAP = new HashMap<>();
 
     public static BlockCropTFC get(ICrop crop)
@@ -85,7 +86,11 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         return MAP.keySet();
     }
 
+    // fields
+
     protected final ICrop crop;
+
+    // constructor
 
     BlockCropTFC(ICrop crop)
     {
@@ -101,22 +106,12 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
         setHardness(0.6f);
     }
 
+    // public methods
+
     @Nonnull
     public ICrop getCrop()
     {
         return crop;
-    }
-
-    @Override
-    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
-    {
-        return false;
     }
 
     @Override
@@ -144,9 +139,14 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         super.updateTick(worldIn, pos, state, random);
+        checkGrowth(worldIn, pos, state, random);
+    }
+
+    public void checkGrowth(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
         if (!worldIn.isRemote)
         {
-            TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
+            TECropBase te = Helpers.getTE(worldIn, pos, TECropBase.class);
             if (te != null)
             {
                 boolean isAlive = true;
@@ -161,22 +161,30 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
                     // check if the crop could grow, if so, grow
                     if (crop.isValidForGrowth(temp, rainfall))
                     {
-                        grow(worldIn, random, pos, worldIn.getBlockState(pos));
+                        grow(worldIn, pos, worldIn.getBlockState(pos), random);
                     }
 
                     // If not valid conditions, die
                     if (!crop.isValidConditions(temp, rainfall))
                     {
-                        worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
-                        TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
-                        if (tilePlaced != null)
-                        {
-                            tilePlaced.setStack(getDeathItem(te));
-                        }
+                        die(worldIn, pos, worldIn.getBlockState(pos), random);
+                        // once the crop has died, stop iterating
                         isAlive = false;
                     }
                 }
             }
+        }
+    }
+
+    public abstract void grow(World worldIn, BlockPos pos, IBlockState state, Random random);
+
+    public void die(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+        TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
+        if (tilePlaced != null)
+        {
+            tilePlaced.setStack(new ItemStack(ItemSeedsTFC.get(getCrop())));
         }
     }
 
@@ -216,7 +224,7 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        TECropBase tile = Helpers.getTE(worldIn, pos, TECropBase.class);
         if (tile != null)
         {
             tile.resetCounter();
@@ -241,7 +249,7 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TETickCounter();
+        return new TECropBase();
     }
 
     @Override
@@ -259,12 +267,4 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     }
 
     public abstract PropertyInteger getStageProperty();
-
-    /**
-     * Gets the item stack that the crop will create upon dying and turning into a placed item
-     */
-    protected ItemStack getDeathItem(TETickCounter cropTE)
-    {
-        return ItemSeedsTFC.get(crop, 1);
-    }
 }
