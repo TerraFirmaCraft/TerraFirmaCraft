@@ -50,6 +50,11 @@ public class GuiKnapping extends GuiContainerTFC
                 addButton(new GuiButtonKnapping(x + 5 * y, bx, by, 16, 16, buttonTexture));
             }
         }
+        // JEI reloads this after it's recipe gui is closed
+        if (inventorySlots instanceof ContainerKnapping)
+        {
+            ((ContainerKnapping) inventorySlots).requiresReset = true;
+        }
     }
 
     @Override
@@ -87,7 +92,7 @@ public class GuiKnapping extends GuiContainerTFC
             {
                 if (button instanceof GuiButtonKnapping)
                 {
-                    button.visible = false;
+                    button.visible = ((ContainerKnapping) inventorySlots).getSlotState(button.id);
                 }
             }
             ((ContainerKnapping) inventorySlots).requiresReset = false;
@@ -114,6 +119,11 @@ public class GuiKnapping extends GuiContainerTFC
         {
             ((GuiButtonKnapping) button).onClick();
             button.playPressSound(mc.getSoundHandler());
+            // Set the client-side matrix
+            if (inventorySlots instanceof ContainerKnapping)
+            {
+                ((ContainerKnapping) inventorySlots).setSlotState(button.id, false);
+            }
         }
     }
 }
