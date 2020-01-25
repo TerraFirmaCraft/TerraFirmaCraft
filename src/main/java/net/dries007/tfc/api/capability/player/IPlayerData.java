@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -33,6 +34,14 @@ public interface IPlayerData extends INBTSerializable<NBTTagCompound>
 
     @Nonnull
     EntityPlayer getPlayer();
+
+    /*
+     * Gets the tool that was used in the last {@link net.minecraftforge.event.world.BlockEvent.BreakEvent} event
+     */
+    @Nonnull
+    ItemStack getHarvestingTool();
+
+    void setHarvestingTool(@Nonnull ItemStack stack);
 
     /**
      * Gets the current chiseling mode.
