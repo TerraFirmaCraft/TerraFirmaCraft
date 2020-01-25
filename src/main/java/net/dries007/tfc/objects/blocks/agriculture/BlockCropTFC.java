@@ -180,12 +180,7 @@ public abstract class BlockCropTFC extends BlockBush
 
     public void die(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
-        TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
-        if (tilePlaced != null)
-        {
-            tilePlaced.setStack(new ItemStack(ItemSeedsTFC.get(getCrop())));
-        }
+        worldIn.setBlockState(pos, BlockCropDead.get(crop).getDefaultState());
     }
 
     @Override

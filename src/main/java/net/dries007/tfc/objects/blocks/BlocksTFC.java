@@ -102,6 +102,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockMetalSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
     private static ImmutableList<BlockCropTFC> allCropBlocks;
+    private static ImmutableList<BlockCropDead> allDeadCropBlocks;
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
     private static ImmutableList<BlockLoom> allLoomBlocks;
@@ -213,6 +214,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockCropTFC> getAllCropBlocks()
     {
         return allCropBlocks;
+    }
+
+    public static ImmutableList<BlockCropDead> getAllDeadCropBlocks()
+    {
+        return allDeadCropBlocks;
     }
 
     public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
@@ -495,10 +501,21 @@ public final class BlocksTFC
 
             for (Crop crop : Crop.values())
             {
-                b.add(register(r, "crop/" + crop.name().toLowerCase(), crop.create()));
+                b.add(register(r, "crop/" + crop.name().toLowerCase(), crop.createGrowingBlock()));
             }
 
             allCropBlocks = b.build();
+        }
+
+        {
+            Builder<BlockCropDead> b = ImmutableList.builder();
+
+            for (Crop crop : Crop.values())
+            {
+                b.add(register(r, "dead_crop/" + crop.name().toLowerCase(), crop.createDeadBlock()));
+            }
+
+            allDeadCropBlocks = b.build();
         }
 
         {

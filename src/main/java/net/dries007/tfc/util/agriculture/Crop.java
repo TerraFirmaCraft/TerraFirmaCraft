@@ -12,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.blocks.agriculture.BlockCropDead;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropSimple;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropSpreading;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
@@ -180,7 +181,7 @@ public enum Crop implements ICrop
         return ItemStack.EMPTY;
     }
 
-    public BlockCropTFC create()
+    public BlockCropTFC createGrowingBlock()
     {
         if (type == SIMPLE || type == PICKABLE)
         {
@@ -191,6 +192,11 @@ public enum Crop implements ICrop
             return BlockCropSpreading.create(this);
         }
         throw new IllegalStateException("Invalid growthstage property " + growthStages + " for crop");
+    }
+
+    public BlockCropDead createDeadBlock()
+    {
+        return new BlockCropDead(this);
     }
 
     enum CropType

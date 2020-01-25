@@ -1,0 +1,118 @@
+package net.dries007.tfc.objects.blocks.agriculture;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import javax.annotation.Nonnull;
+
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
+
+import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.items.ItemSeedsTFC;
+
+public class BlockCropDead extends BlockBush
+{
+    /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */
+    public static final PropertyBool WILD = PropertyBool.create("wild");
+
+    // binary flags for state and metadata conversion
+    private static final int META_WILD = 1;
+
+    // static field and methods for conversion from crop to Block
+
+    private static final Map<ICrop, BlockCropDead> MAP = new HashMap<>();
+
+    public static BlockCropDead get(ICrop crop)
+    {
+        return MAP.get(crop);
+    }
+
+    public static Set<ICrop> getCrops()
+    {
+        return MAP.keySet();
+    }
+
+    // fields
+
+    protected final ICrop crop;
+
+    // constructor
+
+    public BlockCropDead(ICrop crop)
+    {
+        super(Material.PLANTS);
+
+        this.crop = crop;
+        if (MAP.put(crop, this) != null)
+        {
+            throw new IllegalStateException("There can only be one.");
+        }
+
+        setSoundType(SoundType.PLANT);
+        setHardness(0.6f);
+    }
+
+    // public methods
+
+    @Nonnull
+    public ICrop getCrop()
+    {
+        return crop;
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(WILD, (meta & META_WILD) > 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(WILD) ? META_WILD : 0;
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, WILD);
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(ItemSeedsTFC.get(crop));
+    }
+
+    @Nonnull
+    @Override
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
+    {
+        return EnumPlantType.Crop;
+    }
+}
