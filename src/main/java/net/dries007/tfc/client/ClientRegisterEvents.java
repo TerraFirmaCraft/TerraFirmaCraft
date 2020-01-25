@@ -206,6 +206,9 @@ public final class ClientRegisterEvents
         for (Block block : BlocksTFC.getAllCropBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(WILD).build());
 
+        for (Block block : BlocksTFC.getAllDeadCropBlocks())
+            ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(WILD).build());
+
         for (Block block : BlocksTFC.getAllFruitTreeLeavesBlocks())
             ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFruitTreeLeaves.DECAYABLE).ignore(BlockFruitTreeLeaves.HARVESTABLE).build());
 
