@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropSpreading;
 
 @ParametersAreNonnullByDefault
-public class TECropSpreading extends TETickCounter
+public class TECropSpreading extends TECropBase
 {
     private int maxGrowthStage; // The max value this crop can grow to
     private int baseAge; // The current age, including all spreading attempts

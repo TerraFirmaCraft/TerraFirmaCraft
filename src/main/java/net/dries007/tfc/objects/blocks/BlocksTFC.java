@@ -620,6 +620,7 @@ public final class BlocksTFC
         register(TECharcoalForge.class, "charcoal_forge");
         register(TEAnvilTFC.class, "anvil");
         register(TECrucible.class, "crucible");
+        register(TECropBase.class, "crop_base");
         register(TECropSpreading.class, "crop_spreading");
         register(TEBlastFurnace.class, "blast_furnace");
         register(TEBloomery.class, "bloomery");
