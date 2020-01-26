@@ -34,7 +34,6 @@ public class BlockCropDead extends BlockBush
     private static final int META_WILD = 1;
 
     // static field and methods for conversion from crop to Block
-
     private static final Map<ICrop, BlockCropDead> MAP = new HashMap<>();
 
     public static BlockCropDead get(ICrop crop)
@@ -47,11 +46,7 @@ public class BlockCropDead extends BlockBush
         return MAP.keySet();
     }
 
-    // fields
-
     protected final ICrop crop;
-
-    // constructor
 
     public BlockCropDead(ICrop crop)
     {
@@ -66,8 +61,6 @@ public class BlockCropDead extends BlockBush
         setSoundType(SoundType.PLANT);
         setHardness(0.6f);
     }
-
-    // public methods
 
     @Nonnull
     public ICrop getCrop()
@@ -105,17 +98,17 @@ public class BlockCropDead extends BlockBush
 
     @Override
     @Nonnull
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+        return new ItemStack(ItemSeedsTFC.get(crop));
     }
 
     @Override
     @Nonnull
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return new ItemStack(ItemSeedsTFC.get(crop));
+        return new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
     }
 
     @Nonnull

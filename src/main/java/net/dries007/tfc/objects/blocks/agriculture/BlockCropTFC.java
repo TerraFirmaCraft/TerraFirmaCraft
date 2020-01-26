@@ -33,10 +33,8 @@ import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TECropBase;
-import net.dries007.tfc.objects.te.TEPlacedItemFlat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SimpleSkill;
@@ -47,6 +45,15 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @ParametersAreNonnullByDefault
 public abstract class BlockCropTFC extends BlockBush
 {
+    // stage properties
+    public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
+    public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
+    public static final PropertyInteger STAGE_6 = PropertyInteger.create("stage", 0, 5);
+    public static final PropertyInteger STAGE_5 = PropertyInteger.create("stage", 0, 4);
+    
+    /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */
+    public static final PropertyBool WILD = PropertyBool.create("wild");
+
     // model boxes
     private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
         new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.125D, 0.875D),
@@ -58,22 +65,11 @@ public abstract class BlockCropTFC extends BlockBush
         new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.875D, 0.875D),
         new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D)
     };
-
-    // stage properties
-    public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
-    public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
-    public static final PropertyInteger STAGE_6 = PropertyInteger.create("stage", 0, 5);
-    public static final PropertyInteger STAGE_5 = PropertyInteger.create("stage", 0, 4);
-
-    /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */
-    public static final PropertyBool WILD = PropertyBool.create("wild");
-
     // binary flags for state and metadata conversion
     private static final int META_WILD = 8;
     private static final int META_GROWTH = 7;
 
     // static field and methods for conversion from crop to Block
-
     private static final Map<ICrop, BlockCropTFC> MAP = new HashMap<>();
 
     public static BlockCropTFC get(ICrop crop)
@@ -86,11 +82,7 @@ public abstract class BlockCropTFC extends BlockBush
         return MAP.keySet();
     }
 
-    // fields
-
     protected final ICrop crop;
-
-    // constructor
 
     BlockCropTFC(ICrop crop)
     {
@@ -129,6 +121,23 @@ public abstract class BlockCropTFC extends BlockBush
     }
 
     @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        super.updateTick(worldIn, pos, state, random);
+        checkGrowth(worldIn, pos, state, random);
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TECropBase tile = Helpers.getTE(worldIn, pos, TECropBase.class);
+        if (tile != null)
+        {
+            tile.resetCounter();
+        }
+    }
+
+    @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
@@ -136,10 +145,56 @@ public abstract class BlockCropTFC extends BlockBush
     }
 
     @Override
-    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
+    public boolean hasTileEntity(IBlockState state)
     {
-        super.updateTick(worldIn, pos, state, random);
-        checkGrowth(worldIn, pos, state, random);
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TECropBase();
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        EntityPlayer player = harvesters.get();
+        ItemStack seedStack = new ItemStack(ItemSeedsTFC.get(crop));
+        ItemStack foodStack = crop.getFoodDrop(state.getValue(getStageProperty()));
+
+        // if player and skills are present, update skills and increase amounts of items depending on skill
+        if (player != null)
+        {
+            SimpleSkill skill = CapabilityPlayerData.getSkill(player, SkillType.AGRICULTURE);
+
+            if (skill != null)
+            {
+                if (!foodStack.isEmpty())
+                {
+                    foodStack.setCount(1 + RANDOM.nextInt(2 + (int) (6 * skill.getTotalLevel())));
+                    if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
+                    {
+                        seedStack.setCount(2);
+                    }
+                }
+                skill.add(0.04f);
+            }
+        }
+
+        // add items to drop
+        if (!foodStack.isEmpty())
+            drops.add(foodStack);
+        if (!seedStack.isEmpty())
+            drops.add(seedStack);
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        return new ItemStack(ItemSeedsTFC.get(crop));
     }
 
     public void checkGrowth(World worldIn, BlockPos pos, IBlockState state, Random random)
@@ -184,74 +239,11 @@ public abstract class BlockCropTFC extends BlockBush
     }
 
     @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        EntityPlayer player = harvesters.get();
-        ItemStack seedStack = new ItemStack(ItemSeedsTFC.get(crop));
-        ItemStack foodStack = crop.getFoodDrop(state.getValue(getStageProperty()));
-
-        // if player and skills are present, update skills and increase amounts of items depending on skill
-        if (player != null)
-        {
-            SimpleSkill skill = CapabilityPlayerData.getSkill(player, SkillType.AGRICULTURE);
-
-            if (skill != null)
-            {
-                if (!foodStack.isEmpty())
-                {
-                    foodStack.setCount(1 + RANDOM.nextInt(2 + (int) (6 * skill.getTotalLevel())));
-                    if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
-                    {
-                        seedStack.setCount(2);
-                    }
-                }
-                skill.add(0.04f);
-            }
-        }
-
-        // add items to drop
-        if (!foodStack.isEmpty())
-            drops.add(foodStack);
-        if (!seedStack.isEmpty())
-            drops.add(seedStack);
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TECropBase tile = Helpers.getTE(worldIn, pos, TECropBase.class);
-        if (tile != null)
-        {
-            tile.resetCounter();
-        }
-    }
-
-    @Override
     @Nonnull
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return CROPS_AABB[state.getValue(getStageProperty())];
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TECropBase();
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(ItemSeedsTFC.get(crop));
     }
 
     @Nonnull
