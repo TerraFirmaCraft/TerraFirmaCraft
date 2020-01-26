@@ -23,47 +23,6 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public abstract class BlockCropSimple extends BlockCropTFC
 {
-    private final boolean isPickable;
-
-    protected BlockCropSimple(ICrop crop, boolean isPickable)
-    {
-        super(crop);
-        this.isPickable = isPickable;
-
-        setDefaultState(getBlockState().getBaseState().withProperty(getStageProperty(), 0).withProperty(WILD, false));
-    }
-
-    @Override
-    public void grow(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-        if (!worldIn.isRemote)
-        {
-            if (state.getValue(getStageProperty()) < crop.getMaxStage())
-            {
-                worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) + 1), 2);
-            }
-        }
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (isPickable)
-        {
-            ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
-            if (!foodDrop.isEmpty())
-            {
-                if (!worldIn.isRemote)
-                {
-                    worldIn.setBlockState(pos, this.getDefaultState().withProperty(getStageProperty(), state.getValue(getStageProperty()) - 2));
-                    Helpers.spawnItemStack(worldIn, pos, crop.getFoodDrop(crop.getMaxStage()));
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static BlockCropSimple create(ICrop crop, boolean isPickable)
     {
         switch (crop.getMaxStage() + 1)
@@ -106,5 +65,46 @@ public abstract class BlockCropSimple extends BlockCropTFC
                 };
         }
         throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
+    }
+
+    private final boolean isPickable;
+
+    protected BlockCropSimple(ICrop crop, boolean isPickable)
+    {
+        super(crop);
+        this.isPickable = isPickable;
+
+        setDefaultState(getBlockState().getBaseState().withProperty(getStageProperty(), 0).withProperty(WILD, false));
+    }
+
+    @Override
+    public void grow(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        if (!worldIn.isRemote)
+        {
+            if (state.getValue(getStageProperty()) < crop.getMaxStage())
+            {
+                worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) + 1), 2);
+            }
+        }
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (isPickable)
+        {
+            ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
+            if (!foodDrop.isEmpty())
+            {
+                if (!worldIn.isRemote)
+                {
+                    worldIn.setBlockState(pos, this.getDefaultState().withProperty(getStageProperty(), state.getValue(getStageProperty()) - 2));
+                    Helpers.spawnItemStack(worldIn, pos, crop.getFoodDrop(crop.getMaxStage()));
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }

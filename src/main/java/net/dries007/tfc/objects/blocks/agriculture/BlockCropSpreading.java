@@ -25,11 +25,73 @@ public abstract class BlockCropSpreading extends BlockCropTFC
 {
     private static final int MAX_SPREAD_AGE = 16;
 
-    protected BlockCropSpreading(ICrop crop)
+    public static BlockCropSpreading create(ICrop crop)
+    {
+        switch (crop.getMaxStage() + 1)
+        {
+            case 5:
+                return new BlockCropSpreading(crop)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_5;
+                    }
+                };
+            case 6:
+                return new BlockCropSpreading(crop)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_6;
+                    }
+                };
+            case 7:
+                return new BlockCropSpreading(crop)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_7;
+                    }
+                };
+            case 8:
+                return new BlockCropSpreading(crop)
+                {
+                    @Override
+                    public PropertyInteger getStageProperty()
+                    {
+                        return STAGE_8;
+                    }
+                };
+        }
+        throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
+    }
+
+    BlockCropSpreading(ICrop crop)
     {
         super(crop);
 
         setDefaultState(getBlockState().getBaseState().withProperty(WILD, false).withProperty(getStageProperty(), 0));
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TECropSpreading tile = Helpers.getTE(worldIn, pos, TECropSpreading.class);
+        if (tile != null)
+        {
+            tile.onPlaced();
+        }
+        super.onBlockAdded(worldIn, pos, state);
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TECropSpreading();
     }
 
     @Override
@@ -90,67 +152,5 @@ public abstract class BlockCropSpreading extends BlockCropTFC
                 }
             }
         }
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TECropSpreading tile = Helpers.getTE(worldIn, pos, TECropSpreading.class);
-        if (tile != null)
-        {
-            tile.onPlaced();
-        }
-        super.onBlockAdded(worldIn, pos, state);
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        return new TECropSpreading();
-    }
-
-    public static BlockCropSpreading create(ICrop crop)
-    {
-        switch (crop.getMaxStage() + 1)
-        {
-            case 5:
-                return new BlockCropSpreading(crop)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_5;
-                    }
-                };
-            case 6:
-                return new BlockCropSpreading(crop)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_6;
-                    }
-                };
-            case 7:
-                return new BlockCropSpreading(crop)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_7;
-                    }
-                };
-            case 8:
-                return new BlockCropSpreading(crop)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_8;
-                    }
-                };
-        }
-        throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
     }
 }

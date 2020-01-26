@@ -12,22 +12,14 @@ import net.dries007.tfc.util.calendar.ICalendarTickable;
 @ParametersAreNonnullByDefault
 public class TECropBase extends TETickCounter implements ICalendarTickable
 {
-    // static constants
-
     private static final String NBT_LAST_TICK_CAL_CHECKED = "lastTickCalChecked";
 
-    // fields
-
     protected long _lastTickCalChecked;
-
-    // constructor
 
     public TECropBase()
     {
         _lastTickCalChecked = CalendarTFC.PLAYER_TIME.getTicks();
     }
-
-    // ICalendarUpdate methods
 
     @Override
     public void onCalendarUpdate(long playerTickDelta)
@@ -48,8 +40,6 @@ public class TECropBase extends TETickCounter implements ICalendarTickable
         _lastTickCalChecked = tick;
         markDirty();
     }
-
-    // NBT TE method overrides
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
