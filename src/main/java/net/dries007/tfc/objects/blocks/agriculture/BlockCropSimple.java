@@ -25,46 +25,19 @@ public abstract class BlockCropSimple extends BlockCropTFC
 {
     public static BlockCropSimple create(ICrop crop, boolean isPickable)
     {
-        switch (crop.getMaxStage() + 1)
+        PropertyInteger property = getStagePropertyForCrop(crop);
+
+        if (property == null)
+            throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
+
+        return new BlockCropSimple(crop, isPickable)
         {
-            case 5:
-                return new BlockCropSimple(crop, isPickable)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_5;
-                    }
-                };
-            case 6:
-                return new BlockCropSimple(crop, isPickable)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_6;
-                    }
-                };
-            case 7:
-                return new BlockCropSimple(crop, isPickable)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_7;
-                    }
-                };
-            case 8:
-                return new BlockCropSimple(crop, isPickable)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_8;
-                    }
-                };
-        }
-        throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
+            @Override
+            public PropertyInteger getStageProperty()
+            {
+                return property;
+            }
+        };
     }
 
     private final boolean isPickable;

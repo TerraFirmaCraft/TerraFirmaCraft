@@ -50,7 +50,10 @@ public abstract class BlockCropTFC extends BlockBush
     public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
     public static final PropertyInteger STAGE_6 = PropertyInteger.create("stage", 0, 5);
     public static final PropertyInteger STAGE_5 = PropertyInteger.create("stage", 0, 4);
-    
+
+    // static map for conversion from maxValue to Stage Property
+    public static final HashMap<Integer, PropertyInteger> STAGE_MAP = new HashMap<>();
+
     /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */
     public static final PropertyBool WILD = PropertyBool.create("wild");
 
@@ -65,12 +68,21 @@ public abstract class BlockCropTFC extends BlockBush
         new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.875D, 0.875D),
         new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D)
     };
+
     // binary flags for state and metadata conversion
     private static final int META_WILD = 8;
     private static final int META_GROWTH = 7;
 
-    // static field and methods for conversion from crop to Block
+    // static field for conversion from crop to Block
     private static final Map<ICrop, BlockCropTFC> MAP = new HashMap<>();
+
+    static
+    {
+        STAGE_MAP.put(5, STAGE_5);
+        STAGE_MAP.put(6, STAGE_6);
+        STAGE_MAP.put(7, STAGE_7);
+        STAGE_MAP.put(8, STAGE_8);
+    }
 
     public static BlockCropTFC get(ICrop crop)
     {
@@ -80,6 +92,11 @@ public abstract class BlockCropTFC extends BlockBush
     public static Set<ICrop> getCrops()
     {
         return MAP.keySet();
+    }
+
+    static PropertyInteger getStagePropertyForCrop(ICrop crop)
+    {
+        return STAGE_MAP.get(crop.getMaxStage() + 1);
     }
 
     protected final ICrop crop;
