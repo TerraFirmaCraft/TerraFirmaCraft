@@ -27,46 +27,19 @@ public abstract class BlockCropSpreading extends BlockCropTFC
 
     public static BlockCropSpreading create(ICrop crop)
     {
-        switch (crop.getMaxStage() + 1)
+        PropertyInteger property = getStagePropertyForCrop(crop);
+
+        if (property == null)
+            throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
+
+        return new BlockCropSpreading(crop)
         {
-            case 5:
-                return new BlockCropSpreading(crop)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_5;
-                    }
-                };
-            case 6:
-                return new BlockCropSpreading(crop)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_6;
-                    }
-                };
-            case 7:
-                return new BlockCropSpreading(crop)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_7;
-                    }
-                };
-            case 8:
-                return new BlockCropSpreading(crop)
-                {
-                    @Override
-                    public PropertyInteger getStageProperty()
-                    {
-                        return STAGE_8;
-                    }
-                };
-        }
-        throw new IllegalStateException("Invalid growthstage property " + (crop.getMaxStage() + 1) + " for crop");
+            @Override
+            public PropertyInteger getStageProperty()
+            {
+                return property;
+            }
+        };
     }
 
     BlockCropSpreading(ICrop crop)
