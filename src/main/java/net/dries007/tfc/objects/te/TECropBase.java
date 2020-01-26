@@ -14,11 +14,11 @@ public class TECropBase extends TETickCounter implements ICalendarTickable
 {
     private static final String NBT_LAST_TICK_CAL_CHECKED = "lastTickCalChecked";
 
-    protected long _lastTickCalChecked;
+    protected long lastTickCalChecked;
 
     public TECropBase()
     {
-        _lastTickCalChecked = CalendarTFC.PLAYER_TIME.getTicks();
+        lastTickCalChecked = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
@@ -31,13 +31,13 @@ public class TECropBase extends TETickCounter implements ICalendarTickable
     @Override
     public long getLastUpdateTick()
     {
-        return _lastTickCalChecked;
+        return lastTickCalChecked;
     }
 
     @Override
     public void setLastUpdateTick(long tick)
     {
-        _lastTickCalChecked = tick;
+        lastTickCalChecked = tick;
         markDirty();
     }
 
@@ -45,7 +45,7 @@ public class TECropBase extends TETickCounter implements ICalendarTickable
     public void readFromNBT(NBTTagCompound nbt)
     {
         if (nbt.hasKey(NBT_LAST_TICK_CAL_CHECKED))
-            _lastTickCalChecked = nbt.getLong(NBT_LAST_TICK_CAL_CHECKED);
+            lastTickCalChecked = nbt.getLong(NBT_LAST_TICK_CAL_CHECKED);
         super.readFromNBT(nbt);
     }
 
@@ -53,7 +53,7 @@ public class TECropBase extends TETickCounter implements ICalendarTickable
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setLong(NBT_LAST_TICK_CAL_CHECKED, _lastTickCalChecked);
+        nbt.setLong(NBT_LAST_TICK_CAL_CHECKED, lastTickCalChecked);
         return super.writeToNBT(nbt);
     }
 }
