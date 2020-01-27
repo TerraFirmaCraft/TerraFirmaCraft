@@ -29,49 +29,64 @@ public enum Crop implements ICrop
     // todo: unique temp range for beets
     // todo: unique temp range for pumpkins
     // todo: unique temp range for melons
-    BARLEY(Food.BARLEY, new Range(0, 4, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    MAIZE(Food.MAIZE, new Range(0, 8, 35, 40), new Range(100, 400, 50), 6, 0.5f, SIMPLE),
-    OAT(Food.OAT, new Range(0, 4, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    RICE(Food.RICE, new Range(0, 4, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    RYE(Food.RYE, new Range(0, 4, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    WHEAT(Food.WHEAT, new Range(0, 4, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    BEET(Food.BEET, new Range(0, 5, 35, 40), new Range(100, 400, 50), 7, 0.5f, SIMPLE),
-    CABBAGE(Food.CABBAGE, new Range(0, 10, 35, 40), new Range(100, 400, 50), 6, 0.5f, SIMPLE),
-    CARROT(Food.CARROT, new Range(0, 8, 35, 40), new Range(100, 400, 50), 5, 0.5f, SIMPLE),
-    GARLIC(Food.GARLIC, new Range(0, 8, 35, 40), new Range(100, 400, 50), 5, 0.5f, SIMPLE),
-    GREEN_BEAN(Food.GREEN_BEAN, new Range(0, 8, 35, 40), new Range(100, 400, 50), 7, 0.5f, SIMPLE),
-    ONION(Food.ONION, new Range(0, 8, 35, 40), new Range(100, 400, 50), 7, 0.5f, SIMPLE),
-    POTATO(Food.POTATO, new Range(0, 4, 35, 40), new Range(100, 400, 50), 7, 0.5f, SIMPLE),
-    SOYBEAN(Food.SOYBEAN, new Range(0, 8, 35, 40), new Range(100, 400, 50), 7, 0.5f, SIMPLE),
-    SQUASH(Food.SQUASH, new Range(0, 8, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    SUGARCANE(Food.SUGARCANE, new Range(12, 18, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    TOMATO(Food.TOMATO, new Range(0, 8, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), new Range(4, 12, 35, 40), new Range(100, 400, 50), 7, 0.5f, SIMPLE),
-    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), new Range(4, 12, 35, 40), new Range(100, 400, 50), 7, 0.5f, SIMPLE),
-    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, new Range(5, 10, 35, 40), new Range(100, 400, 50), 6, 0.5f, SIMPLE),
-    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY, new Range(0, 5, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE),
-    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY, new Range(0, 5, 35, 40), new Range(100, 400, 50), 8, 0.5f, SIMPLE);
+    // these definitions are defined in the spreadsheet at
+    // https://docs.google.com/spreadsheets/d/1Ghw3dCmVO5Gv0MMGBydUxox_nwLYmmcZkGSbbf0QSAE/edit#gid=893781093
+    // It should be modified first, and then the resulting definitions copied to this space here
+    BARLEY(Food.BARLEY, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    MAIZE(Food.MAIZE, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
+    OAT(Food.OAT, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    RICE(Food.RICE, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    RYE(Food.RYE, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    WHEAT(Food.WHEAT, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    BEET(Food.BEET, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
+    CABBAGE(Food.CABBAGE, 0f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
+    CARROT(Food.CARROT, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 5, 0.5f, SIMPLE),
+    GARLIC(Food.GARLIC, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 5, 0.5f, SIMPLE),
+    GREEN_BEAN(Food.GREEN_BEAN, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
+    ONION(Food.ONION, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
+    POTATO(Food.POTATO, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
+    SOYBEAN(Food.SOYBEAN, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
+    SQUASH(Food.SQUASH, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    SUGARCANE(Food.SUGARCANE, 12f, 18f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    TOMATO(Food.TOMATO, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, PICKABLE),
+    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
+    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
+    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
+    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY,0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY,0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE);
 
+    // how this crop generates food items
     private final Supplier<ItemStack> foodDrop;
     private final Supplier<ItemStack> foodDropEarly;
-    private final Range tempRange;
-    private final Range rainRange;
-    private final int growthStages;
-    private final float growthTime;
+    // temperature compatibility range
+    private final float tempMinAlive, tempMinGrow, tempMaxGrow, tempMaxAlive;
+    // rainfall compatibility range
+    private final float rainMinAlive, rainMinGrow, rainMaxGrow, rainMaxAlive;
+    // growth
+    private final int growthStages; // the number of blockstates the crop has for growing, ignoring wild state
+    private final float growthTime; // Time is measured in % of months, scales with calendar month length
+    // which crop block behavior implementation is used
     private final CropType type;
 
-    Crop(Food foodDrop, Range tempRange, Range rainRange, int growthStages, float growthTime, CropType type)
+    Crop(Food foodDrop, float tempMinAlive, float tempMinGrow, float tempMaxGrow, float tempMaxAlive, float rainMinAlive, float rainMinGrow, float rainMaxGrow, float rainMaxAlive, int growthStages, float growthTime, CropType type)
     {
-        this(() -> new ItemStack(ItemFoodTFC.get(foodDrop)), () -> ItemStack.EMPTY, tempRange, rainRange, growthStages, growthTime, type);
+        this(() -> new ItemStack(ItemFoodTFC.get(foodDrop)), () -> ItemStack.EMPTY, tempMinAlive, tempMinGrow, tempMaxGrow, tempMaxAlive, rainMinAlive, rainMinGrow, rainMaxGrow, rainMaxAlive, growthStages, growthTime, type);
     }
 
-    Crop(Supplier<ItemStack> foodDrop, Supplier<ItemStack> foodDropEarly, Range tempRange, Range rainRange, int growthStages, float growthTime, CropType type)
+    Crop(Supplier<ItemStack> foodDrop, Supplier<ItemStack> foodDropEarly, float tempMinAlive, float tempMinGrow, float tempMaxGrow, float tempMaxAlive, float rainMinAlive, float rainMinGrow, float rainMaxGrow, float rainMaxAlive, int growthStages, float growthTime, CropType type)
     {
         this.foodDrop = foodDrop;
         this.foodDropEarly = foodDropEarly;
 
-        this.tempRange = tempRange;
-        this.rainRange = rainRange;
+        this.tempMinAlive = tempMinAlive;
+        this.tempMinGrow = tempMinGrow;
+        this.tempMaxGrow = tempMaxGrow;
+        this.tempMaxAlive = tempMaxAlive;
+
+        this.rainMinAlive = rainMinAlive;
+        this.rainMinGrow = rainMinGrow;
+        this.rainMaxGrow = rainMaxGrow;
+        this.rainMaxAlive = rainMaxAlive;
 
         this.growthStages = growthStages;
         this.growthTime = growthTime; // This is measured in % of months
@@ -94,13 +109,13 @@ public enum Crop implements ICrop
     @Override
     public boolean isValidConditions(float temperature, float rainfall)
     {
-        return tempRange.minAlive < temperature && temperature < tempRange.maxAlive && rainRange.minAlive < rainfall && rainfall < rainRange.maxAlive;
+        return tempMinAlive < temperature && temperature < tempMaxAlive && rainMinAlive < rainfall && rainfall < rainMaxAlive;
     }
 
     @Override
     public boolean isValidForGrowth(float temperature, float rainfall)
     {
-        return tempRange.minGrow < temperature && temperature < tempRange.maxGrow && rainRange.minGrow < rainfall && rainfall < rainRange.maxGrow;
+        return tempMinGrow < temperature && temperature < tempMaxGrow && rainMinGrow < rainfall && rainfall < rainMaxGrow;
     }
 
     @Nonnull
@@ -139,23 +154,5 @@ public enum Crop implements ICrop
     enum CropType
     {
         SIMPLE, PICKABLE, SPREADING
-    }
-
-    private static class Range
-    {
-        public final float minAlive, maxAlive, minGrow, maxGrow;
-
-        public Range(float minGrow, float maxGrow, float tolerance)
-        {
-            this(minGrow - tolerance, minGrow, maxGrow, maxGrow + tolerance);
-        }
-
-        public Range(float minAlive, float minGrow, float maxGrow, float maxAlive)
-        {
-            this.minAlive = minAlive;
-            this.minGrow = minGrow;
-            this.maxGrow = maxGrow;
-            this.maxAlive = maxAlive;
-        }
     }
 }
