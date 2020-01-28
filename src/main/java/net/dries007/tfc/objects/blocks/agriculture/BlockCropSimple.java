@@ -72,7 +72,7 @@ public abstract class BlockCropSimple extends BlockCropTFC
             {
                 if (!worldIn.isRemote)
                 {
-                    worldIn.setBlockState(pos, this.getDefaultState().withProperty(getStageProperty(), state.getValue(getStageProperty()) - 2));
+                    worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) - 3));
                     Helpers.spawnItemStack(worldIn, pos, crop.getFoodDrop(crop.getMaxStage()));
                 }
                 return true;
