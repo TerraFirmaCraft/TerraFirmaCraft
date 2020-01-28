@@ -28,10 +28,10 @@ import net.dries007.tfc.objects.items.ItemSeedsTFC;
 public class BlockCropDead extends BlockBush
 {
     /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */
-    public static final PropertyBool WILD = PropertyBool.create("wild");
+    public static final PropertyBool MATURE = PropertyBool.create("mature");
 
     // binary flags for state and metadata conversion
-    private static final int META_WILD = 1;
+    private static final int META_MATURE = 1;
 
     // static field and methods for conversion from crop to Block
     private static final Map<ICrop, BlockCropDead> MAP = new HashMap<>();
@@ -73,13 +73,13 @@ public class BlockCropDead extends BlockBush
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(WILD, (meta & META_WILD) > 0);
+        return getDefaultState().withProperty(MATURE, (meta & META_MATURE) > 0);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(WILD) ? META_WILD : 0;
+        return state.getValue(MATURE) ? META_MATURE : 0;
     }
 
     @Nonnull
@@ -93,7 +93,7 @@ public class BlockCropDead extends BlockBush
     @Nonnull
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, WILD);
+        return new BlockStateContainer(this, MATURE);
     }
 
     @Override
