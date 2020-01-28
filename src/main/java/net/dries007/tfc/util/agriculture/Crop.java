@@ -31,7 +31,7 @@ public enum Crop implements ICrop
     // todo: unique temp range for melons
     // these definitions are defined in the spreadsheet at
     // https://docs.google.com/spreadsheets/d/1Ghw3dCmVO5Gv0MMGBydUxox_nwLYmmcZkGSbbf0QSAE/edit#gid=893781093
-    // It should be modified first, and then the resulting definitions copied to this space here
+    // The spreadsheet should be modified first, and then the resulting definitions copied to this space here
     BARLEY(Food.BARLEY, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
     MAIZE(Food.MAIZE, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
     OAT(Food.OAT, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
