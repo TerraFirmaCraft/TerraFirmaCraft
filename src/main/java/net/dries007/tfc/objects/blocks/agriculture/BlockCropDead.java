@@ -22,8 +22,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
+import net.dries007.tfc.util.skills.SimpleSkill;
+import net.dries007.tfc.util.skills.SkillTier;
+import net.dries007.tfc.util.skills.SkillType;
 
 public class BlockCropDead extends BlockBush
 {
@@ -94,6 +98,39 @@ public class BlockCropDead extends BlockBush
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, MATURE);
+    }
+
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random)
+    {
+        // dead crops always drop at least 1 seed
+        int count = 1;
+
+        if (state.getValue(MATURE))
+        {
+            // (mature and dead) crops always drop 1 extra seed
+            count++;
+
+            // mature crops have a chance to drop a bonus, dead or alive
+            EntityPlayer player = harvesters.get();
+
+            if (player != null)
+            {
+                SimpleSkill skill = CapabilityPlayerData.getSkill(player, SkillType.AGRICULTURE);
+
+                if (skill != null)
+                {
+                    if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
+                    {
+                        count++;
+                    }
+
+                    skill.add(0.04f);
+                }
+            }
+        }
+
+        return count;
     }
 
     @Override
