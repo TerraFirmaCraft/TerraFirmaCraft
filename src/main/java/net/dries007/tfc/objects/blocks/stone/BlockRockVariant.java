@@ -37,11 +37,12 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.agriculture.BlockCropDead;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.OreDictionaryHelper;
+
+import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -304,15 +305,20 @@ public class BlockRockVariant extends Block implements IItemSize
                 }
             }
         }
-        else if (plantable instanceof BlockCropTFC || plantable instanceof BlockCropDead)
+        else if (plantable instanceof BlockCropTFC)
         {
-            // wild crops can survive on ground other than farmland, and dead crops can stay on non-farmland as well.
-            // Since this method is used to determine when to destroy the block and drop the crops as items, we ignore wild and tell it to let them live either way.
-            // crop death by non-farmland is handled in the neighbor change override in BlockCropTFC.
             IBlockState cropState = world.getBlockState(pos.up());
-            if (cropState.getBlock() instanceof BlockCropTFC || cropState.getBlock() instanceof BlockCropDead)
+            if (cropState.getBlock() instanceof BlockCropTFC)
             {
-                return (type == Rock.Type.FARMLAND || type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS);
+                boolean isWild = cropState.getValue(WILD);
+                if (isWild)
+                {
+                    if (type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY_GRASS)
+                    {
+                        return true;
+                    }
+                }
+                return type == Rock.Type.FARMLAND;
             }
         }
 

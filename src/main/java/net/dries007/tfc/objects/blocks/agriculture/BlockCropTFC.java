@@ -13,7 +13,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -34,8 +33,6 @@ import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TECropBase;
 import net.dries007.tfc.util.Helpers;
@@ -217,41 +214,6 @@ public abstract class BlockCropTFC extends BlockBush
         return new ItemStack(ItemSeedsTFC.get(crop));
     }
 
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        // BlockBush can cause the state to become air, don't do any more crop logic if this is the case
-        if (worldIn.getBlockState(pos).getBlock() == this)
-        {
-            // non-wild crops should die when the soil beneath them is no longer farmland
-            if (!state.getValue(WILD))
-            {
-                IBlockState soil = worldIn.getBlockState(pos.down());
-                // We only care about TFC variants. If the soil is something else don't worry about needing to kill the crop
-                if (soil.getBlock() instanceof BlockRockVariant)
-                {
-                    if (((BlockRockVariant) soil.getBlock()).getType() != Rock.Type.FARMLAND) die(worldIn, pos, state, RANDOM);
-                }
-            }
-        }
-    }
-
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return CROPS_AABB[state.getValue(getStageProperty())];
-    }
-
-    @Nonnull
-    @Override
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Crop;
-    }
-
     public void checkGrowth(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isRemote)
@@ -290,7 +252,22 @@ public abstract class BlockCropTFC extends BlockBush
 
     public void die(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        worldIn.setBlockState(pos, BlockCropDead.get(crop).getDefaultState().withProperty(BlockCropDead.MATURE, state.getValue(getStageProperty()) == crop.getMaxStage()), 2);
+        worldIn.setBlockState(pos, BlockCropDead.get(crop).getDefaultState().withProperty(BlockCropDead.MATURE, state.getValue(getStageProperty()) == crop.getMaxStage()));
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return CROPS_AABB[state.getValue(getStageProperty())];
+    }
+
+    @Nonnull
+    @Override
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
+    {
+        return EnumPlantType.Crop;
     }
 
     public abstract PropertyInteger getStageProperty();

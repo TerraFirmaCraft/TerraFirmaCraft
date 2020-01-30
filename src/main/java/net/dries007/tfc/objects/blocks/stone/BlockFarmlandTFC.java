@@ -120,7 +120,7 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
         else if (current > target || target == 0)
         {
             if (current > 0) world.setBlockState(pos, state.withProperty(MOISTURE, current - 1), 2);
-            else if (current == target) turnToDirt(world, pos);
+            else if (!hasCrops(world, pos)) turnToDirt(world, pos);
         }
 
         super.updateTick(world, pos, state, rand);
