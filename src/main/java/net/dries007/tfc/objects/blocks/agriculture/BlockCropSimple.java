@@ -17,8 +17,13 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.agriculture.Crop;
+import net.dries007.tfc.util.skills.SimpleSkill;
+import net.dries007.tfc.util.skills.SkillType;
 
 @ParametersAreNonnullByDefault
 public abstract class BlockCropSimple extends BlockCropTFC
@@ -70,10 +75,23 @@ public abstract class BlockCropSimple extends BlockCropTFC
             ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
             if (!foodDrop.isEmpty())
             {
+                ItemStack seedDrop = new ItemStack(ItemSeedsTFC.get(crop));
+                seedDrop.setCount(0);
+                SimpleSkill skill = CapabilityPlayerData.getSkill(playerIn, SkillType.AGRICULTURE);
+
+                if (skill != null)
+                {
+                    foodDrop.setCount(1 + Crop.getSkillFoodBonus(skill, RANDOM));
+                    // omit the +1 because the plant stays alive.
+                    seedDrop.setCount(Crop.getSkillSeedBonus(skill, RANDOM));
+                }
+
                 if (!worldIn.isRemote)
                 {
                     worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) - 3));
-                    Helpers.spawnItemStack(worldIn, pos, crop.getFoodDrop(crop.getMaxStage()));
+                    Helpers.spawnItemStack(worldIn, pos, foodDrop);
+                    if (!seedDrop.isEmpty())
+                        Helpers.spawnItemStack(worldIn, pos, seedDrop);
                 }
                 return true;
             }

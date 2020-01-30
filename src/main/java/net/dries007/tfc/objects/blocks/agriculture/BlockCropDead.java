@@ -25,6 +25,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
+import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.skills.SimpleSkill;
 import net.dries007.tfc.util.skills.SkillTier;
 import net.dries007.tfc.util.skills.SkillType;
@@ -120,11 +121,7 @@ public class BlockCropDead extends BlockBush
 
                 if (skill != null)
                 {
-                    if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
-                    {
-                        count++;
-                    }
-
+                    count += Crop.getSkillSeedBonus(skill, RANDOM);
                     skill.add(0.04f);
                 }
             }

@@ -36,9 +36,9 @@ import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TECropBase;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SimpleSkill;
-import net.dries007.tfc.util.skills.SkillTier;
 import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -190,11 +190,8 @@ public abstract class BlockCropTFC extends BlockBush
             {
                 if (!foodStack.isEmpty())
                 {
-                    foodStack.setCount(1 + RANDOM.nextInt(2 + (int) (6 * skill.getTotalLevel())));
-                    if (skill.getTier().isAtLeast(SkillTier.ADEPT) && RANDOM.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
-                    {
-                        seedStack.setCount(2);
-                    }
+                    foodStack.setCount(1 + Crop.getSkillFoodBonus(skill, RANDOM));
+                    seedStack.setCount(1 + Crop.getSkillSeedBonus(skill, RANDOM));
                 }
                 skill.add(0.04f);
             }
