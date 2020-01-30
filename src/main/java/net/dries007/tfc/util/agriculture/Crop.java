@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.util.agriculture;
 
+import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
@@ -20,6 +21,8 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.skills.Skill;
+import net.dries007.tfc.util.skills.SkillTier;
 
 import static net.dries007.tfc.util.agriculture.Crop.CropType.*;
 
@@ -52,8 +55,35 @@ public enum Crop implements ICrop
     RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
     YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
     JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
-    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY,0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
-    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY,0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE);
+    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE);
+
+    /**
+     * the count to add to the amount of food dropped when applying the skill bonus
+     *
+     * @param skill  agriculture skill of the harvester
+     * @param random random instance to use, generally Block.RANDOM
+     * @return amount to add to item stack count
+     */
+    public static int getSkillFoodBonus(Skill skill, Random random)
+    {
+        return random.nextInt(2 + (int) (6 * skill.getTotalLevel()));
+    }
+
+    /**
+     * the count to add to the amount of seeds dropped when applying the skill bonus
+     *
+     * @param skill  agriculture skill of the harvester
+     * @param random random instance to use, generally Block.RANDOM
+     * @return amount to add to item stack count
+     */
+    public static int getSkillSeedBonus(Skill skill, Random random)
+    {
+        if (skill.getTier().isAtLeast(SkillTier.ADEPT) && random.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
+            return 1;
+        else
+            return 0;
+    }
 
     // how this crop generates food items
     private final Supplier<ItemStack> foodDrop;
