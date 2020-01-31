@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -26,6 +27,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
 {
     private final Map<String, Skill> skills;
     private final EntityPlayer player;
+    private ItemStack harvestingTool;
 
     private ChiselRecipe.Mode chiselMode = ChiselRecipe.Mode.SMOOTH;
 
@@ -33,6 +35,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     {
         this.skills = SkillType.createSkillMap(this);
         this.player = player;
+        harvestingTool = ItemStack.EMPTY;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
         NBTTagCompound nbt = new NBTTagCompound();
         skills.forEach((k, v) -> nbt.setTag(k, v.serializeNBT()));
         nbt.setTag("chiselMode", new NBTTagByte((byte) chiselMode.ordinal()));
+        nbt.setTag("harvestingTool", harvestingTool.serializeNBT());
         return nbt;
     }
 
@@ -51,6 +55,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
         {
             skills.forEach((k, v) -> v.deserializeNBT(nbt.getCompoundTag(k)));
             chiselMode = ChiselRecipe.Mode.valueOf(nbt.getByte("chiselMode"));
+            harvestingTool = new ItemStack(nbt.getCompoundTag("harvestingTool"));
         }
     }
 
@@ -67,6 +72,19 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     public EntityPlayer getPlayer()
     {
         return player;
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getHarvestingTool()
+    {
+        return harvestingTool;
+    }
+
+    @Override
+    public void setHarvestingTool(@Nonnull ItemStack stack)
+    {
+        this.harvestingTool = stack.copy();
     }
 
     @Override

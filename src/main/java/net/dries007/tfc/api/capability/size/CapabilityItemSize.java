@@ -5,14 +5,14 @@
 
 package net.dries007.tfc.api.capability.size;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockLadder;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +20,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.api.capability.ItemStickCapability;
@@ -34,7 +33,7 @@ public final class CapabilityItemSize
     public static final Capability<IItemSize> ITEM_SIZE_CAPABILITY = Helpers.getNull();
     public static final ResourceLocation KEY = new ResourceLocation(TFCConstants.MOD_ID, "item_size");
 
-    public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemSize for items outside TFC
+    public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new LinkedHashMap<>(); //Used inside CT, set custom IItemSize for items outside TFC
 
     public static void preInit()
     {
@@ -44,22 +43,11 @@ public final class CapabilityItemSize
         CUSTOM_ITEMS.put(IIngredient.of(Items.COAL), () -> new ItemSizeHandler(Size.SMALL, Weight.MEDIUM, true));
         CUSTOM_ITEMS.put(IIngredient.of(Items.STICK), ItemStickCapability::new);
         CUSTOM_ITEMS.put(IIngredient.of(Items.CLAY_BALL), () -> new ItemSizeHandler(Size.SMALL, Weight.LIGHT, true));
-    }
-
-    /**
-     * Adds a simple IItemSize capability to an item instance. Call this from an AttachCapabilitiesEvent handler.
-     * This will also override the item's stacksize. If an item uses a custom getStacksize implementation, that will take priority
-     *
-     * @param event    The AttachCapabilitiesEvent that was fired
-     * @param item     The item to attach the capability to
-     * @param size     The item size
-     * @param weight   The item weight
-     * @param canStack An override for if this item can stack or not.
-     */
-    public static void add(AttachCapabilitiesEvent<ItemStack> event, Item item, Size size, Weight weight, boolean canStack)
-    {
-        event.addCapability(KEY, new ItemSizeHandler(size, weight, canStack));
-        item.setMaxStackSize(IItemSize.getStackSize(size, weight, canStack));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.BED), () -> new ItemSizeHandler(Size.LARGE, Weight.MEDIUM, false));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.MINECART), () -> new ItemSizeHandler(Size.VERY_LARGE, Weight.HEAVY, false));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.ARMOR_STAND), () -> new ItemSizeHandler(Size.LARGE, Weight.LIGHT, true));
+        CUSTOM_ITEMS.put(IIngredient.of(Items.CAULDRON), () -> new ItemSizeHandler(Size.SMALL, Weight.MEDIUM, true));
+        CUSTOM_ITEMS.put(IIngredient.of(Blocks.TRIPWIRE_HOOK), () -> new ItemSizeHandler(Size.VERY_SMALL, Weight.LIGHT, true));
     }
 
     /**
@@ -102,12 +90,11 @@ public final class CapabilityItemSize
     @Nonnull
     public static ICapabilityProvider getCustomSize(ItemStack stack)
     {
-        Set<IIngredient<ItemStack>> itemItemSet = CUSTOM_ITEMS.keySet();
-        for (IIngredient<ItemStack> ingredient : itemItemSet)
+        for (Map.Entry<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> entry : CUSTOM_ITEMS.entrySet())
         {
-            if (ingredient.testIgnoreCount(stack))
+            if (entry.getKey().testIgnoreCount(stack))
             {
-                return CUSTOM_ITEMS.get(ingredient).get();
+                return entry.getValue().get();
             }
         }
         // Check for generic item types

@@ -141,6 +141,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         super.readFromNBT(nbt);
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
+        sealed = sealedTick > 0;
     }
 
     @Override
@@ -192,7 +193,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
         if (sizeCap != null)
         {
-            return sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE);
+            return sizeCap.getSize(stack).isSmallerThan(Size.LARGE);
         }
         return true;
     }
