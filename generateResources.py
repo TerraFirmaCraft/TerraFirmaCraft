@@ -16,7 +16,7 @@ def main():
             rm.blockstate(('rock', block_type, rock))
             rm.block_model(('rock', block_type, rock), textures={'all': 'tfc:block/rock/%s/%s' % (block_type, rock)})
             rm.block_item_model(('rock', block_type, rock))
-            rm.block_loot(('rock', 'block_type', 'rock'), 'tfc:rock/%s/%s' % (block_type, rock))
+            rm.block_loot(('rock', block_type, rock), 'tfc:rock/%s/%s' % (block_type, rock))
 
     for rock in ROCKS:
         rm.data(('tfc', 'rocks', rock), {
