@@ -10,6 +10,7 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -117,16 +118,31 @@ public final class CommonEventHandler
     }
 
     /**
-     * Make leaves drop sticks
+     * Update harvesting tool before it takes damage
      */
+    @SubscribeEvent
+    public static void breakEvent(BlockEvent.BreakEvent event)
+    {
+        final EntityPlayer player = event.getPlayer();
+        if (player != null)
+        {
+            IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (cap != null)
+            {
+                cap.setHarvestingTool(player.getHeldItemMainhand());
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
     {
-        final EntityPlayer harvester = event.getHarvester();
-        final ItemStack heldItem = harvester == null ? ItemStack.EMPTY : harvester.getHeldItemMainhand();
+        final EntityPlayer player = event.getHarvester();
+        final ItemStack heldItem = player == null ? ItemStack.EMPTY : player.getHeldItemMainhand();
         final IBlockState state = event.getState();
         final Block block = state.getBlock();
 
+        // Make leaves drop sticks
         if (!event.isSilkTouching() && block instanceof BlockLeaves)
         {
             // Done via event so it applies to all leaves.
@@ -138,6 +154,26 @@ public final class CommonEventHandler
             if (Constants.RNG.nextFloat() < chance)
             {
                 event.getDrops().add(new ItemStack(Items.STICK));
+            }
+        }
+
+        // Apply durability modifier on tools
+        if (player != null)
+        {
+            ItemStack tool = ItemStack.EMPTY;
+            IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (cap != null)
+            {
+                tool = cap.getHarvestingTool();
+            }
+            if (!tool.isEmpty())
+            {
+                float skillModifier = SmithingSkill.getSkillBonus(tool, SmithingSkill.Type.TOOLS) / 2.0F;
+                if (skillModifier > 0 && Constants.RNG.nextFloat() < skillModifier)
+                {
+                    // Up to 50% negating damage, for double durability
+                    player.setHeldItem(EnumHand.MAIN_HAND, tool);
+                }
             }
         }
     }
@@ -234,6 +270,19 @@ public final class CommonEventHandler
     public static void onLivingHurt(LivingHurtEvent event)
     {
         float actualDamage = event.getAmount();
+        // Add damage bonus for weapons
+        Entity entity = event.getSource().getTrueSource();
+        if (entity instanceof EntityLivingBase)
+        {
+            EntityLivingBase damager = (EntityLivingBase) entity;
+            ItemStack stack = damager.getHeldItemMainhand();
+            float skillModifier = SmithingSkill.getSkillBonus(stack, SmithingSkill.Type.WEAPONS);
+            if (skillModifier > 0)
+            {
+                // Up to 1.5x damage
+                actualDamage *= 1 + (skillModifier / 2.0F);
+            }
+        }
         // Modifier for damage type + damage resistance
         actualDamage *= DamageType.getModifier(event.getSource(), event.getEntityLiving());
         if (event.getEntityLiving() instanceof EntityPlayer)
@@ -270,12 +319,12 @@ public final class CommonEventHandler
                 event.addCapability(CapabilityItemSize.KEY, sizeHandler);
                 if (sizeHandler instanceof IItemSize)
                 {
-                    // Only modify the stack size if we're shrinking the size (i.e. don't make unstackable items stackable
+                    // Only modify the stack size if the item was stackable in the first place
+                    // Note: this is called in many cases BEFORE all custom capabilities are added.
                     int prevStackSize = stack.getMaxStackSize();
-                    int replacedStackSize = ((IItemSize) sizeHandler).getStackSize(stack);
-                    if (prevStackSize > replacedStackSize)
+                    if (prevStackSize != 1)
                     {
-                        item.setMaxStackSize(replacedStackSize);
+                        item.setMaxStackSize(((IItemSize) sizeHandler).getStackSize(stack));
                     }
                 }
             }
