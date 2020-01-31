@@ -5,28 +5,23 @@
 
 package net.dries007.tfc.objects.blocks;
 
-import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.util.Util;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.objects.items.TFCItems.ITEMS;
@@ -65,16 +60,20 @@ public final class TFCBlocks
 
     public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MOD_ID);
 
-    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCKS = Arrays.stream(Rock.Default.values())
-        .collect(Collectors.toMap(rock -> rock,
-            rock -> Arrays.stream(Rock.BlockType.values())
-                .collect(Collectors.toMap(type -> type, type ->
-                {
-                    String name = ("rock/" + type.name() + "/" + rock.name()).toLowerCase();
-                    RegistryObject<Block> block = BLOCKS.register(name, () -> type.create(rock));
-                    ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
-                    return block;
-                }))));
+    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCKS = Util.make(new EnumMap<>(Rock.Default.class), map -> {
+        for (Rock.Default rock : Rock.Default.values())
+        {
+            Map<Rock.BlockType, RegistryObject<Block>> inner = new EnumMap<>(Rock.BlockType.class);
+            for (Rock.BlockType type : Rock.BlockType.values())
+            {
+                String name = ("rock/" + type.name() + "/" + rock.name()).toLowerCase();
+                RegistryObject<Block> block = BLOCKS.register(name, () -> type.create(rock));
+                ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+                inner.put(type, block);
+            }
+            map.put(rock, inner);
+        }
+    });
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -636,22 +635,22 @@ public final class TFCBlocks
         */
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void registerVanillaOverrides(RegistryEvent.Register<Block> event)
-    {
-        // Vanilla Overrides. Used for small tweaks on vanilla items, rather than replacing them outright
-        TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
-        //event.getRegistry().registerAll(
-        //    new BlockIceTFC(FluidsTFC.FRESH_WATER.get()).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
-        //    new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow"),
-        //    new BlockTorchTFC().setRegistryName("minecraft", "torch").setTranslationKey("torch")
-        //);
-    }
+    //@SubscribeEvent(priority = EventPriority.LOWEST)
+    //public static void registerVanillaOverrides(RegistryEvent.Register<Block> event)
+    //{
+    //    // Vanilla Overrides. Used for small tweaks on vanilla items, rather than replacing them outright
+    //    TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
+    //    //event.getRegistry().registerAll(
+    //    //    new BlockIceTFC(FluidsTFC.FRESH_WATER.get()).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
+    //    //    new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow"),
+    //    //    new BlockTorchTFC().setRegistryName("minecraft", "torch").setTranslationKey("torch")
+    //    //);
+    //}
 
-    public static boolean isWater(BlockState current)
-    {
-        return current.getMaterial() == Material.WATER;
-    }
+    //public static boolean isWater(BlockState current)
+    //{
+    //    return current.getMaterial() == Material.WATER;
+    //}
 
     //public static boolean isFreshWater(BlockState current)
     //{
@@ -736,10 +735,10 @@ public final class TFCBlocks
     //    return type == GRASS || type == DRY_GRASS || type == DIRT || type == GRAVEL || type == RAW || type == SAND;
     //}
 
-    private static <B extends Block> B register(IForgeRegistry<Block> registry, B block, String name)
-    {
-        block.setRegistryName(Helpers.identifier(name));
-        registry.register(block);
-        return block;
-    }
+    //private static <B extends Block> B register(IForgeRegistry<Block> registry, B block, String name)
+    //{
+    //    block.setRegistryName(Helpers.identifier(name));
+    //    registry.register(block);
+    //    return block;
+    //}
 }
