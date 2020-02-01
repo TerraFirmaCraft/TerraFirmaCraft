@@ -31,7 +31,7 @@ import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)

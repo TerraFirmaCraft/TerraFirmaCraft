@@ -13,7 +13,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.animal.*;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class EntitiesTFC
 {

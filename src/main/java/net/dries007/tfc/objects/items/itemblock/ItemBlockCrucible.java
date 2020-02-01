@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.te.TECrucible;
 import net.dries007.tfc.util.Alloy;
 
@@ -41,7 +41,7 @@ public class ItemBlockCrucible extends ItemBlockTFC
             Alloy alloy = new Alloy(TECrucible.CRUCIBLE_MAX_METAL_FLUID);
             alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
             String metalName = (new TextComponentTranslation(alloy.getResult().getTranslationKey())).getFormattedText();
-            tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.crucible_alloy", alloy.getAmount(), metalName));
+            tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.crucible_alloy", alloy.getAmount(), metalName));
         }
     }
 }

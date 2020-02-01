@@ -13,7 +13,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class CapabilityEgg
 {

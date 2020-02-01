@@ -23,7 +23,7 @@ import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.te.TELargeVessel;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class GuiLargeVessel extends GuiContainerTE<TELargeVessel>
 {

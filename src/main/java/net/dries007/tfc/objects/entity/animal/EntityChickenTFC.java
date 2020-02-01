@@ -44,7 +44,7 @@ import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault

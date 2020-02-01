@@ -14,7 +14,7 @@ import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import net.dries007.tfc.ConfigTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class RecipeRegistryEvents

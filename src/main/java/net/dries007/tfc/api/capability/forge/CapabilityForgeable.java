@@ -22,7 +22,7 @@ import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityForgeable
 {

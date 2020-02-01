@@ -20,8 +20,8 @@ import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.items.rock.*;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 /**
  * todo: document API

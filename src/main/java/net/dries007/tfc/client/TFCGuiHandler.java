@@ -34,7 +34,7 @@ import net.dries007.tfc.objects.te.*;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCGuiHandler implements IGuiHandler
 {

@@ -23,7 +23,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class KnappingRecipeWrapper implements IRecipeWrapper

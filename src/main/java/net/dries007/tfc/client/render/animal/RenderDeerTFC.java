@@ -17,7 +17,7 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.client.model.animal.ModelDeerTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDeerTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault

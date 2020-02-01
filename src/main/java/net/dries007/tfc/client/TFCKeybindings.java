@@ -20,8 +20,8 @@ import net.dries007.tfc.network.PacketCycleItemMode;
 import net.dries007.tfc.network.PacketOpenCraftingGui;
 import net.dries007.tfc.network.PacketPlaceBlockSpecial;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_NAME;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
 @SideOnly(Side.CLIENT)

@@ -18,8 +18,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_NAME;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 @GameRegistry.ObjectHolder(MOD_ID)

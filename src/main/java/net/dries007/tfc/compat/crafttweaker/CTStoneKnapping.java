@@ -28,7 +28,7 @@ import net.dries007.tfc.objects.items.rock.ItemRock;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ZenClass("mods.terrafirmacraft.StoneKnapping")
 @ZenRegister

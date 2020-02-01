@@ -41,7 +41,7 @@ import net.dries007.tfc.objects.container.ContainerBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class GuiBarrel extends GuiContainerTE<TEBarrel>
 {

@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import static net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 

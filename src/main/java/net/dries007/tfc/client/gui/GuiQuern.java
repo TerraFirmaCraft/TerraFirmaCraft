@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.dries007.tfc.objects.te.TEQuern;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class GuiQuern extends GuiContainerTE<TEQuern>
 {

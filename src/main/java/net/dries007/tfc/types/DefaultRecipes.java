@@ -70,8 +70,8 @@ import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.util.skills.SmithingSkill;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.api.types.Metal.ItemType.*;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.fluids.FluidsTFC.*;
 import static net.dries007.tfc.types.DefaultMetals.*;
 import static net.dries007.tfc.util.forge.ForgeRule.*;

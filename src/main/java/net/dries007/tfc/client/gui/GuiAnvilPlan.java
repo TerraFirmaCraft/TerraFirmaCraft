@@ -27,7 +27,7 @@ import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.NBTBuilder;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_INPUT_1;
 
 @SideOnly(Side.CLIENT)

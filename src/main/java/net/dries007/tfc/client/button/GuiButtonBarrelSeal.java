@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.GlStateManager;
 
 import net.dries007.tfc.objects.te.TEBarrel;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.client.gui.GuiBarrel.BARREL_BACKGROUND;
 
 

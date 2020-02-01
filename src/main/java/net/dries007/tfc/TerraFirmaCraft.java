@@ -13,7 +13,8 @@ import net.minecraft.server.dedicated.PropertyManager;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -29,7 +30,6 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
-import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
@@ -46,18 +46,17 @@ import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@SuppressWarnings({"DefaultAnnotationParam", "unused"})
-@Mod(modid = MOD_ID, name = TFCConstants.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, canBeDeactivated = false, certificateFingerprint = TFCConstants.SIGNING_KEY)
 @Mod.EventBusSubscriber
+@Mod(modid = MOD_ID, name = TerraFirmaCraft.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY)
 public final class TerraFirmaCraft
 {
-    @Mod.Instance
-    private static TerraFirmaCraft instance = null;
+    public static final String MOD_ID = "tfc";
+    public static final String MOD_NAME = "TerraFirmaCraft";
 
-    @Mod.Metadata
-    private static ModMetadata metadata = null;
+    @Mod.Instance
+    private static TerraFirmaCraft INSTANCE = null;
 
     @SidedProxy(modId = MOD_ID, clientSide = "net.dries007.tfc.proxy.ClientProxy", serverSide = "net.dries007.tfc.proxy.ServerProxy")
     private static IProxy proxy = null;
@@ -69,7 +68,7 @@ public final class TerraFirmaCraft
 
     public static Logger getLog()
     {
-        return instance.log;
+        return INSTANCE.log;
     }
 
     public static IProxy getProxy()
@@ -77,34 +76,19 @@ public final class TerraFirmaCraft
         return proxy;
     }
 
-    public static String getVersion()
+    public static WorldTypeTFC getWorldType()
     {
-        return metadata.version;
-    }
-
-    public static WorldTypeTFC getWorldTypeTFC()
-    {
-        return instance.worldTypeTFC;
+        return INSTANCE.worldTypeTFC;
     }
 
     public static SimpleNetworkWrapper getNetwork()
     {
-        return instance.network;
+        return INSTANCE.network;
     }
 
     public static TerraFirmaCraft getInstance()
     {
-        return instance;
-    }
-
-    public static LoaderState.ModState getState()
-    {
-        return Loader.instance().getModState(Loader.instance().getModObjectList().inverse().get(instance));
-    }
-
-    public static boolean pastState(LoaderState.ModState state)
-    {
-        return TerraFirmaCraft.getState().ordinal() >= state.ordinal();
+        return INSTANCE;
     }
 
     private final Logger log = LogManager.getLogger(MOD_ID);
@@ -242,31 +226,5 @@ public final class TerraFirmaCraft
 
         // Initialize calendar for the current server
         CalendarTFC.INSTANCE.init(event.getServer());
-    }
-
-    @Mod.EventHandler
-    public void onIMC(FMLInterModComms.IMCEvent event)
-    {
-        //todo: provide nice API here.
-    }
-
-    @Mod.EventHandler
-    public void onFingerprintViolation(FMLFingerprintViolationEvent event)
-    {
-        isSignedBuild = false;
-        FMLCommonHandler.instance().registerCrashCallable(new ICrashCallable()
-        {
-            @Override
-            public String getLabel()
-            {
-                return TFCConstants.MOD_NAME;
-            }
-
-            @Override
-            public String call()
-            {
-                return "You are not running an official build. Please do not use this and then report bugs or issues.";
-            }
-        });
     }
 }

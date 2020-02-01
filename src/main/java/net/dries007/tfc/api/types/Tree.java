@@ -19,7 +19,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class Tree extends IForgeRegistryEntry.Impl<Tree>
 {

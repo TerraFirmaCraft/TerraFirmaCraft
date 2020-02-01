@@ -27,7 +27,7 @@ import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.*;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Seasonally regenerates rocks, sticks, snow, plants, crops and bushes.
