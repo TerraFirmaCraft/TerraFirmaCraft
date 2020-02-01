@@ -7,6 +7,9 @@ package net.dries007.tfc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.dedicated.PropertyManager;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -15,6 +18,7 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
@@ -185,6 +189,20 @@ public final class TerraFirmaCraft
             GuiIngameForge.renderHealth = false;
             GuiIngameForge.renderArmor = false;
             GuiIngameForge.renderExperiance = false;
+        }
+        else
+        {
+            MinecraftServer server = FMLServerHandler.instance().getServer();
+            if (server instanceof DedicatedServer)
+            {
+                PropertyManager settings = ((DedicatedServer) server).settings;
+                if (ConfigTFC.GENERAL.forceTFCWorldTypeOnServer)
+                {
+                    // This is called before vanilla defaults it, meaning we intercept it's default with ours
+                    TerraFirmaCraft.getLog().info("Setting default level-type to `tfc_classic`");
+                    settings.getStringProperty("level-type", "tfc_classic");
+                }
+            }
         }
 
         worldTypeTFC = new WorldTypeTFC();

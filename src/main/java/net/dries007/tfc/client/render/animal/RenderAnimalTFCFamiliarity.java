@@ -27,7 +27,7 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @SideOnly(Side.CLIENT)
 public final class RenderAnimalTFCFamiliarity
 {
-    private static final ResourceLocation ICONS = new ResourceLocation(MOD_ID, "textures/gui/overlay/icons.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(MOD_ID, "textures/gui/icons/overlay.png");
     private static final RenderAnimalTFCFamiliarity INSTANCE = new RenderAnimalTFCFamiliarity();
 
     public static RenderAnimalTFCFamiliarity getInstance() { return INSTANCE; }

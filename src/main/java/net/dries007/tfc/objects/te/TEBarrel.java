@@ -415,6 +415,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
      * This happens when a sealed Barrel was broken.
      *
      * Public access needed from BlockBarrel during getPickBlock
+     *
      * @return An NBTTagCompound containing inventory and tank data.
      */
     public NBTTagCompound getItemTag()

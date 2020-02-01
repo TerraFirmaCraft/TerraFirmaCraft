@@ -63,7 +63,7 @@ public final class FluidTransferHelper
                 ItemStack containerCopy = ItemHandlerHelper.copyStackWithSize(emptyContainer, 1);
                 IFluidHandlerItem containerFluidHandler = getFluidHandler(containerCopy);
                 if (containerFluidHandler != null && // and can hold this liquid
-                    containerFluidHandler.fill(targetFluidHandler.drain(maxAmount,false),false) >0)
+                    containerFluidHandler.fill(targetFluidHandler.drain(maxAmount, false), false) > 0)
                 {
                     boolean canCreateSources = false; //default
                     if (block instanceof BlockFluidClassic)

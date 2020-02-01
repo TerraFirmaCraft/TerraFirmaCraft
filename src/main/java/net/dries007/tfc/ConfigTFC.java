@@ -51,6 +51,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
+        @Config.Comment("If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.")
+        @Config.LangKey("config." + MOD_ID + ".general.forceTFCWorldTypeOnServer")
+        public boolean forceTFCWorldTypeOnServer = true;
+
         @Config.Comment("Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place.")
         @Config.LangKey("config." + MOD_ID + ".general.removeVanillaRecipes")
         public boolean removeVanillaRecipes = true;

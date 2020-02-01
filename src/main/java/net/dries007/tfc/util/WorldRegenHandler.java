@@ -46,14 +46,17 @@ public final class WorldRegenHandler
     @SubscribeEvent
     public static void onChunkLoad(ChunkDataEvent.Load event)
     {
-        if (event.getWorld().provider.getDimension() == 0)
+        // This is disabled for now, as it was causing runaway regeneration of stuff (after multiple attempts to fix it), and potential performance issues
+        // This needs some proper design work on how it is going to operate
+        // todo: fix this
+        /*if (event.getWorld().provider.getDimension() == 0)
         {
             ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(event.getChunk());
             if (chunkDataTFC.isInitialized() && !chunkDataTFC.isSpawnProtected() && (chunkDataTFC.getLastUpdateYear() > CalendarTFC.CALENDAR_TIME.getTotalYears() || CalendarTFC.PLAYER_TIME.getTicks() - chunkDataTFC.getLastUpdateTick() > 6 * ICalendar.TICKS_IN_DAY))
             {
-                POSITIONS.add(event.getChunk().getPos());
+                //POSITIONS.add(event.getChunk().getPos());
             }
-        }
+        }*/
     }
 
     @SubscribeEvent

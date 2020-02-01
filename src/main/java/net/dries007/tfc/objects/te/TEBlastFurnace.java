@@ -23,6 +23,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -30,16 +31,18 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
-import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.recipes.BlastFurnaceRecipe;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
+import static net.dries007.tfc.objects.te.TECrucible.CRUCIBLE_MAX_METAL_FLUID;
 
 @ParametersAreNonnullByDefault
 public class TEBlastFurnace extends TEInventory implements ITickable, ITileFields
@@ -57,9 +60,12 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     private int temperature = 0;
     private float burnTemperature = 0;
 
+    private Alloy alloy;
+
     public TEBlastFurnace()
     {
         super(1);
+        this.alloy = new Alloy(CRUCIBLE_MAX_METAL_FLUID);
     }
 
     @Override
@@ -94,7 +100,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         airTicks = nbt.getLong("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         temperature = nbt.getInteger("temperature");
-        meltAmount = nbt.getInteger("meltAmount");
+        alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
         super.readFromNBT(nbt);
     }
 
@@ -118,7 +124,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         nbt.setLong("airTicks", airTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
         nbt.setInteger("temperature", temperature);
-        nbt.setInteger("meltAmount", meltAmount);
+        nbt.setTag("alloy", alloy.serializeNBT());
         return super.writeToNBT(nbt);
     }
 
@@ -214,7 +220,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         if (!world.isRemote)
         {
             IBlockState state = world.getBlockState(pos);
-
+            meltAmount = alloy.getAmount(); //update for client GUI
             if (--delayTimer <= 0)
             {
                 delayTimer = 20;
@@ -248,15 +254,15 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 }).sum();
                 fuelCount = fuelStacks.size();
             }
-            if (meltAmount > 0)
+            if (alloy.removeAlloy(1, true) > 0)
             {
                 // Move already molten liquid metal to the crucible.
                 // This makes the effect of slowly filling up the crucible.
                 // Take into account full or non-existent (removed) crucibles
                 TECrucible te = Helpers.getTE(world, pos.down(), TECrucible.class);
-                if (te != null && te.addMetal(Metal.PIG_IRON, 1) <= 0)
+                if (te != null && te.addMetal(alloy.getResult(), 1) <= 0)
                 {
-                    meltAmount -= 1;
+                    alloy.removeAlloy(1, false);
                 }
             }
             if (state.getValue(LIT))
@@ -373,20 +379,48 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
      */
     private void convertToMolten(ItemStack stack)
     {
-        IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
-        if (metalObject != null)
+        BlastFurnaceRecipe recipe = BlastFurnaceRecipe.get(stack);
+        if (recipe != null)
         {
-            meltAmount += metalObject.getSmeltAmount(stack);
+            FluidStack output = recipe.getOutput(stack);
+            if (output != null)
+            {
+                alloy.add(output);
+            }
         }
     }
 
     private void addItemsFromWorld()
     {
         EntityItem fluxEntity = null, oreEntity = null;
-        for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up(), pos.up().add(1, 5, 1)), EntitySelectors.IS_ALIVE))
+        List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up(), pos.up().add(1, 5, 1)), EntitySelectors.IS_ALIVE);
+        for (EntityItem entityItem : items)
         {
             ItemStack stack = entityItem.getItem();
-            IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
+            BlastFurnaceRecipe recipe = BlastFurnaceRecipe.get(stack);
+            if (recipe != null)
+            {
+                oreEntity = entityItem;
+                // Try searching for the additive (flux for pig iron)
+                for (EntityItem item : items)
+                {
+                    if (recipe.isValidAdditive(item.getItem()))
+                    {
+                        fluxEntity = item;
+                        break;
+                    }
+                }
+                if (fluxEntity != null)
+                {
+                    // We have both additives + ores for the found recipe
+                    break;
+                }
+                else
+                {
+                    // Didn't found the correct additive, abort adding the ore to the input
+                    oreEntity = null;
+                }
+            }
             if (FuelManager.isItemBloomeryFuel(stack))
             {
                 // Add fuel
@@ -400,18 +434,6 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                         break;
                     }
                 }
-            }
-            else if (metalObject != null)
-            {
-                Metal metal = metalObject.getMetal(stack);
-                if (metal == Metal.WROUGHT_IRON || metal == Metal.PIG_IRON)
-                {
-                    oreEntity = entityItem;
-                }
-            }
-            else if (OreDictionaryHelper.doesStackMatchOre(stack, "dustFlux"))
-            {
-                fluxEntity = entityItem;
             }
         }
 

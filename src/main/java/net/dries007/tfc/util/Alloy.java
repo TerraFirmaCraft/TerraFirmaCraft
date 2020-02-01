@@ -17,6 +17,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.recipes.AlloyRecipe;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -77,7 +79,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     }
 
     /**
-     * Add metal to an alloy from an item stack
+     * Add metal to an alloy from an item stack, ignoring temperature and tier
      * Note if the an item doesn't match a recipe it will be ignored
      *
      * @param stack an item stack
@@ -85,25 +87,35 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
      */
     public Alloy add(@Nonnull ItemStack stack)
     {
-        return add(stack, Metal.Tier.TIER_VI);
+        return add(stack, Metal.Tier.TIER_VI, Float.MAX_VALUE);
     }
 
     /**
      * Add metal to an alloy from an item stack
      * Note if the an item doesn't match a heat recipe it will be ignored
      *
-     * @param stack      an item stack
-     * @param deviceTier the tier of the device doing the heating
+     * @param stack       an item stack
+     * @param deviceTier  the tier of the device doing the heating
+     * @param temperature the temperature to melt items
      * @return the alloy, for method chaining
      */
-    public Alloy add(@Nonnull ItemStack stack, @Nonnull Metal.Tier deviceTier)
+    public Alloy add(@Nonnull ItemStack stack, @Nonnull Metal.Tier deviceTier, float temperature)
     {
         if (!stack.isEmpty())
         {
             HeatRecipe recipe = HeatRecipe.get(stack, deviceTier);
-            if (recipe != null)
+            if (recipe != null && recipe.isValidTemperature(temperature))
             {
                 return add(stack, recipe);
+            }
+            else
+            {
+                IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
+                if (metalObject != null)
+                {
+                    // Melt into unknown alloy (so items aren't simply voided and becomes something)
+                    add(new FluidStack(FluidsTFC.getFluidFromMetal(Metal.UNKNOWN), metalObject.getSmeltAmount(stack) * stack.getCount()));
+                }
             }
         }
         return this;

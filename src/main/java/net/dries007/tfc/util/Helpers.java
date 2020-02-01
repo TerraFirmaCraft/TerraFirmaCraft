@@ -31,6 +31,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -43,6 +44,13 @@ import net.dries007.tfc.objects.entity.EntitySeatOn;
 public final class Helpers
 {
     private static final Joiner JOINER_DOT = Joiner.on('.');
+
+    private static final boolean JEI = Loader.isModLoaded("jei");
+
+    public static boolean isJEIEnabled()
+    {
+        return JEI;
+    }
 
     /**
      * Makes an entity sit on a block

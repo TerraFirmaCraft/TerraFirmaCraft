@@ -24,7 +24,7 @@ import net.dries007.tfc.compat.jei.wrappers.AlloyRecipeWrapper;
 @ParametersAreNonnullByDefault
 public class AlloyCategory extends BaseRecipeCategory<AlloyRecipeWrapper>
 {
-    private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/icons/jei.png");
 
     private final IDrawableStatic slot;
     private final IDrawableStatic fire;
