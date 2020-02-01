@@ -40,8 +40,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_version.outputs.result }}
-          release_name: Release ${{ steps.get_version.outputs.result }}
+          tag_name: v${{ steps.get_version.outputs.result }}
+          release_name: TerraFirmaCraft MC1.12-${{ steps.get_version.outputs.result }}
           body: |
             [This was an automatic build]
             // todo: add changelog
@@ -55,7 +55,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_path: ./build/libs/TerraFirmaCraft-MC1.12.2-${{ steps.get_version.outputs.result }}.jar
-          asset_name: TerraFirmaCraft-MC1.12-${{ steps.get_version.outputs.result }}
+          asset_name: TerraFirmaCraft-MC1.12-${{ steps.get_version.outputs.result }}.jar
           asset_content_type: application/java-archive
       - name: Upload Deobf Jar
         id: upload_deobf_jar
@@ -65,7 +65,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/libs/TerraFirmaCraft-MC1.12.2-${{ steps.get_version.outputs.result }}-deobf.jar
-          asset_name: TerraFirmaCraft-MC1.12-${{ steps.get_version.outputs.result }}-deobf
+          asset_name: TerraFirmaCraft-MC1.12-${{ steps.get_version.outputs.result }}-deobf.jar
           asset_content_type: application/java-archive
       - name: Curseforge
         id: curseforge
