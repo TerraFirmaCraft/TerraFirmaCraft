@@ -115,8 +115,6 @@ public abstract class BlockCropTFC extends BlockBush
         setHardness(0.6f);
     }
 
-    // public methods
-
     @Nonnull
     public ICrop getCrop()
     {
