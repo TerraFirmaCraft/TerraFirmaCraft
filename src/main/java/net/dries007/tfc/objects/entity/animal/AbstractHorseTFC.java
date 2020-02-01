@@ -107,7 +107,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     @SuppressWarnings("unused")
     public AbstractHorseTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public AbstractHorseTFC(World worldIn, Gender gender, int birthDay)
@@ -119,7 +119,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         return 100;
     }
@@ -127,7 +127,7 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override

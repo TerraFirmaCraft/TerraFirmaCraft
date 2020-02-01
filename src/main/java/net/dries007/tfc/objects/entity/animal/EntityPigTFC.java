@@ -41,7 +41,7 @@ public class EntityPigTFC extends EntityAnimalMammal
     @SuppressWarnings("unused")
     public EntityPigTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
             getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
@@ -52,7 +52,7 @@ public class EntityPigTFC extends EntityAnimalMammal
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         return 100;
     }
@@ -60,7 +60,7 @@ public class EntityPigTFC extends EntityAnimalMammal
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class EntityPigTFC extends EntityAnimalMammal
         int numberOfChilds = 8 + rand.nextInt(5); //8-12
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityPigTFC baby = new EntityPigTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityPigTFC baby = new EntityPigTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);

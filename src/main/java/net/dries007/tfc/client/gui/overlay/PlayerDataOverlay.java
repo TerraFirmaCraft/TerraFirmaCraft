@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.player.IPlayerData;
-import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;

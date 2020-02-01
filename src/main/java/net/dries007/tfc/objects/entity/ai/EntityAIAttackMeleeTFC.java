@@ -2,8 +2,8 @@ package net.dries007.tfc.objects.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
-import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
 
 public class EntityAIAttackMeleeTFC extends EntityAIAttackMelee
 {

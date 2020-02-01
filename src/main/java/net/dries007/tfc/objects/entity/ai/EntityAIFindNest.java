@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.te.TENestBox;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;

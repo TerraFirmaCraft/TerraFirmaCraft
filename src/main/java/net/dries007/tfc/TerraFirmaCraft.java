@@ -39,7 +39,6 @@ import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.fuel.FuelManager;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
-import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
@@ -196,8 +195,6 @@ public final class TerraFirmaCraft
         {
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         }
-
-        BiomesTFC.postInit();
         FuelManager.postInit();
         VeinRegistry.INSTANCE.postInit();
     }

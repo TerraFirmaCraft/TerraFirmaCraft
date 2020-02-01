@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -85,7 +86,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     @Override
     public Gender getGender()
     {
-        return Gender.fromBool(this.dataManager.get(GENDER));
+        return Gender.valueOf(this.dataManager.get(GENDER));
     }
 
     @Override
@@ -226,7 +227,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.setGender(Gender.fromBool(nbt.getBoolean("gender")));
+        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
         this.setBirthDay(nbt.getInteger("birth"));
         this.lastFed = nbt.getLong("fed");
         this.lastFDecay = nbt.getLong("decay");
@@ -312,8 +313,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
      * Ignore fall damage like vanilla chickens. Implemented here because all TFC Oviparous animals don't take fall damage.
      * Ostriches would escape fall damage too.
      *
-     * @param distance
-     * @param damageMultiplier
      */
     @Override
     public void fall(float distance, float damageMultiplier)

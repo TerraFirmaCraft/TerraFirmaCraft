@@ -11,6 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 /**

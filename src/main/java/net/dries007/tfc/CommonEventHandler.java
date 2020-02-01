@@ -30,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
@@ -68,6 +69,7 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.ICreatureTFC;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketCalendarUpdate;
@@ -83,6 +85,7 @@ import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
+import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -473,6 +476,24 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onLivingSpawnEvent(LivingSpawnEvent.CheckSpawn event)
     {
+        // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
+        if (event.getEntity() instanceof ICreatureTFC)
+        {
+            ICreatureTFC creature = (ICreatureTFC) event.getEntity();
+            World world = event.getWorld();
+            BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
+
+            float rainfall = ChunkDataTFC.getRainfall(world, pos);
+            float temperature = ClimateTFC.getAvgTemp(world, pos);
+            Biome biome = world.getBiome(pos);
+
+            // We don't roll spawning again since vanilla is handling it
+            if (creature.getSpawnWeight(biome, temperature, rainfall) <= 0)
+            {
+                event.setResult(Event.Result.DENY);
+            }
+        }
+
         // Stop mob spawning in thatch - the list of non-spawnable light-blocking, non-collidable blocks is hardcoded in WorldEntitySpawner#canEntitySpawnBody
         BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
         if (event.getWorld().getBlockState(pos).getBlock() == BlocksTFC.THATCH || event.getWorld().getBlockState(pos.up()).getBlock() == BlocksTFC.THATCH)

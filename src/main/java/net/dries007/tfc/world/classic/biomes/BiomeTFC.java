@@ -11,10 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 
-import net.dries007.tfc.objects.entity.animal.EntityDeerTFC;
-import net.dries007.tfc.objects.entity.animal.EntityPheasantTFC;
-import net.dries007.tfc.objects.entity.animal.EntityRabbitTFC;
-import net.dries007.tfc.objects.entity.animal.EntityWolfTFC;
+import net.dries007.tfc.objects.entity.animal.*;
 import net.dries007.tfc.util.climate.ClimateTFC;
 
 public class BiomeTFC extends Biome
@@ -43,6 +40,7 @@ public class BiomeTFC extends Biome
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPheasantTFC.class, 14, 2, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityRabbitTFC.class, 15, 3, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityWolfTFC.class, 6, 2, 3));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
         spawnBiome = false;
     }
 

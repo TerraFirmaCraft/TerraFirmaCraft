@@ -15,7 +15,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-import net.dries007.tfc.objects.entity.animal.ICreatureTFC;
+import net.dries007.tfc.api.types.ICreatureTFC;
+import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 /*
  * TFC entity spawning mechanics
@@ -39,12 +41,17 @@ public final class WorldEntitySpawnerTFC
      */
     public static void performWorldGenSpawning(World worldIn, Biome biomeIn, int centerX, int centerZ, int diameterX, int diameterZ, Random randomIn)
     {
+        BlockPos chunkBlockPos = new BlockPos(centerX, 0, centerZ);
+
+        float temperature = ClimateTFC.getAvgTemp(worldIn, chunkBlockPos);
+        float rainfall = ChunkDataTFC.getRainfall(worldIn, chunkBlockPos);
+
         // Spawns only one group
         ForgeRegistries.ENTITIES.getValuesCollection().stream()
             .filter(x -> {
                 if (ICreatureTFC.class.isAssignableFrom(x.getEntityClass()))
                 {
-                    int weight = ((ICreatureTFC) x.newInstance(worldIn)).getSpawnWeight(biomeIn);
+                    int weight = ((ICreatureTFC) x.newInstance(worldIn)).getSpawnWeight(biomeIn, temperature, rainfall);
                     return weight > 0 && randomIn.nextInt(weight) == 0;
                 }
                 return false;

@@ -15,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.client.model.animal.ModelChickenTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityChickenTFC;
@@ -25,8 +26,12 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderChickenTFC extends RenderLiving<EntityChickenTFC>
 {
-    private static final ResourceLocation CHICKEN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/chicken.png");
-    private static final ResourceLocation ROOSTER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/rooster.png");
+    private static final ResourceLocation CHICKEN_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/chicken_young.png");
+    private static final ResourceLocation CHICKEN_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/chicken_old.png");
+
+    private static final ResourceLocation ROOSTER_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/rooster_young.png");
+    private static final ResourceLocation ROOSTER_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/rooster_old.png");
+
     private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/chick.png");
 
     public RenderChickenTFC(RenderManager manager)
@@ -52,11 +57,11 @@ public class RenderChickenTFC extends RenderLiving<EntityChickenTFC>
         }
         else if (chicken.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            return ROOSTER_TEXTURE;
+            return chicken.getAge() == IAnimalTFC.Age.OLD ? ROOSTER_OLD : ROOSTER_YOUNG;
         }
         else
         {
-            return CHICKEN_TEXTURE;
+            return chicken.getAge() == IAnimalTFC.Age.OLD ? CHICKEN_OLD : CHICKEN_YOUNG;
         }
     }
 

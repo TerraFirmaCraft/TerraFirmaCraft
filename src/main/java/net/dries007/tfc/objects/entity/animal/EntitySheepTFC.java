@@ -62,7 +62,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
 
     public EntitySheepTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
             getRandomGrowth(DAYS_TO_ADULTHOOD),
             EntitySheep.getRandomSheepColor(Constants.RNG));
     }
@@ -76,7 +76,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         return 100;
     }
@@ -84,7 +84,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         int numberOfChilds = Constants.RNG.nextInt(3) + 1; //1-3
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), this.getDyeColor());
+            EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), this.getDyeColor());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);
