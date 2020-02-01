@@ -19,7 +19,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -317,7 +316,7 @@ public class ChunkGenTFC implements IChunkGenerator
 
         if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, false, ANIMALS))
         {
-            WorldEntitySpawner.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
+            WorldEntitySpawnerTFC.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
         }
 
         ForgeEventFactory.onChunkPopulate(false, this, world, rand, chunkX, chunkZ, false);

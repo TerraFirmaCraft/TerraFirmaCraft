@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Optional;
@@ -41,7 +42,8 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         this.setupTamedAI();
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         if (this.getOwnerId() == null)
@@ -56,7 +58,8 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         compound.setBoolean("Sitting", this.isSitting());
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         String s;
@@ -88,12 +91,14 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         this.setSitting(compound.getBoolean("Sitting"));
     }
 
+    @Override
     public boolean canBeLeashedTo(EntityPlayer player)
     {
         return !this.getLeashed();
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void handleStatusUpdate(byte id)
     {
         if (id == 7)

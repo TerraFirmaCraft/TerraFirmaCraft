@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityAgeable;
@@ -19,6 +20,7 @@ import net.minecraft.world.World;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 public class EntityDonkeyTFC extends AbstractChestHorseTFC
 {
     public static void registerFixesDonkeyTFC(DataFixer fixer)
@@ -31,12 +33,14 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         super(worldIn);
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         super.getHurtSound(damageSourceIn);
         return SoundEvents.ENTITY_DONKEY_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         super.getDeathSound();
@@ -54,11 +58,13 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
             {
                 baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
                 baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
                 this.world.spawnEntity(baby);
             }
         }
     }
 
+    @Override
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         if (otherAnimal == this)
@@ -75,19 +81,28 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         }
     }
 
-    public EntityAgeable createChild(EntityAgeable ageable)
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
+    }
+
+    @Override
+    public EntityAgeable createChild(@Nonnull EntityAgeable ageable)
     {
         AbstractHorseTFC abstracthorse = (ageable instanceof EntityHorseTFC ? new EntityMuleTFC(this.world) : new EntityDonkeyTFC(this.world));
         this.setOffspringAttributes(ageable, abstracthorse);
         return abstracthorse;
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         super.getAmbientSound();
         return SoundEvents.ENTITY_DONKEY_AMBIENT;
     }
 
+    @Override
     @Nullable
     protected ResourceLocation getLootTable()
     {

@@ -5,10 +5,15 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,34 +30,32 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
+public class EntityCowTFC extends EntityAnimalMammal
 {
     private static final int DAYS_TO_ADULTHOOD = 1080;
     private static final int DAYS_TO_FULL_GESTATION = 270;
-
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
 
     private long lastMilked;
 
     @SuppressWarnings("unused")
     public EntityCowTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityCowTFC(World worldIn, Gender gender, int birthDay)
@@ -63,9 +66,27 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
-        return (biome == BiomesTFC.PLAINS || biome == BiomesTFC.HIGH_PLAINS) && temperature > -10 && rainfall > 100 && rainfall < 400;
+        return 100;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 4;
     }
 
     @Override
@@ -83,14 +104,14 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setLong("milked", this.getMilkedDay());
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setMilkedDay(compound.getInteger("milked"));
@@ -102,11 +123,11 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
         int numberOfChilds = 1; //one always
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityCowTFC baby = new EntityCowTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityCowTFC baby = new EntityCowTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);
         }
-
     }
 
     @Override
@@ -116,49 +137,35 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
+    }
+
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
+        FluidActionResult fillResult = FluidUtil.tryFillContainer(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
+            Fluid.BUCKET_VOLUME, player, false);
 
-        if (itemstack.getItem() == Items.BUCKET)
+        // First check if it is possible to fill the player's held item with milk
+        if (fillResult.isSuccess())
         {
-            if (this.getFamiliarity() > 0.15f && hasMilk())
+            if (this.getFamiliarity() > 0.15f && isReadyForAnimalProduct())
             {
                 player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
                 this.setMilkedDay(CalendarTFC.PLAYER_TIME.getTotalDays());
-                itemstack.shrink(1);
-
-                if (itemstack.isEmpty())
-                {
-                    player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
-                }
-                else if (!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET)))
-                {
-                    player.dropItem(new ItemStack(Items.MILK_BUCKET), false);
-                }
+                player.setHeldItem(hand, FluidUtil.tryFillContainerAndStow(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
+                    new PlayerInvWrapper(player.inventory), Fluid.BUCKET_VOLUME, player, true).getResult());
             }
             else if (!this.world.isRemote)
             {
                 //Return chat message indicating why this entity isn't giving milk
-                if (this.getGender() == Gender.MALE)
+                TextComponentTranslation tooltip = getTooltip();
+                if (tooltip != null)
                 {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.male"));
-                }
-                else if (this.getAge() == Age.OLD)
-                {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.old"));
-                }
-                else if (this.getAge() == Age.CHILD)
-                {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.child"));
-                }
-                else if (getFamiliarity() <= 0.15f)
-                {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.lowfamiliarity"));
-                }
-                else if (!hasMilk())
-                {
-                    player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.milk.empty"));
+                    player.sendMessage(tooltip);
                 }
             }
             return true;
@@ -170,34 +177,51 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
-    public float getPercentToAdulthood()
+    public int getDaysToAdulthood()
     {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override
-    public Age getAge()
+    public boolean isReadyForAnimalProduct()
     {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return getFamiliarity() > 0.15f && hasMilk();
     }
 
-    public long getMilkedDay()
+    @Override
+    public TextComponentTranslation getTooltip()
+    {
+        if (this.getGender() == Gender.MALE)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.male_milk");
+        }
+        else if (this.getAge() == Age.OLD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.old", getAnimalName());
+        }
+        else if (this.getAge() == Age.CHILD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getAnimalName());
+        }
+        else if (getFamiliarity() <= 0.15f)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getAnimalName());
+        }
+        else if (!hasMilk())
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.no_milk", getAnimalName());
+        }
+        return null;
+    }
+
+    protected long getMilkedDay()
     {
         return this.lastMilked;
     }
 
-    public void setMilkedDay(long value)
+    protected void setMilkedDay(long value)
     {
         this.lastMilked = value;
-    }
-
-    public boolean hasMilk()
-    {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() > getMilkedDay());
     }
 
     @Override
@@ -253,5 +277,10 @@ public class EntityCowTFC extends EntityAnimalMammal implements IAnimalTFC
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 1.0F);
+    }
+
+    protected boolean hasMilk()
+    {
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() > getMilkedDay());
     }
 }

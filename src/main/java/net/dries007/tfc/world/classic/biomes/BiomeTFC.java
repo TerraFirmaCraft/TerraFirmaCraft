@@ -35,17 +35,12 @@ public class BiomeTFC extends Biome
         this.decorator = createBiomeDecorator();
 
         this.spawnableCreatureList.clear();
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntitySheepTFC.class, 12, 4, 4));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPigTFC.class, 10, 4, 4));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityChickenTFC.class, 10, 4, 4));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityCowTFC.class, 8, 4, 4));
+        // Register creature that respawns in any biome
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityDeerTFC.class, 14, 2, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPheasantTFC.class, 14, 2, 4));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBearTFC.class, 4, 1, 2));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityRabbitTFC.class, 15, 3, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityWolfTFC.class, 6, 2, 3));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityHorseTFC.class, 8, 1, 3));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityDonkeyTFC.class, 5, 1, 1));
+        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
         spawnBiome = false;
     }
 

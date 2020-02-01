@@ -5,7 +5,11 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -41,11 +45,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import jdk.nashorn.internal.ir.Block;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
 {
@@ -61,12 +67,6 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         EntityLiving.registerFixesMob(fixer, EntityWolfTFC.class);
     }
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     private float headRotationCourse;
     private float headRotationCourseOld;
     private boolean isWet;
@@ -77,7 +77,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @SuppressWarnings("unused")
     public EntityWolfTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth());
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityWolfTFC(World worldIn, Gender gender, int birthDay)
@@ -88,9 +88,27 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
-        return temperature > -20 && temperature < 20 && rainfall > 75;
+        return 100;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 1;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     public void onLivingUpdate()
@@ -115,8 +133,9 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         int numberOfChilds = 1 + rand.nextInt(1); //1-2
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityWolfTFC baby = new EntityWolfTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityWolfTFC baby = new EntityWolfTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             UUID uuid = this.getOwnerId();
             if (uuid != null)
             {
@@ -125,6 +144,12 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
             }
             this.world.spawnEntity(baby);
         }
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
     }
 
     @Override
@@ -184,12 +209,9 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
-    public boolean isBreedingItem(ItemStack stack)
-    {
-        return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
-    }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
         if (this.isTamed())
@@ -261,19 +283,15 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     }
 
     @Override
-    public float getPercentToAdulthood()
+    public int getDaysToAdulthood()
     {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override
-    public Age getAge()
+    public boolean isFood(ItemStack stack)
     {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
     }
 
     public boolean isAngry()
@@ -314,14 +332,14 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.dataManager.set(BEGGING, beg);
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setBoolean("Angry", this.isAngry());
         compound.setByte("CollarColor", (byte) this.getCollarColor().getDyeDamage());
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setAngry(compound.getBoolean("Angry"));
