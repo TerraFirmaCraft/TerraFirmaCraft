@@ -8,7 +8,6 @@ package net.dries007.tfc.world.classic.biomes;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,7 +16,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import net.dries007.tfc.objects.entity.animal.EntityBearTFC;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
@@ -134,17 +132,6 @@ public final class BiomesTFC
         {
             WORLD_GEN_BIOMES.add(biome);
         }
-    }
-
-    public static void postInit()
-    {
-        // Should be done here to avoid NPEs
-
-        // Register specific biome respawns
-        MOUNTAINS.getSpawnableList(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
-        MOUNTAINS_EDGE.getSpawnableList(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
-        HIGH_HILLS.getSpawnableList(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
-        HIGH_HILLS_EDGE.getSpawnableList(EnumCreatureType.CREATURE).add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
     }
 
     private BiomesTFC() {}

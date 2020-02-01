@@ -45,6 +45,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import jdk.nashorn.internal.ir.Block;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
@@ -76,7 +77,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @SuppressWarnings("unused")
     public EntityWolfTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityWolfTFC(World worldIn, Gender gender, int birthDay)
@@ -87,7 +88,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         return 100;
     }
@@ -95,7 +96,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
@@ -132,7 +133,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         int numberOfChilds = 1 + rand.nextInt(1); //1-2
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityWolfTFC baby = new EntityWolfTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityWolfTFC baby = new EntityWolfTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             UUID uuid = this.getOwnerId();

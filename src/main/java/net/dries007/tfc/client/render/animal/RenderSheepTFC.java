@@ -5,10 +5,8 @@
 
 package net.dries007.tfc.client.render.animal;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,19 +19,14 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
-public class RenderSheepTFC extends RenderLiving<EntitySheepTFC>
+public class RenderSheepTFC extends RenderAnimalTFC<EntitySheepTFC>
 {
-    private static final ResourceLocation SHEEP_TEXTURES = new ResourceLocation(MOD_ID, "textures/entity/animal/sheep.png");
+    private static final ResourceLocation SHEEP_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/sheep_young.png");
+    private static final ResourceLocation SHEEP_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/sheep_old.png");
 
     public RenderSheepTFC(RenderManager renderManager)
     {
-        super(renderManager, new ModelSheepBodyTFC(), 0.7F);
+        super(renderManager, new ModelSheepBodyTFC(), 0.7F, SHEEP_YOUNG, SHEEP_OLD);
         this.addLayer(new LayerSheepWoolTFC(this));
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(@Nonnull EntitySheepTFC entity)
-    {
-        return SHEEP_TEXTURES;
     }
 }

@@ -37,6 +37,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
@@ -63,7 +64,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
 
     public EntityChickenTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
             getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
@@ -75,7 +76,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         return 100;
     }
@@ -83,7 +84,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.MALE_AND_FEMALES.getRule();
+        return AnimalGroupingRules.MALE_AND_FEMALES;
     }
 
     @Override

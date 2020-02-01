@@ -46,7 +46,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     @SuppressWarnings("unused")
     public EntityBearTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
             getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
@@ -57,7 +57,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         if (BiomesTFC.isMountainBiome(biome) || biome == BiomesTFC.HIGH_HILLS || biome == BiomesTFC.HIGH_HILLS_EDGE)
         {
@@ -69,7 +69,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.MOTHER_AND_CHILDREN_OR_SOLO_MALE.getRule();
+        return AnimalGroupingRules.MOTHER_AND_CHILDREN_OR_SOLO_MALE;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
         int numberOfChilds = 1; //one always
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityBearTFC baby = new EntityBearTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityBearTFC baby = new EntityBearTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }

@@ -45,7 +45,7 @@ public class EntityPheasantTFC extends EntityAnimalTFC
     @SuppressWarnings("unused")
     public EntityPheasantTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
             getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
@@ -56,7 +56,7 @@ public class EntityPheasantTFC extends EntityAnimalTFC
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         return 100;
     }
@@ -64,7 +64,7 @@ public class EntityPheasantTFC extends EntityAnimalTFC
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override

@@ -1,4 +1,9 @@
-package net.dries007.tfc.objects.entity.animal;
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
+package net.dries007.tfc.api.types;
 
 import java.util.List;
 import java.util.Random;
@@ -17,9 +22,11 @@ public interface ICreatureTFC
      * Gets the random weight (1 in N chunks) to spawn this creature
      *
      * @param biome the biome in chunk that is trying to spawn this creature
+     * @param temperature the average temperature of this region
+     * @param rainfall the average rainfall of this region
      * @return 0 if can't spawn, 1 or more for how ofter this creature spawn in said biome
      */
-    int getSpawnWeight(Biome biome);
+    int getSpawnWeight(Biome biome, float temperature, float rainfall);
 
     /**
      * Returns the grouping rules (one or more) for spawn

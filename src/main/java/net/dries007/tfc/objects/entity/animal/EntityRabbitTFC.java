@@ -69,7 +69,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
     @SuppressWarnings("unused")
     public EntityRabbitTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityRabbitTFC(World worldIn, Gender gender, int birthDay)
@@ -82,7 +82,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         return 100;
     }
@@ -90,7 +90,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
@@ -228,7 +228,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
         int numberOfChilds = 5 + rand.nextInt(5); // 5-10
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityRabbitTFC baby = new EntityRabbitTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityRabbitTFC baby = new EntityRabbitTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }

@@ -29,6 +29,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @SuppressWarnings("WeakerAccess")
@@ -41,7 +42,7 @@ public class EntityDeerTFC extends EntityAnimalMammal
     @SuppressWarnings("unused")
     public EntityDeerTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
             getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
@@ -52,7 +53,7 @@ public class EntityDeerTFC extends EntityAnimalMammal
     }
 
     @Override
-    public int getSpawnWeight(Biome biome)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
         return 100;
     }
@@ -60,7 +61,7 @@ public class EntityDeerTFC extends EntityAnimalMammal
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION.getRule();
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
@@ -81,7 +82,7 @@ public class EntityDeerTFC extends EntityAnimalMammal
         int numberOfChilds = 1; //one always
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityDeerTFC baby = new EntityDeerTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityDeerTFC baby = new EntityDeerTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }
@@ -103,7 +104,7 @@ public class EntityDeerTFC extends EntityAnimalMammal
     @Override
     public boolean isFood(ItemStack stack)
     {
-        return stack.getItem() == ItemsTFC.SALT;
+        return OreDictionaryHelper.doesStackMatchOre(stack, "salt");
     }
 
     @Override
