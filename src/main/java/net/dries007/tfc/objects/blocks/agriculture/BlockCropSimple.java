@@ -75,8 +75,7 @@ public abstract class BlockCropSimple extends BlockCropTFC
             ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
             if (!foodDrop.isEmpty())
             {
-                ItemStack seedDrop = new ItemStack(ItemSeedsTFC.get(crop));
-                seedDrop.setCount(0);
+                ItemStack seedDrop = new ItemStack(ItemSeedsTFC.get(crop), 0);
                 SimpleSkill skill = CapabilityPlayerData.getSkill(playerIn, SkillType.AGRICULTURE);
 
                 if (skill != null)
