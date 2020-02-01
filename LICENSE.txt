@@ -1,13 +1,4 @@
 ---
-Custom server versions must be made available under the same license and terms,
-as they constitute a derivative work that is made available under this license.
-
-Usage of any explicitly declared API does not constitute a derivative work.
-- Methods of declaration:
-    - In javadoc or other forms of comments. (for example `Public API`:)
-    - Any class inside of a package with path containing `api`. (For example `net.dries007.tfc.api`).
-- Any IMC message interaction also falls under this provision.
-
 Any other official language version of the EUPL can be obtained via the official website:
     http://eur-lex.europa.eu/legal-content/TXT/?uri=CELEX%3A32017D0863
 ---
