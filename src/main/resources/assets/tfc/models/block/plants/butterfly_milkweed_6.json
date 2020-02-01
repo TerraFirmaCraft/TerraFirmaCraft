@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_6",
+    "particle": "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_6"
+  }
+}

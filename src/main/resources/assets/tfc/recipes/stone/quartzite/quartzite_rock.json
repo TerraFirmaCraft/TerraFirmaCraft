@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:cobble/quartzite"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/quartzite",
+    "count": 4
+  }
+}

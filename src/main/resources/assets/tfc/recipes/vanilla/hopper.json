@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "XCX",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "ingotWroughtIron"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "chest"
+    }
+  },
+  "result": {
+    "item": "minecraft:hopper",
+    "count": 1
+  }
+}

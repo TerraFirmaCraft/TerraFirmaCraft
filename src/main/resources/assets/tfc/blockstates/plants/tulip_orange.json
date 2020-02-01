@@ -1,0 +1,64 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tulip_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tulip_orange_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tulip_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tulip_3"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tulip_4"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "5"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tulip_5"
+        }
+      ]
+    }
+  ]
+}

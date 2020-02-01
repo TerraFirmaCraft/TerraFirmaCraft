@@ -1,0 +1,39 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:leaves_palm",
+    "textures": {
+      "side": "tfc:blocks/fruit_trees/leaves/banana_side",
+      "end": "tfc:blocks/fruit_trees/leaves/banana_end",
+      "cross": "tfc:blocks/fruit_trees/fruit/banana"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "tfc:leaves_palm",
+      "transform": "forge:default-block"
+    },
+    "state": {
+      "normal": {
+        "model": "tfc:leaves_palm"
+      },
+      "flowering": {
+        "model": "tfc:leaves_palm",
+        "textures": {
+          "cross": "tfc:blocks/fruit_trees/flowers/banana"
+        },
+        "submodel": "cross"
+      },
+      "fruit": {
+        "model": "tfc:leaves_palm",
+        "textures": {
+          "cross": "tfc:blocks/fruit_trees/fruit/banana"
+        },
+        "submodel": "cross"
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "lumber"
+    }
+  },
+  "result": {
+    "item": "minecraft:ladder",
+    "count": 16
+  }
+}

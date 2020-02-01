@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/chalk"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/smooth/chalk",
+    "count": 8
+  }
+}

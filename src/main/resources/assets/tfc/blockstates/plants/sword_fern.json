@@ -1,0 +1,11 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/sword_fern"
+        }
+      ]
+    }
+  ]
+}

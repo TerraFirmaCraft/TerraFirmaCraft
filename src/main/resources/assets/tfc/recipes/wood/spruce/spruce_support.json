@@ -1,0 +1,20 @@
+{
+  "type": "tfc:damage_item_shaped",
+  "pattern": [
+    "XB",
+    " B"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "saw"
+    },
+    "B": {
+      "item": "tfc:wood/log/spruce"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/support/spruce",
+    "count": 8
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:rock/slate"
+    }
+  },
+  "result": {
+    "item": "tfc:cobble/slate",
+    "count": 1
+  }
+}

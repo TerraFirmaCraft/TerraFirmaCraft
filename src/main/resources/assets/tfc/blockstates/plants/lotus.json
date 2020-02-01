@@ -1,0 +1,158 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0|1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 3
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 3,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 3,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 3,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/lotus_1",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/lotus_1",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/lotus_1",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/lotus_1",
+          "weight": 1,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 3
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 3,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 3,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 3,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/lotus_3",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/lotus_3",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/lotus_3",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/lotus_3",
+          "weight": 1,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/lotus",
+          "weight": 1,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/lotus_2",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/lotus_2",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/lotus_2",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/lotus_2",
+          "weight": 1,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/lotus_3",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/lotus_3",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/lotus_3",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/lotus_3",
+          "weight": 1,
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

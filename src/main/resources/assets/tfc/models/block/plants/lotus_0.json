@@ -1,0 +1,91 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "tfc:blocks/plants/lotus/lotus",
+    "stem": "tfc:blocks/plants/lotus/lotus_0"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        -16,
+        6
+      ],
+      "to": [
+        14,
+        8.9,
+        6
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#stem"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          6
+        ],
+        "axis": "y",
+        "angle": -45
+      }
+    },
+    {
+      "from": [
+        2,
+        -16,
+        6
+      ],
+      "to": [
+        14,
+        8.9,
+        6
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stem"
+        },
+        "south": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#stem"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          6
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    }
+  ]
+}

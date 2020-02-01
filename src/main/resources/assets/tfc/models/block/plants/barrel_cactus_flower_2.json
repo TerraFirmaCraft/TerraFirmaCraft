@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/plants/barrel_cactus_flower_0",
+  "textures": {
+    "flower": "tfc:blocks/plants/barrel_cactus/flower_2",
+    "particle": "tfc:blocks/plants/barrel_cactus/flower_2"
+  }
+}

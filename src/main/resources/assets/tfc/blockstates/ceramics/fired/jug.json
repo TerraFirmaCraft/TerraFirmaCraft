@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "inventory": {
+      "model": "forge:forgebucket",
+      "textures": {
+        "base": "tfc:items/fluids/jug_empty",
+        "fluid": "tfc:items/fluids/jug_fluid",
+        "cover": "tfc:items/fluids/jug_overlay"
+      },
+      "transform": "forge:default-item",
+      "custom": {
+        "flipGas": true
+      }
+    }
+  }
+}

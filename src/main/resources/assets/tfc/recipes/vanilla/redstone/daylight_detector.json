@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "WWW",
+    "RRR"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "blockGlassColorless"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "gem"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "slabWood"
+    }
+  },
+  "result": {
+    "item": "minecraft:daylight_detector",
+    "count": 1
+  }
+}

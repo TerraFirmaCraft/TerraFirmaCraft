@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:cobble/dacite"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/dacite",
+    "count": 4
+  }
+}

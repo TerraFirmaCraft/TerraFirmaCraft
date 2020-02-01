@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/schist"
+    }
+  },
+  "result": {
+    "item": "tfc:slab/smooth/schist",
+    "data": 0,
+    "count": 6
+  }
+}

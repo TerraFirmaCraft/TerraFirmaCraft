@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:cobble/dolomite"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/dolomite",
+    "count": 4
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "layer0": "tfc:blocks/plants/moss/moss_layer0",
+    "layer1": "tfc:blocks/plants/moss/moss_layer1",
+    "layer2": "tfc:blocks/plants/moss/moss_layer2",
+    "particle": "tfc:blocks/plants/moss/moss_layer0"
+  },
+  "elements": [
+    {
+      "from": [
+        -0.02,
+        0.05,
+        -0.02
+      ],
+      "to": [
+        16.02,
+        0.05,
+        16.02
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#layer0",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer0",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        1,
+        0
+      ],
+      "to": [
+        16,
+        1,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#layer1",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer1",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        2,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#layer2",
+          "tintindex": 2
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer2",
+          "tintindex": 2
+        }
+      }
+    }
+  ]
+}

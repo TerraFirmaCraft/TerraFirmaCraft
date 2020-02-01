@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "WWW"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "clothHighQuality"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "lumber"
+    }
+  },
+  "result": {
+    "item": "minecraft:bed",
+    "data": 0
+  }
+}

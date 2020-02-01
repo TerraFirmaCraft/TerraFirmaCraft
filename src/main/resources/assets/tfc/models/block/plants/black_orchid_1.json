@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/black_orchid/black_orchid_1",
+    "particle": "tfc:blocks/plants/black_orchid/black_orchid_1"
+  }
+}

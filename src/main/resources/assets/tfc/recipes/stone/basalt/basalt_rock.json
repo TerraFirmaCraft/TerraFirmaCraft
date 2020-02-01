@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:cobble/basalt"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/basalt",
+    "count": 4
+  }
+}

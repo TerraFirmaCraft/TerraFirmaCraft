@@ -1,0 +1,16 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "spindle"
+    },
+    {
+      "item": "tfc:animal/product/wool"
+    }
+  ],
+  "result": {
+    "item": "tfc:animal/product/wool_yarn",
+    "count": 8
+  }
+}

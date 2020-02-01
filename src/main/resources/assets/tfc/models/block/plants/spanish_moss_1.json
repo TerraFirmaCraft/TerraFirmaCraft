@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/plants/spanish_moss_0",
+  "textures": {
+    "particle": "tfc:blocks/plants/spanish_moss/spanish_moss_1",
+    "layer0": "tfc:blocks/plants/spanish_moss/spanish_moss_1"
+  }
+}

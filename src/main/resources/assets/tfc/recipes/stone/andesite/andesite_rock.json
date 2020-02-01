@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:cobble/andesite"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/andesite",
+    "count": 4
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/labrador_tea/labrador_tea_2",
+    "particle": "tfc:blocks/plants/labrador_tea/labrador_tea_2"
+  }
+}
