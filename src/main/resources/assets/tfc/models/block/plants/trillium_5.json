@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/trillium/trillium_5",
+    "particle": "tfc:blocks/plants/trillium/trillium_5"
+  }
+}
