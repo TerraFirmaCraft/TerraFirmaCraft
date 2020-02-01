@@ -17,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.client.button.GuiButtonKnapping;
 import net.dries007.tfc.objects.container.ContainerKnapping;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
@@ -98,6 +99,10 @@ public class GuiKnapping extends GuiContainerTFC
             ((ContainerKnapping) inventorySlots).requiresReset = false;
         }
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        if (Helpers.isJEIEnabled())
+        {
+            drawTexturedModalRect(guiLeft + 132, guiTop + 27, 176, 0, 9, 14);
+        }
         if (type == KnappingType.CLAY || type == KnappingType.FIRE_CLAY)
         {
             GlStateManager.color(1, 1, 1, 1);
