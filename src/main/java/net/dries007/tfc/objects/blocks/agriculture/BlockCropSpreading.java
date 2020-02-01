@@ -20,6 +20,7 @@ import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.te.TECropSpreading;
 import net.dries007.tfc.util.Helpers;
 
+@Deprecated // For now, unused, needs design work
 @ParametersAreNonnullByDefault
 public abstract class BlockCropSpreading extends BlockCropTFC
 {
