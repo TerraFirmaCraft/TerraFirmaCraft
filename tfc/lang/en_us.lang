@@ -534,11 +534,14 @@ tfc.enum.nutrient.vitamins=Vitamins
 jei.category.tfc.alloy=Alloying recipes
 jei.category.tfc.anvil=Anvil recipes
 jei.category.tfc.barrel=Barrel recipes
+jei.category.tfc.blast_furnace=Blast Furnace recipes
+jei.category.tfc.bloomery=Bloomery recipes
 jei.category.tfc.heat=Heating recipes
 jei.category.tfc.knap.clay=Clay knapping
 jei.category.tfc.knap.fireclay=Fire clay knapping
 jei.category.tfc.knap.leather=Leather knapping
 jei.category.tfc.knap.stone=Stone knapping
+jei.category.tfc.metal_heat=Metal Heating recipes
 jei.category.tfc.loom=Loom recipes
 jei.category.tfc.quern=Quern recipes
 jei.category.tfc.welding=Welding recipes
@@ -3708,8 +3711,11 @@ item.tfc.crop.product.jute.name=Jute
 item.tfc.crop.product.jute_fiber.name=Jute Fiber
 item.tfc.crop.product.burlap_cloth.name=Burlap Cloth
 
-item.tfc.bloom.unrefined.name=Raw Iron Bloom
-item.tfc.bloom.refined.name=Refined Iron Bloom
+item.tfc.bloom.unrefined.unknown.name=Raw Bloom
+item.tfc.bloom.refined.unknown.name=Refined Bloom
+
+item.tfc.bloom.unrefined.wrought_iron.name=Raw Iron Bloom
+item.tfc.bloom.refined.wrought_iron.name=Refined Iron Bloom
 
 item.tfc.animal.product.wool.name=Wool
 item.tfc.animal.product.wool_yarn.name=Wool Yarn
@@ -3729,4 +3735,8 @@ entity.horsetfc.name=Horse
 entity.donkeytfc.name=Donkey
 entity.muletfc.name=Mule
 
+#TFC death messages
 death.attack.dehydration=%1$s died of dehydration
+
+#Effects
+effectsTFC.overburdened=Overburdened
