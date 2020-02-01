@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.entity.animal;
 
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.SoundType;
@@ -39,6 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 public class EntityHorseTFC extends AbstractHorseTFC
 {
     private static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
@@ -100,7 +102,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
     public void setHorseArmorStack(ItemStack itemStackIn)
     {
         HorseArmorType horsearmortype = HorseArmorType.getByItemStack(itemStackIn);
-        this.dataManager.set(HORSE_ARMOR, Integer.valueOf(horsearmortype.getOrdinal()));
+        this.dataManager.set(HORSE_ARMOR, horsearmortype.getOrdinal());
         this.dataManager.set(HORSE_ARMOR_STACK, itemStackIn);
         this.resetTexturePrefix();
 
@@ -111,7 +113,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
 
             if (i != 0)
             {
-                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier((new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double) i, 0)).setSaved(false));
+                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier((new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", i, 0)).setSaved(false));
             }
         }
     }
@@ -149,7 +151,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         return SoundEvents.ENTITY_HORSE_DEATH;
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("Variant", this.getHorseVariant());
@@ -160,7 +162,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setHorseVariant(compound.getInteger("Variant"));
@@ -189,9 +191,16 @@ public class EntityHorseTFC extends AbstractHorseTFC
             {
                 baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
                 baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
                 this.world.spawnEntity(baby);
             }
         }
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
     }
 
     public boolean canMateWith(EntityAnimal otherAnimal)
@@ -210,7 +219,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
-    public EntityAgeable createChild(EntityAgeable ageable)
+    public EntityAgeable createChild(@Nonnull EntityAgeable ageable)
     {
         AbstractHorseTFC abstracthorse;
 
@@ -263,8 +272,8 @@ public class EntityHorseTFC extends AbstractHorseTFC
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(HORSE_VARIANT, Integer.valueOf(0));
-        this.dataManager.register(HORSE_ARMOR, Integer.valueOf(HorseArmorType.NONE.getOrdinal()));
+        this.dataManager.register(HORSE_VARIANT, 0);
+        this.dataManager.register(HORSE_ARMOR, HorseArmorType.NONE.getOrdinal());
         this.dataManager.register(HORSE_ARMOR_STACK, ItemStack.EMPTY);
     }
 
@@ -281,7 +290,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double) this.getModifiedMaxHealth());
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getModifiedMaxHealth());
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.getModifiedMovementSpeed());
         this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.getModifiedJumpStrength());
     }
@@ -352,7 +361,7 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
         boolean itemStackNotEmpty = !itemstack.isEmpty();

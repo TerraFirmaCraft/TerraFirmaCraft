@@ -5,10 +5,16 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,9 +22,14 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
@@ -26,22 +37,23 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
+import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTFC
+public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
 {
+    private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
+    private long lastLaying; //The last time(in ticks) this chicken has laid eggs
     private static final int DAYS_TO_ADULTHOOD = 124;
     private static final int DAYS_TO_HATCH_EGG = 21;
-
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
 
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
@@ -52,20 +64,39 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
 
     public EntityChickenTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityChickenTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.9F, 0.9F);
+        this.lastLaying = -1;
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
-        return temperature > 18 && rainfall > 350;
+        return 100;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.MALE_AND_FEMALES;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     @Override
@@ -97,37 +128,16 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     }
 
     @Override
-    public float getPercentToAdulthood()
+    public int getDaysToAdulthood()
     {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override
-    public Age getAge()
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
-    }
-
-    @Override
-    public NonNullList<ItemStack> layEggs()
-    {
-        NonNullList<ItemStack> eggs = super.layEggs();
-        ItemStack egg = new ItemStack(Items.EGG);
-        if (this.isFertilized())
-        {
-            IEgg cap = egg.getCapability(CapabilityEgg.CAPABILITY, null);
-            if (cap != null)
-            {
-                cap.setFertilized(new EntityChickenTFC(this.world), DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
-            }
-        }
-        this.setFertilized(false);
-        eggs.add(egg);
-        return eggs;
+        super.writeEntityToNBT(nbt);
+        nbt.setLong("laying", lastLaying);
     }
 
     @Override
@@ -183,5 +193,81 @@ public class EntityChickenTFC extends EntityAnimalOviparous implements IAnimalTF
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.lastLaying = nbt.getLong("laying");
+    }
+
+    @Override
+    public Type getType()
+    {
+        return Type.OVIPAROUS;
+    }
+
+    @Override
+    public boolean isReadyForAnimalProduct()
+    {
+        // Is ready for laying eggs?
+        return this.getFamiliarity() > 0.15f && hasEggs();
+    }
+
+    @Override
+    public TextComponentTranslation getTooltip()
+    {
+        if (this.getGender() == Gender.MALE)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.male_egg");
+        }
+        else if (this.getAge() == Age.OLD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.old", getAnimalName());
+        }
+        else if (this.getAge() == Age.CHILD)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getAnimalName());
+        }
+        else if (getFamiliarity() <= 0.15f)
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getAnimalName());
+        }
+        else if (!hasEggs())
+        {
+            return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.no_egg", getAnimalName());
+        }
+        return null;
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.45F;
+    }
+
+    @Override
+    public List<ItemStack> getProducts()
+    {
+        List<ItemStack> eggs = new ArrayList<>();
+        ItemStack egg = new ItemStack(Items.EGG);
+        if (this.isFertilized())
+        {
+            IEgg cap = egg.getCapability(CapabilityEgg.CAPABILITY, null);
+            if (cap != null)
+            {
+                EntityChickenTFC chick = new EntityChickenTFC(this.world);
+                chick.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                cap.setFertilized(chick, DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
+            }
+        }
+        eggs.add(egg);
+        return eggs;
+    }
+
+    protected boolean hasEggs()
+    {
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying + DEFAULT_TICKS_TO_LAY_EGGS;
     }
 }

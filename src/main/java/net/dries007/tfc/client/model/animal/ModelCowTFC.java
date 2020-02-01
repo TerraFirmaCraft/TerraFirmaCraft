@@ -77,7 +77,7 @@ public class ModelCowTFC extends ModelQuadruped
 
         EntityCowTFC cow = ((EntityCowTFC) entity);
 
-        float percent = cow.getPercentToAdulthood();
+        float percent = (float) cow.getPercentToAdulthood();
 
         float ageScale = 2.0F - percent;
         float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);

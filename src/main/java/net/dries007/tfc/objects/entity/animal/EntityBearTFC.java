@@ -5,12 +5,16 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.IMob;
@@ -28,26 +32,22 @@ import net.minecraft.world.biome.Biome;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTFC
+public class EntityBearTFC extends EntityAnimalMammal implements IMob
 {
     private static final int DAYS_TO_ADULTHOOD = 1800;
     private static final int DAYS_TO_FULL_GESTATION = 210;
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     @SuppressWarnings("unused")
     public EntityBearTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityBearTFC(World worldIn, Gender gender, int birthDay)
@@ -57,10 +57,37 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
-        return (temperature > -15 && temperature < 15 && rainfall > 100) ||
-            (temperature > -10 && temperature < 25 && biome == BiomesTFC.MOUNTAINS);
+        if (BiomesTFC.isMountainBiome(biome) || biome == BiomesTFC.HIGH_HILLS || biome == BiomesTFC.HIGH_HILLS_EDGE)
+        {
+            return 100;
+        }
+        return 0;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.MOTHER_AND_CHILDREN_OR_SOLO_MALE;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 1;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getDaysToAdulthood()
+    {
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override
@@ -69,7 +96,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
         int numberOfChilds = 1; //one always
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityBearTFC baby = new EntityBearTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityBearTFC baby = new EntityBearTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }
@@ -83,25 +110,9 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack it)
+    public boolean isFood(ItemStack it)
     {
         return it.getItem() == Items.FISH;
-    }
-
-    @Override
-    public float getPercentToAdulthood()
-    {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
     }
 
     @Override
@@ -126,11 +137,9 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob, IAnimalTF
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAITempt(this, 1.1D, Items.FISH, false));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(3, new EntityAIAttackMeleeTFC(this, 1.0D, false));
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
     }

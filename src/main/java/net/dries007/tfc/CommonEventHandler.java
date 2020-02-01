@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,6 +73,7 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.ICreatureTFC;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketCalendarUpdate;
@@ -86,7 +86,6 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
-import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -530,10 +529,10 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onLivingSpawnEvent(LivingSpawnEvent.CheckSpawn event)
     {
-        // Check creature spawning
-        if (event.getEntity() instanceof IAnimalTFC)
+        // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
+        if (event.getEntity() instanceof ICreatureTFC)
         {
-            IAnimalTFC animal = (IAnimalTFC) event.getEntity();
+            ICreatureTFC creature = (ICreatureTFC) event.getEntity();
             World world = event.getWorld();
             BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
 
@@ -541,10 +540,8 @@ public final class CommonEventHandler
             float temperature = ClimateTFC.getAvgTemp(world, pos);
             Biome biome = world.getBiome(pos);
 
-            // Set entity pos before checking for collisions
-            event.getEntity().setPosition(event.getX(), event.getY(), event.getZ());
-
-            if (!animal.isValidSpawnConditions(biome, temperature, rainfall) || !((EntityLiving) event.getEntityLiving()).getCanSpawnHere())
+            // We don't roll spawning again since vanilla is handling it
+            if (creature.getSpawnWeight(biome, temperature, rainfall) <= 0)
             {
                 event.setResult(Event.Result.DENY);
             }

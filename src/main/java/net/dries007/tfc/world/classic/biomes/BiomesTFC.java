@@ -63,7 +63,6 @@ public final class BiomesTFC
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " High Plains").setBaseHeight(-1.3f).setHeightVariation(-2.27f)).setSpawnBiome(), true, true, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.PLAINS);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Deep Ocean").setBaseHeight(-3.2f).setHeightVariation(-2.49999f).setBaseBiome("tfc:ocean")), false, false, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
         register(r, new BiomeTFC(new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-2.4f).setHeightVariation(-2.5990001f).setBaseBiome("tfc:ocean"), 4, 5), false, false, BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
-
     }
 
     public static boolean isOceanicBiome(int id)

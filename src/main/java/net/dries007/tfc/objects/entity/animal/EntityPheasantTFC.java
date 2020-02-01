@@ -5,10 +5,14 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,18 +28,12 @@ import net.minecraft.world.biome.Biome;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalTFC
+public class EntityPheasantTFC extends EntityAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 60;
-
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
 
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
@@ -47,8 +45,8 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     @SuppressWarnings("unused")
     public EntityPheasantTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
+            getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityPheasantTFC(World worldIn, Gender gender, int birthDay)
@@ -58,10 +56,27 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
     {
-        return (temperature > -10 && temperature < 15 && rainfall > 200) ||
-            (temperature > 15 && rainfall > 325);
+        return 100;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 1;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 4;
     }
 
     @Override
@@ -89,19 +104,15 @@ public class EntityPheasantTFC extends EntityAnimalOviparous implements IAnimalT
     }
 
     @Override
-    public float getPercentToAdulthood()
+    public int getDaysToAdulthood()
     {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override
-    public Age getAge()
+    public Type getType()
     {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return Type.OVIPAROUS;
     }
 
     @Override
