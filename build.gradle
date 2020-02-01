@@ -219,6 +219,7 @@ curseforge {
         return
     }
     project {
+        apiKey = envApiKey
         id = '302973'
         changelog = '[This was an automatic build]\nFor Release Notes, see https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases'
         releaseType = 'beta'
