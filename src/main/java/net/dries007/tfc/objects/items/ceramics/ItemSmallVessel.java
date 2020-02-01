@@ -125,6 +125,12 @@ public class ItemSmallVessel extends ItemPottery
         return false;
     }
 
+    /**
+     * Get the firing result of a vessel in a heating device
+     *
+     * @param input the small vessel
+     * @return the vessel with molten contents, if possible
+     */
     @Nonnull
     public ItemStack getFiringResult(ItemStack input)
     {
@@ -136,7 +142,7 @@ public class ItemSmallVessel extends ItemPottery
 
             for (int i = 0; i < cap.getSlots(); i++)
             {
-                alloy.add(cap.getStackInSlot(i));
+                alloy.add(cap.getStackInSlot(i), Metal.Tier.TIER_VI, 1600f);
                 cap.setStackInSlot(i, ItemStack.EMPTY);
             }
 

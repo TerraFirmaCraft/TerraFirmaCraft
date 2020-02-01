@@ -26,16 +26,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
-import net.dries007.tfc.api.capability.metal.IMetalItem;
-import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.recipes.BloomeryRecipe;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
-import net.dries007.tfc.util.fuel.FuelManager;
 
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 import static net.minecraft.block.BlockHorizontal.FACING;
@@ -57,6 +54,8 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     private EnumFacing direction = null;
 
     private BlockPos internalBlock = null, externalBlock = null;
+
+    private BloomeryRecipe cachedRecipe = null;
 
     public TEBloomery()
     {
@@ -172,33 +171,35 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
                 addItemsFromWorld();
             }
 
-            updateSlagBlock(this.burnTicksLeft > 0);
+            updateSlagBlock(state.getValue(LIT));
         }
         if (state.getValue(LIT))
         {
             if (--burnTicksLeft <= 0)
             {
                 burnTicksLeft = 0;
-                int totalOutput = 0;
-                for (ItemStack stack : oreStacks)
+                if (cachedRecipe == null && !oreStacks.isEmpty())
                 {
-                    IMetalItem metal = CapabilityMetalItem.getMetalItem(stack);
-                    if (metal != null)
+                    cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
+                    if (cachedRecipe == null)
                     {
-                        totalOutput += metal.getSmeltAmount(stack);
+                        this.dumpItems();
+                    }
+                }
+                if (cachedRecipe != null)
+                {
+                    world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
+
+                    TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
+                    if (te != null)
+                    {
+                        te.setBloom(cachedRecipe.getOutput(oreStacks));
                     }
                 }
 
                 oreStacks.clear();
                 fuelStacks.clear();
-
-                world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
-
-                TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
-                if (te != null)
-                {
-                    te.setMetalAmount(totalOutput);
-                }
+                cachedRecipe = null; // Clear recipe
 
                 updateSlagBlock(false);
                 world.setBlockState(pos, state.withProperty(LIT, false));
@@ -293,27 +294,24 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
 
     private void addItemsFromWorld()
     {
+        if (cachedRecipe == null && !oreStacks.isEmpty())
+        {
+            cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
+            if (cachedRecipe == null)
+            {
+                this.dumpItems();
+            }
+        }
         for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getInternalBlock().up(), getInternalBlock().add(1, 4, 1)), EntitySelectors.IS_ALIVE))
         {
             ItemStack stack = entityItem.getItem();
-            if (FuelManager.isItemBloomeryFuel(stack))
+            if (cachedRecipe == null)
             {
-                // Add fuel
-                while (fuelStacks.size() < maxFuel)
-                {
-                    this.markDirty();
-                    fuelStacks.add(stack.splitStack(1));
-                    if (stack.getCount() <= 0)
-                    {
-                        entityItem.setDead();
-                        break;
-                    }
-                }
+                cachedRecipe = BloomeryRecipe.get(stack);
             }
-            else
+            if (cachedRecipe != null)
             {
-                IMetalItem cap = CapabilityMetalItem.getMetalItem(stack);
-                if (cap != null && (cap.getMetal(stack) == Metal.WROUGHT_IRON || cap.getMetal(stack) == Metal.PIG_IRON))
+                if (cachedRecipe.isValidInput(stack))
                 {
                     if (oreStacks.size() < maxOre)
                     {
@@ -322,6 +320,22 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
                     while (oreStacks.size() < maxOre)
                     {
                         oreStacks.add(stack.splitStack(1));
+                        if (stack.getCount() <= 0)
+                        {
+                            entityItem.setDead();
+                            break;
+                        }
+                    }
+                }
+                else if (cachedRecipe.isValidAdditive(stack))
+                {
+                    if (fuelStacks.size() < maxFuel)
+                    {
+                        markDirty();
+                    }
+                    while (fuelStacks.size() < maxFuel)
+                    {
+                        fuelStacks.add(stack.splitStack(1));
                         if (stack.getCount() <= 0)
                         {
                             entityItem.setDead();

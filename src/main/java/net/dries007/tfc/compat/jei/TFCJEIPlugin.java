@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.jei;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
@@ -38,14 +41,29 @@ public final class TFCJEIPlugin implements IModPlugin
     private static final String ALLOY_UID = TFCConstants.MOD_ID + ".alloy";
     private static final String ANVIL_UID = TFCConstants.MOD_ID + ".anvil";
     private static final String BARREL_UID = TFCConstants.MOD_ID + ".barrel";
+    private static final String BLAST_FURNACE_UID = TFCConstants.MOD_ID + ".blast_furnace";
+    private static final String BLOOMERY_UID = TFCConstants.MOD_ID + ".bloomery";
     private static final String HEAT_UID = TFCConstants.MOD_ID + ".heat";
     private static final String KNAP_CLAY_UID = TFCConstants.MOD_ID + ".knap.clay";
     private static final String KNAP_FIRECLAY_UID = TFCConstants.MOD_ID + ".knap.fireclay";
     private static final String KNAP_LEATHER_UID = TFCConstants.MOD_ID + ".knap.leather";
     private static final String KNAP_STONE_UID = TFCConstants.MOD_ID + ".knap.stone";
+    private static final String METAL_HEAT_UID = TFCConstants.MOD_ID + ".metal_heat";
     private static final String LOOM_UID = TFCConstants.MOD_ID + ".loom";
     private static final String QUERN_UID = TFCConstants.MOD_ID + ".quern";
     private static final String WELDING_UID = TFCConstants.MOD_ID + ".welding";
+
+    private static IModRegistry REGISTRY;
+
+    /**
+     * Helper method to return a collection containing all possible itemstacks registered in JEI
+     *
+     * @return Collection of ItemStacks
+     */
+    public static Collection<ItemStack> getAllIngredients()
+    {
+        return REGISTRY.getIngredientRegistry().getAllIngredients(VanillaTypes.ITEM);
+    }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry)
@@ -54,12 +72,15 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeCategories(new AlloyCategory(registry.getJeiHelpers().getGuiHelper(), ALLOY_UID));
         registry.addRecipeCategories(new AnvilCategory(registry.getJeiHelpers().getGuiHelper(), ANVIL_UID));
         registry.addRecipeCategories(new BarrelCategory(registry.getJeiHelpers().getGuiHelper(), BARREL_UID));
+        registry.addRecipeCategories(new BlastFurnaceCategory(registry.getJeiHelpers().getGuiHelper(), BLAST_FURNACE_UID));
+        registry.addRecipeCategories(new BloomeryCategory(registry.getJeiHelpers().getGuiHelper(), BLOOMERY_UID));
         registry.addRecipeCategories(new HeatCategory(registry.getJeiHelpers().getGuiHelper(), HEAT_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_CLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_FIRECLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_LEATHER_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_STONE_UID));
         registry.addRecipeCategories(new LoomCategory(registry.getJeiHelpers().getGuiHelper(), LOOM_UID));
+        registry.addRecipeCategories(new MetalHeatingCategory(registry.getJeiHelpers().getGuiHelper(), METAL_HEAT_UID));
         registry.addRecipeCategories(new QuernCategory(registry.getJeiHelpers().getGuiHelper(), QUERN_UID));
         registry.addRecipeCategories(new WeldingCategory(registry.getJeiHelpers().getGuiHelper(), WELDING_UID));
     }
@@ -67,6 +88,7 @@ public final class TFCJEIPlugin implements IModPlugin
     @Override
     public void register(IModRegistry registry)
     {
+        REGISTRY = registry;
         //Wraps all quern recipes
         List<SimpleRecipeWrapper> quernList = TFCRegistries.QUERN.getValuesCollection()
             .stream()
@@ -197,12 +219,42 @@ public final class TFCJEIPlugin implements IModPlugin
             registry.addRecipeCatalyst(new ItemStack(barrelItem), BARREL_UID);
         }
 
+        //Wraps all bloomery recipes
+        List<BloomeryRecipeWrapper> bloomeryList = TFCRegistries.BLOOMERY.getValuesCollection()
+            .stream()
+            .map(BloomeryRecipeWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(bloomeryList, BLOOMERY_UID);
+        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.BLOOMERY), BLOOMERY_UID);
+
+        //Wraps all blast furnace recipes
+        List<BlastFurnaceRecipeWrapper> blastList = TFCRegistries.BLAST_FURNACE.getValuesCollection()
+            .stream()
+            .map(BlastFurnaceRecipeWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(blastList, BLAST_FURNACE_UID);
+        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.BLAST_FURNACE), BLAST_FURNACE_UID);
+
+        //Wraps all blast furnace recipes
+        List<MetalHeatingRecipeWrapper> heatMetalList = TFCRegistries.HEAT.getValuesCollection()
+            .stream()
+            .filter(x -> x instanceof HeatRecipeMetalMelting)
+            .map(recipe -> new MetalHeatingRecipeWrapper((HeatRecipeMetalMelting) recipe))
+            .collect(Collectors.toList());
+
+        registry.addRecipes(heatMetalList, METAL_HEAT_UID);
+        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.CRUCIBLE), METAL_HEAT_UID);
+        registry.addRecipeCatalyst(new ItemStack(ItemsTFC.FIRED_VESSEL), METAL_HEAT_UID);
+
         //Click areas
-        registry.addRecipeClickArea(GuiKnapping.class, 97, 42, 22, 19, KNAP_CLAY_UID, KNAP_FIRECLAY_UID, KNAP_LEATHER_UID, KNAP_STONE_UID);
-        registry.addRecipeClickArea(GuiAnvilTFC.class, 12, 96, 152, 7, ANVIL_UID, WELDING_UID);
-        registry.addRecipeClickArea(GuiBarrel.class, 36, 38, 14, 14, BARREL_UID);
-        registry.addRecipeClickArea(GuiQuern.class, 83, 19, 9, 46, QUERN_UID);
-        registry.addRecipeClickArea(GuiCrucible.class, 137, 23, 15, 66, ALLOY_UID);
-        registry.addRecipeClickArea(GuiFirePit.class, 80, 38, 16, 8, HEAT_UID);
+        registry.addRecipeClickArea(GuiKnapping.class, 132, 27, 9, 14, KNAP_CLAY_UID, KNAP_FIRECLAY_UID, KNAP_LEATHER_UID, KNAP_STONE_UID);
+        registry.addRecipeClickArea(GuiAnvilTFC.class, 26, 24, 9, 14, ANVIL_UID, WELDING_UID);
+        registry.addRecipeClickArea(GuiBarrel.class, 92, 21, 9, 14, BARREL_UID);
+        registry.addRecipeClickArea(GuiQuern.class, 114, 48, 9, 14, QUERN_UID);
+        registry.addRecipeClickArea(GuiCrucible.class, 138, 92, 12, 15, ALLOY_UID);
+        registry.addRecipeClickArea(GuiCrucible.class, 138, 8, 12, 15, METAL_HEAT_UID);
+        registry.addRecipeClickArea(GuiFirePit.class, 79, 37, 18, 10, HEAT_UID);
     }
 }
