@@ -11,10 +11,12 @@
       "ore": "ingotWroughtIron"
     },
     "R": {
-      "item": "tfc:metal/bucket/red_steel"
+      "item": "tfc:metal/bucket/red_steel",
+      "data": 0
     },
     "B": {
-      "item": "tfc:metal/bucket/blue_steel"
+      "item": "tfc:metal/bucket/blue_steel",
+      "data": 0
     }
   },
   "result": {
