@@ -147,15 +147,27 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     }
 
     @Override
+    public long gestationDays()
+    {
+        return DAYS_TO_FULL_GESTATION;
+    }
+
+    @Override
     public float getAdultFamiliarityCap()
     {
         return 0.35F;
     }
 
     @Override
-    public long gestationDays()
+    public int getDaysToAdulthood()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack)
+    {
+        return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
     }
 
     @SideOnly(Side.CLIENT)
@@ -208,7 +220,6 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
             return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.dataManager.get(DATA_HEALTH_ID)) * 0.02F) * 3.1415927F : 0.62831855F;
         }
     }
-
 
     @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
@@ -280,18 +291,6 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
             return true;
         }
         return super.processInteract(player, hand);
-    }
-
-    @Override
-    public int getDaysToAdulthood()
-    {
-        return DAYS_TO_ADULTHOOD;
-    }
-
-    @Override
-    public boolean isFood(ItemStack stack)
-    {
-        return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
     }
 
     public boolean isAngry()

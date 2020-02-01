@@ -143,40 +143,6 @@ public class EntityCowTFC extends EntityAnimalMammal
     }
 
     @Override
-    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
-    {
-        ItemStack itemstack = player.getHeldItem(hand);
-        FluidActionResult fillResult = FluidUtil.tryFillContainer(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
-            Fluid.BUCKET_VOLUME, player, false);
-
-        // First check if it is possible to fill the player's held item with milk
-        if (fillResult.isSuccess())
-        {
-            if (this.getFamiliarity() > 0.15f && isReadyForAnimalProduct())
-            {
-                player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
-                this.setMilkedDay(CalendarTFC.PLAYER_TIME.getTotalDays());
-                player.setHeldItem(hand, FluidUtil.tryFillContainerAndStow(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
-                    new PlayerInvWrapper(player.inventory), Fluid.BUCKET_VOLUME, player, true).getResult());
-            }
-            else if (!this.world.isRemote)
-            {
-                //Return chat message indicating why this entity isn't giving milk
-                TextComponentTranslation tooltip = getTooltip();
-                if (tooltip != null)
-                {
-                    player.sendMessage(tooltip);
-                }
-            }
-            return true;
-        }
-        else
-        {
-            return super.processInteract(player, hand);
-        }
-    }
-
-    @Override
     public int getDaysToAdulthood()
     {
         return DAYS_TO_ADULTHOOD;
@@ -212,6 +178,40 @@ public class EntityCowTFC extends EntityAnimalMammal
             return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.no_milk", getAnimalName());
         }
         return null;
+    }
+
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+        FluidActionResult fillResult = FluidUtil.tryFillContainer(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
+            Fluid.BUCKET_VOLUME, player, false);
+
+        // First check if it is possible to fill the player's held item with milk
+        if (fillResult.isSuccess())
+        {
+            if (this.getFamiliarity() > 0.15f && isReadyForAnimalProduct())
+            {
+                player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
+                this.setMilkedDay(CalendarTFC.PLAYER_TIME.getTotalDays());
+                player.setHeldItem(hand, FluidUtil.tryFillContainerAndStow(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
+                    new PlayerInvWrapper(player.inventory), Fluid.BUCKET_VOLUME, player, true).getResult());
+            }
+            else if (!this.world.isRemote)
+            {
+                //Return chat message indicating why this entity isn't giving milk
+                TextComponentTranslation tooltip = getTooltip();
+                if (tooltip != null)
+                {
+                    player.sendMessage(tooltip);
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return super.processInteract(player, hand);
+        }
     }
 
     protected long getMilkedDay()

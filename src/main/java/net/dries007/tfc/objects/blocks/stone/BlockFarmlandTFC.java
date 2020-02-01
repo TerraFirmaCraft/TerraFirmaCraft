@@ -170,17 +170,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
         }
     }
 
-    private void turnToDirt(World world, BlockPos pos)
-    {
-        world.setBlockState(pos, get(rock, Rock.Type.DIRT).getDefaultState());
-        AxisAlignedBB axisalignedbb = FLIPPED_AABB.offset(pos);
-        for (Entity entity : world.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb))
-        {
-            double d0 = Math.min(axisalignedbb.maxY - axisalignedbb.minY, axisalignedbb.maxY - entity.getEntityBoundingBox().minY);
-            entity.setPositionAndUpdate(entity.posX, entity.posY + d0 + 0.001D, entity.posZ);
-        }
-    }
-
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -207,6 +196,17 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
+    }
+
+    private void turnToDirt(World world, BlockPos pos)
+    {
+        world.setBlockState(pos, get(rock, Rock.Type.DIRT).getDefaultState());
+        AxisAlignedBB axisalignedbb = FLIPPED_AABB.offset(pos);
+        for (Entity entity : world.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb))
+        {
+            double d0 = Math.min(axisalignedbb.maxY - axisalignedbb.minY, axisalignedbb.maxY - entity.getEntityBoundingBox().minY);
+            entity.setPositionAndUpdate(entity.posX, entity.posY + d0 + 0.001D, entity.posZ);
+        }
     }
 
     private boolean hasCrops(World worldIn, BlockPos pos)

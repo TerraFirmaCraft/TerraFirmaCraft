@@ -69,6 +69,12 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
         this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
+    @Override
+    public Type getType()
+    {
+        return Type.MAMMAL;
+    }
+
     /**
      * Spawns children of this animal
      */
@@ -80,10 +86,4 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
      * @return long value in days
      */
     public abstract long gestationDays();
-
-    @Override
-    public Type getType()
-    {
-        return Type.MAMMAL;
-    }
 }

@@ -347,39 +347,6 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
         return false;
     }
 
-    @SuppressWarnings("deprecation")
-    public void fall(float distance, float damageMultiplier)
-    {
-        if (distance > 1.0F)
-        {
-            this.playSound(SoundEvents.ENTITY_HORSE_LAND, 0.4F, 1.0F);
-        }
-
-        int i = MathHelper.ceil((distance * 0.5F - 3.0F) * damageMultiplier);
-
-        if (i > 0)
-        {
-            this.attackEntityFrom(DamageSource.FALL, (float) i);
-
-            if (this.isBeingRidden())
-            {
-                for (Entity entity : this.getRecursivePassengers())
-                {
-                    entity.attackEntityFrom(DamageSource.FALL, (float) i);
-                }
-            }
-
-            IBlockState iblockstate = this.world.getBlockState(new BlockPos(this.posX, this.posY - 0.2D - (double) this.prevRotationYaw, this.posZ));
-            Block block = iblockstate.getBlock();
-
-            if (iblockstate.getMaterial() != Material.AIR && !this.isSilent())
-            {
-                SoundType soundtype = block.getSoundType();
-                this.world.playSound(null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
-            }
-        }
-    }
-
     protected float getSoundVolume()
     {
         return 0.8F;
@@ -667,6 +634,39 @@ public class AbstractHorseTFC extends EntityAnimalMammal implements IInventoryCh
     public void setScaleForAge(boolean child)
     {
         this.setScale(child ? this.getHorseSize() : 1.0F);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void fall(float distance, float damageMultiplier)
+    {
+        if (distance > 1.0F)
+        {
+            this.playSound(SoundEvents.ENTITY_HORSE_LAND, 0.4F, 1.0F);
+        }
+
+        int i = MathHelper.ceil((distance * 0.5F - 3.0F) * damageMultiplier);
+
+        if (i > 0)
+        {
+            this.attackEntityFrom(DamageSource.FALL, (float) i);
+
+            if (this.isBeingRidden())
+            {
+                for (Entity entity : this.getRecursivePassengers())
+                {
+                    entity.attackEntityFrom(DamageSource.FALL, (float) i);
+                }
+            }
+
+            IBlockState iblockstate = this.world.getBlockState(new BlockPos(this.posX, this.posY - 0.2D - (double) this.prevRotationYaw, this.posZ));
+            Block block = iblockstate.getBlock();
+
+            if (iblockstate.getMaterial() != Material.AIR && !this.isSilent())
+            {
+                SoundType soundtype = block.getSoundType();
+                this.world.playSound(null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
+            }
+        }
     }
 
     @Override

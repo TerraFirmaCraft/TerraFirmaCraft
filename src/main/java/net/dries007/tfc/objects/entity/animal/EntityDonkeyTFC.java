@@ -34,6 +34,12 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
     }
 
     @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
+    }
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         super.getHurtSound(damageSourceIn);
@@ -79,12 +85,6 @@ public class EntityDonkeyTFC extends AbstractChestHorseTFC
         {
             return this.canMate() && ((AbstractHorseTFC) otherAnimal).canMate() && super.canMateWith(otherAnimal);
         }
-    }
-
-    @Override
-    public float getAdultFamiliarityCap()
-    {
-        return 0.35F;
     }
 
     @Override

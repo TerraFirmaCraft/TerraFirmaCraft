@@ -42,9 +42,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.FLOAT);
 
-    private long lastFed; //Last time(in days) this entity was fed
-    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-
     /**
      * Gets a random growth for this animal
      * ** Static ** So it can be used by class constructor
@@ -59,6 +56,8 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
+    private long lastFed; //Last time(in days) this entity was fed
+    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private boolean fertilized; //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
     private long lastDeath; //Last time(in days) this entity checked for dying of old age
@@ -146,6 +145,13 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     }
 
     @Override
+    public TextComponentTranslation getAnimalName()
+    {
+        String entityString = EntityList.getEntityString(this);
+        return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
+    }
+
+    @Override
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
@@ -194,14 +200,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     }
 
     @Override
-    public boolean getCanSpawnHere()
-    {
-        return this.world.checkNoEntityCollision(getEntityBoundingBox())
-            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
-    }
-
-    @Override
     public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
@@ -213,14 +211,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         nbt.setLong("mating", matingTime);
         nbt.setFloat("familiarity", getFamiliarity());
         nbt.setLong("lastDeath", lastDeath);
-    }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
     }
 
     @Override
@@ -239,18 +229,11 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     }
 
     @Override
-    protected void entityInit()
+    public boolean getCanSpawnHere()
     {
-        super.entityInit();
-        getDataManager().register(GENDER, true);
-        getDataManager().register(BIRTHDAY, 0);
-        getDataManager().register(FAMILIARITY, 0f);
-    }
-
-    @Override
-    public boolean isChild()
-    {
-        return this.getAge() == Age.CHILD;
+        return this.world.checkNoEntityCollision(getEntityBoundingBox())
+            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+            && !this.world.containsAnyLiquid(getEntityBoundingBox());
     }
 
     @Override
@@ -295,6 +278,14 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         return false;
     }
 
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
+        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+    }
+
     @Nullable
     @Override
     public EntityAgeable createChild(@Nonnull EntityAgeable other)
@@ -312,16 +303,44 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     /**
      * Ignore fall damage like vanilla chickens. Implemented here because all TFC Oviparous animals don't take fall damage.
      * Ostriches would escape fall damage too.
-     *
      */
     @Override
     public void fall(float distance, float damageMultiplier)
     {
-        if(this.getType() != Type.OVIPAROUS)
+        if (this.getType() != Type.OVIPAROUS)
         {
             super.fall(distance, damageMultiplier);
         }
     } //disable fall damage for oviparous only, like vanilla
+
+    @Nonnull
+    @Override
+    public String getName()
+    {
+        if (this.hasCustomName())
+        {
+            return this.getCustomNameTag();
+        }
+        else
+        {
+            return getAnimalName().getFormattedText();
+        }
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(GENDER, true);
+        getDataManager().register(BIRTHDAY, 0);
+        getDataManager().register(FAMILIARITY, 0f);
+    }
+
+    @Override
+    public boolean isChild()
+    {
+        return this.getAge() == Age.CHILD;
+    }
 
     @Override
     public void setScaleForAge(boolean child)
@@ -349,26 +368,5 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             }
         }
         return false;
-    }
-
-    @Nonnull
-    @Override
-    public String getName()
-    {
-        if (this.hasCustomName())
-        {
-            return this.getCustomNameTag();
-        }
-        else
-        {
-            return getAnimalName().getFormattedText();
-        }
-    }
-
-    @Override
-    public TextComponentTranslation getAnimalName()
-    {
-        String entityString = EntityList.getEntityString(this);
-        return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
     }
 }

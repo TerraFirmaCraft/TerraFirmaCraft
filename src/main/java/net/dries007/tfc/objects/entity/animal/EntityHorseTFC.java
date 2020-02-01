@@ -197,12 +197,6 @@ public class EntityHorseTFC extends AbstractHorseTFC
         }
     }
 
-    @Override
-    public float getAdultFamiliarityCap()
-    {
-        return 0.35F;
-    }
-
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         if (otherAnimal == this)
@@ -359,6 +353,12 @@ public class EntityHorseTFC extends AbstractHorseTFC
         {
             this.playSound(SoundEvents.ENTITY_HORSE_BREATHE, p_190680_1_.getVolume() * 0.6F, p_190680_1_.getPitch());
         }
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
     }
 
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
