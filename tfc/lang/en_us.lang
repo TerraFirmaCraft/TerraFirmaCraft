@@ -144,6 +144,9 @@ config.tfc.general.toolip=Non side specific settings.
 config.tfc.general.debug=Debug Mode
 config.tfc.general.debug.tooltip=Various debug options. Activates some extra wand features. Enables extra item tooltips.
 
+config.tfc.general.forceTFCWorldTypeOnServer=Default level-type Override
+config.tfc.general.forceTFCWorldTypeOnServer.tooltip=If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.
+
 config.tfc.general.removeVanillaRecipes=Remove Vanilla Recipes
 config.tfc.general.removeVanillaRecipes.tooltip=Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place.
 
