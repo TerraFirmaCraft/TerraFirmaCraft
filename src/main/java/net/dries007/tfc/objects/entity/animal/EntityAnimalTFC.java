@@ -31,7 +31,7 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 {

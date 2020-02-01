@@ -18,7 +18,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.te.TECrucible;
 import net.dries007.tfc.util.Alloy;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class GuiCrucible extends GuiContainerTE<TECrucible>
 {

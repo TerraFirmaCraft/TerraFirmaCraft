@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.EnumHelper;
 
 import net.dries007.tfc.api.types.IArmorMaterialTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * This is an extension enum for the vanilla's ArmorMaterials.

@@ -14,8 +14,8 @@ import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_NAME;
 
 @SideOnly(Side.CLIENT)
 @SuppressWarnings("unused")

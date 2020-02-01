@@ -62,7 +62,7 @@ import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.minecraft.util.text.TextFormatting.*;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
@@ -97,7 +97,7 @@ public class ClientEvents
             // Only change if default is selected, because coming back from customisation, this will be set already.
             if (gui.selectedIndex == WorldType.DEFAULT.getId())
             {
-                gui.selectedIndex = TerraFirmaCraft.getWorldTypeTFC().getId();
+                gui.selectedIndex = TerraFirmaCraft.getWorldType().getId();
             }
         }
     }

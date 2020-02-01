@@ -27,7 +27,7 @@ import net.dries007.tfc.util.collections.WeightedCollection;
 import net.dries007.tfc.world.classic.worldgen.WorldGenOreVeins;
 
 import static net.dries007.tfc.Constants.GSON;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public enum VeinRegistry
 {

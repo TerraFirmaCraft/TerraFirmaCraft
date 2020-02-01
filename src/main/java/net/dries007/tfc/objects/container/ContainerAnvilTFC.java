@@ -29,7 +29,7 @@ import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.forge.ForgeStep;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.client.gui.GuiAnvilTFC.*;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.*;
 
