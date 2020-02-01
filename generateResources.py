@@ -725,7 +725,7 @@ for rock_type in ROCK_TYPES:
             'west': {'true': {'submodel': 'wall_side', 'y': 270}, 'false': {}},
             'up': {'true': {'submodel': 'wall_post', 'y': 270}, 'false': {}}
         })
-        
+
     # SPIKES (stalactite and stalagmite)
     blockstate(('spike', rock_type), 'tfc:spike/top', textures={
         ('texture', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
@@ -984,29 +984,20 @@ blockstate(('placed_hide',), 'tfc:hide_rack', {})
 
 # AGRICULTURE
 
-for crop in CROPS.keys():
-    stages = CROPS[crop]['stages']
-    texture = CROPS[crop]['texture']
-    mymodel = CROPS[crop]['model']
-
-    variants = {'stage': {}}
-    for stage in range(stages):
-        variants['stage'][stage] = {
-            'textures': {
-                texture: "tfc:blocks/crop/%s_%d" % (crop, stage)
-            }
+for cropName, data in CROPS.items():
+    texture = data['texture']
+    blockstate(
+        ('crop', cropName), data['model'], {texture: "tfc:blocks/crop/%s_0" % cropName},
+        {
+            'stage': dict(
+                (
+                    str(stage),
+                    {'textures': {texture: "tfc:blocks/crop/%s_%d" % (cropName, stage)}}
+                ) for stage in range(data['stages'])
+            )
         }
-    blockstate(
-        filename_parts=('crop', crop),
-        textures={texture: "tfc:blocks/crop/%s_0" % crop},
-        model=mymodel,
-        variants=variants
     )
-    blockstate(
-        filename_parts=('dead_crop', crop),
-        textures={texture: "tfc:blocks/crop/%s_dead" % crop},
-        model=mymodel
-    )
+    blockstate(('dead_crop', cropName), data['model'], {texture: "tfc:blocks/crop/%s_dead" % cropName})
 
 #   _____ _
 #  |_   _| |
