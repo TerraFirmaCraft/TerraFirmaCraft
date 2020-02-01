@@ -1,0 +1,125 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "down": "true",
+        "up": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_cross_0"
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "up": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_cross_1"
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_0"
+      }
+    },
+    {
+      "when": {
+        "bottom": "false",
+        "east": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_0",
+        "x": 270,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "bottom": "false",
+        "north": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_0",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "bottom": "false",
+        "south": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_0",
+        "x": 270,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_0",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "bottom": "false",
+        "west": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_0",
+        "x": 270,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "bottom": "true",
+        "east": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_1",
+        "x": 270,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "bottom": "true",
+        "north": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_1",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "bottom": "true",
+        "south": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_1",
+        "x": 270,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "bottom": "true",
+        "west": "true"
+      },
+      "apply": {
+        "model": "tfc:plants/spanish_moss_1",
+        "x": 270,
+        "y": 270
+      }
+    }
+  ]
+}

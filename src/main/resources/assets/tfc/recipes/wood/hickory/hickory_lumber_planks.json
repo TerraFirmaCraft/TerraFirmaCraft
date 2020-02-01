@@ -1,0 +1,16 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/hickory"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "saw"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/lumber/hickory",
+    "count": 4
+  }
+}

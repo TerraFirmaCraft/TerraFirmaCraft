@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    " X ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "ingotDoubleBlueSteel"
+    }
+  },
+  "result": {
+    "item": "tfc:metal/anvil/blue_steel",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:large_vessel_sealed"
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "sealed": {
+      "true": {
+        "model": "tfc:large_vessel_sealed"
+      },
+      "false": {
+        "model": "tfc:large_vessel"
+      }
+    }
+  }
+}

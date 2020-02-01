@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XBX",
+    "XBX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/kapok"
+    },
+    "B": {
+      "item": "tfc:wood/lumber/kapok"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/fence/kapok",
+    "count": 8
+  }
+}

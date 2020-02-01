@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "X X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "lumberSpruce"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/boat/spruce",
+    "count": 1
+  }
+}

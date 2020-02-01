@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/butterfly_milkweed/butterfly_milkweed_3"
+  }
+}

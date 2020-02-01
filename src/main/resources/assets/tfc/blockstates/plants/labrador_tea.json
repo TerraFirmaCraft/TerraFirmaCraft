@@ -1,0 +1,74 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/labrador_tea_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/labrador_tea_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/labrador_tea_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/labrador_tea_3"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/labrador_tea_4"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "5"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/labrador_tea_5"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "6"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/labrador_tea_6"
+        }
+      ]
+    }
+  ]
+}

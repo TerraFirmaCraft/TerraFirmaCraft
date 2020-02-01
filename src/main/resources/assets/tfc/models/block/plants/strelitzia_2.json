@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/strelitzia/strelitzia_2",
+    "particle": "tfc:blocks/plants/strelitzia/strelitzia_2"
+  }
+}

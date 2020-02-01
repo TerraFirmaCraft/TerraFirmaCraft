@@ -1,0 +1,102 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "part": "single"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_single"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_lower_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_lower_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_lower_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_lower_3"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_upper_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_upper_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_upper_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sapphire_tower_upper_3"
+        }
+      ]
+    }
+  ]
+}

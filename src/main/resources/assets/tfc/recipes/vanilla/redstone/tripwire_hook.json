@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    " S ",
+    "WWW"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "ingotWroughtIron"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "lumber"
+    }
+  },
+  "result": {
+    "item": "minecraft:tripwire_hook",
+    "count": 2
+  }
+}

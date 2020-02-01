@@ -1,0 +1,144 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "cross1": "tfc:blocks/plants/toquilla_palm/toquilla_palm_1",
+    "cross2": "tfc:blocks/plants/toquilla_palm/toquilla_palm_2",
+    "cross3": "tfc:blocks/plants/toquilla_palm/toquilla_palm_2_overlay",
+    "particle": "tfc:blocks/plants/toquilla_palm/toquilla_palm_1"
+  },
+  "elements": [
+    {
+      "from": [
+        8,
+        -1,
+        -4.8
+      ],
+      "to": [
+        8,
+        32,
+        20.8
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": -22.5,
+        "rescale": true
+      },
+      "shade": false,
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross1",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#cross1",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        -1,
+        -4.8
+      ],
+      "to": [
+        8,
+        32,
+        20.8
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 22.5,
+        "rescale": true
+      },
+      "shade": false,
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross2",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#cross2",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        -1,
+        -4.8
+      ],
+      "to": [
+        8,
+        32,
+        20.8
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 22.5,
+        "rescale": true
+      },
+      "shade": false,
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross3"
+        },
+        "east": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#cross3"
+        }
+      }
+    }
+  ]
+}

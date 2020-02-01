@@ -1,0 +1,6 @@
+{
+  "parent": "tfc:block/tinted_cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/ryegrass/ryegrass_shortest_0"
+  }
+}

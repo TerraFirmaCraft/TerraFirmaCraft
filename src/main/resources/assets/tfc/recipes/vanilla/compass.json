@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SXS",
+    " S "
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "S": {
+      "item": "tfc:metal/sheet/wrought_iron"
+    }
+  },
+  "result": {
+    "item": "minecraft:compass",
+    "count": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "blockmap": [
+    "null|minecraft:stone",
+    "dungeon_wall|minecraft:wool 5",
+    "dungeon_floor|minecraft:wool 0",
+    "dungeon_ceiling|minecraft:wool 11",
+    "dungeon_stairs_floor|minecraft:stone_brick_stairs",
+    "dungeon_stairs_wall|minecraft:brick_stairs",
+    "dungeon_smoothstone|minecraft:wool 14"
+  ],
+  "floory": 0,
+  "connections": [
+    "north",
+    "south",
+    "up"
+  ],
+  "setpiecemap": [
+    "north|generic_bigroom01_bottomnorth_ns",
+    "up|generic_bigroom01_topsouth",
+    "up->north|generic_bigroom01_topnorth_n"
+  ],
+  "weight": 0.5,
+  "roomtype": "normal"
+}

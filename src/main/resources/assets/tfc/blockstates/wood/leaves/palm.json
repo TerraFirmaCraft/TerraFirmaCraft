@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:leaves_palm",
+    "textures": {
+      "side": "tfc:blocks/wood/leaves/palm",
+      "end": "tfc:blocks/wood/leaves/palm_top"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "tfc:leaves_palm",
+      "transform": "forge:default-block"
+    }
+  }
+}

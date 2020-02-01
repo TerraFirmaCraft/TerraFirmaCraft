@@ -1,0 +1,32 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_column",
+    "textures": {
+      "side": "tfc:blocks/log_pile_side",
+      "end": "tfc:blocks/log_pile_front"
+    }
+  },
+  "variants": {
+    "axis": {
+      "z": {
+        "y": 0,
+        "x": 90
+      },
+      "x": {
+        "y": 90,
+        "x": 90
+      }
+    },
+    "lit": {
+      "true": {},
+      "false": {}
+    },
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {}
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "ingredients": {
+    "fluid": "net.dries007.tfc.objects.recipes.ingredients.FluidIngredient$Factory"
+  },
+  "recipes": {
+    "damage_item_shapeless": "net.dries007.tfc.objects.recipes.ShapelessDamageRecipe$Factory",
+    "damage_item_shaped": "net.dries007.tfc.objects.recipes.ShapedDamageRecipe$Factory",
+    "food_stacking": "net.dries007.tfc.objects.recipes.FoodStackingRecipe$Factory",
+    "damage_add_item_shapeless": "net.dries007.tfc.objects.recipes.ShapelessDamageAddItemRecipe$Factory",
+    "unmold_recipe": "net.dries007.tfc.objects.recipes.UnmoldRecipe$Factory",
+    "damage_item_food_recipe": "net.dries007.tfc.objects.recipes.ShapelessDamageFoodRecipe$Factory",
+    "fluid_food_recipe": "net.dries007.tfc.objects.recipes.ShapelessFluidFoodRecipe$Factory",
+    "shaped_skill": "net.dries007.tfc.objects.recipes.ShapedSkillRecipe$Factory",
+    "salting_shapeless": "net.dries007.tfc.objects.recipes.ShapelessSaltingRecipe$Factory"
+  }
+}

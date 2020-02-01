@@ -1,0 +1,12 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:hay_block"
+    }
+  ],
+  "result": {
+    "item": "tfc:straw",
+    "count": 9
+  }
+}

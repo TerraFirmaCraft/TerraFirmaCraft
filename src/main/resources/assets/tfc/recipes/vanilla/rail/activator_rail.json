@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SRS",
+    "SWS",
+    "SRS"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "ingotWroughtIron"
+    },
+    "W": {
+      "item": "minecraft:redstone_torch"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  },
+  "result": {
+    "item": "minecraft:activator_rail",
+    "count": 16
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/perovskia/perovskia_4",
+    "particle": "tfc:blocks/plants/perovskia/perovskia_4"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/gabbro"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/smooth/gabbro",
+    "count": 8
+  }
+}

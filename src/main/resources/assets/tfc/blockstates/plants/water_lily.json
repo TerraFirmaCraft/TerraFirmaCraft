@@ -1,0 +1,383 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/water_lily_0",
+          "weight": 3
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "weight": 3,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "weight": 3,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "weight": 3,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 1,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 3
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 3,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 3,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 3,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_1",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/water_lily_1",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_1",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_1",
+          "weight": 1,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 9
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 9,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 9,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 9,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_2_purple",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/water_lily_2_purple",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_2_purple",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_2_purple",
+          "weight": 1,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "white": 1
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "white": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "white": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "white": 1,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "yellow": 1
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "yellow": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "yellow": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "yellow": 1,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 12
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 12,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 12,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 12,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_2",
+          "weight": 3
+        },
+        {
+          "model": "tfc:plants/water_lily_2",
+          "weight": 3,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_2",
+          "weight": 3,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_2",
+          "weight": 3,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_2_purple",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/water_lily_2_purple",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_2_purple",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_2_purple",
+          "weight": 1,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "white": 1
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "white": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "white": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "white": 1,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "yellow": 1
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "yellow": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "yellow": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_2_white",
+          "yellow": 1,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/water_lily"
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_0"
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "5"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/water_lily_0"
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "6"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 3
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 3,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 3,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily",
+          "weight": 3,
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/water_lily_0",
+          "weight": 1,
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/quartzite"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/smooth/quartzite",
+    "count": 8
+  }
+}

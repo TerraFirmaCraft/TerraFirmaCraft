@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/hickory"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/button/hickory",
+    "count": 1
+  }
+}

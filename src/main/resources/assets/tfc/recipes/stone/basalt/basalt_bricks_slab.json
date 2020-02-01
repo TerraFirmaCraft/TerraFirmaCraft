@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:bricks/basalt"
+    }
+  },
+  "result": {
+    "item": "tfc:slab/bricks/basalt",
+    "data": 0,
+    "count": 6
+  }
+}

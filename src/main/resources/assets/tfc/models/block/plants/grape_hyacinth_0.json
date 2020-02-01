@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/grape_hyacinth/grape_hyacinth_0",
+    "particle": "tfc:blocks/plants/grape_hyacinth/grape_hyacinth_0"
+  }
+}
