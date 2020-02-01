@@ -1,6 +1,8 @@
 # TerraFirmaCraft: The Next Generation
 *TFC: TNG*
 
+![Build and Release 1.12.x](https://github.com/TerraFirmaCraft/TerraFirmaCraft/workflows/Build%20and%20Release%201.12.x/badge.svg?branch=1.12.x)
+
 This project is the official port of TerraFirmaCraft (the original, also called classic) to Minecraft 1.12 and beyond.
 
 You can find the mod on [Curseforge](https://www.curseforge.com/minecraft/mc-mods/tfcraft), or stay updated by joining our [Discord](https://invite.gg/terrafirmacraft), and see documentation on the [Wiki](https://tng.terrafirmacraft.com/Main_Page).
