@@ -1,0 +1,16 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/kapok"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "saw"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/lumber/kapok",
+    "count": 4
+  }
+}

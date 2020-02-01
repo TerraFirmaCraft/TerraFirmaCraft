@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XOX",
+    "OXO",
+    "XOX"
+  ],
+  "key": {
+    "O": {
+      "type": "forge:ore_dict",
+      "ore": "mortar"
+    },
+    "X": {
+      "item": "tfc:brick/granite"
+    }
+  },
+  "result": {
+    "item": "tfc:bricks/granite",
+    "count": 4
+  }
+}

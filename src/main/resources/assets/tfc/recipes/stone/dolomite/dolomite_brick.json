@@ -1,0 +1,16 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:rock/dolomite"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "chisel"
+    }
+  ],
+  "result": {
+    "item": "tfc:brick/dolomite",
+    "count": 1
+  }
+}

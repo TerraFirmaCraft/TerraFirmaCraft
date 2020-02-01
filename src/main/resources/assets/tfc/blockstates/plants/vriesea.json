@@ -1,0 +1,294 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "age": "0|1",
+        "facing": "up"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_standing_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "up",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_standing_0",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_standing_1",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "up",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_standing_0",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_standing_1",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "0|1",
+        "facing": "down"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_standing_0",
+          "x": 180
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "down",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_standing_0",
+          "x": 180,
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_standing_1",
+          "x": 180,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "down",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_standing_0",
+          "x": 180,
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_standing_1",
+          "x": 180,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "0|1",
+        "facing": "east"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "east",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_1",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "east",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_1",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "0|1",
+        "facing": "south"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "south",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 90,
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_1",
+          "y": 90,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "south",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 90,
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_1",
+          "y": 90,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "0|1",
+        "facing": "west"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 180
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "west",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 180,
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_1",
+          "y": 180,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "west",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 180,
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_1",
+          "y": 180,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "0|1",
+        "facing": "north"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "north",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 270,
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_1",
+          "y": 270,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "age": "2|3",
+        "facing": "north",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/vriesea_0",
+          "y": 270,
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/vriesea_1",
+          "y": 270,
+          "weight": 5
+        }
+      ]
+    }
+  ]
+}

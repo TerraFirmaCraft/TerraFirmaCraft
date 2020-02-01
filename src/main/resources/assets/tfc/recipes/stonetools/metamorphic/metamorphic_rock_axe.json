@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "S"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:stone/axe_head/metamorphic"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  },
+  "result": {
+    "item": "tfc:stone/axe/metamorphic",
+    "count": 1
+  }
+}

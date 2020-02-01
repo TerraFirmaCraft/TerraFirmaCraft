@@ -1,0 +1,44 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/grape_hyacinth_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/grape_hyacinth_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/grape_hyacinth_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/grape_hyacinth_3"
+        }
+      ]
+    }
+  ]
+}

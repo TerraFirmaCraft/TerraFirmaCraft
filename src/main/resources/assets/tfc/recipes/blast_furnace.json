@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XZX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "sheetDoubleWroughtIron"
+    },
+    "Z": {
+      "item": "tfc:crucible"
+    }
+  },
+  "result": {
+    "item": "tfc:blast_furnace",
+    "count": 1
+  }
+}

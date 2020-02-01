@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SS"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "ingotWroughtIron"
+    }
+  },
+  "result": {
+    "item": "minecraft:heavy_weighted_pressure_plate",
+    "count": 16
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "blockmap": [
+    "null|minecraft:stone",
+    "dungeon_wall|minecraft:wool 5",
+    "dungeon_floor|minecraft:wool 0",
+    "dungeon_ceiling|minecraft:wool 11",
+    "dungeon_stairs_floor|minecraft:stone_brick_stairs",
+    "dungeon_stairs_wall|minecraft:brick_stairs"
+  ],
+  "floory": 0,
+  "connections": [
+    "up",
+    "west"
+  ],
+  "setpiecemap": [
+    "up|generic_stairstop_e"
+  ],
+  "weight": 1.0,
+  "roomtype": "stairs"
+}

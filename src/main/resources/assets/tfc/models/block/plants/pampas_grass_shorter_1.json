@@ -1,0 +1,275 @@
+{
+  "credit": "Made with Blockbench",
+  "ambientocclusion": false,
+  "textures": {
+    "0": "tfc:blocks/plants/pampas_grass/pampas_0",
+    "1": "tfc:blocks/plants/pampas_grass/pampas_1",
+    "particle": "tfc:blocks/plants/pampas_grass/pampas_0"
+  },
+  "elements": [
+    {
+      "name": "stalk",
+      "from": [
+        8,
+        0,
+        -8
+      ],
+      "to": [
+        8,
+        16,
+        24
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            16,
+            10
+          ],
+          "texture": "#1",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            16,
+            2,
+            0,
+            10
+          ],
+          "texture": "#1",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "stalk",
+      "from": [
+        8,
+        0,
+        -8
+      ],
+      "to": [
+        8,
+        16,
+        24
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            2,
+            16,
+            10
+          ],
+          "texture": "#1",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            16,
+            2,
+            0,
+            10
+          ],
+          "texture": "#1",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "tinted",
+      "from": [
+        5,
+        0,
+        -11
+      ],
+      "to": [
+        5,
+        16,
+        27
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            16,
+            8,
+            0,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "tinted",
+      "from": [
+        11,
+        0,
+        -11
+      ],
+      "to": [
+        11,
+        16,
+        27
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            16,
+            8,
+            0,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "tinted",
+      "from": [
+        11,
+        0,
+        -11
+      ],
+      "to": [
+        11,
+        16,
+        27
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            16,
+            8,
+            0,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "tinted",
+      "from": [
+        5,
+        0,
+        -11
+      ],
+      "to": [
+        5,
+        16,
+        27
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            16,
+            8,
+            0,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
+}

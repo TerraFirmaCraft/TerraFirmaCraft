@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XOX",
+    "OXO",
+    "XOX"
+  ],
+  "key": {
+    "O": {
+      "type": "forge:ore_dict",
+      "ore": "mortar"
+    },
+    "X": {
+      "item": "tfc:brick/conglomerate"
+    }
+  },
+  "result": {
+    "item": "tfc:bricks/conglomerate",
+    "count": 4
+  }
+}

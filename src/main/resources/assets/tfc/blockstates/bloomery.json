@@ -1,0 +1,44 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "tfc:blocks/devices/bloomery/off",
+      "all": "tfc:blocks/devices/bloomery/off"
+    },
+    "model": "tfc:bloomery/closed"
+  },
+  "variants": {
+    "facing": {
+      "south": {},
+      "west": {
+        "y": 90
+      },
+      "north": {
+        "y": 180
+      },
+      "east": {
+        "y": 270
+      }
+    },
+    "lit": {
+      "true": {
+        "textures": {
+          "all": "tfc:blocks/devices/bloomery/on"
+        }
+      },
+      "false": {}
+    },
+    "open": {
+      "true": {
+        "model": "tfc:bloomery/open"
+      },
+      "false": {}
+    },
+    "inventory": {
+      "model": "tfc:bloomery/inventory"
+    },
+    "normal": [
+      {}
+    ]
+  }
+}

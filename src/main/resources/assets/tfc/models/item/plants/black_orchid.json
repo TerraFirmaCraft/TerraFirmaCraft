@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/black_orchid/black_orchid_0"
+  }
+}

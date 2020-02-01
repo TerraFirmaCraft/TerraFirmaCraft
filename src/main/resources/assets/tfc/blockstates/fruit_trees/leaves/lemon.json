@@ -1,0 +1,39 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "leaves",
+    "textures": {
+      "all": "tfc:blocks/fruit_trees/leaves/lemon"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "leaves",
+      "transform": "forge:default-block"
+    },
+    "state": {
+      "normal": {
+        "model": "leaves"
+      },
+      "flowering": {
+        "model": "leaves",
+        "textures": {
+          "all": "tfc:blocks/fruit_trees/leaves/lemon",
+          "texture": "tfc:blocks/fruit_trees/flowers/lemon"
+        },
+        "submodel": "tfc:fruit_trees/leaves_overlay"
+      },
+      "fruit": {
+        "model": "leaves",
+        "textures": {
+          "all": "tfc:blocks/fruit_trees/leaves/lemon",
+          "texture": "tfc:blocks/fruit_trees/fruit/lemon"
+        },
+        "submodel": "tfc:fruit_trees/leaves_overlay"
+      }
+    }
+  }
+}

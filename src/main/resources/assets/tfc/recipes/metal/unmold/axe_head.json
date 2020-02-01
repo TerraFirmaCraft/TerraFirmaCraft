@@ -1,0 +1,9 @@
+{
+  "type": "tfc:unmold_recipe",
+  "ingredients": [
+    {
+      "item": "tfc:ceramics/fired/mold/axe_head"
+    }
+  ],
+  "result": "axe_head"
+}

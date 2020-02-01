@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:bricks/quartzite"
+    }
+  },
+  "result": {
+    "item": "tfc:slab/bricks/quartzite",
+    "data": 0,
+    "count": 6
+  }
+}

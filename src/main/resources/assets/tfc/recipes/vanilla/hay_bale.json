@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:straw"
+    }
+  },
+  "result": {
+    "item": "minecraft:hay_block",
+    "count": 1
+  }
+}

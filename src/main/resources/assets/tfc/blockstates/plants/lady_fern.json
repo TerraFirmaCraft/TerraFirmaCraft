@@ -1,0 +1,11 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/lady_fern"
+        }
+      ]
+    }
+  ]
+}

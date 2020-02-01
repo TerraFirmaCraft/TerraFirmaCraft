@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/phyllite"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/smooth/phyllite",
+    "count": 8
+  }
+}

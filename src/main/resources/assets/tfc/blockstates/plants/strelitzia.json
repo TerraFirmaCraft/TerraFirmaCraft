@@ -1,0 +1,34 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/strelitzia_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/strelitzia_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/strelitzia_2"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cross",
+    "textures": {
+      "cross": "tfc:blocks/fruit_trees/sapling/cherry",
+      "layer0": "tfc:blocks/fruit_trees/sapling/cherry"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "builtin/generated",
+      "transform": "forge:default-item"
+    }
+  }
+}

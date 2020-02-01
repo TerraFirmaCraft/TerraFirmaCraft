@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/lumber/sycamore"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/planks/sycamore",
+    "count": 1
+  }
+}

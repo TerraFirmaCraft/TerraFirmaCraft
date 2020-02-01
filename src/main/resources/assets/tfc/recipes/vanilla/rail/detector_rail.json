@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SWS",
+    "SRS",
+    "SWS"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "ingotWroughtIron"
+    },
+    "W": {
+      "item": "minecraft:stone_pressure_plate"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "minecraft:detector_rail",
+    "count": 16
+  }
+}

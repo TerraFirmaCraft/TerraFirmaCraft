@@ -1,0 +1,64 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/perovskia_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/perovskia_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/perovskia_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/perovskia_3"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/perovskia_4"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "5"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/perovskia_5"
+        }
+      ]
+    }
+  ]
+}

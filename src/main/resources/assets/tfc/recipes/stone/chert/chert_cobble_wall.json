@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:cobble/chert"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/cobble/chert",
+    "count": 8
+  }
+}

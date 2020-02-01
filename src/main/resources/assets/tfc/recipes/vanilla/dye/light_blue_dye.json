@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:powder/malachite"
+    },
+    {
+      "item": "tfc:powder/flux"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "sand"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 12,
+    "count": 1
+  }
+}

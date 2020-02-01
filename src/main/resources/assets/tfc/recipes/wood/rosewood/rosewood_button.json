@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/rosewood"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/button/rosewood",
+    "count": 1
+  }
+}

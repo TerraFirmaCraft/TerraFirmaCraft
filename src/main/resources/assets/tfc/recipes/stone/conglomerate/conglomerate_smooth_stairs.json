@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/conglomerate"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/smooth/conglomerate",
+    "count": 8
+  }
+}

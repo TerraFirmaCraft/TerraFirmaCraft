@@ -1,0 +1,93 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "part": "lower"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/cattail_double_0"
+        },
+        {
+          "model": "tfc:plants/cattail_double_0",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/cattail_double_0",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/cattail_double_0",
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/cattail_double_1"
+        },
+        {
+          "model": "tfc:plants/cattail_double_1",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/cattail_double_1",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/cattail_double_1",
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/cattail_double_2"
+        },
+        {
+          "model": "tfc:plants/cattail_double_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/cattail_double_2",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/cattail_double_2",
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/cattail_double_3"
+        },
+        {
+          "model": "tfc:plants/cattail_double_3",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/cattail_double_3",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/cattail_double_3",
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "single"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/cattail_single_0"
+        },
+        {
+          "model": "tfc:plants/cattail_single_0",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/cattail_single_0",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/cattail_single_0",
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

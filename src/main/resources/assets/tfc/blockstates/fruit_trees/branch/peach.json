@@ -1,0 +1,63 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:empty",
+    "textures": {
+      "texture": "tfc:blocks/fruit_trees/bark/peach",
+      "particle": "tfc:blocks/fruit_trees/bark/peach"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "facing": {
+      "up": {
+        "submodel": "tfc:fruit_trees/branch_vertical"
+      },
+      "down": {
+        "submodel": "tfc:fruit_trees/branch_vertical"
+      },
+      "north": {
+        "submodel": "tfc:fruit_trees/branch_horizontal"
+      },
+      "east": {
+        "submodel": "tfc:fruit_trees/branch_horizontal",
+        "y": 90
+      },
+      "south": {
+        "submodel": "tfc:fruit_trees/branch_horizontal",
+        "y": 180
+      },
+      "west": {
+        "submodel": "tfc:fruit_trees/branch_horizontal",
+        "y": 270
+      }
+    },
+    "north": {
+      "0": {},
+      "1": {"submodel": "tfc:fruit_trees/branch_vertical_connection"},
+      "2": {"submodel": "tfc:fruit_trees/branch_horizontal_connection"}
+    },
+    "east": {
+      "0": {},
+      "1": {"submodel": "tfc:fruit_trees/branch_vertical_connection", "y": 90},
+      "2": {"submodel": "tfc:fruit_trees/branch_horizontal_connection", "y": 90}
+    },
+    "south": {
+      "0": {},
+      "1": {"submodel": "tfc:fruit_trees/branch_vertical_connection", "y": 180},
+      "2": {"submodel": "tfc:fruit_trees/branch_horizontal_connection", "y": 180}
+    },
+    "west": {
+      "0": {},
+      "1": {"submodel": "tfc:fruit_trees/branch_vertical_connection", "y": 270},
+      "2": {"submodel": "tfc:fruit_trees/branch_horizontal_connection", "y": 270}
+    },
+    "up": {
+      "0": {},
+      "1": {},
+      "2": {"submodel": "tfc:fruit_trees/branch_horizontal_connection", "x": 270}
+    }
+  }
+}

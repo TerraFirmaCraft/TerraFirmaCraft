@@ -1,0 +1,13 @@
+{
+  "type": "tfc:salting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "categoryMeat"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustSalt"
+    }
+  ]
+}

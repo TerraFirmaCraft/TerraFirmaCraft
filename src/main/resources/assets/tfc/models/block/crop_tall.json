@@ -1,0 +1,142 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "block/crop",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "#crop"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        -1,
+        -8
+      ],
+      "to": [
+        4,
+        31,
+        24
+      ],
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#crop"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#crop"
+        }
+      }
+    },
+    {
+      "from": [
+        12,
+        -1,
+        -8
+      ],
+      "to": [
+        12,
+        31,
+        24
+      ],
+      "shade": false,
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#crop"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#crop"
+        }
+      }
+    },
+    {
+      "from": [
+        -8,
+        -1,
+        4
+      ],
+      "to": [
+        24,
+        31,
+        4
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#crop"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#crop"
+        }
+      }
+    },
+    {
+      "from": [
+        -8,
+        -1,
+        12
+      ],
+      "to": [
+        24,
+        31,
+        12
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#crop"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#crop"
+        }
+      }
+    }
+  ]
+}
