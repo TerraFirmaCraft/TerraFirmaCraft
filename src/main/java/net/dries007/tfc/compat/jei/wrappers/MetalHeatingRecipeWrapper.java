@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.compat.jei.wrappers;
 
 import java.util.ArrayList;
@@ -26,6 +31,7 @@ public class MetalHeatingRecipeWrapper implements IRecipeWrapper
     private List<ItemStack> ingredients;
     private ItemStack output;
     private float meltingTemp;
+
     public MetalHeatingRecipeWrapper(HeatRecipeMetalMelting recipe)
     {
         this.meltingTemp = recipe.getTransformTemp();

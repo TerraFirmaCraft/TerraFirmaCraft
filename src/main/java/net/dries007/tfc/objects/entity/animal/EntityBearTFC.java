@@ -91,6 +91,12 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     }
 
     @Override
+    public boolean isFood(ItemStack it)
+    {
+        return it.getItem() == Items.FISH;
+    }
+
+    @Override
     public void birthChildren()
     {
         int numberOfChilds = 1; //one always
@@ -107,12 +113,6 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     public long gestationDays()
     {
         return DAYS_TO_FULL_GESTATION;
-    }
-
-    @Override
-    public boolean isFood(ItemStack it)
-    {
-        return it.getItem() == Items.FISH;
     }
 
     @Override

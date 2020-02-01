@@ -32,6 +32,12 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
         super(worldIn);
     }
 
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35F;
+    }
+
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         super.getHurtSound(damageSourceIn);
@@ -59,12 +65,6 @@ public class EntityMuleTFC extends AbstractChestHorseTFC
                 this.world.spawnEntity(baby);
             }
         }
-    }
-
-    @Override
-    public float getAdultFamiliarityCap()
-    {
-        return 0.35F;
     }
 
     public EntityAgeable createChild(@Nonnull EntityAgeable ageable)

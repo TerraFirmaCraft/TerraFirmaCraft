@@ -195,7 +195,7 @@ public interface IAnimalTFC extends ICreatureTFC
      * Suggestion: EntityLiving#processInteract() for right clicking handling
      *
      * (This function should be implemented with TOP integration in mind ie: what would
-     *  you like for the tooltip to show when #isReadyForAnimalProduct returns true?)
+     * you like for the tooltip to show when #isReadyForAnimalProduct returns true?)
      *
      * @return a list of itemstack
      */
