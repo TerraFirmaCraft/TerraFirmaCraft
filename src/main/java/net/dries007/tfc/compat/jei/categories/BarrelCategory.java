@@ -21,7 +21,7 @@ import net.dries007.tfc.compat.jei.wrappers.BarrelRecipeWrapper;
 @ParametersAreNonnullByDefault
 public class BarrelCategory extends BaseRecipeCategory<BarrelRecipeWrapper>
 {
-    private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/jei/icons.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/icons/jei.png");
     private static final ResourceLocation BARREL_TEXTURES = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/barrel.png");
 
     private final IDrawableStatic fluidSlotBackgroound, fluidSlot;

@@ -65,6 +65,7 @@ public class KnappingRecipeWrapper implements IRecipeWrapper
         }
         return null;
     }
+
     protected final KnappingRecipe recipe;
     private final IDrawable squareHigh, squareLow;
 
