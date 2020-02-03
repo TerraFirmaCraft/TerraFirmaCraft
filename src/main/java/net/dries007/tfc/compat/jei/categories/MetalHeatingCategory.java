@@ -6,12 +6,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.IDrawableAnimated;
-import mezz.jei.api.gui.IDrawableStatic;
-import mezz.jei.api.gui.IGuiItemStackGroup;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
+import mezz.jei.plugins.vanilla.ingredients.FluidStackRenderer;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
 import net.dries007.tfc.compat.jei.wrappers.MetalHeatingRecipeWrapper;
@@ -48,9 +46,12 @@ public class MetalHeatingCategory extends BaseRecipeCategory<MetalHeatingRecipeW
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         itemStackGroup.init(0, true, 20, 16);
-        itemStackGroup.init(1, false, 84, 16);
 
         itemStackGroup.set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
-        itemStackGroup.set(1, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
+
+        IGuiFluidStackGroup fluidStackGroup = recipeLayout.getFluidStacks();
+        FluidStackRenderer renderer = new FluidStackRenderer(); // Defaults to hide fluid amount
+        fluidStackGroup.init(0, true, renderer, 85, 17, 16, 16, 0, 0);
+        fluidStackGroup.set(0, ingredients.getOutputs(VanillaTypes.FLUID).get(0));
     }
 }

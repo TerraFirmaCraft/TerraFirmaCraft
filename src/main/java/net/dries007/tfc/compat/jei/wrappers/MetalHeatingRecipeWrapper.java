@@ -12,24 +12,20 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.compat.jei.TFCJEIPlugin;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
-import net.dries007.tfc.objects.items.ceramics.ItemMold;
 
 public class MetalHeatingRecipeWrapper implements IRecipeWrapper
 {
     private List<ItemStack> ingredients;
-    private ItemStack output;
+    private FluidStack output;
     private float meltingTemp;
 
     public MetalHeatingRecipeWrapper(HeatRecipeMetalMelting recipe)
@@ -43,12 +39,7 @@ public class MetalHeatingRecipeWrapper implements IRecipeWrapper
                 ingredients.add(stack);
             }
         });
-        output = new ItemStack(ItemMold.get(Metal.ItemType.INGOT));
-        IFluidHandler cap = output.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-        if (cap instanceof IMoldHandler)
-        {
-            cap.fill(new FluidStack(FluidsTFC.getFluidFromMetal(recipe.getMetal()), 100), true);
-        }
+        output = new FluidStack(FluidsTFC.getFluidFromMetal(recipe.getMetal()), 1000);
     }
 
     @Override
@@ -59,9 +50,9 @@ public class MetalHeatingRecipeWrapper implements IRecipeWrapper
         recipeIngredients.setInputLists(VanillaTypes.ITEM, allInputs);
 
 
-        List<List<ItemStack>> allOutputs = new ArrayList<>();
+        List<List<FluidStack>> allOutputs = new ArrayList<>();
         allOutputs.add(Lists.newArrayList(output));
-        recipeIngredients.setOutputLists(VanillaTypes.ITEM, allOutputs);
+        recipeIngredients.setOutputLists(VanillaTypes.FLUID, allOutputs);
     }
 
     @Override
