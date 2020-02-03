@@ -9,7 +9,6 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.plugins.vanilla.ingredients.FluidStackRenderer;
 import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
 import net.dries007.tfc.compat.jei.wrappers.MetalHeatingRecipeWrapper;
@@ -45,13 +44,12 @@ public class MetalHeatingCategory extends BaseRecipeCategory<MetalHeatingRecipeW
     public void setRecipe(IRecipeLayout recipeLayout, MetalHeatingRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        itemStackGroup.init(0, true, 20, 16);
+        itemStackGroup.init(0, false, 20, 16);
 
         itemStackGroup.set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
 
         IGuiFluidStackGroup fluidStackGroup = recipeLayout.getFluidStacks();
-        FluidStackRenderer renderer = new FluidStackRenderer(); // Defaults to hide fluid amount
-        fluidStackGroup.init(0, true, renderer, 85, 17, 16, 16, 0, 0);
+        fluidStackGroup.init(0, true, 85, 17, 16, 16, ingredients.getOutputs(VanillaTypes.FLUID).get(0).get(0).amount, false, null);
         fluidStackGroup.set(0, ingredients.getOutputs(VanillaTypes.FLUID).get(0));
     }
 }
