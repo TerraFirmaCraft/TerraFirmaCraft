@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,9 +34,10 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 {
-    private static final long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_HOUR * 2;
+    public static final long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_HOUR * 2;
 
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
@@ -50,7 +52,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
      * @return a random long value containing the days of growth for this animal to spawn
      * **Always spawn adults** (so vanilla respawn mechanics only creates adults of this animal)
      */
-    protected static int getRandomGrowth(int daysToAdulthood)
+    public static int getRandomGrowth(int daysToAdulthood)
     {
         int lifeTimeDays = daysToAdulthood + Constants.RNG.nextInt(daysToAdulthood * 3);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
@@ -80,6 +82,52 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         this.lastDeath = -1;
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.fertilized = false;
+    }
+
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (!itemstack.isEmpty())
+        {
+            if (itemstack.getItem() == Items.SPAWN_EGG)
+            {
+                return super.processInteract(player, hand); // Let vanilla spawn a baby
+            }
+            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            {
+                if (this.isHungry())
+                {
+                    if (!this.world.isRemote)
+                    {
+                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+                        lastFDecay = lastFed; //No decay needed
+                        this.consumeItemFromStack(player, itemstack);
+                        float familiarity = this.getFamiliarity() + 0.06f;
+                        if (this.getAge() != Age.CHILD)
+                        {
+                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                        }
+                        this.setFamiliarity(familiarity);
+                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (!this.world.isRemote)
+                    {
+                        //Show tooltips
+                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -236,46 +284,34 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             && !this.world.containsAnyLiquid(getEntityBoundingBox());
     }
 
+    @Nullable
     @Override
-    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
+    public EntityAgeable createChild(@Nonnull EntityAgeable other)
     {
-        ItemStack itemstack = player.getHeldItem(hand);
-
-        if (!itemstack.isEmpty())
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
         {
-            if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            this.fertilized = true;
+            this.resetInLove();
+            this.onFertilized((IAnimalTFC) other);
+        }
+        else if (other == this)
+        {
+            // Only called if this animal is interacted with a spawn egg
+            // Try to return to vanilla's default method a baby of this animal, as if bred normally
+            try
             {
-                if (this.isHungry())
-                {
-                    if (!this.world.isRemote)
-                    {
-                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
-                        lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, itemstack);
-                        float familiarity = this.getFamiliarity() + 0.06f;
-                        if (this.getAge() != Age.CHILD)
-                        {
-                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
-                        }
-                        this.setFamiliarity(familiarity);
-                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (!this.world.isRemote)
-                    {
-                        //Show tooltips
-                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
-                        }
-                    }
-                }
+                EntityAnimalTFC baby = this.getClass().getConstructor(World.class).newInstance(this.world);
+                baby.setGender(Gender.valueOf(Constants.RNG.nextBoolean()));
+                baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                return baby;
+            }
+            catch (Exception ignored)
+            {
             }
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -286,18 +322,10 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
     }
 
-    @Nullable
     @Override
-    public EntityAgeable createChild(@Nonnull EntityAgeable other)
+    public void setGrowingAge(int age)
     {
-        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
-        {
-            this.fertilized = true;
-            this.resetInLove();
-            this.onFertilized((IAnimalTFC) other);
-        }
-        return null;
+        super.setGrowingAge(0); // Ignoring this
     }
 
     /**
