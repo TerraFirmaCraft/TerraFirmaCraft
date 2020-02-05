@@ -85,52 +85,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     }
 
     @Override
-    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
-    {
-        ItemStack itemstack = player.getHeldItem(hand);
-
-        if (!itemstack.isEmpty())
-        {
-            if (itemstack.getItem() == Items.SPAWN_EGG)
-            {
-                return super.processInteract(player, hand); // Let vanilla spawn a baby
-            }
-            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
-            {
-                if (this.isHungry())
-                {
-                    if (!this.world.isRemote)
-                    {
-                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
-                        lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, itemstack);
-                        float familiarity = this.getFamiliarity() + 0.06f;
-                        if (this.getAge() != Age.CHILD)
-                        {
-                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
-                        }
-                        this.setFamiliarity(familiarity);
-                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (!this.world.isRemote)
-                    {
-                        //Show tooltips
-                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
     public Gender getGender()
     {
         return Gender.valueOf(this.dataManager.get(GENDER));
@@ -284,6 +238,60 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             && !this.world.containsAnyLiquid(getEntityBoundingBox());
     }
 
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (!itemstack.isEmpty())
+        {
+            if (itemstack.getItem() == Items.SPAWN_EGG)
+            {
+                return super.processInteract(player, hand); // Let vanilla spawn a baby
+            }
+            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            {
+                if (this.isHungry())
+                {
+                    if (!this.world.isRemote)
+                    {
+                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+                        lastFDecay = lastFed; //No decay needed
+                        this.consumeItemFromStack(player, itemstack);
+                        float familiarity = this.getFamiliarity() + 0.06f;
+                        if (this.getAge() != Age.CHILD)
+                        {
+                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                        }
+                        this.setFamiliarity(familiarity);
+                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (!this.world.isRemote)
+                    {
+                        //Show tooltips
+                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
+        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+    }
+
     @Nullable
     @Override
     public EntityAgeable createChild(@Nonnull EntityAgeable other)
@@ -315,17 +323,31 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     }
 
     @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
+    protected void entityInit()
     {
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+        super.entityInit();
+        getDataManager().register(GENDER, true);
+        getDataManager().register(BIRTHDAY, 0);
+        getDataManager().register(FAMILIARITY, 0f);
     }
 
     @Override
     public void setGrowingAge(int age)
     {
         super.setGrowingAge(0); // Ignoring this
+    }
+
+    @Override
+    public boolean isChild()
+    {
+        return this.getAge() == Age.CHILD;
+    }
+
+    @Override
+    public void setScaleForAge(boolean child)
+    {
+        double ageScale = 1 / (2.0D - getPercentToAdulthood());
+        this.setScale((float) ageScale);
     }
 
     /**
@@ -353,28 +375,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         {
             return getAnimalName().getFormattedText();
         }
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        getDataManager().register(GENDER, true);
-        getDataManager().register(BIRTHDAY, 0);
-        getDataManager().register(FAMILIARITY, 0f);
-    }
-
-    @Override
-    public boolean isChild()
-    {
-        return this.getAge() == Age.CHILD;
-    }
-
-    @Override
-    public void setScaleForAge(boolean child)
-    {
-        double ageScale = 1 / (2.0D - getPercentToAdulthood());
-        this.setScale((float) ageScale);
     }
 
     /**
