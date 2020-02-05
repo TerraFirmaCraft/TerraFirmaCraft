@@ -245,6 +245,16 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC
     }
 
     @Override
+    protected void mountTo(EntityPlayer player)
+    {
+        if (!this.isTame() && !this.getLeashed())
+        {
+            return;
+        }
+        super.mountTo(player);
+    }
+
+    @Override
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
