@@ -160,7 +160,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @Override
     public boolean isFood(ItemStack stack)
     {
-        return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
+        return (stack.getItem() == Items.BONE) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
     }
 
     @SideOnly(Side.CLIENT)
@@ -218,6 +218,10 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
+        if (super.processInteract(player, hand)) // Process feeding first
+        {
+            return true;
+        }
         ItemStack itemstack = player.getHeldItem(hand);
         if (this.isTamed())
         {
@@ -258,7 +262,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
                 return true;
             }
         }
-        else if (itemstack.getItem() == Items.BONE && !this.isAngry() && !this.isTamed())
+        else if (isFood(itemstack) && !this.isAngry() && !this.isTamed() && getFamiliarity() >= 0.3f)
         {
             if (!this.world.isRemote)
             {
@@ -266,7 +270,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
                 {
                     itemstack.shrink(1);
                 }
-                if (getFamiliarity() >= 0.3f && this.rand.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player))
+                if (this.rand.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player))
                 {
                     this.setTamedBy(player);
                     this.navigator.clearPath();
@@ -284,7 +288,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
             }
             return true;
         }
-        return super.processInteract(player, hand);
+        return false;
     }
 
     public boolean isAngry()
