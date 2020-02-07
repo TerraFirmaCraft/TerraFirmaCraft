@@ -34,6 +34,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.IBerryBush;
@@ -193,7 +194,7 @@ public class BlockBerryBush extends Block
         {
             if (!worldIn.isRemote)
             {
-                Helpers.spawnItemStack(worldIn, pos, bush.getFoodDrop());
+                ItemHandlerHelper.giveItemToPlayer(playerIn, bush.getFoodDrop());
                 worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(FRUITING, false));
                 TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
                 if (te != null)
