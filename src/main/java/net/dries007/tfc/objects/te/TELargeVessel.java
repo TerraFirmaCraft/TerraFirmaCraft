@@ -26,6 +26,7 @@ import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.network.PacketLargeVesselUpdate;
 import net.dries007.tfc.objects.blocks.BlockLargeVessel;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
@@ -193,7 +194,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
         if (sizeCap != null)
         {
-            return sizeCap.getSize(stack).isSmallerThan(Size.LARGE);
+            return sizeCap.getSize(stack).isSmallerThan(Size.LARGE) && sizeCap.getWeight(stack).isSmallerThan(Weight.HEAVY);
         }
         return true;
     }
