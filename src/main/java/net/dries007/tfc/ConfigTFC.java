@@ -325,6 +325,11 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.chanceAnimalDeath")
         public double chanceAnimalDeath = 0.0;
+
+        @Config.Comment("Log return rate of stone axes (eg: How efficiently it is)")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.stoneAxeLogReturnRate")
+        public double stoneAxeLogReturnRate = 0.6;
     }
 
     public static class ClientCFG
