@@ -16,11 +16,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.skills.SimpleSkill;
 import net.dries007.tfc.util.skills.SkillType;
@@ -88,9 +88,9 @@ public abstract class BlockCropSimple extends BlockCropTFC
                 if (!worldIn.isRemote)
                 {
                     worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) - 3));
-                    Helpers.spawnItemStack(worldIn, pos, foodDrop);
+                    ItemHandlerHelper.giveItemToPlayer(playerIn, foodDrop);
                     if (!seedDrop.isEmpty())
-                        Helpers.spawnItemStack(worldIn, pos, seedDrop);
+                        ItemHandlerHelper.giveItemToPlayer(playerIn, seedDrop);
                 }
                 return true;
             }

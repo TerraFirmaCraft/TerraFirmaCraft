@@ -17,6 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.te.ITileFields;
 import net.dries007.tfc.objects.te.TEInventory;
 
@@ -66,12 +69,24 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
 
             if (!ItemStack.areItemStacksEqual(newStack, stack))
             {
-                newStack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-                inventoryItemStacks.set(i, newStack);
-
-                for (IContainerListener listener : listeners)
+                // Since heat temperatures are updated every tick, it can cause network issues (server sending too many update packets = overriding slots, ghost items, etc)
+                // To alleviate that, we're gonna update the client on tooltip changes only
+                boolean updateClient = true;
+                IItemHeat cap1 = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                IItemHeat cap2 = newStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                if (cap1 != null && cap2 != null && Heat.compareHeat(cap1.getTemperature(), cap2.getTemperature()))
                 {
-                    listener.sendSlotContents(this, i, newStack);
+                    updateClient = false;
+                }
+                // May need to do the same for food decay?
+                if (updateClient)
+                {
+                    newStack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+                    inventoryItemStacks.set(i, newStack);
+                    for (IContainerListener listener : listeners)
+                    {
+                        listener.sendSlotContents(this, i, newStack);
+                    }
                 }
             }
         }

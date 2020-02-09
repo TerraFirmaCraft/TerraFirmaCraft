@@ -31,6 +31,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.container.ContainerChestTFC;
@@ -204,7 +205,7 @@ public class TEChestTFC extends TileEntityChest implements ISlotCallback
         IItemSize cap = CapabilityItemSize.getIItemSize(stack);
         if (cap != null)
         {
-            return cap.getSize(stack).isSmallerThan(Size.LARGE);
+            return cap.getSize(stack).isSmallerThan(Size.LARGE) && cap.getWeight(stack).isSmallerThan(Weight.HEAVY);
         }
         return true;
     }
