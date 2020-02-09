@@ -31,6 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.IFruitTree;
@@ -152,7 +153,7 @@ public class BlockFruitTreeLeaves extends BlockLeaves
         {
             if (!worldIn.isRemote)
             {
-                Helpers.spawnItemStack(worldIn, pos, tree.getFoodDrop());
+                ItemHandlerHelper.giveItemToPlayer(playerIn, tree.getFoodDrop());
                 worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.NORMAL));
                 TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
                 if (te != null)

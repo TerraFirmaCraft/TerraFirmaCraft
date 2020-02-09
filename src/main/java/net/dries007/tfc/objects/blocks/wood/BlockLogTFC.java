@@ -28,6 +28,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.player.IPlayerData;
@@ -286,8 +287,8 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             }
             else
             {
-                // Stone tools are 60% efficient
-                if (!stoneTool || Constants.RNG.nextFloat() < 0.6 && !world.isRemote)
+                // Stone tools are 60% efficient (default config)
+                if (!stoneTool || Constants.RNG.nextFloat() < ConfigTFC.GENERAL.stoneAxeLogReturnRate && !world.isRemote)
                 {
                     harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
                 }

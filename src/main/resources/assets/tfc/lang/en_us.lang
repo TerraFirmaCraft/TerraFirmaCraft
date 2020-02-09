@@ -320,6 +320,9 @@ config.tfc.general.factorAnimalAging.tooltip=How long animals until animals beca
 config.tfc.general.chanceAnimalDeath=Animal Death Chance
 config.tfc.general.chanceAnimalDeath.tooltip=Chance of animal dying (checked every in-game day) after it became old
 
+config.tfc.general.stoneAxeLogReturnRate=Stone Axe Log Return Rate
+config.tfc.general.stoneAxeLogReturnRate.tooltip=Log return rate of stone axes (eg: How efficiently it is)
+
 
 
 ## Client Config
