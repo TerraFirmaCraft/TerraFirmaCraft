@@ -1,8 +1,8 @@
-name: Mark stale issues and pull requests
+name: Mark stale issues
 
 on:
   schedule:
-  - cron: "0 17 * * *"
+  - cron: "15 * * * *"
 
 jobs:
   stale:
@@ -15,5 +15,5 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-issue-message: 'This issue is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days'
         stale-issue-label: 'stale'
-        days-before-stale: 30
-        days-before-close: 5
+        days-before-stale: 60
+        days-before-close: 30
