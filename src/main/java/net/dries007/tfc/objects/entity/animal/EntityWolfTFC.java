@@ -22,6 +22,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
@@ -34,8 +35,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
-import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -43,12 +42,10 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import jdk.nashorn.internal.ir.Block;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.*;
-import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @SuppressWarnings("WeakerAccess")
@@ -61,11 +58,6 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     private static final DataParameter<Float> DATA_HEALTH_ID = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> BEGGING = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COLLAR_COLOR = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.VARINT);
-
-    public static void registerFixesWolf(DataFixer fixer)
-    {
-        EntityLiving.registerFixesMob(fixer, EntityWolfTFC.class);
-    }
 
     private float headRotationCourse;
     private float headRotationCourseOld;
@@ -111,6 +103,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         return 5;
     }
 
+    @Override
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
@@ -167,7 +160,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @Override
     public boolean isFood(ItemStack stack)
     {
-        return stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat();
+        return (stack.getItem() == Items.BONE) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
     }
 
     @SideOnly(Side.CLIENT)
@@ -203,6 +196,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         return (this.headRotationCourseOld + (this.headRotationCourse - this.headRotationCourseOld) * p_70917_1_) * 0.15F * 3.1415927F;
     }
 
+    @Override
     public float getEyeHeight()
     {
         return this.height * 0.8F;
@@ -224,31 +218,31 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
+        if (super.processInteract(player, hand)) // Process feeding first
+        {
+            return true;
+        }
         ItemStack itemstack = player.getHeldItem(hand);
         if (this.isTamed())
         {
             if (!itemstack.isEmpty())
             {
-                if (itemstack.getItem() instanceof ItemFoodTFC)
+                if (itemstack.getItem() instanceof ItemFood && ((ItemFood) itemstack.getItem()).isWolfsFavoriteMeat() && this.dataManager.get(DATA_HEALTH_ID) < 20.0F)
                 {
-                    ItemFoodTFC itemfood = (ItemFoodTFC) itemstack.getItem();
-                    if (itemfood.isWolfsFavoriteMeat() && this.dataManager.get(DATA_HEALTH_ID) < 20.0F)
+                    if (!player.isCreative())
                     {
-                        if (!player.capabilities.isCreativeMode)
-                        {
-                            itemstack.shrink(1);
-                        }
-                        this.heal((float) itemfood.getHealAmount(itemstack));
-                        return true;
+                        itemstack.shrink(1);
                     }
+                    this.heal((float) ((ItemFood) itemstack.getItem()).getHealAmount(itemstack));
+                    return true;
                 }
-                else if (itemstack.getItem() == Items.DYE)
+                else if (itemstack.getItem() == Items.DYE) // todo color by ore dictionary?
                 {
                     EnumDyeColor enumdyecolor = EnumDyeColor.byDyeDamage(itemstack.getMetadata());
                     if (enumdyecolor != this.getCollarColor())
                     {
                         this.setCollarColor(enumdyecolor);
-                        if (!player.capabilities.isCreativeMode)
+                        if (!player.isCreative())
                         {
                             itemstack.shrink(1);
                         }
@@ -256,23 +250,27 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
                     }
                 }
             }
-            if (this.isOwner(player) && !this.world.isRemote && !this.isBreedingItem(itemstack))
+            else if (this.isOwner(player))
             {
-                this.aiSit.setSitting(!this.isSitting());
-                this.isJumping = false;
-                this.navigator.clearPath();
-                this.setAttackTarget(null);
+                if (!this.world.isRemote)
+                {
+                    this.aiSit.setSitting(!this.isSitting());
+                    this.isJumping = false;
+                    this.navigator.clearPath();
+                    this.setAttackTarget(null);
+                }
+                return true;
             }
         }
-        else if (itemstack.getItem() == Items.BONE && !this.isAngry())
+        else if (isFood(itemstack) && !this.isAngry() && !this.isTamed() && getFamiliarity() >= 0.3f)
         {
-            if (!player.capabilities.isCreativeMode)
-            {
-                itemstack.shrink(1);
-            }
             if (!this.world.isRemote)
             {
-                if (getFamiliarity() >= 0.3f && this.rand.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player))
+                if (!player.isCreative())
+                {
+                    itemstack.shrink(1);
+                }
+                if (this.rand.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player))
                 {
                     this.setTamedBy(player);
                     this.navigator.clearPath();
@@ -290,7 +288,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
             }
             return true;
         }
-        return super.processInteract(player, hand);
+        return false;
     }
 
     public boolean isAngry()
@@ -331,6 +329,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.dataManager.set(BEGGING, beg);
     }
 
+    @Override
     public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -338,6 +337,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         compound.setByte("CollarColor", (byte) this.getCollarColor().getDyeDamage());
     }
 
+    @Override
     public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -349,11 +349,13 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
 
     }
 
+    @Override
     public boolean canBeLeashedTo(EntityPlayer player)
     {
         return !this.isAngry() && super.canBeLeashedTo(player);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
@@ -369,6 +371,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
+    @Override
     public void setTamed(boolean tamed)
     {
         super.setTamed(tamed);
@@ -383,6 +386,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
+    @Override
     public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner)
     {
         if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast))
@@ -401,7 +405,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
             }
             else
             {
-                return !(target instanceof AbstractHorseTFC) || !((AbstractHorseTFC) target).isTame();
+                return !(target instanceof AbstractHorse) || !((AbstractHorse) target).isTame();
             }
         }
         else
@@ -410,6 +414,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
@@ -418,6 +423,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.dataManager.register(COLLAR_COLOR, EnumDyeColor.RED.getDyeDamage());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void initEntityAI()
     {
@@ -435,16 +441,11 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTargetTFC(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTargetTFC(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(4, new EntityAITargetNonTamedTFC(this, EntityAnimalTFC.class, false, new Predicate<Entity>()
-        {
-            public boolean apply(@Nullable Entity entity)
-            {
-                return entity instanceof EntitySheepTFC || entity instanceof EntityPigTFC || entity instanceof EntityRabbitTFC;
-            }
-        }));
+        this.targetTasks.addTask(4, new EntityAITargetNonTamedTFC(this, EntityAnimalTFC.class, false, (Predicate<Entity>) entity -> entity instanceof EntitySheepTFC || entity instanceof EntityPigTFC || entity instanceof EntityRabbitTFC));
         this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, AbstractSkeleton.class, false));
     }
 
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -461,6 +462,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 
+    @Override
     public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn)
     {
         super.setAttackTarget(entitylivingbaseIn);
@@ -475,6 +477,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
 
     }
 
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -527,6 +530,7 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
 
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         if (this.isAngry())
@@ -543,27 +547,32 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
+    @Override
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_WOLF;
     }
 
+    @Override
     public int getVerticalFaceSpeed()
     {
         return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
     }
 
+    @Override
     public int getMaxSpawnedInChunk()
     {
         return 8;
     }
 
+    @Override
     protected void updateAITasks()
     {
         this.dataManager.set(DATA_HEALTH_ID, this.getHealth());
     }
 
+    @Override
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         if (this.isEntityInvulnerable(source))
@@ -585,26 +594,25 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         }
     }
 
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
-    }
-
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return SoundEvents.ENTITY_WOLF_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         return SoundEvents.ENTITY_WOLF_DEATH;
     }
 
+    @Override
     protected float getSoundVolume()
     {
         return 0.4F;
     }
 
+    @Override
     public boolean attackEntityAsMob(Entity entityIn)
     {
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));

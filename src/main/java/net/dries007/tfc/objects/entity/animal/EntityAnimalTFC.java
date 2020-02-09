@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,9 +34,10 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 {
-    private static final long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_HOUR * 2;
+    public static final long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_HOUR * 2;
 
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
@@ -50,7 +52,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
      * @return a random long value containing the days of growth for this animal to spawn
      * **Always spawn adults** (so vanilla respawn mechanics only creates adults of this animal)
      */
-    protected static int getRandomGrowth(int daysToAdulthood)
+    public static int getRandomGrowth(int daysToAdulthood)
     {
         int lifeTimeDays = daysToAdulthood + Constants.RNG.nextInt(daysToAdulthood * 3);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
@@ -243,7 +245,11 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 
         if (!itemstack.isEmpty())
         {
-            if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            if (itemstack.getItem() == Items.SPAWN_EGG)
+            {
+                return super.processInteract(player, hand); // Let vanilla spawn a baby
+            }
+            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
                 if (this.isHungry())
                 {
@@ -291,13 +297,57 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     public EntityAgeable createChild(@Nonnull EntityAgeable other)
     {
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
         {
             this.fertilized = true;
             this.resetInLove();
             this.onFertilized((IAnimalTFC) other);
         }
+        else if (other == this)
+        {
+            // Only called if this animal is interacted with a spawn egg
+            // Try to return to vanilla's default method a baby of this animal, as if bred normally
+            try
+            {
+                EntityAnimalTFC baby = this.getClass().getConstructor(World.class).newInstance(this.world);
+                baby.setGender(Gender.valueOf(Constants.RNG.nextBoolean()));
+                baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                return baby;
+            }
+            catch (Exception ignored)
+            {
+            }
+        }
         return null;
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(GENDER, true);
+        getDataManager().register(BIRTHDAY, 0);
+        getDataManager().register(FAMILIARITY, 0f);
+    }
+
+    @Override
+    public void setGrowingAge(int age)
+    {
+        super.setGrowingAge(0); // Ignoring this
+    }
+
+    @Override
+    public boolean isChild()
+    {
+        return this.getAge() == Age.CHILD;
+    }
+
+    @Override
+    public void setScaleForAge(boolean child)
+    {
+        double ageScale = 1 / (2.0D - getPercentToAdulthood());
+        this.setScale((float) ageScale);
     }
 
     /**
@@ -325,28 +375,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         {
             return getAnimalName().getFormattedText();
         }
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        getDataManager().register(GENDER, true);
-        getDataManager().register(BIRTHDAY, 0);
-        getDataManager().register(FAMILIARITY, 0f);
-    }
-
-    @Override
-    public boolean isChild()
-    {
-        return this.getAge() == Age.CHILD;
-    }
-
-    @Override
-    public void setScaleForAge(boolean child)
-    {
-        double ageScale = 1 / (2.0D - getPercentToAdulthood());
-        this.setScale((float) ageScale);
     }
 
     /**
