@@ -41,20 +41,13 @@ file "build.properties" withReader {
 }
 
 /**
- * Versioning rules: (Highly based on Semantic Versioning 2.0.0, https://semver.org/)
- *
- * 1. The only versions of this mod that should be in the hands of any non-contributor or
- *    special testers should be produced by the build server, and thus have a build number.
- * 2. Major version 1 is reserved for the first version deemed "a full port of TFC 1.7.10".
- *    We'll see about everything after that when/if we get there :)
- * 3. Minor versions should increase every public build with added features (that are not just bugfixes) or an API is changed.
- *    This resets when(/if) the major version is increased.
- *    This should be done when the feature is merged into the master, not before.
- * 4. The patch version should increase if a bugfix release is required. It resets every minor version.
- * 5. No special stuff is added to the version string. Ever. No exceptions.
- *    Extra information about the build can be included in the jar manifest or some other suitable source.
- *    The version number is a sacred tool that a computer must understand and be able to compare to see what's what.
- *    `-SNAPSHOT` or `.rc0v14s4dffds2` communicates nothing useful.
+ * Version in dev is set to 'dev'
+ * Any builds produced by the github actions build script will have a version matching their tag.
+ * Versioning is highly based on semantic versioning: [MAJOR].[MINOR].[REVISION].[BUILD]
+ *  - Major version resets on MC version changes
+ *  - Minor version resets on added features or major changes
+ *  - Revision resets on any bugfixes or small changes
+ *  - Build increments, only resets on a new major version.
  */
 if (System.getenv('VERSION') != null) {
     version = System.getenv('VERSION')
@@ -119,15 +112,15 @@ dependencies {
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "version", config.version
+    inputs.property "mcversion", config.minecraft.version
 
     // copy mcmod.info from resources
     from(sourceSets.main.resources.srcDirs) {
         include "mcmod.info"
 
         // replace version and mcversion variables/placeholders
-        expand "version": project.version, "mcversion": project.minecraft.version
+        expand "version": config.version, "mcversion": config.minecraft.version
     }
 
     // copy everything else from resources

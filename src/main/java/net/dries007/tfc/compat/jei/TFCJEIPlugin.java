@@ -21,8 +21,8 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import net.dries007.tfc.TerraFirmaCraft;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -47,7 +47,7 @@ public final class TFCJEIPlugin implements IModPlugin
     private static final String BARREL_UID = TerraFirmaCraft.MOD_ID + ".barrel";
     private static final String BLAST_FURNACE_UID = TerraFirmaCraft.MOD_ID + ".blast_furnace";
     private static final String BLOOMERY_UID = TerraFirmaCraft.MOD_ID + ".bloomery";
-    private static final String CASTING_UID = TFCConstants.MOD_ID + ".casting";
+    private static final String CASTING_UID = TerraFirmaCraft.MOD_ID + ".casting";
     private static final String HEAT_UID = TerraFirmaCraft.MOD_ID + ".heat";
     private static final String KNAP_CLAY_UID = TerraFirmaCraft.MOD_ID + ".knap.clay";
     private static final String KNAP_FIRECLAY_UID = TerraFirmaCraft.MOD_ID + ".knap.fireclay";

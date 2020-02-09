@@ -6,7 +6,7 @@
     "version": "${version}",
     "mcversion": "${mcversion}",
     "logoFile": "/assets/tfc/textures/gui/logo.png",
-    "url": "https://terrafirmacraft.github.io",
+    "url": "https://tng.terrafirmacraft.com/Main_Page",
     "updateJson": "https://mc.dries007.net/terrafirmacraft.json",
     "authorList": [
       "Dries007",

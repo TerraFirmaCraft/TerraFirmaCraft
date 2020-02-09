@@ -149,7 +149,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     @Override
     public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState)
     {
-        return true;
+        return false;
     }
 
     @Override
