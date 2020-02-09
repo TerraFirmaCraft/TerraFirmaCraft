@@ -70,16 +70,21 @@ tfc.tooltip.smithing_skill=技能加成：%0.1f%%
 tfc.tooltip.crucible_alloy=含 %1$d mB 的 %2$s
 
 ## Animal Tooltips / Messages
-tfc.tooltip.animal.old=这只动物太老了，不能给它配种。
-tfc.tooltip.animal.lowfamiliarity=这只动物和你的亲密度太低，不能给它配种。
-tfc.tooltip.animal.pregnant=这只动物怀孕了！
-tfc.tooltip.animal.resting=这只动物今天交配过了，正在休息。
+tfc.tooltip.animal.old=这只 %s 太老了，不能给它配种。
+tfc.tooltip.animal.mating.low_familiarity=这只 %s 和你的亲密度太低，不能给它配种。
+tfc.tooltip.animal.pregnant=这只 %s 怀孕了！
+tfc.tooltip.animal.resting=这只 %s 今天交配过了，正在休息。
 
-tfc.tooltip.animal.milk.male=这是头公牛！
-tfc.tooltip.animal.milk.old=这头牛太老，不产奶了。
-tfc.tooltip.animal.milk.child=这头牛还小，没开始产奶。
-tfc.tooltip.animal.milk.lowfamiliarity=这头牛和你的亲密度太低，不让你挤奶。
-tfc.tooltip.animal.milk.empty=这头牛今天挤过奶了。
+tfc.tooltip.animal.product.old=这只 %s 太年轻了。
+tfc.tooltip.animal.product.young=这只 %s 太老了。
+tfc.tooltip.animal.product.low_familiarity=这只 %s 和你的亲密度太低。
+
+tfc.tooltip.animal.product.male_milk=这是公的！
+tfc.tooltip.animal.product.male_egg=这是公的！
+
+tfc.tooltip.animal.product.no_wool=这只 %s 的毛还没长出来。
+tfc.tooltip.animal.product.no_milk=这只 %s 没做好产奶的准备。
+tfc.tooltip.animal.product.no_egg=这只 %s 没做好下蛋的准备。
 
 ## Command Tooltips / Messages
 tfc.tooltip.set_month_length=将月长度设置为 %d 天。
@@ -150,6 +155,9 @@ config.tfc.general.toolip=适用于客户端和服务端。
 config.tfc.general.debug=调试模式
 config.tfc.general.debug.tooltip=各种调试选项。激活一些额外的调试魔杖特性。启用额外的物品提示。
 
+config.tfc.general.forceTFCWorldTypeOnServer=默认世界类型覆盖
+config.tfc.general.forceTFCWorldTypeOnServer.tooltip=若为 true，群峦传说将在服务器启动期间尝试把 `level-type` 强制设置为 `tfc_classic` 。
+
 config.tfc.general.removeVanillaRecipes=移除原版合成配方
 config.tfc.general.removeVanillaRecipes.tooltip=启用/禁用原版配方移除。false = 保留所有原版配方。
 
@@ -214,7 +222,7 @@ config.tfc.general.collapseChance=岩石塌方几率
 config.tfc.general.collapseChance.tooltip=挖掘未加工岩石引发塌方的几率。
 
 config.tfc.general.propagateCollapseChance=塌方扩散几率
-config.tfc.general.propagateCollapseChance.tooltip=塌方的方块扩散塌方的几率。受与塌方中心距离影响。
+config.tfc.general.propagateCollapseChance.tooltip=塌方的方块扩散塌方的几率。受与塌方中心的距离影响。
 
 config.tfc.general.slashingDamageSources=砍击伤害来源
 config.tfc.general.slashingDamageSources.tooltip=伤害来源类型将默认为砍击伤害。
@@ -309,6 +317,16 @@ config.tfc.general.charcoalPitTime.tooltip=木炭坑完成所需要的刻数。
 config.tfc.general.defaultMonthLength=默认月长度
 config.tfc.general.defaultMonthLength.tooltip=当新建世界时默认的月长度（以天为单位）。通过使用 /timetfc 命令可以修改已存在的世界的月长度。
 
+config.tfc.general.enableAnimalAging=启用动物老去
+config.tfc.general.enableAnimalAging.tooltip=动物应当老去直至老死吗？
+
+config.tfc.general.factorAnimalAging=动物老去因子
+config.tfc.general.factorAnimalAging.tooltip=动物变老需要多久（同样影响成年时间）？
+
+config.tfc.general.chanceAnimalDeath=动物死亡几率
+config.tfc.general.chanceAnimalDeath.tooltip=在动物老去后它死亡的几率（每游戏日检查）。
+
+
 
 ## Client Config
 config.tfc.general.woodenBucketWhitelist=木桶液体白名单
@@ -327,7 +345,7 @@ config.tfc.client.showOreDictionaryTooltip=显示物品矿物词典提示
 config.tfc.client.showOreDictionaryTooltip.tooltip=启用高级提示时显示 ItemStack 矿物词典匹配。（F3+H）
 
 config.tfc.client.showNBTTooltip=显示物品 NBT 提示
-config.tfc.client.showNBTTooltip.tooltip=启用高级提示时在提示中显示 。（F3+H）
+config.tfc.client.showNBTTooltip.tooltip=启用高级提示时在提示中显示。（F3+H）
 
 config.tfc.client.propickOutputToActionBar=探矿输出到动作栏
 config.tfc.client.propickOutputToActionBar.tooltip=探矿应该输出到动作栏吗？（快捷栏上方的空间）
@@ -537,11 +555,14 @@ tfc.enum.nutrient.vitamins=维生素
 jei.category.tfc.alloy=合金配方
 jei.category.tfc.anvil=砧类配方
 jei.category.tfc.barrel=桶类配方
+jei.category.tfc.blast_furnace=高炉配方
+jei.category.tfc.bloomery=锻铁炉配方
 jei.category.tfc.heat=加热配方
 jei.category.tfc.knap.clay=粘土塑形
 jei.category.tfc.knap.fireclay=耐火粘土塑形
 jei.category.tfc.knap.leather=皮革塑形
 jei.category.tfc.knap.stone=石子塑形
+jei.category.tfc.metal_heat=金属加热配方
 jei.category.tfc.loom=织机配方
 jei.category.tfc.quern=手推磨配方
 jei.category.tfc.welding=焊接配方
@@ -609,7 +630,7 @@ tile.tfc.placed_item_flat.name=杂物
 tile.tfc.pit_kiln.name=坑窑
 tile.tfc.charcoal_forge.name=木炭炉
 tile.tfc.peat.name=泥炭
-tile.tfc.peat_grass.name=长草的泥炭
+tile.tfc.peat_grass.name=泥炭草方块
 tile.tfc.thatch.name=干草块
 tile.tfc.firepit.name=篝火
 tile.tfc.bellows.name=风箱
@@ -773,48 +794,48 @@ tile.tfc.dirt.phyllite.name=千枚岩泥土
 tile.tfc.dirt.schist.name=片岩泥土
 tile.tfc.dirt.gneiss.name=片麻岩泥土
 tile.tfc.dirt.marble.name=大理岩泥土
-tile.tfc.grass.granite.name=长草的花岗岩泥土
-tile.tfc.grass.diorite.name=长草的闪长岩泥土
-tile.tfc.grass.gabbro.name=长草的辉长岩泥土
-tile.tfc.grass.shale.name=长草的页岩泥土
-tile.tfc.grass.claystone.name=长草的粘土岩泥土
-tile.tfc.grass.rocksalt.name=长草的盐岩泥土
-tile.tfc.grass.limestone.name=长草的石灰岩泥土
-tile.tfc.grass.conglomerate.name=长草的砾岩泥土
-tile.tfc.grass.dolomite.name=长草的白云岩泥土
-tile.tfc.grass.chert.name=长草的硅质岩泥土
-tile.tfc.grass.chalk.name=长草的白垩岩泥土
-tile.tfc.grass.rhyolite.name=长草的流纹岩泥土
-tile.tfc.grass.basalt.name=长草的玄武岩泥土
-tile.tfc.grass.andesite.name=长草的安山岩泥土
-tile.tfc.grass.dacite.name=长草的英安岩泥土
-tile.tfc.grass.quartzite.name=长草的石英岩泥土
-tile.tfc.grass.slate.name=长草的板岩泥土
-tile.tfc.grass.phyllite.name=长草的千枚岩泥土
-tile.tfc.grass.schist.name=长草的片岩泥土
-tile.tfc.grass.gneiss.name=长草的片麻岩泥土
-tile.tfc.grass.marble.name=长草的大理岩泥土
-tile.tfc.clay_grass.granite.name=长草的花岗岩粘土
-tile.tfc.clay_grass.diorite.name=长草的闪长岩粘土
-tile.tfc.clay_grass.gabbro.name=长草的辉长岩粘土
-tile.tfc.clay_grass.shale.name=长草的页岩粘土
-tile.tfc.clay_grass.claystone.name=长草的粘土岩粘土
-tile.tfc.clay_grass.rocksalt.name=长草的盐岩粘土
-tile.tfc.clay_grass.limestone.name=长草的石灰岩粘土
-tile.tfc.clay_grass.conglomerate.name=长草的砾岩粘土
-tile.tfc.clay_grass.dolomite.name=长草的白云岩粘土
-tile.tfc.clay_grass.chert.name=长草的硅质岩粘土
-tile.tfc.clay_grass.chalk.name=长草的白垩岩粘土
-tile.tfc.clay_grass.rhyolite.name=长草的流纹岩粘土
-tile.tfc.clay_grass.basalt.name=长草的玄武岩粘土
-tile.tfc.clay_grass.andesite.name=长草的安山岩粘土
-tile.tfc.clay_grass.dacite.name=长草的英安岩粘土
-tile.tfc.clay_grass.quartzite.name=长草的石英岩粘土
-tile.tfc.clay_grass.slate.name=长草的板岩粘土
-tile.tfc.clay_grass.phyllite.name=长草的千枚岩粘土
-tile.tfc.clay_grass.schist.name=长草的片岩粘土
-tile.tfc.clay_grass.gneiss.name=长草的片麻岩粘土
-tile.tfc.clay_grass.marble.name=长草的大理岩粘土
+tile.tfc.grass.granite.name=花岗岩草方块
+tile.tfc.grass.diorite.name=闪长岩草方块
+tile.tfc.grass.gabbro.name=辉长岩草方块
+tile.tfc.grass.shale.name=页岩草方块
+tile.tfc.grass.claystone.name=粘土岩草方块
+tile.tfc.grass.rocksalt.name=盐岩草方块
+tile.tfc.grass.limestone.name=石灰岩草方块
+tile.tfc.grass.conglomerate.name=砾岩草方块
+tile.tfc.grass.dolomite.name=白云岩草方块
+tile.tfc.grass.chert.name=硅质岩草方块
+tile.tfc.grass.chalk.name=白垩岩草方块
+tile.tfc.grass.rhyolite.name=流纹岩草方块
+tile.tfc.grass.basalt.name=玄武岩草方块
+tile.tfc.grass.andesite.name=安山岩草方块
+tile.tfc.grass.dacite.name=英安岩草方块
+tile.tfc.grass.quartzite.name=石英岩草方块
+tile.tfc.grass.slate.name=板岩草方块
+tile.tfc.grass.phyllite.name=千枚岩草方块
+tile.tfc.grass.schist.name=片岩草方块
+tile.tfc.grass.gneiss.name=片麻岩草方块
+tile.tfc.grass.marble.name=大理岩草方块
+tile.tfc.clay_grass.granite.name=花岗岩粘土草方块
+tile.tfc.clay_grass.diorite.name=闪长岩粘土草方块
+tile.tfc.clay_grass.gabbro.name=辉长岩粘土草方块
+tile.tfc.clay_grass.shale.name=页岩粘土草方块
+tile.tfc.clay_grass.claystone.name=粘土岩粘土草方块
+tile.tfc.clay_grass.rocksalt.name=盐岩粘土草方块
+tile.tfc.clay_grass.limestone.name=石灰岩粘土草方块
+tile.tfc.clay_grass.conglomerate.name=砾岩粘土草方块
+tile.tfc.clay_grass.dolomite.name=白云岩粘土草方块
+tile.tfc.clay_grass.chert.name=硅质岩粘土草方块
+tile.tfc.clay_grass.chalk.name=白垩岩粘土草方块
+tile.tfc.clay_grass.rhyolite.name=流纹岩粘土草方块
+tile.tfc.clay_grass.basalt.name=玄武岩粘土草方块
+tile.tfc.clay_grass.andesite.name=安山岩粘土草方块
+tile.tfc.clay_grass.dacite.name=英安岩粘土草方块
+tile.tfc.clay_grass.quartzite.name=石英岩粘土草方块
+tile.tfc.clay_grass.slate.name=板岩粘土草方块
+tile.tfc.clay_grass.phyllite.name=千枚岩粘土草方块
+tile.tfc.clay_grass.schist.name=片岩粘土草方块
+tile.tfc.clay_grass.gneiss.name=片麻岩粘土草方块
+tile.tfc.clay_grass.marble.name=大理岩粘土草方块
 tile.tfc.clay.granite.name=花岗岩粘土
 tile.tfc.clay.diorite.name=闪长岩粘土
 tile.tfc.clay.gabbro.name=辉长岩粘土
@@ -836,27 +857,27 @@ tile.tfc.clay.phyllite.name=千枚岩粘土
 tile.tfc.clay.schist.name=片岩粘土
 tile.tfc.clay.gneiss.name=片麻岩粘土
 tile.tfc.clay.marble.name=大理岩粘土
-tile.tfc.dry_grass.granite.name=长草的干燥花岗岩
-tile.tfc.dry_grass.diorite.name=长草的干燥闪长岩
-tile.tfc.dry_grass.gabbro.name=长草的干燥辉长岩
-tile.tfc.dry_grass.shale.name=长草的干燥页岩
-tile.tfc.dry_grass.claystone.name=长草的干燥粘土岩
-tile.tfc.dry_grass.rocksalt.name=长草的干燥盐岩
-tile.tfc.dry_grass.limestone.name=长草的干燥石灰岩
-tile.tfc.dry_grass.conglomerate.name=长草的干燥砾岩
-tile.tfc.dry_grass.dolomite.name=长草的干燥白云岩
-tile.tfc.dry_grass.chert.name=长草的干燥硅质岩
-tile.tfc.dry_grass.chalk.name=长草的干燥白垩岩
-tile.tfc.dry_grass.rhyolite.name=长草的干燥流纹岩
-tile.tfc.dry_grass.basalt.name=长草的干燥玄武岩
-tile.tfc.dry_grass.andesite.name=长草的干燥安山岩
-tile.tfc.dry_grass.dacite.name=长草的干燥英安岩
-tile.tfc.dry_grass.quartzite.name=长草的干燥石英岩
-tile.tfc.dry_grass.slate.name=长草的干燥板岩
-tile.tfc.dry_grass.phyllite.name=长草的干燥千枚岩
-tile.tfc.dry_grass.schist.name=长草的干燥片岩
-tile.tfc.dry_grass.gneiss.name=长草的干燥片麻岩
-tile.tfc.dry_grass.marble.name=长草的干燥大理岩
+tile.tfc.dry_grass.granite.name=干燥花岗岩草方块
+tile.tfc.dry_grass.diorite.name=干燥闪长岩草方块
+tile.tfc.dry_grass.gabbro.name=干燥辉长岩草方块
+tile.tfc.dry_grass.shale.name=干燥页岩草方块
+tile.tfc.dry_grass.claystone.name=干燥粘土岩草方块
+tile.tfc.dry_grass.rocksalt.name=干燥盐岩草方块
+tile.tfc.dry_grass.limestone.name=干燥石灰岩草方块
+tile.tfc.dry_grass.conglomerate.name=干燥砾岩草方块
+tile.tfc.dry_grass.dolomite.name=干燥白云岩草方块
+tile.tfc.dry_grass.chert.name=干燥硅质岩草方块
+tile.tfc.dry_grass.chalk.name=干燥白垩岩草方块
+tile.tfc.dry_grass.rhyolite.name=干燥流纹岩草方块
+tile.tfc.dry_grass.basalt.name=干燥玄武岩草方块
+tile.tfc.dry_grass.andesite.name=干燥安山岩草方块
+tile.tfc.dry_grass.dacite.name=干燥英安岩草方块
+tile.tfc.dry_grass.quartzite.name=干燥石英岩草方块
+tile.tfc.dry_grass.slate.name=干燥板岩草方块
+tile.tfc.dry_grass.phyllite.name=干燥千枚岩草方块
+tile.tfc.dry_grass.schist.name=干燥片岩草方块
+tile.tfc.dry_grass.gneiss.name=干燥片麻岩草方块
+tile.tfc.dry_grass.marble.name=干燥大理岩草方块
 
 tile.tfc.path.granite.name=花岗岩径
 tile.tfc.path.diorite.name=闪长岩径
@@ -3072,24 +3093,24 @@ item.tfc.metal.sword_blade.steel.name=钢剑刃
 item.tfc.metal.sword_blade.black_steel.name=黑钢剑刃
 item.tfc.metal.sword_blade.blue_steel.name=蓝钢剑刃
 item.tfc.metal.sword_blade.red_steel.name=红钢剑刃
-item.tfc.metal.mace.bismuth_bronze.name=铋铜锤
-item.tfc.metal.mace.black_bronze.name=黑铜锤
-item.tfc.metal.mace.bronze.name=青铜锤
-item.tfc.metal.mace.copper.name=铜锤
-item.tfc.metal.mace.wrought_iron.name=锻铁锤
-item.tfc.metal.mace.steel.name=钢锤
-item.tfc.metal.mace.black_steel.name=黑钢锤
-item.tfc.metal.mace.blue_steel.name=蓝钢锤
-item.tfc.metal.mace.red_steel.name=红钢锤
-item.tfc.metal.mace_head.bismuth_bronze.name=铋铜锤头
-item.tfc.metal.mace_head.black_bronze.name=黑铜锤头
-item.tfc.metal.mace_head.bronze.name=青铜锤头
-item.tfc.metal.mace_head.copper.name=铜锤头
-item.tfc.metal.mace_head.wrought_iron.name=锻铁锤头
-item.tfc.metal.mace_head.steel.name=钢锤头
-item.tfc.metal.mace_head.black_steel.name=黑钢锤头
-item.tfc.metal.mace_head.blue_steel.name=蓝钢锤头
-item.tfc.metal.mace_head.red_steel.name=红钢锤头
+item.tfc.metal.mace.bismuth_bronze.name=铋铜狼牙棒
+item.tfc.metal.mace.black_bronze.name=黑铜狼牙棒
+item.tfc.metal.mace.bronze.name=青铜狼牙棒
+item.tfc.metal.mace.copper.name=铜狼牙棒
+item.tfc.metal.mace.wrought_iron.name=锻铁狼牙棒
+item.tfc.metal.mace.steel.name=钢狼牙棒
+item.tfc.metal.mace.black_steel.name=黑钢狼牙棒
+item.tfc.metal.mace.blue_steel.name=蓝钢狼牙棒
+item.tfc.metal.mace.red_steel.name=红钢狼牙棒
+item.tfc.metal.mace_head.bismuth_bronze.name=铋铜狼牙棒头
+item.tfc.metal.mace_head.black_bronze.name=黑铜狼牙棒头
+item.tfc.metal.mace_head.bronze.name=青铜狼牙棒头
+item.tfc.metal.mace_head.copper.name=铜狼牙棒头
+item.tfc.metal.mace_head.wrought_iron.name=锻铁狼牙棒头
+item.tfc.metal.mace_head.steel.name=钢狼牙棒头
+item.tfc.metal.mace_head.black_steel.name=黑钢狼牙棒头
+item.tfc.metal.mace_head.blue_steel.name=蓝钢狼牙棒头
+item.tfc.metal.mace_head.red_steel.name=红钢狼牙棒头
 item.tfc.metal.saw.bismuth_bronze.name=铋铜锯
 item.tfc.metal.saw.black_bronze.name=黑铜锯
 item.tfc.metal.saw.bronze.name=青铜锯
@@ -3711,14 +3732,20 @@ item.tfc.crop.product.jute.name=黄麻
 item.tfc.crop.product.jute_fiber.name=黄麻纤维
 item.tfc.crop.product.burlap_cloth.name=粗麻布
 
-item.tfc.bloom.unrefined.name=生铁方坯
-item.tfc.bloom.refined.name=精铁方坯
+item.tfc.bloom.unrefined.unknown.name=生方坯
+item.tfc.bloom.refined.unknown.name=精方坯
+
+item.tfc.bloom.unrefined.wrought_iron.name=生铁方坯
+item.tfc.bloom.refined.wrought_iron.name=精铁方坯
 
 item.tfc.animal.product.wool.name=羊毛
 item.tfc.animal.product.wool_yarn.name=羊毛纱
 item.tfc.animal.product.wool_cloth.name=羊毛布
 item.tfc.animal.product.silk_cloth.name=丝绸
 
+## Entities
+
+# Animals
 entity.sheeptfc.name=羊
 entity.cowtfc.name=牛
 entity.beartfc.name=熊
@@ -3732,4 +3759,32 @@ entity.horsetfc.name=马
 entity.donkeytfc.name=驴
 entity.muletfc.name=骡
 
+#TFC death messages
 death.attack.dehydration=%1$s 死于脱水
+
+#Effects
+effectsTFC.overburdened=负担过重
+
+# Animal names by gender
+tfc.animal.sheeptfc.male=公羊
+tfc.animal.sheeptfc.female=母羊
+tfc.animal.cowtfc.male=公牛
+tfc.animal.cowtfc.female=母牛
+tfc.animal.beartfc.male=公熊
+tfc.animal.beartfc.female=母熊
+tfc.animal.pigtfc.male=公猪
+tfc.animal.pigtfc.female=母猪
+tfc.animal.chickentfc.male=公鸡
+tfc.animal.chickentfc.female=母鸡
+tfc.animal.pheasanttfc.male=公雉鸡
+tfc.animal.pheasanttfc.female=母雉鸡
+tfc.animal.rabbittfc.male=公兔子
+tfc.animal.rabbittfc.female=母兔子
+tfc.animal.wolftfc.male=公狼
+tfc.animal.wolftfc.female=母狼
+tfc.animal.horsetfc.male=公马
+tfc.animal.horsetfc.female=母马
+tfc.animal.donkeytfc.male=公驴
+tfc.animal.donkeytfc.female=母驴
+tfc.animal.muletfc.male=公骡
+tfc.animal.muletfc.female=母骡
