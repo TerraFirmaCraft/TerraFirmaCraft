@@ -14,14 +14,14 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
 import net.dries007.tfc.compat.jei.wrappers.CastingRecipeWrapper;
 
 @ParametersAreNonnullByDefault
 public class CastingCategory extends BaseRecipeCategory<CastingRecipeWrapper>
 {
-    private static final ResourceLocation ICONS = new ResourceLocation(TFCConstants.MOD_ID, "textures/gui/icons/jei.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(TerraFirmaCraft.MOD_ID, "textures/gui/icons/jei.png");
 
     private final IDrawableStatic slot;
     private final IDrawableStatic arrow;
