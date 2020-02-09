@@ -32,7 +32,7 @@ public class EntityAIBegTFC extends EntityAIBase
 
     public boolean shouldExecute()
     {
-        this.player = this.world.getClosestPlayerToEntity(this.wolf, (double) this.minPlayerDistance);
+        this.player = this.world.getClosestPlayerToEntity(this.wolf, this.minPlayerDistance);
         return this.player != null && this.hasTemptationItemInHand(this.player);
     }
 

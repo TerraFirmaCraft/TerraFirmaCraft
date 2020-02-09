@@ -26,9 +26,9 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
     private final EntityTameableTFC tameable;
     private final double followSpeed;
     private final PathNavigate petPathfinder;
-    World world;
-    float maxDist;
-    float minDist;
+    private World world;
+    private float maxDist;
+    private float minDist;
     private EntityLivingBase owner;
     private int timeToRecalcPath;
     private float oldWaterCost;
@@ -121,7 +121,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
                                 {
                                     if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.isTeleportFriendlyBlock(i, j, k, l, i1))
                                     {
-                                        this.tameable.setLocationAndAngles((double) ((float) (i + l) + 0.5F), (double) k, (double) ((float) (j + i1) + 0.5F), this.tameable.rotationYaw, this.tameable.rotationPitch);
+                                        this.tameable.setLocationAndAngles((float) (i + l) + 0.5F, k, (float) (j + i1) + 0.5F, this.tameable.rotationYaw, this.tameable.rotationPitch);
                                         this.petPathfinder.clearPath();
                                         return;
                                     }
@@ -134,7 +134,7 @@ public class EntityAIFollowOwnerTFC extends EntityAIBase
         }
     }
 
-    protected boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset)
+    private boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset)
     {
         BlockPos blockpos = new BlockPos(x + xOffset, y - 1, z + zOffset);
         IBlockState iblockstate = this.world.getBlockState(blockpos);

@@ -242,14 +242,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     }
 
     @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataManager.register(DYE_COLOR, 0);
-        this.dataManager.register(SHEARED, 0);
-    }
-
-    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
@@ -295,6 +287,14 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
         {
             return super.processInteract(player, hand);
         }
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(DYE_COLOR, 0);
+        this.dataManager.register(SHEARED, 0);
     }
 
     @Override
