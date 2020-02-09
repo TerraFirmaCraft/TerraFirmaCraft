@@ -9,20 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraftforge.fluids.FluidStack;
 
 import mcp.MethodsReturnNonnullByDefault;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.dries007.tfc.api.recipes.AlloyRecipe;
-import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.objects.items.metal.ItemIngot;
-import net.dries007.tfc.objects.items.metal.ItemOreTFC;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -40,26 +37,18 @@ public class AlloyRecipeWrapper implements IRecipeWrapper
     public void getIngredients(IIngredients ingredients)
     {
         int i = 0;
-        List<List<ItemStack>> allInputs = new ArrayList<>();
+        List<List<FluidStack>> allInputs = new ArrayList<>();
         for (Metal metal : recipe.getMetals().keySet())
         {
             int min = (int) (recipe.getMetals().get(metal).getMin() * 100);
             int max = (int) (recipe.getMetals().get(metal).getMax() * 100);
             slotContent[i] = min + "-" + max + "%";
-            NonNullList<ItemStack> possibleSmeltable = NonNullList.create();
-            possibleSmeltable.add(new ItemStack(ItemIngot.get(metal, Metal.ItemType.INGOT)));
-            for (Ore ore : TFCRegistries.ORES.getValuesCollection())
-            {
-                if (ore.getMetal() == metal)
-                {
-                    possibleSmeltable.add(new ItemStack(ItemOreTFC.get(ore)));
-                }
-            }
-            allInputs.add(possibleSmeltable);
+            FluidStack fluidInput = new FluidStack(FluidsTFC.getFluidFromMetal(metal), 1000);
+            allInputs.add(Lists.newArrayList(fluidInput));
             i++;
         }
-        ingredients.setInputLists(VanillaTypes.ITEM, allInputs);
-        ingredients.setOutput(VanillaTypes.ITEM, new ItemStack(ItemIngot.get(this.recipe.getResult(), Metal.ItemType.INGOT)));
+        ingredients.setInputLists(VanillaTypes.FLUID, allInputs);
+        ingredients.setOutput(VanillaTypes.FLUID, new FluidStack(FluidsTFC.getFluidFromMetal(recipe.getResult()), 1000));
     }
 
     @Override
