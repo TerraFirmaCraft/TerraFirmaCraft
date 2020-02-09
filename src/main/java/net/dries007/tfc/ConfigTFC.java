@@ -366,14 +366,14 @@ public class ConfigTFC
         @Config.Comment("This controls the appearance of cyclic temperature regions. If you want an endless north / south with a temperate equator, set this to false.")
         @Config.LangKey("config." + MOD_ID + ".world.cyclicTemperatureRegions")
         @Config.RequiresMcRestart
-        public boolean cyclicTemperatureRegions = true;
+        public boolean cyclicTemperatureRegions = false;
 
         @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
         @Config.LangKey("config." + MOD_ID + ".world.debugWorldGen")
         @Config.RequiresWorldRestart
         public boolean debugWorldGen = false;
 
-        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents the period of the wave = the distance between hot and cold bands, in blocks"})
+        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents the period of the wave."})
         @Config.RangeInt(min = 1_000, max = 1_000_000)
         @Config.LangKey("config." + MOD_ID + ".world.latitudeTemperatureModifier")
         public int latitudeTemperatureModifier = 40_000;
@@ -382,6 +382,11 @@ public class ConfigTFC
         @Config.RangeInt(min = 1)
         @Config.LangKey("config." + MOD_ID + ".world.clayRarity")
         public int clayRarity = 30;
+
+        @Config.Comment("The minimum rainfall in an area required for clay to spawn. By default this is the same threshold as dry grass.")
+        @Config.RangeInt(min = 1, max = 500)
+        @Config.LangKey("config." + MOD_ID + ".world.clayRainfallThreshold")
+        public int clayRainfallThreshold = 150;
 
         @Config.Comment("The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.")
         @Config.RangeInt(min = 1)

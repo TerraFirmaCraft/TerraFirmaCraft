@@ -120,7 +120,7 @@ public class ClimateHelper
         int tempRange = ConfigTFC.WORLD.latitudeTemperatureModifier;
         if (!ConfigTFC.WORLD.cyclicTemperatureRegions)
         {
-            chunkZ = MathHelper.clamp(chunkZ, -tempRange, tempRange);
+            chunkZ = MathHelper.clamp(chunkZ, -tempRange / 2, tempRange / 2);
         }
         return 0.5f + 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(Math.PI * chunkZ / tempRange);
     }
