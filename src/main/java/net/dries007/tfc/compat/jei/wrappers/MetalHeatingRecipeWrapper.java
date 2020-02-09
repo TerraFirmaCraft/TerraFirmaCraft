@@ -5,63 +5,35 @@
 
 package net.dries007.tfc.compat.jei.wrappers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.Heat;
-import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.compat.jei.TFCJEIPlugin;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
-import net.dries007.tfc.objects.items.ceramics.ItemMold;
 
 public class MetalHeatingRecipeWrapper implements IRecipeWrapper
 {
-    private List<ItemStack> ingredients;
-    private ItemStack output;
+    private ItemStack stack;
+    private FluidStack output;
     private float meltingTemp;
 
-    public MetalHeatingRecipeWrapper(HeatRecipeMetalMelting recipe)
+    public MetalHeatingRecipeWrapper(ItemStack stack, Metal metal, int amount, float meltingTemp)
     {
-        this.meltingTemp = recipe.getTransformTemp();
-        ingredients = new ArrayList<>();
-        // Although this looks resource-intensive, it's done one time only
-        TFCJEIPlugin.getAllIngredients().forEach(stack -> {
-            if (recipe.isValidInput(stack, Metal.Tier.TIER_VI))
-            {
-                ingredients.add(stack);
-            }
-        });
-        output = new ItemStack(ItemMold.get(Metal.ItemType.INGOT));
-        IFluidHandler cap = output.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-        if (cap instanceof IMoldHandler)
-        {
-            cap.fill(new FluidStack(FluidsTFC.getFluidFromMetal(recipe.getMetal()), 100), true);
-        }
+        this.meltingTemp = meltingTemp;
+        this.stack = stack;
+        output = new FluidStack(FluidsTFC.getFluidFromMetal(metal), amount);
     }
 
     @Override
     public void getIngredients(IIngredients recipeIngredients)
     {
-        List<List<ItemStack>> allInputs = new ArrayList<>();
-        allInputs.add(ingredients);
-        recipeIngredients.setInputLists(VanillaTypes.ITEM, allInputs);
-
-
-        List<List<ItemStack>> allOutputs = new ArrayList<>();
-        allOutputs.add(Lists.newArrayList(output));
-        recipeIngredients.setOutputLists(VanillaTypes.ITEM, allOutputs);
+        recipeIngredients.setInput(VanillaTypes.ITEM, stack);
+        recipeIngredients.setOutput(VanillaTypes.FLUID, output);
     }
 
     @Override

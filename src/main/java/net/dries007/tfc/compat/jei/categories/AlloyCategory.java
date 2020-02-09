@@ -13,10 +13,11 @@ import net.minecraft.util.ResourceLocation;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
-import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
+import mezz.jei.plugins.vanilla.ingredients.FluidStackRenderer;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
 import net.dries007.tfc.compat.jei.wrappers.AlloyRecipeWrapper;
@@ -54,17 +55,18 @@ public class AlloyCategory extends BaseRecipeCategory<AlloyRecipeWrapper>
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, AlloyRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
-        IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        itemStackGroup.init(0, true, 0, 12);
-        itemStackGroup.init(1, true, 60, 12);
-        itemStackGroup.init(2, true, 0, 38);
-        itemStackGroup.init(3, true, 60, 38);
-        itemStackGroup.init(4, false, 138, 25);
+        IGuiFluidStackGroup fluidStackGroup = recipeLayout.getFluidStacks();
+        FluidStackRenderer renderer = new FluidStackRenderer(); // Defaults to hide fluid amount
+        fluidStackGroup.init(0, false, renderer, 1, 13, 16, 16, 0, 0);
+        fluidStackGroup.init(1, false, renderer, 61, 13, 16, 16, 0, 0);
+        fluidStackGroup.init(2, false, renderer, 1, 39, 16, 16, 0, 0);
+        fluidStackGroup.init(3, false, renderer, 61, 39, 16, 16, 0, 0);
+        fluidStackGroup.init(4, true, renderer, 139, 26, 16, 16, 0, 0);
 
-        for (int i = 0; i < ingredients.getInputs(VanillaTypes.ITEM).size(); i++)
+        for (int i = 0; i < ingredients.getInputs(VanillaTypes.FLUID).size(); i++)
         {
-            itemStackGroup.set(i, ingredients.getInputs(VanillaTypes.ITEM).get(i));
+            fluidStackGroup.set(i, ingredients.getInputs(VanillaTypes.FLUID).get(i));
         }
-        itemStackGroup.set(4, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
+        fluidStackGroup.set(4, ingredients.getOutputs(VanillaTypes.FLUID).get(0));
     }
 }
