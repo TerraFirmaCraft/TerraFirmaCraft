@@ -33,6 +33,7 @@ tfc.tooltip.anvil_tier_too_low=This Anvil is too low tier!
 tfc.tooltip.anvil_no_flux=There is no flux in the anvil!
 tfc.tooltip.anvil_too_cold=The item(s) are not hot enough to work!
 tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
+tfc.tooltip.anvil_safety=That would destroy the input!
 tfc.tooltip.crucible_result=Result:
 tfc.tooltip.barrel_seal=Seal Barrel
 tfc.tooltip.barrel_unseal=Unseal Barrel
