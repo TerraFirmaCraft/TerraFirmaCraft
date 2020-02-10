@@ -239,11 +239,19 @@ public class TEAnvilTFC extends TEInventory
             // Add step to stack + tile
             if (step != null)
             {
-                cap.addStep(step);
-                steps = cap.getSteps().copy();
-                workingProgress += step.getStepAmount();
-                //The line below should be changed to a "HIT" sound, not 3 hits(minecraft default)
-                world.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                if (!cap.getSteps().hasWork() && step.getStepAmount() < 0)
+                {
+                    // Newbie helper
+                    // Never start with a red step (which would immediately destroy input)
+                    player.sendStatusMessage(new TextComponentTranslation("tfc.tooltip.anvil_safety"), false);
+                }
+                else
+                {
+                    cap.addStep(step);
+                    steps = cap.getSteps().copy();
+                    workingProgress += step.getStepAmount();
+                    world.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                }
             }
 
             // Handle possible recipe completion

@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -56,7 +57,8 @@ public class PacketAnvilUpdate implements IMessage
         workProgress = buffer.readInt();
         workTarget = buffer.readInt();
         pos = BlockPos.fromLong(buffer.readLong());
-        steps = ForgeSteps.deserialize(buffer.readInt());
+        steps = new ForgeSteps();
+        steps.deserializeNBT(ByteBufUtils.readTag(buffer));
         recipe = Helpers.readResourceLocation(buffer);
     }
 
@@ -66,7 +68,7 @@ public class PacketAnvilUpdate implements IMessage
         buffer.writeInt(workProgress);
         buffer.writeInt(workTarget);
         buffer.writeLong(pos.toLong());
-        buffer.writeInt(steps.serialize());
+        ByteBufUtils.writeTag(buffer, steps.serializeNBT());
         Helpers.writeResourceLocation(buffer, recipe);
     }
 
