@@ -132,6 +132,12 @@ public class TELogPile extends TEInventory implements ITickable
         return OreDictionaryHelper.doesStackMatchOre(stack, "logWood");
     }
 
+    /**
+     * Insert one log into the pile
+     *
+     * @param stack the log ItemStack to be inserted
+     * @return true if one log was inserted, false otherwise
+     */
     public boolean insertLog(ItemStack stack)
     {
         stack.setCount(1);
@@ -143,6 +149,27 @@ public class TELogPile extends TEInventory implements ITickable
             }
         }
         return false;
+    }
+
+    /**
+     * Try to insert logs into every possible slot
+     *
+     * @param stack the log ItemStack to be inserted
+     * @return 0 if none was inserted, number of logs inserted in the pile otherwise
+     */
+    public int insertLogs(ItemStack stack)
+    {
+        int start = stack.getCount();
+        for (int i = 0; i < inventory.getSlots(); i++)
+        {
+            stack = inventory.insertItem(i, stack, false);
+            if (stack.isEmpty())
+            {
+                break;
+            }
+        }
+        int remaining = stack.isEmpty() ? 0 : stack.getCount();
+        return start - remaining;
     }
 
     public ItemStack getLog()
