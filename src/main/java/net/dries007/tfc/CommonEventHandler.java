@@ -38,6 +38,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -562,6 +563,16 @@ public final class CommonEventHandler
             {
                 event.setResult(Event.Result.DENY);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
+    {
+        // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
+        if (ConfigTFC.GENERAL.forceNoVanillaAnimals && Helpers.isVanillaAnimal(event.getEntity()))
+        {
+            event.setCanceled(true);
         }
     }
 

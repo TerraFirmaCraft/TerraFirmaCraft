@@ -273,6 +273,10 @@ config.tfc.general.overworkChunk.tooltip=If true, limits for gold pan and sluice
 config.tfc.general.forceNoVanillaNaturalRegeneration=Force No Vanilla Natural Regeneration
 config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will force the gamerule naturalRegeneration to be false. Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster).
 
+config.tfc.general.forceNoVanillaAnimals=Force No Vanilla Animals
+config.tfc.general.forceNoVanillaAnimals.tooltip=If true, this will prevent vanilla animals from spawning under any circumstances (ie: mob spawner, egg throw, etc).
+
+
 config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
 
