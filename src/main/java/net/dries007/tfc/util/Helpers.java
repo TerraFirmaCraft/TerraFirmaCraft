@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCommandBlock;
 import net.minecraft.block.BlockStructure;
@@ -19,6 +20,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
@@ -47,9 +49,24 @@ public final class Helpers
 
     private static final boolean JEI = Loader.isModLoaded("jei");
 
+    private static final Set<Class> VANILLA_ANIMALS = Sets.newHashSet(EntityCow.class, EntitySheep.class,
+        EntityPig.class, EntityMule.class, EntityHorse.class, EntityDonkey.class, EntityChicken.class,
+        EntityRabbit.class, EntityWolf.class);
+
     public static boolean isJEIEnabled()
     {
         return JEI;
+    }
+
+    /**
+     * Return true if the entity is from vanilla and have a TFC counterpart
+     *
+     * @param entity the entity to check
+     * @return true if it has a TFC counterpart, false otherwise
+     */
+    public static boolean isVanillaAnimal(Entity entity)
+    {
+        return VANILLA_ANIMALS.contains(entity.getClass());
     }
 
     /**

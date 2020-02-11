@@ -256,6 +256,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.forceNoVanillaNaturalRegeneration")
         public boolean forceNoVanillaNaturalRegeneration = true;
 
+        @Config.Comment({"If true, this will prevent vanilla animals from spawning under any circumstances (ie: mob spawner, egg throw, etc)."})
+        @Config.LangKey("config." + MOD_ID + ".general.forceNoVanillaAnimals")
+        public boolean forceNoVanillaAnimals = true;
+
         @Config.Comment("Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?")
         @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
         public boolean peacefulDifficultyPassiveRegeneration = false;
