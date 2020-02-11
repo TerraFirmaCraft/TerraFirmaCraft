@@ -51,6 +51,22 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never fall.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
+        public boolean disableFallableBlocks = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyOre")
+        public boolean disableFallableBlocksDestroyOre = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy loose items.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyLooseItems")
+        public boolean disableFallableBlocksDestroyLooseItems = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never hurt entities.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksHurtEntities")
+        public boolean disableFallableBlocksHurtEntities = false;
+
         @Config.Comment("If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.")
         @Config.LangKey("config." + MOD_ID + ".general.forceTFCWorldTypeOnServer")
         public boolean forceTFCWorldTypeOnServer = true;

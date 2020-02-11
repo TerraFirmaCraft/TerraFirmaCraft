@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.entity;
 
+import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.base.Optional;
@@ -12,7 +13,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -20,11 +23,14 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.util.IFallingBlock;
 
 /**
@@ -153,6 +159,12 @@ public class EntityFallingBlockTFC extends Entity
                     failedBreakCheck = true;
                     return;
                 }
+                else if (!ConfigTFC.GENERAL.disableFallableBlocksDestroyOre && world.getBlockState(pos.down()).getBlock() instanceof BlockOreTFC)
+                {
+                    world.destroyBlock(pos.down(), false);
+                    failedBreakCheck = true;
+                    return;
+                }
             }
 
             final IBlockState current = world.getBlockState(pos);
@@ -271,5 +283,25 @@ public class EntityFallingBlockTFC extends Entity
     public boolean ignoreItemEntityData()
     {
         return true;
+    }
+
+    @Override
+    public void fall(float distance, float damageMultiplier)
+    {
+        if (distance > 1.0F)
+        {
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+            for (Entity entity : list)
+            {
+                if (!ConfigTFC.GENERAL.disableFallableBlocksHurtEntities && entity instanceof EntityLivingBase)
+                {
+                    entity.attackEntityFrom(DamageSource.FALLING_BLOCK, distance);
+                }
+                else if (!ConfigTFC.GENERAL.disableFallableBlocksDestroyLooseItems && entity instanceof EntityItem)
+                {
+                    entity.setDead();
+                }
+            }
+        }
     }
 }

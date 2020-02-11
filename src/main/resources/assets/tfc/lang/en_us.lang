@@ -150,6 +150,18 @@ config.tfc.general.toolip=Non side specific settings.
 config.tfc.general.debug=Debug Mode
 config.tfc.general.debug.tooltip=Various debug options. Activates some extra wand features. Enables extra item tooltips.
 
+config.tfc.general.disableFallableBlocks=Disable Fallable Blocks
+config.tfc.general.disableFallableBlocks.tooltip=If true, fallable blocks (ie: dirt, stone) will never fall.
+
+config.tfc.general.disableFallableBlocksDestroyOre=Disable Falling Blocks Destroying Ore
+config.tfc.general.disableFallableBlocksDestroyOre.tooltip=If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.
+
+config.tfc.general.disableFallableBlocksDestroyLooseItems=Disable Falling blocks Destroying Loose Items
+config.tfc.general.disableFallableBlocksDestroyLooseItems.tooltip=If true, fallable blocks (ie: dirt, stone) will never destroy loose items.
+
+config.tfc.general.disableFallableBlocksHurtEntities=Disable Falling Blocks Hurting Entities
+config.tfc.general.disableFallableBlocksHurtEntities.tooltip=If true, fallable blocks (ie: dirt, stone) will never hurt entities.
+
 config.tfc.general.forceTFCWorldTypeOnServer=Default level-type Override
 config.tfc.general.forceTFCWorldTypeOnServer.tooltip=If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.
 

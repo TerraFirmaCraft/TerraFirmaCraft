@@ -19,6 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 import net.dries007.tfc.objects.entity.EntityFallingBlockTFC;
@@ -49,7 +50,7 @@ public interface IFallingBlock
     default boolean shouldFall(World world, BlockPos posToFallAt, BlockPos originalPos)
     {
         // Can the block fall at a particular position; ignore horizontal falling
-        return canFallThrough(world, posToFallAt.down(), world.getBlockState(originalPos).getMaterial()) && !BlockSupport.isBeingSupported(world, originalPos);
+        return !ConfigTFC.GENERAL.disableFallableBlocks && canFallThrough(world, posToFallAt.down(), world.getBlockState(originalPos).getMaterial()) && !BlockSupport.isBeingSupported(world, originalPos);
     }
 
     // Get the position that the block will fall from (allows for horizontal falling)
