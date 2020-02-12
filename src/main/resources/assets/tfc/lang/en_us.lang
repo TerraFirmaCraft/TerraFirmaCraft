@@ -63,6 +63,7 @@ tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
 tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
 tfc.tooltip.smithing_skill=Skill Bonus: %0.1f%%
 tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
+tfc.tooltip.crucible_less_than_one=< 1 unit
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=This %s is too old to mate.
