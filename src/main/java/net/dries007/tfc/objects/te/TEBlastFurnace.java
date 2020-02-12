@@ -92,7 +92,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
 
         fuelStacks.clear();
         NBTTagList fuels = nbt.getTagList("fuels", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < ores.tagCount(); i++)
+        for (int i = 0; i < fuels.tagCount(); i++)
         {
             fuelStacks.add(new ItemStack(fuels.getCompoundTagAt(i)));
         }
@@ -119,7 +119,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         {
             fuels.appendTag(stack.serializeNBT());
         }
-        nbt.setTag("fuels", ores);
+        nbt.setTag("fuels", fuels);
         nbt.setLong("burnTicksLeft", burnTicksLeft);
         nbt.setLong("airTicks", airTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
