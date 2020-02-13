@@ -190,6 +190,9 @@ config.tfc.general.temperatureModifierGlobal.tooltip=Modifier for how quickly it
 config.tfc.general.temperatureModifierHeating=Heating Temperature Modifier
 config.tfc.general.temperatureModifierHeating.tooltip=Modifier for how quickly devices (i.e. charcoal forge, firepit) gain and lose heat. Smaller number = slower temperature changes.
 
+config.tfc.general.enableCruciblePouringAllSlots=Enable Crucible Pouring from All Slots
+config.tfc.general.enableCruciblePouringAllSlots.tooltip=Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots.
+
 config.tfc.general.foodDecayModifier=Food Decay Modifier
 config.tfc.general.foodDecayModifier.tooltip=Modifier for how quickly food will decay. Larger values = faster decay. Set to 0 for infinite expiration time
 

@@ -113,6 +113,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
 
         // Input draining
         boolean needsClientUpdate = false;
+        boolean canFill = lastFillTimer <= 0;
         for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
         {
             ItemStack inputStack = inventory.getStackInSlot(i);
@@ -143,7 +144,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
             if (cap instanceof IMoldHandler)
             {
                 IMoldHandler mold = (IMoldHandler) cap;
-                if (lastFillTimer <= 0)
+                if (canFill)
                 {
                     if (mold.isMolten())
                     {
@@ -153,6 +154,10 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
                         if (fluidStack != null && fluidStack.amount > 0)
                         {
                             lastFillTimer = 5;
+                            if (!ConfigTFC.GENERAL.enableCruciblePouringAllSlots)
+                            {
+                                canFill = false;
+                            }
                             alloy.add(metal, fluidStack.amount);
                             needsClientUpdate = true;
                         }
