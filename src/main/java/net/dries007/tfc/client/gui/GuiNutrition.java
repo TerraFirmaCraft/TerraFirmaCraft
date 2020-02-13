@@ -43,7 +43,7 @@ public class GuiNutrition extends GuiContainerTFC
         {
             for (Nutrient n : Nutrient.values())
             {
-                cachedNutrients[n.ordinal()] = ((IFoodStatsTFC) foodStats).getNutrient(n);
+                cachedNutrients[n.ordinal()] = ((IFoodStatsTFC) foodStats).getNutrition().getNutrient(n);
             }
         }
     }

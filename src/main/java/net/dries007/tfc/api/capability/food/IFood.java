@@ -28,15 +28,6 @@ import net.dries007.tfc.util.calendar.ICalendarFormatted;
 public interface IFood extends INBTSerializable<NBTTagCompound>
 {
     /**
-     * Gets the nutrient value (only a single item, not the sum of the stack)
-     *
-     * @param stack    the stack to get the nutrient of
-     * @param nutrient the nutrient in question
-     * @return a value, current range is around 0 - 3
-     */
-    float getNutrient(ItemStack stack, Nutrient nutrient);
-
-    /**
      * The timestamp that this food was created
      * Used to calculate expiration date
      * Rotten food uses {@code Long.MIN_VALUE} as the creation date
@@ -68,19 +59,15 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     }
 
     /**
-     * How much thirst is restored when this item is eaten.
-     * Drinking water from a water source gives 15, for reference
+     * Get a visible measure of all immutable data associated with food
+     * - Nutrition information
+     * - Hunger / Saturation
+     * - Water (Thirst)
      *
-     * @return a thirst value, roughly in the range 0 - 15
+     * @see FoodData
      */
-    float getWater();
-
-    /**
-     * This is basically a saturation modifier
-     *
-     * @return a value roughly in the range 0.0 - 1.0
-     */
-    float getCalories();
+    @Nonnull
+    FoodData getData();
 
     /**
      * Gets the current decay date modifier, including traits
@@ -115,7 +102,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      * @param text  the tooltip
      */
     @SideOnly(Side.CLIENT)
-    default void addNutrientInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
+    default void addTooltipInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
     {
         if (isRotten())
         {
@@ -155,6 +142,8 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         {
             text.add("Created at " + getCreationDate());
         }
+
+        // todo: add nutrient info
 
         // Add info for each trait
         for (FoodTrait trait : getTraits())

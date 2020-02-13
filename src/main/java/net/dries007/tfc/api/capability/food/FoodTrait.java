@@ -21,7 +21,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class FoodTrait
 {
-    public static final FoodTrait SMOKED;
     public static final FoodTrait SALTED;
     public static final FoodTrait BRINED; // No decay modifier, required to pickle foods
     public static final FoodTrait PICKLED;
@@ -34,7 +33,6 @@ public class FoodTrait
     {
         // These must be initialized after TRAITS is, to avoid NPE
 
-        SMOKED = new FoodTrait("smoked", 0.5f);
         BRINED = new FoodTrait("brined", 1.0f);
         SALTED = new FoodTrait("salted", 0.5f);
         PICKLED = new FoodTrait("pickled", 0.5f);

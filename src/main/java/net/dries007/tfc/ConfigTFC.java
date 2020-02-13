@@ -374,6 +374,11 @@ public class ConfigTFC
         @Config.RangeInt(min = 100)
         @Config.LangKey("config." + MOD_ID + ".general.tankCrucible")
         public int tankCrucible = 3000;
+
+        @Config.Comment("This is the amount of hunger (consumed) required for a player to completely refresh their nutrition stats. In TFC, almost all foods have 4 hunger, so this is 4x [number of foods required to refresh nutrition stats]. This will update next time you consume a food.")
+        @Config.LangKey("config." + MOD_ID + ".general.nutritionRotationHungerWindow")
+        @Config.RangeInt(min = 4)
+        public int nutritionRotationHungerWindow = 4 * 20;
     }
 
     public static class ClientCFG
