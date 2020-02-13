@@ -6,7 +6,10 @@
 package net.dries007.tfc.client.gui;
 
 import java.io.IOException;
+import java.util.List;
+import javax.annotation.Nonnull;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -36,6 +39,8 @@ public class GuiAnvilPlan extends GuiContainerTE<TEAnvilTFC>
     public static final ResourceLocation PLAN_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/anvil_plan.png");
 
     private final ItemStack inputStack;
+    private int page;
+    private GuiButton buttonLeft, buttonRight;
 
     public GuiAnvilPlan(Container container, InventoryPlayer playerInv, TEAnvilTFC tile)
     {
@@ -49,20 +54,31 @@ public class GuiAnvilPlan extends GuiContainerTE<TEAnvilTFC>
     public void initGui()
     {
         super.initGui();
+        page = 0;
+        updatePage();
+    }
 
-        int buttonID = -1;
-        int posX = 7;
-        int posY = 25;
-        for (AnvilRecipe recipe : AnvilRecipe.getAllFor(inputStack))
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        if (button instanceof GuiButtonAnvilPlanIcon)
         {
-            addButton(new GuiButtonAnvilPlanIcon(recipe, ++buttonID, guiLeft + posX, guiTop + posY));
-            posX += 18;
-            if (posX == 169)
-            {
-                posY += 18;
-                posX = 7;
-            }
+            // This fires when you select a plan in the Plan GUI
+            TerraFirmaCraft.getLog().info("Pressed the plan button");
+            ResourceLocation recipeName = ((GuiButtonAnvilPlanIcon) button).getRecipeName();
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id, new NBTBuilder().setString("recipe", recipeName.toString()).build()));
         }
+        else if (button == buttonLeft)
+        {
+            page--;
+            updatePage();
+        }
+        else if (button == buttonRight)
+        {
+            page++;
+            updatePage();
+        }
+        super.actionPerformed(button);
     }
 
     @Override
@@ -100,16 +116,72 @@ public class GuiAnvilPlan extends GuiContainerTE<TEAnvilTFC>
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 
-    @Override
-    protected void actionPerformed(GuiButton button) throws IOException
+    private void updatePage()
     {
-        if (button instanceof GuiButtonAnvilPlanIcon)
+        buttonList.clear();
+        int buttonID = -1;
+        List<AnvilRecipe> recipeList = AnvilRecipe.getAllFor(inputStack);
+        for (int i = page * 18; i < (page + 1) * 18 && i < recipeList.size(); i++)
         {
-            // This fires when you select a plan in the Plan GUI
-            TerraFirmaCraft.getLog().info("Pressed the plan button");
-            ResourceLocation recipeName = ((GuiButtonAnvilPlanIcon) button).getRecipeName();
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id, new NBTBuilder().setString("recipe", recipeName.toString()).build()));
+            int posX = 7 + (i % 9) * 18;
+            int posY = 25 + ((i % 18) / 9) * 18;
+            addButton(new GuiButtonAnvilPlanIcon(recipeList.get(i), ++buttonID, guiLeft + posX, guiTop + posY));
         }
-        super.actionPerformed(button);
+        buttonLeft = addButton(new GuiButton(++buttonID, guiLeft + 7, guiTop + 65, 14, 14, "")
+        {
+            @Override
+            public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks)
+            {
+                if (this.visible)
+                {
+                    mc.getTextureManager().bindTexture(PLAN_BACKGROUND);
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                    this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                    int i = this.getHoverState(this.hovered);
+                    GlStateManager.enableBlend();
+                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                    this.drawTexturedModalRect(this.x, this.y, 176, 18 + i * 14, this.width, this.height);
+                    this.mouseDragged(mc, mouseX, mouseY);
+                }
+            }
+        });
+
+        buttonRight = addButton(new GuiButton(++buttonID, guiLeft + 154, guiTop + 65, 14, 14, "")
+        {
+            @Override
+            public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks)
+            {
+                if (this.visible)
+                {
+                    mc.getTextureManager().bindTexture(PLAN_BACKGROUND);
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                    this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                    int i = this.getHoverState(this.hovered);
+                    GlStateManager.enableBlend();
+                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                    this.drawTexturedModalRect(this.x, this.y, 190, 18 + i * 14, this.width, this.height);
+                    this.mouseDragged(mc, mouseX, mouseY);
+                }
+            }
+        });
+
+        if (recipeList.size() <= 18)
+        {
+            buttonLeft.visible = false;
+            buttonRight.visible = false;
+        }
+        else
+        {
+            if (page <= 0)
+            {
+                buttonLeft.enabled = false;
+            }
+            if ((page + 1) * 18 >= recipeList.size())
+            {
+                buttonRight.enabled = false;
+            }
+        }
     }
 }
