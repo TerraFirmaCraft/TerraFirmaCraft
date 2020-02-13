@@ -80,9 +80,6 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("food/sugarcane")
     public static final Item SUGARCANE = getNull();
 
-    @GameRegistry.ObjectHolder("ceramics/fire_clay")
-    public static final ItemMisc FIRE_CLAY = getNull();
-
     @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
     public static final ItemPottery UNFIRED_FIRE_BRICK = getNull();
     @GameRegistry.ObjectHolder("ceramics/fired/fire_brick")

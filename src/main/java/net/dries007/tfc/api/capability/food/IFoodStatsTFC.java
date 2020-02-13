@@ -9,13 +9,14 @@ import javax.annotation.Nonnull;
 
 public interface IFoodStatsTFC
 {
-    float MAX_PLAYER_NUTRIENTS = 100f;
     float MAX_PLAYER_THIRST = 100f;
-    int FOOD_HUNGER_AMOUNT = 4; // The amount of hunger restored by eating any food, regardless of type
 
     float getHealthModifier();
 
     float getThirst();
+
+    @Nonnull
+    NutritionStats getNutrition();
 
     /**
      * Used to drink from a water source. Has an internal cooldown

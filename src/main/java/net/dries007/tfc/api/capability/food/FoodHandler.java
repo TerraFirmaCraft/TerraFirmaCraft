@@ -10,7 +10,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -37,45 +36,28 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     private final List<FoodTrait> foodTraits;
-    private final float[] nutrients;
-    private final float decayModifier;
-    private final float water;
-    private final float calories;
+    private final FoodData data;
 
     private long creationDate;
     private boolean isNonDecaying; // This is intentionally not serialized, as we don't want it to preserve over `ItemStack.copy()` operations
 
     public FoodHandler()
     {
-        this(null, new float[] {0f, 0f, 0f, 0f, 0f}, 0.5f, 0f, 1f);
+        this(null, new FoodData(4, 0, 0, 0, 0, 0, 0, 0, 1));
     }
 
     public FoodHandler(@Nullable NBTTagCompound nbt, @Nonnull Food food)
     {
-        this(nbt, food.getNutrients(), food.getCalories(), food.getWater(), food.getDecayModifier());
+        this(nbt, food.getData());
     }
 
-    public FoodHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier)
+    public FoodHandler(@Nullable NBTTagCompound nbt, FoodData data)
     {
         this.foodTraits = new ArrayList<>(2);
-        this.nutrients = new float[Nutrient.TOTAL];
-        this.decayModifier = decayModifier;
-        this.water = water;
-        this.calories = calories;
+        this.data = data;
         this.isNonDecaying = FoodHandler.markStacksNonDecaying;
-        System.arraycopy(nutrients, 0, this.nutrients, 0, nutrients.length);
 
         deserializeNBT(nbt);
-    }
-
-    @Override
-    public float getNutrient(ItemStack stack, Nutrient nutrient)
-    {
-        if (isRotten())
-        {
-            return 0;
-        }
-        return nutrients[nutrient.ordinal()];
     }
 
     @Override
@@ -118,22 +100,17 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     @Override
-    public float getWater()
+    @Nonnull
+    public FoodData getData()
     {
-        return water;
-    }
-
-    @Override
-    public float getCalories()
-    {
-        return calories;
+        return data;
     }
 
     @Override
     public float getDecayDateModifier()
     {
         // Decay modifiers are higher = shorter
-        float mod = decayModifier * (float) ConfigTFC.GENERAL.foodDecayModifier;
+        float mod = data.getDecayModifier() * (float) ConfigTFC.GENERAL.foodDecayModifier;
         for (FoodTrait trait : foodTraits)
         {
             mod *= trait.getDecayModifier();

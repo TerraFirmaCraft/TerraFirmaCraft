@@ -60,10 +60,7 @@ import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.EggHandler;
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.FoodHandler;
-import net.dries007.tfc.api.capability.food.FoodStatsTFC;
-import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import net.dries007.tfc.api.capability.food.*;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.ForgeableHeatableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -350,7 +347,7 @@ public final class CommonEventHandler
                 }
                 else
                 {
-                    foodHandler = new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1);
+                    foodHandler = new FoodHandler(stack.getTagCompound(), new FoodData());
                     event.addCapability(CapabilityFood.KEY, foodHandler);
                 }
             }
