@@ -137,7 +137,7 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
      *
      * @param worldTimeToSetTo a world time, obtained from {@link World#getWorldTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
      */
-    public void setTimeFromWorldTime(long worldTimeToSetTo)
+    public long setTimeFromWorldTime(long worldTimeToSetTo)
     {
         // Calculate the offset to jump to
         long worldTimeJump = (worldTimeToSetTo % ICalendar.TICKS_IN_DAY) - CalendarTFC.CALENDAR_TIME.getWorldTime();
@@ -150,6 +150,7 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
         playerTime += worldTimeJump;
 
         TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+        return worldTimeJump;
     }
 
     /**
