@@ -292,10 +292,8 @@ public class BlockSupport extends Block
         }
         else
         {
-            if (!isConnectable(world, pos, side.getOpposite()))
-            {
-                return false;
-            }
+            if (!isConnectable(world, pos, side.getOpposite())) return false;
+            if (!isThreeTall(world, pos.offset(side.getOpposite()))) return false;
             int distance = getHorizontalDistance(side, world, pos);
             return distance > 0;
         }
@@ -392,6 +390,28 @@ public class BlockSupport extends Block
             return offsetAxis == EnumFacing.Axis.Y || offsetAxis == facing.getAxis();
         }
         return false;
+    }
+
+    /**
+     * Checks if this block is a vertical support beam of height 3 or higher
+     *
+     * @param world the world this block is in
+     * @param pos the position of the block
+     * @return true if this is a vertical support beam three blocks or higher, false otherwise
+     */
+    private boolean isThreeTall(IBlockAccess world, BlockPos pos)
+    {
+        // if the block is invalid it definitely can't support a vertical beam
+        if (!canBlockStay(world, pos)) return false;
+        IBlockState state = world.getBlockState(pos);
+        EnumFacing.Axis axis = state.getValue(AXIS);
+        // sideways supports are never three tall
+        if (axis != EnumFacing.Axis.Y) return false;
+        // if either of the two block beneath this block are not block supports, then this isn't three tall
+        if (!(world.getBlockState(pos.down()).getBlock() instanceof BlockSupport)) return false;
+        if (!(world.getBlockState(pos.down().down()).getBlock() instanceof BlockSupport)) return false;
+        // passed all the checks
+        return true;
     }
 
     /**
