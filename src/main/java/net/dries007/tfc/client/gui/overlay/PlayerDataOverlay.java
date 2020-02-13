@@ -29,6 +29,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.player.IPlayerData;
@@ -65,7 +66,10 @@ public final class PlayerDataOverlay
     {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.player.inventory.player;
-        GuiIngameForge.renderFood = false;
+        GuiIngameForge.renderFood = ConfigTFC.CLIENT.useVanillaHunger;
+        GuiIngameForge.renderHealth = ConfigTFC.CLIENT.useVanillaHealth;
+        GuiIngameForge.renderArmor = ConfigTFC.CLIENT.useVanillaHealth; // Draws on top of health
+        GuiIngameForge.renderExperiance = ConfigTFC.CLIENT.useVanillaHealth && ConfigTFC.CLIENT.hideThirstBar; // Since it's below both, makes sense needing both enabled
 
         // We check for crosshairs just because it's always drawn and is before air bar
         if (event.getType() != ElementType.CROSSHAIRS)
@@ -74,16 +78,19 @@ public final class PlayerDataOverlay
         }
 
         FoodStats foodStats = player.getFoodStats();
-        float baseMaxHealth = 1000;
+        float baseMaxHealth = (float) (20 * ConfigTFC.CLIENT.healthDisplayModifier);
         float currentThirst = 100;
         if (foodStats instanceof IFoodStatsTFC)
         {
             IFoodStatsTFC foodStatsTFC = (IFoodStatsTFC) foodStats;
-            baseMaxHealth = 20 * foodStatsTFC.getHealthModifier() * 50; //20 = 1000 HP in overlay
+            baseMaxHealth = (float) (20 * foodStatsTFC.getHealthModifier() * ConfigTFC.CLIENT.healthDisplayModifier);
             currentThirst = foodStatsTFC.getThirst();
         }
         // This is for air to be drawn above our bars
-        GuiIngameForge.right_height += 10;
+        if (!ConfigTFC.CLIENT.hideThirstBar || !ConfigTFC.CLIENT.useVanillaHunger)
+        {
+            GuiIngameForge.right_height += ConfigTFC.CLIENT.useVanillaHunger ? 6 : 10;
+        }
 
         ScaledResolution sr = event.getResolution();
 
@@ -98,26 +105,8 @@ public final class PlayerDataOverlay
 
         if (mc.playerController.gameIsSurvivalOrAdventure())
         {
-            //Draw Health
             GL11.glEnable(GL11.GL_BLEND);
-            drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
-            float curHealth = player.getHealth() * baseMaxHealth / (float) 20;
-            float percentHealth = curHealth / baseMaxHealth;
-            float surplusPercent = Math.max(percentHealth - 1, 0);
-            int uSurplus = 90;
-            if (percentHealth > 1) percentHealth = 1;
 
-            drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percentHealth), 10);
-            while (surplusPercent > 0)
-            {
-                //Draw beyond max health bar(if other mods adds more health)
-                float percent = Math.min(surplusPercent, 1);
-                drawTexturedModalRect(mid - 91, healthRowHeight, uSurplus, 10, (int) (90 * percent), 10);
-                surplusPercent -= 1.0f;
-                uSurplus = uSurplus == 90 ? 0 : 90; //To alternate between red and yellow bars (if mods adds that much surplus health)
-                //To anyone seeing this: feel free to make a colorize(Hue tweaking?) function to get other color bars
-                //Or just add more color bars to overlay icons.
-            }
             //Draw Food and Water
             float foodLevel = player.getFoodStats().getFoodLevel();
             float percentFood = foodLevel / 20f;
@@ -125,23 +114,61 @@ public final class PlayerDataOverlay
 
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            drawTexturedModalRect(mid + 1, healthRowHeight, 0, 20, 90, 5);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-            drawTexturedModalRect(mid + 1, healthRowHeight, 0, 25, (int) (90 * percentFood), 5);
+            // Food
+            if (!ConfigTFC.CLIENT.useVanillaHunger)
+            {
+                drawTexturedModalRect(mid + 1, healthRowHeight, 0, 20, 90, 5);
+                drawTexturedModalRect(mid + 1, healthRowHeight, 0, 25, (int) (90 * percentFood), 5);
+            }
 
-            drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 20, 90, 5);
-            drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 25, (int) (90 * percentThirst), 5);
+            // Water
+            if (!ConfigTFC.CLIENT.hideThirstBar)
+            {
+                drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 20, 90, 5);
+                drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 25, (int) (90 * percentThirst), 5);
+            }
 
-            //Draw Notifications
-            String healthString = ((int) curHealth) + "/" + ((int) (baseMaxHealth));
-            fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, Color.white.getRGB());
+            if (!ConfigTFC.CLIENT.useVanillaHealth)
+            {
+                //Draw Health
+                drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
+                float curHealth = player.getHealth() * baseMaxHealth / (float) 20;
+                float percentHealth = curHealth / baseMaxHealth;
+                float surplusPercent = Math.max(percentHealth - 1, 0);
+                int uSurplus = 90;
+                if (percentHealth > 1) percentHealth = 1;
+
+                drawTexturedModalRect(mid - 91, healthRowHeight, 0, 10, (int) (90 * percentHealth), 10);
+                while (surplusPercent > 0)
+                {
+                    //Draw beyond max health bar(if other mods adds more health)
+                    float percent = Math.min(surplusPercent, 1);
+                    drawTexturedModalRect(mid - 91, healthRowHeight, uSurplus, 10, (int) (90 * percent), 10);
+                    surplusPercent -= 1.0f;
+                    uSurplus = uSurplus == 90 ? 0 : 90; //To alternate between red and yellow bars (if mods adds that much surplus health)
+                    //To anyone seeing this: feel free to make a colorize(Hue tweaking?) function to get other color bars
+                    //Or just add more color bars to overlay icons.
+                }
+                //Draw Health value
+                String healthString;
+                try
+                {
+                    healthString = String.format(ConfigTFC.CLIENT.healthDisplayFormat, curHealth, baseMaxHealth);
+                }
+                catch (Exception e)
+                {
+                    // Silly users, illegally formatting their health just to crash
+                    healthString = String.format("%.0f / %.0f", curHealth, baseMaxHealth);
+                }
+                fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, Color.white.getRGB());
+            }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             mc.renderEngine.bindTexture(MC_ICONS);
 
             //Draw experience bar when not riding anything, riding a non-living entity such as a boat/minecart, or riding a pig.
-            if (!(player.getRidingEntity() instanceof EntityLiving))
+            if (!(player.getRidingEntity() instanceof EntityLiving) && !GuiIngameForge.renderExperiance)
             {
                 int cap = player.xpBarCap();
                 int left = mid - 91;
@@ -174,7 +201,7 @@ public final class PlayerDataOverlay
             }
 
             // Draw mount's health bar
-            if (player.getRidingEntity() instanceof EntityLivingBase)
+            if (player.getRidingEntity() instanceof EntityLivingBase && !ConfigTFC.CLIENT.useVanillaHealth)
             {
                 GuiIngameForge.renderHealthMount = false;
                 mc.renderEngine.bindTexture(ICONS);

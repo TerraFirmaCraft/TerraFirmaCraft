@@ -368,6 +368,21 @@ config.tfc.client.propickOutputToActionBar.tooltip=Should the prospectors pick o
 config.tfc.client.rottenFoodOverlayColor=Rotten Food Overlay Color
 config.tfc.client.rottenFoodOverlayColor.tooltip=The color to render on top of rotten food. Express as a 265 bit color value: 0xFFFFFF = white, 0x000000 = black
 
+config.tfc.client.useVanillaHealth=Use Vanilla Health Bar
+config.tfc.client.useVanillaHealth.tooltip=Disable TFC health bar and use vanilla instead?
+
+config.tfc.client.healthDisplayModifier=Health Display Modifier
+config.tfc.client.healthDisplayModifier.tooltip=If TFC health bar is enabled, use this health display modifier(ie: 20(vanilla)*50(modifier) = 1000HP). This is a display modifier only, internal health value is not affected!
+
+config.tfc.client.healthDisplayFormat=Health Display Format
+config.tfc.client.healthDisplayFormat.tooltip=If TFC health bar is enabled, use this format to display health (ie: %.0f / %.0f = 500 / 1000, %.1f / %.0f = 15.5 / 20). Please use float formats, otherwise TFC will ignore this and use the default!
+
+config.tfc.client.useVanillaHunger=Use Vanilla Hunger Bar
+config.tfc.client.useVanillaHunger.tooltip=Disable TFC hunger bar and use vanilla instead?
+
+config.tfc.client.hideThirstBar=Hide Thirst Bar
+config.tfc.client.hideThirstBar.tooltip=Hide the thirst bar?
+
 ## World Config
 config.tfc.world=World Gen Settings
 config.tfc.world.tooltip=Various aspects of world generation

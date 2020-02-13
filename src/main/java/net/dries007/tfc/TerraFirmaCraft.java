@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.PropertyManager;
-import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -168,9 +167,6 @@ public final class TerraFirmaCraft
             // Enable overlay to render health, thirst and hunger bars, TFC style.
             // Also renders animal familiarity
             MinecraftForge.EVENT_BUS.register(PlayerDataOverlay.getInstance());
-            GuiIngameForge.renderHealth = false;
-            GuiIngameForge.renderArmor = false;
-            GuiIngameForge.renderExperiance = false;
         }
         else
         {
