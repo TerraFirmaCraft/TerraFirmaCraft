@@ -513,6 +513,35 @@ public final class CommonEventHandler
         }
     }
 
+    /*
+     * Fired on server, sync capabilities to client whenever player changes dimension.
+     */
+    @SubscribeEvent
+    public static void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
+    {
+        if (event.player instanceof EntityPlayerMP)
+        {
+            // Capability Sync Handler
+            final EntityPlayerMP player = (EntityPlayerMP) event.player;
+            player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+
+            // Food Stats
+            FoodStats originalStats = event.player.getFoodStats();
+            if (!(originalStats instanceof FoodStatsTFC))
+            {
+                event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
+            }
+
+            // Skills
+            IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (skills != null)
+            {
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
+            }
+        }
+    }
+
     /**
      * Only fired on server
      */
