@@ -115,6 +115,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")
         public double temperatureModifierGlobal = 0.5; // todo: items cool too fast at 0.5, needs tweaking
 
+        @Config.Comment("Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots.")
+        @Config.LangKey("config." + MOD_ID + ".general.enableCruciblePouringAllSlots")
+        public boolean enableCruciblePouringAllSlots = false;
+
         @Config.Comment("Modifier for how quickly devices (i.e. charcoal forge, firepit) gain and lose heat. Smaller number = slower temperature changes.")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierHeating")
