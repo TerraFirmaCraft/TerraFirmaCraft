@@ -378,6 +378,27 @@ public class ConfigTFC
         @Config.Comment("The color to render on top of rotten food. Express as a 265 bit color value: 0xFFFFFF = white, 0x000000 = black")
         @Config.LangKey("config." + MOD_ID + ".client.rottenFoodOverlayColor")
         public int rottenFoodOverlayColor = 0x88CC33;
+
+        @Config.Comment({"Disable TFC health bar and use vanilla instead?"})
+        @Config.LangKey("config." + MOD_ID + ".client.useVanillaHealth")
+        public boolean useVanillaHealth = false;
+
+        @Config.Comment({"If TFC health bar is enabled, use this health display modifier(ie: 20(vanilla)*50(modifier) = 1000HP).", "This is a display modifier only, internal health value is not affected!"})
+        @Config.LangKey("config." + MOD_ID + ".client.healthDisplayModifier")
+        @Config.RangeDouble(min = 0.5)
+        public double healthDisplayModifier = 50;
+
+        @Config.Comment({"If TFC health bar is enabled, use this format to display health (ie: %.0f / %.0f = 500 / 1000, %.1f / %.0f = 15.5 / 20).", "Please use float formats, otherwise TFC will ignore this and use the default!"})
+        @Config.LangKey("config." + MOD_ID + ".client.healthDisplayFormat")
+        public String healthDisplayFormat = "%.0f / %.0f";
+
+        @Config.Comment({"Disable TFC hunger bar and use vanilla instead?"})
+        @Config.LangKey("config." + MOD_ID + ".client.useVanillaHunger")
+        public boolean useVanillaHunger = false;
+
+        @Config.Comment({"Hide the thirst bar?"})
+        @Config.LangKey("config." + MOD_ID + ".client.hideThirstBar")
+        public boolean hideThirstBar = false;
     }
 
     public static class WorldCFG
