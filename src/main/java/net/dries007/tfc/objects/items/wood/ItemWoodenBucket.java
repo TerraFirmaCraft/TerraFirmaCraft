@@ -124,7 +124,7 @@ public class ItemWoodenBucket extends ItemTFC
                             worldIn.destroyBlock(pos, true); //drop the replaceable block (ie: torches, flowers...)
                         }
 
-                        FluidStack fluidStack = bucketCap.drain(CAPACITY, true);
+                        FluidStack fluidStack = bucketCap.drain(CAPACITY, !playerIn.isCreative());
                         if (fluidStack != null)
                         {
                             Fluid fluid = fluidStack.getFluid();
