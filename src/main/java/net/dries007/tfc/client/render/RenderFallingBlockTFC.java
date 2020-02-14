@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.client.render;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
@@ -82,7 +83,7 @@ public class RenderFallingBlockTFC extends Render<EntityFallingBlockTFC>
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EntityFallingBlockTFC entity)
+    protected ResourceLocation getEntityTexture(@Nonnull EntityFallingBlockTFC entity)
     {
         return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }

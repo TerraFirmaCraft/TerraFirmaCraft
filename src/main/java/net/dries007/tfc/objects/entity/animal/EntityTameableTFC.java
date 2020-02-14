@@ -70,6 +70,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         else
         {
             String s1 = compound.getString("Owner");
+            //noinspection ConstantConditions
             s = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s1);
         }
         if (!s.isEmpty())
@@ -233,7 +234,7 @@ public abstract class EntityTameableTFC extends EntityAnimalMammal implements IE
         return super.isOnSameTeam(entityIn);
     }
 
-    public void onDeath(DamageSource cause)
+    public void onDeath(@Nonnull DamageSource cause)
     {
         if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP)
         {

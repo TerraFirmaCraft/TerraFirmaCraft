@@ -20,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IRarity;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -109,7 +110,7 @@ public class ItemDebug extends Item
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack stack)
+    public IRarity getForgeRarity(ItemStack stack)
     {
         return EnumRarity.EPIC;
     }

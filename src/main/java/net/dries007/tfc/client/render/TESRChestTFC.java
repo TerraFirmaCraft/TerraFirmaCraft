@@ -35,6 +35,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
     {
         for (Tree wood : TFCRegistries.TREES.getValuesCollection())
         {
+            //noinspection ConstantConditions
             SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest/" + wood.getRegistryName().getPath() + ".png"));
             DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_double/" + wood.getRegistryName().getPath() + ".png"));
             TRAP_SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_trap/" + wood.getRegistryName().getPath() + ".png"));
