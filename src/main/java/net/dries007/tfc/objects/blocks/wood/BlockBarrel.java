@@ -297,6 +297,7 @@ public class BlockBarrel extends Block implements IItemSize
     }
 
     @Override
+    @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world,
                                   BlockPos pos, EntityPlayer player)
     {
