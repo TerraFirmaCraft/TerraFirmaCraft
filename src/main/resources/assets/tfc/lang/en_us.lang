@@ -64,6 +64,8 @@ tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably w
 tfc.tooltip.smithing_skill=Skill Bonus: %0.1f%%
 tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
 tfc.tooltip.crucible_less_than_one=< 1 unit
+tfc.tooltip.previous_page=Previous Page
+tfc.tooltip.next_page=Next Page
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=This %s is too old to mate.
@@ -289,8 +291,8 @@ config.tfc.general.overworkChunk.tooltip=If true, limits for gold pan and sluice
 config.tfc.general.forceNoVanillaNaturalRegeneration=Force No Vanilla Natural Regeneration
 config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will force the gamerule naturalRegeneration to be false. Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster).
 
-config.tfc.general.forceNoVanillaAnimals=Force No Vanilla Animals
-config.tfc.general.forceNoVanillaAnimals.tooltip=If true, this will prevent vanilla animals from spawning under any circumstances (ie: mob spawner, egg throw, etc).
+config.tfc.general.forceReplaceVanillaAnimals=Force Replace Vanilla Animals
+config.tfc.general.forceReplaceVanillaAnimals.tooltip=If true, this will replace vanilla animals with the TFC counterpart under any spawning circumstances (ie: mob spawner, etc).
 
 
 config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen

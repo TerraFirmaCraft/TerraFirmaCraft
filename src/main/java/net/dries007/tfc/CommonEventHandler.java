@@ -14,6 +14,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
@@ -39,6 +40,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -570,8 +572,25 @@ public final class CommonEventHandler
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
     {
         // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
-        if (ConfigTFC.GENERAL.forceNoVanillaAnimals && Helpers.isVanillaAnimal(event.getEntity()))
+        if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(event.getEntity()))
         {
+            Entity TFCReplacement = Helpers.getTFCReplacement(event.getEntity());
+            if (TFCReplacement != null)
+            {
+                TFCReplacement.setPositionAndRotation(event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, event.getEntity().rotationYaw, event.getEntity().rotationPitch);
+                event.getWorld().spawnEntity(TFCReplacement); // Fires another spawning event for the TFC replacement
+            }
+            event.setCanceled(true); // Cancel the vanilla spawn
+        }
+    }
+
+    @SubscribeEvent
+    public static void onProjectileImpactEvent(ProjectileImpactEvent.Throwable event)
+    {
+        if (event.getThrowable() instanceof EntityEgg)
+        {
+            // Only way of preventing EntityEgg from spawning a chicken is to cancel the impact altogether
+            // Side effect: The impact will not hurt entities
             event.setCanceled(true);
         }
     }

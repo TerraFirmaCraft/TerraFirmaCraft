@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCommandBlock;
 import net.minecraft.block.BlockStructure;
@@ -42,6 +41,7 @@ import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.EntitySeatOn;
+import net.dries007.tfc.objects.entity.animal.*;
 
 public final class Helpers
 {
@@ -49,9 +49,21 @@ public final class Helpers
 
     private static final boolean JEI = Loader.isModLoaded("jei");
 
-    private static final Set<Class> VANILLA_ANIMALS = Sets.newHashSet(EntityCow.class, EntitySheep.class,
-        EntityPig.class, EntityMule.class, EntityHorse.class, EntityDonkey.class, EntityChicken.class,
-        EntityRabbit.class, EntityWolf.class);
+    private static final Map<Class<? extends Entity>, Class<? extends Entity>> VANILLA_REPLACEMENTS;
+
+    static
+    {
+        VANILLA_REPLACEMENTS = new HashMap<>();
+        VANILLA_REPLACEMENTS.put(EntityCow.class, EntityCowTFC.class);
+        VANILLA_REPLACEMENTS.put(EntitySheep.class, EntitySheepTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityPig.class, EntityPigTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityMule.class, EntityMuleTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityHorse.class, EntityHorseTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityDonkey.class, EntityDonkeyTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityChicken.class, EntityChickenTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityRabbit.class, EntityRabbitTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityWolf.class, EntityWolfTFC.class);
+    }
 
     public static boolean isJEIEnabled()
     {
@@ -66,7 +78,24 @@ public final class Helpers
      */
     public static boolean isVanillaAnimal(Entity entity)
     {
-        return VANILLA_ANIMALS.contains(entity.getClass());
+        return VANILLA_REPLACEMENTS.get(entity.getClass()) != null;
+    }
+
+    @Nullable
+    public static Entity getTFCReplacement(Entity entity)
+    {
+        Class<? extends Entity> animalClass = VANILLA_REPLACEMENTS.get(entity.getClass());
+        if (animalClass != null)
+        {
+            try
+            {
+                return animalClass.getConstructor(World.class).newInstance(entity.world);
+            }
+            catch (Exception ignored)
+            {
+            }
+        }
+        return null;
     }
 
     /**
