@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -51,8 +52,12 @@ public final class WorldEntitySpawnerTFC
             .filter(x -> {
                 if (ICreatureTFC.class.isAssignableFrom(x.getEntityClass()))
                 {
-                    int weight = ((ICreatureTFC) x.newInstance(worldIn)).getSpawnWeight(biomeIn, temperature, rainfall);
-                    return weight > 0 && randomIn.nextInt(weight) == 0;
+                    Entity ent = x.newInstance(worldIn);
+                    if (ent instanceof ICreatureTFC)
+                    {
+                        int weight = ((ICreatureTFC) ent).getSpawnWeight(biomeIn, temperature, rainfall);
+                        return weight > 0 && randomIn.nextInt(weight) == 0;
+                    }
                 }
                 return false;
             }).findFirst()
@@ -60,6 +65,10 @@ public final class WorldEntitySpawnerTFC
             {
                 List<EntityLiving> group = new ArrayList<>();
                 EntityLiving creature = (EntityLiving) entityEntry.newInstance(worldIn);
+                if (!(creature instanceof ICreatureTFC))
+                {
+                    return; // Make sure to not crash
+                }
                 ICreatureTFC creatureTFC = (ICreatureTFC) creature;
                 int fallback = 5; // Fallback measure if some mod completely deny this entity spawn
                 int individuals = Math.max(1, creatureTFC.getMinGroupSize()) + randomIn.nextInt(creatureTFC.getMaxGroupSize() - Math.max(0, creatureTFC.getMinGroupSize() - 1));
