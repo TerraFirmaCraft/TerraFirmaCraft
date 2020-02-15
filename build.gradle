@@ -120,7 +120,7 @@ processResources {
         include "mcmod.info"
 
         // replace version and mcversion variables/placeholders
-        expand "version": config.version, "mcversion": config.minecraft.version
+        expand "mod_version": version, "mc_version": config.minecraft.version
     }
 
     // copy everything else from resources
@@ -208,7 +208,8 @@ if (project.hasProperty("signjar.keystore"))
 curseforge {
     def envApiKey = System.getenv('CURSEFORGE_API_KEY')
     if (envApiKey == null) {
-        println 'Unable to locate api key in env variable'
+        println 'No Curseforge API Key'
+        envApiKey = 'kaput'
         return
     }
     project {
