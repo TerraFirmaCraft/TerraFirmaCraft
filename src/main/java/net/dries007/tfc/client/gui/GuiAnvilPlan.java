@@ -7,9 +7,7 @@ package net.dries007.tfc.client.gui;
 
 import java.io.IOException;
 import java.util.List;
-import javax.annotation.Nonnull;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -25,6 +23,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.client.button.GuiButtonAnvilPlanIcon;
+import net.dries007.tfc.client.button.GuiButtonPage;
 import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
@@ -127,45 +126,9 @@ public class GuiAnvilPlan extends GuiContainerTE<TEAnvilTFC>
             int posY = 25 + ((i % 18) / 9) * 18;
             addButton(new GuiButtonAnvilPlanIcon(recipeList.get(i), ++buttonID, guiLeft + posX, guiTop + posY));
         }
-        buttonLeft = addButton(new GuiButton(++buttonID, guiLeft + 7, guiTop + 65, 14, 14, "")
-        {
-            @Override
-            public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks)
-            {
-                if (this.visible)
-                {
-                    mc.getTextureManager().bindTexture(PLAN_BACKGROUND);
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-                    int i = this.getHoverState(this.hovered);
-                    GlStateManager.enableBlend();
-                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-                    this.drawTexturedModalRect(this.x, this.y, 176, 18 + i * 14, this.width, this.height);
-                    this.mouseDragged(mc, mouseX, mouseY);
-                }
-            }
-        });
+        buttonLeft = addButton(new GuiButtonPage(++buttonID, guiLeft + 7, guiTop + 65, GuiButtonPage.Type.LEFT, "tfc.tooltip.previous_page"));
 
-        buttonRight = addButton(new GuiButton(++buttonID, guiLeft + 154, guiTop + 65, 14, 14, "")
-        {
-            @Override
-            public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks)
-            {
-                if (this.visible)
-                {
-                    mc.getTextureManager().bindTexture(PLAN_BACKGROUND);
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-                    int i = this.getHoverState(this.hovered);
-                    GlStateManager.enableBlend();
-                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-                    this.drawTexturedModalRect(this.x, this.y, 190, 18 + i * 14, this.width, this.height);
-                    this.mouseDragged(mc, mouseX, mouseY);
-                }
-            }
-        });
+        buttonRight = addButton(new GuiButtonPage(++buttonID, guiLeft + 154, guiTop + 65, GuiButtonPage.Type.RIGHT, "tfc.tooltip.next_page"));
 
         if (recipeList.size() <= 18)
         {
