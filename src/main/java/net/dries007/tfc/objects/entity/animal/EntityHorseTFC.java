@@ -51,9 +51,9 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
     protected static final int DAYS_TO_ADULTHOOD = 1120;
     protected static final int DAYS_TO_FULL_GESTATION = 240;
     //Values that has a visual effect on client
-    private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.VARINT);
-    private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.VARINT);
+    private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.FLOAT);
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private boolean fertilized; //Is this female fertilized?

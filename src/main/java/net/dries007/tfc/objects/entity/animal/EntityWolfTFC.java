@@ -13,68 +13,74 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.google.common.base.Predicate;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.objects.entity.ai.*;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
+public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
 {
     private static final int DAYS_TO_ADULTHOOD = 360;
     private static final int DAYS_TO_FULL_GESTATION = 70;
 
-    private static final DataParameter<Float> DATA_HEALTH_ID = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.FLOAT);
-    private static final DataParameter<Boolean> BEGGING = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> COLLAR_COLOR = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.VARINT);
+    //Values that has a visual effect on client
+    private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.VARINT);
+    private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.FLOAT);
 
-    private float headRotationCourse;
-    private float headRotationCourseOld;
-    private boolean isWet;
-    private boolean isShaking;
-    private float timeWolfIsShaking;
-    private float prevTimeWolfIsShaking;
+    private long lastFed; //Last time(in days) this entity was fed
+    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
+    private boolean fertilized; //Is this female fertilized?
+    private long matingTime; //The last time(in ticks) this male tried fertilizing females
+    private long lastDeath; //Last time(in days) this entity checked for dying of old age
+    private long pregnantTime; // The time(in days) this entity became pregnant
 
     @SuppressWarnings("unused")
     public EntityWolfTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityWolfTFC(World worldIn, Gender gender, int birthDay)
     {
-        super(worldIn, gender, birthDay);
+        super(worldIn);
+        this.setGender(gender);
+        this.setBirthDay(birthDay);
+        this.setFamiliarity(0);
+        this.setGrowingAge(0); //We don't use this
+        this.lastFed = -1;
+        this.matingTime = -1;
+        this.lastDeath = -1;
+        this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
+        this.fertilized = false;
+        this.pregnantTime = -1;
         this.setSize(0.6F, 0.85F);
         this.setTamed(false);
     }
@@ -103,24 +109,6 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         return 5;
     }
 
-    @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote && this.isWet && !this.isShaking && !this.hasPath() && this.onGround)
-        {
-            this.isShaking = true;
-            this.timeWolfIsShaking = 0.0F;
-            this.prevTimeWolfIsShaking = 0.0F;
-            this.world.setEntityState(this, (byte) 8);
-        }
-        if (!this.world.isRemote && this.getAttackTarget() == null && this.isAngry())
-        {
-            this.setAngry(false);
-        }
-    }
-
-    @Override
     public void birthChildren()
     {
         int numberOfChilds = 1 + rand.nextInt(1); //1-2
@@ -140,9 +128,27 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     }
 
     @Override
-    public long gestationDays()
+    public Gender getGender()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return Gender.valueOf(this.dataManager.get(GENDER));
+    }
+
+    @Override
+    public void setGender(Gender gender)
+    {
+        this.dataManager.set(GENDER, gender.toBool());
+    }
+
+    @Override
+    public int getBirthDay()
+    {
+        return this.dataManager.get(BIRTHDAY);
+    }
+
+    @Override
+    public void setBirthDay(int value)
+    {
+        this.dataManager.set(BIRTHDAY, value);
     }
 
     @Override
@@ -152,9 +158,47 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     }
 
     @Override
+    public float getFamiliarity()
+    {
+        return this.dataManager.get(FAMILIARITY);
+    }
+
+    @Override
+    public void setFamiliarity(float value)
+    {
+        if (value < 0f) value = 0f;
+        if (value > 1f) value = 1f;
+        this.dataManager.set(FAMILIARITY, value);
+    }
+
+    @Override
+    public boolean isFertilized() { return this.fertilized; }
+
+    @Override
+    public void setFertilized(boolean value)
+    {
+        this.fertilized = value;
+    }
+
+    @Override
+    public void onFertilized(IAnimalTFC male)
+    {
+        //Mark the day this female became pregnant
+        this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
+    }
+
+    @Override
     public int getDaysToAdulthood()
     {
         return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public boolean isReadyToMate()
+    {
+        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.isHungry())
+            return false;
+        return this.matingTime == -1 || this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
@@ -163,254 +207,64 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
         return (stack.getItem() == Items.BONE) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
     }
 
-    @SideOnly(Side.CLIENT)
-    public boolean isWolfWet()
+    @Override
+    public boolean isHungry()
     {
-        return this.isWet;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public float getShadingWhileWet(float p_70915_1_)
-    {
-        return 0.75F + (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * p_70915_1_) / 2.0F * 0.25F;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public float getShakeAngle(float p_70923_1_, float p_70923_2_)
-    {
-        float f = (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * p_70923_1_ + p_70923_2_) / 1.8F;
-        if (f < 0.0F)
-        {
-            f = 0.0F;
-        }
-        else if (f > 1.0F)
-        {
-            f = 1.0F;
-        }
-        return MathHelper.sin(f * 3.1415927F) * MathHelper.sin(f * 3.1415927F * 11.0F) * 0.15F * 3.1415927F;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public float getInterestedAngle(float p_70917_1_)
-    {
-        return (this.headRotationCourseOld + (this.headRotationCourse - this.headRotationCourseOld) * p_70917_1_) * 0.15F * 3.1415927F;
+        if (lastFed == -1) return true;
+        return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
     @Override
-    public float getEyeHeight()
+    public Type getType()
     {
-        return this.height * 0.8F;
+        return Type.MAMMAL;
     }
 
-    @SideOnly(Side.CLIENT)
-    public float getTailRotation()
+    @Override
+    public TextComponentTranslation getAnimalName()
     {
-        if (this.isAngry())
+        String entityString = EntityList.getEntityString(this);
+        return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
+    }
+
+    @Override
+    public boolean getCanSpawnHere()
+    {
+        return this.world.checkNoEntityCollision(getEntityBoundingBox())
+            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+    }
+
+    @Override
+    public void setGrowingAge(int age)
+    {
+        super.setGrowingAge(0); // Ignoring this
+    }
+
+    @Override
+    public boolean isChild()
+    {
+        return this.getAge() == Age.CHILD;
+    }
+
+    @Override
+    public void setScaleForAge(boolean child)
+    {
+        double ageScale = 1 / (2.0D - getPercentToAdulthood());
+        this.setScale((float) ageScale);
+    }
+
+    @Nonnull
+    @Override
+    public String getName()
+    {
+        if (this.hasCustomName())
         {
-            return 1.5393804F;
+            return this.getCustomNameTag();
         }
         else
         {
-            return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.dataManager.get(DATA_HEALTH_ID)) * 0.02F) * 3.1415927F : 0.62831855F;
-        }
-    }
-
-    @Override
-    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
-    {
-        if (super.processInteract(player, hand)) // Process feeding first
-        {
-            return true;
-        }
-        ItemStack itemstack = player.getHeldItem(hand);
-        if (this.isTamed())
-        {
-            if (!itemstack.isEmpty())
-            {
-                if (itemstack.getItem() instanceof ItemFood && ((ItemFood) itemstack.getItem()).isWolfsFavoriteMeat() && this.dataManager.get(DATA_HEALTH_ID) < 20.0F)
-                {
-                    if (!player.isCreative())
-                    {
-                        itemstack.shrink(1);
-                    }
-                    this.heal((float) ((ItemFood) itemstack.getItem()).getHealAmount(itemstack));
-                    return true;
-                }
-                else if (itemstack.getItem() == Items.DYE) // todo color by ore dictionary?
-                {
-                    EnumDyeColor enumdyecolor = EnumDyeColor.byDyeDamage(itemstack.getMetadata());
-                    if (enumdyecolor != this.getCollarColor())
-                    {
-                        this.setCollarColor(enumdyecolor);
-                        if (!player.isCreative())
-                        {
-                            itemstack.shrink(1);
-                        }
-                        return true;
-                    }
-                }
-            }
-            else if (this.isOwner(player))
-            {
-                if (!this.world.isRemote)
-                {
-                    this.aiSit.setSitting(!this.isSitting());
-                    this.isJumping = false;
-                    this.navigator.clearPath();
-                    this.setAttackTarget(null);
-                }
-                return true;
-            }
-        }
-        else if (isFood(itemstack) && !this.isAngry() && !this.isTamed() && getFamiliarity() >= 0.3f)
-        {
-            if (!this.world.isRemote)
-            {
-                if (!player.isCreative())
-                {
-                    itemstack.shrink(1);
-                }
-                if (this.rand.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player))
-                {
-                    this.setTamedBy(player);
-                    this.navigator.clearPath();
-                    this.setAttackTarget(null);
-                    this.aiSit.setSitting(true);
-                    this.setHealth(20.0F);
-                    this.playTameEffect(true);
-                    this.world.setEntityState(this, (byte) 7);
-                }
-                else
-                {
-                    this.playTameEffect(false);
-                    this.world.setEntityState(this, (byte) 6);
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isAngry()
-    {
-        return (this.dataManager.get(TAMED) & 2) != 0;
-    }
-
-    public void setAngry(boolean angry)
-    {
-        byte b0 = this.dataManager.get(TAMED);
-        if (angry)
-        {
-            this.dataManager.set(TAMED, (byte) (b0 | 2));
-        }
-        else
-        {
-            this.dataManager.set(TAMED, (byte) (b0 & -3));
-        }
-    }
-
-    public EnumDyeColor getCollarColor()
-    {
-        return EnumDyeColor.byDyeDamage(this.dataManager.get(COLLAR_COLOR) & 15);
-    }
-
-    public void setCollarColor(EnumDyeColor collarcolor)
-    {
-        this.dataManager.set(COLLAR_COLOR, collarcolor.getDyeDamage());
-    }
-
-    public boolean isBegging()
-    {
-        return this.dataManager.get(BEGGING);
-    }
-
-    public void setBegging(boolean beg)
-    {
-        this.dataManager.set(BEGGING, beg);
-    }
-
-    @Override
-    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
-    {
-        super.writeEntityToNBT(compound);
-        compound.setBoolean("Angry", this.isAngry());
-        compound.setByte("CollarColor", (byte) this.getCollarColor().getDyeDamage());
-    }
-
-    @Override
-    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
-    {
-        super.readEntityFromNBT(compound);
-        this.setAngry(compound.getBoolean("Angry"));
-        if (compound.hasKey("CollarColor", 99))
-        {
-            this.setCollarColor(EnumDyeColor.byDyeDamage(compound.getByte("CollarColor")));
-        }
-
-    }
-
-    @Override
-    public boolean canBeLeashedTo(EntityPlayer player)
-    {
-        return !this.isAngry() && super.canBeLeashedTo(player);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id)
-    {
-        if (id == 8)
-        {
-            this.isShaking = true;
-            this.timeWolfIsShaking = 0.0F;
-            this.prevTimeWolfIsShaking = 0.0F;
-        }
-        else
-        {
-            super.handleStatusUpdate(id);
-        }
-    }
-
-    @Override
-    public void setTamed(boolean tamed)
-    {
-        super.setTamed(tamed);
-        if (tamed)
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        }
-        else
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        }
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-    }
-
-    @Override
-    public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner)
-    {
-        if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast))
-        {
-            if (target instanceof EntityWolfTFC)
-            {
-                EntityWolfTFC entitywolf = (EntityWolfTFC) target;
-                if (entitywolf.isTamed() && entitywolf.getOwner() == owner)
-                {
-                    return false;
-                }
-            }
-            if (target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target))
-            {
-                return false;
-            }
-            else
-            {
-                return !(target instanceof AbstractHorse) || !((AbstractHorse) target).isTame();
-            }
-        }
-        else
-        {
-            return false;
+            return getAnimalName().getFormattedText();
         }
     }
 
@@ -418,133 +272,39 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DATA_HEALTH_ID, this.getHealth());
-        this.dataManager.register(BEGGING, false);
-        this.dataManager.register(COLLAR_COLOR, EnumDyeColor.RED.getDyeDamage());
+        getDataManager().register(GENDER, true);
+        getDataManager().register(BIRTHDAY, 0);
+        getDataManager().register(FAMILIARITY, 0f);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    protected void initEntityAI()
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
-        this.aiSit = new EntityAISitTFC(this);
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(6, new EntityAIFollowOwnerTFC(this, 1.0D, 10.0F, 2.0F));
-        this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(9, new EntityAIBegTFC(this, 8.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(10, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTargetTFC(this));
-        this.targetTasks.addTask(2, new EntityAIOwnerHurtTargetTFC(this));
-        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(4, new EntityAITargetNonTamedTFC(this, EntityAnimalTFC.class, false, (Predicate<Entity>) entity -> entity instanceof EntitySheepTFC || entity instanceof EntityPigTFC || entity instanceof EntityRabbitTFC));
-        this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, AbstractSkeleton.class, false));
+        super.writeEntityToNBT(nbt);
+        nbt.setBoolean("gender", getGender().toBool());
+        nbt.setInteger("birth", getBirthDay());
+        nbt.setLong("fed", lastFed);
+        nbt.setLong("decay", lastFDecay);
+        nbt.setBoolean("fertilized", this.fertilized);
+        nbt.setLong("mating", matingTime);
+        nbt.setFloat("familiarity", getFamiliarity());
+        nbt.setLong("lastDeath", lastDeath);
+        nbt.setLong("pregnant", pregnantTime);
     }
 
     @Override
-    protected void applyEntityAttributes()
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
     {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
-        if (this.isTamed())
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        }
-        else
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        }
-
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-    }
-
-    @Override
-    public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn)
-    {
-        super.setAttackTarget(entitylivingbaseIn);
-        if (entitylivingbaseIn == null)
-        {
-            this.setAngry(false);
-        }
-        else if (!this.isTamed())
-        {
-            this.setAngry(true);
-        }
-
-    }
-
-    @Override
-    public void onUpdate()
-    {
-        super.onUpdate();
-        this.headRotationCourseOld = this.headRotationCourse;
-        if (this.isBegging())
-        {
-            this.headRotationCourse += (1.0F - this.headRotationCourse) * 0.4F;
-        }
-        else
-        {
-            this.headRotationCourse += (0.0F - this.headRotationCourse) * 0.4F;
-        }
-
-        if (this.isWet())
-        {
-            this.isWet = true;
-            this.isShaking = false;
-            this.timeWolfIsShaking = 0.0F;
-            this.prevTimeWolfIsShaking = 0.0F;
-        }
-        else if ((this.isWet || this.isShaking) && this.isShaking)
-        {
-            if (this.timeWolfIsShaking == 0.0F)
-            {
-                this.playSound(SoundEvents.ENTITY_WOLF_SHAKE, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-            }
-
-            this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
-            this.timeWolfIsShaking += 0.05F;
-            if (this.prevTimeWolfIsShaking >= 2.0F)
-            {
-                this.isWet = false;
-                this.isShaking = false;
-                this.prevTimeWolfIsShaking = 0.0F;
-                this.timeWolfIsShaking = 0.0F;
-            }
-
-            if (this.timeWolfIsShaking > 0.4F)
-            {
-                float f = (float) this.getEntityBoundingBox().minY;
-                int i = (int) (MathHelper.sin((this.timeWolfIsShaking - 0.4F) * 3.1415927F) * 7.0F);
-                for (int j = 0; j < i; ++j)
-                {
-                    float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
-                    float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
-                    this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (double) f1, f + 0.8F, this.posZ + (double) f2, this.motionX, this.motionY, this.motionZ);
-                }
-            }
-        }
-
-    }
-
-    @Override
-    protected SoundEvent getAmbientSound()
-    {
-        if (this.isAngry())
-        {
-            return SoundEvents.ENTITY_WOLF_GROWL;
-        }
-        else if (this.rand.nextInt(3) != 0)
-        {
-            return SoundEvents.ENTITY_WOLF_AMBIENT;
-        }
-        else
-        {
-            return this.isTamed() && this.dataManager.get(DATA_HEALTH_ID) < 10.0F ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT;
-        }
+        super.readEntityFromNBT(nbt);
+        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
+        this.setBirthDay(nbt.getInteger("birth"));
+        this.lastFed = nbt.getLong("fed");
+        this.lastFDecay = nbt.getLong("decay");
+        this.matingTime = nbt.getLong("mating");
+        this.fertilized = nbt.getBoolean("fertilized");
+        this.setFamiliarity(nbt.getFloat("familiarity"));
+        this.lastDeath = nbt.getLong("lastDeath");
+        this.pregnantTime = nbt.getLong("pregnant");
     }
 
     @Override
@@ -555,71 +315,187 @@ public class EntityWolfTFC extends EntityTameableTFC implements IAnimalTFC
     }
 
     @Override
-    public int getVerticalFaceSpeed()
+    public void onLivingUpdate()
     {
-        return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
-    }
-
-    @Override
-    public int getMaxSpawnedInChunk()
-    {
-        return 8;
-    }
-
-    @Override
-    protected void updateAITasks()
-    {
-        this.dataManager.set(DATA_HEALTH_ID, this.getHealth());
-    }
-
-    @Override
-    public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-        if (this.isEntityInvulnerable(source))
+        super.onLivingUpdate();
+        if (!this.world.isRemote)
         {
-            return false;
-        }
-        else
-        {
-            Entity entity = source.getTrueSource();
-            if (this.aiSit != null)
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + DAYS_TO_FULL_GESTATION)
             {
-                this.aiSit.setSitting(false);
+                birthChildren();
+                this.setFertilized(false);
             }
-            if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow))
+
+            // Is it time to decay familiarity?
+            // If this entity was never fed(eg: new born, wild)
+            // or wasn't fed yesterday(this is the starting of the second day)
+            if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
-                amount = (amount + 1.0F) / 2.0F;
+                float familiarity = getFamiliarity();
+                if (familiarity < 0.3f)
+                {
+                    familiarity -= 0.02 * (CalendarTFC.PLAYER_TIME.getTotalDays() - this.lastFDecay);
+                    this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
+                    this.setFamiliarity(familiarity);
+                }
             }
-            return super.attackEntityFrom(source, amount);
+            if (this.getGender() == Gender.MALE && this.isReadyToMate())
+            {
+                this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
+                if (findFemaleMate())
+                {
+                    this.setInLove(null);
+                }
+            }
+            if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
+            {
+                if (lastDeath == -1)
+                {
+                    // First time check, to avoid dying at the same time this animal spawned, we skip the first day
+                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                }
+                else
+                {
+                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                    // Randomly die of old age, tied to entity UUID and calendar time
+                    final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
+                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    {
+                        this.setDead();
+                    }
+                }
+            }
         }
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
-        return SoundEvents.ENTITY_WOLF_HURT;
-    }
+        ItemStack itemstack = player.getHeldItem(hand);
 
-    @Override
-    protected SoundEvent getDeathSound()
-    {
-        return SoundEvents.ENTITY_WOLF_DEATH;
-    }
-
-    @Override
-    protected float getSoundVolume()
-    {
-        return 0.4F;
-    }
-
-    @Override
-    public boolean attackEntityAsMob(Entity entityIn)
-    {
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));
-        if (flag)
+        if (!itemstack.isEmpty())
         {
-            this.applyEnchantments(this, entityIn);
+            if (itemstack.getItem() == Items.SPAWN_EGG)
+            {
+                return super.processInteract(player, hand); // Let vanilla spawn a baby
+            }
+            if (this.isFood(itemstack))
+            {
+                if (!this.isAngry() && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+                {
+                    if (this.isHungry())
+                    {
+                        if (!this.world.isRemote)
+                        {
+                            lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+                            lastFDecay = lastFed; //No decay needed
+                            this.consumeItemFromStack(player, itemstack);
+                            float familiarity = this.getFamiliarity() + 0.06f;
+                            if (this.getAge() != Age.CHILD)
+                            {
+                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            }
+                            this.setFamiliarity(familiarity);
+                            world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+                        }
+                        return true;
+                    }
+                    else if (!this.isTamed() && getFamiliarity() >= 0.3f)
+                    {
+                        if (!this.world.isRemote)
+                        {
+                            this.consumeItemFromStack(player, itemstack);
+                            if (this.rand.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player))
+                            {
+                                this.setTamedBy(player);
+                                this.navigator.clearPath();
+                                this.setAttackTarget(null);
+                                this.aiSit.setSitting(true);
+                                this.playTameEffect(true);
+                                this.world.setEntityState(this, (byte) 7);
+                            }
+                            else
+                            {
+                                this.playTameEffect(false);
+                                this.world.setEntityState(this, (byte) 6);
+                            }
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        if (!this.world.isRemote)
+                        {
+                            //Show tooltips
+                            if (this.isFertilized() && this.getType() == Type.MAMMAL)
+                            {
+                                player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
         }
-        return flag;
+        return super.processInteract(player, hand);
+    }
+
+    @Nullable
+    @Override
+    public EntityWolfTFC createChild(@Nonnull EntityAgeable other)
+    {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
+        {
+            this.fertilized = true;
+            this.resetInLove();
+            this.onFertilized((IAnimalTFC) other);
+        }
+        else if (other == this)
+        {
+            // Only called if this animal is interacted with a spawn egg
+            // Try to return to vanilla's default method a baby of this animal, as if bred normally
+            try
+            {
+                EntityWolfTFC baby = new EntityWolfTFC(this.world);
+                baby.setGender(Gender.valueOf(Constants.RNG.nextBoolean()));
+                baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                return baby;
+            }
+            catch (Exception ignored)
+            {
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        EntityWolfTFC other = (EntityWolfTFC) otherAnimal;
+        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+    }
+
+    /**
+     * Find and charms a near female animal of this animal
+     * Used by males to try mating with females
+     *
+     * @return true if found and charmed a female
+     */
+    @SuppressWarnings("WeakerAccess")
+    protected boolean findFemaleMate()
+    {
+        List<EntityWolfTFC> list = this.world.getEntitiesWithinAABB(EntityWolfTFC.class, this.getEntityBoundingBox().grow(8.0D));
+        for (EntityWolfTFC ent : list)
+        {
+            if (ent.getGender() == Gender.FEMALE && !ent.isInLove() && ent.isReadyToMate())
+            {
+                ent.setInLove(null);
+                return true;
+            }
+        }
+        return false;
     }
 }

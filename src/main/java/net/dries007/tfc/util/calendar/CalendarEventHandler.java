@@ -6,6 +6,7 @@
 package net.dries007.tfc.util.calendar;
 
 import java.util.List;
+import java.util.Objects;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,6 +19,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -79,7 +83,11 @@ public class CalendarEventHandler
             long currentWorldTime = event.getEntity().getEntityWorld().getWorldTime();
             if (CalendarTFC.CALENDAR_TIME.getWorldTime() != currentWorldTime)
             {
-                CalendarTFC.INSTANCE.setTimeFromWorldTime(currentWorldTime);
+                long jump = CalendarTFC.INSTANCE.setTimeFromWorldTime(currentWorldTime);
+                // Consume food/water on all online players accordingly (EXHAUSTION_MULTIPLIER is here to de-compensate)
+                event.getEntity().getEntityWorld().getEntities(EntityPlayer.class, Objects::nonNull)
+                    .forEach(player -> player.addExhaustion(FoodStatsTFC.PASSIVE_EXHAUSTION * jump / FoodStatsTFC.EXHAUSTION_MULTIPLIER * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier));
+
             }
         }
     }
