@@ -292,10 +292,7 @@ public class BlockSupport extends Block
         }
         else
         {
-            if (!isConnectable(world, pos, side.getOpposite()))
-            {
-                return false;
-            }
+            if (!isConnectable(world, pos, side.getOpposite())) return false;
             int distance = getHorizontalDistance(side, world, pos);
             return distance > 0;
         }
@@ -395,6 +392,28 @@ public class BlockSupport extends Block
     }
 
     /**
+     * Checks if this block is a vertical support beam of height 3 or higher
+     *
+     * @param world the world this block is in
+     * @param pos the position of the block
+     * @return true if this is a vertical support beam three blocks or higher, false otherwise
+     */
+    private boolean isThreeTall(IBlockAccess world, BlockPos pos)
+    {
+        // if the block is invalid it definitely can't support a vertical beam
+        if (!canBlockStay(world, pos)) return false;
+        IBlockState state = world.getBlockState(pos);
+        EnumFacing.Axis axis = state.getValue(AXIS);
+        // sideways supports are never three tall
+        if (axis != EnumFacing.Axis.Y) return false;
+        // if either of the two block beneath this block are not block supports, then this isn't three tall
+        if (!(world.getBlockState(pos.down()).getBlock() instanceof BlockSupport)) return false;
+        if (!(world.getBlockState(pos.down().down()).getBlock() instanceof BlockSupport)) return false;
+        // passed all the checks
+        return true;
+    }
+
+    /**
      * Checks if this support can stay in pos
      *
      * @param world the world obj
@@ -431,6 +450,9 @@ public class BlockSupport extends Block
      */
     private int getHorizontalDistance(EnumFacing face, IBlockAccess worldIn, BlockPos pos)
     {
+        // if the placement block on the clicked side is not three tall don't bother checking for length
+        if (!isThreeTall(worldIn, pos.offset(face.getOpposite()))) return 0;
+        // look across the gap for valid distance
         int distance = -1;
         for (int i = 0; i < 5; i++)
         {
@@ -445,6 +467,14 @@ public class BlockSupport extends Block
                 return 0;
             }
         }
+
+        // if another side wasn't found, fail
+        if (distance == -1) return 0;
+
+        // if the other side isn't three tall, fail
+        if (!isThreeTall(worldIn, pos.offset(face, distance + 1))) return 0;
+
+        // return the distance + 1 because the distance checked is off by one for the loop
         return distance + 1;
     }
 
