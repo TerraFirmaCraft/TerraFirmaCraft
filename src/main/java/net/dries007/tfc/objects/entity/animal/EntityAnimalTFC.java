@@ -34,7 +34,6 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@SuppressWarnings("WeakerAccess")
 public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 {
     public static final long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_HOUR * 2;

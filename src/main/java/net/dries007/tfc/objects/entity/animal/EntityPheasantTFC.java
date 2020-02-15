@@ -29,7 +29,6 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 
-@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityPheasantTFC extends EntityAnimalTFC
 {
@@ -45,8 +44,7 @@ public class EntityPheasantTFC extends EntityAnimalTFC
     @SuppressWarnings("unused")
     public EntityPheasantTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
-            getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityPheasantTFC(World worldIn, Gender gender, int birthDay)

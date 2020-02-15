@@ -12,16 +12,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockCarrot;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,8 +26,10 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.util.*;
-import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -47,7 +45,6 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityRabbitTFC extends EntityAnimalMammal
 {
@@ -55,11 +52,6 @@ public class EntityRabbitTFC extends EntityAnimalMammal
     private static final int DAYS_TO_FULL_GESTATION = 30;
 
     private static final DataParameter<Integer> RABBIT_TYPE = EntityDataManager.createKey(EntityRabbitTFC.class, DataSerializers.VARINT);
-
-    public static void registerFixesRabbit(DataFixer fixer)
-    {
-        EntityLiving.registerFixesMob(fixer, EntityRabbitTFC.class);
-    }
 
     private int jumpTicks;
     private int jumpDuration;
@@ -76,7 +68,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.4F, 0.5F);
-        this.jumpHelper = new EntityRabbitTFC.RabbitJumpHelper(this);
+        this.jumpHelper = new RabbitJumpHelper(this);
         this.moveHelper = new EntityRabbitTFC.RabbitMoveHelper(this);
         this.setMovementSpeed(0.0D);
     }
@@ -125,7 +117,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
 
             EntityRabbitTFC.RabbitJumpHelper entityrabbit$rabbitjumphelper = (EntityRabbitTFC.RabbitJumpHelper) this.jumpHelper;
 
-            if (!entityrabbit$rabbitjumphelper.getIsJumping())
+            if (!entityrabbit$rabbitjumphelper.isJumping())
             {
                 if (this.moveHelper.isUpdating() && this.currentMoveTypeDuration == 0)
                 {
@@ -278,8 +270,8 @@ public class EntityRabbitTFC extends EntityAnimalMammal
             Item item = is.getItem();
             this.tasks.addTask(3, new EntityAITempt(this, 1.4D, item, false));
         }
-        this.tasks.addTask(4, new EntityAIAvoidEntity(this, EntityPlayer.class, 8.0F, 2.0D, 2.0D));
-        this.tasks.addTask(4, new EntityAIAvoidEntity(this, EntityMob.class, 4.0F, 2.0D, 2.0D));
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 8.0F, 2.0D, 2.0D));
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityMob.class, 4.0F, 2.0D, 2.0D));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
     }
@@ -396,17 +388,6 @@ public class EntityRabbitTFC extends EntityAnimalMammal
         }
     }
 
-    protected void createEatingParticles()
-    {
-        BlockCarrot blockcarrot = (BlockCarrot) Blocks.CARROTS;
-        IBlockState iblockstate = blockcarrot.withAge(blockcarrot.getMaxAge());
-        this.world.spawnParticle(EnumParticleTypes.BLOCK_DUST,
-            this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
-            this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height),
-            this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, 0.0D, 0.0D,
-            0.0D, Block.getStateId(iblockstate));
-    }
-
     private void calculateRotationYaw(double x, double z)
     {
         this.rotationYaw = (float) (MathHelper.atan2(z - this.posZ, x - this.posX) * (180D / Math.PI)) - 90.0F;
@@ -482,7 +463,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
 
         public void onUpdateMoveHelper()
         {
-            if (this.rabbit.onGround && !this.rabbit.isJumping && !((EntityRabbitTFC.RabbitJumpHelper) this.rabbit.jumpHelper).getIsJumping())
+            if (this.rabbit.onGround && !this.rabbit.isJumping && !((EntityRabbitTFC.RabbitJumpHelper) this.rabbit.jumpHelper).isJumping())
             {
                 this.rabbit.setMovementSpeed(0.0D);
             }
@@ -522,7 +503,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
         }
     }
 
-    public class RabbitJumpHelper extends EntityJumpHelper
+    public static class RabbitJumpHelper extends EntityJumpHelper
     {
         private final EntityRabbitTFC rabbit;
         private boolean canJump;
@@ -533,7 +514,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal
             this.rabbit = rabbit;
         }
 
-        public boolean getIsJumping()
+        public boolean isJumping()
         {
             return this.isJumping;
         }

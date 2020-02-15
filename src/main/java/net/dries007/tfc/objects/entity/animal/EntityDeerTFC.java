@@ -32,7 +32,6 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityDeerTFC extends EntityAnimalMammal
 {
@@ -42,8 +41,7 @@ public class EntityDeerTFC extends EntityAnimalMammal
     @SuppressWarnings("unused")
     public EntityDeerTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
-            getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityDeerTFC(World worldIn, Gender gender, int birthDay)

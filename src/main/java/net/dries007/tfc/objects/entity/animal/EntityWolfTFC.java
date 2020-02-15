@@ -43,7 +43,6 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
 {

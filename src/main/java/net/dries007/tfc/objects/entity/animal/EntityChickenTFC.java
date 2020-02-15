@@ -46,7 +46,6 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
 {
@@ -63,8 +62,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
 
     public EntityChickenTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
-            getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityChickenTFC(World worldIn, Gender gender, int birthDay)

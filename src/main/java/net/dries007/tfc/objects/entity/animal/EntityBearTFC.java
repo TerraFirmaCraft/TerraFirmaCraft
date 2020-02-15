@@ -36,7 +36,6 @@ import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
-@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityBearTFC extends EntityAnimalMammal implements IMob
 {
@@ -46,8 +45,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     @SuppressWarnings("unused")
     public EntityBearTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
-            getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityBearTFC(World worldIn, Gender gender, int birthDay)
