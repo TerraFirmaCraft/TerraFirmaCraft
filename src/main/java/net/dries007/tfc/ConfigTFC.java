@@ -51,6 +51,22 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never fall.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
+        public boolean disableFallableBlocks = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyOre")
+        public boolean disableFallableBlocksDestroyOre = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy loose items.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyLooseItems")
+        public boolean disableFallableBlocksDestroyLooseItems = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never hurt entities.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksHurtEntities")
+        public boolean disableFallableBlocksHurtEntities = false;
+
         @Config.Comment("If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.")
         @Config.LangKey("config." + MOD_ID + ".general.forceTFCWorldTypeOnServer")
         public boolean forceTFCWorldTypeOnServer = true;
@@ -98,6 +114,10 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")
         public double temperatureModifierGlobal = 0.5; // todo: items cool too fast at 0.5, needs tweaking
+
+        @Config.Comment("Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots.")
+        @Config.LangKey("config." + MOD_ID + ".general.enableCruciblePouringAllSlots")
+        public boolean enableCruciblePouringAllSlots = false;
 
         @Config.Comment("Modifier for how quickly devices (i.e. charcoal forge, firepit) gain and lose heat. Smaller number = slower temperature changes.")
         @Config.RangeDouble(min = 0, max = 10)
@@ -256,6 +276,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.forceNoVanillaNaturalRegeneration")
         public boolean forceNoVanillaNaturalRegeneration = true;
 
+        @Config.Comment({"If true, this will replace vanilla animals with the TFC counterpart under any spawning circumstances (ie: mob spawner, etc)."})
+        @Config.LangKey("config." + MOD_ID + ".general.forceReplaceVanillaAnimals")
+        public boolean forceReplaceVanillaAnimals = true;
+
         @Config.Comment("Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?")
         @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
         public boolean peacefulDifficultyPassiveRegeneration = false;
@@ -358,6 +382,27 @@ public class ConfigTFC
         @Config.Comment("The color to render on top of rotten food. Express as a 265 bit color value: 0xFFFFFF = white, 0x000000 = black")
         @Config.LangKey("config." + MOD_ID + ".client.rottenFoodOverlayColor")
         public int rottenFoodOverlayColor = 0x88CC33;
+
+        @Config.Comment({"Disable TFC health bar and use vanilla instead?"})
+        @Config.LangKey("config." + MOD_ID + ".client.useVanillaHealth")
+        public boolean useVanillaHealth = false;
+
+        @Config.Comment({"If TFC health bar is enabled, use this health display modifier(ie: 20(vanilla)*50(modifier) = 1000HP).", "This is a display modifier only, internal health value is not affected!"})
+        @Config.LangKey("config." + MOD_ID + ".client.healthDisplayModifier")
+        @Config.RangeDouble(min = 0.5)
+        public double healthDisplayModifier = 50;
+
+        @Config.Comment({"If TFC health bar is enabled, use this format to display health (ie: %.0f / %.0f = 500 / 1000, %.1f / %.0f = 15.5 / 20).", "Please use float formats, otherwise TFC will ignore this and use the default!"})
+        @Config.LangKey("config." + MOD_ID + ".client.healthDisplayFormat")
+        public String healthDisplayFormat = "%.0f / %.0f";
+
+        @Config.Comment({"Disable TFC hunger bar and use vanilla instead?"})
+        @Config.LangKey("config." + MOD_ID + ".client.useVanillaHunger")
+        public boolean useVanillaHunger = false;
+
+        @Config.Comment({"Hide the thirst bar?"})
+        @Config.LangKey("config." + MOD_ID + ".client.hideThirstBar")
+        public boolean hideThirstBar = false;
     }
 
     public static class WorldCFG

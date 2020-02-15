@@ -5,11 +5,17 @@
 
 package net.dries007.tfc.api.capability.forge;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
@@ -86,5 +92,14 @@ public class ForgeableMeasurableMetalHandler extends ForgeableHandler implements
             this.heatCapacity = metal.getSpecificHeat();
         }
         super.deserializeNBT(nbt);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
+    {
+        String desc = TextFormatting.WHITE + I18n.format("tfc.tooltip.units", metalAmount);
+        text.add(desc);
+        super.addHeatInfo(stack, text);
     }
 }

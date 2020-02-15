@@ -38,6 +38,7 @@ import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -114,7 +115,7 @@ public class BlockLogPile extends Block implements ILightableBlock
         if (te != null)
         {
             // Special Interactions
-            // 1. Try and put a log inside (happens on right click event)
+            // 1. Try and put a log inside (happens on right click event when sneaking)
             // 2. Try and light the TE
             // 3. Open the GUI
             ItemStack stack = player.getHeldItem(hand);
@@ -130,12 +131,43 @@ public class BlockLogPile extends Block implements ILightableBlock
                 }
                 return true;
             }
+            if (OreDictionaryHelper.doesStackMatchOre(stack, "logWood"))
+            {
+                // Copy from InteractionManager since this is called first when player is not sneaking
+                if (!player.isSneaking())
+                {
+                    if (te.insertLog(stack.copy()))
+                    {
+                        if (!world.isRemote)
+                        {
+                            world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            stack.shrink(1);
+                            player.setHeldItem(hand, stack);
+                        }
+                        return true;
+                    }
+                }
+                else
+                {
+                    int inserted = te.insertLogs(stack.copy());
+                    if (inserted > 0)
+                    {
+                        if (!world.isRemote)
+                        {
+                            world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            stack.shrink(inserted);
+                            player.setHeldItem(hand, stack);
+                        }
+                        return true;
+                    }
+                }
+            }
+
             if (!player.isSneaking() && !state.getValue(LIT))
             {
                 if (!world.isRemote)
                 {
                     TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.LOG_PILE);
-
                 }
                 return true;
             }

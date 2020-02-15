@@ -33,6 +33,7 @@ tfc.tooltip.anvil_tier_too_low=This Anvil is too low tier!
 tfc.tooltip.anvil_no_flux=There is no flux in the anvil!
 tfc.tooltip.anvil_too_cold=The item(s) are not hot enough to work!
 tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
+tfc.tooltip.anvil_safety=That would destroy the input!
 tfc.tooltip.crucible_result=Result:
 tfc.tooltip.barrel_seal=Seal Barrel
 tfc.tooltip.barrel_unseal=Unseal Barrel
@@ -62,6 +63,9 @@ tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
 tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
 tfc.tooltip.smithing_skill=Skill Bonus: %0.1f%%
 tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
+tfc.tooltip.crucible_less_than_one=< 1 unit
+tfc.tooltip.previous_page=Previous Page
+tfc.tooltip.next_page=Next Page
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=This %s is too old to mate.
@@ -149,6 +153,18 @@ config.tfc.general.toolip=Non side specific settings.
 config.tfc.general.debug=Debug Mode
 config.tfc.general.debug.tooltip=Various debug options. Activates some extra wand features. Enables extra item tooltips.
 
+config.tfc.general.disableFallableBlocks=Disable Fallable Blocks
+config.tfc.general.disableFallableBlocks.tooltip=If true, fallable blocks (ie: dirt, stone) will never fall.
+
+config.tfc.general.disableFallableBlocksDestroyOre=Disable Falling Blocks Destroying Ore
+config.tfc.general.disableFallableBlocksDestroyOre.tooltip=If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.
+
+config.tfc.general.disableFallableBlocksDestroyLooseItems=Disable Falling blocks Destroying Loose Items
+config.tfc.general.disableFallableBlocksDestroyLooseItems.tooltip=If true, fallable blocks (ie: dirt, stone) will never destroy loose items.
+
+config.tfc.general.disableFallableBlocksHurtEntities=Disable Falling Blocks Hurting Entities
+config.tfc.general.disableFallableBlocksHurtEntities.tooltip=If true, fallable blocks (ie: dirt, stone) will never hurt entities.
+
 config.tfc.general.forceTFCWorldTypeOnServer=Default level-type Override
 config.tfc.general.forceTFCWorldTypeOnServer.tooltip=If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.
 
@@ -175,6 +191,9 @@ config.tfc.general.temperatureModifierGlobal.tooltip=Modifier for how quickly it
 
 config.tfc.general.temperatureModifierHeating=Heating Temperature Modifier
 config.tfc.general.temperatureModifierHeating.tooltip=Modifier for how quickly devices (i.e. charcoal forge, firepit) gain and lose heat. Smaller number = slower temperature changes.
+
+config.tfc.general.enableCruciblePouringAllSlots=Enable Crucible Pouring from All Slots
+config.tfc.general.enableCruciblePouringAllSlots.tooltip=Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots.
 
 config.tfc.general.foodDecayModifier=Food Decay Modifier
 config.tfc.general.foodDecayModifier.tooltip=Modifier for how quickly food will decay. Larger values = faster decay. Set to 0 for infinite expiration time
@@ -272,6 +291,10 @@ config.tfc.general.overworkChunk.tooltip=If true, limits for gold pan and sluice
 config.tfc.general.forceNoVanillaNaturalRegeneration=Force No Vanilla Natural Regeneration
 config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will force the gamerule naturalRegeneration to be false. Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster).
 
+config.tfc.general.forceReplaceVanillaAnimals=Force Replace Vanilla Animals
+config.tfc.general.forceReplaceVanillaAnimals.tooltip=If true, this will replace vanilla animals with the TFC counterpart under any spawning circumstances (ie: mob spawner, etc).
+
+
 config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
 
@@ -349,6 +372,21 @@ config.tfc.client.propickOutputToActionBar.tooltip=Should the prospectors pick o
 
 config.tfc.client.rottenFoodOverlayColor=Rotten Food Overlay Color
 config.tfc.client.rottenFoodOverlayColor.tooltip=The color to render on top of rotten food. Express as a 265 bit color value: 0xFFFFFF = white, 0x000000 = black
+
+config.tfc.client.useVanillaHealth=Use Vanilla Health Bar
+config.tfc.client.useVanillaHealth.tooltip=Disable TFC health bar and use vanilla instead?
+
+config.tfc.client.healthDisplayModifier=Health Display Modifier
+config.tfc.client.healthDisplayModifier.tooltip=If TFC health bar is enabled, use this health display modifier(ie: 20(vanilla)*50(modifier) = 1000HP). This is a display modifier only, internal health value is not affected!
+
+config.tfc.client.healthDisplayFormat=Health Display Format
+config.tfc.client.healthDisplayFormat.tooltip=If TFC health bar is enabled, use this format to display health (ie: %.0f / %.0f = 500 / 1000, %.1f / %.0f = 15.5 / 20). Please use float formats, otherwise TFC will ignore this and use the default!
+
+config.tfc.client.useVanillaHunger=Use Vanilla Hunger Bar
+config.tfc.client.useVanillaHunger.tooltip=Disable TFC hunger bar and use vanilla instead?
+
+config.tfc.client.hideThirstBar=Hide Thirst Bar
+config.tfc.client.hideThirstBar.tooltip=Hide the thirst bar?
 
 ## World Config
 config.tfc.world=World Gen Settings
