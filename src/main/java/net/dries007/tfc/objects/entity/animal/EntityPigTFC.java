@@ -31,7 +31,6 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
 public class EntityPigTFC extends EntityAnimalMammal
 {
@@ -41,8 +40,7 @@ public class EntityPigTFC extends EntityAnimalMammal
     @SuppressWarnings("unused")
     public EntityPigTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
-            getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityPigTFC(World worldIn, Gender gender, int birthDay)
