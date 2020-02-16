@@ -39,6 +39,7 @@ tfc.tooltip.anvil_tier_too_low=此砧等级过低！
 tfc.tooltip.anvil_no_flux=砧里没有助焊剂！
 tfc.tooltip.anvil_too_cold=物品不够热，无法开工！
 tfc.tooltip.anvil_no_hammer=砧里没有锤！
+tfc.tooltip.anvil_safety=那会毁了原料！
 tfc.tooltip.crucible_result=产物：
 tfc.tooltip.barrel_seal=密封桶
 tfc.tooltip.barrel_unseal=启封桶
@@ -68,6 +69,9 @@ tfc.tooltip.large_vessel_unseal=启封大缸
 tfc.tooltip.goldpan.chunkworked=这片地区似乎已被过度开采。你或许发现不了什么。
 tfc.tooltip.smithing_skill=技能加成：%0.1f%%
 tfc.tooltip.crucible_alloy=含 %1$d mB 的 %2$s
+tfc.tooltip.crucible_less_than_one=< 1 单元
+tfc.tooltip.previous_page=上一页
+tfc.tooltip.next_page=下一页
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=这只 %s 太老了，不能给它配种。
@@ -155,6 +159,18 @@ config.tfc.general.toolip=适用于客户端和服务端。
 config.tfc.general.debug=调试模式
 config.tfc.general.debug.tooltip=各种调试选项。激活一些额外的调试魔杖特性。启用额外的物品提示。
 
+config.tfc.general.disableFallableBlocks=禁用方块下落
+config.tfc.general.disableFallableBlocks.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会下落。
+
+config.tfc.general.disableFallableBlocksDestroyOre=禁用下落方块摧毁矿石
+config.tfc.general.disableFallableBlocksDestroyOre.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会摧毁矿石方块。
+
+config.tfc.general.disableFallableBlocksDestroyLooseItems=禁用下落方块摧毁零散物品
+config.tfc.general.disableFallableBlocksDestroyLooseItems.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会摧毁零散物品（地表的石子与木棍等）。
+
+config.tfc.general.disableFallableBlocksHurtEntities=禁用下落方块伤害实体
+config.tfc.general.disableFallableBlocksHurtEntities.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会伤害实体。
+
 config.tfc.general.forceTFCWorldTypeOnServer=默认世界类型覆盖
 config.tfc.general.forceTFCWorldTypeOnServer.tooltip=若为 true，群峦传说将在服务器启动期间尝试把 `level-type` 强制设置为 `tfc_classic` 。
 
@@ -181,6 +197,9 @@ config.tfc.general.temperatureModifierGlobal.tooltip=修改物品获得和失去
 
 config.tfc.general.temperatureModifierHeating=加热温度修正值
 config.tfc.general.temperatureModifierHeating.tooltip=修改设施（如木炭炉，篝火）获得和失去热量的速度。较小的值 = 较慢的温度变化。
+
+config.tfc.general.enableCruciblePouringAllSlots=启用坩埚全槽灌注
+config.tfc.general.enableCruciblePouringAllSlots.tooltip=允许坩埚接受所有 9 个输入槽的金属浇注（来自小缸 / 模具）。
 
 config.tfc.general.foodDecayModifier=食物腐烂修正值
 config.tfc.general.foodDecayModifier.tooltip=食物腐烂的速度。较大的值 = 较快的腐烂速度。设置为 0 永不腐烂。
@@ -278,20 +297,24 @@ config.tfc.general.overworkChunk.tooltip=若为 true，忽略对淘金盘和洗�
 config.tfc.general.forceNoVanillaNaturalRegeneration=强制无原版自然恢复
 config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=若为 true，将把游戏规则 naturalRegeneration 强制设置为 false 。注意：这不会影响群峦的自然恢复。若将 naturalRegeneration 设置为 true ，将同时有群峦和正常原版（比群峦快多了）的恢复。
 
+config.tfc.general.forceNoVanillaAnimals=强制替换原版动物
+config.tfc.general.forceNoVanillaAnimals.tooltip=若为 true，在任何情况下生成的原版动物（例如：刷怪箱，刷怪蛋，等等）将被群峦传说的相应动物替换。
+
+
 config.tfc.general.peacefulDifficultyPassiveRegeneration=和平难度被动恢复
-config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饱食度，口渴值？
+config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饥饿值，口渴值？
 
 config.tfc.general.requireHammerInOffHand=凿要求副手锤
 config.tfc.general.requireHammerInOffHand.tooltip=若为 true，使用凿时锤必须在副手。若为 false，锤可以在副手或物品栏中。
 
-config.tfc.general.chiselDelay=凿延迟
+config.tfc.general.chiselDelay=凿的延迟
 config.tfc.general.chiselDelay.tooltip=使用凿时应有延迟吗？
 
 config.tfc.general.worldRegenerationMinimumTime=世界再生最小时间
 config.tfc.general.worldRegenerationMinimumTime.tooltip=区块空闲以开始自然再生资源所需的最短时间（以天为单位）。在此之后，资源再生将根据自此时间以来持续的时间加速，最高可达 4 倍.
 
 config.tfc.general.worldRegenerationSticksRocksModifier=地表资源再生修正值
-config.tfc.general.worldRegenerationSticksRocksModifier.tooltip=地表上碎石和木棍再生的数目。
+config.tfc.general.worldRegenerationSticksRocksModifier.tooltip=地表上零散石子和木棍再生的数目。
 
 config.tfc.general.foodDecayStackTime=食物腐烂叠加时间
 config.tfc.general.foodDecayStackTime.tooltip=食物初始保质期的同步值。当食物首次成为物品时，其初始保质期将四舍五入至该值最接近的倍数（以小时为单位）。
@@ -356,7 +379,22 @@ config.tfc.client.propickOutputToActionBar.tooltip=探矿应该输出到动作�
 config.tfc.client.rottenFoodOverlayColor=腐烂食物覆盖层颜色
 config.tfc.client.rottenFoodOverlayColor.tooltip=在腐烂食物上额外渲染的颜色。以 256 位颜色值表示：0xFFFFFF = 白色，0x000000 = 黑色
 
-## Config.World
+config.tfc.client.useVanillaHealth=使用原版生命条
+config.tfc.client.useVanillaHealth.tooltip=禁用群峦传说的生命条，使用原版的？
+
+config.tfc.client.healthDisplayModifier=生命显示修正值
+config.tfc.client.healthDisplayModifier.tooltip=若启用了群峦传说的生命条，使用此生命显示修正值（例如：20（原版） * 50（修正值） = 1000 生命值）。这只是显示上的修正值，内部生命值不会受到影响！
+
+config.tfc.client.healthDisplayFormat=生命值显示格式
+config.tfc.client.healthDisplayFormat.tooltip=若启用了群峦传说的生命条，使用此格式显示生命值（例如：%.0f / %.0f = 500 / 1000, %.1f / %.0f = 15.5 / 20）。请使用浮点数格式，否则群峦传说将忽略此选项，使用默认格式。
+
+config.tfc.client.useVanillaHunger=使用原版饥饿条
+config.tfc.client.useVanillaHunger.tooltip=禁用群峦传说的饥饿条，使用原版的？
+
+config.tfc.client.hideThirstBar=隐藏口渴条
+config.tfc.client.hideThirstBar.tooltip=隐藏口渴条？口渴机制不受影响。
+
+## World Config
 config.tfc.world=世界生成设置
 config.tfc.world.tooltip=世界生成的各个方面
 
@@ -378,8 +416,8 @@ config.tfc.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1 / N �
 config.tfc.world.clayRainfallThreshold=粘土降雨阈值
 config.tfc.world.clayRainfallThreshold.tooltip=区域生成粘土所需要的最低降水量。此设置默认与生成干燥草方块的阈值相同。
 
-config.tfc.world.looseRocksFrequency=石子频率
-config.tfc.world.looseRocksFrequency.tooltip=每个区块生成地表石子的尝试次数。包括地表矿石样本。
+config.tfc.world.looseRocksFrequency=零散石子频率
+config.tfc.world.looseRocksFrequency.tooltip=每个区块生成地表零散石子的尝试次数。包括地表矿石样本。
 
 config.tfc.world.rainfallSpreadFactor=降雨量分布因子
 config.tfc.world.rainfallSpreadFactor.tooltip=控制降雨量如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
