@@ -30,6 +30,7 @@ import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.objects.blocks.soil.TFCSandBlock;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
 import static net.dries007.tfc.objects.items.TFCItems.ITEMS;
 
 
@@ -74,7 +75,7 @@ public final class TFCBlocks
             {
                 String name = ("rock/" + type.name() + "/" + rock.name()).toLowerCase();
                 RegistryObject<Block> block = BLOCKS.register(name, () -> type.create(rock));
-                ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+                ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
                 inner.put(type, block);
             }
             map.put(rock, inner);
@@ -86,7 +87,7 @@ public final class TFCBlocks
         {
             String name = ("sand/" + type.name()).toLowerCase();
             RegistryObject<Block> block = BLOCKS.register(name, () -> new TFCSandBlock(type.getDustColor(), Block.Properties.create(Material.SAND, MaterialColor.ADOBE).hardnessAndResistance(0.5F).sound(SoundType.SAND)));
-            ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+            ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
             map.put(type, block);
         }
     });
@@ -99,7 +100,7 @@ public final class TFCBlocks
             {
                 String name = (type.name() + "/" + variant.name()).toLowerCase();
                 RegistryObject<Block> block = BLOCKS.register(name, type::create);
-                ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+                ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
                 inner.put(variant, block);
             }
             map.put(type, inner);
