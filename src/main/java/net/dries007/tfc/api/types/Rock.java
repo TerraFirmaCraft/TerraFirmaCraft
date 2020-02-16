@@ -73,10 +73,6 @@ public class Rock extends TFCType
         MARBLE,
     }
 
-    /**
-     * The block types that are used to create rock/type permutations
-     * Extensible via addons
-     */
     public enum BlockType
     {
         RAW(rock -> new RawRockVariantBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),

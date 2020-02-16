@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/schist",
-    "smooth": "tfc:rock/smooth/schist",
-    "cobble": "tfc:rock/cobble/schist",
     "bricks": "tfc:rock/bricks/schist",
-    "gravel": "tfc:rock/gravel/schist"
+    "cobble": "tfc:rock/cobble/schist",
+    "gravel": "tfc:rock/gravel/schist",
+    "smooth": "tfc:rock/smooth/schist"
   },
   "category": "metamorphic"
 }

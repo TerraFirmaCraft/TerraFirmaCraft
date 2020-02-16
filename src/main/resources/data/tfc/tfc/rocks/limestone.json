@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/limestone",
-    "smooth": "tfc:rock/smooth/limestone",
-    "cobble": "tfc:rock/cobble/limestone",
     "bricks": "tfc:rock/bricks/limestone",
-    "gravel": "tfc:rock/gravel/limestone"
+    "cobble": "tfc:rock/cobble/limestone",
+    "gravel": "tfc:rock/gravel/limestone",
+    "smooth": "tfc:rock/smooth/limestone"
   },
-  "category": "metamorphic"
+  "category": "sedimentary"
 }

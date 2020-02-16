@@ -1,38 +1,12 @@
-/*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- */
-
 package net.dries007.tfc.objects.blocks.soil;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FallingBlock;
+import net.minecraft.block.SandBlock;
 
-public class TFCSandBlock extends FallingBlock
+public class TFCSandBlock extends SandBlock
 {
-    private final int color;
-
-    public TFCSandBlock(Properties properties, int color)
+    public TFCSandBlock(int dustColorIn, Properties properties)
     {
-        super(properties);
-        this.color = color;
+        super(dustColorIn, properties);
     }
 
-    @Override
-    public int getDustColor(BlockState state)
-    {
-        return color;
-    }
-
-    public enum Type
-    {
-        BROWN,
-        WHITE,
-        BLACK,
-        RED,
-        YELLOW,
-        GRAY
-
-        // todo: color property
-    }
 }

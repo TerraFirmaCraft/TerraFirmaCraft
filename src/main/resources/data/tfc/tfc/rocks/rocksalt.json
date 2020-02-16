@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/rocksalt",
-    "smooth": "tfc:rock/smooth/rocksalt",
-    "cobble": "tfc:rock/cobble/rocksalt",
     "bricks": "tfc:rock/bricks/rocksalt",
-    "gravel": "tfc:rock/gravel/rocksalt"
+    "cobble": "tfc:rock/cobble/rocksalt",
+    "gravel": "tfc:rock/gravel/rocksalt",
+    "smooth": "tfc:rock/smooth/rocksalt"
   },
-  "category": "metamorphic"
+  "category": "sedimentary"
 }

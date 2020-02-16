@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/chert",
-    "smooth": "tfc:rock/smooth/chert",
-    "cobble": "tfc:rock/cobble/chert",
     "bricks": "tfc:rock/bricks/chert",
-    "gravel": "tfc:rock/gravel/chert"
+    "cobble": "tfc:rock/cobble/chert",
+    "gravel": "tfc:rock/gravel/chert",
+    "smooth": "tfc:rock/smooth/chert"
   },
-  "category": "metamorphic"
+  "category": "sedimentary"
 }

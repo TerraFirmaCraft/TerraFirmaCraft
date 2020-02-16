@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/slate",
-    "smooth": "tfc:rock/smooth/slate",
-    "cobble": "tfc:rock/cobble/slate",
     "bricks": "tfc:rock/bricks/slate",
-    "gravel": "tfc:rock/gravel/slate"
+    "cobble": "tfc:rock/cobble/slate",
+    "gravel": "tfc:rock/gravel/slate",
+    "smooth": "tfc:rock/smooth/slate"
   },
   "category": "metamorphic"
 }

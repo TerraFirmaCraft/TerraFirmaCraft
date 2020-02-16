@@ -34,7 +34,7 @@ public class Images<T>
 
     private static int clamp(int num, int min, int max)
     {
-        return num < min ? min : num > max ? max : num;
+        return num < min ? min : Math.min(num, max);
     }
 
     private final ValueTransformer<T> transformer;

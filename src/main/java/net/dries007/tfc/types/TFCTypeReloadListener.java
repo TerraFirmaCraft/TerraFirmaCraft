@@ -1,9 +1,6 @@
 package net.dries007.tfc.types;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -30,18 +27,25 @@ public class TFCTypeReloadListener<T extends TFCType> extends JsonReloadListener
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final BiMap<ResourceLocation, T> types;
+    private final BiMap<Integer, T> typeIds;
+
     private final List<T> orderedTypes;
     private final Gson gson;
     private final Class<T> resourceClass;
+    private final List<Runnable> callbacks;
+    private final String typeName;
 
-    public TFCTypeReloadListener(Gson gson, String domain, Class<T> resourceClass)
+    public TFCTypeReloadListener(Gson gson, String domain, Class<T> resourceClass, String typeName)
     {
         super(gson, TerraFirmaCraft.MOD_ID + "/" + domain);
 
         this.types = HashBiMap.create();
+        this.typeIds = HashBiMap.create();
         this.orderedTypes = new ArrayList<>();
         this.gson = gson;
         this.resourceClass = resourceClass;
+        this.callbacks = new ArrayList<>();
+        this.typeName = typeName;
     }
 
     @Nullable
@@ -51,9 +55,19 @@ public class TFCTypeReloadListener<T extends TFCType> extends JsonReloadListener
     }
 
     @Nullable
-    public ResourceLocation getId(T type)
+    public ResourceLocation getName(T type)
     {
         return types.inverse().get(type);
+    }
+
+    public int getId(T type)
+    {
+        return typeIds.inverse().get(type);
+    }
+
+    public T get(int id)
+    {
+        return typeIds.get(id);
     }
 
     @Nonnull
@@ -74,11 +88,17 @@ public class TFCTypeReloadListener<T extends TFCType> extends JsonReloadListener
         return orderedTypes;
     }
 
+    public void addCallback(Runnable callback)
+    {
+        this.callbacks.add(callback);
+    }
+
     @Override
     protected void apply(Map<ResourceLocation, JsonObject> resources, IResourceManager resourceManager, IProfiler profiler)
     {
         types.clear();
         orderedTypes.clear();
+        SortedMap<ResourceLocation, T> sortedEntries = new TreeMap<>();
         for (Map.Entry<ResourceLocation, JsonObject> entry : resources.entrySet())
         {
             ResourceLocation name = entry.getKey();
@@ -88,22 +108,34 @@ public class TFCTypeReloadListener<T extends TFCType> extends JsonReloadListener
                 if (CraftingHelper.processConditions(json, "conditions"))
                 {
                     T object = gson.fromJson(json, resourceClass);
-                    object.setId(name);
+                    object.setName(name);
                     types.put(name, object);
-                    orderedTypes.add(object);
+                    sortedEntries.put(name, object);
                 }
                 else
                 {
-                    LOGGER.info("Skipping loading type '{}' as it's conditions were not met", name);
+                    LOGGER.info("Skipping loading {} '{}' as it's conditions were not met", typeName, name);
                 }
             }
             catch (IllegalArgumentException | JsonParseException e)
             {
-                LOGGER.warn("Type '{}' failed to parse. This is most likely caused by incorrectly specified JSON.", entry.getKey());
+                LOGGER.warn("{} '{}' failed to parse. This is most likely caused by incorrectly specified JSON.", typeName, entry.getKey());
                 LOGGER.warn("Error: ", e);
             }
         }
 
-        LOGGER.info("Registered {} Types Successfully.", types.size());
+        LOGGER.info("Registered {} {}s Successfully.", types.size(), typeName);
+
+        // Setup entry -> id map from sorted names
+        int id = 0;
+        for (ResourceLocation name : sortedEntries.keySet())
+        {
+            typeIds.put(id++, types.get(name));
+        }
+
+        for (Runnable callback : callbacks)
+        {
+            callback.run();
+        }
     }
 }

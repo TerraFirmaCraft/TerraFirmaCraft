@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.dries007.tfc.objects.blocks.TFCBlocks;
+import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.world.TFCWorldType;
 
 @Mod(TerraFirmaCraft.MOD_ID)
@@ -47,5 +48,6 @@ public final class TerraFirmaCraft
         worldType = new TFCWorldType();
 
         TFCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TFCItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }
