@@ -326,6 +326,9 @@ config.tfc.general.factorAnimalAging.tooltip=动物变老需要多久（同样�
 config.tfc.general.chanceAnimalDeath=动物死亡几率
 config.tfc.general.chanceAnimalDeath.tooltip=在动物老去后它死亡的几率（每游戏日检查）。
 
+config.tfc.general.stoneAxeLogReturnRate=石斧原木返还率
+config.tfc.general.stoneAxeLogReturnRate.tooltip=石斧的原木返还率。（例如，效率如何？）
+
 
 
 ## Client Config
@@ -367,10 +370,13 @@ config.tfc.world.debugWorldGen=调试模式（危险）
 config.tfc.world.debugWorldGen.tooltip=调试世界生成 [危险] 你的世界将会受到影响！不要在你正常的世界里使用！
 
 config.tfc.world.latitudeTemperatureModifier=纬度温度修正值
-config.tfc.world.latitudeTemperatureModifier.tooltip=控制温度区域的大小。每个温度区域的大小由正弦波确定。波周期的一半 = 热带和冷带之间的距离，以方块为单位
+config.tfc.world.latitudeTemperatureModifier.tooltip=控制温度区域的大小。每个温度区域的大小由正弦波确定。此设置代表波的周期。
 
 config.tfc.world.clayRarity=粘土矿床稀有度
 config.tfc.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1 / N 区块（若可产生粘土）将含有粘土矿床。
+
+config.tfc.world.clayRainfallThreshold=粘土降雨阈值
+config.tfc.world.clayRainfallThreshold.tooltip=区域生成粘土所需要的最低降水量。此设置默认与生成干燥草方块的阈值相同。
 
 config.tfc.world.looseRocksFrequency=石子频率
 config.tfc.world.looseRocksFrequency.tooltip=每个区块生成地表石子的尝试次数。包括地表矿石样本。
@@ -557,6 +563,7 @@ jei.category.tfc.anvil=砧类配方
 jei.category.tfc.barrel=桶类配方
 jei.category.tfc.blast_furnace=高炉配方
 jei.category.tfc.bloomery=锻铁炉配方
+jei.category.tfc.casting=浇筑配方
 jei.category.tfc.heat=加热配方
 jei.category.tfc.knap.clay=粘土塑形
 jei.category.tfc.knap.fireclay=耐火粘土塑形
