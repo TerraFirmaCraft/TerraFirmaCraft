@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.classic;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiCreateWorld;
 import net.minecraft.server.MinecraftServer;
@@ -16,11 +18,14 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.client.gui.GuiCustomizeWorld;
 
 /**
  * todo: spawn stuff, see worldevent.createspawn & worldProvider
  */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class WorldTypeTFC extends WorldType
 {
     public static final int SEALEVEL = 144;

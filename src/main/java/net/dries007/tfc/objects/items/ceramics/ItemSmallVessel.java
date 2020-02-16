@@ -460,6 +460,7 @@ public class ItemSmallVessel extends ItemPottery
             if (fluid != null)
             {
                 Metal metal = FluidsTFC.getMetalFromFluid(fluid.getFluid());
+                //noinspection ConstantConditions
                 if (metal != null)
                 {
                     meltTemp = metal.getMeltTemp();

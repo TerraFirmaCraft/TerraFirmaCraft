@@ -82,7 +82,7 @@ String runGitCommand(String cmd_args)
 minecraft { // Only change any of this with prior approval from the dev team!
     version = "${config.minecraft.version}-${config.forge.version}"
     runDir = "run"
-    mappings = "snapshot_20180814"
+    mappings = "stable_39"
 }
 
 repositories {

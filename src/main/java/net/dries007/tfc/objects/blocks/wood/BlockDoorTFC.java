@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks.wood;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
@@ -22,9 +23,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.items.wood.ItemDoorTFC;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BlockDoorTFC extends BlockDoor
 {
     private static final Map<Tree, BlockDoorTFC> MAP = new HashMap<>();
