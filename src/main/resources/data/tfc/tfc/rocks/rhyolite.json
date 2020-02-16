@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/rhyolite",
-    "smooth": "tfc:rock/smooth/rhyolite",
-    "cobble": "tfc:rock/cobble/rhyolite",
     "bricks": "tfc:rock/bricks/rhyolite",
-    "gravel": "tfc:rock/gravel/rhyolite"
+    "cobble": "tfc:rock/cobble/rhyolite",
+    "gravel": "tfc:rock/gravel/rhyolite",
+    "smooth": "tfc:rock/smooth/rhyolite"
   },
-  "category": "metamorphic"
+  "category": "igneous_extrusive"
 }

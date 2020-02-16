@@ -16,7 +16,7 @@ public final class TFCTypeManager
         .registerTypeAdapter(Rock.class, new RockDeserializer())
         .create();
 
-    public static final TFCTypeReloadListener<Rock> ROCKS = new TFCTypeReloadListener<>(GSON, "rocks", Rock.class);
+    public static final TFCTypeReloadListener<Rock> ROCKS = new TFCTypeReloadListener<>(GSON, "rocks", Rock.class, "rock");
 
     public static void init(IReloadableResourceManager resourceManager)
     {

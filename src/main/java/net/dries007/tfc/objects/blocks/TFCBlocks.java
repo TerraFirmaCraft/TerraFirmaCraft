@@ -11,6 +11,9 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Util;
@@ -22,6 +25,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.blocks.soil.SandBlockType;
+import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
+import net.dries007.tfc.objects.blocks.soil.TFCSandBlock;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.objects.items.TFCItems.ITEMS;
@@ -72,6 +78,31 @@ public final class TFCBlocks
                 inner.put(type, block);
             }
             map.put(rock, inner);
+        }
+    });
+
+    public static final Map<SandBlockType, RegistryObject<Block>> SAND = Util.make(new EnumMap<>(SandBlockType.class), map -> {
+        for (SandBlockType type : SandBlockType.values())
+        {
+            String name = ("sand/" + type.name()).toLowerCase();
+            RegistryObject<Block> block = BLOCKS.register(name, () -> new TFCSandBlock(type.getDustColor(), Block.Properties.create(Material.SAND, MaterialColor.ADOBE).hardnessAndResistance(0.5F).sound(SoundType.SAND)));
+            ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+            map.put(type, block);
+        }
+    });
+
+    public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Util.make(new EnumMap<>(SoilBlockType.class), map -> {
+        for (SoilBlockType type : SoilBlockType.values())
+        {
+            Map<SoilBlockType.Variant, RegistryObject<Block>> inner = new EnumMap<>(SoilBlockType.Variant.class);
+            for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
+            {
+                String name = (type.name() + "/" + variant.name()).toLowerCase();
+                RegistryObject<Block> block = BLOCKS.register(name, type::create);
+                ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+                inner.put(variant, block);
+            }
+            map.put(type, inner);
         }
     });
 

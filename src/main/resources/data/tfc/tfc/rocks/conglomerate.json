@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/conglomerate",
-    "smooth": "tfc:rock/smooth/conglomerate",
-    "cobble": "tfc:rock/cobble/conglomerate",
     "bricks": "tfc:rock/bricks/conglomerate",
-    "gravel": "tfc:rock/gravel/conglomerate"
+    "cobble": "tfc:rock/cobble/conglomerate",
+    "gravel": "tfc:rock/gravel/conglomerate",
+    "smooth": "tfc:rock/smooth/conglomerate"
   },
-  "category": "metamorphic"
+  "category": "sedimentary"
 }

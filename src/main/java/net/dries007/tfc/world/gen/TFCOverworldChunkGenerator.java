@@ -156,15 +156,11 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                         Rock rock;
                         if (y < rockProvider.getBottomLayerHeight(y))
                         {
-                            rock = rockData.getBottomLayer(x, z);
-                        }
-                        else if (y < rockProvider.getMiddleLayerHeight(y))
-                        {
-                            rock = rockData.getMiddleLayer(x, z);
+                            rock = rockData.getBottomRock(x, z);
                         }
                         else
                         {
-                            rock = rockData.getTopLayer(x, z);
+                            rock = rockData.getTopRock(x, z);
                         }
                         // todo: require rock type RAW / GRAVEL
                         BlockState replacement = rock.getBlock(type).getDefaultState();

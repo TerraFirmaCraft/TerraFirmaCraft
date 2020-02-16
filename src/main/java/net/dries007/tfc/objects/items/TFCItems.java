@@ -5,17 +5,12 @@
 
 package net.dries007.tfc.objects.items;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-
-import net.dries007.tfc.TerraFirmaCraft;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -121,11 +116,6 @@ public final class TFCItems
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
-        TerraFirmaCraft.getLog().info("Registering Items!");
-
-        IForgeRegistry<Item> r = event.getRegistry();
-        Builder<Item> simpleItems = ImmutableList.builder();
-
         /*
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
         simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
@@ -284,16 +274,6 @@ public final class TFCItems
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
         // Note: if you add items you don't need to put them in this list of todos. Feel free to add them where they make sense :)
-        // todo: Bow? Arrows?
-        // todo: Fishing rod?
-        // todo: ink?
-        // todo: flint & steel? Higher durability versions for different metals (iron/steels)?
-        // todo: fluid glass bottles? (alcohols/water/vinegar/brine)
-        // todo: minecart with chest (so the chest dropped is the right kind of wood)
-        // todo: custom buckets: steel (infinite/classic/source)
-        // todo: mortar
-
-        // todo: quiver
 
         allSimpleItems = simpleItems.build();
 

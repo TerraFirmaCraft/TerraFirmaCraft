@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/dolomite",
-    "smooth": "tfc:rock/smooth/dolomite",
-    "cobble": "tfc:rock/cobble/dolomite",
     "bricks": "tfc:rock/bricks/dolomite",
-    "gravel": "tfc:rock/gravel/dolomite"
+    "cobble": "tfc:rock/cobble/dolomite",
+    "gravel": "tfc:rock/gravel/dolomite",
+    "smooth": "tfc:rock/smooth/dolomite"
   },
-  "category": "metamorphic"
+  "category": "sedimentary"
 }

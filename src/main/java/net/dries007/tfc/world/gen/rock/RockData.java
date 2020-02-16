@@ -18,34 +18,42 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.blocks.soil.SandBlockType;
+import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.types.TFCTypeManager;
 
 public class RockData implements INBTSerializable<CompoundNBT>
 {
-    private Rock[] bottomLayer;
-    private Rock[] middleLayer;
-    private Rock[] topLayer;
+    private Rock[] bottomLayer, topLayer;
+    private SoilBlockType[] soilLayer;
+    private SandBlockType[] sandLayer;
 
-    public RockData(Rock[] bottomLayer, Rock[] middleLayer, Rock[] topLayer)
+    public RockData(Rock[] bottomLayer, Rock[] topLayer, SoilBlockType[] soilLayer, SandBlockType[] sandLayer)
     {
         this.bottomLayer = bottomLayer;
-        this.middleLayer = middleLayer;
         this.topLayer = topLayer;
+        this.soilLayer = soilLayer;
+        this.sandLayer = sandLayer;
     }
 
-    public Rock getTopLayer(int x, int z)
+    public Rock getTopRock(int x, int z)
     {
         return topLayer[x + 16 * z];
     }
 
-    public Rock getMiddleLayer(int x, int z)
-    {
-        return middleLayer[x + 16 * z];
-    }
-
-    public Rock getBottomLayer(int x, int z)
+    public Rock getBottomRock(int x, int z)
     {
         return bottomLayer[x + 16 * z];
+    }
+
+    public SoilBlockType getSoil(int x, int z)
+    {
+        return soilLayer[x + 16 * z];
+    }
+
+    public SandBlockType getSand(int x, int z)
+    {
+        return sandLayer[x + 16 * z];
     }
 
     @Override
@@ -54,19 +62,22 @@ public class RockData implements INBTSerializable<CompoundNBT>
         CompoundNBT nbt = new CompoundNBT();
 
         // Record a map from bytes -> rocks (pallet, similar to vanilla world save format)
-        List<Rock> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
+        List<Rock> uniqueRocks = Stream.of(bottomLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
         ListNBT pallet = new ListNBT();
         byte index = 0;
         for (Rock rock : uniqueRocks)
         {
-            pallet.add(index, new StringNBT(rock.getId().toString()));
+            pallet.add(index, new StringNBT(rock.getName().toString()));
         }
         nbt.put("pallet", pallet);
 
         // Record the raw byte values
-        nbt.putByteArray("bottomLayer", createRockByteArray(topLayer, uniqueRocks));
-        nbt.putByteArray("middleLayer", createRockByteArray(middleLayer, uniqueRocks));
-        nbt.putByteArray("topLayer", createRockByteArray(bottomLayer, uniqueRocks));
+        nbt.putByteArray("bottomLayer", createByteArray(topLayer, r -> (byte) uniqueRocks.indexOf(r)));
+        nbt.putByteArray("topLayer", createByteArray(bottomLayer, r -> (byte) uniqueRocks.indexOf(r)));
+
+        // Record byte values for soil and sand
+        nbt.putByteArray("soilLayer", createByteArray(soilLayer, e -> (byte) e.ordinal()));
+        nbt.putByteArray("sandLayer", createByteArray(sandLayer, e -> (byte) e.ordinal()));
 
         return nbt;
     }
@@ -84,29 +95,41 @@ public class RockData implements INBTSerializable<CompoundNBT>
                 uniqueRocks.add(TFCTypeManager.ROCKS.get(new ResourceLocation(pallet.getString(i))));
             }
 
-            bottomLayer = createRockArray(nbt.getByteArray("bottomLayer"), uniqueRocks);
-            middleLayer = createRockArray(nbt.getByteArray("middleLayer"), uniqueRocks);
-            topLayer = createRockArray(nbt.getByteArray("topLayer"), uniqueRocks);
+            createArrayFromBytes(nbt.getByteArray("bottomLayer"), bottomLayer, uniqueRocks::get);
+            createArrayFromBytes(nbt.getByteArray("topLayer"), topLayer, uniqueRocks::get);
+
+            createArrayFromBytes(nbt.getByteArray("soilLayer"), soilLayer, SoilBlockType::valueOf);
+            createArrayFromBytes(nbt.getByteArray("sandLayer"), sandLayer, SandBlockType::valueOf);
         }
     }
 
-    private byte[] createRockByteArray(Rock[] rocks, List<Rock> uniqueRocks)
+    private <T> byte[] createByteArray(T[] array, ToByteFunction<T> byteConverter)
     {
-        byte[] bytes = new byte[rocks.length];
-        for (int i = 0; i < rocks.length; i++)
+        byte[] bytes = new byte[array.length];
+        for (int i = 0; i < array.length; i++)
         {
-            bytes[i] = (byte) uniqueRocks.indexOf(rocks[i]);
+            bytes[i] = byteConverter.get(array[i]);
         }
         return bytes;
     }
 
-    private Rock[] createRockArray(byte[] bytes, List<Rock> pallet)
+    private <T> void createArrayFromBytes(byte[] byteArray, T[] array, FromByteFunction<T> byteConverter)
     {
-        Rock[] rocks = new Rock[bytes.length];
-        for (int i = 0; i < bytes.length; i++)
+        for (int i = 0; i < byteArray.length; i++)
         {
-            rocks[i] = pallet.get(bytes[i]);
+            array[i] = byteConverter.get(byteArray[i]);
         }
-        return rocks;
+    }
+
+    @FunctionalInterface
+    interface ToByteFunction<T>
+    {
+        byte get(T t);
+    }
+
+    @FunctionalInterface
+    interface FromByteFunction<T>
+    {
+        T get(byte b);
     }
 }

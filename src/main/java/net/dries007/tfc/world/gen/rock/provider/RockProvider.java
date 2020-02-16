@@ -17,11 +17,12 @@ import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.objects.blocks.soil.SandBlockType;
+import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.types.TFCTypeManager;
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -56,7 +57,7 @@ public class RockProvider
 
     private final Map<ChunkPos, RockData> cachedRockData;
     private final IWorld world;
-    private final LazyArea bottomRockFactory, middleRockFactory, topRockFactory;
+    private final LazyArea seedArea;
     private final int bottomLayerBaseHeight, middleLayerBaseHeight;
 
     public RockProvider(IWorld world, TFCGenerationSettings settings)
@@ -64,10 +65,7 @@ public class RockProvider
         this.cachedRockData = new FiniteLinkedHashMap<>(256);
         this.world = world;
 
-        List<IAreaFactory<LazyArea>> factories = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings);
-        this.bottomRockFactory = factories.get(0).make();
-        this.middleRockFactory = factories.get(1).make();
-        this.topRockFactory = factories.get(2).make();
+        this.seedArea = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings).make();
 
         this.bottomLayerBaseHeight = 30;//settings.getBottomRockLayerBaseHeight();
         this.middleLayerBaseHeight = 30;//settings.getMiddleRockLayerBaseHeight();
@@ -120,8 +118,9 @@ public class RockProvider
     private RockData createData(ChunkPos pos)
     {
         Rock[] bottomLayer = new Rock[256];
-        Rock[] middleLayer = new Rock[256];
         Rock[] topLayer = new Rock[256];
+        SoilBlockType[] soilLayer = new SoilBlockType[256];
+        SandBlockType[] sandLayer = new SandBlockType[256];
 
         List<Rock> orderedRocks = TFCTypeManager.ROCKS.getOrderedValues();
         int totalSize = orderedRocks.size();
@@ -130,15 +129,26 @@ public class RockProvider
         {
             for (int z = 0; z < 16; z++)
             {
-                bottomLayer[x + 16 * z] = orderedRocks.get(bottomRockFactory.getValue(chunkX + x, chunkZ + z) % totalSize);
-                middleLayer[x + 16 * z] = orderedRocks.get(middleRockFactory.getValue(chunkX + x, chunkZ + z) % totalSize);
-                topLayer[x + 16 * z] = orderedRocks.get(topRockFactory.getValue(chunkX + x, chunkZ + z) % totalSize);
+                // From the seed, generate a combination of rock, sand, and soil profile
+                int seed = seedArea.getValue(chunkX + x, chunkZ + z);
+                int topRockValue = seed % totalSize;
+                topLayer[x + 16 * z] = TFCTypeManager.ROCKS.get(topRockValue);
+                seed /= totalSize;
 
-                // todo: create offsets
+                int bottomRockValue = seed % totalSize;
+                bottomLayer[x + 16 * z] = TFCTypeManager.ROCKS.get(bottomRockValue);
+                seed /= totalSize;
+
+                int soilValue = seed % SoilBlockType.TOTAL;
+                soilLayer[x + 16 * z] = SoilBlockType.valueOf(soilValue);
+                seed /= SoilBlockType.TOTAL;
+
+                int sandValue = seed % SandBlockType.TOTAL;
+                sandLayer[x + 16 * z] = SandBlockType.valueOf(sandValue);
             }
         }
 
-        RockData data = new RockData(bottomLayer, middleLayer, topLayer);
+        RockData data = new RockData(bottomLayer, topLayer, soilLayer, sandLayer);
         cachedRockData.put(pos, data);
         return data;
     }

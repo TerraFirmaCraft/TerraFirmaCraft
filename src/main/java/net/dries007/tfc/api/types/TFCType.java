@@ -6,16 +6,16 @@ import net.minecraft.util.ResourceLocation;
 
 public class TFCType
 {
-    private ResourceLocation id;
+    private ResourceLocation name;
 
     @Nonnull
-    public ResourceLocation getId()
+    public ResourceLocation getName()
     {
-        return id;
+        return name;
     }
 
-    public void setId(ResourceLocation id)
+    public void setName(@Nonnull ResourceLocation name)
     {
-        this.id = id;
+        this.name = name;
     }
 }

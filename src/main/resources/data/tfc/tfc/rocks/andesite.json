@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/andesite",
-    "smooth": "tfc:rock/smooth/andesite",
-    "cobble": "tfc:rock/cobble/andesite",
     "bricks": "tfc:rock/bricks/andesite",
-    "gravel": "tfc:rock/gravel/andesite"
+    "cobble": "tfc:rock/cobble/andesite",
+    "gravel": "tfc:rock/gravel/andesite",
+    "smooth": "tfc:rock/smooth/andesite"
   },
-  "category": "metamorphic"
+  "category": "igneous_extrusive"
 }

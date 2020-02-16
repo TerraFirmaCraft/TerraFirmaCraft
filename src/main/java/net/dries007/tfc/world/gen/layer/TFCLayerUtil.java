@@ -182,39 +182,44 @@ public class TFCLayerUtil
         return Arrays.asList(mainLayer, areaFactoryActual);
     }
 
-    public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed, TFCGenerationSettings settings)
+    public static IAreaFactory<LazyArea> createOverworldRockLayers(long seed, TFCGenerationSettings settings)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
 
-        IAreaFactory<LazyArea> mainLayer;
+        IAreaFactory<LazyArea> seedLayer, biomeLayer;
         List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
         int layerCount = 0;
 
-        for (int layer = 0; layer < 3; layer++)
+        Images.ColorMap moduloDiscrete20 = (v, m, x) -> Images.Colors.DISCRETE_20.apply(v / Integer.MAX_VALUE * 4, 1, 0);
+        IMAGES.color(moduloDiscrete20);
+
+        // Seed Areas
+        seedLayer = RandomLayer.INSTANCE.apply(contextFactory.apply(1000L));
+        IMAGES.size(32).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
+
+        IMAGES.size(640);
+        for (int i = 0; i < 3; i++)
         {
-            IMAGES.color(Images.Colors.LINEAR_GRAY);
+            seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
+            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -320, -320, 320, 320);
 
-            mainLayer = RockSeedLayer.INSTANCE.apply(contextFactory.apply(1000L));
-
-            mainLayer = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1001L), mainLayer);
-            IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-            for (int i = 0; i < 6; i++)
-            {
-                mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1024L), mainLayer);
-                IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-            }
-
-            mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1025L), mainLayer);
-            IMAGES.draw("layer_rock_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-            IAreaFactory<LazyArea> areaFactoryActual = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1029L), mainLayer);
-            IMAGES.size(1280).draw("layer_rock_" + ++layerCount, areaFactoryActual, 0, 0, -640, -640, 640, 640);
-
-            completedLayers.add(mainLayer);
+            seedLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1001L), seedLayer);
+            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -320, -320, 320, 320);
         }
 
-        return completedLayers;
+        for (int i = 0; i < 5; i++)
+        {
+            seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
+            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -320, -320, 320, 320);
+        }
+
+        seedLayer = new ModuloLayer(20).apply(contextFactory.apply(1003L), seedLayer);
+        IMAGES.color(Images.Colors.DISCRETE_20);
+
+        seedLayer = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1003L), seedLayer);
+        IMAGES.size(1280).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -640, -640, 640, 640);
+
+        return seedLayer;
     }
 
     public static <A extends IArea, C extends IExtendedNoiseRandom<A>> IAreaFactory<A> repeat(IAreaTransformer1 transformer, int count, IAreaFactory<A> originalLayer, Supplier<C> contextSupplier)

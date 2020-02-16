@@ -22,7 +22,6 @@ import net.minecraft.world.storage.WorldInfo;
 import net.dries007.tfc.world.biome.TFCBiome;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.gen.TFCGenerationSettings;
-import net.dries007.tfc.world.gen.layer.BiomeFactoryLayer;
 import net.dries007.tfc.world.gen.layer.TFCLayerUtil;
 
 @ParametersAreNonnullByDefault
@@ -31,11 +30,11 @@ public class TFCBiomeProvider extends BiomeProvider
     /**
      * Before the final Voronoi Zoom - In OverworldBiomeProvider this is genBiomes
      */
-    private final BiomeFactoryLayer biomeFactory;
+    private final BiomeFactory biomeFactory;
     /**
      * After the final Voronoi Zoom - In OverworldBiomeProvider this is biomeFactoryLayer
      */
-    private final BiomeFactoryLayer biomeFactoryActual;
+    private final BiomeFactory biomeFactoryActual;
 
     private Biome[] biomes = TFCBiomes.getBiomes().toArray(new Biome[0]);
 
@@ -44,8 +43,8 @@ public class TFCBiomeProvider extends BiomeProvider
         WorldInfo worldInfo = settings.getWorldInfo();
         List<IAreaFactory<LazyArea>> areaFactory = TFCLayerUtil.createOverworldBiomeLayer(worldInfo.getSeed(), settings);
 
-        this.biomeFactory = new BiomeFactoryLayer(areaFactory.get(0));
-        this.biomeFactoryActual = new BiomeFactoryLayer(areaFactory.get(1));
+        this.biomeFactory = new BiomeFactory(areaFactory.get(0));
+        this.biomeFactoryActual = new BiomeFactory(areaFactory.get(1));
 
         // todo: create temperature / rainfall layers, and use them to generate biome permutations
     }

@@ -16,6 +16,7 @@ public class RockDeserializer extends TFCTypeDeserializer<Rock>
     @Override
     protected Rock create(JsonObject obj)
     {
+        // Rock category
         String rockCategoryName = JSONUtils.getString(obj, "category");
         RockCategory category;
         try
@@ -27,6 +28,7 @@ public class RockDeserializer extends TFCTypeDeserializer<Rock>
             throw new JsonParseException("Unknown rock category " + rockCategoryName);
         }
 
+        // Rock blocks
         Map<Rock.BlockType, Block> blockVariants = findRegistryObjects(obj, "blocks", ForgeRegistries.BLOCKS, Rock.BlockType.values(), type -> type.name().toLowerCase());
         return new Rock(category, blockVariants);
     }
