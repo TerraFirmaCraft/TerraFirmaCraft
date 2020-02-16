@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.IRarity;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.ConfigTFC;
@@ -232,7 +233,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
 
     @Override
     @Nonnull
-    public EnumRarity getRarity(ItemStack stack)
+    public IRarity getForgeRarity(@Nonnull ItemStack stack)
     {
         switch (metal.getTier())
         {
@@ -246,7 +247,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             case TIER_V:
                 return EnumRarity.EPIC;
         }
-        return super.getRarity(stack);
+        return super.getForgeRarity(stack);
     }
 
     @Override

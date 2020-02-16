@@ -40,6 +40,7 @@ public class ChiselHighlightHandler
             BlockPos pos = traceResult.getBlockPos();
 
             // pos is null if the raytraceresult is for an entity. This causes a crash. The IDE lies.
+            //noinspection ConstantConditions
             if (pos != null)
             {
                 // Get the state that the chisel would turn the block into if it clicked

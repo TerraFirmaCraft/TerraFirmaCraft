@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
@@ -34,6 +35,7 @@ import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.skills.SimpleSkill;
 import net.dries007.tfc.util.skills.SkillType;
 
+@ParametersAreNonnullByDefault
 public class BlockCropDead extends BlockBush
 {
     /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */

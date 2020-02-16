@@ -158,6 +158,7 @@ public class ItemMold extends ItemPottery
             if (resource != null)
             {
                 Metal metal = FluidsTFC.getMetalFromFluid(resource.getFluid());
+                //noinspection ConstantConditions
                 if (metal != null && type.hasMold(metal))
                 {
                     int fillAmount = tank.fill(resource, doFill);
@@ -284,6 +285,7 @@ public class ItemMold extends ItemPottery
             if (fluid != null)
             {
                 Metal metal = FluidsTFC.getMetalFromFluid(fluid.getFluid());
+                //noinspection ConstantConditions
                 if (metal != null)
                 {
                     meltTemp = metal.getMeltTemp();
