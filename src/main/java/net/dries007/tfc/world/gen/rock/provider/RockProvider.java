@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.world.gen.rock.provider;
 
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -122,8 +121,7 @@ public class RockProvider
         SoilBlockType[] soilLayer = new SoilBlockType[256];
         SandBlockType[] sandLayer = new SandBlockType[256];
 
-        List<Rock> orderedRocks = TFCTypeManager.ROCKS.getOrderedValues();
-        int totalSize = orderedRocks.size();
+        int totalRocks = TFCTypeManager.ROCKS.getValues().size();
         int chunkX = pos.getXStart(), chunkZ = pos.getZStart();
         for (int x = 0; x < 16; x++)
         {
@@ -131,13 +129,13 @@ public class RockProvider
             {
                 // From the seed, generate a combination of rock, sand, and soil profile
                 int seed = seedArea.getValue(chunkX + x, chunkZ + z);
-                int topRockValue = seed % totalSize;
+                int topRockValue = seed % totalRocks;
                 topLayer[x + 16 * z] = TFCTypeManager.ROCKS.get(topRockValue);
-                seed /= totalSize;
+                seed /= totalRocks;
 
-                int bottomRockValue = seed % totalSize;
+                int bottomRockValue = seed % totalRocks;
                 bottomLayer[x + 16 * z] = TFCTypeManager.ROCKS.get(bottomRockValue);
-                seed /= totalSize;
+                seed /= totalRocks;
 
                 int soilValue = seed % SoilBlockType.TOTAL;
                 soilLayer[x + 16 * z] = SoilBlockType.valueOf(soilValue);
