@@ -1,0 +1,21 @@
+{
+    "display": {
+        "icon": {
+            "item": "tfc:ore/tetrahedrite"
+        },
+        "title": {
+            "translate": "advancements.tfc_main.root.title"
+        },
+        "description": {
+            "translate": "advancements.tfc_main.root.description"
+        },
+        "background": "tfc:textures/gui/advancements/backgrounds/main.png",
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "criteria": {
+        "in-game": {
+            "trigger": "minecraft:tick"
+        }
+    }
+}

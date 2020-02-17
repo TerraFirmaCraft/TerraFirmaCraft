@@ -3827,3 +3827,142 @@ tfc.animal.donkeytfc.male=Donkey♂
 tfc.animal.donkeytfc.female=Donkey♀
 tfc.animal.muletfc.male=Mule♂
 tfc.animal.muletfc.female=Mule♀
+
+## Advancements
+
+# Main Quest
+advancements.tfc_main.root.title=TerraFirmaCraft
+advancements.tfc_main.root.description=TFC's main line of progression.
+#
+advancements.tfc_main.pick_rock.title=Just a Rock
+advancements.tfc_main.pick_rock.description=Pick up a Stone from the ground.
+#
+advancements.tfc_main.stone_age.title=Paleolithic!
+advancements.tfc_main.stone_age.description=Enter the Stone Age by knapping a stone tool.
+#
+advancements.tfc_main.stone_knives.title=Double Trouble
+advancements.tfc_main.stone_knives.description=Make two stone knife heads from the same stone.
+#
+advancements.tfc_main.logging.title=Timber!
+advancements.tfc_main.logging.description=Make an axe.
+#
+advancements.tfc_main.campfire.title=Lighting a Fire
+advancements.tfc_main.campfire.description=Make a fire pit.
+#
+advancements.tfc_main.charcoal.title=A Better Fuel
+advancements.tfc_main.charcoal.description=Make charcoal by lighting some log piles on a pit and covering them.
+#
+advancements.tfc_main.find_clay.title=Potential Pot
+advancements.tfc_main.find_clay.description=Find and dig clay for pottery.
+#
+advancements.tfc_main.pottery.title=Handicrafts
+advancements.tfc_main.pottery.description=Knap a piece of pottery from clay.
+#
+advancements.tfc_main.stone_anvil.title=Hammer Time
+advancements.tfc_main.stone_anvil.description=Hit some igneous stone with a hammer to make your first anvil.
+#
+advancements.tfc_main.metal_casting.title=All-Star Casting
+advancements.tfc_main.metal_casting.description=Make a mold with which to cast a metal tool.
+#
+advancements.tfc_main.copper_age.title=Chalcolithic
+advancements.tfc_main.copper_age.description=Enter the Copper Age by making a copper tool.
+#
+advancements.tfc_main.mining.title=Time to Mine (Finally!)
+advancements.tfc_main.mining.description=Make a pickaxe.
+#
+advancements.tfc_main.carpentry.title=Carpenter
+advancements.tfc_main.carpentry.description=Make a saw.
+#
+advancements.tfc_main.make_quern.title=The Grind
+advancements.tfc_main.make_quern.description= Craft a Quern.
+#
+advancements.tfc_main.metal_anvil.title=Dropping an Anvil
+advancements.tfc_main.metal_anvil.description=Make a Copper Anvil.
+#
+advancements.tfc_main.bronze_age.title=The Bronze Age
+advancements.tfc_main.bronze_age.description=Enter the Bronze by making Bronze Anvil.
+#
+advancements.tfc_main.make_bloomery.title=In Bloom
+advancements.tfc_main.make_bloomery.description=Craft a Bloomery.
+#
+advancements.tfc_main.iron_age.title=The Iron Age
+advancements.tfc_main.iron_age.description=Enter the Iron Age by getting an Iron Bloom.
+#
+advancements.tfc_main.make_blast_furnace.title=Blast Off!
+advancements.tfc_main.make_blast_furnace.description=Craft a Blast Furnace.
+#
+advancements.tfc_main.make_fire_clay.title=Fireproof
+advancements.tfc_main.make_fire_clay.description=Craft some fire clay.
+#
+advancements.tfc_main.make_crucible.title=Metallurgy
+advancements.tfc_main.make_crucible.description=Knap a Crucible from fire clay.
+#
+advancements.tfc_main.get_steel.title=Industrialized
+advancements.tfc_main.get_steel.description=Get a Steel Ingot.
+#
+advancements.tfc_main.get_unknown.title=D'OH!
+advancements.tfc_main.get_unknown.description=Get an Unknown Ingot by messing up an alloy.
+#
+advancements.tfc_main.get_black_steel.title=Back In Black
+advancements.tfc_main.get_black_steel.description=Get a Black Steel Ingot.
+#
+advancements.tfc_main.get_blue_steel.title=Blue Ogre
+advancements.tfc_main.get_blue_steel.description=Get a Blue Steel Ingot.
+#
+advancements.tfc_main.get_red_steel.title=Red Ogre
+advancements.tfc_main.get_red_steel.description=Get a Red Steel Ingot.
+#
+advancements.tfc_main.blue_steel_bucket.title=Hot Sauce
+advancements.tfc_main.blue_steel_bucket.description=Craft a Blue Steel Bucket.
+#
+advancements.tfc_main.red_steel_ingot.title=Tsunami
+advancements.tfc_main.red_steel_ingot.description=Craft a Red Steel Bucket.
+#
+advancements.tfc_main.ultimate_goal.title=All This for a Bucket?
+advancements.tfc_main.ultimate_goal.description=Craft a vanilla Iron Bucket.
+
+# Exploration
+advancements.tfc_main.root.title=TFC Exploration
+advancements.tfc_main.root.description=Explore TFC's world for resources.
+#
+advancements.tfc_explore.gatherer.title=Gatherer
+advancements.tfc_explore.gatherer.description=Harvest a wild crop.
+#
+advancements.tfc_explore.farming.title=Farmer
+advancements.tfc_explore.farming.description=Make a hoe.
+#
+advancements.tfc_explore.baker.title=Baking Bread
+advancements.tfc_explore.baker.description=Make a loaf of bread.
+#
+advancements.tfc_explore.botanist.title=Botanist
+advancements.tfc_explore.botanist.description=Get the seeds for more than ten crops.
+#
+advancements.tfc_explore.rutabaga.title=Stupid Onions...
+advancements.tfc_explore.rutabaga.description=Find a Rutabaga.
+#
+advancements.tfc_main.pick_nugget.title=A Shiny Rock
+advancements.tfc_main.pick_nugget.description=Pick up nugget from the ground.
+#
+advancements.tfc_main.make_propick.title=Prospecting
+advancements.tfc_main.make_propick.description=Craft a prospector's pick.
+#
+advancements.tfc_explore.get_flux.title=In Flux
+advancements.tfc_explore.get_flux.description=Get some flux for welding.
+#
+advancements.tfc_explore.gatherer.title=Geologist
+advancements.tfc_explore.gatherer.description=Get at least one rock of every stone type.
+#
+advancements.tfc_explore.find_diamonds.title=DIAM- Oh Wait...
+advancements.tfc_explore.find_diamonds.description=Find Diamonds.
+#
+advancements.tfc_explore.find_graphite.title=Writing Stone
+advancements.tfc_explore.find_graphite.description=Find Graphite.
+#
+advancements.tfc_explore.find_kaolinite.title=Pink Unicorn
+advancements.tfc_explore.find_kaolinite.description=Find Kaolinite.
+#
+advancements.tfc_explore.find_gold.title=Gold Rush
+advancements.tfc_explore.find_gold.description=Find Gold Ore.
+#
+advancements.tfc_explore.find_nickel.title=...and Dime
+advancements.tfc_explore.find_nickel.description=Find Nickel Ore.
