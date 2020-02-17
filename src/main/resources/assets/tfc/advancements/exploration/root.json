@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "item": "tfc:plants/goldenrod"
+        },
+        "title": {
+            "translate": "advancements.tfc_explore.root.title"
+        },
+        "description": {
+            "translate": "advancements.tfc_explore.root.description"
+        },
+        "background": "tfc:textures/gui/advancements/backgrounds/exploration.png",
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "criteria": {
+        "crafting_table": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:stick"
+                    }
+                ]
+            }
+        }
+    }
+}
