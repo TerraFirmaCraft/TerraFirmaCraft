@@ -4,10 +4,10 @@
             "item": "tfc:rock/granite"
         },
         "title": {
-            "translate": "advancements.tfc_main.pick_rock.title"
+            "translate": "advancements.main.pick_rock.title"
         },
         "description": {
-            "translate": "advancements.tfc_main.pick_rock.description"
+            "translate": "advancements.main.pick_rock.description"
         }
     },
     "parent": "tfc:main/root",
