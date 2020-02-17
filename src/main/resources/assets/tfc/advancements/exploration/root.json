@@ -4,10 +4,10 @@
             "item": "tfc:plants/goldenrod"
         },
         "title": {
-            "translate": "advancements.tfc_explore.root.title"
+            "translate": "advancements.exploration.root.title"
         },
         "description": {
-            "translate": "advancements.tfc_explore.root.description"
+            "translate": "advancements.exploration.root.description"
         },
         "background": "tfc:textures/gui/advancements/backgrounds/exploration.png",
         "show_toast": false,
