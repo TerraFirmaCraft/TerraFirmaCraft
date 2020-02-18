@@ -37,6 +37,8 @@ public class TFCSounds
     public static final SoundEvent ITEM_THROW = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":item.jug.blow")
     public static final SoundEvent JUG_BLOW = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":item.firestarter")
+    public static final SoundEvent FIRE_STARTER = getNull();
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.bear.say")
     public static final SoundEvent ANIMAL_BEAR_SAY = getNull();
@@ -95,6 +97,7 @@ public class TFCSounds
             createSoundEvent("anvil.metalimpact"),
             createSoundEvent("item.throw"),
             createSoundEvent("item.jug.blow"),
+            createSoundEvent("item.firestarter"),
             // Animals
             createSoundEvent("animal.bear.cry"),
             createSoundEvent("animal.bear.say"),
