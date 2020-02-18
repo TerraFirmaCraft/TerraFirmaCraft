@@ -367,7 +367,7 @@ public final class DefaultRecipes
                 }
             }
             return false;
-        }, new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, INGOT)), Metal.Tier.TIER_II, GENERAL, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
+        }, new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, INGOT)), Metal.Tier.TIER_II, null, HIT_LAST, HIT_SECOND_LAST, HIT_THIRD_LAST));
 
         // Shields
         addAnvil(r, DOUBLE_SHEET, SHIELD, true, ARMOR, UPSET_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
