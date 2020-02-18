@@ -7,7 +7,6 @@ package net.dries007.tfc.world.biome;
 
 import javax.annotation.Nonnull;
 
-import net.dries007.tfc.world.gen.surfacebuilders.TFCSurfaceBuilders;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -20,7 +19,7 @@ public class CanyonsBiome extends TFCBiome
 
     public CanyonsBiome(float minHeight, float maxHeight)
     {
-        super(new Builder().category(Category.EXTREME_HILLS).surfaceBuilder(TFCSurfaceBuilders.DEFAULT_NORMAL));
+        super(new Builder().category(Category.EXTREME_HILLS));
 
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;

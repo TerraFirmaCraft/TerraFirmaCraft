@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.BlockState;
 
-import net.dries007.tfc.world.gen.surfacebuilders.TFCSurfaceBuilders;
+import net.dries007.tfc.world.gen.surfacebuilders.ISurfaceBuilder;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -21,7 +21,7 @@ public class OceanBiome extends TFCBiome
 
     public OceanBiome(boolean isDeep)
     {
-        super(new Builder().category(Category.OCEAN).surfaceBuilder(TFCSurfaceBuilders.DEFAULT_NORMAL));
+        super(new Builder().category(Category.OCEAN));
 
         if (isDeep)
         {
@@ -49,8 +49,21 @@ public class OceanBiome extends TFCBiome
 
     @Nonnull
     @Override
+    public ISurfaceBuilder getTFCSurfaceBuilder()
+    {
+        return ISurfaceBuilder.SEAWATER;
+    }
+
+    @Nonnull
+    @Override
     public BlockState getWaterState()
     {
         return SALT_WATER;
+    }
+
+    @Override
+    public int getDefaultRockHeight()
+    {
+        return SEA_LEVEL;
     }
 }

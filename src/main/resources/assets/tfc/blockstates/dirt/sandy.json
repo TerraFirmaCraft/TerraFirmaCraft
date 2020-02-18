@@ -1,8 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/dirt/sandy"
-    }
+    "": [
+      {
+        "model": "tfc:block/dirt/sandy",
+        "y": 0
+      },
+      {
+        "model": "tfc:block/dirt/sandy",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/dirt/sandy",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/dirt/sandy",
+        "y": 270
+      }
+    ]
   }
 }

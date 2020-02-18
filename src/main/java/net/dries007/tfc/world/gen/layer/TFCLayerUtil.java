@@ -213,12 +213,6 @@ public class TFCLayerUtil
             IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -320, -320, 320, 320);
         }
 
-        seedLayer = new ModuloLayer(20).apply(contextFactory.apply(1003L), seedLayer);
-        IMAGES.color(Images.Colors.DISCRETE_20);
-
-        seedLayer = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1003L), seedLayer);
-        IMAGES.size(1280).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -640, -640, 640, 640);
-
         return seedLayer;
     }
 

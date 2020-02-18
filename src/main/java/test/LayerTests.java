@@ -24,6 +24,8 @@ import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
 import imageutil.Images;
 import net.dries007.tfc.world.gen.layer.*;
 import net.dries007.tfc.world.gen.rock.RockCategory;
+import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.SimplexNoise2D;
 
 import static net.dries007.tfc.world.gen.layer.TFCLayerUtil.*;
 
@@ -49,7 +51,7 @@ public class LayerTests
         isTestMode = true;
         IMAGES.enable();
 
-        boolean testBiomes = false, testRocks = true, findSpawnBiomes = false, drawHugeArea = false;
+        boolean testBiomes = false, testRocks = false, findSpawnBiomes = false, drawHugeArea = false, testClimate = true;
 
         long seed = System.currentTimeMillis();
 
@@ -81,6 +83,15 @@ public class LayerTests
             {
                 IMAGES.draw("rocks_actual_10km", layers.get(0), 0, 0, -5000, -5000, 5000, 5000);
             }
+        }
+
+        if (testClimate)
+        {
+            INoise2D regionalTemp = new SimplexNoise2D(seed).octaves(4).scaled(-5.5f, 5.5f).flattened(-5, 5).spread(0.002f);
+            Images.get().color(Images.Colors.LINEAR_BLUE_RED).drawF("regional_temp", regionalTemp::noise, -5, 5, -5000, -5000, 5000, 5000);
+
+            INoise2D rainfall = new SimplexNoise2D(seed).octaves(4).scaled(-25, 525).flattened(0, 500).spread(0.002f);
+            Images.get().drawF("rainfall", rainfall::noise, 0, 500, -5000, -5000, 5000, 5000);
         }
     }
 

@@ -26,13 +26,12 @@ public class BiomeFactory
     {
         TFCBiome[] biomes = new TFCBiome[xSize * zSize];
 
-        for (int x = 0; x < zSize; ++x)
+        for (int x = 0; x < xSize; ++x)
         {
-            for (int z = 0; z < xSize; ++z)
+            for (int z = 0; z < zSize; ++z)
             {
-                int value = lazyArea.getValue(startX + z, startZ + x);
-                biomes[z + x * xSize] = getBiome(value);
-                // todo: apply variants from climate
+                int value = lazyArea.getValue(startX + x, startZ + z);
+                biomes[x + z * xSize] = getBiome(value);
             }
         }
         return biomes;

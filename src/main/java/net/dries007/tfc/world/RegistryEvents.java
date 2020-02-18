@@ -73,8 +73,8 @@ public final class RegistryEvents
             new MountainsBiome(30, 64, true).setRegistryName("flooded_mountains"),
             new CanyonsBiome(-7, 26).setRegistryName("canyons"),
 
-            new ShoreBiome().setRegistryName("shore"),
-            new ShoreBiome().setRegistryName("stone_shore"),
+            new ShoreBiome(false).setRegistryName("shore"),
+            new ShoreBiome(true).setRegistryName("stone_shore"),
 
             new MountainsBiome(36, 34, false).setRegistryName("mountains_edge"),
             new LakeBiome().setRegistryName("lake"),

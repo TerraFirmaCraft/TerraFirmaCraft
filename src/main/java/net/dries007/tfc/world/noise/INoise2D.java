@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.noise;
 
+import net.dries007.tfc.util.function.FloatUnaryFunction;
+
 /**
  * Wrapper for a 2D noise layer
  *

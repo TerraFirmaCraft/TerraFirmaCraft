@@ -18,8 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
-import net.dries007.tfc.world.gen.rock.RockData;
-import net.dries007.tfc.world.gen.rock.provider.RockProvider;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -45,17 +44,19 @@ public final class EventHandler
         World world = event.getObject().getWorld();
         if (world.getWorldType() == TerraFirmaCraft.getWorldType())
         {
-            ChunkData chunkData = new ChunkData();
-
             // Add the rock data to the chunk capability, for long term storage
-            RockProvider rockProvider = RockProvider.getProvider(world);
-            if (rockProvider != null)
+            ChunkData data;
+            ChunkDataProvider chunkDataProvider = ChunkDataProvider.get(world);
+            if (chunkDataProvider != null)
             {
-                RockData data = rockProvider.getRockData(event.getObject());
-                chunkData.setRockData(data);
+                data = chunkDataProvider.get(event.getObject());
+            }
+            else
+            {
+                data = new ChunkData();
             }
 
-            event.addCapability(ChunkDataCapability.KEY, chunkData);
+            event.addCapability(ChunkDataCapability.KEY, data);
         }
     }
 

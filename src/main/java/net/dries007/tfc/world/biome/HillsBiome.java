@@ -7,7 +7,6 @@ package net.dries007.tfc.world.biome;
 
 import javax.annotation.Nonnull;
 
-import net.dries007.tfc.world.gen.surfacebuilders.TFCSurfaceBuilders;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -19,7 +18,7 @@ public class HillsBiome extends TFCBiome
 
     public HillsBiome(float height)
     {
-        super(new Builder().category(Category.PLAINS).surfaceBuilder(TFCSurfaceBuilders.DEFAULT_THICK));
+        super(new Builder().category(Category.PLAINS));
         this.height = height;
 
         TFCDefaultBiomeFeatures.addCarvers(this);
