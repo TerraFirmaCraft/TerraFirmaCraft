@@ -26,7 +26,7 @@ public class PacketOpenCraftingGui implements IMessageEmpty
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    if (ConfigTFC.GENERAL.inventoryCraftingTableMode == 1 || (ConfigTFC.GENERAL.inventoryCraftingTableMode == 2 && Helpers.playerHasItemMatchingOre(player.inventory, "craftingTable")))
+                    if (ConfigTFC.GENERAL.inventoryCraftingTableMode == 1 || (ConfigTFC.GENERAL.inventoryCraftingTableMode == 2 && Helpers.playerHasItemMatchingOre(player.inventory, "workbench")))
                     {
                         TFCGuiHandler.openGui(player.world, player, TFCGuiHandler.Type.CRAFTING);
                     }
