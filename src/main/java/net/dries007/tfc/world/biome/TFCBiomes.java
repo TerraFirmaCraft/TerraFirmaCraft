@@ -21,29 +21,29 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class TFCBiomes
 {
     // Aquatic biomes
-    public static final TFCBiome OCEAN = Helpers.getNull(); // Ocean biome found near continents. Geo: Medium/Medium
-    public static final TFCBiome DEEP_OCEAN = Helpers.getNull(); // Deep ocean biome covering most all oceans. Geo: Medium/Medium
-    public static final TFCBiome DEEP_OCEAN_RIDGE = Helpers.getNull(); // Variant of deep ocean biomes, contains snaking ridge like formations. Geo: High/New
+    public static final TFCBiome OCEAN = Helpers.getNull(); // Ocean biome found near continents.
+    public static final TFCBiome DEEP_OCEAN = Helpers.getNull(); // Deep ocean biome covering most all oceans.
+    public static final TFCBiome DEEP_OCEAN_RIDGE = Helpers.getNull(); // Variant of deep ocean biomes, contains snaking ridge like formations.
 
     // Low biomes
-    public static final TFCBiome PLAINS = Helpers.getNull(); // Very flat, slightly above sea level. Geo: Low/Old
-    public static final TFCBiome HILLS = Helpers.getNull(); // Small hills, slightly above sea level. Geo: Low/Medium
-    public static final TFCBiome LOWLANDS = Helpers.getNull(); // Flat, swamp-like, lots of shallow pools below sea level. Geo: Low/Old
-    public static final TFCBiome LOW_CANYONS = Helpers.getNull(); // Sharp, small hills, with lots of water / snaking winding rivers. Geo:Medium/Old
+    public static final TFCBiome PLAINS = Helpers.getNull(); // Very flat, slightly above sea level.
+    public static final TFCBiome HILLS = Helpers.getNull(); // Small hills, slightly above sea level.
+    public static final TFCBiome LOWLANDS = Helpers.getNull(); // Flat, swamp-like, lots of shallow pools below sea level.
+    public static final TFCBiome LOW_CANYONS = Helpers.getNull(); // Sharp, small hills, with lots of water / snaking winding rivers.
 
     // Mid biomes
-    public static final TFCBiome ROLLING_HILLS = Helpers.getNull(); // Higher hills, above sea level. Some larger / steeper hills. Geo: Medium/Medium
-    public static final TFCBiome BADLANDS = Helpers.getNull(); // High, flat area with relief / absolute value based noise carving. Geo: High/Medium
-    public static final TFCBiome PLATEAU = Helpers.getNull(); // Very high area, very flat top. Geo: Low/New
-    public static final TFCBiome OLD_MOUNTAINS = Helpers.getNull(); // Rounded top mountains, very large hills. Geo: Medium/Old
+    public static final TFCBiome ROLLING_HILLS = Helpers.getNull(); // Higher hills, above sea level. Some larger / steeper hills.
+    public static final TFCBiome BADLANDS = Helpers.getNull(); // Very high flat area with steep relief carving, similar to vanilla mesas.
+    public static final TFCBiome PLATEAU = Helpers.getNull(); // Very high area, very flat top.
+    public static final TFCBiome OLD_MOUNTAINS = Helpers.getNull(); // Rounded top mountains, very large hills.
 
     // High biomes
-    public static final TFCBiome MOUNTAINS = Helpers.getNull(); // High, picturesque mountains. Pointed peaks, low valleys well above sea level. Geo: High/New
-    public static final TFCBiome FLOODED_MOUNTAINS = Helpers.getNull(); // Mountains with high areas, and low, below sea level valleys. Water is salt water here. Geo: High/Old
-    public static final TFCBiome CANYONS = Helpers.getNull(); // Very high flat area with steep relief carving, similar to vanilla mesas. Geo: Medium/New
+    public static final TFCBiome MOUNTAINS = Helpers.getNull(); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
+    public static final TFCBiome FLOODED_MOUNTAINS = Helpers.getNull(); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final TFCBiome CANYONS = Helpers.getNull(); // Medium height with snake like ridges, often slightly below sea level
 
     // Shores
-    public static final TFCBiome SHORE = Helpers.getNull(); // Standard shore biome. Different areas have different shores based on geology layers.
+    public static final TFCBiome SHORE = Helpers.getNull(); // Standard shore biome with a sandy beach
     public static final TFCBiome STONE_SHORE = Helpers.getNull(); // Shore for mountain biomes
 
     // Technical biomes

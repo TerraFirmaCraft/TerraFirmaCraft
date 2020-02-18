@@ -7,7 +7,6 @@ package net.dries007.tfc.world.biome;
 
 import javax.annotation.Nonnull;
 
-import net.dries007.tfc.world.gen.surfacebuilders.TFCSurfaceBuilders;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -17,7 +16,7 @@ public class LakeBiome extends TFCBiome
 {
     public LakeBiome()
     {
-        super(new Builder().category(Category.RIVER).surfaceBuilder(TFCSurfaceBuilders.RIVER));
+        super(new Builder().category(Category.RIVER));
 
         TFCDefaultBiomeFeatures.addCarvers(this);
     }

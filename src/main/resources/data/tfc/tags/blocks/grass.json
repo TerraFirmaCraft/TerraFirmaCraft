@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:grass/silty",
+    "tfc:grass/sandy",
+    "tfc:grass/loamy",
+    "tfc:grass/clay",
+    "tfc:grass/peat",
+    "tfc:dry_grass/silty",
+    "tfc:dry_grass/sandy",
+    "tfc:dry_grass/loamy",
+    "tfc:dry_grass/clay",
+    "tfc:dry_grass/peat"
+  ]
+}

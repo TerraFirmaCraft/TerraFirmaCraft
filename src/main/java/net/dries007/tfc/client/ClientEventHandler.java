@@ -1,45 +1,47 @@
-/*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- */
-
 package net.dries007.tfc.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.client.gui.screen.CreateWorldScreen;
-import net.minecraft.world.WorldType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.GrassColors;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.objects.blocks.TFCBlocks;
+import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
+import net.dries007.tfc.util.climate.ClimateTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
-public class ClientEventHandler
+@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public final class ClientEventHandler
 {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event)
+    @SubscribeEvent
+    public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
     {
+        LOGGER.debug("Registering Color Handler Blocks");
+        BlockColors blockColors = event.getBlockColors();
 
-        LOGGER.debug("Init Gui Pre Event");
-        if (event.getGui() instanceof CreateWorldScreen)
-        {
-            // Only change if default is selected, because coming back from customisation, this will be set already.
-            CreateWorldScreen gui = ((CreateWorldScreen) event.getGui());
-            Integer selectedIndex = ObfuscationReflectionHelper.getPrivateValue(CreateWorldScreen.class, gui, "field_146331_K");
-            if (selectedIndex != null && selectedIndex == WorldType.DEFAULT.getId())
+        // Grass Colors
+        IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> {
+            if (pos != null && tintIndex == 0)
             {
-                LOGGER.debug("Setting Selected World Type to TFC Default");
-                ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TerraFirmaCraft.getWorldType().getId(), "field_146331_K");
+                // todo: change this to use monthly temp
+                double temp = MathHelper.clamp((ClimateTFC.getAvgTemp(pos) + 30) / 60, 0, 1);
+                double rain = MathHelper.clamp((ClimateTFC.getRainfall(pos) - 50) / 400, 0, 1);
+                return GrassColors.get(temp, rain);
             }
-        }
+            return -1;
+        };
+
+        blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
+        blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.DRY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
     }
 }

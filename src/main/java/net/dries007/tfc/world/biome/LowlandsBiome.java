@@ -7,7 +7,6 @@ package net.dries007.tfc.world.biome;
 
 import javax.annotation.Nonnull;
 
-import net.dries007.tfc.world.gen.surfacebuilders.TFCSurfaceBuilders;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -17,7 +16,7 @@ public class LowlandsBiome extends TFCBiome
 {
     public LowlandsBiome()
     {
-        super(new Builder().category(Category.PLAINS).surfaceBuilder(TFCSurfaceBuilders.DEFAULT_THICK));
+        super(new Builder().category(Category.PLAINS));
 
         TFCDefaultBiomeFeatures.addCarvers(this);
     }

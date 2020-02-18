@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -46,6 +47,8 @@ public class TFCGrassBlock extends Block
     public TFCGrassBlock(Properties properties)
     {
         super(properties);
+
+        setDefaultState(stateContainer.getBaseState().with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false));
     }
 
     @Override
@@ -78,5 +81,19 @@ public class TFCGrassBlock extends Block
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(NORTH, EAST, SOUTH, WEST);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isSolid(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    @Nonnull
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 }

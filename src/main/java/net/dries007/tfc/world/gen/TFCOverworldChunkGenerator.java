@@ -31,12 +31,10 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.world.biome.TFCBiome;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.provider.TFCBiomeProvider;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.gen.carver.WorleyCaveCarver;
 import net.dries007.tfc.world.gen.rock.RockData;
-import net.dries007.tfc.world.gen.rock.provider.RockProvider;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
-import net.dries007.tfc.world.noise.SinNoise;
 
 @ParametersAreNonnullByDefault
 public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSettings>
@@ -60,24 +58,18 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     });
 
     // Noise
-    private final INoise2D temperatureNoise;
-    private final INoise2D rainfallNoise;
     private final Map<TFCBiome, INoise2D> biomeNoiseMap;
 
     // Generators / Providers
     private final TFCBiomeProvider biomeProvider;
     private final WorleyCaveCarver worleyCaveCarver;
-    private final RockProvider rockProvider;
+    private final ChunkDataProvider chunkDataProvider;
 
     public TFCOverworldChunkGenerator(IWorld world, BiomeProvider biomeProvider, TFCGenerationSettings settings)
     {
         super(world, biomeProvider, settings);
 
         Random seedGenerator = new Random(world.getSeed());
-
-        // Initial Climate Layers
-        this.temperatureNoise = new SinNoise(20, 0, (float) Math.PI * 0.000025f, 0).extendX().add(new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0008f).scaled(-5, 5));
-        this.rainfallNoise = new SinNoise(250, 250, (float) Math.PI * 0.000025f, 0).extendY().add(new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0008f).scaled(-25, 25));
 
         this.biomeNoiseMap = new HashMap<>();
         final long biomeNoiseSeed = seedGenerator.nextLong();
@@ -93,14 +85,13 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator);
 
         // Rock Layer Provider
-        // todo: initialize this with the biome provider in sync (i.e. generate all layers here and pass them in?)
-        this.rockProvider = new RockProvider(world, settings);
+        this.chunkDataProvider = new ChunkDataProvider(world, settings, seedGenerator);
     }
 
     @Nonnull
-    public RockProvider getRockProvider()
+    public ChunkDataProvider getChunkDataProvider()
     {
-        return rockProvider;
+        return chunkDataProvider;
     }
 
     @Override
@@ -117,61 +108,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     }
 
     @Override
-    public void generateSurface(IChunk chunk)
-    {
-        ChunkPos chunkPos = chunk.getPos();
-        SharedSeedRandom random = new SharedSeedRandom();
-        random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
-
-        Biome[] biomes = chunk.getBiomes();
-        RockData rockData = rockProvider.getOrCreateRockData(chunkPos);
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        // Instead of doing surface materials, we do block replacements here, since the basic surface material is generated during make base
-
-        for (int x = 0; x < 16; x++)
-        {
-            for (int z = 0; z < 16; z++)
-            {
-                int topYLevel = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-
-                // surface builder
-                //biomes[z * 16 + x].buildSurface(random, chunk, chunkPos.getXStart() + x, chunkPos.getZStart() + z, chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1, 0, getSettings().getDefaultBlock(), getSettings().getDefaultFluid(), getSeaLevel(), world.getSeed());
-
-                // rock replacement
-                for (int y = topYLevel; y >= 0; y--)
-                {
-                    pos.setPos(x, y, z);
-                    BlockState state = chunk.getBlockState(pos);
-                    Rock.BlockType type = null;
-                    if (state.getBlock() == Blocks.GRAVEL)
-                    {
-                        type = Rock.BlockType.GRAVEL;
-                    }
-                    else if (state.getBlock() == Blocks.STONE)
-                    {
-                        type = Rock.BlockType.RAW;
-                    }
-                    if (type != null)
-                    {
-                        Rock rock;
-                        if (y < rockProvider.getBottomLayerHeight(y))
-                        {
-                            rock = rockData.getBottomRock(x, z);
-                        }
-                        else
-                        {
-                            rock = rockData.getTopRock(x, z);
-                        }
-                        // todo: require rock type RAW / GRAVEL
-                        BlockState replacement = rock.getBlock(type).getDefaultState();
-                        chunk.setBlockState(pos, replacement, false);
-                    }
-                }
-            }
-        }
-
-        makeBedrock(chunk, random);
-    }
+    public void generateBiomes(IChunk chunkIn) { /* NOOP */ }
 
     @Override
     public int getGroundHeight()
@@ -179,6 +116,36 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         return 0;
     }
 
+    @Override
+    public void generateSurface(IChunk chunk)
+    {
+        ChunkPos chunkPos = chunk.getPos();
+        SharedSeedRandom random = new SharedSeedRandom();
+        random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
+
+        Biome[] biomes = chunk.getBiomes();
+        RockData rockData = chunkDataProvider.getOrCreate(chunkPos).getRockData();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int x = 0; x < 16; x++)
+        {
+            for (int z = 0; z < 16; z++)
+            {
+                // todo: make dependent on temp / rainfall layer
+                float temperature = 5;
+                float rainfall = 200;
+                float noise = 0; // todo: use for noise surface builder
+                int topYLevel = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
+                ((TFCBiome) biomes[x + 16 * z]).getTFCSurfaceBuilder().buildSurface(random, chunk, rockData, chunkPos.getXStart() + x, chunkPos.getZStart() + z, topYLevel + 1, temperature, rainfall, noise);
+            }
+        }
+
+        makeBedrock(chunk, random);
+    }
+
+    /**
+     * This runs after biome generation. We skip biome generation there as we do it in tandem with noise generation
+     */
     @Override
     public void makeBase(IWorld world, IChunk chunk)
     {
@@ -194,6 +161,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         // Build the base height map, and also assign surface types (different from biomes because we need more control)
         double[] baseHeight = new double[16 * 16];
+        double[] baseRockHeight = new double[16 * 16];
         Object2DoubleMap<TFCBiome> heightBiomeMap = new Object2DoubleOpenHashMap<>(4);
         for (int x = 0; x < 16; x++)
         {
@@ -210,6 +178,9 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                         // Get the biome at the position and add it to the height biome map
                         TFCBiome biomeAt = spreadBiomes[(x + xOffset) + 24 * (z + zOffset)];
                         heightBiomeMap.mergeDouble(biomeAt, PARABOLIC_FIELD[xOffset + 9 * zOffset], Double::sum);
+
+                        // Sum the rock layer height
+                        baseRockHeight[z + 16 * x] += PARABOLIC_FIELD[zOffset + 9 * xOffset] * biomeAt.getDefaultRockHeight();
                     }
                 }
 
@@ -301,6 +272,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         }
 
         // Build Rough Terrain
+        RockData rockData = chunkDataProvider.getOrCreate(chunkPos).getRockData();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (int x = 0; x < 16; x++)
         {
@@ -311,7 +283,17 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 {
                     // todo: can this just be x, y, z since it all gets cut off anyway?
                     pos.setPos(chunkX + x, y, chunkZ + z);
-                    chunk.setBlockState(pos, settings.getDefaultBlock(), false);
+                    Rock rock;
+                    if (y < baseRockHeight[x + 16 * z])
+                    {
+                        rock = rockData.getBottomRock(x, z);
+                    }
+                    else
+                    {
+                        rock = rockData.getTopRock(x, z);
+                    }
+                    BlockState rockState = rock.getBlock(Rock.BlockType.RAW).getDefaultState();
+                    chunk.setBlockState(pos, rockState, false);
                 }
 
                 for (int y = (int) totalHeight + 1; y <= SEA_LEVEL; y++)
@@ -322,23 +304,12 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
             }
         }
 
+        // Now set biomes
+        chunk.setBiomes(localBiomes);
+
         // Height maps
         chunk.func_217303_b(Heightmap.Type.OCEAN_FLOOR_WG);
         chunk.func_217303_b(Heightmap.Type.WORLD_SURFACE_WG);
-
-        // Surface Builders
-        // We build surfaces here instead of later as we need more than just the biome to be able to accurately place surface material
-        for (int x = 0; x < 16; x++)
-        {
-            for (int z = 0; z < 16; z++)
-            {
-                // surface builder
-                localBiomes[z * 16 + x].buildSurface(random, chunk, chunkPos.getXStart() + x, chunkPos.getZStart() + z, chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1, 0, getSettings().getDefaultBlock(), getSettings().getDefaultFluid(), getSeaLevel(), world.getSeed());
-
-                // rock replacement
-
-            }
-        }
     }
 
     @Override

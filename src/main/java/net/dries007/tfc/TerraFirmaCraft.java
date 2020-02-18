@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.world.TFCWorldType;
@@ -19,6 +20,7 @@ import net.dries007.tfc.world.TFCWorldType;
 public final class TerraFirmaCraft
 {
     public static final String MOD_ID = "tfc";
+    public static final String MOD_NAME = "TerraFirmaCraft";
 
     private static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
@@ -49,5 +51,7 @@ public final class TerraFirmaCraft
 
         TFCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TFCItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
+        PacketHandler.setup();
     }
 }

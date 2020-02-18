@@ -1,0 +1,87 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_top",
+        "x": 270
+      }
+    },
+    {
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_bottom",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_top"
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_top",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_top",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_top",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "north": false
+      },
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_side"
+      }
+    },
+    {
+      "when": {
+        "east": false
+      },
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": false
+      },
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": false
+      },
+      "apply": {
+        "model": "tfc:block/dry_grass/sandy_side",
+        "y": 270
+      }
+    }
+  ]
+}

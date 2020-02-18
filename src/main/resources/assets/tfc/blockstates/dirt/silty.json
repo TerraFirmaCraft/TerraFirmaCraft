@@ -1,8 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/dirt/silty"
-    }
+    "": [
+      {
+        "model": "tfc:block/dirt/silty",
+        "y": 0
+      },
+      {
+        "model": "tfc:block/dirt/silty",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/dirt/silty",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/dirt/silty",
+        "y": 270
+      }
+    ]
   }
 }

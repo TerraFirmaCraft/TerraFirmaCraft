@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.BlockState;
 
-import net.dries007.tfc.world.gen.surfacebuilders.TFCSurfaceBuilders;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -23,7 +22,7 @@ public class MountainsBiome extends TFCBiome
 
     public MountainsBiome(float baseHeight, float scaleHeight, boolean isOceanMountains)
     {
-        super(new Builder().surfaceBuilder(TFCSurfaceBuilders.DEFAULT_THIN).category(Category.EXTREME_HILLS));
+        super(new Builder().category(Category.EXTREME_HILLS));
 
         this.baseHeight = baseHeight;
         this.scaleHeight = scaleHeight;
@@ -46,5 +45,11 @@ public class MountainsBiome extends TFCBiome
     public BlockState getWaterState()
     {
         return isOceanMountains ? SALT_WATER : FRESH_WATER;
+    }
+
+    @Override
+    public int getDefaultRockHeight()
+    {
+        return isOceanMountains ? SEA_LEVEL + 10 : SEA_LEVEL - 30;
     }
 }

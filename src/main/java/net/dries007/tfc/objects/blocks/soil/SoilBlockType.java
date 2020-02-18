@@ -14,16 +14,6 @@ public enum SoilBlockType
     DRY_GRASS,
     GRASS_PATH;
 
-    public static final int TOTAL = values().length;
-
-    private static final SoilBlockType[] VALUES = values();
-
-    @Nonnull
-    public static SoilBlockType valueOf(int i)
-    {
-        return i >= 0 && i < TOTAL ? VALUES[i] : DIRT;
-    }
-
     public Block create()
     {
         switch (this)
@@ -44,7 +34,17 @@ public enum SoilBlockType
         SILTY,
         SANDY,
         LOAMY,
-        CLAY,
-        PEAT
+        CLAY, // These two are special
+        PEAT;
+
+        public static final int TOTAL = values().length;
+
+        private static final Variant[] VALUES = values();
+
+        @Nonnull
+        public static Variant valueOf(int i)
+        {
+            return i >= 0 && i < TOTAL ? VALUES[i] : SILTY;
+        }
     }
 }
