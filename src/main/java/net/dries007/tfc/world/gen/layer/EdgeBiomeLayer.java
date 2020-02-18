@@ -7,10 +7,12 @@ package net.dries007.tfc.world.gen.layer;
 
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
+@ParametersAreNonnullByDefault
 public enum EdgeBiomeLayer implements ICastleTransformer
 {
     INSTANCE;

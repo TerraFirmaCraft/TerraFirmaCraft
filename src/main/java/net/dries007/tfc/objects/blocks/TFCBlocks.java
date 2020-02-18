@@ -34,7 +34,6 @@ import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
 import static net.dries007.tfc.objects.items.TFCItems.ITEMS;
 
 
-@SuppressWarnings("ConstantConditions")
 public final class TFCBlocks
 {
     /*

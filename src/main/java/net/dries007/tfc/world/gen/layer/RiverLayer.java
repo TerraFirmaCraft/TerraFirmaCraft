@@ -5,12 +5,15 @@
 
 package net.dries007.tfc.world.gen.layer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
 import static net.dries007.tfc.world.gen.layer.TFCLayerUtil.OCEAN;
 import static net.dries007.tfc.world.gen.layer.TFCLayerUtil.RIVER;
 
+@ParametersAreNonnullByDefault
 public enum RiverLayer implements ICastleTransformer
 {
     INSTANCE;

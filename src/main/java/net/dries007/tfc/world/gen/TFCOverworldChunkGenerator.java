@@ -18,12 +18,14 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeContainer;
+import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.WorldGenRegion;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
@@ -95,7 +97,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     }
 
     @Override
-    public void carve(IChunk chunkIn, GenerationStage.Carving stage)
+    public void func_225550_a_(BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
     {
         if (stage == GenerationStage.Carving.AIR)
         {
@@ -104,28 +106,19 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         }
 
         // Fire other world carvers
-        super.carve(chunkIn, stage);
+        super.func_225550_a_(biomeManager, chunkIn, stage);
     }
 
     @Override
-    public void generateBiomes(IChunk chunkIn) { /* NOOP */ }
-
-    @Override
-    public int getGroundHeight()
-    {
-        return 0;
-    }
-
-    @Override
-    public void generateSurface(IChunk chunk)
+    public void func_225551_a_(WorldGenRegion worldGenRegion, IChunk chunk)
     {
         ChunkPos chunkPos = chunk.getPos();
         SharedSeedRandom random = new SharedSeedRandom();
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
 
-        Biome[] biomes = chunk.getBiomes();
+        BiomeContainer biomes = chunk.getBiomes();
         RockData rockData = chunkDataProvider.getOrCreate(chunkPos).getRockData();
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable pos = new BlockPos.Mutable();
 
         for (int x = 0; x < 16; x++)
         {
@@ -156,7 +149,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
 
         // The spread biomes (for calculating terrain smoothing), and the 16x16 biome grid (for height map creation)
-        TFCBiome[] spreadBiomes = biomeProvider.getBiomes(chunkX - 4, chunkZ - 4, 24, 24, false);
+        TFCBiome[] spreadBiomes = biomeProvider.getBiomes(chunkX - 4, chunkZ - 4, 24, 24);
         TFCBiome[] localBiomes = new TFCBiome[16 * 16];
 
         // Build the base height map, and also assign surface types (different from biomes because we need more control)
@@ -271,9 +264,13 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
             }
         }
 
+        //  todo: light stuff and height maps
+        Heightmap oceanFloorHeightMap = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
+        Heightmap worldSurfaceHeightMap = chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
+
         // Build Rough Terrain
         RockData rockData = chunkDataProvider.getOrCreate(chunkPos).getRockData();
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable pos = new BlockPos.Mutable();
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
@@ -328,7 +325,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     private void makeBedrock(IChunk chunk, Random random)
     {
         boolean flatBedrock = getSettings().isFlatBedrock();
-        BlockPos.MutableBlockPos posAt = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable posAt = new BlockPos.Mutable();
         for (BlockPos pos : BlockPos.getAllInBoxMutable(chunk.getPos().getXStart(), 0, chunk.getPos().getZStart(), chunk.getPos().getXStart() + 15, 0, chunk.getPos().getZStart() + 15))
         {
             if (flatBedrock)

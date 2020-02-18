@@ -73,7 +73,7 @@ public class RockData implements INBTSerializable<CompoundNBT>
         byte index = 0;
         for (Rock rock : uniqueRocks)
         {
-            pallet.add(index, new StringNBT(rock.getName().toString()));
+            pallet.add(index, StringNBT.valueOf(rock.getName().toString()));
         }
         nbt.put("pallet", pallet);
 

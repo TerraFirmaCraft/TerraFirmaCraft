@@ -5,9 +5,12 @@
 
 package net.dries007.tfc.world.gen.layer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IBishopTransformer;
 
+@ParametersAreNonnullByDefault
 public enum AddIslandLayer implements IBishopTransformer
 {
     NORMAL(5),

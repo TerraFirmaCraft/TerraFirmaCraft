@@ -5,9 +5,12 @@
 
 package net.dries007.tfc.world.gen.layer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
 
+@ParametersAreNonnullByDefault
 public class IslandLayer implements IAreaTransformer0
 {
     private final int islandFrequency;

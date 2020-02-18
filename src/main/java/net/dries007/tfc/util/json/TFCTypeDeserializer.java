@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.gson.*;
 import net.minecraft.util.JSONUtils;
@@ -12,6 +13,7 @@ import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+@ParametersAreNonnullByDefault
 public abstract class TFCTypeDeserializer<T> implements JsonDeserializer<T>
 {
     @Override

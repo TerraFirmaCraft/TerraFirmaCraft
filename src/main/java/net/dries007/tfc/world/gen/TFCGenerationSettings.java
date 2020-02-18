@@ -11,6 +11,13 @@ import net.minecraft.world.storage.WorldInfo;
 
 public class TFCGenerationSettings extends GenerationSettings implements IBiomeProviderSettings
 {
+    public TFCGenerationSettings() {}
+
+    public TFCGenerationSettings(WorldInfo worldInfo)
+    {
+        setWorldInfo(worldInfo);
+    }
+
     public boolean isFlatBedrock()
     {
         return false; // todo: config

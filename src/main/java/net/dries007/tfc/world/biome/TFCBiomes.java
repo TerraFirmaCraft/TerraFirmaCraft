@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nonnull;
 
-import net.minecraft.util.LazyLoadBase;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.ObjectHolder;
 
 import net.dries007.tfc.util.Helpers;
@@ -52,7 +52,7 @@ public class TFCBiomes
     public static final TFCBiome RIVER = Helpers.getNull(); // Biome for river channels
 
     // Lazy load the biomes in order to allow registry replacements
-    private static final LazyLoadBase<Set<TFCBiome>> BIOMES = new LazyLoadBase<>(() -> {
+    private static final Lazy<Set<TFCBiome>> BIOMES = Lazy.of(() -> {
         Set<TFCBiome> values = new HashSet<>();
         for (TFCBiome biome : Arrays.asList(OCEAN, DEEP_OCEAN, DEEP_OCEAN_RIDGE, PLAINS, HILLS, LOWLANDS, LOW_CANYONS, ROLLING_HILLS, BADLANDS, PLATEAU, OLD_MOUNTAINS, MOUNTAINS, FLOODED_MOUNTAINS, CANYONS, SHORE, STONE_SHORE, MOUNTAINS_EDGE, LAKE, RIVER))
         {
@@ -68,6 +68,6 @@ public class TFCBiomes
     @Nonnull
     public static Set<TFCBiome> getBiomes()
     {
-        return BIOMES.getValue();
+        return BIOMES.get();
     }
 }
