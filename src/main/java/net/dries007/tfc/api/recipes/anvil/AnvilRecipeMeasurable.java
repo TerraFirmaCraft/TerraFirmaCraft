@@ -18,7 +18,6 @@ import net.dries007.tfc.api.capability.forge.IForgeableMeasurableMetal;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.forge.ForgeRule;
-import net.dries007.tfc.util.skills.SmithingSkill;
 
 /**
  * AnvilRecipe implementation for copying {@link IForgeableMeasurableMetal} cap from one item to another
@@ -36,7 +35,7 @@ public class AnvilRecipeMeasurable extends AnvilRecipe
      */
     public AnvilRecipeMeasurable(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, Metal.Tier minTier, ForgeRule... rules) throws IllegalArgumentException
     {
-        super(name, input, output, minTier, SmithingSkill.Type.GENERAL, rules);
+        super(name, input, output, minTier, null, rules);
     }
 
     @Override
