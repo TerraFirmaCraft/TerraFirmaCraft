@@ -6,7 +6,6 @@
 package net.dries007.tfc.world.gen.layer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.LongFunction;
 import java.util.function.Supplier;
@@ -18,7 +17,6 @@ import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
-import net.minecraft.world.gen.layer.VoroniZoomLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -56,7 +54,7 @@ public class TFCLayerUtil
     public static final int LAKE = getId(TFCBiomes.LAKE);
     public static final int RIVER = getId(TFCBiomes.RIVER);
 
-    public static List<IAreaFactory<LazyArea>> createOverworldBiomeLayer(long seed, TFCGenerationSettings settings)
+    public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, TFCGenerationSettings settings)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
 
@@ -176,10 +174,7 @@ public class TFCLayerUtil
         mainLayer = BiomeRiverWidenLayer.LOW.apply(contextFactory.apply(1028L), mainLayer);
         IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
 
-        IAreaFactory<LazyArea> areaFactoryActual = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1029L), mainLayer);
-        IMAGES.size(1280).draw("layer_biome_" + ++layerCount, areaFactoryActual, 0, 0, -640, -640, 640, 640);
-
-        return Arrays.asList(mainLayer, areaFactoryActual);
+        return mainLayer;
     }
 
     public static IAreaFactory<LazyArea> createOverworldRockLayers(long seed, TFCGenerationSettings settings)
@@ -212,6 +207,9 @@ public class TFCLayerUtil
             seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
             IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -320, -320, 320, 320);
         }
+
+        seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1003L), seedLayer);
+        IMAGES.size(1280).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -640, -640, 640, 640);
 
         return seedLayer;
     }

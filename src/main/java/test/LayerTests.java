@@ -17,7 +17,6 @@ import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
-import net.minecraft.world.gen.layer.VoroniZoomLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
 
@@ -215,7 +214,7 @@ public class LayerTests
         mainLayer = BiomeRiverWidenLayer.LOW.apply(contextFactory.apply(1028L), mainLayer);
         IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
 
-        IAreaFactory<LazyArea> areaFactoryActual = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1029L), mainLayer);
+        IAreaFactory<LazyArea> areaFactoryActual = ZoomLayer.NORMAL.apply(contextFactory.apply(1029L), mainLayer);
         IMAGES.size(1280).color(Images.Colors.DISCRETE_20).draw("layer_biome_" + ++layerCount, areaFactoryActual, 0, 0, -640, -640, 640, 640);
 
         return Arrays.asList(mainLayer, areaFactoryActual);
@@ -255,7 +254,7 @@ public class LayerTests
         seedLayer = new ModuloLayer(20).apply(contextFactory.apply(1003L), seedLayer);
         IMAGES.color(Images.Colors.DISCRETE_20);
 
-        seedLayer = VoroniZoomLayer.INSTANCE.apply(contextFactory.apply(1003L), seedLayer);
+        seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1003L), seedLayer);
         IMAGES.size(1280).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -640, -640, 640, 640);
 
         return null;

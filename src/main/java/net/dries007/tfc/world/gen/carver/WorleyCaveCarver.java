@@ -75,7 +75,7 @@ public class WorleyCaveCarver
 
         float[] section = new float[16 * 16];
         float[] prevSection = null;
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable pos = new BlockPos.Mutable();
 
         // Create caves, layer by layer
         for (int y = SAMPLE_HEIGHT - 1; y >= 0; y--)

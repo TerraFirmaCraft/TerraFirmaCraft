@@ -5,9 +5,12 @@
 
 package net.dries007.tfc.world.gen.layer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
+@ParametersAreNonnullByDefault
 public enum BiomeRiverWidenLayer implements ICastleTransformer
 {
     MEDIUM

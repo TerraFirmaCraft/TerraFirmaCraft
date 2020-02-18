@@ -9,8 +9,6 @@ import net.dries007.tfc.util.function.FloatUnaryFunction;
 
 /**
  * Wrapper for a 3D Noise Layer
- *
- * @author AlcatrazEscapee
  */
 @FunctionalInterface
 public interface INoise3D

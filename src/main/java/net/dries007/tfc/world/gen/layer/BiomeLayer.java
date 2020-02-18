@@ -5,11 +5,14 @@
 
 package net.dries007.tfc.world.gen.layer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IC0Transformer;
 
 import static net.dries007.tfc.world.gen.layer.TFCLayerUtil.*;
 
+@ParametersAreNonnullByDefault
 public enum BiomeLayer implements IC0Transformer
 {
     INSTANCE;

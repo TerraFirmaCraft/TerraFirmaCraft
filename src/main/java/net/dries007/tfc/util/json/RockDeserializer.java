@@ -1,6 +1,7 @@
 package net.dries007.tfc.util.json;
 
 import java.util.Map;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -11,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.world.gen.rock.RockCategory;
 
+@ParametersAreNonnullByDefault
 public class RockDeserializer extends TFCTypeDeserializer<Rock>
 {
     @Override

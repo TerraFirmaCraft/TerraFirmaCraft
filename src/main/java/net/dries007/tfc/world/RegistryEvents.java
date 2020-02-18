@@ -45,6 +45,7 @@ public final class RegistryEvents
         LOGGER.debug("Registering TFC Biome Provider Type");
 
         event.getRegistry().registerAll(
+            // todo: WTF MOJANG
             new BiomeProviderType<>(TFCBiomeProvider::new, TFCGenerationSettings::new).setRegistryName("overworld")
         );
     }

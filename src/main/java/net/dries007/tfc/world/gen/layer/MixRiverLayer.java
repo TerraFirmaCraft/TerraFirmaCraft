@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.gen.layer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer2;
@@ -12,6 +14,7 @@ import net.minecraft.world.gen.layer.traits.IDimOffset0Transformer;
 
 import static net.dries007.tfc.world.gen.layer.TFCLayerUtil.RIVER;
 
+@ParametersAreNonnullByDefault
 public enum MixRiverLayer implements IAreaTransformer2, IDimOffset0Transformer
 {
     INSTANCE;
