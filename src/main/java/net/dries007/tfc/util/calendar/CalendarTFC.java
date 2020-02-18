@@ -187,14 +187,6 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
             doDaylightCycle = nbt.getBoolean("doDaylightCycle");
             arePlayersLoggedOn = nbt.getBoolean("arePlayersLoggedOn");
-
-            // For versions < 0.27.x, in order to lessen the amount of world breakage that occurs
-            if (nbt.hasKey("worldTotalTime"))
-            {
-                long worldTotalTime = nbt.getLong("worldTotalTime");
-                playerTime = worldTotalTime + nbt.getLong("playerTimeOffset");
-                calendarTime = worldTotalTime + nbt.getLong("calendarTimeOffset");
-            }
         }
     }
 
@@ -255,7 +247,7 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
         {
             playerTime++;
         }
-        if (server.getTickCounter() % 20 == 0)
+        if (server.getTickCounter() % 10 == 0)
         {
             TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
         }
@@ -273,21 +265,29 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
         long deltaWorldTime = (world.getWorldTime() % ICalendar.TICKS_IN_DAY) - CALENDAR_TIME.getWorldTime();
         if (deltaWorldTime > 1 || deltaWorldTime < -1)
         {
-            TerraFirmaCraft.getLog().info("World time and calendar time are out of sync by {} ticks, correcting!", deltaWorldTime);
+            TerraFirmaCraft.getLog().info("World time and Calendar Time are out of sync! Trying to fix...");
+            TerraFirmaCraft.getLog().info("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTime, CALENDAR_TIME.getWorldTime(), playerTime, world.getWorldTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
+
+            // Check if tracking values are wrong
+            boolean checkArePlayersLoggedOn = server.getPlayerList().getPlayers().size() > 0;
+            if (arePlayersLoggedOn != checkArePlayersLoggedOn)
+            {
+                // Whoops, somehow we missed this.
+                TerraFirmaCraft.getLog().info("Setting ArePlayersLoggedOn = {}", checkArePlayersLoggedOn);
+                setPlayersLoggedOn(checkArePlayersLoggedOn);
+            }
             if (deltaWorldTime < 0)
             {
                 // Calendar is ahead, so jump world time
                 world.setWorldTime(world.getWorldTime() - deltaWorldTime);
+                TerraFirmaCraft.getLog().info("Calendar is ahead by {} ticks, jumping world time to catch up", -deltaWorldTime);
             }
             else
             {
                 // World time is ahead, so jump calendar
                 calendarTime += deltaWorldTime;
+                TerraFirmaCraft.getLog().info("Calendar is behind by {} ticks, jumping calendar time to catch up", deltaWorldTime);
             }
-            TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
-        }
-        if (server.getTickCounter() % 20 == 0)
-        {
             TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
         }
     }
@@ -315,10 +315,11 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
         if (arePlayersLoggedOn)
         {
             rules.setOrCreateGameRule("doDaylightCycle", Boolean.toString(doDaylightCycle));
+            TerraFirmaCraft.getLog().info("Reverted doDaylightCycle to {} as players are logged in.", doDaylightCycle);
         }
         else
         {
-            rules.setOrCreateGameRule("doDaylightCycle", "false");
+            rules.setOrCreateGameRule("doDaylightCycle", Boolean.toString(false));
             TerraFirmaCraft.getLog().info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
         }
 
