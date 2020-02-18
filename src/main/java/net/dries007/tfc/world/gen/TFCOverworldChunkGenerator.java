@@ -117,8 +117,11 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
 
         BiomeContainer biomes = chunk.getBiomes();
+        if (biomes == null)
+        {
+            throw new IllegalStateException("Biomes are missing from chunk during surface generation");
+        }
         RockData rockData = chunkDataProvider.getOrCreate(chunkPos).getRockData();
-        BlockPos.Mutable pos = new BlockPos.Mutable();
 
         for (int x = 0; x < 16; x++)
         {
@@ -129,11 +132,17 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 float rainfall = 200;
                 float noise = 0; // todo: use for noise surface builder
                 int topYLevel = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-                ((TFCBiome) biomes[x + 16 * z]).getTFCSurfaceBuilder().buildSurface(random, chunk, rockData, chunkPos.getXStart() + x, chunkPos.getZStart() + z, topYLevel + 1, temperature, rainfall, noise);
+                ((TFCBiome) biomes.getNoiseBiome(x, 0, z)).getTFCSurfaceBuilder().buildSurface(random, chunk, rockData, chunkPos.getXStart() + x, chunkPos.getZStart() + z, topYLevel + 1, temperature, rainfall, noise);
             }
         }
 
         makeBedrock(chunk, random);
+    }
+
+    @Override
+    public int getGroundHeight()
+    {
+        return SEA_LEVEL;
     }
 
     /**
@@ -150,7 +159,6 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         // The spread biomes (for calculating terrain smoothing), and the 16x16 biome grid (for height map creation)
         TFCBiome[] spreadBiomes = biomeProvider.getBiomes(chunkX - 4, chunkZ - 4, 24, 24);
-        TFCBiome[] localBiomes = new TFCBiome[16 * 16];
 
         // Build the base height map, and also assign surface types (different from biomes because we need more control)
         double[] baseHeight = new double[16 * 16];
@@ -260,7 +268,6 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 }
 
                 baseHeight[x + 16 * z] = actualHeight;
-                localBiomes[x + 16 * z] = biomeAt;
             }
         }
 
@@ -300,13 +307,6 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 }
             }
         }
-
-        // Now set biomes
-        chunk.setBiomes(localBiomes);
-
-        // Height maps
-        chunk.func_217303_b(Heightmap.Type.OCEAN_FLOOR_WG);
-        chunk.func_217303_b(Heightmap.Type.WORLD_SURFACE_WG);
     }
 
     @Override
