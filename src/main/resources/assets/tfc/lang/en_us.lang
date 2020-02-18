@@ -348,6 +348,8 @@ config.tfc.general.chanceAnimalDeath.tooltip=Chance of animal dying (checked eve
 config.tfc.general.stoneAxeLogReturnRate=Stone Axe Log Return Rate
 config.tfc.general.stoneAxeLogReturnRate.tooltip=Log return rate of stone axes (eg: How efficiently it is)
 
+config.tfc.general.inventoryCraftingTableMode=Inventory Crafting Table
+config.tfc.general.inventoryCraftingTableMode.tooltip=Enable a 3x3 crafting table by pressing 'C'. 0 = Disabled, 1 = Enabled, Always, 2 = Enabled, If the player has a crafting table in inventory. (ore dictionary name: 'workbench')
 
 
 ## Client Config
