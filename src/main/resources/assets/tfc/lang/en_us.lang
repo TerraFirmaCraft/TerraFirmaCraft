@@ -3,7 +3,7 @@ tfc.command.time.usage=/timetfc [add|query|set] [args...]
 tfc.command.time.usage_expected_first_argument=Expected [add|query|set] after /timetfc
 tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
 tfc.command.time.usage_expected_second_argument_set=Expected [day|night|monthlength <value>] after /timetfc set
-tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years|] <value> after /timetfc add
+tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
 tfc.command.time.set_month_length=Set Month Length to %d Days / Month
 tfc.command.time.query=%s is %d
 tfc.command.time.added=Added %d %s to the time.
@@ -296,7 +296,6 @@ config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will 
 config.tfc.general.forceReplaceVanillaAnimals=Force Replace Vanilla Animals
 config.tfc.general.forceReplaceVanillaAnimals.tooltip=If true, this will replace vanilla animals with the TFC counterpart under any spawning circumstances (ie: mob spawner, etc).
 
-
 config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
 
@@ -349,7 +348,7 @@ config.tfc.general.stoneAxeLogReturnRate=Stone Axe Log Return Rate
 config.tfc.general.stoneAxeLogReturnRate.tooltip=Log return rate of stone axes (eg: How efficiently it is)
 
 config.tfc.general.inventoryCraftingTableMode=Inventory Crafting Table
-config.tfc.general.inventoryCraftingTableMode.tooltip=Enable a 3x3 crafting table by pressing 'C'. 0 = Disabled, 1 = Enabled, Always, 2 = Enabled, If the player has a crafting table in inventory. (ore dictionary name: 'workbench')
+config.tfc.general.inventoryCraftingTableMode.tooltip=Enable a 3x3 crafting table, default by pressing 'C'. 0 = Disabled, 1 = Enabled, Always, 2 = Enabled, If the player has a crafting table in inventory. (ore dictionary name: 'workbench')
 
 
 ## Client Config
