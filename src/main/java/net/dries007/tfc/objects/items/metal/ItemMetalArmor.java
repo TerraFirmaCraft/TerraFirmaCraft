@@ -62,6 +62,13 @@ public class ItemMetalArmor extends ItemArmorTFC implements IMetalItem, IItemSiz
         return d < 0 ? 0 : MathHelper.floor(type.getSmeltAmount() * d);
     }
 
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ForgeableHeatableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+    }
+
     @Override
     @Nonnull
     public IRarity getForgeRarity(@Nonnull ItemStack stack)
@@ -79,12 +86,5 @@ public class ItemMetalArmor extends ItemArmorTFC implements IMetalItem, IItemSiz
                 return EnumRarity.EPIC;
         }
         return super.getForgeRarity(stack);
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new ForgeableHeatableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
     }
 }

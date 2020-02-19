@@ -63,20 +63,6 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer player)
-    {
-        if (!player.getEntityWorld().isRemote)
-        {
-            ItemStack stack = inventory.getStackInSlot(0);
-            if (!stack.isEmpty())
-            {
-                Helpers.spawnItemStack(player.getEntityWorld(), player.getPosition(), stack);
-            }
-        }
-        super.onContainerClosed(player);
-    }
-
-    @Override
     public boolean canInteractWith(@Nonnull EntityPlayer player)
     {
         IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
@@ -88,6 +74,20 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
     {
         inventory = new ItemStackHandlerCallback(this, 1);
         addSlotToContainer(new SlotItemHandler(inventory, 0, 80, 34));
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer player)
+    {
+        if (!player.getEntityWorld().isRemote)
+        {
+            ItemStack stack = inventory.getStackInSlot(0);
+            if (!stack.isEmpty())
+            {
+                Helpers.spawnItemStack(player.getEntityWorld(), player.getPosition(), stack);
+            }
+        }
+        super.onContainerClosed(player);
     }
 
     @Override

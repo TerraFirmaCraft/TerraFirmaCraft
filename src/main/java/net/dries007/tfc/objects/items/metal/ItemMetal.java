@@ -232,6 +232,19 @@ public class ItemMetal extends ItemTFC implements IMetalItem
     }
 
     @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        return this.type == Metal.ItemType.KNIFE || super.doesSneakBypassUse(stack, world, pos, player);
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ForgeableHeatableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+    }
+
+    @Override
     @Nonnull
     public IRarity getForgeRarity(@Nonnull ItemStack stack)
     {
@@ -248,19 +261,6 @@ public class ItemMetal extends ItemTFC implements IMetalItem
                 return EnumRarity.EPIC;
         }
         return super.getForgeRarity(stack);
-    }
-
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        return this.type == Metal.ItemType.KNIFE || super.doesSneakBypassUse(stack, world, pos, player);
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new ForgeableHeatableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
     }
 
     public Metal.ItemType getType()
