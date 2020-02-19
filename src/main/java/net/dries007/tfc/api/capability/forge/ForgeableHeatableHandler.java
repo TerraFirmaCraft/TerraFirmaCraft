@@ -1,8 +1,3 @@
-/*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
- */
-
 package net.dries007.tfc.api.capability.forge;
 
 import javax.annotation.Nonnull;
@@ -12,24 +7,28 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
-public class ForgeableHandler implements ICapabilitySerializable<NBTTagCompound>, IForgeable
+public class ForgeableHeatableHandler extends ItemHeatHandler implements IForgeableHeatable
 {
     protected final ForgeSteps steps;
     protected int work;
     protected ResourceLocation recipeName;
 
-    public ForgeableHandler(@Nullable NBTTagCompound nbt)
+    public ForgeableHeatableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
     {
+        this.heatCapacity = heatCapacity;
+        this.meltTemp = meltTemp;
+
         steps = new ForgeSteps();
+
         deserializeNBT(nbt);
     }
 
-    public ForgeableHandler()
+    public ForgeableHeatableHandler()
     {
         // for custom implementations
         steps = new ForgeSteps();
@@ -85,7 +84,7 @@ public class ForgeableHandler implements ICapabilitySerializable<NBTTagCompound>
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY;
+        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @SuppressWarnings("unchecked")
@@ -100,7 +99,7 @@ public class ForgeableHandler implements ICapabilitySerializable<NBTTagCompound>
     @Nonnull
     public NBTTagCompound serializeNBT()
     {
-        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound nbt = super.serializeNBT();
 
         nbt.setInteger("work", work);
         nbt.setTag("steps", steps.serializeNBT());
@@ -121,5 +120,6 @@ public class ForgeableHandler implements ICapabilitySerializable<NBTTagCompound>
             recipeName = nbt.hasKey("recipe") ? new ResourceLocation(nbt.getString("recipe")) : null; // stops defaulting to empty string
             steps.deserializeNBT(nbt.getCompoundTag("steps"));
         }
+        super.deserializeNBT(nbt);
     }
 }

@@ -17,6 +17,7 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.forge.ForgeableHeatableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
@@ -106,6 +107,9 @@ public class CTItemRegistry
         }
     }
 
+    /*
+     * Heatable items / Hot forging
+     */
     @ZenMethod
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static void registerItemHeat(crafttweaker.api.item.IIngredient input, float heatCapacity, float meltTemp, boolean forgeable)
@@ -130,7 +134,7 @@ public class CTItemRegistry
                 {
                     if (forgeable)
                     {
-                        CapabilityForgeable.CUSTOM_ITEMS.put(inputIngredient, () -> new ForgeableHandler(null, heatCapacity, meltTemp));
+                        CapabilityForgeable.CUSTOM_ITEMS.put(inputIngredient, () -> new ForgeableHeatableHandler(null, heatCapacity, meltTemp));
                     }
                     else
                     {
@@ -142,6 +146,41 @@ public class CTItemRegistry
                 public String describe()
                 {
                     return "Registered heat capacity for " + input.toCommandString();
+                }
+            });
+        }
+    }
+
+    /*
+     * Cold forging
+     */
+    @ZenMethod
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void registerItemForgeable(crafttweaker.api.item.IIngredient input)
+    {
+        if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
+        if (input instanceof ILiquidStack)
+            throw new IllegalArgumentException("There is a fluid where it's supposed to be an item!");
+        IIngredient inputIngredient = CTHelper.getInternalIngredient(input);
+        if (CapabilityItemHeat.CUSTOM_ITEMS.get(inputIngredient) != null || CapabilityForgeable.CUSTOM_ITEMS.get(inputIngredient) != null)
+        {
+            throw new IllegalStateException("Input already registered in forge/heat capability!");
+        }
+        else
+        {
+            CraftTweakerAPI.apply(new IAction()
+            {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void apply()
+                {
+                    CapabilityForgeable.CUSTOM_ITEMS.put(inputIngredient, () -> new ForgeableHandler(null));
+                }
+
+                @Override
+                public String describe()
+                {
+                    return "Registered forgeable capability for " + input.toCommandString();
                 }
             });
         }

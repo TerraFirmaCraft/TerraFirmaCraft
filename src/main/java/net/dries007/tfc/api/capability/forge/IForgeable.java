@@ -5,31 +5,22 @@
 
 package net.dries007.tfc.api.capability.forge;
 
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.util.INBTSerializable;
 
-import net.dries007.tfc.api.capability.heat.Heat;
-import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 /**
- * This is an advanced IItemHeat capability that is used by items that can be forged
- * If you implement this capability, you MUST implement {@link net.dries007.tfc.api.capability.heat.CapabilityItemHeat} as well
- * You should return the same instance from the getCapability calls
+ * Capability for forgeable items (not to be confused with forgeable items that needs heat)
+ * Allows items to be forged in the anvil.
  */
-public interface IForgeable extends IItemHeat
+public interface IForgeable extends INBTSerializable<NBTTagCompound>
 {
     /**
      * Gets the current amount of work on the object
@@ -84,72 +75,18 @@ public interface IForgeable extends IItemHeat
     void reset();
 
     /**
-     * Gets the working temperature of the item
-     *
-     * @return a temperature
-     */
-    default float getWorkTemp()
-    {
-        return getMeltTemp() * 0.6f;
-    }
-
-    /**
-     * Checks if the item is hot enough to be worked
-     *
      * @return true if the item is workable
      */
     default boolean isWorkable()
     {
-        return getTemperature() > getWorkTemp();
+        return true;
     }
 
     /**
-     * Gets the welding temperature of the item
-     *
-     * @return a temperature
-     */
-    default float getWeldTemp()
-    {
-        return getMeltTemp() * 0.8f;
-    }
-
-    /**
-     * Checks if the item is hot enough to be worked
-     *
      * @return true if the item is weldable
      */
     default boolean isWeldable()
     {
-        return getTemperature() > getWeldTemp();
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    default void addHeatInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
-    {
-        float temperature = getTemperature();
-        String tooltip = Heat.getTooltip(temperature);
-        if (tooltip != null)
-        {
-            tooltip += TextFormatting.WHITE;
-            if (temperature > getMeltTemp())
-            {
-                tooltip += " - " + I18n.format(MOD_ID + ".tooltip.liquid");
-            }
-            else if (temperature > getWeldTemp())
-            {
-                tooltip += " - " + I18n.format(MOD_ID + ".tooltip.weldable");
-            }
-            else if (temperature > getWorkTemp())
-            {
-                tooltip += " - " + I18n.format(MOD_ID + ".tooltip.workable");
-            }
-
-            if (temperature > 0.9 * getMeltTemp())
-            {
-                tooltip += " (" + I18n.format(MOD_ID + ".tooltip.danger") + ")";
-            }
-            text.add(tooltip);
-        }
+        return true;
     }
 }
