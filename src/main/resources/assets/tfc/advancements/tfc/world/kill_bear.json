@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:coal",
+            "data": 1
+        },
+        "title": {
+            "translate": "advancements.world.kill_bear.title"
+        },
+        "description": {
+            "translate": "advancements.world.kill_bear.description"
+        }
+    },
+    "parent": "tfc:world/root",
+    "criteria":{
+        "native_copper": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": [
+                    {
+                        "type": "tfc:beartfc"
+                    }
+                ]
+            }
+        }
+    }
+}

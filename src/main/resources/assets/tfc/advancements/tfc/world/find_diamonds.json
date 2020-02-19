@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "item": "tfc:gem/diamond",
+            "data": 2
+        },
+        "frame": "challenge",
+        "title": {
+            "translate": "advancements.world.find_diamonds.title"
+        },
+        "description": {
+            "translate": "advancements.world.find_diamonds.description"
+        }
+    },
+    "parent": "tfc:world/make_propick",
+    "criteria":{
+        "find_ore": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "tfc:gem/diamond"
+                    }
+                ]
+            }
+        }
+    }
+}
