@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
@@ -54,10 +55,9 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
     public static final int SLOT_ITEM = 2;
-    public static final int TANK_CAPACITY = 10000;
     public static final int BARREL_MAX_FLUID_TEMPERATURE = 500;
 
-    private FluidTank tank = new FluidTankCallback(this, 0, TANK_CAPACITY);
+    private FluidTank tank = new FluidTankCallback(this, 0, ConfigTFC.GENERAL.tankBarrel);
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
@@ -79,6 +79,14 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public void readFromItemTag(NBTTagCompound nbt)
     {
         tank.readFromNBT(nbt.getCompoundTag("tank"));
+        if (tank.getFluidAmount() > tank.getCapacity())
+        {
+            // Fix config changes
+            FluidStack fluidStack = tank.getFluid();
+            //noinspection ConstantConditions
+            fluidStack.amount = tank.getCapacity();
+            tank.setFluid(fluidStack);
+        }
         inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
@@ -216,11 +224,11 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 tickCounter = 0;
 
                 ItemStack fluidContainerIn = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
-                FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
+                FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, ConfigTFC.GENERAL.tankBarrel, world, pos);
 
                 if (!result.isSuccess())
                 {
-                    result = FluidTransferHelper.fillContainerFromTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, TANK_CAPACITY, world, pos);
+                    result = FluidTransferHelper.fillContainerFromTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, ConfigTFC.GENERAL.tankBarrel, world, pos);
                 }
 
                 if (result.isSuccess())
@@ -311,6 +319,14 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         super.readFromNBT(nbt);
 
         tank.readFromNBT(nbt.getCompoundTag("tank"));
+        if (tank.getFluidAmount() > tank.getCapacity())
+        {
+            // Fix config changes
+            FluidStack fluidStack = tank.getFluid();
+            //noinspection ConstantConditions
+            fluidStack.amount = tank.getCapacity();
+            tank.setFluid(fluidStack);
+        }
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
 

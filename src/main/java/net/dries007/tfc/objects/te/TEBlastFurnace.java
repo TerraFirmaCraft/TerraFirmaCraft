@@ -42,7 +42,6 @@ import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
-import static net.dries007.tfc.objects.te.TECrucible.CRUCIBLE_MAX_METAL_FLUID;
 
 @ParametersAreNonnullByDefault
 public class TEBlastFurnace extends TEInventory implements ITickable, ITileFields
@@ -65,7 +64,8 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     public TEBlastFurnace()
     {
         super(1);
-        this.alloy = new Alloy(CRUCIBLE_MAX_METAL_FLUID);
+        // Blast furnaces hold the same amount of crucibles, should it matter to be different?
+        this.alloy = new Alloy(ConfigTFC.GENERAL.tankCrucible);
     }
 
     @Override

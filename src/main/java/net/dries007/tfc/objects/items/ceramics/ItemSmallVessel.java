@@ -34,6 +34,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
@@ -191,7 +192,7 @@ public class ItemSmallVessel extends ItemPottery
         {
             super(4);
 
-            tank = new FluidTank(4000);
+            tank = new FluidTank(ConfigTFC.GENERAL.tankSmallVessel);
             fluidMode = false;
             deserializeNBT(nbt);
         }

@@ -35,6 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
@@ -69,7 +70,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                 Fluid fluid = handler.drain(Fluid.BUCKET_VOLUME, false).getFluid();
                 if (fluid.getTemperature() < BARREL_MAX_FLUID_TEMPERATURE)
                 {
-                    FluidTank tank = new FluidTank(TEBarrel.TANK_CAPACITY);
+                    FluidTank tank = new FluidTank(ConfigTFC.GENERAL.tankBarrel);
                     boolean canCreateSources = false; //default
                     if (state.getBlock() instanceof BlockFluidClassic)
                     {
@@ -84,7 +85,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                     if (canCreateSources && fluidStack != null)
                     {
-                        fluidStack.amount = TEBarrel.TANK_CAPACITY;
+                        fluidStack.amount = ConfigTFC.GENERAL.tankBarrel;
                     }
                     tank.fill(fluidStack, true);
 
@@ -170,7 +171,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                 IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, rayTrace.sideHit);
                 if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
                 {
-                    FluidTank tank = new FluidTank(TEBarrel.TANK_CAPACITY);
+                    FluidTank tank = new FluidTank(ConfigTFC.GENERAL.tankBarrel);
                     boolean canCreateSources = false; //default
                     if (state.getBlock() instanceof BlockFluidClassic)
                     {
@@ -185,7 +186,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                     if (canCreateSources && fluidStack != null)
                     {
-                        fluidStack.amount = TEBarrel.TANK_CAPACITY;
+                        fluidStack.amount = ConfigTFC.GENERAL.tankBarrel;
                     }
                     tank.fill(fluidStack, true);
 

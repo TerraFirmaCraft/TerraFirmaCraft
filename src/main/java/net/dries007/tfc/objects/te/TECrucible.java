@@ -52,8 +52,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
 
     public static final int FIELD_TEMPERATURE = 0;
 
-    public static final int CRUCIBLE_MAX_METAL_FLUID = 3000; // = 30 Ingots worth
-
     private final Alloy alloy;
     private final IItemHandler inventoryWrapperExtract;
     private final IItemHandler inventoryWrapperInsert;
@@ -68,7 +66,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     {
         super(10);
 
-        this.alloy = new Alloy(CRUCIBLE_MAX_METAL_FLUID);
+        this.alloy = new Alloy(ConfigTFC.GENERAL.tankCrucible); // Side effect: Maximum amount only matches config if not loading from disk
         this.inventoryWrapperExtract = new ItemHandlerSidedWrapper(this, inventory, EnumFacing.DOWN);
         this.inventoryWrapperInsert = new ItemHandlerSidedWrapper(this, inventory, EnumFacing.UP);
 
@@ -88,7 +86,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
 
     public int addMetal(Metal metal, int amount)
     {
-        int overflow = Math.max(0, alloy.getAmount() + amount - CRUCIBLE_MAX_METAL_FLUID); // Amount which cannot be inserted
+        int overflow = Math.max(0, alloy.getAmount() + amount - alloy.getMaxAmount()); // Amount which cannot be inserted
         alloy.add(metal, amount);
 
         //Update crucible temperature to match
