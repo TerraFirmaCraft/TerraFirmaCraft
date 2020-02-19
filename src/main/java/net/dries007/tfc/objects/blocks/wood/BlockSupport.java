@@ -395,7 +395,7 @@ public class BlockSupport extends Block
      * Checks if this block is a vertical support beam of height 3 or higher
      *
      * @param world the world this block is in
-     * @param pos the position of the block
+     * @param pos   the position of the block
      * @return true if this is a vertical support beam three blocks or higher, false otherwise
      */
     private boolean isThreeTall(IBlockAccess world, BlockPos pos)
@@ -408,9 +408,8 @@ public class BlockSupport extends Block
         if (axis != EnumFacing.Axis.Y) return false;
         // if either of the two block beneath this block are not block supports, then this isn't three tall
         if (!(world.getBlockState(pos.down()).getBlock() instanceof BlockSupport)) return false;
-        if (!(world.getBlockState(pos.down().down()).getBlock() instanceof BlockSupport)) return false;
+        return world.getBlockState(pos.down().down()).getBlock() instanceof BlockSupport;
         // passed all the checks
-        return true;
     }
 
     /**

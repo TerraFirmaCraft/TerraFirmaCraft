@@ -58,29 +58,6 @@ public class GuiAnvilPlan extends GuiContainerTE<TEAnvilTFC>
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException
-    {
-        if (button instanceof GuiButtonAnvilPlanIcon)
-        {
-            // This fires when you select a plan in the Plan GUI
-            TerraFirmaCraft.getLog().info("Pressed the plan button");
-            ResourceLocation recipeName = ((GuiButtonAnvilPlanIcon) button).getRecipeName();
-            TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id, new NBTBuilder().setString("recipe", recipeName.toString()).build()));
-        }
-        else if (button == buttonLeft)
-        {
-            page--;
-            updatePage();
-        }
-        else if (button == buttonRight)
-        {
-            page++;
-            updatePage();
-        }
-        super.actionPerformed(button);
-    }
-
-    @Override
     protected void renderHoveredToolTip(int mouseX, int mouseY)
     {
         // Button Tooltips
@@ -105,6 +82,29 @@ public class GuiAnvilPlan extends GuiContainerTE<TEAnvilTFC>
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
 
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        if (button instanceof GuiButtonAnvilPlanIcon)
+        {
+            // This fires when you select a plan in the Plan GUI
+            TerraFirmaCraft.getLog().info("Pressed the plan button");
+            ResourceLocation recipeName = ((GuiButtonAnvilPlanIcon) button).getRecipeName();
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id, new NBTBuilder().setString("recipe", recipeName.toString()).build()));
+        }
+        else if (button == buttonLeft)
+        {
+            page--;
+            updatePage();
+        }
+        else if (button == buttonRight)
+        {
+            page++;
+            updatePage();
+        }
+        super.actionPerformed(button);
     }
 
     @Override

@@ -81,17 +81,6 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
         return "[" + getStep(0) + ", " + getStep(1) + ", " + getStep(2) + "]";
     }
 
-    private int getStepInt(int idx)
-    {
-        ForgeStep step = steps.get(idx);
-        return step == null ? -1 : step.ordinal();
-    }
-
-    private void setStepInt(int position, int step)
-    {
-        steps.set(position, ForgeStep.valueOf(step));
-    }
-
     /**
      * Checks if this is fresh new (no forging has been done yet)
      *
@@ -107,5 +96,16 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
             }
         }
         return false;
+    }
+
+    private int getStepInt(int idx)
+    {
+        ForgeStep step = steps.get(idx);
+        return step == null ? -1 : step.ordinal();
+    }
+
+    private void setStepInt(int position, int step)
+    {
+        steps.set(position, ForgeStep.valueOf(step));
     }
 }

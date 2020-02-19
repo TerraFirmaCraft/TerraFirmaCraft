@@ -110,12 +110,6 @@ public class ItemDebug extends Item
     }
 
     @Override
-    public IRarity getForgeRarity(ItemStack stack)
-    {
-        return EnumRarity.EPIC;
-    }
-
-    @Override
     public int getEntityLifespan(ItemStack itemStack, World world)
     {
         return 60;
@@ -125,5 +119,11 @@ public class ItemDebug extends Item
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     {
         return false;
+    }
+
+    @Override
+    public IRarity getForgeRarity(ItemStack stack)
+    {
+        return EnumRarity.EPIC;
     }
 }
