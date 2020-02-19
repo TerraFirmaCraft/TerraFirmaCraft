@@ -3831,138 +3831,132 @@ tfc.animal.muletfc.female=Mule♀
 ## Advancements
 
 # Main Quest
+# Stone Age
 advancements.main.root.title=TerraFirmaCraft
 advancements.main.root.description=TFC's main line of progression.
-#
 advancements.main.pick_rock.title=Just a Rock
 advancements.main.pick_rock.description=Pick up a Stone from the ground.
-#
 advancements.main.stone_age.title=Paleolithic!
 advancements.main.stone_age.description=Enter the Stone Age by knapping a stone tool.
-#
-advancements.main.stone_knives.title=Double Trouble
-advancements.main.stone_knives.description=Make two stone knife heads from the same stone.
-#
-advancements.main.logging.title=Timber!
-advancements.main.logging.description=Make an axe.
-#
-advancements.main.campfire.title=Lighting a Fire
-advancements.main.campfire.description=Make a fire pit.
-#
+advancements.main.get_straw.title=Grasping at Straws
+advancements.main.get_straw.description=Cut some grass with a knife or scythe to get straw.
+advancements.main.logging.title=Timberrr!
+advancements.main.logging.description=Use an axe to get cut down a tree.
+advancements.main.firestarter.title=Embers
+advancements.main.firestarter.description=Craft a firestarter from two sticks.
+advancements.main.campfire.title=The Fire Pit
+advancements.main.campfire.description=Throw a log and three stick to the ground, then light them up.
 advancements.main.charcoal.title=A Better Fuel
 advancements.main.charcoal.description=Make charcoal by lighting some log piles on a pit and covering them.
-#
-advancements.main.find_clay.title=Potential Pot
+advancements.main.find_clay.title=Locating Clay
 advancements.main.find_clay.description=Find and dig clay for pottery.
-#
 advancements.main.pottery.title=Handicrafts
-advancements.main.pottery.description=Knap a piece of pottery from clay.
-#
+advancements.main.pottery.description=Knap a piece of pottery from clay and fire it in a pit kiln.
+advancements.main.get_unknown.title=D'OH!
+advancements.main.get_unknown.description=Get an Unknown Ingot from a botched alloy.
 advancements.main.stone_anvil.title=Hammer Time
 advancements.main.stone_anvil.description=Hit some igneous stone with a hammer to make your first anvil.
-#
-advancements.main.metal_casting.title=All-Star Casting
-advancements.main.metal_casting.description=Make a mold with which to cast a metal tool.
-#
-advancements.main.copper_age.title=Chalcolithic
+advancements.main.metal_casting.title=Pouring Metal
+advancements.main.metal_casting.description=Craft a fired mold with which to cast a metal tool.
+# Copper and Bronze Ages
+advancements.main.copper_age.title=The Copper Age
 advancements.main.copper_age.description=Enter the Copper Age by making a copper tool.
-#
 advancements.main.mining.title=Time to Mine (Finally!)
-advancements.main.mining.description=Make a pickaxe.
-#
+advancements.main.mining.description=Craft a pickaxe.
 advancements.main.carpentry.title=Carpenter
-advancements.main.carpentry.description=Make a saw.
-#
+advancements.main.carpentry.description=Craft a saw.
+advancements.main.make_barrel.title=Do a Barrel Roll!
+advancements.main.make_barrel.description=Craft a barrel using lumber made with your saw.
 advancements.main.make_quern.title=The Grind
 advancements.main.make_quern.description= Craft a Quern.
-#
+advancements.main.get_flux.title=In Flux
+advancements.main.get_flux.description=Get some flux to start welding.
 advancements.main.metal_anvil.title=Dropping an Anvil
-advancements.main.metal_anvil.description=Make a Copper Anvil.
-#
+advancements.main.metal_anvil.description=Craft a Copper Anvil from double ingots made via welding.
+advancements.main.metal_sheet.title=The Flattening
+advancements.main.metal_sheet.description=Craft a metal sheet from a double ingot.
+advancements.main.make_shield.title=Take Cover!
+advancements.main.make_shield.description=Craft a shield from a double sheet.
+advancements.main.scraped_hide.title=Soak and Scrape
+advancements.main.scraped_hide.description=Soak a raw hide in limewater, then scrape it on top of a log.
+advancements.main.make_leather.title=Genuine Leather
+advancements.main.make_leather.description=Soak a scraped hide in fresh water and then in tannin.
+advancements.main.make_bellows.title=Blow You Away
+advancements.main.make_bellows.description=Use leather to make a bellows.
 advancements.main.bronze_age.title=The Bronze Age
-advancements.main.bronze_age.description=Enter the Bronze by making Bronze Anvil.
-#
-advancements.main.make_bloomery.title=In Bloom
+advancements.main.bronze_age.description=Enter the Bronze Age by crafting a Bronze Anvil.
+# Iron Age
+advancements.main.make_bloomery.title=Ironworks
 advancements.main.make_bloomery.description=Craft a Bloomery.
-#
+advancements.main.iron_bloom.title=In Bloom
+advancements.main.iron_bloom.description=Use the bloomery to produce an iron bloom.
 advancements.main.iron_age.title=The Iron Age
-advancements.main.iron_age.description=Enter the Iron Age by getting an Iron Bloom.
-#
+advancements.main.iron_age.description=Enter the Iron Age getting a wrought iron ingot.
+advancements.main.iron_armor.title=Knight in Shining Armor
+advancements.main.iron_armor.description=Equip a full iron armor set.
 advancements.main.make_blast_furnace.title=Blast Off!
 advancements.main.make_blast_furnace.description=Craft a Blast Furnace.
-#
 advancements.main.make_fire_clay.title=Fireproof
 advancements.main.make_fire_clay.description=Craft some fire clay.
-#
-advancements.main.make_crucible.title=Metallurgy
+advancements.main.make_fire_bricks.title=Making a Chimney
+advancements.main.make_fire_bricks.description=Make four fire brick blocks, for building a blast furnace.
+advancements.main.make_crucible.title=Metallurgic!
 advancements.main.make_crucible.description=Knap a Crucible from fire clay.
-#
 advancements.main.get_steel.title=Industrialized
 advancements.main.get_steel.description=Get a Steel Ingot.
-#
-advancements.main.get_unknown.title=D'OH!
-advancements.main.get_unknown.description=Get an Unknown Ingot by messing up an alloy.
-#
+advancements.main.flint_and_steel.title=Light My Fire
+advancements.main.flint_and_steel.description=Craft a Flint and Steel.
 advancements.main.get_black_steel.title=Back In Black
 advancements.main.get_black_steel.description=Get a Black Steel Ingot.
-#
 advancements.main.get_blue_steel.title=Blue Ogre
 advancements.main.get_blue_steel.description=Get a Blue Steel Ingot.
-#
 advancements.main.get_red_steel.title=Red Ogre
 advancements.main.get_red_steel.description=Get a Red Steel Ingot.
-#
-advancements.main.blue_steel_bucket.title=Hot Sauce
+advancements.main.blue_steel_bucket.title=Super Hot Sauce
 advancements.main.blue_steel_bucket.description=Craft a Blue Steel Bucket.
-#
-advancements.main.red_steel_ingot.title=Tsunami
-advancements.main.red_steel_ingot.description=Craft a Red Steel Bucket.
-#
-advancements.main.ultimate_goal.title=All This for a Bucket?
-advancements.main.ultimate_goal.description=Craft a vanilla Iron Bucket.
+advancements.main.red_steel_bucket.title=Tsunami
+advancements.main.red_steel_bucket.description=Craft a Red Steel Bucket.
+advancements.main.ultimate_goal.title=All This for a Bucket?!
+advancements.main.ultimate_goal.description=Combine the Red and Blue Steel Buckets into a vanilla Bucket.
 
-# Exploration
-advancements.exploration.root.title=TFC Exploration
-advancements.exploration.root.description=Explore TFC's world for resources.
-#
-advancements.exploration.gatherer.title=Gatherer
-advancements.exploration.gatherer.description=Harvest a wild crop.
-#
-advancements.exploration.farming.title=Farmer
-advancements.exploration.farming.description=Make a hoe.
-#
-advancements.exploration.baker.title=Baking Bread
-advancements.exploration.baker.description=Make a loaf of bread.
-#
-advancements.exploration.botanist.title=Botanist
-advancements.exploration.botanist.description=Get the seeds for more than ten crops.
-#
-advancements.exploration.rutabaga.title=Stupid Onions...
-advancements.exploration.rutabaga.description=Find a Rutabaga.
-#
-advancements.main.pick_nugget.title=A Shiny Rock
-advancements.main.pick_nugget.description=Pick up nugget from the ground.
-#
-advancements.main.make_propick.title=Prospecting
-advancements.main.make_propick.description=Craft a prospector's pick.
-#
-advancements.exploration.get_flux.title=In Flux
-advancements.exploration.get_flux.description=Get some flux for welding.
-#
-advancements.exploration.gatherer.title=Geologist
-advancements.exploration.gatherer.description=Get at least one rock of every stone type.
-#
-advancements.exploration.find_diamonds.title=DIAM- Oh Wait...
-advancements.exploration.find_diamonds.description=Find Diamonds.
-#
-advancements.exploration.find_graphite.title=Writing Stone
-advancements.exploration.find_graphite.description=Find Graphite.
-#
-advancements.exploration.find_kaolinite.title=Pink Unicorn
-advancements.exploration.find_kaolinite.description=Find Kaolinite.
-#
-advancements.exploration.find_gold.title=Gold Rush
-advancements.exploration.find_gold.description=Find Gold Ore.
-#
-advancements.exploration.find_nickel.title=...and Dime
-advancements.exploration.find_nickel.description=Find Nickel Ore.
+# World
+#Farming and Animals
+advancements.world.root.title=TerraFirmaCraft World
+advancements.world.root.description=Explore TFC's world for resources.
+advancements.world.gatherer.title=Gatherer
+advancements.world.gatherer.description=Get seeds from a wild crop.
+advancements.world.farming.title=Farmer
+advancements.world.farming.description=Harvest a fully grown crop.
+advancements.world.baker.title=Baking Bread
+advancements.world.baker.description=Make a loaf of bread.
+advancements.world.botanist.title=Botanist
+advancements.world.botanist.description=Get seeds of all of the crops.
+advancements.world.rutabaga.title=Stupid Onions...
+advancements.world.rutabaga.description=Find a Rutabaga.
+advancements.world.kill_bear.title=Bear in Mind
+advancements.world.kill_bear.description=Kill a bear.
+# Minerals
+advancements.world.pick_nugget.title=A Weird Rock
+advancements.world.pick_nugget.description=Pick up nugget from the ground.
+advancements.world.make_propick.title=Prospecting
+advancements.world.make_propick.description=Craft a prospector's pick.
+advancements.world.geologist.title=Geologist
+advancements.world.geologist.description=Get a rock from every stone type and one of every gem.
+advancements.world.find_diamonds.title=DIAM- Oh Wait...
+advancements.world.find_diamonds.description=Find Diamonds.
+advancements.world.find_coal.title=Carboniferous
+advancements.world.find_coal.description=Find Bituminous Coal or Lignite.
+advancements.world.find_graphite.title=Writing Stone
+advancements.world.find_graphite.description=Find Graphite.
+advancements.world.find_kaolinite.title=Pink Unicorn
+advancements.world.find_kaolinite.description=Find Kaolinite.
+advancements.world.find_sylvite.title=Good for your Plants
+advancements.world.find_sylvite.description=Find Sylvite.
+advancements.world.find_iron.title=Pretty Ironic
+advancements.world.find_iron.description=Find Hematite, Limonite or Magnetite Ore.
+advancements.world.find_gold.title=Gold Rush
+advancements.world.find_gold.description=Find Navite Gold Ore.
+advancements.world.find_silver.title=Silver Bullet
+advancements.world.find_silver.description=Find Navite Silver Ore.
+advancements.world.find_nickel.title=Dime and Nickel
+advancements.world.find_nickel.description=Find Garnierite Ore.
