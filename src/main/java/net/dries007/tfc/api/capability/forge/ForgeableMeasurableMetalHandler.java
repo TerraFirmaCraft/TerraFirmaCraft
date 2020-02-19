@@ -21,9 +21,9 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 
 /**
- * Extension of forgeable handler for blooms
+ * Extension of forgeable heatable handler for blooms
  */
-public class ForgeableMeasurableMetalHandler extends ForgeableHandler implements IForgeableMeasurableMetal
+public class ForgeableMeasurableMetalHandler extends ForgeableHeatableHandler implements IForgeableMeasurableMetal
 {
     private int metalAmount;
     private Metal metal;

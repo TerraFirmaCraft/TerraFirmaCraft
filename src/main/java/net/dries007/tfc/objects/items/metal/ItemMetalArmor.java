@@ -18,7 +18,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.IRarity;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.forge.ForgeableHeatableHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.types.Metal;
@@ -85,6 +85,6 @@ public class ItemMetalArmor extends ItemArmorTFC implements IMetalItem, IItemSiz
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+        return new ForgeableHeatableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
     }
 }

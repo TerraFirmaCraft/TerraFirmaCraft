@@ -58,9 +58,10 @@ public class BloomeryRecipe extends IForgeRegistryEntry.Impl<BloomeryRecipe>
         IForgeable cap = bloom.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
         if (cap instanceof IForgeableMeasurableMetal)
         {
-            ((IForgeableMeasurableMetal) cap).setMetalAmount(metalAmount);
-            ((IForgeableMeasurableMetal) cap).setMetal(metal);
-            cap.setTemperature(cap.getMeltTemp() - 1);
+            IForgeableMeasurableMetal capBloom = (IForgeableMeasurableMetal) cap;
+            capBloom.setMetalAmount(metalAmount);
+            capBloom.setMetal(metal);
+            capBloom.setTemperature(capBloom.getMeltTemp() - 1);
         }
         return bloom;
     }
@@ -76,9 +77,10 @@ public class BloomeryRecipe extends IForgeRegistryEntry.Impl<BloomeryRecipe>
         IForgeable cap = bloom.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
         if (cap instanceof IForgeableMeasurableMetal)
         {
-            ((IForgeableMeasurableMetal) cap).setMetalAmount(100);
-            ((IForgeableMeasurableMetal) cap).setMetal(metal);
-            cap.setTemperature(cap.getMeltTemp() - 1);
+            IForgeableMeasurableMetal capBloom = (IForgeableMeasurableMetal) cap;
+            capBloom.setMetalAmount(100);
+            capBloom.setMetal(metal);
+            capBloom.setTemperature(capBloom.getMeltTemp() - 1);
         }
         return bloom;
     }
