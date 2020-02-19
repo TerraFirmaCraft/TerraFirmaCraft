@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "tfc:ore/graphite"
+        },
+        "frame": "goal",
+        "title": {
+            "translate": "advancements.world.find_graphite.title"
+        },
+        "description": {
+            "translate": "advancements.world.find_graphite.description"
+        }
+    },
+    "parent": "tfc:world/make_propick",
+    "criteria":{
+        "find_ore": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "tfc:ore/graphite"
+                    }
+                ]
+            }
+        }
+    }
+}
