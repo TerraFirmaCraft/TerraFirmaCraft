@@ -2,11 +2,21 @@
 tfc.command.time.usage=/timetfc [add|query|set] [args...]
 tfc.command.time.usage_expected_first_argument=Expected [add|query|set] after /timetfc
 tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
-tfc.command.time.usage_expected_second_argument_set=Expected [day|night|monthlength <value>] after /timetfc set
-tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years|] <value> after /timetfc add
+tfc.command.time.usage_expected_second_argument_set=Expected [<ticks>|day|night|monthlength <value>] after /timetfc set
+tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
 tfc.command.time.set_month_length=Set Month Length to %d Days / Month
-tfc.command.time.query=%s is %d
-tfc.command.time.added=Added %d %s to the time.
+tfc.command.time.set_day=Time set to the next daylight
+tfc.command.time.set_night=Time set to the next nighttime
+tfc.command.time.set_ticks=Day time set to %d
+tfc.command.time.add_days=Added %d days to time (%d ticks)
+tfc.command.time.add_months=Added %d months to time (%d ticks)
+tfc.command.time.add_years=Added %d years to time (%d ticks)
+tfc.command.time.add_ticks=Added %d ticks to time
+tfc.command.time.query_calendarticks=Calendar ticks is %d
+tfc.command.time.query_playerticks=Player ticks is %d
+tfc.command.time.query_gametime=Game time is %d ticks
+tfc.command.time.query_day=Current day is %d
+tfc.command.time.query_daytime=Current day time is %d
 
 # Gui
 

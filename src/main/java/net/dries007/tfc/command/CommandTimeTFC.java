@@ -58,18 +58,20 @@ public class CommandTimeTFC extends CommandBase
                     if ("day".equals(args[1]))
                     {
                         resultWorldTime = 1000;
+                        notifyCommandListener(sender, this, "tfc.command.time.set_day");
                     }
                     else if ("night".equals(args[1]))
                     {
                         resultWorldTime = 13000;
+                        notifyCommandListener(sender, this, "tfc.command.time.set_night");
                     }
                     else
                     {
                         resultWorldTime = parseInt(args[1], 0);
+                        notifyCommandListener(sender, this, "tfc.command.time.set_ticks", resultWorldTime);
                     }
                     setAllWorldTimes(server, resultWorldTime);
                     CalendarTFC.INSTANCE.setTimeFromWorldTime(resultWorldTime);
-                    notifyCommandListener(sender, this, "commands.time.set", resultWorldTime);
                 }
             }
             else if ("add".equals(args[0]))
@@ -79,25 +81,29 @@ public class CommandTimeTFC extends CommandBase
                     throw new WrongUsageException("tfc.command.time.usage_expected_second_argument_add");
                 }
                 long timeToAdd;
-                String unitAdded = args[1];
                 switch (args[1])
                 {
                     case "months":
-                        timeToAdd = ICalendar.TICKS_IN_DAY * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * parseInt(args[2], 0);
+                        int months = parseInt(args[2], 0);
+                        timeToAdd = ICalendar.TICKS_IN_DAY * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * months;
+                        notifyCommandListener(sender, this, "tfc.command.time.add_months", months, timeToAdd);
                         break;
                     case "years":
-                        timeToAdd = ICalendar.TICKS_IN_DAY * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * 12 * parseInt(args[2], 0);
+                        int years = parseInt(args[2], 0);
+                        timeToAdd = ICalendar.TICKS_IN_DAY * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * 12 * years;
+                        notifyCommandListener(sender, this, "tfc.command.time.add_years", years, timeToAdd);
                         break;
                     case "days":
-                        timeToAdd = ICalendar.TICKS_IN_DAY * parseInt(args[2], 0);
+                        int days = parseInt(args[2], 0);
+                        timeToAdd = ICalendar.TICKS_IN_DAY * days;
+                        notifyCommandListener(sender, this, "tfc.command.time.add_days", days, timeToAdd);
                         break;
                     default:
-                        unitAdded = "ticks";
                         timeToAdd = parseInt(args[1], 0);
+                        notifyCommandListener(sender, this, "tfc.command.time.add_ticks", timeToAdd);
                 }
                 long newCalendarTime = CalendarTFC.CALENDAR_TIME.getTicks() + timeToAdd;
                 CalendarTFC.INSTANCE.setTimeFromCalendarTime(newCalendarTime);
-                notifyCommandListener(sender, this, "tfc.command.time.added", timeToAdd, unitAdded);
             }
             else if ("query".equals(args[0]))
             {
@@ -109,31 +115,31 @@ public class CommandTimeTFC extends CommandBase
                 {
                     int daytime = (int) (sender.getEntityWorld().getWorldTime() % ICalendar.TICKS_IN_DAY);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, daytime);
-                    notifyCommandListener(sender, this, "commands.time.query", "World Time", daytime);
+                    notifyCommandListener(sender, this, "tfc.command.time.query_daytime", daytime);
                 }
                 else if ("day".equals(args[1]))
                 {
                     int day = (int) (CalendarTFC.CALENDAR_TIME.getTotalDays() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, day);
-                    notifyCommandListener(sender, this, "tfc.command.time.query", "Day Number (Calendar Time)", day);
+                    notifyCommandListener(sender, this, "tfc.command.time.query_day", day);
                 }
                 else if ("gametime".equals(args[1]))
                 {
                     int gameTime = (int) (sender.getEntityWorld().getTotalWorldTime() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "tfc.command.time.query", "Total World Time (Game Time)", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.time.query_gametime", gameTime);
                 }
                 else if ("playerticks".equals(args[1]))
                 {
                     int gameTime = (int) (CalendarTFC.PLAYER_TIME.getTicks() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "tfc.command.time.query", "Player Ticks", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.time.query_playerticks", gameTime);
                 }
                 else if ("calendarticks".equals(args[1]))
                 {
                     int gameTime = (int) (CalendarTFC.CALENDAR_TIME.getTicks() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "tfc.command.time.query", "Calendar Ticks", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.time.query_calendarticks", gameTime);
                 }
                 else
                 {
@@ -168,7 +174,7 @@ public class CommandTimeTFC extends CommandBase
         {
             if ("set".equals(args[0]))
             {
-                return getListOfStringsMatchingLastWord(args, "day", "night");
+                return getListOfStringsMatchingLastWord(args, "day", "night", "monthlength");
             }
             else if ("add".equals(args[0]))
             {
@@ -176,7 +182,7 @@ public class CommandTimeTFC extends CommandBase
             }
             else if ("query".equals(args[0]))
             {
-                return getListOfStringsMatchingLastWord(args, "daytime", "day", "gametime", "playertime", "calendartime", "date");
+                return getListOfStringsMatchingLastWord(args, "daytime", "day", "gametime", "playerticks", "calendarticks");
             }
         }
         return Collections.emptyList();
