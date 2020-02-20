@@ -53,8 +53,11 @@ public class WorldGenBerryBushes implements IWorldGenerator
                     {
                         return;
                     }
-
-                    world.setBlockState(pos, BlockBerryBush.get(bush).getDefaultState());
+                    BlockBerryBush block = BlockBerryBush.get(bush);
+                    if (block.canPlaceBlockAt(world, pos))
+                    {
+                        world.setBlockState(pos, block.getDefaultState());
+                    }
                 }
             }
         }
