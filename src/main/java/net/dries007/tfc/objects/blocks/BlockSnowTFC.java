@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.objects.blocks.agriculture.BlockBerryBush;
 import net.dries007.tfc.util.climate.ClimateTFC;
 
 @ParametersAreNonnullByDefault
@@ -64,7 +65,7 @@ public class BlockSnowTFC extends BlockSnow
 
         if (block != Blocks.ICE && block != Blocks.PACKED_ICE && block != Blocks.BARRIER && block != BlocksTFC.SEA_ICE)
         {
-            return stateDown.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID || stateDown.getBlock().isLeaves(stateDown, worldIn, pos.down()) || block == this && stateDown.getValue(LAYERS) == 8;
+            return stateDown.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID || (!(stateDown.getBlock() instanceof BlockBerryBush) && stateDown.getBlock().isLeaves(stateDown, worldIn, pos.down())) || block == this && stateDown.getValue(LAYERS) == 8;
         }
         else
         {
