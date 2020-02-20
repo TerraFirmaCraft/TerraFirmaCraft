@@ -66,7 +66,7 @@ public class BlockBerryBush extends Block
 
     public BlockBerryBush(IBerryBush bush)
     {
-        super(Material.LEAVES);
+        super(Material.PLANTS);
         this.bush = bush;
         if (MAP.put(bush, this) != null) throw new IllegalStateException("There can only be one.");
         Blocks.FIRE.setFireInfo(this, 30, 60);
