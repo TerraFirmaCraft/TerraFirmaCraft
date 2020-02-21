@@ -19,6 +19,10 @@
       {
         "type": "forge:ore_dict",
         "ore": "gemCoal"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "gemLignite"
       }
     ]
   ],

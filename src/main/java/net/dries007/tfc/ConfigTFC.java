@@ -354,6 +354,11 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.stoneAxeLogReturnRate")
         public double stoneAxeLogReturnRate = 0.6;
+
+        @Config.Comment("Enable a 3x3 crafting table by pressing 'C'. 0 = Disabled, 1 = Enabled, Always, 2 = Enabled, If the player has a crafting table in inventory. (ore dictionary name: 'workbench')")
+        @Config.RangeInt(min = 0, max = 2)
+        @Config.LangKey("config." + MOD_ID + ".general.inventoryCraftingTableMode")
+        public int inventoryCraftingTableMode = 0;
     }
 
     public static class ClientCFG

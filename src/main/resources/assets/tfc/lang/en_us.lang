@@ -5,6 +5,8 @@ tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|game
 tfc.command.time.usage_expected_second_argument_set=Expected [day|night|monthlength <value>] after /timetfc set
 tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years|] <value> after /timetfc add
 tfc.command.time.set_month_length=Set Month Length to %d Days / Month
+tfc.command.time.query=%s is %d
+tfc.command.time.added=Added %d %s to the time.
 
 # Gui
 
@@ -346,6 +348,8 @@ config.tfc.general.chanceAnimalDeath.tooltip=Chance of animal dying (checked eve
 config.tfc.general.stoneAxeLogReturnRate=Stone Axe Log Return Rate
 config.tfc.general.stoneAxeLogReturnRate.tooltip=Log return rate of stone axes (eg: How efficiently it is)
 
+config.tfc.general.inventoryCraftingTableMode=Inventory Crafting Table
+config.tfc.general.inventoryCraftingTableMode.tooltip=Enable a 3x3 crafting table by pressing 'C'. 0 = Disabled, 1 = Enabled, Always, 2 = Enabled, If the player has a crafting table in inventory. (ore dictionary name: 'workbench')
 
 
 ## Client Config
@@ -3827,6 +3831,33 @@ tfc.animal.donkeytfc.male=Donkey♂
 tfc.animal.donkeytfc.female=Donkey♀
 tfc.animal.muletfc.male=Mule♂
 tfc.animal.muletfc.female=Mule♀
+
+# Sound Events
+tfc.item.ceramicbreak=Ceramic Item Breaks
+tfc.item.firestarter=Firestarter Sizzles
+tfc.item.jug.blow=The sound of music!!!
+tfc.item.throw=Javelin Thrown
+tfc.animal.rooster.cry=Rooster Cries
+tfc.quern.stonedrag=Quern Grinds
+tfc.bellows.blow.air=Bellows Puffs
+tfc.dirt.slide=Dirt Slides
+tfc.rock.slide=Rock Slides
+tfc.anvil.metalimpact=Hammer Bangs on Anvil
+tfc.animal.deer.say=Deer Snorts
+tfc.animal.deer.cry=Deer Cries
+tfc.animal.deer.hurt=Deer Hurt
+tfc.animal.deer.death=Deer Dies
+tfc.animal.bear.say=Bear Grunts
+tfc.animal.bear.cry=Bear Cries
+tfc.animal.bear.cub.cry=Baby Bear Cries
+tfc.animal.bear.hurt=Bear Hurt
+tfc.animal.bear.death=Bear Dies
+tfc.animal.pheasant.say=Phesant Clucks
+tfc.animal.pheasant.chick.say=Phesant Chick Clucks
+tfc.animal.pheasant.hurt=Phesant Hurt
+tfc.animal.pheasant.death=Pheasant Dies
+tfc.animal.cricket=Crickets
+tfc.animal.frog=Frogs
 
 ## Advancements
 
