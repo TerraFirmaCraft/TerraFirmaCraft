@@ -4,10 +4,10 @@
             "item": "tfc:metal/hoe/wrought_iron"
         },
         "title": {
-            "translate": "advancements.world.farming.title"
+            "translate": "advancements.tfc.world.farming.title"
         },
         "description": {
-            "translate": "advancements.world.farming.description"
+            "translate": "advancements.tfc.world.farming.description"
         }
     },
     "parent": "tfc:world/gatherer",

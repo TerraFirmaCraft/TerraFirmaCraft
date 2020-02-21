@@ -4,10 +4,10 @@
             "item": "tfc:plants/goldenrod"
         },
         "title": {
-            "translate": "advancements.world.root.title"
+            "translate": "advancements.tfc.world.root.title"
         },
         "description": {
-            "translate": "advancements.world.root.description"
+            "translate": "advancements.tfc.world.root.description"
         },
         "background": "tfc:textures/blocks/stonetypes/dirt/andesite.png",
         "show_toast": false,

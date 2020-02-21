@@ -5,10 +5,10 @@
             "data": 1
         },
         "title": {
-            "translate": "advancements.world.kill_bear.title"
+            "translate": "advancements.tfc.world.kill_bear.title"
         },
         "description": {
-            "translate": "advancements.world.kill_bear.description"
+            "translate": "advancements.tfc.world.kill_bear.description"
         }
     },
     "parent": "tfc:world/root",

@@ -4,10 +4,10 @@
             "item": "tfc:ore/native_silver"
         },
         "title": {
-            "translate": "advancements.world.find_silver.title"
+            "translate": "advancements.tfc.world.find_silver.title"
         },
         "description": {
-            "translate": "advancements.world.find_silver.description"
+            "translate": "advancements.tfc.world.find_silver.description"
         }
     },
     "parent": "tfc:world/make_propick",

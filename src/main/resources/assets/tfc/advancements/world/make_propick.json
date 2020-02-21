@@ -4,10 +4,10 @@
             "item": "tfc:metal/propick/copper"
         },
         "title": {
-            "translate": "advancements.world.make_propick.title"
+            "translate": "advancements.tfc.world.make_propick.title"
         },
         "description": {
-            "translate": "advancements.world.make_propick.description"
+            "translate": "advancements.tfc.world.make_propick.description"
         }
     },
     "parent": "tfc:world/pick_nugget",

@@ -4,10 +4,10 @@
             "item": "tfc:ore/bituminous_coal"
         },
         "title": {
-            "translate": "advancements.world.find_coal.title"
+            "translate": "advancements.tfc.world.find_coal.title"
         },
         "description": {
-            "translate": "advancements.world.find_coal.description"
+            "translate": "advancements.tfc.world.find_coal.description"
         }
     },
     "parent": "tfc:world/make_propick",

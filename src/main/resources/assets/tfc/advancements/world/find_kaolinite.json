@@ -5,10 +5,10 @@
         },
         "frame": "goal",
         "title": {
-            "translate": "advancements.world.find_kaolinite.title"
+            "translate": "advancements.tfc.world.find_kaolinite.title"
         },
         "description": {
-            "translate": "advancements.world.find_kaolinite.description"
+            "translate": "advancements.tfc.world.find_kaolinite.description"
         }
     },
     "parent": "tfc:world/make_propick",
