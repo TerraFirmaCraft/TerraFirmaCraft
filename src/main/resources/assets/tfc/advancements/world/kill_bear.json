@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:coal",
+            "item": "tfc:stone/javelin/igneous_extrusive",
             "data": 1
         },
         "title": {
@@ -16,8 +16,7 @@
         "native_copper": {
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
-                "entity": 
-                {
+                "entity": {
                     "type": "tfc:beartfc"
                 }
             }
