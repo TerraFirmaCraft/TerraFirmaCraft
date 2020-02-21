@@ -16,11 +16,10 @@
         "native_copper": {
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
-                "entity": [
-                    {
-                        "type": "tfc:beartfc"
-                    }
-                ]
+                "entity": 
+                {
+                    "type": "tfc:beartfc"
+                }
             }
         }
     }
