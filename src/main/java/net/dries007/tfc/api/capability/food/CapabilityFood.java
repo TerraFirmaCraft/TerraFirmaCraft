@@ -152,6 +152,16 @@ public class CapabilityFood
         return stack;
     }
 
+    public static ItemStack setStackNonDecaying(ItemStack stack)
+    {
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (cap != null)
+        {
+            cap.setNonDecaying();
+        }
+        return stack;
+    }
+
     @Nullable
     public static ICapabilityProvider getCustomFood(ItemStack stack)
     {

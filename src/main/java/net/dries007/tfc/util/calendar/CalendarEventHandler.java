@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -103,14 +105,19 @@ public class CalendarEventHandler
         if (event.player instanceof EntityPlayerMP)
         {
             // Check total players and reset player / calendar time ticking
-            List<EntityPlayer> players = event.player.world.playerEntities;
-            int playerCount = players.size();
-            // The player logging out doesn't count
-            if (players.contains(event.player))
+            MinecraftServer server = event.player.getServer();
+            if (server != null)
             {
-                playerCount--;
+                TerraFirmaCraft.getLog().info("Player Logged Out - Checking for Calendar Updates.");
+                List<EntityPlayerMP> players = server.getPlayerList().getPlayers();
+                int playerCount = players.size();
+                // The player logging out doesn't count
+                if (players.contains(event.player))
+                {
+                    playerCount--;
+                }
+                CalendarTFC.INSTANCE.setPlayersLoggedOn(playerCount > 0);
             }
-            CalendarTFC.INSTANCE.setPlayersLoggedOn(playerCount > 0);
         }
     }
 
@@ -125,8 +132,13 @@ public class CalendarEventHandler
         if (event.player instanceof EntityPlayerMP)
         {
             // Check total players and reset player / calendar time ticking
-            int players = event.player.world.playerEntities.size();
-            CalendarTFC.INSTANCE.setPlayersLoggedOn(players > 0);
+            MinecraftServer server = event.player.getServer();
+            if (server != null)
+            {
+                TerraFirmaCraft.getLog().info("Player Logged In - Checking for Calendar Updates.");
+                int players = server.getPlayerList().getPlayers().size();
+                CalendarTFC.INSTANCE.setPlayersLoggedOn(players > 0);
+            }
         }
     }
 

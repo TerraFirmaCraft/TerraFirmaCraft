@@ -32,6 +32,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
@@ -155,6 +156,11 @@ public class ItemFireStarter extends ItemTFC
             if (countLeft < 10 && itemRand.nextFloat() + 0.3 < count / (double) total)
             {
                 world.spawnParticle(EnumParticleTypes.FLAME, result.hitVec.x, result.hitVec.y, result.hitVec.z, 0.0F, 0.0F, 0.0F);
+            }
+
+            if (count % 3 == 1)
+            {
+                player.playSound(TFCSounds.FIRE_STARTER, 0.5f, 0.05F);
             }
         }
         else if (countLeft == 1) // Server, and last tick of use
