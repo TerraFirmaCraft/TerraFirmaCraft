@@ -88,8 +88,8 @@ public class ModelChickenTFC extends ModelBase
 
         GlStateManager.pushMatrix();
 
-        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
+        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
         if (percent >= 0.75 && chicken.getGender() == EntityAnimalTFC.Gender.MALE)
         {
@@ -114,8 +114,8 @@ public class ModelChickenTFC extends ModelBase
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
+        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         this.body.render(par7);
         this.rightLeg.render(par7);
         this.leftLeg.render(par7);
