@@ -79,6 +79,7 @@ public class CommandTimeTFC extends CommandBase
                     throw new WrongUsageException("tfc.command.time.usage_expected_second_argument_add");
                 }
                 long timeToAdd;
+                String unitAdded = args[1];
                 switch (args[1])
                 {
                     case "months":
@@ -91,11 +92,12 @@ public class CommandTimeTFC extends CommandBase
                         timeToAdd = ICalendar.TICKS_IN_DAY * parseInt(args[2], 0);
                         break;
                     default:
+                        unitAdded = "ticks";
                         timeToAdd = parseInt(args[1], 0);
                 }
                 long newCalendarTime = CalendarTFC.CALENDAR_TIME.getTicks() + timeToAdd;
                 CalendarTFC.INSTANCE.setTimeFromCalendarTime(newCalendarTime);
-                notifyCommandListener(sender, this, "commands.time.added", timeToAdd);
+                notifyCommandListener(sender, this, "tfc.command.time.added", timeToAdd, unitAdded);
             }
             else if ("query".equals(args[0]))
             {
@@ -107,31 +109,31 @@ public class CommandTimeTFC extends CommandBase
                 {
                     int daytime = (int) (sender.getEntityWorld().getWorldTime() % ICalendar.TICKS_IN_DAY);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, daytime);
-                    notifyCommandListener(sender, this, "commands.time.query", daytime);
+                    notifyCommandListener(sender, this, "commands.time.query", "World Time", daytime);
                 }
                 else if ("day".equals(args[1]))
                 {
                     int day = (int) (CalendarTFC.CALENDAR_TIME.getTotalDays() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, day);
-                    notifyCommandListener(sender, this, "commands.time.query", day);
+                    notifyCommandListener(sender, this, "tfc.command.time.query", "Day Number (Calendar Time)", day);
                 }
                 else if ("gametime".equals(args[1]))
                 {
                     int gameTime = (int) (sender.getEntityWorld().getTotalWorldTime() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "commands.time.query", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.time.query", "Total World Time (Game Time)", gameTime);
                 }
                 else if ("playerticks".equals(args[1]))
                 {
                     int gameTime = (int) (CalendarTFC.PLAYER_TIME.getTicks() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "commands.time.query", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.time.query", "Player Ticks", gameTime);
                 }
                 else if ("calendarticks".equals(args[1]))
                 {
                     int gameTime = (int) (CalendarTFC.CALENDAR_TIME.getTicks() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "commands.time.query", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.time.query", "Calendar Ticks", gameTime);
                 }
                 else
                 {
