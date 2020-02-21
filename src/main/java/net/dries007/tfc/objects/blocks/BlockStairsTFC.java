@@ -8,10 +8,14 @@ package net.dries007.tfc.objects.blocks;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
@@ -68,5 +72,18 @@ public class BlockStairsTFC extends BlockStairs
         OreDictionaryHelper.register(this, "stair", "wood", wood);
 
         Blocks.FIRE.setFireInfo(this, 5, 20);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        // Prevents cobble stairs from falling
+    }
+
+    @Override
+    public void onBlockAdded(@Nonnull World worldIn, @Nonnull BlockPos pos, IBlockState state)
+    {
+        // Prevents cobble stairs from falling
     }
 }
