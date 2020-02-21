@@ -4,10 +4,10 @@
             "item": "tfc:crop/seeds/wheat"
         },
         "title": {
-            "translate": "advancements.world.gatherer.title"
+            "translate": "advancements.tfc.world.gatherer.title"
         },
         "description": {
-            "translate": "advancements.world.gatherer.description"
+            "translate": "advancements.tfc.world.gatherer.description"
         }
     },
     "parent": "tfc:world/root",

@@ -5,10 +5,10 @@
         },
         "frame": "goal",
         "title": {
-            "translate": "advancements.world.find_nickel.title"
+            "translate": "advancements.tfc.world.find_nickel.title"
         },
         "description": {
-            "translate": "advancements.world.find_nickel.description"
+            "translate": "advancements.tfc.world.find_nickel.description"
         }
     },
     "parent": "tfc:world/make_propick",

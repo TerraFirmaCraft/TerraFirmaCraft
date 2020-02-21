@@ -4,10 +4,10 @@
             "item": "tfc:ore/small/native_copper"
         },
         "title": {
-            "translate": "advancements.world.pick_nugget.title"
+            "translate": "advancements.tfc.world.pick_nugget.title"
         },
         "description": {
-            "translate": "advancements.world.pick_nugget.description"
+            "translate": "advancements.tfc.world.pick_nugget.description"
         }
     },
     "parent": "tfc:world/root",

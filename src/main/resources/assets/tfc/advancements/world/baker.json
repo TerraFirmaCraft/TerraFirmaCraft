@@ -5,10 +5,10 @@
         },
         "frame": "goal",
         "title": {
-            "translate": "advancements.world.baker.title"
+            "translate": "advancements.tfc.world.baker.title"
         },
         "description": {
-            "translate": "advancements.world.baker.description"
+            "translate": "advancements.tfc.world.baker.description"
         }
     },
     "parent": "tfc:world/farming",

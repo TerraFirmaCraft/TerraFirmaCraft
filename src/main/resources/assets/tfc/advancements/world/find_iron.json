@@ -5,10 +5,10 @@
         },
         "frame": "goal",
         "title": {
-            "translate": "advancements.world.find_iron.title"
+            "translate": "advancements.tfc.world.find_iron.title"
         },
         "description": {
-            "translate": "advancements.world.find_iron.description"
+            "translate": "advancements.tfc.world.find_iron.description"
         }
     },
     "parent": "tfc:world/make_propick",

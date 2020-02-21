@@ -4,10 +4,10 @@
             "item": "tfc:ore/native_gold"
         },
         "title": {
-            "translate": "advancements.world.find_gold.title"
+            "translate": "advancements.tfc.world.find_gold.title"
         },
         "description": {
-            "translate": "advancements.world.find_gold.description"
+            "translate": "advancements.tfc.world.find_gold.description"
         }
     },
     "parent": "tfc:world/make_propick",

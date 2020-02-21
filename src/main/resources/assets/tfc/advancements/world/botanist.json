@@ -5,10 +5,10 @@
         },
         "frame": "challenge",
         "title": {
-            "translate": "advancements.world.botanist.title"
+            "translate": "advancements.tfc.world.botanist.title"
         },
         "description": {
-            "translate": "advancements.world.botanist.description"
+            "translate": "advancements.tfc.world.botanist.description"
         }
     },
     "parent": "tfc:world/gatherer",

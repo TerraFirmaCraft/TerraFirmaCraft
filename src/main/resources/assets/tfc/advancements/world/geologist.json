@@ -5,10 +5,10 @@
         },
         "frame": "challenge",
         "title": {
-            "translate": "advancements.world.geologist.title"
+            "translate": "advancements.tfc.world.geologist.title"
         },
         "description": {
-            "translate": "advancements.world.geologist.description"
+            "translate": "advancements.tfc.world.geologist.description"
         }
     },
     "parent": "tfc:world/pick_nugget",

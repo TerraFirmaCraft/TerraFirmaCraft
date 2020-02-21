@@ -6,10 +6,10 @@
         },
         "frame": "challenge",
         "title": {
-            "translate": "advancements.world.find_diamonds.title"
+            "translate": "advancements.tfc.world.find_diamonds.title"
         },
         "description": {
-            "translate": "advancements.world.find_diamonds.description"
+            "translate": "advancements.tfc.world.find_diamonds.description"
         }
     },
     "parent": "tfc:world/make_propick",
