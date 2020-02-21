@@ -4,10 +4,10 @@
             "item": "tfc:metal/ingot/blue_steel"
         },
         "title": {
-            "translate": "advancements.main.get_blue_steel.title"
+            "translate": "advancements.tfc.main.get_blue_steel.title"
         },
         "description": {
-            "translate": "advancements.main.get_blue_steel.description"
+            "translate": "advancements.tfc.main.get_blue_steel.description"
         }
     },
     "parent": "tfc:main/get_black_steel",
