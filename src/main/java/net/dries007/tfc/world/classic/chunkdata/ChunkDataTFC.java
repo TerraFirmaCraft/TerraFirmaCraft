@@ -82,6 +82,16 @@ public final class ChunkDataTFC
         return get(world, pos).getRainfall();
     }
 
+    public static float getFloraDensity(World world, BlockPos pos)
+    {
+        return get(world, pos).getFloraDensity();
+    }
+
+    public static float getFloraDiversity(World world, BlockPos pos)
+    {
+        return get(world, pos).getFloraDiversity();
+    }
+
     public static boolean isStable(World world, BlockPos pos)
     {
         return get(world, pos).getStabilityLayer(pos.getX() & 15, pos.getZ() & 15).valueInt == 0;

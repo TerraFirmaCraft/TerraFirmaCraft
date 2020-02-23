@@ -446,6 +446,9 @@ config.tfc.world.floraDiversitySpreadFactor.tooltip=This controls how spread the
 config.tfc.world.floraDensitySpreadFactor=Flora Density Spread Factor
 config.tfc.world.floraDensitySpreadFactor.tooltip=This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
 
+config.tfc.world.animalSpawnWeight=Animal Spawn Weight
+config.tfc.world.animalSpawnWeight.tooltip=This controls how spread apart TFC animals spawn, in number of chunks. Higher values mean their spawns are very sparse, also making them more rare.
+
 # Misc
 itemGroup.tfc.misc=TFC Misc
 itemGroup.tfc.rock.blocks=TFC Rock & Soil Blocks

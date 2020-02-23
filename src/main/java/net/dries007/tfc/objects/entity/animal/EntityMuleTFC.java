@@ -213,7 +213,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
         return 0; // Not naturally spawned, must be bred
     }

@@ -480,5 +480,10 @@ public class ConfigTFC
         @Config.Comment("This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
         @Config.LangKey("config." + MOD_ID + ".world.floraDensitySpreadFactor")
         public double floraDensitySpreadFactor = 0.16;
+
+        @Config.Comment("This controls how spread apart TFC animals spawn, in number of chunks. Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.RangeInt(min = 1)
+        @Config.LangKey("config." + MOD_ID + ".world.animalSpawnWeight")
+        public int animalSpawnWeight = 100;
     }
 }
