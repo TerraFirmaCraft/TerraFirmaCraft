@@ -159,12 +159,12 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     public static <T extends EntityAnimal & IAnimalTFC> void findFemaleMate(T maleAnimal)
     {
         List<EntityAnimal> list = maleAnimal.world.getEntitiesWithinAABB(maleAnimal.getClass(), maleAnimal.getEntityBoundingBox().grow(8.0D));
-        for (EntityAnimal ent : list)
+        for (EntityAnimal femaleAnimal : list)
         {
-            IAnimalTFC female = (IAnimalTFC) ent;
-            if (female.getGender() == Gender.FEMALE && !ent.isInLove() && female.isReadyToMate())
+            IAnimalTFC female = (IAnimalTFC) femaleAnimal;
+            if (female.getGender() == Gender.FEMALE && !femaleAnimal.isInLove() && female.isReadyToMate())
             {
-                ent.setInLove(null);
+                femaleAnimal.setInLove(null);
                 maleAnimal.setInLove(null);
                 break;
             }
@@ -228,12 +228,15 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, itemstack);
-                        float familiarity = this.getFamiliarity() + 0.06f;
-                        if (this.getAge() != Age.CHILD)
+                        if (this.getFamiliarity() < getAdultFamiliarityCap())
                         {
-                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            float familiarity = this.getFamiliarity() + 0.06f;
+                            if (this.getAge() != Age.CHILD)
+                            {
+                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            }
+                            this.setFamiliarity(familiarity);
                         }
-                        this.setFamiliarity(familiarity);
                         world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
                     }
                     return true;

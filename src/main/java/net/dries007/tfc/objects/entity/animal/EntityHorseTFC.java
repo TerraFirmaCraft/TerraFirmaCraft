@@ -419,12 +419,15 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, itemstack);
-                        float familiarity = this.getFamiliarity() + 0.06f;
-                        if (this.getAge() != Age.CHILD)
+                        if (this.getFamiliarity() < getAdultFamiliarityCap())
                         {
-                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            float familiarity = this.getFamiliarity() + 0.06f;
+                            if (this.getAge() != Age.CHILD)
+                            {
+                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            }
+                            this.setFamiliarity(familiarity);
                         }
-                        this.setFamiliarity(familiarity);
                         world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
                     }
                     return true;

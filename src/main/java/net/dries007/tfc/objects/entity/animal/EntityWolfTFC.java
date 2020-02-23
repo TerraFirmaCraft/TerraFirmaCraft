@@ -392,12 +392,15 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
                             lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                             lastFDecay = lastFed; //No decay needed
                             this.consumeItemFromStack(player, itemstack);
-                            float familiarity = this.getFamiliarity() + 0.06f;
-                            if (this.getAge() != Age.CHILD)
+                            if (this.getFamiliarity() < getAdultFamiliarityCap())
                             {
-                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                                float familiarity = this.getFamiliarity() + 0.06f;
+                                if (this.getAge() != Age.CHILD)
+                                {
+                                    familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                                }
+                                this.setFamiliarity(familiarity);
                             }
-                            this.setFamiliarity(familiarity);
                             world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
                         }
                         return true;
@@ -463,6 +466,11 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
                 baby.setGender(Gender.valueOf(Constants.RNG.nextBoolean()));
                 baby.setBirthDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
                 baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                if (this.isTamed())
+                {
+                    baby.setOwnerId(this.getOwnerId());
+                    baby.setTamed(true);
+                }
                 return baby;
             }
             catch (Exception ignored)
