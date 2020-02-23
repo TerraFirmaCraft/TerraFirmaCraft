@@ -8,9 +8,9 @@ package net.dries007.tfc.api.capability.forge;
 import net.dries007.tfc.api.types.Metal;
 
 /**
- * Interface for the forgeable capability for items that store a metal amount, i.e. blooms
+ * Interface for the forgeable heatable capability for items that store a metal amount, i.e. blooms
  */
-public interface IForgeableMeasurableMetal extends IForgeable
+public interface IForgeableMeasurableMetal extends IForgeableHeatable
 {
     /**
      * Gets the metal content in this item

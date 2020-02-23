@@ -359,6 +359,21 @@ public class ConfigTFC
         @Config.RangeInt(min = 0, max = 2)
         @Config.LangKey("config." + MOD_ID + ".general.inventoryCraftingTableMode")
         public int inventoryCraftingTableMode = 0;
+
+        @Config.Comment("How much metal (units / mB) can a small vessel hold?")
+        @Config.RangeInt(min = 100)
+        @Config.LangKey("config." + MOD_ID + ".general.tankSmallVessel")
+        public int tankSmallVessel = 4000;
+
+        @Config.Comment("How much fluid (mB) can a barrel hold?")
+        @Config.RangeInt(min = 100)
+        @Config.LangKey("config." + MOD_ID + ".general.tankBarrel")
+        public int tankBarrel = 10000;
+
+        @Config.Comment("How much metal (units / mB) can a crucible hold?")
+        @Config.RangeInt(min = 100)
+        @Config.LangKey("config." + MOD_ID + ".general.tankCrucible")
+        public int tankCrucible = 3000;
     }
 
     public static class ClientCFG

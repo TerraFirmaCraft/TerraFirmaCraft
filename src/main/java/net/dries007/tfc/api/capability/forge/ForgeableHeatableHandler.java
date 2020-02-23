@@ -12,80 +12,79 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
-public class ForgeableHandler implements ICapabilitySerializable<NBTTagCompound>, IForgeable
+public class ForgeableHeatableHandler extends ItemHeatHandler implements IForgeableHeatable
 {
-    protected final ForgeSteps steps;
-    protected int work;
-    protected ResourceLocation recipeName;
+    private final ForgeableHandler internalForgeCap;
 
-    public ForgeableHandler(@Nullable NBTTagCompound nbt)
+    public ForgeableHeatableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
     {
-        steps = new ForgeSteps();
+        this.heatCapacity = heatCapacity;
+        this.meltTemp = meltTemp;
+
+        internalForgeCap = new ForgeableHandler(nbt);
+
         deserializeNBT(nbt);
     }
 
-    public ForgeableHandler()
+    public ForgeableHeatableHandler()
     {
         // for custom implementations
-        steps = new ForgeSteps();
+        internalForgeCap = new ForgeableHandler();
     }
 
     @Override
     public int getWork()
     {
-        return work;
+        return internalForgeCap.getWork();
     }
 
     @Override
     public void setWork(int work)
     {
-        this.work = work;
+        internalForgeCap.setWork(work);
     }
 
     @Override
     @Nullable
     public ResourceLocation getRecipeName()
     {
-        return recipeName;
+        return internalForgeCap.getRecipeName();
     }
 
     @Override
     public void setRecipe(@Nullable ResourceLocation recipeName)
     {
-        this.recipeName = recipeName;
+        internalForgeCap.setRecipe(recipeName);
     }
 
     @Override
     @Nonnull
     public ForgeSteps getSteps()
     {
-        return steps;
+        return internalForgeCap.getSteps();
     }
 
     @Override
     public void addStep(ForgeStep step)
     {
-        steps.addStep(step);
-        work += step.getStepAmount();
+        internalForgeCap.addStep(step);
     }
 
     @Override
     public void reset()
     {
-        steps.reset();
-        recipeName = null;
-        work = 0;
+        internalForgeCap.reset();
     }
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY;
+        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @SuppressWarnings("unchecked")
@@ -100,15 +99,8 @@ public class ForgeableHandler implements ICapabilitySerializable<NBTTagCompound>
     @Nonnull
     public NBTTagCompound serializeNBT()
     {
-        NBTTagCompound nbt = new NBTTagCompound();
-
-        nbt.setInteger("work", work);
-        nbt.setTag("steps", steps.serializeNBT());
-        if (recipeName != null)
-        {
-            nbt.setString("recipe", recipeName.toString());
-        }
-
+        NBTTagCompound nbt = super.serializeNBT();
+        nbt.setTag("forge", internalForgeCap.serializeNBT());
         return nbt;
     }
 
@@ -117,9 +109,8 @@ public class ForgeableHandler implements ICapabilitySerializable<NBTTagCompound>
     {
         if (nbt != null)
         {
-            work = nbt.getInteger("work");
-            recipeName = nbt.hasKey("recipe") ? new ResourceLocation(nbt.getString("recipe")) : null; // stops defaulting to empty string
-            steps.deserializeNBT(nbt.getCompoundTag("steps"));
+            internalForgeCap.deserializeNBT(nbt.getCompoundTag("forge"));
+            super.deserializeNBT(nbt);
         }
     }
 }

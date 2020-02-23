@@ -110,6 +110,19 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
         return super.getTranslationKey(stack) + "." + grade.getName();
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        Metal metal = getMetal(stack);
+        if (metal != null)
+        {
+            // Like classic, "Metal: xx units"
+            String info = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
+            tooltip.add(info);
+        }
+    }
+
     @Override
     public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
@@ -167,18 +180,5 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
     public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.MEDIUM;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        Metal metal = getMetal(stack);
-        if (metal != null)
-        {
-            // Like classic, "Metal: xx units"
-            String info = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
-            tooltip.add(info);
-        }
     }
 }

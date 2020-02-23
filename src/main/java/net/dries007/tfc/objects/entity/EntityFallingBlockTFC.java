@@ -218,6 +218,26 @@ public class EntityFallingBlockTFC extends Entity
     }
 
     @Override
+    public void fall(float distance, float damageMultiplier)
+    {
+        if (distance > 1.0F)
+        {
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+            for (Entity entity : list)
+            {
+                if (!ConfigTFC.GENERAL.disableFallableBlocksHurtEntities && entity instanceof EntityLivingBase)
+                {
+                    entity.attackEntityFrom(DamageSource.FALLING_BLOCK, distance);
+                }
+                else if (!ConfigTFC.GENERAL.disableFallableBlocksDestroyLooseItems && entity instanceof EntityItem)
+                {
+                    entity.setDead();
+                }
+            }
+        }
+    }
+
+    @Override
     public boolean canBeCollidedWith()
     {
         return !isDead;
@@ -283,25 +303,5 @@ public class EntityFallingBlockTFC extends Entity
     public boolean ignoreItemEntityData()
     {
         return true;
-    }
-
-    @Override
-    public void fall(float distance, float damageMultiplier)
-    {
-        if (distance > 1.0F)
-        {
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
-            for (Entity entity : list)
-            {
-                if (!ConfigTFC.GENERAL.disableFallableBlocksHurtEntities && entity instanceof EntityLivingBase)
-                {
-                    entity.attackEntityFrom(DamageSource.FALLING_BLOCK, distance);
-                }
-                else if (!ConfigTFC.GENERAL.disableFallableBlocksDestroyLooseItems && entity instanceof EntityItem)
-                {
-                    entity.setDead();
-                }
-            }
-        }
     }
 }

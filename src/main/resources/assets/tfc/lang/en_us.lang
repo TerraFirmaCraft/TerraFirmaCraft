@@ -2,11 +2,21 @@
 tfc.command.time.usage=/timetfc [add|query|set] [args...]
 tfc.command.time.usage_expected_first_argument=Expected [add|query|set] after /timetfc
 tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
-tfc.command.time.usage_expected_second_argument_set=Expected [day|night|monthlength <value>] after /timetfc set
-tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years|] <value> after /timetfc add
+tfc.command.time.usage_expected_second_argument_set=Expected [<ticks>|day|night|monthlength <value>] after /timetfc set
+tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
 tfc.command.time.set_month_length=Set Month Length to %d Days / Month
-tfc.command.time.query=%s is %d
-tfc.command.time.added=Added %d %s to the time.
+tfc.command.time.set_day=Time set to the next daylight
+tfc.command.time.set_night=Time set to the next nighttime
+tfc.command.time.set_ticks=Day time set to %d
+tfc.command.time.add_days=Added %d days to time (%d ticks)
+tfc.command.time.add_months=Added %d months to time (%d ticks)
+tfc.command.time.add_years=Added %d years to time (%d ticks)
+tfc.command.time.add_ticks=Added %d ticks to time
+tfc.command.time.query_calendarticks=Calendar ticks is %d
+tfc.command.time.query_playerticks=Player ticks is %d
+tfc.command.time.query_gametime=Game time is %d ticks
+tfc.command.time.query_day=Current day is %d
+tfc.command.time.query_daytime=Current day time is %d
 
 # Gui
 
@@ -34,6 +44,7 @@ tfc.tooltip.anvil_plan=Plans
 tfc.tooltip.anvil_tier_too_low=This Anvil is too low tier!
 tfc.tooltip.anvil_no_flux=There is no flux in the anvil!
 tfc.tooltip.anvil_too_cold=The item(s) are not hot enough to work!
+tfc.tooltip.anvil_not_weldable=The item(s) can't be welded!
 tfc.tooltip.anvil_no_hammer=There is no hammer in the anvil!
 tfc.tooltip.anvil_safety=That would destroy the input!
 tfc.tooltip.crucible_result=Result:
@@ -350,6 +361,15 @@ config.tfc.general.stoneAxeLogReturnRate.tooltip=Log return rate of stone axes (
 
 config.tfc.general.inventoryCraftingTableMode=Inventory Crafting Table
 config.tfc.general.inventoryCraftingTableMode.tooltip=Enable a 3x3 crafting table by pressing 'C'. 0 = Disabled, 1 = Enabled, Always, 2 = Enabled, If the player has a crafting table in inventory. (ore dictionary name: 'workbench')
+
+config.tfc.general.tankSmallVessel=Small Vessel Tank Storage
+config.tfc.general.tankSmallVessel.tooltip=How much metal (units / mB) can a small vessel hold?
+
+config.tfc.general.tankBarrel=Barrel Tank Storage
+config.tfc.general.tankBarrel.tooltip=How much fluid (mB) can a barrel hold?
+
+config.tfc.general.tankCrucible=Crucible Tank Storage
+config.tfc.general.tankCrucible.tooltip=How much metal (units / mB) can a crucible hold?
 
 
 ## Client Config

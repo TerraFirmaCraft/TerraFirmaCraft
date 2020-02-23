@@ -275,9 +275,9 @@ public class TEAnvilTFC extends TEInventory
                         if (!output.isEmpty())
                         {
                             IItemHeat outputCap = output.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                            if (outputCap != null)
+                            if (outputCap != null && cap instanceof IItemHeat)
                             {
-                                outputCap.setTemperature(cap.getTemperature());
+                                outputCap.setTemperature(((IItemHeat) cap).getTemperature());
                             }
                             if (skill != null && recipe.getSkillBonusType() != null)
                             {
@@ -346,24 +346,37 @@ public class TEAnvilTFC extends TEInventory
                 return false;
             }
 
-            // Heat
-            IForgeable heat1 = input1.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-            IForgeable heat2 = input2.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-            if (heat1 == null || heat2 == null || !heat1.isWeldable() || !heat2.isWeldable())
+            // Check if both are weldable
+            IForgeable cap1 = input1.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+            IForgeable cap2 = input2.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
+            if (cap1 == null || cap2 == null || !cap1.isWeldable() || !cap2.isWeldable())
             {
-                // No heat capability or not hot enough
-                player.sendMessage(new TextComponentTranslation("tfc.tooltip.anvil_too_cold"));
+                if (cap1 instanceof IItemHeat && cap2 instanceof IItemHeat)
+                {
+                    player.sendMessage(new TextComponentTranslation("tfc.tooltip.anvil_too_cold"));
+                }
+                else
+                {
+                    player.sendMessage(new TextComponentTranslation("tfc.tooltip.anvil_not_weldable"));
+                }
                 return false;
             }
             ItemStack result = recipe.getOutput();
             IItemHeat heatResult = result.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-            float resultTemperature = Math.min(heat1.getTemperature(), heat2.getTemperature());
+            float resultTemperature = 0;
+            if (cap1 instanceof IItemHeat)
+            {
+                resultTemperature = ((IItemHeat) cap1).getTemperature();
+            }
+            if (cap2 instanceof IItemHeat)
+            {
+                resultTemperature = Math.min(resultTemperature, ((IItemHeat) cap2).getTemperature());
+            }
             if (heatResult != null)
             {
                 // Every welding result should have this capability, but don't fail if it doesn't
                 heatResult.setTemperature(resultTemperature);
             }
-
             // Set stacks in slots
             inventory.setStackInSlot(SLOT_INPUT_1, result);
             inventory.setStackInSlot(SLOT_INPUT_2, ItemStack.EMPTY);

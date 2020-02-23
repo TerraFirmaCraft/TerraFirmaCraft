@@ -289,6 +289,16 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     }
 
     /**
+     * Gets the maximum amount this storage can hold
+     *
+     * @return The maximum amount
+     */
+    public int getMaxAmount()
+    {
+        return maxAmount;
+    }
+
+    /**
      * Returns a read-only copy of the metals in an alloy
      * The alloy may also contain values with a % content less than epsilon, which are not visible in this view
      *
@@ -337,6 +347,16 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
             }
             updateSanitizedMap();
         }
+    }
+
+    public void setMaxAmount(int value)
+    {
+        int surplus = this.getAmount() - value;
+        if (surplus > 0)
+        {
+            this.removeAlloy(surplus, false);
+        }
+        this.maxAmount = value;
     }
 
     /**
