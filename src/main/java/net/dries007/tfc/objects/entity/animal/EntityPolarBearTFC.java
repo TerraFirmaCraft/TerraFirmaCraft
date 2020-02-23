@@ -10,15 +10,14 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityPolarBear;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -148,6 +147,22 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC
     {
         String entityString = EntityList.getEntityString(this);
         return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
+    }
+
+    @Override
+    public boolean attackEntityAsMob(Entity entityIn)
+    {
+        double attackDamage = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        if (this.isChild())
+        {
+            attackDamage /= 2;
+        }
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) attackDamage);
+        if (flag)
+        {
+            this.applyEnchantments(this, entityIn);
+        }
+        return flag;
     }
 
     @Override
