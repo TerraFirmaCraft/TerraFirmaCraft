@@ -70,15 +70,15 @@ public class ModelPigTFC extends ModelQuadruped
 
         GlStateManager.pushMatrix();
 
-        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
         GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
+        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         GlStateManager.translate(0.0F, (ageScale - 1) * -0.125f, 0.1875f - (0.1875f * percent));
         head.render(par7);
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
+        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
         body.render(par7);
         leg1.render(par7);
