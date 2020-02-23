@@ -428,7 +428,7 @@ public final class CommonEventHandler
         {
             // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.player;
-            player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+            CapabilityContainerListener.addTo(player.inventoryContainer, player);
 
             // Food Stats
             FoodStats originalStats = player.getFoodStats();
@@ -473,7 +473,7 @@ public final class CommonEventHandler
         {
             // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.player;
-            player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+            CapabilityContainerListener.addTo(player.inventoryContainer, player);
 
             // Food Stats
             FoodStats originalStats = event.player.getFoodStats();
@@ -526,7 +526,7 @@ public final class CommonEventHandler
         {
             // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.player;
-            player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+            CapabilityContainerListener.addTo(player.inventoryContainer, player);
 
             // Food Stats
             FoodStats originalStats = event.player.getFoodStats();
@@ -554,7 +554,7 @@ public final class CommonEventHandler
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
             // Capability Sync Handler
-            event.getContainer().addListener(new CapabilityContainerListener((EntityPlayerMP) event.getEntityPlayer()));
+            CapabilityContainerListener.addTo(event.getContainer(), (EntityPlayerMP) event.getEntityPlayer());
         }
     }
 

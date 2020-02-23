@@ -17,9 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.heat.Heat;
-import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.objects.te.ITileFields;
 import net.dries007.tfc.objects.te.TEInventory;
 
@@ -29,7 +26,7 @@ import net.dries007.tfc.objects.te.TEInventory;
  * @param <T> The Tile Entity class
  */
 @ParametersAreNonnullByDefault
-public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
+public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple implements ICapabilityUpdateContainer
 {
     protected final T tile;
     protected final EntityPlayer player;
@@ -38,6 +35,7 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
     private final int yOffset; // The number of pixels higher than normal (If the gui is larger than normal, see Anvil)
 
     private int[] cachedFields;
+    private IContainerListener capabilityListener; // Set via ICapabilityUpdateContainer, used to sync cap only updates
 
     protected ContainerTE(InventoryPlayer playerInv, T tile)
     {
@@ -64,29 +62,28 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
         }
         for (int i = 0; i < inventorySlots.size(); ++i)
         {
-            ItemStack stack = inventorySlots.get(i).getStack();
-            ItemStack newStack = inventoryItemStacks.get(i);
+            ItemStack newStack = inventorySlots.get(i).getStack();
+            ItemStack cachedStack = inventoryItemStacks.get(i);
 
-            if (!ItemStack.areItemStacksEqual(newStack, stack))
+            if (!ItemStack.areItemStacksEqual(cachedStack, newStack))
             {
-                // Since heat temperatures are updated every tick, it can cause network issues (server sending too many update packets = overriding slots, ghost items, etc)
-                // To alleviate that, we're gonna update the client on tooltip changes only
-                boolean updateClient = true;
-                IItemHeat cap1 = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                IItemHeat cap2 = newStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                if (cap1 != null && cap2 != null && Heat.compareHeat(cap1.getTemperature(), cap2.getTemperature()))
+                // Duplicated from Container#detectAndSendChanges
+                boolean clientStackChanged = !ItemStack.areItemStacksEqualUsingNBTShareTag(cachedStack, newStack);
+                cachedStack = newStack.isEmpty() ? ItemStack.EMPTY : newStack.copy();
+                this.inventoryItemStacks.set(i, cachedStack);
+
+                if (clientStackChanged)
                 {
-                    updateClient = false;
-                }
-                // May need to do the same for food decay?
-                if (updateClient)
-                {
-                    newStack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-                    inventoryItemStacks.set(i, newStack);
-                    for (IContainerListener listener : listeners)
+                    for (IContainerListener listener : this.listeners)
                     {
-                        listener.sendSlotContents(this, i, newStack);
+                        listener.sendSlotContents(this, i, cachedStack);
                     }
+                }
+                else if (capabilityListener != null)
+                {
+                    // There's a capability difference ONLY that needs to be synced, so we use our own handler here, as to not conflict with vanilla's sync, because this won't overwrite the client side item stack
+                    // The listener will check if the item actually needs a sync based on capabilities we know we need to sync
+                    capabilityListener.sendSlotContents(this, i, cachedStack);
                 }
             }
         }
@@ -193,6 +190,12 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
                 }
             }
         }
+    }
+
+    @Override
+    public void setCapabilityListener(IContainerListener capabilityListener)
+    {
+        this.capabilityListener = capabilityListener;
     }
 
     protected boolean transferStackOutOfContainer(ItemStack stack, int containerSlots)
