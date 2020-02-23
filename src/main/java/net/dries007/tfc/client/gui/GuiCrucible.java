@@ -60,7 +60,7 @@ public class GuiCrucible extends GuiContainerTE<TECrucible>
             int startY = 93;
             int endX = 133;
             int endY = 124;
-            int fillHeight = (int) Math.ceil((float) (endY - startY) * tile.getAlloy().getAmount() / TECrucible.CRUCIBLE_MAX_METAL_FLUID);
+            int fillHeight = (int) Math.ceil((float) (endY - startY) * tile.getAlloy().getAmount() / tile.getAlloy().getMaxAmount());
 
             if (mouseX >= guiLeft + startX && mouseX < guiLeft + endX && mouseY >= guiTop + endY - fillHeight && mouseY < guiTop + endY)
             {
@@ -126,7 +126,7 @@ public class GuiCrucible extends GuiContainerTE<TECrucible>
             int endX = 133;
             int endY = 124;
 
-            int fillHeight = (int) Math.ceil((float) (endY - startY) * alloy.getAmount() / TECrucible.CRUCIBLE_MAX_METAL_FLUID);
+            int fillHeight = (int) Math.ceil((float) (endY - startY) * alloy.getAmount() / alloy.getMaxAmount());
 
             Fluid fluid = FluidsTFC.getFluidFromMetal(alloy.getResult());
             TextureAtlasSprite sprite = FluidSpriteCache.getStillSprite(fluid);

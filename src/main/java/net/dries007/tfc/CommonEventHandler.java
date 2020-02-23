@@ -65,8 +65,9 @@ import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
-import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.forge.ForgeableHeatableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
@@ -350,15 +351,35 @@ public final class CommonEventHandler
                 }
             }
 
-            // Forge / Heat. Try forge first, because it's more specific
+            // Forge / Metal / Heat. Try forge first, because it's more specific
             ICapabilityProvider forgeHandler = CapabilityForgeable.getCustomForgeable(stack);
             boolean isForgeable = false;
+            boolean isHeatable = false;
             if (forgeHandler != null)
             {
                 isForgeable = true;
                 event.addCapability(CapabilityForgeable.KEY, forgeHandler);
+                isHeatable = forgeHandler instanceof IItemHeat;
             }
-            else
+            // Metal
+            ICapabilityProvider metalCapability = CapabilityMetalItem.getCustomMetalItem(stack);
+            if (metalCapability != null)
+            {
+                event.addCapability(CapabilityMetalItem.KEY, metalCapability);
+                if (!isForgeable)
+                {
+                    // Add a forgeable capability for this item, if none is found
+                    IMetalItem cap = (IMetalItem) metalCapability;
+                    Metal metal = cap.getMetal(stack);
+                    if (metal != null)
+                    {
+                        event.addCapability(CapabilityForgeable.KEY, new ForgeableHeatableHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
+                        isHeatable = true;
+                    }
+                }
+            }
+            // If one of the above is also heatable, skip this
+            if (!isHeatable)
             {
                 ICapabilityProvider heatHandler = CapabilityItemHeat.getCustomHeat(stack);
                 if (heatHandler != null)
@@ -381,23 +402,6 @@ public final class CommonEventHandler
             if (stack.getItem() == Items.EGG)
             {
                 event.addCapability(CapabilityEgg.KEY, new EggHandler());
-            }
-
-            // Metal
-            ICapabilityProvider metalCapability = CapabilityMetalItem.getCustomMetalItem(stack);
-            if (metalCapability != null)
-            {
-                event.addCapability(CapabilityMetalItem.KEY, metalCapability);
-                if (!isForgeable)
-                {
-                    // Add a forgeable capability for this item, if none is found
-                    IMetalItem cap = (IMetalItem) metalCapability;
-                    Metal metal = cap.getMetal(stack);
-                    if (metal != null)
-                    {
-                        event.addCapability(CapabilityForgeable.KEY, new ForgeableHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
-                    }
-                }
             }
         }
     }
