@@ -54,7 +54,7 @@ public class CTStoneKnapping
         if ("all".equalsIgnoreCase(rocks[0]))
         {
             ItemStack outputStack = (ItemStack) output[0].getInternal();
-            rockOutputMapper = rockIn -> outputStack;
+            rockOutputMapper = rockIn -> outputStack.copy();
         }
         else
         {
