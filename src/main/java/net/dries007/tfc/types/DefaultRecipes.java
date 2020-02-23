@@ -319,7 +319,7 @@ public final class DefaultRecipes
             HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_VENISON)), 480).setRegistryName("burned_venison"),
 
             // Egg
-            HeatRecipe.destroy(IIngredient.of(Items.EGG), 480).setRegistryName("burned_egg")
+            HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_EGG)), 480).setRegistryName("burned_egg")
 
         );
     }
