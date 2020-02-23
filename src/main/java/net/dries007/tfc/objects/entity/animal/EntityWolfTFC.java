@@ -347,10 +347,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
             if (this.getGender() == Gender.MALE && this.isReadyToMate())
             {
                 this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
-                if (findFemaleMate())
-                {
-                    this.setInLove(null);
-                }
+                EntityAnimalTFC.findFemaleMate(this);
             }
             if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
@@ -481,26 +478,5 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
         if (otherAnimal.getClass() != this.getClass()) return false;
         EntityWolfTFC other = (EntityWolfTFC) otherAnimal;
         return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
-    }
-
-    /**
-     * Find and charms a near female animal of this animal
-     * Used by males to try mating with females
-     *
-     * @return true if found and charmed a female
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected boolean findFemaleMate()
-    {
-        List<EntityWolfTFC> list = this.world.getEntitiesWithinAABB(EntityWolfTFC.class, this.getEntityBoundingBox().grow(8.0D));
-        for (EntityWolfTFC ent : list)
-        {
-            if (ent.getGender() == Gender.FEMALE && !ent.isInLove() && ent.isReadyToMate())
-            {
-                ent.setInLove(null);
-                return true;
-            }
-        }
-        return false;
     }
 }
