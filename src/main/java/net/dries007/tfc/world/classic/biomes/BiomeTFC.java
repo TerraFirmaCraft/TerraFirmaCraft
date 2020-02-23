@@ -8,6 +8,7 @@ package net.dries007.tfc.world.classic.biomes;
 import javax.annotation.Nonnull;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 
@@ -54,14 +55,14 @@ public class BiomeTFC extends Biome
     @Nonnull
     public BiomeDecorator createBiomeDecorator()
     {
-        // todo: Forge event wrap this
         return new BiomeDecoratorTFC(lilyPadPerChunk, waterPlantsPerChunk);
     }
 
     @Override
     public float getTemperature(BlockPos pos)
     {
-        return ClimateTFC.getActualTemp(pos);
+        // Vanilla spec: 0.15 = snow threshold, range = [-1, 1] for overworld temps.
+        return MathHelper.clamp(0.15f + ClimateTFC.getActualTemp(pos) / 35, -1, 1);
     }
 
     @Override
