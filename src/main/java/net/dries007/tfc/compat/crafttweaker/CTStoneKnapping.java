@@ -71,7 +71,8 @@ public class CTStoneKnapping
                 {
                     throw new IllegalArgumentException("Unknown rock '" + rock + "'.");
                 }
-                outputMap.put(rock, (ItemStack) output[i].getInternal());
+                ItemStack outputStack = (ItemStack) output[i].getInternal();
+                outputMap.put(rock, outputStack.copy());
             }
             rockOutputMapper = rockIn -> outputMap.getOrDefault(rockIn, ItemStack.EMPTY);
         }
