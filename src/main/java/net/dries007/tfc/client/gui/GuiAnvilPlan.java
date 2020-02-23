@@ -90,7 +90,6 @@ public class GuiAnvilPlan extends GuiContainerTE<TEAnvilTFC>
         if (button instanceof GuiButtonAnvilPlanIcon)
         {
             // This fires when you select a plan in the Plan GUI
-            TerraFirmaCraft.getLog().info("Pressed the plan button");
             ResourceLocation recipeName = ((GuiButtonAnvilPlanIcon) button).getRecipeName();
             TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id, new NBTBuilder().setString("recipe", recipeName.toString()).build()));
         }

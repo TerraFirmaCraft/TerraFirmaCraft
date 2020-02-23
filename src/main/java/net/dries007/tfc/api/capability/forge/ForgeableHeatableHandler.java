@@ -19,16 +19,14 @@ import net.dries007.tfc.util.forge.ForgeSteps;
 
 public class ForgeableHeatableHandler extends ItemHeatHandler implements IForgeableHeatable
 {
-    protected final ForgeSteps steps;
-    protected int work;
-    protected ResourceLocation recipeName;
+    private final ForgeableHandler internalForgeCap;
 
     public ForgeableHeatableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
     {
         this.heatCapacity = heatCapacity;
         this.meltTemp = meltTemp;
 
-        steps = new ForgeSteps();
+        internalForgeCap = new ForgeableHandler(nbt);
 
         deserializeNBT(nbt);
     }
@@ -36,54 +34,51 @@ public class ForgeableHeatableHandler extends ItemHeatHandler implements IForgea
     public ForgeableHeatableHandler()
     {
         // for custom implementations
-        steps = new ForgeSteps();
+        internalForgeCap = new ForgeableHandler();
     }
 
     @Override
     public int getWork()
     {
-        return work;
+        return internalForgeCap.getWork();
     }
 
     @Override
     public void setWork(int work)
     {
-        this.work = work;
+        internalForgeCap.setWork(work);
     }
 
     @Override
     @Nullable
     public ResourceLocation getRecipeName()
     {
-        return recipeName;
+        return internalForgeCap.getRecipeName();
     }
 
     @Override
     public void setRecipe(@Nullable ResourceLocation recipeName)
     {
-        this.recipeName = recipeName;
+        internalForgeCap.setRecipe(recipeName);
     }
 
     @Override
     @Nonnull
     public ForgeSteps getSteps()
     {
-        return steps;
+        return internalForgeCap.getSteps();
     }
 
     @Override
     public void addStep(ForgeStep step)
     {
-        steps.addStep(step);
-        work += step.getStepAmount();
+        internalForgeCap.addStep(step);
     }
 
     @Override
     public void reset()
     {
-        steps.reset();
-        recipeName = null;
-        work = 0;
+        internalForgeCap.reset();
     }
 
     @Override
@@ -105,14 +100,7 @@ public class ForgeableHeatableHandler extends ItemHeatHandler implements IForgea
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = super.serializeNBT();
-
-        nbt.setInteger("work", work);
-        nbt.setTag("steps", steps.serializeNBT());
-        if (recipeName != null)
-        {
-            nbt.setString("recipe", recipeName.toString());
-        }
-
+        nbt.setTag("forge", internalForgeCap.serializeNBT());
         return nbt;
     }
 
@@ -121,10 +109,8 @@ public class ForgeableHeatableHandler extends ItemHeatHandler implements IForgea
     {
         if (nbt != null)
         {
-            work = nbt.getInteger("work");
-            recipeName = nbt.hasKey("recipe") ? new ResourceLocation(nbt.getString("recipe")) : null; // stops defaulting to empty string
-            steps.deserializeNBT(nbt.getCompoundTag("steps"));
+            internalForgeCap.deserializeNBT(nbt.getCompoundTag("forge"));
+            super.deserializeNBT(nbt);
         }
-        super.deserializeNBT(nbt);
     }
 }

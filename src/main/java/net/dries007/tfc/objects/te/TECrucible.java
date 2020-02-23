@@ -268,6 +268,9 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
         alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
         temperature = nbt.getFloat("temp");
 
+        // Voids surplus and set the maximum amount if config was changed
+        alloy.setMaxAmount(ConfigTFC.GENERAL.tankCrucible);
+
         // Also set the cached alloyResult:
         alloyResult = alloy.getResult();
 
@@ -278,6 +281,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
         {
             cachedRecipes[i] = HeatRecipe.get(inventory.getStackInSlot(i));
         }
+
     }
 
     @Override
@@ -366,6 +370,9 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     {
         alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
 
+        // Voids surplus and set the maximum amount if config was changed
+        alloy.setMaxAmount(ConfigTFC.GENERAL.tankCrucible);
+
         // Also set the cached alloyResult:
         alloyResult = alloy.getResult();
     }
@@ -373,7 +380,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     /**
      * Used on SERVER to get the alloy contents
      *
-     * @return the alloy
+     * @return the alloyForgeableHeatableHandler
      */
     @Nonnull
     public Alloy getAlloy()
