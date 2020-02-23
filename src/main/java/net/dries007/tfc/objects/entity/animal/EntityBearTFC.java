@@ -108,7 +108,6 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }
-
     }
 
     @Override

@@ -446,6 +446,12 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
     }
 
     @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
+    }
+
+    @Override
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         if (otherAnimal instanceof IAnimalTFC && otherAnimal instanceof AbstractHorse)
@@ -479,7 +485,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
     }
 
     /**
-     * Find and charms a near female horse/donkey/mule
+     * Find and charms a near female horse/donkey
      * Used by males to try mating with females
      *
      * @return true if found and charmed a female
@@ -489,7 +495,8 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
         List<AbstractHorse> list = this.world.getEntitiesWithinAABB(AbstractHorse.class, this.getEntityBoundingBox().grow(8.0D));
         for (AbstractHorse ent : list)
         {
-            if (ent instanceof IAnimalTFC && ((IAnimalTFC) ent).getGender() == Gender.FEMALE && !ent.isInLove() && ((IAnimalTFC) ent).isReadyToMate())
+            if ((ent instanceof EntityHorseTFC || ent instanceof EntityDonkeyTFC) &&
+                ((IAnimalTFC) ent).getGender() == Gender.FEMALE && !ent.isInLove() && ((IAnimalTFC) ent).isReadyToMate())
             {
                 ent.setInLove(null);
                 return true;

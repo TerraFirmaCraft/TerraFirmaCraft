@@ -3824,6 +3824,9 @@ entity.wolftfc.name=Wolf
 entity.horsetfc.name=Horse
 entity.donkeytfc.name=Donkey
 entity.muletfc.name=Mule
+entity.parrottfc.name=Parrot
+entity.llamatfc.name=Llama
+entity.polarbeartfc.name=Polar Bear
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
@@ -3854,6 +3857,12 @@ tfc.animal.donkeytfc.male=Donkey♂
 tfc.animal.donkeytfc.female=Donkey♀
 tfc.animal.muletfc.male=Mule♂
 tfc.animal.muletfc.female=Mule♀
+tfc.animal.parrottfc.male=Parrot♂
+tfc.animal.parrottfc.female=Parrot♀
+tfc.animal.llamatfc.male=Llama♂
+tfc.animal.llamatfc.female=Llama♀
+tfc.animal.polarbeartfc.male=Polar Bear♂
+tfc.animal.poarbeartfc.female=Polar Bear♀
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic Item Breaks
