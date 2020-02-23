@@ -409,7 +409,6 @@ public class BlockSupport extends Block
         // if either of the two block beneath this block are not block supports, then this isn't three tall
         if (!(world.getBlockState(pos.down()).getBlock() instanceof BlockSupport)) return false;
         return world.getBlockState(pos.down().down()).getBlock() instanceof BlockSupport;
-        // passed all the checks
     }
 
     /**

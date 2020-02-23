@@ -349,6 +349,16 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         }
     }
 
+    public void setMaxAmount(int value)
+    {
+        int surplus = this.getAmount() - value;
+        if (surplus > 0)
+        {
+            this.removeAlloy(surplus, false);
+        }
+        this.maxAmount = value;
+    }
+
     /**
      * Resets the alloy
      */
