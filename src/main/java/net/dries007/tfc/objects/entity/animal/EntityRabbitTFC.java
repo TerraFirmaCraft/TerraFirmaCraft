@@ -40,10 +40,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityRabbitTFC extends EntityAnimalMammal
@@ -74,9 +77,17 @@ public class EntityRabbitTFC extends EntityAnimalMammal
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA
+                || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST ||
+                biomeType == BiomeHelper.BiomeType.DESERT))
+        {
+            return ConfigTFC.WORLD.animalSpawnWeight;
+        }
+        return 0;
     }
 
     @Override

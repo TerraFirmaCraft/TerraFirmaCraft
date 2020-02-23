@@ -40,6 +40,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -85,9 +86,14 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome))
+        {
+            // Spawns everywhere, there's so many species...
+            return ConfigTFC.WORLD.animalSpawnWeight;
+        }
+        return 0;
     }
 
     @Override

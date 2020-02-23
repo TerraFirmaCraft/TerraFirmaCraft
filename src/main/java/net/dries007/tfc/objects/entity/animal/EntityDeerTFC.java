@@ -25,12 +25,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityDeerTFC extends EntityAnimalMammal
@@ -51,9 +54,15 @@ public class EntityDeerTFC extends EntityAnimalMammal
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TUNDRA))
+        {
+            return ConfigTFC.WORLD.animalSpawnWeight;
+        }
+        return 0;
     }
 
     @Override

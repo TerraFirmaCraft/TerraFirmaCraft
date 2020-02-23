@@ -574,10 +574,12 @@ public final class CommonEventHandler
 
             float rainfall = ChunkDataTFC.getRainfall(world, pos);
             float temperature = ClimateTFC.getAvgTemp(world, pos);
+            float floraDensity = ChunkDataTFC.getFloraDensity(world, pos);
+            float floraDiversity = ChunkDataTFC.getFloraDiversity(world, pos);
             Biome biome = world.getBiome(pos);
 
             // We don't roll spawning again since vanilla is handling it
-            if (creature.getSpawnWeight(biome, temperature, rainfall) <= 0)
+            if (creature.getSpawnWeight(biome, temperature, rainfall, floraDensity, floraDiversity) <= 0)
             {
                 event.setResult(Event.Result.DENY);
             }

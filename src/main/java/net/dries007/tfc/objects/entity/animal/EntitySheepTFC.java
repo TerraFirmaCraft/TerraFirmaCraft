@@ -40,12 +40,15 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -74,9 +77,15 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+        {
+            return ConfigTFC.WORLD.animalSpawnWeight;
+        }
+        return 0;
     }
 
     @Override

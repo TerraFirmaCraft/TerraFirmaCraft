@@ -44,8 +44,10 @@ public final class WorldEntitySpawnerTFC
     {
         BlockPos chunkBlockPos = new BlockPos(centerX, 0, centerZ);
 
-        float temperature = ClimateTFC.getAvgTemp(worldIn, chunkBlockPos);
-        float rainfall = ChunkDataTFC.getRainfall(worldIn, chunkBlockPos);
+        float temperature = ClimateTFC.getAvgTemp(worldIn, chunkBlockPos); // Straight forward temperature regions
+        float rainfall = ChunkDataTFC.getRainfall(worldIn, chunkBlockPos); // For deserts
+        float floraDensity = ChunkDataTFC.getFloraDensity(worldIn, chunkBlockPos); //0.125- = no trees, 0.25- = Almost plains / some trees, 0.3-0.5 = normal forest, 0.66+ = too jungle
+        float floraDiversity = ChunkDataTFC.getFloraDiversity(worldIn, chunkBlockPos); // not much effect on animals
 
         // Spawns only one group
         ForgeRegistries.ENTITIES.getValuesCollection().stream()
@@ -55,7 +57,7 @@ public final class WorldEntitySpawnerTFC
                     Entity ent = x.newInstance(worldIn);
                     if (ent instanceof ICreatureTFC)
                     {
-                        int weight = ((ICreatureTFC) ent).getSpawnWeight(biomeIn, temperature, rainfall);
+                        int weight = ((ICreatureTFC) ent).getSpawnWeight(biomeIn, temperature, rainfall, floraDensity, floraDiversity);
                         return weight > 0 && randomIn.nextInt(weight) == 0;
                     }
                 }

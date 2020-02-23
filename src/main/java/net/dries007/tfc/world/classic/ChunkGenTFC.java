@@ -217,7 +217,7 @@ public class ChunkGenTFC implements IChunkGenerator
 
         rainfall = MathHelper.clamp(250f + 250f * rainfallSpread * (float) noiseGen7.getValue(chunkX * 0.005, chunkZ * 0.005), 0, 500);
         float floraDiversity = MathHelper.clamp(0.5f + 0.5f * floraDiversitySpread * (float) noiseGen9.getValue(chunkX * 0.005, chunkZ * 0.005), 0, 1);
-        float floraDensity = MathHelper.clamp((0.3f + 0.4f * rainfall / 500f) + 0.3f * floraDensitySpread * (float) noiseGen8.getValue(chunkX * 0.005, chunkZ * 0.005), 0, 1);
+        float floraDensity = MathHelper.clamp((0.3f + 0.2f * rainfall / 500f) + 0.4f * floraDensitySpread * (float) noiseGen8.getValue(chunkX * 0.05, chunkZ * 0.05), 0, 1);
 
         rockLayer1 = rocksGenLayer1.getInts(chunkX * 16, chunkZ * 16, 16, 16).clone();
         rockLayer2 = rocksGenLayer2.getInts(chunkX * 16, chunkZ * 16, 16, 16).clone();
