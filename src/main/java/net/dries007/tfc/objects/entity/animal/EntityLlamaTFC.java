@@ -429,6 +429,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC
         super.entityInit();
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
+        getDataManager().register(FAMILIARITY, 0f);
     }
 
     @Override

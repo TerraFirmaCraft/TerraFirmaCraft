@@ -74,6 +74,13 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC
     }
 
     @Override
+    public boolean setEntityOnShoulder(EntityPlayer p_191994_1_)
+    {
+        // Because mojang won't let you render anything at player's shoulder, like, never!!! (or at least, not in 1.12)
+        return false;
+    }
+
+    @Override
     public void onLivingUpdate()
     {
         super.onLivingUpdate();

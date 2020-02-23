@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -129,9 +128,19 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     }
 
     @Override
-    public boolean attackEntityAsMob(@Nonnull Entity entityIn)
+    public boolean attackEntityAsMob(Entity entityIn)
     {
-        return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (getAge() == Age.CHILD ? 2 : 4));
+        double attackDamage = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        if (this.isChild())
+        {
+            attackDamage /= 2;
+        }
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) attackDamage);
+        if (flag)
+        {
+            this.applyEnchantments(this, entityIn);
+        }
+        return flag;
     }
 
     @Override
@@ -152,7 +161,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
     @Override
