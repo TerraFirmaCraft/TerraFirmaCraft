@@ -3827,6 +3827,10 @@ entity.muletfc.name=Mule
 entity.parrottfc.name=Parrot
 entity.llamatfc.name=Llama
 entity.polarbeartfc.name=Polar Bear
+entity.alpacatfc.name=Alpaca
+entity.ducktfc.name=Duck
+entity.goattfc.name=Goat
+entity.panthertfc.name=Black Panther
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
@@ -3863,6 +3867,12 @@ tfc.animal.llamatfc.male=Llama♂
 tfc.animal.llamatfc.female=Llama♀
 tfc.animal.polarbeartfc.male=Polar Bear♂
 tfc.animal.poarbeartfc.female=Polar Bear♀
+tfc.animal.alpacatfc.male=Alpaca♂
+tfc.animal.alpacatfc.female=Alpaca♀
+tfc.animal.ducktfc.male=Drake
+tfc.animal.ducktfc.female=Duck
+tfc.animal.goattfc.male=Goat♂
+tfc.animal.goattfc.female=Goat♀
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic Item Breaks

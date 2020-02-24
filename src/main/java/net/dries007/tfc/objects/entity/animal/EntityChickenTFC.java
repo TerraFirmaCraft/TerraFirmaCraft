@@ -61,7 +61,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     public float oFlapSpeed;
     public float oFlap;
     public float wingRotDelta = 1.0F;
-    private long lastLaying; //The last time(in ticks) this chicken has laid eggs
+    protected long lastLaying; //The last time(in ticks) this chicken has laid eggs
 
     public EntityChickenTFC(World worldIn)
     {
@@ -109,7 +109,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        if (this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
+        if (this.getClass() == EntityChickenTFC.class && this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
         {
             this.world.playSound(null, this.getPosition(), TFCSounds.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
         }

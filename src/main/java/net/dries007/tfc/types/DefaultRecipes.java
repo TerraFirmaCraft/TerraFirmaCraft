@@ -292,6 +292,9 @@ public final class DefaultRecipes
             new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.VENISON)), new ItemStack(ItemFoodTFC.get(Food.COOKED_VENISON)), 200, 480).setRegistryName("cooked_venison"),
             new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.RABBIT)), new ItemStack(ItemFoodTFC.get(Food.COOKED_RABBIT)), 200, 480).setRegistryName("cooked_rabbit"),
             new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.WOLF)), new ItemStack(ItemFoodTFC.get(Food.COOKED_WOLF)), 200, 480).setRegistryName("cooked_wolf"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.CHEVON)), new ItemStack(ItemFoodTFC.get(Food.COOKED_CHEVON)), 200, 480).setRegistryName("cooked_chevon"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.DUCK)), new ItemStack(ItemFoodTFC.get(Food.COOKED_DUCK)), 200, 480).setRegistryName("cooked_duck"),
+            new HeatRecipeSimple(IIngredient.of(ItemFoodTFC.get(Food.VIANDE)), new ItemStack(ItemFoodTFC.get(Food.COOKED_VIANDE)), 200, 480).setRegistryName("cooked_viande"),
 
             // Egg
             new HeatRecipeSimple(IIngredient.of(Items.EGG), new ItemStack(ItemFoodTFC.get(Food.COOKED_EGG)), 200, 480).setRegistryName("cooked_egg"),
@@ -317,6 +320,9 @@ public final class DefaultRecipes
             HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_RABBIT)), 480).setRegistryName("burned_rabbit"),
             HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_WOLF)), 480).setRegistryName("burned_wolf"),
             HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_VENISON)), 480).setRegistryName("burned_venison"),
+            HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_CHEVON)), 480).setRegistryName("burned_chevon"),
+            HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_DUCK)), 480).setRegistryName("burned_duck"),
+            HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_VIANDE)), 480).setRegistryName("burned_viande"),
 
             // Egg
             HeatRecipe.destroy(IIngredient.of(ItemFoodTFC.get(Food.COOKED_EGG)), 480).setRegistryName("burned_egg")

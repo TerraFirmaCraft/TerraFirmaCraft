@@ -92,6 +92,111 @@
       "tfc:metalimpact4"
     ]
   },
+  "animal.alpaca.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.alpaca.say",
+    "sounds": [
+      "tfc:alpaca1",
+      "tfc:alpaca2",
+      "tfc:alpaca3"
+    ]
+  },
+  "animal.alpaca.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.alpaca.cry",
+    "sounds": [
+      "tfc:alpacacry1",
+      "tfc:alpacacry2"
+    ]
+  },
+  "animal.alpaca.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.alpaca.death",
+    "sounds": [
+      "tfc:alpacadeath"
+    ]
+  },
+  "animal.alpaca.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.alpaca.hurt",
+    "sounds": [
+      "tfc:alpacahurt1",
+      "tfc:alpacahurt2"
+    ]
+  },
+  "animal.alpaca.step": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.alpaca.step",
+    "sounds": [
+      "tfc:alpacastep1",
+      "tfc:alpacastep2",
+      "tfc:alpacastep3",
+      "tfc:alpacastep4"
+    ]
+  },
+  "animal.duck.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.duck.say",
+    "sounds": [
+      "tfc:duck1",
+      "tfc:duck2",
+      "tfc:duck3"
+    ]
+  },
+  "animal.duck.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.duck.cry",
+    "sounds": [
+      "tfc:duckcry1",
+      "tfc:duckcry2"
+    ]
+  },
+  "animal.duck.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.duck.death",
+    "sounds": [
+      "tfc:duckdeath"
+    ]
+  },
+  "animal.duck.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.duck.hurt",
+    "sounds": [
+      "tfc:duckhurt1"
+    ]
+  },
+  "animal.goat.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.goat.say",
+    "sounds": [
+      "tfc:goat1",
+      "tfc:goat2",
+      "tfc:goat3",
+      "tfc:goat4"
+    ]
+  },
+  "animal.goat.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.goat.cry",
+    "sounds": [
+      "tfc:goatcry1",
+      "tfc:goatcry2"
+    ]
+  },
+  "animal.goat.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.goat.death",
+    "sounds": [
+      "tfc:goatdeath"
+    ]
+  },
+  "animal.goat.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.goat.hurt",
+    "sounds": [
+      "tfc:goathurt1"
+    ]
+  },
   "animal.deer.say": {
     "category": "ambient",
     "subtitle": "tfc.animal.deer.say",
