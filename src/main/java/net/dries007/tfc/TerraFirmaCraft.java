@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
+import net.dries007.tfc.api.capability.damage.DamageResistanceRegistry;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodHandler;
@@ -132,6 +133,7 @@ public final class TerraFirmaCraft
 
         EntitiesTFC.preInit();
         VeinRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
+        DamageResistanceRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
 
         CapabilityChunkData.preInit();
         CapabilityItemSize.preInit();
@@ -195,6 +197,7 @@ public final class TerraFirmaCraft
         }
         FuelManager.postInit();
         VeinRegistry.INSTANCE.postInit();
+        DamageResistanceRegistry.INSTANCE.postInit();
     }
 
     @Mod.EventHandler
