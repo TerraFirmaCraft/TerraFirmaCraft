@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -66,7 +65,7 @@ public enum VeinRegistry
     {
         // Init base config dir
         TerraFirmaCraft.getLog().info("Loading or creating TFC config directory");
-        tfcConfigDir = new File(dir, MOD_ID);
+        tfcConfigDir = new File(dir, MOD_ID); // todo in 1.15+ move this to a subfolder like damage resistance (i left untouched so old config still work)
         if (!tfcConfigDir.exists() && !tfcConfigDir.mkdir())
         {
             throw new Error("Problem creating TFC extra config directory.");
@@ -107,31 +106,37 @@ public enum VeinRegistry
         weightedVeinTypes.clear();
         veinTypeRegistry.clear();
 
-        Path[] recursivePathList;
+        // Changed to only read files in the same folder, not subdirectories
+        File[] allFiles;
         try
         {
-            recursivePathList = Files.walk(tfcConfigDir.toPath()).filter(Files::isRegularFile).toArray(Path[]::new);
+            allFiles = tfcConfigDir.listFiles();
+            Objects.requireNonNull(allFiles);
         }
-        catch (IOException e)
+        catch (NullPointerException e)
         {
-            TerraFirmaCraft.getLog().error("Unable to read files in the config directory! TFC will not generate any ore veins!");
+            TerraFirmaCraft.getLog().error("Unable to read files in the damage resistance directory! TFC will not set entities resistance data!");
             TerraFirmaCraft.getLog().error("Error: ", e);
             return;
         }
 
-        for (Path path : recursivePathList)
+        for (File veinFile : allFiles)
         {
+            if (veinFile.isDirectory())
+            {
+                continue; // Skip
+            }
             try
             {
                 // Read each file, then json parse each file individually into a map, so each vein can be parsed by GSON independently
-                String fileContents = new String(Files.readAllBytes(path), Charset.defaultCharset());
+                String fileContents = new String(Files.readAllBytes(veinFile.toPath()), Charset.defaultCharset());
                 Set<Map.Entry<String, JsonElement>> allVeinsJson = new JsonParser().parse(fileContents).getAsJsonObject().entrySet();
                 for (Map.Entry<String, JsonElement> entry : allVeinsJson)
                 {
                     try
                     {
                         String properVeinName = entry.getKey();
-                        String veinPath = tfcConfigDir.toPath().relativize(path.getParent()).toString();
+                        String veinPath = tfcConfigDir.toPath().relativize(veinFile.toPath().getParent()).toString();
                         if (!veinPath.isEmpty())
                         {
                             properVeinName = veinPath + "/" + properVeinName;
@@ -152,7 +157,7 @@ public enum VeinRegistry
             catch (IOException e)
             {
                 // Don't crash the game if one of the files error-ed, just show it in log
-                TerraFirmaCraft.getLog().error("There was an error reading an ore generation file at: " + path);
+                TerraFirmaCraft.getLog().error("There was an error reading an ore generation file at: " + veinFile.toPath());
                 TerraFirmaCraft.getLog().error("Error: ", e);
             }
         }
