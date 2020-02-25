@@ -3758,6 +3758,9 @@ item.tfc.food.pheasant.name=Raw Pheasant
 item.tfc.food.venison.name=Raw Venison
 item.tfc.food.rabbit.name=Raw Rabbit Meat
 item.tfc.food.wolf.name=Raw Wolf Meat
+item.tfc.food.viande.name=Raw Viande
+item.tfc.food.duck.name=Raw Duck
+item.tfc.food.chevon.name=Raw Chevon
 item.tfc.food.cooked_beef.name=Cooked Beef
 item.tfc.food.cooked_pork.name=Cooked Pork
 item.tfc.food.cooked_chicken.name=Cooked Chicken
@@ -3770,6 +3773,9 @@ item.tfc.food.cooked_pheasant.name=Cooked Pheasant
 item.tfc.food.cooked_venison.name=Cooked Venison
 item.tfc.food.cooked_rabbit.name=Cooked Rabbit Meat
 item.tfc.food.cooked_wolf.name=Cooked Wolf
+item.tfc.food.cooked_viande.name=Cooked Viande
+item.tfc.food.cooked_duck.name=Cooked Duck
+item.tfc.food.cooked_chevon.name=Cooked Chevon
 
 item.tfc.crop.seeds.barley.name=Barley Seeds
 item.tfc.crop.seeds.beet.name=Beet Seeds
@@ -3831,6 +3837,7 @@ entity.alpacatfc.name=Alpaca
 entity.ducktfc.name=Duck
 entity.goattfc.name=Goat
 entity.panthertfc.name=Black Panther
+entity.ocelottfc.name=Ocelot
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
@@ -3873,6 +3880,10 @@ tfc.animal.ducktfc.male=Drake
 tfc.animal.ducktfc.female=Duck
 tfc.animal.goattfc.male=Goat♂
 tfc.animal.goattfc.female=Goat♀
+tfc.animal.ocelottfc.male=Ocelot♂
+tfc.animal.ocelottfc.female=Ocelot♀
+tfc.animal.cattfc.male=Cat♂
+tfc.animal.cattfc.female=Cat♀
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic Item Breaks
@@ -3898,5 +3909,18 @@ tfc.animal.pheasant.say=Phesant Clucks
 tfc.animal.pheasant.chick.say=Phesant Chick Clucks
 tfc.animal.pheasant.hurt=Phesant Hurt
 tfc.animal.pheasant.death=Pheasant Dies
+tfc.animal.alpaca.say=Alpaca bleats
+tfc.animal.alpaca.cry=Alpaca bleats
+tfc.animal.alpaca.hurt=Alpaca Hurt
+tfc.animal.alpaca.death=Alpaca Dies
+tfc.animal.alpaca.step=Footsteps
+tfc.animal.duck.say=Duck Clucks
+tfc.animal.duck.cry=Duck Clucks
+tfc.animal.duck.hurt=Duck Hurt
+tfc.animal.duck.death=Duck Dies
+tfc.animal.goat.say=Goat baahs
+tfc.animal.goat.cry=Goat baahs
+tfc.animal.goat.hurt=Goat Hurt
+tfc.animal.goat.death=Goat Dies
 tfc.animal.cricket=Crickets
 tfc.animal.frog=Frogs

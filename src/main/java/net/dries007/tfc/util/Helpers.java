@@ -19,6 +19,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityPolarBear;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -63,6 +64,10 @@ public final class Helpers
         VANILLA_REPLACEMENTS.put(EntityChicken.class, EntityChickenTFC.class);
         VANILLA_REPLACEMENTS.put(EntityRabbit.class, EntityRabbitTFC.class);
         VANILLA_REPLACEMENTS.put(EntityWolf.class, EntityWolfTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityOcelot.class, EntityOcelotTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityPolarBear.class, EntityPolarBearTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityParrot.class, EntityParrotTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityLlama.class, EntityLlamaTFC.class);
     }
 
     public static boolean isJEIEnabled()
