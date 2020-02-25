@@ -174,7 +174,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC
     @Override
     public TextComponentTranslation getAnimalName()
     {
-        String entityString = EntityList.getEntityString(this);
+        String entityString = isTamed() ? "cattfc" : EntityList.getEntityString(this);
         return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
     }
 
