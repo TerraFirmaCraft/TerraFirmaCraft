@@ -64,22 +64,6 @@ public class ShapelessDamageFoodRecipe extends ShapelessDamageRecipe
     @Nonnull
     public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inventoryCrafting)
     {
-        final NonNullList<ItemStack> remainingItems = NonNullList.withSize(inventoryCrafting.getSizeInventory(), ItemStack.EMPTY);
-
-        for (int i = 0; i < remainingItems.size(); ++i)
-        {
-            final ItemStack itemstack = inventoryCrafting.getStackInSlot(i);
-
-            // If the stack isn't empty and the stack is damageable we can damage it, otherwise delegate to containerItem.
-            if (!itemstack.isEmpty() && itemstack.getItem().isDamageable())
-            {
-                remainingItems.set(i, damageStack(itemstack)); //from super, damages by 1
-            }
-            else
-            {
-                remainingItems.set(i, ForgeHooks.getContainerItem(itemstack));
-            }
-        }
         // Give straw to player as well.
         EntityPlayer player = ForgeHooks.getCraftingPlayer();
         if (!player.world.isRemote)
@@ -87,7 +71,7 @@ public class ShapelessDamageFoodRecipe extends ShapelessDamageRecipe
             ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(ItemsTFC.STRAW)); //gives one at a time, like grain
         }
 
-        return remainingItems;
+        return super.getRemainingItems(inventoryCrafting);
     }
 
     public static class Factory implements IRecipeFactory
