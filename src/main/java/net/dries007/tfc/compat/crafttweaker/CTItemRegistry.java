@@ -260,7 +260,7 @@ public class CTItemRegistry
         //noinspection unchecked
         IIngredient<ItemStack> ing = CTHelper.getInternalIngredient(itemInput);
         Fuel fuel = new Fuel(ing, burnTicks, temperature, forgeFuel, bloomeryFuel);
-        if (FuelManager.canRegister(fuel))
+        if (!FuelManager.canRegister(fuel))
         {
             throw new IllegalStateException("Fuel already registered!");
         }
