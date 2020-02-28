@@ -19,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
@@ -92,6 +93,7 @@ import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.MonsterEquipment;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
 import net.dries007.tfc.util.climate.ClimateTFC;
@@ -606,16 +608,27 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
     {
+        Entity entity = event.getEntity();
         // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
-        if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(event.getEntity()))
+        if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
         {
-            Entity TFCReplacement = Helpers.getTFCReplacement(event.getEntity());
+            Entity TFCReplacement = Helpers.getTFCReplacement(entity);
             if (TFCReplacement != null)
             {
-                TFCReplacement.setPositionAndRotation(event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, event.getEntity().rotationYaw, event.getEntity().rotationPitch);
+                TFCReplacement.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
                 event.getWorld().spawnEntity(TFCReplacement); // Fires another spawning event for the TFC replacement
             }
             event.setCanceled(true); // Cancel the vanilla spawn
+        }
+        // Set equipment to some mobs
+        MonsterEquipment equipment = MonsterEquipment.get(entity);
+        if (equipment != null)
+        {
+            entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, equipment.getWeapon(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, equipment.getHelmet(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, equipment.getChestplate(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, equipment.getLeggings(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.FEET, equipment.getBoots(Constants.RNG));
         }
     }
 
