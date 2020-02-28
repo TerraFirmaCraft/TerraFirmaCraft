@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.gson.JsonObject;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -16,12 +17,16 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
+import net.dries007.tfc.objects.items.ItemsTFC;
 
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
@@ -54,6 +59,36 @@ public class ShapelessDamageFoodRecipe extends ShapelessDamageRecipe
             }
         }
         return foodStack != null ? CapabilityFood.updateFoodFromPrevious(foodStack, out) : ItemStack.EMPTY;
+    }
+
+    @Override
+    @Nonnull
+    public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inventoryCrafting)
+    {
+        final NonNullList<ItemStack> remainingItems = NonNullList.withSize(inventoryCrafting.getSizeInventory(), ItemStack.EMPTY);
+
+        for (int i = 0; i < remainingItems.size(); ++i)
+        {
+            final ItemStack itemstack = inventoryCrafting.getStackInSlot(i);
+
+            // If the stack isn't empty and the stack is damageable we can damage it, otherwise delegate to containerItem.
+            if (!itemstack.isEmpty() && itemstack.getItem().isDamageable())
+            {
+                remainingItems.set(i, damageStack(itemstack)); //from super, damages by 1
+            }
+            else
+            {
+                remainingItems.set(i, ForgeHooks.getContainerItem(itemstack));
+            }
+        }
+        // Give straw to player as well.
+        EntityPlayer player = ForgeHooks.getCraftingPlayer();
+        if (!player.world.isRemote)
+        {
+            ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(ItemsTFC.STRAW)); //gives one at a time, like grain
+        }
+
+        return remainingItems;
     }
 
     public static class Factory implements IRecipeFactory
