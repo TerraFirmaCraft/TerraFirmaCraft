@@ -98,6 +98,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SmithingSkill;
+import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -567,13 +568,13 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onLivingSpawnEvent(LivingSpawnEvent.CheckSpawn event)
     {
+        World world = event.getWorld();
+        BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
+
         // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
         if (event.getEntity() instanceof ICreatureTFC)
         {
             ICreatureTFC creature = (ICreatureTFC) event.getEntity();
-            World world = event.getWorld();
-            BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
-
             float rainfall = ChunkDataTFC.getRainfall(world, pos);
             float temperature = ClimateTFC.getAvgTemp(world, pos);
             float floraDensity = ChunkDataTFC.getFloraDensity(world, pos);
@@ -588,17 +589,16 @@ public final class CommonEventHandler
         }
 
         // Stop mob spawning in thatch - the list of non-spawnable light-blocking, non-collidable blocks is hardcoded in WorldEntitySpawner#canEntitySpawnBody
-        BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
         if (event.getWorld().getBlockState(pos).getBlock() == BlocksTFC.THATCH || event.getWorld().getBlockState(pos.up()).getBlock() == BlocksTFC.THATCH)
         {
             event.setResult(Event.Result.DENY);
         }
 
-        // Stop mob spawning in spawn protected chunks
-        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
+        // Stop mob spawning in surface (only mobs, not EntityAnimals that also implements IMob)
+        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false) && !event.getEntity().isCreatureType(EnumCreatureType.CREATURE, false))
         {
-            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
-            if (ConfigTFC.GENERAL.spawnProtectionEnable && (ConfigTFC.GENERAL.spawnProtectionMinY <= event.getY()) && data.isSpawnProtected())
+            int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2 / 2) + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
+            if (pos.getY() >= maximumY || world.canSeeSky(pos))
             {
                 event.setResult(Event.Result.DENY);
             }

@@ -11,6 +11,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -40,6 +45,8 @@ public class ItemMetalSword extends ItemSword implements IMetalItem, IItemSize
 {
     private static final Map<Metal, ItemMetalSword> TABLE = new HashMap<>();
 
+    private float attackDamage;
+
     @Nullable
     public static ItemMetalSword get(Metal metal)
     {
@@ -67,6 +74,9 @@ public class ItemMetalSword extends ItemSword implements IMetalItem, IItemSize
 
         setMaxStackSize(1);
         setMaxDamage(material.getMaxUses());
+
+        // Overriding vanilla because it always add 3.0F damage regardless of material.
+        attackDamage = material.getAttackDamage();
 
         OreDictionaryHelper.register(this, Metal.ItemType.SWORD);
         OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
@@ -131,5 +141,17 @@ public class ItemMetalSword extends ItemSword implements IMetalItem, IItemSize
     public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.MEDIUM;
+    }
+
+    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
+    {
+        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
+        if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
+        {
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316D, 0));
+        }
+
+        return multimap;
     }
 }

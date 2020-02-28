@@ -12,7 +12,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -20,6 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -41,6 +47,8 @@ public class ItemRockHoe extends ItemHoe implements IItemSize, IRockObject
 
     public final RockCategory category;
 
+    private float attackDamage;
+
     public ItemRockHoe(RockCategory category)
     {
         super(category.getToolMaterial());
@@ -50,6 +58,8 @@ public class ItemRockHoe extends ItemHoe implements IItemSize, IRockObject
         OreDictionaryHelper.register(this, "hoe");
         OreDictionaryHelper.register(this, "hoe", "stone");
         OreDictionaryHelper.register(this, "hoe", "stone", category);
+        attackDamage = category.getToolMaterial().getAttackDamage() * 0.875f;
+        OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
     }
 
     @Override
@@ -91,5 +101,17 @@ public class ItemRockHoe extends ItemHoe implements IItemSize, IRockObject
     public RockCategory getRockCategory(ItemStack stack)
     {
         return category;
+    }
+
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
+    {
+        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
+        if (slot == EntityEquipmentSlot.MAINHAND)
+        {
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", attackDamage, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -3, 0));
+        }
+        return multimap;
     }
 }
