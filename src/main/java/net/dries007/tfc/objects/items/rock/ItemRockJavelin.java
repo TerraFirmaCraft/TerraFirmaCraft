@@ -58,7 +58,7 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
 
     public ItemRockJavelin(RockCategory category)
     {
-        super(1f * category.getToolMaterial().getAttackDamage(), -1, category.getToolMaterial(), ImmutableSet.of());
+        super(0.7f * category.getToolMaterial().getAttackDamage(), -1.8f, category.getToolMaterial(), ImmutableSet.of());
         this.category = category;
         if (MAP.put(category, this) != null)
         {
