@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class CalendarWorldData extends WorldSavedData
@@ -39,39 +39,48 @@ public class CalendarWorldData extends WorldSavedData
         throw new IllegalStateException("Unable to access calendar data - everything is wrong now");
     }
 
-    private CalendarTFC instance;
+    private final CalendarTFC calendar;
 
     @SuppressWarnings("WeakerAccess")
     public CalendarWorldData()
     {
         super(NAME);
-        instance = new CalendarTFC();
+        this.calendar = new CalendarTFC();
     }
 
     @SuppressWarnings("unused")
     public CalendarWorldData(String name)
     {
         super(name);
-        instance = new CalendarTFC();
+        this.calendar = new CalendarTFC();
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
-        instance.deserializeNBT(nbt.getCompoundTag("calendar"));
+        calendar.deserializeNBT(nbt.getCompoundTag("calendar"));
     }
 
     @Override
     @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setTag("calendar", instance.serializeNBT());
+        nbt.setTag("calendar", CalendarTFC.INSTANCE.serializeNBT());
         return nbt;
+    }
+
+    /**
+     * Since this updates every tick, and doesn't store a local copy always assume it needs saving to disk
+     */
+    @Override
+    public boolean isDirty()
+    {
+        return true;
     }
 
     @Nonnull
     public CalendarTFC getCalendar()
     {
-        return instance;
+        return calendar;
     }
 }

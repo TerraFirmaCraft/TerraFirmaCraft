@@ -27,9 +27,8 @@ import static net.dries007.tfc.world.classic.ChunkGenTFC.LAVA;
  */
 public class MapGenCavesTFC extends MapGenBase
 {
-    private int[] rockLayer1;
     private final DataLayer[] stabilityLayer;
-
+    private int[] rockLayer1;
     private float rainfall = 0f;
 
     public MapGenCavesTFC(DataLayer[] stabilityLayer)

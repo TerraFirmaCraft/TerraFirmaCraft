@@ -5,19 +5,19 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockCarrot;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,8 +26,10 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.util.*;
-import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -38,29 +40,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
+public class EntityRabbitTFC extends EntityAnimalMammal
 {
     private static final int DAYS_TO_ADULTHOOD = 240;
     private static final int DAYS_TO_FULL_GESTATION = 30;
 
     private static final DataParameter<Integer> RABBIT_TYPE = EntityDataManager.createKey(EntityRabbitTFC.class, DataSerializers.VARINT);
-
-    public static void registerFixesRabbit(DataFixer fixer)
-    {
-        EntityLiving.registerFixesMob(fixer, EntityRabbitTFC.class);
-    }
-
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
 
     private int jumpTicks;
     private int jumpDuration;
@@ -70,22 +64,48 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
     @SuppressWarnings("unused")
     public EntityRabbitTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()), getRandomGrowth());
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityRabbitTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.4F, 0.5F);
-        this.jumpHelper = new EntityRabbitTFC.RabbitJumpHelper(this);
+        this.jumpHelper = new RabbitJumpHelper(this);
         this.moveHelper = new EntityRabbitTFC.RabbitMoveHelper(this);
         this.setMovementSpeed(0.0D);
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return temperature > -10 && rainfall > 150;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA
+                || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST ||
+                biomeType == BiomeHelper.BiomeType.DESERT))
+        {
+            return ConfigTFC.WORLD.animalSpawnWeight;
+        }
+        return 0;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 4;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 7;
     }
 
     @Override
@@ -108,7 +128,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 
             EntityRabbitTFC.RabbitJumpHelper entityrabbit$rabbitjumphelper = (EntityRabbitTFC.RabbitJumpHelper) this.jumpHelper;
 
-            if (!entityrabbit$rabbitjumphelper.getIsJumping())
+            if (!entityrabbit$rabbitjumphelper.isJumping())
             {
                 if (this.moveHelper.isUpdating() && this.currentMoveTypeDuration == 0)
                 {
@@ -150,12 +170,12 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 
     public int getRabbitType()
     {
-        return this.dataManager.get(RABBIT_TYPE).intValue();
+        return this.dataManager.get(RABBIT_TYPE);
     }
 
     public void setRabbitType(int rabbitTypeId)
     {
-        this.dataManager.set(RABBIT_TYPE, Integer.valueOf(rabbitTypeId));
+        this.dataManager.set(RABBIT_TYPE, rabbitTypeId);
     }
 
     @SideOnly(Side.CLIENT)
@@ -193,13 +213,13 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         }
     }
 
-    public void writeEntityToNBT(NBTTagCompound compound)
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("RabbitType", this.getRabbitType());
     }
 
-    public void readEntityFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setRabbitType(compound.getInteger("RabbitType"));
@@ -211,7 +231,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         int numberOfChilds = 5 + rand.nextInt(5); // 5-10
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityRabbitTFC baby = new EntityRabbitTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityRabbitTFC baby = new EntityRabbitTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.world.spawnEntity(baby);
         }
@@ -223,13 +243,21 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         return DAYS_TO_FULL_GESTATION;
     }
 
+    @Nonnull
+    @Override
     public SoundCategory getSoundCategory()
     {
         return SoundCategory.NEUTRAL;
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack)
+    public int getDaysToAdulthood()
+    {
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack)
     {
         return OreDictionaryHelper.doesStackMatchOre(stack, "carrot");
     }
@@ -238,26 +266,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(RABBIT_TYPE, Integer.valueOf(0));
-    }
-
-    @Override
-    public float getPercentToAdulthood()
-    {
-        if (this.getAge() != Age.CHILD)
-            return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f)
-            value = 1f;
-        if (value < 0f)
-            value = 0;
-        return (float) value;
-    }
-
-    @Override
-    public Age getAge()
-    {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        this.dataManager.register(RABBIT_TYPE, 0);
     }
 
     @Override
@@ -272,8 +281,8 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
             Item item = is.getItem();
             this.tasks.addTask(3, new EntityAITempt(this, 1.4D, item, false));
         }
-        this.tasks.addTask(4, new EntityAIAvoidEntity(this, EntityPlayer.class, 8.0F, 2.0D, 2.0D));
-        this.tasks.addTask(4, new EntityAIAvoidEntity(this, EntityMob.class, 4.0F, 2.0D, 2.0D));
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 8.0F, 2.0D, 2.0D));
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityMob.class, 4.0F, 2.0D, 2.0D));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
     }
@@ -390,17 +399,6 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         }
     }
 
-    protected void createEatingParticles()
-    {
-        BlockCarrot blockcarrot = (BlockCarrot) Blocks.CARROTS;
-        IBlockState iblockstate = blockcarrot.withAge(blockcarrot.getMaxAge());
-        this.world.spawnParticle(EnumParticleTypes.BLOCK_DUST,
-            this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
-            this.posY + 0.5D + (double) (this.rand.nextFloat() * this.height),
-            this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, 0.0D, 0.0D,
-            0.0D, Block.getStateId(iblockstate));
-    }
-
     private void calculateRotationYaw(double x, double z)
     {
         this.rotationYaw = (float) (MathHelper.atan2(z - this.posZ, x - this.posX) * (180D / Math.PI)) - 90.0F;
@@ -476,7 +474,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
 
         public void onUpdateMoveHelper()
         {
-            if (this.rabbit.onGround && !this.rabbit.isJumping && !((EntityRabbitTFC.RabbitJumpHelper) this.rabbit.jumpHelper).getIsJumping())
+            if (this.rabbit.onGround && !this.rabbit.isJumping && !((EntityRabbitTFC.RabbitJumpHelper) this.rabbit.jumpHelper).isJumping())
             {
                 this.rabbit.setMovementSpeed(0.0D);
             }
@@ -516,7 +514,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
         }
     }
 
-    public class RabbitJumpHelper extends EntityJumpHelper
+    public static class RabbitJumpHelper extends EntityJumpHelper
     {
         private final EntityRabbitTFC rabbit;
         private boolean canJump;
@@ -527,7 +525,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IAnimalTFC
             this.rabbit = rabbit;
         }
 
-        public boolean getIsJumping()
+        public boolean isJumping()
         {
             return this.isJumping;
         }

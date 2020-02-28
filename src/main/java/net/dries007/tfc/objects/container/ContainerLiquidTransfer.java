@@ -52,28 +52,14 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
                     if (fStack != null && outFluidHandler.fill(fStack, false) == 1)
                     {
                         outFluidHandler.fill(capFluidHandler.drain(1, true), true);
-                    }
 
-                    // Copy the input temperature onto the output temperature
-                    ((IMoldHandler) outFluidHandler).setTemperature(((IMoldHandler) capFluidHandler).getTemperature());
+                        // Copy the input temperature onto the output temperature
+                        ((IMoldHandler) outFluidHandler).setTemperature(((IMoldHandler) capFluidHandler).getTemperature());
+                    }
                 }
             }
         }
         super.detectAndSendChanges();
-    }
-
-    @Override
-    public void onContainerClosed(EntityPlayer player)
-    {
-        if (!player.getEntityWorld().isRemote)
-        {
-            ItemStack stack = inventory.getStackInSlot(0);
-            if (!stack.isEmpty())
-            {
-                Helpers.spawnItemStack(player.getEntityWorld(), player.getPosition(), stack);
-            }
-        }
-        super.onContainerClosed(player);
     }
 
     @Override
@@ -88,6 +74,20 @@ public class ContainerLiquidTransfer extends ContainerItemStack implements ISlot
     {
         inventory = new ItemStackHandlerCallback(this, 1);
         addSlotToContainer(new SlotItemHandler(inventory, 0, 80, 34));
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer player)
+    {
+        if (!player.getEntityWorld().isRemote)
+        {
+            ItemStack stack = inventory.getStackInSlot(0);
+            if (!stack.isEmpty())
+            {
+                Helpers.spawnItemStack(player.getEntityWorld(), player.getPosition(), stack);
+            }
+        }
+        super.onContainerClosed(player);
     }
 
     @Override

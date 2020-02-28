@@ -1,0 +1,169 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "part": "single",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_single_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_lower_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_upper_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "single",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_single_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_lower_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_upper_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "single",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_single_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_lower_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_upper_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "single",
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_single_3"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_lower_3"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_upper_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "single",
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_single_4"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "lower",
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_lower_4"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper",
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/ostrich_fern_upper_4"
+        }
+      ]
+    }
+  ]
+}

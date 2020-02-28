@@ -1,0 +1,11 @@
+{
+  "parent": "tfc:block/plants/morning_glory",
+  "textures": {
+    "particle": "tfc:blocks/plants/morning_glory/morning_glory_bottom_2",
+    "layer0": "tfc:blocks/empty",
+    "layer1": "tfc:blocks/empty",
+    "bottom": "tfc:blocks/plants/morning_glory/morning_glory_bottom_2",
+    "middle": "tfc:blocks/plants/morning_glory/morning_glory_middle_2",
+    "top": "tfc:blocks/plants/morning_glory/morning_glory_top_2"
+  }
+}

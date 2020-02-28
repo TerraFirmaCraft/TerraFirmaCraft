@@ -27,7 +27,7 @@ import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityDamageResistance
 {
@@ -36,6 +36,8 @@ public final class CapabilityDamageResistance
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "damage_resistance");
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ARMOR = new HashMap<>(); //Used inside CT, set custom IDamageResistance for armor items outside TFC
+    public static final Map<String, Supplier<ICapabilityProvider>> ENTITY_RESISTANCE = new HashMap<>(); // Map entities -> Capability to damage resistance
+
 
     public static void preInit()
     {
@@ -67,25 +69,9 @@ public final class CapabilityDamageResistance
             if (entityType != null)
             {
                 String entityTypeName = entityType.toString();
-                // todo: make this configurable via json or CT or something
-                switch (entityTypeName)
+                if (ENTITY_RESISTANCE.containsKey(entityTypeName))
                 {
-                    case "minecraft:skeleton":
-                    case "minecraft:wither_skeleton":
-                    case "minecraft:stray":
-                        event.addCapability(KEY, new DamageResistance(-20, Float.POSITIVE_INFINITY, 20));
-                        break;
-                    case "minecraft:creeper":
-                        event.addCapability(KEY, new DamageResistance(+20, -20, 0));
-                        break;
-                    case "minecraft:enderman":
-                        event.addCapability(KEY, new DamageResistance(-10, -10, -10));
-                        break;
-                    case "minecraft:zombie":
-                    case "minecraft:husk":
-                    case "minecraft:zombie_villager":
-                        event.addCapability(KEY, new DamageResistance(+20, 0, -20));
-                        break;
+                    event.addCapability(KEY, ENTITY_RESISTANCE.get(entityTypeName).get());
                 }
             }
         }

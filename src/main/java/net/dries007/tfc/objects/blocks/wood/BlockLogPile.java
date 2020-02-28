@@ -19,7 +19,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -35,9 +34,11 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
+import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -100,9 +101,9 @@ public class BlockLogPile extends Block implements ILightableBlock
         {
             worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + rand.nextFloat(), pos.getY() + 1, pos.getZ() + rand.nextFloat(),
                 0f, 0.1f + 0.1f * rand.nextFloat(), 0f);
-            if (rand.nextDouble() < 0.4D)
+            if (worldIn.getTotalWorldTime() % 80 == 0)
             {
-                worldIn.playSound((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.5F, 0.6F, false);
+                worldIn.playSound((double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.5F, 0.6F, false);
             }
         }
     }
@@ -114,23 +115,51 @@ public class BlockLogPile extends Block implements ILightableBlock
         if (te != null)
         {
             // Special Interactions
-            // 1. Try and put a log inside (happens on right click event)
+            // 1. Try and put a log inside (happens on right click event when sneaking)
             // 2. Try and light the TE
             // 3. Open the GUI
             ItemStack stack = player.getHeldItem(hand);
-            if (stack.getItem() == Items.FLINT_AND_STEEL && !state.getValue(LIT) && side == EnumFacing.UP)
+            if (!state.getValue(LIT) && side == EnumFacing.UP && world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos) && ItemFireStarter.onIgnition(stack))
             {
                 // Light the Pile
-                if (world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos))
+                if (!world.isRemote)
                 {
-                    if (!world.isRemote)
+                    world.setBlockState(pos, state.withProperty(LIT, true));
+                    te.light();
+                    world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
+                    world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                }
+                return true;
+            }
+            if (OreDictionaryHelper.doesStackMatchOre(stack, "logWood"))
+            {
+                // Copy from InteractionManager since this is called first when player is not sneaking
+                if (!player.isSneaking())
+                {
+                    if (te.insertLog(stack.copy()))
                     {
-                        world.setBlockState(pos, state.withProperty(LIT, true));
-                        te.light();
-                        world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
-                        world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                        if (!world.isRemote)
+                        {
+                            world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            stack.shrink(1);
+                            player.setHeldItem(hand, stack);
+                        }
+                        return true;
                     }
-                    return true;
+                }
+                else
+                {
+                    int inserted = te.insertLogs(stack.copy());
+                    if (inserted > 0)
+                    {
+                        if (!world.isRemote)
+                        {
+                            world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            stack.shrink(inserted);
+                            player.setHeldItem(hand, stack);
+                        }
+                        return true;
+                    }
                 }
             }
 
@@ -139,7 +168,6 @@ public class BlockLogPile extends Block implements ILightableBlock
                 if (!world.isRemote)
                 {
                     TFCGuiHandler.openGui(world, pos, player, TFCGuiHandler.Type.LOG_PILE);
-
                 }
                 return true;
             }
@@ -173,18 +201,6 @@ public class BlockLogPile extends Block implements ILightableBlock
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, AXIS, LIT);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-    {
-        TELogPile tile = Helpers.getTE(world, pos, TELogPile.class);
-        if (tile != null)
-        {
-            return side == EnumFacing.DOWN || tile.countLogs() == 16;
-        }
-        return super.isSideSolid(state, world, pos, side);
     }
 
     @Override

@@ -77,4 +77,11 @@ public class ServerProxy implements IProxy
     {
         return CalendarTFC.DAY_NAMES[(int) (totalDays % 7)];
     }
+
+    @Nonnull
+    @Override
+    public String getDate(int hour, int minute, String monthName, int day, long years)
+    {
+        return String.format("%02d:%02d %s %02d, %04d", hour, minute, monthName, day, years);
+    }
 }

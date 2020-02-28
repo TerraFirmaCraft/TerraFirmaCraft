@@ -53,7 +53,8 @@ public class CTHeating
             @Override
             public String describe()
             {
-                return "Adding heating recipe for " + ostack.getDisplayName();
+                //noinspection ConstantConditions
+                return "Adding heating recipe " + recipe.getRegistryName().toString();
             }
         });
     }

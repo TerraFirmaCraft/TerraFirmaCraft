@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -23,7 +24,7 @@ import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityItemHeat
 {
@@ -36,6 +37,40 @@ public final class CapabilityItemHeat
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IItemHeat.class, new DumbStorage<>(), ItemHeatHandler::new);
+        //register heat on vanilla egg for cooking
+        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Items.EGG), () -> new ItemHeatHandler(null, 1, 480));
+    }
+
+    /**
+     * Helper method to adjust temperature towards a value, without overshooting or stuttering
+     */
+    public static float adjustTempTowards(float temp, float target, float delta)
+    {
+        return adjustTempTowards(temp, target, delta, delta);
+    }
+
+    public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
+    {
+        if (temp < target)
+        {
+            if (temp + deltaPositive >= target)
+            {
+                return target;
+            }
+            return temp + deltaPositive;
+        }
+        else if (temp > target)
+        {
+            if (temp - deltaNegative <= target)
+            {
+                return target;
+            }
+            return temp - deltaNegative;
+        }
+        else
+        {
+            return target;
+        }
     }
 
     /**

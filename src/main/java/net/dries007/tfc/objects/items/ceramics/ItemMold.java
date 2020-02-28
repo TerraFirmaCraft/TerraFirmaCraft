@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,8 +31,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -46,6 +45,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
+@ParametersAreNonnullByDefault
 public class ItemMold extends ItemPottery
 {
     private static final EnumMap<Metal.ItemType, ItemMold> MAP = new EnumMap<>(Metal.ItemType.class);
@@ -101,52 +101,16 @@ public class ItemMold extends ItemPottery
 
     @Nullable
     @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack)
-    {
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null)
-        {
-            nbt = new NBTTagCompound();
-            stack.setTagCompound(nbt);
-        }
-        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (inventory instanceof IMoldHandler)
-        {
-            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
-        }
-        return nbt;
-    }
-
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        super.readNBTShareTag(stack, nbt);
-        if (nbt != null)
-        {
-            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (inventory instanceof IMoldHandler)
-            {
-                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
-            }
-        }
-    }
-
-    @Nullable
-    @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return new FilledMoldCapability(nbt);
     }
 
     @Override
-    public int getItemStackLimit(ItemStack stack)
+    public boolean canStack(ItemStack stack)
     {
         IMoldHandler moldHandler = (IMoldHandler) stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-        if (moldHandler != null && moldHandler.getMetal() != null)
-        {
-            return 1;
-        }
-        return super.getItemStackLimit(stack);
+        return moldHandler == null || moldHandler.getMetal() == null;
     }
 
     // Extends ItemHeatHandler for ease of use
@@ -160,7 +124,9 @@ public class ItemMold extends ItemPottery
             tank = new FluidTank(100);
 
             if (nbt != null)
+            {
                 deserializeNBT(nbt);
+            }
         }
 
         @Nullable
@@ -192,6 +158,7 @@ public class ItemMold extends ItemPottery
             if (resource != null)
             {
                 Metal metal = FluidsTFC.getMetalFromFluid(resource.getFluid());
+                //noinspection ConstantConditions
                 if (metal != null && type.hasMold(metal))
                 {
                     int fillAmount = tank.fill(resource, doFill);
@@ -238,7 +205,11 @@ public class ItemMold extends ItemPottery
                 String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
                 if (isMolten())
                 {
-                    desc += " - " + I18n.format("tfc.tooltip.liquid");
+                    desc += I18n.format("tfc.tooltip.liquid");
+                }
+                else
+                {
+                    desc += I18n.format("tfc.tooltip.solid");
                 }
                 text.add(desc);
             }
@@ -285,13 +256,13 @@ public class ItemMold extends ItemPottery
             }
             else
             {
-                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
+                nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
             }
             return tank.writeToNBT(nbt);
         }
 
         @Override
-        public void deserializeNBT(NBTTagCompound nbt)
+        public void deserializeNBT(@Nullable NBTTagCompound nbt)
         {
             if (nbt != null)
             {
@@ -307,13 +278,14 @@ public class ItemMold extends ItemPottery
             updateFluidData(tank.getFluid());
         }
 
-        private void updateFluidData(FluidStack fluid)
+        private void updateFluidData(@Nullable FluidStack fluid)
         {
             meltTemp = Heat.maxVisibleTemperature();
             heatCapacity = 1;
             if (fluid != null)
             {
                 Metal metal = FluidsTFC.getMetalFromFluid(fluid.getFluid());
+                //noinspection ConstantConditions
                 if (metal != null)
                 {
                     meltTemp = metal.getMeltTemp();

@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -30,7 +31,7 @@ import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockCharcoalPile.LAYERS;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -42,7 +43,7 @@ public final class InteractionManager
     static
     {
         // Clay knapping
-        putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "clay") && stack.getCount() >= 5, (worldIn, playerIn, handIn) -> {
+        putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "clay") && stack.getCount() >= KnappingType.CLAY.getAmountToConsume(), (worldIn, playerIn, handIn) -> {
             if (!worldIn.isRemote)
             {
                 TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.KNAPPING_CLAY);
@@ -51,7 +52,7 @@ public final class InteractionManager
         });
 
         // Fire clay knapping
-        putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "fireClay") && stack.getCount() >= 5, ((worldIn, playerIn, handIn) -> {
+        putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "fireClay") && stack.getCount() >= KnappingType.FIRE_CLAY.getAmountToConsume(), ((worldIn, playerIn, handIn) -> {
             if (!worldIn.isRemote)
             {
                 TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.KNAPPING_FIRE_CLAY);
@@ -80,24 +81,41 @@ public final class InteractionManager
                 if (stateAt.getBlock() == BlocksTFC.LOG_PILE)
                 {
                     // Clicked on a log pile, so try to insert into the original
+                    // This is called first when player is sneaking, otherwise the call chain is passed to the BlockLogPile#onBlockActivated
                     TELogPile te = Helpers.getTE(worldIn, pos, TELogPile.class);
                     if (te != null)
                     {
-                        if (te.insertLog(stack.copy()))
+                        if (!player.isSneaking())
                         {
-                            if (!worldIn.isRemote)
+                            if (te.insertLog(stack))
                             {
-                                worldIn.playSound(null, pos.offset(direction), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                stack.shrink(1);
-                                player.setHeldItem(hand, stack);
+                                if (!worldIn.isRemote)
+                                {
+                                    worldIn.playSound(null, pos.offset(direction), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                    stack.shrink(1);
+                                    player.setHeldItem(hand, stack);
+                                }
+                                return EnumActionResult.SUCCESS;
                             }
-                            return EnumActionResult.SUCCESS;
+                        }
+                        else
+                        {
+                            int inserted = te.insertLogs(stack.copy());
+                            if (inserted > 0)
+                            {
+                                if (!worldIn.isRemote)
+                                {
+                                    worldIn.playSound(null, pos.offset(direction), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                    stack.shrink(inserted);
+                                    player.setHeldItem(hand, stack);
+                                }
+                                return EnumActionResult.SUCCESS;
+                            }
                         }
                     }
                 }
-
-                // Try and place a log pile - if you were sneaking or you clicked on a log pile
-                if (stateAt.getBlock() == BlocksTFC.LOG_PILE || player.isSneaking())
+                // Try and place a log pile - if you were sneaking
+                if (player.isSneaking())
                 {
                     BlockPos posAt = pos;
                     if (!stateAt.getBlock().isReplaceable(worldIn, pos))
@@ -176,7 +194,6 @@ public final class InteractionManager
             }
             return EnumActionResult.FAIL;
         });
-
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

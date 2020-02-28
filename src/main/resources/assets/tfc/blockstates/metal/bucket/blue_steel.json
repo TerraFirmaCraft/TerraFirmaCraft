@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "inventory": {
+      "model": "forge:forgebucket",
+      "textures": {
+        "base": "tfc:items/fluids/blue_steel_bucket_empty",
+        "fluid": "tfc:items/fluids/steel_bucket_fluid",
+        "cover": "tfc:items/fluids/blue_steel_bucket_overlay"
+      },
+      "transform": "forge:default-item",
+      "custom": {
+        "flipGas": true
+      }
+    }
+  }
+}

@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.client.TFCGuiHandler;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class GuiButtonPlayerInventoryTab extends GuiButtonTFC
 {
@@ -75,6 +75,7 @@ public class GuiButtonPlayerInventoryTab extends GuiButtonTFC
         x += newGuiLeft - guiLeft;
         iconX += newGuiLeft - guiLeft;
         guiLeft = newGuiLeft;
+        enabled = false;
     }
 
     public boolean isActive()
@@ -100,6 +101,7 @@ public class GuiButtonPlayerInventoryTab extends GuiButtonTFC
             // The icon
             drawScaledCustomSizeModalRect(iconX, iconY, iconU, iconV, 32, 32, 16, 16, 256, 256);
             mouseDragged(mc, mouseX, mouseY);
+            enabled = true;
         }
     }
 }

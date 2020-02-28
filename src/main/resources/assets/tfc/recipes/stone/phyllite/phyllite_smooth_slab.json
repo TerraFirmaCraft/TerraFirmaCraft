@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:smooth/phyllite"
+    }
+  },
+  "result": {
+    "item": "tfc:slab/smooth/phyllite",
+    "data": 0,
+    "count": 6
+  }
+}

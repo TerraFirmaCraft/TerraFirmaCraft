@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -27,6 +29,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.IMoldHandler;
+import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
@@ -43,18 +46,17 @@ import net.dries007.tfc.util.Helpers;
 @ParametersAreNonnullByDefault
 public class TECrucible extends TEInventory implements ITickable, ITileFields, IItemHandlerSidedCallback
 {
-    public static final int SLOT_INPUT = 0;
-    public static final int SLOT_OUTPUT = 1;
+    public static final int SLOT_INPUT_START = 0;
+    public static final int SLOT_INPUT_END = 8;
+    public static final int SLOT_OUTPUT = 9;
 
     public static final int FIELD_TEMPERATURE = 0;
-
-    public static final int CRUCIBLE_MAX_METAL_FLUID = 3000; // = 30 Ingots worth
 
     private final Alloy alloy;
     private final IItemHandler inventoryWrapperExtract;
     private final IItemHandler inventoryWrapperInsert;
 
-    private HeatRecipe cachedRecipe;
+    private HeatRecipe[] cachedRecipes;
     private Metal alloyResult;
     private float temperature;
     private float targetTemperature;
@@ -62,15 +64,16 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
 
     public TECrucible()
     {
-        super(2);
+        super(10);
 
-        this.alloy = new Alloy(CRUCIBLE_MAX_METAL_FLUID);
+        this.alloy = new Alloy(ConfigTFC.GENERAL.tankCrucible); // Side effect: Maximum amount only matches config if not loading from disk
         this.inventoryWrapperExtract = new ItemHandlerSidedWrapper(this, inventory, EnumFacing.DOWN);
         this.inventoryWrapperInsert = new ItemHandlerSidedWrapper(this, inventory, EnumFacing.UP);
 
         this.temperature = 0;
         this.lastFillTimer = 0;
-        this.cachedRecipe = null;
+        this.cachedRecipes = new HeatRecipe[9];
+        Arrays.fill(this.cachedRecipes, null);
     }
 
     public void acceptHeat(float temperature)
@@ -83,7 +86,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
 
     public int addMetal(Metal metal, int amount)
     {
-        int overflow = Math.max(0, alloy.getAmount() + amount - CRUCIBLE_MAX_METAL_FLUID); // Amount which cannot be inserted
+        int overflow = Math.max(0, alloy.getAmount() + amount - alloy.getMaxAmount()); // Amount which cannot be inserted
         alloy.add(metal, amount);
 
         //Update crucible temperature to match
@@ -98,16 +101,8 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     public void update()
     {
         if (world.isRemote) return;
-        if (temperature < targetTemperature)
-        {
-            temperature += (float) ConfigTFC.GENERAL.temperatureModifierHeating;
-        }
-        else if (temperature > targetTemperature)
-        {
-            temperature -= (float) ConfigTFC.GENERAL.temperatureModifierHeating;
-        }
 
-        // Update target temperature
+        temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, (float) ConfigTFC.GENERAL.temperatureModifierHeating);
         if (targetTemperature > 0)
         {
             // Crucible target temperature decays constantly, since it is set by outside providers
@@ -115,52 +110,62 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
         }
 
         // Input draining
-        ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
-        IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-
         boolean needsClientUpdate = false;
-        if (cap instanceof IMoldHandler)
+        boolean canFill = lastFillTimer <= 0;
+        for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
         {
-            // Try and drain fluid
-            IMoldHandler mold = (IMoldHandler) cap;
-            if (lastFillTimer <= 0)
+            ItemStack inputStack = inventory.getStackInSlot(i);
+            IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+
+            if (cap != null)
             {
-                if (mold.isMolten())
+                // Always heat up the item regardless if it is melting or not
+                if (cap.getTemperature() < temperature)
                 {
-                    // Use mold.getMetal() to avoid off by one errors during draining
-                    Metal metal = mold.getMetal();
-                    FluidStack fluidStack = mold.drain(1, true);
-                    if (fluidStack != null && fluidStack.amount > 0)
+                    CapabilityItemHeat.addTemp(cap);
+                }
+                if (cachedRecipes[i] != null)
+                {
+                    if (cachedRecipes[i].isValidTemperature(cap.getTemperature()))
                     {
-                        alloy.add(metal, fluidStack.amount);
+                        alloy.add(inputStack, cachedRecipes[i]);
+                        inventory.setStackInSlot(i, cachedRecipes[i].getOutputStack(inputStack));
                         needsClientUpdate = true;
                     }
+                    else if (cap.getTemperature() < temperature)
+                    {
+                        CapabilityItemHeat.addTemp(cap);
+                    }
                 }
-                lastFillTimer = 5;
             }
-            else
+            // Try and drain fluid
+            if (cap instanceof IMoldHandler)
             {
-                lastFillTimer--;
+                IMoldHandler mold = (IMoldHandler) cap;
+                if (canFill)
+                {
+                    if (mold.isMolten())
+                    {
+                        // Use mold.getMetal() to avoid off by one errors during draining
+                        Metal metal = mold.getMetal();
+                        FluidStack fluidStack = mold.drain(1, true);
+                        if (fluidStack != null && fluidStack.amount > 0)
+                        {
+                            lastFillTimer = 5;
+                            if (!ConfigTFC.GENERAL.enableCruciblePouringAllSlots)
+                            {
+                                canFill = false;
+                            }
+                            alloy.add(metal, fluidStack.amount);
+                            needsClientUpdate = true;
+                        }
+                    }
+                }
             }
-            // Always heat up the item regardless if it is melting or not
-            if (cap.getTemperature() < temperature)
-            {
-                CapabilityItemHeat.addTemp(cap);
-            }
-
         }
-        else if (cap != null && cachedRecipe != null)
+        if (lastFillTimer > 0)
         {
-            if (cachedRecipe.isValidTemperature(cap.getTemperature()))
-            {
-                alloy.add(inputStack, cachedRecipe);
-                inventory.setStackInSlot(SLOT_INPUT, cachedRecipe.getOutputStack(inputStack));
-                needsClientUpdate = true;
-            }
-            else if (cap.getTemperature() < temperature)
-            {
-                CapabilityItemHeat.addTemp(cap);
-            }
+            lastFillTimer--;
         }
 
         // Output filling
@@ -205,7 +210,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     @Override
     public int getSlotLimit(int slot)
     {
-        return slot == SLOT_INPUT ? 64 : 1;
+        return 1;
     }
 
     @Override
@@ -215,15 +220,46 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
         {
             return false;
         }
-        return slot == SLOT_INPUT || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        if (slot != SLOT_OUTPUT)
+        {
+            IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            if (cap instanceof IMoldHandler)
+            {
+                if (cap instanceof ISmallVesselHandler)
+                {
+                    if (((ISmallVesselHandler) cap).getMetal() != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < ((ISmallVesselHandler) cap).getSlots(); i++)
+                        {
+                            if (!((ISmallVesselHandler) cap).getStackInSlot(i).isEmpty())
+                            {
+                                return true;
+                            }
+                        }
+                        return false; // This will make empty small vessels go to the output slot (same as below)
+                    }
+                }
+                else
+                {
+                    return ((IMoldHandler) cap).getAmount() > 0; // This will make empty molds go to the output slot / prevent empty molds go to the input (no sense in heating them here anyway)
+                }
+            }
+        }
+        return slot != SLOT_OUTPUT || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
     }
 
     @Override
     public void setAndUpdateSlots(int slot)
     {
         super.setAndUpdateSlots(slot);
-
-        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_INPUT));
+        if (slot != SLOT_OUTPUT)
+        {
+            cachedRecipes[slot] = HeatRecipe.get(inventory.getStackInSlot(slot));
+        }
     }
 
     @Override
@@ -232,13 +268,20 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
         alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
         temperature = nbt.getFloat("temp");
 
+        // Voids surplus and set the maximum amount if config was changed
+        alloy.setMaxAmount(ConfigTFC.GENERAL.tankCrucible);
+
         // Also set the cached alloyResult:
         alloyResult = alloy.getResult();
 
         super.readFromNBT(nbt);
 
         // Update the recipe cache
-        cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_INPUT));
+        for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
+        {
+            cachedRecipes[i] = HeatRecipe.get(inventory.getStackInSlot(i));
+        }
+
     }
 
     @Override
@@ -249,6 +292,30 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
         nbt.setFloat("temp", temperature);
 
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null) || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null)
+        {
+            if (facing == EnumFacing.DOWN)
+            {
+                return (T) inventoryWrapperExtract;
+            }
+            else
+            {
+                return (T) inventoryWrapperInsert;
+            }
+        }
+        return super.getCapability(capability, facing);
     }
 
     @Override
@@ -303,6 +370,9 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     {
         alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
 
+        // Voids surplus and set the maximum amount if config was changed
+        alloy.setMaxAmount(ConfigTFC.GENERAL.tankCrucible);
+
         // Also set the cached alloyResult:
         alloyResult = alloy.getResult();
     }
@@ -310,7 +380,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     /**
      * Used on SERVER to get the alloy contents
      *
-     * @return the alloy
+     * @return the alloyForgeableHeatableHandler
      */
     @Nonnull
     public Alloy getAlloy()
@@ -351,29 +421,5 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     public boolean canExtract(int slot, EnumFacing side)
     {
         return side == EnumFacing.DOWN;
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null) || super.hasCapability(capability, facing);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null)
-        {
-            if (facing == EnumFacing.DOWN)
-            {
-                return (T) inventoryWrapperExtract;
-            }
-            else
-            {
-                return (T) inventoryWrapperInsert;
-            }
-        }
-        return super.getCapability(capability, facing);
     }
 }

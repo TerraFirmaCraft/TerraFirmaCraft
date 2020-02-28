@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.api.capability.food;
 
-import net.dries007.tfc.util.calendar.ICalendar;
-
 public enum Nutrient
 {
     CARBOHYDRATES,
@@ -16,10 +14,4 @@ public enum Nutrient
     MINERALS;
 
     public static final int TOTAL = values().length;
-
-    public float getDecayModifier()
-    {
-        // Nutrients lost / tick
-        return 8f / ICalendar.TICKS_IN_DAY;
-    }
 }

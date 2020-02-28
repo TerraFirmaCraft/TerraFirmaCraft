@@ -62,7 +62,7 @@ import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.minecraft.util.text.TextFormatting.*;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
@@ -85,6 +85,14 @@ public class ClientEvents
         RenderingRegistry.registerEntityRenderingHandler(EntityDonkeyTFC.class, RenderAbstractHorseTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityMuleTFC.class, RenderAbstractHorseTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBoatTFC.class, RenderBoatTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityPolarBearTFC.class, RenderPolarBearTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityParrotTFC.class, RenderParrotTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityLlamaTFC.class, RenderLlamaTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityOcelotTFC.class, RenderOcelotTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityPantherTFC.class, RenderPantherTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityDuckTFC.class, RenderDuckTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityAlpacaTFC.class, RenderAlpacaTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGoatTFC.class, RenderGoatTFC::new);
     }
 
     @SideOnly(Side.CLIENT)
@@ -97,7 +105,7 @@ public class ClientEvents
             // Only change if default is selected, because coming back from customisation, this will be set already.
             if (gui.selectedIndex == WorldType.DEFAULT.getId())
             {
-                gui.selectedIndex = TerraFirmaCraft.getWorldTypeTFC().getId();
+                gui.selectedIndex = TerraFirmaCraft.getWorldType().getId();
             }
         }
     }
@@ -121,20 +129,28 @@ public class ClientEvents
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public static void onGuiButtonPress(GuiScreenEvent.ActionPerformedEvent.Post event)
+    public static void onGuiButtonPressPre(GuiScreenEvent.ActionPerformedEvent.Pre event)
     {
         if (event.getGui() instanceof GuiInventory)
         {
             if (event.getButton() instanceof GuiButtonPlayerInventoryTab)
             {
-                // This should generally be true, but check just in case something has disabled it
                 GuiButtonPlayerInventoryTab button = (GuiButtonPlayerInventoryTab) event.getButton();
-                if (button.isActive())
+                // This is to prevent the button from immediately firing after moving (enabled is set to false then)
+                if (button.isActive() && button.enabled)
                 {
                     TerraFirmaCraft.getNetwork().sendToServer(new PacketSwitchPlayerInventoryTab(button.getGuiType()));
                 }
             }
+        }
+    }
 
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onGuiButtonPressPost(GuiScreenEvent.ActionPerformedEvent.Post event)
+    {
+        if (event.getGui() instanceof GuiInventory)
+        {
             // This is necessary to catch the resizing of the inventory gui when you open the recipe book
             for (GuiButton button : event.getButtonList())
             {
@@ -164,9 +180,9 @@ public class ClientEvents
 
                 list.add("");
                 list.add(AQUA + "TerraFirmaCraft");
+                boolean chunkDataValid = data != null && data.isInitialized();
 
-                if (data == null || !data.isInitialized()) list.add("No data ?!");
-                else
+                if (chunkDataValid)
                 {
                     list.add(String.format("%sRegion: %s%.1f\u00b0C%s Avg: %s%.1f\u00b0C%s Min: %s%.1f\u00b0C%s Max: %s%.1f\u00b0C",
                         GRAY, WHITE, data.getRegionalTemp(), GRAY,
@@ -176,12 +192,18 @@ public class ClientEvents
                     list.add(String.format("%sTemperature: %s%.1f\u00b0C Daily: %s%.1f\u00b0C",
                         GRAY, WHITE, ClimateTFC.getMonthlyTemp(blockpos),
                         WHITE, ClimateTFC.getActualTemp(blockpos)));
+                }
+                else if (mc.world.provider.getDimension() == 0)
+                {
+                    list.add("Invalid Chunk Data (?)");
+                }
 
-                    list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
-                    list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.TOTAL_TIME.getTicks(), CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
+                // Always add calendar info
+                list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
+                list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
 
-                    list.add(GRAY + "Biome: " + WHITE + mc.world.getBiome(blockpos).getBiomeName());
-
+                if (chunkDataValid)
+                {
                     list.add(GRAY + "Rainfall: " + WHITE + data.getRainfall());
                     list.add(GRAY + "Flora Density: " + WHITE + data.getFloraDensity());
                     list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
@@ -189,18 +211,7 @@ public class ClientEvents
                     list.add(GRAY + "Valid Trees: ");
                     data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.getRegistryName(), t.getDominance())));
 
-                    //list.add(GRAY + "Rocks: " + WHITE + data.getRockLayer1(x, z).name + ", " + data.getRockLayer2(x, z).name + ", " + data.getRockLayer3(x, z).name);
-                    //list.add(GRAY + "Stability: " + WHITE + data.getStabilityLayer(x, z).name);
-                    //list.add(GRAY + "Drainage: " + WHITE + data.getDrainageLayer(x, z).name);
                     list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
-                    //list.add(GRAY + "Fish population: " + WHITE + data.getFishPopulation());
-
-                    //list.add("");
-                    //list.add(GRAY + "Rock at feet: " + WHITE + data.getRockLayerHeight(x, blockpos.getY(), z).name);
-
-                    // list.add("");
-                    //data.getOresSpawned().stream().map(String::valueOf).forEach(list::add);
-
                     list.add(GRAY + "Spawn Protection: " + WHITE + data.getSpawnProtection());
                 }
             }
@@ -238,7 +249,7 @@ public class ClientEvents
                 tt.add(I18n.format("tfc.tooltip.smithing_skill", skillMod * 100));
             }
 
-            if (event.getFlags().isAdvanced() && ConfigTFC.GENERAL.debug) // Only added with advanced tooltip mode + debug on
+            if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
             {
                 IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
                 if (metalObject != null)

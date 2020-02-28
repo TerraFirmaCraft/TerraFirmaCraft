@@ -1,0 +1,39 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "leaves",
+    "textures": {
+      "all": "tfc:blocks/fruit_trees/leaves/peach"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "leaves",
+      "transform": "forge:default-block"
+    },
+    "state": {
+      "normal": {
+        "model": "leaves"
+      },
+      "flowering": {
+        "model": "leaves",
+        "textures": {
+          "all": "tfc:blocks/fruit_trees/leaves/peach",
+          "texture": "tfc:blocks/fruit_trees/flowers/peach"
+        },
+        "submodel": "tfc:fruit_trees/leaves_overlay"
+      },
+      "fruit": {
+        "model": "leaves",
+        "textures": {
+          "all": "tfc:blocks/fruit_trees/leaves/peach",
+          "texture": "tfc:blocks/fruit_trees/fruit/peach"
+        },
+        "submodel": "tfc:fruit_trees/leaves_overlay"
+      }
+    }
+  }
+}

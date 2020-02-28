@@ -17,13 +17,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
+import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.recipes.AlloyRecipe;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
-import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
-import net.dries007.tfc.objects.fluids.properties.MetalFluidWrapper;
+import net.dries007.tfc.objects.fluids.properties.MetalProperty;
 
 /**
  * A helper class for working with alloys
@@ -32,7 +33,10 @@ import net.dries007.tfc.objects.fluids.properties.MetalFluidWrapper;
  */
 public class Alloy implements INBTSerializable<NBTTagCompound>
 {
-    private final Object2DoubleMap<Metal> metalMap;
+    // We compare alloy ranges to an accuracy of +/- 0.05% Anything outside of this range is ignored
+    public static final double EPSILON = 0.0005;
+
+    private final Object2DoubleMap<Metal> metalMap, sanitizedMetalMap;
     private int totalAmount;
     private int maxAmount;
 
@@ -52,6 +56,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     public Alloy(int maxAmount)
     {
         this.metalMap = new Object2DoubleOpenHashMap<>();
+        this.sanitizedMetalMap = new Object2DoubleOpenHashMap<>();
         this.totalAmount = 0;
         this.maxAmount = maxAmount;
     }
@@ -64,17 +69,17 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
      */
     public Alloy add(@Nonnull FluidStack stack)
     {
-        FluidWrapper wrapper = FluidsTFC.getWrapper(stack.getFluid());
-        if (wrapper instanceof MetalFluidWrapper)
+        MetalProperty metalProperty = FluidsTFC.getWrapper(stack.getFluid()).get(MetalProperty.METAL);
+        if (metalProperty != null)
         {
-            Metal metal = ((MetalFluidWrapper) wrapper).getMetal();
+            Metal metal = metalProperty.getMetal();
             add(metal, stack.amount);
         }
         return this;
     }
 
     /**
-     * Add metal to an alloy from an item stack
+     * Add metal to an alloy from an item stack, ignoring temperature and tier
      * Note if the an item doesn't match a recipe it will be ignored
      *
      * @param stack an item stack
@@ -82,25 +87,35 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
      */
     public Alloy add(@Nonnull ItemStack stack)
     {
-        return add(stack, Metal.Tier.TIER_VI);
+        return add(stack, Metal.Tier.TIER_VI, Float.MAX_VALUE);
     }
 
     /**
      * Add metal to an alloy from an item stack
      * Note if the an item doesn't match a heat recipe it will be ignored
      *
-     * @param stack      an item stack
-     * @param deviceTier the tier of the device doing the heating
+     * @param stack       an item stack
+     * @param deviceTier  the tier of the device doing the heating
+     * @param temperature the temperature to melt items
      * @return the alloy, for method chaining
      */
-    public Alloy add(@Nonnull ItemStack stack, @Nonnull Metal.Tier deviceTier)
+    public Alloy add(@Nonnull ItemStack stack, @Nonnull Metal.Tier deviceTier, float temperature)
     {
         if (!stack.isEmpty())
         {
             HeatRecipe recipe = HeatRecipe.get(stack, deviceTier);
-            if (recipe != null)
+            if (recipe != null && recipe.isValidTemperature(temperature))
             {
                 return add(stack, recipe);
+            }
+            else
+            {
+                IMetalItem metalObject = CapabilityMetalItem.getMetalItem(stack);
+                if (metalObject != null)
+                {
+                    // Melt into unknown alloy (so items aren't simply voided and becomes something)
+                    add(new FluidStack(FluidsTFC.getFluidFromMetal(Metal.UNKNOWN), metalObject.getSmeltAmount(stack) * stack.getCount()));
+                }
             }
         }
         return this;
@@ -165,8 +180,9 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
                     return this;
                 }
             }
-            metalMap.merge(metal, amount, (x, y) -> x + y);
+            metalMap.merge(metal, amount, Double::sum);
             totalAmount += amount;
+            updateSanitizedMap();
         }
         return this;
     }
@@ -194,7 +210,8 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     }
 
     /**
-     * Removes an amount of metal from the alloy.
+     * Removes an amount of a specific metal ingredient from the alloy.
+     * This will NOT removed the completed alloy. Use {@link Alloy#removeAlloy(int, boolean)} instead
      *
      * @param metalToRemove the metal component to remove
      * @param removeAmount  the amount to remove
@@ -205,15 +222,19 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         if (metalMap.containsKey(metalToRemove))
         {
             double currentAmount = metalMap.get(metalToRemove);
+            int actualRemoveAmount;
             if (currentAmount > removeAmount)
             {
                 metalMap.put(metalToRemove, currentAmount - removeAmount);
-                return removeAmount;
+                actualRemoveAmount = removeAmount;
             }
             else
             {
-                return (int) metalMap.remove(metalToRemove).doubleValue();
+                actualRemoveAmount = (int) metalMap.remove(metalToRemove).doubleValue();
             }
+            totalAmount -= actualRemoveAmount;
+            updateSanitizedMap();
+            return actualRemoveAmount;
         }
         return 0;
     }
@@ -230,7 +251,7 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     {
         if (simulate)
         {
-            return totalAmount < removeAmount ? totalAmount : removeAmount;
+            return Math.min(totalAmount, removeAmount);
         }
         if (removeAmount >= totalAmount)
         {
@@ -239,13 +260,20 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         }
         else
         {
+            Map<Metal, Double> resultMap = new Object2DoubleOpenHashMap<>(metalMap.size());
             for (Map.Entry<Metal, Double> entry : metalMap.entrySet())
             {
-                // Remove the amount of metal from each component
+                // Remove the amount of metal from each component, add the remainder (if it exists) into the result map
                 double remove = removeAmount * entry.getValue() / totalAmount;
-                metalMap.put(entry.getKey(), entry.getValue() - remove);
+                if (entry.getValue() > remove)
+                {
+                    resultMap.put(entry.getKey(), entry.getValue() - remove);
+                }
             }
             totalAmount -= removeAmount;
+            metalMap.clear();
+            metalMap.putAll(resultMap);
+            updateSanitizedMap();
             return removeAmount;
         }
     }
@@ -260,9 +288,25 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         return totalAmount;
     }
 
+    /**
+     * Gets the maximum amount this storage can hold
+     *
+     * @return The maximum amount
+     */
+    public int getMaxAmount()
+    {
+        return maxAmount;
+    }
+
+    /**
+     * Returns a read-only copy of the metals in an alloy
+     * The alloy may also contain values with a % content less than epsilon, which are not visible in this view
+     *
+     * @return a map of metals -> unit values
+     */
     public Map<Metal, Double> getMetals()
     {
-        return metalMap;
+        return sanitizedMetalMap;
     }
 
     @Override
@@ -301,7 +345,18 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
                     this.metalMap.put(metal, amount);
                 }
             }
+            updateSanitizedMap();
         }
+    }
+
+    public void setMaxAmount(int value)
+    {
+        int surplus = this.getAmount() - value;
+        if (surplus > 0)
+        {
+            this.removeAlloy(surplus, false);
+        }
+        this.maxAmount = value;
     }
 
     /**
@@ -313,13 +368,26 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
         totalAmount = 0;
     }
 
+    /**
+     * The sanitized map is kept as a read-only view of the current alloy, with values < epsilon excluded
+     */
+    private void updateSanitizedMap()
+    {
+        sanitizedMetalMap.clear();
+        metalMap.forEach((metal, value) -> {
+            if (value > totalAmount * EPSILON)
+            {
+                sanitizedMetalMap.put(metal, value);
+            }
+        });
+    }
+
     private boolean matchesRecipe(AlloyRecipe recipe)
     {
         if (this.metalMap.containsKey(recipe.getResult()))
         {
             Alloy other = new Alloy().add(this);
-            double resultAmount = other.metalMap.remove(recipe.getResult());
-            other.totalAmount -= resultAmount;
+            other.remove(recipe.getResult(), Integer.MAX_VALUE);
             return other.matchesRecipeExact(recipe);
         }
         return this.matchesRecipeExact(recipe);
@@ -329,14 +397,14 @@ public class Alloy implements INBTSerializable<NBTTagCompound>
     {
         // for each metal in the alloy, it needs to satisfy an ingredient
         // for each metal in the recipe, it needs to match with an alloy
-        for (Metal metal : Sets.union(recipe.getMetals().keySet(), metalMap.keySet()))
+        Map<Metal, Double> metals = getMetals();
+        for (Metal metal : Sets.union(recipe.getMetals().keySet(), metals.keySet()))
         {
-            if (!metalMap.containsKey(metal) ||
-                !recipe.getMetals().containsKey(metal) ||
-                !recipe.getMetals().get(metal).test(metalMap.get(metal) / totalAmount))
+            if (!metals.containsKey(metal) || !recipe.getMetals().containsKey(metal) || !recipe.getMetals().get(metal).test(metals.get(metal) / totalAmount))
+            {
                 return false;
+            }
         }
         return true;
     }
-
 }

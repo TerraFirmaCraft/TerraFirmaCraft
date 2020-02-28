@@ -21,7 +21,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.te.TEChestTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
@@ -35,6 +35,7 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
     {
         for (Tree wood : TFCRegistries.TREES.getValuesCollection())
         {
+            //noinspection ConstantConditions
             SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest/" + wood.getRegistryName().getPath() + ".png"));
             DOUBLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_double/" + wood.getRegistryName().getPath() + ".png"));
             TRAP_SINGLE_TEXTURES.put(wood, new ResourceLocation(MOD_ID, "textures/entity/chests/chest_trap/" + wood.getRegistryName().getPath() + ".png"));

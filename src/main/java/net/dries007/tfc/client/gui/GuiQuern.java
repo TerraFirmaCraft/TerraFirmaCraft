@@ -11,8 +11,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.objects.te.TEQuern;
+import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class GuiQuern extends GuiContainerTE<TEQuern>
 {
@@ -38,5 +39,9 @@ public class GuiQuern extends GuiContainerTE<TEQuern>
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        if (Helpers.isJEIEnabled())
+        {
+            drawTexturedModalRect(guiLeft + 114, guiTop + 48, 176, 0, 9, 14);
+        }
     }
 }

@@ -3,10 +3,10 @@
     "modid": "tfc",
     "name": "TerraFirmaCraft",
     "description": "A 1.12+ port for the 1.7.10 classic TerraFirmaCraft",
-    "version": "${version}",
-    "mcversion": "${mcversion}",
+    "version": "${mod_version}",
+    "mcversion": "${mc_version}",
     "logoFile": "/assets/tfc/textures/gui/logo.png",
-    "url": "https://terrafirmacraft.github.io",
+    "url": "https://tng.terrafirmacraft.com/Main_Page",
     "updateJson": "https://mc.dries007.net/terrafirmacraft.json",
     "authorList": [
       "Dries007",

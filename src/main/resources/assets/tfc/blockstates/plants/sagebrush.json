@@ -1,0 +1,82 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sagebrush_0",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_1",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_2",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_3",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_4",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_5",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/sagebrush_6",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/sagebrush_7",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sagebrush_0b",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_1b",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_2b",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_3b",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_4b",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/sagebrush_5b",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/sagebrush_6b",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/sagebrush_7b",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

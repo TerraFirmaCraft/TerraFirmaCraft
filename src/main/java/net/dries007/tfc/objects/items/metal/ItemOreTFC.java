@@ -6,16 +6,23 @@
 package net.dries007.tfc.objects.items.metal;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
@@ -23,6 +30,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.items.ItemTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @SuppressWarnings("WeakerAccess")
@@ -60,6 +68,10 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
             {
                 //noinspection ConstantConditions
                 OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", ore.getMetal().getRegistryName().getPath(), grade);
+                if (ore.getMetal() == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
+                {
+                    OreDictionaryHelper.registerMeta(this, grade.getMeta(), "ore", "iron", grade);
+                }
             }
         }
         else // Mineral
@@ -72,8 +84,10 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
                     OreDictionaryHelper.register(this, "gem", "lapis");
                     break;
                 case "bituminous_coal":
-                case "lignite":
                     OreDictionaryHelper.register(this, "gem", "coal");
+                    break;
+                case "lignite":
+                    OreDictionaryHelper.register(this, "gem", "lignite");
                     break;
                 default:
                     OreDictionaryHelper.register(this, "gem", ore);
@@ -94,6 +108,19 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
         Ore.Grade grade = getGradeFromStack(stack);
         if (grade == Ore.Grade.NORMAL) return super.getTranslationKey(stack);
         return super.getTranslationKey(stack) + "." + grade.getName();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        Metal metal = getMetal(stack);
+        if (metal != null)
+        {
+            // Like classic, "Metal: xx units"
+            String info = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
+            tooltip.add(info);
+        }
     }
 
     @Override
@@ -145,13 +172,13 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.SMALL;
+        return Size.NORMAL;
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.MEDIUM;
     }
 }

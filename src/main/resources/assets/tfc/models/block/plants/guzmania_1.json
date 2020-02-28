@@ -1,0 +1,93 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "cross": "tfc:blocks/plants/guzmania/guzmania_1",
+    "particle": "tfc:blocks/plants/guzmania/guzmania_1"
+  },
+  "elements": [
+    {
+      "from": [
+        -8.2,
+        -1,
+        8
+      ],
+      "to": [
+        6.2,
+        15,
+        8
+      ],
+      "shade": false,
+      "rotation": {
+        "angle": -45,
+        "axis": "z",
+        "origin": [
+          4,
+          0,
+          0
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross"
+        },
+        "south": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#cross"
+        }
+      }
+    },
+    {
+      "from": [
+        -1,
+        -1,
+        0.8
+      ],
+      "to": [
+        -1,
+        15,
+        15.2
+      ],
+      "shade": false,
+      "rotation": {
+        "angle": -45,
+        "axis": "z",
+        "origin": [
+          4,
+          0,
+          0
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#cross"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross"
+        }
+      }
+    }
+  ]
+}

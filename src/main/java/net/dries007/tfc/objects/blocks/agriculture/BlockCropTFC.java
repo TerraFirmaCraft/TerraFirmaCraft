@@ -14,38 +14,75 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
-import net.dries007.tfc.objects.te.TEPlacedItemFlat;
-import net.dries007.tfc.objects.te.TETickCounter;
+import net.dries007.tfc.objects.te.TECropBase;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.skills.SimpleSkill;
+import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 @ParametersAreNonnullByDefault
-public abstract class BlockCropTFC extends BlockBush implements IGrowable
+public abstract class BlockCropTFC extends BlockBush
 {
+    // stage properties
+    public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
+    public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
+    public static final PropertyInteger STAGE_6 = PropertyInteger.create("stage", 0, 5);
+    public static final PropertyInteger STAGE_5 = PropertyInteger.create("stage", 0, 4);
+
+    // static map for conversion from maxValue to Stage Property
+    public static final HashMap<Integer, PropertyInteger> STAGE_MAP = new HashMap<>();
+
     /* true if the crop spawned in the wild, means it ignores growth conditions i.e. farmland */
     public static final PropertyBool WILD = PropertyBool.create("wild");
 
+    // model boxes
+    private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.125D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.25D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.375D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.625D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.75D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.875D, 0.875D),
+        new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D)
+    };
+
+    // binary flags for state and metadata conversion
+    private static final int META_WILD = 8;
+    private static final int META_GROWTH = 7;
+
+    // static field for conversion from crop to Block
     private static final Map<ICrop, BlockCropTFC> MAP = new HashMap<>();
+
+    static
+    {
+        STAGE_MAP.put(5, STAGE_5);
+        STAGE_MAP.put(6, STAGE_6);
+        STAGE_MAP.put(7, STAGE_7);
+        STAGE_MAP.put(8, STAGE_8);
+    }
 
     public static BlockCropTFC get(ICrop crop)
     {
@@ -55,6 +92,11 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     public static Set<ICrop> getCrops()
     {
         return MAP.keySet();
+    }
+
+    static PropertyInteger getStagePropertyForCrop(ICrop crop)
+    {
+        return STAGE_MAP.get(crop.getMaxStage() + 1);
     }
 
     protected final ICrop crop;
@@ -80,58 +122,41 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     }
 
     @Override
-    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateFromMeta(int meta)
     {
-        return true;
+        return getDefaultState().withProperty(WILD, (meta & META_WILD) > 0).withProperty(getStageProperty(), meta & META_GROWTH);
     }
 
     @Override
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    public int getMetaFromState(IBlockState state)
     {
-        return true;
+        return state.getValue(getStageProperty()) + (state.getValue(WILD) ? META_WILD : 0);
     }
 
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         super.updateTick(worldIn, pos, state, random);
-        if (!worldIn.isRemote)
-        {
-            // Attempt to grow
-            float temp = ClimateTFC.getActualTemp(worldIn, pos);
-            float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
-            TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
-            if (te != null)
-            {
-                long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-                if (hours > crop.getGrowthTime() && crop.isValidForGrowth(temp, rainfall))
-                {
-                    grow(worldIn, random, pos, state);
-                    te.resetCounter();
-                }
-
-                // If not valid conditions, die
-                if (!crop.isValidConditions(temp, rainfall))
-                {
-                    worldIn.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
-                    TEPlacedItemFlat tilePlaced = Helpers.getTE(worldIn, pos, TEPlacedItemFlat.class);
-                    if (tilePlaced != null)
-                    {
-                        tilePlaced.setStack(getDeathItem(te));
-                    }
-                }
-            }
-        }
+        checkGrowth(worldIn, pos, state, random);
     }
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
+        TECropBase tile = Helpers.getTE(worldIn, pos, TECropBase.class);
         if (tile != null)
         {
             tile.resetCounter();
         }
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, getStageProperty(), WILD);
     }
 
     @Override
@@ -144,7 +169,37 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TETickCounter();
+        return new TECropBase();
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        EntityPlayer player = harvesters.get();
+        ItemStack seedStack = new ItemStack(ItemSeedsTFC.get(crop));
+        ItemStack foodStack = crop.getFoodDrop(state.getValue(getStageProperty()));
+
+        // if player and skills are present, update skills and increase amounts of items depending on skill
+        if (player != null)
+        {
+            SimpleSkill skill = CapabilityPlayerData.getSkill(player, SkillType.AGRICULTURE);
+
+            if (skill != null)
+            {
+                if (!foodStack.isEmpty())
+                {
+                    foodStack.setCount(1 + Crop.getSkillFoodBonus(skill, RANDOM));
+                    seedStack.setCount(1 + Crop.getSkillSeedBonus(skill, RANDOM));
+                }
+                skill.add(0.04f);
+            }
+        }
+
+        // add items to drop
+        if (!foodStack.isEmpty())
+            drops.add(foodStack);
+        if (!seedStack.isEmpty())
+            drops.add(seedStack);
     }
 
     @Override
@@ -152,6 +207,55 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(ItemSeedsTFC.get(crop));
+    }
+
+    public void checkGrowth(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        if (!worldIn.isRemote)
+        {
+            TECropBase te = Helpers.getTE(worldIn, pos, TECropBase.class);
+            if (te != null)
+            {
+                boolean isAlive = true;
+                while (te.getTicksSinceUpdate() > crop.getGrowthTime() && isAlive)
+                {
+                    te.reduceCounter((long) crop.getGrowthTime());
+
+                    // find stats for the time in which the crop would have grown
+                    float temp = ClimateTFC.getActualTemp(worldIn, pos, -te.getTicksSinceUpdate());
+                    float rainfall = ChunkDataTFC.getRainfall(worldIn, pos);
+
+                    // check if the crop could grow, if so, grow
+                    if (crop.isValidForGrowth(temp, rainfall))
+                    {
+                        grow(worldIn, pos, worldIn.getBlockState(pos), random);
+                    }
+
+                    // If not valid conditions, die
+                    if (!crop.isValidConditions(temp, rainfall))
+                    {
+                        die(worldIn, pos, worldIn.getBlockState(pos), random);
+                        // once the crop has died, stop iterating
+                        isAlive = false;
+                    }
+                }
+            }
+        }
+    }
+
+    public abstract void grow(World worldIn, BlockPos pos, IBlockState state, Random random);
+
+    public void die(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        worldIn.setBlockState(pos, BlockCropDead.get(crop).getDefaultState().withProperty(BlockCropDead.MATURE, state.getValue(getStageProperty()) == crop.getMaxStage()));
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return CROPS_AABB[state.getValue(getStageProperty())];
     }
 
     @Nonnull
@@ -162,12 +266,4 @@ public abstract class BlockCropTFC extends BlockBush implements IGrowable
     }
 
     public abstract PropertyInteger getStageProperty();
-
-    /**
-     * Gets the item stack that the crop will create upon dying and turning into a placed item
-     */
-    protected ItemStack getDeathItem(TETickCounter cropTE)
-    {
-        return ItemSeedsTFC.get(crop, 1);
-    }
 }

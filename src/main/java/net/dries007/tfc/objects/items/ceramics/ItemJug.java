@@ -34,7 +34,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandler;
-import net.dries007.tfc.objects.fluids.properties.DrinkableFluidWrapper;
+import net.dries007.tfc.objects.fluids.properties.DrinkableProperty;
 import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
 import net.dries007.tfc.util.FluidTransferHelper;
 
@@ -47,17 +47,6 @@ public class ItemJug extends ItemPottery
     public ItemJug()
     {
         setHasSubtypes(true);
-    }
-
-    @Override
-    public boolean canStack(@Nonnull ItemStack stack)
-    {
-        IFluidHandler jugCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if (jugCap != null)
-        {
-            return jugCap.drain(CAPACITY, false) == null;
-        }
-        return true;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -75,7 +64,7 @@ public class ItemJug extends ItemPottery
                 if (jugCap.drain(CAPACITY, false) != null)
                 {
                     player.setActiveHand(hand);
-                    return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                 }
                 else if (!world.isRemote && jugCap.drain(CAPACITY, false) == null && rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK)
                 {
@@ -87,19 +76,20 @@ public class ItemJug extends ItemPottery
                         stack.shrink(1);
                         if (stack.isEmpty())
                         {
-                            return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
+                            return new ActionResult<>(EnumActionResult.SUCCESS, result.getResult());
                         }
                         ItemHandlerHelper.giveItemToPlayer(player, result.getResult());
-                        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }
                 else
                 {
                     player.world.playSound(null, player.getPosition(), TFCSounds.JUG_BLOW, SoundCategory.PLAYERS, 1.0f, 0.8f + (float) (player.getLookVec().y / 2));
                 }
+                return new ActionResult<>(EnumActionResult.SUCCESS, stack);
             }
         }
-        return ActionResult.newResult(EnumActionResult.PASS, stack);
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     @Override
@@ -112,10 +102,10 @@ public class ItemJug extends ItemPottery
             FluidStack fluidConsumed = jugCap.drain(CAPACITY, true);
             if (fluidConsumed != null && entityLiving instanceof EntityPlayer)
             {
-                FluidWrapper wrapper = FluidsTFC.getWrapper(fluidConsumed.getFluid());
-                if (wrapper instanceof DrinkableFluidWrapper)
+                DrinkableProperty drinkable = FluidsTFC.getWrapper(fluidConsumed.getFluid()).get(DrinkableProperty.DRINKABLE);
+                if (drinkable != null)
                 {
-                    ((DrinkableFluidWrapper) wrapper).onDrink((EntityPlayer) entityLiving);
+                    drinkable.onDrink((EntityPlayer) entityLiving);
                 }
             }
             if (Constants.RNG.nextFloat() < 0.02) // 1/50 chance, same as 1.7.10
@@ -138,17 +128,6 @@ public class ItemJug extends ItemPottery
     public int getMaxItemUseDuration(ItemStack stack)
     {
         return 32;
-    }
-
-    @Override
-    public int getItemStackLimit(ItemStack stack)
-    {
-        IFluidHandler jugCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if (jugCap != null && jugCap.drain(CAPACITY, false) != null)
-        {
-            return getStackSize(stack);
-        }
-        return 1;
     }
 
     @Override
@@ -176,7 +155,7 @@ public class ItemJug extends ItemPottery
             items.add(new ItemStack(this));
             for (FluidWrapper wrapper : FluidsTFC.getAllWrappers())
             {
-                if (wrapper instanceof DrinkableFluidWrapper)
+                if (wrapper.get(DrinkableProperty.DRINKABLE) != null)
                 {
                     ItemStack stack = new ItemStack(this);
                     IFluidHandlerItem cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
@@ -191,8 +170,14 @@ public class ItemJug extends ItemPottery
     }
 
     @Override
+    public boolean canStack(ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
     public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new FluidWhitelistHandler(stack, CAPACITY, FluidsTFC.getAllWrappers().stream().filter(x -> x instanceof DrinkableFluidWrapper).map(FluidWrapper::get).collect(Collectors.toSet()));
+        return new FluidWhitelistHandler(stack, CAPACITY, FluidsTFC.getAllWrappers().stream().filter(x -> x.get(DrinkableProperty.DRINKABLE) != null).map(FluidWrapper::get).collect(Collectors.toSet()));
     }
 }

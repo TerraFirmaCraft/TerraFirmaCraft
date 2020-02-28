@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:cobble/chalk"
+    }
+  ],
+  "result": {
+    "item": "tfc:rock/chalk",
+    "count": 4
+  }
+}

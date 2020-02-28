@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:ore/lapis_lazuli"
+    }
+  },
+  "result": {
+    "item": "minecraft:lapis_block",
+    "count": 1
+  }
+}

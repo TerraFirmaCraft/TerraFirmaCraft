@@ -12,7 +12,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Top level items must be static, the subclasses' fields must not be static.
@@ -51,6 +51,26 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never fall.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
+        public boolean disableFallableBlocks = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyOre")
+        public boolean disableFallableBlocksDestroyOre = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy loose items.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyLooseItems")
+        public boolean disableFallableBlocksDestroyLooseItems = false;
+
+        @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never hurt entities.")
+        @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksHurtEntities")
+        public boolean disableFallableBlocksHurtEntities = false;
+
+        @Config.Comment("If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.")
+        @Config.LangKey("config." + MOD_ID + ".general.forceTFCWorldTypeOnServer")
+        public boolean forceTFCWorldTypeOnServer = true;
+
         @Config.Comment("Enable/Disable the vanilla recipe removal spam. False = Those recipes are left in place.")
         @Config.LangKey("config." + MOD_ID + ".general.removeVanillaRecipes")
         public boolean removeVanillaRecipes = true;
@@ -82,10 +102,22 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.woodenBucketWhitelist")
         public String[] woodenBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar"};
 
+        @Config.Comment("List of fluids allowed to be picked up by blue steel bucket")
+        @Config.LangKey("config." + MOD_ID + ".general.blueSteelBucketWhitelist")
+        public String[] blueSteelBucketWhitelist = new String[] {"lava"};
+
+        @Config.Comment("List of fluids allowed to be picked up by red steel bucket")
+        @Config.LangKey("config." + MOD_ID + ".general.redSteelBucketWhitelist")
+        public String[] redSteelBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water"};
+
         @Config.Comment("Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")
         public double temperatureModifierGlobal = 0.5; // todo: items cool too fast at 0.5, needs tweaking
+
+        @Config.Comment("Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots.")
+        @Config.LangKey("config." + MOD_ID + ".general.enableCruciblePouringAllSlots")
+        public boolean enableCruciblePouringAllSlots = false;
 
         @Config.Comment("Modifier for how quickly devices (i.e. charcoal forge, firepit) gain and lose heat. Smaller number = slower temperature changes.")
         @Config.RangeDouble(min = 0, max = 10)
@@ -111,6 +143,11 @@ public class ConfigTFC
         @Config.RangeInt(min = 20)
         @Config.LangKey("config." + MOD_ID + ".general.bloomeryTime")
         public int bloomeryTime = 15000;
+
+        @Config.Comment("How fast the blast furnace consume fuels (compared to the charcoal forge).")
+        @Config.RangeDouble(min = 0.1D)
+        @Config.LangKey("config." + MOD_ID + ".general.blastFurnaceConsumption")
+        public double blastFurnaceConsumption = 4;
 
         @Config.Comment("Percentage chance that plants will grow each update. Smaller number = slower.")
         @Config.RangeDouble(min = 0d, max = 1d)
@@ -239,29 +276,41 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.forceNoVanillaNaturalRegeneration")
         public boolean forceNoVanillaNaturalRegeneration = true;
 
+        @Config.Comment({"If true, this will replace vanilla animals with the TFC counterpart under any spawning circumstances (ie: mob spawner, etc)."})
+        @Config.LangKey("config." + MOD_ID + ".general.forceReplaceVanillaAnimals")
+        public boolean forceReplaceVanillaAnimals = true;
+
         @Config.Comment("Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?")
         @Config.LangKey("config." + MOD_ID + ".general.peacefulDifficultyPassiveRegeneration")
         public boolean peacefulDifficultyPassiveRegeneration = false;
 
-        @Config.Comment("How fast sticks and rocks regenerate, in scale of days. Use 0 to disable it entirely.")
-        @Config.RangeDouble(min = 0, max = 1200)
-        @Config.LangKey("config." + MOD_ID + ".general.regenSticksRocks")
-        public double regenSticksRocks = 24;
+        @Config.Comment("A multiplier for passive exhaustion (how fast your hunger decays. 0 = hunger doesn't decay passively, higher values = faster decay.")
+        @Config.LangKey("config." + MOD_ID + ".general.foodPassiveExhaustionMultiplier")
+        @Config.RangeDouble(min = 0, max = 100)
+        public double foodPassiveExhaustionMultiplier = 1;
 
-        @Config.Comment("How fast plants regenerate, in scale of months. Use 0 to disable it entirely.")
-        @Config.RangeDouble(min = 0, max = 1200)
-        @Config.LangKey("config." + MOD_ID + ".general.regenPlants")
-        public double regenPlants = 3;
+        @Config.Comment("The minimum time for a chunk to be unoccupied for it's resources to begin to naturally regenerate. (In days). After this amount, regeneration will scale up based on how long since this duration, up to a maximum of 4x")
+        @Config.RangeInt(min = 12, max = 1000)
+        @Config.LangKey("config." + MOD_ID + ".general.worldRegenerationMinimumTime")
+        public int worldRegenerationMinimumTime = 24;
 
-        @Config.Comment("How fast wild crops and berry bushes regenerate, in scale of months. Use 0 to disable it entirely.")
-        @Config.RangeDouble(min = 0, max = 1200)
-        @Config.LangKey("config." + MOD_ID + ".general.regenCrops")
-        public double regenCrops = 12;
+        @Config.Comment("The weight for loose rocks and sticks regeneration in the world.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.worldRegenerationSticksRocksModifier")
+        public double worldRegenerationSticksRocksModifier = 0.5;
 
         @Config.Comment("The number of hours to which initial food decay will be synced. When a food item is dropped, it's initial expiration date will be rounded to the closest multiple of this (in hours).")
         @Config.RangeInt(min = 1, max = 48)
         @Config.LangKey("config." + MOD_ID + ".general.foodDecayStackTime")
         public int foodDecayStackTime = 6;
+
+        @Config.Comment("If true, hammer must be in offhand for chisel use. If false, hammer can be in offhand or toolbar.")
+        @Config.LangKey("config." + MOD_ID + ".general.requireHammerInOffHand")
+        public boolean requireHammerInOffHand = true;
+
+        @Config.Comment("Does the chisel have a delay on use?")
+        @Config.LangKey("config." + MOD_ID + ".general.chiselDelay")
+        public boolean chiselDelay = false;
 
         @Config.Comment("Add iron ore dictionary to wrought iron items?")
         @Config.LangKey("config." + MOD_ID + ".general.oreDictIron")
@@ -278,6 +327,53 @@ public class ConfigTFC
         @Config.Comment("The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.")
         @Config.LangKey("config." + MOD_ID + ".general.spawnProtectionMinY")
         public int spawnProtectionMinY = 100;
+
+        @Config.Comment("The time required for a charcoal pit to complete")
+        @Config.LangKey("config." + MOD_ID + ".general.charcoalPitTime")
+        public int charcoalPitTime = 18_000;
+
+        @Config.Comment("The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.")
+        @Config.LangKey("config." + MOD_ID + ".general.defaultMonthLength")
+        public int defaultMonthLength = 8;
+
+        @Config.Comment("Should animals became old and die?")
+        @Config.LangKey("config." + MOD_ID + ".general.enableAnimalAging")
+        public boolean enableAnimalAging = true;
+
+        @Config.Comment("How long until animals became old (in factor to adulthood)?")
+        @Config.RangeDouble(min = 1, max = 50)
+        @Config.LangKey("config." + MOD_ID + ".general.factorAnimalAging")
+        public double factorAnimalAging = 3;
+
+        @Config.Comment("Chance of animal dying (checked every in-game day) after it became old")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.chanceAnimalDeath")
+        public double chanceAnimalDeath = 0.0;
+
+        @Config.Comment("Log return rate of stone axes (eg: How efficiently it is)")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.stoneAxeLogReturnRate")
+        public double stoneAxeLogReturnRate = 0.6;
+
+        @Config.Comment("Enable a 3x3 crafting inventory via key binding. 0 = Disabled, 1 = Enabled, Always, 2 = Enabled, If the player has a crafting table in inventory. (ore dictionary name: 'workbench')")
+        @Config.RangeInt(min = 0, max = 2)
+        @Config.LangKey("config." + MOD_ID + ".general.inventoryCraftingTableMode")
+        public int inventoryCraftingTableMode = 0;
+
+        @Config.Comment("How much metal (units / mB) can a small vessel hold?")
+        @Config.RangeInt(min = 100)
+        @Config.LangKey("config." + MOD_ID + ".general.tankSmallVessel")
+        public int tankSmallVessel = 4000;
+
+        @Config.Comment("How much fluid (mB) can a barrel hold?")
+        @Config.RangeInt(min = 100)
+        @Config.LangKey("config." + MOD_ID + ".general.tankBarrel")
+        public int tankBarrel = 10000;
+
+        @Config.Comment("How much metal (units / mB) can a crucible hold?")
+        @Config.RangeInt(min = 100)
+        @Config.LangKey("config." + MOD_ID + ".general.tankCrucible")
+        public int tankCrucible = 3000;
     }
 
     public static class ClientCFG
@@ -306,6 +402,27 @@ public class ConfigTFC
         @Config.Comment("The color to render on top of rotten food. Express as a 265 bit color value: 0xFFFFFF = white, 0x000000 = black")
         @Config.LangKey("config." + MOD_ID + ".client.rottenFoodOverlayColor")
         public int rottenFoodOverlayColor = 0x88CC33;
+
+        @Config.Comment({"Disable TFC health bar and use vanilla instead?"})
+        @Config.LangKey("config." + MOD_ID + ".client.useVanillaHealth")
+        public boolean useVanillaHealth = false;
+
+        @Config.Comment({"If TFC health bar is enabled, use this health display modifier(ie: 20(vanilla)*50(modifier) = 1000HP).", "This is a display modifier only, internal health value is not affected!"})
+        @Config.LangKey("config." + MOD_ID + ".client.healthDisplayModifier")
+        @Config.RangeDouble(min = 0.5)
+        public double healthDisplayModifier = 50;
+
+        @Config.Comment({"If TFC health bar is enabled, use this format to display health (ie: %.0f / %.0f = 500 / 1000, %.1f / %.0f = 15.5 / 20).", "Please use float formats, otherwise TFC will ignore this and use the default!"})
+        @Config.LangKey("config." + MOD_ID + ".client.healthDisplayFormat")
+        public String healthDisplayFormat = "%.0f / %.0f";
+
+        @Config.Comment({"Disable TFC hunger bar and use vanilla instead?"})
+        @Config.LangKey("config." + MOD_ID + ".client.useVanillaHunger")
+        public boolean useVanillaHunger = false;
+
+        @Config.Comment({"Hide the thirst bar?"})
+        @Config.LangKey("config." + MOD_ID + ".client.hideThirstBar")
+        public boolean hideThirstBar = false;
     }
 
     public static class WorldCFG
@@ -319,26 +436,54 @@ public class ConfigTFC
         @Config.Comment("This controls the appearance of cyclic temperature regions. If you want an endless north / south with a temperate equator, set this to false.")
         @Config.LangKey("config." + MOD_ID + ".world.cyclicTemperatureRegions")
         @Config.RequiresMcRestart
-        public boolean cyclicTemperatureRegions = true;
+        public boolean cyclicTemperatureRegions = false;
 
         @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
         @Config.LangKey("config." + MOD_ID + ".world.debugWorldGen")
         @Config.RequiresWorldRestart
         public boolean debugWorldGen = false;
 
-        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents half the period of the wave = the distance between hot and cold bands, in blocks"})
+        @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents the period of the wave."})
         @Config.RangeInt(min = 1_000, max = 1_000_000)
         @Config.LangKey("config." + MOD_ID + ".world.latitudeTemperatureModifier")
-        public int latitudeTemperatureModifier = 20_000;
+        public int latitudeTemperatureModifier = 40_000;
 
         @Config.Comment("The rarity for clay pits to occur. On average 1 / N chunks will have a clay deposit, if the chunk in question is valid for clay to spawn.")
         @Config.RangeInt(min = 1)
         @Config.LangKey("config." + MOD_ID + ".world.clayRarity")
         public int clayRarity = 30;
 
+        @Config.Comment("The minimum rainfall in an area required for clay to spawn. By default this is the same threshold as dry grass.")
+        @Config.RangeInt(min = 1, max = 500)
+        @Config.LangKey("config." + MOD_ID + ".world.clayRainfallThreshold")
+        public int clayRainfallThreshold = 150;
+
         @Config.Comment("The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.")
         @Config.RangeInt(min = 1)
         @Config.LangKey("config." + MOD_ID + ".world.looseRocksFrequency")
         public int looseRocksFrequency = 18;
+
+        @Config.RequiresMcRestart
+        @Config.RangeDouble(min = 0.05, max = 0.4)
+        @Config.Comment("This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+        @Config.LangKey("config." + MOD_ID + ".world.rainfallSpreadFactor")
+        public double rainfallSpreadFactor = 0.13;
+
+        @Config.RequiresMcRestart
+        @Config.RangeDouble(min = 0.05, max = 0.4)
+        @Config.Comment("This controls how spread the flora diversity distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+        @Config.LangKey("config." + MOD_ID + ".world.floraDiversitySpreadFactor")
+        public double floraDiversitySpreadFactor = 0.16;
+
+        @Config.RequiresMcRestart
+        @Config.RangeDouble(min = 0.05, max = 0.4)
+        @Config.Comment("This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+        @Config.LangKey("config." + MOD_ID + ".world.floraDensitySpreadFactor")
+        public double floraDensitySpreadFactor = 0.16;
+
+        @Config.Comment("This controls how spread apart TFC animals spawn, in number of chunks. Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.RangeInt(min = 1)
+        @Config.LangKey("config." + MOD_ID + ".world.animalSpawnWeight")
+        public int animalSpawnWeight = 100;
     }
 }

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XRX",
+    "XBX",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "ingotWroughtIron"
+    },
+    "R": {
+      "item": "tfc:metal/bucket/red_steel",
+      "data": 0
+    },
+    "B": {
+      "item": "tfc:metal/bucket/blue_steel",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "minecraft:bucket",
+    "count": 1
+  }
+}

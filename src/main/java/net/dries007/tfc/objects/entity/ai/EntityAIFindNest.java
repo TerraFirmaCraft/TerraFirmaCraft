@@ -6,19 +6,18 @@
 package net.dries007.tfc.objects.entity.ai;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.objects.entity.animal.EntityAnimalOviparous;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.te.TENestBox;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 public class EntityAIFindNest extends EntityAIBase
@@ -47,10 +46,10 @@ public class EntityAIFindNest extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        if (theCreature instanceof EntityAnimalOviparous)
+        if (theCreature instanceof IAnimalTFC && ((IAnimalTFC) theCreature).getType() == IAnimalTFC.Type.OVIPAROUS)
         {
-            EntityAnimalOviparous ent = (EntityAnimalOviparous) theCreature;
-            return ent.isReadyToLayEggs() && this.getNearbyNest();
+            IAnimalTFC animal = (IAnimalTFC) theCreature;
+            return animal.isReadyForAnimalProduct() && this.getNearbyNest();
         }
         return false;
     }
@@ -88,34 +87,35 @@ public class EntityAIFindNest extends EntityAIBase
             if (this.currentTick > 200)
             {
                 //We never reached it in 10 secs, lets give up on this nest box
-                failureDepressionMap.put(nestPos, CalendarTFC.TOTAL_TIME.getTicks() + ICalendar.TICKS_IN_HOUR * 4);
+                failureDepressionMap.put(nestPos, theWorld.getTotalWorldTime() + ICalendar.TICKS_IN_HOUR * 4);
                 this.end = true;
             }
         }
         else
         {
             TENestBox te = Helpers.getTE(this.theWorld, nestPos, TENestBox.class);
-            if (te != null && theCreature instanceof EntityAnimalOviparous)
+            if (te != null && theCreature instanceof IAnimalTFC && ((IAnimalTFC) theCreature).getType() == IAnimalTFC.Type.OVIPAROUS)
             {
-                EntityAnimalOviparous ent = (EntityAnimalOviparous) theCreature;
+                IAnimalTFC animal = (IAnimalTFC) theCreature;
                 if (!te.hasBird())
                 {
-                    te.seatOnThis(ent);
+                    te.seatOnThis(theCreature);
                     this.currentTick = 0;
                 }
                 if (this.currentTick >= this.maxSittingTicks)
                 {
-                    NonNullList<ItemStack> eggs = ent.layEggs();
+                    List<ItemStack> eggs = animal.getProducts();
                     for (ItemStack egg : eggs)
                     {
                         te.insertEgg(egg);
                     }
+                    animal.setFertilized(false);
                     this.end = true;
                 }
-                else if (te.getBird() != ent)
+                else if (te.getBird() != theCreature)
                 {
                     //Used by another bird, give up on this one for now
-                    failureDepressionMap.put(nestPos, CalendarTFC.TOTAL_TIME.getTicks() + ICalendar.TICKS_IN_HOUR * 4);
+                    failureDepressionMap.put(nestPos, theWorld.getTotalWorldTime() + ICalendar.TICKS_IN_HOUR * 4);
                     this.end = true;
                 }
             }
@@ -148,7 +148,7 @@ public class EntityAIFindNest extends EntityAIBase
         if (failureDepressionMap.containsKey(pos))
         {
             long time = failureDepressionMap.get(pos);
-            if (time > CalendarTFC.TOTAL_TIME.getTicks())
+            if (time > world.getTotalWorldTime())
                 return false;
             else
                 failureDepressionMap.remove(pos);

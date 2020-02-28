@@ -19,9 +19,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-import net.dries007.tfc.api.recipes.AlloyRecipe;
-import net.dries007.tfc.api.recipes.LoomRecipe;
-import net.dries007.tfc.api.recipes.WeldingRecipe;
+import net.dries007.tfc.api.recipes.*;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
@@ -30,8 +28,8 @@ import net.dries007.tfc.api.recipes.quern.QuernRecipe;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.*;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.api.registries.TFCRegistryNames.*;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class Registries
@@ -59,6 +57,9 @@ public final class Registries
         newRegistry(BARREL_RECIPE, BarrelRecipe.class, false);
         newRegistry(LOOM_RECIPE, LoomRecipe.class, false);
         newRegistry(QUERN_RECIPE, QuernRecipe.class, false);
+        newRegistry(CHISEL_RECIPE, ChiselRecipe.class, false);
+        newRegistry(BLOOMERY_RECIPE, BloomeryRecipe.class, false);
+        newRegistry(BLAST_FURNACE_RECIPE, BlastFurnaceRecipe.class, false);
     }
 
     /**

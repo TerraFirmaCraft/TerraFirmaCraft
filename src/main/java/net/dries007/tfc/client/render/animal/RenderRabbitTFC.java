@@ -37,7 +37,7 @@ public class RenderRabbitTFC extends RenderLiving<EntityRabbitTFC>
     @Override
     public void doRender(EntityRabbitTFC rabbit, double par2, double par4, double par6, float par8, float par9)
     {
-        this.shadowSize = 0.15f + rabbit.getPercentToAdulthood() * 0.15f;
+        this.shadowSize = (float) (0.15f + rabbit.getPercentToAdulthood() * 0.15f);
         super.doRender(rabbit, par2, par4, par6, par8, par9);
     }
 

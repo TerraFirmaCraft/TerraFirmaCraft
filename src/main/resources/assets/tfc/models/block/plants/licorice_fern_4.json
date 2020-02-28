@@ -1,0 +1,107 @@
+{
+  "credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+  "textures": {
+    "0": "tfc:blocks/plants/licorice_fern/licorice_fern_3",
+    "1": "tfc:blocks/plants/licorice_fern/licorice_fern_2",
+    "particle": "tfc:blocks/plants/licorice_fern/licorice_fern_1"
+  },
+  "elements": [
+    {
+      "name": "cube",
+      "from": [
+        1,
+        8,
+        1
+      ],
+      "to": [
+        17,
+        8,
+        17
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#1",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            16,
+            16,
+            0,
+            0
+          ],
+          "texture": "#1",
+          "tintindex": 0
+        }
+      },
+      "rotation": {
+        "origin": [
+          9,
+          8,
+          9
+        ],
+        "axis": "x",
+        "angle": -22.5
+      }
+    },
+    {
+      "name": "cube",
+      "from": [
+        -1,
+        5,
+        1
+      ],
+      "to": [
+        15,
+        5,
+        17
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            16,
+            16,
+            0,
+            0
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      },
+      "rotation": {
+        "origin": [
+          7,
+          5,
+          9
+        ],
+        "axis": "x",
+        "angle": -22.5
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    }
+  }
+}

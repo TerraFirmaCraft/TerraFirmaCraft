@@ -26,7 +26,7 @@ import net.dries007.tfc.util.forge.ForgeRule;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
 {
@@ -93,6 +93,11 @@ public class GuiAnvilTFC extends GuiContainerTE<TEAnvilTFC>
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+
+        if (Helpers.isJEIEnabled())
+        {
+            drawTexturedModalRect(guiLeft + 26, guiTop + 24, 0, 192, 9, 14);
+        }
 
         // Draw the progress indicators
         int progress = tile.getWorkingProgress();

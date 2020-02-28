@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.entity;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.Entity;
@@ -44,6 +45,7 @@ public class EntitySeatOn extends Entity
         return this.pos;
     }
 
+    @Nullable
     public Entity getSittingEntity()
     {
         for (Entity ent : this.getPassengers())

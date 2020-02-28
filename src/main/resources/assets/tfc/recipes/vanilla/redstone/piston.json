@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "SXS",
+    "SRS"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "ingotWroughtIron"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "cobblestone"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "planksWood"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "minecraft:piston",
+    "count": 1
+  }
+}

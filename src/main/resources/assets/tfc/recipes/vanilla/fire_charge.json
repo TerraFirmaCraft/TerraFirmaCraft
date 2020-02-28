@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "tfc:firestarter"
+    },
+    [
+      {
+        "item": "minecraft:coal",
+        "data": 0
+      },
+      {
+        "item": "minecraft:coal",
+        "data": 1
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "gemCoal"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "gemLignite"
+      }
+    ]
+  ],
+  "result": {
+    "item": "minecraft:fire_charge",
+    "count": 3
+  }
+}

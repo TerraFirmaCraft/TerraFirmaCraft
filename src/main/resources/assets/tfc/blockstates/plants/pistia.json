@@ -1,0 +1,23 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:plants/pistia"
+        },
+        {
+          "model": "tfc:plants/pistia",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/pistia",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/pistia",
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

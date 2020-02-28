@@ -19,6 +19,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,6 +30,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.IFruitTree;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -45,6 +47,11 @@ public class BlockFruitTreeTrunk extends Block
     public static final PropertyBool WEST = PropertyBool.create("west");
     private static final Map<IFruitTree, BlockFruitTreeTrunk> MAP = new HashMap<>();
     private static final AxisAlignedBB TRUNK_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 1.0D, 0.6875D);
+    private static final AxisAlignedBB CONNECTION_N_AABB = new AxisAlignedBB(0.3125D, 0.375D, 0.0D, 0.0D, 0.625D, 0.3125D);
+    private static final AxisAlignedBB CONNECTION_S_AABB = new AxisAlignedBB(0.3125D, 0.375D, 0.6875D, 0.0D, 0.625D, 1.0D);
+    private static final AxisAlignedBB CONNECTION_W_AABB = new AxisAlignedBB(0.0D, 0.375D, 0.3125D, 0.3125D, 0.625D, 0.6875D);
+    private static final AxisAlignedBB CONNECTION_E_AABB = new AxisAlignedBB(0.6875D, 0.375D, 0.3125D, 1.0D, 0.625D, 0.6875D);
+
 
     public static BlockFruitTreeTrunk get(IFruitTree tree)
     {
@@ -61,6 +68,7 @@ public class BlockFruitTreeTrunk extends Block
         setTickRandomly(true);
         setHarvestLevel("axe", 0);
         setSoundType(SoundType.WOOD);
+        Blocks.FIRE.setFireInfo(this, 5, 20);
         this.tree = tree;
         setDefaultState(blockState.getBaseState().withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(EAST, false).withProperty(WEST, false));
     }
@@ -113,7 +121,25 @@ public class BlockFruitTreeTrunk extends Block
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return TRUNK_AABB;
+        state = getActualState(state, source, pos);
+        AxisAlignedBB finalAABB = TRUNK_AABB;
+        if (state.getValue(NORTH))
+        {
+            finalAABB = finalAABB.union(CONNECTION_N_AABB);
+        }
+        if (state.getValue(SOUTH))
+        {
+            finalAABB = finalAABB.union(CONNECTION_S_AABB);
+        }
+        if (state.getValue(WEST))
+        {
+            finalAABB = finalAABB.union(CONNECTION_W_AABB);
+        }
+        if (state.getValue(EAST))
+        {
+            finalAABB = finalAABB.union(CONNECTION_E_AABB);
+        }
+        return finalAABB;
     }
 
     @Override
@@ -256,6 +282,17 @@ public class BlockFruitTreeTrunk extends Block
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (!(worldIn.getBlockState(pos.down()).getBlock() instanceof BlockFruitTreeTrunk) && !BlocksTFC.isGrowableSoil(worldIn.getBlockState(pos.down())))
+        {
+            worldIn.destroyBlock(pos, false);
         }
     }
 

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XSX",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/lumber/palm"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/loom/palm",
+    "count": 1
+  }
+}

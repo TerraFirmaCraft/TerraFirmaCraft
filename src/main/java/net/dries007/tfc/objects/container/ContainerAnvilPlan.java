@@ -22,7 +22,7 @@ public class ContainerAnvilPlan extends ContainerTE<TEAnvilTFC> implements IButt
 {
     public ContainerAnvilPlan(InventoryPlayer playerInv, TEAnvilTFC tile)
     {
-        super(playerInv, tile, true);
+        super(playerInv, tile);
     }
 
     @Override

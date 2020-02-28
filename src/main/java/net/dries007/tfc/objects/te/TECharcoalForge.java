@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -12,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -23,13 +23,15 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 
 @ParametersAreNonnullByDefault
-public class TECharcoalForge extends TEInventory implements ITickable, ITileFields
+public class TECharcoalForge extends TEInventory implements ICalendarTickable, ITileFields
 {
     public static final int SLOT_FUEL_MIN = 0;
     public static final int SLOT_FUEL_MAX = 4;
@@ -46,6 +48,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     private int burnTicks; // Ticks remaining on the current item of fuel
     private float burnTemperature; // Temperature provided from the current item of fuel
     private int airTicks; // Ticks of air provided by bellows
+    private long lastPlayerTick; // Last player tick this forge was ticked (for purposes of catching up)
 
     public TECharcoalForge()
     {
@@ -58,11 +61,9 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         burnTemperature = 0;
         burnTicks = 0;
         airTicks = 0;
+        lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
 
-        for (int i = 0; i < cachedRecipes.length; i++)
-        {
-            cachedRecipes[i] = null;
-        }
+        Arrays.fill(cachedRecipes, null);
     }
 
     public void onAirIntake(int amount)
@@ -77,102 +78,166 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
     @Override
     public void update()
     {
-        if (world.isRemote) return;
-        IBlockState state = world.getBlockState(pos);
-        if (state.getValue(LIT))
-        {
-            // Update fuel
-            if (burnTicks > 0)
-            {
-                // Double fuel consumption if using bellows
-                burnTicks -= airTicks > 0 ? 2 : 1;
-            }
-            if (burnTicks <= 0)
-            {
-                // Consume fuel
-                ItemStack stack = inventory.getStackInSlot(SLOT_FUEL_MIN);
-                if (stack.isEmpty())
-                {
-                    world.setBlockState(pos, state.withProperty(LIT, false));
-                    burnTicks = 0;
-                    burnTemperature = 0;
-                }
-                else
-                {
-                    inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
-                    requiresSlotUpdate = true;
-                    Fuel fuel = FuelManager.getFuel(stack);
-                    burnTicks = fuel.getAmount();
-                    burnTemperature = fuel.getTemperature();
-                }
-            }
-        }
-        else if (burnTemperature > 0)
-        {
-            // If not lit, stop burning
-            burnTemperature = 0;
-            burnTicks = 0;
-        }
+        ICalendarTickable.super.update();
 
-        // Update bellows air
-        if (airTicks > 0)
+        if (!world.isRemote)
         {
-            airTicks--;
+            IBlockState state = world.getBlockState(pos);
+            if (state.getValue(LIT))
+            {
+                // Update fuel
+                if (burnTicks > 0)
+                {
+                    // Double fuel consumption if using bellows
+                    burnTicks -= airTicks > 0 ? 2 : 1;
+                }
+                if (burnTicks <= 0)
+                {
+                    // Consume fuel
+                    ItemStack stack = inventory.getStackInSlot(SLOT_FUEL_MIN);
+                    if (stack.isEmpty())
+                    {
+                        world.setBlockState(pos, state.withProperty(LIT, false));
+                        burnTicks = 0;
+                        burnTemperature = 0;
+                    }
+                    else
+                    {
+                        inventory.setStackInSlot(SLOT_FUEL_MIN, ItemStack.EMPTY);
+                        requiresSlotUpdate = true;
+                        Fuel fuel = FuelManager.getFuel(stack);
+                        burnTicks = fuel.getAmount();
+                        burnTemperature = fuel.getTemperature();
+                    }
+                }
+            }
+            else if (burnTemperature > 0)
+            {
+                // If not lit, stop burning
+                burnTemperature = 0;
+                burnTicks = 0;
+            }
+
+            // Update bellows air
+            if (airTicks > 0)
+            {
+                airTicks--;
+            }
+
+            // Always update temperature / cooking, until the fire pit is not hot anymore
+            if (temperature > 0 || burnTemperature > 0)
+            {
+                // Update temperature
+                float targetTemperature = burnTemperature + airTicks;
+                if (temperature != targetTemperature)
+                {
+                    float delta = (float) ConfigTFC.GENERAL.temperatureModifierHeating;
+                    temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, delta * (airTicks > 0 ? 2 : 1), delta * (airTicks > 0 ? 0.5f : 1));
+                }
+
+                // Provide heat to blocks that are one block above
+                Block blockUp = world.getBlockState(pos.up()).getBlock();
+                if (blockUp instanceof IHeatConsumerBlock)
+                {
+                    ((IHeatConsumerBlock) blockUp).acceptHeat(world, pos.up(), temperature);
+                }
+
+                // Update items in slots
+                // Loop through input + 2 output slots
+                for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
+                {
+                    ItemStack stack = inventory.getStackInSlot(i);
+                    IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        // Update temperature of item
+                        float itemTemp = cap.getTemperature();
+                        if (temperature > itemTemp)
+                        {
+                            CapabilityItemHeat.addTemp(cap);
+                        }
+
+                        // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
+                        handleInputMelting(stack, i);
+                    }
+                }
+            }
+
+            // This is here to avoid duplication glitches
+            if (requiresSlotUpdate)
+            {
+                cascadeFuelSlots();
+            }
+            markDirtyFast();
+        }
+    }
+
+    @Override
+    public void onCalendarUpdate(long deltaPlayerTicks)
+    {
+        IBlockState state = world.getBlockState(pos);
+        if (!state.getValue(LIT))
+        {
+            return;
+        }
+        // Consume fuel as dictated by the delta player ticks (don't simulate any input changes), and then extinguish
+        if (burnTicks > deltaPlayerTicks)
+        {
+            burnTicks -= deltaPlayerTicks;
+            return;
         }
         else
         {
-            airTicks = 0;
+            deltaPlayerTicks -= burnTicks;
+            burnTicks = 0;
         }
-
-        // Always update temperature / cooking, until the fire pit is not hot anymore
-        if (temperature > 0 || burnTemperature > 0)
+        // Need to consume fuel
+        requiresSlotUpdate = true;
+        for (int i = SLOT_FUEL_MIN; i <= SLOT_FUEL_MAX; i++)
         {
-            // Update temperature
-            float targetTemperature = burnTemperature + airTicks;
-            if (temperature < targetTemperature)
+            ItemStack fuelStack = inventory.getStackInSlot(i);
+            Fuel fuel = FuelManager.getFuel(fuelStack);
+            inventory.setStackInSlot(i, ItemStack.EMPTY);
+            if (fuel.getAmount() > deltaPlayerTicks)
             {
-                // Modifier for heating = 2x for bellows
-                temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                burnTicks = (int) (fuel.getAmount() - deltaPlayerTicks);
+                burnTemperature = fuel.getTemperature();
+                return;
             }
-            else if (temperature > targetTemperature)
+            else
             {
-                // Modifier for cooling = 0.5x for bellows
-                temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                deltaPlayerTicks -= fuel.getAmount();
+                burnTicks = 0;
             }
-
-            // Provide heat to blocks that are one block above
-            Block blockUp = world.getBlockState(pos.up()).getBlock();
-            if (blockUp instanceof IHeatConsumerBlock)
-            {
-                ((IHeatConsumerBlock) blockUp).acceptHeat(world, pos.up(), temperature);
-            }
-
-            // Update items in slots
-            // Loop through input + 2 output slots
+        }
+        if (deltaPlayerTicks > 0)
+        {
+            // Consumed all fuel, so extinguish and cool instantly
+            burnTemperature = 0;
+            temperature = 0;
             for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
             {
                 ItemStack stack = inventory.getStackInSlot(i);
                 IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
                 if (cap != null)
                 {
-                    // Update temperature of item
-                    float itemTemp = cap.getTemperature();
-                    if (temperature > itemTemp)
-                    {
-                        CapabilityItemHeat.addTemp(cap);
-                    }
-
-                    // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
-                    handleInputMelting(stack, i);
+                    cap.setTemperature(0f);
                 }
             }
+            world.setBlockState(pos, state.withProperty(LIT, false));
         }
+    }
 
-        // This is here to avoid duplication glitches
-        if (requiresSlotUpdate)
-        {
-            cascadeFuelSlots();
-        }
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
     }
 
     public void onCreate()
@@ -196,6 +261,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         burnTicks = nbt.getInteger("burnTicks");
         airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
+        lastPlayerTick = nbt.getLong("lastPlayerTick");
         super.readFromNBT(nbt);
 
         updateCachedRecipes();
@@ -209,6 +275,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         nbt.setInteger("burnTicks", burnTicks);
         nbt.setInteger("airTicks", airTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
+        nbt.setLong("lastPlayerTick", lastPlayerTick);
         return super.writeToNBT(nbt);
     }
 
@@ -278,6 +345,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
         {
             // Handle possible metal output
             FluidStack fluidStack = recipe.getOutputFluid(stack);
+            ItemStack outputStack = recipe.getOutputStack(stack);
             float itemTemperature = cap.getTemperature();
             if (fluidStack != null)
             {
@@ -312,7 +380,7 @@ public class TECharcoalForge extends TEInventory implements ITickable, ITileFiel
             }
 
             // Handle possible item output
-            inventory.setStackInSlot(startIndex, recipe.getOutputStack(stack));
+            inventory.setStackInSlot(startIndex, outputStack);
         }
     }
 

@@ -18,7 +18,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.dries007.tfc.objects.items.metal.*;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * todo: document API
@@ -37,6 +37,10 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     public static final Metal BISMUTH_BRONZE = Helpers.getNull();
     @GameRegistry.ObjectHolder("tfc:black_bronze")
     public static final Metal BLACK_BRONZE = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:blue_steel")
+    public static final Metal BLUE_STEEL = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:red_steel")
+    public static final Metal RED_STEEL = Helpers.getNull();
 
     private final Tier tier;
     private final float specificHeat;
@@ -194,12 +198,12 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         AXE_HEAD(true, 100, true, "X XXX", "    X", "     ", "    X", "X XXX"),
         HOE(true, 100, ItemMetalHoe::new),
         HOE_HEAD(true, 100, true, "XXXXX", "     ", "  XXX", "XXXXX"),
-        CHISEL(true, 100, ItemMetalTool::new),
+        CHISEL(true, 100, ItemMetalChisel::new),
         CHISEL_HEAD(true, 100, true, "X X", "X X", "X X", "X X", "X X"),
-        SWORD(true, 200, ItemMetalTool::new),
-        SWORD_BLADE(true, 200, true, "XXX  ", "XX   ", "X   X", "X  XX", " XXXX"),
-        MACE(true, 200, ItemMetalTool::new),
-        MACE_HEAD(true, 200, true, "XX XX", "X   X", "X   X", "X   X", "XX XX"),
+        SWORD(true, 100, (metal, itemType) -> new ItemMetalSword(metal)),
+        SWORD_BLADE(true, 100, true, "XXX  ", "XX   ", "X   X", "X  XX", " XXXX"),
+        MACE(true, 100, ItemMetalTool::new),
+        MACE_HEAD(true, 100, true, "XX XX", "X   X", "X   X", "X   X", "XX XX"),
         SAW(true, 100, ItemMetalTool::new),
         SAW_BLADE(true, 100, true, "XXX  ", "XX   ", "X   X", "    X", "  XXX"),
         JAVELIN(true, 100, ItemMetalJavelin::new),
@@ -223,7 +227,9 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         UNFINISHED_BOOTS(true, 200),
         BOOTS(true, 3, 400, ItemMetalArmor::new),
 
-        SHIELD(true, 400, ItemMetalShield::new);
+        SHIELD(true, 400, ItemMetalShield::new),
+
+        BUCKET(false, 200, ItemMetalBucket::new);
 
         public static Item create(Metal metal, ItemType type)
         {
@@ -272,6 +278,10 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             if (!metal.usable)
             {
                 return this == ItemType.INGOT;
+            }
+            else if (this == ItemType.BUCKET) //only these two metals for buckets
+            {
+                return metal == BLUE_STEEL || metal == RED_STEEL;
             }
             return !this.isToolItem() || metal.getToolMetal() != null;
         }

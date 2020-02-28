@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.loot.ApplySimpleSkill;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class LootTablesTFC
@@ -31,6 +31,9 @@ public class LootTablesTFC
     public static ResourceLocation ANIMALS_RABBIT;
     public static ResourceLocation ANIMALS_WOLF;
     public static ResourceLocation ANIMALS_HORSE;
+    public static ResourceLocation ANIMALS_ALPACA;
+    public static ResourceLocation ANIMALS_DUCK;
+    public static ResourceLocation ANIMALS_GOAT;
 
     public static void init()
     {
@@ -44,6 +47,9 @@ public class LootTablesTFC
         ANIMALS_RABBIT = register("animals/rabbit");
         ANIMALS_WOLF = register("animals/wolf");
         ANIMALS_HORSE = register("animals/horse");
+        ANIMALS_ALPACA = register("animals/alpaca");
+        ANIMALS_DUCK = register("animals/duck");
+        ANIMALS_GOAT = register("animals/goat");
 
         // Loot function for skill drop multiplier
         LootFunctionManager.registerFunction(new ApplySimpleSkill.Serializer(new ResourceLocation(MOD_ID, "apply_skill")));

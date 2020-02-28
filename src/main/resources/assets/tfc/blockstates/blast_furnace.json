@@ -1,0 +1,32 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "orientable",
+    "textures": {
+      "side": "tfc:blocks/devices/blast_furnace/side",
+      "top": "tfc:blocks/devices/blast_furnace/top",
+      "front": "tfc:blocks/devices/blast_furnace/side"
+    }
+  },
+  "variants": {
+    "normal": {
+      "transform": "forge:default-block"
+    },
+    "lit": {
+      "true": {
+        "textures": {
+          "side": "tfc:blocks/devices/blast_furnace/side_lit",
+          "top": "tfc:blocks/devices/blast_furnace/top_lit",
+          "front": "tfc:blocks/devices/blast_furnace/side_lit"
+        }
+      },
+      "false": {
+        "textures": {
+          "#side": "tfc:blocks/devices/blast_furnace/side",
+          "#top": "tfc:blocks/devices/blast_furnace/top",
+          "#front": "tfc:blocks/devices/blast_furnace/side"
+        }
+      }
+    }
+  }
+}

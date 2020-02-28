@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "tfc:blocks/devices/firepit/base",
+      "unlit": "tfc:blocks/devices/firepit/base",
+      "lit": "tfc:blocks/devices/firepit/base_lit"
+    },
+    "model": "tfc:firepit/unlit"
+  },
+  "variants": {
+    "lit": {
+      "true": {
+        "model": "tfc:firepit/lit"
+      },
+      "false": {
+        "model": "tfc:firepit/unlit"
+      }
+    },
+    "inventory": [
+      {
+        "transform": "forge:default-block",
+        "model": "tfc:firepit/lit"
+      }
+    ],
+    "normal": [
+      {}
+    ]
+  }
+}

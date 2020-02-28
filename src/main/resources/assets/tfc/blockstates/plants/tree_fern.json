@@ -1,0 +1,35 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "part": "lower|middle"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tree_fern_lower"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper|single"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tree_fern_upper"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper|single"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/tree_fern_upper",
+          "y": 180
+        }
+      ]
+    }
+  ]
+}

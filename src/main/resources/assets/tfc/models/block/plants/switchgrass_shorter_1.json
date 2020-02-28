@@ -1,0 +1,6 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/switchgrass/switchgrass_shorter_1"
+  }
+}

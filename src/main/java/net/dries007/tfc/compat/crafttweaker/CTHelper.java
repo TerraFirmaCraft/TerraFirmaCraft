@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.item.IngredientStack;
@@ -25,11 +24,8 @@ public final class CTHelper
         int amount = ingredient.getAmount();
         if (ingredient instanceof IngredientStack)
         {
-            //Yep, this is needed. This happens if user specifies ore dict with amount (ie: <ore:ingotSteel>*4).
-            //We can't map IngredientStack#getItems to ore dict otherwise
-            //That or we implement "IngredientMultipleItemStack"
             IngredientStack is = (IngredientStack) ingredient;
-            ingredient = ReflectionHelper.getPrivateValue(IngredientStack.class, is, "ingredient");
+            ingredient = (crafttweaker.api.item.IIngredient) is.getInternal();
         }
         if (ingredient instanceof IOreDictEntry)
         {

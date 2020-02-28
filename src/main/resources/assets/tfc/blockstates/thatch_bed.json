@@ -1,0 +1,47 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:thatch_bed_part",
+    "textures": {
+      "thatch": "tfc:blocks/thatch",
+      "particle": "tfc:blocks/thatch"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "part": {
+      "head": {
+        "model": "tfc:thatch_bed_part",
+        "textures": {
+          "side": "tfc:blocks/thatch_bed/head_side",
+          "end": "tfc:blocks/thatch_bed/head_end",
+          "top": "tfc:blocks/thatch_bed/head_top"
+        }
+      },
+      "foot": {
+        "model": "tfc:thatch_bed_part",
+        "textures": {
+          "side": "tfc:blocks/thatch_bed/foot_side",
+          "end": "tfc:blocks/thatch_bed/foot_end",
+          "top": "tfc:blocks/thatch_bed/foot_top"
+        }
+      }
+    },
+    "facing": {
+      "north": {
+        "y": 0
+      },
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": 270
+      },
+      "east": {
+        "y": 90
+      }
+    }
+  }
+}

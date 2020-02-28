@@ -12,14 +12,13 @@ import net.minecraftforge.items.IItemHandler;
 import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.objects.te.TECrucible;
 
-import static net.dries007.tfc.objects.te.TECrucible.SLOT_INPUT;
-import static net.dries007.tfc.objects.te.TECrucible.SLOT_OUTPUT;
+import static net.dries007.tfc.objects.te.TECrucible.*;
 
 public class ContainerCrucible extends ContainerTE<TECrucible>
 {
     public ContainerCrucible(InventoryPlayer playerInv, TECrucible tile)
     {
-        super(playerInv, tile, true, 26);
+        super(playerInv, tile, 55);
     }
 
     @Override
@@ -28,8 +27,16 @@ public class ContainerCrucible extends ContainerTE<TECrucible>
         IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         if (inventory != null)
         {
-            addSlotToContainer(new SlotCallback(inventory, SLOT_INPUT, 152, 7, tile));
-            addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT, 152, 90, tile));
+            for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
+            {
+                int line = i / 3;
+                int column = i % 3;
+                int x = 26 + column * 18;
+                int y = 82 + line * 18;
+                addSlotToContainer(new SlotCallback(inventory, i, x, y, tile));
+            }
+
+            addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT, 152, 100, tile));
         }
     }
 }

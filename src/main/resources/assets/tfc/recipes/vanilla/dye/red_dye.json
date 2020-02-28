@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:powder/hematite"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 1,
+    "count": 1
+  }
+}

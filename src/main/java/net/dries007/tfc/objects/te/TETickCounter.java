@@ -28,6 +28,12 @@ public class TETickCounter extends TEBase
         markDirty();
     }
 
+    public void reduceCounter(long amount)
+    {
+        lastUpdateTick += amount;
+        markDirty();
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {

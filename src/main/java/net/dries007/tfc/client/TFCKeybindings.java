@@ -16,11 +16,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.network.PacketCycleItemMode;
 import net.dries007.tfc.network.PacketOpenCraftingGui;
 import net.dries007.tfc.network.PacketPlaceBlockSpecial;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_NAME;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_NAME;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MOD_ID)
 @SideOnly(Side.CLIENT)
@@ -28,17 +29,20 @@ public class TFCKeybindings
 {
     private static final KeyBinding OPEN_CRAFTING_TABLE = new KeyBinding("tfc.key.craft", KeyConflictContext.IN_GAME, Keyboard.KEY_C, MOD_NAME);
     private static final KeyBinding PLACE_BLOCK = new KeyBinding("tfc.key.placeblock", KeyConflictContext.IN_GAME, Keyboard.KEY_V, MOD_NAME);
+    private static final KeyBinding CHANGE_ITEM_MODE = new KeyBinding("tfc.key.itemmode", KeyConflictContext.IN_GAME, Keyboard.KEY_M, MOD_NAME);
 
     public static void init()
     {
         ClientRegistry.registerKeyBinding(OPEN_CRAFTING_TABLE);
         ClientRegistry.registerKeyBinding(PLACE_BLOCK);
+        ClientRegistry.registerKeyBinding(CHANGE_ITEM_MODE);
     }
 
     @SideOnly(Side.CLIENT)
-    @SubscribeEvent()
-    public static void onKeyEvent(InputEvent.KeyInputEvent event)
+    @SubscribeEvent
+    public static void onKeyEvent(InputEvent event)
     {
+        // todo: move this to a button on the inventory GUI
         if (OPEN_CRAFTING_TABLE.isPressed())
         {
             TerraFirmaCraft.getNetwork().sendToServer(new PacketOpenCraftingGui());
@@ -46,6 +50,10 @@ public class TFCKeybindings
         if (PLACE_BLOCK.isPressed())
         {
             TerraFirmaCraft.getNetwork().sendToServer(new PacketPlaceBlockSpecial());
+        }
+        if (CHANGE_ITEM_MODE.isPressed())
+        {
+            TerraFirmaCraft.getNetwork().sendToServer(new PacketCycleItemMode());
         }
     }
 }

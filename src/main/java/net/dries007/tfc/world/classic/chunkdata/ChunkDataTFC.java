@@ -13,10 +13,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -26,13 +24,13 @@ import net.minecraftforge.registries.ForgeRegistry;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.NBTBuilder;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.classic.DataLayer;
+import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER2;
 import static net.dries007.tfc.world.classic.WorldTypeTFC.ROCKLAYER3;
@@ -84,6 +82,16 @@ public final class ChunkDataTFC
         return get(world, pos).getRainfall();
     }
 
+    public static float getFloraDensity(World world, BlockPos pos)
+    {
+        return get(world, pos).getFloraDensity();
+    }
+
+    public static float getFloraDiversity(World world, BlockPos pos)
+    {
+        return get(world, pos).getFloraDiversity();
+    }
+
     public static boolean isStable(World world, BlockPos pos)
     {
         return get(world, pos).getStabilityLayer(pos.getX() & 15, pos.getZ() & 15).valueInt == 0;
@@ -116,22 +124,22 @@ public final class ChunkDataTFC
     private final DataLayer[] stabilityLayer = new DataLayer[256]; // To be removed / replaced?
     private final int[] seaLevelOffset = new int[256];
     private boolean initialized = false;
-    private long lastUpdatePlants, lastUpdateCrops, lastUpdateRocks, lastUpdateSnow; //Used by regeneration
     private int fishPopulation = FISH_POP_MAX; // todo: Set this based on biome? temp? rng?
     private float rainfall;
     private float regionalTemp;
     private float avgTemp;
     private float floraDensity;
     private float floraDiversity;
-    private Set<Ore> chunkOres = new HashSet<>();
+    private Set<Vein> generatedVeins = new HashSet<>();
     private int chunkWorkage;
-    private long protectedTicks;
+    private long protectedTicks; // Used for hostile spawn protection. Starts negative, increases by players in the area
+    private long lastUpdateTick, lastUpdateYear; // The last time this chunk was updated by world regen
 
     /**
      * INTERNAL USE ONLY.
      * No need to mark as dirty, since this will only ever be called on worldgen, before the first chunk save.
      */
-    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity, long creationTick, long creationCalendarTick)
+    public void setGenerationData(int[] rockLayer1, int[] rockLayer2, int[] rockLayer3, DataLayer[] stabilityLayer, DataLayer[] drainageLayer, int[] seaLevelOffset, float rainfall, float regionalTemp, float avgTemp, float floraDensity, float floraDiversity)
     {
         this.initialized = true;
         System.arraycopy(rockLayer1, 0, this.rockLayer1, 0, 256);
@@ -147,33 +155,29 @@ public final class ChunkDataTFC
         this.floraDensity = floraDensity;
         this.floraDiversity = floraDiversity;
 
-        this.lastUpdateRocks = creationTick; //based on TOTAL_TIME
-
-        this.lastUpdateSnow = creationCalendarTick; //Based on CALENDAR_TIME
-        this.lastUpdateCrops = creationCalendarTick;
-        this.lastUpdatePlants = creationCalendarTick;
         this.chunkWorkage = 0;
+
+        this.lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
+        this.lastUpdateYear = CalendarTFC.CALENDAR_TIME.getTotalYears();
     }
 
     /**
      * Adds generated ores to this chunk list of ores
      * Should be used by ore vein generators to save in this chunk which ores generated here
      *
-     * @param ore the ore added by ore vein generator
+     * @param vein the ore added by ore vein generator
      */
-    public void addGeneratedOre(@Nonnull Ore ore)
+    public void markVeinGenerated(@Nonnull Vein vein)
     {
-        chunkOres.add(ore);
+        generatedVeins.add(vein);
     }
 
     /**
-     * Returns a set of ores that generated in this chunk
-     *
-     * @return the immutable set containing all ores that generated in this chunk
+     * @return the veins generated in this chunk. Note: the veins here are soft (non-functional) copies. They are used for data markers, not for actual world generation
      */
-    public Set<Ore> getChunkOres()
+    public Set<Vein> getGeneratedVeins()
     {
-        return ImmutableSet.copyOf(chunkOres);
+        return generatedVeins;
     }
 
     public boolean canWork(int amount)
@@ -194,46 +198,6 @@ public final class ChunkDataTFC
     public boolean isInitialized()
     {
         return initialized;
-    }
-
-    public long getLastUpdateRocks()
-    {
-        return lastUpdateRocks;
-    }
-
-    public void setLastUpdateRocks(long tick)
-    {
-        this.lastUpdateRocks = tick;
-    }
-
-    public long getLastUpdateSnow()
-    {
-        return lastUpdateSnow;
-    }
-
-    public void setLastUpdateSnow(long tick)
-    {
-        this.lastUpdateSnow = tick;
-    }
-
-    public long getLastUpdateCrops()
-    {
-        return lastUpdateCrops;
-    }
-
-    public void setLastUpdateCrops(long tick)
-    {
-        this.lastUpdateCrops = tick;
-    }
-
-    public long getLastUpdatePlants()
-    {
-        return lastUpdatePlants;
-    }
-
-    public void setLastUpdatePlants(long tick)
-    {
-        this.lastUpdatePlants = tick;
     }
 
     public Rock getRock1(BlockPos pos)
@@ -345,6 +309,26 @@ public final class ChunkDataTFC
         return getSpawnProtection() > 0;
     }
 
+    public long getLastUpdateTick()
+    {
+        return lastUpdateTick;
+    }
+
+    public void resetLastUpdateTick()
+    {
+        this.lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
+    }
+
+    public long getLastUpdateYear()
+    {
+        return lastUpdateYear;
+    }
+
+    public void resetLastUpdateYear()
+    {
+        this.lastUpdateYear = CalendarTFC.CALENDAR_TIME.getTotalYears();
+    }
+
     public List<Tree> getValidTrees()
     {
         return TFCRegistries.TREES.getValuesCollection().stream()
@@ -422,11 +406,6 @@ public final class ChunkDataTFC
             NBTTagCompound root = new NBTTagCompound();
             root.setBoolean("valid", true);
 
-            root.setLong("lastUpdateRocks", instance.lastUpdateRocks);
-            root.setLong("lastUpdateSnow", instance.lastUpdateSnow);
-            root.setLong("lastUpdateCrops", instance.lastUpdateCrops);
-            root.setLong("lastUpdatePlants", instance.lastUpdatePlants);
-
             root.setTag("rockLayer1", new NBTTagIntArray(instance.rockLayer1));
             root.setTag("rockLayer2", new NBTTagIntArray(instance.rockLayer2));
             root.setTag("rockLayer3", new NBTTagIntArray(instance.rockLayer3));
@@ -445,19 +424,15 @@ public final class ChunkDataTFC
 
             root.setInteger("chunkWorkage", instance.chunkWorkage);
             root.setLong("protectedTicks", instance.protectedTicks);
+            root.setLong("lastUpdateTick", instance.lastUpdateTick);
+            root.setLong("lastUpdateYear", instance.lastUpdateYear);
 
-            if (instance.chunkOres.size() > 0)
+            NBTTagList veinList = new NBTTagList();
+            for (Vein vein : instance.generatedVeins)
             {
-                NBTTagList oreList = new NBTTagList();
-                for (Ore ore : instance.chunkOres)
-                {
-                    NBTTagCompound nbtOre = new NBTTagCompound();
-                    //noinspection ConstantConditions
-                    nbtOre.setString("oreRegistry", ore.getRegistryName().toString());
-                    oreList.appendTag(nbtOre);
-                }
-                root.setTag("chunkOres", oreList);
+                veinList.appendTag(Vein.serialize(vein));
             }
+            root.setTag("veins", veinList);
 
             return root;
         }
@@ -473,11 +448,6 @@ public final class ChunkDataTFC
                 System.arraycopy(root.getIntArray("rockLayer3"), 0, instance.rockLayer3, 0, 256);
                 System.arraycopy(root.getIntArray("seaLevelOffset"), 0, instance.seaLevelOffset, 0, 256);
 
-                instance.lastUpdateRocks = root.getLong("lastUpdateRocks");
-                instance.lastUpdateSnow = root.getLong("lastUpdateSnow");
-                instance.lastUpdateCrops = root.getLong("lastUpdateCrops");
-                instance.lastUpdatePlants = root.getLong("lastUpdatePlants");
-
                 read(instance.stabilityLayer, root.getByteArray("stabilityLayer"));
                 read(instance.drainageLayer, root.getByteArray("drainageLayer"));
 
@@ -491,18 +461,15 @@ public final class ChunkDataTFC
 
                 instance.chunkWorkage = root.getInteger("chunkWorkage");
                 instance.protectedTicks = root.getLong("protectedTicks");
+                instance.lastUpdateTick = root.getLong("lastUpdateTick");
+                instance.lastUpdateYear = root.getLong("lastUpdateYear");
 
-                instance.chunkOres = new HashSet<>();
+                instance.generatedVeins = new HashSet<>();
 
-                if (root.hasKey("chunkOres"))
+                NBTTagList veinList = root.getTagList("veins", Constants.NBT.TAG_COMPOUND);
+                for (int i = 0; i < veinList.tagCount(); i++)
                 {
-                    NBTTagList oreList = root.getTagList("chunkOres", Constants.NBT.TAG_COMPOUND);
-                    for (int i = 0; i < oreList.tagCount(); i++)
-                    {
-                        NBTTagCompound nbtOre = oreList.getCompoundTagAt(i);
-                        Ore ore = TFCRegistries.ORES.getValue(new ResourceLocation(nbtOre.getString("oreRegistry")));
-                        instance.chunkOres.add(ore);
-                    }
+                    instance.generatedVeins.add(Vein.deserialize(veinList.getCompoundTagAt(i)));
                 }
 
                 instance.initialized = true;

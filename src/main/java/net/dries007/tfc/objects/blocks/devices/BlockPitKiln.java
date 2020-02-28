@@ -34,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
-import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 
@@ -160,8 +160,14 @@ public class BlockPitKiln extends Block implements ILightableBlock
             {
                 te.tryLight();
             }
-            // Make sure the sides are valid
-            te.assertValid();
+            if (!worldIn.isSideSolid(pos.down(), EnumFacing.UP))
+            {
+                if (te.isLit())
+                {
+                    te.emptyFuelContents();
+                }
+                worldIn.destroyBlock(pos, true);
+            }
         }
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
@@ -183,8 +189,8 @@ public class BlockPitKiln extends Block implements ILightableBlock
         TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
         if (te != null)
         {
-            // Skip interacting if using a fire starter
-            if (playerIn.getHeldItemMainhand().getItem() == ItemsTFC.FIRESTARTER || playerIn.getHeldItemOffhand().getItem() == ItemsTFC.FIRESTARTER)
+            // Skip interacting if using a fire starter (wait for fire in #neighborChanged)
+            if (ItemFireStarter.canIgnite(playerIn.getHeldItem(hand)))
             {
                 return false;
             }

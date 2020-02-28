@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.dries007.tfc.api.registries.TFCRegistryEvent;
 import net.dries007.tfc.api.types.Plant;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -161,7 +161,7 @@ public final class DefaultPlants
             new Plant(VRIESEA, Plant.PlantType.EPIPHYTE, new int[] {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}, false, false, 0f, 40f, 15f, 50f, 300f, 500f, 4, 11, 1, 0.8D, null),
             new Plant(WATER_CANNA, Plant.PlantType.FLOATING, new int[] {0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 0}, true, false, 18f, 30f, -12f, 36f, 150f, 500f, 9, 15, 1, 1, 1, 0.8D, null),
             new Plant(WATER_LILY, Plant.PlantType.FLOATING, new int[] {5, 5, 6, 0, 1, 2, 2, 2, 2, 3, 4, 5}, false, false, 15f, 30f, -34f, 38f, 0f, 500f, 4, 15, 1, 1, 1, 0.8D, null),
-            new Plant(YUCCA, Plant.PlantType.DESERT, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3}, true, false, 20f, 30f, -34f, 36f, 0f, 75f, 9, 15, 1, 0.8D, null)
+            new Plant(YUCCA, Plant.PlantType.DESERT, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3}, false, false, 20f, 30f, -34f, 36f, 0f, 75f, 9, 15, 1, 0.8D, null)
         );
     }
 }

@@ -5,18 +5,27 @@
 
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityWolfTFC;
 
+/**
+ * Need this for not insta-growing
+ * This is a copy paste from vanilla, changing only the re-scale while animal is growing
+ */
 @SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelWolfTFC extends ModelBase
 {
     /**
@@ -54,8 +63,6 @@ public class ModelWolfTFC extends ModelBase
 
     public ModelWolfTFC()
     {
-        float f = 0.0F;
-        float f1 = 13.5F;
         this.wolfHeadMain = new ModelRenderer(this, 0, 0);
         this.wolfHeadMain.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, 0.0F);
         this.wolfHeadMain.setRotationPoint(-1.0F, 13.5F, -7.0F);
@@ -88,41 +95,33 @@ public class ModelWolfTFC extends ModelBase
     /**
      * Sets the models various rotation angles then renders the model.
      */
+    @Override
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 
-        if (this.isChild)
+        if (((EntityAnimal) entityIn).isChild())
         {
-            float f = 2.0F;
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(0.0F, 5.0F * scale, 2.0F * scale);
-            this.wolfHeadMain.renderWithRotation(scale);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(0.5F, 0.5F, 0.5F);
-            GlStateManager.translate(0.0F, 24.0F * scale, 0.0F);
-            this.wolfBody.render(scale);
-            this.wolfLeg1.render(scale);
-            this.wolfLeg2.render(scale);
-            this.wolfLeg3.render(scale);
-            this.wolfLeg4.render(scale);
-            this.wolfTail.renderWithRotation(scale);
-            this.wolfMane.render(scale);
-            GlStateManager.popMatrix();
+            double ageScale = 1;
+            double percent = 1;
+            if (entityIn instanceof IAnimalTFC)
+            {
+                percent = ((IAnimalTFC) entityIn).getPercentToAdulthood();
+                ageScale = 1 / (2.0D - percent);
+            }
+            GlStateManager.scale(ageScale, ageScale, ageScale);
+            GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
-        else
-        {
-            this.wolfHeadMain.renderWithRotation(scale);
-            this.wolfBody.render(scale);
-            this.wolfLeg1.render(scale);
-            this.wolfLeg2.render(scale);
-            this.wolfLeg3.render(scale);
-            this.wolfLeg4.render(scale);
-            this.wolfTail.renderWithRotation(scale);
-            this.wolfMane.render(scale);
-        }
+
+        this.wolfHeadMain.renderWithRotation(scale);
+        this.wolfBody.render(scale);
+        this.wolfLeg1.render(scale);
+        this.wolfLeg2.render(scale);
+        this.wolfLeg3.render(scale);
+        this.wolfLeg4.render(scale);
+        this.wolfTail.renderWithRotation(scale);
+        this.wolfMane.render(scale);
     }
 
     /**
@@ -130,6 +129,7 @@ public class ModelWolfTFC extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
+    @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
@@ -142,6 +142,7 @@ public class ModelWolfTFC extends ModelBase
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
+    @Override
     public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime)
     {
         EntityWolfTFC entitywolf = (EntityWolfTFC) entitylivingbaseIn;

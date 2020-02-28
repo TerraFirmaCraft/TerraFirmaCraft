@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "RRR"
+  ],
+  "key": {
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "stonePolished"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "stone"
+    }
+  },
+  "result": {
+    "item": "tfc:quern",
+    "count": 1
+  }
+}

@@ -19,7 +19,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.dries007.tfc.api.util.ITreeGenerator;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class Tree extends IForgeRegistryEntry.Impl<Tree>
 {
@@ -108,12 +108,13 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         return false;
     }
 
-    public void makeTree(World world, BlockPos pos, Random rand, boolean isWorldGen)
+    public boolean makeTree(World world, BlockPos pos, Random rand, boolean isWorldGen)
     {
         if (!world.isRemote)
         {
-            makeTree(((WorldServer) world).getStructureTemplateManager(), world, pos, rand, isWorldGen);
+            return makeTree(((WorldServer) world).getStructureTemplateManager(), world, pos, rand, isWorldGen);
         }
+        return false;
     }
 
     public boolean isValidLocation(float temp, float rain, float density)

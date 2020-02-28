@@ -59,7 +59,7 @@ public class TESRCrucible extends TileEntitySpecialRenderer<TECrucible>
         BufferBuilder buffer = Tessellator.getInstance().getBuffer();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
-        double height = 0.140625D + (0.75D - 0.015625D) * amount / TECrucible.CRUCIBLE_MAX_METAL_FLUID;
+        double height = 0.140625D + (0.75D - 0.015625D) * amount / te.getAlloy().getMaxAmount();
 
         buffer.pos(0.1875D, height, 0.1875D).tex(sprite.getInterpolatedU(3), sprite.getInterpolatedV(3)).normal(0, 0, 1).endVertex();
         buffer.pos(0.1875D, height, 0.8125D).tex(sprite.getInterpolatedU(3), sprite.getInterpolatedV(13)).normal(0, 0, 1).endVertex();

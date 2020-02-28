@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:rock/limestone"
+    }
+  },
+  "result": {
+    "item": "tfc:cobble/limestone",
+    "count": 1
+  }
+}

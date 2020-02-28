@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    " X "
+  ],
+  "key": {
+    "X": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "lumber"
+      }
+    ]
+  },
+  "result": {
+    "item": "tfc:wooden_bucket",
+    "count": 1,
+    "data": 0
+  }
+}

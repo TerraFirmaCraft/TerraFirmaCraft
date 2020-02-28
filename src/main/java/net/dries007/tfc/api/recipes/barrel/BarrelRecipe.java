@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.objects.te.TEBarrel;
 
 public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
 {
@@ -58,6 +58,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
 
     public boolean isValidInputInstant(ItemStack inputStack, @Nullable FluidStack inputFluid)
     {
+        // Used on instant recipes, to verify that they only convert if there exists enough items to fully convert the fluid
         return inputFluid == null || inputFluid.amount / this.inputFluid.getAmount() <= inputStack.getCount() / this.inputStack.getAmount();
     }
 
@@ -107,7 +108,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         if (outputFluid != null)
         {
             // Ignore input and replace with output
-            int outputAmount = Math.min(multiplier * outputFluid.amount, TEBarrel.TANK_CAPACITY);
+            int outputAmount = Math.min(multiplier * outputFluid.amount, ConfigTFC.GENERAL.tankBarrel);
             return new FluidStack(outputFluid.getFluid(), outputAmount);
         }
         else
@@ -193,11 +194,22 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         }
     }
 
-    private int getMultiplier(FluidStack inputFluid, ItemStack inputStack)
+    protected int getMultiplier(FluidStack inputFluid, ItemStack inputStack)
     {
         if (isValidInput(inputFluid, inputStack))
         {
-            return Math.min(inputFluid.amount / this.inputFluid.getAmount(), inputStack.getCount() / this.inputStack.getAmount());
+            if (this.inputFluid.getAmount() == 0)
+            {
+                return inputStack.getCount() / this.inputStack.getAmount();
+            }
+            else if (this.inputStack.getAmount() == 0)
+            {
+                return inputFluid.amount / this.inputFluid.getAmount();
+            }
+            else
+            {
+                return Math.min(inputFluid.amount / this.inputFluid.getAmount(), inputStack.getCount() / this.inputStack.getAmount());
+            }
         }
         return 0;
     }

@@ -5,24 +5,27 @@
 
 package net.dries007.tfc;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumActionResult;
@@ -37,6 +40,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -61,8 +66,9 @@ import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
-import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.forge.ForgeableHeatableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
@@ -70,6 +76,9 @@ import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.capability.player.PlayerDataHandler;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.ICreatureTFC;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketCalendarUpdate;
@@ -78,18 +87,20 @@ import net.dries007.tfc.network.PacketPlayerDataUpdate;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.devices.BlockQuern;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
+import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
-import net.dries007.tfc.objects.entity.animal.IAnimalTFC;
+import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.MonsterEquipment;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -116,16 +127,31 @@ public final class CommonEventHandler
     }
 
     /**
-     * Make leaves drop sticks
+     * Update harvesting tool before it takes damage
      */
+    @SubscribeEvent
+    public static void breakEvent(BlockEvent.BreakEvent event)
+    {
+        final EntityPlayer player = event.getPlayer();
+        if (player != null)
+        {
+            IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (cap != null)
+            {
+                cap.setHarvestingTool(player.getHeldItemMainhand());
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
     {
-        final EntityPlayer harvester = event.getHarvester();
-        final ItemStack heldItem = harvester == null ? ItemStack.EMPTY : harvester.getHeldItemMainhand();
+        final EntityPlayer player = event.getHarvester();
+        final ItemStack heldItem = player == null ? ItemStack.EMPTY : player.getHeldItemMainhand();
         final IBlockState state = event.getState();
         final Block block = state.getBlock();
 
+        // Make leaves drop sticks
         if (!event.isSilkTouching() && block instanceof BlockLeaves)
         {
             // Done via event so it applies to all leaves.
@@ -137,6 +163,26 @@ public final class CommonEventHandler
             if (Constants.RNG.nextFloat() < chance)
             {
                 event.getDrops().add(new ItemStack(Items.STICK));
+            }
+        }
+
+        // Apply durability modifier on tools
+        if (player != null)
+        {
+            ItemStack tool = ItemStack.EMPTY;
+            IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (cap != null)
+            {
+                tool = cap.getHarvestingTool();
+            }
+            if (!tool.isEmpty())
+            {
+                float skillModifier = SmithingSkill.getSkillBonus(tool, SmithingSkill.Type.TOOLS) / 2.0F;
+                if (skillModifier > 0 && Constants.RNG.nextFloat() < skillModifier)
+                {
+                    // Up to 50% negating damage, for double durability
+                    player.setHeldItem(EnumHand.MAIN_HAND, tool);
+                }
             }
         }
     }
@@ -233,6 +279,19 @@ public final class CommonEventHandler
     public static void onLivingHurt(LivingHurtEvent event)
     {
         float actualDamage = event.getAmount();
+        // Add damage bonus for weapons
+        Entity entity = event.getSource().getTrueSource();
+        if (entity instanceof EntityLivingBase)
+        {
+            EntityLivingBase damager = (EntityLivingBase) entity;
+            ItemStack stack = damager.getHeldItemMainhand();
+            float skillModifier = SmithingSkill.getSkillBonus(stack, SmithingSkill.Type.WEAPONS);
+            if (skillModifier > 0)
+            {
+                // Up to 1.5x damage
+                actualDamage *= 1 + (skillModifier / 2.0F);
+            }
+        }
         // Modifier for damage type + damage resistance
         actualDamage *= DamageType.getModifier(event.getSource(), event.getEntityLiving());
         if (event.getEntityLiving() instanceof EntityPlayer)
@@ -269,12 +328,12 @@ public final class CommonEventHandler
                 event.addCapability(CapabilityItemSize.KEY, sizeHandler);
                 if (sizeHandler instanceof IItemSize)
                 {
-                    // Only modify the stack size if we're shrinking the size (i.e. don't make unstackable items stackable
+                    // Only modify the stack size if the item was stackable in the first place
+                    // Note: this is called in many cases BEFORE all custom capabilities are added.
                     int prevStackSize = stack.getMaxStackSize();
-                    int replacedStackSize = ((IItemSize) sizeHandler).getStackSize(stack);
-                    if (prevStackSize > replacedStackSize)
+                    if (prevStackSize != 1)
                     {
-                        item.setMaxStackSize(replacedStackSize);
+                        item.setMaxStackSize(((IItemSize) sizeHandler).getStackSize(stack));
                     }
                 }
             }
@@ -294,15 +353,35 @@ public final class CommonEventHandler
                 }
             }
 
-            // Forge / Heat. Try forge first, because it's more specific
+            // Forge / Metal / Heat. Try forge first, because it's more specific
             ICapabilityProvider forgeHandler = CapabilityForgeable.getCustomForgeable(stack);
             boolean isForgeable = false;
+            boolean isHeatable = false;
             if (forgeHandler != null)
             {
                 isForgeable = true;
                 event.addCapability(CapabilityForgeable.KEY, forgeHandler);
+                isHeatable = forgeHandler instanceof IItemHeat;
             }
-            else
+            // Metal
+            ICapabilityProvider metalCapability = CapabilityMetalItem.getCustomMetalItem(stack);
+            if (metalCapability != null)
+            {
+                event.addCapability(CapabilityMetalItem.KEY, metalCapability);
+                if (!isForgeable)
+                {
+                    // Add a forgeable capability for this item, if none is found
+                    IMetalItem cap = (IMetalItem) metalCapability;
+                    Metal metal = cap.getMetal(stack);
+                    if (metal != null)
+                    {
+                        event.addCapability(CapabilityForgeable.KEY, new ForgeableHeatableHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
+                        isHeatable = true;
+                    }
+                }
+            }
+            // If one of the above is also heatable, skip this
+            if (!isHeatable)
             {
                 ICapabilityProvider heatHandler = CapabilityItemHeat.getCustomHeat(stack);
                 if (heatHandler != null)
@@ -325,23 +404,6 @@ public final class CommonEventHandler
             if (stack.getItem() == Items.EGG)
             {
                 event.addCapability(CapabilityEgg.KEY, new EggHandler());
-            }
-
-            // Metal
-            ICapabilityProvider metalCapability = CapabilityMetalItem.getCustomMetalItem(stack);
-            if (metalCapability != null)
-            {
-                event.addCapability(CapabilityMetalItem.KEY, metalCapability);
-                if (!isForgeable)
-                {
-                    // Add a forgeable capability for this item, if none is found
-                    IMetalItem cap = (IMetalItem) metalCapability;
-                    Metal metal = cap.getMetal(stack);
-                    if (metal != null)
-                    {
-                        event.addCapability(CapabilityForgeable.KEY, new ForgeableHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
-                    }
-                }
             }
         }
     }
@@ -372,10 +434,7 @@ public final class CommonEventHandler
         {
             // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.player;
-            player.inventoryContainer.addListener(new CapabilityContainerListener(player));
-
-            // World Data (Calendar) Sync Handler
-            CalendarTFC.INSTANCE.updatePlayer(player);
+            CapabilityContainerListener.addTo(player.inventoryContainer, player);
 
             // Food Stats
             FoodStats originalStats = player.getFoodStats();
@@ -405,34 +464,13 @@ public final class CommonEventHandler
             {
                 TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
             }
-
-            // Check total players and reset calendar time ticking
-            int players = event.player.world.playerEntities.size();
-            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, players > 0);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
-    {
-        if (event.player instanceof EntityPlayerMP)
-        {
-            // Check total players and reset calendar time ticking
-            List<EntityPlayer> players = event.player.world.playerEntities;
-            int playerCount = players.size();
-            // The player logging out doesn't count
-            if (players.contains(event.player))
-            {
-                playerCount--;
-            }
-            CalendarTFC.INSTANCE.setArePlayersLoggedOn(event.player.world, playerCount > 0);
         }
     }
 
     /**
      * Fired on server only when a player dies and respawns, or travels through dimensions
      *
-     * @param event {@link net.minecraftforge.event.entity.player.PlayerEvent.Clone}
+     * @param event {@link PlayerEvent.PlayerRespawnEvent event}
      */
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
@@ -441,7 +479,7 @@ public final class CommonEventHandler
         {
             // Capability Sync Handler
             final EntityPlayerMP player = (EntityPlayerMP) event.player;
-            player.inventoryContainer.addListener(new CapabilityContainerListener(player));
+            CapabilityContainerListener.addTo(player.inventoryContainer, player);
 
             // Food Stats
             FoodStats originalStats = event.player.getFoodStats();
@@ -450,35 +488,100 @@ public final class CommonEventHandler
                 event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
                 TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
             }
+
+            // Skills
+            IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (skills != null)
+            {
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
+            }
         }
     }
 
+    /**
+     * Fired on server only when a player dies and respawns.
+     * Used to copy skill level before respawning since we need the original (AKA the body) player entity
+     *
+     * @param event {@link net.minecraftforge.event.entity.player.PlayerEvent.Clone}
+     */
+    @SubscribeEvent
+    public static void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
+    {
+        if (event.getEntityPlayer() instanceof EntityPlayerMP)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+
+            // Skills
+            IPlayerData newSkills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            IPlayerData originalSkills = event.getOriginal().getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (newSkills != null && originalSkills != null)
+            {
+                newSkills.deserializeNBT(originalSkills.serializeNBT());
+                // To properly sync, we need to use PlayerRespawnEvent
+            }
+        }
+    }
+
+    /*
+     * Fired on server, sync capabilities to client whenever player changes dimension.
+     */
+    @SubscribeEvent
+    public static void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
+    {
+        if (event.player instanceof EntityPlayerMP)
+        {
+            // Capability Sync Handler
+            final EntityPlayerMP player = (EntityPlayerMP) event.player;
+            CapabilityContainerListener.addTo(player.inventoryContainer, player);
+
+            // Food Stats
+            FoodStats originalStats = event.player.getFoodStats();
+            if (!(originalStats instanceof FoodStatsTFC))
+            {
+                event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
+                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
+            }
+
+            // Skills
+            IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (skills != null)
+            {
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
+            }
+        }
+    }
+
+    /**
+     * Only fired on server
+     */
     @SubscribeEvent
     public static void onContainerOpen(PlayerContainerEvent.Open event)
     {
         if (event.getEntityPlayer() instanceof EntityPlayerMP)
         {
             // Capability Sync Handler
-            final EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
-            event.getContainer().addListener(new CapabilityContainerListener(player));
+            CapabilityContainerListener.addTo(event.getContainer(), (EntityPlayerMP) event.getEntityPlayer());
         }
     }
 
     @SubscribeEvent
     public static void onLivingSpawnEvent(LivingSpawnEvent.CheckSpawn event)
     {
-        // Check creature spawning
-        if (event.getEntity() instanceof IAnimalTFC)
+        // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
+        if (event.getEntity() instanceof ICreatureTFC)
         {
-            IAnimalTFC animal = (IAnimalTFC) event.getEntity();
+            ICreatureTFC creature = (ICreatureTFC) event.getEntity();
             World world = event.getWorld();
             BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
 
             float rainfall = ChunkDataTFC.getRainfall(world, pos);
             float temperature = ClimateTFC.getAvgTemp(world, pos);
+            float floraDensity = ChunkDataTFC.getFloraDensity(world, pos);
+            float floraDiversity = ChunkDataTFC.getFloraDiversity(world, pos);
             Biome biome = world.getBiome(pos);
 
-            if (!animal.isValidSpawnConditions(biome, temperature, rainfall))
+            // We don't roll spawning again since vanilla is handling it
+            if (creature.getSpawnWeight(biome, temperature, rainfall, floraDensity, floraDiversity) <= 0)
             {
                 event.setResult(Event.Result.DENY);
             }
@@ -503,15 +606,48 @@ public final class CommonEventHandler
     }
 
     @SubscribeEvent
+    public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
+    {
+        Entity entity = event.getEntity();
+        // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
+        if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
+        {
+            Entity TFCReplacement = Helpers.getTFCReplacement(entity);
+            if (TFCReplacement != null)
+            {
+                TFCReplacement.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
+                event.getWorld().spawnEntity(TFCReplacement); // Fires another spawning event for the TFC replacement
+            }
+            event.setCanceled(true); // Cancel the vanilla spawn
+        }
+        // Set equipment to some mobs
+        MonsterEquipment equipment = MonsterEquipment.get(entity);
+        if (equipment != null)
+        {
+            entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, equipment.getWeapon(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, equipment.getHelmet(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, equipment.getChestplate(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, equipment.getLeggings(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.FEET, equipment.getBoots(Constants.RNG));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onProjectileImpactEvent(ProjectileImpactEvent.Throwable event)
+    {
+        if (event.getThrowable() instanceof EntityEgg)
+        {
+            // Only way of preventing EntityEgg from spawning a chicken is to cancel the impact altogether
+            // Side effect: The impact will not hurt entities
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
     public static void onGameRuleChange(GameRuleChangeEvent event)
     {
         GameRules rules = event.getRules();
-        if ("doDaylightCycle".equals(event.getRuleName()))
-        {
-            // This is only called on server, so it needs to sync to client
-            CalendarTFC.INSTANCE.setDoDaylightCycle(event.getServer().getEntityWorld(), rules.getBoolean("doDaylightCycle"));
-        }
-        else if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
+        if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
         {
             // Natural regeneration should be disabled, allows TFC to have custom regeneration
             event.getRules().setOrCreateGameRule("naturalRegeneration", "false");
@@ -528,7 +664,7 @@ public final class CommonEventHandler
         {
             // Calendar Sync / Initialization
             CalendarWorldData data = CalendarWorldData.get(world);
-            CalendarTFC.INSTANCE.reset(data.getCalendar());
+            CalendarTFC.INSTANCE.resetTo(data.getCalendar());
             TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.INSTANCE));
         }
 
@@ -555,13 +691,14 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
+        // Since cobble is a gravity block, placing it can lead to world crashes, so we avoid doing that and place rhyolite instead
         if (event.getNewState().getBlock() == Blocks.STONE)
         {
-            event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState());
+            event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
         }
-        else if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
+        if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
         {
-            event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.COBBLE).getDefaultState());
+            event.setNewState(BlockRockVariant.get(Rock.RHYOLITE, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
         }
     }
 
@@ -572,9 +709,9 @@ public final class CommonEventHandler
         {
             // Add spawn protection to surrounding chunks
             BlockPos basePos = new BlockPos(event.player);
-            for (int i = -1; i <= 1; i++)
+            for (int i = -2; i <= 2; i++)
             {
-                for (int j = -1; j <= 1; j++)
+                for (int j = -2; j <= 2; j++)
                 {
                     BlockPos chunkPos = basePos.add(16 * i, 0, 16 * j);
                     ChunkDataTFC data = ChunkDataTFC.get(event.player.getEntityWorld(), chunkPos);
@@ -582,5 +719,62 @@ public final class CommonEventHandler
                 }
             }
         }
+
+        if (event.phase == TickEvent.Phase.START && !event.player.isCreative() && event.player.ticksExisted % 20 == 0)
+        {
+            // Update overburdened state
+            int hugeHeavyCount = countPlayerOverburdened(event.player.inventory);
+            if (hugeHeavyCount >= 1)
+            {
+                // Add extra exhaustion from carrying a heavy item
+                // This is equivalent to an additional 25% of passive exhaustion
+                event.player.addExhaustion(FoodStatsTFC.PASSIVE_EXHAUSTION * 20 * 0.25f / 0.4f);
+            }
+            if (hugeHeavyCount >= 2)
+            {
+                // Player is barely able to move
+                event.player.addPotionEffect(new PotionEffect(PotionEffectsTFC.OVERBURDENED, 25, 125, false, false));
+            }
+        }
+    }
+
+    private static int countPlayerOverburdened(InventoryPlayer inventory)
+    {
+        // This is just optimized (probably uselessly, but whatever) for use in onPlayerTick
+        int hugeHeavyCount = 0;
+        for (ItemStack stack : inventory.mainInventory)
+        {
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            {
+                hugeHeavyCount++;
+                if (hugeHeavyCount >= 2)
+                {
+                    return hugeHeavyCount;
+                }
+            }
+        }
+        for (ItemStack stack : inventory.armorInventory)
+        {
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            {
+                hugeHeavyCount++;
+                if (hugeHeavyCount >= 2)
+                {
+                    return hugeHeavyCount;
+                }
+            }
+        }
+        for (ItemStack stack : inventory.offHandInventory)
+        {
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            {
+                hugeHeavyCount++;
+                if (hugeHeavyCount >= 2)
+                {
+                    return hugeHeavyCount;
+                }
+            }
+        }
+        return hugeHeavyCount;
     }
 }

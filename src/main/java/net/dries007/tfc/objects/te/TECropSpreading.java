@@ -8,12 +8,13 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.dries007.tfc.util.agriculture.Crop;
+import net.dries007.tfc.objects.blocks.agriculture.BlockCropSpreading;
 
 @ParametersAreNonnullByDefault
-public class TECropSpreading extends TETickCounter
+public class TECropSpreading extends TECropBase
 {
     private int maxGrowthStage; // The max value this crop can grow to
     private int baseAge; // The current age, including all spreading attempts
@@ -46,11 +47,13 @@ public class TECropSpreading extends TETickCounter
 
     public void onPlaced()
     {
+        IBlockState state = world.getBlockState(pos);
+        BlockCropSpreading block = (BlockCropSpreading) state.getBlock();
         // Calculate initial max growth stage
-        maxGrowthStage = 3 + world.getBlockState(pos).getValue(Crop.STAGE_8);
-        if (maxGrowthStage >= 8)
+        maxGrowthStage = 3 + state.getValue(block.getStageProperty());
+        if (maxGrowthStage > block.getCrop().getMaxStage())
         {
-            maxGrowthStage = 7;
+            maxGrowthStage = block.getCrop().getMaxStage();
         }
         // Reset counter
         resetCounter();

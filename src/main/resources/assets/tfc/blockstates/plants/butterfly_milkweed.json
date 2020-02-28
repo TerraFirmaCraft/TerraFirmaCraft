@@ -1,0 +1,74 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/butterfly_milkweed_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/butterfly_milkweed_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/butterfly_milkweed_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/butterfly_milkweed_3"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/butterfly_milkweed_4"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "5"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/butterfly_milkweed_5"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "6"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/butterfly_milkweed_6"
+        }
+      ]
+    }
+  ]
+}

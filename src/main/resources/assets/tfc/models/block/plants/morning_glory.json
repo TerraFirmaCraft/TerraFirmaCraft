@@ -1,0 +1,177 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "tfc:blocks/plants/morning_glory/morning_glory_layer0",
+    "layer0": "tfc:blocks/plants/morning_glory/morning_glory_layer0",
+    "layer1": "tfc:blocks/plants/morning_glory/morning_glory_layer1",
+    "bottom": "tfc:blocks/empty",
+    "middle": "tfc:blocks/empty",
+    "top": "tfc:blocks/empty"
+  },
+  "elements": [
+    {
+      "from": [
+        -0.05,
+        0.05,
+        -0.05
+      ],
+      "to": [
+        16.05,
+        0.05,
+        16.05
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#layer0",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer0",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        1,
+        0
+      ],
+      "to": [
+        16,
+        1,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#layer1",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer1",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "from": [
+        -0.05,
+        0.05,
+        -0.05
+      ],
+      "to": [
+        16.05,
+        0.05,
+        16.05
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#bottom"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#bottom"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        1,
+        0
+      ],
+      "to": [
+        16,
+        1,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#middle"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#middle"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        2,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#top"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#top"
+        }
+      }
+    }
+  ]
+}

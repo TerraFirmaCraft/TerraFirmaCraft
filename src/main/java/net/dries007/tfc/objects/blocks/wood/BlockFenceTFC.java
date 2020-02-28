@@ -32,6 +32,8 @@ public class BlockFenceTFC extends BlockFence
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         this.wood = wood;
         setHarvestLevel("axe", 0);
+        setHardness(2.0F); // match vanilla
+        setResistance(15.0F);
         OreDictionaryHelper.register(this, "fence", "wood");
         //noinspection ConstantConditions
         OreDictionaryHelper.register(this, "fence", "wood", wood.getRegistryName().getPath());
