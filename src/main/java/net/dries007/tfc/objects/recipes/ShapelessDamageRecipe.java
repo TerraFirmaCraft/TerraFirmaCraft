@@ -65,7 +65,7 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
     }
 
     // We need to damage the stack but damageItem will not return an item.
-    private ItemStack damageStack(ItemStack stack)
+    protected ItemStack damageStack(ItemStack stack)
     {
         ItemStack damagedStack = stack.copy();
         damagedStack.damageItem(1, ForgeHooks.getCraftingPlayer());
