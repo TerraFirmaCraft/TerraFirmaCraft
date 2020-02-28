@@ -134,14 +134,6 @@ public class ItemGoldPan extends ItemTFC
                 {
                     stack.setItemDamage(2);
                 }
-                else if (type == Rock.Type.CLAY)
-                {
-                    stack.setItemDamage(3);
-                }
-                else if (type == Rock.Type.DIRT || type == Rock.Type.GRASS)
-                {
-                    stack.setItemDamage(4);
-                }
                 if (stack.getItemDamage() > 0 && Constants.RNG.nextFloat() < 0.10f)
                 {
                     world.setBlockToAir(pos);
