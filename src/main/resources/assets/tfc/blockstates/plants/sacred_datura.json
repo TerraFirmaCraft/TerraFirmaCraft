@@ -1,0 +1,56 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sacred_datura_0"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sacred_datura_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "dayperiod": "1|2",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sacred_datura_2"
+        }
+      ]
+    },
+    {
+      "when": {
+        "dayperiod": "3|0",
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sacred_datura_2b"
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sacred_datura_3"
+        }
+      ]
+    }
+  ]
+}

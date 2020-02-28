@@ -5,10 +5,14 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,27 +27,23 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityPigTFC extends EntityAnimalMammal implements IAnimalTFC
+public class EntityPigTFC extends EntityAnimalMammal
 {
     private static final int DAYS_TO_ADULTHOOD = 450;
     private static final int DAYS_TO_FULL_GESTATION = 111;
 
-    private static int getRandomGrowth()
-    {
-        int lifeTimeDays = Constants.RNG.nextInt(DAYS_TO_ADULTHOOD * 4);
-        return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
     @SuppressWarnings("unused")
     public EntityPigTFC(World worldIn)
     {
-        this(worldIn, Gender.fromBool(Constants.RNG.nextBoolean()),
-            getRandomGrowth());
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
     public EntityPigTFC(World worldIn, Gender gender, int birthDay)
@@ -53,9 +53,34 @@ public class EntityPigTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
-    public boolean isValidSpawnConditions(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return temperature > -10 && rainfall > 150;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA ||
+                biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
+        {
+            return ConfigTFC.WORLD.animalSpawnWeight;
+        }
+        return 0;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 4;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     @Override
@@ -64,11 +89,11 @@ public class EntityPigTFC extends EntityAnimalMammal implements IAnimalTFC
         int numberOfChilds = 8 + rand.nextInt(5); //8-12
         for (int i = 0; i < numberOfChilds; i++)
         {
-            EntityPigTFC baby = new EntityPigTFC(this.world, Gender.fromBool(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            EntityPigTFC baby = new EntityPigTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);
         }
-
     }
 
     @Override
@@ -78,19 +103,15 @@ public class EntityPigTFC extends EntityAnimalMammal implements IAnimalTFC
     }
 
     @Override
-    public float getPercentToAdulthood()
+    public float getAdultFamiliarityCap()
     {
-        if (this.getAge() != Age.CHILD) return 1;
-        double value = (CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay()) / (double) DAYS_TO_ADULTHOOD;
-        if (value > 1f) value = 1f;
-        if (value < 0f) value = 0;
-        return (float) value;
+        return 0.35F;
     }
 
     @Override
-    public Age getAge()
+    public int getDaysToAdulthood()
     {
-        return CalendarTFC.PLAYER_TIME.getTotalDays() >= this.getBirthDay() + DAYS_TO_ADULTHOOD ? Age.ADULT : Age.CHILD;
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override

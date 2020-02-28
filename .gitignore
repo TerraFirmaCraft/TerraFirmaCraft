@@ -9,6 +9,7 @@ tfc.json
 
 # IntelliJ
 /out/
+/run/
 /.idea/
 *.iml
 *.ipr

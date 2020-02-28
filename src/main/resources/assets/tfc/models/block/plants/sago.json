@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/tinted_cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/sago/sago",
+    "particle": "tfc:blocks/plants/sago/sago"
+  }
+}

@@ -10,7 +10,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
@@ -42,6 +41,7 @@ import net.dries007.tfc.objects.items.ItemGem;
 import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
 public class TESluice extends TEBase implements ITickable
 {
@@ -70,7 +70,7 @@ public class TESluice extends TEBase implements ITickable
                             {
                                 Chunk chunk = world.getChunk(x, z);
                                 ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
-                                if (chunkData.canWork(1) && chunkData.getChunkOres().size() > 0)
+                                if (chunkData.canWork(1) && chunkData.getGeneratedVeins().size() > 0)
                                 {
                                     chunks.add(chunk);
                                 }
@@ -81,10 +81,13 @@ public class TESluice extends TEBase implements ITickable
                             Chunk workingChunk = chunks.get(Constants.RNG.nextInt(chunks.size()));
                             ChunkDataTFC chunkData = ChunkDataTFC.get(workingChunk);
                             chunkData.addWork();
-                            List<Ore> oreList = Lists.newArrayList(chunkData.getChunkOres());
-                            Ore drop = oreList.get(Constants.RNG.nextInt(oreList.size()));
-                            ItemStack output = new ItemStack(ItemSmallOre.get(drop));
-                            Helpers.spawnItemStack(world, getFrontWaterPos(), output);
+                            List<Vein> veinList = new ArrayList<>(chunkData.getGeneratedVeins());
+                            Ore ore = veinList.get(Constants.RNG.nextInt(veinList.size())).getType().getOre();
+                            if (ore != null)
+                            {
+                                ItemStack output = new ItemStack(ItemSmallOre.get(ore));
+                                Helpers.spawnItemStack(world, getFrontWaterPos(), output);
+                            }
                         }
                     }
                     if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceGemChance)

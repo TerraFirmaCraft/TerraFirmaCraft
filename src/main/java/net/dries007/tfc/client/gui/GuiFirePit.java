@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.objects.te.TEFirePit;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class GuiFirePit extends GuiContainerTE<TEFirePit>
 {

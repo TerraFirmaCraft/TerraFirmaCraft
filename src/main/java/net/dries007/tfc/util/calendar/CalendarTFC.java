@@ -8,39 +8,26 @@ package net.dries007.tfc.util.calendar;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import io.netty.buffer.ByteBuf;
-import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 
-@SuppressWarnings("WeakerAccess")
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class CalendarTFC implements INBTSerializable<NBTTagCompound>
+public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
 {
-    public static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
-    public static final Map<String, String> BIRTHDAYS = new HashMap<>();
-    /* The offset in ticks between the world time (sun position) and the calendar (since world time 0 = 6 AM) */
-    public static final int WORLD_TIME_OFFSET = 6 * ICalendar.TICKS_IN_HOUR;
-
-    /* The internal calendar instance. Do NOT use this to calculate times. */
     public static final CalendarTFC INSTANCE = new CalendarTFC();
-
-    /**
-     * Total time. Always returns the result of {@link World#getTotalWorldTime()}
-     */
-    public static final ICalendar TOTAL_TIME = () -> CalendarTFC.INSTANCE.worldTotalTime;
 
     /**
      * Player time. Advances when player sleeps, stops when no players are online
      * NOT synced with the daylight cycle.
+     * Used for almost everything that tracks time.
      */
     public static final ICalendar PLAYER_TIME = () -> CalendarTFC.INSTANCE.playerTime;
 
@@ -65,8 +52,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         }
     };
 
-    public static final int DEFAULT_DAYS_IN_MONTH = 8;
-    public static final int DEFAULT_CALENDAR_TIME_OFFSET = (5 * DEFAULT_DAYS_IN_MONTH * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
+    public static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+    public static final Map<String, String> BIRTHDAYS = new HashMap<>();
 
     static
     {
@@ -86,21 +73,89 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         BIRTHDAYS.put("MARCH10", "Disastermoo's Birthday");
     }
 
-    private long worldTotalTime, playerTime, calendarTime;
-    private long playerTimeOffset, calendarTimeOffset;
+    /**
+     * This runs a sequence of code, but first will set the calendar and player time by an offset
+     * Useful if we need to run code that technically needs to happen at a different calendar time
+     * The offsets are removed once the transaction is complete
+     *
+     * @param transactionPlayerTimeOffset   the offset to be added to the player time
+     * @param transactionCalendarTimeOffset the offset to be added to the calendar time
+     */
+    public static void runTransaction(long transactionPlayerTimeOffset, long transactionCalendarTimeOffset, Runnable transaction)
+    {
+        try
+        {
+            INSTANCE.playerTime += transactionPlayerTimeOffset;
+            INSTANCE.calendarTime += transactionCalendarTimeOffset;
+
+            transaction.run();
+        }
+        finally
+        {
+            // Always reset after transaction complete
+            INSTANCE.playerTime -= transactionPlayerTimeOffset;
+            INSTANCE.calendarTime -= transactionCalendarTimeOffset;
+        }
+    }
+
+    private long playerTime, calendarTime;
     private int daysInMonth;
     private boolean doDaylightCycle, arePlayersLoggedOn;
+    private MinecraftServer server;
 
     public CalendarTFC()
     {
         // Initialize to default values
-        daysInMonth = DEFAULT_DAYS_IN_MONTH;
-        playerTimeOffset = 0;
-        calendarTimeOffset = DEFAULT_CALENDAR_TIME_OFFSET;
+        daysInMonth = ConfigTFC.GENERAL.defaultMonthLength;
+        playerTime = 0;
+        calendarTime = (5 * daysInMonth * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
         doDaylightCycle = true;
         arePlayersLoggedOn = false;
     }
 
+    public void setTimeFromCalendarTime(long calendarTimeToSetTo)
+    {
+        // Calculate the time jump
+        long timeJump = calendarTimeToSetTo - calendarTime;
+
+        calendarTime = calendarTimeToSetTo;
+        playerTime += timeJump;
+
+        // Update the actual world times
+        for (World world : server.worlds)
+        {
+            long currentWorldTime = world.getWorldTime();
+            world.setWorldTime(currentWorldTime + timeJump);
+        }
+
+        TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+    }
+
+    /**
+     * Jumps the calendar ahead to a world time.
+     * This does not automatically fix sync errors
+     *
+     * @param worldTimeToSetTo a world time, obtained from {@link World#getWorldTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
+     */
+    public long setTimeFromWorldTime(long worldTimeToSetTo)
+    {
+        // Calculate the offset to jump to
+        long worldTimeJump = (worldTimeToSetTo % ICalendar.TICKS_IN_DAY) - CalendarTFC.CALENDAR_TIME.getWorldTime();
+        if (worldTimeJump < 0)
+        {
+            worldTimeJump += ICalendar.TICKS_IN_DAY;
+        }
+
+        calendarTime += worldTimeJump;
+        playerTime += worldTimeJump;
+
+        TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+        return worldTimeJump;
+    }
+
+    /**
+     * For serialization when saving to world data
+     */
     @Override
     public NBTTagCompound serializeNBT()
     {
@@ -108,9 +163,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
 
         nbt.setInteger("daysInMonth", daysInMonth);
 
-        nbt.setLong("worldTotalTime", worldTotalTime);
-        nbt.setLong("playerTimeOffset", playerTimeOffset);
-        nbt.setLong("calendarTimeOffset", calendarTimeOffset);
+        nbt.setLong("playerTime", playerTime);
+        nbt.setLong("calendarTime", calendarTime);
 
         nbt.setBoolean("doDaylightCycle", doDaylightCycle);
         nbt.setBoolean("arePlayersLoggedOn", arePlayersLoggedOn);
@@ -118,6 +172,9 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         return nbt;
     }
 
+    /**
+     * For serialization when reading from world data
+     */
     @Override
     public void deserializeNBT(@Nullable NBTTagCompound nbt)
     {
@@ -125,16 +182,11 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
         {
             daysInMonth = nbt.getInteger("daysInMonth");
 
-            worldTotalTime = nbt.getLong("worldTotalTime");
-            playerTimeOffset = nbt.getLong("playerTimeOffset");
-            calendarTimeOffset = nbt.getLong("calendarTimeOffset");
+            playerTime = nbt.getLong("playerTime");
+            calendarTime = nbt.getLong("calendarTime");
 
             doDaylightCycle = nbt.getBoolean("doDaylightCycle");
             arePlayersLoggedOn = nbt.getBoolean("arePlayersLoggedOn");
-
-            // Re-calculate values
-            playerTime = worldTotalTime + playerTimeOffset;
-            calendarTime = worldTotalTime + calendarTimeOffset;
         }
     }
 
@@ -142,9 +194,8 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         buffer.writeInt(daysInMonth);
 
-        buffer.writeLong(worldTotalTime);
-        buffer.writeLong(playerTimeOffset);
-        buffer.writeLong(calendarTimeOffset);
+        buffer.writeLong(playerTime);
+        buffer.writeLong(calendarTime);
 
         buffer.writeBoolean(doDaylightCycle);
         buffer.writeBoolean(arePlayersLoggedOn);
@@ -154,179 +205,137 @@ public class CalendarTFC implements INBTSerializable<NBTTagCompound>
     {
         daysInMonth = buffer.readInt();
 
-        worldTotalTime = buffer.readLong();
-        playerTimeOffset = buffer.readLong();
-        calendarTimeOffset = buffer.readLong();
+        playerTime = buffer.readLong();
+        calendarTime = buffer.readLong();
 
         doDaylightCycle = buffer.readBoolean();
         arePlayersLoggedOn = buffer.readBoolean();
-
-        // Re-calculate values
-        playerTime = worldTotalTime + playerTimeOffset;
-        calendarTime = worldTotalTime + calendarTimeOffset;
     }
 
-    public void reset(CalendarTFC resetTo)
+    public void resetTo(CalendarTFC resetTo)
     {
         this.daysInMonth = resetTo.daysInMonth;
 
-        this.worldTotalTime = resetTo.worldTotalTime;
-        this.playerTimeOffset = resetTo.playerTimeOffset;
-        this.calendarTimeOffset = resetTo.calendarTimeOffset;
+        this.playerTime = resetTo.playerTime;
+        this.calendarTime = resetTo.calendarTime;
 
         this.doDaylightCycle = resetTo.doDaylightCycle;
         this.arePlayersLoggedOn = resetTo.arePlayersLoggedOn;
-
-        // Re-calculate values
-        playerTime = worldTotalTime + playerTimeOffset;
-        calendarTime = worldTotalTime + calendarTimeOffset;
-    }
-
-    public int getDaysInMonth()
-    {
-        return daysInMonth;
     }
 
     /**
-     * Sends an update packet to a player on log in
-     *
-     * @param player the server player to send to
+     * Called from {@link net.minecraftforge.fml.common.event.FMLServerStartingEvent}
+     * Initializes the calendar with the current minecraft server instance, reloading all values from world saved data
      */
-    public void updatePlayer(EntityPlayerMP player)
+    public void init(MinecraftServer server)
     {
-        TerraFirmaCraft.getNetwork().sendTo(new PacketCalendarUpdate(this), player);
+        this.server = server;
+
+        // Initialize doDaylightCycle to false as the server is just starting
+        server.getEntityWorld().getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
+
+        resetTo(CalendarWorldData.get(server.getEntityWorld()).getCalendar());
+        TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
     }
 
     /**
-     * Sets the per-world month length. Will also recalculate all time that has passed so far
-     *
-     * @param world       The current world
-     * @param daysInMonth the days per each month
+     * Called on server ticks, syncs to client
      */
-    public void setMonthLength(World world, int daysInMonth)
+    public void onServerTick()
     {
-        // Current amount of months and remainder - these will stay the same
-        long totalMonths = CalendarTFC.CALENDAR_TIME.getTotalMonths();
-        long remainder = calendarTime - (totalMonths * this.daysInMonth * ICalendar.TICKS_IN_DAY);
-
-        // New calendar time based on the same amount of months + remainder
-        this.daysInMonth = daysInMonth;
-        long newCalendarTime = (totalMonths * daysInMonth * ICalendar.TICKS_IN_DAY) + remainder;
-
-        // Reset and update
-        setCalendarTime(world, newCalendarTime);
-    }
-
-    /**
-     * Called to set the total world time from tick events
-     *
-     * @param worldTotalTime the total world time
-     */
-    public void setTotalTime(long worldTotalTime)
-    {
-        // Set total world time directly
-        if (worldTotalTime < 0)
-        {
-            worldTotalTime = 0;
-        }
-        this.worldTotalTime = worldTotalTime;
-
-        // Set player time based on if time is advancing or not
         if (arePlayersLoggedOn)
         {
-            playerTime = worldTotalTime + playerTimeOffset;
+            playerTime++;
         }
-        else
-        {
-            playerTimeOffset = playerTime - worldTotalTime;
-        }
-
-        // Set calendar time based if time is advancing or not
-        if (doDaylightCycle)
-        {
-            calendarTime = worldTotalTime + calendarTimeOffset;
-        }
-        else
-        {
-            calendarTimeOffset = calendarTime - worldTotalTime;
-        }
-    }
-
-    /**
-     * Sets the player time by resetting the offset.
-     * This should only be used for debugging purposes
-     *
-     * @param world      The world
-     * @param playerTime The calendar time
-     */
-    public void setPlayerTime(World world, long playerTime)
-    {
-        if (playerTime < this.playerTime || playerTime < 0)
-        {
-            TerraFirmaCraft.getLog().warn("Something tried to set the player time to go in reverse! This should never happen!");
-        }
-        else
-        {
-            // Don't set the player time directly, instead set the offset from the total time
-            this.playerTimeOffset = playerTime - worldTotalTime;
-            this.playerTime = worldTotalTime + playerTimeOffset;
-
-            // Then update world data + clients
-            updateWorldDataAndSync(world);
-        }
-    }
-
-    /**
-     * Sets the calendar time.
-     * This actually sets the calendar offset - i.e. the difference between the current world time and the calendar time
-     * It then will save that offset to world data, and sync to client
-     *
-     * @param world        The world
-     * @param calendarTime The calendar time
-     */
-    public void setCalendarTime(World world, long calendarTime)
-    {
-        // Calendar time is not allowed to be negative (i.e. before January 1, 1000)
-        if (calendarTime < 0)
-        {
-            calendarTime = 0;
-            TerraFirmaCraft.getLog().warn("Something tried to set the calendar time to a negative value! This should never happen!");
-        }
-        // Don't set the calendar time directly, instead set the offset from the total time
-        this.calendarTimeOffset = calendarTime - worldTotalTime;
-        this.calendarTime = worldTotalTime + calendarTimeOffset;
-
-        // Then update world data + clients
-        updateWorldDataAndSync(world);
-    }
-
-    public void setDoDaylightCycle(World world, boolean doDaylightCycle)
-    {
-        this.doDaylightCycle = doDaylightCycle;
-
-        // Then update world data + clients
-        updateWorldDataAndSync(world);
-    }
-
-    public void setArePlayersLoggedOn(World world, boolean arePlayersLoggedOn)
-    {
-        this.arePlayersLoggedOn = arePlayersLoggedOn;
-
-        // Then update world data + clients
-        updateWorldDataAndSync(world);
-    }
-
-    public void updateWorldDataAndSync(World world)
-    {
-        // Update world data
-        CalendarWorldData data = CalendarWorldData.get(world);
-        data.getCalendar().reset(this);
-        data.markDirty();
-
-        // Sync to clients
-        if (!world.isRemote)
+        if (server.getTickCounter() % 10 == 0)
         {
             TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
         }
+    }
+
+    /**
+     * Called on each overworld tick, increments and syncs calendar time
+     */
+    public void onOverworldTick(World world)
+    {
+        if (doDaylightCycle && arePlayersLoggedOn)
+        {
+            calendarTime++;
+        }
+        long deltaWorldTime = (world.getWorldTime() % ICalendar.TICKS_IN_DAY) - CALENDAR_TIME.getWorldTime();
+        if (deltaWorldTime > 1 || deltaWorldTime < -1)
+        {
+            TerraFirmaCraft.getLog().info("World time and Calendar Time are out of sync! Trying to fix...");
+            TerraFirmaCraft.getLog().info("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTime, CALENDAR_TIME.getWorldTime(), playerTime, world.getWorldTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
+
+            // Check if tracking values are wrong
+            boolean checkArePlayersLoggedOn = server.getPlayerList().getPlayers().size() > 0;
+            if (arePlayersLoggedOn != checkArePlayersLoggedOn)
+            {
+                // Whoops, somehow we missed this.
+                TerraFirmaCraft.getLog().info("Setting ArePlayersLoggedOn = {}", checkArePlayersLoggedOn);
+                setPlayersLoggedOn(checkArePlayersLoggedOn);
+            }
+            if (deltaWorldTime < 0)
+            {
+                // Calendar is ahead, so jump world time
+                world.setWorldTime(world.getWorldTime() - deltaWorldTime);
+                TerraFirmaCraft.getLog().info("Calendar is ahead by {} ticks, jumping world time to catch up", -deltaWorldTime);
+            }
+            else
+            {
+                // World time is ahead, so jump calendar
+                calendarTime += deltaWorldTime;
+                TerraFirmaCraft.getLog().info("Calendar is behind by {} ticks, jumping calendar time to catch up", deltaWorldTime);
+            }
+            TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+        }
+    }
+
+    public void setMonthLength(int newMonthLength)
+    {
+        // Recalculate the new calendar time
+        // Preserve the current month, time of day, and position within the month
+        long baseMonths = CalendarTFC.CALENDAR_TIME.getTotalMonths();
+        long baseDayTime = calendarTime - (CalendarTFC.CALENDAR_TIME.getTotalDays() * ICalendar.TICKS_IN_DAY);
+        // Minus one here because `getDayOfMonth` returns the player visible one (which adds one)
+        float monthPercent = (float) (CalendarTFC.CALENDAR_TIME.getDayOfMonth() - 1) / daysInMonth;
+        int newDayOfMonth = (int) (monthPercent * newMonthLength);
+
+        this.daysInMonth = newMonthLength;
+        this.calendarTime = (baseMonths * daysInMonth + newDayOfMonth) * ICalendar.TICKS_IN_DAY + baseDayTime;
+
+        TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+    }
+
+    public void setPlayersLoggedOn(boolean arePlayersLoggedOn)
+    {
+        GameRules rules = server.getEntityWorld().getGameRules();
+        this.arePlayersLoggedOn = arePlayersLoggedOn;
+        if (arePlayersLoggedOn)
+        {
+            rules.setOrCreateGameRule("doDaylightCycle", Boolean.toString(doDaylightCycle));
+            TerraFirmaCraft.getLog().info("Reverted doDaylightCycle to {} as players are logged in.", doDaylightCycle);
+        }
+        else
+        {
+            rules.setOrCreateGameRule("doDaylightCycle", Boolean.toString(false));
+            TerraFirmaCraft.getLog().info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
+        }
+
+        TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
+    }
+
+    public void setDoDaylightCycle()
+    {
+        GameRules rules = server.getEntityWorld().getGameRules();
+        this.doDaylightCycle = rules.getBoolean("doDaylightCycle");
+        if (!arePlayersLoggedOn)
+        {
+            rules.setOrCreateGameRule("doDaylightCycle", "false");
+            TerraFirmaCraft.getLog().info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
+        }
+
+        TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(this));
     }
 }

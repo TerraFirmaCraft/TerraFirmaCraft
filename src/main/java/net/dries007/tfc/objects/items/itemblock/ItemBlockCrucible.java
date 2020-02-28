@@ -6,7 +6,6 @@
 package net.dries007.tfc.objects.items.itemblock;
 
 import java.util.List;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -20,10 +19,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.util.TFCConstants;
-import net.dries007.tfc.objects.te.TECrucible;
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Alloy;
 
 @ParametersAreNonnullByDefault
@@ -41,24 +38,10 @@ public class ItemBlockCrucible extends ItemBlockTFC
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt != null)
         {
-            Alloy alloy = new Alloy(TECrucible.CRUCIBLE_MAX_METAL_FLUID);
+            Alloy alloy = new Alloy(ConfigTFC.GENERAL.tankCrucible);
             alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
             String metalName = (new TextComponentTranslation(alloy.getResult().getTranslationKey())).getFormattedText();
-            tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.crucible_alloy", alloy.getAmount(), metalName));
+            tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.crucible_alloy", alloy.getAmount(), metalName));
         }
-    }
-
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.HUGE;
-    }
-
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
     }
 }

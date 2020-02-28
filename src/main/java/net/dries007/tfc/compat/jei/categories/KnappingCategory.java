@@ -19,7 +19,7 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import net.dries007.tfc.compat.jei.BaseRecipeCategory;
 import net.dries007.tfc.compat.jei.wrappers.KnappingRecipeWrapper;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class KnappingCategory extends BaseRecipeCategory<KnappingRecipeWrapper>

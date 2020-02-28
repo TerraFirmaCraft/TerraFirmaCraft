@@ -16,8 +16,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CreativeTabsTFC
 {
@@ -51,6 +52,8 @@ public final class CreativeTabsTFC
             ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(iconResourceLocation));
             if (!stack.isEmpty())
             {
+                // Food stacks shouldn't rot in creative tabs, and these are created on demand instead of beforehand and cached
+                CapabilityFood.setStackNonDecaying(stack);
                 return stack;
             }
             TerraFirmaCraft.getLog().error("[Please inform developers] No icon stack for creative tab {}", getTabLabel());

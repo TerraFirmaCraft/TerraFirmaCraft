@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "Y Y",
+    "XYX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "lumber"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "straw"
+    }
+  },
+  "result": {
+    "item": "tfc:nest_box",
+    "count": 1
+  }
+}

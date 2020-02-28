@@ -1,0 +1,43 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "layer0": "tfc:blocks/plants/duckweed/duckweed",
+    "particle": "tfc:blocks/plants/duckweed/duckweed"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        -1.5,
+        0
+      ],
+      "to": [
+        16,
+        -1.5,
+        16
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#layer0",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            16,
+            16,
+            0,
+            0
+          ],
+          "texture": "#layer0",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
+}

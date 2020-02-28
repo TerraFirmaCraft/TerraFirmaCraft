@@ -17,8 +17,8 @@ import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.objects.ArmorMaterialTFC;
 import net.dries007.tfc.objects.ToolMaterialsTFC;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.api.types.Metal.Tier.*;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 
 @SuppressWarnings("WeakerAccess")
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -103,15 +103,15 @@ public final class DefaultMetals
             new Ore(NATIVE_COPPER, COPPER, 0.75D, 0.33D),
             new Ore(NATIVE_GOLD, GOLD, 0.25D, 0.15D),
             new Ore(NATIVE_PLATINUM, PLATINUM, 1D, 0.002D),
-            new Ore(HEMATITE, PIG_IRON, false),
+            new Ore(HEMATITE, WROUGHT_IRON, false),
             new Ore(NATIVE_SILVER, SILVER, 0.50D, 0.15D),
             new Ore(CASSITERITE, TIN),
             new Ore(GALENA, LEAD),
             new Ore(BISMUTHINITE, BISMUTH),
             new Ore(GARNIERITE, NICKEL),
             new Ore(MALACHITE, COPPER),
-            new Ore(MAGNETITE, PIG_IRON, false),
-            new Ore(LIMONITE, PIG_IRON, false),
+            new Ore(MAGNETITE, WROUGHT_IRON, false),
+            new Ore(LIMONITE, WROUGHT_IRON, false),
             new Ore(SPHALERITE, ZINC),
             new Ore(TETRAHEDRITE, COPPER),
             new Ore(BITUMINOUS_COAL),

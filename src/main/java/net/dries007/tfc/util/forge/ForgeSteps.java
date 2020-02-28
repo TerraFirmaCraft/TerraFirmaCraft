@@ -16,15 +16,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 @ParametersAreNonnullByDefault
 public class ForgeSteps implements INBTSerializable<NBTTagCompound>
 {
-    public static ForgeSteps deserialize(int serialized)
-    {
-        ForgeSteps steps = new ForgeSteps();
-        steps.setStepInt(0, (serialized & 0xFF));
-        steps.setStepInt(1, (serialized & 0xFFFF) >> 8);
-        steps.setStepInt(2, (serialized & 0xFFFFFF) >> 16);
-        return steps;
-    }
-
     private final LinkedList<ForgeStep> steps;
 
     public ForgeSteps()
@@ -84,15 +75,27 @@ public class ForgeSteps implements INBTSerializable<NBTTagCompound>
         return steps.get(idx);
     }
 
-    public int serialize()
-    {
-        return (getStepInt(0)) | (getStepInt(1) << 8) | (getStepInt(2) << 16);
-    }
-
     @Override
     public String toString()
     {
         return "[" + getStep(0) + ", " + getStep(1) + ", " + getStep(2) + "]";
+    }
+
+    /**
+     * Checks if this is fresh new (no forging has been done yet)
+     *
+     * @return true if has been worked at least once, false otherwise
+     */
+    public boolean hasWork()
+    {
+        for (ForgeStep step : steps)
+        {
+            if (step != null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int getStepInt(int idx)

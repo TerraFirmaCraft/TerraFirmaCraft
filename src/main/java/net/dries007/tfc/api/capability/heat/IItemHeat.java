@@ -23,7 +23,7 @@ public interface IItemHeat extends INBTSerializable<NBTTagCompound>
     /**
      * Gets the current temperature. Should call {@link CapabilityItemHeat#adjustTemp(float, float, long)} internally
      *
-     * @return the temperature. Between 0 - 1600
+     * @return the temperature.
      */
     float getTemperature();
 

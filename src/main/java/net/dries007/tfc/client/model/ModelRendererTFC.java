@@ -13,7 +13,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelRendererTFC extends ModelRenderer
 {
-
     public ModelBase modelBase;
     public int textureOffsetX;
     public int textureOffsetY;

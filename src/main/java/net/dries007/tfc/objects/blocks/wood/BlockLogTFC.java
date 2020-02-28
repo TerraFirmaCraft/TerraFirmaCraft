@@ -20,6 +20,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -27,7 +28,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -71,6 +75,46 @@ public class BlockLogTFC extends BlockLog implements IItemSize
 
         Blocks.FIRE.setFireInfo(this, 5, 5);
         setTickRandomly(true);
+    }
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        ItemStack stack = ItemStack.EMPTY;
+        IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+        if (cap != null)
+        {
+            stack = cap.getHarvestingTool();
+        }
+        if (stack.isEmpty())
+        {
+            stack = player.getHeldItemMainhand();
+        }
+        final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
+        if (toolClasses.contains("axe") && !toolClasses.contains("saw"))
+        {
+            if (!state.getValue(PLACED))
+            {
+                player.setHeldItem(EnumHand.MAIN_HAND, stack); // Reset so we can damage however we want before vanilla
+                if (!removeTree(world, pos, player, stack, OreDictionaryHelper.doesStackMatchOre(stack, "axeStone") || OreDictionaryHelper.doesStackMatchOre(stack, "hammerStone")))
+                {
+                    return false;
+                }
+                return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
+            }
+        }
+        else if (toolClasses.contains("hammer"))
+        {
+            // Break log and spawn some sticks
+            world.setBlockToAir(pos);
+            if (!world.isRemote)
+            {
+                Helpers.spawnItemStack(world, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
+            }
+            // False so vanilla will not drop a log itemstack (which would lead to an exploit)
+            return false;
+        }
+        return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
 
     @SuppressWarnings("deprecation")
@@ -148,29 +192,10 @@ public class BlockLogTFC extends BlockLog implements IItemSize
     }
 
     @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    public boolean isToolEffective(String type, IBlockState state)
     {
-        if (!state.getValue(PLACED))
-        {
-            final ItemStack stack = player.getHeldItemMainhand();
-            final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
-            if (toolClasses.contains("axe") && !toolClasses.contains("saw"))
-            {
-                if (!removeTree(world, pos, player, stack, OreDictionaryHelper.doesStackMatchOre(stack, "axeStone") || OreDictionaryHelper.doesStackMatchOre(stack, "hammerStone")))
-                {
-                    return false;
-                }
-                return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
-            }
-            else if (toolClasses.contains("hammer"))
-            {
-                // Break log and spawn some sticks
-                world.setBlockToAir(pos);
-                Helpers.spawnItemStack(world, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
-                return true;
-            }
-        }
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
+        // Avoids NPE
+        return "hammer".equals(type) || super.isToolEffective(type, state);
     }
 
     @Override
@@ -273,8 +298,8 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             }
             else
             {
-                // Stone tools are 60% efficient
-                if (!stoneTool || Constants.RNG.nextFloat() < 0.6 && !world.isRemote)
+                // Stone tools are 60% efficient (default config)
+                if (!stoneTool || Constants.RNG.nextFloat() < ConfigTFC.GENERAL.stoneAxeLogReturnRate && !world.isRemote)
                 {
                     harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
                 }

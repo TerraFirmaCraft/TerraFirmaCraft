@@ -42,7 +42,7 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe> implement
     @Nonnull
     public ItemStack getOutputItem(ItemStack stack)
     {
-        return CapabilityFood.updateFoodDecay(stack, outputItem.copy());
+        return CapabilityFood.updateFoodFromPrevious(stack, outputItem.copy());
     }
 
     @Override

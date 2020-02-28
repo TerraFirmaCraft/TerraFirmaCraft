@@ -31,7 +31,7 @@ public class ItemMetalShield extends ItemMetalTool
         this.addPropertyOverride(new ResourceLocation("blocking"), new IItemPropertyGetter()
         {
             @SideOnly(Side.CLIENT)
-            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
+            public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
             {
                 return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
             }
@@ -44,7 +44,7 @@ public class ItemMetalShield extends ItemMetalTool
     {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         playerIn.setActiveHand(handIn);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
     }
 
     @Nonnull

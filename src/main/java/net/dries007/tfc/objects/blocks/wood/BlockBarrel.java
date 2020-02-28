@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,6 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -33,6 +35,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TEBarrel;
@@ -46,7 +51,7 @@ import net.dries007.tfc.util.Helpers;
  * @see BarrelRecipe
  */
 @ParametersAreNonnullByDefault
-public class BlockBarrel extends Block
+public class BlockBarrel extends Block implements IItemSize
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
@@ -79,6 +84,26 @@ public class BlockBarrel extends Block
         setSoundType(SoundType.WOOD);
         setHardness(2F);
         setDefaultState(blockState.getBaseState().withProperty(SEALED, false));
+    }
+
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.HUGE;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() == null ? Weight.MEDIUM : Weight.HEAVY;
+    }
+
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() == null;
     }
 
     @SuppressWarnings("deprecation")
@@ -135,6 +160,14 @@ public class BlockBarrel extends Block
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return BOUNDING_BOX;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -270,5 +303,19 @@ public class BlockBarrel extends Block
         // Unseal the vessel if an explosion destroys it, so it drops it's contents
         world.setBlockState(pos, world.getBlockState(pos).withProperty(SEALED, false));
         super.onBlockExploded(world, pos, explosion);
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world,
+                                  BlockPos pos, EntityPlayer player)
+    {
+        ItemStack stack = new ItemStack(state.getBlock());
+        TEBarrel tile = Helpers.getTE(world, pos, TEBarrel.class);
+        if (tile != null)
+        {
+            stack.setTagCompound(tile.getItemTag());
+        }
+        return stack;
     }
 }

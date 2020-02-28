@@ -1,0 +1,107 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/licorice_fern_0",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/licorice_fern_1",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/licorice_fern_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/licorice_fern_3",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/licorice_fern_4",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/licorice_fern_0",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/licorice_fern_1",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/licorice_fern_2",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/licorice_fern_3",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/licorice_fern_4",
+          "y": 180
+        }
+      ]
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/licorice_fern_0",
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/licorice_fern_1",
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/licorice_fern_2",
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/licorice_fern_3",
+          "y": 270
+        },
+        {
+          "model": "tfc:plants/licorice_fern_4",
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/licorice_fern_0"
+        },
+        {
+          "model": "tfc:plants/licorice_fern_1"
+        },
+        {
+          "model": "tfc:plants/licorice_fern_2"
+        },
+        {
+          "model": "tfc:plants/licorice_fern_3"
+        },
+        {
+          "model": "tfc:plants/licorice_fern_4"
+        }
+      ]
+    }
+  ]
+}

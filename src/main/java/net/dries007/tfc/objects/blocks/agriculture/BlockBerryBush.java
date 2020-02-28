@@ -34,9 +34,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.IBerryBush;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -64,7 +66,7 @@ public class BlockBerryBush extends Block
 
     public BlockBerryBush(IBerryBush bush)
     {
-        super(Material.LEAVES);
+        super(Material.PLANTS);
         this.bush = bush;
         if (MAP.put(bush, this) != null) throw new IllegalStateException("There can only be one.");
         Blocks.FIRE.setFireInfo(this, 30, 60);
@@ -88,11 +90,24 @@ public class BlockBerryBush extends Block
         return state.getValue(FRUITING) ? 1 : 0;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean causesSuffocation(IBlockState state)
+    {
+        return false;
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
         return bush.getSize() == IBerryBush.Size.LARGE;
+    }
+
+    @Override
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+    {
+        return true;
     }
 
     @Override
@@ -158,6 +173,17 @@ public class BlockBerryBush extends Block
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (!canStay(worldIn, pos))
+        {
+            worldIn.destroyBlock(pos, true);
+        }
+    }
+
+    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
@@ -180,8 +206,7 @@ public class BlockBerryBush extends Block
     {
         if (super.canPlaceBlockAt(worldIn, pos))
         {
-            IBlockState state = worldIn.getBlockState(pos.down());
-            return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
+            return canStay(worldIn, pos);
         }
         return false;
     }
@@ -193,7 +218,7 @@ public class BlockBerryBush extends Block
         {
             if (!worldIn.isRemote)
             {
-                Helpers.spawnItemStack(worldIn, pos, bush.getFoodDrop());
+                ItemHandlerHelper.giveItemToPlayer(playerIn, bush.getFoodDrop());
                 worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(FRUITING, false));
                 TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
                 if (te != null)
@@ -240,5 +265,15 @@ public class BlockBerryBush extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETickCounter();
+    }
+
+    private boolean canStay(IBlockAccess world, BlockPos pos)
+    {
+        IBlockState below = world.getBlockState(pos.down());
+        if (bush.getSize() == IBerryBush.Size.LARGE && below.getBlock() instanceof BlockBerryBush && ((BlockBerryBush) below.getBlock()).bush == this.bush)
+        {
+            return BlocksTFC.isGrowableSoil(world.getBlockState(pos.down(2))); // Only stack once
+        }
+        return BlocksTFC.isGrowableSoil(below);
     }
 }

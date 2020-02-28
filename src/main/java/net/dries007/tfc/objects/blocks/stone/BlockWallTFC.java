@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks.stone;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.state.IBlockState;
@@ -40,7 +41,7 @@ public class BlockWallTFC extends BlockWall
 
         parent = modelBlock;
         OreDictionaryHelper.register(this, "wall");
-        OreDictionaryHelper.registerRockType(this, modelBlock.type, modelBlock.rock, "wall");
+        OreDictionaryHelper.registerRockType(this, modelBlock.type, "wall");
     }
 
     @Override
@@ -56,6 +57,7 @@ public class BlockWallTFC extends BlockWall
     }
 
     @Override
+    @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState();

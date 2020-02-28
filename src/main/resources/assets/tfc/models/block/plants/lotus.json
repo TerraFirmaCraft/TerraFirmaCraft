@@ -1,0 +1,43 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "layer0": "tfc:blocks/plants/lotus/lotus",
+    "particle": "tfc:blocks/plants/lotus/lotus"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        -1.5,
+        0
+      ],
+      "to": [
+        16,
+        -1.5,
+        16
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer0",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#layer0",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
+}

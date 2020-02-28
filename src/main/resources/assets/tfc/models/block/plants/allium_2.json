@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/allium/allium_2",
+    "particle": "tfc:blocks/plants/allium/allium_2"
+  }
+}

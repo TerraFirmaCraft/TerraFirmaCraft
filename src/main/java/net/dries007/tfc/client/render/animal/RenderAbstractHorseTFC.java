@@ -11,17 +11,21 @@ import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelHorseTFC;
-import net.dries007.tfc.objects.entity.animal.AbstractHorseTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDonkeyTFC;
 import net.dries007.tfc.objects.entity.animal.EntityMuleTFC;
 
+/**
+ * Used for mule and donkey, because vanilla uses it's own map from class -> resource
+ */
+@SuppressWarnings("WeakerAccess")
 @SideOnly(Side.CLIENT)
-public class RenderAbstractHorseTFC extends RenderLiving<AbstractHorseTFC>
+public class RenderAbstractHorseTFC extends RenderLiving<AbstractHorse>
 {
     private static final Map<Class<?>, ResourceLocation> MAP = Maps.newHashMap();
 
@@ -44,13 +48,15 @@ public class RenderAbstractHorseTFC extends RenderLiving<AbstractHorseTFC>
         this.scale = scaleIn;
     }
 
-    protected void preRenderCallback(AbstractHorseTFC entitylivingbaseIn, float partialTickTime)
+    @Override
+    protected void preRenderCallback(AbstractHorse entitylivingbaseIn, float partialTickTime)
     {
         GlStateManager.scale(this.scale, this.scale, this.scale);
         super.preRenderCallback(entitylivingbaseIn, partialTickTime);
     }
 
-    protected ResourceLocation getEntityTexture(AbstractHorseTFC entity)
+    @Override
+    protected ResourceLocation getEntityTexture(AbstractHorse entity)
     {
         return MAP.get(entity.getClass());
     }

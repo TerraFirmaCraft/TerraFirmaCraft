@@ -12,24 +12,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 
-public class ForgeableHandler extends ItemHeatHandler implements IForgeable
+public class ForgeableHandler implements ICapabilitySerializable<NBTTagCompound>, IForgeable
 {
     protected final ForgeSteps steps;
     protected int work;
     protected ResourceLocation recipeName;
 
-    public ForgeableHandler(@Nullable NBTTagCompound nbt, float heatCapacity, float meltTemp)
+    public ForgeableHandler(@Nullable NBTTagCompound nbt)
     {
-        this.heatCapacity = heatCapacity;
-        this.meltTemp = meltTemp;
-
         steps = new ForgeSteps();
-
         deserializeNBT(nbt);
     }
 
@@ -89,7 +85,7 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY || super.hasCapability(capability, facing);
+        return capability == CapabilityForgeable.FORGEABLE_CAPABILITY;
     }
 
     @SuppressWarnings("unchecked")
@@ -104,7 +100,7 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
     @Nonnull
     public NBTTagCompound serializeNBT()
     {
-        NBTTagCompound nbt = super.serializeNBT();
+        NBTTagCompound nbt = new NBTTagCompound();
 
         nbt.setInteger("work", work);
         nbt.setTag("steps", steps.serializeNBT());
@@ -125,6 +121,5 @@ public class ForgeableHandler extends ItemHeatHandler implements IForgeable
             recipeName = nbt.hasKey("recipe") ? new ResourceLocation(nbt.getString("recipe")) : null; // stops defaulting to empty string
             steps.deserializeNBT(nbt.getCompoundTag("steps"));
         }
-        super.deserializeNBT(nbt);
     }
 }

@@ -26,37 +26,41 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
-import net.dries007.tfc.api.capability.metal.IMetalItem;
-import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.recipes.BloomeryRecipe;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.fuel.FuelManager;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 import static net.minecraft.block.BlockHorizontal.FACING;
 
+@SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class TEBloomery extends TEInventory implements ITickable
+public class TEBloomery extends TEInventory implements ICalendarTickable, ITickable
 {
-    //Gets the internal block, should be charcoal pile/bloom
+    // Gets the internal block, should be charcoal pile/bloom
     private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
-    //Gets the external block, the front of the facing to dump contents in world.
+    // Gets the external block, the front of the facing to dump contents in world.
     private static final Vec3i OFFSET_EXTERNAL = new Vec3i(-1, 0, 0);
     private List<ItemStack> oreStacks = new ArrayList<>();
     private List<ItemStack> fuelStacks = new ArrayList<>();
 
-    private int maxFuel = 0, maxOre = 0, delayTimer = 0;
-    private long burnTicksLeft;
+    private int maxFuel = 0, maxOre = 0, delayTimer = 0; // Helper variables, not necessary to serialize
+    private long burnTicksLeft; // Ticks left to finish the current operation
+    private long lastPlayerTick; // Last player tick this bloomery was ticked (for purposes of catching up)
     private EnumFacing direction = null;
 
     private BlockPos internalBlock = null, externalBlock = null;
 
+    private BloomeryRecipe cachedRecipe = null;
+
     public TEBloomery()
     {
         super(0);
+        lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
@@ -106,26 +110,120 @@ public class TEBloomery extends TEInventory implements ITickable
         super.onBreakBlock(world, pos, state);
     }
 
-    public BlockPos getInternalBlock()
+    @Override
+    public void update()
     {
-        if (internalBlock == null)
+        ICalendarTickable.super.update();
+
+        if (world.isRemote) return;
+        IBlockState state = world.getBlockState(pos);
+        if (--delayTimer <= 0)
         {
-            internalBlock = pos.up(OFFSET_INTERNAL.getY())
-                .offset(direction, OFFSET_INTERNAL.getX())
-                .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
+            delayTimer = 20;
+            // Update multiblock status
+            if (direction == null)
+            {
+                direction = world.getBlockState(pos).getValue(FACING);
+            }
+
+            int newMaxItems = BlocksTFC.BLOOMERY.getChimneyLevels(world, getInternalBlock()) * 8;
+            if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), direction))
+            {
+                newMaxItems = 0;
+            }
+
+            maxFuel = newMaxItems;
+            maxOre = newMaxItems;
+            boolean turnOff = false;
+            while (maxOre < oreStacks.size())
+            {
+                turnOff = true;
+                // Structure lost one or more chimney levels
+                InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), oreStacks.get(0));
+                oreStacks.remove(0);
+            }
+            while (maxFuel < fuelStacks.size())
+            {
+                turnOff = true;
+                InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), fuelStacks.get(0));
+                fuelStacks.remove(0);
+            }
+            // Structure became compromised, unlit if needed
+            if (turnOff && state.getValue(LIT))
+            {
+                burnTicksLeft = 0;
+                state = state.withProperty(LIT, false);
+                world.setBlockState(pos, state);
+            }
+            if (!BlocksTFC.BLOOMERY.canGateStayInPlace(world, pos, direction.getAxis()))
+            {
+                // Bloomery gate (the front facing) structure became compromised
+                world.destroyBlock(pos, true);
+                return;
+            }
+            if (!isInternalBlockComplete() && !fuelStacks.isEmpty())
+            {
+                dumpItems();
+            }
+
+            if (isInternalBlockComplete())
+            {
+                addItemsFromWorld();
+            }
+
+            updateSlagBlock(state.getValue(LIT));
         }
-        return internalBlock;
+        if (state.getValue(LIT))
+        {
+            if (--burnTicksLeft <= 0)
+            {
+                burnTicksLeft = 0;
+                if (cachedRecipe == null && !oreStacks.isEmpty())
+                {
+                    cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
+                    if (cachedRecipe == null)
+                    {
+                        this.dumpItems();
+                    }
+                }
+                if (cachedRecipe != null)
+                {
+                    world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
+
+                    TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
+                    if (te != null)
+                    {
+                        te.setBloom(cachedRecipe.getOutput(oreStacks));
+                    }
+                }
+
+                oreStacks.clear();
+                fuelStacks.clear();
+                cachedRecipe = null; // Clear recipe
+
+                updateSlagBlock(false);
+                world.setBlockState(pos, state.withProperty(LIT, false));
+                markDirty();
+            }
+        }
     }
 
-    public BlockPos getExternalBlock()
+    @Override
+    public void onCalendarUpdate(long playerTickDelta)
     {
-        if (externalBlock == null)
-        {
-            externalBlock = pos.up(OFFSET_EXTERNAL.getY())
-                .offset(direction, OFFSET_EXTERNAL.getX())
-                .offset(direction.rotateY(), OFFSET_EXTERNAL.getZ());
-        }
-        return externalBlock;
+        burnTicksLeft = Math.max(0, burnTicksLeft - playerTickDelta);
+    }
+
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
     }
 
     public boolean canIgnite()
@@ -142,88 +240,36 @@ public class TEBloomery extends TEInventory implements ITickable
         this.burnTicksLeft = ConfigTFC.GENERAL.bloomeryTime;
     }
 
-    @Override
-    public void update()
+    /**
+     * Gets the internal (charcoal pile / bloom) position
+     *
+     * @return BlockPos of the internal block
+     */
+    protected BlockPos getInternalBlock()
     {
-        if (world.isRemote) return;
-        if (--delayTimer <= 0)
+        if (internalBlock == null)
         {
-            delayTimer = 20;
-            // Update multiblock status
-            if (direction == null)
-            {
-                direction = world.getBlockState(pos).getValue(FACING);
-            }
-
-            int newMaxItems = BlocksTFC.BLOOMERY.getChimneyLevels(world, getInternalBlock()) * 8;
-            if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), world.getBlockState(pos).getValue(FACING)))
-            {
-                newMaxItems = 0;
-            }
-
-            maxFuel = newMaxItems;
-            maxOre = newMaxItems;
-            while (maxOre < oreStacks.size())
-            {
-                //Structure lost one or more chimney levels
-                InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), oreStacks.get(0));
-                oreStacks.remove(0);
-            }
-            while (maxFuel < fuelStacks.size())
-            {
-                InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), fuelStacks.get(0));
-                fuelStacks.remove(0);
-            }
-            if (maxOre <= 0)
-            {
-                //Structure became compromised
-                world.destroyBlock(pos, true);
-                return;
-            }
-            if (!isInternalBlockComplete() && !fuelStacks.isEmpty())
-            {
-                dumpItems();
-            }
-
-            if (isInternalBlockComplete())
-            {
-                addItemsFromWorld();
-            }
-
-            updateSlagBlock(this.burnTicksLeft > 0);
+            internalBlock = pos.up(OFFSET_INTERNAL.getY())
+                .offset(direction, OFFSET_INTERNAL.getX())
+                .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
         }
-        IBlockState state = world.getBlockState(pos);
-        if (state.getValue(LIT))
+        return internalBlock;
+    }
+
+    /**
+     * Gets the external (front facing) position
+     *
+     * @return BlockPos to dump items in world
+     */
+    protected BlockPos getExternalBlock()
+    {
+        if (externalBlock == null)
         {
-            if (--burnTicksLeft <= 0)
-            {
-                burnTicksLeft = 0;
-                int totalOutput = 0;
-                for (ItemStack stack : oreStacks)
-                {
-                    IMetalItem metal = CapabilityMetalItem.getMetalItem(stack);
-                    if (metal != null)
-                    {
-                        totalOutput += metal.getSmeltAmount(stack);
-                    }
-                }
-
-                oreStacks.clear();
-                fuelStacks.clear();
-
-                world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
-
-                TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
-                if (te != null)
-                {
-                    te.setMetalAmount(totalOutput);
-                }
-
-                updateSlagBlock(false);
-                world.setBlockState(pos, state.withProperty(LIT, false));
-                markDirty();
-            }
+            externalBlock = pos.up(OFFSET_EXTERNAL.getY())
+                .offset(direction, OFFSET_EXTERNAL.getX())
+                .offset(direction.rotateY(), OFFSET_EXTERNAL.getZ());
         }
+        return externalBlock;
     }
 
     private void dumpItems()
@@ -248,27 +294,24 @@ public class TEBloomery extends TEInventory implements ITickable
 
     private void addItemsFromWorld()
     {
+        if (cachedRecipe == null && !oreStacks.isEmpty())
+        {
+            cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
+            if (cachedRecipe == null)
+            {
+                this.dumpItems();
+            }
+        }
         for (EntityItem entityItem : world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getInternalBlock().up(), getInternalBlock().add(1, 4, 1)), EntitySelectors.IS_ALIVE))
         {
             ItemStack stack = entityItem.getItem();
-            if (FuelManager.isItemFuel(stack))
+            if (cachedRecipe == null)
             {
-                // Add fuel
-                while (fuelStacks.size() < maxFuel)
-                {
-                    this.markDirty();
-                    fuelStacks.add(stack.splitStack(1));
-                    if (stack.getCount() <= 0)
-                    {
-                        entityItem.setDead();
-                        break;
-                    }
-                }
+                cachedRecipe = BloomeryRecipe.get(stack);
             }
-            else
+            if (cachedRecipe != null)
             {
-                IMetalItem cap = CapabilityMetalItem.getMetalItem(stack);
-                if (cap != null && (cap.getMetal(stack) == Metal.WROUGHT_IRON || cap.getMetal(stack) == Metal.PIG_IRON))
+                if (cachedRecipe.isValidInput(stack))
                 {
                     if (oreStacks.size() < maxOre)
                     {
@@ -277,6 +320,22 @@ public class TEBloomery extends TEInventory implements ITickable
                     while (oreStacks.size() < maxOre)
                     {
                         oreStacks.add(stack.splitStack(1));
+                        if (stack.getCount() <= 0)
+                        {
+                            entityItem.setDead();
+                            break;
+                        }
+                    }
+                }
+                else if (cachedRecipe.isValidAdditive(stack))
+                {
+                    if (fuelStacks.size() < maxFuel)
+                    {
+                        markDirty();
+                    }
+                    while (fuelStacks.size() < maxFuel)
+                    {
+                        fuelStacks.add(stack.splitStack(1));
                         if (stack.getCount() <= 0)
                         {
                             entityItem.setDead();

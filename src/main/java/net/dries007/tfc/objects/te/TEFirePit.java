@@ -14,7 +14,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ITickable;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -26,13 +25,15 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.fuel.Fuel;
 import net.dries007.tfc.util.fuel.FuelManager;
 
 import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
 
 @ParametersAreNonnullByDefault
-public class TEFirePit extends TEInventory implements ITickable, ITileFields
+public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFields
 {
     // Slot 0 - 3 = fuel slots with 3 being input, 4 = normal input slot, 5 and 6 are output slots 1 + 2
     public static final int SLOT_FUEL_CONSUME = 0;
@@ -49,6 +50,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
     private int burnTicks; // Ticks remaining on the current item of fuel
     private int airTicks; // Ticks of bellows provided air remaining
     private float burnTemperature; // Temperature provided from the current item of fuel
+    private long lastPlayerTick; // Last player tick this forge was ticked (for purposes of catching up)
     private Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
 
     public TEFirePit()
@@ -59,104 +61,173 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         burnTemperature = 0;
         burnTicks = 0;
         cachedRecipe = null;
+        lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
     public void update()
     {
-        if (world.isRemote) return;
-        IBlockState state = world.getBlockState(pos);
-        if (state.getValue(LIT))
-        {
-            // Update fuel
-            if (burnTicks > 0)
-            {
-                burnTicks -= airTicks > 0 ? 2 : 1;
-            }
-            if (burnTicks == 0)
-            {
-                // Consume fuel
-                ItemStack stack = inventory.getStackInSlot(SLOT_FUEL_CONSUME);
-                if (stack.isEmpty())
-                {
-                    world.setBlockState(pos, state.withProperty(LIT, false));
-                    burnTicks = 0;
-                    burnTemperature = 0;
-                }
-                else
-                {
-                    inventory.setStackInSlot(SLOT_FUEL_CONSUME, ItemStack.EMPTY);
-                    requiresSlotUpdate = true;
-                    Fuel fuel = FuelManager.getFuel(stack);
-                    burnTicks += fuel.getAmount();
-                    burnTemperature = fuel.getTemperature();
-                }
-            }
-        }
+        ICalendarTickable.super.update();
 
-        // Update air ticks
-        if (airTicks > 0)
+        if (!world.isRemote)
         {
-            airTicks--;
+            IBlockState state = world.getBlockState(pos);
+            if (state.getValue(LIT))
+            {
+                // Update fuel
+                if (burnTicks > 0)
+                {
+                    burnTicks -= airTicks > 0 ? 2 : 1;
+                }
+                if (burnTicks == 0)
+                {
+                    // Consume fuel
+                    ItemStack stack = inventory.getStackInSlot(SLOT_FUEL_CONSUME);
+                    if (stack.isEmpty())
+                    {
+                        world.setBlockState(pos, state.withProperty(LIT, false));
+                        burnTicks = 0;
+                        burnTemperature = 0;
+                    }
+                    else
+                    {
+                        inventory.setStackInSlot(SLOT_FUEL_CONSUME, ItemStack.EMPTY);
+                        requiresSlotUpdate = true;
+                        Fuel fuel = FuelManager.getFuel(stack);
+                        burnTicks += fuel.getAmount();
+                        burnTemperature = fuel.getTemperature();
+                    }
+                }
+            }
+
+            // Update air ticks
+            if (airTicks > 0)
+            {
+                airTicks--;
+            }
+            else
+            {
+                airTicks = 0;
+            }
+
+            // Always update temperature / cooking, until the fire pit is not hot anymore
+            if (temperature > 0 || burnTemperature > 0)
+            {
+                // Update temperature
+                float targetTemperature = burnTemperature + airTicks;
+                if (temperature != targetTemperature)
+                {
+                    float delta = (float) ConfigTFC.GENERAL.temperatureModifierHeating;
+                    temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, delta * (airTicks > 0 ? 2 : 1), delta * (airTicks > 0 ? 0.5f : 1));
+                }
+
+                // The fire pit is nice: it will automatically move input to output for you, saving the trouble of losing the input due to melting / burning
+                ItemStack stack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
+                IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                if (cap != null)
+                {
+                    float itemTemp = cap.getTemperature();
+                    if (temperature > itemTemp)
+                    {
+                        CapabilityItemHeat.addTemp(cap);
+                    }
+
+                    handleInputMelting(stack);
+                }
+            }
+            // Leftover handling
+            if (!leftover.isEmpty())
+            {
+                ItemStack outputStack = leftover.peek();
+
+                // Try inserting in any slot
+                outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
+                outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
+
+                // Try merging in any slot
+                outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_1));
+                outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_2));
+
+                //If any of the above succeeds
+                if (outputStack.isEmpty())
+                {
+                    leftover.poll();
+                }
+            }
+
+            // This is here to avoid duplication glitches
+            if (requiresSlotUpdate)
+            {
+                cascadeFuelSlots();
+            }
+
+            markDirtyFast();
+        }
+    }
+
+    @Override
+    public void onCalendarUpdate(long deltaPlayerTicks)
+    {
+        IBlockState state = world.getBlockState(pos);
+        if (!state.getValue(LIT))
+        {
+            return;
+        }
+        // Consume fuel as dictated by the delta player ticks (don't simulate any input changes), and then extinguish
+        if (burnTicks > deltaPlayerTicks)
+        {
+            burnTicks -= deltaPlayerTicks;
+            return;
         }
         else
         {
-            airTicks = 0;
+            deltaPlayerTicks -= burnTicks;
+            burnTicks = 0;
         }
-
-        // Always update temperature / cooking, until the fire pit is not hot anymore
-        if (temperature > 0 || burnTemperature > 0)
+        // Need to consume fuel
+        requiresSlotUpdate = true;
+        for (int i = SLOT_FUEL_CONSUME; i <= SLOT_FUEL_INPUT; i++)
         {
-            // Update temperature
-            float targetTemp = burnTemperature + airTicks;
-            if (temperature < targetTemp)
+            ItemStack fuelStack = inventory.getStackInSlot(i);
+            Fuel fuel = FuelManager.getFuel(fuelStack);
+            inventory.setStackInSlot(i, ItemStack.EMPTY);
+            if (fuel.getAmount() > deltaPlayerTicks)
             {
-                temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                burnTicks = (int) (fuel.getAmount() - deltaPlayerTicks);
+                burnTemperature = fuel.getTemperature();
+                return;
             }
-            else if (temperature > targetTemp)
+            else
             {
-                temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                deltaPlayerTicks -= fuel.getAmount();
+                burnTicks = 0;
             }
-
-            // The fire pit is nice: it will automatically move input to output for you, saving the trouble of losing the input due to melting / burning
+        }
+        if (deltaPlayerTicks > 0)
+        {
+            // Consumed all fuel, so extinguish and cool instantly
+            burnTemperature = 0;
+            temperature = 0;
             ItemStack stack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
             IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             if (cap != null)
             {
-                float itemTemp = cap.getTemperature();
-                if (temperature > itemTemp)
-                {
-                    CapabilityItemHeat.addTemp(cap);
-                }
-
-                handleInputMelting(stack);
+                cap.setTemperature(0f);
             }
+            world.setBlockState(pos, state.withProperty(LIT, false));
         }
-        // Leftover handling
-        if (!leftover.isEmpty())
-        {
-            ItemStack outputStack = leftover.peek();
+    }
 
-            // Try inserting in any slot
-            outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
-            outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
 
-            // Try merging in any slot
-            outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_1));
-            outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_2));
-
-            //If any of the above succeeds
-            if (outputStack.isEmpty())
-            {
-                leftover.poll();
-            }
-        }
-
-        // This is here to avoid duplication glitches
-        if (requiresSlotUpdate)
-        {
-            cascadeFuelSlots();
-        }
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
     }
 
     @Override
@@ -176,6 +247,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         burnTicks = nbt.getInteger("burnTicks");
         airTicks = nbt.getInteger("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
+        lastPlayerTick = nbt.getLong("lastPlayerTick");
         if (nbt.hasKey("leftover"))
         {
             NBTTagList surplusItems = nbt.getTagList("leftover", Constants.NBT.TAG_COMPOUND);
@@ -197,6 +269,7 @@ public class TEFirePit extends TEInventory implements ITickable, ITileFields
         nbt.setFloat("temperature", temperature);
         nbt.setInteger("burnTicks", burnTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
+        nbt.setLong("lastPlayerTick", lastPlayerTick);
         if (!leftover.isEmpty())
         {
             NBTTagList surplusList = new NBTTagList();

@@ -130,13 +130,13 @@ public class ModelPheasantTFC extends ModelBase
     public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
-        float percent = ((EntityPheasantTFC) entity).getPercentToAdulthood();
+        float percent = (float) ((EntityPheasantTFC) entity).getPercentToAdulthood();
         float ageScale = 2.0F - percent;
 
         GlStateManager.pushMatrix();
 
-        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
+        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
         this.head.render(par7);
         this.beak.render(par7);
@@ -144,8 +144,9 @@ public class ModelPheasantTFC extends ModelBase
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
+        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
+
         this.body.render(par7);
         this.rightLeg.render(par7);
         this.leftLeg.render(par7);

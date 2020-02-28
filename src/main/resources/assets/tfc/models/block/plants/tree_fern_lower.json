@@ -1,0 +1,87 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "trunk": "tfc:blocks/plants/tree_fern/tree_fern_trunk",
+    "particle": "tfc:blocks/plants/tree_fern/tree_fern_trunk"
+  },
+  "elements": [
+    {
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
+      "rotation": {
+        "origin": [
+          8.0,
+          8.0,
+          8.0
+        ],
+        "axis": "y",
+        "angle": 0.0,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#trunk",
+          "uv": [
+            0,
+            0,
+            4,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#trunk",
+          "uv": [
+            0,
+            0,
+            4,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#trunk",
+          "uv": [
+            0,
+            0,
+            4,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#trunk",
+          "uv": [
+            0,
+            0,
+            4,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#trunk",
+          "uv": [
+            12,
+            0,
+            16,
+            4
+          ]
+        },
+        "down": {
+          "texture": "#trunk",
+          "uv": [
+            12,
+            0,
+            16,
+            4
+          ]
+        }
+      }
+    }
+  ]
+}

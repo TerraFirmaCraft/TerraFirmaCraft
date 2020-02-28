@@ -173,7 +173,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
             if (!state.getValue(LIT))
             {
                 ItemStack held = player.getHeldItem(hand);
-                if (ItemFireStarter.canIgnite(held))
+                if (ItemFireStarter.onIgnition(held))
                 {
                     worldIn.setBlockState(pos, state.withProperty(LIT, true));
                     return true;

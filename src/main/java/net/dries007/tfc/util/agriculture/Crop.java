@@ -5,14 +5,15 @@
 
 package net.dries007.tfc.util.agriculture;
 
+import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.blocks.agriculture.BlockCropDead;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropSimple;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropSpreading;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
@@ -20,68 +21,105 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.skills.Skill;
+import net.dries007.tfc.util.skills.SkillTier;
 
 import static net.dries007.tfc.util.agriculture.Crop.CropType.*;
 
 public enum Crop implements ICrop
 {
-    BARLEY(Food.BARLEY, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    MAIZE(Food.MAIZE, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
-    OAT(Food.OAT, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    RICE(Food.RICE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    RYE(Food.RYE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    WHEAT(Food.WHEAT, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    BEET(Food.BEET, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    CABBAGE(Food.CABBAGE, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
-    CARROT(Food.CARROT, 5f, 35f, 100f, 400f, 5, 0.5f, SIMPLE),
-    GARLIC(Food.GARLIC, 5f, 35f, 100f, 400f, 5, 0.5f, SIMPLE),
-    GREEN_BEAN(Food.GREEN_BEAN, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    ONION(Food.ONION, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    POTATO(Food.POTATO, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    SOYBEAN(Food.SOYBEAN, 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    SQUASH(Food.SQUASH, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING),
-    SUGARCANE(Food.SUGARCANE, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    TOMATO(Food.TOMATO, 5f, 35f, 100f, 400f, 8, 0.5f, SIMPLE),
-    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 5f, 35f, 100f, 400f, 7, 0.5f, SIMPLE),
-    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 6, 0.5f, SIMPLE),
-    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING),
-    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY, 5f, 35f, 100f, 400f, 8, 0.5f, SPREADING);
+    // todo: unique rain tolerances for each crop
+    // todo: unique temp range for beets
+    // todo: unique temp range for pumpkins
+    // todo: unique temp range for melons
+    // these definitions are defined in the spreadsheet at
+    // https://docs.google.com/spreadsheets/d/1Ghw3dCmVO5Gv0MMGBydUxox_nwLYmmcZkGSbbf0QSAE/edit#gid=893781093
+    // It should be modified first, and then the resulting definitions copied to this space here
+    BARLEY(Food.BARLEY, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    MAIZE(Food.MAIZE, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
+    OAT(Food.OAT, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    RICE(Food.RICE, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    RYE(Food.RYE, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    WHEAT(Food.WHEAT, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    BEET(Food.BEET, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
+    CABBAGE(Food.CABBAGE, 0f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
+    CARROT(Food.CARROT, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 5, 0.5f, SIMPLE),
+    GARLIC(Food.GARLIC, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 5, 0.5f, SIMPLE),
+    GREEN_BEAN(Food.GREEN_BEAN, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
+    ONION(Food.ONION, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
+    POTATO(Food.POTATO, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
+    SOYBEAN(Food.SOYBEAN, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
+    SQUASH(Food.SQUASH, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    SUGARCANE(Food.SUGARCANE, 12f, 18f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    TOMATO(Food.TOMATO, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, PICKABLE),
+    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
+    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
+    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
+    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE);
 
-    public static final PropertyInteger STAGE_8 = PropertyInteger.create("stage", 0, 7);
-    public static final PropertyInteger STAGE_7 = PropertyInteger.create("stage", 0, 6);
-    public static final PropertyInteger STAGE_6 = PropertyInteger.create("stage", 0, 5);
-    public static final PropertyInteger STAGE_5 = PropertyInteger.create("stage", 0, 4);
-
-    private final Supplier<ItemStack> foodDrop;
-    private final Supplier<ItemStack> foodDropEarly;
-    private final float minTemp;
-    private final float maxTemp;
-    private final float minRain;
-    private final float maxRain;
-    private final int growthStages;
-    private final float growthTime;
-    private final CropType type;
-
-    Crop(Food foodDrop, float minTemp, float maxTemp, float minRain, float maxRain, int growthStages, float growthTime, CropType type)
+    /**
+     * the count to add to the amount of food dropped when applying the skill bonus
+     *
+     * @param skill  agriculture skill of the harvester
+     * @param random random instance to use, generally Block.RANDOM
+     * @return amount to add to item stack count
+     */
+    public static int getSkillFoodBonus(Skill skill, Random random)
     {
-        this(() -> new ItemStack(ItemFoodTFC.get(foodDrop)), () -> ItemStack.EMPTY, minTemp, maxTemp, minRain, maxRain, growthStages, growthTime, type);
+        return random.nextInt(2 + (int) (6 * skill.getTotalLevel()));
     }
 
-    Crop(Supplier<ItemStack> foodDrop, Supplier<ItemStack> foodDropEarly, float minTemp, float maxTemp, float minRain, float maxRain, int growthStages, float growthTime, CropType type)
+    /**
+     * the count to add to the amount of seeds dropped when applying the skill bonus
+     *
+     * @param skill  agriculture skill of the harvester
+     * @param random random instance to use, generally Block.RANDOM
+     * @return amount to add to item stack count
+     */
+    public static int getSkillSeedBonus(Skill skill, Random random)
+    {
+        if (skill.getTier().isAtLeast(SkillTier.ADEPT) && random.nextInt(10 - 2 * skill.getTier().ordinal()) == 0)
+            return 1;
+        else
+            return 0;
+    }
+
+    // how this crop generates food items
+    private final Supplier<ItemStack> foodDrop;
+    private final Supplier<ItemStack> foodDropEarly;
+    // temperature compatibility range
+    private final float tempMinAlive, tempMinGrow, tempMaxGrow, tempMaxAlive;
+    // rainfall compatibility range
+    private final float rainMinAlive, rainMinGrow, rainMaxGrow, rainMaxAlive;
+    // growth
+    private final int growthStages; // the number of blockstates the crop has for growing, ignoring wild state
+    private final float growthTime; // Time is measured in % of months, scales with calendar month length
+    // which crop block behavior implementation is used
+    private final CropType type;
+
+    Crop(Food foodDrop, float tempMinAlive, float tempMinGrow, float tempMaxGrow, float tempMaxAlive, float rainMinAlive, float rainMinGrow, float rainMaxGrow, float rainMaxAlive, int growthStages, float growthTime, CropType type)
+    {
+        this(() -> new ItemStack(ItemFoodTFC.get(foodDrop)), () -> ItemStack.EMPTY, tempMinAlive, tempMinGrow, tempMaxGrow, tempMaxAlive, rainMinAlive, rainMinGrow, rainMaxGrow, rainMaxAlive, growthStages, growthTime, type);
+    }
+
+    Crop(Supplier<ItemStack> foodDrop, Supplier<ItemStack> foodDropEarly, float tempMinAlive, float tempMinGrow, float tempMaxGrow, float tempMaxAlive, float rainMinAlive, float rainMinGrow, float rainMaxGrow, float rainMaxAlive, int growthStages, float growthTime, CropType type)
     {
         this.foodDrop = foodDrop;
         this.foodDropEarly = foodDropEarly;
 
-        this.minTemp = minTemp;
-        this.maxTemp = maxTemp;
-        this.minRain = minRain;
-        this.maxRain = maxRain;
+        this.tempMinAlive = tempMinAlive;
+        this.tempMinGrow = tempMinGrow;
+        this.tempMaxGrow = tempMaxGrow;
+        this.tempMaxAlive = tempMaxAlive;
+
+        this.rainMinAlive = rainMinAlive;
+        this.rainMinGrow = rainMinGrow;
+        this.rainMaxGrow = rainMaxGrow;
+        this.rainMaxAlive = rainMaxAlive;
 
         this.growthStages = growthStages;
-        // The value stored it measured in hours, the input value is in months
-        // todo: the input should be in days instead of months
-        this.growthTime = growthTime * ICalendar.HOURS_IN_DAY * CalendarTFC.INSTANCE.getDaysInMonth();
+        this.growthTime = growthTime; // This is measured in % of months
 
         this.type = type;
     }
@@ -89,7 +127,7 @@ public enum Crop implements ICrop
     @Override
     public float getGrowthTime()
     {
-        return growthTime;
+        return growthTime * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * ICalendar.TICKS_IN_DAY;
     }
 
     @Override
@@ -101,13 +139,13 @@ public enum Crop implements ICrop
     @Override
     public boolean isValidConditions(float temperature, float rainfall)
     {
-        return minTemp - 5 < temperature && temperature < maxTemp + 5 && minRain - 50 < rainfall && rainfall < maxRain + 50;
+        return tempMinAlive < temperature && temperature < tempMaxAlive && rainMinAlive < rainfall && rainfall < rainMaxAlive;
     }
 
     @Override
     public boolean isValidForGrowth(float temperature, float rainfall)
     {
-        return minTemp < temperature && temperature < maxTemp && minRain < rainfall && rainfall < maxRain;
+        return tempMinGrow < temperature && temperature < tempMaxGrow && rainMinGrow < rainfall && rainfall < rainMaxGrow;
     }
 
     @Nonnull
@@ -125,55 +163,22 @@ public enum Crop implements ICrop
         return ItemStack.EMPTY;
     }
 
-    public BlockCropTFC create()
+    public BlockCropTFC createGrowingBlock()
     {
         if (type == SIMPLE || type == PICKABLE)
         {
-            switch (growthStages)
-            {
-                case 5:
-                    return new BlockCropSimple(this, type == PICKABLE)
-                    {
-                        @Override
-                        public PropertyInteger getStageProperty()
-                        {
-                            return STAGE_5;
-                        }
-                    };
-                case 6:
-                    return new BlockCropSimple(this, type == PICKABLE)
-                    {
-                        @Override
-                        public PropertyInteger getStageProperty()
-                        {
-                            return STAGE_6;
-                        }
-                    };
-                case 7:
-                    return new BlockCropSimple(this, type == PICKABLE)
-                    {
-                        @Override
-                        public PropertyInteger getStageProperty()
-                        {
-                            return STAGE_7;
-                        }
-                    };
-                case 8:
-                    return new BlockCropSimple(this, type == PICKABLE)
-                    {
-                        @Override
-                        public PropertyInteger getStageProperty()
-                        {
-                            return STAGE_8;
-                        }
-                    };
-            }
+            return BlockCropSimple.create(this, type == PICKABLE);
         }
         else if (type == SPREADING)
         {
-            return new BlockCropSpreading(this);
+            return BlockCropSpreading.create(this);
         }
         throw new IllegalStateException("Invalid growthstage property " + growthStages + " for crop");
+    }
+
+    public BlockCropDead createDeadBlock()
+    {
+        return new BlockCropDead(this);
     }
 
     enum CropType

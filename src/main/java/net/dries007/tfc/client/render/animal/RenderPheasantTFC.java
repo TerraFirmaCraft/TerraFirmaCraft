@@ -15,19 +15,24 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.client.model.animal.ModelPheasantTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityPheasantTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
 public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
 {
     private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_chick.png");
-    private static final ResourceLocation MALE_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_male.png");
-    private static final ResourceLocation FEMALE_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_female.png");
+
+    private static final ResourceLocation MALE_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_male_young.png");
+    private static final ResourceLocation MALE_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_male_old.png");
+
+    private static final ResourceLocation FEMALE_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_female_young.png");
+    private static final ResourceLocation FEMALE_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_female_old.png");
 
     public RenderPheasantTFC(RenderManager manager)
     {
@@ -37,14 +42,14 @@ public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
     @Override
     public void doRender(EntityPheasantTFC chicken, double par2, double par4, double par6, float par8, float par9)
     {
-        this.shadowSize = 0.15f + chicken.getPercentToAdulthood() * 0.15f;
+        this.shadowSize = (float) (0.15f + chicken.getPercentToAdulthood() * 0.15f);
         super.doRender(chicken, par2, par4, par6, par8, par9);
     }
 
     @Override
     protected ResourceLocation getEntityTexture(EntityPheasantTFC chicken)
     {
-        float percent = chicken.getPercentToAdulthood();
+        float percent = (float) chicken.getPercentToAdulthood();
 
         if (percent < 0.65f)
         {
@@ -52,11 +57,11 @@ public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
         }
         else if (chicken.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            return MALE_TEXTURE;
+            return chicken.getAge() == IAnimalTFC.Age.OLD ? MALE_OLD : MALE_YOUNG;
         }
         else
         {
-            return FEMALE_TEXTURE;
+            return chicken.getAge() == IAnimalTFC.Age.OLD ? FEMALE_OLD : FEMALE_YOUNG;
         }
     }
 

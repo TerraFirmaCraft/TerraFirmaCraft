@@ -1,0 +1,555 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "3": "tfc:items/devices/quern/handstone_bottom",
+    "side": "tfc:items/devices/quern/handstone_side",
+    "handstone": "tfc:items/devices/quern/handstone_top",
+    "particle": "tfc:items/devices/quern/handstone_top",
+    "handle": "tfc:blocks/wood/sheets/oak"
+  },
+  "elements": [
+    {
+      "from": [
+        2.5,
+        6,
+        2.5
+      ],
+      "to": [
+        3.5,
+        10,
+        3.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          3,
+          8,
+          3
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            6,
+            13,
+            10
+          ],
+          "texture": "#handle"
+        },
+        "east": {
+          "uv": [
+            15,
+            6,
+            16,
+            10
+          ],
+          "texture": "#handle"
+        },
+        "south": {
+          "uv": [
+            13,
+            6,
+            14,
+            10
+          ],
+          "texture": "#handle"
+        },
+        "west": {
+          "uv": [
+            14,
+            6,
+            15,
+            10
+          ],
+          "texture": "#handle"
+        },
+        "up": {
+          "uv": [
+            2,
+            1,
+            3,
+            2
+          ],
+          "texture": "#handle"
+        },
+        "down": {
+          "uv": [
+            3,
+            1,
+            4,
+            2
+          ],
+          "texture": "#handle"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        2,
+        6
+      ],
+      "to": [
+        10,
+        3,
+        10
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "rotation": 270,
+          "texture": "#handstone"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        0,
+        0
+      ],
+      "to": [
+        10,
+        2,
+        6
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            5,
+            6,
+            7,
+            10
+          ],
+          "rotation": 270,
+          "texture": "#handstone"
+        },
+        "down": {
+          "uv": [
+            0,
+            6,
+            6,
+            10
+          ],
+          "rotation": 270,
+          "texture": "#3"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            9,
+            16,
+            11
+          ],
+          "texture": "#handstone"
+        },
+        "down": {
+          "uv": [
+            0,
+            10,
+            16,
+            16
+          ],
+          "rotation": 270,
+          "texture": "#3"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        0,
+        10
+      ],
+      "to": [
+        10,
+        2,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            9,
+            6,
+            11,
+            10
+          ],
+          "rotation": 90,
+          "texture": "#handstone"
+        },
+        "down": {
+          "uv": [
+            10,
+            6,
+            16,
+            10
+          ],
+          "rotation": 270,
+          "texture": "#3"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        6,
+        2,
+        16
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            5,
+            16,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#handstone"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            6
+          ],
+          "rotation": 270,
+          "texture": "#3"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        2,
+        6
+      ],
+      "to": [
+        10,
+        4,
+        10
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#handstone"
+        },
+        "down": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "rotation": 270,
+          "texture": "#handstone"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        4,
+        6
+      ],
+      "to": [
+        6,
+        6,
+        10
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            5,
+            6,
+            7,
+            10
+          ],
+          "rotation": 90,
+          "texture": "#handstone"
+        },
+        "up": {
+          "uv": [
+            0,
+            6,
+            6,
+            10
+          ],
+          "texture": "#handstone"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        4,
+        10
+      ],
+      "to": [
+        16,
+        6,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            9,
+            16,
+            11
+          ],
+          "rotation": 180,
+          "texture": "#handstone"
+        },
+        "up": {
+          "uv": [
+            0,
+            10,
+            16,
+            16
+          ],
+          "texture": "#handstone"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        4,
+        6
+      ],
+      "to": [
+        16,
+        6,
+        10
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            9,
+            6,
+            11,
+            10
+          ],
+          "rotation": 270,
+          "texture": "#handstone"
+        },
+        "up": {
+          "uv": [
+            10,
+            6,
+            16,
+            10
+          ],
+          "texture": "#handstone"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        4,
+        0
+      ],
+      "to": [
+        16,
+        6,
+        6
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            5,
+            16,
+            7
+          ],
+          "texture": "#handstone"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            6
+          ],
+          "texture": "#handstone"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        6,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            6
+          ],
+          "texture": "#side",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            6
+          ],
+          "texture": "#side",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            6
+          ],
+          "texture": "#side",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            6
+          ],
+          "texture": "#side",
+          "cullface": "west"
+        }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        135,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30,
+        45,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    },
+    "fixed": {
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  }
+}

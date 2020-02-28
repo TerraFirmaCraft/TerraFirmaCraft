@@ -7,35 +7,51 @@ package net.dries007.tfc.util.fuel;
 
 import net.minecraft.item.ItemStack;
 
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+
 public class Fuel
 {
-    private final ItemStack stack;
+    private final IIngredient<ItemStack> ingredient;
     private final int amount;
     private final float temperature;
 
-    private final boolean isForgeValid;
+    private final boolean isForgeValid, isBloomeryValid;
 
-    public Fuel(ItemStack stack, int amount, float temperature)
+    public Fuel(IIngredient<ItemStack> ingredient, int amount, float temperature)
     {
-        this(stack, amount, temperature, false);
+        this(ingredient, amount, temperature, false, false);
     }
 
-    public Fuel(ItemStack stack, int amount, float temperature, boolean isForgeValid)
+    public Fuel(IIngredient<ItemStack> ingredient, int amount, float temperature, boolean isForgeValid, boolean isBloomeryValid)
     {
-        this.stack = stack;
+        this.ingredient = ingredient;
         this.amount = amount;
         this.temperature = temperature;
         this.isForgeValid = isForgeValid;
+        this.isBloomeryValid = isBloomeryValid;
     }
 
+    /**
+     * Check if at least one itemstack from both fuel obj match
+     *
+     * @param fuel the other fuel to compare
+     * @return true if at least one itemstack is equal
+     */
     public boolean matchesInput(Fuel fuel)
     {
-        return matchesInput(fuel.stack);
+        for (ItemStack stack : fuel.ingredient.getValidIngredients())
+        {
+            if (matchesInput(stack))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean matchesInput(ItemStack stack)
     {
-        return this.stack.isItemEqual(stack);
+        return ingredient.testIgnoreCount(stack);
     }
 
     public int getAmount()
@@ -51,5 +67,10 @@ public class Fuel
     public boolean isForgeFuel()
     {
         return isForgeValid;
+    }
+
+    public boolean isBloomeryFuel()
+    {
+        return isBloomeryValid;
     }
 }

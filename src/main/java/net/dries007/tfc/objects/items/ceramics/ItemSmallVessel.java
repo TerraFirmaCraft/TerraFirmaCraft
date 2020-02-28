@@ -34,15 +34,18 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.api.capability.IMoldHandler;
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.util.TFCConstants;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.util.Alloy;
@@ -117,44 +120,18 @@ public class ItemSmallVessel extends ItemPottery
         }
     }
 
-    @Nullable
-    @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack)
-    {
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null)
-        {
-            nbt = new NBTTagCompound();
-            stack.setTagCompound(nbt);
-        }
-        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (inventory instanceof IMoldHandler)
-        {
-            nbt.setTag("caps", ((IMoldHandler) inventory).serializeNBT());
-        }
-        return nbt;
-    }
-
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        super.readNBTShareTag(stack, nbt);
-        if (nbt != null)
-        {
-            IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (inventory instanceof IMoldHandler)
-            {
-                ((IMoldHandler) inventory).deserializeNBT(nbt.getCompoundTag("caps"));
-            }
-        }
-    }
-
     @Override
     public boolean canStack(ItemStack stack)
     {
         return false;
     }
 
+    /**
+     * Get the firing result of a vessel in a heating device
+     *
+     * @param input the small vessel
+     * @return the vessel with molten contents, if possible
+     */
     @Nonnull
     public ItemStack getFiringResult(ItemStack input)
     {
@@ -166,7 +143,7 @@ public class ItemSmallVessel extends ItemPottery
 
             for (int i = 0; i < cap.getSlots(); i++)
             {
-                alloy.add(cap.getStackInSlot(i));
+                alloy.add(cap.getStackInSlot(i), Metal.Tier.TIER_VI, 1600f);
                 cap.setStackInSlot(i, ItemStack.EMPTY);
             }
 
@@ -181,7 +158,7 @@ public class ItemSmallVessel extends ItemPottery
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.VERY_LARGE;
+        return Size.SMALL;
     }
 
     @Nonnull
@@ -215,7 +192,7 @@ public class ItemSmallVessel extends ItemPottery
         {
             super(4);
 
-            tank = new FluidTank(4000);
+            tank = new FluidTank(ConfigTFC.GENERAL.tankSmallVessel);
             fluidMode = false;
             deserializeNBT(nbt);
         }
@@ -239,14 +216,14 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public float getTemperature()
         {
-            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.TOTAL_TIME.getTicks() - lastUpdateTick);
+            return CapabilityItemHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.PLAYER_TIME.getTicks() - lastUpdateTick);
         }
 
         @Override
         public void setTemperature(float temperature)
         {
             this.temperature = temperature;
-            this.lastUpdateTick = CalendarTFC.TOTAL_TIME.getTicks();
+            this.lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
         }
 
         @Override
@@ -271,7 +248,11 @@ public class ItemSmallVessel extends ItemPottery
                 String desc = TextFormatting.DARK_GREEN + I18n.format(Helpers.getTypeName(metal)) + ": " + I18n.format("tfc.tooltip.units", getAmount());
                 if (isMolten())
                 {
-                    desc += " - " + I18n.format("tfc.tooltip.liquid");
+                    desc += I18n.format("tfc.tooltip.liquid");
+                }
+                else
+                {
+                    desc += I18n.format("tfc.tooltip.solid");
                 }
                 text.add(desc);
             }
@@ -282,14 +263,14 @@ public class ItemSmallVessel extends ItemPottery
                 {
                     if (!slot.isEmpty())
                     {
-                        text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
+                        text.add(1, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
                         hasContent = true;
                     }
                 }
 
                 if (!hasContent)
                 {
-                    text.add(1, I18n.format(TFCConstants.MOD_ID + ".tooltip.small_vessel_empty"));
+                    text.add(1, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_empty"));
                 }
             }
             ISmallVesselHandler.super.addHeatInfo(stack, text);
@@ -337,7 +318,7 @@ public class ItemSmallVessel extends ItemPottery
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if ((fluidMode || isInventoryEmpty()) && resource != null && FluidsTFC.getMetalFromFluid(resource.getFluid()) != null)
+            if ((fluidMode || isInventoryEmpty()) && resource != null)
             {
                 updateFluidData(resource);
                 fluidMode = true;
@@ -374,7 +355,7 @@ public class ItemSmallVessel extends ItemPottery
             IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
-                CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
+                CapabilityFood.applyTrait(cap, FoodTrait.PRESERVED);
             }
             super.setStackInSlot(slot, stack);
         }
@@ -388,7 +369,7 @@ public class ItemSmallVessel extends ItemPottery
                 IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (cap != null)
                 {
-                    CapabilityFood.applyTrait(cap, CapabilityFood.PRESERVED);
+                    CapabilityFood.applyTrait(cap, FoodTrait.PRESERVED);
                 }
             }
             return super.insertItem(slot, stack, simulate);
@@ -401,9 +382,20 @@ public class ItemSmallVessel extends ItemPottery
             IFood cap = getStackInSlot(slot).getCapability(CapabilityFood.CAPABILITY, null);
             if (cap != null)
             {
-                CapabilityFood.removeTrait(cap, CapabilityFood.PRESERVED);
+                CapabilityFood.removeTrait(cap, FoodTrait.PRESERVED);
             }
             return super.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+        {
+            IItemSize size = CapabilityItemSize.getIItemSize(stack);
+            if (size != null)
+            {
+                return size.getSize(stack).isSmallerThan(Size.LARGE) && size.getWeight(stack).isSmallerThan(Weight.HEAVY);
+            }
+            return false;
         }
 
         @Override
@@ -421,7 +413,7 @@ public class ItemSmallVessel extends ItemPottery
             }
             else
             {
-                nbt.setLong("ticks", CalendarTFC.TOTAL_TIME.getTicks());
+                nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
             }
 
             if (fluidMode)
@@ -469,6 +461,7 @@ public class ItemSmallVessel extends ItemPottery
             if (fluid != null)
             {
                 Metal metal = FluidsTFC.getMetalFromFluid(fluid.getFluid());
+                //noinspection ConstantConditions
                 if (metal != null)
                 {
                     meltTemp = metal.getMeltTemp();

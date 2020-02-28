@@ -9,20 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
-import net.dries007.tfc.objects.items.metal.ItemOreTFC;
-import net.dries007.tfc.types.DefaultMetals;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 public final class FuelManager
 {
     private static final List<Fuel> FUELS = new ArrayList<>();
-    private static final Fuel EMPTY = new Fuel(ItemStack.EMPTY, 0, 0);
+    private static final Fuel EMPTY = new Fuel(IIngredient.empty(), 0, 0);
 
     @Nonnull
     public static Fuel getFuel(ItemStack stack)
@@ -41,34 +38,52 @@ public final class FuelManager
         return fuel != EMPTY && fuel.isForgeFuel();
     }
 
+    public static boolean isItemBloomeryFuel(ItemStack stack)
+    {
+        Fuel fuel = getFuel(stack);
+        return fuel != EMPTY && fuel.isBloomeryFuel();
+    }
+
     public static void postInit()
     {
         for (Tree wood : TFCRegistries.TREES.getValuesCollection())
         {
             BlockLogTFC log = BlockLogTFC.get(wood);
-            FUELS.add(new Fuel(new ItemStack(log), wood.getBurnTicks(), wood.getBurnTemp()));
+            FUELS.add(new Fuel(IIngredient.of(new ItemStack(log)), wood.getBurnTicks(), wood.getBurnTemp()));
         }
 
-        // Coal (Vanilla)
-        FUELS.add(new Fuel(new ItemStack(Items.COAL, 1, 0), 2200, 1350f, true));
-        // Coal (TFC Variants)
-        FUELS.add(new Fuel(ItemOreTFC.get(TFCRegistries.ORES.getValue(DefaultMetals.BITUMINOUS_COAL), 1), 2200, 1415f, true));
-        FUELS.add(new Fuel(ItemOreTFC.get(TFCRegistries.ORES.getValue(DefaultMetals.LIGNITE), 1), 2200, 1415f, true));
+        // Coals
+        FUELS.add(new Fuel(IIngredient.of("gemCoal"), 2200, 1415f, true, false));
+        FUELS.add(new Fuel(IIngredient.of("gemLignite"), 2000, 1350f, true, false));
 
         // Charcoal
-        FUELS.add(new Fuel(new ItemStack(Items.COAL, 1, 1), 1800, 1350f, true));
+        FUELS.add(new Fuel(IIngredient.of("charcoal"), 1800, 1350f, true, true));
 
         //Peat
-        FUELS.add(new Fuel(new ItemStack(BlocksTFC.PEAT), 2500, 680));
+        FUELS.add(new Fuel(IIngredient.of("peat"), 2500, 680));
     }
 
-    public static boolean addFuel(Fuel fuel)
+    /**
+     * Register a new fuel only if the fuel is unique
+     *
+     * @param fuel the fuel obj to register
+     */
+    public static void addFuel(Fuel fuel)
     {
-        if (FUELS.stream().anyMatch(x -> x.matchesInput(fuel)))
+        if (canRegister(fuel))
         {
-            return false;
+            FUELS.add(fuel);
         }
-        FUELS.add(fuel);
-        return true;
+    }
+
+    /**
+     * Checks if this fuel can be registered
+     *
+     * @param fuel the fuel obj to register
+     * @return true if the new fuel is unique (eg: don't have at least one itemstack that is equal to another already registered fuel)
+     */
+    public static boolean canRegister(Fuel fuel)
+    {
+        return FUELS.stream().noneMatch(x -> x.matchesInput(fuel));
     }
 }

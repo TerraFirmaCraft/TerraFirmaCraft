@@ -99,8 +99,9 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
             }
 
             // Check if it can fall
+            IBlockState originalState = world.getBlockState(pos);
             faces = Arrays.stream(EnumFacing.HORIZONTALS)
-                .filter(x -> shouldFall(world, pos.offset(x), pos) && IFallingBlock.canFallThrough(world, pos.offset(x)))
+                .filter(x -> shouldFall(world, pos.offset(x), pos) && IFallingBlock.canFallThrough(world, pos.offset(x), originalState.getMaterial()))
                 .toArray(EnumFacing[]::new);
 
             if (faces.length >= 1)

@@ -17,15 +17,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.network.PacketLargeVesselUpdate;
 import net.dries007.tfc.objects.blocks.BlockLargeVessel;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
@@ -81,7 +82,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     @Nonnull
     public String getSealedDate()
     {
-        return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.INSTANCE.getDaysInMonth());
+        return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -100,11 +101,11 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     {
         for (int i = 0; i < inventory.getSlots(); i++)
         {
-            CapabilityFood.applyTrait(inventory.getStackInSlot(i), CapabilityFood.PRESERVED);
+            CapabilityFood.applyTrait(inventory.getStackInSlot(i), FoodTrait.PRESERVED);
         }
 
         // Update sealed tick info and sync to client
-        sealedTick = CalendarTFC.TOTAL_TIME.getTicks();
+        sealedTick = CalendarTFC.PLAYER_TIME.getTicks();
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         sealed = true;
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick, sealed), world.provider.getDimension());
@@ -115,7 +116,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         // Update preservation trait on contents
         for (int i = 0; i < inventory.getSlots(); i++)
         {
-            CapabilityFood.removeTrait(inventory.getStackInSlot(i), CapabilityFood.PRESERVED);
+            CapabilityFood.removeTrait(inventory.getStackInSlot(i), FoodTrait.PRESERVED);
         }
 
         // Update sealed tick info and sync to client
@@ -141,6 +142,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         super.readFromNBT(nbt);
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
+        sealed = sealedTick > 0;
     }
 
     @Override
@@ -155,7 +157,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
     }
 
     @Override
@@ -192,7 +194,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
         if (sizeCap != null)
         {
-            return sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE);
+            return sizeCap.getSize(stack).isSmallerThan(Size.LARGE) && sizeCap.getWeight(stack).isSmallerThan(Weight.HEAVY);
         }
         return true;
     }
@@ -224,7 +226,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             ItemStack stack = super.extractItem(slot, amount, simulate);
-            CapabilityFood.removeTrait(stack, CapabilityFood.PRESERVED);
+            CapabilityFood.removeTrait(stack, FoodTrait.PRESERVED);
             return stack;
         }
     }

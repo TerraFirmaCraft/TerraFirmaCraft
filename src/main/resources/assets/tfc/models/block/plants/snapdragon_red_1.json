@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/snapdragon/snapdragon_red_1",
+    "particle": "tfc:blocks/plants/snapdragon/snapdragon_red_1"
+  }
+}

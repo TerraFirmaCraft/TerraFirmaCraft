@@ -85,9 +85,9 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
     }
 
     @Override
-    public float getDecayModifier()
+    public float getDecayDateModifier()
     {
-        return internalFoodCap.getDecayModifier();
+        return internalFoodCap.getDecayDateModifier();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
 
     @Nonnull
     @Override
-    public List<IFoodTrait> getTraits()
+    public List<FoodTrait> getTraits()
     {
         return internalFoodCap.getTraits();
     }

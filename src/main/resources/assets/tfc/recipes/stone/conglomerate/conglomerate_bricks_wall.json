@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:bricks/conglomerate"
+    }
+  },
+  "result": {
+    "item": "tfc:wall/bricks/conglomerate",
+    "count": 8
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "tfc:damage_item_food_recipe",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "knife"
+    },
+    {
+      "item": "tfc:food/wheat"
+    }
+  ],
+  "result": {
+    "item": "tfc:food/wheat_grain"
+  }
+}

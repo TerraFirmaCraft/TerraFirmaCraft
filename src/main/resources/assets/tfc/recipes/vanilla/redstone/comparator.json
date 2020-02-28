@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " T ",
+    "TXT",
+    "SSS"
+  ],
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "gem"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stone"
+    }
+  },
+  "result": {
+    "item": "minecraft:comparator",
+    "count": 1
+  }
+}

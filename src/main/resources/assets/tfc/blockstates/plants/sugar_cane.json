@@ -1,0 +1,34 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "part": "lower"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sugar_cane_lower"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "middle"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sugar_cane_middle"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "single|upper"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/sugar_cane_upper"
+        }
+      ]
+    }
+  ]
+}

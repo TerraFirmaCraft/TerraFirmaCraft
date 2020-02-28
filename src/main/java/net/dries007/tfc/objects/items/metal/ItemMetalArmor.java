@@ -15,9 +15,10 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.IRarity;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.forge.ForgeableHeatableHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.types.Metal;
@@ -61,9 +62,16 @@ public class ItemMetalArmor extends ItemArmorTFC implements IMetalItem, IItemSiz
         return d < 0 ? 0 : MathHelper.floor(type.getSmeltAmount() * d);
     }
 
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ForgeableHeatableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+    }
+
     @Override
     @Nonnull
-    public EnumRarity getRarity(ItemStack stack)
+    public IRarity getForgeRarity(@Nonnull ItemStack stack)
     {
         switch (metal.getTier())
         {
@@ -77,13 +85,6 @@ public class ItemMetalArmor extends ItemArmorTFC implements IMetalItem, IItemSiz
             case TIER_V:
                 return EnumRarity.EPIC;
         }
-        return super.getRarity(stack);
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+        return super.getForgeRarity(stack);
     }
 }

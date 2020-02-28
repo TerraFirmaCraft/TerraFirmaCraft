@@ -40,6 +40,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @ParametersAreNonnullByDefault
 public class TEPitKiln extends TEPlacedItem implements ITickable
@@ -101,58 +102,62 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
     private final NonNullList<ItemStack> logItems = NonNullList.withSize(WOOD_NEEDED, ItemStack.EMPTY);
     private final NonNullList<ItemStack> strawItems = NonNullList.withSize(STRAW_NEEDED, ItemStack.EMPTY);
-    private int burnTicksToGo;
+    private long litTick;
+    private boolean isLit;
 
     @Override
     public void update()
     {
-        if (burnTicksToGo > 0)
+        if (isLit)
         {
-            burnTicksToGo--;
-            BlockPos above = pos.up();
-            if (world.isAirBlock(above))
+            if (world.getTotalWorldTime() % 10 == 0)
             {
-                world.setBlockState(above, Blocks.FIRE.getDefaultState());
-            }
-            else
-            {
-                IBlockState stateAbove = world.getBlockState(above);
-                if (stateAbove.getMaterial() != Material.FIRE)
+                BlockPos above = pos.up();
+                if (world.isAirBlock(above))
                 {
-                    // todo: decide what to do now.
-                    burnTicksToGo = 0;
+                    world.setBlockState(above, Blocks.FIRE.getDefaultState());
+                }
+                else
+                {
+                    IBlockState stateAbove = world.getBlockState(above);
+                    if (stateAbove.getMaterial() != Material.FIRE)
+                    {
+                        // consume contents, don't cook items, convert to placed item
+                        emptyFuelContents();
+                        convertPitKilnToPlacedItem(world, pos);
+                        return;
+                    }
+                }
+
+                if (!isValid())
+                {
+                    // consume contents, don't cook items, convert to placed item
+                    emptyFuelContents();
+                    convertPitKilnToPlacedItem(world, pos);
                     return;
                 }
             }
-            if (burnTicksToGo == 0)
+
+            // Check if complete
+            long remainingTicks = ConfigTFC.GENERAL.pitKilnTime - (CalendarTFC.PLAYER_TIME.getTicks() - litTick);
+            if (remainingTicks <= 0)
             {
-                strawItems.clear();
-                logItems.clear();
+                // Empty ingredients
+                emptyFuelContents();
 
-                for (int i = 0; i < inventory.getSlots(); i++)
+                // If we missed the point where remainingTicks == 0, then we need to transaction wrap this
+                if (remainingTicks < 0)
                 {
-                    ItemStack stack = inventory.getStackInSlot(i);
-                    ItemStack outputStack = ItemStack.EMPTY;
-                    // First, heat up the item to max temperature, so the recipe can properly check the temperature of the item
-                    IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (heat != null)
-                    {
-                        heat.setTemperature(Heat.maxVisibleTemperature());
-
-                        // Only Tier I and below can be melted in a pit kiln
-                        HeatRecipe recipe = HeatRecipe.get(stack, Metal.Tier.TIER_I);
-                        if (recipe != null)
-                        {
-                            outputStack = recipe.getOutputStack(stack);
-                        }
-                    }
-
-                    // Reset item in inventory
-                    inventory.setStackInSlot(i, outputStack);
+                    CalendarTFC.runTransaction(remainingTicks, 0, this::cookContents);
+                }
+                else
+                {
+                    cookContents();
                 }
 
-                world.setBlockToAir(above);
+                world.setBlockToAir(pos.up());
                 updateBlock();
+
                 // Since there will be no items in the pit kiln at this point
                 TEPlacedItem.convertPitKilnToPlacedItem(world, pos);
             }
@@ -169,7 +174,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
 
     public boolean isLit()
     {
-        return burnTicksToGo > 0;
+        return isLit;
     }
 
     public boolean hasFuel()
@@ -252,10 +257,10 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
-        burnTicksToGo = nbt.getInteger("burnTicksToGo");
+        isLit = nbt.getBoolean("isLit");
+        litTick = nbt.getLong("litTick");
         ItemStackHelper.loadAllItems(nbt.getCompoundTag("strawItems"), strawItems);
         ItemStackHelper.loadAllItems(nbt.getCompoundTag("logItems"), logItems);
-
         super.readFromNBT(nbt);
     }
 
@@ -263,7 +268,8 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
     @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setLong("burnTicksToGo", burnTicksToGo);
+        nbt.setBoolean("isLit", isLit);
+        nbt.setLong("litTick", litTick);
         nbt.setTag("strawItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), strawItems));
         nbt.setTag("logItems", ItemStackHelper.saveAllItems(new NBTTagCompound(), logItems));
         return super.writeToNBT(nbt);
@@ -293,7 +299,8 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                         return false;
                     }
                 }
-                burnTicksToGo = ConfigTFC.GENERAL.pitKilnTime;
+                isLit = true;
+                litTick = CalendarTFC.PLAYER_TIME.getTicks();
                 updateBlock();
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
                 //Light other adjacent pit kilns
@@ -312,19 +319,40 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         return false;
     }
 
-    public void assertValid()
+    public void emptyFuelContents()
     {
-        if (isLit() && !isValid() && !world.isRemote)
+        strawItems.clear();
+        logItems.clear();
+    }
+
+    private void cookContents()
+    {
+        for (int i = 0; i < inventory.getSlots(); i++)
         {
-            // Stop burning, remove all straw + wood, etc.
-            if (world.getBlockState(pos.up()).getMaterial() == Material.FIRE)
+            ItemStack stack = inventory.getStackInSlot(i);
+            ItemStack outputStack = ItemStack.EMPTY;
+            // First, heat up the item to max temperature, so the recipe can properly check the temperature of the item
+            IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (heat != null)
             {
-                world.setBlockToAir(pos.up());
+                heat.setTemperature(Heat.maxVisibleTemperature());
+
+                // Only Tier I and below can be melted in a pit kiln
+                HeatRecipe recipe = HeatRecipe.get(stack, Metal.Tier.TIER_I);
+                if (recipe != null)
+                {
+                    outputStack = recipe.getOutputStack(stack);
+                }
+
+                // Heat up the output as well
+                IItemHeat outputHeat = outputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                if (outputHeat != null)
+                {
+                    outputHeat.setTemperature(Heat.maxVisibleTemperature());
+                }
             }
-            strawItems.clear();
-            logItems.clear();
-            // The easiest way to do this is just to convert to a PlacedItem:
-            TEPlacedItem.convertPitKilnToPlacedItem(world, pos);
+            // Reset item in inventory
+            inventory.setStackInSlot(i, outputStack);
         }
     }
 
@@ -369,6 +397,6 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 return false;
             }
         }
-        return world.getBlockState(pos.down()).isNormalCube();
+        return world.isSideSolid(pos.down(), EnumFacing.UP);
     }
 }

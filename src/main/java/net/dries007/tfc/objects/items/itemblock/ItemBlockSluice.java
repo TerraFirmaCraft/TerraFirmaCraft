@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.objects.items.itemblock;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
@@ -19,8 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.blocks.devices.BlockSluice;
 
 @ParametersAreNonnullByDefault
@@ -31,21 +28,6 @@ public class ItemBlockSluice extends ItemBlockTFC
     {
         super(block);
     }
-
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.HUGE;
-    }
-
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
-    }
-
 
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {

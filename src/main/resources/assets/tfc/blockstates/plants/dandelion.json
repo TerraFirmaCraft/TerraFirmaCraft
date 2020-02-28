@@ -1,0 +1,150 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_0",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/dandelion_1",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_1",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/dandelion_2",
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "2"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_2",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/dandelion_3",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "3"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_2",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/dandelion_3",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "4"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_1",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/dandelion_3",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "5"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_1",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/dandelion_3",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "6"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_1",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/dandelion_2",
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "7"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_2",
+          "weight": 5
+        },
+        {
+          "model": "tfc:plants/dandelion_3",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "8"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_1",
+          "weight": 1
+        },
+        {
+          "model": "tfc:plants/dandelion_3",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "9"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/dandelion_0",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

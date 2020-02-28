@@ -1,0 +1,19 @@
+{
+  "type": "tfc:shaped_skill",
+  "pattern": [
+    "X",
+    "S"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:metal/pick_head/black_bronze"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  },
+  "result": {
+    "item": "tfc:metal/pick/black_bronze"
+  }
+}

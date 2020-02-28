@@ -1,0 +1,42 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:fruit_trees/trunk",
+    "textures": {
+      "texture": "tfc:blocks/fruit_trees/bark/banana",
+      "particle": "tfc:blocks/fruit_trees/bark/banana"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "north": {
+      "true": {
+        "submodel": "tfc:fruit_trees/trunk_connection"
+      },
+      "false": {}
+    },
+    "east": {
+      "true": {
+        "submodel": "tfc:fruit_trees/trunk_connection",
+        "y": 90
+      },
+      "false": {}
+    },
+    "south": {
+      "true": {
+        "submodel": "tfc:fruit_trees/trunk_connection",
+        "y": 180
+      },
+      "false": {}
+    },
+    "west": {
+      "true": {
+        "submodel": "tfc:fruit_trees/trunk_connection",
+        "y": 270
+      },
+      "false": {}
+    }
+  }
+}

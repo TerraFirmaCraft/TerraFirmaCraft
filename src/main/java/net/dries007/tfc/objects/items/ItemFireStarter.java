@@ -17,10 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -35,6 +32,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
@@ -48,14 +46,47 @@ import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 @ParametersAreNonnullByDefault
 public class ItemFireStarter extends ItemTFC
 {
+    /**
+     * Causes ignition of fire based devices, consume or damage items if valid
+     *
+     * @param stack the itemstack that is used to cause ignition
+     * @return true if item is a valid item to ignite devices
+     */
+    public static boolean onIgnition(ItemStack stack)
+    {
+        if (stack.isEmpty())
+        {
+            return false;
+        }
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "fireStarter"))
+        {
+            if (stack.getItem().isDamageable())
+            {
+                Helpers.damageItem(stack);
+            }
+            else
+            {
+                stack.shrink(1);
+            }
+            return true;
+        }
+        // Infinite items aren't damaged or consumed
+        return OreDictionaryHelper.doesStackMatchOre(stack, "infiniteFire");
+    }
+
+    /**
+     * Checks if item can cause ignition
+     *
+     * @param stack the itemstack that is used to cause ignition
+     * @return true if item is a valid item to ignite devices
+     */
     public static boolean canIgnite(ItemStack stack)
     {
         if (stack.isEmpty())
         {
             return false;
         }
-        Item item = stack.getItem();
-        return item == ItemsTFC.FIRESTARTER || item == Items.FLINT_AND_STEEL || item == Items.FIRE_CHARGE || item instanceof ItemFlintAndSteel;
+        return OreDictionaryHelper.doesStackMatchOre(stack, "fireStarter") || OreDictionaryHelper.doesStackMatchOre(stack, "infiniteFire");
     }
 
     public ItemFireStarter()
@@ -63,6 +94,7 @@ public class ItemFireStarter extends ItemTFC
         setMaxDamage(8);
         setMaxStackSize(1);
         setNoRepair();
+        OreDictionaryHelper.register(this, "fire", "starter");
     }
 
     @Override
@@ -124,6 +156,11 @@ public class ItemFireStarter extends ItemTFC
             if (countLeft < 10 && itemRand.nextFloat() + 0.3 < count / (double) total)
             {
                 world.spawnParticle(EnumParticleTypes.FLAME, result.hitVec.x, result.hitVec.y, result.hitVec.z, 0.0F, 0.0F, 0.0F);
+            }
+
+            if (count % 3 == 1)
+            {
+                player.playSound(TFCSounds.FIRE_STARTER, 0.5f, 0.05F);
             }
         }
         else if (countLeft == 1) // Server, and last tick of use

@@ -29,14 +29,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -70,12 +70,12 @@ public class ItemBlockBarrel extends ItemBlockTFC
                 Fluid fluid = handler.drain(Fluid.BUCKET_VOLUME, false).getFluid();
                 if (fluid.getTemperature() < BARREL_MAX_FLUID_TEMPERATURE)
                 {
-                    FluidTank tank = new FluidTank(TEBarrel.TANK_CAPACITY);
+                    FluidTank tank = new FluidTank(ConfigTFC.GENERAL.tankBarrel);
                     boolean canCreateSources = false; //default
                     if (state.getBlock() instanceof BlockFluidClassic)
                     {
                         BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(pos).getBlock();
-                        canCreateSources = ReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                        canCreateSources = ObfuscationReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
                     }
                     else if (state.getBlock() instanceof BlockLiquid)
                     {
@@ -85,7 +85,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                     if (canCreateSources && fluidStack != null)
                     {
-                        fluidStack.amount = TEBarrel.TANK_CAPACITY;
+                        fluidStack.amount = ConfigTFC.GENERAL.tankBarrel;
                     }
                     tank.fill(fluidStack, true);
 
@@ -93,11 +93,20 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
                     nbt.setTag("inventory", new ItemStackHandler(3).serializeNBT());
 
-                    nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
+                    nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
                     ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);
-                    player.setHeldItem(hand, stack);
+                    player.getHeldItem(hand).shrink(1);
+                    if (player.getHeldItem(hand).isEmpty())
+                    {
+                        player.setHeldItem(hand, stack);
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(player, stack);
+                    }
+
                     return EnumActionResult.SUCCESS;
                 }
             }
@@ -128,20 +137,20 @@ public class ItemBlockBarrel extends ItemBlockTFC
             {
                 if (inventory.isEmpty())
                 {
-                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_empty"));
+                    tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_empty"));
                 }
                 else
                 {
-                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                    tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_item", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
                 }
             }
             else
             {
-                tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_fluid", tank.getFluidAmount(), tank.getFluid().getLocalizedName()));
+                tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_fluid", tank.getFluidAmount(), tank.getFluid().getLocalizedName()));
 
                 if (!inventory.isEmpty())
                 {
-                    tooltip.add(I18n.format(TFCConstants.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
+                    tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_item_in_fluid", inventory.getCount(), inventory.getItem().getItemStackDisplayName(inventory)));
                 }
             }
         }
@@ -162,12 +171,12 @@ public class ItemBlockBarrel extends ItemBlockTFC
                 IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, rayTrace.sideHit);
                 if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
                 {
-                    FluidTank tank = new FluidTank(TEBarrel.TANK_CAPACITY);
+                    FluidTank tank = new FluidTank(ConfigTFC.GENERAL.tankBarrel);
                     boolean canCreateSources = false; //default
                     if (state.getBlock() instanceof BlockFluidClassic)
                     {
                         BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(pos).getBlock();
-                        canCreateSources = ReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                        canCreateSources = ObfuscationReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
                     }
                     else if (state.getBlock() instanceof BlockLiquid)
                     {
@@ -177,7 +186,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                     if (canCreateSources && fluidStack != null)
                     {
-                        fluidStack.amount = TEBarrel.TANK_CAPACITY;
+                        fluidStack.amount = ConfigTFC.GENERAL.tankBarrel;
                     }
                     tank.fill(fluidStack, true);
 
@@ -185,7 +194,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
                     nbt.setTag("inventory", new ItemStackHandler(3).serializeNBT());
 
-                    nbt.setLong("sealedTick", CalendarTFC.TOTAL_TIME.getTicks());
+                    nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
                     nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
                     ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
                     stack.setTagCompound(nbt);
@@ -195,19 +204,5 @@ public class ItemBlockBarrel extends ItemBlockTFC
             }
         }
         return super.onItemRightClick(worldIn, player, hand);
-    }
-
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
-    {
-        return Size.HUGE;
-    }
-
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
-    {
-        return Weight.HEAVY;
     }
 }

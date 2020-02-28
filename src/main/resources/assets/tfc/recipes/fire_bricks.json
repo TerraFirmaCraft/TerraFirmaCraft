@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XMX",
+    "MXM",
+    "XMX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:ceramics/fired/fire_brick"
+    },
+    "M": {
+      "type": "forge:ore_dict",
+      "ore": "mortar"
+    }
+  },
+  "result": {
+    "item": "tfc:fire_bricks",
+    "count": 2
+  }
+}

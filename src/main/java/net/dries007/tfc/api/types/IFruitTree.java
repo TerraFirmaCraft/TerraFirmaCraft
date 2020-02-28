@@ -70,7 +70,6 @@ public interface IFruitTree
     /**
      * Return the tree generator used to generate this fruit tree.
      *
-     * @return
      */
     @Nonnull
     default IFruitTreeGenerator getGenerator()

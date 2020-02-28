@@ -19,6 +19,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityPolarBear;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
@@ -30,50 +32,75 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.util.TFCConstants;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.entity.EntitySeatOn;
-import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
+import net.dries007.tfc.objects.entity.animal.*;
 
 public final class Helpers
 {
     private static final Joiner JOINER_DOT = Joiner.on('.');
 
-    /**
-     * Gets a map of generated ores for each chunk in radius.
-     * It takes account only loaded chunks, so if radius is too big you probably won't get an accurate data.
-     *
-     * @param world  the WorldObj
-     * @param chunkX the center chunk's X position
-     * @param chunkZ the center chunk's Z position
-     * @param radius the radius to scan. can be 0 to scan only the central chunk
-     * @return a map containing all ores generated for each chunk
-     */
-    public static Map<ChunkPos, Set<Ore>> getChunkOres(World world, int chunkX, int chunkZ, int radius)
+    private static final boolean JEI = Loader.isModLoaded("jei");
+
+    private static final Map<Class<? extends Entity>, Class<? extends Entity>> VANILLA_REPLACEMENTS;
+
+    static
     {
-        Map<ChunkPos, Set<Ore>> map = new HashMap<>();
-        for (int x = chunkX - radius; x <= chunkX + radius; x++)
+        VANILLA_REPLACEMENTS = new HashMap<>();
+        VANILLA_REPLACEMENTS.put(EntityCow.class, EntityCowTFC.class);
+        VANILLA_REPLACEMENTS.put(EntitySheep.class, EntitySheepTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityPig.class, EntityPigTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityMule.class, EntityMuleTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityHorse.class, EntityHorseTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityDonkey.class, EntityDonkeyTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityChicken.class, EntityChickenTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityRabbit.class, EntityRabbitTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityWolf.class, EntityWolfTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityOcelot.class, EntityOcelotTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityPolarBear.class, EntityPolarBearTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityParrot.class, EntityParrotTFC.class);
+        VANILLA_REPLACEMENTS.put(EntityLlama.class, EntityLlamaTFC.class);
+    }
+
+    public static boolean isJEIEnabled()
+    {
+        return JEI;
+    }
+
+    /**
+     * Return true if the entity is from vanilla and have a TFC counterpart
+     *
+     * @param entity the entity to check
+     * @return true if it has a TFC counterpart, false otherwise
+     */
+    public static boolean isVanillaAnimal(Entity entity)
+    {
+        return VANILLA_REPLACEMENTS.get(entity.getClass()) != null;
+    }
+
+    @Nullable
+    public static Entity getTFCReplacement(Entity entity)
+    {
+        Class<? extends Entity> animalClass = VANILLA_REPLACEMENTS.get(entity.getClass());
+        if (animalClass != null)
         {
-            for (int z = chunkZ - radius; z <= chunkZ + radius; z++)
+            try
             {
-                ChunkPos chunkPos = new ChunkPos(x, z);
-                if (world.isBlockLoaded(chunkPos.getBlock(8, 0, 8)))
-                {
-                    Chunk chunk = world.getChunk(x, z);
-                    ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
-                    map.put(chunkPos, chunkData.getChunkOres());
-                }
+                return animalClass.getConstructor(World.class).newInstance(entity.world);
+            }
+            catch (Exception ignored)
+            {
             }
         }
-        return map;
+        return null;
     }
 
     /**
@@ -171,13 +198,13 @@ public final class Helpers
 
     public static String getEnumName(Enum<?> anEnum)
     {
-        return JOINER_DOT.join(TFCConstants.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
+        return JOINER_DOT.join(TerraFirmaCraft.MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum).toLowerCase();
     }
 
     public static String getTypeName(IForgeRegistryEntry<?> type)
     {
         //noinspection ConstantConditions
-        return JOINER_DOT.join(TFCConstants.MOD_ID, "types", type.getRegistryType().getSimpleName(), type.getRegistryName().getPath()).toLowerCase();
+        return JOINER_DOT.join(TerraFirmaCraft.MOD_ID, "types", type.getRegistryType().getSimpleName(), type.getRegistryName().getPath()).toLowerCase();
     }
 
     public static boolean playerHasItemMatchingOre(InventoryPlayer playerInv, String ore)

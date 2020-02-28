@@ -34,8 +34,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
  */
 public class WorldGenSoilPits implements IWorldGenerator
 {
-    private static final float CLAY_RAINFALL_THREHOLD = 100f;
-
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
@@ -56,7 +54,7 @@ public class WorldGenSoilPits implements IWorldGenerator
         int radius = rng.nextInt(6) + 2;
         int depth = rng.nextInt(3) + 1;
         if (rng.nextInt(ConfigTFC.WORLD.clayRarity) != 0 || start.getY() > WorldTypeTFC.SEALEVEL + 6) return;
-        if (ChunkDataTFC.getRainfall(world, start) < CLAY_RAINFALL_THREHOLD) return;
+        if (ChunkDataTFC.getRainfall(world, start) < ConfigTFC.WORLD.clayRainfallThreshold) return;
 
         for (int x = -radius; x <= radius; x++)
         {

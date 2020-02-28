@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
@@ -31,13 +32,15 @@ import net.minecraft.world.World;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
-import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
 public class BlockCharcoalPile extends Block implements ILightableBlock
 {
+    public static final Material CHARCOAL_MATERIAL = new Material(MapColor.BROWN);
+
     public static final PropertyInteger LAYERS = PropertyInteger.create("type", 1, 8);
 
     private static final AxisAlignedBB[] PILE_AABB = new AxisAlignedBB[] {
@@ -53,7 +56,7 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
 
     public BlockCharcoalPile()
     {
-        super(Material.GROUND);
+        super(CHARCOAL_MATERIAL);
 
         setSoundType(TFCSounds.CHARCOAL_PILE);
         setHarvestLevel("shovel", 0);
@@ -172,22 +175,18 @@ public class BlockCharcoalPile extends Block implements ILightableBlock
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = player.getHeldItem(hand);
-
-        if (stack.getItem() == ItemsTFC.FIRESTARTER || stack.getItem() == Items.FLINT_AND_STEEL)
+        if (state.getValue(LAYERS) >= 7 && BlockCharcoalForge.isValid(world, pos) && ItemFireStarter.onIgnition(stack))
         {
-            if (state.getValue(LAYERS) >= 7 && BlockCharcoalForge.isValid(world, pos))
+            if (!world.isRemote)
             {
-                if (!world.isRemote)
+                world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
+                TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
+                if (te != null)
                 {
-                    world.setBlockState(pos, BlocksTFC.CHARCOAL_FORGE.getDefaultState().withProperty(LIT, true));
-                    TECharcoalForge te = Helpers.getTE(world, pos, TECharcoalForge.class);
-                    if (te != null)
-                    {
-                        te.onCreate();
-                    }
+                    te.onCreate();
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }

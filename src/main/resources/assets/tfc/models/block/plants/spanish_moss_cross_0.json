@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/spanish_moss/spanish_moss_0",
+    "particle": "tfc:blocks/plants/spanish_moss/spanish_moss_0"
+  }
+}

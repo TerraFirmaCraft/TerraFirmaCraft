@@ -43,8 +43,8 @@ import net.dries007.tfc.util.agriculture.BerryBush;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.agriculture.FruitTree;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.api.types.Rock.Type.*;
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.*;
 import static net.dries007.tfc.util.Helpers.getNull;
 
@@ -102,6 +102,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockMetalSheet> allSheets;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
     private static ImmutableList<BlockCropTFC> allCropBlocks;
+    private static ImmutableList<BlockCropDead> allDeadCropBlocks;
     private static ImmutableList<BlockPlantTFC> allPlantBlocks;
     private static ImmutableList<BlockPlantTFC> allGrassBlocks;
     private static ImmutableList<BlockLoom> allLoomBlocks;
@@ -213,6 +214,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockCropTFC> getAllCropBlocks()
     {
         return allCropBlocks;
+    }
+
+    public static ImmutableList<BlockCropDead> getAllDeadCropBlocks()
+    {
+        return allDeadCropBlocks;
     }
 
     public static ImmutableList<BlockPlantTFC> getAllPlantBlocks()
@@ -495,10 +501,21 @@ public final class BlocksTFC
 
             for (Crop crop : Crop.values())
             {
-                b.add(register(r, "crop/" + crop.name().toLowerCase(), crop.create()));
+                b.add(register(r, "crop/" + crop.name().toLowerCase(), crop.createGrowingBlock()));
             }
 
             allCropBlocks = b.build();
+        }
+
+        {
+            Builder<BlockCropDead> b = ImmutableList.builder();
+
+            for (Crop crop : Crop.values())
+            {
+                b.add(register(r, "dead_crop/" + crop.name().toLowerCase(), crop.createDeadBlock()));
+            }
+
+            allDeadCropBlocks = b.build();
         }
 
         {
@@ -620,6 +637,7 @@ public final class BlocksTFC
         register(TECharcoalForge.class, "charcoal_forge");
         register(TEAnvilTFC.class, "anvil");
         register(TECrucible.class, "crucible");
+        register(TECropBase.class, "crop_base");
         register(TECropSpreading.class, "crop_spreading");
         register(TEBlastFurnace.class, "blast_furnace");
         register(TEBloomery.class, "bloomery");
@@ -695,6 +713,14 @@ public final class BlocksTFC
     public static boolean isSoil(IBlockState current)
     {
         if (current.getBlock() instanceof BlockPeat) return true;
+        if (!(current.getBlock() instanceof BlockRockVariant)) return false;
+        Rock.Type type = ((BlockRockVariant) current.getBlock()).getType();
+        return type == GRASS || type == DRY_GRASS || type == DIRT || type == CLAY || type == CLAY_GRASS;
+    }
+
+    public static boolean isGrowableSoil(IBlockState current)
+    {
+        if (current.getBlock() instanceof BlockPeat) return false;
         if (!(current.getBlock() instanceof BlockRockVariant)) return false;
         Rock.Type type = ((BlockRockVariant) current.getBlock()).getType();
         return type == GRASS || type == DRY_GRASS || type == DIRT || type == CLAY || type == CLAY_GRASS;

@@ -29,33 +29,49 @@ import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 
 /**
  * This is a {@link IContainerListener} which will monitor containers and send any capability data changes for included capabilities
- * In TFC, own items use {@link net.minecraft.item.Item#getNBTShareTag(ItemStack)} to sync internal capabilities such as inventory, fluids, etc.
  * Capabilities which are applied to all items (heat, forgeable, food, etc) are synced via this handler
  * We do NOT use {@link ItemStack#setTagCompound(NBTTagCompound)} to save capability data, as that results in duplication of information
  *
- * Below is a forge PR that would solve all these problems, but will likely not get implemented in 1.12.
- * <a href="https://github.com/MinecraftForge/MinecraftForge/pull/5009/files">Capability Sync PR for 1.12</>
+ * For containers under our control, they may need to send constant capability updates. In order to avoid ghost items, they ONLY call this listener when they need to sync changes.
  *
  * @author Choonster
  * @author AlcatrazEscapee
+ * @see ICapabilityUpdateContainer
+ *
+ * Below is a forge PR that would solve all these problems, but will likely not get implemented in 1.12.
+ * <a href="https://github.com/MinecraftForge/MinecraftForge/pull/5009/files">Capability Sync PR for 1.12</>
  */
 @ParametersAreNonnullByDefault
 public class CapabilityContainerListener implements IContainerListener
 {
-    private static final Map<String, Capability<? extends INBTSerializable<? extends NBTBase>>> CAPABILITIES = new HashMap<>();
+    /**
+     * Capability instances that need syncing, via calling deserializeNBT() on client
+     */
+    public static final Map<String, Capability<? extends INBTSerializable<? extends NBTBase>>> SYNC_CAPS = new HashMap<>();
 
     static
     {
-        CAPABILITIES.put(CapabilityItemHeat.KEY.toString(), CapabilityItemHeat.ITEM_HEAT_CAPABILITY);
-        CAPABILITIES.put(CapabilityForgeable.KEY.toString(), CapabilityForgeable.FORGEABLE_CAPABILITY);
-        CAPABILITIES.put(CapabilityFood.KEY.toString(), CapabilityFood.CAPABILITY);
+        SYNC_CAPS.put(CapabilityItemHeat.KEY.toString(), CapabilityItemHeat.ITEM_HEAT_CAPABILITY);
+        SYNC_CAPS.put(CapabilityForgeable.KEY.toString(), CapabilityForgeable.FORGEABLE_CAPABILITY);
+        SYNC_CAPS.put(CapabilityFood.KEY.toString(), CapabilityFood.CAPABILITY);
+    }
+
+    public static void addTo(Container container, EntityPlayerMP player)
+    {
+        // Add the listener to the container, and also register it for containers that need additional sync logic
+        CapabilityContainerListener listener = new CapabilityContainerListener(player);
+        container.addListener(listener);
+        if (container instanceof ICapabilityUpdateContainer)
+        {
+            ((ICapabilityUpdateContainer) container).setCapabilityListener(listener);
+        }
     }
 
     @Nonnull
     public static NBTTagCompound readCapabilityData(ItemStack stack)
     {
         NBTTagCompound nbt = new NBTTagCompound();
-        CAPABILITIES.forEach((name, cap) -> {
+        SYNC_CAPS.forEach((name, cap) -> {
             INBTSerializable<? extends NBTBase> capability = stack.getCapability(cap, null);
             if (capability != null)
             {
@@ -65,16 +81,28 @@ public class CapabilityContainerListener implements IContainerListener
         return nbt;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static void applyCapabilityData(ItemStack stack, NBTTagCompound nbt)
     {
-        CAPABILITIES.forEach((name, cap) -> {
+        SYNC_CAPS.forEach((name, cap) -> {
             INBTSerializable<? extends NBTBase> capability = stack.getCapability(cap, null);
             if (capability != null)
             {
                 ((INBTSerializable) capability).deserializeNBT(nbt.getTag(name));
             }
         });
+    }
+
+    public static boolean shouldSyncItem(ItemStack stack)
+    {
+        for (Capability<?> capability : SYNC_CAPS.values())
+        {
+            if (stack.hasCapability(capability, null))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private final EntityPlayerMP player;
@@ -92,21 +120,21 @@ public class CapabilityContainerListener implements IContainerListener
     public void sendAllContents(final Container container, final NonNullList<ItemStack> items)
     {
         // Filter out any items from the list that shouldn't be synced
-        final NonNullList<ItemStack> syncableItemsList = NonNullList.withSize(items.size(), ItemStack.EMPTY);
-        for (int index = 0; index < syncableItemsList.size(); index++)
+        final NonNullList<ItemStack> filteredItems = NonNullList.withSize(items.size(), ItemStack.EMPTY);
+        for (int index = 0; index < items.size(); index++)
         {
-            final ItemStack stack = syncableItemsList.get(index);
+            final ItemStack stack = items.get(index);
             if (shouldSyncItem(stack))
             {
-                syncableItemsList.set(index, stack);
+                filteredItems.set(index, stack);
             }
             else
             {
-                syncableItemsList.set(index, ItemStack.EMPTY);
+                filteredItems.set(index, ItemStack.EMPTY);
             }
         }
 
-        final PacketCapabilityContainerUpdate message = new PacketCapabilityContainerUpdate(container.windowId, syncableItemsList);
+        final PacketCapabilityContainerUpdate message = new PacketCapabilityContainerUpdate(container.windowId, filteredItems);
         if (message.hasData())
         {
             TerraFirmaCraft.getNetwork().sendTo(message, player);
@@ -136,16 +164,4 @@ public class CapabilityContainerListener implements IContainerListener
 
     @Override
     public void sendAllWindowProperties(Container container, IInventory inventory) {}
-
-    private boolean shouldSyncItem(ItemStack stack)
-    {
-        for (Capability<?> capability : CAPABILITIES.values())
-        {
-            if (stack.hasCapability(capability, null))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 }

@@ -6,12 +6,9 @@
 package net.dries007.tfc.client.gui;
 
 import java.util.List;
-import javax.annotation.Nonnull;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -23,13 +20,14 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.button.GuiButtonPage;
 import net.dries007.tfc.client.button.GuiButtonPlayerInventoryTab;
 import net.dries007.tfc.network.PacketSwitchPlayerInventoryTab;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.skills.Skill;
 import net.dries007.tfc.util.skills.SkillType;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 public class GuiSkills extends GuiContainerTFC
@@ -66,45 +64,9 @@ public class GuiSkills extends GuiContainerTFC
         addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.CALENDAR, guiLeft, guiTop, ++buttonId, true));
         addButton(new GuiButtonPlayerInventoryTab(TFCGuiHandler.Type.NUTRITION, guiLeft, guiTop, ++buttonId, true));
 
-        buttonLeft = addButton(new GuiButton(++buttonId, guiLeft + 7, guiTop + 68, 14, 14, "")
-        {
-            @Override
-            public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks)
-            {
-                if (this.visible)
-                {
-                    mc.getTextureManager().bindTexture(BACKGROUND);
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-                    int i = this.getHoverState(this.hovered);
-                    GlStateManager.enableBlend();
-                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-                    this.drawTexturedModalRect(this.x, this.y, 176, i * 14, this.width, this.height);
-                    this.mouseDragged(mc, mouseX, mouseY);
-                }
-            }
-        });
+        buttonLeft = addButton(new GuiButtonPage(++buttonId, guiLeft + 7, guiTop + 68, GuiButtonPage.Type.LEFT, "tfc.tooltip.previous_page"));
 
-        buttonRight = addButton(new GuiButton(++buttonId, guiLeft + 154, guiTop + 68, 14, 14, "")
-        {
-            @Override
-            public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks)
-            {
-                if (this.visible)
-                {
-                    mc.getTextureManager().bindTexture(BACKGROUND);
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-                    int i = this.getHoverState(this.hovered);
-                    GlStateManager.enableBlend();
-                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-                    this.drawTexturedModalRect(this.x, this.y, 190, i * 14, this.width, this.height);
-                    this.mouseDragged(mc, mouseX, mouseY);
-                }
-            }
-        });
+        buttonRight = addButton(new GuiButtonPage(++buttonId, guiLeft + 154, guiTop + 68, GuiButtonPage.Type.RIGHT, "tfc.tooltip.next_page"));
         updateSkillValues();
     }
 

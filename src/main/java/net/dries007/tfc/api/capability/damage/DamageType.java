@@ -46,7 +46,7 @@ public enum DamageType
             {
                 for (ItemStack stack : entityUnderAttack.getArmorInventoryList())
                 {
-                    IDamageResistance resist = null;
+                    IDamageResistance resist;
                     if (stack.getItem() instanceof IDamageResistance)
                     {
                         resist = (IDamageResistance) stack.getItem();

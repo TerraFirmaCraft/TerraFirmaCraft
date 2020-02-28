@@ -11,8 +11,8 @@ import net.minecraftforge.common.util.EnumHelper;
 public final class ToolMaterialsTFC
 {
     public static final Item.ToolMaterial IGNEOUS_INTRUSIVE = EnumHelper.addToolMaterial("tfc_igneous_intrusive", 1, 60, 7, 2.0f, 5); //Tier 0
-    public static final Item.ToolMaterial SEDIMENTARY = EnumHelper.addToolMaterial("tfc_sedimentary", 1, 70, 7, 2.0f, 5);
-    public static final Item.ToolMaterial IGNEOUS_EXTRUSIVE = EnumHelper.addToolMaterial("tfc_igneous_extrusive", 1, 50, 6, 2.0f, 5);
+    public static final Item.ToolMaterial SEDIMENTARY = EnumHelper.addToolMaterial("tfc_sedimentary", 1, 50, 7, 2.0f, 5);
+    public static final Item.ToolMaterial IGNEOUS_EXTRUSIVE = EnumHelper.addToolMaterial("tfc_igneous_extrusive", 1, 70, 6, 2.0f, 5);
     public static final Item.ToolMaterial METAMORPHIC = EnumHelper.addToolMaterial("tfc_metamorphic", 1, 55, 6.5f, 2.0f, 5);
     public static final Item.ToolMaterial COPPER = EnumHelper.addToolMaterial("tfc_copper", 2, 600, 8, 3.25f, 8); //Tier 1
     public static final Item.ToolMaterial BRONZE = EnumHelper.addToolMaterial("tfc_bronze", 2, 1300, 11, 5.0f, 13); //Tier 2

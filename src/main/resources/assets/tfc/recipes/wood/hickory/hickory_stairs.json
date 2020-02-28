@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/hickory"
+    }
+  },
+  "result": {
+    "item": "tfc:stairs/wood/hickory",
+    "count": 8
+  }
+}

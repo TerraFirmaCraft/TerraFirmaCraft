@@ -18,7 +18,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketChunkData;
 import net.dries007.tfc.util.climate.ClimateTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class CapabilityChunkData
@@ -33,7 +33,7 @@ public final class CapabilityChunkData
     @SubscribeEvent
     public static void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<Chunk> event)
     {
-        if (event.getObject().getWorld().getWorldType() == TerraFirmaCraft.getWorldTypeTFC())
+        if (event.getObject().getWorld().getWorldType() == TerraFirmaCraft.getWorldType())
             event.addCapability(CHUNK_DATA, new ChunkDataProvider());
     }
 

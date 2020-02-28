@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/white_cedar"
+    }
+  ],
+  "result": {
+    "item": "tfc:wood/button/white_cedar",
+    "count": 1
+  }
+}

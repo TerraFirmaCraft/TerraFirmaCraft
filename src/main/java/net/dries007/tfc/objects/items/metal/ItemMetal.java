@@ -13,15 +13,17 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.IRarity;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.forge.ForgeableHandler;
+import net.dries007.tfc.api.capability.forge.ForgeableHeatableHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -33,8 +35,13 @@ public class ItemMetal extends ItemTFC implements IMetalItem
 {
     private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetal>> TABLE = new HashMap<>();
 
-    public static ItemMetal get(Metal metal, Metal.ItemType type)
+    public static Item get(Metal metal, Metal.ItemType type)
     {
+        if (type == Metal.ItemType.SWORD)
+        {
+            // Make sure to not crash (in 1.15+, don't forget to rewrite all metal items to extend the proper vanilla classes)
+            return ItemMetalSword.get(metal);
+        }
         return TABLE.get(metal).get(type);
     }
 
@@ -129,7 +136,8 @@ public class ItemMetal extends ItemTFC implements IMetalItem
         switch (type)
         {
             case HAMMER:
-            case INGOT:
+            case DOUBLE_INGOT:
+            case SHEET:
             case SCRAP:
             case LAMP:
             case TUYERE:
@@ -151,11 +159,11 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             case SCYTHE:
                 return Size.SMALL;
             case SAW:
-            case SHEET:
             case DOUBLE_SHEET:
                 return Size.NORMAL;
             case ANVIL:
                 return Size.HUGE;
+            case INGOT:
             case DUST:
                 return Size.VERY_SMALL;
             case NUGGET:
@@ -171,6 +179,9 @@ public class ItemMetal extends ItemTFC implements IMetalItem
     {
         switch (type)
         {
+            case INGOT:
+            case DOUBLE_INGOT:
+            case SHEET:
             case DOUBLE_SHEET:
             case ANVIL:
             case HELMET:
@@ -227,8 +238,21 @@ public class ItemMetal extends ItemTFC implements IMetalItem
     }
 
     @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        return this.type == Metal.ItemType.KNIFE || super.doesSneakBypassUse(stack, world, pos, player);
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ForgeableHeatableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+    }
+
+    @Override
     @Nonnull
-    public EnumRarity getRarity(ItemStack stack)
+    public IRarity getForgeRarity(@Nonnull ItemStack stack)
     {
         switch (metal.getTier())
         {
@@ -242,20 +266,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             case TIER_V:
                 return EnumRarity.EPIC;
         }
-        return super.getRarity(stack);
-    }
-
-    @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        return this.type == Metal.ItemType.KNIFE || super.doesSneakBypassUse(stack, world, pos, player);
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new ForgeableHandler(nbt, metal.getSpecificHeat(), metal.getMeltTemp());
+        return super.getForgeRarity(stack);
     }
 
     public Metal.ItemType getType()

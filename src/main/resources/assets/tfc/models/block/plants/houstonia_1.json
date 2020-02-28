@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/houstonia/houstonia_1",
+    "particle": "tfc:blocks/plants/houstonia/houstonia_1"
+  }
+}

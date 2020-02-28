@@ -25,7 +25,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class CapabilityFood
 {
@@ -38,28 +38,14 @@ public class CapabilityFood
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
      * That puts decay times at 25% - 100% of this value
-     * So meat / fruit will decay in ~4 days, grains take ~16 days
+     * So meat / fruit will decay in ~5 days, grains take ~20 days
      * Other modifiers are applied on top of that
      */
-    public static final int DEFAULT_ROT_TICKS = ICalendar.TICKS_IN_DAY * 16;
-
-    public static final IFoodTrait.Impl SMOKED = new IFoodTrait.Impl("smoked", 0.5f);
-    public static final IFoodTrait.Impl BRINED = new IFoodTrait.Impl("brined", 0.5f);
-    public static final IFoodTrait.Impl SALTED = new IFoodTrait.Impl("salted", 0.75f);
-    public static final IFoodTrait.Impl PICKLED = new IFoodTrait.Impl("pickled", 0.75f);
-    public static final IFoodTrait.Impl PRESERVED = new IFoodTrait.Impl("preserved", 0.5f);
-
-    private static final Map<String, IFoodTrait> TRAITS = new HashMap<>();
+    public static final int DEFAULT_ROT_TICKS = ICalendar.TICKS_IN_DAY * 22;
 
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IFood.class, new DumbStorage<>(), FoodHandler::new);
-
-        TRAITS.put("smoked", SMOKED);
-        TRAITS.put("brined", BRINED);
-        TRAITS.put("salted", SALTED); // todo: In 1.7.10 this was 0.5 for uncooked meat, 0.75 for cooked. Requires a custom class.
-        TRAITS.put("pickled", PICKLED); // todo: same as above
-        TRAITS.put("preserved", PRESERVED); // Used by large vessels
     }
 
     public static void init()
@@ -70,29 +56,25 @@ public class CapabilityFood
         CUSTOM_FOODS.put(IIngredient.of(Items.GOLDEN_CARROT), () -> new FoodHandler(null, new float[] {0.5f, 0, 1.2f, 1.2f, 0}, 2, 5, 0));
     }
 
-    public static Map<String, IFoodTrait> getTraits()
-    {
-        return TRAITS;
-    }
-
     /**
      * Helper method to handle applying a trait to a food item.
      * Do NOT just directly apply the trait, as that can lead to strange interactions with decay dates / creation dates
      * This calculates a creation date that interpolates between no preservation (if the food is rotten), to full preservation (if the food is new)
      */
-    public static void applyTrait(IFood instance, IFoodTrait trait)
+    public static void applyTrait(IFood instance, FoodTrait trait)
     {
         if (!instance.getTraits().contains(trait))
         {
             if (!instance.isRotten())
             {
+                // Applied decay DATE modifier = 1 / decay mod
                 instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), 1f / trait.getDecayModifier()));
             }
             instance.getTraits().add(trait);
         }
     }
 
-    public static void applyTrait(ItemStack stack, IFoodTrait trait)
+    public static void applyTrait(ItemStack stack, FoodTrait trait)
     {
         IFood food = stack.getCapability(CAPABILITY, null);
         if (!stack.isEmpty() && food != null)
@@ -105,19 +87,20 @@ public class CapabilityFood
      * Helper method to handle removing a trait to a food item.
      * Do NOT just directly remove the trait, as that can lead to strange interactions with decay dates / creation dates
      */
-    public static void removeTrait(IFood instance, IFoodTrait trait)
+    public static void removeTrait(IFood instance, FoodTrait trait)
     {
         if (instance.getTraits().contains(trait))
         {
             if (!instance.isRotten())
             {
+                // Removed trait = 1 / apply trait
                 instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), trait.getDecayModifier()));
             }
             instance.getTraits().remove(trait);
         }
     }
 
-    public static void removeTrait(ItemStack stack, IFoodTrait trait)
+    public static void removeTrait(ItemStack stack, FoodTrait trait)
     {
         IFood food = stack.getCapability(CAPABILITY, null);
         if (!stack.isEmpty() && food != null)
@@ -135,14 +118,16 @@ public class CapabilityFood
      * @param newStack the new stack
      * @return the modified stack, for chaining
      */
-    public static ItemStack updateFoodDecay(ItemStack oldStack, ItemStack newStack)
+    public static ItemStack updateFoodFromPrevious(ItemStack oldStack, ItemStack newStack)
     {
         IFood oldCap = oldStack.getCapability(CapabilityFood.CAPABILITY, null);
         IFood newCap = newStack.getCapability(CapabilityFood.CAPABILITY, null);
         if (oldCap != null && newCap != null)
         {
-            // This is similar to the trait applied, except it's the inverse, since decay mod performs a 1 / x
-            float decayDelta = oldCap.getDecayModifier() / newCap.getDecayModifier();
+            // Copy traits from old stack to new stack
+            newCap.getTraits().addAll(oldCap.getTraits());
+            // Applied trait decay DATE modifier = new / old
+            float decayDelta = newCap.getDecayDateModifier() / oldCap.getDecayDateModifier();
             newCap.setCreationDate(calculateNewCreationDate(oldCap.getCreationDate(), decayDelta));
         }
         return newStack;
@@ -150,7 +135,7 @@ public class CapabilityFood
 
     /**
      * Call this from any function that is meant to create a new item stack.
-     * In MOST cases, you should use {@link CapabilityFood#updateFoodDecay(ItemStack, ItemStack)}, as the decay should transfer from input -> output
+     * In MOST cases, you should use {@link CapabilityFood#updateFoodFromPrevious(ItemStack, ItemStack)}, as the decay should transfer from input -> output
      * This is only for where there is no input. (i.e. on a direct {@code stack.copy()} from non-food inputs
      *
      * @param stack the new stack
@@ -163,6 +148,16 @@ public class CapabilityFood
         if (cap != null)
         {
             cap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks());
+        }
+        return stack;
+    }
+
+    public static ItemStack setStackNonDecaying(ItemStack stack)
+    {
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (cap != null)
+        {
+            cap.setNonDecaying();
         }
         return stack;
     }
@@ -253,11 +248,14 @@ public class CapabilityFood
      * = (1 - p) * T + p * (Ci + d)
      * via 1. > (1 - p) * T + p * T = T
      * QED
+     *
+     * @param ci The initial creation date
+     * @param p  The decay date modifier (1 / standard decay modifier)
+     * @return cf the final creation date
      */
     private static long calculateNewCreationDate(long ci, float p)
     {
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * CalendarTFC.PLAYER_TIME.getTicks() + p * ci);
     }
-
 }

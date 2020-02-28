@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SWS",
+    "SRS",
+    "SWS"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "ingotWroughtIron"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "minecraft:golden_rail",
+    "count": 16
+  }
+}

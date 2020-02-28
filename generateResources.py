@@ -291,29 +291,31 @@ FLUIDS = {
     'milk_vinegar': 'milk_vinegar',
 }
 
-# Simple crops (tall / stages)
-SIMPLE_CROPS = {
-    'barley': (False, 8),
-    'maize': (False, 6),
-    'oat': (False, 8),
-    'rice': (False, 8),
-    'rye': (False, 8),
-    'wheat': (False, 8),
-    'beet': (False, 7),
-    'cabbage': (False, 6),
-    'carrot': (False, 5),
-    'garlic': (False, 5),
-    'green_bean': (False, 7),
-    'onion': (False, 7),
-    'potato': (False, 7),
-    'soybean': (False, 7),
-    'sugarcane': (False, 8),
-    'red_bell_pepper': (False, 7),
-    'tomato': (False, 8),
-    'yellow_bell_pepper': (False, 7),
-    'jute': (True, 6)
+# all crops
+CROPS = {
+    'barley': {'model': 'crop', 'texture': 'crop', 'stages': 8},
+    'maize': {'model': 'tfc:crop_tall', 'texture': 'crop', 'stages': 6},
+    'oat': {'model': 'crop', 'texture': 'crop', 'stages': 8},
+    'rice': {'model': 'crop', 'texture': 'crop', 'stages': 8},
+    'rye': {'model': 'crop', 'texture': 'crop', 'stages': 8},
+    'wheat': {'model': 'crop', 'texture': 'crop', 'stages': 8},
+    'beet': {'model': 'cross', 'texture': 'cross', 'stages': 7},
+    'cabbage': {'model': 'cross', 'texture': 'cross', 'stages': 6},
+    'carrot': {'model': 'cross', 'texture': 'cross', 'stages': 5},
+    'garlic': {'model': 'cross', 'texture': 'cross', 'stages': 5},
+    'green_bean': {'model': 'cross', 'texture': 'cross', 'stages': 7},
+    'onion': {'model': 'cross', 'texture': 'cross', 'stages': 7},
+    'potato': {'model': 'cross', 'texture': 'cross', 'stages': 7},
+    'soybean': {'model': 'cross', 'texture': 'cross', 'stages': 7},
+    'sugarcane': {'model': 'tfc:crop_tall', 'texture': 'crop', 'stages': 8},
+    'red_bell_pepper': {'model': 'cross', 'texture': 'cross', 'stages': 7},
+    'tomato': {'model': 'tfc:large_cross', 'texture': 'cross', 'stages': 8},
+    'yellow_bell_pepper': {'model': 'cross', 'texture': 'cross', 'stages': 7},
+    'jute': {'model': 'tfc:crop_tall', 'texture': 'crop', 'stages': 6},
+    'pumpkin': {'model': 'crop', 'texture': 'crop', 'stages': 8},
+    'squash': {'model': 'cross', 'texture': 'cross', 'stages': 8},
+    'melon': {'model': 'crop', 'texture': 'crop', 'stages': 8}
 }
-SPREADING_CROPS = ['pumpkin', 'squash', 'melon']
 
 FOODS = [
     'banana',
@@ -723,7 +725,7 @@ for rock_type in ROCK_TYPES:
             'west': {'true': {'submodel': 'wall_side', 'y': 270}, 'false': {}},
             'up': {'true': {'submodel': 'wall_post', 'y': 270}, 'false': {}}
         })
-        
+
     # SPIKES (stalactite and stalagmite)
     blockstate(('spike', rock_type), 'tfc:spike/top', textures={
         ('texture', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
@@ -980,6 +982,22 @@ for wood_type in WOOD_TYPES:
 # LEATHER / HIDES
 blockstate(('placed_hide',), 'tfc:hide_rack', {})
 
+# AGRICULTURE
+
+for cropName, data in CROPS.items():
+    texture = data['texture']
+    blockstate(
+        ('crop', cropName), data['model'], {texture: "tfc:blocks/crop/%s_0" % cropName},
+        {
+            'stage': dict(
+                (
+                    str(stage),
+                    {'textures': {texture: "tfc:blocks/crop/%s_%d" % (cropName, stage)}}
+                ) for stage in range(data['stages'])
+            )
+        }
+    )
+    blockstate(('dead_crop', cropName), data['model'], {texture: "tfc:blocks/crop/%s_dead" % cropName})
 
 #   _____ _
 #  |_   _| |
@@ -1124,8 +1142,5 @@ for size in ('small', 'medium', 'large'):
 for food in FOODS:
     item(('food', food), 'tfc:items/food/%s' % food)
 
-for crop in SIMPLE_CROPS.keys():
-    item(('crop', 'seeds', crop), 'tfc:items/crop/seeds/%s' % crop)
-
-for crop in SPREADING_CROPS:
+for crop in CROPS.keys():
     item(('crop', 'seeds', crop), 'tfc:items/crop/seeds/%s' % crop)

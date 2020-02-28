@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:rock/basalt"
+    }
+  },
+  "result": {
+    "item": "tfc:cobble/basalt",
+    "count": 1
+  }
+}

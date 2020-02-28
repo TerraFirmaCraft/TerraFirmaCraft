@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:powder/lapis_lazuli"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 4,
+    "count": 1
+  }
+}

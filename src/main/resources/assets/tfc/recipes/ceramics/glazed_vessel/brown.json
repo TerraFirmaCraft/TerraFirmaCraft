@@ -1,0 +1,16 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyeBrown"
+    },
+    {
+      "item": "tfc:ceramics/unfired/vessel"
+    }
+  ],
+  "result": {
+    "item": "tfc:ceramics/unfired/vessel_glazed",
+    "data": 3
+  }
+}

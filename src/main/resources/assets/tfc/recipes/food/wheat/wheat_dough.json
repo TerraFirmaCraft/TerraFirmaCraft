@@ -1,0 +1,17 @@
+{
+  "type": "tfc:fluid_food_recipe",
+  "ingredients": [
+    {
+      "type": "tfc:fluid",
+      "fluid": "fresh_water"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "flourWheat"
+    }
+  ],
+  "result": {
+    "item": "tfc:food/wheat_dough",
+    "count": 2
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/field_horsetail_0"
+        },
+        {
+          "model": "tfc:plants/field_horsetail_0",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/field_horsetail_0",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/field_horsetail_0",
+          "y": 270
+        }
+      ]
+    },
+    {
+      "when": {
+        "stage": "1"
+      },
+      "apply": [
+        {
+          "model": "tfc:plants/field_horsetail_1"
+        },
+        {
+          "model": "tfc:plants/field_horsetail_1",
+          "y": 90
+        },
+        {
+          "model": "tfc:plants/field_horsetail_1",
+          "y": 180
+        },
+        {
+          "model": "tfc:plants/field_horsetail_1",
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

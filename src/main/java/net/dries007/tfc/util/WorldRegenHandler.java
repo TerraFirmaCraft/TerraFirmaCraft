@@ -5,13 +5,13 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Queue;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.IChunkGenerator;
@@ -23,11 +23,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.classic.biomes.BiomeTFC;
+import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.*;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Seasonally regenerates rocks, sticks, snow, plants, crops and bushes.
@@ -35,110 +35,83 @@ import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class WorldRegenHandler
 {
-    /* The list of chunk positions to check for world regeneration */
-    private static final Queue<ChunkPos> POSITIONS_TO_CHECK = new ConcurrentLinkedQueue<>();
-
     private static final WorldGenLooseRocks ROCKS_GEN = new WorldGenLooseRocks(false);
     private static final WorldGenSnowIce SNOW_GEN = new WorldGenSnowIce();
     private static final WorldGenWildCrops CROPS_GEN = new WorldGenWildCrops();
     private static final WorldGenBerryBushes BUSH_GEN = new WorldGenBerryBushes();
 
     private static final Random RANDOM = new Random();
+    private static final List<ChunkPos> POSITIONS = new LinkedList<>();
 
     @SubscribeEvent
     public static void onChunkLoad(ChunkDataEvent.Load event)
     {
-        if (event.getWorld().provider.getDimension() == 0)
+        // This is disabled for now, as it was causing runaway regeneration of stuff (after multiple attempts to fix it), and potential performance issues
+        // This needs some proper design work on how it is going to operate
+        // todo: fix this
+        /*if (event.getWorld().provider.getDimension() == 0)
         {
             ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(event.getChunk());
-            if (chunkDataTFC.isInitialized())
+            if (chunkDataTFC.isInitialized() && !chunkDataTFC.isSpawnProtected() && (chunkDataTFC.getLastUpdateYear() > CalendarTFC.CALENDAR_TIME.getTotalYears() || CalendarTFC.PLAYER_TIME.getTicks() - chunkDataTFC.getLastUpdateTick() > 6 * ICalendar.TICKS_IN_DAY))
             {
-                POSITIONS_TO_CHECK.offer(event.getChunk().getPos());
+                //POSITIONS.add(event.getChunk().getPos());
             }
-        }
+        }*/
     }
 
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event)
     {
-        if (!event.world.isRemote && event.phase == TickEvent.Phase.END && !POSITIONS_TO_CHECK.isEmpty())
+        if (!event.world.isRemote && event.phase == TickEvent.Phase.END)
         {
-            for (ChunkPos pos : POSITIONS_TO_CHECK)
+            if (!POSITIONS.isEmpty())
             {
+                ChunkPos pos = POSITIONS.remove(0);
+                ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(event.world, pos.getBlock(0, 0, 0));
+
                 IChunkProvider chunkProvider = event.world.getChunkProvider();
                 IChunkGenerator chunkGenerator = ((ChunkProviderServer) chunkProvider).chunkGenerator;
-                ChunkDataTFC chunkDataTFC = ChunkDataTFC.get(event.world.getChunk(pos.x, pos.z));
 
-                // Loose rocks / sticks (debris)
-                if (ConfigTFC.GENERAL.regenSticksRocks > 0 && !chunkDataTFC.isSpawnProtected())
+                // If past the update time, then run some regeneration of natural resources
+                long updateDelta = CalendarTFC.PLAYER_TIME.getTicks() - chunkDataTFC.getLastUpdateTick();
+                if (updateDelta > ConfigTFC.GENERAL.worldRegenerationMinimumTime * ICalendar.TICKS_IN_DAY && !chunkDataTFC.isSpawnProtected())
                 {
-                    long deltaRocks = CalendarTFC.TOTAL_TIME.getTicks() - chunkDataTFC.getLastUpdateRocks();
-                    double looseRegeneration = deltaRocks / (ICalendar.TICKS_IN_DAY * ConfigTFC.GENERAL.regenSticksRocks);
-                    if (looseRegeneration > 0.1D)
-                    {
-                        if (looseRegeneration > 1)
-                        {
-                            looseRegeneration = 1;
-                        }
-                        chunkDataTFC.setLastUpdateRocks(CalendarTFC.CALENDAR_TIME.getTicks());
+                    float regenerationModifier = MathHelper.clamp((float) updateDelta / (4 * ConfigTFC.GENERAL.worldRegenerationMinimumTime * ICalendar.TICKS_IN_DAY), 0, 1);
 
-                        ROCKS_GEN.setFactor(looseRegeneration);
+                    // Loose rocks - factors in time since last update
+                    if (ConfigTFC.GENERAL.worldRegenerationSticksRocksModifier > 0)
+                    {
+                        double rockModifier = ConfigTFC.GENERAL.worldRegenerationSticksRocksModifier * regenerationModifier;
+                        ROCKS_GEN.setFactor(rockModifier);
                         ROCKS_GEN.generate(RANDOM, pos.x, pos.z, event.world, chunkGenerator, chunkProvider);
 
-                        int stickDensity = (int) (looseRegeneration * (1 + (int) (3f * chunkDataTFC.getFloraDensity())));
+                        int stickDensity = (int) (rockModifier * (1 + (int) (3f * chunkDataTFC.getFloraDensity())));
                         WorldGenTrees.generateLooseSticks(RANDOM, pos.x, pos.z, event.world, stickDensity);
                     }
+
+                    chunkDataTFC.resetLastUpdateTick();
                 }
 
-                // Plant regeneration
-                if (ConfigTFC.GENERAL.regenPlants > 0)
+                // Plants + crops. Only runs once (maximum) each year
+                if (CalendarTFC.CALENDAR_TIME.getMonthOfYear().isWithin(Month.APRIL, Month.JULY) && !chunkDataTFC.isSpawnProtected() && CalendarTFC.CALENDAR_TIME.getTotalYears() > chunkDataTFC.getLastUpdateYear())
                 {
-                    long deltaPlants = CalendarTFC.CALENDAR_TIME.getTicks() - chunkDataTFC.getLastUpdatePlants();
-                    double deltaPlantsMonths = deltaPlants / (double) (CalendarTFC.INSTANCE.getDaysInMonth() * ICalendar.TICKS_IN_DAY);
-
-                    if (deltaPlantsMonths > ConfigTFC.GENERAL.regenPlants)
+                    if (RANDOM.nextInt(20) == 0)
                     {
-                        chunkDataTFC.setLastUpdatePlants(CalendarTFC.CALENDAR_TIME.getTicks());
-
-                        BlockPos biomePos = new BlockPos(pos.getXStart(), 0, pos.getZStart());
-                        Biome biome = event.world.getBiome(biomePos);
-                        if (biome instanceof BiomeTFC)
-                        {
-                            ((BiomeTFC) biome).decorator.decorate(event.world, RANDOM, biome, biomePos);
-                        }
+                        BlockPos chunkPos = new BlockPos(pos.x << 4, 0, pos.z << 4);
+                        BlockPos start = event.world.getHeight(chunkPos.add(RANDOM.nextInt(16) + 8, 0, RANDOM.nextInt(16) + 8));
+                        CROPS_GEN.generate(event.world, RANDOM, start);
                     }
+                    BUSH_GEN.generate(RANDOM, pos.x, pos.z, event.world, chunkGenerator, chunkProvider);
+
+                    chunkDataTFC.resetLastUpdateYear();
                 }
 
                 // Update snow / ice from large calendar changes
-                long deltaSnow = CalendarTFC.CALENDAR_TIME.getTicks() - chunkDataTFC.getLastUpdateSnow();
-                double deltaSnowMonths = deltaSnow / (double) (CalendarTFC.INSTANCE.getDaysInMonth() * ICalendar.TICKS_IN_DAY);
-                if (deltaSnowMonths > 0.5D)
+                if (updateDelta > ICalendar.TICKS_IN_DAY * 4)
                 {
-                    chunkDataTFC.setLastUpdateSnow(CalendarTFC.CALENDAR_TIME.getTicks());
                     SNOW_GEN.generate(RANDOM, pos.x, pos.z, event.world, chunkGenerator, chunkProvider);
                 }
-
-                if (ConfigTFC.GENERAL.regenCrops > 0)
-                {
-                    long deltaCrops = CalendarTFC.CALENDAR_TIME.getTicks() - chunkDataTFC.getLastUpdateCrops();
-                    double deltaCropsMonths = deltaCrops / (double) (CalendarTFC.INSTANCE.getDaysInMonth() * ICalendar.TICKS_IN_DAY);
-
-                    if (deltaCropsMonths > ConfigTFC.GENERAL.regenCrops)
-                    {
-                        chunkDataTFC.setLastUpdateCrops(CalendarTFC.CALENDAR_TIME.getTicks());
-
-                        if (RANDOM.nextInt(20) == 0)
-                        {
-                            BlockPos chunkPos = new BlockPos(pos.x << 4, 0, pos.z << 4);
-                            BlockPos start = event.world.getHeight(chunkPos.add(RANDOM.nextInt(16) + 8, 0, RANDOM.nextInt(16) + 8));
-                            CROPS_GEN.generate(event.world, RANDOM, start);
-                        }
-                        BUSH_GEN.generate(RANDOM, pos.x, pos.z, event.world, chunkGenerator, chunkProvider);
-                    }
-                }
             }
-
-            POSITIONS_TO_CHECK.clear();
         }
     }
 }

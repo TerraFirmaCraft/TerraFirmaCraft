@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:powder/limonite"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 11,
+    "count": 1
+  }
+}

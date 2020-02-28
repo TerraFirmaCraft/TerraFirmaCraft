@@ -19,8 +19,6 @@ import net.dries007.tfc.objects.te.TENestBox;
 @MethodsReturnNonnullByDefault
 public class ContainerNestBox extends ContainerTE<TENestBox>
 {
-    private static final int[] SLOT_SHIFT_ORDER = new int[] {0, 1, 2, 3};
-
     public ContainerNestBox(InventoryPlayer playerInv, TENestBox te)
     {
         super(playerInv, te);
@@ -37,11 +35,5 @@ public class ContainerNestBox extends ContainerTE<TENestBox>
             addSlotToContainer(new SlotCallback(inventory, 2, 71, 41, tile));
             addSlotToContainer(new SlotCallback(inventory, 3, 89, 41, tile));
         }
-    }
-
-    @Override
-    protected int[] getSlotShiftOrder(int containerSlots)
-    {
-        return SLOT_SHIFT_ORDER;
     }
 }

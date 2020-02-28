@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_4",
+    "particle": "tfc:blocks/plants/oxeye_daisy/oxeye_daisy_4"
+  }
+}

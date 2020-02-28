@@ -38,7 +38,7 @@ import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault

@@ -1,0 +1,23 @@
+{
+  "blockmap": [
+    "null|minecraft:stone",
+    "dungeon_wall|minecraft:wool 5",
+    "dungeon_floor|minecraft:wool 0",
+    "dungeon_ceiling|minecraft:wool 11",
+    "dungeon_stairs_floor|minecraft:stone_brick_stairs",
+    "dungeon_stairs_wall|minecraft:brick_stairs"
+  ],
+  "floory": 0,
+  "connections": [
+    "north",
+    "east"
+  ],
+  "setpiecemap": [
+    "north|generic_cistern_nw",
+    "north->west|generic_cistern_ne",
+    "north->north|generic_cistern_sw",
+    "north->north->west|generic_cistern_se",
+    "north->north->west->north|generic_cisterntunnel_nw"
+  ],
+  "weight": 0.5
+}

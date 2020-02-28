@@ -1,0 +1,76 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "stage": "0",
+        "age": "0"
+      },
+      "apply": {
+        "model": "tfc:plants/ryegrass_shortest_0"
+      }
+    },
+    {
+      "when": {
+        "stage": "0",
+        "age": "1"
+      },
+      "apply": {
+        "model": "tfc:plants/ryegrass_shorter_0"
+      }
+    },
+    {
+      "when": {
+        "stage": "0",
+        "age": "2"
+      },
+      "apply": {
+        "model": "tfc:plants/ryegrass_short_0"
+      }
+    },
+    {
+      "when": {
+        "stage": "0",
+        "age": "3"
+      },
+      "apply": {
+        "model": "tfc:plants/ryegrass_0"
+      }
+    },
+    {
+      "when": {
+        "stage": "1",
+        "age": "0"
+      },
+      "apply": {
+        "model": "tfc:plants/ryegrass_shortest_0b"
+      }
+    },
+    {
+      "when": {
+        "stage": "1",
+        "age": "1"
+      },
+      "apply": {
+        "model": "tfc:plants/ryegrass_shorter_0b"
+      }
+    },
+    {
+      "when": {
+        "stage": "1",
+        "age": "2"
+      },
+      "apply": {
+        "model": "tfc:plants/ryegrass_short_0b"
+      }
+    },
+    {
+      "when": {
+        "stage": "1",
+        "age": "3"
+      },
+      "apply": {
+        "model": "tfc:plants/ryegrass_0b"
+      }
+    }
+  ]
+}

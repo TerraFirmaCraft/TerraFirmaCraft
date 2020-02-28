@@ -31,13 +31,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.util.IHeatConsumerBlock;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.te.TECrucible;
 import net.dries007.tfc.util.Helpers;
 
 @ParametersAreNonnullByDefault
-public class BlockCrucible extends Block implements IHeatConsumerBlock
+public class BlockCrucible extends Block implements IHeatConsumerBlock, IItemSize
 {
     private static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(0.0625, 0, 0.0625, 0.9375, 0.9375, 0.9375);
     private static final AxisAlignedBB AABB_LEGS = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.9375D, 0.125D, 0.9375D);
@@ -63,6 +66,20 @@ public class BlockCrucible extends Block implements IHeatConsumerBlock
         {
             tile.acceptHeat(temperature);
         }
+    }
+
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.HUGE;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return stack.getTagCompound() == null ? Weight.MEDIUM : Weight.HEAVY;
     }
 
     @SuppressWarnings("deprecation")

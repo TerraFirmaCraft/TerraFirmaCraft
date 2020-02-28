@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:blocks/plants/fountain_grass/fountain_grass_0"
+  }
+}

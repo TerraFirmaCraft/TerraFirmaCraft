@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import static net.dries007.tfc.api.util.TFCConstants.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.util.Helpers.getNull;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
@@ -37,6 +37,8 @@ public class TFCSounds
     public static final SoundEvent ITEM_THROW = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":item.jug.blow")
     public static final SoundEvent JUG_BLOW = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":item.firestarter")
+    public static final SoundEvent FIRE_STARTER = getNull();
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.bear.say")
     public static final SoundEvent ANIMAL_BEAR_SAY = getNull();
@@ -65,6 +67,35 @@ public class TFCSounds
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.rooster.cry")
     public static final SoundEvent ANIMAL_ROOSTER_CRY = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.alpaca.say")
+    public static final SoundEvent ANIMAL_ALPACA_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.alpaca.cry")
+    public static final SoundEvent ANIMAL_ALPACA_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.alpaca.hurt")
+    public static final SoundEvent ANIMAL_ALPACA_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.alpaca.death")
+    public static final SoundEvent ANIMAL_ALPACA_DEATH = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.alpaca.step")
+    public static final SoundEvent ANIMAL_ALPACA_STEP = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.duck.say")
+    public static final SoundEvent ANIMAL_DUCK_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.duck.cry")
+    public static final SoundEvent ANIMAL_DUCK_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.duck.hurt")
+    public static final SoundEvent ANIMAL_DUCK_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.duck.death")
+    public static final SoundEvent ANIMAL_DUCK_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.goat.say")
+    public static final SoundEvent ANIMAL_GOAT_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.goat.cry")
+    public static final SoundEvent ANIMAL_GOAT_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.goat.hurt")
+    public static final SoundEvent ANIMAL_GOAT_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.goat.death")
+    public static final SoundEvent ANIMAL_GOAT_DEATH = getNull();
 
     // These are static initialized because we need a custom sound type which uses the sounds before initialization
     private static final SoundEvent CHARCOAL_PILE_BREAK = createSoundEvent("block.charcoal.break");
@@ -95,6 +126,7 @@ public class TFCSounds
             createSoundEvent("anvil.metalimpact"),
             createSoundEvent("item.throw"),
             createSoundEvent("item.jug.blow"),
+            createSoundEvent("item.firestarter"),
             // Animals
             createSoundEvent("animal.bear.cry"),
             createSoundEvent("animal.bear.say"),
@@ -107,7 +139,20 @@ public class TFCSounds
             createSoundEvent("animal.pheasant.say"),
             createSoundEvent("animal.pheasant.hurt"),
             createSoundEvent("animal.pheasant.death"),
-            createSoundEvent("animal.rooster.cry")
+            createSoundEvent("animal.rooster.cry"),
+            createSoundEvent("animal.alpaca.cry"),
+            createSoundEvent("animal.alpaca.say"),
+            createSoundEvent("animal.alpaca.hurt"),
+            createSoundEvent("animal.alpaca.death"),
+            createSoundEvent("animal.alpaca.step"),
+            createSoundEvent("animal.duck.cry"),
+            createSoundEvent("animal.duck.say"),
+            createSoundEvent("animal.duck.hurt"),
+            createSoundEvent("animal.duck.death"),
+            createSoundEvent("animal.goat.cry"),
+            createSoundEvent("animal.goat.say"),
+            createSoundEvent("animal.goat.hurt"),
+            createSoundEvent("animal.goat.death")
         );
     }
 
