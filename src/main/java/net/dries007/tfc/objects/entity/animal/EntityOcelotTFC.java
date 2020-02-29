@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -76,6 +77,16 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC
         this.lastDeath = -1;
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.fertilized = false;
+    }
+
+    @Override
+    protected void initEntityAI()
+    {
+        super.initEntityAI();
+        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityPheasantTFC.class, false, pheasant -> true));
+        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityChickenTFC.class, false, chicken -> true));
+        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityDuckTFC.class, false, duck -> true));
+        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, rabbit -> true));
     }
 
     @Override

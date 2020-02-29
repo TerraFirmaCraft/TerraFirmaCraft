@@ -320,14 +320,6 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.oreDictPlate")
         public boolean oreDictPlate = false;
 
-        @Config.Comment("Should living in a chunk block hostile mob spawning over time?")
-        @Config.LangKey("config." + MOD_ID + ".general.spawnProtectionEnable")
-        public boolean spawnProtectionEnable = true;
-
-        @Config.Comment("The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.")
-        @Config.LangKey("config." + MOD_ID + ".general.spawnProtectionMinY")
-        public int spawnProtectionMinY = 100;
-
         @Config.Comment("The time required for a charcoal pit to complete")
         @Config.LangKey("config." + MOD_ID + ".general.charcoalPitTime")
         public int charcoalPitTime = 18_000;
@@ -374,6 +366,10 @@ public class ConfigTFC
         @Config.RangeInt(min = 100)
         @Config.LangKey("config." + MOD_ID + ".general.tankCrucible")
         public int tankCrucible = 3000;
+
+        @Config.Comment("Prevent mob spawning on surface?")
+        @Config.LangKey("config." + MOD_ID + ".world.preventMobsOnSurface")
+        public boolean preventMobsOnSurface = true;
     }
 
     public static class ClientCFG

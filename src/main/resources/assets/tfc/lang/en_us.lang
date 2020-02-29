@@ -335,12 +335,6 @@ config.tfc.general.oreDictIron.tooltip=Add iron ore dictionary to wrought iron i
 config.tfc.general.oreDictPlate=Plate Ore Dictionary in Sheets
 config.tfc.general.oreDictPlate.tooltip=Add plate ore dictionary to sheet items?
 
-config.tfc.general.spawnProtectionEnable=Enable Spawn Protection
-config.tfc.general.spawnProtectionEnable.tooltip=Should living in a chunk block hostile mob spawning over time?
-
-config.tfc.general.spawnProtectionMinY=Spawn Protection Minimum Y Level
-config.tfc.general.spawnProtectionMinY.tooltip=The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.
-
 config.tfc.general.charcoalPitTime=Charcoal Pit Ticks
 config.tfc.general.charcoalPitTime.tooltip=The time required for a charcoal pit to complete
 
@@ -370,6 +364,9 @@ config.tfc.general.tankBarrel.tooltip=How much fluid (mB) can a barrel hold?
 
 config.tfc.general.tankCrucible=Crucible Tank Storage
 config.tfc.general.tankCrucible.tooltip=How much metal (units / mB) can a crucible hold?
+
+config.tfc.general.preventMobsOnSurface=Prevent Mobs On Surface
+config.tfc.general.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
 
 
 ## Client Config
@@ -3884,6 +3881,8 @@ tfc.animal.ocelottfc.male=Ocelot♂
 tfc.animal.ocelottfc.female=Ocelot♀
 tfc.animal.cattfc.male=Cat♂
 tfc.animal.cattfc.female=Cat♀
+tfc.animal.panthertfc.male=Black Panther♂
+tfc.animal.panthertfc.female=Black Panther♀
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic Item Breaks

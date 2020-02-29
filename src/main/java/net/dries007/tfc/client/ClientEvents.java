@@ -212,7 +212,6 @@ public class ClientEvents
                     data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.getRegistryName(), t.getDominance())));
 
                     list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
-                    list.add(GRAY + "Spawn Protection: " + WHITE + data.getSpawnProtection());
                 }
             }
         }

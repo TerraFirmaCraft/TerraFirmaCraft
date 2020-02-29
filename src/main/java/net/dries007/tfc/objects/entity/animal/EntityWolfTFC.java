@@ -16,6 +16,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -280,6 +281,14 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
         getDataManager().register(FAMILIARITY, 0f);
+    }
+
+    @Override
+    protected void initEntityAI()
+    {
+        super.initEntityAI();
+        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, sheep -> true));
+        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntitySheepTFC.class, false, rabbit -> true));
     }
 
     @Override
