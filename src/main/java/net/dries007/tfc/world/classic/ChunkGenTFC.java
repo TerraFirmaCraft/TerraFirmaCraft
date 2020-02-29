@@ -191,6 +191,7 @@ public class ChunkGenTFC implements IChunkGenerator
         rainfallSpread = (float) ConfigTFC.WORLD.rainfallSpreadFactor;
         floraDiversitySpread = (float) ConfigTFC.WORLD.floraDiversitySpreadFactor;
         floraDensitySpread = (float) ConfigTFC.WORLD.floraDensitySpreadFactor;
+        world.setSeaLevel(WorldTypeTFC.SEALEVEL); // Set sea level so squids can spawn
     }
 
     @Override
