@@ -74,18 +74,11 @@ public class ModelCowTFC extends ModelQuadruped
     public void render(@Nonnull Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
-
         EntityCowTFC cow = ((EntityCowTFC) entity);
 
         float percent = (float) cow.getPercentToAdulthood();
-
         float ageScale = 2.0F - percent;
-        float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
-        GlStateManager.pushMatrix();
 
-        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
-        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
-        GlStateManager.translate(0.0F, 0, 0.1875f - (0.1875f * percent));
         if (percent < 0.5)
         {
             horn1.isHidden = true;
@@ -106,12 +99,12 @@ public class ModelCowTFC extends ModelQuadruped
             horn1b.isHidden = true;
             horn2b.isHidden = true;
         }
-        head.render(par7);
-        GlStateManager.popMatrix();
+
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
+        head.render(par7);
         body.render(par7);
         udders.render(par7);
         leg1.render(par7);
