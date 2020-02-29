@@ -77,14 +77,6 @@ public class ModelSheepBodyTFC extends ModelQuadruped
 
         float percent = (float) sheep.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
-        float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
-
-        GlStateManager.pushMatrix();
-
-        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
-        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
-        GlStateManager.translate(0.0F, (ageScale - 1) * -0.125f, 0.1875f - (0.1875f * percent));
-
 
         if (percent < 0.5)
         {
@@ -102,13 +94,13 @@ public class ModelSheepBodyTFC extends ModelQuadruped
             horn1.isHidden = true;
             horn2.isHidden = true;
         }
-        this.head.render(par7);
 
-        GlStateManager.popMatrix();
+
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
+        this.head.render(par7);
         this.body.render(par7);
         this.leg1.render(par7);
         this.leg2.render(par7);
