@@ -595,12 +595,15 @@ public final class CommonEventHandler
         }
 
         // Stop mob spawning in surface (only mobs, not EntityAnimals that also implements IMob)
-        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false) && !event.getEntity().isCreatureType(EnumCreatureType.CREATURE, false))
+        if (ConfigTFC.GENERAL.preventMobsOnSurface)
         {
-            int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2 / 2) + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
-            if (pos.getY() >= maximumY || world.canSeeSky(pos))
+            if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false) && !event.getEntity().isCreatureType(EnumCreatureType.CREATURE, false))
             {
-                event.setResult(Event.Result.DENY);
+                int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2) / 2 + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
+                if (pos.getY() >= maximumY || world.canSeeSky(pos))
+                {
+                    event.setResult(Event.Result.DENY);
+                }
             }
         }
     }
