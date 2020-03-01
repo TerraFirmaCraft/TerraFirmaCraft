@@ -3,7 +3,6 @@
         "icon": {
             "item": "tfc:food/wheat_bread"
         },
-        "frame": "goal",
         "title": {
             "translate": "advancements.tfc.world.baker.title"
         },

@@ -4,10 +4,10 @@
             "item": "tfc:wood/loom/oak"
         },
         "title": {
-            "translate": "advancements.tfc.main.make_loom.title"
+            "translate": "advancements.tfc.world.make_loom.title"
         },
         "description": {
-            "translate": "advancements.tfc.main.make_loom.description"
+            "translate": "advancements.tfc.world.make_loom.description"
         }
     },
     "parent": "tfc:world/make_spindle",
