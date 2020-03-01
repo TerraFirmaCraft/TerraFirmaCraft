@@ -1,8 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "tfc:stone/javelin/igneous_extrusive",
-            "data": 1
+            "item": "tfc:food/bear"
         },
         "title": {
             "translate": "advancements.tfc.world.kill_bear.title"
