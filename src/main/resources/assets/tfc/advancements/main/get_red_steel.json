@@ -3,6 +3,7 @@
         "icon": {
             "item": "tfc:metal/ingot/red_steel"
         },
+        "frame":"goal",
         "title": {
             "translate": "advancements.tfc.main.get_red_steel.title"
         },
@@ -22,5 +23,8 @@
                 ]
             }
         }
+    },
+    "rewards":{
+        "experience": 25
     }
 }

@@ -46,5 +46,8 @@
     },
     "requirements": [
         ["hematite","limonite","magnetite"]
-    ]
+    ],
+    "rewards":{
+        "experience": 25
+    }
 }

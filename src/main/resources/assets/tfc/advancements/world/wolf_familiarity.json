@@ -20,5 +20,8 @@
                 "familiarity": 1.0
             }
         }
+    },
+    "rewards":{
+        "experience": 100
     }
 }

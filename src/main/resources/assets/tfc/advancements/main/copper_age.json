@@ -156,5 +156,8 @@
     },
     "requirements": [
         ["ingot","pickaxe","shovel","axe","hoe","chisel","sword","mace","saw","javelin","hammer","propick","knife","scythe"]
-    ]
+    ],
+    "rewards":{
+        "experience": 25
+    }
 }

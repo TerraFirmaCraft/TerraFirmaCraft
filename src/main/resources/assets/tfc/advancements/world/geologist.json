@@ -372,5 +372,8 @@
         ["sapphire"],
         ["topaz"],
         ["tourmaline"]
-    ]
+    ],
+    "rewards":{
+        "experience": 250
+    }
 }
