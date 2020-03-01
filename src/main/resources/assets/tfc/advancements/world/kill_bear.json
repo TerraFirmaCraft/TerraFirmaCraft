@@ -3,6 +3,7 @@
         "icon": {
             "item": "tfc:food/bear"
         },
+        "frame":"goal",
         "title": {
             "translate": "advancements.tfc.world.kill_bear.title"
         },
