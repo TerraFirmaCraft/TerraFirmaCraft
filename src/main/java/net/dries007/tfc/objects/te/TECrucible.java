@@ -132,10 +132,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
                         inventory.setStackInSlot(i, cachedRecipes[i].getOutputStack(inputStack));
                         needsClientUpdate = true;
                     }
-                    else if (cap.getTemperature() < temperature)
-                    {
-                        CapabilityItemHeat.addTemp(cap);
-                    }
                 }
             }
             // Try and drain fluid
