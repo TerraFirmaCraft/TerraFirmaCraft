@@ -42,26 +42,28 @@ import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
+import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 
 @JEIPlugin
 public final class TFCJEIPlugin implements IModPlugin
 {
-    private static final String ALLOY_UID = TerraFirmaCraft.MOD_ID + ".alloy";
-    private static final String ANVIL_UID = TerraFirmaCraft.MOD_ID + ".anvil";
-    private static final String BARREL_UID = TerraFirmaCraft.MOD_ID + ".barrel";
-    private static final String BLAST_FURNACE_UID = TerraFirmaCraft.MOD_ID + ".blast_furnace";
-    private static final String BLOOMERY_UID = TerraFirmaCraft.MOD_ID + ".bloomery";
-    private static final String CASTING_UID = TerraFirmaCraft.MOD_ID + ".casting";
-    private static final String HEAT_UID = TerraFirmaCraft.MOD_ID + ".heat";
-    private static final String KNAP_CLAY_UID = TerraFirmaCraft.MOD_ID + ".knap.clay";
-    private static final String KNAP_FIRECLAY_UID = TerraFirmaCraft.MOD_ID + ".knap.fireclay";
-    private static final String KNAP_LEATHER_UID = TerraFirmaCraft.MOD_ID + ".knap.leather";
-    private static final String KNAP_STONE_UID = TerraFirmaCraft.MOD_ID + ".knap.stone";
-    private static final String METAL_HEAT_UID = TerraFirmaCraft.MOD_ID + ".metal_heat";
-    private static final String LOOM_UID = TerraFirmaCraft.MOD_ID + ".loom";
-    private static final String QUERN_UID = TerraFirmaCraft.MOD_ID + ".quern";
-    private static final String WELDING_UID = TerraFirmaCraft.MOD_ID + ".welding";
+    public static final String ALLOY_UID = TerraFirmaCraft.MOD_ID + ".alloy";
+    public static final String ANVIL_UID = TerraFirmaCraft.MOD_ID + ".anvil";
+    public static final String BARREL_UID = TerraFirmaCraft.MOD_ID + ".barrel";
+    public static final String BLAST_FURNACE_UID = TerraFirmaCraft.MOD_ID + ".blast_furnace";
+    public static final String BLOOMERY_UID = TerraFirmaCraft.MOD_ID + ".bloomery";
+    public static final String CASTING_UID = TerraFirmaCraft.MOD_ID + ".casting";
+    public static final String CHISEL_UID = TerraFirmaCraft.MOD_ID + ".chisel";
+    public static final String HEAT_UID = TerraFirmaCraft.MOD_ID + ".heat";
+    public static final String KNAP_CLAY_UID = TerraFirmaCraft.MOD_ID + ".knap.clay";
+    public static final String KNAP_FIRECLAY_UID = TerraFirmaCraft.MOD_ID + ".knap.fireclay";
+    public static final String KNAP_LEATHER_UID = TerraFirmaCraft.MOD_ID + ".knap.leather";
+    public static final String KNAP_STONE_UID = TerraFirmaCraft.MOD_ID + ".knap.stone";
+    public static final String METAL_HEAT_UID = TerraFirmaCraft.MOD_ID + ".metal_heat";
+    public static final String LOOM_UID = TerraFirmaCraft.MOD_ID + ".loom";
+    public static final String QUERN_UID = TerraFirmaCraft.MOD_ID + ".quern";
+    public static final String WELDING_UID = TerraFirmaCraft.MOD_ID + ".welding";
 
     private static IModRegistry REGISTRY;
 
@@ -85,6 +87,7 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeCategories(new BlastFurnaceCategory(registry.getJeiHelpers().getGuiHelper(), BLAST_FURNACE_UID));
         registry.addRecipeCategories(new BloomeryCategory(registry.getJeiHelpers().getGuiHelper(), BLOOMERY_UID));
         registry.addRecipeCategories(new CastingCategory(registry.getJeiHelpers().getGuiHelper(), CASTING_UID));
+        registry.addRecipeCategories(new ChiselCategory(registry.getJeiHelpers().getGuiHelper(), CHISEL_UID));
         registry.addRecipeCategories(new HeatCategory(registry.getJeiHelpers().getGuiHelper(), HEAT_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_CLAY_UID));
         registry.addRecipeCategories(new KnappingCategory(registry.getJeiHelpers().getGuiHelper(), KNAP_FIRECLAY_UID));
@@ -100,25 +103,6 @@ public final class TFCJEIPlugin implements IModPlugin
     public void register(IModRegistry registry)
     {
         REGISTRY = registry;
-
-        //Wraps all unmold and casting recipes
-        List<UnmoldRecipeWrapper> unmoldList = new ArrayList<>();
-        List<CastingRecipeWrapper> castingList = new ArrayList<>();
-        TFCRegistries.METALS.getValuesCollection()
-            .forEach(metal -> {
-                for (Metal.ItemType type : Metal.ItemType.values())
-                {
-                    if (type.hasMold(metal))
-                    {
-                        unmoldList.add(new UnmoldRecipeWrapper(metal, type));
-                        castingList.add(new CastingRecipeWrapper(metal, type));
-                    }
-                }
-            });
-        registry.addRecipes(unmoldList, VanillaRecipeCategoryUid.CRAFTING);
-        registry.addRecipes(castingList, CASTING_UID);
-        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.CRUCIBLE), CASTING_UID);
-        registry.addRecipeCatalyst(new ItemStack(ItemsTFC.FIRED_VESSEL), CASTING_UID);
 
         //Wraps all quern recipes
         List<SimpleRecipeWrapper> quernList = TFCRegistries.QUERN.getValuesCollection()
@@ -155,19 +139,6 @@ public final class TFCJEIPlugin implements IModPlugin
             .collect(Collectors.toList());
 
         registry.addRecipes(weldList, WELDING_UID);
-
-        List<Metal> tierOrdered = TFCRegistries.METALS.getValuesCollection()
-            .stream()
-            .sorted(Comparator.comparingInt(metal -> metal.getTier().ordinal()))
-            .collect(Collectors.toList());
-        for (Metal metal : tierOrdered)
-        {
-            if (Metal.ItemType.ANVIL.hasType(metal))
-            {
-                registry.addRecipeCatalyst(new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL)), ANVIL_UID);
-                registry.addRecipeCatalyst(new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL)), WELDING_UID);
-            }
-        }
 
         //Wraps all loom recipes
         List<SimpleRecipeWrapper> loomRecipes = TFCRegistries.LOOM.getValuesCollection()
@@ -289,6 +260,46 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipes(heatMetalList, METAL_HEAT_UID);
         registry.addRecipeCatalyst(new ItemStack(BlocksTFC.CRUCIBLE), METAL_HEAT_UID);
         registry.addRecipeCatalyst(new ItemStack(ItemsTFC.FIRED_VESSEL), METAL_HEAT_UID);
+
+        //Wraps all chisel recipes
+        List<ChiselRecipeWrapper> chiselList = TFCRegistries.CHISEL.getValuesCollection()
+            .stream()
+            .map(ChiselRecipeWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(chiselList, CHISEL_UID);
+
+        // Register metal related stuff (put everything here for performance + sorted registration)
+        List<UnmoldRecipeWrapper> unmoldList = new ArrayList<>();
+        List<CastingRecipeWrapper> castingList = new ArrayList<>();
+        List<Metal> tierOrdered = TFCRegistries.METALS.getValuesCollection()
+            .stream()
+            .sorted(Comparator.comparingInt(metal -> metal.getTier().ordinal()))
+            .collect(Collectors.toList());
+        for (Metal metal : tierOrdered)
+        {
+            if (Metal.ItemType.ANVIL.hasType(metal))
+            {
+                registry.addRecipeCatalyst(new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL)), ANVIL_UID);
+                registry.addRecipeCatalyst(new ItemStack(ItemAnvil.get(metal, Metal.ItemType.ANVIL)), WELDING_UID);
+            }
+            if (Metal.ItemType.CHISEL.hasType(metal))
+            {
+                registry.addRecipeCatalyst(new ItemStack(ItemMetalChisel.get(metal, Metal.ItemType.CHISEL)), CHISEL_UID);
+            }
+            for (Metal.ItemType type : Metal.ItemType.values())
+            {
+                if (type.hasMold(metal))
+                {
+                    unmoldList.add(new UnmoldRecipeWrapper(metal, type));
+                    castingList.add(new CastingRecipeWrapper(metal, type));
+                }
+            }
+        }
+        registry.addRecipes(unmoldList, VanillaRecipeCategoryUid.CRAFTING);
+        registry.addRecipes(castingList, CASTING_UID);
+        registry.addRecipeCatalyst(new ItemStack(BlocksTFC.CRUCIBLE), CASTING_UID);
+        registry.addRecipeCatalyst(new ItemStack(ItemsTFC.FIRED_VESSEL), CASTING_UID);
 
         //Click areas
         registry.addRecipeClickArea(GuiKnapping.class, 132, 27, 9, 14, KNAP_CLAY_UID, KNAP_FIRECLAY_UID, KNAP_LEATHER_UID, KNAP_STONE_UID);
