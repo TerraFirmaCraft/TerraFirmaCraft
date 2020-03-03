@@ -237,12 +237,16 @@ public final class CommonEventHandler
                         player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
                         if (isFreshWater)
                         {
-                            foodStats.addThirst(10); //Simulation already proven that i can drink this amount
+                            foodStats.attemptDrink(10, false);
                         }
                         else
                         {
-                            foodStats.addThirst(-1); //Simulation already proven that i can drink this amount
+                            foodStats.attemptDrink(-1, false);
                         }
+                    }
+                    else
+                    {
+                        foodStats.resetCooldown();
                     }
                     event.setCancellationResult(EnumActionResult.SUCCESS);
                     event.setCanceled(true);

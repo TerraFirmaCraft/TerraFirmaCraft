@@ -319,7 +319,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             if (!simulate)
             {
                 // One drink every so often
-                lastDrinkTick = sourcePlayer.world.getTotalWorldTime();
+                resetCooldown();
                 addThirst(value);
             }
             return true;
@@ -357,6 +357,12 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public void setNutrient(@Nonnull Nutrient nutrient, float value)
     {
         setNutrient(nutrient.ordinal(), value);
+    }
+
+    @Override
+    public void resetCooldown()
+    {
+        lastDrinkTick = sourcePlayer.world.getTotalWorldTime();
     }
 
     private void addNutrient(int index, float amount)
