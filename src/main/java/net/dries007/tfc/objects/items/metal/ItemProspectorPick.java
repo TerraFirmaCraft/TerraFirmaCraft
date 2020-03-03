@@ -187,13 +187,23 @@ public class ItemProspectorPick extends ItemMetalTool
             if (vein.isOreBlock(blockState))
             {
                 Block block = blockState.getBlock();
+                ItemStack blockStack;
                 if (vein.getOre() != null)
+                {
                     if (vein.getOre().isGraded() && !ignoreGrade)
-                        return new ItemStack(block.getItemDropped(blockState, null, 0), 1, block.getMetaFromState(blockState));
+                    {
+                        blockStack = new ItemStack(block.getItemDropped(blockState, null, 0), 1, block.getMetaFromState(blockState));
+                    }
                     else
-                        return new ItemStack(block.getItemDropped(blockState, null, 0), 1, 0);
+                    {
+                        blockStack = new ItemStack(block.getItemDropped(blockState, null, 0), 1, 0);
+                    }
+                }
                 else
-                    return new ItemStack(Item.getItemFromBlock(block), 1, block.getMetaFromState(blockState));
+                {
+                    blockStack = new ItemStack(Item.getItemFromBlock(block), 1, block.getMetaFromState(blockState));
+                }
+                return blockStack.isEmpty() ? null : blockStack; // Make sure to not return Air blocks if vein config is bogus
             }
         }
         return null;
