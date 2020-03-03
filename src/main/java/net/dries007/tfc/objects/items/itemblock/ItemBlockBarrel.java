@@ -61,9 +61,9 @@ public class ItemBlockBarrel extends ItemBlockTFC
     {
         if (player.getHeldItem(hand).getTagCompound() == null)
         {
-            pos = pos.offset(facing); //Since the clicked facing is the block bellow fluids
-            IBlockState state = worldIn.getBlockState(pos);
-            IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, facing);
+            BlockPos fluidPos = pos.offset(facing); //Since the clicked facing is the block bellow fluids
+            IBlockState state = worldIn.getBlockState(fluidPos);
+            IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, fluidPos, facing);
             if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
             {
                 //noinspection ConstantConditions
@@ -74,13 +74,13 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     boolean canCreateSources = false; //default
                     if (state.getBlock() instanceof BlockFluidClassic)
                     {
-                        BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(pos).getBlock();
+                        BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(fluidPos).getBlock();
                         canCreateSources = ObfuscationReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
                     }
                     else if (state.getBlock() instanceof BlockLiquid)
                     {
                         //Fire the event so other mods that prevent infinite water disable this
-                        canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, pos, state, state.getMaterial() == Material.WATER);
+                        canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, fluidPos, state, state.getMaterial() == Material.WATER);
                     }
                     FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                     if (canCreateSources && fluidStack != null)
