@@ -494,6 +494,19 @@ tfc.types.metal.high_carbon_black_steel=Black High Carbon Steel
 tfc.types.metal.high_carbon_blue_steel=Blue High Carbon Steel
 tfc.types.metal.high_carbon_red_steel=Red High Carbon Steel
 
+## Rock category
+tfc.types.rock_category.sedimentary=Sedimentary
+tfc.types.rock_category.metamorphic=Metamorphic
+tfc.types.rock_category.igneous_intrusive=Igneous Intrusive
+tfc.types.rock_category.igneous_extrusive=Igneous Extrusive
+
+## Vein Rarity
+tfc.types.vein.rarity.uncommon=Very Common
+tfc.types.vein.rarity.common=Common
+tfc.types.vein.rarity.rare=Rare
+tfc.types.vein.rarity.very_rare=Very Rare
+tfc.types.vein.rarity.epic=Epic
+
 tfc.enum.tier.tier_0=Tier 0
 tfc.enum.tier.tier_i=Tier I
 tfc.enum.tier.tier_ii=Tier II
@@ -629,10 +642,26 @@ jei.category.tfc.knap.stone=Stone knapping
 jei.category.tfc.metal_heat=Metal Heating recipes
 jei.category.tfc.loom=Loom recipes
 jei.category.tfc.quern=Quern recipes
+jei.category.tfc.rock_layer=Rock Layer Ores
+jei.category.tfc.vein=Vein Information
 jei.category.tfc.welding=Welding recipes
 
+## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=Instant
 jei.tooltips.tfc.barrel.duration=%d hours
+
+### Rock Layer
+jei.tooltips.tfc.rock_layer.category=Category
+jei.tooltips.tfc.rock_layer.layers=Layers
+jei.tooltips.tfc.rock_layer.top=Top
+jei.tooltips.tfc.rock_layer.middle=Middle
+jei.tooltips.tfc.rock_layer.bottom=Bottom
+
+### Vein Information
+jei.tooltips.tfc.vein.min_y=Min Y
+jei.tooltips.tfc.vein.max_y=Max Y
+jei.tooltips.tfc.vein.rarity=Rarity
+jei.tooltips.tfc.vein.loose_rock=Loose Rock
 
 # Fluids
 fluid.salt_water=Salt Water
