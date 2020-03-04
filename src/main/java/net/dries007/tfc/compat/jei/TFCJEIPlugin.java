@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.Item;
@@ -32,6 +33,7 @@ import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.client.gui.*;
@@ -43,7 +45,9 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
+import net.dries007.tfc.objects.items.metal.ItemMetalTool;
 import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
 @JEIPlugin
 public final class TFCJEIPlugin implements IModPlugin
@@ -63,6 +67,8 @@ public final class TFCJEIPlugin implements IModPlugin
     public static final String METAL_HEAT_UID = TerraFirmaCraft.MOD_ID + ".metal_heat";
     public static final String LOOM_UID = TerraFirmaCraft.MOD_ID + ".loom";
     public static final String QUERN_UID = TerraFirmaCraft.MOD_ID + ".quern";
+    public static final String ROCK_LAYER_UID = TerraFirmaCraft.MOD_ID + ".rock_layer";
+    public static final String VEIN_UID = TerraFirmaCraft.MOD_ID + ".vein";
     public static final String WELDING_UID = TerraFirmaCraft.MOD_ID + ".welding";
 
     private static IModRegistry REGISTRY;
@@ -96,6 +102,8 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeCategories(new LoomCategory(registry.getJeiHelpers().getGuiHelper(), LOOM_UID));
         registry.addRecipeCategories(new MetalHeatingCategory(registry.getJeiHelpers().getGuiHelper(), METAL_HEAT_UID));
         registry.addRecipeCategories(new QuernCategory(registry.getJeiHelpers().getGuiHelper(), QUERN_UID));
+        registry.addRecipeCategories(new RockLayerCategory(registry.getJeiHelpers().getGuiHelper(), ROCK_LAYER_UID));
+        registry.addRecipeCategories(new VeinCategory(registry.getJeiHelpers().getGuiHelper(), VEIN_UID));
         registry.addRecipeCategories(new WeldingCategory(registry.getJeiHelpers().getGuiHelper(), WELDING_UID));
     }
 
@@ -269,6 +277,23 @@ public final class TFCJEIPlugin implements IModPlugin
 
         registry.addRecipes(chiselList, CHISEL_UID);
 
+        //Wraps all rock layers
+        List<RockLayerWrapper> rockLayerList = TFCRegistries.ROCKS.getValuesCollection()
+            .stream()
+            .map(RockLayerWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(rockLayerList, ROCK_LAYER_UID);
+
+        //Wraps all veins
+        List<VeinWrapper> veinList = VeinRegistry.INSTANCE.getVeins().values()
+            // Some veins returns air, bug in vein registry?
+            .stream().filter(veinType -> veinType.getOre() != null || veinType.getOreState(Rock.GRANITE, Ore.Grade.NORMAL).getMaterial() != Material.AIR)
+            .map(VeinWrapper::new)
+            .collect(Collectors.toList());
+
+        registry.addRecipes(veinList, VEIN_UID);
+
         // Register metal related stuff (put everything here for performance + sorted registration)
         List<UnmoldRecipeWrapper> unmoldList = new ArrayList<>();
         List<CastingRecipeWrapper> castingList = new ArrayList<>();
@@ -286,6 +311,11 @@ public final class TFCJEIPlugin implements IModPlugin
             if (Metal.ItemType.CHISEL.hasType(metal))
             {
                 registry.addRecipeCatalyst(new ItemStack(ItemMetalChisel.get(metal, Metal.ItemType.CHISEL)), CHISEL_UID);
+            }
+            if (Metal.ItemType.PROPICK.hasType(metal))
+            {
+                registry.addRecipeCatalyst(new ItemStack(ItemMetalTool.get(metal, Metal.ItemType.PROPICK)), ROCK_LAYER_UID);
+                registry.addRecipeCatalyst(new ItemStack(ItemMetalTool.get(metal, Metal.ItemType.PROPICK)), VEIN_UID);
             }
             for (Metal.ItemType type : Metal.ItemType.values())
             {
