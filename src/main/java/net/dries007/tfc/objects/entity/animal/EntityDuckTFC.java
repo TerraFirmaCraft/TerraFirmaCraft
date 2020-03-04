@@ -62,7 +62,7 @@ public class EntityDuckTFC extends EntityChickenTFC implements IAnimalTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.WORLD.animalSpawnWeight;
+            return ConfigTFC.WORLD.familiarizableSpawnWeight;
         }
         return 0;
     }

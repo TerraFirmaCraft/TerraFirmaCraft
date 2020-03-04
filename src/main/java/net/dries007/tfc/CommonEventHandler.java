@@ -595,7 +595,7 @@ public final class CommonEventHandler
         }
 
         // Stop mob spawning in surface (only mobs, not EntityAnimals that also implements IMob)
-        if (ConfigTFC.GENERAL.preventMobsOnSurface)
+        if (ConfigTFC.WORLD.preventMobsOnSurface)
         {
             if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false) && !event.getEntity().isCreatureType(EnumCreatureType.CREATURE, false))
             {

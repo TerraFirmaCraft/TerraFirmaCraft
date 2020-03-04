@@ -55,7 +55,7 @@ public class EntityAlpacaTFC extends EntitySheepTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TUNDRA || biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            return ConfigTFC.WORLD.animalSpawnWeight;
+            return ConfigTFC.WORLD.familiarizableSpawnWeight;
         }
         return 0;
     }

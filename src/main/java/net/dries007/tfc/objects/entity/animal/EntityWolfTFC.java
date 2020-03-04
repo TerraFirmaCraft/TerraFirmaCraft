@@ -92,7 +92,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome))
         {
             // Spawns everywhere, there's so many species...
-            return ConfigTFC.WORLD.animalSpawnWeight;
+            return ConfigTFC.WORLD.familiarizableSpawnWeight;
         }
         return 0;
     }

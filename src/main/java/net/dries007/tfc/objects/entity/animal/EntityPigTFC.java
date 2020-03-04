@@ -60,7 +60,7 @@ public class EntityPigTFC extends EntityAnimalMammal
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA ||
                 biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
-            return ConfigTFC.WORLD.animalSpawnWeight;
+            return ConfigTFC.WORLD.familiarizableSpawnWeight;
         }
         return 0;
     }
