@@ -54,7 +54,7 @@ public class EntityGoatTFC extends EntityCowTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.WORLD.animalSpawnWeight;
+            return ConfigTFC.WORLD.familiarizableSpawnWeight;
         }
         return 0;
     }

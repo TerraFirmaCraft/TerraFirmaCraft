@@ -9,14 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.ICreatureTFC;
+import net.dries007.tfc.api.types.IHuntable;
+import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -27,7 +34,28 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @SuppressWarnings("WeakerAccess")
 public final class WorldEntitySpawnerTFC
 {
-    //todo customization for spawning other mods' creatures. maybe a Map<Entity, SpawnRules>, where SpawnRules is a new class with biomes, grouping and spawn weight
+    public static EnumCreatureType PREDATOR;
+    public static EnumCreatureType HUNTABLE;
+    public static EnumCreatureType MOB;
+
+    public static void preInit()
+    {
+        // We need to create here, to avoid errors later
+        // Creating with maxNumber = 0 to not tamper non TFC-worlds
+        MOB = EnumHelper.addCreatureType("MOB", EntityMob.class, 0, Material.AIR, false, false);
+        PREDATOR = EnumHelper.addCreatureType("PREDATOR", IPredator.class, 0, Material.AIR, false, false);
+        HUNTABLE = EnumHelper.addCreatureType("HUNTABLE", IHuntable.class, 0, Material.AIR, true, true);
+    }
+
+    public static void init()
+    {
+        EnumCreatureType.MONSTER.maxNumberOfCreature = 0; // Disable "default"
+        EnumCreatureType.CREATURE.maxNumberOfCreature = 0; // Disable "default"
+        MOB.maxNumberOfCreature = ConfigTFC.WORLD.mobSpawnCount;
+        PREDATOR.maxNumberOfCreature = ConfigTFC.WORLD.predatorSpawnCount;
+        HUNTABLE.maxNumberOfCreature = ConfigTFC.WORLD.huntableSpawnCount;
+    }
+
 
 
     /**
@@ -42,12 +70,12 @@ public final class WorldEntitySpawnerTFC
      */
     public static void performWorldGenSpawning(World worldIn, Biome biomeIn, int centerX, int centerZ, int diameterX, int diameterZ, Random randomIn)
     {
-        BlockPos chunkBlockPos = new BlockPos(centerX, 0, centerZ);
+        final BlockPos chunkBlockPos = new BlockPos(centerX, 0, centerZ);
 
-        float temperature = ClimateTFC.getAvgTemp(worldIn, chunkBlockPos); // Straight forward temperature regions
-        float rainfall = ChunkDataTFC.getRainfall(worldIn, chunkBlockPos); // For deserts
-        float floraDensity = ChunkDataTFC.getFloraDensity(worldIn, chunkBlockPos); //0.125- = no trees, 0.25- = Almost plains / some trees, 0.3-0.5 = normal forest, 0.66+ = too jungle
-        float floraDiversity = ChunkDataTFC.getFloraDiversity(worldIn, chunkBlockPos); // not much effect on animals
+        final float temperature = ClimateTFC.getAvgTemp(worldIn, chunkBlockPos);
+        final float rainfall = ChunkDataTFC.getRainfall(worldIn, chunkBlockPos);
+        final float floraDensity = ChunkDataTFC.getFloraDensity(worldIn, chunkBlockPos);
+        final float floraDiversity = ChunkDataTFC.getFloraDiversity(worldIn, chunkBlockPos);
 
         // Spawns only one group
         ForgeRegistries.ENTITIES.getValuesCollection().stream()

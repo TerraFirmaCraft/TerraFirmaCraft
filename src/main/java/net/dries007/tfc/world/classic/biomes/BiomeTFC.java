@@ -5,15 +5,20 @@
 
 package net.dries007.tfc.world.classic.biomes;
 
+import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-import net.dries007.tfc.objects.entity.animal.*;
+import net.dries007.tfc.api.types.IHuntable;
+import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.world.classic.WorldEntitySpawnerTFC;
 
 public class BiomeTFC extends Biome
 {
@@ -34,15 +39,21 @@ public class BiomeTFC extends Biome
 
         // throw out the first decorator, because it's missing the lilypad & plant settings
         this.decorator = createBiomeDecorator();
-
         this.spawnableCreatureList.clear();
-        // Register creature that respawns in any biome
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityDeerTFC.class, 14, 2, 4));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPheasantTFC.class, 14, 2, 4));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityRabbitTFC.class, 15, 3, 4));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityWolfTFC.class, 6, 2, 3));
-        this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBearTFC.class, 12, 1, 2));
         spawnBiome = false;
+        modSpawnableLists.put(WorldEntitySpawnerTFC.PREDATOR, new ArrayList<>());
+        modSpawnableLists.put(WorldEntitySpawnerTFC.HUNTABLE, new ArrayList<>());
+        //noinspection unchecked
+        ForgeRegistries.ENTITIES.getValuesCollection().stream()
+            .filter(x -> IHuntable.class.isAssignableFrom(x.getEntityClass()))
+            .forEach(x -> modSpawnableLists.get(WorldEntitySpawnerTFC.HUNTABLE).add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), 12, 2, 4)));
+
+        //noinspection unchecked
+        ForgeRegistries.ENTITIES.getValuesCollection().stream()
+            .filter(x -> IPredator.class.isAssignableFrom(x.getEntityClass()))
+            .forEach(x -> modSpawnableLists.get(WorldEntitySpawnerTFC.PREDATOR).add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), 30, 2, 4)));
+
+        modSpawnableLists.put(WorldEntitySpawnerTFC.MOB, spawnableMonsterList);
     }
 
     @Override

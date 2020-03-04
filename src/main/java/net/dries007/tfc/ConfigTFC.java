@@ -366,10 +366,6 @@ public class ConfigTFC
         @Config.RangeInt(min = 100)
         @Config.LangKey("config." + MOD_ID + ".general.tankCrucible")
         public int tankCrucible = 3000;
-
-        @Config.Comment("Prevent mob spawning on surface?")
-        @Config.LangKey("config." + MOD_ID + ".world.preventMobsOnSurface")
-        public boolean preventMobsOnSurface = true;
     }
 
     public static class ClientCFG
@@ -477,9 +473,38 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".world.floraDensitySpreadFactor")
         public double floraDensitySpreadFactor = 0.16;
 
-        @Config.Comment("This controls how spread apart TFC animals spawn, in number of chunks. Higher values mean their spawns are very sparse, also making them more rare.")
-        @Config.RangeInt(min = 1)
-        @Config.LangKey("config." + MOD_ID + ".world.animalSpawnWeight")
-        public int animalSpawnWeight = 100;
+        @Config.Comment("This controls how spread apart TFC familiarizable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.familiarizableSpawnWeight")
+        public int familiarizableSpawnWeight = 50;
+
+        @Config.Comment("This controls how spread apart TFC huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.huntableSpawnWeight")
+        public int huntableSpawnWeight = 50;
+
+        @Config.Comment("This controls how spread apart TFC predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.predatorSpawnWeight")
+        public int predatorSpawnWeight = 50;
+
+        @Config.Comment("This controls how many huntable animals are loaded(spawned) / player. Higher values means more huntables near a player, which in turn raises meat food abundance (caution, a value too high can also negatively impact performance)")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.huntableSpawnCount")
+        public int huntableSpawnCount = 50;
+
+        @Config.Comment("This controls how many predators are loaded(spawned) / player. Higher values means more predators near a player, which in turn raises difficulty (caution, a value too high can also negatively impact performance)")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.predatorSpawnCount")
+        public int predatorSpawnCount = 50;
+
+        @Config.Comment("This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high can also negatively impact performance)")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.mobSpawnCount")
+        public int mobSpawnCount = 200;
+
+        @Config.Comment("Prevent mob spawning on surface?")
+        @Config.LangKey("config." + MOD_ID + ".world.preventMobsOnSurface")
+        public boolean preventMobsOnSurface = true;
     }
 }

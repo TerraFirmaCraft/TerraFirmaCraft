@@ -10,13 +10,14 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.world.biome.Biome;
 
 /**
  * Interface for creature spawning mechanics
  * See {@link net.dries007.tfc.world.classic.WorldEntitySpawnerTFC}
  */
-public interface ICreatureTFC
+public interface ICreatureTFC extends IAnimals
 {
     /**
      * Gets the random weight (1 in N chunks) to spawn this creature

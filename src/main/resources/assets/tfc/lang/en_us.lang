@@ -307,7 +307,6 @@ config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will 
 config.tfc.general.forceReplaceVanillaAnimals=Force Replace Vanilla Animals
 config.tfc.general.forceReplaceVanillaAnimals.tooltip=If true, this will replace vanilla animals with the TFC counterpart under any spawning circumstances (ie: mob spawner, etc).
 
-
 config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
 
@@ -364,9 +363,6 @@ config.tfc.general.tankBarrel.tooltip=How much fluid (mB) can a barrel hold?
 
 config.tfc.general.tankCrucible=Crucible Tank Storage
 config.tfc.general.tankCrucible.tooltip=How much metal (units / mB) can a crucible hold?
-
-config.tfc.general.preventMobsOnSurface=Prevent Mobs On Surface
-config.tfc.general.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
 
 
 ## Client Config
@@ -443,8 +439,26 @@ config.tfc.world.floraDiversitySpreadFactor.tooltip=This controls how spread the
 config.tfc.world.floraDensitySpreadFactor=Flora Density Spread Factor
 config.tfc.world.floraDensitySpreadFactor.tooltip=This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
 
-config.tfc.world.animalSpawnWeight=Animal Spawn Weight
-config.tfc.world.animalSpawnWeight.tooltip=This controls how spread apart TFC animals spawn, in number of chunks. Higher values mean their spawns are very sparse, also making them more rare.
+config.tfc.world.familiarizableSpawnWeight=Familiarizable Spawn Weight
+config.tfc.world.familiarizableSpawnWeight.tooltip=This controls how spread apart TFC familiarizable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+
+config.tfc.general.huntableSpawnWeight=Huntable Spawn Weight
+config.tfc.general.huntableSpawnWeight.tooltip=This controls how spread apart TFC huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+
+config.tfc.general.predatorSpawnWeight=Predator Spawn Weight
+config.tfc.general.predatorSpawnWeight.tooltip=This controls how spread apart TFC predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+
+config.tfc.general.huntableSpawnCount=Huntable Spawn Count
+config.tfc.general.huntableSpawnCount.tooltip=This controls how many huntable animals are loaded(spawned) / player. Higher values means more huntables near a player, which in turn raises meat food abundance (caution, a value too high may also negatively impact performance).
+
+config.tfc.general.predatorSpawnCount=Predator Spawn Count
+config.tfc.general.predatorSpawnCount.tooltip=This controls how many predators are loaded(spawned) / player. Higher values means more predators near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
+
+config.tfc.general.mobSpawnCount=Mob Spawn Count
+config.tfc.general.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
+
+config.tfc.general.preventMobsOnSurface=Prevent Mobs On Surface
+config.tfc.general.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
@@ -3853,14 +3867,16 @@ tfc.animal.pigtfc.male=Pig♂
 tfc.animal.pigtfc.female=Pig♀
 tfc.animal.chickentfc.male=Rooster
 tfc.animal.chickentfc.female=Chicken
+tfc.animal.deertfc.male=Buck
+tfc.animal.deertfc.female=Doe
 tfc.animal.pheasanttfc.male=Pheasant♂
 tfc.animal.pheasanttfc.female=Pheasant♀
 tfc.animal.rabbittfc.male=Rabbit♂
 tfc.animal.rabbittfc.female=Rabbit♀
 tfc.animal.wolftfc.male=Wolf♂
 tfc.animal.wolftfc.female=Wolf♀
-tfc.animal.horsetfc.male=Horse♂
-tfc.animal.horsetfc.female=Horse♀
+tfc.animal.horsetfc.male=Stallion
+tfc.animal.horsetfc.female=Mare
 tfc.animal.donkeytfc.male=Donkey♂
 tfc.animal.donkeytfc.female=Donkey♀
 tfc.animal.muletfc.male=Mule♂
