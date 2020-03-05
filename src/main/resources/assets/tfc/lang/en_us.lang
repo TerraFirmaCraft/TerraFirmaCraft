@@ -437,6 +437,9 @@ config.tfc.world.clayRainfallThreshold.tooltip=The minimum rainfall in an area r
 config.tfc.world.looseRocksFrequency=Loose Rocks Frequency
 config.tfc.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
 
+config.tfc.world.looseRockScan=Loose Rocks Vein Scan
+config.tfc.world.looseRockScan.tooltip=This controls how deep loose rocks scans for veins when generating. Higher values = more ore samples.
+
 config.tfc.world.rainfallSpreadFactor=Rainfall Spread Factor
 config.tfc.world.rainfallSpreadFactor.tooltip=This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
 
@@ -501,8 +504,8 @@ tfc.types.rock_category.igneous_intrusive=Igneous Intrusive
 tfc.types.rock_category.igneous_extrusive=Igneous Extrusive
 
 ## Vein Rarity
-tfc.types.vein.rarity.uncommon=Very Common
 tfc.types.vein.rarity.common=Common
+tfc.types.vein.rarity.uncommon=Uncommon
 tfc.types.vein.rarity.rare=Rare
 tfc.types.vein.rarity.very_rare=Very Rare
 tfc.types.vein.rarity.epic=Epic

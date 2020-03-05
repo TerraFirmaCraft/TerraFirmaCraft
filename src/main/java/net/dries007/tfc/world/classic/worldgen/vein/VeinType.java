@@ -16,7 +16,6 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,7 +24,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -33,6 +31,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class VeinType
 {
     private final Ore ore;
+    private final ItemStack looseRock;
     private final Set<Rock> baseRocks;
 
     private final int width;
@@ -47,9 +46,10 @@ public class VeinType
     private final Shape shape;
     private String name;
 
-    public VeinType(@Nullable Ore ore, Collection<Rock> baseRocks, Shape shape, int width, int height, int rarity, int minY, int maxY, int density)
+    public VeinType(@Nullable Ore ore, ItemStack looseRock, Collection<Rock> baseRocks, Shape shape, int width, int height, int rarity, int minY, int maxY, int density)
     {
         this.ore = ore;
+        this.looseRock = looseRock;
         this.baseRocks = ImmutableSet.copyOf(baseRocks);
         this.shape = shape;
 
@@ -111,22 +111,13 @@ public class VeinType
 
     public boolean hasLooseRocks()
     {
-        return ore != null && ore.isGraded();
+        return !looseRock.isEmpty();
     }
 
     @Nonnull
     public ItemStack getLooseRockItem()
     {
-        if (ore != null)
-        {
-            // This is done intentionally, as some ores may not have a small ore item
-            Item itemOre = ItemSmallOre.get(getOre());
-            if (itemOre != null)
-            {
-                return new ItemStack(itemOre, 1);
-            }
-        }
-        return ItemStack.EMPTY;
+        return looseRock.copy();
     }
 
     public String getRegistryName()
@@ -207,9 +198,9 @@ public class VeinType
     {
         private final IBlockState oreState;
 
-        public CustomVeinType(@Nonnull IBlockState oreState, @Nonnull Collection<Rock> rocks, Shape shape, int width, int height, int rarity, int minY, int maxY, int density)
+        public CustomVeinType(@Nonnull IBlockState oreState, ItemStack looseRock, @Nonnull Collection<Rock> rocks, Shape shape, int width, int height, int rarity, int minY, int maxY, int density)
         {
-            super(null, rocks, shape, width, height, rarity, minY, maxY, density);
+            super(null, looseRock, rocks, shape, width, height, rarity, minY, maxY, density);
             this.oreState = oreState;
         }
 
