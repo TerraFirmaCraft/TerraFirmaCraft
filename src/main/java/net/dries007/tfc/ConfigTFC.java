@@ -463,6 +463,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".world.looseRocksFrequency")
         public int looseRocksFrequency = 18;
 
+        @Config.Comment("This controls how deep loose rocks scans for veins when generating. Higher values = more ore samples.")
+        @Config.RangeInt(min = 1, max = 255)
+        @Config.LangKey("config." + MOD_ID + ".world.looseRockScan")
+        public int looseRockScan = 35;
+
         @Config.RequiresMcRestart
         @Config.RangeDouble(min = 0.05, max = 0.4)
         @Config.Comment("This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")

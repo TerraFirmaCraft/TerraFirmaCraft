@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 import com.google.gson.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -22,6 +25,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
+import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
 public class VeinTypeJson implements JsonDeserializer<VeinType>
@@ -68,6 +72,49 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
             }
         });
 
+        // Parse loose rock
+        ItemStack looseRock = ItemStack.EMPTY;
+        if (JsonUtils.hasField(jsonObject, "loose"))
+        {
+            ResourceLocation looseResource = new ResourceLocation(JsonUtils.getString(jsonObject, "loose"));
+            // try parsing small ore first
+            Ore looseOre = TFCRegistries.ORES.getValue(looseResource);
+            Item looseItem = null;
+            if (looseOre != null)
+            {
+                looseItem = ItemSmallOre.get(looseOre);
+            }
+            if (looseItem == null)
+            {
+                // Try parsing item instead
+                // todo remove meta in 1.15+
+                int metaLoose = JsonUtils.getInt(jsonObject, "looseMeta", 0);
+                looseItem = ForgeRegistries.ITEMS.getValue(looseResource);
+                if (looseItem == null)
+                {
+                    // Block?
+                    Block looseBlock = ForgeRegistries.BLOCKS.getValue(looseResource);
+                    // Looks like forge parse anything to air if nothing is found
+                    if (looseBlock == null || looseBlock == Blocks.AIR)
+                    {
+                        throw new JsonParseException("Unable to parse vein " + looseResource + ". No registered small ore, item or block found.");
+                    }
+                    else
+                    {
+                        looseRock = new ItemStack(looseBlock, 1, metaLoose);
+                    }
+                }
+                else
+                {
+                    looseRock = new ItemStack(looseItem, 1, metaLoose);
+                }
+            }
+            else
+            {
+                looseRock = new ItemStack(looseItem, 1);
+            }
+        }
+
         ResourceLocation oreName = new ResourceLocation(JsonUtils.getString(jsonObject, "ore"));
         Ore ore = TFCRegistries.ORES.getValue(oreName);
         if (ore == null)
@@ -86,13 +133,13 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
                 {
                     throw new JsonParseException("Unable to find a matching IBlockState for block " + oreName + " and metadata: " + meta);
                 }
-                return new VeinType.CustomVeinType(oreState, blocks, shape, width, height, rarity, minY, maxY, density);
+                return new VeinType.CustomVeinType(oreState, looseRock, blocks, shape, width, height, rarity, minY, maxY, density);
             }
             else
             {
                 throw new JsonParseException("Unrecognized ore '" + oreName + "'");
             }
         }
-        return new VeinType(ore, blocks, shape, width, height, rarity, minY, maxY, density);
+        return new VeinType(ore, looseRock, blocks, shape, width, height, rarity, minY, maxY, density);
     }
 }
