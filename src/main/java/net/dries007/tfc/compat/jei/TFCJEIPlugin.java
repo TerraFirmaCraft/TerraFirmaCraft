@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.Item;
@@ -33,7 +32,6 @@ import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.client.gui.*;
@@ -287,9 +285,7 @@ public final class TFCJEIPlugin implements IModPlugin
 
         //Wraps all veins
         List<VeinWrapper> veinList = VeinRegistry.INSTANCE.getVeins().values()
-            // Some veins returns air, bug in vein registry?
-            .stream().filter(veinType -> veinType.getOre() != null || veinType.getOreState(Rock.GRANITE, Ore.Grade.NORMAL).getMaterial() != Material.AIR)
-            .map(VeinWrapper::new)
+            .stream().map(VeinWrapper::new)
             .collect(Collectors.toList());
 
         registry.addRecipes(veinList, VEIN_UID);
