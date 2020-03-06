@@ -166,6 +166,9 @@ config.tfc.general.toolip=Non side specific settings.
 config.tfc.general.debug=Debug Mode
 config.tfc.general.debug.tooltip=Various debug options. Activates some extra wand features. Enables extra item tooltips.
 
+config.tfc.general.findVeinsChunkLoad=Find Veins Command Chunk Load
+config.tfc.general.findVeinsChunkLoad.tooltip=How many chunks can be loaded at a time via /findveins command. [DANGER] Consumes a LOT of ram, may crash / freeze if this value is too high and your server can't handle it.
+
 config.tfc.general.disableFallableBlocks=Disable Fallable Blocks
 config.tfc.general.disableFallableBlocks.tooltip=If true, fallable blocks (ie: dirt, stone) will never fall.
 
