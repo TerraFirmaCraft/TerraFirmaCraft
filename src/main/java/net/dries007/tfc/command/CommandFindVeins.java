@@ -5,10 +5,6 @@
 
 package net.dries007.tfc.command;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
@@ -30,9 +26,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.util.LogFileWriter;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
@@ -43,12 +39,10 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class CommandFindVeins extends CommandBase
 {
     private static final List<ChunkPos> POSITIONS = new LinkedList<>();
-    private static final Set<BlockPos> FOUND_VEINS = new HashSet<>(); // Using BlockPos instead of vein objs lowers ram usage
 
-    private static Consumer<Vein> CONSUMER = null; // Runs for each found vein
+    private static Consumer<Chunk> CONSUMER = null; // Runs for each chunk
     private static Consumer<Integer> LOGGER = null; // Tells someone how much job remains
     private static Runnable FINISHER = null; // Runs after everything finishes
-    private static String FILTER = "all";
 
     /**
      * Doing that way so we spread chunk loading over ticks to not overload server too much
@@ -68,15 +62,7 @@ public class CommandFindVeins extends CommandBase
                 LOGGER.accept(POSITIONS.size());
                 ChunkPos pos = POSITIONS.remove(0);
                 Chunk chunk = event.world.getChunk(pos.getBlock(0, 0, 0));
-                ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
-                chunkData.getGeneratedVeins().stream()
-                    .filter(vein -> !FOUND_VEINS.contains(vein.getPos()))
-                    .filter(vein -> FILTER.equalsIgnoreCase("all") || vein.getType().getRegistryName().equalsIgnoreCase(FILTER))
-                    .forEach(vein ->
-                    {
-                        FOUND_VEINS.add(vein.getPos());
-                        CONSUMER.accept(vein);
-                    });
+                CONSUMER.accept(chunk);
                 // Tell MC we don't need the chunk anymore
                 chunkProvider.queueUnload(chunk);
             }
@@ -84,7 +70,6 @@ public class CommandFindVeins extends CommandBase
 
             // Resets everything
             POSITIONS.clear();
-            FOUND_VEINS.clear();
             CONSUMER = null;
             LOGGER = null;
             FINISHER = null;
@@ -111,9 +96,25 @@ public class CommandFindVeins extends CommandBase
         if (args.length != 2 && args.length != 3) throw new WrongUsageException("2 or 3 arguments required.");
         if (sender.getCommandSenderEntity() == null) throw new WrongUsageException("Can only be used by a player");
         if (POSITIONS.size() > 0) throw new CommandException("Can't start another job while there's one running");
+        final Set<BlockPos> veinsFound = new HashSet<>(); // Using BlockPos instead of vein objs lowers ram usage
+        final String filter = args[0];
+
         // Default print to player chat
-        Consumer<Vein> consumer = vein -> sender.sendMessage(new TextComponentString("> Vein: " + vein.getType() + " at " + vein.getPos()));
-        Runnable finisher = () -> {}; // do nothing
+        CONSUMER = chunk ->
+        {
+            ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
+            chunkData.getGeneratedVeins().stream()
+                .filter(vein -> !veinsFound.contains(vein.getPos()))
+                .filter(vein -> filter.equalsIgnoreCase("all") || vein.getType().getRegistryName().equalsIgnoreCase(filter))
+                .forEach(vein ->
+                {
+                    veinsFound.add(vein.getPos());
+                    sender.sendMessage(new TextComponentString("> Vein: " + vein.getType() + " at " + vein.getPos()));
+                });
+        };
+        FINISHER = () -> {}; // do nothing
+        LOGGER = integer -> {}; // don't announce
+
         boolean generated = false;
         if (args.length >= 3)
         {
@@ -121,87 +122,99 @@ public class CommandFindVeins extends CommandBase
             if (args[2].equalsIgnoreCase("dump"))
             {
                 sender.sendMessage(new TextComponentString("Dumping veins, this is gonna take a while..."));
-                try
+                final String fileName = "tfc-veins-dump.log";
+                CONSUMER = chunk ->
                 {
-                    final String fileName = "tfc-veins-dump.log";
-                    final File dumpFile = new File(fileName);
-                    final BufferedWriter writer = new BufferedWriter(new FileWriter(dumpFile));
-                    consumer = vein -> {
-                        try
+                    ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
+                    chunkData.getGeneratedVeins().stream()
+                        .filter(vein -> !veinsFound.contains(vein.getPos()))
+                        .filter(vein -> filter.equalsIgnoreCase("all") || vein.getType().getRegistryName().equalsIgnoreCase(filter))
+                        .forEach(vein ->
                         {
+                            veinsFound.add(vein.getPos());
                             String dump = "Vein: " + vein.getType() + " at " + vein.getPos();
-                            writer.write(dump);
-                            writer.newLine();
-                        }
-                        catch (IOException e)
-                        {
-                            TerraFirmaCraft.getLog().error(e.getMessage());
-                        }
-                    };
-                    finisher = () -> {
-                        try
-                        {
-                            writer.close();
-                            sender.sendMessage(new TextComponentString("vein dump file saved at: " + dumpFile.getAbsolutePath()));
-                        }
-                        catch (IOException e)
-                        {
-                            TerraFirmaCraft.getLog().error(e.getMessage());
-                        }
-                    };
-                }
-                catch (IOException e)
+                            if (!LogFileWriter.isOpen())
+                            {
+                                LogFileWriter.open(fileName);
+                            }
+                            LogFileWriter.writeLine(dump);
+                        });
+                };
+                FINISHER = () ->
                 {
-                    TerraFirmaCraft.getLog().error(e.getMessage());
-                    return;
-                }
+                    if (LogFileWriter.isOpen())
+                    {
+                        sender.sendMessage(new TextComponentString("vein dump file saved at: " + LogFileWriter.getFilePath()));
+                        LogFileWriter.close();
+                    }
+                };
             }
             else if (args[2].equalsIgnoreCase("rate"))
             {
                 sender.sendMessage(new TextComponentString("Dumping vein rates, this is gonna take a while..."));
-                try
+                // Save files to MC's root folder
+                String fileName = "tfc-veins-rate.log";
+                Map<VeinType, Integer> veinRateMap = new HashMap<>();
+                Map<Rock, Integer> rockRateMap = new HashMap<>();
+                CONSUMER = chunk ->
                 {
-                    // Save files to MC's root folder
-                    String fileName = "tfc-veins-rate.log";
-                    File dumpFile = new File(fileName);
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(dumpFile));
-                    Map<VeinType, Integer> veinRateMap = new HashMap<>();
-                    consumer = vein -> {
-                        int count = 1;
-                        if (veinRateMap.containsKey(vein.getType()))
+                    ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
+                    Rock rock1 = chunkData.getRockLayer1(8, 8); // Grabbing the middle is fine
+                    Rock rock2 = chunkData.getRockLayer1(8, 8);
+                    Rock rock3 = chunkData.getRockLayer1(8, 8);
+
+                    int value = 1;
+                    if (rockRateMap.containsKey(rock1))
+                    {
+                        value += rockRateMap.get(rock1);
+                    }
+                    rockRateMap.put(rock1, value);
+
+                    value = 1;
+                    if (rockRateMap.containsKey(rock2))
+                    {
+                        value += rockRateMap.get(rock2);
+                    }
+                    rockRateMap.put(rock2, value);
+
+                    value = 1;
+                    if (rockRateMap.containsKey(rock3))
+                    {
+                        value += rockRateMap.get(rock3);
+                    }
+                    rockRateMap.put(rock3, value);
+
+                    chunkData.getGeneratedVeins().stream()
+                        .filter(vein -> !veinsFound.contains(vein.getPos()))
+                        .filter(vein -> filter.equalsIgnoreCase("all") || vein.getType().getRegistryName().equalsIgnoreCase(filter))
+                        .forEach(vein ->
                         {
-                            count += veinRateMap.get(vein.getType());
-                        }
-                        veinRateMap.put(vein.getType(), count);
-                    };
-                    finisher = () -> {
-                        veinRateMap.forEach((veinType, count) -> {
-                            try
+                            veinsFound.add(vein.getPos());
+                            int count = 1;
+                            if (veinRateMap.containsKey(vein.getType()))
                             {
-                                String dump = "VeinType: " + veinType.getRegistryName() + " count: " + count;
-                                writer.write(dump);
-                                writer.newLine();
+                                count += veinRateMap.get(vein.getType());
                             }
-                            catch (IOException e)
-                            {
-                                TerraFirmaCraft.getLog().error(e.getMessage());
-                            }
+                            veinRateMap.put(vein.getType(), count);
                         });
-                        try
-                        {
-                            writer.close();
-                            sender.sendMessage(new TextComponentString("vein rate file saved at: " + dumpFile.getAbsolutePath()));
-                        }
-                        catch (IOException e)
-                        {
-                            TerraFirmaCraft.getLog().error(e.getMessage());
-                        }
-                    };
-                }
-                catch (IOException e)
+                };
+                FINISHER = () ->
                 {
-                    TerraFirmaCraft.getLog().error(e.getMessage());
-                }
+                    if (!LogFileWriter.isOpen())
+                    {
+                        LogFileWriter.open(fileName);
+                    }
+
+                    veinRateMap.forEach((veinType, count) -> LogFileWriter.writeLine("VeinType: " + veinType.getRegistryName() + " count: " + count));
+
+                    LogFileWriter.newLine();
+                    LogFileWriter.writeLine("Found Rock Layers: ");
+
+                    rockRateMap.forEach((rock, count) -> LogFileWriter.writeLine("Rock: " + rock.getRegistryName() + " chunks: " + count));
+
+                    sender.sendMessage(new TextComponentString("vein rate file saved at: " + LogFileWriter.getFilePath()));
+                    LogFileWriter.close();
+                };
             }
             else
             {
@@ -210,11 +223,6 @@ public class CommandFindVeins extends CommandBase
         }
 
         final int radius = parseInt(args[1], 1, 1000);
-
-        CONSUMER = consumer;
-        FINISHER = finisher;
-        FILTER = args[0];
-
         final int chunkX = sender.getCommandSenderEntity().chunkCoordX;
         final int chunkZ = sender.getCommandSenderEntity().chunkCoordZ;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(0, 0, 0);
@@ -234,18 +242,14 @@ public class CommandFindVeins extends CommandBase
         final int announceAt = totalJob / 20; // At each 5%
         if (generated)
         {
-            LOGGER = remaining -> {
+            LOGGER = remaining ->
+            {
                 if (remaining % announceAt == 0)
                 {
                     sender.sendMessage(new TextComponentString("Chunks remaining: " + remaining + "/" + totalJob));
                 }
             };
         }
-        else
-        {
-            LOGGER = integer -> {}; // don't need to announce when we are dumping to chat already.
-        }
-
     }
 
     @Override
