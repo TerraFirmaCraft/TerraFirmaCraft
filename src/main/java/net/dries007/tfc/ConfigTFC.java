@@ -51,11 +51,6 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.debug")
         public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
 
-        @Config.Comment("How many chunks can be loaded at a time via /findveins command. [DANGER] Consumes a LOT of ram, may crash / freeze if this value is too high and your server can't handle it.")
-        @Config.RangeInt(min = 500, max = 100_000)
-        @Config.LangKey("config." + MOD_ID + ".general.findVeinsChunkLoad")
-        public int findVeinsChunkLoad = 3000;
-
         @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never fall.")
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
         public boolean disableFallableBlocks = false;

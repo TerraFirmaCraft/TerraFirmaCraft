@@ -16,66 +16,25 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraft.world.chunk.storage.AnvilChunkLoader;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.WorldWorkerManager;
 
-import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.util.LogFileWriter;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 @ParametersAreNonnullByDefault
-@Mod.EventBusSubscriber(modid = MOD_ID)
 public class CommandFindVeins extends CommandBase
 {
-    private static final List<ChunkPos> POSITIONS = new LinkedList<>();
-
-    private static Consumer<Chunk> CONSUMER = null; // Runs for each chunk
-    private static Consumer<Integer> LOGGER = null; // Tells someone how much job remains
-    private static Runnable FINISHER = null; // Runs after everything finishes
-
-    /**
-     * Doing that way so we spread chunk loading over ticks to not overload server too much
-     */
-    @SubscribeEvent
-    public static void onWorldTick(TickEvent.WorldTickEvent event)
-    {
-        if (!event.world.isRemote && event.phase == TickEvent.Phase.END && POSITIONS.size() > 0)
-        {
-            while (POSITIONS.size() > 0)
-            {
-                ChunkProviderServer chunkProvider = ((ChunkProviderServer) event.world.getChunkProvider());
-                if (chunkProvider.loadedChunks.size() > ConfigTFC.GENERAL.findVeinsChunkLoad)
-                {
-                    return; // Breaks in the middle for performance
-                }
-                LOGGER.accept(POSITIONS.size());
-                ChunkPos pos = POSITIONS.remove(0);
-                Chunk chunk = event.world.getChunk(pos.getBlock(0, 0, 0));
-                CONSUMER.accept(chunk);
-                // Tell MC we don't need the chunk anymore
-                chunkProvider.queueUnload(chunk);
-            }
-            FINISHER.run();
-
-            // Resets everything
-            POSITIONS.clear();
-            CONSUMER = null;
-            LOGGER = null;
-            FINISHER = null;
-        }
-    }
-
     @Override
     @Nonnull
     public String getName()
@@ -87,7 +46,7 @@ public class CommandFindVeins extends CommandBase
     @Nonnull
     public String getUsage(ICommandSender sender)
     {
-        return "/findveins [all|<vein name>] <radius> [dump|rate] -> Finds all instances of a specific vein, or all veins within a certain chunk radius, if dump or rate, also save it to a log file";
+        return "/findveins [all|<vein name>] <radius> [dump|rate] -> Finds all instances of a specific vein, or all veins within a certain chunk radius, if dump or rate save it to a log file";
     }
 
     @Override
@@ -95,12 +54,13 @@ public class CommandFindVeins extends CommandBase
     {
         if (args.length != 2 && args.length != 3) throw new WrongUsageException("2 or 3 arguments required.");
         if (sender.getCommandSenderEntity() == null) throw new WrongUsageException("Can only be used by a player");
-        if (POSITIONS.size() > 0) throw new CommandException("Can't start another job while there's one running");
+
+        final List<ChunkPos> chunks = new LinkedList<>();
         final Set<BlockPos> veinsFound = new HashSet<>(); // Using BlockPos instead of vein objs lowers ram usage
         final String filter = args[0];
 
         // Default print to player chat
-        CONSUMER = chunk ->
+        Consumer<Chunk> consumer = chunk ->
         {
             ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
             chunkData.getGeneratedVeins().stream()
@@ -112,8 +72,8 @@ public class CommandFindVeins extends CommandBase
                     sender.sendMessage(new TextComponentString("> Vein: " + vein.getType() + " at " + vein.getPos()));
                 });
         };
-        FINISHER = () -> {}; // do nothing
-        LOGGER = integer -> {}; // don't announce
+        Consumer<Integer> logger = integer -> {}; // don't announce
+        Runnable finisher = () -> {}; // do nothing
 
         boolean generated = false;
         if (args.length >= 3)
@@ -123,7 +83,7 @@ public class CommandFindVeins extends CommandBase
             {
                 sender.sendMessage(new TextComponentString("Dumping veins, this is gonna take a while..."));
                 final String fileName = "tfc-veins-dump.log";
-                CONSUMER = chunk ->
+                consumer = chunk ->
                 {
                     ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
                     chunkData.getGeneratedVeins().stream()
@@ -140,7 +100,7 @@ public class CommandFindVeins extends CommandBase
                             LogFileWriter.writeLine(dump);
                         });
                 };
-                FINISHER = () ->
+                finisher = () ->
                 {
                     if (LogFileWriter.isOpen())
                     {
@@ -156,7 +116,7 @@ public class CommandFindVeins extends CommandBase
                 String fileName = "tfc-veins-rate.log";
                 Map<VeinType, Integer> veinRateMap = new HashMap<>();
                 Map<Rock, Integer> rockRateMap = new HashMap<>();
-                CONSUMER = chunk ->
+                consumer = chunk ->
                 {
                     ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
                     Rock rock1 = chunkData.getRockLayer1(8, 8); // Grabbing the middle is fine
@@ -198,7 +158,7 @@ public class CommandFindVeins extends CommandBase
                             veinRateMap.put(vein.getType(), count);
                         });
                 };
-                FINISHER = () ->
+                finisher = () ->
                 {
                     if (!LogFileWriter.isOpen())
                     {
@@ -234,22 +194,17 @@ public class CommandFindVeins extends CommandBase
                 if (sender.getEntityWorld().isBlockLoaded(pos) || (generated && sender.getEntityWorld().isChunkGeneratedAt(x, z)))
                 {
                     // Add to the list of positions so we spread chunk loading and not freeze / crash the server
-                    POSITIONS.add(new ChunkPos(pos));
+                    chunks.add(new ChunkPos(pos));
                 }
             }
         }
-        final int totalJob = POSITIONS.size();
-        final int announceAt = totalJob / 20; // At each 5%
+        final int totalJob = chunks.size();
         if (generated)
         {
-            LOGGER = remaining ->
-            {
-                if (remaining % announceAt == 0)
-                {
-                    sender.sendMessage(new TextComponentString("Chunks remaining: " + remaining + "/" + totalJob));
-                }
-            };
+            logger = remaining -> sender.sendMessage(new TextComponentString("Chunks remaining: " + remaining + "/" + totalJob));
         }
+        WorldWorkerManager.IWorker worker = new Worker(0, sender, chunks, consumer, logger, finisher);
+        WorldWorkerManager.addWorker(worker);
     }
 
     @Override
@@ -271,6 +226,105 @@ public class CommandFindVeins extends CommandBase
             return getListOfStringsMatchingLastWord(args, "dump", "rate");
         }
         return Collections.emptyList();
+    }
+
+    private static class Worker implements WorldWorkerManager.IWorker
+    {
+        private final int dimension;
+        private final ICommandSender listener;
+        private final List<ChunkPos> chunks;
+        private final Consumer<Chunk> consumer; // Runs for each chunk
+        private final Consumer<Integer> logger; // Tells someone how much job remains
+        private final Runnable finisher; // Runs after everything finishes
+
+        private long lastNotifcationTime;
+        private Boolean keepingLoaded;
+
+        public Worker(int dimension, ICommandSender listener, List<ChunkPos> chunks, Consumer<Chunk> consumer, Consumer<Integer> logger, Runnable finisher)
+        {
+            this.dimension = dimension;
+            this.listener = listener;
+            this.chunks = chunks;
+            this.consumer = consumer;
+            this.logger = logger;
+            this.finisher = finisher;
+            lastNotifcationTime = 0;
+            keepingLoaded = false;
+        }
+
+        @Override
+        public boolean hasWork()
+        {
+            return chunks.size() > 0;
+        }
+
+        @Override
+        public boolean doWork()
+        {
+            WorldServer world = DimensionManager.getWorld(dimension);
+            if (world == null)
+            {
+                DimensionManager.initDimension(dimension);
+                world = DimensionManager.getWorld(dimension);
+                if (world == null)
+                {
+                    listener.sendMessage(new TextComponentString("Failed to load dimension " + dimension));
+                    chunks.clear();
+                    return false;
+                }
+            }
+
+            AnvilChunkLoader loader = world.getChunkProvider().chunkLoader instanceof AnvilChunkLoader ? (AnvilChunkLoader) world.getChunkProvider().chunkLoader : null;
+            if (loader != null && loader.getPendingSaveCount() > 100)
+            {
+                // if this block is called, that's because chunk saving is lagging, not much we can do besides waiting
+                // Slowing down notification to not spam the same value too much
+                if (lastNotifcationTime < System.currentTimeMillis() - 10000) // 10 sec notification
+                {
+                    logger.accept(chunks.size());
+                    lastNotifcationTime = System.currentTimeMillis();
+                }
+                return false;
+            }
+
+            ChunkPos next = chunks.remove(0);
+
+            if (next != null)
+            {
+                if (lastNotifcationTime < System.currentTimeMillis() - 5000) // 5 sec notification
+                {
+                    logger.accept(chunks.size());
+                    lastNotifcationTime = System.currentTimeMillis();
+                }
+
+                // While we work we don't want to cause world load spam so pause unloading the world.
+                if (!keepingLoaded)
+                {
+                    keepingLoaded = DimensionManager.keepDimensionLoaded(dimension, true);
+                }
+
+                Chunk target = world.getChunk(next.x, next.z);
+
+                consumer.accept(target);
+
+                PlayerChunkMapEntry watchers = world.getPlayerChunkMap().getEntry(target.x, target.z);
+                if (watchers == null) //If there are no players watching this, this will be null, so we can unload.
+                {
+                    world.getChunkProvider().queueUnload(target);
+                }
+            }
+
+            if (chunks.isEmpty())
+            {
+                finisher.run();
+                if (keepingLoaded)
+                {
+                    DimensionManager.keepDimensionLoaded(dimension, false);
+                }
+                return false;
+            }
+            return true;
+        }
     }
 }
 
