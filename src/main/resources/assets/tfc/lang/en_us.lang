@@ -334,6 +334,12 @@ config.tfc.general.oreDictIron.tooltip=Add iron ore dictionary to wrought iron i
 config.tfc.general.oreDictPlate=Plate Ore Dictionary in Sheets
 config.tfc.general.oreDictPlate.tooltip=Add plate ore dictionary to sheet items?
 
+config.tfc.general.spawnProtectionEnable=Enable Spawn Protection
+config.tfc.general.spawnProtectionEnable.tooltip=Should living in a chunk block hostile mob spawning over time?
+
+config.tfc.general.spawnProtectionMinY=Spawn Protection Minimum Y Level
+config.tfc.general.spawnProtectionMinY.tooltip=The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.
+
 config.tfc.general.charcoalPitTime=Charcoal Pit Ticks
 config.tfc.general.charcoalPitTime.tooltip=The time required for a charcoal pit to complete
 
@@ -439,20 +445,26 @@ config.tfc.world.floraDiversitySpreadFactor.tooltip=This controls how spread the
 config.tfc.world.floraDensitySpreadFactor=Flora Density Spread Factor
 config.tfc.world.floraDensitySpreadFactor.tooltip=This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
 
-config.tfc.world.familiarizableSpawnWeight=Familiarizable Spawn Weight
-config.tfc.world.familiarizableSpawnWeight.tooltip=This controls how spread apart TFC familiarizable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+config.tfc.world.livestockSpawnRarity=Livestock Spawn Rarity
+config.tfc.world.livestockSpawnRarity.tooltip=This controls how spread apart livestock (familiarizable) animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
 
-config.tfc.general.huntableSpawnWeight=Huntable Spawn Weight
-config.tfc.general.huntableSpawnWeight.tooltip=This controls how spread apart TFC huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+config.tfc.world.livestockRespawnWeight=Livestock Respawn Weight
+config.tfc.world.livestockRespawnWeight.tooltip=This controls the chance livestock (familiarizable) animals are chosen to respawn against other animal types. Use 0 to disable livestock respawns.
 
-config.tfc.general.predatorSpawnWeight=Predator Spawn Weight
-config.tfc.general.predatorSpawnWeight.tooltip=This controls how spread apart TFC predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+config.tfc.general.huntableSpawnRarity=Huntable Spawn Rarity
+config.tfc.general.huntableSpawnRarity.tooltip=This controls how spread apart huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
 
-config.tfc.general.huntableSpawnCount=Huntable Spawn Count
-config.tfc.general.huntableSpawnCount.tooltip=This controls how many huntable animals are loaded(spawned) / player. Higher values means more huntables near a player, which in turn raises meat food abundance (caution, a value too high may also negatively impact performance).
+config.tfc.general.huntableRespawnWeight=Huntable Respawn Weight
+config.tfc.general.huntableRespawnWeight.tooltip=This controls the chance huntable animals are chosen to respawn against other animal types. Use 0 to disable huntable respawns.
 
-config.tfc.general.predatorSpawnCount=Predator Spawn Count
-config.tfc.general.predatorSpawnCount.tooltip=This controls how many predators are loaded(spawned) / player. Higher values means more predators near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
+config.tfc.general.predatorSpawnRarity=Predator Spawn Rarity
+config.tfc.general.predatorSpawnRarity.tooltip=This controls how spread apart predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+
+config.tfc.general.predatorRespawnWeight=Predator Respawn Weight
+config.tfc.general.predatorRespawnWeight.tooltip=This controls the chance predators are chosen to respawn against other animal types. Use 0 to disable predator respawns.
+
+config.tfc.general.animalSpawnCount=Animal Spawn Count
+config.tfc.general.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
 
 config.tfc.general.mobSpawnCount=Mob Spawn Count
 config.tfc.general.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).

@@ -39,6 +39,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -46,7 +47,9 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
+// This one is special, since it's familiarizable and is also a predator since it will attack you if provoked plus will hunt other livestock for food.
+// Since this don't fit in the predators list, but should be respawned over time, putting it into the huntable list
+public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
 {
     private static final int DAYS_TO_ADULTHOOD = 360;
     private static final int DAYS_TO_FULL_GESTATION = 70;
@@ -92,7 +95,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome))
         {
             // Spawns everywhere, there's so many species...
-            return ConfigTFC.WORLD.familiarizableSpawnWeight;
+            return ConfigTFC.WORLD.livestockSpawnRarity;
         }
         return 0;
     }

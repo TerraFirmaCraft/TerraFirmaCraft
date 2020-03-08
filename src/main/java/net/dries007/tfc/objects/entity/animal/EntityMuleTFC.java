@@ -36,6 +36,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
@@ -43,7 +44,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class EntityMuleTFC extends EntityMule implements IAnimalTFC
+public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
 {
     protected static final int DAYS_TO_ADULTHOOD = 1120;
     protected static final int DAYS_TO_FULL_GESTATION = 240;

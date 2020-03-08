@@ -33,6 +33,7 @@ import net.minecraft.world.biome.Biome;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
@@ -40,7 +41,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class EntityParrotTFC extends EntityParrot implements IAnimalTFC
+public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivestock
 {
     private static final int DAYS_TO_ADULTHOOD = 180;
     //Values that has a visual effect on client
@@ -365,7 +366,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
-            return ConfigTFC.WORLD.familiarizableSpawnWeight;
+            return ConfigTFC.WORLD.livestockSpawnRarity;
         }
         return 0;
     }

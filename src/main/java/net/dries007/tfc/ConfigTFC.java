@@ -320,6 +320,14 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.oreDictPlate")
         public boolean oreDictPlate = false;
 
+        @Config.Comment("Should living in a chunk block hostile mob spawning over time?")
+        @Config.LangKey("config." + MOD_ID + ".general.spawnProtectionEnable")
+        public boolean spawnProtectionEnable = true;
+
+        @Config.Comment("The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.")
+        @Config.LangKey("config." + MOD_ID + ".general.spawnProtectionMinY")
+        public int spawnProtectionMinY = 100;
+
         @Config.Comment("The time required for a charcoal pit to complete")
         @Config.LangKey("config." + MOD_ID + ".general.charcoalPitTime")
         public int charcoalPitTime = 18_000;
@@ -473,35 +481,45 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".world.floraDensitySpreadFactor")
         public double floraDensitySpreadFactor = 0.16;
 
-        @Config.Comment("This controls how spread apart TFC familiarizable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.Comment("This controls how spread apart livestock (familiarizable) animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
         @Config.RangeInt(min = 0)
-        @Config.LangKey("config." + MOD_ID + ".world.familiarizableSpawnWeight")
-        public int familiarizableSpawnWeight = 50;
+        @Config.LangKey("config." + MOD_ID + ".world.livestockSpawnRarity")
+        public int livestockSpawnRarity = 50;
 
-        @Config.Comment("This controls how spread apart TFC huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.Comment("This controls the chance livestock (familiarizable) animals are chosen to respawn against other animal types. Use 0 to disable livestock respawns.")
         @Config.RangeInt(min = 0)
-        @Config.LangKey("config." + MOD_ID + ".world.huntableSpawnWeight")
-        public int huntableSpawnWeight = 50;
+        @Config.LangKey("config." + MOD_ID + ".world.livestockRespawnWeight")
+        public int livestockRespawnWeight = 0;
 
-        @Config.Comment("This controls how spread apart TFC predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.Comment("This controls how spread apart huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
         @Config.RangeInt(min = 0)
-        @Config.LangKey("config." + MOD_ID + ".world.predatorSpawnWeight")
-        public int predatorSpawnWeight = 50;
+        @Config.LangKey("config." + MOD_ID + ".world.huntableSpawnRarity")
+        public int huntableSpawnRarity = 50;
 
-        @Config.Comment("This controls how many huntable animals are loaded(spawned) / player. Higher values means more huntables near a player, which in turn raises meat food abundance (caution, a value too high can also negatively impact performance)")
+        @Config.Comment("This controls the chance huntable animals are chosen to respawn against other animal types. Use 0 to disable huntable respawns.")
         @Config.RangeInt(min = 0)
-        @Config.LangKey("config." + MOD_ID + ".world.huntableSpawnCount")
-        public int huntableSpawnCount = 50;
+        @Config.LangKey("config." + MOD_ID + ".world.huntableRespawnWeight")
+        public int huntableRespawnWeight = 70;
 
-        @Config.Comment("This controls how many predators are loaded(spawned) / player. Higher values means more predators near a player, which in turn raises difficulty (caution, a value too high can also negatively impact performance)")
+        @Config.Comment("This controls how spread apart predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
         @Config.RangeInt(min = 0)
-        @Config.LangKey("config." + MOD_ID + ".world.predatorSpawnCount")
-        public int predatorSpawnCount = 50;
+        @Config.LangKey("config." + MOD_ID + ".world.predatorSpawnRarity")
+        public int predatorSpawnRarity = 70;
+
+        @Config.Comment("This controls the chance predators are chosen to respawn against other animal types. Use 0 to disable predator respawns.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.predatorRespawnWeight")
+        public int predatorRespawnWeight = 30;
+
+        @Config.Comment("This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.animalSpawnCount")
+        public int animalSpawnCount = 75;
 
         @Config.Comment("This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high can also negatively impact performance)")
         @Config.RangeInt(min = 0)
         @Config.LangKey("config." + MOD_ID + ".world.mobSpawnCount")
-        public int mobSpawnCount = 200;
+        public int mobSpawnCount = 140;
 
         @Config.Comment("Prevent mob spawning on surface?")
         @Config.LangKey("config." + MOD_ID + ".world.preventMobsOnSurface")

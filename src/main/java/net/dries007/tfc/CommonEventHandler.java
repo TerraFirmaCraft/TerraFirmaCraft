@@ -79,6 +79,7 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.ICreatureTFC;
+import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketCalendarUpdate;
@@ -571,6 +572,16 @@ public final class CommonEventHandler
         World world = event.getWorld();
         BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
 
+        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false) || event.getEntity() instanceof IPredator)
+        {
+            // Prevent predators and mobs from spawning where the player lives.
+            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
+            if (ConfigTFC.GENERAL.spawnProtectionEnable && (ConfigTFC.GENERAL.spawnProtectionMinY <= event.getY()) && data.isSpawnProtected())
+            {
+                event.setResult(Event.Result.DENY);
+            }
+        }
+
         // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
         if (event.getEntity() instanceof ICreatureTFC)
         {
@@ -594,10 +605,10 @@ public final class CommonEventHandler
             event.setResult(Event.Result.DENY);
         }
 
-        // Stop mob spawning in surface (only mobs, not EntityAnimals that also implements IMob)
+        // Stop mob spawning in surface
         if (ConfigTFC.WORLD.preventMobsOnSurface)
         {
-            if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false) && !event.getEntity().isCreatureType(EnumCreatureType.CREATURE, false))
+            if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
             {
                 int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2) / 2 + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
                 if (pos.getY() >= maximumY || world.canSeeSky(pos))

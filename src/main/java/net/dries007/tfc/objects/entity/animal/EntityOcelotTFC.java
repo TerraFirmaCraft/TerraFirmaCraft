@@ -37,6 +37,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
@@ -44,7 +45,9 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC
+// This one is special, since it's familiarizable and also attacks other livestock for food.
+// Should fit more in the huntable list
+public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntable
 {
     protected static final int DAYS_TO_FULL_GESTATION = 330;
     private static final int DAYS_TO_ADULTHOOD = 60;
@@ -215,7 +218,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
-            return ConfigTFC.WORLD.familiarizableSpawnWeight;
+            return ConfigTFC.WORLD.livestockSpawnRarity;
         }
         return 0;
     }
