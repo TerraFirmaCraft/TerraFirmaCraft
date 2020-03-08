@@ -212,8 +212,9 @@ public class BlockLeavesTFC extends BlockLeaves
         if (world.isRemote || !state.getValue(DECAYABLE))
             return;
 
-        List<BlockPos> paths = new ArrayList<>();
-        List<BlockPos> pathsToAdd;
+        Set<BlockPos> paths = new HashSet<>();
+        Set<BlockPos> evaluated = new HashSet<>(); // Leaves that everything was evaluated so no need to do it again
+        List<BlockPos> pathsToAdd; // New Leaves that needs evaluation
         BlockPos.MutableBlockPos pos1 = new BlockPos.MutableBlockPos(pos);
         IBlockState state1;
         paths.add(pos); // Center block
@@ -226,17 +227,18 @@ public class BlockLeavesTFC extends BlockLeaves
                 for (EnumFacing face : EnumFacing.values())
                 {
                     pos1.setPos(p1).move(face);
-                    if (paths.contains(pos1.toImmutable()))
+                    if (evaluated.contains(pos1) || !world.isBlockLoaded(pos1))
                         continue;
                     state1 = world.getBlockState(pos1);
                     if (state1.getBlock() == BlockLogTFC.get(wood))
                         return;
                     if (state1.getBlock() == this)
                         pathsToAdd.add(pos1.toImmutable());
-
                 }
+                evaluated.add(p1); // Evaluated
             }
             paths.addAll(pathsToAdd);
+            paths.removeAll(evaluated);
         }
 
         world.setBlockToAir(pos);
