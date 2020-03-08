@@ -20,6 +20,7 @@ import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -31,7 +32,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
  * Actually, goats also reach maturity + finish gestation faster than cows, and even give birth to more than one individual, but produce milk once every 3 days
  */
 @ParametersAreNonnullByDefault
-public class EntityGoatTFC extends EntityCowTFC
+public class EntityGoatTFC extends EntityCowTFC implements ILivestock
 {
     private static final int DAYS_TO_ADULTHOOD = 150;
     private static final int DAYS_TO_FULL_GESTATION = 150;
@@ -54,7 +55,7 @@ public class EntityGoatTFC extends EntityCowTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.WORLD.familiarizableSpawnWeight;
+            return ConfigTFC.WORLD.livestockSpawnRarity;
         }
         return 0;
     }

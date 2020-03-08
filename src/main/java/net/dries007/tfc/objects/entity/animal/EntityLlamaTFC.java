@@ -36,6 +36,7 @@ import net.minecraft.world.biome.Biome;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
@@ -44,7 +45,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC
+public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestock
 {
     protected static final int DAYS_TO_FULL_GESTATION = 330;
     private static final int DAYS_TO_ADULTHOOD = 900;
@@ -295,7 +296,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TUNDRA))
         {
-            return ConfigTFC.WORLD.familiarizableSpawnWeight;
+            return ConfigTFC.WORLD.livestockSpawnRarity;
         }
         return 0;
     }

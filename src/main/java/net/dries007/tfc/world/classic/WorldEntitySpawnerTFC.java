@@ -9,21 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.ICreatureTFC;
-import net.dries007.tfc.api.types.IHuntable;
-import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -34,26 +29,12 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @SuppressWarnings("WeakerAccess")
 public final class WorldEntitySpawnerTFC
 {
-    public static EnumCreatureType PREDATOR;
-    public static EnumCreatureType HUNTABLE;
-    public static EnumCreatureType MOB;
-
-    public static void preInit()
-    {
-        // We need to create here, to avoid errors later
-        // Creating with maxNumber = 0 to not tamper non TFC-worlds
-        MOB = EnumHelper.addCreatureType("MOB", EntityMob.class, 0, Material.AIR, false, false);
-        PREDATOR = EnumHelper.addCreatureType("PREDATOR", IPredator.class, 0, Material.AIR, false, false);
-        HUNTABLE = EnumHelper.addCreatureType("HUNTABLE", IHuntable.class, 0, Material.AIR, true, true);
-    }
-
     public static void init()
     {
-        EnumCreatureType.MONSTER.maxNumberOfCreature = 0; // Disable "default"
-        EnumCreatureType.CREATURE.maxNumberOfCreature = 0; // Disable "default"
-        MOB.maxNumberOfCreature = ConfigTFC.WORLD.mobSpawnCount;
-        PREDATOR.maxNumberOfCreature = ConfigTFC.WORLD.predatorSpawnCount;
-        HUNTABLE.maxNumberOfCreature = ConfigTFC.WORLD.huntableSpawnCount;
+        EnumCreatureType.MONSTER.maxNumberOfCreature = ConfigTFC.WORLD.mobSpawnCount;
+        EnumCreatureType.CREATURE.maxNumberOfCreature = ConfigTFC.WORLD.animalSpawnCount;
+        // Using enum helper to add creature types adds more issues than resolve.
+        // Although it worked in dev and with only minor mods, I had too much trouble with a larger modpack
     }
 
 

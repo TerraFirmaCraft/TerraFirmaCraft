@@ -10,14 +10,13 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.world.biome.Biome;
 
 /**
  * Interface for creature spawning mechanics
  * See {@link net.dries007.tfc.world.classic.WorldEntitySpawnerTFC}
  */
-public interface ICreatureTFC extends IAnimals
+public interface ICreatureTFC
 {
     /**
      * Gets the random weight (1 in N chunks) to spawn this creature
@@ -61,5 +60,17 @@ public interface ICreatureTFC extends IAnimals
     default int getMaxGroupSize()
     {
         return 1;
+    }
+
+    /**
+     * Returns this creature type
+     *
+     * @return CreatureType of this entity
+     */
+    CreatureType getCreatureType();
+
+    enum CreatureType
+    {
+        PREDATOR, HUNTABLE, LIVESTOCK
     }
 }

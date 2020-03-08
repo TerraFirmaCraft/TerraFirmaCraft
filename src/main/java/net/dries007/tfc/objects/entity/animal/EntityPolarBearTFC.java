@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityPolarBear;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -35,7 +34,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, IMob, IPredator // IMod for compatibility, but not really used in TFC
+public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, IPredator
 {
     private static final int DAYS_TO_ADULTHOOD = 1440;
     //Values that has a visual effect on client
@@ -207,7 +206,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TUNDRA || biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            return ConfigTFC.WORLD.predatorSpawnWeight;
+            return ConfigTFC.WORLD.predatorSpawnRarity;
         }
         return 0;
     }

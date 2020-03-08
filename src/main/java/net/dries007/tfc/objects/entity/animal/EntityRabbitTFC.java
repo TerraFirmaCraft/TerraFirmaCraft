@@ -86,7 +86,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
                 || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST ||
                 biomeType == BiomeHelper.BiomeType.DESERT))
         {
-            return ConfigTFC.WORLD.huntableSpawnWeight;
+            return ConfigTFC.WORLD.huntableSpawnRarity;
         }
         return 0;
     }

@@ -42,7 +42,6 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.fuel.FuelManager;
-import net.dries007.tfc.world.classic.WorldEntitySpawnerTFC;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
@@ -145,8 +144,6 @@ public final class TerraFirmaCraft
         CapabilityPlayerData.preInit();
         CapabilityDamageResistance.preInit();
         CapabilityMetalItem.preInit();
-
-        WorldEntitySpawnerTFC.preInit();
 
         if (event.getSide().isClient())
         {

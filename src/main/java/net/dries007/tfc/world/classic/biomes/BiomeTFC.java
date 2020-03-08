@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.world.classic.biomes;
 
-import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.EntityLiving;
@@ -15,10 +14,11 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IHuntable;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.util.climate.ClimateTFC;
-import net.dries007.tfc.world.classic.WorldEntitySpawnerTFC;
 
 public class BiomeTFC extends Biome
 {
@@ -41,19 +41,27 @@ public class BiomeTFC extends Biome
         this.decorator = createBiomeDecorator();
         this.spawnableCreatureList.clear();
         spawnBiome = false;
-        modSpawnableLists.put(WorldEntitySpawnerTFC.PREDATOR, new ArrayList<>());
-        modSpawnableLists.put(WorldEntitySpawnerTFC.HUNTABLE, new ArrayList<>());
-        //noinspection unchecked
-        ForgeRegistries.ENTITIES.getValuesCollection().stream()
-            .filter(x -> IHuntable.class.isAssignableFrom(x.getEntityClass()))
-            .forEach(x -> modSpawnableLists.get(WorldEntitySpawnerTFC.HUNTABLE).add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), 12, 2, 4)));
-
-        //noinspection unchecked
-        ForgeRegistries.ENTITIES.getValuesCollection().stream()
-            .filter(x -> IPredator.class.isAssignableFrom(x.getEntityClass()))
-            .forEach(x -> modSpawnableLists.get(WorldEntitySpawnerTFC.PREDATOR).add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), 30, 2, 4)));
-
-        modSpawnableLists.put(WorldEntitySpawnerTFC.MOB, spawnableMonsterList);
+        if (ConfigTFC.WORLD.predatorRespawnWeight > 0)
+        {
+            //noinspection unchecked
+            ForgeRegistries.ENTITIES.getValuesCollection().stream()
+                .filter(x -> IPredator.class.isAssignableFrom(x.getEntityClass()))
+                .forEach(x -> spawnableCreatureList.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), ConfigTFC.WORLD.predatorRespawnWeight, 1, 2)));
+        }
+        if (ConfigTFC.WORLD.huntableRespawnWeight > 0)
+        {
+            //noinspection unchecked
+            ForgeRegistries.ENTITIES.getValuesCollection().stream()
+                .filter(x -> IHuntable.class.isAssignableFrom(x.getEntityClass()))
+                .forEach(x -> spawnableCreatureList.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), ConfigTFC.WORLD.huntableRespawnWeight, 1, 2)));
+        }
+        if (ConfigTFC.WORLD.livestockRespawnWeight > 0)
+        {
+            //noinspection unchecked
+            ForgeRegistries.ENTITIES.getValuesCollection().stream()
+                .filter(x -> ILivestock.class.isAssignableFrom(x.getEntityClass()))
+                .forEach(x -> spawnableCreatureList.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), ConfigTFC.WORLD.livestockRespawnWeight, 1, 2)));
+        }
     }
 
     @Override

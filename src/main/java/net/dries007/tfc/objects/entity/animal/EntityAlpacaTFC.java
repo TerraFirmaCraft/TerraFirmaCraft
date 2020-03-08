@@ -20,6 +20,7 @@ import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -31,7 +32,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
  * Actually, they produce wool faster, but takes longer to reach maturity, have long gestation periods and only give birth to one individual
  */
 @ParametersAreNonnullByDefault
-public class EntityAlpacaTFC extends EntitySheepTFC
+public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
 {
     private static final int DAYS_TO_ADULTHOOD = 1080;
     private static final int DAYS_TO_GROW_WOOL = 4;
@@ -55,7 +56,7 @@ public class EntityAlpacaTFC extends EntitySheepTFC
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TUNDRA || biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            return ConfigTFC.WORLD.familiarizableSpawnWeight;
+            return ConfigTFC.WORLD.livestockSpawnRarity;
         }
         return 0;
     }

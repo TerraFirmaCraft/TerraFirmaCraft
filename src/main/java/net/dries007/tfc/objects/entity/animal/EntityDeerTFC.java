@@ -61,7 +61,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TUNDRA))
         {
-            return ConfigTFC.WORLD.huntableSpawnWeight;
+            return ConfigTFC.WORLD.huntableSpawnRarity;
         }
         return 0;
     }
