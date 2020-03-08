@@ -716,6 +716,37 @@ fluid.high_carbon_red_steel=Molten High Carbon Red Steel
 fluid.high_carbon_black_steel=Molten High Carbon Black Steel
 fluid.unknown=Unknown Molten Metal
 
+# Vein names
+vein.native_copper.name=Native Copper
+vein.native_gold.name=Native Gold
+vein.native_platinum.name=Native Platinum
+vein.native_silver.name=Native Silver
+vein.hematite.name=Hematite
+vein.cassiterite.name=Cassiterite
+vein.bismuthinite.name=Bismuthinite
+vein.garnierite.name=Garnierite
+vein.malachite.name=Malachite
+vein.magnetite.name=Magnetite
+vein.limonite.name=Limonite
+vein.sphalerite.name=Sphalerite
+vein.tetrahedrite.name=Tetrahedrite
+vein.bithminous_coal.name=Bituminous Coal
+vein.lignite.name=Lignite
+vein.kaolinite.name=Kaolinite
+vein.graphite.name=Graphite
+vein.kimberlite.name=Kimberlite
+vein.cinnabar.name=Cinnabar
+vein.cryolite.name=Cryolite
+vein.saltpeter.name=Saltpeter
+vein.sylvite.name=Sylvite
+vein.borax.name=Borax
+vein.lapis_lazuli.name=Lapis Lazuli
+vein.surface_native_copper.name=Surface Native Copper
+vein.surface_cassiterite.name=Surface Cassiterite
+vein.surface_bismuthinite.name=Surface Bismuthinite
+vein.surface_sphalerite.name=Surface Sphalerite
+vein.surface_tetrahedrite.name=Surface Tetrahedrite
+
 
 ### ================== BLOCKS ===========================
 

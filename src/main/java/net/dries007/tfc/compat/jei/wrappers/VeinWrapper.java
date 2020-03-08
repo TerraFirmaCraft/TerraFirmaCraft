@@ -87,7 +87,7 @@ public class VeinWrapper implements IRecipeWrapper
     {
         final int newLine = 11;
         float x = 16f;
-        float y = 6f;
+        float y = 19f;
         // Draw Min / Max Y
         String text = I18n.format("jei.tooltips.tfc.vein.min_y");
         x = x - minecraft.fontRenderer.getStringWidth(text) / 2.0f;
@@ -100,7 +100,7 @@ public class VeinWrapper implements IRecipeWrapper
         minecraft.fontRenderer.drawString(text, x, y, 0xFFFFFF, false);
 
         x = 49f;
-        y = 6f;
+        y = 19f;
         text = I18n.format("jei.tooltips.tfc.vein.max_y");
         x = x - minecraft.fontRenderer.getStringWidth(text) / 2.0f;
         minecraft.fontRenderer.drawString(text, x, y, 0x00C300, false);
@@ -127,7 +127,7 @@ public class VeinWrapper implements IRecipeWrapper
         // Draw Loose rock title
         text = I18n.format("jei.tooltips.tfc.vein.loose_rock");
         List<String> listString = minecraft.fontRenderer.listFormattedStringToWidth(text, 52); // To fit
-        y = 20f - newLine * listString.size();
+        y = 33f - newLine * listString.size();
         for (String str : listString)
         {
             x = 127f;
@@ -135,5 +135,12 @@ public class VeinWrapper implements IRecipeWrapper
             x = x - minecraft.fontRenderer.getStringWidth(str) / 2.0f;
             minecraft.fontRenderer.drawString(str, x, y, 0xFFFFFF, false);
         }
+
+        // Draw vein name
+        x = 81f;
+        y = 3f;
+        text = I18n.format("vein." + veinType.getRegistryName() + ".name");
+        x = x - minecraft.fontRenderer.getStringWidth(text) / 2.0f;
+        minecraft.fontRenderer.drawString(text, x, y, 0xFFFFFF, false);
     }
 }

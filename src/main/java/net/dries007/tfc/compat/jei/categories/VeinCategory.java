@@ -35,16 +35,16 @@ public class VeinCategory extends BaseRecipeCategory<VeinWrapper>
     public void setRecipe(IRecipeLayout recipeLayout, VeinWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        itemStackGroup.init(0, false, 73, 5);
+        itemStackGroup.init(0, false, 73, 18);
         itemStackGroup.set(0, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
 
 
         int slot = 1;
         for (List<ItemStack> oreStacks : ingredients.getInputs(VanillaTypes.ITEM))
         {
-            if (slot > 27) break; // Avoid overflow
+            if (slot > 18) break; // Avoid overflow
             int x = 1 + ((slot - 1) % 9) * 18;
-            int y = 55 + ((slot - 1) / 9) * 18;
+            int y = 68 + ((slot - 1) / 9) * 18;
             itemStackGroup.init(slot, true, x, y);
             itemStackGroup.set(slot, oreStacks);
             slot++;
@@ -53,7 +53,7 @@ public class VeinCategory extends BaseRecipeCategory<VeinWrapper>
         if (ingredients.getOutputs(VanillaTypes.ITEM).size() > 1)
         {
             // Has loose rock
-            itemStackGroup.init(slot, false, 118, 30);
+            itemStackGroup.init(slot, false, 118, 43);
             itemStackGroup.set(slot, ingredients.getOutputs(VanillaTypes.ITEM).get(1));
         }
     }
