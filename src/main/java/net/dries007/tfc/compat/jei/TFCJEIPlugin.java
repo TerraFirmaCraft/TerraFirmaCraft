@@ -23,6 +23,7 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipeFoodTraits;
 import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -235,7 +236,7 @@ public final class TFCJEIPlugin implements IModPlugin
 
         //Wraps all barrel recipes
         List<BarrelRecipeWrapper> barrelRecipes = TFCRegistries.BARREL.getValuesCollection()
-            .stream().filter(recipe -> recipe.getOutputStack() != ItemStack.EMPTY || recipe.getOutputFluid() != null)
+            .stream().filter(recipe -> recipe instanceof BarrelRecipeFoodTraits || recipe.getOutputStack() != ItemStack.EMPTY || recipe.getOutputFluid() != null)
             .map(BarrelRecipeWrapper::new)
             .collect(Collectors.toList());
 
