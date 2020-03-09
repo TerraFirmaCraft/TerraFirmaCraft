@@ -5,41 +5,66 @@
 
 package net.dries007.tfc.compat.jei.wrappers;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipeFoodTraits;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
 public class BarrelRecipeWrapper implements IRecipeWrapper
 {
-    private BarrelRecipe recipe;
+    private final BarrelRecipe recipe;
+    private final List<ItemStack> itemIngredients;
+    private final List<FluidStack> fluidIngredients;
+    private final List<ItemStack> outputItems;
+    private final FluidStack outputFluid;
 
     public BarrelRecipeWrapper(BarrelRecipe recipe)
     {
         this.recipe = recipe;
+        itemIngredients = recipe.getItemIngredient().getValidIngredients();
+        fluidIngredients = recipe.getFluidIngredient().getValidIngredients();
+        outputItems = new ArrayList<>();
+        if (recipe instanceof BarrelRecipeFoodTraits)
+        {
+            BarrelRecipeFoodTraits recipeFoodTraits = (BarrelRecipeFoodTraits) recipe;
+            FluidStack fluid = fluidIngredients.size() > 0 ? fluidIngredients.get(0) : null;
+            for (ItemStack ingredient : itemIngredients)
+            {
+                outputItems.addAll(recipeFoodTraits.getOutputItem(fluid, ingredient));
+            }
+        }
+        else
+        {
+            outputItems.add(recipe.getOutputStack());
+        }
+        outputFluid = recipe.getOutputFluid();
     }
 
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ingredients.setInputLists(VanillaTypes.ITEM, Collections.singletonList(recipe.getItemIngredient().getValidIngredients()));
-        ingredients.setInputLists(VanillaTypes.FLUID, Collections.singletonList(recipe.getFluidIngredient().getValidIngredients()));
-        if (recipe.getOutputStack() != ItemStack.EMPTY)
+        ingredients.setInputLists(VanillaTypes.ITEM, Collections.singletonList(itemIngredients));
+        ingredients.setInputLists(VanillaTypes.FLUID, Collections.singletonList(fluidIngredients));
+        if (outputItems.size() > 0)
         {
-            ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutputStack());
+            ingredients.setOutputLists(VanillaTypes.ITEM, Collections.singletonList(outputItems));
         }
-        if (recipe.getOutputFluid() != null)
+        if (outputFluid != null)
         {
-            ingredients.setOutput(VanillaTypes.FLUID, recipe.getOutputFluid());
+            ingredients.setOutput(VanillaTypes.FLUID, outputFluid);
         }
     }
 
