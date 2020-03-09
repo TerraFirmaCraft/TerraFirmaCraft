@@ -134,20 +134,19 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
                 // Calculate the date to display in calendar time
                 long rottenCalendarTime = rottenDate - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
                 text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
-
-                if (ConfigTFC.GENERAL.debug)
+            }
+            if (ConfigTFC.GENERAL.debug)
+            {
+                // todo: make this 1) use color, 2) only show if sneaking (to avoid tooltip clutter), 3) only show if skill is high enough
+                // i.e. lowest level shows category, i.e. "Category: Grain"
+                // next level shows which nutrients it has, i.e. "Category: Grain, Nutrients: Carbohydrates, Fat"
+                // final level shows exact values, i.e. "Category: Grain, Nutrients: Carbohydrates (1.5), Fat (3.0)"
+                for (Nutrient nutrient : Nutrient.values())
                 {
-                    // todo: make this 1) use color, 2) only show if sneaking (to avoid tooltip clutter), 3) only show if skill is high enough
-                    // i.e. lowest level shows category, i.e. "Category: Grain"
-                    // next level shows which nutrients it has, i.e. "Category: Grain, Nutrients: Carbohydrates, Fat"
-                    // final level shows exact values, i.e. "Category: Grain, Nutrients: Carbohydrates (1.5), Fat (3.0)"
-                    for (Nutrient nutrient : Nutrient.values())
+                    float amount = getNutrient(stack, nutrient);
+                    if (amount > 0)
                     {
-                        float amount = getNutrient(stack, nutrient);
-                        if (amount > 0)
-                        {
-                            text.add(nutrient.name().toLowerCase() + ": " + amount);
-                        }
+                        text.add(nutrient.name().toLowerCase() + ": " + amount);
                     }
                 }
             }
