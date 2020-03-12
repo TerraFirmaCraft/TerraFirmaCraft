@@ -133,7 +133,18 @@ public class VeinType
     @Override
     public String toString()
     {
-        return String.format("%s: {ore=%s, shape=%s, size=%s, rarity=%d, baseRocks=%s, minY=%d, maxY=%d, density=%.2f}", name, (getOre() != null ? getOre() : "special"), shape, getWidth(), getRarity(), baseRocks, getMinY(), getMaxY(), getDensity());
+        String ore = "special";
+        if (getOre() != null)
+        {
+            ore = getOre().toString();
+        }
+        else if (getOreState(Rock.GRANITE, Ore.Grade.NORMAL) != null)
+        {
+            // print the registry name
+            //noinspection ConstantConditions
+            ore = getOreState(Rock.GRANITE, Ore.Grade.NORMAL).getBlock().getRegistryName().toString();
+        }
+        return String.format("%s: {ore=%s, shape=%s, size=%s, rarity=%d, baseRocks=%s, minY=%d, maxY=%d, density=%.2f}", name, ore, shape, getWidth(), getRarity(), baseRocks, getMinY(), getMaxY(), getDensity());
     }
 
     public int getWidth()
