@@ -16,6 +16,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.world.classic.ChunkGenTFC;
@@ -97,9 +99,19 @@ public class WorldGenOreVeins implements IWorldGenerator
                 }
             }
             // Chunk post-processing, if a vein generated
-            if (generated && vein.getType() != null)
+            if (vein.getType() != null)
             {
-                chunkData.markVeinGenerated(vein);
+                if (generated)
+                {
+                    chunkData.markVeinGenerated(vein);
+                }
+                else if (ConfigTFC.GENERAL.debug)
+                {
+                    // Failed to generate, debug info
+                    // This can be by a number of factors, mainly because at each expected replacing position we didn't find a matching raw rock.
+                    // Some possible causes: Width / Height / Shape / Density / Y / Rock Layer
+                    TerraFirmaCraft.getLog().warn("Failed to generate vein '{}' in chunk ({}, {}). Vein center pos ({}x, {}y, {}z)", vein.getType().getRegistryName(), chunkX, chunkZ, vein.getPos().getX(), vein.getPos().getY(), vein.getPos().getZ());
+                }
             }
         }
     }

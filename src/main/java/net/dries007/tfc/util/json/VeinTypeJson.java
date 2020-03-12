@@ -43,11 +43,25 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
             throw new JsonParseException("Minimum height cannot be greater than maximum height!");
         }
         int rarity = JsonUtils.getInt(jsonObject, "rarity");
+        if (rarity <= 0)
+        {
+            throw new JsonParseException("Rarity cannot be negative or zero!");
+        }
         int density = JsonUtils.getInt(jsonObject, "density");
         int width = JsonUtils.getInt(jsonObject, "width");
         int height = JsonUtils.getInt(jsonObject, "height");
+        String shapeName = JsonUtils.getString(jsonObject, "shape");
+        VeinType.Shape shape;
 
-        VeinType.Shape shape = VeinType.Shape.valueOf(JsonUtils.getString(jsonObject, "shape").toUpperCase());
+        try
+        {
+            shape = VeinType.Shape.valueOf(shapeName.toUpperCase());
+        }
+        catch (IllegalArgumentException e)
+        {
+            // Not crash the game, just inform what is wrong
+            throw new JsonParseException("No shape '" + shapeName + "' exists.");
+        }
 
         JsonArray rocks = JsonUtils.getJsonArray(jsonObject, "base_rocks");
         Set<Rock> blocks = new HashSet<>();
@@ -97,7 +111,7 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
                     // Looks like forge parse anything to air if nothing is found
                     if (looseBlock == null || looseBlock == Blocks.AIR)
                     {
-                        throw new JsonParseException("Unable to parse vein " + looseResource + ". No registered small ore, item or block found.");
+                        throw new JsonParseException("Unable to parse loose rock " + looseResource + ". No registered small ore, item or block found.");
                     }
                     else
                     {
