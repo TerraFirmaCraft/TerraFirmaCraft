@@ -410,12 +410,29 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     @Override
     public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
     {
-        return side != EnumFacing.DOWN;
+        IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        if (cap instanceof IMoldHandler)
+        {
+            // Molds will go into the output slot (automating filling molds should be possible)
+            return side != EnumFacing.DOWN && slot == SLOT_OUTPUT;
+        }
+        return side != EnumFacing.DOWN && slot != SLOT_OUTPUT;
     }
 
     @Override
     public boolean canExtract(int slot, EnumFacing side)
     {
-        return side == EnumFacing.DOWN;
+        if (side == EnumFacing.DOWN && slot == SLOT_OUTPUT)
+        {
+            ItemStack stack = inventory.getStackInSlot(SLOT_OUTPUT);
+            IFluidHandler cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            if (cap != null)
+            {
+                // Only output if cap is full (so, only full molds will output from slot)
+                return cap.drain(1, false) != null && cap.fill(cap.drain(1, false), false) <= 0;
+            }
+            return true;
+        }
+        return false;
     }
 }
