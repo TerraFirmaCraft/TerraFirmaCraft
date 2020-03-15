@@ -636,7 +636,7 @@ jei.tooltips.tfc.barrel.duration=%d hours
 # Fluids
 fluid.salt_water=Salt Water
 fluid.fresh_water=Fresh Water
-fluid.hot_water=Hot water
+fluid.hot_water=Hot Water
 fluid.rum=Rum
 fluid.beer=Beer
 fluid.whiskey=Whiskey
