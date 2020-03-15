@@ -144,7 +144,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         else
         {
             // Passive exhaustion - call the source player instead of the local method
-            player.addExhaustion(PASSIVE_EXHAUSTION * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier);
+            player.addExhaustion(PASSIVE_EXHAUSTION / EXHAUSTION_MULTIPLIER * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier);
 
             // Same check as the original food stats, so hunger, thirst, and nutrition loss are synced
             if (originalStats.foodExhaustionLevel >= 4.0F)
@@ -319,7 +319,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             if (!simulate)
             {
                 // One drink every so often
-                lastDrinkTick = sourcePlayer.world.getTotalWorldTime();
+                resetCooldown();
                 addThirst(value);
             }
             return true;
@@ -357,6 +357,12 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public void setNutrient(@Nonnull Nutrient nutrient, float value)
     {
         setNutrient(nutrient.ordinal(), value);
+    }
+
+    @Override
+    public void resetCooldown()
+    {
+        lastDrinkTick = sourcePlayer.world.getTotalWorldTime();
     }
 
     private void addNutrient(int index, float amount)
