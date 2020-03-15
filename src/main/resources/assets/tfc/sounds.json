@@ -220,6 +220,7 @@
   },
   "block.charcoal.break": {
     "category": "block",
+    "subtitle": "subtitles.block.generic.break",
     "sounds": [
       {
         "name": "tfc:charcoaldig1",
@@ -254,6 +255,7 @@
   },
   "block.charcoal.hit": {
     "category": "block",
+    "subtitle": "subtitles.block.generic.hit",
     "sounds": [
       {
         "name": "tfc:charcoalstep1",
@@ -271,6 +273,7 @@
   },
   "block.charcoal.place": {
     "category": "block",
+    "subtitle": "subtitles.block.generic.place",
     "sounds": [
       {
         "name": "tfc:charcoaldig1",
@@ -288,6 +291,7 @@
   },
   "block.charcoal.step": {
     "category": "block",
+    "subtitle": "subtitles.block.generic.footsteps",
     "sounds": [
       {
         "name": "tfc:charcoalstep1",
