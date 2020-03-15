@@ -1046,7 +1046,7 @@ for item_type, tool_item in METAL_ITEMS.items():
             parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
             if item_type in ['knife', 'javelin']:
                 parent = 'tfc:item/handheld_flipped'
-            item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal),
+            item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type, metal),
                  parent=parent)
 for metal in STEEL:
     for type in ['high_carbon', 'weak']:
