@@ -5,10 +5,12 @@
 
 package net.dries007.tfc.compat.jei.categories;
 
+import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
@@ -74,16 +76,19 @@ public class BarrelCategory extends BaseRecipeCategory<BarrelRecipeWrapper>
         }
 
         IGuiFluidStackGroup fluidStackGroup = recipeLayout.getFluidStacks();
-        fluidStackGroup.init(0, true, 6, 6, 8, 50, 10000, true, null);
-        fluidStackGroup.init(1, false, 108, 6, 8, 50, 10000, true, null);
-
+        int slot = 0;
         if (ingredients.getInputs(VanillaTypes.FLUID).size() > 0)
         {
-            fluidStackGroup.set(0, ingredients.getInputs(VanillaTypes.FLUID).get(0));
+            List<FluidStack> inputFluid = ingredients.getInputs(VanillaTypes.FLUID).get(0);
+            fluidStackGroup.init(slot, true, 6, 6, 8, 50, inputFluid.get(0).amount, false, null);
+            fluidStackGroup.set(slot, inputFluid);
+            slot++;
         }
         if (ingredients.getOutputs(VanillaTypes.FLUID).size() > 0)
         {
-            fluidStackGroup.set(1, ingredients.getOutputs(VanillaTypes.FLUID).get(0));
+            List<FluidStack> outputFluid = ingredients.getOutputs(VanillaTypes.FLUID).get(0);
+            fluidStackGroup.init(slot, false, 108, 6, 8, 50, outputFluid.get(0).amount, false, null);
+            fluidStackGroup.set(slot, outputFluid);
         }
     }
 }

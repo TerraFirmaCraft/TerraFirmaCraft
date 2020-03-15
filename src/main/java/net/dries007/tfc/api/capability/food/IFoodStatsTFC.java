@@ -41,4 +41,10 @@ public interface IFoodStatsTFC
      * @param value    the value to set to, in [0, 100]
      */
     void setNutrient(@Nonnull Nutrient nutrient, float value);
+
+    /**
+     * Resets cooldown to prevent arm swinging in client when it attempts to drink water
+     * Client also needs to update cooldown after a sucessful drink attempt
+     */
+    void resetCooldown();
 }
