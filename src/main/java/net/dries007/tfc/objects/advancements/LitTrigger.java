@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.advancements;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +13,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,11 +36,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class LitTrigger implements ICriterionTrigger<LitTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation(MOD_ID, "lit_device");
-    private final Map<PlayerAdvancements, LitTrigger.Listeners> listeners = Maps.newHashMap();
-
-    public LitTrigger()
-    {
-    }
+    private final Map<PlayerAdvancements, LitTrigger.Listeners> listeners = new HashMap<>();
 
     @Override
     public ResourceLocation getId()
@@ -104,40 +100,6 @@ public class LitTrigger implements ICriterionTrigger<LitTrigger.Instance>
 
     }
 
-    static class Listeners
-    {
-        private final PlayerAdvancements playerAdvancements;
-        private final Set<Listener<LitTrigger.Instance>> listeners = new HashSet<>();
-
-        public Listeners(PlayerAdvancements playerAdvancementsIn)
-        {
-            this.playerAdvancements = playerAdvancementsIn;
-        }
-
-        public boolean isEmpty()
-        {
-            return this.listeners.isEmpty();
-        }
-
-        public void add(Listener<LitTrigger.Instance> listener)
-        {
-            this.listeners.add(listener);
-        }
-
-        public void remove(Listener<LitTrigger.Instance> listener)
-        {
-            this.listeners.remove(listener);
-        }
-
-        public void trigger(Block block)
-        {
-            this.listeners.stream()
-                .filter(listener -> listener.getCriterionInstance().test(block))
-                .collect(Collectors.toList()) // This line is needed to avoid ConcurrentModificationException
-                .forEach(listener -> listener.grantCriterion(this.playerAdvancements));
-        }
-    }
-
     public static class Instance extends AbstractCriterionInstance
     {
         private final ResourceLocation blockPredicate;
@@ -151,6 +113,40 @@ public class LitTrigger implements ICriterionTrigger<LitTrigger.Instance>
         public boolean test(Block block)
         {
             return blockPredicate == null || blockPredicate.equals(block.getRegistryName());
+        }
+    }
+
+    private static class Listeners
+    {
+        private final PlayerAdvancements playerAdvancements;
+        private final Set<Listener<LitTrigger.Instance>> listeners = new HashSet<>();
+
+        private Listeners(PlayerAdvancements playerAdvancementsIn)
+        {
+            this.playerAdvancements = playerAdvancementsIn;
+        }
+
+        private boolean isEmpty()
+        {
+            return this.listeners.isEmpty();
+        }
+
+        private void add(Listener<LitTrigger.Instance> listener)
+        {
+            this.listeners.add(listener);
+        }
+
+        private void remove(Listener<LitTrigger.Instance> listener)
+        {
+            this.listeners.remove(listener);
+        }
+
+        private void trigger(Block block)
+        {
+            this.listeners.stream()
+                    .filter(listener -> listener.getCriterionInstance().test(block))
+                    .collect(Collectors.toList()) // This line is needed to avoid ConcurrentModificationException
+                    .forEach(listener -> listener.grantCriterion(this.playerAdvancements));
         }
     }
 }
