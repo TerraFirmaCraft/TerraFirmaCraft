@@ -77,8 +77,8 @@ public enum Food
     SQUASH(VEGETABLE, 4, 0f, 0f, 0f, 1.5f, 0f, 0f, 0f, 2.5f),
     TOMATO(VEGETABLE, 4, 0f, 0f, 0f, 1.5f, 0f, 0f, 0f, 3.5f),
     YELLOW_BELL_PEPPER(VEGETABLE, 4, 2f, 0f, 0f, 1f, 0f, 0f, 0f, 2.5f),
-    CHEESE(DAIRY, 4, 1f, 0f, 0f, 0f, 0f, 0f, 7f, 2f),
-    COOKED_EGG(DAIRY, 4, 1f, 0f, 0f, 0f, 0f, 0f, 4f, 1f),
+    CHEESE(DAIRY, 4, 1f, 0f, 0f, 0f, 0f, 0f, 4f, 2f),
+    COOKED_EGG(DAIRY, 4, 1f, 0f, 0f, 0f, 0f, 0f, 3f, 1f),
     BEEF(MEAT, 4, 2f, 0f, 0f, 0f, 0f, 2f, 0f, 2f, 1f, 200f),
     PORK(MEAT, 4, 2f, 0f, 0f, 0f, 0f, 2f, 0f, 2f, 1f, 200f),
     CHICKEN(MEAT, 4, 2f, 0f, 0f, 0f, 0f, 2f, 0f, 3f, 1f, 200f),
@@ -102,13 +102,7 @@ public enum Food
     COOKED_PHEASANT(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 2.5f, 0f, 2.25f),
     COOKED_VENISON(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 2f, 0f, 1.5f),
     COOKED_WOLF(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 1.5f, 0f, 2.25f),
-    COOKED_RABBIT(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 1.5f, 0f, 2.25f),
-    BARLEY_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
-    CORNBREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
-    OAT_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
-    RICE_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
-    RYE_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
-    WHEAT_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich");
+    COOKED_RABBIT(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 1.5f, 0f, 2.25f);
 
     private final Category category;
     private final FoodData foodData;
@@ -119,12 +113,12 @@ public enum Food
 
     private final String[] oreDictNames;
 
-    Food(@Nonnull Category category, int hunger, float water, float saturation, float grain, float veg, float fruit, float meat, float dairy, float decayModifier, String... oreNames)
+    Food(@Nonnull Category category, int hunger, float saturation, float water, float grain, float veg, float fruit, float meat, float dairy, float decayModifier, String... oreNames)
     {
-        this(category, hunger, water, saturation, grain, veg, fruit, meat, dairy, decayModifier, 0, -1, oreNames);
+        this(category, hunger, saturation, water, grain, veg, fruit, meat, dairy, decayModifier, 0, -1, oreNames);
     }
 
-    Food(@Nonnull Category category, int hunger, float water, float saturation, float grain, float veg, float fruit, float meat, float dairy, float decayModifier, float heatCapacity, float cookingTemp, String... oreNames)
+    Food(@Nonnull Category category, int hunger, float saturation, float water, float grain, float veg, float fruit, float meat, float dairy, float decayModifier, float heatCapacity, float cookingTemp, String... oreNames)
     {
         this.category = category;
         this.foodData = new FoodData(hunger, water, saturation, grain, fruit, veg, meat, dairy, decayModifier);
