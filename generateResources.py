@@ -407,7 +407,13 @@ FOODS = [
     'cooked_pheasant',
     'cooked_wolf',
     'cooked_venison',
-    'cooked_rabbit'
+    'cooked_rabbit',
+    'barley_bread_sandwich',
+    'cornbread_sandwich',
+    'oat_bread_sandwich',
+    'rice_bread_sandwich',
+    'rye_bread_sandwich',
+    'wheat_bread_sandwich',
 ]
 
 # Special 'hardcoded' cases

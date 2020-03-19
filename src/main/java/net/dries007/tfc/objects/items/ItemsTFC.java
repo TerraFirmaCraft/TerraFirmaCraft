@@ -34,6 +34,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
+import net.dries007.tfc.objects.items.food.ItemSandwich;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTorch;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
@@ -268,9 +269,18 @@ public final class ItemsTFC
         simpleItems.add(register(r, "crop/product/jute_fiber", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
         simpleItems.add(register(r, "crop/product/burlap_cloth", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
 
+        // All simple foods (not meals) just use ItemFood and are registered here
         for (Food food : Food.values())
         {
-            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemFoodTFC(food), CT_FOOD));
+            if (food.getCategory() != Food.Category.MEAL)
+            {
+                simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemFoodTFC(food), CT_FOOD));
+            }
+        }
+        // Complex foods that require special classes go here
+        for (Food food : new Food[] {Food.BARLEY_BREAD_SANDWICH, Food.CORNBREAD_SANDWICH, Food.OAT_BREAD_SANDWICH, Food.RICE_BREAD_SANDWICH, Food.RYE_BREAD_SANDWICH, Food.WHEAT_BREAD_SANDWICH})
+        {
+            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemSandwich(food), CT_FOOD));
         }
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));

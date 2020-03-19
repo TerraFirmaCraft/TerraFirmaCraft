@@ -103,7 +103,12 @@ public enum Food
     COOKED_VENISON(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 2f, 0f, 1.5f),
     COOKED_WOLF(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 1.5f, 0f, 2.25f),
     COOKED_RABBIT(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 1.5f, 0f, 2.25f),
-    ;
+    BARLEY_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    CORNBREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    OAT_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    RICE_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    RYE_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    WHEAT_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich");
 
     private final Category category;
     private final FoodData foodData;
@@ -173,6 +178,7 @@ public enum Food
         MEAT,
         COOKED_MEAT,
         DAIRY,
-        MEAL
+        MEAL,
+        OTHER // Provided for addons / other mods
     }
 }
