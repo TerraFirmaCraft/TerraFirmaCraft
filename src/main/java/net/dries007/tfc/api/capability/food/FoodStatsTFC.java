@@ -36,7 +36,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public static final DamageSource DEHYDRATION = (new DamageSource("dehydration")).setDamageBypassesArmor().setDamageIsAbsolute(); // Same as starvation, but another message on death
 
     private final EntityPlayer sourcePlayer;
-    private final FoodStats originalStats;
+    private final FoodStats originalStats; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
     private final NutritionStats nutritionStats; // Separate handler for nutrition, because it's a bit complex
     private long lastDrinkTick;
     private float thirst;
@@ -46,7 +46,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     {
         this.sourcePlayer = sourcePlayer;
         this.originalStats = originalStats;
-        this.nutritionStats = new NutritionStats(0.5f);
+        this.nutritionStats = new NutritionStats(0.5f, 0.0f);
         this.thirst = MAX_PLAYER_THIRST;
     }
 
@@ -56,8 +56,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         // This should never be called directly - when it is we assume it's direct stat modifications (saturation potion, eating cake)
         // We make modifications to vanilla logic, as saturation needs to be unaffected by hunger
         // todo: handle cake
-        foodLevel = Math.min(hungerAmount + foodLevel, 20);
-        foodSaturationLevel = Math.min(foodSaturationLevel + saturationAmount, foodLevel);
     }
 
     @Override
@@ -72,7 +70,8 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             {
                 addThirst(data.getWater());
                 nutritionStats.addNutrients(data);
-                addStats(data.getHunger(), data.getSaturation());
+                originalStats.foodLevel = Math.min(data.getHunger() + originalStats.foodLevel, 20);
+                originalStats.foodSaturationLevel = Math.min(originalStats.foodSaturationLevel + data.getSaturation(), 20);
             }
             else
             {
@@ -89,8 +88,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
         else
         {
-            // Default behavior, shouldn't happen except in *very* special cases
-            originalStats.addStats(foodItem, stack);
+            TerraFirmaCraft.getLog().info("Player ate a weird food: {} / {} that we don't know what to do with.", foodItem, stack);
         }
     }
 
@@ -249,6 +247,14 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         originalStats.setFoodLevel(foodLevelIn);
     }
 
+    /**
+     * Use instead of {@link FoodStats#setFoodSaturationLevel(float)} as it's client only
+     */
+    public void setSaturation(float saturation)
+    {
+        originalStats.foodSaturationLevel = saturation;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void setFoodSaturationLevel(float foodSaturationLevelIn)
@@ -300,16 +306,23 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     }
 
     @Override
-    public void addThirst(float value)
+    public void setThirst(float thirst)
     {
-        this.thirst += value;
+        this.thirst = thirst;
         if (thirst < 0)
         {
-            thirst = 0;
+            this.thirst = 0;
         }
         if (thirst > MAX_PLAYER_THIRST)
         {
-            thirst = MAX_PLAYER_THIRST;
+            this.thirst = MAX_PLAYER_THIRST;
         }
+    }
+
+    @Override
+    public void resetCooldown()
+    {
+        // Using total world time is okay here because it's done on a per-player basis
+        lastDrinkTick = sourcePlayer.world.getTotalWorldTime();
     }
 }

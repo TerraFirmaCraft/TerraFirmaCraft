@@ -7,7 +7,6 @@ package net.dries007.tfc.api.capability.food;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,20 +25,33 @@ import net.dries007.tfc.ConfigTFC;
  */
 public class NutritionStats implements INBTSerializable<NBTTagCompound>
 {
-    private final List<FoodData> records;
-    private final float defaultNutritionValue;
+    private final LinkedList<FoodData> records;
+    private final float defaultNutritionValue, defaultDairyNutritionValue;
     private final float[] nutrients;
     private float averageNutrients;
     private int hungerWindow;
 
-    public NutritionStats(float defaultNutritionValue)
+    public NutritionStats(float defaultNutritionValue, float defaultDairyNutritionValue)
     {
         this.records = new LinkedList<>();
         this.defaultNutritionValue = defaultNutritionValue;
+        this.defaultDairyNutritionValue = defaultDairyNutritionValue;
         this.nutrients = new float[5];
         this.hungerWindow = 0;
 
         calculateNutrition();
+    }
+
+    public void reset()
+    {
+        this.records.clear();
+        calculateNutrition();
+    }
+
+    @Nullable
+    public FoodData getLastRecord()
+    {
+        return records.peekLast();
     }
 
     public float getAverageNutrition()
@@ -66,7 +78,7 @@ public class NutritionStats implements INBTSerializable<NBTTagCompound>
 
     public void addNutrients(@Nonnull FoodData data)
     {
-        records.add(data);
+        records.addFirst(data);
         calculateNutrition();
     }
 
@@ -89,7 +101,7 @@ public class NutritionStats implements INBTSerializable<NBTTagCompound>
         if (nbt != null)
         {
             records.clear();
-            NBTTagList recordsNbt = nbt.getTagList("records", 5 /* Float */);
+            NBTTagList recordsNbt = nbt.getTagList("records", 10 /* Compound */);
             for (int i = 0; i < recordsNbt.tagCount(); i++)
             {
                 records.add(new FoodData(recordsNbt.getCompoundTagAt(i)));
@@ -132,8 +144,18 @@ public class NutritionStats implements INBTSerializable<NBTTagCompound>
         updateAllNutrients(nutrients, j -> nutrients[j] / hungerWindow);
         if (runningHungerTotal < hungerWindow)
         {
-            final float totalHunger = runningHungerTotal;
-            updateAllNutrients(nutrients, j -> nutrients[j] + defaultNutritionValue * (1 - totalHunger / hungerWindow));
+            float defaultModifier = 1 - (float) runningHungerTotal / hungerWindow;
+            for (Nutrient nutrient : Nutrient.values())
+            {
+                if (nutrient == Nutrient.DAIRY)
+                {
+                    nutrients[nutrient.ordinal()] += defaultDairyNutritionValue * defaultModifier;
+                }
+                else
+                {
+                    nutrients[nutrient.ordinal()] += defaultNutritionValue * defaultModifier;
+                }
+            }
         }
         // Also calculate overall average
         updateAverageNutrients();

@@ -1,6 +1,6 @@
 # Command
-tfc.command.time.usage=/timetfc [add|query|set] [args...]
-tfc.command.time.usage_expected_first_argument=Expected [add|query|set] after /timetfc
+tfc.command.time.usage=/timetfc <add|query|set> [args...]
+tfc.command.time.usage_expected_first_argument=Expected <add|query|set> after /timetfc
 tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
 tfc.command.time.usage_expected_second_argument_set=Expected [<ticks>|day|night|monthlength <value>] after /timetfc set
 tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
@@ -17,6 +17,26 @@ tfc.command.time.query_playerticks=Player ticks is %d
 tfc.command.time.query_gametime=Game time is %d ticks
 tfc.command.time.query_day=Current day is %d
 tfc.command.time.query_daytime=Current day time is %d
+tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <name>] [value]
+tfc.command.playertfc.usage_expected_first_argument=Expected <get|set|add|reset> after /playertfc
+tfc.command.playertfc.usage_expected_second_argument=Expected [nutrition|food|saturation|water|skill <name>] after /playertfc %s
+tfc.command.playertfc.usage_expected_id=Expected <name> after /playertfc %s
+tfc.command.playertfc.usage_expected_value=Expected [value] after /playertfc %s
+tfc.command.playertfc.usage_cant_set_add_nutrients=Can't set / add nutrients directly as it's based on food history. Run /playertfc reset nutrients instead.
+tfc.command.playertfc.usage_unknown_skill=Unknown skill: %s
+tfc.command.playertfc.usage_needs_player=Must be used by a player
+tfc.command.playertfc.reset_nutrients=Reset nutrients
+tfc.command.playertfc.get_nutrients=Average Nutrition: %.2f (Grain: %.2f, Fruit: %.2f, Veg: %.2f, Meat: %.2f, Dairy: %.2f)
+tfc.command.playertfc.get_nutrients_last_eaten=Last Eaten: %d Hunger, %s Saturation, %s Decay Modifier. Nutrients: (Grain: %s, Fruit: %s, Veg: %s, Meat: %s, Dairy: %s)
+tfc.command.playertfc.add_skill=Added %.2f to skill %s
+tfc.command.playertfc.set_skill=Set %s to %.2f
+tfc.command.playertfc.get_skill=Skill %s: Total Level = %.2f, Tier = %s, Level = %.2f
+tfc.command.playertfc.get_food=Hunger: %d
+tfc.command.playertfc.set_food=Set hunger to %d
+tfc.command.playertfc.get_saturation=Saturation: %.2f
+tfc.command.playertfc.set_saturation=Set saturation to %.2f
+tfc.command.playertfc.get_water=Water: %.1f%%
+tfc.command.playertfc.set_water=Set water to %.1f%%
 
 # Gui
 
@@ -60,6 +80,11 @@ tfc.tooltip.debug_times=PT: %d | CT: %d
 tfc.tooltip.food_expiry_date=Expires on: %s
 tfc.tooltip.food_rotten=Rotten - I wouldn't eat that.
 tfc.tooltip.food_infinite_expiry=Never Expires
+tfc.tooltip.nutrition=Nutrition:
+tfc.tooltip.nutrition_saturation= - Saturation: %s%%
+tfc.tooltip.nutrition_water= - Water: %s%%
+tfc.tooltip.nutrition_nutrient= - %s: %s
+tfc.tooltip.hold_shift_for_nutrition_info=Hold (Shift) for Nutrition Info
 tfc.tooltip.plant_cold=%sToo cold%s
 tfc.tooltip.plant_dry=%sToo dry%s
 tfc.tooltip.plant_hot=%sToo hot%s
@@ -102,8 +127,6 @@ tfc.tooltip.set_month_length=Set Month Length to %d days.
 tfc.tooltip.time_command_set_player_time=Set Player Time to %d.
 tfc.tooltip.time_command_set_calendar_time=Set Calendar Time to %s.
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
-tfc.tooltip.skill_set=Set %s to level %.2f
-tfc.tooltip.skill_add=Added %.2f levels to %s
 
 ## Prospecting Result Messages
 tfc.propick.found=Found
@@ -607,11 +630,11 @@ tfc.enum.day.thursday=Thursday
 tfc.enum.day.friday=Friday
 tfc.enum.day.saturday=Saturday
 
-tfc.enum.nutrient.carbohydrates=Carbohydrates
-tfc.enum.nutrient.fat=Fat
-tfc.enum.nutrient.protein=Protein
-tfc.enum.nutrient.minerals=Minerals
-tfc.enum.nutrient.vitamins=Vitamins
+tfc.enum.nutrient.grain=Grain
+tfc.enum.nutrient.vegetables=Vegetables
+tfc.enum.nutrient.fruit=Fruit
+tfc.enum.nutrient.meat=Meat
+tfc.enum.nutrient.dairy=Dairy
 
 #JEI
 jei.category.tfc.alloy=Alloying recipes
@@ -3767,6 +3790,12 @@ item.tfc.food.cooked_pheasant.name=Cooked Pheasant
 item.tfc.food.cooked_venison.name=Cooked Venison
 item.tfc.food.cooked_rabbit.name=Cooked Rabbit Meat
 item.tfc.food.cooked_wolf.name=Cooked Wolf
+item.tfc.food.barley_bread_sandwich=Barley Bread Sandwich
+item.tfc.food.cornbread_sandwich=Cornbread Sandwich
+item.tfc.food.rye_bread_sandwich=Rye Bread Sandwich
+item.tfc.food.oat_bread_sandwich=Oat Bread Sandwich
+item.tfc.food.wheat_bread_sandwich=Wheat Bread Sandwich
+item.tfc.food.rice_bread_sandwich=Rice Bread Sandwich
 
 item.tfc.crop.seeds.barley.name=Barley Seeds
 item.tfc.crop.seeds.beet.name=Beet Seeds

@@ -30,10 +30,15 @@ public class FoodData implements INBTSerializable<NBTTagCompound>
 
     public FoodData(int hunger, float water, float saturation, float grain, float fruit, float veg, float meat, float dairy, float decayModifier)
     {
+        this(hunger, water, saturation, new float[] {grain, fruit, veg, meat, dairy}, decayModifier);
+    }
+
+    public FoodData(int hunger, float water, float saturation, float[] nutrients, float decayModifier)
+    {
         this.hunger = hunger;
         this.water = water;
         this.saturation = saturation;
-        this.nutrients = new float[] {grain, fruit, veg, meat, dairy};
+        this.nutrients = nutrients;
         this.decayModifier = decayModifier;
     }
 

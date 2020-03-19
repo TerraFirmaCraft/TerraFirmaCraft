@@ -235,7 +235,7 @@ public class ClientEvents
             IFood nutrients = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (nutrients != null)
             {
-                nutrients.addTooltipInfo(stack, tt);
+                nutrients.addTooltipInfo(stack, tt, event.getEntityPlayer());
             }
             float skillMod = SmithingSkill.getSkillBonus(stack);
             if (skillMod > 0)

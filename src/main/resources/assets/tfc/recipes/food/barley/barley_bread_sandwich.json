@@ -1,0 +1,28 @@
+{
+  "type": "tfc:sandwich",
+  "pattern": [
+    " BK",
+    "FFF",
+    " B "
+  ],
+  "key": {
+    "K": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "knife"
+      }
+    ],
+    "B": {
+      "item": "tfc:food/barley_bread"
+    },
+    "F": {
+      "type": "tfc:food_category",
+      "categories": ["cooked_meat", "fruit", "vegetable", "dairy"],
+      "allowed_empty": true
+    }
+  },
+  "result": {
+    "item": "tfc:food/barley_bread_sandwich",
+    "count": 2
+  }
+}
