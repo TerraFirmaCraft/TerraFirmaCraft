@@ -78,7 +78,7 @@ public class SandwichRecipe extends ShapedOreRecipe
             List<FoodData> breads = new ArrayList<>();
             List<FoodData> ingredients = new ArrayList<>();
             getBreadsAndIngredients(inv, breads, ingredients);
-            return breads.size() == 2 && ingredients.size() > 1;
+            return breads.size() == 2 && ingredients.size() > 0;
         }
         return false;
     }
@@ -115,7 +115,7 @@ public class SandwichRecipe extends ShapedOreRecipe
             CraftingHelper.ShapedPrimer primer = RecipeUtils.parsePhaped(context, json);
 
             ItemStack result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
-            return new ShapedDamageRecipe(group.isEmpty() ? null : new ResourceLocation(group), primer, result);
+            return new SandwichRecipe(group.isEmpty() ? null : new ResourceLocation(group), primer, result);
         }
     }
 }

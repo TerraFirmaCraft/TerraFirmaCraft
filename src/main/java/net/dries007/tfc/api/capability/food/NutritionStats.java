@@ -157,6 +157,8 @@ public class NutritionStats implements INBTSerializable<NBTTagCompound>
                 }
             }
         }
+        // Cap all nutrient averages at 1
+        updateAllNutrients(nutrients, j -> Math.min(1, nutrients[j]));
         // Also calculate overall average
         updateAverageNutrients();
     }

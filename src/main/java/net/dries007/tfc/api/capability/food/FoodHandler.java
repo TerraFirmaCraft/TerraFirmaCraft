@@ -151,6 +151,10 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setLong("creationDate", getCreationDate());
+        if (isDynamic())
+        {
+            nbt.setTag("foodData", data.serializeNBT());
+        }
         // Traits are sorted so they match when trying to stack them
         NBTTagList traitList = new NBTTagList();
         for (FoodTrait trait : foodTraits)
@@ -165,26 +169,33 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     public void deserializeNBT(@Nullable NBTTagCompound nbt)
     {
         foodTraits.clear();
-        if (nbt != null && nbt.hasKey("creationDate"))
+        if (nbt != null)
         {
-            creationDate = nbt.getLong("creationDate");
-            if (creationDate == 0)
+            if (isDynamic())
             {
-                // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
-                creationDate = (int) (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
+                data.deserializeNBT(nbt.getCompoundTag("foodData"));
             }
             NBTTagList traitList = nbt.getTagList("traits", 8 /* String */);
             for (int i = 0; i < traitList.tagCount(); i++)
             {
                 foodTraits.add(FoodTrait.getTraits().get(traitList.getStringTagAt(i)));
             }
+
+            creationDate = nbt.getLong("creationDate");
+            if (creationDate == 0)
+            {
+                // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
+                creationDate = (int) (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
+            }
         }
-        else
-        {
-            // Don't default to zero
-            // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
-            creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
-        }
+    }
+
+    /**
+     * This marks if the food data should be serialized. For normal food items, it isn't, because all values are provided on construction via CapabilityFood. Only mark this is food data will change per item stack
+     */
+    protected boolean isDynamic()
+    {
+        return false;
     }
 
     private long calculateRottenDate(long creationDateIn)

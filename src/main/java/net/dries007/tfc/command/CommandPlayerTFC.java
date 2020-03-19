@@ -124,12 +124,32 @@ public class CommandPlayerTFC extends CommandBase
         }
         else
         {
-            sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients", nutritionStats.getAverageNutrition(), nutritionStats.getNutrient(Nutrient.GRAIN), nutritionStats.getNutrient(Nutrient.FRUIT), nutritionStats.getNutrient(Nutrient.VEGETABLES), nutritionStats.getNutrient(Nutrient.MEAT), nutritionStats.getNutrient(Nutrient.DAIRY)));
+            sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients",
+                    String.format("%.2f", nutritionStats.getAverageNutrition())
+            ));
+            for (Nutrient nutrient : Nutrient.values())
+            {
+                sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients_nutrient",
+                        new TextComponentTranslation(Helpers.getEnumName(nutrient)),
+                        String.format("%.2f", nutritionStats.getNutrient(nutrient))
+                ));
+            }
             FoodData lastRecord = nutritionStats.getLastRecord();
             if (lastRecord != null)
             {
                 float[] nutrients = lastRecord.getNutrients();
-                sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients_last_eaten", lastRecord.getHunger(), lastRecord.getSaturation(), lastRecord.getDecayModifier(), String.format("%.1f", nutrients[Nutrient.GRAIN.ordinal()]), nutrients[Nutrient.FRUIT.ordinal()], nutrients[Nutrient.VEGETABLES.ordinal()], nutrients[Nutrient.MEAT.ordinal()], nutrients[Nutrient.DAIRY.ordinal()]));
+                sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients_last_eaten",
+                        lastRecord.getHunger(),
+                        String.format("%.2f", lastRecord.getSaturation()),
+                        String.format("%.2f", lastRecord.getDecayModifier())
+                ));
+                for (Nutrient nutrient : Nutrient.values())
+                {
+                    sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients_last_eaten_nutrient",
+                            new TextComponentTranslation(Helpers.getEnumName(nutrient)),
+                            String.format("%.2f", nutrients[nutrient.ordinal()])
+                    ));
+                }
             }
         }
     }

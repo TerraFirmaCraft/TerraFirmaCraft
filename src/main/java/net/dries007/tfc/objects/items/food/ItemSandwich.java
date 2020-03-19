@@ -65,5 +65,11 @@ public class ItemSandwich extends ItemFoodTFC
             }
             this.data = new FoodData(4, water, saturation, nutrition, rootData.getDecayModifier());
         }
+
+        @Override
+        protected boolean isDynamic()
+        {
+            return true;
+        }
     }
 }
