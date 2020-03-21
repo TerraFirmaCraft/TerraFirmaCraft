@@ -3761,6 +3761,7 @@ item.tfc.food.wolf.name=Raw Wolf Meat
 item.tfc.food.viande.name=Raw Viande
 item.tfc.food.duck.name=Raw Duck
 item.tfc.food.chevon.name=Raw Chevon
+item.tfc.food.gran_feline.name=Raw Gran Feline Meat
 item.tfc.food.cooked_beef.name=Cooked Beef
 item.tfc.food.cooked_pork.name=Cooked Pork
 item.tfc.food.cooked_chicken.name=Cooked Chicken
@@ -3776,6 +3777,7 @@ item.tfc.food.cooked_wolf.name=Cooked Wolf
 item.tfc.food.cooked_viande.name=Cooked Viande
 item.tfc.food.cooked_duck.name=Cooked Duck
 item.tfc.food.cooked_chevon.name=Cooked Chevon
+item.tfc.food.cooked_gran_feline.name=Cooked Gran Feline
 
 item.tfc.crop.seeds.barley.name=Barley Seeds
 item.tfc.crop.seeds.beet.name=Beet Seeds
@@ -3838,6 +3840,7 @@ entity.ducktfc.name=Duck
 entity.goattfc.name=Goat
 entity.panthertfc.name=Black Panther
 entity.ocelottfc.name=Ocelot
+entity.sabertoothtfc.name=Saber Tooth
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
@@ -3884,6 +3887,10 @@ tfc.animal.ocelottfc.male=Ocelot♂
 tfc.animal.ocelottfc.female=Ocelot♀
 tfc.animal.cattfc.male=Cat♂
 tfc.animal.cattfc.female=Cat♀
+tfc.animal.panthertfc.male=Panther♂
+tfc.animal.panthertfc.female=Panther♀
+tfc.animal.sabertoothtfc.male=Saber Tooth♂
+tfc.animal.sabertoothtfc.female=Saber Tooth♀
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic Item Breaks

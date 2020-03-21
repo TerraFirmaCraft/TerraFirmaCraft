@@ -8,12 +8,14 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.IMob;
@@ -21,18 +23,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
+//import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -42,6 +51,16 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
 {
     private static final int DAYS_TO_ADULTHOOD = 1800;
     private static final int DAYS_TO_FULL_GESTATION = 210;
+    private static final DataParameter<Boolean> IS_STANDING;
+
+    static
+    {
+        IS_STANDING = EntityDataManager.createKey(EntityBearTFC.class, DataSerializers.BOOLEAN);
+    }
+
+    private float clientSideStandAnimation0;
+    private float clientSideStandAnimation;
+    private int warningSoundTicks;
 
     @SuppressWarnings("unused")
     public EntityBearTFC(World worldIn)
@@ -128,7 +147,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn)
+    public boolean attackEntityAsMob(@Nonnull Entity entityIn)
     {
         double attackDamage = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
         if (this.isChild())
@@ -147,9 +166,11 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMeleeTFC(this, 1.0D, false, EntityAIAttackMeleeTFC.AttackBehavior.DAYLIGHT_ONLY));
+        this.tasks.addTask(1, new EntityBearTFC.AIMeleeAttack());
+        //this.tasks.addTask(3, new EntityAIAttackMeleeTFC(this, 1.0D, false, EntityAIAttackMeleeTFC.AttackBehavior.DAYLIGHT_ONLY));
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
     }
@@ -182,4 +203,110 @@ public class EntityBearTFC extends EntityAnimalMammal implements IMob
     {
         this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
     }
+
+    protected void playWarningSound()
+    {
+        if (this.warningSoundTicks <= 0)
+        {
+            this.playSound(SoundEvents.ENTITY_POLAR_BEAR_WARNING, 1.0F, 1.0F);
+            this.warningSoundTicks = 40;
+        }
+
+    }
+
+    public boolean isStanding()
+    {
+        return this.dataManager.get(IS_STANDING);
+    }
+
+    public void setStanding(boolean standing)
+    {
+        this.dataManager.set(IS_STANDING, standing);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getStandingAnimationScale(float p_189795_1_)
+    {
+        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * p_189795_1_) / 6.0F;
+    }
+
+    public void onUpdate()
+    {
+        super.onUpdate();
+        if (this.world.isRemote)
+        {
+            this.clientSideStandAnimation0 = this.clientSideStandAnimation;
+            if (this.isStanding())
+            {
+                this.clientSideStandAnimation = MathHelper.clamp(this.clientSideStandAnimation + 1.0F, 0.0F, 6.0F);
+            }
+            else
+            {
+                this.clientSideStandAnimation = MathHelper.clamp(this.clientSideStandAnimation - 1.0F, 0.0F, 6.0F);
+            }
+        }
+
+        if (this.warningSoundTicks > 0)
+        {
+            --this.warningSoundTicks;
+        }
+
+    }
+
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(IS_STANDING, false);
+    }
+
+    class AIMeleeAttack extends EntityAIAttackMelee
+    {
+        public AIMeleeAttack()
+        {
+            super(EntityBearTFC.this, 1.25D, true);
+        }
+
+        public void resetTask()
+        {
+            EntityBearTFC.this.setStanding(false);
+            super.resetTask();
+        }
+
+        protected void checkAndPerformAttack(EntityLivingBase enemy, double distToEnemySqr)
+        {
+            double d0 = this.getAttackReachSqr(enemy);
+            if (distToEnemySqr <= d0 && this.attackTick <= 0)
+            {
+                this.attackTick = 20;
+                this.attacker.attackEntityAsMob(enemy);
+                EntityBearTFC.this.setStanding(false);
+            }
+            else if (distToEnemySqr <= d0 * 2.0D)
+            {
+                if (this.attackTick <= 0)
+                {
+                    EntityBearTFC.this.setStanding(false);
+                    this.attackTick = 20;
+                }
+
+                if (this.attackTick <= 10)
+                {
+                    EntityBearTFC.this.setStanding(true);
+                    EntityBearTFC.this.playWarningSound();
+                }
+            }
+            else
+            {
+                this.attackTick = 20;
+                EntityBearTFC.this.setStanding(false);
+            }
+
+        }
+
+        protected double getAttackReachSqr(EntityLivingBase attackTarget)
+        {
+            return 4.0F + attackTarget.width;
+        }
+    }
+
 }
