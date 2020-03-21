@@ -176,7 +176,7 @@ public final class DefaultRecipes
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("wool"), null, new ItemStack(Blocks.WOOL, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("wool_" + dyeName),
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("carpet"), null, new ItemStack(Blocks.CARPET, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("carpet_" + dyeName),
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("bed"), null, new ItemStack(Blocks.BED, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("bed_" + dyeName),
-                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName)
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName)
                 );
             }
             else
@@ -186,10 +186,62 @@ public final class DefaultRecipes
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("wool"), null, new ItemStack(Blocks.WOOL, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("wool_" + dyeName),
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("carpet"), null, new ItemStack(Blocks.CARPET, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("carpet_" + dyeName),
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("bed"), null, new ItemStack(Blocks.BED, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("bed_" + dyeName),
-                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName)
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName)
                 );
             }
         }
+        //Dye combinations.
+        event.getRegistry().registerAll(
+            //Orange
+            new BarrelRecipeFluidMixing(IIngredient.of(RED_DYE.get(), 1), new IngredientFluidItem(YELLOW_DYE.get(), 1), new FluidStack(ORANGE_DYE.get(), 2), 0).setRegistryName("orange_dye_red_yellow_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(YELLOW_DYE.get(), 1), new IngredientFluidItem(RED_DYE.get(), 1), new FluidStack(ORANGE_DYE.get(), 2), 0).setRegistryName("orange_dye_yellow_red_liquid"),
+            new BarrelRecipe(IIngredient.of(RED_DYE.get(), 1000), IIngredient.of("dyeYellow"), new FluidStack(ORANGE_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("orange_dye_red_yellow_solid"),
+            new BarrelRecipe(IIngredient.of(YELLOW_DYE.get(), 1000), IIngredient.of("dyeRed"), new FluidStack(ORANGE_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("orange_dye_yellow_red_solid"),
+            //Light Blue
+            new BarrelRecipeFluidMixing(IIngredient.of(BLUE_DYE.get(), 1), new IngredientFluidItem(WHITE_DYE.get(), 1), new FluidStack(LIGHT_BLUE_DYE.get(), 2), 0).setRegistryName("light_blue_dye_blue_white_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(WHITE_DYE.get(), 1), new IngredientFluidItem(BLUE_DYE.get(), 1), new FluidStack(LIGHT_BLUE_DYE.get(), 2), 0).setRegistryName("light_blue_dye_white_blue_liquid"),
+            new BarrelRecipe(IIngredient.of(BLUE_DYE.get(), 1000), IIngredient.of("dyeWhite"), new FluidStack(LIGHT_BLUE_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("light_blue_dye_blue_white_solid"),
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 1000), IIngredient.of("dyeBlue"), new FluidStack(LIGHT_BLUE_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("light_blue_dye_white_blue_solid"),
+            //Magenta
+            new BarrelRecipeFluidMixing(IIngredient.of(PURPLE_DYE.get(), 1), new IngredientFluidItem(PINK_DYE.get(), 1), new FluidStack(MAGENTA_DYE.get(), 2), 0).setRegistryName("magenta_dye_purple_pink_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(PINK_DYE.get(), 1), new IngredientFluidItem(PURPLE_DYE.get(), 1), new FluidStack(MAGENTA_DYE.get(), 2), 0).setRegistryName("magenta_dye_pink_purple_liquid"),
+            new BarrelRecipe(IIngredient.of(PURPLE_DYE.get(), 1000), IIngredient.of("dyePink"), new FluidStack(MAGENTA_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("magenta_dye_purple_pink_solid"),
+            new BarrelRecipe(IIngredient.of(PINK_DYE.get(), 1000), IIngredient.of("dyePurple"), new FluidStack(MAGENTA_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("magenta_dye_pink_purple_solid"),
+            //Pink
+            new BarrelRecipeFluidMixing(IIngredient.of(RED_DYE.get(), 1), new IngredientFluidItem(WHITE_DYE.get(), 1), new FluidStack(PINK_DYE.get(), 2), 0).setRegistryName("pink_dye_red_white_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(WHITE_DYE.get(), 1), new IngredientFluidItem(RED_DYE.get(), 1), new FluidStack(PINK_DYE.get(), 2), 0).setRegistryName("pink_dye_white_red_liquid"),
+            new BarrelRecipe(IIngredient.of(RED_DYE.get(), 1000), IIngredient.of("dyeWhite"), new FluidStack(PINK_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("pink_dye_red_white_solid"),
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 1000), IIngredient.of("dyeRed"), new FluidStack(PINK_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("pink_dye_white_red_solid"),
+            //Light Gray
+            new BarrelRecipeFluidMixing(IIngredient.of(WHITE_DYE.get(), 1), new IngredientFluidItem(GRAY_DYE.get(), 1), new FluidStack(LIGHT_GRAY_DYE.get(), 2), 0).setRegistryName("light_gray_dye_white_gray_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(WHITE_DYE.get(), 2), new IngredientFluidItem(BLACK_DYE.get(), 1), new FluidStack(LIGHT_GRAY_DYE.get(), 3), 0).setRegistryName("light_gray_dye_white_black_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(GRAY_DYE.get(), 1), new IngredientFluidItem(WHITE_DYE.get(), 1), new FluidStack(LIGHT_GRAY_DYE.get(), 2), 0).setRegistryName("light_gray_dye_gray_white_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(BLACK_DYE.get(), 1), new IngredientFluidItem(WHITE_DYE.get(), 2), new FluidStack(LIGHT_GRAY_DYE.get(), 3), 0).setRegistryName("light_gray_dye_black_white_liquid"),
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 1000), IIngredient.of("dyeGray"), new FluidStack(LIGHT_GRAY_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("light_gray_dye_white_gray_solid"),
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 1000), IIngredient.of("dyeBlack"), new FluidStack(LIGHT_GRAY_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("light_gray_dye_white_black_solid"),
+            new BarrelRecipe(IIngredient.of(GRAY_DYE.get(), 1000), IIngredient.of("dyeWhite"), new FluidStack(LIGHT_GRAY_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("light_gray_dye_gray_white_solid"),
+            new BarrelRecipe(IIngredient.of(BLACK_DYE.get(), 1000), IIngredient.of("dyeWhite"), new FluidStack(LIGHT_GRAY_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("light_gray_dye_black_white_solid"),
+            //Lime
+            new BarrelRecipeFluidMixing(IIngredient.of(GREEN_DYE.get(), 1), new IngredientFluidItem(WHITE_DYE.get(), 1), new FluidStack(LIME_DYE.get(), 2), 0).setRegistryName("lime_dye_green_white_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(WHITE_DYE.get(), 1), new IngredientFluidItem(GREEN_DYE.get(), 1), new FluidStack(LIME_DYE.get(), 2), 0).setRegistryName("lime_dye_white_green_liquid"),
+            new BarrelRecipe(IIngredient.of(GREEN_DYE.get(), 1000), IIngredient.of("dyeWhite"), new FluidStack(LIME_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("lime_dye_green_white_solid"),
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 1000), IIngredient.of("dyeGreen"), new FluidStack(LIME_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("lime_dye_white_green_solid"),
+            //Cyan
+            new BarrelRecipeFluidMixing(IIngredient.of(GREEN_DYE.get(), 1), new IngredientFluidItem(BLUE_DYE.get(), 1), new FluidStack(CYAN_DYE.get(), 2), 0).setRegistryName("cyan_dye_green_blue_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(BLUE_DYE.get(), 1), new IngredientFluidItem(GREEN_DYE.get(), 1), new FluidStack(CYAN_DYE.get(), 2), 0).setRegistryName("cyan_dye_blue_green_liquid"),
+            new BarrelRecipe(IIngredient.of(GREEN_DYE.get(), 1000), IIngredient.of("dyeBlue"), new FluidStack(CYAN_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("cyan_dye_green_blue_solid"),
+            new BarrelRecipe(IIngredient.of(BLUE_DYE.get(), 1000), IIngredient.of("dyeGreen"), new FluidStack(CYAN_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("cyan_dye_blue_green_solid"),
+            //Purple
+            new BarrelRecipeFluidMixing(IIngredient.of(RED_DYE.get(), 1), new IngredientFluidItem(BLUE_DYE.get(), 1), new FluidStack(PURPLE_DYE.get(), 2), 0).setRegistryName("purple_dye_red_blue_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(BLUE_DYE.get(), 1), new IngredientFluidItem(RED_DYE.get(), 1), new FluidStack(PURPLE_DYE.get(), 2), 0).setRegistryName("purple_dye_blue_red_liquid"),
+            new BarrelRecipe(IIngredient.of(RED_DYE.get(), 1000), IIngredient.of("dyeBlue"), new FluidStack(PURPLE_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("purple_dye_red_blue_solid"),
+            new BarrelRecipe(IIngredient.of(BLUE_DYE.get(), 1000), IIngredient.of("dyeRed"), new FluidStack(PURPLE_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("purple_dye_blue_red_solid"),
+            //Gray
+            new BarrelRecipeFluidMixing(IIngredient.of(BLACK_DYE.get(), 1), new IngredientFluidItem(WHITE_DYE.get(), 1), new FluidStack(GRAY_DYE.get(), 2), 0).setRegistryName("gray_dye_black_white_liquid"),
+            new BarrelRecipeFluidMixing(IIngredient.of(WHITE_DYE.get(), 1), new IngredientFluidItem(BLACK_DYE.get(), 1), new FluidStack(GRAY_DYE.get(), 2), 0).setRegistryName("gray_dye_white_black_liquid"),
+            new BarrelRecipe(IIngredient.of(BLACK_DYE.get(), 1000), IIngredient.of("dyeWhite"), new FluidStack(GRAY_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("gray_dye_black_white_solid"),
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 1000), IIngredient.of("dyeBlack"), new FluidStack(GRAY_DYE.get(), 1000), ItemStack.EMPTY, 0).setRegistryName("gray_dye_white_black_solid")
+        );
     }
 
     @SubscribeEvent
