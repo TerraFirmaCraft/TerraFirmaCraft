@@ -682,7 +682,22 @@ fluid.high_carbon_blue_steel=Molten High Carbon Blue Steel
 fluid.high_carbon_red_steel=Molten High Carbon Red Steel
 fluid.high_carbon_black_steel=Molten High Carbon Black Steel
 fluid.unknown=Unknown Molten Metal
-
+fluid.white_dye=White Dye
+fluid.orange_dye=Orange Dye
+fluid.magenta_dye=Magenta Dye
+fluid.light_blue_dye=Light Blue Dye
+fluid.yellow_dye=Yellow Dye
+fluid.lime_dye=Lime Dye
+fluid.pink_dye=Pink Dye
+fluid.gray_dye=Gray Dye
+fluid.light_gray_dye=Light Gray Dye
+fluid.cyan_dye=Cyan Dye
+fluid.purple_dye=Purple Dye
+fluid.blue_dye=Blue Dye
+fluid.brown_dye=Brown Dye
+fluid.green_dye=Green Dye
+fluid.red_dye=Red Dye
+fluid.black_dye=Black Dye
 
 ### ================== BLOCKS ===========================
 
