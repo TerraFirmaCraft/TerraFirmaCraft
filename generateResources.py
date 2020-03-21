@@ -414,6 +414,11 @@ FOODS = [
     'rice_bread_sandwich',
     'rye_bread_sandwich',
     'wheat_bread_sandwich',
+    'soup_grain',
+    'soup_fruit',
+    'soup_vegetable',
+    'soup_meat',
+    'soup_dairy'
 ]
 
 # Special 'hardcoded' cases

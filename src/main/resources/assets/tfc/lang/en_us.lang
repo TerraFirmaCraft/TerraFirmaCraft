@@ -106,6 +106,10 @@ tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
 tfc.tooltip.crucible_less_than_one=< 1 unit
 tfc.tooltip.previous_page=Previous Page
 tfc.tooltip.next_page=Next Page
+tfc.tooltip.firepit_cooking_pot_empty=Empty
+tfc.tooltip.firepit_cooking_pot_waiting=Waiting
+tfc.tooltip.firepit_cooking_pot_boiling=Boiling
+tfc.tooltip.firepit_cooking_pot_servings=Servings: %d
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=This %s is too old to mate.
@@ -3798,6 +3802,11 @@ item.tfc.food.rye_bread_sandwich.name=Rye Bread Sandwich
 item.tfc.food.oat_bread_sandwich.name=Oat Bread Sandwich
 item.tfc.food.wheat_bread_sandwich.name=Wheat Bread Sandwich
 item.tfc.food.rice_bread_sandwich.name=Rice Bread Sandwich
+item.tfc.food.soup_grain.name=Wholesome Soup
+item.tfc.food.soup_fruit.name=Tasty Soup
+item.tfc.food.soup_vegetable.name=Filling Soup
+item.tfc.food.soup_meat.name=Hearty Soup
+item.tfc.food.soup_dairy.name=Creamy Soup
 
 item.tfc.crop.seeds.barley.name=Barley Seeds
 item.tfc.crop.seeds.beet.name=Beet Seeds

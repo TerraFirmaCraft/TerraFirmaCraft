@@ -1,0 +1,179 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "pot_side": "tfc:blocks/ceramics/large_vessel_side",
+    "pot_bottom": "tfc:blocks/ceramics/large_vessel_bottom",
+    "particle": "tfc:blocks/ceramics/large_vessel_side"
+  },
+  "elements": [
+    {
+      "name": "PotNorth",
+      "from": [4, 6, 3],
+      "to": [12, 9, 4],
+      "faces": {
+        "north": {"uv": [6, 4, 15, 8], "texture": "#pot_side"},
+        "east": {"uv": [5, 7, 13, 11], "texture": "#pot_side"},
+        "south": {"uv": [8, 8, 16, 12], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 8, 1], "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 8, 1], "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotNorthRim",
+      "from": [5, 9, 4],
+      "to": [12, 10, 5],
+      "faces": {
+        "north": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 8, 1], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 8], "rotation": 270, "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "rotation": 90, "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotNorthRim2",
+      "from": [4, 10, 3],
+      "to": [12, 11, 4],
+      "faces": {
+        "north": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 7], "rotation": 270, "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "rotation": 90, "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotEast",
+      "from": [12, 6, 4],
+      "to": [13, 9, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "east": {"uv": [6, 4, 15, 8], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "west": {"uv": [8, 8, 16, 12], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 8], "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotEastRim",
+      "from": [11, 9, 5],
+      "to": [12, 10, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 9, 1], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 8, 1], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 8], "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotEastRim2",
+      "from": [12, 10, 4],
+      "to": [13, 11, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 7], "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotSouth",
+      "from": [4, 6, 12],
+      "to": [12, 9, 13],
+      "faces": {
+        "north": {"uv": [8, 8, 16, 12], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 8, 4], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 8, 1], "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 8, 1], "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotSouthRim",
+      "from": [4, 9, 11],
+      "to": [11, 10, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 9, 1], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 8, 1], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 8], "rotation": 270, "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "rotation": 90, "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotSouthRim2",
+      "from": [4, 10, 12],
+      "to": [12, 11, 13],
+      "faces": {
+        "north": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 7], "rotation": 270, "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "rotation": 90, "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotWest",
+      "from": [3, 6, 4],
+      "to": [4, 9, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "east": {"uv": [8, 8, 16, 12], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "west": {"uv": [7, 4, 15, 8], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 8], "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotWestRim",
+      "from": [4, 9, 4],
+      "to": [5, 10, 11],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 1, 4], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 7], "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotWestRim2",
+      "from": [3, 10, 4],
+      "to": [4, 11, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "east": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "south": {"uv": [0, 0, 1, 1], "texture": "#pot_side"},
+        "west": {"uv": [0, 0, 7, 1], "texture": "#pot_side"},
+        "up": {"uv": [0, 0, 1, 7], "texture": "#pot_side"},
+        "down": {"uv": [0, 0, 1, 8], "texture": "#pot_side"}
+      }
+    },
+    {
+      "name": "PotBottom",
+      "from": [4, 5, 4],
+      "to": [12, 7, 12],
+      "faces": {
+        "north": {"uv": [8, 12, 16, 14], "texture": "#pot_side"},
+        "east": {"uv": [8, 12, 16, 14], "texture": "#pot_side"},
+        "south": {"uv": [8, 12, 16, 14], "texture": "#pot_side"},
+        "west": {"uv": [8, 12, 16, 14], "texture": "#pot_side"},
+        "up": {"uv": [3, 4, 11, 12], "texture": "#pot_bottom"},
+        "down": {"uv": [0, 0, 8, 8], "texture": "#pot_bottom"}
+      }
+    }
+  ]
+}

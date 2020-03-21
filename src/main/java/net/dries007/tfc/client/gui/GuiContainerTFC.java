@@ -10,6 +10,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -59,5 +60,13 @@ public class GuiContainerTFC extends GuiContainer
         this.itemRender.renderItemOverlayIntoGUI(font, stack, x, y, altText);
         this.zLevel = 0.0F;
         this.itemRender.zLevel = 0.0F;
+    }
+
+    protected void drawSlotOverlay(Slot slot)
+    {
+        int xPos = slot.xPos - 1;
+        int yPos = slot.yPos - 1;
+
+        this.drawGradientRect(xPos, yPos, xPos + 18, yPos + 18, 0x75FFFFFF, 0x75FFFFFF);
     }
 }

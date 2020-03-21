@@ -35,6 +35,7 @@ import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.items.food.ItemSandwich;
+import net.dries007.tfc.objects.items.food.ItemSoupTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTorch;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
@@ -248,9 +249,15 @@ public final class ItemsTFC
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(false), new ItemSmallVessel(false));
             registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(true), new ItemSmallVessel(true));
 
+            ItemPottery firedPot = new ItemPottery();
+            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot", new ItemPottery(), firedPot);
+            OreDictionaryHelper.register(firedPot, "cooking_pot");
+
+            ItemPottery firedBowl = new ItemPottery();
+            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl", new ItemPottery(), firedBowl);
+            OreDictionaryHelper.register(firedBowl, "bowl");
+
             registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
-            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot");
-            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl");
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.MEDIUM, "fire_clay"), CT_MISC));
@@ -281,6 +288,10 @@ public final class ItemsTFC
         for (Food food : new Food[] {Food.BARLEY_BREAD_SANDWICH, Food.CORNBREAD_SANDWICH, Food.OAT_BREAD_SANDWICH, Food.RICE_BREAD_SANDWICH, Food.RYE_BREAD_SANDWICH, Food.WHEAT_BREAD_SANDWICH})
         {
             simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemSandwich(food), CT_FOOD));
+        }
+        for (Food food : new Food[] {Food.SOUP_GRAIN, Food.SOUP_FRUIT, Food.SOUP_VEGETABLE, Food.SOUP_MEAT, Food.SOUP_DAIRY})
+        {
+            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemSoupTFC(food), CT_FOOD));
         }
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));

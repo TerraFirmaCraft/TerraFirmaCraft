@@ -8,7 +8,10 @@ package net.dries007.tfc.util.agriculture;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.ItemStack;
+
 import net.dries007.tfc.api.capability.food.FoodData;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.util.agriculture.Food.Category.*;
 
@@ -102,7 +105,18 @@ public enum Food
     COOKED_PHEASANT(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 2.5f, 0f, 2.25f),
     COOKED_VENISON(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 2f, 0f, 1.5f),
     COOKED_WOLF(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 1.5f, 0f, 2.25f),
-    COOKED_RABBIT(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 1.5f, 0f, 2.25f);
+    COOKED_RABBIT(COOKED_MEAT, 4, 1f, 0f, 0f, 0f, 0f, 1.5f, 0f, 2.25f),
+    BARLEY_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    CORNBREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    OAT_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    RICE_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    RYE_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    WHEAT_BREAD_SANDWICH(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "sandwich"),
+    SOUP_GRAIN(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup"),
+    SOUP_FRUIT(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup"),
+    SOUP_VEGETABLE(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup"),
+    SOUP_MEAT(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup"),
+    SOUP_DAIRY(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup");
 
     private final Category category;
     private final FoodData foodData;
@@ -173,6 +187,18 @@ public enum Food
         COOKED_MEAT,
         DAIRY,
         MEAL,
-        OTHER // Provided for addons / other mods
+        OTHER; // Provided for addons / other mods
+
+        public static boolean doesStackMatchCategories(ItemStack stack, Category... categories)
+        {
+            for (Category cat : categories)
+            {
+                if (OreDictionaryHelper.doesStackMatchOre(stack, OreDictionaryHelper.toString("category_" + cat.name())))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

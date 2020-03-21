@@ -134,7 +134,7 @@ public class CommandPlayerTFC extends CommandBase
                         String.format("%.2f", nutritionStats.getNutrient(nutrient))
                 ));
             }
-            FoodData lastRecord = nutritionStats.getLastRecord();
+            FoodData lastRecord = nutritionStats.getMostRecentRecord();
             if (lastRecord != null)
             {
                 float[] nutrients = lastRecord.getNutrients();
