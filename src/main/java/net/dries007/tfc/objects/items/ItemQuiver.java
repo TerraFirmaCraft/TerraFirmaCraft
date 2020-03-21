@@ -25,6 +25,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.items.metal.ItemMetalJavelin;
+import net.dries007.tfc.objects.items.rock.ItemRockJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
@@ -77,7 +79,7 @@ public class ItemQuiver extends ItemTFC
     }
 
     // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
-    private class QuiverCapability extends ItemStackHandler implements ICapabilityProvider
+    public class QuiverCapability extends ItemStackHandler implements ICapabilityProvider
     {
 
         QuiverCapability(@Nullable NBTTagCompound nbt)
@@ -123,7 +125,7 @@ public class ItemQuiver extends ItemTFC
         {
             //noinspection ConstantConditions
             return OreDictionaryHelper.doesStackMatchOre(stack, "javelin") ||
-                   OreDictionaryHelper.doesStackMatchOre(stack, "arrow") ||
+                   //OreDictionaryHelper.doesStackMatchOre(stack, "arrow") ||
                    stack.getItem().getRegistryName().getPath().endsWith("arrow"); // no oreDict for vanilla arrows
         }
 
@@ -156,6 +158,34 @@ public class ItemQuiver extends ItemTFC
                 }
             }
             return true;
+        }
+
+        public ItemStack findJavelin()
+        {
+            for (int i = 0; i < getSlots(); i++)
+            {
+                ItemStack stack = extractItem(i, 1, true);
+                if (!stack.isEmpty() && (stack.getItem() instanceof ItemMetalJavelin ||
+                    stack.getItem() instanceof ItemRockJavelin))
+                {
+                    return extractItem(i, 1, false);
+                }
+            }
+            return null;
+        }
+
+        public ItemStack findArrows()
+        {
+            for (int i = 0; i < getSlots(); i++)
+            {
+                ItemStack stack = extractItem(i, 1, true);
+                //noinspection ConstantConditions
+                if (!stack.isEmpty() && stack.getItem().getRegistryName().getPath().endsWith("arrow"))
+                {
+                    return extractItem(i, 1, false);
+                }
+            }
+            return null;
         }
     }
 
