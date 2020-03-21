@@ -29,7 +29,7 @@ public class ContainerQuiver extends ContainerItemStack implements ISlotCallback
     {
         //noinspection ConstantConditions
         return OreDictionaryHelper.doesStackMatchOre(stack, "javelin") ||
-               OreDictionaryHelper.doesStackMatchOre(stack, "arrow") ||
+               //OreDictionaryHelper.doesStackMatchOre(stack, "arrow") ||
                stack.getItem().getRegistryName().getPath().endsWith("arrow"); // no oreDict for vanilla arrows
     }
 
