@@ -48,8 +48,20 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
             throw new JsonParseException("Rarity cannot be negative or zero!");
         }
         int density = JsonUtils.getInt(jsonObject, "density");
+        if (density <= 0)
+        {
+            throw new JsonParseException("Density cannot be negative or zero!");
+        }
         int width = JsonUtils.getInt(jsonObject, "width");
+        if (width <= 0)
+        {
+            throw new JsonParseException("Width cannot be negative or zero!");
+        }
         int height = JsonUtils.getInt(jsonObject, "height");
+        if (height <= 0)
+        {
+            throw new JsonParseException("Height cannot be negative or zero!");
+        }
         String shapeName = JsonUtils.getString(jsonObject, "shape");
         VeinType.Shape shape;
 
