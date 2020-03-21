@@ -125,6 +125,9 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();
 
+    @GameRegistry.ObjectHolder("quiver")
+    public static final ItemQuiver QUIVER = getNull();
+
     public static final ItemWoodenBucket WOODEN_BUCKET = getNull();
 
     @GameRegistry.ObjectHolder("metal/bucket/blue_steel")
@@ -278,6 +281,8 @@ public final class ItemsTFC
             OreDictionaryHelper.register(firedBowl, "bowl");
 
             registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
+            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot");
+            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl");
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT, "fire_clay"), CT_MISC));
@@ -337,6 +342,8 @@ public final class ItemsTFC
                 simpleItems.add(register(r, ("hide/" + type.name() + "/" + size.name()).toLowerCase(), new ItemAnimalHide(type, size), CT_MISC));
             }
         }
+
+        simpleItems.add(register(r, "quiver", new ItemQuiver(), CT_MISC));
 
         simpleItems.add(register(r, "animal/product/wool", new ItemMisc(Size.SMALL, Weight.LIGHT), CT_MISC));
         simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT, "string"), CT_MISC));

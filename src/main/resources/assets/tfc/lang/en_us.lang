@@ -4031,6 +4031,8 @@ item.tfc.animal.product.wool_yarn.name=Wool Yarn
 item.tfc.animal.product.wool_cloth.name=Wool Cloth
 item.tfc.animal.product.silk_cloth.name=Silk Cloth
 
+item.tfc.quiver.name=Quiver
+
 ## Entities
 
 # Animals

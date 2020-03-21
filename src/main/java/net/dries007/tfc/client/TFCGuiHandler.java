@@ -24,6 +24,7 @@ import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.gui.*;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.container.*;
+import net.dries007.tfc.objects.items.ItemQuiver;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.ceramics.ItemSmallVessel;
 import net.dries007.tfc.objects.items.rock.ItemRock;
@@ -39,6 +40,7 @@ public class TFCGuiHandler implements IGuiHandler
     private static final ResourceLocation CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button.png");
     private static final ResourceLocation FIRE_CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire.png");
     private static final ResourceLocation LEATHER_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/leather_button.png");
+    private static final ResourceLocation QUIVER_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/quiver_inventory.png");
 
     // use this instead of player.openGui() -> avoids magic numbers
     public static void openGui(World world, BlockPos pos, EntityPlayer player, Type type)
@@ -106,6 +108,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerBlastFurnace(player.inventory, Helpers.getTE(world, pos, TEBlastFurnace.class));
             case CRAFTING:
                 return new ContainerInventoryCrafting(player.inventory, player.world);
+            case QUIVER:
+                return new ContainerQuiver(player.inventory,stack.getItem() instanceof ItemQuiver ? stack : player.getHeldItemOffhand());
             case CHEST:
                 if (world.getBlockState(pos).getBlock() instanceof BlockChestTFC)
                 {
@@ -174,6 +178,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiBlastFurnace(container, player.inventory, Helpers.getTE(world, pos, TEBlastFurnace.class));
             case CRAFTING:
                 return new GuiInventoryCrafting(container);
+            case QUIVER:
+                return new GuiContainerTFC(container, player.inventory, QUIVER_BACKGROUND);
             case CHEST:
                 if (container instanceof ContainerChestTFC)
                 {
@@ -213,6 +219,7 @@ public class TFCGuiHandler implements IGuiHandler
         SALAD,
         INVENTORY, // This is special, it is used by GuiButtonPlayerInventoryTab to signal to open the vanilla inventory
         CRAFTING, // In-inventory 3x3 crafting grid
+        QUIVER,
         NULL; // This is special, it is a non-null null.
 
         private static Type[] values = values();
