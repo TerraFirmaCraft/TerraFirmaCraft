@@ -20,7 +20,6 @@ tfc.command.time.query_daytime=Current day time is %d
 
 tfc.command.veins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
 tfc.command.veins.usage_expected_player=Can only be used by a player
-tfc.command.veins.usage_expected_first_argument=Expected [add|<vein name>] after /findveins
 tfc.command.veins.usage_first_argument_not_vein=No Vein found with name %s
 
 
@@ -515,12 +514,7 @@ tfc.types.rock_category.metamorphic=Metamorphic
 tfc.types.rock_category.igneous_intrusive=Igneous Intrusive
 tfc.types.rock_category.igneous_extrusive=Igneous Extrusive
 
-## Vein Rarity
-tfc.types.vein.rarity.common=Common
-tfc.types.vein.rarity.uncommon=Uncommon
-tfc.types.vein.rarity.rare=Rare
-tfc.types.vein.rarity.very_rare=Very Rare
-tfc.types.vein.rarity.epic=Epic
+## Tier
 
 tfc.enum.tier.tier_0=Tier 0
 tfc.enum.tier.tier_i=Tier I
@@ -676,6 +670,7 @@ jei.tooltips.tfc.rock_layer.bottom=Bottom
 jei.tooltips.tfc.vein.min_y=Min Y
 jei.tooltips.tfc.vein.max_y=Max Y
 jei.tooltips.tfc.vein.rarity=Rarity
+jei.tooltips.tfc.vein.rarity_value=%s%% chunks
 jei.tooltips.tfc.vein.loose_rock=Loose Rock
 
 # Fluids

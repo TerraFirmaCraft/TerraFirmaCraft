@@ -14,18 +14,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class VeinType
@@ -187,11 +181,6 @@ public class VeinType
         return ore;
     }
 
-    public Rarity getRarityEnum()
-    {
-        return Rarity.valueOf(this.getRarity());
-    }
-
     /**
      * Can the vein spawn in the specified rock type
      */
@@ -225,63 +214,6 @@ public class VeinType
         public IBlockState getOreState(Rock rock, Ore.Grade grade)
         {
             return this.oreState;
-        }
-    }
-
-    public enum Rarity
-    {
-        COMMON(0, 50),
-        UNCOMMON(50, 100),
-        RARE(100, 150),
-        VERY_RARE(150, 200),
-        EPIC(200, Integer.MAX_VALUE);
-
-
-        @Nonnull
-        public static Rarity valueOf(int rarityValue)
-        {
-            for (Rarity rarity : Rarity.values())
-            {
-                if (rarity.test(rarityValue))
-                {
-                    return rarity;
-                }
-            }
-            throw new IllegalArgumentException("Rarity can't be negative!");
-        }
-
-        private final int minValue;
-        private final int maxValue;
-
-        Rarity(int minValue, int maxValue)
-        {
-            this.minValue = minValue;
-            this.maxValue = maxValue;
-        }
-
-        public boolean test(int rarityValue)
-        {
-            return rarityValue >= minValue && rarityValue < maxValue;
-        }
-
-        public String getTranslationKey()
-        {
-            return MOD_ID + ".types.vein.rarity." + this.name().toLowerCase();
-        }
-
-        @SideOnly(Side.CLIENT)
-        public String getFormattedText()
-        {
-            EnumRarity forgeRarity = EnumRarity.EPIC; // fallback for very rare
-            for (EnumRarity rarity : EnumRarity.values())
-            {
-                if (rarity.getName().equalsIgnoreCase(this.name()))
-                {
-                    forgeRarity = rarity;
-                    break;
-                }
-            }
-            return forgeRarity.getColor() + I18n.format(getTranslationKey());
         }
     }
 }

@@ -120,7 +120,8 @@ public class VeinWrapper implements IRecipeWrapper
 
         x = 33f;
         y += newLine;
-        text = I18n.format(veinType.getRarityEnum().getFormattedText());
+        String rarityValue = String.format("%.1f", 100.0f / veinType.getRarity()); // Let's not forget that we can't format using I18n (since MC convert any %d and %f in lang entries to %s)
+        text = I18n.format("jei.tooltips.tfc.vein.rarity_value", rarityValue);
         x = x - minecraft.fontRenderer.getStringWidth(text) / 2.0f;
         minecraft.fontRenderer.drawString(text, x, y, 0xFFFFFF, false);
 
