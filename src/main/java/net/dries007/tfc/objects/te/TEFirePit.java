@@ -36,8 +36,8 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
 import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.food.ItemDynamicBowlFood;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
-import net.dries007.tfc.objects.items.food.ItemSoupTFC;
 import net.dries007.tfc.util.agriculture.Food;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
@@ -223,7 +223,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                         if (boilingTicks > ConfigTFC.GENERAL.firePitCookingPotBoilingTime)
                         {
                             // Convert output
-                            float water = 20, saturation = 1; // soups have base 20 water + 1 saturation
+                            float water = 20, saturation = 2; // soups have base 20 water + 2 saturation
                             float[] nutrition = new float[Nutrient.TOTAL];
                             int ingredientCount = 0;
                             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
@@ -232,6 +232,11 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                                 IFood food = ingredient.getCapability(CapabilityFood.CAPABILITY, null);
                                 if (food != null)
                                 {
+                                    if (food.isRotten())
+                                    {
+                                        ingredientCount = 0;
+                                        break;
+                                    }
                                     water += food.getData().getWater();
                                     saturation += food.getData().getSaturation();
                                     float[] ingredientNutrition = food.getData().getNutrients();
@@ -506,9 +511,9 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
 
             ItemStack soupStack = new ItemStack(getSoupItem());
             IFood soupFood = soupStack.getCapability(CapabilityFood.CAPABILITY, null);
-            if (soupFood instanceof ItemSoupTFC.SoupHandler)
+            if (soupFood instanceof ItemDynamicBowlFood.DynamicFoodHandler)
             {
-                ((ItemSoupTFC.SoupHandler) soupFood).initCreationDataAndBowl(stack, soupContents);
+                ((ItemDynamicBowlFood.DynamicFoodHandler) soupFood).initCreationDataAndBowl(stack, soupContents);
             }
             stack.shrink(1); // consume bowl
             ItemHandlerHelper.giveItemToPlayer(player, soupStack);

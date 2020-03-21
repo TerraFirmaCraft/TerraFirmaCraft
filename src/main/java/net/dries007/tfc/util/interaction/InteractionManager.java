@@ -73,6 +73,14 @@ public final class InteractionManager
             return EnumActionResult.FAIL;
         }));
 
+        putBoth(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "bowl"), ((worldIn, playerIn, handIn) -> {
+            if (!worldIn.isRemote)
+            {
+                TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.SALAD);
+            }
+            return EnumActionResult.SUCCESS;
+        }));
+
         // Logs -> Log Piles (placement + insertion)
         USE_ACTIONS.put(stack -> OreDictionaryHelper.doesStackMatchOre(stack, "logWood"), (stack, player, worldIn, pos, hand, direction, hitX, hitY, hitZ) -> {
             if (direction != null)

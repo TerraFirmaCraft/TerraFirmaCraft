@@ -116,6 +116,8 @@ public class TFCGuiHandler implements IGuiHandler
                     return new ContainerChestTFC(player.inventory, chestContainer, player);
                 }
                 return null;
+            case SALAD:
+                return new ContainerSalad(player.inventory);
             default:
                 return null;
         }
@@ -182,6 +184,8 @@ public class TFCGuiHandler implements IGuiHandler
                     return new GuiChestTFC((ContainerChestTFC) container, player.inventory);
                 }
                 return null;
+            case SALAD:
+                return new GuiSalad(container, player.inventory);
             default:
                 return null;
         }
@@ -211,6 +215,7 @@ public class TFCGuiHandler implements IGuiHandler
         NUTRITION,
         SKILLS,
         CHEST,
+        SALAD,
         INVENTORY, // This is special, it is used by GuiButtonPlayerInventoryTab to signal to open the vanilla inventory
         CRAFTING, // In-inventory 3x3 crafting grid
         NULL; // This is special, it is a non-null null.

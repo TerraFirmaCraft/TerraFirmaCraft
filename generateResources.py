@@ -418,7 +418,12 @@ FOODS = [
     'soup_fruit',
     'soup_vegetable',
     'soup_meat',
-    'soup_dairy'
+    'soup_dairy',
+    'salad_grain',
+    'salad_fruit',
+    'salad_vegetable',
+    'salad_meat',
+    'salad_dairy'
 ]
 
 # Special 'hardcoded' cases

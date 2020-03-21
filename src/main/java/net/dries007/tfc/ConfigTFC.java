@@ -129,8 +129,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.foodDecayModifier")
         public double foodDecayModifier = 1.0;
 
-        @Config.Comment("Number of ticks required for a cooking pot on a fire pit to boil before turning into soup. (1000 = 1 in game hour = 50 seconds). Default is 1/2 hour")
-        public int firePitCookingPotBoilingTime = 100; // todo: change to default
+        @Config.Comment("Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1/2 hour per serving")
+        @Config.RangeInt(min = 20)
+        @Config.LangKey("config." + MOD_ID + ".general.firePitCookingPotBoilingTime")
+        public int firePitCookingPotBoilingTime = 500;
 
         @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.")
         @Config.RangeInt(min = 20)

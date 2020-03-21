@@ -22,9 +22,9 @@ import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.util.agriculture.Food;
 
 @ParametersAreNonnullByDefault
-public class ItemSoupTFC extends ItemFoodTFC
+public class ItemDynamicBowlFood extends ItemFoodTFC
 {
-    public ItemSoupTFC(Food food)
+    public ItemDynamicBowlFood(Food food)
     {
         super(food);
     }
@@ -33,7 +33,7 @@ public class ItemSoupTFC extends ItemFoodTFC
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new SoupHandler(nbt, food.getData());
+        return new DynamicFoodHandler(nbt, food.getData());
     }
 
     @Nonnull
@@ -41,9 +41,9 @@ public class ItemSoupTFC extends ItemFoodTFC
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
         IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (food instanceof SoupHandler)
+        if (food instanceof DynamicFoodHandler)
         {
-            ItemStack bowlStack = ((SoupHandler) food).getBowlStack().copy();
+            ItemStack bowlStack = ((DynamicFoodHandler) food).getBowlStack().copy();
             bowlStack.setCount(1);
             super.onItemUseFinish(stack, worldIn, entityLiving);
             return bowlStack;
@@ -51,11 +51,11 @@ public class ItemSoupTFC extends ItemFoodTFC
         return super.onItemUseFinish(stack, worldIn, entityLiving);
     }
 
-    public static class SoupHandler extends FoodHandler
+    public static class DynamicFoodHandler extends FoodHandler
     {
         private ItemStack bowlStack;
 
-        public SoupHandler(@Nullable NBTTagCompound nbt, FoodData data)
+        public DynamicFoodHandler(@Nullable NBTTagCompound nbt, FoodData data)
         {
             super(nbt, data);
             this.bowlStack = ItemStack.EMPTY;
