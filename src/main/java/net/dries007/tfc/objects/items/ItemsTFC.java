@@ -124,6 +124,9 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("powder/salt")
     public static final ItemPowder SALT = getNull();
 
+    @GameRegistry.ObjectHolder("quiver")
+    public static final ItemQuiver QUIVER = getNull();
+
     public static final ItemWoodenBucket WOODEN_BUCKET = getNull();
 
     @GameRegistry.ObjectHolder("metal/bucket/blue_steel")
@@ -298,6 +301,8 @@ public final class ItemsTFC
         simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.TINY, Weight.LIGHT, "string"), CT_MISC));
         simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
         simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
+
+        simpleItems.add(register(r, "quiver", new ItemQuiver(), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
