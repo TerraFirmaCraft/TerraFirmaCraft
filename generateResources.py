@@ -289,6 +289,22 @@ FLUIDS = {
     'limewater': 'limewater',
     'milk_curdled': 'milk_curdled',
     'milk_vinegar': 'milk_vinegar',
+    'black_dye': 'black_dye',
+    'red_dye': 'red_dye',
+    'green_dye': 'green_dye',
+    'brown_dye': 'brown_dye',
+    'blue_dye': 'blue_dye',
+    'purple_dye': 'purple_dye',
+    'cyan_dye': 'cyan_dye',
+    'light_gray_dye': 'light_gray_dye',
+    'gray_dye': 'gray_dye',
+    'pink_dye': 'pink_dye',
+    'lime_dye': 'lime_dye',
+    'yellow_dye': 'yellow_dye',
+    'light_blue_dye': 'light_blue_dye',
+    'magenta_dye': 'magenta_dye',
+    'orange_dye': 'orange_dye',
+    'white_dye': 'white_dye'
 }
 
 # all crops

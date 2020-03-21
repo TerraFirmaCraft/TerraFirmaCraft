@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.types;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -50,6 +52,7 @@ import net.dries007.tfc.objects.Powder;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.inventory.ingredient.IngredientFluidItem;
 import net.dries007.tfc.objects.items.ItemAnimalHide;
@@ -138,6 +141,55 @@ public final class DefaultRecipes
             new BarrelRecipeTemperature(IIngredient.of(FRESH_WATER.get(), 1), 50).setRegistryName("fresh_water_cooling"),
             new BarrelRecipeTemperature(IIngredient.of(SALT_WATER.get(), 1), 50).setRegistryName("salt_water_cooling")
         );
+
+        //Nice handy list of dye in the correct order BY META DATA to get the correct fluid.
+        List<FluidWrapper> fluids = new ArrayList<>();
+        fluids.add(WHITE_DYE);
+        fluids.add(ORANGE_DYE);
+        fluids.add(MAGENTA_DYE);
+        fluids.add(LIGHT_BLUE_DYE);
+        fluids.add(YELLOW_DYE);
+        fluids.add(LIME_DYE);
+        fluids.add(PINK_DYE);
+        fluids.add(GRAY_DYE);
+        fluids.add(LIGHT_GRAY_DYE);
+        fluids.add(CYAN_DYE);
+        fluids.add(PURPLE_DYE);
+        fluids.add(BLUE_DYE);
+        fluids.add(BROWN_DYE);
+        fluids.add(GREEN_DYE);
+        fluids.add(RED_DYE);
+        fluids.add(BLACK_DYE);
+
+        //The many many many recipes that is dye. This assumes that the standard meta values for colored objects are followed.
+        for (EnumDyeColor dyeColor : EnumDyeColor.values())
+        {
+            String dyeName = dyeColor.getDyeColorName();
+            int dyeMeta = dyeColor.getDyeDamage();
+
+            //Because whoever made the dye colors though SILVER was light gray...
+            if (dyeColor.equals(EnumDyeColor.SILVER))
+            {//Seriously this is dumb....
+                dyeName = "light_gray";
+                event.getRegistry().registerAll(
+                    new BarrelRecipe(IIngredient.of(HOT_WATER.get(), 1000), IIngredient.of("dyeLightGray"), new FluidStack(fluids.get(dyeColor.getMetadata()).get(), 1000), ItemStack.EMPTY, ICalendar.TICKS_IN_HOUR).setRegistryName(dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("wool"), null, new ItemStack(Blocks.WOOL, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("wool_" + dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("carpet"), null, new ItemStack(Blocks.CARPET, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("carpet_" + dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("bed"), null, new ItemStack(Blocks.BED, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("bed_" + dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName)
+                );
+            }
+            else
+            {//Do all the regular dyes.....
+                event.getRegistry().registerAll(
+                    new BarrelRecipe(IIngredient.of(HOT_WATER.get(), 1000), IIngredient.of(OreDictionaryHelper.toString("dye_" + dyeName)), new FluidStack(fluids.get(dyeColor.getMetadata()).get(), 1000), ItemStack.EMPTY, ICalendar.TICKS_IN_HOUR).setRegistryName(dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("wool"), null, new ItemStack(Blocks.WOOL, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("wool_" + dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("carpet"), null, new ItemStack(Blocks.CARPET, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("carpet_" + dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("bed"), null, new ItemStack(Blocks.BED, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("bed_" + dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName)
+                );
+            }
+        }
     }
 
     @SubscribeEvent
