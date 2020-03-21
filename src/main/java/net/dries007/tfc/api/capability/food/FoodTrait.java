@@ -26,6 +26,8 @@ public class FoodTrait
     public static final FoodTrait PICKLED;
     public static final FoodTrait PRESERVED; // Large / Small vessels
     public static final FoodTrait VINEGAR; // Used for the state of being sealed in vinegar
+    public static final FoodTrait CHARCOAL_GRILLED;
+    public static final FoodTrait WOOD_GRILLED;
 
     private static final Map<String, FoodTrait> TRAITS = new HashMap<>();
 
@@ -38,6 +40,8 @@ public class FoodTrait
         PICKLED = new FoodTrait("pickled", 0.5f);
         PRESERVED = new FoodTrait("preserved", 0.5f);
         VINEGAR = new FoodTrait("vinegar", 0.1f, false);
+        CHARCOAL_GRILLED = new FoodTrait("charcoal_grilled", 0.9f); // todo: nutrition modifier -30%
+        WOOD_GRILLED = new FoodTrait("wood_grilled", 0.9f); // todo: nutrition modifier +10%
     }
 
     public static Map<String, FoodTrait> getTraits()

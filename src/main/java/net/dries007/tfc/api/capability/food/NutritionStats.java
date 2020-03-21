@@ -49,9 +49,9 @@ public class NutritionStats implements INBTSerializable<NBTTagCompound>
     }
 
     @Nullable
-    public FoodData getLastRecord()
+    public FoodData getMostRecentRecord()
     {
-        return records.peekLast();
+        return records.peekFirst(); // The "most recent" is actually the first in the queue
     }
 
     public float getAverageNutrition()

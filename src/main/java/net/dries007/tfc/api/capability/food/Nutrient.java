@@ -18,6 +18,13 @@ public enum Nutrient
     DAIRY(TextFormatting.DARK_PURPLE);
 
     public static final int TOTAL = values().length;
+    private static final Nutrient[] VALUES = values();
+
+    @Nonnull
+    public static Nutrient valueOf(int i)
+    {
+        return i >= 0 && i < VALUES.length ? VALUES[i] : GRAIN;
+    }
 
     private final TextFormatting color;
 
