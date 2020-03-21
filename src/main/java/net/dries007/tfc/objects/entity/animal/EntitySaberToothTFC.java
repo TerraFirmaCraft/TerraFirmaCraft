@@ -34,18 +34,18 @@ import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityPantherTFC extends EntityAnimalMammal implements IMob
+public class EntitySaberToothTFC extends EntityAnimalMammal implements IMob
 {
     private static final int DAYS_TO_ADULTHOOD = 1800;
 
     @SuppressWarnings("unused")
-    public EntityPantherTFC(World worldIn)
+    public EntitySaberToothTFC(World worldIn)
     {
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
             getRandomGrowth(DAYS_TO_ADULTHOOD));
     }
 
-    public EntityPantherTFC(World worldIn, Gender gender, int birthDay)
+    public EntitySaberToothTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
         this.setSize(1.7F, 1.2F);

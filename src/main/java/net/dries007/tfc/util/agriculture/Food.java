@@ -93,6 +93,7 @@ public enum Food
     VIANDE(MEAT, 0.2f, 1f, 0f, 2f, 2.5f, 0f, 0f, 3f, 1f, 200f),
     DUCK(MEAT, 0.2f, 1f, 0f, 0.5f, 2.5f, 0f, 0f, 3f, 1f, 200f),
     CHEVON(MEAT, 0.2f, 1f, 0f, 2f, 2.5f, 0f, 0f, 3f, 1f, 200f),
+    GRAN_FELINE(MEAT, 0.2f, 1f, 0f, 2f, 2.5f, 0.5f, 0f, 2f, 1f, 200f),
     COOKED_BEEF(MEAT, 0.8f, 2f, 0f, 2f, 2.5f, 0f, 0f, 1.5f),
     COOKED_PORK(MEAT, 0.8f, 2f, 0f, 2f, 2.5f, 0f, 0f, 1.5f),
     COOKED_CHICKEN(MEAT, 0.6f, 2f, 0f, 0.5f, 2.5f, 0f, 0f, 2.25f),
@@ -107,7 +108,8 @@ public enum Food
     COOKED_RABBIT(MEAT, 0.6f, 2f, 0f, 0.5f, 1.5f, 0f, 0f, 2.25f),
     COOKED_VIANDE(MEAT, 0.6f, 2f, 0f, 1f, 2.5f, 0f, 0f, 3f),
     COOKED_DUCK(MEAT, 0.6f, 2f, 0f, 0.5f, 2.5f, 0f, 0f, 3f),
-    COOKED_CHEVON(MEAT, 0.6f, 2f, 0f, 1f, 2.5f, 0f, 0f, 3f);
+    COOKED_CHEVON(MEAT, 0.6f, 2f, 0f, 1f, 2.5f, 0f, 0f, 3f),
+    COOKED_GRAN_FELINE(MEAT, 0.6f, 2f, 0f, 1f, 2.5f, 0f, 0f, 3f);
 
     private final Category category;
     private final float calories;
