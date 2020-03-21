@@ -107,7 +107,7 @@ tfc.tooltip.crucible_less_than_one=< 1 unit
 tfc.tooltip.previous_page=Previous Page
 tfc.tooltip.next_page=Next Page
 tfc.tooltip.firepit_cooking_pot_empty=Empty
-tfc.tooltip.firepit_cooking_pot_waiting=Waiting
+tfc.tooltip.firepit_cooking_pot_waiting=Add Ingredients
 tfc.tooltip.firepit_cooking_pot_boiling=Boiling
 tfc.tooltip.firepit_cooking_pot_servings=Servings: %d
 
@@ -239,6 +239,9 @@ config.tfc.general.enableCruciblePouringAllSlots.tooltip=Let crucibles accept po
 
 config.tfc.general.foodDecayModifier=Food Decay Modifier
 config.tfc.general.foodDecayModifier.tooltip=Modifier for how quickly food will decay. Larger values = faster decay. Set to 0 for infinite expiration time
+
+config.tfc.general.firePitCookingPotBoilingTime=Cooking Pot Boil Time
+config.tfc.general.firePitCookingPotBoilingTime.tooltip=Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1/2 hour per serving
 
 config.tfc.general.pitKilnTime=Pit Kiln Time
 config.tfc.general.pitKilnTime.tooltip=Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.
@@ -3681,10 +3684,10 @@ item.tfc.ceramics.unfired.large_vessel.name=Unfired Large Vessel
 
 item.tfc.ceramics.fired.spindle.name=Spindle Head
 item.tfc.ceramics.unfired.spindle.name=Unfired Spindle Head
-item.tfc.ceramics.fired.pot.name=Pot
+item.tfc.ceramics.fired.pot.name=Ceramic Pot
 item.tfc.ceramics.unfired.pot.name=Unfired Pot
 item.tfc.ceramics.unfired.jug.name=Unfired Jug
-item.tfc.ceramics.fired.bowl.name=Bowl
+item.tfc.ceramics.fired.bowl.name=Ceramic Bowl
 item.tfc.ceramics.unfired.bowl.name=Unfired Bowl
 item.tfc.ceramics.fired.fire_brick.name=Fire Brick
 item.tfc.ceramics.unfired.fire_brick.name=Unfired Fire Brick
@@ -3807,6 +3810,11 @@ item.tfc.food.soup_fruit.name=Tasty Soup
 item.tfc.food.soup_vegetable.name=Filling Soup
 item.tfc.food.soup_meat.name=Hearty Soup
 item.tfc.food.soup_dairy.name=Creamy Soup
+item.tfc.food.salad_grain.name=Cruchy Salad
+item.tfc.food.salad_fruit.name=Sweet Salad
+item.tfc.food.salad_vegetable.name=Healthy Salad
+item.tfc.food.salad_meat.name=Flavorful Salad
+item.tfc.food.salad_dairy.name=Disgusting Salad
 
 item.tfc.crop.seeds.barley.name=Barley Seeds
 item.tfc.crop.seeds.beet.name=Beet Seeds

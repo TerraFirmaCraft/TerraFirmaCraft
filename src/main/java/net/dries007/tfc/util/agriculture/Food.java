@@ -116,7 +116,12 @@ public enum Food
     SOUP_FRUIT(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup"),
     SOUP_VEGETABLE(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup"),
     SOUP_MEAT(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup"),
-    SOUP_DAIRY(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup");
+    SOUP_DAIRY(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3.5f, "soup"),
+    SALAD_GRAIN(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 5f, "salad"),
+    SALAD_FRUIT(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 5f, "salad"),
+    SALAD_VEGETABLE(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 5f, "salad"),
+    SALAD_MEAT(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 5f, "salad"),
+    SALAD_DAIRY(MEAL, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 5f, "salad");
 
     private final Category category;
     private final FoodData foodData;
