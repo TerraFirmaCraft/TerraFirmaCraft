@@ -3788,6 +3788,8 @@ item.tfc.animal.product.wool_yarn.name=羊毛纱
 item.tfc.animal.product.wool_cloth.name=羊毛布
 item.tfc.animal.product.silk_cloth.name=丝绸
 
+item.tfc.quiver.name=箭袋
+
 ## Entities
 
 # Animals
