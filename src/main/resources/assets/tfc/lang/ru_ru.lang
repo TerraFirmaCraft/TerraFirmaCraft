@@ -3707,6 +3707,8 @@ item.tfc.animal.product.wool_yarn.name=Шерстяная пряжа
 item.tfc.animal.product.wool_cloth.name=Шерстяная ткань
 item.tfc.animal.product.silk_cloth.name=Шелковая ткань
 
+item.tfc.quiver.name=Колчан
+
 entity.sheeptfc.name=Овца
 entity.cowtfc.name=Корова
 entity.beartfc.name=Медведь
