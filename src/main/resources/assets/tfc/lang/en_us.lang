@@ -18,6 +18,12 @@ tfc.command.time.query_gametime=Game time is %d ticks
 tfc.command.time.query_day=Current day is %d
 tfc.command.time.query_daytime=Current day time is %d
 
+tfc.command.veins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
+tfc.command.veins.usage_expected_player=Can only be used by a player
+tfc.command.veins.usage_expected_first_argument=Expected [add|<vein name>] after /findveins
+tfc.command.veins.usage_first_argument_not_vein=No Vein found with name %s
+
+
 # Gui
 
 ## Tooltips
@@ -104,6 +110,12 @@ tfc.tooltip.time_command_set_calendar_time=Set Calendar Time to %s.
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
 tfc.tooltip.skill_set=Set %s to level %.2f
 tfc.tooltip.skill_add=Added %.2f levels to %s
+tfc.tooltip.veins_command.dump_veins=Dumping all veins in specified radius, this is gonna take a while...
+tfc.tooltip.veins_command.rate_veins=Dumping vein rate in specified radius, this is gonna take a while...
+tfc.tooltip.veins_command.failed=Failed to load dimension %d
+tfc.tooltip.veins_command.remaining_chunks=Chunks Remaining: %d / %d
+tfc.tooltip.veins_command.output=Found vein %s at %s
+tfc.tooltip.veins_command.output_file=File saved at %s
 
 ## Prospecting Result Messages
 tfc.propick.found=Found
