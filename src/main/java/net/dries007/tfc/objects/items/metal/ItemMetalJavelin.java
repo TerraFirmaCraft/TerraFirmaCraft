@@ -21,10 +21,11 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.util.IQuiverAmmo;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 
-public class ItemMetalJavelin extends ItemMetalTool
+public class ItemMetalJavelin extends ItemMetalTool implements IQuiverAmmo
 {
     public ItemMetalJavelin(Metal metal, Metal.ItemType type)
     {
@@ -86,6 +87,7 @@ public class ItemMetalJavelin extends ItemMetalTool
                 }
                 player.inventory.deleteStack(stack);
                 player.addStat(StatList.getObjectUseStats(this));
+                replenishJavelin(player.inventory); //Use a quiver if possible
             }
         }
     }
