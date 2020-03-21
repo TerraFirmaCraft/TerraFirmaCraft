@@ -21,12 +21,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
-import net.minecraft.block.material.Material;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.types.Ore;
-import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.util.collections.WeightedCollection;
 import net.dries007.tfc.world.classic.worldgen.WorldGenOreVeins;
 
@@ -142,13 +139,6 @@ public enum VeinRegistry
                         }
                         VeinType vein = GSON.fromJson(entry.getValue(), VeinType.class);
                         vein.setRegistryName(properVeinName);
-
-                        // Last check before registering, make sure to not include any bogus veins
-                        if (vein.getOre() == null && vein.getOreState(Rock.GRANITE, Ore.Grade.NORMAL).getMaterial() == Material.AIR)
-                        {
-                            TerraFirmaCraft.getLog().error("Error: " + vein.getRegistryName() + " vein registered ore block is Air! Skipping.");
-                            continue;
-                        }
 
                         veinTypeRegistry.put(properVeinName, vein);
                         weightedVeinTypes.add(vein.getWeight(), vein);
