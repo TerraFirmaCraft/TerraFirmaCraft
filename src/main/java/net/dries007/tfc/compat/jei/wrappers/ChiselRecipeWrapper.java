@@ -18,6 +18,7 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.dries007.tfc.api.recipes.ChiselRecipe;
 import net.dries007.tfc.compat.jei.TFCJEIPlugin;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 @ParametersAreNonnullByDefault
 public class ChiselRecipeWrapper implements IRecipeWrapper
@@ -40,7 +41,13 @@ public class ChiselRecipeWrapper implements IRecipeWrapper
                 }
             });
         // Ideally we should use Block#getPickBlock but we can't have a World and EntityPlayer at this point
-        output = new ItemStack(recipe.getOutputState().getBlock());
+        ItemStack recipeOutput = new ItemStack(recipe.getOutputState().getBlock());
+        if (recipeOutput.isEmpty())
+        {
+            // Failed to grab the output block, using debug block
+            recipeOutput = new ItemStack(BlocksTFC.DEBUG);
+        }
+        this.output = recipeOutput;
     }
 
 

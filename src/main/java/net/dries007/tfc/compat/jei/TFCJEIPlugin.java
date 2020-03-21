@@ -5,15 +5,12 @@
 
 package net.dries007.tfc.compat.jei;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,7 +20,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
-import mezz.jei.api.gui.IAdvancedGuiHandler;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
@@ -337,44 +333,9 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeClickArea(GuiFirePit.class, 79, 37, 18, 10, HEAT_UID);
 
         // Fix inventory tab overlap see https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/646
-        registry.addAdvancedGuiHandlers(new TFCGuiAreas<>(GuiInventory.class));
-        registry.addAdvancedGuiHandlers(new TFCGuiAreas<>(GuiCalendar.class));
-        registry.addAdvancedGuiHandlers(new TFCGuiAreas<>(GuiNutrition.class));
-        registry.addAdvancedGuiHandlers(new TFCGuiAreas<>(GuiSkills.class));
-    }
-
-    private static class TFCGuiAreas<T extends GuiContainer> implements IAdvancedGuiHandler<T>
-    {
-        private final Class<T> clazz;
-
-        private TFCGuiAreas(Class<T> clazz)
-        {
-            this.clazz = clazz;
-        }
-
-        @Nonnull
-        @Override
-        public Class<T> getGuiContainerClass()
-        {
-            return clazz;
-        }
-
-        @Override
-        public List<Rectangle> getGuiExtraAreas(T guiContainer)
-        {
-            List<Rectangle> areas = new ArrayList<>();
-
-            int xPosition = guiContainer.getGuiLeft() + 176;
-            int yPosition = guiContainer.getGuiTop() + 4; // +23 each button
-            int w = 20;
-            int h = 22;
-            for (int i = 0; i < 4; i++)
-            {
-                Rectangle rectangle = new Rectangle(xPosition, yPosition + i * 23, w, h);
-                areas.add(rectangle);
-            }
-
-            return areas;
-        }
+        registry.addAdvancedGuiHandlers(new TFCInventoryGuiHandler<>(GuiInventory.class));
+        registry.addAdvancedGuiHandlers(new TFCInventoryGuiHandler<>(GuiCalendar.class));
+        registry.addAdvancedGuiHandlers(new TFCInventoryGuiHandler<>(GuiNutrition.class));
+        registry.addAdvancedGuiHandlers(new TFCInventoryGuiHandler<>(GuiSkills.class));
     }
 }

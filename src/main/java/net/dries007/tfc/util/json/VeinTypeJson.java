@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import com.google.gson.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
@@ -98,46 +97,44 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
             }
         });
 
-        // Parse loose rock
+        // Parse loose rock / indicator
         ItemStack looseRock = ItemStack.EMPTY;
         if (JsonUtils.hasField(jsonObject, "loose"))
         {
             ResourceLocation looseResource = new ResourceLocation(JsonUtils.getString(jsonObject, "loose"));
+
             // try parsing small ore first
             Ore looseOre = TFCRegistries.ORES.getValue(looseResource);
-            Item looseItem = null;
+            Item smallOre = null;
             if (looseOre != null)
             {
-                looseItem = ItemSmallOre.get(looseOre);
+                smallOre = ItemSmallOre.get(looseOre);
             }
-            if (looseItem == null)
+
+            if (smallOre != null)
             {
-                // Try parsing item instead
-                // todo remove meta in 1.15+
-                int metaLoose = JsonUtils.getInt(jsonObject, "looseMeta", 0);
-                looseItem = ForgeRegistries.ITEMS.getValue(looseResource);
-                if (looseItem == null)
-                {
-                    // Block?
-                    Block looseBlock = ForgeRegistries.BLOCKS.getValue(looseResource);
-                    // Looks like forge parse anything to air if nothing is found
-                    if (looseBlock == null || looseBlock == Blocks.AIR)
-                    {
-                        throw new JsonParseException("Unable to parse loose rock " + looseResource + ". No registered small ore, item or block found.");
-                    }
-                    else
-                    {
-                        looseRock = new ItemStack(looseBlock, 1, metaLoose);
-                    }
-                }
-                else
-                {
-                    looseRock = new ItemStack(looseItem, 1, metaLoose);
-                }
+                // Found Small Ore, using that
+                looseRock = new ItemStack(smallOre, 1);
             }
             else
             {
-                looseRock = new ItemStack(looseItem, 1);
+                // Try parsing item/block instead
+                // todo remove meta in 1.15+
+                int metaLoose = JsonUtils.getInt(jsonObject, "looseMeta", 0);
+                if (ForgeRegistries.ITEMS.containsKey(looseResource))
+                {
+                    //noinspection ConstantConditions
+                    looseRock = new ItemStack(ForgeRegistries.ITEMS.getValue(looseResource), 1, metaLoose);
+                }
+                else if (ForgeRegistries.BLOCKS.containsKey(looseResource))
+                {
+                    //noinspection ConstantConditions
+                    looseRock = new ItemStack(ForgeRegistries.BLOCKS.getValue(looseResource), 1, metaLoose);
+                }
+                else
+                {
+                    throw new JsonParseException("Unable to parse loose rock " + looseResource + ". No registered small ore, item or block found.");
+                }
             }
         }
 
@@ -145,14 +142,15 @@ public class VeinTypeJson implements JsonDeserializer<VeinType>
         Ore ore = TFCRegistries.ORES.getValue(oreName);
         if (ore == null)
         {
-            Block block = ForgeRegistries.BLOCKS.getValue(oreName);
-            if (block != null)
+            if (ForgeRegistries.BLOCKS.containsKey(oreName))
             {
+                Block block = ForgeRegistries.BLOCKS.getValue(oreName);
                 //todo: remove metadata in 1.13
                 int meta = JsonUtils.getInt(jsonObject, "meta", 0);
                 IBlockState oreState;
                 try
                 {
+                    //noinspection ConstantConditions
                     oreState = block.getStateFromMeta(meta);
                 }
                 catch (RuntimeException e)
