@@ -110,7 +110,7 @@ public class WorldGenOreVeins implements IWorldGenerator
                     // Failed to generate, debug info
                     // This can be by a number of factors, mainly because at each expected replacing position we didn't find a matching raw rock.
                     // Some possible causes: Width / Height / Shape / Density / Y / Rock Layer
-                    TerraFirmaCraft.getLog().warn("Failed to generate vein '{}' in chunk ({}, {}). Vein center pos ({}x, {}y, {}z)", vein.getType().getRegistryName(), chunkX, chunkZ, vein.getPos().getX(), vein.getPos().getY(), vein.getPos().getZ());
+                    TerraFirmaCraft.getLog().debug("Failed to generate vein '{}' in chunk ({}, {}). Vein center pos ({}x, {}y, {}z)", vein.getType().getRegistryName(), chunkX, chunkZ, vein.getPos().getX(), vein.getPos().getY(), vein.getPos().getZ());
                 }
             }
         }
