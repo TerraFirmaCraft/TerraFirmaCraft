@@ -266,8 +266,8 @@ public class CommandFindVeins extends CommandBase
                 {
                     // Also count rock layers
                     Rock rock1 = chunkData.getRockLayer1(8, 8); // Grabbing the middle is fine
-                    Rock rock2 = chunkData.getRockLayer1(8, 8);
-                    Rock rock3 = chunkData.getRockLayer1(8, 8);
+                    Rock rock2 = chunkData.getRockLayer2(8, 8);
+                    Rock rock3 = chunkData.getRockLayer3(8, 8);
 
                     int value = 1;
                     if (rockRateMap.containsKey(rock1))
@@ -302,19 +302,15 @@ public class CommandFindVeins extends CommandBase
             {
                 if (type == 1)
                 {
-                    try
+                    final String fileName = "tfc-veins-dump.log";
+                    final File file = new File(fileName);
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
                     {
-                        final String fileName = "tfc-veins-dump.log";
-                        final File file = new File(fileName);
-                        final BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
                         for (String line : outputLog)
                         {
                             writer.write(line);
                             writer.newLine();
                         }
-
-                        writer.close();
 
                         listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.output_file", file.getAbsolutePath()));
                     }
@@ -327,11 +323,9 @@ public class CommandFindVeins extends CommandBase
                 else if (type == 2)
                 {
                     final String fileName = "tfc-veins-rate.log";
-                    try
+                    final File file = new File(fileName);
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
                     {
-                        final File file = new File(fileName);
-                        final BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
                         writer.write("Found Veins: ");
                         writer.newLine();
                         for (VeinType veinType : veinRateMap.keySet())
@@ -351,8 +345,6 @@ public class CommandFindVeins extends CommandBase
                             writer.write(line);
                             writer.newLine();
                         }
-
-                        writer.close();
 
                         listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.output_file", file.getAbsolutePath()));
                     }

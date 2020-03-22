@@ -22,7 +22,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
 
-import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.collections.WeightedCollection;
 import net.dries007.tfc.world.classic.worldgen.WorldGenOreVeins;
@@ -143,11 +142,7 @@ public enum VeinRegistry
                         veinTypeRegistry.put(properVeinName, vein);
                         weightedVeinTypes.add(vein.getWeight(), vein);
 
-                        // Debug info
-                        if (ConfigTFC.GENERAL.debug)
-                        {
-                            TerraFirmaCraft.getLog().info("Registered new vein " + vein.toString());
-                        }
+                        TerraFirmaCraft.getLog().info("Registered new vein " + vein.toString());
                     }
                     catch (JsonParseException e)
                     {
