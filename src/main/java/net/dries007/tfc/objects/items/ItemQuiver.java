@@ -25,6 +25,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 import net.dries007.tfc.objects.items.metal.ItemMetalJavelin;
 import net.dries007.tfc.objects.items.rock.ItemRockJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -42,13 +43,6 @@ public class ItemQuiver extends ItemTFC
             TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.QUIVER);
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    @Nonnull
-    public String getTranslationKey(ItemStack stack)
-    {
-        return super.getTranslationKey(stack);
     }
 
     @Override
@@ -78,8 +72,8 @@ public class ItemQuiver extends ItemTFC
         return new QuiverCapability(nbt);
     }
 
-    // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
-    public class QuiverCapability extends ItemStackHandler implements ICapabilityProvider
+    // Extends ItemStackHandler for ease of use.
+    public class QuiverCapability extends ItemStackHandler implements ICapabilityProvider, ISlotCallback
     {
 
         QuiverCapability(@Nullable NBTTagCompound nbt)
@@ -88,23 +82,6 @@ public class ItemQuiver extends ItemTFC
 
             deserializeNBT(nbt);
         }
-
-/*        //todo: may be useful to enumerate contents in advanced tooltips like small vessels do because of heatCap.
-        @SideOnly(Side.CLIENT)
-        @Override
-        public void addInventoryInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
-        {
-            boolean hasContent = false;
-            for (ItemStack slot : super.stacks)
-            {
-                if (!slot.isEmpty())
-                {
-                    text.add(1, I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.small_vessel_item", slot.getCount(), slot.getItem().getItemStackDisplayName(slot)));
-                    hasContent = true;
-                }
-            }
-        }
-*/
 
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
@@ -127,25 +104,6 @@ public class ItemQuiver extends ItemTFC
             return OreDictionaryHelper.doesStackMatchOre(stack, "javelin") ||
                    //OreDictionaryHelper.doesStackMatchOre(stack, "arrow") ||
                    stack.getItem().getRegistryName().getPath().endsWith("arrow"); // no oreDict for vanilla arrows
-        }
-
-        @Override
-        public NBTTagCompound serializeNBT()
-        {
-            NBTTagCompound nbt = new NBTTagCompound();
-            // Save item data
-            nbt.setTag("items", super.serializeNBT());
-            return nbt;
-        }
-
-        @Override
-        public void deserializeNBT(@Nullable NBTTagCompound nbt)
-        {
-            if (nbt != null)
-            {
-                // Read item contents
-                super.deserializeNBT(nbt.getCompoundTag("items"));
-            }
         }
 
         private boolean isInventoryEmpty()
