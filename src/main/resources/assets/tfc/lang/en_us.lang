@@ -458,6 +458,10 @@ itemGroup.tfc.gems=TFC Gems
 itemGroup.tfc.food=TFC Foodstuffs
 itemGroup.tfc.plants=TFC Plants
 
+item.dyePowder.green.name=Green Dye
+item.dyePowder.red.name=Red Dye
+item.dyePowder.yellow.name=Yellow Dye
+
 generator.tfc_classic=TFC Classic
 
 # Enum types
