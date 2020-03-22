@@ -131,6 +131,15 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("metal/bucket/red_steel")
     public static final ItemMetalBucket RED_STEEL_BUCKET = getNull();
 
+    @GameRegistry.ObjectHolder("dye/black")
+    public static final ItemMisc DYE_BLACK = getNull();
+    @GameRegistry.ObjectHolder("dye/blue")
+    public static final ItemMisc DYE_BLUE = getNull();
+    @GameRegistry.ObjectHolder("dye/brown")
+    public static final ItemMisc DYE_BROWN = getNull();
+    @GameRegistry.ObjectHolder("dye/white")
+    public static final ItemMisc DYE_WHITE = getNull();
+
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
@@ -298,6 +307,11 @@ public final class ItemsTFC
         simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.TINY, Weight.LIGHT, "string"), CT_MISC));
         simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
         simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
+
+        simpleItems.add(register(r, "dye/black", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBlack"), CT_MISC));
+        simpleItems.add(register(r, "dye/blue", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBlue"), CT_MISC));
+        simpleItems.add(register(r, "dye/white", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeWhite"), CT_MISC));
+        simpleItems.add(register(r, "dye/brown", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBrown"), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
