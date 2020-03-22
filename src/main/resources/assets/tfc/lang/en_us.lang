@@ -461,6 +461,10 @@ itemGroup.tfc.plants=TFC Plants
 item.dyePowder.green.name=Green Dye
 item.dyePowder.red.name=Red Dye
 item.dyePowder.yellow.name=Yellow Dye
+item.tfc.dye.blue.name=Blue Dye
+item.tfc.dye.black.name=Black Dye
+item.tfc.dye.brown.name=Brown Dye
+item.tfc.dye.white.name=White Dye
 
 generator.tfc_classic=TFC Classic
 
@@ -3679,6 +3683,7 @@ item.tfc.ceramics.unfired.bowl.name=Unfired Bowl
 item.tfc.ceramics.fired.fire_brick.name=Fire Brick
 item.tfc.ceramics.unfired.fire_brick.name=Unfired Fire Brick
 item.tfc.ceramics.fire_clay.name=Fire Clay
+item.tfc.ceramics.unfired.brick.name=Unfired Brick
 
 item.tfc.hide.raw.small.name=Small Raw Hide
 item.tfc.hide.raw.medium.name=Medium Raw Hide
