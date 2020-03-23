@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items.metal;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -84,7 +85,7 @@ public class ItemIngot extends ItemMetal
                             return EnumActionResult.SUCCESS;
                         }
                     }
-                    else if (stateTop.getBlock().isReplaceable(worldIn, posTop) && worldIn.mayPlace(BlocksTFC.INGOT_PILE, posTop, false, EnumFacing.UP, null))
+                    else if (stateTop.getBlock().isReplaceable(worldIn, posTop) && worldIn.mayPlace(BlocksTFC.INGOT_PILE, posTop, false, EnumFacing.UP, null) && worldIn.getBlockState(posTop).getBlock().getBlockFaceShape(worldIn, worldIn.getBlockState(posTop), posTop, EnumFacing.UP) == BlockFaceShape.SOLID)
                     {
                         worldIn.setBlockState(posTop, BlocksTFC.INGOT_PILE.getDefaultState());
                         TEIngotPile te = Helpers.getTE(worldIn, posTop, TEIngotPile.class);
