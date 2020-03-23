@@ -3683,7 +3683,7 @@ item.tfc.ceramics.unfired.bowl.name=Unfired Bowl
 item.tfc.ceramics.fired.fire_brick.name=Fire Brick
 item.tfc.ceramics.unfired.fire_brick.name=Unfired Fire Brick
 item.tfc.ceramics.fire_clay.name=Fire Clay
-item.tfc.ceramics.unfired.brick.name=Unfired Brick
+item.tfc.ceramics.unfired.clay_brick.name=Unfired Clay Brick
 
 item.tfc.hide.raw.small.name=Small Raw Hide
 item.tfc.hide.raw.medium.name=Medium Raw Hide

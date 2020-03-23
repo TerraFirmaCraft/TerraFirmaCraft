@@ -140,7 +140,7 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("dye/white")
     public static final ItemMisc DYE_WHITE = getNull();
 
-    @GameRegistry.ObjectHolder("ceramics/unfired/brick")
+    @GameRegistry.ObjectHolder("ceramics/unfired/clay_brick")
     public static final ItemMisc UNFIRED_BRICK = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
@@ -269,7 +269,7 @@ public final class ItemsTFC
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.MEDIUM, "fire_clay"), CT_MISC));
 
-            simpleItems.add(register(r, "ceramics/unfired/brick", new ItemMisc(Size.SMALL, Weight.MEDIUM), CT_MISC));
+            simpleItems.add(register(r, "ceramics/unfired/clay_brick", new ItemMisc(Size.SMALL, Weight.MEDIUM), CT_MISC));
 
             simpleItems.add(register(r, "ceramics/unfired/jug", new ItemPottery(), CT_POTTERY));
             register(r, "ceramics/fired/jug", new ItemJug(), CT_POTTERY);
