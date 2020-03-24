@@ -22,7 +22,9 @@
       "cooking_pot": {
         "submodel": "tfc:firepit/cooking_pot"
       },
-      "grill": {}
+      "grill": {
+        "submodel": "tfc:firepit/grill"
+      }
     },
     "inventory": [
       {

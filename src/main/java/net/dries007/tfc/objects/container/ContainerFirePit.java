@@ -52,8 +52,9 @@ public class ContainerFirePit extends ContainerTE<TEFirePit>
                 addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT_1, 71, 48, tile));
                 addSlotToContainer(new SlotCallback(inventory, SLOT_OUTPUT_2, 89, 48, tile));
             }
-            else if (attachment == BlockFirePit.FirePitAttachment.COOKING_POT)
+            else
             {
+                // Both fire pit and cooking pot use these extra slots
                 for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
                 {
                     addSlotToContainer(new SlotCallback(inventory, i, 62 + (i - SLOT_EXTRA_INPUT_START) * 18, 20, tile));
