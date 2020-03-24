@@ -11,7 +11,6 @@ public enum SoilBlockType
 {
     DIRT,
     GRASS,
-    DRY_GRASS,
     GRASS_PATH;
 
     public Block create()
@@ -21,7 +20,6 @@ public enum SoilBlockType
             case DIRT:
                 return new TFCDirtBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND));
             case GRASS:
-            case DRY_GRASS:
                 return new TFCGrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT));
             case GRASS_PATH:
                 return new TFCGrassPathBlock(Block.Properties.create(Material.EARTH).hardnessAndResistance(0.65F).sound(SoundType.PLANT));
@@ -31,9 +29,11 @@ public enum SoilBlockType
 
     public enum Variant
     {
-        SILTY,
-        SANDY,
-        LOAMY,
+        SILT,
+        LOAM,
+        SANDY_LOAM,
+        SILTY_LOAM,
+        CLAY_LOAM,
         CLAY, // These two are special
         PEAT;
 
@@ -44,7 +44,7 @@ public enum SoilBlockType
         @Nonnull
         public static Variant valueOf(int i)
         {
-            return i >= 0 && i < TOTAL ? VALUES[i] : SILTY;
+            return i >= 0 && i < TOTAL ? VALUES[i] : SILT;
         }
     }
 }

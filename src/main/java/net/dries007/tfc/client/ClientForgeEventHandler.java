@@ -56,10 +56,10 @@ public class ClientForgeEventHandler
     {
         Minecraft mc = Minecraft.getInstance();
         List<String> list = event.getRight();
-        if (mc.gameSettings.showDebugInfo) // todo: config
+        if (mc.world != null && mc.gameSettings.showDebugInfo) // todo: config
         {
             //noinspection ConstantConditions
-            BlockPos pos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getBoundingBox().minY, mc.getRenderViewEntity().posZ);
+            BlockPos pos = new BlockPos(mc.getRenderViewEntity().getPosX(), mc.getRenderViewEntity().getBoundingBox().minY, mc.getRenderViewEntity().getPosZ());
             if (mc.world.chunkExists(pos.getX() >> 4, pos.getZ() >> 4))
             {
                 IChunk chunk = mc.world.getChunk(pos);
@@ -68,16 +68,23 @@ public class ClientForgeEventHandler
                     list.add("");
                     list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
-                    list.add(String.format("%sRegion: %s%.1f\u00b0C%s Avg: %s%.1f\u00b0C%s Min: %s%.1f\u00b0C%s Max: %s%.1f\u00b0C",
-                        GRAY, WHITE, data.getRegionalTemp(), GRAY,
-                        WHITE, data.getAvgTemp(), GRAY,
-                        WHITE, ClimateHelper.monthFactor(data.getRegionalTemp(), Month.JANUARY.getTemperatureModifier(), pos.getZ()), GRAY,
-                        WHITE, ClimateHelper.monthFactor(data.getRegionalTemp(), Month.JULY.getTemperatureModifier(), pos.getZ())));
-                    //list.add(String.format("%sTemperature: %s%.1f\u00b0C Daily: %s%.1f\u00b0C",
-                    //    GRAY, WHITE, ClimateTFC.getMonthlyTemp(pos),
-                    //    WHITE, ClimateTFC.getActualTemp(pos)));
+                    if (data.isValid())
+                    {
+                        list.add(String.format("%sRegion: %s%.1f\u00b0C%s Avg: %s%.1f\u00b0C%s Min: %s%.1f\u00b0C%s Max: %s%.1f\u00b0C",
+                            GRAY, WHITE, data.getRegionalTemp(), GRAY,
+                            WHITE, data.getAvgTemp(), GRAY,
+                            WHITE, ClimateHelper.monthFactor(data.getRegionalTemp(), Month.JANUARY.getTemperatureModifier(), pos.getZ()), GRAY,
+                            WHITE, ClimateHelper.monthFactor(data.getRegionalTemp(), Month.JULY.getTemperatureModifier(), pos.getZ())));
+                        //list.add(String.format("%sTemperature: %s%.1f\u00b0C Daily: %s%.1f\u00b0C",
+                        //    GRAY, WHITE, ClimateTFC.getMonthlyTemp(pos),
+                        //    WHITE, ClimateTFC.getActualTemp(pos)));
 
-                    list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall()));
+                        list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall()));
+                    }
+                    else
+                    {
+                        list.add("Invalid Chunk Data");
+                    }
                 });
             }
         }

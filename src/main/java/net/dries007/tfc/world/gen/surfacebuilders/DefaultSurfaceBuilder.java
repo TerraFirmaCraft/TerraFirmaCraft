@@ -33,7 +33,7 @@ public class DefaultSurfaceBuilder implements ISurfaceBuilder
 
         Block defaultBlock = data.getTopRock(localX, localZ).getBlock(Rock.BlockType.RAW);
         BlockState stateUnder = config.getUnder().get(data, localX, localZ);
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable pos = new BlockPos.Mutable();
 
         for (int y = startHeight; y >= 0 && surfaceFlag != 0; y--)
         {

@@ -17,8 +17,9 @@ public class PacketHandler
 
     public static void setup()
     {
-        int id = -1;
+        int id = 0;
 
-        CHANNEL.registerMessage(++id, ChunkDataPacket.class, ChunkDataPacket::encode, ChunkDataPacket::new, ChunkDataPacket::handle);
+        CHANNEL.registerMessage(id++, ChunkDataUpdatePacket.class, ChunkDataUpdatePacket::encode, ChunkDataUpdatePacket::new, ChunkDataUpdatePacket::handle);
+        CHANNEL.registerMessage(id++, ChunkDataRequestPacket.class, ChunkDataRequestPacket::encode, ChunkDataRequestPacket::new, ChunkDataRequestPacket::handle);
     }
 }

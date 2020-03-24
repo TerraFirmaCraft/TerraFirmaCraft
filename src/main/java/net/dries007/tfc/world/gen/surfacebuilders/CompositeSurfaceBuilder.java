@@ -12,21 +12,24 @@ public class CompositeSurfaceBuilder implements ISurfaceBuilder
     private final ISurfaceBuilder[] builders;
     private final ISurfaceBuilder otherwise;
     private final boolean useRainfall;
+    private final float fuzz;
 
-    public CompositeSurfaceBuilder(float mid, ISurfaceBuilder low, ISurfaceBuilder high, boolean useRainfall)
+    public CompositeSurfaceBuilder(float mid, ISurfaceBuilder low, ISurfaceBuilder high, boolean useRainfall, float fuzz)
     {
         this.thresholds = new float[] {mid};
         this.builders = new ISurfaceBuilder[] {low};
         this.otherwise = high;
         this.useRainfall = useRainfall;
+        this.fuzz = fuzz;
     }
 
-    public CompositeSurfaceBuilder(float min, float max, ISurfaceBuilder low, ISurfaceBuilder mid, ISurfaceBuilder high, boolean useRainfall)
+    public CompositeSurfaceBuilder(float min, float max, ISurfaceBuilder low, ISurfaceBuilder mid, ISurfaceBuilder high, boolean useRainfall, float fuzz)
     {
         this.thresholds = new float[] {min, max};
         this.builders = new ISurfaceBuilder[] {low, mid};
         this.otherwise = high;
         this.useRainfall = useRainfall;
+        this.fuzz = fuzz;
     }
 
     @Override
@@ -35,6 +38,7 @@ public class CompositeSurfaceBuilder implements ISurfaceBuilder
         for (int i = 0; i < thresholds.length; i++)
         {
             float value = useRainfall ? rainfall : temperature;
+            value += (random.nextFloat() - random.nextFloat()) * fuzz;
             if (value < thresholds[i])
             {
                 builders[i].buildSurface(random, chunkIn, data, x, z, startHeight, temperature, rainfall, noise);
