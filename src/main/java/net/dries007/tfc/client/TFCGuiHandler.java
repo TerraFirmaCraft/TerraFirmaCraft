@@ -94,8 +94,6 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerKnapping(KnappingType.LEATHER, player.inventory, OreDictionaryHelper.doesStackMatchOre(stack, "leather") ? stack : player.getHeldItemOffhand());
             case KNAPPING_FIRE_CLAY:
                 return new ContainerKnapping(KnappingType.FIRE_CLAY, player.inventory, OreDictionaryHelper.doesStackMatchOre(stack, "fireClay") ? stack : player.getHeldItemOffhand());
-            case QUERN:
-                return new ContainerQuern(player.inventory, Helpers.getTE(world, pos, TEQuern.class));
             case CRUCIBLE:
                 return new ContainerCrucible(player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             case LARGE_VESSEL:
@@ -162,8 +160,6 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiKnapping(container, player, KnappingType.LEATHER, LEATHER_TEXTURE);
             case KNAPPING_FIRE_CLAY:
                 return new GuiKnapping(container, player, KnappingType.FIRE_CLAY, FIRE_CLAY_TEXTURE);
-            case QUERN:
-                return new GuiQuern(container, player.inventory, Helpers.getTE(world, pos, TEQuern.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CRUCIBLE:
                 return new GuiCrucible(container, player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             case LARGE_VESSEL:
@@ -200,7 +196,6 @@ public class TFCGuiHandler implements IGuiHandler
         MOLD,
         FIRE_PIT,
         BARREL,
-        QUERN,
         KNAPPING_STONE,
         KNAPPING_CLAY,
         KNAPPING_FIRE_CLAY,
