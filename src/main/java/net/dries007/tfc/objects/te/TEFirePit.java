@@ -35,7 +35,6 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.food.ItemDynamicBowlFood;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.agriculture.Food;
@@ -76,12 +75,18 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     // Fire pit
     private Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
 
+    // Attachments
+    private ItemStack attachedItemStack;
+
     // Cooking Pot
     private CookingPotStage cookingPotStage;
     private int boilingTicks;
     private FoodData soupContents;
     private int soupServings;
     private Nutrient soupNutrient;
+
+    // Grill
+    private HeatRecipe[] cachedGrillRecipes;
 
     public TEFirePit()
     {
@@ -93,11 +98,15 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         cachedRecipe = null;
         lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
 
+        attachedItemStack = ItemStack.EMPTY;
+
         cookingPotStage = CookingPotStage.EMPTY;
         boilingTicks = 0;
         soupContents = null;
         soupServings = 0;
         soupNutrient = null;
+
+        cachedGrillRecipes = new HeatRecipe[5];
     }
 
     @Override
@@ -281,7 +290,21 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             }
             else if (attachment == BlockFirePit.FirePitAttachment.GRILL)
             {
-                // todo
+                // Only difference is we do the same heating recipe manipulations, just with five extra slots instead.
+                for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
+                {
+                    ItemStack stack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
+                    IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        float itemTemp = cap.getTemperature();
+                        if (temperature > itemTemp)
+                        {
+                            CapabilityItemHeat.addTemp(cap);
+                        }
+                        handleGrillCooking(i, stack, cap);
+                    }
+                }
             }
 
             // This is here to avoid duplication glitches
@@ -366,6 +389,9 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
 
         // Update cached recipe
         cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT));
+
+        // If grill, update other heat recipes
+        updateCachedGrillRecipes();
     }
 
     @Override
@@ -384,34 +410,31 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                 leftover.add(new ItemStack(surplusItems.getCompoundTagAt(i)));
             }
         }
+
+        attachedItemStack = new ItemStack(nbt.getCompoundTag("attachedItemStack"));
+
+        BlockFirePit.FirePitAttachment attachment = BlockFirePit.FirePitAttachment.valueOf(nbt.getInteger("attachment"));
+        if (attachment == BlockFirePit.FirePitAttachment.COOKING_POT)
+        {
+            cookingPotStage = CookingPotStage.valueOf(nbt.getInteger("cookingPotStage"));
+            if (cookingPotStage == CookingPotStage.FINISHED)
+            {
+                soupServings = nbt.getInteger("soupServings");
+                soupNutrient = Nutrient.valueOf(nbt.getInteger("soupNutrient"));
+                soupContents = new FoodData();
+                soupContents.deserializeNBT(nbt.getCompoundTag("soupContents"));
+            }
+            else if (cookingPotStage == CookingPotStage.BOILING)
+            {
+                boilingTicks = nbt.getInteger("boilingTicks");
+            }
+        }
+
         super.readFromNBT(nbt);
 
         // Update recipe cache
         cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT));
-
-        // Cooking pot
-        cookingPotStage = CookingPotStage.valueOf(nbt.getInteger("cookingPotStage"));
-        if (cookingPotStage == CookingPotStage.FINISHED)
-        {
-            soupServings = nbt.getInteger("soupServings");
-            soupNutrient = Nutrient.valueOf(nbt.getInteger("soupNutrient"));
-            soupContents = new FoodData();
-            soupContents.deserializeNBT(nbt.getCompoundTag("soupContents"));
-        }
-        else if (cookingPotStage == CookingPotStage.BOILING)
-        {
-            boilingTicks = nbt.getInteger("boilingTicks");
-        }
-    }
-
-    @Override
-    public void onBreakBlock(World world, BlockPos pos, IBlockState state)
-    {
-        if (state.getValue(ATTACHMENT) == BlockFirePit.FirePitAttachment.COOKING_POT)
-        {
-            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemsTFC.FIRED_POT));
-        }
-        super.onBreakBlock(world, pos, state);
+        updateCachedGrillRecipes();
     }
 
     @Override
@@ -431,7 +454,35 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             }
             nbt.setTag("leftover", surplusList);
         }
+        nbt.setTag("attachedItemStack", attachedItemStack.serializeNBT());
+
+        BlockFirePit.FirePitAttachment attachment = world.getBlockState(pos).getValue(ATTACHMENT);
+        nbt.setInteger("attachment", attachment.ordinal()); // to de-serialize the correct stuff
+        if (attachment == BlockFirePit.FirePitAttachment.COOKING_POT)
+        {
+            nbt.setInteger("cookingPotStage", cookingPotStage.ordinal());
+            if (cookingPotStage == CookingPotStage.BOILING)
+            {
+                nbt.setInteger("boilingTicks", boilingTicks);
+            }
+            else if (cookingPotStage == CookingPotStage.FINISHED)
+            {
+                nbt.setTag("soupContents", soupContents.serializeNBT());
+                nbt.setInteger("soupNutrient", soupNutrient.ordinal());
+                nbt.setInteger("soupServings", soupServings);
+            }
+        }
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public void onBreakBlock(World world, BlockPos pos, IBlockState state)
+    {
+        if (!attachedItemStack.isEmpty())
+        {
+            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), attachedItemStack);
+        }
+        super.onBreakBlock(world, pos, state);
     }
 
     @Override
@@ -458,10 +509,16 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             case SLOT_EXTRA_INPUT_START + 2:
             case SLOT_EXTRA_INPUT_START + 3:
             case SLOT_EXTRA_INPUT_START + 4:
-                if (world.getBlockState(pos).getValue(ATTACHMENT) == BlockFirePit.FirePitAttachment.COOKING_POT)
+                BlockFirePit.FirePitAttachment attachment = world.getBlockState(pos).getValue(ATTACHMENT);
+                if (attachment == BlockFirePit.FirePitAttachment.COOKING_POT)
                 {
                     // Cooking pot inputs must be food & category of veg, cooked or uncooked meat
                     return stack.hasCapability(CapabilityFood.CAPABILITY, null) && Food.Category.doesStackMatchCategories(stack, Food.Category.FRUIT, Food.Category.VEGETABLE, Food.Category.COOKED_MEAT, Food.Category.MEAT);
+                }
+                else if (attachment == BlockFirePit.FirePitAttachment.GRILL)
+                {
+                    // Grill can only do food + heatable
+                    return stack.hasCapability(CapabilityFood.CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
                 }
             default: // Other fuel slots + output slots
                 return false;
@@ -480,21 +537,17 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         return soupServings;
     }
 
-    public void onConvertToCookingPot(EntityPlayer player)
+    public void onConvertToCookingPot(EntityPlayer player, ItemStack stack)
     {
-        // Dump items in output / input slots
-        for (int i = SLOT_ITEM_INPUT; i < SLOT_OUTPUT_2; i++)
-        {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty())
-            {
-                ItemHandlerHelper.giveItemToPlayer(player, stack);
-            }
-            inventory.setStackInSlot(i, ItemStack.EMPTY);
-        }
-
-        // Reset cooking pot stage
+        dumpNonExtraItems(player);
         cookingPotStage = CookingPotStage.EMPTY;
+        attachedItemStack = stack.splitStack(1);
+    }
+
+    public void onConvertToGrill(EntityPlayer player, ItemStack stack)
+    {
+        dumpNonExtraItems(player);
+        attachedItemStack = stack.splitStack(1);
     }
 
     public void addWaterToCookingPot()
@@ -585,6 +638,30 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         if (airTicks > 600)
         {
             airTicks = 600;
+        }
+    }
+
+    private void updateCachedGrillRecipes()
+    {
+        if (world.getBlockState(pos).getValue(ATTACHMENT) == BlockFirePit.FirePitAttachment.GRILL)
+        {
+            for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
+            {
+                cachedGrillRecipes[i - SLOT_EXTRA_INPUT_START] = HeatRecipe.get(inventory.getStackInSlot(i));
+            }
+        }
+    }
+
+    private void dumpNonExtraItems(EntityPlayer player)
+    {
+        for (int i = SLOT_ITEM_INPUT; i < SLOT_OUTPUT_2; i++)
+        {
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (!stack.isEmpty())
+            {
+                ItemHandlerHelper.giveItemToPlayer(player, stack);
+            }
+            inventory.setStackInSlot(i, ItemStack.EMPTY);
         }
     }
 
@@ -681,6 +758,16 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                     }
                 }
             }
+        }
+    }
+
+    private void handleGrillCooking(int slot, ItemStack stack, IItemHeat heat)
+    {
+        HeatRecipe recipe = cachedGrillRecipes[slot - SLOT_EXTRA_INPUT_START];
+        if (recipe != null && recipe.isValidTemperature(heat.getTemperature()))
+        {
+            ItemStack output = recipe.getOutputStack(stack);
+            inventory.setStackInSlot(slot, output);
         }
     }
 

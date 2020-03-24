@@ -219,8 +219,13 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
                     if (OreDictionaryHelper.doesStackMatchOre(held, "cookingPot"))
                     {
                         worldIn.setBlockState(pos, state.withProperty(ATTACHMENT, FirePitAttachment.COOKING_POT));
-                        tile.onConvertToCookingPot(player);
-                        held.shrink(1);
+                        tile.onConvertToCookingPot(player, held);
+                        return true;
+                    }
+                    else if (OreDictionaryHelper.doesStackMatchOre(held, "grill"))
+                    {
+                        worldIn.setBlockState(pos, state.withProperty(ATTACHMENT, FirePitAttachment.GRILL));
+                        tile.onConvertToGrill(player, held);
                         return true;
                     }
                 }

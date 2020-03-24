@@ -22,6 +22,7 @@ public class GuiFirePit extends GuiContainerTE<TEFirePit>
 {
     private static final ResourceLocation FIRE_PIT_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
     private static final ResourceLocation FIRE_PIT_COOKING_POT_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit_cooking_pot.png");
+    private static final ResourceLocation FIRE_PIT_GRILL_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit_grill.png");
 
     private final BlockFirePit.FirePitAttachment attachment;
 
@@ -112,6 +113,7 @@ public class GuiFirePit extends GuiContainerTE<TEFirePit>
                 mc.getTextureManager().bindTexture(FIRE_PIT_COOKING_POT_BACKGROUND);
                 break;
             case GRILL:
+                mc.getTextureManager().bindTexture(FIRE_PIT_GRILL_BACKGROUND);
                 break;
         }
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);

@@ -64,6 +64,7 @@ public final class ItemsTFC
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
     public static final Item HANDSTONE = getNull();
+    public static final Item WROUGHT_IRON_GRILL = getNull();
 
     @GameRegistry.ObjectHolder("crop/product/jute")
     public static final ItemMisc JUTE = getNull();
@@ -322,17 +323,7 @@ public final class ItemsTFC
         simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
-
-        // Note: if you add items you don't need to put them in this list of todos. Feel free to add them where they make sense :)
-        // todo: Bow? Arrows?
-        // todo: Fishing rod?
-        // todo: ink?
-        // todo: flint & steel? Higher durability versions for different metals (iron/steels)?
-        // todo: fluid glass bottles? (alcohols/water/vinegar/brine)
-        // todo: minecart with chest (so the chest dropped is the right kind of wood)
-        // todo: mortar
-
-        // todo: quiver
+        register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.MEDIUM, "grill"), CT_MISC);
 
         allSimpleItems = simpleItems.build();
 
