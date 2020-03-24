@@ -30,7 +30,7 @@ public enum Heat
 
     public static float maxVisibleTemperature()
     {
-        return BRILLIANT_WHITE.max;
+        return BRILLIANT_WHITE.getMax();
     }
 
     @Nullable
@@ -63,7 +63,7 @@ public enum Heat
             {
                 for (int i = 1; i <= 4; i++)
                 {
-                    if (temperature <= heat.min + ((float) i * 0.2f) * (heat.max - heat.min))
+                    if (temperature <= heat.getMin() + ((float) i * 0.2f) * (heat.getMax() - heat.getMin()))
                         continue;
                     b.append("\u2605");
                 }
@@ -97,8 +97,8 @@ public enum Heat
         return tooltip;
     }
 
-    final float min;
-    final float max;
+    private final float min;
+    private final float max;
     final TextFormatting format, alternate;
 
     Heat(float min, float max, TextFormatting format, TextFormatting alternate)
@@ -112,5 +112,15 @@ public enum Heat
     Heat(float min, float max, TextFormatting format)
     {
         this(min, max, format, format);
+    }
+
+    public float getMin()
+    {
+        return min;
+    }
+
+    public float getMax()
+    {
+        return max;
     }
 }

@@ -40,8 +40,8 @@ public class FoodTrait
         PICKLED = new FoodTrait("pickled", 0.5f);
         PRESERVED = new FoodTrait("preserved", 0.5f);
         VINEGAR = new FoodTrait("vinegar", 0.1f, false);
-        CHARCOAL_GRILLED = new FoodTrait("charcoal_grilled", 0.9f); // todo: nutrition modifier -30%
-        WOOD_GRILLED = new FoodTrait("wood_grilled", 0.9f); // todo: nutrition modifier +10%
+        CHARCOAL_GRILLED = new FoodTrait("charcoal_grilled", 1.2f);
+        WOOD_GRILLED = new FoodTrait("wood_grilled", 0.8f);
     }
 
     public static Map<String, FoodTrait> getTraits()

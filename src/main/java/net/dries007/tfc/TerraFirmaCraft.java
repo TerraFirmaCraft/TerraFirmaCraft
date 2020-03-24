@@ -179,6 +179,7 @@ public final class TerraFirmaCraft
                 if (ConfigTFC.GENERAL.forceTFCWorldTypeOnServer)
                 {
                     // This is called before vanilla defaults it, meaning we intercept it's default with ours
+                    // However, we can't actually set this due to fears of overriding the existing world
                     TerraFirmaCraft.getLog().info("Setting default level-type to `tfc_classic`");
                     settings.getStringProperty("level-type", "tfc_classic");
                 }

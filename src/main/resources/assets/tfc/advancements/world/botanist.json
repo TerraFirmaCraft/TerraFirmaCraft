@@ -212,26 +212,6 @@
                     }
                 ]
             }
-        },
-        "pumpkin": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "tfc:crop/seeds/pumpkin"
-                    }
-                ]
-            }
-        },
-        "melon": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "tfc:crop/seeds/melon"
-                    }
-                ]
-            }
         }
     },
     "rewards":{

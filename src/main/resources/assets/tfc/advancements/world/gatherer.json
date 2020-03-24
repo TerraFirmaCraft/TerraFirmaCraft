@@ -211,31 +211,30 @@
                     }
                 ]
             }
-        },
-        "pumpkin": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "tfc:crop/seeds/pumpkin"
-                    }
-                ]
-            }
-        },
-        "melon": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "tfc:crop/seeds/melon"
-                    }
-                ]
-            }
         }
     },
     "requirements": [
-        ["barley","maize","oat","rice","rye","wheat",
-            "beet","cabbage","carrot","garlic","green_bean","onion","potato","soybean","squash","sugarcane","tomato","red_bell_pepper","yellow_bell_pepper",
-            "jute","pumpkin","melon"]
+      [
+        "barley",
+        "maize",
+        "oat",
+        "rice",
+        "rye",
+        "wheat",
+        "beet",
+        "cabbage",
+        "carrot",
+        "garlic",
+        "green_bean",
+        "onion",
+        "potato",
+        "soybean",
+        "squash",
+        "sugarcane",
+        "tomato",
+        "red_bell_pepper",
+        "yellow_bell_pepper",
+        "jute"
+      ]
     ]
 }
