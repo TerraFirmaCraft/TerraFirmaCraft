@@ -290,7 +290,6 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addRecipeClickArea(GuiKnapping.class, 132, 27, 9, 14, KNAP_CLAY_UID, KNAP_FIRECLAY_UID, KNAP_LEATHER_UID, KNAP_STONE_UID);
         registry.addRecipeClickArea(GuiAnvilTFC.class, 26, 24, 9, 14, ANVIL_UID, WELDING_UID);
         registry.addRecipeClickArea(GuiBarrel.class, 92, 21, 9, 14, BARREL_UID);
-        registry.addRecipeClickArea(GuiQuern.class, 114, 48, 9, 14, QUERN_UID);
         registry.addRecipeClickArea(GuiCrucible.class, 139, 100, 10, 15, ALLOY_UID);
         registry.addRecipeClickArea(GuiCrucible.class, 82, 100, 10, 15, METAL_HEAT_UID);
         registry.addRecipeClickArea(GuiFirePit.class, 79, 37, 18, 10, HEAT_UID);
