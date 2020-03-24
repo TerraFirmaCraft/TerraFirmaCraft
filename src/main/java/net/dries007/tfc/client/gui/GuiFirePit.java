@@ -88,13 +88,13 @@ public class GuiFirePit extends GuiContainerTE<TEFirePit>
         if (attachment == BlockFirePit.FirePitAttachment.COOKING_POT)
         {
             TEFirePit.CookingPotStage stage = tile.getCookingPotStage();
-            if (stage == TEFirePit.CookingPotStage.BOILING)
+            if (stage == TEFirePit.CookingPotStage.BOILING || stage == TEFirePit.CookingPotStage.FINISHED)
             {
                 // slots are disabled while boiling
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 for (int i = TEFirePit.SLOT_EXTRA_INPUT_START; i <= TEFirePit.SLOT_EXTRA_INPUT_END; i++)
                 {
-                    drawSlotOverlay(inventorySlots.getSlot(i));
+                    drawSlotOverlay(inventorySlots.getSlot(i - 3)); // index of extra inputs
                 }
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }

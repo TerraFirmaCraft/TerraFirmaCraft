@@ -10,10 +10,12 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodData;
@@ -45,8 +47,10 @@ public class ItemDynamicBowlFood extends ItemFoodTFC
         {
             ItemStack bowlStack = ((DynamicFoodHandler) food).getBowlStack().copy();
             bowlStack.setCount(1);
-            super.onItemUseFinish(stack, worldIn, entityLiving);
-            return bowlStack;
+            if (entityLiving instanceof EntityPlayer)
+            {
+                ItemHandlerHelper.giveItemToPlayer((EntityPlayer) entityLiving, bowlStack);
+            }
         }
         return super.onItemUseFinish(stack, worldIn, entityLiving);
     }

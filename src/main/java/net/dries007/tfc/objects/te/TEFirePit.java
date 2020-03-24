@@ -5,9 +5,11 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
@@ -17,24 +19,28 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.FoodData;
-import net.dries007.tfc.api.capability.food.IFood;
-import net.dries007.tfc.api.capability.food.Nutrient;
+import net.dries007.tfc.api.capability.food.*;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
+import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
+import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.objects.items.food.ItemDynamicBowlFood;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.agriculture.Food;
@@ -47,7 +53,7 @@ import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.ATTACHMENT;
 import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
 
 @ParametersAreNonnullByDefault
-public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFields
+public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFields, IItemHandlerSidedCallback
 {
     // Slot 0 - 3 = fuel slots with 3 being input, 4 = normal input slot, 5 and 6 are output slots 1 + 2
     public static final int SLOT_FUEL_CONSUME = 0;
@@ -62,7 +68,9 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     public static final int FIELD_COOKING_POT_STAGE = 1;
     public static final int FIELD_COOKING_POT_SERVINGS = 2;
 
-    public static final int COOKING_POT_BOILING_TEMPERATURE = 210; // Very hot
+    public static final float COOKING_POT_BOILING_TEMPERATURE = Heat.VERY_HOT.getMin();
+
+    private final IItemHandler[] inventoryWrappers;
 
     private HeatRecipe cachedRecipe;
     private boolean requiresSlotUpdate = false;
@@ -71,8 +79,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     private int airTicks; // Ticks of bellows provided air remaining
     private float burnTemperature; // Temperature provided from the current item of fuel
     private long lastPlayerTick; // Last player tick this forge was ticked (for purposes of catching up)
-
-    // Fire pit
     private Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
 
     // Attachments
@@ -84,6 +90,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     private FoodData soupContents;
     private int soupServings;
     private Nutrient soupNutrient;
+    private long soupCreationDate;
 
     // Grill
     private HeatRecipe[] cachedGrillRecipes;
@@ -105,8 +112,11 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         soupContents = null;
         soupServings = 0;
         soupNutrient = null;
+        soupCreationDate = 0;
 
         cachedGrillRecipes = new HeatRecipe[5];
+
+        inventoryWrappers = Arrays.stream(EnumFacing.values()).map(e -> new ItemHandlerSidedWrapper(this, inventory, e)).toArray(IItemHandler[]::new);
     }
 
     @Override
@@ -277,6 +287,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                                 soupContents = new FoodData(4, water, saturation, nutrition, Food.SOUP_GRAIN.getData().getDecayModifier());
                                 soupServings = (int) (ingredientCount / 2f) + 1;
                                 soupNutrient = maxNutrient; // the max nutrient determines the item you get
+                                soupCreationDate = CalendarTFC.PLAYER_TIME.getTicks();
 
                                 cookingPotStage = CookingPotStage.FINISHED;
                             }
@@ -293,7 +304,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                 // Only difference is we do the same heating recipe manipulations, just with five extra slots instead.
                 for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
                 {
-                    ItemStack stack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
+                    ItemStack stack = inventory.getStackInSlot(i);
                     IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
                     if (cap != null)
                     {
@@ -391,7 +402,10 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT));
 
         // If grill, update other heat recipes
-        updateCachedGrillRecipes();
+        if (world.getBlockState(pos).getValue(ATTACHMENT) == BlockFirePit.FirePitAttachment.GRILL)
+        {
+            updateCachedGrillRecipes();
+        }
     }
 
     @Override
@@ -423,6 +437,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                 soupNutrient = Nutrient.valueOf(nbt.getInteger("soupNutrient"));
                 soupContents = new FoodData();
                 soupContents.deserializeNBT(nbt.getCompoundTag("soupContents"));
+                soupCreationDate = nbt.getLong("soupCreationDate");
             }
             else if (cookingPotStage == CookingPotStage.BOILING)
             {
@@ -434,7 +449,10 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
 
         // Update recipe cache
         cachedRecipe = HeatRecipe.get(inventory.getStackInSlot(SLOT_ITEM_INPUT));
-        updateCachedGrillRecipes();
+        if (attachment == BlockFirePit.FirePitAttachment.GRILL)
+        {
+            updateCachedGrillRecipes();
+        }
     }
 
     @Override
@@ -470,6 +488,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                 nbt.setTag("soupContents", soupContents.serializeNBT());
                 nbt.setInteger("soupNutrient", soupNutrient.ordinal());
                 nbt.setInteger("soupServings", soupServings);
+                nbt.setLong("soupCreationDate", soupCreationDate);
             }
         }
         return super.writeToNBT(nbt);
@@ -556,25 +575,15 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         cookingPotStage = CookingPotStage.WAITING;
     }
 
-    public void onUseBowlOnCookingPot(EntityPlayer player, ItemStack stack)
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        if (soupServings > 0)
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
-            soupServings--;
-
-            ItemStack soupStack = new ItemStack(getSoupItem());
-            IFood soupFood = soupStack.getCapability(CapabilityFood.CAPABILITY, null);
-            if (soupFood instanceof ItemDynamicBowlFood.DynamicFoodHandler)
-            {
-                ((ItemDynamicBowlFood.DynamicFoodHandler) soupFood).initCreationDataAndBowl(stack, soupContents);
-            }
-            stack.shrink(1); // consume bowl
-            ItemHandlerHelper.giveItemToPlayer(player, soupStack);
-            if (soupServings == 0)
-            {
-                cookingPotStage = CookingPotStage.EMPTY;
-            }
+            return (T) new ItemHandlerSidedWrapper(this, inventory, facing);
         }
+        return super.getCapability(capability, facing);
     }
 
     @Nonnull
@@ -641,14 +650,45 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         }
     }
 
+    public void onUseBowlOnCookingPot(EntityPlayer player, ItemStack stack)
+    {
+        if (soupServings > 0)
+        {
+            soupServings--;
+
+            ItemStack soupStack = new ItemStack(getSoupItem());
+            IFood soupFood = soupStack.getCapability(CapabilityFood.CAPABILITY, null);
+            if (soupFood instanceof ItemDynamicBowlFood.DynamicFoodHandler)
+            {
+                soupFood.setCreationDate(soupCreationDate);
+                ((ItemDynamicBowlFood.DynamicFoodHandler) soupFood).initCreationDataAndBowl(stack, soupContents);
+            }
+            stack.shrink(1); // consume bowl
+            ItemHandlerHelper.giveItemToPlayer(player, soupStack);
+            if (soupServings == 0)
+            {
+                cookingPotStage = CookingPotStage.EMPTY;
+            }
+        }
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
+    {
+        return !(cookingPotStage == CookingPotStage.BOILING || cookingPotStage == CookingPotStage.FINISHED);
+    }
+
+    @Override
+    public boolean canExtract(int slot, EnumFacing side)
+    {
+        return !(cookingPotStage == CookingPotStage.BOILING || cookingPotStage == CookingPotStage.FINISHED);
+    }
+
     private void updateCachedGrillRecipes()
     {
-        if (world.getBlockState(pos).getValue(ATTACHMENT) == BlockFirePit.FirePitAttachment.GRILL)
+        for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
         {
-            for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
-            {
-                cachedGrillRecipes[i - SLOT_EXTRA_INPUT_START] = HeatRecipe.get(inventory.getStackInSlot(i));
-            }
+            cachedGrillRecipes[i - SLOT_EXTRA_INPUT_START] = HeatRecipe.get(inventory.getStackInSlot(i));
         }
     }
 
@@ -767,6 +807,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         if (recipe != null && recipe.isValidTemperature(heat.getTemperature()))
         {
             ItemStack output = recipe.getOutputStack(stack);
+            CapabilityFood.applyTrait(output, FoodTrait.WOOD_GRILLED);
             inventory.setStackInSlot(slot, output);
         }
     }
