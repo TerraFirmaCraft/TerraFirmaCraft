@@ -141,6 +141,8 @@ public enum VeinRegistry
 
                         veinTypeRegistry.put(properVeinName, vein);
                         weightedVeinTypes.add(vein.getWeight(), vein);
+
+                        TerraFirmaCraft.getLog().info("Registered new vein " + vein.toString());
                     }
                     catch (JsonParseException e)
                     {
