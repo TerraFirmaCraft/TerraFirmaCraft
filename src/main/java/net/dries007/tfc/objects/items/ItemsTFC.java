@@ -323,7 +323,7 @@ public final class ItemsTFC
         simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
-        register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.MEDIUM, "grill"), CT_MISC);
+        simpleItems.add(register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.MEDIUM, "grill"), CT_MISC));
 
         allSimpleItems = simpleItems.build();
 
