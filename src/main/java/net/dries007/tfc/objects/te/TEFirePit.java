@@ -573,6 +573,8 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     {
         // Advance the stage
         cookingPotStage = CookingPotStage.WAITING;
+        // And also reset the temperature
+        temperature = 0;
     }
 
     @SuppressWarnings("unchecked")
