@@ -41,6 +41,7 @@ public class ChunkDataProvider
      * Data is synced to client via custom packets
      */
     @Nullable
+    @SuppressWarnings("ConstantConditions")
     public static ChunkDataProvider get(World world)
     {
         AbstractChunkProvider chunkProvider = world.getChunkProvider();
@@ -54,10 +55,6 @@ public class ChunkDataProvider
                 {
                     return ((TFCOverworldChunkGenerator) chunkGenerator).getChunkDataProvider();
                 }
-            }
-            else
-            {
-                // Client, return dummy provider
             }
         }
         return null;
@@ -73,7 +70,7 @@ public class ChunkDataProvider
 
     public ChunkDataProvider(IWorld world, TFCGenerationSettings settings, Random seedGenerator)
     {
-        this.cachedChunkData = new FiniteLinkedHashMap<>(256);
+        this.cachedChunkData = new FiniteLinkedHashMap<>(1024);
         this.world = world;
 
         this.seedArea = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings).make();
@@ -162,6 +159,7 @@ public class ChunkDataProvider
         }
 
         data.setRockData(new RockData(bottomLayer, topLayer, soilLayer, sandLayer));
+        data.setValid(true);
         return data;
     }
 }

@@ -38,13 +38,11 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     private float rainfall;
     private float regionalTemp;
     private float avgTemp;
+    private boolean isValid;
 
     public ChunkData()
     {
-        rockData = new RockData();
-        rainfall = 250;
-        regionalTemp = 0;
-        avgTemp = 10;
+        initWithDefaultValues();
     }
 
     @Nonnull
@@ -88,6 +86,16 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         this.avgTemp = avgTemp;
     }
 
+    public boolean isValid()
+    {
+        return isValid;
+    }
+
+    public void setValid(boolean valid)
+    {
+        isValid = valid;
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
@@ -100,11 +108,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         CompoundNBT nbt = new CompoundNBT();
 
-        nbt.put("rockData", rockData.serializeNBT());
-        nbt.putFloat("rainfall", rainfall);
-        nbt.putFloat("regionalTemp", regionalTemp);
-        nbt.putFloat("avgTemp", avgTemp);
-
+        nbt.putBoolean("isValid", isValid);
+        if (isValid)
+        {
+            nbt.put("rockData", rockData.serializeNBT());
+            nbt.putFloat("rainfall", rainfall);
+            nbt.putFloat("regionalTemp", regionalTemp);
+            nbt.putFloat("avgTemp", avgTemp);
+        }
         return nbt;
     }
 
@@ -113,10 +124,27 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         if (nbt != null)
         {
-            rockData.deserializeNBT(nbt.getCompound("rockData"));
-            rainfall = nbt.getFloat("rainfall");
-            regionalTemp = nbt.getFloat("regionalTemp");
-            avgTemp = nbt.getFloat("avgTemp");
+            isValid = nbt.getBoolean("isValid");
+            if (isValid)
+            {
+                rockData.deserializeNBT(nbt.getCompound("rockData"));
+                rainfall = nbt.getFloat("rainfall");
+                regionalTemp = nbt.getFloat("regionalTemp");
+                avgTemp = nbt.getFloat("avgTemp");
+            }
+            else
+            {
+                initWithDefaultValues();
+            }
         }
+    }
+
+    private void initWithDefaultValues()
+    {
+        rockData = new RockData();
+        rainfall = 250;
+        regionalTemp = 0;
+        avgTemp = 10;
+        isValid = false;
     }
 }

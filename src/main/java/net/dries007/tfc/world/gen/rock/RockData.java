@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.api.types.Rock;
@@ -94,7 +95,7 @@ public class RockData implements INBTSerializable<CompoundNBT>
         if (nbt != null)
         {
             // Build pallet
-            ListNBT pallet = nbt.getList("pallet", 8 /* String */);
+            ListNBT pallet = nbt.getList("pallet", Constants.NBT.TAG_STRING);
             List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
             for (int i = 0; i < pallet.size(); i++)
             {

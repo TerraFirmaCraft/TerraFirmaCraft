@@ -12,14 +12,12 @@ import net.dries007.tfc.world.gen.rock.RockData;
 public interface ISurfacePart
 {
     @Nonnull
-    @SuppressWarnings("ConstantConditions")
     static ISurfacePart soil(SoilBlockType soil)
     {
         return (rockData, x, z) -> TFCBlocks.SOIL.get(soil).get(rockData.getSoil(x, z)).get().getDefaultState();
     }
 
     @Nonnull
-    @SuppressWarnings("ConstantConditions")
     static ISurfacePart sand()
     {
         return (rockData, x, z) -> TFCBlocks.SAND.get(rockData.getSand(x, z)).get().getDefaultState();

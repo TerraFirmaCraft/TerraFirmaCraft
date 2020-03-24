@@ -18,14 +18,10 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.BiomeContainer;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.WorldGenRegion;
+import net.minecraft.world.gen.*;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
@@ -33,6 +29,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.world.biome.TFCBiome;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.provider.TFCBiomeProvider;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.gen.carver.WorleyCaveCarver;
 import net.dries007.tfc.world.gen.rock.RockData;
@@ -48,6 +45,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     public static final BlockState WATER = Blocks.WATER.getDefaultState();
     public static final BlockState AIR = Blocks.AIR.getDefaultState();
 
+    // Parabolic field with total summed area equal to 1
     private static final double[] PARABOLIC_FIELD = Util.make(new double[9 * 9], array ->
     {
         for (int x = 0; x < 9; x++)
@@ -61,6 +59,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
     // Noise
     private final Map<TFCBiome, INoise2D> biomeNoiseMap;
+    private final INoiseGenerator surfaceDepthNoise;
 
     // Generators / Providers
     private final TFCBiomeProvider biomeProvider;
@@ -71,11 +70,13 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     {
         super(world, biomeProvider, settings);
 
-        Random seedGenerator = new Random(world.getSeed());
+        SharedSeedRandom seedGenerator = new SharedSeedRandom(world.getSeed());
 
+        // Noise
         this.biomeNoiseMap = new HashMap<>();
         final long biomeNoiseSeed = seedGenerator.nextLong();
         TFCBiomes.getBiomes().forEach(biome -> biomeNoiseMap.put(biome, biome.createNoiseLayer(biomeNoiseSeed)));
+        surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, 3, 0);
 
         if (!(biomeProvider instanceof TFCBiomeProvider))
         {
@@ -86,7 +87,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         // Custom cave carver
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator);
 
-        // Rock Layer Provider
+        // Chunk data
         this.chunkDataProvider = new ChunkDataProvider(world, settings, seedGenerator);
     }
 
@@ -110,29 +111,31 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     }
 
     @Override
+    public void generateBiomes(IChunk chunkIn)
+    {
+        super.generateBiomes(chunkIn);
+    }
+
+    @Override
     public void func_225551_a_(WorldGenRegion worldGenRegion, IChunk chunk)
     {
         ChunkPos chunkPos = chunk.getPos();
         SharedSeedRandom random = new SharedSeedRandom();
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
-
-        BiomeContainer biomes = chunk.getBiomes();
-        if (biomes == null)
-        {
-            throw new IllegalStateException("Biomes are missing from chunk during surface generation");
-        }
-        RockData rockData = chunkDataProvider.getOrCreate(chunkPos).getRockData();
+        ChunkData chunData = chunkDataProvider.getOrCreate(chunkPos);
+        BlockPos.Mutable pos = new BlockPos.Mutable();
 
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
-                // todo: make dependent on temp / rainfall layer
-                float temperature = 5;
-                float rainfall = 200;
-                float noise = 0; // todo: use for noise surface builder
+                pos.setPos(x, 0, z);
+                float temperature = chunData.getAvgTemp();
+                float rainfall = chunData.getRainfall();
                 int topYLevel = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-                ((TFCBiome) biomes.getNoiseBiome(x, 0, z)).getTFCSurfaceBuilder().buildSurface(random, chunk, rockData, chunkPos.getXStart() + x, chunkPos.getZStart() + z, topYLevel + 1, temperature, rainfall, noise);
+                // todo: use a INoise2D here since it's easier to read
+                float noise = (float) surfaceDepthNoise.noiseAt(x * 0.0625D, topYLevel * 0.0625D, 0.0625D, z * 0.0625) * 15.0f;
+                ((TFCBiome) worldGenRegion.getBiome(pos)).getTFCSurfaceBuilder().buildSurface(random, chunk, chunData.getRockData(), chunkPos.getXStart() + x, chunkPos.getZStart() + z, topYLevel + 1, temperature, rainfall, noise);
             }
         }
 
@@ -158,7 +161,16 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
 
         // The spread biomes (for calculating terrain smoothing), and the 16x16 biome grid (for height map creation)
-        TFCBiome[] spreadBiomes = biomeProvider.getBiomes(chunkX - 4, chunkZ - 4, 24, 24);
+        TFCBiome[] spreadBiomes = new TFCBiome[24 * 24];
+        BlockPos.Mutable pos = new BlockPos.Mutable();
+        for (int i = 0; i < 24; i++)
+        {
+            for (int j = 0; j < 24; j++)
+            {
+                pos.setPos(chunkX - 4 + i, 0, chunkZ - 4 + j);
+                spreadBiomes[i + 24 * j] = (TFCBiome) world.getBiome(pos);
+            }
+        }
 
         // Build the base height map, and also assign surface types (different from biomes because we need more control)
         double[] baseHeight = new double[16 * 16];
@@ -277,7 +289,6 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         // Build Rough Terrain
         RockData rockData = chunkDataProvider.getOrCreate(chunkPos).getRockData();
-        BlockPos.Mutable pos = new BlockPos.Mutable();
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)

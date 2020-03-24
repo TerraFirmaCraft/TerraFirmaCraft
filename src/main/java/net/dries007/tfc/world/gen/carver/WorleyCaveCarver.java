@@ -134,7 +134,12 @@ public class WorleyCaveCarver
                                         BlockState originalState = chunkIn.getBlockState(pos);
                                         if (!originalState.isAir(chunkIn, pos) && originalState != BEDROCK && !originalState.getMaterial().isLiquid())
                                         {
-                                            chunkIn.setBlockState(pos, replacementState, false);
+                                            BlockState stateUp = chunkIn.getBlockState(pos);
+                                            // Don't replace if the stateUp exposes water
+                                            if (!stateUp.getMaterial().isLiquid())
+                                            {
+                                                chunkIn.setBlockState(pos, replacementState, false);
+                                            }
                                         }
                                     }
                                 }

@@ -23,7 +23,7 @@ public enum ShoreLayer implements ICastleTransformer
         Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(west) || p.test(south) || p.test(east);
         if (TFCLayerUtil.isMountains(center))
         {
-            if (matcher.test(TFCLayerUtil::isOcean))
+            if (matcher.test(TFCLayerUtil::isOcean) && center != TFCLayerUtil.FLOODED_MOUNTAINS)
             {
                 return TFCLayerUtil.STONE_SHORE;
             }

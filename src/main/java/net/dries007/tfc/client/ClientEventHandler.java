@@ -3,6 +3,8 @@ package net.dries007.tfc.client;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.util.math.MathHelper;
@@ -11,6 +13,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
@@ -22,6 +25,14 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class ClientEventHandler
 {
     private static final Logger LOGGER = LogManager.getLogger();
+
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event)
+    {
+        LOGGER.debug("Client Setup");
+
+        TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutoutMipped()));
+    }
 
     @SubscribeEvent
     public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
@@ -42,6 +53,5 @@ public final class ClientEventHandler
         };
 
         blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
-        blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.DRY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
     }
 }

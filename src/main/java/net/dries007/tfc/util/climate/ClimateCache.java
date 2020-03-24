@@ -31,8 +31,8 @@ public final class ClimateCache
         return backingMap.getOrDefault(pos, ClimateData.DEFAULT);
     }
 
-    public void update(ChunkPos pos, float temperature, float rainfall)
+    public void update(ChunkPos pos, float regionalTemp, float rainfall)
     {
-        backingMap.put(pos, new ClimateData(temperature, rainfall));
+        backingMap.put(pos, new ClimateData(regionalTemp, rainfall));
     }
 }
