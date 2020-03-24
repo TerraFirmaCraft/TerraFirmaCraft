@@ -2664,6 +2664,7 @@ item.tfc.wooden_bucket.filled=%s Bucket
 item.tfc.ceramics.fired.jug.name=Jug
 item.tfc.ceramics.fired.jug.filled=%s Jug
 item.tfc.mortar.name=Mortar
+item.tfc.wrought_iron_grill.name=Wrought Iron Grill
 
 item.tfc.ore.native_copper.name=Native Copper
 item.tfc.ore.native_gold.name=Native Gold
