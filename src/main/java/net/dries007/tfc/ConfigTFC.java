@@ -113,7 +113,7 @@ public class ConfigTFC
         @Config.Comment("Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")
-        public double temperatureModifierGlobal = 0.5; // todo: items cool too fast at 0.5, needs tweaking
+        public double temperatureModifierGlobal = 0.5;
 
         @Config.Comment("Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots.")
         @Config.LangKey("config." + MOD_ID + ".general.enableCruciblePouringAllSlots")
@@ -129,10 +129,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.foodDecayModifier")
         public double foodDecayModifier = 1.0;
 
-        @Config.Comment("Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1/2 hour per serving")
+        @Config.Comment("Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1 hour.")
         @Config.RangeInt(min = 20)
         @Config.LangKey("config." + MOD_ID + ".general.firePitCookingPotBoilingTime")
-        public int firePitCookingPotBoilingTime = 500;
+        public int firePitCookingPotBoilingTime = 1000;
 
         @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.")
         @Config.RangeInt(min = 20)
