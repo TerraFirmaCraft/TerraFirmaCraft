@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.te;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -70,7 +71,7 @@ public class TESluice extends TEBase implements ITickable
                             {
                                 Chunk chunk = world.getChunk(x, z);
                                 ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
-                                if (chunkData.canWork(1) && chunkData.getGeneratedVeins().size() > 0)
+                                if (chunkData.canWork(1) && chunkData.getGeneratedVeins().stream().anyMatch(vein -> vein.getType() != null && vein.getType().getOre() != null))
                                 {
                                     chunks.add(chunk);
                                 }
@@ -80,14 +81,17 @@ public class TESluice extends TEBase implements ITickable
                         {
                             Chunk workingChunk = chunks.get(Constants.RNG.nextInt(chunks.size()));
                             ChunkDataTFC chunkData = ChunkDataTFC.get(workingChunk);
-                            chunkData.addWork();
-                            List<Vein> veinList = new ArrayList<>(chunkData.getGeneratedVeins());
+
+                            // Only check for not null veins
+                            List<Vein> veinList = chunkData.getGeneratedVeins()
+                                .stream().filter(vein -> vein.getType() != null && vein.getType().getOre() != null)
+                                .collect(Collectors.toList());
+
+                            //noinspection ConstantConditions
                             Ore ore = veinList.get(Constants.RNG.nextInt(veinList.size())).getType().getOre();
-                            if (ore != null)
-                            {
-                                ItemStack output = new ItemStack(ItemSmallOre.get(ore));
-                                Helpers.spawnItemStack(world, getFrontWaterPos(), output);
-                            }
+                            ItemStack output = new ItemStack(ItemSmallOre.get(ore));
+                            Helpers.spawnItemStack(world, getFrontWaterPos(), output);
+                            chunkData.addWork();
                         }
                     }
                     if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceGemChance)
