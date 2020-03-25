@@ -23,14 +23,14 @@ public class ItemPottery extends ItemTFC
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.SMALL;
+        return Size.NORMAL; // Fits in large vessels and chests
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.MEDIUM;
+        return Weight.LIGHT; // Stacksize = 32
     }
 
     @Nullable

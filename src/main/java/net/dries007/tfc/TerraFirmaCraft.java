@@ -187,6 +187,9 @@ public final class TerraFirmaCraft
         }
 
         worldTypeTFC = new WorldTypeTFC();
+
+        CapabilityItemSize.init();
+        CapabilityItemHeat.init();
     }
 
     @Mod.EventHandler

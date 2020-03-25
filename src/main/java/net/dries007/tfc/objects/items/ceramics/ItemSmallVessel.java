@@ -158,14 +158,14 @@ public class ItemSmallVessel extends ItemPottery
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.SMALL;
+        return Size.NORMAL; // Can't be stored in itself
     }
 
     @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.VERY_HEAVY; // Stacksize = 1
     }
 
     @Nullable
@@ -393,7 +393,7 @@ public class ItemSmallVessel extends ItemPottery
             IItemSize size = CapabilityItemSize.getIItemSize(stack);
             if (size != null)
             {
-                return size.getSize(stack).isSmallerThan(Size.LARGE) && size.getWeight(stack).isSmallerThan(Weight.HEAVY);
+                return size.getSize(stack).isSmallerThan(Size.NORMAL);
             }
             return false;
         }
