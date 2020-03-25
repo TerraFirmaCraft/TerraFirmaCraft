@@ -15,11 +15,27 @@
     "B": {
       "item": "tfc:food/cornbread"
     },
-    "F": {
-      "type": "tfc:food_category",
-      "categories": ["cooked_meat", "fruit", "vegetable", "dairy"],
-      "allowed_empty": true
-    }
+    "F": [
+      {
+        "type": "minecraft:empty"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryFruit"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryCookedMeat"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryVegetable"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryDairy"
+      }
+    ]
   },
   "result": {
     "item": "tfc:food/cornbread_sandwich",

@@ -55,6 +55,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
         public boolean disableFallableBlocks = false;
 
+        @Config.Comment("If true, lava and water will make vanilla stone + cobblestone (instead of TFC rock variants).")
+        @Config.LangKey("config." + MOD_ID + ".general.disableLavaWaterPlacesTFCBlocks")
+        public boolean disableLavaWaterPlacesTFCBlocks = false;
+
         @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.")
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyOre")
         public boolean disableFallableBlocksDestroyOre = false;

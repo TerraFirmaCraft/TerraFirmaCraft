@@ -1,7 +1,6 @@
 {
   "ingredients": {
-    "fluid": "net.dries007.tfc.objects.recipes.ingredients.FluidIngredient$Factory",
-    "food_category": "net.dries007.tfc.objects.recipes.ingredients.FoodCategoryIngredient$Factory"
+    "fluid": "net.dries007.tfc.objects.recipes.ingredients.FluidIngredient$Factory"
   },
   "recipes": {
     "damage_item_shapeless": "net.dries007.tfc.objects.recipes.ShapelessDamageRecipe$Factory",

@@ -678,13 +678,16 @@ public final class CommonEventHandler
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
         // Since cobble is a gravity block, placing it can lead to world crashes, so we avoid doing that and place rhyolite instead
-        if (event.getNewState().getBlock() == Blocks.STONE)
+        if (!ConfigTFC.GENERAL.disableLavaWaterPlacesTFCBlocks)
         {
-            event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
-        }
-        if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
-        {
-            event.setNewState(BlockRockVariant.get(Rock.RHYOLITE, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
+            if (event.getNewState().getBlock() == Blocks.STONE)
+            {
+                event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
+            }
+            if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
+            {
+                event.setNewState(BlockRockVariant.get(Rock.RHYOLITE, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
+            }
         }
     }
 
