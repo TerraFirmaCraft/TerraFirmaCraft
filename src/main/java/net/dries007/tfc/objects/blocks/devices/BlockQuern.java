@@ -62,14 +62,14 @@ public class BlockQuern extends Block implements IItemSize, IHighlightHandler
     @Nonnull
     public Size getSize(ItemStack stack)
     {
-        return Size.VERY_LARGE;
+        return Size.VERY_LARGE; // Can't store anywhere, but don't overburden
     }
 
     @Override
     @Nonnull
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.VERY_HEAVY; // Stacksize = 1
     }
 
     @SuppressWarnings("deprecation")

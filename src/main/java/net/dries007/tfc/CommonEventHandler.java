@@ -733,7 +733,7 @@ public final class CommonEventHandler
         int hugeHeavyCount = 0;
         for (ItemStack stack : inventory.mainInventory)
         {
-            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
             {
                 hugeHeavyCount++;
                 if (hugeHeavyCount >= 2)
@@ -744,7 +744,7 @@ public final class CommonEventHandler
         }
         for (ItemStack stack : inventory.armorInventory)
         {
-            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
             {
                 hugeHeavyCount++;
                 if (hugeHeavyCount >= 2)
@@ -755,7 +755,7 @@ public final class CommonEventHandler
         }
         for (ItemStack stack : inventory.offHandInventory)
         {
-            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
             {
                 hugeHeavyCount++;
                 if (hugeHeavyCount >= 2)

@@ -74,14 +74,14 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.HUGE;
+        return Size.LARGE; // Only in chests
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.VERY_HEAVY; // Stack size = 1
     }
 
     @SuppressWarnings("deprecation")

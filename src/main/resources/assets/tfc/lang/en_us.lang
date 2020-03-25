@@ -569,9 +569,11 @@ tfc.enum.size.very_large=Very Large
 tfc.enum.size.huge=Huge
 
 ## Weight
+tfc.enum.weight.very_light=Very Light
 tfc.enum.weight.light=Light
 tfc.enum.weight.medium=Medium
 tfc.enum.weight.heavy=Heavy
+tfc.enum.weight.very_heavy=Very Heavy
 
 ## Heat
 tfc.enum.heat.warming=Warming

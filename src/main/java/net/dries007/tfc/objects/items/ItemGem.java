@@ -81,14 +81,14 @@ public class ItemGem extends ItemTFC
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.TINY;
+        return Size.SMALL; // Stored anywhere
     }
 
     @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.LIGHT;
+        return Weight.VERY_LIGHT; // Stacksize = 64
     }
 
     @Nullable

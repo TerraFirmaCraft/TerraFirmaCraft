@@ -73,14 +73,14 @@ public class BlockLoom extends BlockContainer implements IItemSize
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.LARGE;
+        return Size.LARGE; // Can only store in chests
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.VERY_HEAVY; // Stacksize = 1
     }
 
     @Nullable
