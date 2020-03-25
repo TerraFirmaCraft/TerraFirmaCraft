@@ -74,7 +74,12 @@ public final class CapabilityItemSize
     {
         if (!stack.isEmpty())
         {
-            if (stack.getItem() instanceof IItemSize)
+            IItemSize size = stack.getCapability(ITEM_SIZE_CAPABILITY, null);
+            if (size != null)
+            {
+                return size;
+            }
+            else if (stack.getItem() instanceof IItemSize)
             {
                 return (IItemSize) stack.getItem();
             }
@@ -82,7 +87,6 @@ public final class CapabilityItemSize
             {
                 return (IItemSize) ((ItemBlock) stack.getItem()).getBlock();
             }
-            return stack.getCapability(ITEM_SIZE_CAPABILITY, null);
         }
         return null;
     }

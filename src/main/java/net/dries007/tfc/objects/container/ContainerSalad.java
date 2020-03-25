@@ -40,6 +40,7 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
     public static final int SLOT_OUTPUT = 6;
 
     private final ItemStackHandler inventory;
+    private boolean skipOutputUpdates = false;
 
     public ContainerSalad(InventoryPlayer playerInv)
     {
@@ -110,6 +111,10 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
     public void setAndUpdateSlots(int slot)
     {
         // Check salad creation
+        if (skipOutputUpdates)
+        {
+            return; // cheeky hack to prevent output from getting updated in the middle of a shift click transaction
+        }
         ItemStack bowlStack = inventory.getStackInSlot(SLOT_BOWLS);
         if (!bowlStack.isEmpty())
         {
@@ -194,8 +199,13 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
             int containerSlots = inventorySlots.size() - player.inventory.mainInventory.size();
             if (index < containerSlots)
             {
+                if (index == SLOT_OUTPUT)
+                {
+                    skipOutputUpdates = true;
+                }
                 if (!mergeItemStack(stack, containerSlots, inventorySlots.size(), true))
                 {
+                    skipOutputUpdates = false;
                     return ItemStack.EMPTY;
                 }
             }
@@ -215,9 +225,11 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
             }
             if (stack.getCount() == stackCopy.getCount())
             {
+                skipOutputUpdates = false;
                 return ItemStack.EMPTY;
             }
-            slot.onTake(player, stack);
+            slot.onTake(player, stackCopy);
+            skipOutputUpdates = false;
             return stackCopy;
         }
         return ItemStack.EMPTY;

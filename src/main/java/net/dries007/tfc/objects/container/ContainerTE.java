@@ -136,7 +136,7 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
             {
                 return ItemStack.EMPTY;
             }
-            slot.onTake(player, stack);
+            slot.onTake(player, stackCopy);
             return stackCopy;
         }
         return ItemStack.EMPTY;

@@ -164,7 +164,7 @@ public class ItemWoodenBucket extends ItemTFC
             if (fluidStack != null)
             {
                 String fluidname = fluidStack.getLocalizedName();
-                return new TextComponentTranslation("item.tfc.wooden_bucket.filled", fluidname).getFormattedText();
+                return new TextComponentTranslation(getTranslationKey() + ".filled.name", fluidname).getFormattedText();
             }
         }
         return super.getItemStackDisplayName(stack);
