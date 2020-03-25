@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -44,9 +45,10 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
+@ParametersAreNonnullByDefault
 public class TESluice extends TEBase implements ITickable
 {
-    private static final int MAX_SOIL = 50;
+    public static final int MAX_SOIL = 50;
     private int soil;
     private int ticksRemaining, delayTimer;
 
@@ -135,17 +137,14 @@ public class TESluice extends TEBase implements ITickable
                             BlockRockVariant rockBlock = (BlockRockVariant) ((ItemBlock) stack.getItem()).getBlock();
                             if (rockBlock.getType() == Rock.Type.SAND || rockBlock.getType() == Rock.Type.GRAVEL)
                             {
-                                soil += 20;
-                                if (soil > MAX_SOIL)
-                                {
-                                    soil = MAX_SOIL;
-                                }
+                                soil += 20; // Overflows to not consume an stack until a full soil worth is consumed
                                 stack.shrink(1);
                                 if (stack.getCount() <= 0)
                                 {
                                     entityItem.setDead();
                                     break;
                                 }
+                                updateBlock();
                             }
                         }
                     }
@@ -218,6 +217,11 @@ public class TESluice extends TEBase implements ITickable
         return null;
     }
 
+    public int getSoil()
+    {
+        return soil;
+    }
+
     private BlockPos getFrontWaterPos()
     {
         //noinspection ConstantConditions
@@ -246,17 +250,29 @@ public class TESluice extends TEBase implements ITickable
         return false;
     }
 
+    private void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
+    }
+
     private void consumeSoil()
     {
         if (soil > 0 && hasFlow())
         {
             soil--;
             ticksRemaining = ConfigTFC.GENERAL.sluiceTicks;
+            updateBlock();
         }
         else
         {
-            soil = 0;
             ticksRemaining = 0;
+            if (soil > 0)
+            {
+                soil = 0;
+                updateBlock();
+            }
         }
     }
 
