@@ -81,7 +81,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 if (!veins.isEmpty())
                 {
                     veins.removeIf(v -> {
-                        if (!v.getType().hasLooseRocks() || v.getHighestY() < lowestYScan)
+                        if (v.getType() == null || !v.getType().hasLooseRocks() || v.getHighestY() < lowestYScan)
                         {
                             return true;
                         }
@@ -123,7 +123,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
             if (tile != null)
             {
                 ItemStack stack = ItemStack.EMPTY;
-                if (vein != null)
+                if (vein != null && vein.getType() != null)
                 {
                     stack = vein.getType().getLooseRockItem();
                 }

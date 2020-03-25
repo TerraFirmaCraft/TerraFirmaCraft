@@ -238,20 +238,24 @@ public class CommandFindVeins extends CommandBase
 
                 chunkData.getGeneratedVeins().stream()
                     .filter(vein -> !veinsFound.contains(vein.getPos()))
-                    .filter(vein -> filter == null || vein.getType().equals(filter))
+                    .filter(vein -> filter == null || filter.equals(vein.getType()))
                     .forEach(vein ->
                     {
                         veinsFound.add(vein.getPos());
-
+                        String veinName = "Unregistered Vein";
+                        if (vein.getType() != null)
+                        {
+                            veinName = vein.getType().getRegistryName();
+                        }
                         if (type == 0)
                         {
-                            listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.output", vein.getType().getRegistryName(), vein.getPos()));
+                            listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.output", veinName, vein.getPos()));
                         }
                         else if (type == 1)
                         {
-                            outputLog.add(String.format("Found %s at %s", vein.getType().getRegistryName(), vein.getPos()));
+                            outputLog.add(String.format("Found %s at %s", veinName, vein.getPos()));
                         }
-                        else if (type == 2)
+                        else if (type == 2 && vein.getType() != null)
                         {
                             int count = 1;
                             if (veinRateMap.containsKey(vein.getType()))

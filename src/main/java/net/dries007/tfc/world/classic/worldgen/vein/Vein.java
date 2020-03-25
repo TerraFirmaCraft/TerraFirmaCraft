@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.classic.worldgen.vein;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -119,6 +121,11 @@ public class Vein
         return pos;
     }
 
+    /**
+     * Should mostly always returns a VeinType obj (loaded from ore vein config)
+     * Unless this vein generated before config was changed, and this vein registry deleted
+     */
+    @Nullable
     public VeinType getType()
     {
         return type;
