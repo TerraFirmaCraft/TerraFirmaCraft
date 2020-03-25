@@ -180,13 +180,11 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             {
                 foodTraits.add(FoodTrait.getTraits().get(traitList.getStringTagAt(i)));
             }
-
             creationDate = nbt.getLong("creationDate");
-            if (creationDate == 0)
-            {
-                // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
-                creationDate = (int) (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
-            }
+        }
+        if (creationDate == 0)
+        {
+            initDefaultCreationDate();
         }
     }
 
@@ -207,5 +205,11 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             return Long.MAX_VALUE;
         }
         return creationDateIn + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
+    }
+
+    private void initDefaultCreationDate()
+    {
+        // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
+        creationDate = (int) (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
     }
 }

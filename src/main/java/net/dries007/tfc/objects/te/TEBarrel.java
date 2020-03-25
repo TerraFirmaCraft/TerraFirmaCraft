@@ -249,8 +249,8 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 }
             }
 
-            // Check if recipe is complete
-            if (recipe != null)
+            // Check if recipe is complete (sealed recipes only)
+            if (recipe != null && sealed)
             {
                 int durationSealed = (int) (CalendarTFC.PLAYER_TIME.getTicks() - sealedTick);
                 if (durationSealed > recipe.getDuration())

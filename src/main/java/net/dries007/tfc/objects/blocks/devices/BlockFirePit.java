@@ -18,6 +18,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -55,7 +56,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
 
     private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
     private static final AxisAlignedBB FIREPIT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
-    private static final AxisAlignedBB COOKING_POT_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.6875, 0.8125);
+    private static final AxisAlignedBB ATTACHMENT_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.6875, 0.8125);
 
     public BlockFirePit()
     {
@@ -100,9 +101,9 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, FIREPIT_AABB);
-        if (state.getValue(ATTACHMENT) == FirePitAttachment.COOKING_POT)
+        if (state.getValue(ATTACHMENT) != FirePitAttachment.NONE)
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, COOKING_POT_AABB);
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, ATTACHMENT_AABB);
         }
     }
 
@@ -298,6 +299,17 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
     {
         return offset.equals(TEBellows.OFFSET_LEVEL);
+    }
+
+    @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
     }
 
     @Override
