@@ -1,6 +1,6 @@
 # Contributions
 # 感谢为中文本地化贡献力量的所有人。
-# 初稿：青乌 人间之蟹 gdufw hidfug HeartyYF
+# 初稿：青乌 人间之蟹 zhanj gdufw hidfug HeartyYF
 # 校对：hidfug HeartyYF zhanj xwjcool123 3TUSK wje5
 # 以及其他很多提出过建议和意见的朋友。
 
@@ -8,9 +8,48 @@
 tfc.command.time.usage=/timetfc [add|query|set] [参数]
 tfc.command.time.usage_expected_first_argument=在 /timetfc 后应有 [add|query|set]
 tfc.command.time.usage_expected_second_argument_query=在 /timetfc query 后应有 [daytime|day|gametime|playerticks|calendarticks]
-tfc.command.time.usage_expected_second_argument_set=在 /timetfc set 后应有 [day|night|monthlength <value>]
-tfc.command.time.usage_expected_second_argument_add=在 /timetfc add 后应有 [days|months|years] <value>
+tfc.command.time.usage_expected_second_argument_set=在 /timetfc set 后应有 [<刻>|day|night|monthlength <值>]
+tfc.command.time.usage_expected_second_argument_add=在 /timetfc add 后应有 [days|months|years] <值>
 tfc.command.time.set_month_length=将月长度设置为 %d 天/月
+tfc.command.time.set_day=已将时间设置为下一个白天
+tfc.command.time.set_night=已将时间设置为下一个晚上
+tfc.command.time.set_ticks=已将时间设为下一天的 %d
+tfc.command.time.add_days=将时间调快了 %d 天（%d 刻）
+tfc.command.time.add_months=将时间调快了 %d 月（%d 刻）
+tfc.command.time.add_years=将时间调快了 %d 年（%d 刻）
+tfc.command.time.add_ticks=将时间调快了 %d 刻
+tfc.command.time.query_calendarticks=日历刻是 %d
+tfc.command.time.query_playerticks=玩家刻是 %d
+tfc.command.time.query_gametime=游戏时间是 %d 刻
+tfc.command.time.query_day=现在是第 %d 天
+tfc.command.time.query_daytime=现在是一日中的 %d 刻
+tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <名称>] [值]
+tfc.command.playertfc.usage_expected_first_argument=在 /playertfc 后应有 <get|set|add|reset>
+tfc.command.playertfc.usage_expected_second_argument=在 /playertfc %s 后应有 [nutrition|food|saturation|water|skill <名称>]
+tfc.command.playertfc.usage_expected_id=在 /playertfc %s 后应有 <名称>
+tfc.command.playertfc.usage_expected_value=在 /playertfc %s 后应有 [值]
+tfc.command.playertfc.usage_cant_set_add_nutrients=无法直接设置/增加营养值，因为其基于食物历史。作为替代，请使用 /playertfc 重置营养值。
+tfc.command.playertfc.usage_unknown_skill=未知技能：%s
+tfc.command.playertfc.usage_needs_player=必须由玩家执行
+tfc.command.playertfc.reset_nutrients=重置营养值
+tfc.command.playertfc.get_nutrients=平均营养值：%s
+tfc.command.playertfc.get_nutrients_nutrient= - %s：%s
+tfc.command.playertfc.get_nutrients_last_eaten=最后食用：%d 饥饿值，%s 饱和度，%s 腐烂因子。
+tfc.command.playertfc.get_nutrients_last_eaten_nutrient= - %s：%s
+tfc.command.playertfc.add_skill=向 %2$s 添加了 %1$.2f
+tfc.command.playertfc.set_skill=将 %s 设置为 %.2f
+tfc.command.playertfc.get_skill=技能 %s：平均等级 = %.2f，层次 = %s, 等级 = %.2f
+tfc.command.playertfc.get_food=饥饿值：%d
+tfc.command.playertfc.set_food=将饥饿值设置为 %d
+tfc.command.playertfc.get_saturation=饱和度：%.2f
+tfc.command.playertfc.set_saturation=将饱和度设置为 %.2f
+tfc.command.playertfc.get_water=口渴值：%.1f%%
+tfc.command.playertfc.set_water=将口渴值设置为 %.1f%%
+
+tfc.command.veins.usage=/findveins [all|<矿脉名称>] <半径> [dump|rate]
+tfc.command.veins.usage_expected_player=必须由玩家执行
+tfc.command.veins.usage_first_argument_not_vein=未发现名为 %s 的矿脉
+
 
 # Gui
 
@@ -38,6 +77,7 @@ tfc.tooltip.anvil_plan=目标
 tfc.tooltip.anvil_tier_too_low=此砧等级过低！
 tfc.tooltip.anvil_no_flux=砧里没有助焊剂！
 tfc.tooltip.anvil_too_cold=物品不够热，无法开工！
+tfc.tooltip.anvil_not_weldable=此物品无法被焊接！
 tfc.tooltip.anvil_no_hammer=砧里没有锤！
 tfc.tooltip.anvil_safety=那会毁了原料！
 tfc.tooltip.crucible_result=产物：
@@ -53,6 +93,11 @@ tfc.tooltip.debug_times=玩家刻：%d | 日历刻：%d
 tfc.tooltip.food_expiry_date=于 %s 过期
 tfc.tooltip.food_rotten=腐烂了 - 我绝对不吃。
 tfc.tooltip.food_infinite_expiry=永不过期
+tfc.tooltip.nutrition=营养值：
+tfc.tooltip.nutrition_saturation= - 饱和度：%s%%
+tfc.tooltip.nutrition_water= - 口渴值：%s%%
+tfc.tooltip.nutrition_nutrient= - %s：%s
+tfc.tooltip.hold_shift_for_nutrition_info=按住 (Shift) 查看营养值信息	
 tfc.tooltip.plant_cold=%s过冷%s
 tfc.tooltip.plant_dry=%s过干%s
 tfc.tooltip.plant_hot=%s过热%s
@@ -72,6 +117,10 @@ tfc.tooltip.crucible_alloy=含 %1$d mB 的 %2$s
 tfc.tooltip.crucible_less_than_one=< 1 单元
 tfc.tooltip.previous_page=上一页
 tfc.tooltip.next_page=下一页
+tfc.tooltip.firepit_cooking_pot_empty=空
+tfc.tooltip.firepit_cooking_pot_waiting=请添加食材
+tfc.tooltip.firepit_cooking_pot_boiling=沸腾
+tfc.tooltip.firepit_cooking_pot_servings=份数：%d
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=这只 %s 太老了，不能给它配种。
@@ -95,8 +144,12 @@ tfc.tooltip.set_month_length=将月长度设置为 %d 天。
 tfc.tooltip.time_command_set_player_time=将玩家时间设置为 %d 。
 tfc.tooltip.time_command_set_calendar_time=将日历时间设置为 %s 。
 tfc.tooltip.time_command_disabled=此命令已被群峦传说禁用。作为替代，请使用 /timetfc ！
-tfc.tooltip.skill_set=将 %s 设置为 %.2f 级
-tfc.tooltip.skill_add=向 %s 添加了 %.2f 级
+tfc.tooltip.veins_command.dump_veins=正在存储指定半径的所有矿脉，这可能需要一点时间...
+tfc.tooltip.veins_command.rate_veins=正在存储指定半径的矿脉比率，这可能需要一点时间...
+tfc.tooltip.veins_command.failed=加载维度 %d 失败
+tfc.tooltip.veins_command.remaining_chunks=剩余区块：%d / %d
+tfc.tooltip.veins_command.output=在 %2$s 发现矿脉 %1$s
+tfc.tooltip.veins_command.output_file=文件存储为 %s
 
 ## Prospecting Result Messages
 tfc.propick.found=发现
@@ -133,7 +186,7 @@ tfc.enum.skilltier.expert=专家
 tfc.enum.skilltier.master=大师
 
 ## Keybindings
-tfc.key.craft=合成面板
+tfc.key.craft=工作台界面
 tfc.key.placeblock=在方块上放置物品
 tfc.key.itemmode=切换物品模式
 
@@ -190,7 +243,7 @@ config.tfc.general.leafStickDropChanceBonusClasses=树叶工具类掉落木棍�
 config.tfc.general.leafStickDropChanceBonusClasses.tooltip=使用对应工具破坏树叶时额外掉落木棍的几率
 
 config.tfc.general.stoneGemDropChance=岩石掉落宝石几率
-config.tfc.general.stoneGemDropChance.tooltip=任何宝石从未加工岩石中掉落的几率
+config.tfc.general.stoneGemDropChance.tooltip=宝石从未加工岩石中掉落的几率
 
 config.tfc.general.temperatureModifierGlobal=全局温度修正值
 config.tfc.general.temperatureModifierGlobal.tooltip=修改物品获得和失去热量的速度。较小的值 = 较慢的温度变化。
@@ -199,10 +252,13 @@ config.tfc.general.temperatureModifierHeating=加热温度修正值
 config.tfc.general.temperatureModifierHeating.tooltip=修改设施（如木炭炉，篝火）获得和失去热量的速度。较小的值 = 较慢的温度变化。
 
 config.tfc.general.enableCruciblePouringAllSlots=启用坩埚全槽灌注
-config.tfc.general.enableCruciblePouringAllSlots.tooltip=允许坩埚接受所有 9 个输入槽的金属浇注（来自小缸 / 模具）。
+config.tfc.general.enableCruciblePouringAllSlots.tooltip=允许坩埚接受所有 9 个输入槽的金属浇注（来自小缸/模具）。
 
 config.tfc.general.foodDecayModifier=食物腐烂修正值
 config.tfc.general.foodDecayModifier.tooltip=食物腐烂的速度。较大的值 = 较快的腐烂速度。设置为 0 永不腐烂。
+
+config.tfc.general.firePitCookingPotBoilingTime=烹饪锅沸腾时间
+config.tfc.general.firePitCookingPotBoilingTime.tooltip=在篝火上烧开一锅所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 1 小时。
 
 config.tfc.general.pitKilnTime=坑窑时间
 config.tfc.general.pitKilnTime.tooltip=坑窑燃烧完毕所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 8 小时。
@@ -352,11 +408,22 @@ config.tfc.general.chanceAnimalDeath.tooltip=在动物老去后它死亡的几�
 config.tfc.general.stoneAxeLogReturnRate=石斧原木返还率
 config.tfc.general.stoneAxeLogReturnRate.tooltip=石斧的原木返还率。（例如，效率如何？）
 
+config.tfc.general.inventoryCraftingTableMode=背包工作台
+config.tfc.general.inventoryCraftingTableMode.tooltip=允许玩家通过绑定的按键直接打开工作台界面。0 = 禁用，1 = 总是启用，2 = 仅当玩家背包中有工作台时启用。（矿物词典名称：'workbench'）
+
+config.tfc.general.tankSmallVessel=小缸容量
+config.tfc.general.tankSmallVessel.tooltip=小缸能容纳多少金属？（单位/mB）
+
+config.tfc.general.tankBarrel=木桶容量
+config.tfc.general.tankBarrel.tooltip=木桶能容纳多少液体？（mB）
+
+config.tfc.general.tankCrucible=坩埚容量
+config.tfc.general.tankCrucible.tooltip=坩埚能容纳多少金属？（单位/mB）
 
 
 ## Client Config
-config.tfc.general.woodenBucketWhitelist=木桶液体白名单
-config.tfc.general.woodenBucketWhitelist.tooltip=允许被木桶承装的液体列表。
+config.tfc.general.woodenBucketWhitelist=提桶液体白名单
+config.tfc.general.woodenBucketWhitelist.tooltip=允许被提桶承装的液体列表。
 
 config.tfc.client=客户端设置
 config.tfc.client.toolip=仅作用于客户端。
@@ -411,13 +478,16 @@ config.tfc.world.latitudeTemperatureModifier=纬度温度修正值
 config.tfc.world.latitudeTemperatureModifier.tooltip=控制温度区域的大小。每个温度区域的大小由正弦波确定。此设置代表波的周期。
 
 config.tfc.world.clayRarity=粘土矿床稀有度
-config.tfc.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1 / N 区块（若可产生粘土）将含有粘土矿床。
+config.tfc.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1/N 区块（若可产生粘土）将含有粘土矿床。
 
 config.tfc.world.clayRainfallThreshold=粘土降雨阈值
 config.tfc.world.clayRainfallThreshold.tooltip=区域生成粘土所需要的最低降水量。此设置默认与生成干燥草方块的阈值相同。
 
 config.tfc.world.looseRocksFrequency=零散石子频率
 config.tfc.world.looseRocksFrequency.tooltip=每个区块生成地表零散石子的尝试次数。包括地表矿石样本。
+
+config.tfc.world.looseRockScan=零散石子矿脉扫描
+config.tfc.world.looseRockScan.tooltip=控制生成零散石子时扫描矿脉的深度。更高的值 = 更多的矿石样本。
 
 config.tfc.world.rainfallSpreadFactor=降雨量分布因子
 config.tfc.world.rainfallSpreadFactor.tooltip=控制降雨量如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
@@ -429,16 +499,16 @@ config.tfc.world.floraDensitySpreadFactor=植物群密度分布因子
 config.tfc.world.floraDensitySpreadFactor.tooltip=控制植物群密度如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
 
 # Misc
-itemGroup.tfc.misc=群峦传说|杂项
-itemGroup.tfc.rock.blocks=群峦传说|石 & 土方块
-itemGroup.tfc.rock.items=群峦传说|矿物 & 工具
-itemGroup.tfc.wood=群峦传说|木材
-itemGroup.tfc.decorations=群峦传说|装饰品
-itemGroup.tfc.pottery=群峦传说|陶器
-itemGroup.tfc.metal=群峦传说|金属
-itemGroup.tfc.gems=群峦传说|宝石
-itemGroup.tfc.food=群峦传说|食物
-itemGroup.tfc.plants=群峦传说|植物
+itemGroup.tfc.misc=群峦传说 | 杂项
+itemGroup.tfc.rock.blocks=群峦传说 | 石&土方块
+itemGroup.tfc.rock.items=群峦传说 | 矿物&工具
+itemGroup.tfc.wood=群峦传说 | 木材
+itemGroup.tfc.decorations=群峦传说 | 装饰品
+itemGroup.tfc.pottery=群峦传说 | 陶器
+itemGroup.tfc.metal=群峦传说 | 金属
+itemGroup.tfc.gems=群峦传说 | 宝石
+itemGroup.tfc.food=群峦传说 | 食物
+itemGroup.tfc.plants=群峦传说 | 植物
 
 generator.tfc_classic=群峦传说经典生成
 
@@ -475,6 +545,14 @@ tfc.types.metal.high_carbon_steel=高碳钢
 tfc.types.metal.high_carbon_black_steel=高碳黑钢
 tfc.types.metal.high_carbon_blue_steel=高碳蓝钢
 tfc.types.metal.high_carbon_red_steel=高碳红钢
+
+## Rock category
+tfc.types.rock_category.sedimentary=沉积岩
+tfc.types.rock_category.metamorphic=变质岩
+tfc.types.rock_category.igneous_intrusive=侵入型岩浆岩
+tfc.types.rock_category.igneous_extrusive=喷出型岩浆岩
+
+## Tier
 
 tfc.enum.tier.tier_0=第零级
 tfc.enum.tier.tier_i=第一级
@@ -589,11 +667,11 @@ tfc.enum.day.thursday=周四
 tfc.enum.day.friday=周五
 tfc.enum.day.saturday=周六
 
-tfc.enum.nutrient.carbohydrates=碳水化合物
-tfc.enum.nutrient.fat=脂肪
-tfc.enum.nutrient.protein=蛋白质
-tfc.enum.nutrient.minerals=矿物质
-tfc.enum.nutrient.vitamins=维生素
+tfc.enum.nutrient.grain=谷物
+tfc.enum.nutrient.vegetables=蔬菜
+tfc.enum.nutrient.fruit=水果
+tfc.enum.nutrient.meat=肉类
+tfc.enum.nutrient.dairy=乳制品
 
 #JEI
 jei.category.tfc.alloy=合金配方
@@ -602,6 +680,7 @@ jei.category.tfc.barrel=桶类配方
 jei.category.tfc.blast_furnace=高炉配方
 jei.category.tfc.bloomery=锻铁炉配方
 jei.category.tfc.casting=浇筑配方
+jei.category.tfc.chisel=凿类平滑配方
 jei.category.tfc.heat=加热配方
 jei.category.tfc.knap.clay=粘土塑形
 jei.category.tfc.knap.fireclay=耐火粘土塑形
@@ -610,10 +689,27 @@ jei.category.tfc.knap.stone=石子塑形
 jei.category.tfc.metal_heat=金属加热配方
 jei.category.tfc.loom=织机配方
 jei.category.tfc.quern=手推磨配方
+jei.category.tfc.rock_layer=岩层矿石
+jei.category.tfc.vein=矿脉信息
 jei.category.tfc.welding=焊接配方
 
+## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=立即
 jei.tooltips.tfc.barrel.duration=%d 小时
+
+### Rock Layer
+jei.tooltips.tfc.rock_layer.category=岩石类别
+jei.tooltips.tfc.rock_layer.layers=所在层
+jei.tooltips.tfc.rock_layer.top=顶
+jei.tooltips.tfc.rock_layer.middle=中
+jei.tooltips.tfc.rock_layer.bottom=底
+
+### Vein Information
+jei.tooltips.tfc.vein.min_y=最小 Y
+jei.tooltips.tfc.vein.max_y=最大 Y
+jei.tooltips.tfc.vein.rarity=稀有度
+jei.tooltips.tfc.vein.rarity_value=%s%% 区块
+jei.tooltips.tfc.vein.loose_rock=零散石子
 
 # Fluids
 fluid.salt_water=咸水
@@ -664,6 +760,37 @@ fluid.high_carbon_blue_steel=熔融高碳蓝钢
 fluid.high_carbon_red_steel=熔融高碳红钢
 fluid.high_carbon_black_steel=熔融高碳黑钢
 fluid.unknown=未知熔融金属
+
+# Vein names
+vein.native_copper.name=原生铜
+vein.native_gold.name=原生金
+vein.native_platinum.name=原生铂
+vein.native_silver.name=原生银
+vein.hematite.name=赤铁矿
+vein.cassiterite.name=锡石
+vein.bismuthinite.name=辉铋矿
+vein.garnierite.name=绿镍矿
+vein.malachite.name=孔雀石
+vein.magnetite.name=磁铁矿
+vein.limonite.name=褐铁矿
+vein.sphalerite.name=闪锌矿
+vein.tetrahedrite.name=黝铜矿
+vein.bithminous_coal.name=烟煤
+vein.lignite.name=褐煤
+vein.kaolinite.name=高岭石
+vein.graphite.name=石墨
+vein.kimberlite.name=金伯利岩
+vein.cinnabar.name=朱砂
+vein.cryolite.name=冰晶石
+vein.saltpeter.name=硝石
+vein.sylvite.name=钾石盐
+vein.borax.name=硼砂
+vein.lapis_lazuli.name=青金石
+vein.surface_native_copper.name=表层原生铜
+vein.surface_cassiterite.name=表层锡石
+vein.surface_bismuthinite.name=表层辉铋矿
+vein.surface_sphalerite.name=表层闪锌矿
+vein.surface_tetrahedrite.name=表层黝铜矿
 
 
 ### ================== BLOCKS ===========================
@@ -1096,69 +1223,69 @@ tile.tfc.slab.bricks.schist.name=片岩砖块台阶
 tile.tfc.slab.bricks.gneiss.name=片麻岩砖块台阶
 tile.tfc.slab.bricks.marble.name=大理岩砖块台阶
 
-tile.tfc.double_slab.smooth.granite.name=双平滑花岗岩台阶
-tile.tfc.double_slab.smooth.diorite.name=双平滑闪长岩台阶
-tile.tfc.double_slab.smooth.gabbro.name=双平滑辉长岩台阶
-tile.tfc.double_slab.smooth.shale.name=双平滑页岩台阶
-tile.tfc.double_slab.smooth.claystone.name=双平滑粘土岩台阶
-tile.tfc.double_slab.smooth.rocksalt.name=双平滑盐岩台阶
-tile.tfc.double_slab.smooth.limestone.name=双平滑石灰岩台阶
-tile.tfc.double_slab.smooth.conglomerate.name=双平滑砾岩台阶
-tile.tfc.double_slab.smooth.dolomite.name=双平滑白云岩台阶
-tile.tfc.double_slab.smooth.chert.name=双平滑硅质岩台阶
-tile.tfc.double_slab.smooth.chalk.name=双平滑白垩岩台阶
-tile.tfc.double_slab.smooth.rhyolite.name=双平滑流纹岩台阶
-tile.tfc.double_slab.smooth.basalt.name=双平滑玄武岩台阶
-tile.tfc.double_slab.smooth.andesite.name=双平滑安山岩台阶
-tile.tfc.double_slab.smooth.dacite.name=双平滑英安岩台阶
-tile.tfc.double_slab.smooth.quartzite.name=双平滑石英岩台阶
-tile.tfc.double_slab.smooth.slate.name=双平滑板岩台阶
-tile.tfc.double_slab.smooth.phyllite.name=双平滑千枚岩台阶
-tile.tfc.double_slab.smooth.schist.name=双平滑片岩台阶
-tile.tfc.double_slab.smooth.gneiss.name=双平滑片麻岩台阶
-tile.tfc.double_slab.smooth.marble.name=双平滑大理岩台阶
-tile.tfc.double_slab.cobble.granite.name=双花岗岩圆石台阶
-tile.tfc.double_slab.cobble.diorite.name=双闪长岩圆石台阶
-tile.tfc.double_slab.cobble.gabbro.name=双辉长岩圆石台阶
-tile.tfc.double_slab.cobble.shale.name=双页岩圆石台阶
-tile.tfc.double_slab.cobble.claystone.name=双粘土岩圆石台阶
-tile.tfc.double_slab.cobble.rocksalt.name=双盐岩圆石台阶
-tile.tfc.double_slab.cobble.limestone.name=双石灰岩圆石台阶
-tile.tfc.double_slab.cobble.conglomerate.name=双砾岩圆石台阶
-tile.tfc.double_slab.cobble.dolomite.name=双白云岩圆石台阶
-tile.tfc.double_slab.cobble.chert.name=双硅质岩圆石台阶
-tile.tfc.double_slab.cobble.chalk.name=双白垩岩圆石台阶
-tile.tfc.double_slab.cobble.rhyolite.name=双流纹岩圆石台阶
-tile.tfc.double_slab.cobble.basalt.name=双玄武岩圆石台阶
-tile.tfc.double_slab.cobble.andesite.name=双安山岩圆石台阶
-tile.tfc.double_slab.cobble.dacite.name=双英安岩圆石台阶
-tile.tfc.double_slab.cobble.quartzite.name=双石英岩圆石台阶
-tile.tfc.double_slab.cobble.slate.name=双板岩圆石台阶
-tile.tfc.double_slab.cobble.phyllite.name=双千枚岩圆石台阶
-tile.tfc.double_slab.cobble.schist.name=双片岩圆石台阶
-tile.tfc.double_slab.cobble.gneiss.name=双片麻岩圆石台阶
-tile.tfc.double_slab.cobble.marble.name=双大理岩圆石台阶
-tile.tfc.double_slab.bricks.granite.name=双花岗岩砖块台阶
-tile.tfc.double_slab.bricks.diorite.name=双闪长岩砖块台阶
-tile.tfc.double_slab.bricks.gabbro.name=双辉长岩砖块台阶
-tile.tfc.double_slab.bricks.shale.name=双页岩砖块台阶
-tile.tfc.double_slab.bricks.claystone.name=双粘土岩砖块台阶
-tile.tfc.double_slab.bricks.rocksalt.name=双盐岩砖块台阶
-tile.tfc.double_slab.bricks.limestone.name=双石灰岩砖块台阶
-tile.tfc.double_slab.bricks.conglomerate.name=双砾岩砖块台阶
-tile.tfc.double_slab.bricks.dolomite.name=双白云岩砖块台阶
-tile.tfc.double_slab.bricks.chert.name=双硅质岩砖块台阶
-tile.tfc.double_slab.bricks.chalk.name=双白垩岩砖块台阶
-tile.tfc.double_slab.bricks.rhyolite.name=双流纹岩砖块台阶
-tile.tfc.double_slab.bricks.basalt.name=双玄武岩砖块台阶
-tile.tfc.double_slab.bricks.andesite.name=双安山岩砖块台阶
-tile.tfc.double_slab.bricks.dacite.name=双英安岩砖块台阶
-tile.tfc.double_slab.bricks.quartzite.name=双石英岩砖块台阶
-tile.tfc.double_slab.bricks.slate.name=双板岩砖块台阶
-tile.tfc.double_slab.bricks.phyllite.name=双千枚岩砖块台阶
-tile.tfc.double_slab.bricks.schist.name=双片岩砖块台阶
-tile.tfc.double_slab.bricks.gneiss.name=双片麻岩砖块台阶
-tile.tfc.double_slab.bricks.marble.name=双大理岩砖块台阶
+tile.tfc.double_slab.smooth.granite.name=平滑花岗岩双台阶
+tile.tfc.double_slab.smooth.diorite.name=平滑闪长岩双台阶
+tile.tfc.double_slab.smooth.gabbro.name=平滑辉长岩双台阶
+tile.tfc.double_slab.smooth.shale.name=平滑页岩双台阶
+tile.tfc.double_slab.smooth.claystone.name=平滑粘土岩双台阶
+tile.tfc.double_slab.smooth.rocksalt.name=平滑盐岩双台阶
+tile.tfc.double_slab.smooth.limestone.name=平滑石灰岩双台阶
+tile.tfc.double_slab.smooth.conglomerate.name=平滑砾岩双台阶
+tile.tfc.double_slab.smooth.dolomite.name=平滑白云岩双台阶
+tile.tfc.double_slab.smooth.chert.name=平滑硅质岩双台阶
+tile.tfc.double_slab.smooth.chalk.name=平滑白垩岩双台阶
+tile.tfc.double_slab.smooth.rhyolite.name=平滑流纹岩双台阶
+tile.tfc.double_slab.smooth.basalt.name=平滑玄武岩双台阶
+tile.tfc.double_slab.smooth.andesite.name=平滑安山岩双台阶
+tile.tfc.double_slab.smooth.dacite.name=平滑英安岩双台阶
+tile.tfc.double_slab.smooth.quartzite.name=平滑石英岩双台阶
+tile.tfc.double_slab.smooth.slate.name=平滑板岩双台阶
+tile.tfc.double_slab.smooth.phyllite.name=平滑千枚岩双台阶
+tile.tfc.double_slab.smooth.schist.name=平滑片岩双台阶
+tile.tfc.double_slab.smooth.gneiss.name=平滑片麻岩双台阶
+tile.tfc.double_slab.smooth.marble.name=平滑大理岩双台阶
+tile.tfc.double_slab.cobble.granite.name=花岗岩圆石双台阶
+tile.tfc.double_slab.cobble.diorite.name=闪长岩圆石双台阶
+tile.tfc.double_slab.cobble.gabbro.name=辉长岩圆石双台阶
+tile.tfc.double_slab.cobble.shale.name=页岩圆石双台阶
+tile.tfc.double_slab.cobble.claystone.name=粘土岩圆石双台阶
+tile.tfc.double_slab.cobble.rocksalt.name=盐岩圆石双台阶
+tile.tfc.double_slab.cobble.limestone.name=石灰岩圆石双台阶
+tile.tfc.double_slab.cobble.conglomerate.name=砾岩圆石双台阶
+tile.tfc.double_slab.cobble.dolomite.name=白云岩圆石双台阶
+tile.tfc.double_slab.cobble.chert.name=硅质岩圆石双台阶
+tile.tfc.double_slab.cobble.chalk.name=白垩岩圆石双台阶
+tile.tfc.double_slab.cobble.rhyolite.name=流纹岩圆石双台阶
+tile.tfc.double_slab.cobble.basalt.name=玄武岩圆石双台阶
+tile.tfc.double_slab.cobble.andesite.name=安山岩圆石双台阶
+tile.tfc.double_slab.cobble.dacite.name=英安岩圆石双台阶
+tile.tfc.double_slab.cobble.quartzite.name=石英岩圆石双台阶
+tile.tfc.double_slab.cobble.slate.name=板岩圆石双台阶
+tile.tfc.double_slab.cobble.phyllite.name=千枚岩圆石双台阶
+tile.tfc.double_slab.cobble.schist.name=片岩圆石双台阶
+tile.tfc.double_slab.cobble.gneiss.name=片麻岩圆石双台阶
+tile.tfc.double_slab.cobble.marble.name=大理岩圆石双台阶
+tile.tfc.double_slab.bricks.granite.name=花岗岩砖块双台阶
+tile.tfc.double_slab.bricks.diorite.name=闪长岩砖块双台阶
+tile.tfc.double_slab.bricks.gabbro.name=辉长岩砖块双台阶
+tile.tfc.double_slab.bricks.shale.name=页岩砖块双台阶
+tile.tfc.double_slab.bricks.claystone.name=粘土岩砖块双台阶
+tile.tfc.double_slab.bricks.rocksalt.name=盐岩砖块双台阶
+tile.tfc.double_slab.bricks.limestone.name=石灰岩砖块双台阶
+tile.tfc.double_slab.bricks.conglomerate.name=砾岩砖块双台阶
+tile.tfc.double_slab.bricks.dolomite.name=白云岩砖块双台阶
+tile.tfc.double_slab.bricks.chert.name=硅质岩砖块双台阶
+tile.tfc.double_slab.bricks.chalk.name=白垩岩砖块双台阶
+tile.tfc.double_slab.bricks.rhyolite.name=流纹岩砖块双台阶
+tile.tfc.double_slab.bricks.basalt.name=玄武岩砖块双台阶
+tile.tfc.double_slab.bricks.andesite.name=安山岩砖块双台阶
+tile.tfc.double_slab.bricks.dacite.name=英安岩砖块双台阶
+tile.tfc.double_slab.bricks.quartzite.name=石英岩砖块双台阶
+tile.tfc.double_slab.bricks.slate.name=板岩砖块双台阶
+tile.tfc.double_slab.bricks.phyllite.name=千枚岩砖块双台阶
+tile.tfc.double_slab.bricks.schist.name=片岩砖块双台阶
+tile.tfc.double_slab.bricks.gneiss.name=片麻岩砖块双台阶
+tile.tfc.double_slab.bricks.marble.name=大理岩砖块双台阶
 
 tile.tfc.ore.native_copper.granite.name=花岗岩原生铜
 tile.tfc.ore.native_gold.granite.name=花岗岩原生金
@@ -2412,25 +2539,25 @@ tile.tfc.slab.wood.rosewood.name=蔷薇木台阶
 tile.tfc.slab.wood.blackwood.name=黑檀木台阶
 tile.tfc.slab.wood.palm.name=棕榈木台阶
 
-tile.tfc.double_slab.wood.ash.name=双黑梣木台阶
-tile.tfc.double_slab.wood.aspen.name=双山杨木台阶
-tile.tfc.double_slab.wood.birch.name=双白桦木台阶
-tile.tfc.double_slab.wood.chestnut.name=双栗木台阶
-tile.tfc.double_slab.wood.douglas_fir.name=双花旗松木台阶
-tile.tfc.double_slab.wood.hickory.name=双山核桃木台阶
-tile.tfc.double_slab.wood.maple.name=双枫木台阶
-tile.tfc.double_slab.wood.oak.name=双白橡木台阶
-tile.tfc.double_slab.wood.pine.name=双松木台阶
-tile.tfc.double_slab.wood.sequoia.name=双红杉木台阶
-tile.tfc.double_slab.wood.spruce.name=双云杉木台阶
-tile.tfc.double_slab.wood.sycamore.name=双悬铃木台阶
-tile.tfc.double_slab.wood.white_cedar.name=双香柏木台阶
-tile.tfc.double_slab.wood.willow.name=双柳木台阶
-tile.tfc.double_slab.wood.kapok.name=双木棉木台阶
-tile.tfc.double_slab.wood.acacia.name=双金合欢木台阶
-tile.tfc.double_slab.wood.rosewood.name=双蔷薇木台阶
-tile.tfc.double_slab.wood.blackwood.name=双黑檀木台阶
-tile.tfc.double_slab.wood.palm.name=双棕榈木台阶
+tile.tfc.double_slab.wood.ash.name=黑梣木双台阶
+tile.tfc.double_slab.wood.aspen.name=山杨木双台阶
+tile.tfc.double_slab.wood.birch.name=白桦木双台阶
+tile.tfc.double_slab.wood.chestnut.name=栗木双台阶
+tile.tfc.double_slab.wood.douglas_fir.name=花旗松木双台阶
+tile.tfc.double_slab.wood.hickory.name=山核桃木双台阶
+tile.tfc.double_slab.wood.maple.name=枫木双台阶
+tile.tfc.double_slab.wood.oak.name=白橡木双台阶
+tile.tfc.double_slab.wood.pine.name=松木双台阶
+tile.tfc.double_slab.wood.sequoia.name=红杉木双台阶
+tile.tfc.double_slab.wood.spruce.name=云杉木双台阶
+tile.tfc.double_slab.wood.sycamore.name=悬铃木双台阶
+tile.tfc.double_slab.wood.white_cedar.name=香柏木双台阶
+tile.tfc.double_slab.wood.willow.name=柳木双台阶
+tile.tfc.double_slab.wood.kapok.name=木棉木双台阶
+tile.tfc.double_slab.wood.acacia.name=金合欢木双台阶
+tile.tfc.double_slab.wood.rosewood.name=蔷薇木双台阶
+tile.tfc.double_slab.wood.blackwood.name=黑檀木双台阶
+tile.tfc.double_slab.wood.palm.name=棕榈木双台阶
 
 tile.tfc.wood.sapling.ash.name=白蜡树苗
 tile.tfc.wood.sapling.aspen.name=白杨树苗
@@ -2538,11 +2665,12 @@ item.tfc.straw.name=干草
 item.leather.name=皮革
 item.tfc.spindle.name=纺锤
 item.tfc.handstone.name=手推磨磨盘
-item.tfc.wooden_bucket.name=木桶
-item.tfc.wooden_bucket.filled=%s木桶
+item.tfc.wooden_bucket.name=提桶
+item.tfc.wooden_bucket.filled=%s提桶
 item.tfc.ceramics.fired.jug.name=罐
 item.tfc.ceramics.fired.jug.filled=%s罐
 item.tfc.mortar.name=砂浆
+item.tfc.wrought_iron_grill.name=锻铁 Grill
 
 item.tfc.ore.native_copper.name=原生铜
 item.tfc.ore.native_gold.name=原生金
@@ -3634,10 +3762,10 @@ item.tfc.ceramics.unfired.large_vessel.name=未烧制大缸
 
 item.tfc.ceramics.fired.spindle.name=纺锤头
 item.tfc.ceramics.unfired.spindle.name=未烧制纺锤头
-item.tfc.ceramics.fired.pot.name=锅
+item.tfc.ceramics.fired.pot.name=陶锅
 item.tfc.ceramics.unfired.pot.name=未烧制锅
 item.tfc.ceramics.unfired.jug.name=未烧制罐
-item.tfc.ceramics.fired.bowl.name=碗
+item.tfc.ceramics.fired.bowl.name=陶碗
 item.tfc.ceramics.unfired.bowl.name=未烧制碗
 item.tfc.ceramics.fired.fire_brick.name=耐火砖
 item.tfc.ceramics.unfired.fire_brick.name=未烧制耐火砖
@@ -3749,6 +3877,22 @@ item.tfc.food.cooked_pheasant.name=熟雉鸡肉
 item.tfc.food.cooked_venison.name=熟鹿肉
 item.tfc.food.cooked_rabbit.name=熟兔肉
 item.tfc.food.cooked_wolf.name=熟狼肉
+item.tfc.food.barley_bread_sandwich.name=大麦面包三明治
+item.tfc.food.cornbread_sandwich.name=玉米面包三明治
+item.tfc.food.rye_bread_sandwich.name=黑麦面包三明治
+item.tfc.food.oat_bread_sandwich.name=燕麦面包三明治
+item.tfc.food.wheat_bread_sandwich.name=小麦面包三明治
+item.tfc.food.rice_bread_sandwich.name=稻米面包三明治
+item.tfc.food.soup_grain.name=Wholesome Soup
+item.tfc.food.soup_fruit.name=Tasty Soup
+item.tfc.food.soup_vegetable.name=Filling Soup
+item.tfc.food.soup_meat.name=Hearty Soup
+item.tfc.food.soup_dairy.name=Creamy Soup
+item.tfc.food.salad_grain.name=Cruchy Salad
+item.tfc.food.salad_fruit.name=Sweet Salad
+item.tfc.food.salad_vegetable.name=Healthy Salad
+item.tfc.food.salad_meat.name=Flavorful Salad
+item.tfc.food.salad_dairy.name=Disgusting Salad
 
 item.tfc.crop.seeds.barley.name=大麦种子
 item.tfc.crop.seeds.beet.name=甜菜种子
@@ -3833,3 +3977,175 @@ tfc.animal.donkeytfc.male=公驴
 tfc.animal.donkeytfc.female=母驴
 tfc.animal.muletfc.male=公骡
 tfc.animal.muletfc.female=母骡
+
+# Sound Events
+tfc.item.ceramicbreak=陶器：被破坏
+tfc.item.firestarter=起火器：嘶嘶作响
+tfc.item.jug.blow=音乐的声音！！！
+tfc.item.throw=标枪：投掷
+tfc.animal.rooster.cry=公鸡：打鸣
+tfc.quern.stonedrag=手推磨：磨粉
+tfc.bellows.blow.air=风箱：鼓风
+tfc.dirt.slide=泥土：滑动
+tfc.rock.slide=岩石：滑动
+tfc.anvil.metalimpact=锤敲击砧
+tfc.animal.deer.say=鹿：喷鼻
+tfc.animal.deer.cry=鹿：嘶鸣
+tfc.animal.deer.hurt=鹿：受伤
+tfc.animal.deer.death=鹿：死亡
+tfc.animal.bear.say=熊：低吼
+tfc.animal.bear.cry=熊：吼叫
+tfc.animal.bear.cub.cry=幼熊：吼叫
+tfc.animal.bear.hurt=熊：受伤
+tfc.animal.bear.death=熊：死亡
+tfc.animal.pheasant.say=雉鸡：咯咯叫
+tfc.animal.pheasant.chick.say=幼雉鸡：啾~
+tfc.animal.pheasant.hurt=雉鸡：受伤
+tfc.animal.pheasant.death=雉鸡：死亡
+tfc.animal.cricket=蟋蟀叫
+tfc.animal.frog=蛙鸣
+
+## Advancements
+
+# Main Quest
+# Stone Age
+advancements.tfc.main.root.title=群峦传说
+advancements.tfc.main.root.description=群峦传说主进度线。
+advancements.tfc.main.pick_rock.title=确凿无疑是块岩石
+advancements.tfc.main.pick_rock.description=从地上捡起一块石子。
+advancements.tfc.main.stone_age.title=石器时代！
+advancements.tfc.main.stone_age.description=用石子互相敲击制作工具。
+advancements.tfc.main.get_straw.title=修剪草坪
+advancements.tfc.main.get_straw.description=用刀或镰刀割些草。
+advancements.tfc.main.logging.title=木材！
+advancements.tfc.main.logging.description=用斧头砍倒一棵树。
+advancements.tfc.main.firestarter.title=火花
+advancements.tfc.main.firestarter.description=用两根木棍制作起火器
+advancements.tfc.main.campfire.title=篝火
+advancements.tfc.main.campfire.description=把一根原木和三根木棍扔到地上，然后点燃它们。
+advancements.tfc.main.charcoal.title=更好的燃料
+advancements.tfc.main.charcoal.description=挖一个坑，堆满木柴，引燃，然后用泥土密封。
+advancements.tfc.main.find_clay.title=发现粘土
+advancements.tfc.main.find_clay.description=找到并挖一些粘土。
+advancements.tfc.main.pottery.title=陶瓷工匠
+advancements.tfc.main.pottery.description=用粘土捏出一件陶器并在窑中烧制。
+advancements.tfc.main.get_unknown.title=D'OH！
+advancements.tfc.main.get_unknown.description=由于错误的合金配比，你得到了一些未知金属。
+advancements.tfc.main.stone_anvil.title=锤子时间
+advancements.tfc.main.stone_anvil.description=用锤子敲击岩浆岩来制作一个石砧。
+advancements.tfc.main.metal_casting.title=模具
+advancements.tfc.main.metal_casting.description=制作一些用于浇筑金属工具的模具。
+# Copper and Bronze Ages
+advancements.tfc.main.copper_age.title=铜器时代
+advancements.tfc.main.copper_age.description=制作一把铜制工具。
+advancements.tfc.main.mining.title=挖矿时间到（久 等 了）
+advancements.tfc.main.mining.description=制作一把镐子。
+advancements.tfc.main.carpentry.title=木匠
+advancements.tfc.main.carpentry.description=制作锯。
+advancements.tfc.main.make_barrel.title=木桶摇滚！
+advancements.tfc.main.make_barrel.description=用你的锯子做一个木桶。
+advancements.tfc.main.make_quern.title=苦差事
+advancements.tfc.main.make_quern.description=制作一座手推磨。
+advancements.tfc.main.get_flux.title=千锤万凿出深山
+advancements.tfc.main.get_flux.description=找到助焊剂。
+advancements.tfc.main.metal_anvil.title=锵锵！
+advancements.tfc.main.metal_anvil.description=焊接铜双锭然后制作铜砧。
+advancements.tfc.main.metal_sheet.title=降维打击
+advancements.tfc.main.metal_sheet.description=把金属双锭敲成金属薄板。
+advancements.tfc.main.make_shield.title=找掩体！
+advancements.tfc.main.make_shield.description=用金属双层薄板制作盾牌。
+advancements.tfc.main.scraped_hide.title=浸灰、剖层
+advancements.tfc.main.scraped_hide.description=把野兽皮浸在石灰水里，然后放在原木上刮净。
+advancements.tfc.main.make_leather.title=脱灰、浸酸
+advancements.tfc.main.make_leather.description=把刮制好的皮革浸在淡水里，然后再浸入鞣酸里。
+advancements.tfc.main.make_bellows.title=风助火势 火借风威
+advancements.tfc.main.make_bellows.description=用皮革制作风箱。
+advancements.tfc.main.bronze_age.title=青铜时代
+advancements.tfc.main.bronze_age.description=制作一个青铜砧。
+# Iron Age
+advancements.tfc.main.make_bloomery.title=结实的合金框架
+advancements.tfc.main.make_bloomery.description=制作一个锻铁炉。
+advancements.tfc.main.iron_bloom.title=炉火熊熊
+advancements.tfc.main.iron_bloom.description=用锻铁炉熔炼一块生铁方坯。
+advancements.tfc.main.iron_age.title=铁器时代
+advancements.tfc.main.iron_age.description=制作一个铁砧。
+advancements.tfc.main.iron_armor.title=铠甲勇士
+advancements.tfc.main.iron_armor.description=装备全套铁甲。
+advancements.tfc.main.make_blast_furnace.title=拔地而起！
+advancements.tfc.main.make_blast_furnace.description=制作一个高炉。
+advancements.tfc.main.make_fire_clay.title=粘土，石墨，还有高岭石！
+advancements.tfc.main.make_fire_clay.description=做一些耐火粘土。
+advancements.tfc.main.make_fire_bricks.title=烟囱
+advancements.tfc.main.make_fire_bricks.description=制作四块耐火砖来搭建高炉的烟囱。
+advancements.tfc.main.make_crucible.title=冶金！
+advancements.tfc.main.make_crucible.description=用耐火粘土揑出一台坩埚。
+advancements.tfc.main.get_steel.title=工业之骨
+advancements.tfc.main.get_steel.description=获得钢锭。
+advancements.tfc.main.flint_and_steel.title=火石
+advancements.tfc.main.flint_and_steel.description=制作打火石。
+advancements.tfc.main.get_black_steel.title=黑钢
+advancements.tfc.main.get_black_steel.description=获得黑钢锭。
+advancements.tfc.main.get_blue_steel.title=蓝钢
+advancements.tfc.main.get_blue_steel.description=获得蓝钢锭。
+advancements.tfc.main.get_red_steel.title=红钢
+advancements.tfc.main.get_red_steel.description=获得红钢锭。
+advancements.tfc.main.blue_steel_bucket.title=小心烫口
+advancements.tfc.main.blue_steel_bucket.description=制作蓝钢桶。
+advancements.tfc.main.red_steel_bucket.title=无尽之水
+advancements.tfc.main.red_steel_bucket.description=制作红钢桶。
+advancements.tfc.main.ultimate_goal.title=就这？！
+advancements.tfc.main.ultimate_goal.description=结合红钢桶和蓝钢桶获得原版桶。
+
+# World
+#Farming and Animals
+advancements.tfc.world.root.title=群峦传说 世界
+advancements.tfc.world.root.description=从群峦传说的世界获取物资。
+advancements.tfc.world.gatherer.title=播种
+advancements.tfc.world.gatherer.description=从野生作物中获取种子。
+advancements.tfc.world.farming.title=收获
+advancements.tfc.world.farming.description=收获成熟的作物。
+advancements.tfc.world.baker.title=烘焙
+advancements.tfc.world.baker.description=制作烤面包。
+advancements.tfc.world.botanist.title=神农氏
+advancements.tfc.world.botanist.description=获得所有作物的种子。
+advancements.tfc.world.rutabaga.title=Stupid Onions...
+advancements.tfc.world.rutabaga.description=发现洋葱。
+advancements.tfc.world.first_familiarity.title=建立友谊
+advancements.tfc.world.first_familiarity.description=驯化一只动物。
+advancements.tfc.world.wolf_familiarity.title=永恒的伙伴
+advancements.tfc.world.wolf_familiarity.description=和一只狼的亲密度达到 100%。
+advancements.tfc.world.make_spindle.title=理顺毛线
+advancements.tfc.world.make_spindle.description=制作一个纺锤把羊毛变成羊毛纱。
+advancements.tfc.world.make_loom.title=扎扎弄机抒
+advancements.tfc.world.make_loom.description=制作一台织布机，并用它把线织成布。
+advancements.tfc.world.make_bed.title=舒适的梦
+advancements.tfc.world.make_bed.description=用羊毛布或丝绸制作床。
+advancements.tfc.world.hunter.title=狩猎
+advancements.tfc.world.hunter.description=杀死一只动物。
+advancements.tfc.world.kill_bear.title=战斗民族
+advancements.tfc.world.kill_bear.description=杀死一头棕熊。
+# Minerals
+advancements.tfc.world.pick_nugget.title=五色石
+advancements.tfc.world.pick_nugget.description=从地上捡起一块矿石。
+advancements.tfc.world.make_propick.title=大地回声
+advancements.tfc.world.make_propick.description=制作一把勘矿镐。
+advancements.tfc.world.geologist.title=岩石学家
+advancements.tfc.world.geologist.description=收集所有石子和矿石。
+advancements.tfc.world.find_diamonds.title=宝石迷情
+advancements.tfc.world.find_diamonds.description=在辉长岩岩层中找到金伯利岩。
+advancements.tfc.world.find_coal.title=黑色的金子
+advancements.tfc.world.find_coal.description=在沉积岩岩层中找到烟煤或褐煤。
+advancements.tfc.world.find_graphite.title=石墨
+advancements.tfc.world.find_graphite.description=生成岩层：大理岩、片麻岩、石英岩、片岩。
+advancements.tfc.world.find_kaolinite.title=Pink Unicorn
+advancements.tfc.world.find_kaolinite.description=在沉积岩岩层中找到高岭石。
+advancements.tfc.world.find_sylvite.title=金坷垃
+advancements.tfc.world.find_sylvite.description=在盐岩岩层中找到钾石盐。
+advancements.tfc.world.find_iron.title=没毛病吧老铁
+advancements.tfc.world.find_iron.description=找到赤铁矿、褐铁矿或者磁铁矿。
+advancements.tfc.world.find_gold.title=淘金热
+advancements.tfc.world.find_gold.description=在火山岩岩层或侵入岩岩层中找到原生金矿。
+advancements.tfc.world.find_silver.title=银色子弹
+advancements.tfc.world.find_silver.description=在花岗岩岩层或片麻岩岩层中找到原生银矿。
+advancements.tfc.world.find_nickel.title=硬币
+advancements.tfc.world.find_nickel.description=在辉长岩岩层中找到镍矿。
