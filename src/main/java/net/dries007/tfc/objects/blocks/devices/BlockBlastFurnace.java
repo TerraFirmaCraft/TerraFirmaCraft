@@ -37,7 +37,7 @@ import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TEBlastFurnace;
 import net.dries007.tfc.objects.te.TEMetalSheet;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Multiblock;
+import net.dries007.tfc.util.block.Multiblock;
 
 @ParametersAreNonnullByDefault
 public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, ILightableBlock
