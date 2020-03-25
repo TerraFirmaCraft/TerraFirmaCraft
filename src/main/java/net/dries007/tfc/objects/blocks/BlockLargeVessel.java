@@ -84,14 +84,14 @@ public class BlockLargeVessel extends Block implements IItemSize
     @Nonnull
     public Size getSize(ItemStack stack)
     {
-        return Size.HUGE;
+        return stack.getTagCompound() == null ? Size.VERY_LARGE : Size.HUGE; // Causes overburden if sealed
     }
 
     @Override
     @Nonnull
     public Weight getWeight(ItemStack stack)
     {
-        return stack.getTagCompound() == null ? Weight.MEDIUM : Weight.HEAVY;
+        return Weight.VERY_HEAVY; // Stacksize = 1
     }
 
     @Override

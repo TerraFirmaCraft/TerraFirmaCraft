@@ -30,7 +30,7 @@ public interface IItemSize
 {
     static int getStackSize(Size size, Weight weight, boolean canStack)
     {
-        return canStack ? Math.min(size.stackSize * weight.multiplier, 64) : 1;
+        return canStack ? weight.stackSize : 1;
     }
 
     @Nonnull
