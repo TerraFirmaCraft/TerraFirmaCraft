@@ -158,7 +158,7 @@ public final class ItemsTFC
         Builder<Item> simpleItems = ImmutableList.builder();
 
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
-        simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT, "mortar"), CT_MISC));
+        simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.VERY_LIGHT, "mortar"), CT_MISC));
         register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
         register(r, "metal/bucket/blue_steel", new ItemMetalBucket(Metal.BLUE_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
         register(r, "metal/bucket/red_steel", new ItemMetalBucket(Metal.RED_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
@@ -261,7 +261,7 @@ public final class ItemsTFC
             registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 
-            simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.MEDIUM, "fire_clay"), CT_MISC));
+            simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT, "fire_clay"), CT_MISC));
 
             simpleItems.add(register(r, "ceramics/unfired/jug", new ItemPottery(), CT_POTTERY));
             register(r, "ceramics/fired/jug", new ItemJug(), CT_POTTERY);
@@ -273,9 +273,9 @@ public final class ItemsTFC
             simpleItems.add(register(r, "crop/seeds/" + crop.name().toLowerCase(), new ItemSeedsTFC(crop), CT_FOOD));
         }
 
-        simpleItems.add(register(r, "crop/product/jute", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
-        simpleItems.add(register(r, "crop/product/jute_fiber", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
-        simpleItems.add(register(r, "crop/product/burlap_cloth", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/jute", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/jute_fiber", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/burlap_cloth", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT), CT_MISC));
 
         // All simple foods (not meals) just use ItemFood and are registered here
         for (Food food : Food.values())
@@ -300,8 +300,8 @@ public final class ItemsTFC
         }
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
-        simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
-        simpleItems.add(register(r, "handstone", new ItemCraftingTool(250, Size.NORMAL, Weight.HEAVY, "handstone"), CT_MISC));
+        simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT, "kindling", "straw"), CT_MISC));
+        simpleItems.add(register(r, "handstone", new ItemCraftingTool(250, Size.NORMAL, Weight.VERY_HEAVY, "handstone"), CT_MISC));
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));
 
@@ -317,13 +317,13 @@ public final class ItemsTFC
             }
         }
 
-        simpleItems.add(register(r, "animal/product/wool", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
-        simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.TINY, Weight.LIGHT, "string"), CT_MISC));
-        simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
-        simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool", new ItemMisc(Size.SMALL, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT, "string"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.SMALL, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.SMALL, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
-        simpleItems.add(register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.MEDIUM, "grill"), CT_MISC));
+        simpleItems.add(register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.HEAVY, "grill"), CT_MISC));
 
         allSimpleItems = simpleItems.build();
 

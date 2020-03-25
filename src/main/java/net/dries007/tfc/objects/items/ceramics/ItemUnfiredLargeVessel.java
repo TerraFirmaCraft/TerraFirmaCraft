@@ -18,13 +18,13 @@ public class ItemUnfiredLargeVessel extends ItemPottery
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.HUGE;
+        return Size.VERY_LARGE; // Don't fit in chests
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.MEDIUM;
+        return Weight.VERY_HEAVY; // Stack size = 1
     }
 }

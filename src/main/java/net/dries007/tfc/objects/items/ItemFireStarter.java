@@ -264,14 +264,14 @@ public class ItemFireStarter extends ItemTFC
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.SMALL;
+        return Size.SMALL; // Stored anywhere
     }
 
     @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.LIGHT;
+        return Weight.LIGHT; // Stacksize is always 1, don't need to change this
     }
 
     @Override

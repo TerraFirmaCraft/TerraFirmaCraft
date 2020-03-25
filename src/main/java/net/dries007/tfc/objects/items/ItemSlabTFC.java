@@ -30,13 +30,13 @@ public class ItemSlabTFC extends ItemSlab implements IItemSize
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.SMALL;
+        return Size.SMALL; // if blocks fits in small vessels, this should too
     }
 
     @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.MEDIUM;
+        return Weight.VERY_LIGHT; // Double the stacksize of a block (or 64)
     }
 }

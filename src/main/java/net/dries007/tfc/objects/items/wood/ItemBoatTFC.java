@@ -63,14 +63,14 @@ public class ItemBoatTFC extends ItemTFC
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.LARGE;
+        return Size.LARGE; // Stored in chests
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.LIGHT;
+        return Weight.MEDIUM; // Stacksize = 16
     }
 
     @Override
