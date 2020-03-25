@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks.devices;
 
+import java.util.List;
 import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,12 +17,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 
@@ -30,11 +34,32 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.te.TESluice;
+import net.dries007.tfc.util.block.BoundingBox;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BlockSluice extends BlockHorizontal implements IItemSize
 {
+    // From bottom to top, 1 step (4/16 block) at a time
+    // [0=lower half, 1=upper half][step]
+    private static final BoundingBox[][] BOXES =
+        {
+            {
+                new BoundingBox(0.5D, 0.0625D, 0.125D, 0.5D, 0.0625D, 0.125D, EnumFacing.SOUTH),
+                new BoundingBox(0.5D, 0.125D, 0.375D, 0.5D, 0.125D, 0.125D, EnumFacing.SOUTH),
+                new BoundingBox(0.5D, 0.1875D, 0.625D, 0.5D, 0.1875D, 0.125D, EnumFacing.SOUTH),
+                new BoundingBox(0.5D, 0.25D, 0.875D, 0.5D, 0.25D, 0.125D, EnumFacing.SOUTH)
+            },
+            {
+                new BoundingBox(0.5D, 0.3125D, 0.125D, 0.5D, 0.3125D, 0.125D, EnumFacing.SOUTH),
+                new BoundingBox(0.5D, 0.375D, 0.375D, 0.5D, 0.375D, 0.125D, EnumFacing.SOUTH),
+                new BoundingBox(0.5D, 0.4375D, 0.625D, 0.5D, 0.4375D, 0.125D, EnumFacing.SOUTH),
+                new BoundingBox(0.5D, 0.5D, 0.875D, 0.5D, 0.5D, 0.125D, EnumFacing.SOUTH)
+            }
+        };
+
+    private static final AxisAlignedBB LOWER_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 0.5D, 1D);
+
     public static final PropertyBool UPPER = PropertyBool.create("upper"); //true if this is the upper half
 
     public BlockSluice()
@@ -119,6 +144,36 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
         return state.getValue(UPPER) ? Item.getItemFromBlock(this) : Items.AIR;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        if (state.getValue(UPPER))
+        {
+            return FULL_BLOCK_AABB;
+        }
+        else
+        {
+            return LOWER_AABB;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+    {
+        EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+        boolean upper = world.getBlockState(pos).getValue(UPPER);
+
+        BoundingBox[] part = BOXES[upper ? 1 : 0];
+
+        for (int i = 0; i < 4; i++)
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, part[i].getAABB(facing));
+        }
+    }
+
+    @Override
     public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
     {
         if (state.getValue(UPPER))
