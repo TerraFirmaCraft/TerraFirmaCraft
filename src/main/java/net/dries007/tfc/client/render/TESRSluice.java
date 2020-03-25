@@ -5,22 +5,34 @@
 
 package net.dries007.tfc.client.render;
 
+import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.FluidSpriteCache;
 import net.dries007.tfc.objects.te.TESluice;
 
+@SideOnly(Side.CLIENT)
 public class TESRSluice extends TileEntitySpecialRenderer<TESluice>
 {
+    private static final ItemStack GRAVEL = new ItemStack(Blocks.GRAVEL);
+    private static final Random SOIL_NOISE = new Random();
+
     @Override
     public void render(TESluice te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
@@ -49,6 +61,30 @@ public class TESRSluice extends TileEntitySpecialRenderer<TESluice>
             default:
         }
 
+        // Render soil (gravel "blocklings")
+        int soilBlocks = Math.min((int) Math.ceil(te.getSoil() * 5D / TESluice.MAX_SOIL), 5);
+        for (int step = 0; step < 8; step++)
+        {
+            double posX = 0.5D;
+            double posY = 0.96875D - 0.0125D - (0.125D * step);
+            double posZ = 0.15625D - 0.0125D + (0.25D * step);
+            for (int soiling = 1; soiling < soilBlocks; soiling++)
+            {
+                // Filling from the middle outward borders
+                // Also, random is reset every time to keep then from changing every time the number of soil changes
+                SOIL_NOISE.setSeed(te.getPos().toLong() + soiling * 2 + step * 3);
+                drawSoil(posX - (0.1D * soiling), posY, posZ, SOIL_NOISE.nextFloat() * 360F);
+                drawSoil(posX + (0.1D * soiling), posY, posZ, SOIL_NOISE.nextFloat() * 360F);
+            }
+            if (te.getSoil() > 0)
+            {
+                // Always draw the middle one if there is soil
+                SOIL_NOISE.setSeed(te.getPos().toLong() - 565 + step * 4);
+                drawSoil(posX, posY, posZ, SOIL_NOISE.nextFloat() * 360F);
+            }
+        }
+
+        rendererDispatcher.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         TextureAtlasSprite sprite = FluidSpriteCache.getFlowingSprite(flowing);
 
@@ -64,8 +100,6 @@ public class TESRSluice extends TileEntitySpecialRenderer<TESluice>
         float a = ((color >> 24) & 0xFF) / 255F;
 
         GlStateManager.color(r, g, b, a);
-
-        rendererDispatcher.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         BufferBuilder buffer = Tessellator.getInstance().getBuffer();
 
@@ -116,5 +150,18 @@ public class TESRSluice extends TileEntitySpecialRenderer<TESluice>
     public boolean isGlobalRenderer(TESluice te)
     {
         return true;
+    }
+
+    private void drawSoil(double posX, double posY, double posZ, float rotation)
+    {
+        GlStateManager.pushMatrix();
+
+        GlStateManager.translate(posX, posY, posZ);
+        GlStateManager.rotate(rotation, 0, 1, 0);
+        GlStateManager.scale(0.1D, 0.1D, 0.1D);
+
+        Minecraft.getMinecraft().getRenderItem().renderItem(GRAVEL, ItemCameraTransforms.TransformType.FIXED);
+
+        GlStateManager.popMatrix();
     }
 }

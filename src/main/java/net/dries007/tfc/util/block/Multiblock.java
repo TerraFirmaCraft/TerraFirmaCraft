@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Use this as a helper to detect multiblocks
