@@ -120,7 +120,7 @@ tfc.tooltip.next_page=下一页
 tfc.tooltip.firepit_cooking_pot_empty=空
 tfc.tooltip.firepit_cooking_pot_waiting=请添加食材
 tfc.tooltip.firepit_cooking_pot_boiling=沸腾
-tfc.tooltip.firepit_cooking_pot_servings=份数：%d
+tfc.tooltip.firepit_cooking_pot_servings=剩余份数：%d
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=这只 %s 太老了，不能给它配种。
@@ -214,6 +214,9 @@ config.tfc.general.debug.tooltip=各种调试选项。激活一些额外的调�
 
 config.tfc.general.disableFallableBlocks=禁用方块下落
 config.tfc.general.disableFallableBlocks.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会下落。
+
+config.tfc.general.disableLavaWaterPlacesTFCBlocks=禁用群峦传说熔岩/水混合
+config.tfc.general.disableLavaWaterPlacesTFCBlocks.tooltip=若为 true，熔岩和水将生成原版的石头和圆石，而不是群峦的变种。
 
 config.tfc.general.disableFallableBlocksDestroyOre=禁用下落方块摧毁矿石
 config.tfc.general.disableFallableBlocksDestroyOre.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会摧毁矿石方块。
@@ -414,16 +417,16 @@ config.tfc.general.inventoryCraftingTableMode.tooltip=允许玩家通过绑定�
 config.tfc.general.tankSmallVessel=小缸容量
 config.tfc.general.tankSmallVessel.tooltip=小缸能容纳多少金属？（单位/mB）
 
-config.tfc.general.tankBarrel=木桶容量
-config.tfc.general.tankBarrel.tooltip=木桶能容纳多少液体？（mB）
+config.tfc.general.tankBarrel=大桶容量
+config.tfc.general.tankBarrel.tooltip=大桶能容纳多少液体？（mB）
 
 config.tfc.general.tankCrucible=坩埚容量
 config.tfc.general.tankCrucible.tooltip=坩埚能容纳多少金属？（单位/mB）
 
 
 ## Client Config
-config.tfc.general.woodenBucketWhitelist=提桶液体白名单
-config.tfc.general.woodenBucketWhitelist.tooltip=允许被提桶承装的液体列表。
+config.tfc.general.woodenBucketWhitelist=木桶液体白名单
+config.tfc.general.woodenBucketWhitelist.tooltip=允许被木桶承装的液体列表。
 
 config.tfc.client=客户端设置
 config.tfc.client.toolip=仅作用于客户端。
@@ -572,9 +575,11 @@ tfc.enum.size.very_large=非常大
 tfc.enum.size.huge=极大
 
 ## Weight
+tfc.enum.weight.very_light=极轻
 tfc.enum.weight.light=轻
 tfc.enum.weight.medium=中
 tfc.enum.weight.heavy=重
+tfc.enum.weight.very_heavy=极重
 
 ## Heat
 tfc.enum.heat.warming=暖
@@ -2239,44 +2244,44 @@ tile.tfc.wood.tool_rack.rosewood.name=蔷薇木工具架
 tile.tfc.wood.tool_rack.blackwood.name=黑檀木工具架
 tile.tfc.wood.tool_rack.palm.name=棕榈木工具架
 
-tile.tfc.wood.barrel.ash.name=黑梣木桶
-tile.tfc.wood.barrel.aspen.name=山杨木桶
-tile.tfc.wood.barrel.birch.name=白桦木桶
-tile.tfc.wood.barrel.chestnut.name=栗木桶
-tile.tfc.wood.barrel.douglas_fir.name=花旗松木桶
-tile.tfc.wood.barrel.hickory.name=山核桃木桶
-tile.tfc.wood.barrel.maple.name=枫木桶
-tile.tfc.wood.barrel.oak.name=白橡木桶
-tile.tfc.wood.barrel.pine.name=松木桶
-tile.tfc.wood.barrel.sequoia.name=红杉木桶
-tile.tfc.wood.barrel.spruce.name=云杉木桶
-tile.tfc.wood.barrel.sycamore.name=悬铃木桶
-tile.tfc.wood.barrel.white_cedar.name=香柏木桶
-tile.tfc.wood.barrel.willow.name=柳木桶
-tile.tfc.wood.barrel.kapok.name=木棉木桶
-tile.tfc.wood.barrel.acacia.name=金合欢木桶
-tile.tfc.wood.barrel.rosewood.name=蔷薇木桶
-tile.tfc.wood.barrel.blackwood.name=黑檀木桶
-tile.tfc.wood.barrel.palm.name=棕榈木桶
-tile.tfc.wood.barrel.ash.sealed.name=黑梣木桶（密封）
-tile.tfc.wood.barrel.aspen.sealed.name=山杨木桶（密封）
-tile.tfc.wood.barrel.birch.sealed.name=白桦木桶（密封）
-tile.tfc.wood.barrel.chestnut.sealed.name=栗木桶（密封）
-tile.tfc.wood.barrel.douglas_fir.sealed.name=花旗松木桶（密封）
-tile.tfc.wood.barrel.hickory.sealed.name=山核桃木桶（密封）
-tile.tfc.wood.barrel.maple.sealed.name=枫木桶（密封）
-tile.tfc.wood.barrel.oak.sealed.name=白橡木桶（密封）
-tile.tfc.wood.barrel.pine.sealed.name=松木桶（密封）
-tile.tfc.wood.barrel.sequoia.sealed.name=红杉木桶（密封）
-tile.tfc.wood.barrel.spruce.sealed.name=云杉木桶（密封）
-tile.tfc.wood.barrel.sycamore.sealed.name=悬铃木桶（密封）
-tile.tfc.wood.barrel.white_cedar.sealed.name=香柏木桶（密封）
-tile.tfc.wood.barrel.willow.sealed.name=柳木桶（密封）
-tile.tfc.wood.barrel.kapok.sealed.name=木棉木桶（密封）
-tile.tfc.wood.barrel.acacia.sealed.name=金合欢木桶（密封）
-tile.tfc.wood.barrel.rosewood.sealed.name=蔷薇木桶（密封）
-tile.tfc.wood.barrel.blackwood.sealed.name=黑檀木桶（密封）
-tile.tfc.wood.barrel.palm.sealed.name=棕榈木桶（密封）
+tile.tfc.wood.barrel.ash.name=黑梣木大桶
+tile.tfc.wood.barrel.aspen.name=山杨木大桶
+tile.tfc.wood.barrel.birch.name=白桦木大桶
+tile.tfc.wood.barrel.chestnut.name=栗木大桶
+tile.tfc.wood.barrel.douglas_fir.name=花旗松木大桶
+tile.tfc.wood.barrel.hickory.name=山核桃木大桶
+tile.tfc.wood.barrel.maple.name=枫木大桶
+tile.tfc.wood.barrel.oak.name=白橡木大桶
+tile.tfc.wood.barrel.pine.name=松木大桶
+tile.tfc.wood.barrel.sequoia.name=红杉木大桶
+tile.tfc.wood.barrel.spruce.name=云杉木大桶
+tile.tfc.wood.barrel.sycamore.name=悬铃木大桶
+tile.tfc.wood.barrel.white_cedar.name=香柏木大桶
+tile.tfc.wood.barrel.willow.name=柳木大桶
+tile.tfc.wood.barrel.kapok.name=木棉木大桶
+tile.tfc.wood.barrel.acacia.name=金合欢木大桶
+tile.tfc.wood.barrel.rosewood.name=蔷薇木大桶
+tile.tfc.wood.barrel.blackwood.name=黑檀木大桶
+tile.tfc.wood.barrel.palm.name=棕榈木大桶
+tile.tfc.wood.barrel.ash.sealed.name=黑梣木大桶（密封）
+tile.tfc.wood.barrel.aspen.sealed.name=山杨木大桶（密封）
+tile.tfc.wood.barrel.birch.sealed.name=白桦木大桶（密封）
+tile.tfc.wood.barrel.chestnut.sealed.name=栗木大桶（密封）
+tile.tfc.wood.barrel.douglas_fir.sealed.name=花旗松木大桶（密封）
+tile.tfc.wood.barrel.hickory.sealed.name=山核桃木大桶（密封）
+tile.tfc.wood.barrel.maple.sealed.name=枫木大桶（密封）
+tile.tfc.wood.barrel.oak.sealed.name=白橡木大桶（密封）
+tile.tfc.wood.barrel.pine.sealed.name=松木大桶（密封）
+tile.tfc.wood.barrel.sequoia.sealed.name=红杉木大桶（密封）
+tile.tfc.wood.barrel.spruce.sealed.name=云杉木大桶（密封）
+tile.tfc.wood.barrel.sycamore.sealed.name=悬铃木大桶（密封）
+tile.tfc.wood.barrel.white_cedar.sealed.name=香柏木大桶（密封）
+tile.tfc.wood.barrel.willow.sealed.name=柳木大桶（密封）
+tile.tfc.wood.barrel.kapok.sealed.name=木棉木大桶（密封）
+tile.tfc.wood.barrel.acacia.sealed.name=金合欢木大桶（密封）
+tile.tfc.wood.barrel.rosewood.sealed.name=蔷薇木大桶（密封）
+tile.tfc.wood.barrel.blackwood.sealed.name=黑檀木大桶（密封）
+tile.tfc.wood.barrel.palm.sealed.name=棕榈木大桶（密封）
 
 tile.tfc.wood.loom.ash.name=黑梣木织机
 tile.tfc.wood.loom.aspen.name=山杨木织机
@@ -2665,8 +2670,8 @@ item.tfc.straw.name=干草
 item.leather.name=皮革
 item.tfc.spindle.name=纺锤
 item.tfc.handstone.name=手推磨磨盘
-item.tfc.wooden_bucket.name=提桶
-item.tfc.wooden_bucket.filled=%s提桶
+item.tfc.wooden_bucket.name=木桶
+item.tfc.wooden_bucket.filled.name=%s木桶
 item.tfc.ceramics.fired.jug.name=罐
 item.tfc.ceramics.fired.jug.filled=%s罐
 item.tfc.mortar.name=砂浆
@@ -3439,6 +3444,8 @@ item.tfc.metal.boots.blue_steel.name=蓝钢靴
 item.tfc.metal.boots.red_steel.name=红钢靴
 item.tfc.metal.bucket.blue_steel.name=蓝钢桶
 item.tfc.metal.bucket.red_steel.name=红钢桶
+item.tfc.metal.bucket.blue_steel.filled.name=%s蓝钢桶
+item.tfc.metal.bucket.red_steel.filled.name=%s红钢桶
 item.tfc.metal.helmet.bismuth_bronze.name=铋铜头盔
 item.tfc.metal.helmet.black_bronze.name=黑铜头盔
 item.tfc.metal.helmet.bronze.name=青铜头盔
@@ -4042,8 +4049,8 @@ advancements.tfc.main.mining.title=挖矿时间到（久 等 了）
 advancements.tfc.main.mining.description=制作一把镐子。
 advancements.tfc.main.carpentry.title=木匠
 advancements.tfc.main.carpentry.description=制作锯。
-advancements.tfc.main.make_barrel.title=木桶摇滚！
-advancements.tfc.main.make_barrel.description=用你的锯子做一个木桶。
+advancements.tfc.main.make_barrel.title=大桶摇滚！
+advancements.tfc.main.make_barrel.description=用你的锯子做一个大桶。
 advancements.tfc.main.make_quern.title=苦差事
 advancements.tfc.main.make_quern.description=制作一座手推磨。
 advancements.tfc.main.get_flux.title=千锤万凿出深山
