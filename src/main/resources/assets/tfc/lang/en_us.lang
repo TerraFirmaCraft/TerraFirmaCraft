@@ -3841,6 +3841,7 @@ entity.goattfc.name=Goat
 entity.panthertfc.name=Black Panther
 entity.ocelottfc.name=Ocelot
 entity.sabertoothtfc.name=Saber Tooth
+entity.cameltfc.name=Camel
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
@@ -3891,6 +3892,8 @@ tfc.animal.panthertfc.male=Panther♂
 tfc.animal.panthertfc.female=Panther♀
 tfc.animal.sabertoothtfc.male=Saber Tooth♂
 tfc.animal.sabertoothtfc.female=Saber Tooth♀
+tfc.animal.cameltfc.male=Camel♂
+tfc.animal.cameltfc.female=Camel♀
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic Item Breaks
@@ -3912,9 +3915,9 @@ tfc.animal.bear.cry=Bear Cries
 tfc.animal.bear.cub.cry=Baby Bear Cries
 tfc.animal.bear.hurt=Bear Hurt
 tfc.animal.bear.death=Bear Dies
-tfc.animal.pheasant.say=Phesant Clucks
-tfc.animal.pheasant.chick.say=Phesant Chick Clucks
-tfc.animal.pheasant.hurt=Phesant Hurt
+tfc.animal.pheasant.say=Pheasant Clucks
+tfc.animal.pheasant.chick.say=Pheasant Chick Clucks
+tfc.animal.pheasant.hurt=Pheasant Hurt
 tfc.animal.pheasant.death=Pheasant Dies
 tfc.animal.alpaca.say=Alpaca bleats
 tfc.animal.alpaca.cry=Alpaca bleats
@@ -3929,5 +3932,17 @@ tfc.animal.goat.say=Goat baahs
 tfc.animal.goat.cry=Goat baahs
 tfc.animal.goat.hurt=Goat Hurt
 tfc.animal.goat.death=Goat Dies
+tfc.animal.camel.say=Camel Grunts
+tfc.animal.camel.cry=Camel Cries
+tfc.animal.camel.hurt=Camel Hurt
+tfc.animal.camel.death=Camel Dies
+tfc.animal.panther.say=Panther Grunts
+tfc.animal.panther.cry=Panther Cries
+tfc.animal.panther.hurt=Panther Hurt
+tfc.animal.panther.death=Panther Dies
+tfc.animal.sabertooth.say=Saber Tooth Grunts
+tfc.animal.sabertooth.cry=Saber Tooth Cries
+tfc.animal.sabertooth.hurt=Saber Tooth Hurt
+tfc.animal.sabertooth.death=Saber Tooth Dies
 tfc.animal.cricket=Crickets
 tfc.animal.frog=Frogs

@@ -89,16 +89,10 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IMob
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
-        return TFCSounds.ANIMAL_BEAR_HURT; // todo
-    }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_PANTHER_HURT; }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
-        return TFCSounds.ANIMAL_BEAR_DEATH; // todo
-    }
+    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_PANTHER_DEATH; }
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn)
@@ -141,7 +135,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IMob
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY; // todo
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_PANTHER_CRY : TFCSounds.ANIMAL_PANTHER_SAY;
     }
 
     @Nullable
@@ -154,6 +148,6 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IMob
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // todo
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F); //todo
     }
 }

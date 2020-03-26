@@ -34,7 +34,7 @@ public class LootTablesTFC
     public static ResourceLocation ANIMALS_ALPACA;
     public static ResourceLocation ANIMALS_DUCK;
     public static ResourceLocation ANIMALS_GOAT;
-    public static ResourceLocation ANIMALS_PANTHER;
+    public static ResourceLocation ANIMALS_CAMEL;
     public static ResourceLocation ANIMALS_GRAN_FELINE;
 
     public static void init()
@@ -52,7 +52,7 @@ public class LootTablesTFC
         ANIMALS_ALPACA = register("animals/alpaca");
         ANIMALS_DUCK = register("animals/duck");
         ANIMALS_GOAT = register("animals/goat");
-        ANIMALS_PANTHER = register("animals/panther");
+        ANIMALS_CAMEL = register("animals/camel");
         ANIMALS_GRAN_FELINE = register("animals/gran_feline");
 
 

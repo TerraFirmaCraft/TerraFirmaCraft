@@ -8,169 +8,550 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.*;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
-import net.minecraftforge.oredict.OreDictionary;
-
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityCamelTFC extends EntityAnimalMammal
+public class EntityCamelTFC extends EntityLlama implements IAnimalTFC
+{
+    protected static final int DAYS_TO_FULL_GESTATION = 330;
+    private static final int DAYS_TO_ADULTHOOD = 900;
+    //Values that has a visual effect on client
+    private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.VARINT);
+    private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> DATA_COLOR_ID = null;
+    private long lastFed; //Last time(in days) this entity was fed
+    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
+    private boolean fertilized; //Is this female fertilized?
+    private long matingTime; //The last time(in ticks) this male tried fertilizing females
+    private long lastDeath; //Last time(in days) this entity checked for dying of old age
+    private long pregnantTime; // The time(in days) this entity became pregnant
+    private float geneJump, geneHealth, geneSpeed, geneStrength; // Basic genetic selection based on vanilla's llama offspring
+    private int geneVariant;
+    @SuppressWarnings("unused")
+    public EntityCamelTFC(World world)
     {
-        private static final int DAYS_TO_ADULTHOOD = 450;
-        private static final int DAYS_TO_FULL_GESTATION = 111;
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
+    }
 
-        @SuppressWarnings("unused")
-        public EntityCamelTFC(World worldIn)
+    public EntityCamelTFC(World world, IAnimalTFC.Gender gender, int birthDay)
+    {
+        super(world);
+        this.setGender(gender);
+        this.setBirthDay(birthDay);
+        this.setFamiliarity(0);
+        this.setGrowingAge(0); //We don't use this
+        this.lastFed = -1;
+        this.matingTime = -1;
+        this.lastDeath = -1;
+        this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
+        this.fertilized = false;
+        this.geneHealth = 0;
+        this.geneJump = 0;
+        this.geneSpeed = 0;
+        this.geneStrength = 0;
+        this.geneVariant = 0;
+    }
+
+    @Override
+    public Gender getGender()
+    {
+        return Gender.valueOf(this.dataManager.get(GENDER));
+    }
+
+    @Override
+    public void setGender(Gender gender)
+    {
+        this.dataManager.set(GENDER, gender.toBool());
+    }
+
+    @Override
+    public int getBirthDay()
+    {
+        return this.dataManager.get(BIRTHDAY);
+    }
+
+    @Override
+    public void setBirthDay(int value)
+    {
+        this.dataManager.set(BIRTHDAY, value);
+    }
+
+    @Override
+    public float getAdultFamiliarityCap()
+    {
+        return 0.35f;
+    }
+
+    @Override
+    public float getFamiliarity()
+    {
+        return this.dataManager.get(FAMILIARITY);
+    }
+
+    @Override
+    public void setFamiliarity(float value)
+    {
+        if (value < 0f) value = 0f;
+        if (value > 1f) value = 1f;
+        this.dataManager.set(FAMILIARITY, value);
+    }
+
+    @Override
+    public boolean isFertilized() { return this.fertilized; }
+
+    @Override
+    public void setFertilized(boolean value)
+    {
+        this.fertilized = value;
+    }
+
+    @Override
+    public void onFertilized(@Nonnull IAnimalTFC male)
+    {
+        this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
+        int selection = this.rand.nextInt(9);
+        int i;
+        if (selection < 4)
         {
-            this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+            i = this.getVariant();
         }
-
-        public EntityCamelTFC(World worldIn, Gender gender, int birthDay)
+        else if (selection < 8)
         {
-            super(worldIn, gender, birthDay);
-            this.setSize(0.9F, 0.9F);
+            i = ((EntityCamelTFC) male).getVariant();
         }
-
-        @Override
-        public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
+        else
         {
-            BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
-            if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-                (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA ||
-                    biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
+            // Mutation
+            i = this.rand.nextInt(4);
+        }
+        this.geneVariant = i;
+        EntityCamelTFC father = (EntityCamelTFC) male;
+        this.geneHealth = (float) ((father.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue() + this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue() + this.getModifiedMaxHealth()) / 3.0D);
+        this.geneSpeed = (float) ((father.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue() + this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue() + this.getModifiedMovementSpeed()) / 3.0D);
+        this.geneJump = (float) ((father.getEntityAttribute(JUMP_STRENGTH).getBaseValue() + this.getEntityAttribute(JUMP_STRENGTH).getBaseValue() + this.getModifiedJumpStrength()) / 3.0D);
+
+        this.geneStrength = this.rand.nextInt(Math.max(this.getStrength(), father.getStrength())) + 1;
+        if (this.rand.nextFloat() < 0.03F)
+        {
+            this.geneStrength++;
+        }
+    }
+
+    @Override
+    public int getDaysToAdulthood()
+    {
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public boolean isReadyToMate()
+    {
+        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.isHungry())
+            return false;
+        return this.matingTime == -1 || this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
+    }
+
+    @Override
+    public boolean isHungry()
+    {
+        if (lastFed == -1) return true;
+        return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
+    }
+
+    @Override
+    public IAnimalTFC.Type getType()
+    {
+        return IAnimalTFC.Type.MAMMAL;
+    }
+
+    @Override
+    public TextComponentTranslation getAnimalName()
+    {
+        String entityString = EntityList.getEntityString(this);
+        return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
+    }
+
+    @Override
+    public boolean getCanSpawnHere()
+    {
+        return this.world.checkNoEntityCollision(getEntityBoundingBox())
+            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+    }
+
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (!itemstack.isEmpty())
+        {
+            if (itemstack.getItem() == Items.SPAWN_EGG)
             {
-                return ConfigTFC.WORLD.animalSpawnWeight;
+                return super.processInteract(player, hand); // Let vanilla spawn a baby
             }
-            return 0;
-        }
-
-        @Override
-        public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
-        {
-            return AnimalGroupingRules.ELDER_AND_POPULATION;
-        }
-
-        @Override
-        public int getMinGroupSize()
-        {
-            return 4;
-        }
-
-        @Override
-        public int getMaxGroupSize()
-        {
-            return 5;
-        }
-
-        @Override
-        public void birthChildren()
-        {
-            int numberOfChilds = 8 + rand.nextInt(5); //8-12
-            for (int i = 0; i < numberOfChilds; i++)
+            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
-                net.dries007.tfc.objects.entity.animal.EntityCamelTFC baby = new net.dries007.tfc.objects.entity.animal.EntityCamelTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
-                baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-                this.world.spawnEntity(baby);
+                if (this.isHungry())
+                {
+                    if (!this.world.isRemote)
+                    {
+                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+                        lastFDecay = lastFed; //No decay needed
+                        this.consumeItemFromStack(player, itemstack);
+                        if (this.getFamiliarity() < getAdultFamiliarityCap())
+                        {
+                            float familiarity = this.getFamiliarity() + 0.06f;
+                            if (this.getAge() != Age.CHILD)
+                            {
+                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            }
+                            this.setFamiliarity(familiarity);
+                        }
+                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (!this.world.isRemote)
+                    {
+                        //Show tooltips
+                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
+                        }
+                    }
+                }
             }
         }
+        return super.processInteract(player, hand);
+    }
 
-        @Override
-        public long gestationDays()
+    @Override
+    public void setGrowingAge(int age)
+    {
+        super.setGrowingAge(0); // Ignoring this
+    }
+
+    @Override
+    public boolean isChild()
+    {
+        return this.getAge() == IAnimalTFC.Age.CHILD;
+    }
+
+    @Nonnull
+    @Override
+    public String getName()
+    {
+        if (this.hasCustomName())
         {
-            return DAYS_TO_FULL_GESTATION;
+            return this.getCustomNameTag();
         }
-
-        @Override
-        public float getAdultFamiliarityCap()
+        else
         {
-            return 0.35F;
+            return getAnimalName().getFormattedText();
         }
+    }
 
-        @Override
-        public int getDaysToAdulthood()
+    @Override
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
+    {
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TUNDRA))
         {
-            return DAYS_TO_ADULTHOOD;
+            return ConfigTFC.WORLD.animalSpawnWeight;
         }
+        return 0;
+    }
 
-        @Override
-        protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 2;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 4;
+    }
+
+    @Override
+    public void setScaleForAge(boolean child)
+    {
+        double ageScale = 1 / (2.0D - getPercentToAdulthood());
+        this.setScale((float) ageScale);
+    }
+
+    @Override
+    protected void mountTo(EntityPlayer player)
+    {
+        if (!this.isTame() && !this.getLeashed())
         {
-            return SoundEvents.ENTITY_PIG_HURT;
+            return;
         }
+        super.mountTo(player);
+    }
 
-        @Override
-        protected SoundEvent getDeathSound()
+    @Override
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        if (!this.world.isRemote)
         {
-            return SoundEvents.ENTITY_PIG_DEATH;
-        }
-
-        @Override
-        protected void initEntityAI()
-        {
-            this.tasks.addTask(0, new EntityAISwimming(this));
-            this.tasks.addTask(1, new EntityAIPanic(this, 1.3D));
-            this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-            for (ItemStack is : OreDictionary.getOres("grain"))
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + DAYS_TO_FULL_GESTATION)
             {
-                Item item = is.getItem();
-                this.tasks.addTask(3, new EntityAITempt(this, 1.1D, item, false));
+                birthChildren();
+                this.setFertilized(false);
             }
-            this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
-            this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-            this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-            this.tasks.addTask(7, new EntityAILookIdle(this));
+            // Is it time to decay familiarity?
+            // If this entity was never fed(eg: new born, wild)
+            // or wasn't fed yesterday(this is the starting of the second day)
+            if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
+            {
+                float familiarity = getFamiliarity();
+                if (familiarity < 0.3f)
+                {
+                    familiarity -= 0.02 * (CalendarTFC.PLAYER_TIME.getTotalDays() - this.lastFDecay);
+                    this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
+                    this.setFamiliarity(familiarity);
+                }
+            }
+            if (this.getGender() == Gender.MALE && this.isReadyToMate())
+            {
+                this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
+                EntityAnimalTFC.findFemaleMate(this);
+            }
+            if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
+            {
+                if (lastDeath == -1)
+                {
+                    // First time check, to avoid dying at the same time this animal spawned, we skip the first day
+                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                }
+                else
+                {
+                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                    // Randomly die of old age, tied to entity UUID and calendar time
+                    final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
+                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    {
+                        this.setDead();
+                    }
+                }
+            }
         }
+    }
 
-        @Override
-        protected void applyEntityAttributes()
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setBoolean("gender", getGender().toBool());
+        nbt.setInteger("birth", getBirthDay());
+        nbt.setLong("fed", lastFed);
+        nbt.setLong("decay", lastFDecay);
+        nbt.setBoolean("fertilized", this.fertilized);
+        nbt.setLong("mating", matingTime);
+        nbt.setFloat("familiarity", getFamiliarity());
+        nbt.setLong("lastDeath", lastDeath);
+        nbt.setLong("pregnant", pregnantTime);
+        nbt.setFloat("geneSpeed", geneSpeed);
+        nbt.setFloat("geneJump", geneJump);
+        nbt.setFloat("geneHealth", geneHealth);
+        nbt.setFloat("geneStrength", geneStrength);
+        nbt.setInteger("geneVariant", geneVariant);
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
+        this.setBirthDay(nbt.getInteger("birth"));
+        this.lastFed = nbt.getLong("fed");
+        this.lastFDecay = nbt.getLong("decay");
+        this.matingTime = nbt.getLong("mating");
+        this.fertilized = nbt.getBoolean("fertilized");
+        this.setFamiliarity(nbt.getFloat("familiarity"));
+        this.lastDeath = nbt.getLong("lastDeath");
+        this.pregnantTime = nbt.getLong("pregnant");
+        this.geneSpeed = nbt.getFloat("geneSpeed");
+        this.geneJump = nbt.getFloat("geneSpeed");
+        this.geneHealth = nbt.getFloat("geneSpeed");
+        this.geneStrength = nbt.getFloat("geneStrength");
+        this.geneVariant = nbt.getInteger("geneVariant");
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(GENDER, true);
+        getDataManager().register(BIRTHDAY, 0);
+        getDataManager().register(FAMILIARITY, 0f);
+    }
+
+    @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
+    }
+
+    @Override
+    protected ResourceLocation getLootTable()
+    {
+        return LootTablesTFC.ANIMALS_CAMEL;
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        EntityCamelTFC other = (EntityCamelTFC) otherAnimal;
+        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+    }
+
+    @Nullable
+    @Override
+    public EntityCamelTFC createChild(@Nonnull EntityAgeable other)
+    {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
         {
-            super.applyEntityAttributes();
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
+            this.fertilized = true;
+            this.resetInLove();
+            this.onFertilized((IAnimalTFC) other);
         }
-
-        @Override
-        protected SoundEvent getAmbientSound()
+        else if (other == this)
         {
-            return SoundEvents.ENTITY_PIG_AMBIENT;
+            // Only called if this animal is interacted with a spawn egg
+            // Try to return to vanilla's default method a baby of this animal, as if bred normally
+            return new EntityCamelTFC(this.world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
         }
+        return null;
+    }
 
-        @Nullable
-        protected ResourceLocation getLootTable()
+    public void birthChildren()
+    {
+        int numberOfChilds = 1; //one always
+        for (int i = 0; i < numberOfChilds; i++)
         {
-            return LootTablesTFC.ANIMALS_PIG;
+            EntityCamelTFC baby = new EntityCamelTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            if (this.geneHealth > 0)
+            {
+                baby.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.geneHealth);
+            }
+            if (this.geneSpeed > 0)
+            {
+                baby.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.geneSpeed);
+            }
+            if (this.geneJump > 0)
+            {
+                baby.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.geneJump);
+            }
+            if (this.geneStrength > 0)
+            {
+                this.setStrength((int) this.geneStrength);
+            }
+            baby.setVariant(geneVariant);
+            geneJump = 0;
+            geneSpeed = 0;
+            geneJump = 0;
+            geneStrength = 0;
+            geneVariant = 0;
+            this.world.spawnEntity(baby);
         }
+    }
 
-        @Override
-        protected void playStepSound(BlockPos pos, Block blockIn)
-        {
-            this.playSound(SoundEvents.ENTITY_PIG_STEP, 0.15F, 1.0F);
+    /*public boolean wearsArmor() {
+        return true;
+    }
+
+    public boolean isArmor(ItemStack stack) {
+        return stack.getItem() == Item.getItemFromBlock(Blocks.CARPET);
+    }
+
+    //public boolean canBeSaddled() {return false;}
+
+    public void onInventoryChanged(IInventory invBasic) {
+        EnumDyeColor enumdyecolor = this.getColor();
+        super.onInventoryChanged(invBasic);
+        EnumDyeColor enumdyecolor1 = this.getColor();
+        if (this.ticksExisted > 20 && enumdyecolor1 != null && enumdyecolor1 != enumdyecolor) {
+            this.playSound(SoundEvents.ENTITY_LLAMA_SWAG, 0.5F, 1.0F);
         }
 
     }
 
+    protected void updateHorseSlots() {
+        if (!this.world.isRemote) {
+            super.updateHorseSlots();
+            this.setColorByItem(this.horseChest.getStackInSlot(1));
+        }
+
+    }
+
+    private void setColorByItem(ItemStack stack) {
+        if (this.isArmor(stack)) {
+            this.setColor(EnumDyeColor.byMetadata(stack.getMetadata()));
+        } else {
+            this.setColor((EnumDyeColor)null);
+        }
+
+    }
+
+
+    private void setColor(@Nullable EnumDyeColor color) {
+        this.dataManager.set(DATA_COLOR_ID, color == null ? -1 : color.getMetadata());
+    }
+
+    @Nullable
+    public EnumDyeColor getColor() {
+        int i = this.dataManager.get(DATA_COLOR_ID);
+        return i == -1 ? null : EnumDyeColor.byMetadata(i);
+    }*/
+
+}

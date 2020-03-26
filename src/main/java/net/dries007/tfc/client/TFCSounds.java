@@ -97,6 +97,33 @@ public class TFCSounds
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.goat.death")
     public static final SoundEvent ANIMAL_GOAT_DEATH = getNull();
 
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.camel.say")
+    public static final SoundEvent ANIMAL_CAMEL_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.camel.cry")
+    public static final SoundEvent ANIMAL_CAMEL_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.camel.hurt")
+    public static final SoundEvent ANIMAL_CAMEL_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.camel.death")
+    public static final SoundEvent ANIMAL_CAMEL_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.panther.say")
+    public static final SoundEvent ANIMAL_PANTHER_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.panther.cry")
+    public static final SoundEvent ANIMAL_PANTHER_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.panther.hurt")
+    public static final SoundEvent ANIMAL_PANTHER_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.panther.death")
+    public static final SoundEvent ANIMAL_PANTHER_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.sabertooth.say")
+    public static final SoundEvent ANIMAL_SABERTOOTH_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.sabertooth.cry")
+    public static final SoundEvent ANIMAL_SABERTOOTH_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.sabertooth.hurt")
+    public static final SoundEvent ANIMAL_SABERTOOTH_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.sabertooth.death")
+    public static final SoundEvent ANIMAL_SABERTOOTH_DEATH = getNull();
+
     // These are static initialized because we need a custom sound type which uses the sounds before initialization
     private static final SoundEvent CHARCOAL_PILE_BREAK = createSoundEvent("block.charcoal.break");
     private static final SoundEvent CHARCOAL_PILE_FALL = createSoundEvent("block.charcoal.fall");
@@ -152,7 +179,19 @@ public class TFCSounds
             createSoundEvent("animal.goat.cry"),
             createSoundEvent("animal.goat.say"),
             createSoundEvent("animal.goat.hurt"),
-            createSoundEvent("animal.goat.death")
+            createSoundEvent("animal.goat.death"),
+            createSoundEvent("animal.camel.cry"),
+            createSoundEvent("animal.camel.say"),
+            createSoundEvent("animal.camel.hurt"),
+            createSoundEvent("animal.camel.death"),
+            createSoundEvent("animal.panther.cry"),
+            createSoundEvent("animal.panther.say"),
+            createSoundEvent("animal.panther.hurt"),
+            createSoundEvent("animal.panther.death"),
+            createSoundEvent("animal.sabertooth.cry"),
+            createSoundEvent("animal.sabertooth.say"),
+            createSoundEvent("animal.sabertooth.hurt"),
+            createSoundEvent("animal.sabertooth.death")
         );
     }
 
