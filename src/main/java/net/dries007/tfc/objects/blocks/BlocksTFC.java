@@ -9,7 +9,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockGravel;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
@@ -56,6 +58,9 @@ public final class BlocksTFC
 {
     @GameRegistry.ObjectHolder("ceramics/fired/large_vessel")
     public static final BlockLargeVessel FIRED_LARGE_VESSEL = getNull();
+
+    @GameRegistry.ObjectHolder("aggregate")
+    public static final BlockGravel AGGREGATE = getNull();
 
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
@@ -281,7 +286,8 @@ public final class BlocksTFC
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "debug", new BlockDebug(), CT_MISC)));
 
-        normalItemBlocks.add(new ItemBlockTFC(register(r, "aggregate", new BlockSand(), CT_ROCK_BLOCKS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "aggregate", new BlockGravel(), CT_ROCK_BLOCKS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "fire_clay_block", new BlockFireClay(), CT_ROCK_BLOCKS)));
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS)));
@@ -300,6 +306,30 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER.get()), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
+
+        //Alc will hate this but do we really need a whole system for decorations...?
+        String[] decorationTypes = {"raw", "bricks", "polished"};
+
+        for (String type : decorationTypes)
+        {
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/white", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/orange", new BlockDecorativeStone(MapColor.ORANGE_STAINED_HARDENED_CLAY), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/magenta", new BlockDecorativeStone(MapColor.MAGENTA), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/light_blue", new BlockDecorativeStone(MapColor.LIGHT_BLUE), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/yellow", new BlockDecorativeStone(MapColor.YELLOW), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/lime", new BlockDecorativeStone(MapColor.LIME), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/pink", new BlockDecorativeStone(MapColor.PINK), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/gray", new BlockDecorativeStone(MapColor.GRAY), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/light_gray", new BlockDecorativeStone(MapColor.SILVER), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/cyan", new BlockDecorativeStone(MapColor.CYAN), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/purple", new BlockDecorativeStone(MapColor.PURPLE), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/blue", new BlockDecorativeStone(MapColor.LAPIS), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/brown", new BlockDecorativeStone(MapColor.BROWN), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/green", new BlockDecorativeStone(MapColor.GREEN), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/red", new BlockDecorativeStone(MapColor.RED), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/black", new BlockDecorativeStone(MapColor.BLACK), CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+        }
 
         {
             Builder<BlockFluidBase> b = ImmutableList.builder();
@@ -658,9 +688,13 @@ public final class BlocksTFC
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
         event.getRegistry().registerAll(
             new BlockIceTFC(FluidsTFC.FRESH_WATER.get()).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
-            new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow"),
-            new BlockTorchTFC().setRegistryName("minecraft", "torch").setTranslationKey("torch")
+            new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow")
         );
+
+        if (!ConfigTFC.GENERAL.disableTorchOverride)
+        {
+            event.getRegistry().register(new BlockTorchTFC().setRegistryName("minecraft", "torch").setTranslationKey("torch"));
+        }
     }
 
     public static boolean isWater(IBlockState current)

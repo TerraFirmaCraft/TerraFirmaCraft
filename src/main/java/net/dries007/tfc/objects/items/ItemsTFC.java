@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -141,7 +142,10 @@ public final class ItemsTFC
     public static final ItemMisc DYE_WHITE = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/unfired/clay_brick")
-    public static final ItemMisc UNFIRED_BRICK = getNull();
+    public static final ItemPottery UNFIRED_BRICK = getNull();
+
+    @GameRegistry.ObjectHolder("ceramics/unfired/clay_flower_pot")
+    public static final ItemPottery UNFIRED_FLOWER_POT = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
@@ -269,10 +273,10 @@ public final class ItemsTFC
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.MEDIUM, "fire_clay"), CT_MISC));
 
-            simpleItems.add(register(r, "ceramics/unfired/clay_brick", new ItemMisc(Size.SMALL, Weight.MEDIUM), CT_MISC));
-
             simpleItems.add(register(r, "ceramics/unfired/jug", new ItemPottery(), CT_POTTERY));
             register(r, "ceramics/fired/jug", new ItemJug(), CT_POTTERY);
+            simpleItems.add(register(r, "ceramics/unfired/clay_brick", new ItemPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/unfired/clay_flower_pot", new ItemPottery(), CT_POTTERY));
 
         }
 
@@ -344,9 +348,13 @@ public final class ItemsTFC
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
         event.getRegistry().registerAll(
             new ItemSnow(Blocks.SNOW_LAYER).setRegistryName("minecraft", "snow_layer"),
-            new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"),
             new ItemGlassBottleTFC().setRegistryName(Items.GLASS_BOTTLE.getRegistryName()).setTranslationKey("glassBottle")
         );
+
+        if (!ConfigTFC.GENERAL.disableTorchOverride)
+        {
+            event.getRegistry().register(new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"));
+        }
     }
 
     public static void init()
