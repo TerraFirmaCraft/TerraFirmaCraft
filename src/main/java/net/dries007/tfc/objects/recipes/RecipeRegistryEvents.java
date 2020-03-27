@@ -74,6 +74,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:shears"));
             modRegistry.remove(new ResourceLocation("minecraft:lead"));
             modRegistry.remove(new ResourceLocation("minecraft:glass_bottle"));
+            modRegistry.remove(new ResourceLocation("minecraft:flower_pot"));
 
             //breakydowny, buildyupy things.
             modRegistry.remove(new ResourceLocation("minecraft:wheat"));
@@ -127,7 +128,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:end_bricks"));
 
             //Armor Dye
-            modRegistry.remove(new ResourceLocation("minecraft:armordye"));
+            //modRegistry.remove(new ResourceLocation("minecraft:armordye"));
 
             //Fire Works
             modRegistry.remove(new ResourceLocation("minecraft:fireworks"));

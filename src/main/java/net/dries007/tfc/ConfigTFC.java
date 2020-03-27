@@ -55,6 +55,21 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
         public boolean disableFallableBlocks = false;
 
+        @Config.Comment({"Disable the override TFC does when lava and water meet.",
+            "Only use if you want vanilla cobblestone or have another mod that changes this."})
+        @Config.LangKey("config." + MOD_ID + ".general.disableCobbleGenOverride")
+        public boolean disableCobbleGenOverride = false;
+
+        @Config.Comment({"Disable the override torches use.",
+            "Only use if you want vanilla torches or have another mod that changes torches."})
+        @Config.LangKey("config." + MOD_ID + ".general.disableTorchOverride")
+        public boolean disableTorchOverride = false;
+
+        @Config.Comment({"Disable trees being fully cut by axes.",
+            "Only use if you want other mods to handle tree felling."})
+        @Config.LangKey("config." + MOD_ID + ".general.disableTreeFelling")
+        public boolean disableTreeFelling = false;
+
         @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.")
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyOre")
         public boolean disableFallableBlocksDestroyOre = false;
@@ -83,6 +98,11 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
         public double leafStickDropChance = 0.1;
+
+        @Config.Comment("Leaf block density. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.leafDensity")
+        public double leafDensity = 0.1;
 
         @Config.Comment("Bonus leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
