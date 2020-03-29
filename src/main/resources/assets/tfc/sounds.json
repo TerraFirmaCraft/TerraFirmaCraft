@@ -343,36 +343,36 @@
       "tfc:pantherdeath1"
     ]
   },
-  "animal.tiger.say": {
+  "animal.sabertooth.say": {
     "category": "ambient",
-    "subtitle": "tfc.animal.tiger.say",
+    "subtitle": "tfc.animal.sabertooth.say",
     "sounds": [
-      "tfc:tiger1",
-      "tfc:tiger2",
-      "tfc:tiger3"
+      "tfc:sabertooth1",
+      "tfc:sabertooth2",
+      "tfc:sabertooth3"
     ]
   },
-  "animal.tiger.cry": {
+  "animal.sabertooth.cry": {
     "category": "ambient",
-    "subtitle": "tfc.animal.tiger.cry",
+    "subtitle": "tfc.animal.sabertooth.cry",
     "sounds": [
-      "tfc:tigercry1",
-      "tfc:tigercry2"
+      "tfc:sabertooth1",
+      "tfc:sabertooth2"
     ]
   },
-  "animal.tiger.hurt": {
+  "animal.sabertooth.hurt": {
     "category": "ambient",
-    "subtitle": "tfc.animal.tiger.hurt",
+    "subtitle": "tfc.animal.sabertooth.hurt",
     "sounds": [
-      "tfc:tigerhurt1",
-      "tfc:tigerhurt2"
+      "tfc:sabertoothhurt1",
+      "tfc:sabertoothhurt2"
     ]
   },
-  "animal.tiger.death": {
+  "animal.sabertooth.death": {
     "category": "ambient",
-    "subtitle": "tfc.animal.tiger.death",
+    "subtitle": "tfc.animal.sabertooth.death",
     "sounds": [
-      "tfc:tigerdeath1"
+      "tfc:sabertoothdeath1"
     ]
   },
   "animal.pheasant.say": {
