@@ -693,7 +693,7 @@ for rock_type in ROCK_TYPES:
     for block_type in GRASS_TYPES:
         blockstate((block_type, rock_type), 'tfc:grass', textures={
             ('all', 'particle'): 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
-            'particle': 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
+            'particle': 'tfc:blocks/grass_top' % rock_type,
             'top': 'tfc:blocks/%s_top' % block_type,
             ('north', 'south', 'east', 'west'): 'tfc:blocks/%s_side' % block_type,
         }, variants={
