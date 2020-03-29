@@ -70,8 +70,9 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             {
                 addThirst(data.getWater());
                 nutritionStats.addNutrients(data);
-                originalStats.foodLevel = Math.min(data.getHunger() + originalStats.foodLevel, 20);
-                originalStats.foodSaturationLevel = Math.min(originalStats.foodSaturationLevel + data.getSaturation(), 20);
+
+                // In order to get the exact saturation we want, apply this scaling factor here
+                originalStats.addStats(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
             }
             else
             {
@@ -115,7 +116,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             {
                 if (needFood())
                 {
-                    player.foodStats.setFoodLevel(player.foodStats.getFoodLevel() + 1);
+                    setFoodLevel(getFoodLevel() + 1);
                 }
 
                 if (thirst < MAX_PLAYER_THIRST)
