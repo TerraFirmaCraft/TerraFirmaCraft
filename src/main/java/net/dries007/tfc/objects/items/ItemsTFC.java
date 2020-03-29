@@ -147,6 +147,9 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("ceramics/unfired/clay_flower_pot")
     public static final ItemPottery UNFIRED_FLOWER_POT = getNull();
 
+    @GameRegistry.ObjectHolder("ore/gypsum")
+    public static final ItemOreTFC GYPSUM = getNull();
+
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;

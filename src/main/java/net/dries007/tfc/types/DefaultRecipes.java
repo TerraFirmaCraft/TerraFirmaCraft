@@ -138,6 +138,7 @@ public final class DefaultRecipes
             // this ratio works for 9b + 1b = 10b (full barrel) of brine/milk_vinegar, but leaves odd ninths of fluid around for other mixtures.
             //  previous todo had "make it a simpler calculation"
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 500), IIngredient.of("dustFlux"), new FluidStack(LIMEWATER.get(), 500), ItemStack.EMPTY, 0).setRegistryName("limewater"),
+            new BarrelRecipe(IIngredient.of(LIMEWATER.get(), 100), IIngredient.of(ItemsTFC.GYPSUM), null, new ItemStack(BlocksTFC.ALABASTER_RAW_PLAIN), ICalendar.TICKS_IN_HOUR).setRegistryName("plain_alabaster"),
 
             new BarrelRecipeTemperature(IIngredient.of(FRESH_WATER.get(), 1), 50).setRegistryName("fresh_water_cooling"),
             new BarrelRecipeTemperature(IIngredient.of(SALT_WATER.get(), 1), 50).setRegistryName("salt_water_cooling")
@@ -177,8 +178,8 @@ public final class DefaultRecipes
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("wool"), null, new ItemStack(Blocks.WOOL, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("wool_" + dyeName),
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("carpet"), null, new ItemStack(Blocks.CARPET, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("carpet_" + dyeName),
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("bed"), null, new ItemStack(Blocks.BED, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("bed_" + dyeName),
-                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName),
-                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of(BlocksTFC.AGGREGATE), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("aggregate_" + dyeName)
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of(BlocksTFC.AGGREGATE), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("aggregate_" + dyeName)
                 );
             }
             else
@@ -188,11 +189,65 @@ public final class DefaultRecipes
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("wool"), null, new ItemStack(Blocks.WOOL, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("wool_" + dyeName),
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("carpet"), null, new ItemStack(Blocks.CARPET, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("carpet_" + dyeName),
                     new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("bed"), null, new ItemStack(Blocks.BED, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("bed_" + dyeName),
-                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName),
-                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 25), IIngredient.of(BlocksTFC.AGGREGATE), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("aggregate_" + dyeName)
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of("powderConcrete"), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName),
+                    new BarrelRecipe(IIngredient.of(fluids.get(dyeMeta).get(), 125), IIngredient.of(BlocksTFC.AGGREGATE), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("aggregate_" + dyeName)
                 );
             }
         }
+
+        event.getRegistry().registerAll(
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_WHITE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_white"),
+            new BarrelRecipe(IIngredient.of(ORANGE_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_ORANGE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_orange"),
+            new BarrelRecipe(IIngredient.of(MAGENTA_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_MAGENTA), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_magenta"),
+            new BarrelRecipe(IIngredient.of(LIGHT_BLUE_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIGHT_BLUE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_light_blue"),
+            new BarrelRecipe(IIngredient.of(YELLOW_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_YELLOW), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_yellow"),
+            new BarrelRecipe(IIngredient.of(LIME_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIME), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_lime"),
+            new BarrelRecipe(IIngredient.of(PINK_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_PINK), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_pink"),
+            new BarrelRecipe(IIngredient.of(GRAY_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_GRAY), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_gray"),
+            new BarrelRecipe(IIngredient.of(LIGHT_GRAY_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIGHT_GRAY), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_light_gray"),
+            new BarrelRecipe(IIngredient.of(CYAN_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_CYAN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_cyan"),
+            new BarrelRecipe(IIngredient.of(PURPLE_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_PURPLE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_purple"),
+            new BarrelRecipe(IIngredient.of(BLUE_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BLUE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_blue"),
+            new BarrelRecipe(IIngredient.of(BROWN_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BROWN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_brown"),
+            new BarrelRecipe(IIngredient.of(GREEN_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_GREEN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_green"),
+            new BarrelRecipe(IIngredient.of(RED_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_RED), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_red"),
+            new BarrelRecipe(IIngredient.of(BLACK_DYE.get(), 125), IIngredient.of("alabasterBricks"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BLACK), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_bricks_black"),
+
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_WHITE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_white"),
+            new BarrelRecipe(IIngredient.of(ORANGE_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_ORANGE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_orange"),
+            new BarrelRecipe(IIngredient.of(MAGENTA_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_MAGENTA), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_magenta"),
+            new BarrelRecipe(IIngredient.of(LIGHT_BLUE_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIGHT_BLUE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_light_blue"),
+            new BarrelRecipe(IIngredient.of(YELLOW_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_YELLOW), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_yellow"),
+            new BarrelRecipe(IIngredient.of(LIME_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIME), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_lime"),
+            new BarrelRecipe(IIngredient.of(PINK_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_PINK), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_pink"),
+            new BarrelRecipe(IIngredient.of(GRAY_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_GRAY), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_gray"),
+            new BarrelRecipe(IIngredient.of(LIGHT_GRAY_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIGHT_GRAY), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_light_gray"),
+            new BarrelRecipe(IIngredient.of(CYAN_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_CYAN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_cyan"),
+            new BarrelRecipe(IIngredient.of(PURPLE_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_PURPLE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_purple"),
+            new BarrelRecipe(IIngredient.of(BLUE_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BLUE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_blue"),
+            new BarrelRecipe(IIngredient.of(BROWN_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BROWN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_brown"),
+            new BarrelRecipe(IIngredient.of(GREEN_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_GREEN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_green"),
+            new BarrelRecipe(IIngredient.of(RED_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_RED), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_red"),
+            new BarrelRecipe(IIngredient.of(BLACK_DYE.get(), 125), IIngredient.of("alabasterRaw"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BLACK), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_raw_black"),
+
+            new BarrelRecipe(IIngredient.of(WHITE_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_WHITE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_white"),
+            new BarrelRecipe(IIngredient.of(ORANGE_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_ORANGE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_orange"),
+            new BarrelRecipe(IIngredient.of(MAGENTA_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_MAGENTA), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_magenta"),
+            new BarrelRecipe(IIngredient.of(LIGHT_BLUE_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIGHT_BLUE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_light_blue"),
+            new BarrelRecipe(IIngredient.of(YELLOW_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_YELLOW), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_yellow"),
+            new BarrelRecipe(IIngredient.of(LIME_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIME), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_lime"),
+            new BarrelRecipe(IIngredient.of(PINK_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_PINK), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_pink"),
+            new BarrelRecipe(IIngredient.of(GRAY_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_GRAY), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_gray"),
+            new BarrelRecipe(IIngredient.of(LIGHT_GRAY_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_LIGHT_GRAY), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_light_gray"),
+            new BarrelRecipe(IIngredient.of(CYAN_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_CYAN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_cyan"),
+            new BarrelRecipe(IIngredient.of(PURPLE_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_PURPLE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_purple"),
+            new BarrelRecipe(IIngredient.of(BLUE_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BLUE), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_blue"),
+            new BarrelRecipe(IIngredient.of(BROWN_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BROWN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_brown"),
+            new BarrelRecipe(IIngredient.of(GREEN_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_GREEN), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_green"),
+            new BarrelRecipe(IIngredient.of(RED_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_RED), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_red"),
+            new BarrelRecipe(IIngredient.of(BLACK_DYE.get(), 125), IIngredient.of("alabasterPolished"), null, new ItemStack(BlocksTFC.ALABASTER_BRICKS_BLACK), ICalendar.TICKS_IN_HOUR).setRegistryName("alabaster_polished_black")
+        );
+
         //Dye combinations.
         event.getRegistry().registerAll(
             //Orange
@@ -658,7 +713,8 @@ public final class DefaultRecipes
             new QuernRecipe(IIngredient.of("gemLapis"), new ItemStack(ItemPowder.get(Powder.LAPIS_LAZULI), 4)).setRegistryName("lapis_lazuli"),
             new QuernRecipe(IIngredient.of("gemGraphite"), new ItemStack(ItemPowder.get(Powder.GRAPHITE), 4)).setRegistryName("graphite_powder"),
             new QuernRecipe(IIngredient.of("gemKaolinite"), new ItemStack(ItemPowder.get(Powder.KAOLINITE), 4)).setRegistryName("kaolinite_powder"),
-            new QuernRecipeRandomGem(IIngredient.of("gemKimberlite"), Gem.DIAMOND).setRegistryName("diamonds")
+            new QuernRecipeRandomGem(IIngredient.of("gemKimberlite"), Gem.DIAMOND).setRegistryName("diamonds"),
+            new QuernRecipe(IIngredient.of(BlockRockVariant.get(Rock.LIMESTONE, Rock.Type.RAW)), new ItemStack(ItemsTFC.GYPSUM)).setRegistryName("gypsum")
         );
     }
 

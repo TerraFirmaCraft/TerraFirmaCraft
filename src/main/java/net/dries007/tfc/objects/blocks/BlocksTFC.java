@@ -15,6 +15,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
@@ -61,6 +62,111 @@ public final class BlocksTFC
 
     @GameRegistry.ObjectHolder("aggregate")
     public static final BlockGravel AGGREGATE = getNull();
+
+    @GameRegistry.ObjectHolder("alabaster/bricks/white")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_WHITE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/orange")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_ORANGE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/magenta")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_MAGENTA = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/light_blue")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_LIGHT_BLUE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/yellow")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_YELLOW = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/lime")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_LIME = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/pink")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_PINK = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/gray")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_GRAY = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/light_gray")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_LIGHT_GRAY = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/cyan")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_CYAN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/purple")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_PURPLE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/blue")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_BLUE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/brown")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_BROWN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/green")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_GREEN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/red")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_RED = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/black")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_BLACK = getNull();
+    @GameRegistry.ObjectHolder("alabaster/bricks/plain")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_PLAIN = getNull();
+
+    @GameRegistry.ObjectHolder("alabaster/raw/white")
+    public static final BlockDecorativeStone ALABASTER_RAW_WHITE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/orange")
+    public static final BlockDecorativeStone ALABASTER_RAW_ORANGE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/magenta")
+    public static final BlockDecorativeStone ALABASTER_RAW_MAGENTA = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/light_blue")
+    public static final BlockDecorativeStone ALABASTER_RAW_LIGHT_BLUE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/yellow")
+    public static final BlockDecorativeStone ALABASTER_RAW_YELLOW = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/lime")
+    public static final BlockDecorativeStone ALABASTER_RAW_LIME = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/pink")
+    public static final BlockDecorativeStone ALABASTER_RAW_PINK = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/gray")
+    public static final BlockDecorativeStone ALABASTER_RAW_GRAY = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/light_gray")
+    public static final BlockDecorativeStone ALABASTER_RAW_LIGHT_GRAY = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/cyan")
+    public static final BlockDecorativeStone ALABASTER_RAW_CYAN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/purple")
+    public static final BlockDecorativeStone ALABASTER_RAW_PURPLE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/blue")
+    public static final BlockDecorativeStone ALABASTER_RAW_BLUE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/brown")
+    public static final BlockDecorativeStone ALABASTER_RAW_BROWN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/green")
+    public static final BlockDecorativeStone ALABASTER_RAW_GREEN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/red")
+    public static final BlockDecorativeStone ALABASTER_RAW_RED = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/black")
+    public static final BlockDecorativeStone ALABASTER_RAW_BLACK = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/plain")
+    public static final BlockDecorativeStone ALABASTER_RAW_PLAIN = getNull();
+
+    @GameRegistry.ObjectHolder("alabaster/polished/white")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_WHITE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/orange")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_ORANGE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/magenta")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_MAGENTA = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/light_blue")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_LIGHT_BLUE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/yellow")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_YELLOW = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/lime")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_LIME = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/pink")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_PINK = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/gray")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_GRAY = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/light_gray")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_LIGHT_GRAY = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/cyan")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_CYAN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polishedpurple")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_PURPLE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/blue")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_BLUE = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/brown")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_BROWN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/green")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_GREEN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/red")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_RED = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/black")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_BLACK = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/plain")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_PLAIN = getNull();
 
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
@@ -120,6 +226,10 @@ public final class BlocksTFC
     private static ImmutableList<BlockFruitTreeLeaves> allFruitTreeLeavesBlocks;
 
     private static ImmutableList<BlockBerryBush> allBerryBushBlocks;
+
+    private static ImmutableList<ItemBlock> allAlabasterRawBlocks;
+    private static ImmutableList<ItemBlock> allAlabasterBricksBlocks;
+    private static ImmutableList<ItemBlock> allAlabasterPolishedBlocks;
 
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
@@ -272,6 +382,21 @@ public final class BlocksTFC
         return allBerryBushBlocks;
     }
 
+    public static ImmutableList<ItemBlock> getAllAlabasterRawBlocks()
+    {
+        return allAlabasterRawBlocks;
+    }
+
+    public static ImmutableList<ItemBlock> getAllAlabasterBricksBlocks()
+    {
+        return allAlabasterBricksBlocks;
+    }
+
+    public static ImmutableList<ItemBlock> getAllAlabasterPolishedBlocks()
+    {
+        return allAlabasterPolishedBlocks;
+    }
+
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
     public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -306,29 +431,36 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER.get()), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
-
-        //Alc will hate this but do we really need a whole system for decorations...?
-        String[] decorationTypes = {"raw", "bricks", "polished"};
-
-        for (String type : decorationTypes)
         {
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/white", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/orange", new BlockDecorativeStone(MapColor.ORANGE_STAINED_HARDENED_CLAY), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/magenta", new BlockDecorativeStone(MapColor.MAGENTA), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/light_blue", new BlockDecorativeStone(MapColor.LIGHT_BLUE), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/yellow", new BlockDecorativeStone(MapColor.YELLOW), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/lime", new BlockDecorativeStone(MapColor.LIME), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/pink", new BlockDecorativeStone(MapColor.PINK), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/gray", new BlockDecorativeStone(MapColor.GRAY), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/light_gray", new BlockDecorativeStone(MapColor.SILVER), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/cyan", new BlockDecorativeStone(MapColor.CYAN), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/purple", new BlockDecorativeStone(MapColor.PURPLE), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/blue", new BlockDecorativeStone(MapColor.LAPIS), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/brown", new BlockDecorativeStone(MapColor.BROWN), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/green", new BlockDecorativeStone(MapColor.GREEN), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/red", new BlockDecorativeStone(MapColor.RED), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/black", new BlockDecorativeStone(MapColor.BLACK), CT_DECORATIONS)));
-            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/" + type + "/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+            Builder<ItemBlock> raw = ImmutableList.builder();
+            Builder<ItemBlock> polished = ImmutableList.builder();
+            Builder<ItemBlock> bricks = ImmutableList.builder();
+
+            raw.add(new ItemBlockTFC(register(r, "alabaster/raw/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+            for (EnumDyeColor dyeColor : EnumDyeColor.values())
+            {
+                raw.add(new ItemBlockTFC(register(r, "alabaster/raw/" + dyeColor.getDyeColorName(), new BlockDecorativeStone(MapColor.getBlockColor(dyeColor)), CT_DECORATIONS)));
+            }
+
+            polished.add(new ItemBlockTFC(register(r, "alabaster/polished/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+            for (EnumDyeColor dyeColor : EnumDyeColor.values())
+            {
+                polished.add(new ItemBlockTFC(register(r, "alabaster/polished/" + dyeColor.getDyeColorName(), new BlockDecorativeStone(MapColor.getBlockColor(dyeColor)), CT_DECORATIONS)));
+            }
+
+            bricks.add(new ItemBlockTFC(register(r, "alabaster/bricks/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+            for (EnumDyeColor dyeColor : EnumDyeColor.values())
+            {
+                bricks.add(new ItemBlockTFC(register(r, "alabaster/bricks/" + dyeColor.getDyeColorName(), new BlockDecorativeStone(MapColor.getBlockColor(dyeColor)), CT_DECORATIONS)));
+            }
+
+            allAlabasterRawBlocks = raw.build();
+            allAlabasterBricksBlocks = bricks.build();
+            allAlabasterPolishedBlocks = polished.build();
+
+            normalItemBlocks.addAll(allAlabasterBricksBlocks);
+            normalItemBlocks.addAll(allAlabasterRawBlocks);
+            normalItemBlocks.addAll(allAlabasterPolishedBlocks);
         }
 
         {

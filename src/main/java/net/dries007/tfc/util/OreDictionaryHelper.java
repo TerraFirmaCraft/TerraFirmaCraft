@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -24,6 +25,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.Powder;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemPowder;
 
 /**
@@ -106,6 +108,21 @@ public class OreDictionaryHelper
         OreDictionary.registerOre("dyeYellow", new ItemStack(ItemPowder.get(Powder.LIMONITE)));
         OreDictionary.registerOre("dyeGreen", new ItemStack(ItemPowder.get(Powder.MALACHITE)));
         OreDictionary.registerOre("dyeBrown", new ItemStack(ItemPowder.get(Powder.FERTILIZER)));
+
+        for (ItemBlock block : BlocksTFC.getAllAlabasterBricksBlocks())
+        {
+            OreDictionary.registerOre("alabasterBricks", new ItemStack(block.getBlock()));
+        }
+
+        for (ItemBlock block : BlocksTFC.getAllAlabasterRawBlocks())
+        {
+            OreDictionary.registerOre("alabasterRaw", new ItemStack(block.getBlock()));
+        }
+
+        for (ItemBlock block : BlocksTFC.getAllAlabasterPolishedBlocks())
+        {
+            OreDictionary.registerOre("alabasterPolished", new ItemStack(block.getBlock()));
+        }
 
         // Register a name without any items
         OreDictionary.getOres("infiniteFire", true);
