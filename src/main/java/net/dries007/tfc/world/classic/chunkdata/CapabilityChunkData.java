@@ -33,8 +33,12 @@ public final class CapabilityChunkData
     @SubscribeEvent
     public static void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<Chunk> event)
     {
-        if (event.getObject().getWorld().getWorldType() == TerraFirmaCraft.getWorldType())
+        // Per #922, if there's no world or no world type, something is seriously violating our assumptions and we will just fail.
+        //noinspection ConstantConditions
+        if (event.getObject().getWorld() != null && event.getObject().getWorld().getWorldType() == TerraFirmaCraft.getWorldType())
+        {
             event.addCapability(CHUNK_DATA, new ChunkDataProvider());
+        }
     }
 
     @SubscribeEvent
