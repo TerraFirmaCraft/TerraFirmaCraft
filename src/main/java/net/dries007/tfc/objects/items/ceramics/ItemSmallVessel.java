@@ -48,6 +48,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -176,7 +177,7 @@ public class ItemSmallVessel extends ItemPottery
     }
 
     // Extends ItemStackHandler for ease of use. Duplicates most of ItemHeatHandler functionality
-    private class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler
+    private class SmallVesselCapability extends ItemStackHandler implements ICapabilityProvider, ISmallVesselHandler, ISlotCallback
     {
         private final FluidTank tank;
 
