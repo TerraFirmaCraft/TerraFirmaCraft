@@ -685,8 +685,7 @@ public final class CommonEventHandler
         {
             event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
         }
-
-        if (!ConfigTFC.GENERAL.disableCobbleGenOverride && event.getNewState().getBlock() == Blocks.COBBLESTONE)
+        if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
         {
             event.setNewState(BlockRockVariant.get(Rock.RHYOLITE, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
         }

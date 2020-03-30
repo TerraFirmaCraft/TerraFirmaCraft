@@ -22,7 +22,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -40,7 +39,6 @@ public final class CapabilityItemHeat
         CapabilityManager.INSTANCE.register(IItemHeat.class, new DumbStorage<>(), ItemHeatHandler::new);
         //register heat on vanilla egg for cooking
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Items.EGG), () -> new ItemHeatHandler(null, 1, 480));
-        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(ItemsTFC.UNFIRED_BRICK), () -> new ItemHeatHandler(null, 1, 1601));
     }
 
     /**
