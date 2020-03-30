@@ -55,11 +55,6 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
         public boolean disableFallableBlocks = false;
 
-        @Config.Comment({"Disable the override TFC does when lava and water meet.",
-            "Only use if you want vanilla cobblestone or have another mod that changes this."})
-        @Config.LangKey("config." + MOD_ID + ".general.disableCobbleGenOverride")
-        public boolean disableCobbleGenOverride = false;
-
         @Config.Comment({"Disable the override torches use.",
             "Only use if you want vanilla torches or have another mod that changes torches."})
         @Config.LangKey("config." + MOD_ID + ".general.disableTorchOverride")
