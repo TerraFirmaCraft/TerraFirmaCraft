@@ -417,6 +417,17 @@ config.tfc.general.tankBarrel.tooltip=How much fluid (mB) can a barrel hold?
 config.tfc.general.tankCrucible=Crucible Tank Storage
 config.tfc.general.tankCrucible.tooltip=How much metal (units / mB) can a crucible hold?
 
+config.tfc.general.disableCobbleGenOverride=Disable TFC Cobble Generation Changes
+config.tfc.general.disableCobbleGenOverride.tooltip=Turn this on if you want to edit this with other mods or have a way to get vanilla cobblestone.
+
+config.tfc.general.leafDensity=Leaf Density
+config.tfc.general.leafDensity.tooltip=How mush leaves should slow the player down. Lower = Slower, Higher = Faster. 1 = None.
+
+config.tfc.general.disableTorchOverride=Disable Torch Override
+config.tfc.general.disableTorchOverride.tooltip=Turn this on if you want to edit this with other mods.
+
+config.tfc.general.disableTreeFelling=Disable Tree Felling
+config.tfc.general.disableTreeFelling.tooltip=Turn this on if you want to edit this with other mods.
 
 ## Client Config
 config.tfc.general.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
@@ -506,6 +517,14 @@ itemGroup.tfc.metal=TFC Metal
 itemGroup.tfc.gems=TFC Gems
 itemGroup.tfc.food=TFC Foodstuffs
 itemGroup.tfc.plants=TFC Plants
+
+item.dyePowder.green.name=Green Dye
+item.dyePowder.red.name=Red Dye
+item.dyePowder.yellow.name=Yellow Dye
+item.tfc.dye.blue.name=Blue Dye
+item.tfc.dye.black.name=Black Dye
+item.tfc.dye.brown.name=Brown Dye
+item.tfc.dye.white.name=White Dye
 
 generator.tfc_classic=TFC Classic
 
@@ -759,6 +778,22 @@ fluid.high_carbon_blue_steel=Molten High Carbon Blue Steel
 fluid.high_carbon_red_steel=Molten High Carbon Red Steel
 fluid.high_carbon_black_steel=Molten High Carbon Black Steel
 fluid.unknown=Unknown Molten Metal
+fluid.white_dye=White Dye
+fluid.orange_dye=Orange Dye
+fluid.magenta_dye=Magenta Dye
+fluid.light_blue_dye=Light Blue Dye
+fluid.yellow_dye=Yellow Dye
+fluid.lime_dye=Lime Dye
+fluid.pink_dye=Pink Dye
+fluid.gray_dye=Gray Dye
+fluid.light_gray_dye=Light Gray Dye
+fluid.cyan_dye=Cyan Dye
+fluid.purple_dye=Purple Dye
+fluid.blue_dye=Blue Dye
+fluid.brown_dye=Brown Dye
+fluid.green_dye=Green Dye
+fluid.red_dye=Red Dye
+fluid.black_dye=Black Dye
 
 # Vein names
 vein.native_copper.name=Native Copper
@@ -812,10 +847,67 @@ tile.tfc.bloomery.name=Bloomery
 tile.tfc.fire_bricks.name=Fire Bricks
 tile.tfc.quern.name=Quern
 tile.tfc.ceramics.fired.large_vessel.name=Large Vessel
+tile.tfc.fire_clay_block.name=Fire Clay
+tile.tfc.aggregate.name=Aggregate
 tile.tfc.sluice.name=Sluice
 tile.tfc.ice.name=Ice
 tile.tfc.sea_ice.name=Sea Ice
 tile.tfc.nest_box.name=Nest Box
+
+## Decoration blocks
+tile.tfc.alabaster.bricks.cyan.name=Cyan Alabaster Bricks
+tile.tfc.alabaster.bricks.black.name=Black Alabaster Bricks
+tile.tfc.alabaster.bricks.magenta.name=Magenta Alabaster Bricks
+tile.tfc.alabaster.bricks.orange.name=Orange Alabaster Bricks
+tile.tfc.alabaster.bricks.lime.name=Lime Alabaster Bricks
+tile.tfc.alabaster.bricks.plain.name= Alabaster Bricks
+tile.tfc.alabaster.bricks.blue.name=Blue Alabaster Bricks
+tile.tfc.alabaster.bricks.purple.name=Purple Alabaster Bricks
+tile.tfc.alabaster.bricks.light_blue.name=Light Blue Alabaster Bricks
+tile.tfc.alabaster.bricks.gray.name=Gray Alabaster Bricks
+tile.tfc.alabaster.bricks.silver.name=Light Gray Alabaster Bricks
+tile.tfc.alabaster.bricks.yellow.name=Yellow Alabaster Bricks
+tile.tfc.alabaster.bricks.brown.name=Brown Alabaster Bricks
+tile.tfc.alabaster.bricks.pink.name=Pink Alabaster Bricks
+tile.tfc.alabaster.bricks.green.name=Green Alabaster Bricks
+tile.tfc.alabaster.bricks.white.name=White Alabaster Bricks
+tile.tfc.alabaster.bricks.red.name=Red Alabaster Bricks
+
+tile.tfc.alabaster.raw.cyan.name=Cyan Alabaster Bricks
+tile.tfc.alabaster.raw.black.name=Black Alabaster Bricks
+tile.tfc.alabaster.raw.magenta.name=Magenta Alabaster Bricks
+tile.tfc.alabaster.raw.orange.name=Orange Alabaster Bricks
+tile.tfc.alabaster.raw.lime.name=Lime Alabaster Bricks
+tile.tfc.alabaster.raw.plain.name= Alabaster Bricks
+tile.tfc.alabaster.raw.blue.name=Blue Alabaster Bricks
+tile.tfc.alabaster.raw.purple.name=Purple Alabaster Bricks
+tile.tfc.alabaster.raw.light_blue.name=Light Blue Alabaster Bricks
+tile.tfc.alabaster.raw.gray.name=Gray Alabaster Bricks
+tile.tfc.alabaster.raw.silver.name=Light Gray Alabaster Bricks
+tile.tfc.alabaster.raw.yellow.name=Yellow Alabaster Bricks
+tile.tfc.alabaster.raw.brown.name=Brown Alabaster Bricks
+tile.tfc.alabaster.raw.pink.name=Pink Alabaster Bricks
+tile.tfc.alabaster.raw.green.name=Green Alabaster Bricks
+tile.tfc.alabaster.raw.white.name=White Alabaster Bricks
+tile.tfc.alabaster.raw.red.name=Red Alabaster Bricks
+
+tile.tfc.alabaster.polished.cyan.name=Cyan Alabaster Bricks
+tile.tfc.alabaster.polished.black.name=Black Alabaster Bricks
+tile.tfc.alabaster.polished.magenta.name=Magenta Alabaster Bricks
+tile.tfc.alabaster.polished.orange.name=Orange Alabaster Bricks
+tile.tfc.alabaster.polished.lime.name=Lime Alabaster Bricks
+tile.tfc.alabaster.polished.plain.name= Alabaster Bricks
+tile.tfc.alabaster.polished.blue.name=Blue Alabaster Bricks
+tile.tfc.alabaster.polished.purple.name=Purple Alabaster Bricks
+tile.tfc.alabaster.polished.light_blue.name=Light Blue Alabaster Bricks
+tile.tfc.alabaster.polished.gray.name=Gray Alabaster Bricks
+tile.tfc.alabaster.polished.light_gray.name=Light Gray Alabaster Bricks
+tile.tfc.alabaster.polished.yellow.name=Yellow Alabaster Bricks
+tile.tfc.alabaster.polished.brown.name=Brown Alabaster Bricks
+tile.tfc.alabaster.polished.pink.name=Pink Alabaster Bricks
+tile.tfc.alabaster.polished.green.name=Green Alabaster Bricks
+tile.tfc.alabaster.polished.white.name=White Alabaster Bricks
+tile.tfc.alabaster.polished.red.name=Red Alabaster Bricks
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
@@ -2668,6 +2760,7 @@ item.tfc.wooden_bucket.name=Bucket
 item.tfc.wooden_bucket.filled.name=%s Bucket
 item.tfc.ceramics.fired.jug.name=Jug
 item.tfc.ceramics.fired.jug.filled=%s Jug
+item.tfc.ceramics.unfired.clay_flower_pot.name=Unfired Clay Flower Pot
 item.tfc.mortar.name=Mortar
 item.tfc.wrought_iron_grill.name=Wrought Iron Grill
 
@@ -3771,6 +3864,7 @@ item.tfc.ceramics.unfired.bowl.name=Unfired Bowl
 item.tfc.ceramics.fired.fire_brick.name=Fire Brick
 item.tfc.ceramics.unfired.fire_brick.name=Unfired Fire Brick
 item.tfc.ceramics.fire_clay.name=Fire Clay
+item.tfc.ceramics.unfired.clay_brick.name=Unfired Clay Brick
 
 item.tfc.hide.raw.small.name=Small Raw Hide
 item.tfc.hide.raw.medium.name=Medium Raw Hide
@@ -3980,8 +4074,8 @@ tfc.animal.muletfc.male=Mule♂
 tfc.animal.muletfc.female=Mule♀
 
 # Sound Events
-tfc.item.ceramicbreak=Ceramic Item Breaks
-tfc.item.firestarter=Firestarter Sizzles
+tfc.item.ceramicbreak=Ceramic item breaks
+tfc.item.firestarter=Firestarter sizzles
 tfc.item.jug.blow=The sound of music!!!
 tfc.item.throw=Javelin thrown
 tfc.animal.rooster.cry=Rooster cries

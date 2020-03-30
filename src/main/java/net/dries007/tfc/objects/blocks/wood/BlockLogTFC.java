@@ -91,7 +91,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             stack = player.getHeldItemMainhand();
         }
         final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
-        if (toolClasses.contains("axe") && !toolClasses.contains("saw"))
+        if (!ConfigTFC.GENERAL.disableTreeFelling && toolClasses.contains("axe") && !toolClasses.contains("saw"))
         {
             if (!state.getValue(PLACED))
             {

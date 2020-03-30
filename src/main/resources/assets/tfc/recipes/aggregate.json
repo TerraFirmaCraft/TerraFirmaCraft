@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GSG",
+    "FFF",
+    "GSG"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "sand"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "gravel"
+    },
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "dustFlux"
+    }
+  },
+  "result": {
+    "item": "tfc:aggregate",
+    "count": 6
+  }
+}

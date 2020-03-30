@@ -289,6 +289,22 @@ FLUIDS = {
     'limewater': 'limewater',
     'milk_curdled': 'milk_curdled',
     'milk_vinegar': 'milk_vinegar',
+    'black_dye': 'black_dye',
+    'red_dye': 'red_dye',
+    'green_dye': 'green_dye',
+    'brown_dye': 'brown_dye',
+    'blue_dye': 'blue_dye',
+    'purple_dye': 'purple_dye',
+    'cyan_dye': 'cyan_dye',
+    'light_gray_dye': 'light_gray_dye',
+    'gray_dye': 'gray_dye',
+    'pink_dye': 'pink_dye',
+    'lime_dye': 'lime_dye',
+    'yellow_dye': 'yellow_dye',
+    'light_blue_dye': 'light_blue_dye',
+    'magenta_dye': 'magenta_dye',
+    'orange_dye': 'orange_dye',
+    'white_dye': 'white_dye'
 }
 
 # all crops
@@ -693,7 +709,7 @@ for rock_type in ROCK_TYPES:
     for block_type in GRASS_TYPES:
         blockstate((block_type, rock_type), 'tfc:grass', textures={
             ('all', 'particle'): 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
-            'particle': 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
+            'particle': 'tfc:blocks/grass_top' % rock_type,
             'top': 'tfc:blocks/%s_top' % block_type,
             ('north', 'south', 'east', 'west'): 'tfc:blocks/%s_side' % block_type,
         }, variants={
