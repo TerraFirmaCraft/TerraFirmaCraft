@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.objects.fluids;
 
+import java.awt.*;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -14,6 +17,7 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -64,10 +68,29 @@ public final class FluidsTFC
     public static FluidWrapper WHISKEY;
     public static FluidWrapper BEER;
     public static FluidWrapper RUM;
+    // Dye
+//    public static FluidWrapper BLACK_DYE;
+//    public static FluidWrapper RED_DYE;
+//    public static FluidWrapper GREEN_DYE;
+//    public static FluidWrapper BROWN_DYE;
+//    public static FluidWrapper BLUE_DYE;
+//    public static FluidWrapper PURPLE_DYE;
+//    public static FluidWrapper CYAN_DYE;
+//    public static FluidWrapper LIGHT_GRAY_DYE;
+//    public static FluidWrapper GRAY_DYE;
+//    public static FluidWrapper PINK_DYE;
+//    public static FluidWrapper LIME_DYE;
+//    public static FluidWrapper YELLOW_DYE;
+//    public static FluidWrapper LIGHT_BLUE_DYE;
+//    public static FluidWrapper MAGENTA_DYE;
+//    public static FluidWrapper ORANGE_DYE;
+//    public static FluidWrapper WHITE_DYE;
 
     private static ImmutableSet<FluidWrapper> allAlcoholsFluids;
     private static ImmutableMap<Metal, FluidWrapper> allMetalFluids;
     private static ImmutableSet<FluidWrapper> allOtherFiniteFluids;
+
+    private static Map<EnumDyeColor, FluidWrapper> DYE_FLUIDS;
 
     public static ImmutableSet<FluidWrapper> getAllAlcoholsFluids()
     {
@@ -112,6 +135,11 @@ public final class FluidsTFC
     public static Metal getMetalFromFluid(@Nonnull Fluid fluid)
     {
         return getWrapper(fluid).get(MetalProperty.METAL).getMetal();
+    }
+
+    public static FluidWrapper getFluidFromDye(EnumDyeColor dyeColor)
+    {
+        return DYE_FLUIDS.get(dyeColor);
     }
 
     public static void registerFluids()
@@ -162,7 +190,24 @@ public final class FluidsTFC
                 TANNIN = registerFluid(new Fluid("tannin", STILL, FLOW, 0xFF63594E)),
                 LIMEWATER = registerFluid(new Fluid("limewater", STILL, FLOW, 0xFFB4B4B4)),
                 CURDLED_MILK = registerFluid(new Fluid("milk_curdled", STILL, FLOW, 0xFFFFFBE8)),
-                MILK_VINEGAR = registerFluid(new Fluid("milk_vinegar", STILL, FLOW, 0xFFFFFBE8))
+                MILK_VINEGAR = registerFluid(new Fluid("milk_vinegar", STILL, FLOW, 0xFFFFFBE8))//,
+                //dye block
+//                WHITE_DYE = registerFluid(new Fluid("white_dye", STILL, FLOW, 0xFFF9FFFE)),
+//                ORANGE_DYE = registerFluid(new Fluid("orange_dye", STILL, FLOW, 0xFFF9801D)),
+//                MAGENTA_DYE = registerFluid(new Fluid("magenta_dye", STILL, FLOW, 0xFFC74EBD)),
+//                LIGHT_BLUE_DYE = registerFluid(new Fluid("light_blue_dye", STILL, FLOW, 0xFF3AB3DA)),
+//                YELLOW_DYE = registerFluid(new Fluid("yellow_dye", STILL, FLOW, 0xFFFED83D)),
+//                LIME_DYE = registerFluid(new Fluid("lime_dye", STILL, FLOW, 0xFF80C71F)),
+//                PINK_DYE = registerFluid(new Fluid("pink_dye", STILL, FLOW, 0xFFF38BAA)),
+//                GRAY_DYE = registerFluid(new Fluid("gray_dye", STILL, FLOW, 0xFF474F52)),
+//                LIGHT_GRAY_DYE = registerFluid(new Fluid("light_gray_dye", STILL, FLOW, 0xFF9D9D97)),
+//                CYAN_DYE = registerFluid(new Fluid("cyan_dye", STILL, FLOW, 0xFF169C9C)),
+//                PURPLE_DYE = registerFluid(new Fluid("purple_dye", STILL, FLOW, 0xFF8932B8)),
+//                BLUE_DYE = registerFluid(new Fluid("blue_dye", STILL, FLOW, 0xFF3C44AA)),
+//                BROWN_DYE = registerFluid(new Fluid("brown_dye", STILL, FLOW, 0xFF835432)),
+//                GREEN_DYE = registerFluid(new Fluid("green_dye", STILL, FLOW, 0xFF5E7C16)),
+//                RED_DYE = registerFluid(new Fluid("red_dye", STILL, FLOW, 0xFFB02E26)),
+//                BLACK_DYE = registerFluid(new Fluid("black_dye", STILL, FLOW, 0xFF1D1D21))
             )
             .build();
 
@@ -177,6 +222,13 @@ public final class FluidsTFC
                     ))
             )
             .build();
+
+        DYE_FLUIDS = Arrays.stream(EnumDyeColor.values()).collect(Collectors.toMap(
+            color -> color,
+            color -> {
+                float[] c = color.getColorComponentValues();
+                return registerFluid(new Fluid(color.getName() + "_dye", STILL, FLOW, new Color(c[0], c[1], c[2]).getRGB()));
+            }));
     }
 
     @Nonnull

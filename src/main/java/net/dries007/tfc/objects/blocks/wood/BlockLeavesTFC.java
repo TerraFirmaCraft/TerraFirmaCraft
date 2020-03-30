@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -94,12 +95,12 @@ public class BlockLeavesTFC extends BlockLeaves
         entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
         entityIn.fallDistance = 0;
         // Entity motion is reduced by leaves.
-        entityIn.motionX *= 0.1D;
+        entityIn.motionX *= ConfigTFC.GENERAL.leafDensity;
         if (entityIn.motionY < 0)
         {
-            entityIn.motionY *= 0.1D;
+            entityIn.motionY *= ConfigTFC.GENERAL.leafDensity;
         }
-        entityIn.motionZ *= 0.1D;
+        entityIn.motionZ *= ConfigTFC.GENERAL.leafDensity;
     }
 
     @Override

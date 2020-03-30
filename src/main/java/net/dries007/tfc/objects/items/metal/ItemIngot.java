@@ -84,7 +84,7 @@ public class ItemIngot extends ItemMetal
                             return EnumActionResult.SUCCESS;
                         }
                     }
-                    else if (stateTop.getBlock().isReplaceable(worldIn, posTop) && worldIn.mayPlace(BlocksTFC.INGOT_PILE, posTop, false, EnumFacing.UP, null))
+                    else if (stateTop.getBlock().isReplaceable(worldIn, posTop) && worldIn.mayPlace(BlocksTFC.INGOT_PILE, posTop, false, EnumFacing.UP, null) && worldIn.getBlockState(posTop.down()).isSideSolid(worldIn, posTop.down(), EnumFacing.UP))
                     {
                         worldIn.setBlockState(posTop, BlocksTFC.INGOT_PILE.getDefaultState());
                         TEIngotPile te = Helpers.getTE(worldIn, posTop, TEIngotPile.class);

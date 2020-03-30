@@ -59,6 +59,16 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.disableLavaWaterPlacesTFCBlocks")
         public boolean disableLavaWaterPlacesTFCBlocks = false;
 
+        @Config.Comment({"Disable the override torches use.",
+            "Only use if you want vanilla torches or have another mod that changes torches."})
+        @Config.LangKey("config." + MOD_ID + ".general.disableTorchOverride")
+        public boolean disableTorchOverride = false;
+
+        @Config.Comment({"Disable trees being fully cut by axes.",
+            "Only use if you want other mods to handle tree felling."})
+        @Config.LangKey("config." + MOD_ID + ".general.disableTreeFelling")
+        public boolean disableTreeFelling = false;
+
         @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.")
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyOre")
         public boolean disableFallableBlocksDestroyOre = false;
@@ -88,6 +98,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
         public double leafStickDropChance = 0.1;
 
+        @Config.Comment("Leaf block density. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.leafDensity")
+        public double leafDensity = 0.1;
+
         @Config.Comment("Bonus leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonus")
@@ -104,7 +119,7 @@ public class ConfigTFC
 
         @Config.Comment("List of fluids allowed to be picked up by wooden bucket")
         @Config.LangKey("config." + MOD_ID + ".general.woodenBucketWhitelist")
-        public String[] woodenBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar"};
+        public String[] woodenBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar", "white_dye", "orange_dye", "magenta_dye", "light_blue_dye", "yellow_dye", "lime_dye", "pink_dye", "gray_dye", "light_gray_dye", "cyan_dye", "purple_dye", "blue_dye", "brown_dye", "green_dye", "red_dye", "black_dye"};
 
         @Config.Comment("List of fluids allowed to be picked up by blue steel bucket")
         @Config.LangKey("config." + MOD_ID + ".general.blueSteelBucketWhitelist")

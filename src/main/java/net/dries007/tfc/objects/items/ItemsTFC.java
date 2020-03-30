@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -130,6 +131,24 @@ public final class ItemsTFC
     public static final ItemMetalBucket BLUE_STEEL_BUCKET = getNull();
     @GameRegistry.ObjectHolder("metal/bucket/red_steel")
     public static final ItemMetalBucket RED_STEEL_BUCKET = getNull();
+
+    @GameRegistry.ObjectHolder("dye/black")
+    public static final ItemMisc DYE_BLACK = getNull();
+    @GameRegistry.ObjectHolder("dye/blue")
+    public static final ItemMisc DYE_BLUE = getNull();
+    @GameRegistry.ObjectHolder("dye/brown")
+    public static final ItemMisc DYE_BROWN = getNull();
+    @GameRegistry.ObjectHolder("dye/white")
+    public static final ItemMisc DYE_WHITE = getNull();
+
+    @GameRegistry.ObjectHolder("ceramics/unfired/clay_brick")
+    public static final ItemPottery UNFIRED_BRICK = getNull();
+
+    @GameRegistry.ObjectHolder("ceramics/unfired/clay_flower_pot")
+    public static final ItemPottery UNFIRED_FLOWER_POT = getNull();
+
+    @GameRegistry.ObjectHolder("ore/gypsum")
+    public static final ItemOreTFC GYPSUM = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
@@ -265,6 +284,8 @@ public final class ItemsTFC
 
             simpleItems.add(register(r, "ceramics/unfired/jug", new ItemPottery(), CT_POTTERY));
             register(r, "ceramics/fired/jug", new ItemJug(), CT_POTTERY);
+            simpleItems.add(register(r, "ceramics/unfired/clay_brick", new ItemPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/unfired/clay_flower_pot", new ItemPottery(), CT_POTTERY));
 
         }
 
@@ -322,6 +343,11 @@ public final class ItemsTFC
         simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.SMALL, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
         simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.SMALL, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
 
+        simpleItems.add(register(r, "dye/black", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBlack"), CT_MISC));
+        simpleItems.add(register(r, "dye/blue", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBlue"), CT_MISC));
+        simpleItems.add(register(r, "dye/white", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeWhite"), CT_MISC));
+        simpleItems.add(register(r, "dye/brown", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBrown"), CT_MISC));
+
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
         simpleItems.add(register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.HEAVY, "grill"), CT_MISC));
 
@@ -338,9 +364,13 @@ public final class ItemsTFC
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
         event.getRegistry().registerAll(
             new ItemSnow(Blocks.SNOW_LAYER).setRegistryName("minecraft", "snow_layer"),
-            new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"),
             new ItemGlassBottleTFC().setRegistryName(Items.GLASS_BOTTLE.getRegistryName()).setTranslationKey("glassBottle")
         );
+
+        if (!ConfigTFC.GENERAL.disableTorchOverride)
+        {
+            event.getRegistry().register(new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"));
+        }
     }
 
     public static void init()

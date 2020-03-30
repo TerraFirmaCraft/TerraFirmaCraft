@@ -131,7 +131,10 @@ public class BlockBerryBush extends Block
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        return bush.getSize() == IBerryBush.Size.LARGE ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+        if (bush.getSize() == IBerryBush.Size.LARGE && face == EnumFacing.UP)
+            return BlockFaceShape.SOLID;
+        else
+            return BlockFaceShape.UNDEFINED;
     }
 
     @SuppressWarnings("deprecation")
