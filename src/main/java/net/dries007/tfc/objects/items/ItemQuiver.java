@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -20,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.api.capability.size.Size;
@@ -65,6 +68,103 @@ public class ItemQuiver extends ItemTFC
         return Weight.HEAVY;
     }
 
+    static ItemStack findQuiver(InventoryPlayer playerInv)
+    {
+        for (int i = 0; i < playerInv.mainInventory.size(); i++)
+        {
+            ItemStack cur = playerInv.mainInventory.get(i);
+            if (cur.getItem() instanceof ItemQuiver)
+            {
+                return cur;
+            }
+        }
+        return null;
+    }
+
+    public static void replenishJavelin(InventoryPlayer playerInv)
+    {
+        ItemStack quiver = findQuiver(playerInv);
+        if (quiver != null)
+        {
+            IItemHandler quiverCapability = quiver.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (quiverCapability instanceof ItemQuiver.QuiverCapability)
+            {
+                ItemStack newJav = ((ItemQuiver.QuiverCapability) quiverCapability).findJavelin();
+                if (newJav != null)
+                {
+                    playerInv.setInventorySlotContents(playerInv.currentItem, newJav);
+                }
+            }
+        }
+    }
+
+    //following ItemBow.findAmmo
+    static ItemStack findAmmoNotMatching(EntityPlayer player, ItemStack match)
+    {
+        if (newArrows(player.getHeldItem(EnumHand.OFF_HAND), match))
+        {
+            return player.getHeldItem(EnumHand.OFF_HAND);
+        }
+        else if (newArrows(player.getHeldItem(EnumHand.MAIN_HAND), match))
+        {
+            return player.getHeldItem(EnumHand.MAIN_HAND);
+        }
+        else
+        {
+            for(int i = 0; i < player.inventory.getSizeInventory(); ++i)
+            {
+                ItemStack itemstack = player.inventory.getStackInSlot(i);
+                if (newArrows(itemstack, match))
+//                    player.inventory.getSlotFor(match) != i)
+                {
+                    return itemstack;
+                }
+            }
+            return ItemStack.EMPTY;
+        }
+    }
+
+    static boolean newArrows(ItemStack arrow1, ItemStack arrow2)
+    {
+        return arrow1.getItem() instanceof ItemArrow && !arrow1.equals(arrow2); //yes, I really mean the same stack
+    }
+
+    public static void replenishArrows(EntityPlayer player)
+    {
+        //current arrow stack (if more than one arrow, return)
+        ItemStack curArrows = findAmmoNotMatching(player, ItemStack.EMPTY);
+        if (curArrows.getCount() > 1) // ItemBow shrinks stack by 1
+        {
+            return;
+        }
+
+        //additional arrow stack (if found, return)
+        ItemStack nextArrows = findAmmoNotMatching(player, curArrows);
+        if (nextArrows != ItemStack.EMPTY) {
+            return;
+        }
+
+        //empty destination slot for arrow stack from quiver since we're called
+        //before curArrows is deleted by ItemBow.onPlayerStoppedUsing
+        int empty = player.inventory.getFirstEmptyStack();
+
+        if (empty > 0 )
+        {
+            ItemStack quiver = findQuiver(player.inventory);
+            if (quiver != null) {
+                IItemHandler quiverCapability = quiver.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (quiverCapability instanceof ItemQuiver.QuiverCapability)
+                {
+                    ItemStack newArrows = ((ItemQuiver.QuiverCapability) quiverCapability).findArrows();
+                    if (newArrows != null)
+                    {
+                        player.inventory.setInventorySlotContents(empty, newArrows);
+                    }
+                }
+            }
+        }
+    }
+
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
@@ -80,7 +180,10 @@ public class ItemQuiver extends ItemTFC
         {
             super(8);
 
-            deserializeNBT(nbt);
+            if (nbt != null)
+            {
+                deserializeNBT(nbt);
+            }
         }
 
         @Override
@@ -100,10 +203,8 @@ public class ItemQuiver extends ItemTFC
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
-            //noinspection ConstantConditions
             return OreDictionaryHelper.doesStackMatchOre(stack, "javelin") ||
-                   //OreDictionaryHelper.doesStackMatchOre(stack, "arrow") ||
-                   stack.getItem().getRegistryName().getPath().endsWith("arrow"); // no oreDict for vanilla arrows
+                   stack.getItem() instanceof ItemArrow;
         }
 
         private boolean isInventoryEmpty()
@@ -137,10 +238,9 @@ public class ItemQuiver extends ItemTFC
             for (int i = 0; i < getSlots(); i++)
             {
                 ItemStack stack = extractItem(i, 1, true);
-                //noinspection ConstantConditions
-                if (!stack.isEmpty() && stack.getItem().getRegistryName().getPath().endsWith("arrow"))
+                if (!stack.isEmpty() && stack.getItem() instanceof ItemArrow)
                 {
-                    return extractItem(i, 1, false);
+                    return extractItem(i, stack.getMaxStackSize(), false);
                 }
             }
             return null;
