@@ -38,15 +38,16 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.api.types.RockCategory;
-import net.dries007.tfc.api.util.IQuiverAmmo;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+import net.dries007.tfc.objects.items.ItemQuiver;
+
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject, IQuiverAmmo
+public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
 {
     private static final Map<RockCategory, ItemRockJavelin> MAP = new HashMap<>();
 
@@ -151,7 +152,7 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject,
                 }
                 player.inventory.deleteStack(stack);
                 player.addStat(StatList.getObjectUseStats(this));
-                replenishJavelin(player.inventory); //Use a quiver if possible
+                ItemQuiver.replenishJavelin(player.inventory); //Use a quiver if possible
             }
         }
     }
