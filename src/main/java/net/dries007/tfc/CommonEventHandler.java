@@ -8,6 +8,7 @@ package net.dries007.tfc;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -15,14 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
@@ -44,6 +39,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -90,6 +86,7 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
+import net.dries007.tfc.objects.items.ItemQuiver;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -140,6 +137,8 @@ public final class CommonEventHandler
             }
         }
     }
+
+
 
     @SubscribeEvent
     public static void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event)
@@ -765,5 +764,22 @@ public final class CommonEventHandler
             }
         }
         return hugeHeavyCount;
+    }
+
+    //how to handle other mod cancellations?
+    @SubscribeEvent
+    public static void checkArrowRefill(ArrowLooseEvent event)
+    {
+        //check the easy negations first, is the bow enchanted, is the velocity enough?
+        if (event.hasAmmo() && !(EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, event.getBow()) > 0)) {
+            float f = ItemBow.getArrowVelocity(event.getCharge());
+            if ((double) f >= 0.1D) {
+                final EntityPlayer player = event.getEntityPlayer();
+                if (player != null && !player.capabilities.isCreativeMode )
+                {
+                    ItemQuiver.replenishArrows(player);
+                }
+            }
+        }
     }
 }
