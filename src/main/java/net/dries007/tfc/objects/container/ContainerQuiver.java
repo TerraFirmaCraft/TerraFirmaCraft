@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.container;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -25,12 +26,10 @@ public class ContainerQuiver extends ContainerItemStack implements ISlotCallback
     }
 
     @Override
-    public boolean isItemValid(int slot, @Nonnull ItemStack stack) //duplicated in ItemQuiver?
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack)
     {
-        //noinspection ConstantConditions
         return OreDictionaryHelper.doesStackMatchOre(stack, "javelin") ||
-               //OreDictionaryHelper.doesStackMatchOre(stack, "arrow") ||
-               stack.getItem().getRegistryName().getPath().endsWith("arrow"); // no oreDict for vanilla arrows
+               stack.getItem() instanceof ItemArrow;
     }
 
     @Override
