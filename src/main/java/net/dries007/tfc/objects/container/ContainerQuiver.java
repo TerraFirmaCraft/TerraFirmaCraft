@@ -8,14 +8,13 @@ package net.dries007.tfc.objects.container;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 import net.dries007.tfc.objects.inventory.slot.SlotCallback;
-import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.objects.items.ItemQuiver;
 
 public class ContainerQuiver extends ContainerItemStack implements ISlotCallback
 {
@@ -28,8 +27,12 @@ public class ContainerQuiver extends ContainerItemStack implements ISlotCallback
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack)
     {
-        return OreDictionaryHelper.doesStackMatchOre(stack, "javelin") ||
-               stack.getItem() instanceof ItemArrow;
+        IItemHandler quiverCapability = this.stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (quiverCapability instanceof ItemQuiver.QuiverCapability)
+        {
+            return quiverCapability.isItemValid(slot, stack);
+        }
+        return false;
     }
 
     @Override
