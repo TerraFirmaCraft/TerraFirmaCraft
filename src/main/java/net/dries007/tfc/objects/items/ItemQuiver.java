@@ -11,6 +11,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +27,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.api.capability.damage.IDamageResistance;
+import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
@@ -34,8 +38,13 @@ import net.dries007.tfc.objects.items.rock.ItemRockJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
-public class ItemQuiver extends ItemTFC
+public class ItemQuiver extends ItemArmor implements IItemSize, IDamageResistance
 {
+    public ItemQuiver()
+    {
+        super(ArmorMaterial.LEATHER, 1 /* chest*/, EntityEquipmentSlot.CHEST);
+    }
+
     @Override
     @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
@@ -65,7 +74,25 @@ public class ItemQuiver extends ItemTFC
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.MEDIUM;
+    }
+
+
+    //leather has no damage resistances and no entry in materialTFC, so placeholders
+    @Override
+    public float getCrushingModifier()
+    {
+        return IDamageResistance.super.getCrushingModifier();
+    }
+    @Override
+    public float getPiercingModifier()
+    {
+        return IDamageResistance.super.getPiercingModifier();
+    }
+    @Override
+    public float getSlashingModifier()
+    {
+        return IDamageResistance.super.getSlashingModifier();
     }
 
     static ItemStack findQuiver(InventoryPlayer playerInv)
@@ -73,6 +100,14 @@ public class ItemQuiver extends ItemTFC
         for (int i = 0; i < playerInv.mainInventory.size(); i++)
         {
             ItemStack cur = playerInv.mainInventory.get(i);
+            if (cur.getItem() instanceof ItemQuiver)
+            {
+                return cur;
+            }
+        }
+        for (int i = 0; i < playerInv.armorInventory.size(); i++)
+        {
+            ItemStack cur = playerInv.armorInventory.get(i);
             if (cur.getItem() instanceof ItemQuiver)
             {
                 return cur;
@@ -101,12 +136,12 @@ public class ItemQuiver extends ItemTFC
     //following ItemBow.findAmmo
     static ItemStack findAmmoNotMatching(EntityPlayer player, ItemStack match)
     {
-        if (newArrows(player.getHeldItem(EnumHand.OFF_HAND), match))
+        if (diffArrows(player.getHeldItem(EnumHand.OFF_HAND), match))
         {
             return player.getHeldItem(EnumHand.OFF_HAND);
         }
-        else if (newArrows(player.getHeldItem(EnumHand.MAIN_HAND), match))
-        {
+        else if (diffArrows(player.getHeldItem(EnumHand.MAIN_HAND), match))
+        { //itemBow checks for arrows in main hand. Where's the bow at, then?
             return player.getHeldItem(EnumHand.MAIN_HAND);
         }
         else
@@ -114,7 +149,7 @@ public class ItemQuiver extends ItemTFC
             for(int i = 0; i < player.inventory.getSizeInventory(); ++i)
             {
                 ItemStack itemstack = player.inventory.getStackInSlot(i);
-                if (newArrows(itemstack, match))
+                if (diffArrows(itemstack, match))
 //                    player.inventory.getSlotFor(match) != i)
                 {
                     return itemstack;
@@ -124,7 +159,7 @@ public class ItemQuiver extends ItemTFC
         }
     }
 
-    static boolean newArrows(ItemStack arrow1, ItemStack arrow2)
+    static boolean diffArrows(ItemStack arrow1, ItemStack arrow2)
     {
         return arrow1.getItem() instanceof ItemArrow && !arrow1.equals(arrow2); //yes, I really mean the same stack
     }
