@@ -48,6 +48,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -766,11 +767,11 @@ public final class CommonEventHandler
         return hugeHeavyCount;
     }
 
-    //how to handle other mod cancellations?
-    @SubscribeEvent
+    //go last, so if other mods cancel this event, we never see it.
+    @SubscribeEvent(priority=EventPriority.LOWEST)
     public static void checkArrowRefill(ArrowLooseEvent event)
     {
-        //check the easy negations first, is the bow enchanted, is the velocity enough?
+        //check the easy negations first, is the bow enchanted, is it charged enough?
         if (event.hasAmmo() && !(EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, event.getBow()) > 0)) {
             float f = ItemBow.getArrowVelocity(event.getCharge());
             if ((double) f >= 0.1D) {
