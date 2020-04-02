@@ -1,26 +1,41 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "GSG",
-    "FFF",
-    "GSG"
-  ],
-  "key": {
-    "S": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "type": "forge:ore_dict",
       "ore": "sand"
     },
-    "G": {
+    {
+      "type": "forge:ore_dict",
+      "ore": "sand"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "sand"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "sand"
+    },
+    {
       "type": "forge:ore_dict",
       "ore": "gravel"
     },
-    "F": {
+    {
       "type": "forge:ore_dict",
-      "ore": "dustFlux"
+      "ore": "gravel"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gravel"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gravel"
     }
-  },
+  ],
   "result": {
     "item": "tfc:aggregate",
-    "count": 6
+    "count": 8
   }
 }

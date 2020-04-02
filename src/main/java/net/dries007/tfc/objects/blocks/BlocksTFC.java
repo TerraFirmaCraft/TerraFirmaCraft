@@ -293,7 +293,7 @@ public final class BlocksTFC
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "debug", new BlockDebug(), CT_MISC)));
 
-        normalItemBlocks.add(new ItemBlockTFC(register(r, "aggregate", new BlockGravel(), CT_ROCK_BLOCKS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "aggregate", new BlockAggregate(), CT_ROCK_BLOCKS)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "fire_clay_block", new BlockFireClay(), CT_ROCK_BLOCKS)));
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS)));
@@ -334,8 +334,8 @@ public final class BlocksTFC
             }
 
         {
+            // Apparently this is the way we're supposed to do things even though the fluid registry defaults. So we'll do it this way.
             Builder<BlockFluidBase> b = ImmutableList.builder();
-            // We always want to register our water variants, as they absolutely need special subclasses
             b.add(
                 register(r, "fluid/hot_water", new BlockFluidHotWater()),
                 register(r, "fluid/fresh_water", new BlockFluidWater(FluidsTFC.FRESH_WATER.get(), Material.WATER, false)),
@@ -343,24 +343,20 @@ public final class BlocksTFC
             );
             for (FluidWrapper wrapper : FluidsTFC.getAllAlcoholsFluids())
             {
-                if (wrapper.isDefault())
-                {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
-                }
+                b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllOtherFiniteFluids())
             {
-                if (wrapper.isDefault())
-                {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
-                }
+                b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllMetalFluids())
             {
-                if (wrapper.isDefault())
-                {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.LAVA)));
-                }
+                b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.LAVA)));
+            }
+            for (EnumDyeColor color : EnumDyeColor.values())
+            {
+                FluidWrapper wrapper = FluidsTFC.getFluidFromDye(color);
+                b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
             }
             allFluidBlocks = b.build();
         }

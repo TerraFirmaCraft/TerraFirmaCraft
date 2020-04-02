@@ -270,9 +270,6 @@ FLUIDS = {
     'salt_water': 'salt_water',
     'fresh_water': 'fresh_water',
     'hot_water': 'hot_water',
-    'finite_salt_water': 'salt_water',
-    'finite_fresh_water': 'fresh_water',
-    'finite_hot_water': 'hot_water',
     'rum': 'rum',
     'beer': 'beer',
     'whiskey': 'whiskey',
@@ -612,7 +609,6 @@ def item(filename_parts, *layers, parent='item/generated'):
     model(('item', *filename_parts), parent,
           None if len(layers) == 0 else {'layer%d' % i: v for i, v in enumerate(layers)})
 
-
 #   ____  _            _        _        _
 #  |  _ \| |          | |      | |      | |
 #  | |_) | | ___   ___| | _____| |_ __ _| |_ ___  ___
@@ -709,7 +705,7 @@ for rock_type in ROCK_TYPES:
     for block_type in GRASS_TYPES:
         blockstate((block_type, rock_type), 'tfc:grass', textures={
             ('all', 'particle'): 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
-            'particle': 'tfc:blocks/grass_top' % rock_type,
+            'particle': 'tfc:blocks/grass_top',
             'top': 'tfc:blocks/%s_top' % block_type,
             ('north', 'south', 'east', 'west'): 'tfc:blocks/%s_side' % block_type,
         }, variants={
