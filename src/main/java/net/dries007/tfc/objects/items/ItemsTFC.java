@@ -81,8 +81,6 @@ public final class ItemsTFC
     public static final ItemMisc WOOL_CLOTH = getNull();
     @GameRegistry.ObjectHolder("animal/product/silk_cloth")
     public static final ItemMisc SILK_CLOTH = getNull();
-    @GameRegistry.ObjectHolder("food/sugarcane")
-    public static final Item SUGARCANE = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
     public static final ItemPottery UNFIRED_FIRE_BRICK = getNull();
@@ -114,6 +112,8 @@ public final class ItemsTFC
     public static final ItemPottery FIRED_SPINDLE = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/large_vessel")
     public static final ItemPottery UNFIRED_LARGE_VESSEL = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fire_clay")
+    public static final Item FIRE_CLAY = getNull();
 
     @GameRegistry.ObjectHolder("bloom/unrefined")
     public static final ItemBloom UNREFINED_BLOOM = getNull();
@@ -343,10 +343,11 @@ public final class ItemsTFC
         simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.SMALL, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
         simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.SMALL, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
 
-        simpleItems.add(register(r, "dye/black", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBlack"), CT_MISC));
-        simpleItems.add(register(r, "dye/blue", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBlue"), CT_MISC));
-        simpleItems.add(register(r, "dye/white", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeWhite"), CT_MISC));
-        simpleItems.add(register(r, "dye/brown", new ItemMisc(Size.TINY, Weight.LIGHT, "dyeBrown"), CT_MISC));
+        simpleItems.add(register(r, "dye/black", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_black"), CT_MISC));
+        simpleItems.add(register(r, "dye/blue", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_blue"), CT_MISC));
+        simpleItems.add(register(r, "dye/white", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_white"), CT_MISC));
+        simpleItems.add(register(r, "dye/brown", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_brown"), CT_MISC));
+        simpleItems.add(register(r, "alabaster_brick", new ItemMisc(Size.VERY_SMALL, Weight.LIGHT), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
         simpleItems.add(register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.HEAVY, "grill"), CT_MISC));

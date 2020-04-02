@@ -127,9 +127,6 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:end_crystal"));
             modRegistry.remove(new ResourceLocation("minecraft:end_bricks"));
 
-            //Armor Dye
-            //modRegistry.remove(new ResourceLocation("minecraft:armordye"));
-
             //Fire Works
             modRegistry.remove(new ResourceLocation("minecraft:fireworks"));
 
@@ -321,7 +318,6 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:purple_bed"));
 
             //pink
-            modRegistry.remove(new ResourceLocation("minecraft:pink_dye_from_red_bonemeal"));
             modRegistry.remove(new ResourceLocation("minecraft:pink_dye_from_pink_tulip"));
             modRegistry.remove(new ResourceLocation("minecraft:pink_dye_from_peony"));
             modRegistry.remove(new ResourceLocation("minecraft:pink_concrete_powder"));
@@ -334,8 +330,6 @@ public class RecipeRegistryEvents
 
             //magenta
             modRegistry.remove(new ResourceLocation("minecraft:magenta_dye_from_lilac"));
-            modRegistry.remove(new ResourceLocation("minecraft:magenta_dye_from_lapis_red_pink"));
-            modRegistry.remove(new ResourceLocation("minecraft:magenta_dye_from_lapis_ink_bonemeal"));
             modRegistry.remove(new ResourceLocation("minecraft:magenta_dye_from_allium"));
             modRegistry.remove(new ResourceLocation("minecraft:magenta_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:magenta_bed"));
@@ -349,16 +343,13 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_white_tulip"));
             modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_oxeye_daisy"));
             modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_ink_bonemeal"));
-            modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_gray_bonemeal"));
             modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_azure_bluet"));
             modRegistry.remove(new ResourceLocation("minecraft:light_gray_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:light_gray_bed"));
-            modRegistry.remove(new ResourceLocation("minecraft:gray_dye"));
             modRegistry.remove(new ResourceLocation("minecraft:gray_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:gray_bed"));
 
             //blue
-            modRegistry.remove(new ResourceLocation("minecraft:light_blue_dye_from_lapis_bonemeal"));
             modRegistry.remove(new ResourceLocation("minecraft:light_blue_dye_from_blue_orchid"));
             modRegistry.remove(new ResourceLocation("minecraft:light_blue_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:light_blue_bed"));
@@ -374,7 +365,6 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:green_bed"));
 
             //cyan
-            modRegistry.remove(new ResourceLocation("minecraft:cyan_dye"));
             modRegistry.remove(new ResourceLocation("minecraft:cyan_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:cyan_bed"));
 

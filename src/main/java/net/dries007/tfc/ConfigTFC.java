@@ -514,5 +514,10 @@ public class ConfigTFC
         @Config.Comment("This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
         @Config.LangKey("config." + MOD_ID + ".world.floraDensitySpreadFactor")
         public double floraDensitySpreadFactor = 0.16;
+
+        @Config.RequiresMcRestart
+        @Config.Comment("Disable the default ore gen file overwriting existing ore modifications. Pack makers: disable in order to be able to modify the ore gen, otherwise your changes will all be overwritten")
+        @Config.LangKey("config." + MOD_ID + ".world.enableDefaultOreGenFileOverwrite")
+        public boolean enableDefaultOreGenFileOverwrite = true;
     }
 }

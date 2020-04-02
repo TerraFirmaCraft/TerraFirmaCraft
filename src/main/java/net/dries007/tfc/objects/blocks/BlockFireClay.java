@@ -1,7 +1,13 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.blocks;
 
 import java.util.Random;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -15,6 +21,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.items.ItemsTFC;
 
+@ParametersAreNonnullByDefault
 public class BlockFireClay extends Block implements IItemSize
 {
     public BlockFireClay()
@@ -30,6 +37,7 @@ public class BlockFireClay extends Block implements IItemSize
         return 4;
     }
 
+    @Nonnull
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
