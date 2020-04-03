@@ -108,8 +108,7 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event)
     {
-        //TerraFirmaCraft.getLog().info("[CHUNK TEST] Load: {}", load.getChunk().getPos());
-        if (event.getWorld().isRemote())
+        if (event.getWorld() != null && event.getWorld().isRemote())
         {
             // Client
             // Ask the server for the chunk data and climate information
@@ -117,10 +116,26 @@ public final class ForgeEventHandler
             PacketHandler.get().send(PacketDistributor.SERVER.noArg(), new ChunkDataRequestPacket(pos.x, pos.z));
         }
     }
-
+/*
     @SubscribeEvent
-    public static void onChunkUnload(ChunkEvent.Unload event)
+    public static void onNeighborChange(BlockEvent.NeighborNotifyEvent event)
     {
-        //TerraFirmaCraft.getLog().info("[CHUNK TEST] Unload: {}", unload.getChunk().getPos());
+        // We handle grass block "updates" here because they need to listen for just further than neighbors
+        if (event.getState().getBlock() instanceof TFCGrassBlock)
+        {
+            // Notify neighbors one block to the side and one blockup
+            for (Direction direction : Direction.Plane.HORIZONTAL)
+            {
+                BlockPos targetPos = event.getPos().up().offset(direction);
+                BlockState target = event.getWorld().getBlockState(targetPos);
+                if (target.getBlock() instanceof TFCGrassBlock)
+                {
+                    target.getBlock().updateDiagonalNeighbors();
+                    target.getBlock().neighborChanged(target, event.getWorld(), targetPos, target.getBlock(), event.getPos().up(), false);
+                }
+            }
+        }
     }
+
+ */
 }

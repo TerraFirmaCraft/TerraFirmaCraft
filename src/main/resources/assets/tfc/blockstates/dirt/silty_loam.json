@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "": [
+      {
+        "model": "tfc:block/dirt/silty_loam",
+        "y": 0
+      },
+      {
+        "model": "tfc:block/dirt/silty_loam",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/dirt/silty_loam",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/dirt/silty_loam",
+        "y": 270
+      }
+    ]
+  }
+}

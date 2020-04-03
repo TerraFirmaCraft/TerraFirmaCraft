@@ -122,7 +122,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         ChunkPos chunkPos = chunk.getPos();
         SharedSeedRandom random = new SharedSeedRandom();
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
-        ChunkData chunData = chunkDataProvider.getOrCreate(chunkPos);
+        ChunkData chunkData = chunkDataProvider.getOrCreate(chunkPos);
         BlockPos.Mutable pos = new BlockPos.Mutable();
 
         for (int x = 0; x < 16; x++)
@@ -130,12 +130,12 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
             for (int z = 0; z < 16; z++)
             {
                 pos.setPos(x, 0, z);
-                float temperature = chunData.getAvgTemp();
-                float rainfall = chunData.getRainfall();
+                float temperature = chunkData.getAvgTemp();
+                float rainfall = chunkData.getRainfall();
                 int topYLevel = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
                 // todo: use a INoise2D here since it's easier to read
                 float noise = (float) surfaceDepthNoise.noiseAt(x * 0.0625D, topYLevel * 0.0625D, 0.0625D, z * 0.0625) * 15.0f;
-                ((TFCBiome) worldGenRegion.getBiome(pos)).getTFCSurfaceBuilder().buildSurface(random, chunk, chunData.getRockData(), chunkPos.getXStart() + x, chunkPos.getZStart() + z, topYLevel + 1, temperature, rainfall, noise);
+                ((TFCBiome) worldGenRegion.getBiome(pos)).getTFCSurfaceBuilder().buildSurface(random, chunk, chunkData.getRockData(), chunkPos.getXStart() + x, chunkPos.getZStart() + z, topYLevel + 1, temperature, rainfall, noise);
             }
         }
 
@@ -282,10 +282,6 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 baseHeight[x + 16 * z] = actualHeight;
             }
         }
-
-        //  todo: light stuff and height maps
-        Heightmap oceanFloorHeightMap = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
-        Heightmap worldSurfaceHeightMap = chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
 
         // Build Rough Terrain
         RockData rockData = chunkDataProvider.getOrCreate(chunkPos).getRockData();
