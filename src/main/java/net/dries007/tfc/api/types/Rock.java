@@ -47,6 +47,8 @@ public class Rock extends TFCType
     /**
      * Default rocks that are used for block registration calls.
      * Not extensible.
+     *
+     * @see Rock instead and register via json
      */
     public enum Default
     {

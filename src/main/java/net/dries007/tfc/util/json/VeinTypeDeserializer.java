@@ -35,7 +35,7 @@ public enum VeinTypeDeserializer implements JsonDeserializer<VeinType>
         int rarity = JSONUtils.getInt(json, "rarity", 10);
         if (rarity <= 0)
         {
-            throw new JsonParseException("Count must be > 0.");
+            throw new JsonParseException("Rarity must be > 0.");
         }
         int minY = JSONUtils.getInt(json, "min_y", 16);
         int maxY = JSONUtils.getInt(json, "max_y", 128);
