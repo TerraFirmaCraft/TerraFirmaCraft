@@ -44,6 +44,8 @@ public final class CapabilityItemHeat
     {
         //register heat on vanilla egg for cooking
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Items.EGG), () -> new ItemHeatHandler(null, 1, 480));
+        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of("blockClay"), () -> new ItemHeatHandler(null, 1, 600));
+        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of("terracotta"), () -> new ItemHeatHandler(null, 1, 1200));
     }
 
     /**
@@ -58,19 +60,11 @@ public final class CapabilityItemHeat
     {
         if (temp < target)
         {
-            if (temp + deltaPositive >= target)
-            {
-                return target;
-            }
-            return temp + deltaPositive;
+            return Math.min(temp + deltaPositive, target);
         }
         else if (temp > target)
         {
-            if (temp - deltaNegative <= target)
-            {
-                return target;
-            }
-            return temp - deltaNegative;
+            return Math.max(temp - deltaNegative, target);
         }
         else
         {
