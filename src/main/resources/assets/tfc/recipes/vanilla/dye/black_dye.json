@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:dye",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "tfc:dye/black",
+    "count": 1
+  }
+}

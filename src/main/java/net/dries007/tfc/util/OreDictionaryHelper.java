@@ -94,6 +94,7 @@ public class OreDictionaryHelper
         OreDictionary.registerOre("fireStarter", new ItemStack(Items.FLINT_AND_STEEL, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("fireStarter", new ItemStack(Items.FIRE_CHARGE));
         OreDictionary.registerOre("bowl", Items.BOWL);
+        OreDictionary.registerOre("blockClay", Blocks.CLAY);
 
         //adding oredict to dyeables for dye support. Instead of adding specific recipes color can be changed universally.
         OreDictionary.registerOre("bed", new ItemStack(Items.BED, 1, OreDictionary.WILDCARD_VALUE));
