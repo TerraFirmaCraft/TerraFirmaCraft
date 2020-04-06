@@ -37,14 +37,16 @@ public class EntitiesTFC
         registerLiving("horsetfc", EntityHorseTFC.class, 0xA5886B, 0xABA400);
         registerLiving("donkeytfc", EntityDonkeyTFC.class, 0x493C32, 0x756659);
         registerLiving("muletfc", EntityMuleTFC.class, 0x180200, 0x482D1A);
-        registerLiving("polarbeartfc", EntityPolarBearTFC.class, 0xAA7722, 0xFFF91F);
+        registerLiving("polarbeartfc", EntityPolarBearTFC.class, 0x557755, 0xF1FFF1);
         registerLiving("parrottfc", EntityParrotTFC.class, 0x885040, 0xB0ACAC);
         registerLiving("llamatfc", EntityLlamaTFC.class, 0xA52A2A, 0xAA7722);
         registerLiving("ocelottfc", EntityOcelotTFC.class, 0x3527FA, 0x7F23A0);
         registerLiving("panthertfc", EntityPantherTFC.class, 0x3527FA, 0x7F23A0);
-        registerLiving("ducktfc", EntityDuckTFC.class, 0x3527FA, 0x7F23A0);
-        registerLiving("alpacatfc", EntityAlpacaTFC.class, 0xFFFFFF, 0xFF6347);
-        registerLiving("goattfc", EntityGoatTFC.class, 0xFFFFFF, 0xFF6347);
+        registerLiving("ducktfc", EntityDuckTFC.class, 0xFFF91F, 0x462612);
+        registerLiving("alpacatfc", EntityAlpacaTFC.class, 0x462612, 0xA5886B);
+        registerLiving("goattfc", EntityGoatTFC.class, 0xA5886B, 0x756659);
+        registerLiving("sabertoothtfc", EntitySaberToothTFC.class, 0xA5886B, 0x756659);
+        registerLiving("cameltfc", EntityCamelTFC.class, 0xA5886B, 0x756659);
     }
 
     private static void register(String name, Class<? extends Entity> cls)
