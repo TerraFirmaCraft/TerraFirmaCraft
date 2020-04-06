@@ -211,14 +211,11 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityBearTFC.AIMeleeAttack());
-        //this.tasks.addTask(3, new EntityAIAttackMeleeTFC(this, 1.0D, false, EntityAIAttackMeleeTFC.AttackBehavior.DAYLIGHT_ONLY));
+        this.tasks.addTask(1, new EntityBearTFC.AIBearStandAttack()); // Watch and "warn" near players, attack by standing (like polar bears)
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-        // Avoid player at nighttime
-        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
     }
 
     public void onUpdate()
@@ -260,19 +257,21 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
         this.dataManager.register(IS_STANDING, false);
     }
 
-    private class AIMeleeAttack extends EntityAIAttackMelee
+    private class AIBearStandAttack extends EntityAIAttackMelee
     {
-        public AIMeleeAttack()
+        public AIBearStandAttack()
         {
             super(EntityBearTFC.this, 1.25D, true);
         }
 
+        @Override
         public void resetTask()
         {
             EntityBearTFC.this.setStanding(false);
             super.resetTask();
         }
 
+        @Override
         protected void checkAndPerformAttack(EntityLivingBase enemy, double distToEnemySqr)
         {
             double d0 = this.getAttackReachSqr(enemy);
