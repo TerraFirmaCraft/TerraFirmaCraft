@@ -98,20 +98,6 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     }
 
     @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote)
-        {
-            if (this.getMilkedDay() > CalendarTFC.PLAYER_TIME.getTotalDays())
-            {
-                //Calendar went backwards by command! this need to update
-                this.setMilkedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            }
-        }
-    }
-
-    @Override
     public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);

@@ -55,7 +55,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
      */
     public static int getRandomGrowth(int daysToAdulthood)
     {
-        int lifeTimeDays = daysToAdulthood + Constants.RNG.nextInt(daysToAdulthood * 3);
+        int lifeTimeDays = daysToAdulthood + Constants.RNG.nextInt((int) (daysToAdulthood * ConfigTFC.GENERAL.factorAnimalAging));
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
@@ -135,7 +135,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     @Override
     public boolean isReadyToMate()
     {
-        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.isHungry())
+        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || this.isHungry())
             return false;
         return this.matingTime == -1 || this.matingTime + MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
     }
