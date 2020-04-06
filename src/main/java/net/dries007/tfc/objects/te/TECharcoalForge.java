@@ -19,6 +19,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
@@ -378,6 +380,9 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
                     }
                 }
             }
+
+            // Charcoal grilled!
+            CapabilityFood.applyTrait(outputStack, FoodTrait.CHARCOAL_GRILLED);
 
             // Handle possible item output
             inventory.setStackInSlot(startIndex, outputStack);

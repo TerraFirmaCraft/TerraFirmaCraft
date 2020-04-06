@@ -7,8 +7,11 @@ package net.dries007.tfc.api.capability.food;
 
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
@@ -18,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
@@ -27,15 +31,6 @@ import net.dries007.tfc.util.calendar.ICalendarFormatted;
  */
 public interface IFood extends INBTSerializable<NBTTagCompound>
 {
-    /**
-     * Gets the nutrient value (only a single item, not the sum of the stack)
-     *
-     * @param stack    the stack to get the nutrient of
-     * @param nutrient the nutrient in question
-     * @return a value, current range is around 0 - 3
-     */
-    float getNutrient(ItemStack stack, Nutrient nutrient);
-
     /**
      * The timestamp that this food was created
      * Used to calculate expiration date
@@ -68,19 +63,15 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
     }
 
     /**
-     * How much thirst is restored when this item is eaten.
-     * Drinking water from a water source gives 15, for reference
+     * Get a visible measure of all immutable data associated with food
+     * - Nutrition information
+     * - Hunger / Saturation
+     * - Water (Thirst)
      *
-     * @return a thirst value, roughly in the range 0 - 15
+     * @see FoodData
      */
-    float getWater();
-
-    /**
-     * This is basically a saturation modifier
-     *
-     * @return a value roughly in the range 0.0 - 1.0
-     */
-    float getCalories();
+    @Nonnull
+    FoodData getData();
 
     /**
      * Gets the current decay date modifier, including traits
@@ -115,8 +106,9 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
      * @param text  the tooltip
      */
     @SideOnly(Side.CLIENT)
-    default void addNutrientInfo(@Nonnull ItemStack stack, @Nonnull List<String> text)
+    default void addTooltipInfo(@Nonnull ItemStack stack, @Nonnull List<String> text, @Nullable EntityPlayer player)
     {
+        // Expiration dates
         if (isRotten())
         {
             text.add(TextFormatting.RED + I18n.format("tfc.tooltip.food_rotten"));
@@ -124,7 +116,6 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
         else
         {
             long rottenDate = getRottenDate();
-
             if (rottenDate == Long.MAX_VALUE)
             {
                 text.add(TextFormatting.GOLD + I18n.format("tfc.tooltip.food_infinite_expiry"));
@@ -135,25 +126,40 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
                 long rottenCalendarTime = rottenDate - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
                 text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
             }
-            if (ConfigTFC.GENERAL.debug)
-            {
-                // todo: make this 1) use color, 2) only show if sneaking (to avoid tooltip clutter), 3) only show if skill is high enough
-                // i.e. lowest level shows category, i.e. "Category: Grain"
-                // next level shows which nutrients it has, i.e. "Category: Grain, Nutrients: Carbohydrates, Fat"
-                // final level shows exact values, i.e. "Category: Grain, Nutrients: Carbohydrates (1.5), Fat (3.0)"
-                for (Nutrient nutrient : Nutrient.values())
-                {
-                    float amount = getNutrient(stack, nutrient);
-                    if (amount > 0)
-                    {
-                        text.add(nutrient.name().toLowerCase() + ": " + amount);
-                    }
-                }
-            }
         }
         if (ConfigTFC.GENERAL.debug)
         {
             text.add("Created at " + getCreationDate());
+        }
+
+        // Nutrition / Hunger / Saturation / Water Values
+        // Hide this based on the shift key (because it's a lot of into)
+        if (GuiScreen.isShiftKeyDown())
+        {
+            text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.nutrition"));
+
+            float saturation = getData().getSaturation();
+            if (saturation > 0)
+            {
+                text.add(TextFormatting.GRAY + I18n.format("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))));
+            }
+            float water = getData().getWater();
+            if (water > 0)
+            {
+                text.add(TextFormatting.GRAY + I18n.format("tfc.tooltip.nutrition_water", String.format("%d", (int) water)));
+            }
+            for (Nutrient nutrient : Nutrient.values())
+            {
+                float value = getData().getNutrients()[nutrient.ordinal()];
+                if (value > 0)
+                {
+                    text.add(nutrient.getColor() + I18n.format("tfc.tooltip.nutrition_nutrient", I18n.format(Helpers.getEnumName(nutrient)), String.format("%.1f", value)));
+                }
+            }
+        }
+        else
+        {
+            text.add(TextFormatting.ITALIC + I18n.format("tfc.tooltip.hold_shift_for_nutrition_info"));
         }
 
         // Add info for each trait

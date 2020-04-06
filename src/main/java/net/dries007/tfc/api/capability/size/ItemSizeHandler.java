@@ -28,7 +28,7 @@ public class ItemSizeHandler implements ICapabilityProvider, IItemSize
 
     public ItemSizeHandler()
     {
-        this(Size.NORMAL, Weight.MEDIUM, true);
+        this(Size.SMALL, Weight.LIGHT, true); // Default to fitting in small vessels and stacksize = 32
     }
 
     @Override

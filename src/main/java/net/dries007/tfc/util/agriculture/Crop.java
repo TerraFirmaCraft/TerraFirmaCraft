@@ -9,7 +9,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.types.ICrop;
@@ -54,9 +53,7 @@ public enum Crop implements ICrop
     TOMATO(Food.TOMATO, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, PICKABLE),
     RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
     YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
-    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
-    PUMPKIN(() -> new ItemStack(Blocks.PUMPKIN), () -> ItemStack.EMPTY, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
-    MELON(() -> new ItemStack(Blocks.MELON_BLOCK), () -> ItemStack.EMPTY, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE);
+    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE);
 
     /**
      * the count to add to the amount of food dropped when applying the skill bonus

@@ -51,7 +51,7 @@ public class ItemLumberTFC extends ItemTFC
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.NORMAL;
+        return Size.NORMAL; // Stored in Large Vessels and Chests
     }
 
     @Nonnull

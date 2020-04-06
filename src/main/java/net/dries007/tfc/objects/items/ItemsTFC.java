@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -33,7 +34,9 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockDoorTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.items.ceramics.*;
+import net.dries007.tfc.objects.items.food.ItemDynamicBowlFood;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
+import net.dries007.tfc.objects.items.food.ItemSandwich;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTorch;
 import net.dries007.tfc.objects.items.metal.ItemMetal;
@@ -62,6 +65,7 @@ public final class ItemsTFC
     public static final ItemGoldPan GOLDPAN = getNull();
     public static final ItemMisc STRAW = getNull();
     public static final Item HANDSTONE = getNull();
+    public static final Item WROUGHT_IRON_GRILL = getNull();
 
     @GameRegistry.ObjectHolder("crop/product/jute")
     public static final ItemMisc JUTE = getNull();
@@ -77,11 +81,6 @@ public final class ItemsTFC
     public static final ItemMisc WOOL_CLOTH = getNull();
     @GameRegistry.ObjectHolder("animal/product/silk_cloth")
     public static final ItemMisc SILK_CLOTH = getNull();
-    @GameRegistry.ObjectHolder("food/sugarcane")
-    public static final Item SUGARCANE = getNull();
-
-    @GameRegistry.ObjectHolder("ceramics/fire_clay")
-    public static final ItemMisc FIRE_CLAY = getNull();
 
     @GameRegistry.ObjectHolder("ceramics/unfired/fire_brick")
     public static final ItemPottery UNFIRED_FIRE_BRICK = getNull();
@@ -113,6 +112,8 @@ public final class ItemsTFC
     public static final ItemPottery FIRED_SPINDLE = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/large_vessel")
     public static final ItemPottery UNFIRED_LARGE_VESSEL = getNull();
+    @GameRegistry.ObjectHolder("ceramics/fire_clay")
+    public static final Item FIRE_CLAY = getNull();
 
     @GameRegistry.ObjectHolder("bloom/unrefined")
     public static final ItemBloom UNREFINED_BLOOM = getNull();
@@ -133,6 +134,24 @@ public final class ItemsTFC
     public static final ItemMetalBucket BLUE_STEEL_BUCKET = getNull();
     @GameRegistry.ObjectHolder("metal/bucket/red_steel")
     public static final ItemMetalBucket RED_STEEL_BUCKET = getNull();
+
+    @GameRegistry.ObjectHolder("dye/black")
+    public static final ItemMisc DYE_BLACK = getNull();
+    @GameRegistry.ObjectHolder("dye/blue")
+    public static final ItemMisc DYE_BLUE = getNull();
+    @GameRegistry.ObjectHolder("dye/brown")
+    public static final ItemMisc DYE_BROWN = getNull();
+    @GameRegistry.ObjectHolder("dye/white")
+    public static final ItemMisc DYE_WHITE = getNull();
+
+    @GameRegistry.ObjectHolder("ceramics/unfired/clay_brick")
+    public static final ItemPottery UNFIRED_BRICK = getNull();
+
+    @GameRegistry.ObjectHolder("ceramics/unfired/clay_flower_pot")
+    public static final ItemPottery UNFIRED_FLOWER_POT = getNull();
+
+    @GameRegistry.ObjectHolder("ore/gypsum")
+    public static final ItemOreTFC GYPSUM = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
@@ -161,7 +180,7 @@ public final class ItemsTFC
         Builder<Item> simpleItems = ImmutableList.builder();
 
         simpleItems.add(register(r, "wand", new ItemDebug(), CT_MISC));
-        simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.LIGHT, "mortar"), CT_MISC));
+        simpleItems.add(register(r, "mortar", new ItemMisc(Size.TINY, Weight.VERY_LIGHT, "mortar"), CT_MISC));
         register(r, "wooden_bucket", new ItemWoodenBucket(), CT_WOOD); //not a simple item, use a custom model
         register(r, "metal/bucket/blue_steel", new ItemMetalBucket(Metal.BLUE_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
         register(r, "metal/bucket/red_steel", new ItemMetalBucket(Metal.RED_STEEL, Metal.ItemType.BUCKET), CT_METAL); //not a simple item, use a custom model
@@ -253,15 +272,23 @@ public final class ItemsTFC
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(false), new ItemSmallVessel(false));
             registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(true), new ItemSmallVessel(true));
 
+            ItemPottery firedPot = new ItemPottery();
+            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot", new ItemPottery(), firedPot);
+            OreDictionaryHelper.register(firedPot, "cooking_pot");
+
+            ItemPottery firedBowl = new ItemPottery();
+            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl", new ItemPottery(), firedBowl);
+            OreDictionaryHelper.register(firedBowl, "bowl");
+
             registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
-            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot");
-            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl");
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 
-            simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.MEDIUM, "fire_clay"), CT_MISC));
+            simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT, "fire_clay"), CT_MISC));
 
             simpleItems.add(register(r, "ceramics/unfired/jug", new ItemPottery(), CT_POTTERY));
             register(r, "ceramics/fired/jug", new ItemJug(), CT_POTTERY);
+            simpleItems.add(register(r, "ceramics/unfired/clay_brick", new ItemPottery(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/unfired/clay_flower_pot", new ItemPottery(), CT_POTTERY));
 
         }
 
@@ -270,18 +297,35 @@ public final class ItemsTFC
             simpleItems.add(register(r, "crop/seeds/" + crop.name().toLowerCase(), new ItemSeedsTFC(crop), CT_FOOD));
         }
 
-        simpleItems.add(register(r, "crop/product/jute", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
-        simpleItems.add(register(r, "crop/product/jute_fiber", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
-        simpleItems.add(register(r, "crop/product/burlap_cloth", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/jute", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/jute_fiber", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/burlap_cloth", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT), CT_MISC));
 
+        // All simple foods (not meals) just use ItemFood and are registered here
         for (Food food : Food.values())
         {
-            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemFoodTFC(food), CT_FOOD));
+            if (food.getCategory() != Food.Category.MEAL)
+            {
+                simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemFoodTFC(food), CT_FOOD));
+            }
+        }
+        // Complex foods that require special classes go here
+        for (Food food : new Food[] {Food.BARLEY_BREAD_SANDWICH, Food.CORNBREAD_SANDWICH, Food.OAT_BREAD_SANDWICH, Food.RICE_BREAD_SANDWICH, Food.RYE_BREAD_SANDWICH, Food.WHEAT_BREAD_SANDWICH})
+        {
+            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemSandwich(food), CT_FOOD));
+        }
+        for (Food food : new Food[] {Food.SOUP_GRAIN, Food.SOUP_FRUIT, Food.SOUP_VEGETABLE, Food.SOUP_MEAT, Food.SOUP_DAIRY})
+        {
+            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemDynamicBowlFood(food), CT_FOOD));
+        }
+        for (Food food : new Food[] {Food.SALAD_GRAIN, Food.SALAD_FRUIT, Food.SALAD_VEGETABLE, Food.SALAD_MEAT, Food.SALAD_DAIRY})
+        {
+            simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemDynamicBowlFood(food), CT_FOOD));
         }
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
-        simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.LIGHT, "kindling", "straw"), CT_MISC));
-        simpleItems.add(register(r, "handstone", new ItemCraftingTool(250, Size.NORMAL, Weight.HEAVY, "handstone"), CT_MISC));
+        simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT, "kindling", "straw"), CT_MISC));
+        simpleItems.add(register(r, "handstone", new ItemCraftingTool(250, Size.NORMAL, Weight.VERY_HEAVY, "handstone"), CT_MISC));
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));
 
@@ -300,23 +344,19 @@ public final class ItemsTFC
         //leather quiver
         simpleItems.add(register(r, "quiver", new ItemQuiver(), CT_MISC));
 
-        simpleItems.add(register(r, "animal/product/wool", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
-        simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.TINY, Weight.LIGHT, "string"), CT_MISC));
-        simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
-        simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool", new ItemMisc(Size.SMALL, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT, "string"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.SMALL, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
+        simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.SMALL, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
+
+        simpleItems.add(register(r, "dye/black", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_black"), CT_MISC));
+        simpleItems.add(register(r, "dye/blue", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_blue"), CT_MISC));
+        simpleItems.add(register(r, "dye/white", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_white"), CT_MISC));
+        simpleItems.add(register(r, "dye/brown", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_brown"), CT_MISC));
+        simpleItems.add(register(r, "alabaster_brick", new ItemMisc(Size.VERY_SMALL, Weight.LIGHT), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
-
-        // Note: if you add items you don't need to put them in this list of todos. Feel free to add them where they make sense :)
-        // todo: Bow? Arrows?
-        // todo: Fishing rod?
-        // todo: ink?
-        // todo: flint & steel? Higher durability versions for different metals (iron/steels)?
-        // todo: fluid glass bottles? (alcohols/water/vinegar/brine)
-        // todo: minecart with chest (so the chest dropped is the right kind of wood)
-        // todo: mortar
-
-        // todo: quiver
+        simpleItems.add(register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.HEAVY, "grill"), CT_MISC));
 
         allSimpleItems = simpleItems.build();
 
@@ -331,9 +371,13 @@ public final class ItemsTFC
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
         event.getRegistry().registerAll(
             new ItemSnow(Blocks.SNOW_LAYER).setRegistryName("minecraft", "snow_layer"),
-            new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"),
             new ItemGlassBottleTFC().setRegistryName(Items.GLASS_BOTTLE.getRegistryName()).setTranslationKey("glassBottle")
         );
+
+        if (!ConfigTFC.GENERAL.disableTorchOverride)
+        {
+            event.getRegistry().register(new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"));
+        }
     }
 
     public static void init()

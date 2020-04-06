@@ -172,16 +172,6 @@
                 ]
             }
         },
-        "sugarcane": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "tfc:food/sugarcane"
-                    }
-                ]
-            }
-        },
         "tomato": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
@@ -244,6 +234,6 @@
         }
     },
     "requirements": [
-        ["barley","maize","oat","rice","rye","wheat","beet","cabbage","carrot","garlic","green_bean","green_bell_pepper","onion","potato","soybean","squash","sugarcane","tomato","red_bell_pepper","yellow_bell_pepper","jute","pumpkin","melon"]
+        ["barley", "maize", "oat", "rice", "rye", "wheat", "beet", "cabbage", "carrot", "garlic", "green_bean", "green_bell_pepper", "onion", "potato", "soybean", "squash", "tomato", "red_bell_pepper", "yellow_bell_pepper", "jute", "pumpkin", "melon"]
     ]
 }

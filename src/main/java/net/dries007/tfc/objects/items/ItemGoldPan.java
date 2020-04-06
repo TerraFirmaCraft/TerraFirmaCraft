@@ -184,14 +184,14 @@ public class ItemGoldPan extends ItemTFC
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.SMALL;
+        return Size.NORMAL; // Stored in large vessels and chests
     }
 
     @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.LIGHT;
+        return Weight.MEDIUM; // Stacksize = 16
     }
 
     @Override

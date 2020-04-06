@@ -172,13 +172,13 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.NORMAL;
+        return Size.SMALL; // Fits in Small Vessels
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.MEDIUM;
+        return Weight.MEDIUM; // Stacksize = 16
     }
 }

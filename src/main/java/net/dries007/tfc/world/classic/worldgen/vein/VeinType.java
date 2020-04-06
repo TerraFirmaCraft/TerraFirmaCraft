@@ -14,19 +14,18 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
 import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
-import net.dries007.tfc.objects.items.metal.ItemSmallOre;
 
 @ParametersAreNonnullByDefault
 public class VeinType
 {
     private final Ore ore;
+    private final ItemStack looseRock;
     private final Set<Rock> baseRocks;
 
     private final int width;
@@ -41,9 +40,10 @@ public class VeinType
     private final Shape shape;
     private String name;
 
-    public VeinType(@Nullable Ore ore, Collection<Rock> baseRocks, Shape shape, int width, int height, int rarity, int minY, int maxY, int density)
+    public VeinType(@Nullable Ore ore, ItemStack looseRock, Collection<Rock> baseRocks, Shape shape, int width, int height, int rarity, int minY, int maxY, int density)
     {
         this.ore = ore;
+        this.looseRock = looseRock;
         this.baseRocks = ImmutableSet.copyOf(baseRocks);
         this.shape = shape;
 
@@ -105,22 +105,13 @@ public class VeinType
 
     public boolean hasLooseRocks()
     {
-        return ore != null && ore.isGraded();
+        return !looseRock.isEmpty();
     }
 
     @Nonnull
     public ItemStack getLooseRockItem()
     {
-        if (ore != null)
-        {
-            // This is done intentionally, as some ores may not have a small ore item
-            Item itemOre = ItemSmallOre.get(getOre());
-            if (itemOre != null)
-            {
-                return new ItemStack(itemOre, 1);
-            }
-        }
-        return ItemStack.EMPTY;
+        return looseRock.copy();
     }
 
     public String getRegistryName()
@@ -136,7 +127,18 @@ public class VeinType
     @Override
     public String toString()
     {
-        return String.format("%s: {ore=%s, shape=%s, size=%s, rarity=%d, baseRocks=%s, minY=%d, maxY=%d, density=%.2f}", name, (getOre() != null ? getOre() : "special"), shape, getWidth(), getRarity(), baseRocks, getMinY(), getMaxY(), getDensity());
+        String ore = "special";
+        if (getOre() != null)
+        {
+            ore = getOre().toString();
+        }
+        else if (getOreState(Rock.GRANITE, Ore.Grade.NORMAL) != null)
+        {
+            // print the registry name
+            //noinspection ConstantConditions
+            ore = getOreState(Rock.GRANITE, Ore.Grade.NORMAL).getBlock().getRegistryName().toString();
+        }
+        return String.format("%s: {ore=%s, shape=%s, size=%s, rarity=%d, baseRocks=%s, minY=%d, maxY=%d, density=%.2f}", name, ore, shape, getWidth(), getRarity(), baseRocks, getMinY(), getMaxY(), getDensity());
     }
 
     public int getWidth()
@@ -182,7 +184,7 @@ public class VeinType
     /**
      * Can the vein spawn in the specified rock type
      */
-    boolean canSpawnIn(Rock rock)
+    public boolean canSpawnIn(Rock rock)
     {
         return baseRocks.contains(rock);
     }
@@ -196,9 +198,9 @@ public class VeinType
     {
         private final IBlockState oreState;
 
-        public CustomVeinType(@Nonnull IBlockState oreState, @Nonnull Collection<Rock> rocks, Shape shape, int width, int height, int rarity, int minY, int maxY, int density)
+        public CustomVeinType(@Nonnull IBlockState oreState, ItemStack looseRock, @Nonnull Collection<Rock> rocks, Shape shape, int width, int height, int rarity, int minY, int maxY, int density)
         {
-            super(null, rocks, shape, width, height, rarity, minY, maxY, density);
+            super(null, looseRock, rocks, shape, width, height, rarity, minY, maxY, density);
             this.oreState = oreState;
         }
 

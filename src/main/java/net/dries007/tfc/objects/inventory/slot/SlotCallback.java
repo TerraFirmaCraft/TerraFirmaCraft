@@ -35,7 +35,7 @@ public class SlotCallback extends SlotItemHandler
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack)
     {
-        return callback.isItemValid(this.slotNumber, stack) && super.isItemValid(stack);
+        return callback.isItemValid(getSlotIndex(), stack) && super.isItemValid(stack);
     }
 
     @Override

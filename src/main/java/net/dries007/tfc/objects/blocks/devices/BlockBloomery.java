@@ -39,7 +39,7 @@ import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBloomery;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Multiblock;
+import net.dries007.tfc.util.block.Multiblock;
 
 import static net.minecraft.block.BlockTrapDoor.OPEN;
 
@@ -214,14 +214,14 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
     @Nonnull
     public Size getSize(ItemStack stack)
     {
-        return Size.VERY_SMALL;
+        return Size.LARGE; // Only in chests
     }
 
     @Override
     @Nonnull
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.VERY_HEAVY;  // stacksize = 1
     }
 
     @Override

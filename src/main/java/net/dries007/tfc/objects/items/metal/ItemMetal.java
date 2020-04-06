@@ -129,41 +129,28 @@ public class ItemMetal extends ItemTFC implements IMetalItem
     {
         switch (type)
         {
-            case HAMMER:
-            case DOUBLE_INGOT:
-            case SHEET:
-            case SCRAP:
-            case LAMP:
-            case TUYERE:
-            case PICK_HEAD:
-            case SHOVEL_HEAD:
-            case AXE_HEAD:
-            case HOE_HEAD:
-            case CHISEL:
-            case CHISEL_HEAD:
-            case SWORD_BLADE:
-            case MACE_HEAD:
-            case SAW_BLADE:
-            case JAVELIN_HEAD:
-            case HAMMER_HEAD:
-            case PROPICK:
-            case PROPICK_HEAD:
-            case KNIFE:
-            case KNIFE_BLADE:
-            case SCYTHE:
-                return Size.SMALL;
-            case SAW:
-            case DOUBLE_SHEET:
-                return Size.NORMAL;
-            case ANVIL:
-                return Size.HUGE;
-            case INGOT:
-            case DUST:
-                return Size.VERY_SMALL;
             case NUGGET:
-                return Size.TINY;
+            case DUST:
+            case SCRAP:
+                return Size.SMALL; // Fits in Small Vessels
+            case PICK_HEAD:
+            case HAMMER_HEAD:
+            case HOE_HEAD:
+            case AXE_HEAD:
+            case CHISEL_HEAD:
+            case JAVELIN_HEAD:
+            case MACE_HEAD:
+            case PROPICK_HEAD:
+            case SHOVEL_HEAD:
+            case KNIFE_BLADE:
+            case SAW_BLADE:
+            case SCYTHE_BLADE:
+            case SWORD_BLADE:
+                return Size.NORMAL; // Tool heads fits in large vessels
+            case ANVIL:
+                return Size.HUGE; // Overburdens
             default:
-                return Size.LARGE;
+                return Size.LARGE; // Everything else fits only in chests
         }
     }
 
@@ -173,28 +160,27 @@ public class ItemMetal extends ItemTFC implements IMetalItem
     {
         switch (type)
         {
+            case DUST:
+            case NUGGET:
+            case SCRAP:
+                return Weight.VERY_LIGHT; // Stacksize = 64
             case INGOT:
             case DOUBLE_INGOT:
             case SHEET:
             case DOUBLE_SHEET:
+                return Weight.LIGHT; // Stacksize = 32
             case ANVIL:
             case HELMET:
             case GREAVES:
             case CHESTPLATE:
             case BOOTS:
-                return Weight.HEAVY;
-            case HOE:
-            case DUST:
-            case NUGGET:
-            case LAMP:
-            case TUYERE:
             case UNFINISHED_CHESTPLATE:
             case UNFINISHED_GREAVES:
             case UNFINISHED_HELMET:
             case UNFINISHED_BOOTS:
-                return Weight.LIGHT;
+                return Weight.VERY_HEAVY; // Stacksize = 1
             default:
-                return Weight.MEDIUM;
+                return Weight.MEDIUM; // Stacksize = 16 for everything else, but tools will still stack only to 1
         }
     }
 

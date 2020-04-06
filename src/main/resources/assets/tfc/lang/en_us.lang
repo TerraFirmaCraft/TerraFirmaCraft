@@ -1,6 +1,6 @@
 # Command
-tfc.command.time.usage=/timetfc [add|query|set] [args...]
-tfc.command.time.usage_expected_first_argument=Expected [add|query|set] after /timetfc
+tfc.command.time.usage=/timetfc <add|query|set> [args...]
+tfc.command.time.usage_expected_first_argument=Expected <add|query|set> after /timetfc
 tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
 tfc.command.time.usage_expected_second_argument_set=Expected [<ticks>|day|night|monthlength <value>] after /timetfc set
 tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
@@ -17,6 +17,33 @@ tfc.command.time.query_playerticks=Player ticks is %d
 tfc.command.time.query_gametime=Game time is %d ticks
 tfc.command.time.query_day=Current day is %d
 tfc.command.time.query_daytime=Current day time is %d
+tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <name>] [value]
+tfc.command.playertfc.usage_expected_first_argument=Expected <get|set|add|reset> after /playertfc
+tfc.command.playertfc.usage_expected_second_argument=Expected [nutrition|food|saturation|water|skill <name>] after /playertfc %s
+tfc.command.playertfc.usage_expected_id=Expected <name> after /playertfc %s
+tfc.command.playertfc.usage_expected_value=Expected [value] after /playertfc %s
+tfc.command.playertfc.usage_cant_set_add_nutrients=Can't set / add nutrients directly as it's based on food history. Run /playertfc reset nutrients instead.
+tfc.command.playertfc.usage_unknown_skill=Unknown skill: %s
+tfc.command.playertfc.usage_needs_player=Must be used by a player
+tfc.command.playertfc.reset_nutrients=Reset nutrients
+tfc.command.playertfc.get_nutrients=Average Nutrition: %s
+tfc.command.playertfc.get_nutrients_nutrient= - %s: %s
+tfc.command.playertfc.get_nutrients_last_eaten=Last Eaten: %d Hunger, %s Saturation, %s Decay Modifier.
+tfc.command.playertfc.get_nutrients_last_eaten_nutrient= - %s: %s
+tfc.command.playertfc.add_skill=Added %.2f to skill %s
+tfc.command.playertfc.set_skill=Set %s to %.2f
+tfc.command.playertfc.get_skill=Skill %s: Total Level = %.2f, Tier = %s, Level = %.2f
+tfc.command.playertfc.get_food=Hunger: %d
+tfc.command.playertfc.set_food=Set hunger to %d
+tfc.command.playertfc.get_saturation=Saturation: %.2f
+tfc.command.playertfc.set_saturation=Set saturation to %.2f
+tfc.command.playertfc.get_water=Water: %.1f%%
+tfc.command.playertfc.set_water=Set water to %.1f%%
+
+tfc.command.veins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
+tfc.command.veins.usage_expected_player=Can only be used by a player
+tfc.command.veins.usage_first_argument_not_vein=No Vein found with name %s
+
 
 # Gui
 
@@ -60,6 +87,11 @@ tfc.tooltip.debug_times=PT: %d | CT: %d
 tfc.tooltip.food_expiry_date=Expires on: %s
 tfc.tooltip.food_rotten=Rotten - I wouldn't eat that.
 tfc.tooltip.food_infinite_expiry=Never Expires
+tfc.tooltip.nutrition=Nutrition:
+tfc.tooltip.nutrition_saturation= - Saturation: %s%%
+tfc.tooltip.nutrition_water= - Water: %s%%
+tfc.tooltip.nutrition_nutrient= - %s: %s
+tfc.tooltip.hold_shift_for_nutrition_info=Hold (Shift) for Nutrition Info
 tfc.tooltip.plant_cold=%sToo cold%s
 tfc.tooltip.plant_dry=%sToo dry%s
 tfc.tooltip.plant_hot=%sToo hot%s
@@ -79,6 +111,10 @@ tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
 tfc.tooltip.crucible_less_than_one=< 1 unit
 tfc.tooltip.previous_page=Previous Page
 tfc.tooltip.next_page=Next Page
+tfc.tooltip.firepit_cooking_pot_empty=Empty
+tfc.tooltip.firepit_cooking_pot_waiting=Add Ingredients
+tfc.tooltip.firepit_cooking_pot_boiling=Boiling
+tfc.tooltip.firepit_cooking_pot_servings=Servings: %d
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=This %s is too old to mate.
@@ -102,8 +138,12 @@ tfc.tooltip.set_month_length=Set Month Length to %d days.
 tfc.tooltip.time_command_set_player_time=Set Player Time to %d.
 tfc.tooltip.time_command_set_calendar_time=Set Calendar Time to %s.
 tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
-tfc.tooltip.skill_set=Set %s to level %.2f
-tfc.tooltip.skill_add=Added %.2f levels to %s
+tfc.tooltip.veins_command.dump_veins=Dumping all veins in specified radius, this is gonna take a while...
+tfc.tooltip.veins_command.rate_veins=Dumping vein rates in specified radius, this is gonna take a while...
+tfc.tooltip.veins_command.failed=Failed to load dimension %d
+tfc.tooltip.veins_command.remaining_chunks=Chunks Remaining: %d / %d
+tfc.tooltip.veins_command.output=Found vein %s at %s
+tfc.tooltip.veins_command.output_file=File saved at %s
 
 ## Prospecting Result Messages
 tfc.propick.found=Found
@@ -169,6 +209,9 @@ config.tfc.general.debug.tooltip=Various debug options. Activates some extra wan
 config.tfc.general.disableFallableBlocks=Disable Fallable Blocks
 config.tfc.general.disableFallableBlocks.tooltip=If true, fallable blocks (ie: dirt, stone) will never fall.
 
+config.tfc.general.disableLavaWaterPlacesTFCBlocks=Disable TFC Lava/Water Mixing
+config.tfc.general.disableLavaWaterPlacesTFCBlocks.tooltip=If true, lava and water will make vanilla stone + cobblestone (instead of TFC rock variants).
+
 config.tfc.general.disableFallableBlocksDestroyOre=Disable Falling Blocks Destroying Ore
 config.tfc.general.disableFallableBlocksDestroyOre.tooltip=If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.
 
@@ -210,6 +253,9 @@ config.tfc.general.enableCruciblePouringAllSlots.tooltip=Let crucibles accept po
 
 config.tfc.general.foodDecayModifier=Food Decay Modifier
 config.tfc.general.foodDecayModifier.tooltip=Modifier for how quickly food will decay. Larger values = faster decay. Set to 0 for infinite expiration time
+
+config.tfc.general.firePitCookingPotBoilingTime=Cooking Pot Boil Time
+config.tfc.general.firePitCookingPotBoilingTime.tooltip=Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1 hour.
 
 config.tfc.general.pitKilnTime=Pit Kiln Time
 config.tfc.general.pitKilnTime.tooltip=Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.
@@ -371,6 +417,17 @@ config.tfc.general.tankBarrel.tooltip=How much fluid (mB) can a barrel hold?
 config.tfc.general.tankCrucible=Crucible Tank Storage
 config.tfc.general.tankCrucible.tooltip=How much metal (units / mB) can a crucible hold?
 
+config.tfc.general.disableCobbleGenOverride=Disable TFC Cobble Generation Changes
+config.tfc.general.disableCobbleGenOverride.tooltip=Turn this on if you want to edit this with other mods or have a way to get vanilla cobblestone.
+
+config.tfc.general.leafDensity=Leaf Density
+config.tfc.general.leafDensity.tooltip=How mush leaves should slow the player down. Lower = Slower, Higher = Faster. 1 = None.
+
+config.tfc.general.disableTorchOverride=Disable Torch Override
+config.tfc.general.disableTorchOverride.tooltip=Turn this on if you want to edit this with other mods.
+
+config.tfc.general.disableTreeFelling=Disable Tree Felling
+config.tfc.general.disableTreeFelling.tooltip=Turn this on if you want to edit this with other mods.
 
 ## Client Config
 config.tfc.general.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
@@ -437,6 +494,9 @@ config.tfc.world.clayRainfallThreshold.tooltip=The minimum rainfall in an area r
 config.tfc.world.looseRocksFrequency=Loose Rocks Frequency
 config.tfc.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
 
+config.tfc.world.looseRockScan=Loose Rocks Vein Scan
+config.tfc.world.looseRockScan.tooltip=This controls how deep loose rocks scans for veins when generating. Higher values = more ore samples.
+
 config.tfc.world.rainfallSpreadFactor=Rainfall Spread Factor
 config.tfc.world.rainfallSpreadFactor.tooltip=This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
 
@@ -445,6 +505,9 @@ config.tfc.world.floraDiversitySpreadFactor.tooltip=This controls how spread the
 
 config.tfc.world.floraDensitySpreadFactor=Flora Density Spread Factor
 config.tfc.world.floraDensitySpreadFactor.tooltip=This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
+
+config.tfc.world.enableDefaultOreGenFileOverwrite=Disable Default Ore Gen File
+config.tfc.world.enableDefaultOreGenFileOverwrite.tooltip=Disable the default ore gen file overwriting existing ore modifications. Pack makers: disable in order to be able to modify the ore gen, otherwise your changes will all be overwritten
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
@@ -457,6 +520,14 @@ itemGroup.tfc.metal=TFC Metal
 itemGroup.tfc.gems=TFC Gems
 itemGroup.tfc.food=TFC Foodstuffs
 itemGroup.tfc.plants=TFC Plants
+
+item.dyePowder.green.name=Green Dye
+item.dyePowder.red.name=Red Dye
+item.dyePowder.yellow.name=Yellow Dye
+item.tfc.dye.blue.name=Blue Dye
+item.tfc.dye.black.name=Black Dye
+item.tfc.dye.brown.name=Brown Dye
+item.tfc.dye.white.name=White Dye
 
 generator.tfc_classic=TFC Classic
 
@@ -494,6 +565,14 @@ tfc.types.metal.high_carbon_black_steel=Black High Carbon Steel
 tfc.types.metal.high_carbon_blue_steel=Blue High Carbon Steel
 tfc.types.metal.high_carbon_red_steel=Red High Carbon Steel
 
+## Rock category
+tfc.types.rock_category.sedimentary=Sedimentary
+tfc.types.rock_category.metamorphic=Metamorphic
+tfc.types.rock_category.igneous_intrusive=Igneous Intrusive
+tfc.types.rock_category.igneous_extrusive=Igneous Extrusive
+
+## Tier
+
 tfc.enum.tier.tier_0=Tier 0
 tfc.enum.tier.tier_i=Tier I
 tfc.enum.tier.tier_ii=Tier II
@@ -512,9 +591,11 @@ tfc.enum.size.very_large=Very Large
 tfc.enum.size.huge=Huge
 
 ## Weight
+tfc.enum.weight.very_light=Very Light
 tfc.enum.weight.light=Light
 tfc.enum.weight.medium=Medium
 tfc.enum.weight.heavy=Heavy
+tfc.enum.weight.very_heavy=Very Heavy
 
 ## Heat
 tfc.enum.heat.warming=Warming
@@ -607,11 +688,11 @@ tfc.enum.day.thursday=Thursday
 tfc.enum.day.friday=Friday
 tfc.enum.day.saturday=Saturday
 
-tfc.enum.nutrient.carbohydrates=Carbohydrates
-tfc.enum.nutrient.fat=Fat
-tfc.enum.nutrient.protein=Protein
-tfc.enum.nutrient.minerals=Minerals
-tfc.enum.nutrient.vitamins=Vitamins
+tfc.enum.nutrient.grain=Grain
+tfc.enum.nutrient.vegetables=Vegetables
+tfc.enum.nutrient.fruit=Fruit
+tfc.enum.nutrient.meat=Meat
+tfc.enum.nutrient.dairy=Dairy
 
 #JEI
 jei.category.tfc.alloy=Alloying recipes
@@ -620,6 +701,7 @@ jei.category.tfc.barrel=Barrel recipes
 jei.category.tfc.blast_furnace=Blast Furnace recipes
 jei.category.tfc.bloomery=Bloomery recipes
 jei.category.tfc.casting=Casting recipes
+jei.category.tfc.chisel=Chisel Smoothing recipes
 jei.category.tfc.heat=Heating recipes
 jei.category.tfc.knap.clay=Clay knapping
 jei.category.tfc.knap.fireclay=Fire clay knapping
@@ -628,10 +710,27 @@ jei.category.tfc.knap.stone=Stone knapping
 jei.category.tfc.metal_heat=Metal Heating recipes
 jei.category.tfc.loom=Loom recipes
 jei.category.tfc.quern=Quern recipes
+jei.category.tfc.rock_layer=Rock Layer Ores
+jei.category.tfc.vein=Vein Information
 jei.category.tfc.welding=Welding recipes
 
+## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=Instant
 jei.tooltips.tfc.barrel.duration=%d hours
+
+### Rock Layer
+jei.tooltips.tfc.rock_layer.category=Category
+jei.tooltips.tfc.rock_layer.layers=Layers
+jei.tooltips.tfc.rock_layer.top=Top
+jei.tooltips.tfc.rock_layer.middle=Middle
+jei.tooltips.tfc.rock_layer.bottom=Bottom
+
+### Vein Information
+jei.tooltips.tfc.vein.min_y=Min Y
+jei.tooltips.tfc.vein.max_y=Max Y
+jei.tooltips.tfc.vein.rarity=Rarity
+jei.tooltips.tfc.vein.rarity_value=%s%% chunks
+jei.tooltips.tfc.vein.loose_rock=Loose Rock
 
 # Fluids
 fluid.salt_water=Salt Water
@@ -682,6 +781,53 @@ fluid.high_carbon_blue_steel=Molten High Carbon Blue Steel
 fluid.high_carbon_red_steel=Molten High Carbon Red Steel
 fluid.high_carbon_black_steel=Molten High Carbon Black Steel
 fluid.unknown=Unknown Molten Metal
+fluid.white_dye=White Dye
+fluid.orange_dye=Orange Dye
+fluid.magenta_dye=Magenta Dye
+fluid.light_blue_dye=Light Blue Dye
+fluid.yellow_dye=Yellow Dye
+fluid.lime_dye=Lime Dye
+fluid.pink_dye=Pink Dye
+fluid.gray_dye=Gray Dye
+fluid.light_gray_dye=Light Gray Dye
+fluid.cyan_dye=Cyan Dye
+fluid.purple_dye=Purple Dye
+fluid.blue_dye=Blue Dye
+fluid.brown_dye=Brown Dye
+fluid.green_dye=Green Dye
+fluid.red_dye=Red Dye
+fluid.black_dye=Black Dye
+
+# Vein names
+vein.native_copper.name=Native Copper
+vein.native_gold.name=Native Gold
+vein.native_platinum.name=Native Platinum
+vein.native_silver.name=Native Silver
+vein.hematite.name=Hematite
+vein.cassiterite.name=Cassiterite
+vein.bismuthinite.name=Bismuthinite
+vein.garnierite.name=Garnierite
+vein.malachite.name=Malachite
+vein.magnetite.name=Magnetite
+vein.limonite.name=Limonite
+vein.sphalerite.name=Sphalerite
+vein.tetrahedrite.name=Tetrahedrite
+vein.bithminous_coal.name=Bituminous Coal
+vein.lignite.name=Lignite
+vein.kaolinite.name=Kaolinite
+vein.graphite.name=Graphite
+vein.kimberlite.name=Kimberlite
+vein.cinnabar.name=Cinnabar
+vein.cryolite.name=Cryolite
+vein.saltpeter.name=Saltpeter
+vein.sylvite.name=Sylvite
+vein.borax.name=Borax
+vein.lapis_lazuli.name=Lapis Lazuli
+vein.surface_native_copper.name=Surface Native Copper
+vein.surface_cassiterite.name=Surface Cassiterite
+vein.surface_bismuthinite.name=Surface Bismuthinite
+vein.surface_sphalerite.name=Surface Sphalerite
+vein.surface_tetrahedrite.name=Surface Tetrahedrite
 
 
 ### ================== BLOCKS ===========================
@@ -704,10 +850,67 @@ tile.tfc.bloomery.name=Bloomery
 tile.tfc.fire_bricks.name=Fire Bricks
 tile.tfc.quern.name=Quern
 tile.tfc.ceramics.fired.large_vessel.name=Large Vessel
+tile.tfc.fire_clay_block.name=Fire Clay
+tile.tfc.aggregate.name=Aggregate
 tile.tfc.sluice.name=Sluice
 tile.tfc.ice.name=Ice
 tile.tfc.sea_ice.name=Sea Ice
 tile.tfc.nest_box.name=Nest Box
+
+## Decoration blocks
+tile.tfc.alabaster.bricks.cyan.name=Cyan Alabaster Bricks
+tile.tfc.alabaster.bricks.black.name=Black Alabaster Bricks
+tile.tfc.alabaster.bricks.magenta.name=Magenta Alabaster Bricks
+tile.tfc.alabaster.bricks.orange.name=Orange Alabaster Bricks
+tile.tfc.alabaster.bricks.lime.name=Lime Alabaster Bricks
+tile.tfc.alabaster.bricks.plain.name= Alabaster Bricks
+tile.tfc.alabaster.bricks.blue.name=Blue Alabaster Bricks
+tile.tfc.alabaster.bricks.purple.name=Purple Alabaster Bricks
+tile.tfc.alabaster.bricks.light_blue.name=Light Blue Alabaster Bricks
+tile.tfc.alabaster.bricks.gray.name=Gray Alabaster Bricks
+tile.tfc.alabaster.bricks.silver.name=Light Gray Alabaster Bricks
+tile.tfc.alabaster.bricks.yellow.name=Yellow Alabaster Bricks
+tile.tfc.alabaster.bricks.brown.name=Brown Alabaster Bricks
+tile.tfc.alabaster.bricks.pink.name=Pink Alabaster Bricks
+tile.tfc.alabaster.bricks.green.name=Green Alabaster Bricks
+tile.tfc.alabaster.bricks.white.name=White Alabaster Bricks
+tile.tfc.alabaster.bricks.red.name=Red Alabaster Bricks
+
+tile.tfc.alabaster.raw.cyan.name=Cyan Alabaster
+tile.tfc.alabaster.raw.black.name=Black Alabaster
+tile.tfc.alabaster.raw.magenta.name=Magenta Alabaster
+tile.tfc.alabaster.raw.orange.name=Orange Alabaster
+tile.tfc.alabaster.raw.lime.name=Lime Alabaster
+tile.tfc.alabaster.raw.plain.name= Alabaster
+tile.tfc.alabaster.raw.blue.name=Blue Alabaster
+tile.tfc.alabaster.raw.purple.name=Purple Alabaster
+tile.tfc.alabaster.raw.light_blue.name=Light Blue Alabaster
+tile.tfc.alabaster.raw.gray.name=Gray Alabaster
+tile.tfc.alabaster.raw.silver.name=Light Gray Alabaster
+tile.tfc.alabaster.raw.yellow.name=Yellow Alabaster
+tile.tfc.alabaster.raw.brown.name=Brown Alabaster
+tile.tfc.alabaster.raw.pink.name=Pink Alabaster
+tile.tfc.alabaster.raw.green.name=Green Alabaster
+tile.tfc.alabaster.raw.white.name=White Alabaster
+tile.tfc.alabaster.raw.red.name=Red Alabaster
+
+tile.tfc.alabaster.polished.cyan.name=Cyan Smooth Alabaster
+tile.tfc.alabaster.polished.black.name=Black Smooth Alabaster
+tile.tfc.alabaster.polished.magenta.name=Magenta Smooth Alabaster
+tile.tfc.alabaster.polished.orange.name=Orange Smooth Alabaster
+tile.tfc.alabaster.polished.lime.name=Lime Smooth Alabaster
+tile.tfc.alabaster.polished.plain.name= Smooth Alabaster
+tile.tfc.alabaster.polished.blue.name=Blue Smooth Alabaster
+tile.tfc.alabaster.polished.purple.name=Purple Smooth Alabaster
+tile.tfc.alabaster.polished.light_blue.name=Light Blue Smooth Alabaster
+tile.tfc.alabaster.polished.gray.name=Gray Smooth Alabaster
+tile.tfc.alabaster.polished.silver.name=Light Gray Smooth Alabaster
+tile.tfc.alabaster.polished.yellow.name=Yellow Smooth Alabaster
+tile.tfc.alabaster.polished.brown.name=Brown Smooth Alabaster
+tile.tfc.alabaster.polished.pink.name=Pink Smooth Alabaster
+tile.tfc.alabaster.polished.green.name=Green Smooth Alabaster
+tile.tfc.alabaster.polished.white.name=White Smooth Alabaster
+tile.tfc.alabaster.polished.red.name=Red Smooth Alabaster
 
 ## Stone types & variaties, Wood, Stairs, Slabs, ....
 tile.tfc.raw.granite.name=Raw Granite
@@ -2557,10 +2760,13 @@ item.leather.name=Leather
 item.tfc.spindle.name=Spindle
 item.tfc.handstone.name=Quern Handstone
 item.tfc.wooden_bucket.name=Bucket
-item.tfc.wooden_bucket.filled=%s Bucket
+item.tfc.wooden_bucket.filled.name=%s Bucket
 item.tfc.ceramics.fired.jug.name=Jug
 item.tfc.ceramics.fired.jug.filled=%s Jug
+item.tfc.ceramics.unfired.clay_flower_pot.name=Unfired Clay Flower Pot
 item.tfc.mortar.name=Mortar
+item.tfc.wrought_iron_grill.name=Wrought Iron Grill
+item.tfc.alabaster_brick.name=Alabaster Brick
 
 item.tfc.ore.native_copper.name=Native Copper
 item.tfc.ore.native_gold.name=Native Gold
@@ -3329,6 +3535,8 @@ item.tfc.metal.boots.blue_steel.name=Blue Steel Boots
 item.tfc.metal.boots.red_steel.name=Red Steel Boots
 item.tfc.metal.bucket.blue_steel.name=Blue Steel Bucket
 item.tfc.metal.bucket.red_steel.name=Red Steel Bucket
+item.tfc.metal.bucket.blue_steel.filled.name=%s Bucket
+item.tfc.metal.bucket.red_steel.filled.name=%s Bucket
 item.tfc.metal.helmet.bismuth_bronze.name=Bismuth Bronze Helmet
 item.tfc.metal.helmet.black_bronze.name=Black Bronze Helmet
 item.tfc.metal.helmet.bronze.name=Bronze Helmet
@@ -3652,14 +3860,15 @@ item.tfc.ceramics.unfired.large_vessel.name=Unfired Large Vessel
 
 item.tfc.ceramics.fired.spindle.name=Spindle Head
 item.tfc.ceramics.unfired.spindle.name=Unfired Spindle Head
-item.tfc.ceramics.fired.pot.name=Pot
+item.tfc.ceramics.fired.pot.name=Ceramic Pot
 item.tfc.ceramics.unfired.pot.name=Unfired Pot
 item.tfc.ceramics.unfired.jug.name=Unfired Jug
-item.tfc.ceramics.fired.bowl.name=Bowl
+item.tfc.ceramics.fired.bowl.name=Ceramic Bowl
 item.tfc.ceramics.unfired.bowl.name=Unfired Bowl
 item.tfc.ceramics.fired.fire_brick.name=Fire Brick
 item.tfc.ceramics.unfired.fire_brick.name=Unfired Fire Brick
 item.tfc.ceramics.fire_clay.name=Fire Clay
+item.tfc.ceramics.unfired.clay_brick.name=Unfired Clay Brick
 
 item.tfc.hide.raw.small.name=Small Raw Hide
 item.tfc.hide.raw.medium.name=Medium Raw Hide
@@ -3767,6 +3976,22 @@ item.tfc.food.cooked_pheasant.name=Cooked Pheasant
 item.tfc.food.cooked_venison.name=Cooked Venison
 item.tfc.food.cooked_rabbit.name=Cooked Rabbit Meat
 item.tfc.food.cooked_wolf.name=Cooked Wolf
+item.tfc.food.barley_bread_sandwich.name=Barley Bread Sandwich
+item.tfc.food.cornbread_sandwich.name=Cornbread Sandwich
+item.tfc.food.rye_bread_sandwich.name=Rye Bread Sandwich
+item.tfc.food.oat_bread_sandwich.name=Oat Bread Sandwich
+item.tfc.food.wheat_bread_sandwich.name=Wheat Bread Sandwich
+item.tfc.food.rice_bread_sandwich.name=Rice Bread Sandwich
+item.tfc.food.soup_grain.name=Wholesome Soup
+item.tfc.food.soup_fruit.name=Tasty Soup
+item.tfc.food.soup_vegetable.name=Filling Soup
+item.tfc.food.soup_meat.name=Hearty Soup
+item.tfc.food.soup_dairy.name=Creamy Soup
+item.tfc.food.salad_grain.name=Cruchy Salad
+item.tfc.food.salad_fruit.name=Sweet Salad
+item.tfc.food.salad_vegetable.name=Healthy Salad
+item.tfc.food.salad_meat.name=Flavorful Salad
+item.tfc.food.salad_dairy.name=Disgusting Salad
 
 item.tfc.crop.seeds.barley.name=Barley Seeds
 item.tfc.crop.seeds.beet.name=Beet Seeds

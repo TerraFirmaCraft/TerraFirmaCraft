@@ -55,6 +55,20 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
         public boolean disableFallableBlocks = false;
 
+        @Config.Comment("If true, lava and water will make vanilla stone + cobblestone (instead of TFC rock variants).")
+        @Config.LangKey("config." + MOD_ID + ".general.disableLavaWaterPlacesTFCBlocks")
+        public boolean disableLavaWaterPlacesTFCBlocks = false;
+
+        @Config.Comment({"Disable the override torches use.",
+            "Only use if you want vanilla torches or have another mod that changes torches."})
+        @Config.LangKey("config." + MOD_ID + ".general.disableTorchOverride")
+        public boolean disableTorchOverride = false;
+
+        @Config.Comment({"Disable trees being fully cut by axes.",
+            "Only use if you want other mods to handle tree felling."})
+        @Config.LangKey("config." + MOD_ID + ".general.disableTreeFelling")
+        public boolean disableTreeFelling = false;
+
         @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never destroy ore blocks.")
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksDestroyOre")
         public boolean disableFallableBlocksDestroyOre = false;
@@ -84,6 +98,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
         public double leafStickDropChance = 0.1;
 
+        @Config.Comment("Leaf block density. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.leafDensity")
+        public double leafDensity = 0.1;
+
         @Config.Comment("Bonus leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChanceBonus")
@@ -100,7 +119,7 @@ public class ConfigTFC
 
         @Config.Comment("List of fluids allowed to be picked up by wooden bucket")
         @Config.LangKey("config." + MOD_ID + ".general.woodenBucketWhitelist")
-        public String[] woodenBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar"};
+        public String[] woodenBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar", "white_dye", "orange_dye", "magenta_dye", "light_blue_dye", "yellow_dye", "lime_dye", "pink_dye", "gray_dye", "light_gray_dye", "cyan_dye", "purple_dye", "blue_dye", "brown_dye", "green_dye", "red_dye", "black_dye"};
 
         @Config.Comment("List of fluids allowed to be picked up by blue steel bucket")
         @Config.LangKey("config." + MOD_ID + ".general.blueSteelBucketWhitelist")
@@ -113,7 +132,7 @@ public class ConfigTFC
         @Config.Comment("Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.")
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.temperatureModifierGlobal")
-        public double temperatureModifierGlobal = 0.5; // todo: items cool too fast at 0.5, needs tweaking
+        public double temperatureModifierGlobal = 0.5;
 
         @Config.Comment("Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots.")
         @Config.LangKey("config." + MOD_ID + ".general.enableCruciblePouringAllSlots")
@@ -128,6 +147,11 @@ public class ConfigTFC
         @Config.RangeDouble(min = 0, max = 10)
         @Config.LangKey("config." + MOD_ID + ".general.foodDecayModifier")
         public double foodDecayModifier = 1.0;
+
+        @Config.Comment("Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1 hour.")
+        @Config.RangeInt(min = 20)
+        @Config.LangKey("config." + MOD_ID + ".general.firePitCookingPotBoilingTime")
+        public int firePitCookingPotBoilingTime = 1000;
 
         @Config.Comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.")
         @Config.RangeInt(min = 20)
@@ -374,6 +398,11 @@ public class ConfigTFC
         @Config.RangeInt(min = 100)
         @Config.LangKey("config." + MOD_ID + ".general.tankCrucible")
         public int tankCrucible = 3000;
+
+        @Config.Comment("This is the amount of hunger (consumed) required for a player to completely refresh their nutrition stats. In TFC, almost all foods have 4 hunger, so this is 4x [number of foods required to refresh nutrition stats]. This will update next time you consume a food.")
+        @Config.LangKey("config." + MOD_ID + ".general.nutritionRotationHungerWindow")
+        @Config.RangeInt(min = 4)
+        public int nutritionRotationHungerWindow = 4 * 20;
     }
 
     public static class ClientCFG
@@ -463,6 +492,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".world.looseRocksFrequency")
         public int looseRocksFrequency = 18;
 
+        @Config.Comment("This controls how deep loose rocks scans for veins when generating. Higher values = more ore samples.")
+        @Config.RangeInt(min = 1, max = 255)
+        @Config.LangKey("config." + MOD_ID + ".world.looseRockScan")
+        public int looseRockScan = 35;
+
         @Config.RequiresMcRestart
         @Config.RangeDouble(min = 0.05, max = 0.4)
         @Config.Comment("This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
@@ -480,5 +514,10 @@ public class ConfigTFC
         @Config.Comment("This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
         @Config.LangKey("config." + MOD_ID + ".world.floraDensitySpreadFactor")
         public double floraDensitySpreadFactor = 0.16;
+
+        @Config.RequiresMcRestart
+        @Config.Comment("Disable the default ore gen file overwriting existing ore modifications. Pack makers: disable in order to be able to modify the ore gen, otherwise your changes will all be overwritten")
+        @Config.LangKey("config." + MOD_ID + ".world.enableDefaultOreGenFileOverwrite")
+        public boolean enableDefaultOreGenFileOverwrite = true;
     }
 }

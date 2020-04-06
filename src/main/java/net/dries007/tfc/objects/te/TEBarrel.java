@@ -30,9 +30,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.size.CapabilityItemSize;
-import net.dries007.tfc.api.capability.size.IItemSize;
-import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.network.PacketBarrelUpdate;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -249,8 +246,8 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 }
             }
 
-            // Check if recipe is complete
-            if (recipe != null)
+            // Check if recipe is complete (sealed recipes only)
+            if (recipe != null && sealed)
             {
                 int durationSealed = (int) (CalendarTFC.PLAYER_TIME.getTicks() - sealedTick);
                 if (durationSealed > recipe.getDuration())
@@ -415,11 +412,6 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
             case SLOT_FLUID_CONTAINER_IN:
                 return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             case SLOT_ITEM:
-                IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
-                if (sizeCap != null)
-                {
-                    return sizeCap.getSize(stack).isSmallerThan(Size.VERY_LARGE);
-                }
                 return true;
             default:
                 return false;

@@ -9,10 +9,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockGravel;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
@@ -23,6 +26,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
@@ -55,6 +59,16 @@ public final class BlocksTFC
 {
     @GameRegistry.ObjectHolder("ceramics/fired/large_vessel")
     public static final BlockLargeVessel FIRED_LARGE_VESSEL = getNull();
+
+    @GameRegistry.ObjectHolder("aggregate")
+    public static final BlockGravel AGGREGATE = getNull();
+
+    @GameRegistry.ObjectHolder("alabaster/bricks/plain")
+    public static final BlockDecorativeStone ALABASTER_BRICKS_PLAIN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/polished/plain")
+    public static final BlockDecorativeStone ALABASTER_POLISHED_PLAIN = getNull();
+    @GameRegistry.ObjectHolder("alabaster/raw/plain")
+    public static final BlockDecorativeStone ALABASTER_RAW_PLAIN = getNull();
 
     public static final BlockDebug DEBUG = getNull();
     public static final BlockPeat PEAT = getNull();
@@ -114,7 +128,6 @@ public final class BlocksTFC
     private static ImmutableList<BlockFruitTreeLeaves> allFruitTreeLeavesBlocks;
 
     private static ImmutableList<BlockBerryBush> allBerryBushBlocks;
-
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks()
     {
@@ -280,6 +293,9 @@ public final class BlocksTFC
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "debug", new BlockDebug(), CT_MISC)));
 
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "aggregate", new BlockAggregate(), CT_ROCK_BLOCKS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "fire_clay_block", new BlockFireClay(), CT_ROCK_BLOCKS)));
+
         normalItemBlocks.add(new ItemBlockTFC(register(r, "peat", new BlockPeat(Material.GROUND), CT_ROCK_BLOCKS)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "peat_grass", new BlockPeatGrass(Material.GRASS), CT_ROCK_BLOCKS)));
 
@@ -298,9 +314,28 @@ public final class BlocksTFC
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
 
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/raw/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/polished/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+        normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/bricks/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
+
+            for (EnumDyeColor dyeColor : EnumDyeColor.values())
+            {
+                BlockDecorativeStone polished = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
+                BlockDecorativeStone bricks = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
+                BlockDecorativeStone raw = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
+
+                normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/polished/" + dyeColor.getName(), polished, CT_DECORATIONS)));
+                normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/bricks/" + dyeColor.getName(), bricks, CT_DECORATIONS)));
+                normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/raw/" + dyeColor.getName(), raw, CT_DECORATIONS)));
+
+                BlockDecorativeStone.ALABASTER_POLISHED.put(dyeColor, polished);
+                BlockDecorativeStone.ALABASTER_BRICKS.put(dyeColor, bricks);
+                BlockDecorativeStone.ALABASTER_RAW.put(dyeColor, raw);
+            }
+
         {
+            // Apparently this is the way we're supposed to do things even though the fluid registry defaults. So we'll do it this way.
             Builder<BlockFluidBase> b = ImmutableList.builder();
-            // We always want to register our water variants, as they absolutely need special subclasses
             b.add(
                 register(r, "fluid/hot_water", new BlockFluidHotWater()),
                 register(r, "fluid/fresh_water", new BlockFluidWater(FluidsTFC.FRESH_WATER.get(), Material.WATER, false)),
@@ -308,24 +343,20 @@ public final class BlocksTFC
             );
             for (FluidWrapper wrapper : FluidsTFC.getAllAlcoholsFluids())
             {
-                if (wrapper.isDefault())
-                {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
-                }
+                b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllOtherFiniteFluids())
             {
-                if (wrapper.isDefault())
-                {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
-                }
+                b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
             }
             for (FluidWrapper wrapper : FluidsTFC.getAllMetalFluids())
             {
-                if (wrapper.isDefault())
-                {
-                    b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.LAVA)));
-                }
+                b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.LAVA)));
+            }
+            for (EnumDyeColor color : EnumDyeColor.values())
+            {
+                FluidWrapper wrapper = FluidsTFC.getFluidFromDye(color);
+                b.add(register(r, "fluid/" + wrapper.get().getName(), new BlockFluidTFC(wrapper.get(), Material.WATER)));
             }
             allFluidBlocks = b.build();
         }
@@ -655,9 +686,13 @@ public final class BlocksTFC
         TerraFirmaCraft.getLog().info("The below warnings about unintended overrides are normal. The override is intended. ;)");
         event.getRegistry().registerAll(
             new BlockIceTFC(FluidsTFC.FRESH_WATER.get()).setRegistryName("minecraft", "ice").setTranslationKey("ice"),
-            new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow"),
-            new BlockTorchTFC().setRegistryName("minecraft", "torch").setTranslationKey("torch")
+            new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow")
         );
+
+        if (!ConfigTFC.GENERAL.disableTorchOverride)
+        {
+            event.getRegistry().register(new BlockTorchTFC().setRegistryName("minecraft", "torch").setTranslationKey("torch"));
+        }
     }
 
     public static boolean isWater(IBlockState current)
