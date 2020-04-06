@@ -79,6 +79,9 @@ tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
 tfc.tooltip.crucible_less_than_one=< 1 unit
 tfc.tooltip.previous_page=Previous Page
 tfc.tooltip.next_page=Next Page
+tfc.tooltip.fertilized=Fertilized
+tfc.tooltip.egg_hatch=Will hatch in %d days
+tfc.tooltip.egg_hatch_today=Will hatch today!
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=This %s is too old to mate.

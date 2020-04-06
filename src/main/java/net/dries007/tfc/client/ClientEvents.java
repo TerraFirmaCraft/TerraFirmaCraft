@@ -35,6 +35,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.egg.CapabilityEgg;
+import net.dries007.tfc.api.capability.egg.IEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -243,6 +245,11 @@ public class ClientEvents
             if (nutrients != null)
             {
                 nutrients.addNutrientInfo(stack, tt);
+            }
+            IEgg eggInfo = stack.getCapability(CapabilityEgg.CAPABILITY, null);
+            if (eggInfo != null)
+            {
+                eggInfo.addEggInfo(stack, tt);
             }
             float skillMod = SmithingSkill.getSkillBonus(stack);
             if (skillMod > 0)
