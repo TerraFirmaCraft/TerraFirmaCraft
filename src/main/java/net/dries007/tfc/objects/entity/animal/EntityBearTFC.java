@@ -112,7 +112,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    public boolean isFood(ItemStack it)
+    public boolean isFood(@Nonnull ItemStack it)
     {
         return it.getItem() == Items.FISH;
     }

@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -70,7 +71,7 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    public boolean isFood(ItemStack stack)
+    public boolean isFood(@Nonnull ItemStack stack)
     {
         // Since there's no way to get fish in default TFC, let's consider meats as also valid food items for cats
         return (stack.getItem() == Items.FISH) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());

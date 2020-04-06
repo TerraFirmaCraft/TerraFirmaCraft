@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -110,7 +111,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     }
 
     @Override
-    public boolean isFood(ItemStack stack)
+    public boolean isFood(@Nonnull ItemStack stack)
     {
         return OreDictionaryHelper.doesStackMatchOre(stack, "salt");
     }

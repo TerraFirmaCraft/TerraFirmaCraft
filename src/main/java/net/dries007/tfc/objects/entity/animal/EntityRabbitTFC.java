@@ -258,7 +258,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     }
 
     @Override
-    public boolean isFood(ItemStack stack)
+    public boolean isFood(@Nonnull ItemStack stack)
     {
         return OreDictionaryHelper.doesStackMatchOre(stack, "carrot");
     }

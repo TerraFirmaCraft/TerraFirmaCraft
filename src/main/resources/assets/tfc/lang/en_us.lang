@@ -125,8 +125,8 @@ tfc.tooltip.animal.mating.low_familiarity=This %s has low familiarity to mate.
 tfc.tooltip.animal.mating.pregnant=This %s is pregnant!
 tfc.tooltip.animal.mating.resting=This %s is resting from today's mating.
 
-tfc.tooltip.animal.product.old=This %s is too young.
-tfc.tooltip.animal.product.young=This %s is too old.
+tfc.tooltip.animal.product.old=This %s is too old.
+tfc.tooltip.animal.product.young=This %s is too young.
 tfc.tooltip.animal.product.low_familiarity=This %s has low familiarity.
 
 tfc.tooltip.animal.product.male_milk=This is a male!

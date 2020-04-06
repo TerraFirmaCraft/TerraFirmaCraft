@@ -108,20 +108,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     }
 
     @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote)
-        {
-            if (this.getShearedDay() > CalendarTFC.PLAYER_TIME.getTotalDays())
-            {
-                //Calendar went backwards by command! this need to update
-                this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            }
-        }
-    }
-
-    @Override
     public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
