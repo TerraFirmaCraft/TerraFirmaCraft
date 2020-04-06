@@ -297,12 +297,13 @@ public final class ItemsTFC
             }
         }
 
+        //leather quiver
+        simpleItems.add(register(r, "quiver", new ItemQuiver(), CT_MISC));
+
         simpleItems.add(register(r, "animal/product/wool", new ItemMisc(Size.TINY, Weight.LIGHT), CT_MISC));
         simpleItems.add(register(r, "animal/product/wool_yarn", new ItemMisc(Size.TINY, Weight.LIGHT, "string"), CT_MISC));
         simpleItems.add(register(r, "animal/product/wool_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
         simpleItems.add(register(r, "animal/product/silk_cloth", new ItemMisc(Size.TINY, Weight.LIGHT, "cloth_high_quality"), CT_MISC));
-
-        simpleItems.add(register(r, "quiver", new ItemQuiver(), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
 
