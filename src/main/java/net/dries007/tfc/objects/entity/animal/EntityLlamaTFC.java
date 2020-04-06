@@ -50,17 +50,17 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     protected static final int DAYS_TO_FULL_GESTATION = 330;
     private static final int DAYS_TO_ADULTHOOD = 900;
     //Values that has a visual effect on client
-    private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.VARINT);
-    private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.FLOAT);
-    private long lastFed; //Last time(in days) this entity was fed
-    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-    private boolean fertilized; //Is this female fertilized?
-    private long matingTime; //The last time(in ticks) this male tried fertilizing females
-    private long lastDeath; //Last time(in days) this entity checked for dying of old age
-    private long pregnantTime; // The time(in days) this entity became pregnant
-    private float geneJump, geneHealth, geneSpeed, geneStrength; // Basic genetic selection based on vanilla's llama offspring
-    private int geneVariant;
+    protected static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.VARINT);
+    protected static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.FLOAT);
+    protected long lastFed; //Last time(in days) this entity was fed
+    protected long lastFDecay; //Last time(in days) this entity's familiarity had decayed
+    protected boolean fertilized; //Is this female fertilized?
+    protected long matingTime; //The last time(in ticks) this male tried fertilizing females
+    protected long lastDeath; //Last time(in days) this entity checked for dying of old age
+    protected long pregnantTime; // The time(in days) this entity became pregnant
+    protected float geneJump, geneHealth, geneSpeed, geneStrength; // Basic genetic selection based on vanilla's llama offspring
+    protected int geneVariant;
 
     @SuppressWarnings("unused")
     public EntityLlamaTFC(World world)

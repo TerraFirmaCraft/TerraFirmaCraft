@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.client.TFCSounds;
@@ -57,7 +58,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return 0; // todo this is a WIP animal, so disabled for the time being
+            return ConfigTFC.WORLD.predatorSpawnRarity;
         }
         return 0;
     }
@@ -88,16 +89,10 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
-        return TFCSounds.ANIMAL_BEAR_HURT; // todo
-    }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_PANTHER_HURT; }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
-        return TFCSounds.ANIMAL_BEAR_DEATH; // todo
-    }
+    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_PANTHER_DEATH; }
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn)
@@ -142,19 +137,19 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY; // todo
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_PANTHER_CRY : TFCSounds.ANIMAL_PANTHER_SAY;
     }
 
     @Nullable
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_BEAR; // todo
+        return LootTablesTFC.ANIMALS_GRAN_FELINE;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // todo
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F); //todo
     }
 }

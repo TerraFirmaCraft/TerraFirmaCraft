@@ -154,7 +154,6 @@ public class ModelPantherTFC extends ModelBase
         head.addChild(mouthBottom);
     }
 
-
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
@@ -177,7 +176,7 @@ public class ModelPantherTFC extends ModelBase
         head.render(f5);
 
         GlStateManager.pushMatrix();
-        GlStateManager.scale(0.9D, 0.9D, 1.0D);
+        GlStateManager.scale(1.0D, 1.0D, 1.0D);
 
         neck.render(f5);
         neckBase.render(f5);
