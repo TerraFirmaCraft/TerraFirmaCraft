@@ -114,6 +114,7 @@ public class ItemQuiver extends ItemArmorTFC
             if (newJav != null)
             {
                 playerInv.setInventorySlotContents(playerInv.currentItem, newJav);
+                playerInv.markDirty();
             }
         }
     }
@@ -124,7 +125,7 @@ public class ItemQuiver extends ItemArmorTFC
         //empty destination slot for single arrow from quiver
         int empty = player.inventory.getFirstEmptyStack();
 
-        if (empty > 0 )
+        if (empty >= 0 )
         {
             QuiverCapability quiver = findQuiver(player.inventory);
             if (quiver != null) {
@@ -132,6 +133,7 @@ public class ItemQuiver extends ItemArmorTFC
                 if (newArrow != null)
                 {
                     player.inventory.setInventorySlotContents(empty, newArrow);
+                    player.inventory.markDirty();
                     return true;
                 }
             }
@@ -144,19 +146,24 @@ public class ItemQuiver extends ItemArmorTFC
         ItemStack stack = event.getItem().getItem(); //really.
         Item item = stack.getItem();
         if (item instanceof ItemRockJavelin || item instanceof ItemMetalJavelin)
-        {
+        { // if no javelin on hotbar, don't put in quiver unless no empty slots
             InventoryPlayer inv = event.getEntityPlayer().inventory;
             boolean found = false;
+            boolean empty = false;
             for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++)
             {
                 ItemStack slot = inv.getStackInSlot(i);
+                if (!empty && slot.isEmpty()) {
+                    empty = true;
+                    continue;
+                }
                 if (slot.getItem() instanceof ItemMetalJavelin || slot.getItem() instanceof ItemRockJavelin)
                 {
                     found = true;
                     break;
                 }
             }
-            if (!found)
+            if (!found && empty)
             {
                 return false;
             }
@@ -166,12 +173,9 @@ public class ItemQuiver extends ItemArmorTFC
             QuiverCapability quiver = findQuiver(event.getEntityPlayer().inventory);
             if (quiver != null)
             {
-                ItemStack remain = ItemHandlerHelper.insertItem(quiver, stack, true);
-                if (remain.isEmpty()) // Forge doesn't handle mods picking up partial stacks well, EntityItem#onCollideWithPlayer
-                {
-                    ItemHandlerHelper.insertItem(quiver, stack, false);
-                    return true;
-                }
+                stack.setCount(ItemHandlerHelper.insertItem(quiver, stack, false).getCount());
+                // Tell forge if we picked the whole stack up
+                return stack.isEmpty();
             }
         }
         return false;
