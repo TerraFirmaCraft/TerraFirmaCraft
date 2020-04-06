@@ -37,6 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
@@ -71,7 +72,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
     public EntityBearTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.2F);
+        this.setSize(1.3F, 1.4F);
     }
 
     @Override
@@ -211,9 +212,10 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityBearTFC.AIBearStandAttack()); // Watch and "warn" near players, attack by standing (like polar bears)
+        this.tasks.addTask(1, new EntityBearTFC.AIBearStandAttack());
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
     }
@@ -271,6 +273,15 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
             super.resetTask();
         }
 
+        /*
+         * Adults are aggressive (at day), children won't attack **UNLESS** hit by target
+         */
+        @Override
+        public boolean shouldExecute()
+        {
+            return ((((EntityAnimalTFC) this.attacker).getAge() != IAnimalTFC.Age.CHILD && this.attacker.world.isDaytime()) || this.attacker.getRevengeTarget() != null) && super.shouldExecute();
+        }
+
         @Override
         protected void checkAndPerformAttack(EntityLivingBase enemy, double distToEnemySqr)
         {
@@ -305,7 +316,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
 
         protected double getAttackReachSqr(EntityLivingBase attackTarget)
         {
-            return 4.0F + attackTarget.width;
+            return 3.0F + attackTarget.width;
         }
     }
 
