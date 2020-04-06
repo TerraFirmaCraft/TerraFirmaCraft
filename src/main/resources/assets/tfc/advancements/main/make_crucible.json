@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:crucible"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.make_crucible.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_crucible.description"
+    }
+  },
+  "parent": "tfc:main/make_fire_clay",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:crucible"
+          }
+        ]
+      }
+    }
+  }
+}

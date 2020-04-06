@@ -112,7 +112,7 @@ public class ItemRockShovel extends ItemSpade implements IItemSize, IRockObject
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.LARGE;
+        return Size.LARGE; // Stored only in chests
     }
 
     @Nonnull

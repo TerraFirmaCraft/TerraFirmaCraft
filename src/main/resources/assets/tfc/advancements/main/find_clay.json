@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:clay_ball"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.find_clay.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.find_clay.description"
+    }
+  },
+  "parent": "tfc:main/stone_age",
+  "criteria": {
+    "native_copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:clay_ball"
+          }
+        ]
+      }
+    }
+  }
+}

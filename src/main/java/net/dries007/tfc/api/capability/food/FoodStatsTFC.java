@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.api.capability.food;
 
-import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -37,8 +36,8 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public static final DamageSource DEHYDRATION = (new DamageSource("dehydration")).setDamageBypassesArmor().setDamageIsAbsolute(); // Same as starvation, but another message on death
 
     private final EntityPlayer sourcePlayer;
-    private final FoodStats originalStats;
-    private final float[] nutrients;
+    private final FoodStats originalStats; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
+    private final NutritionStats nutritionStats; // Separate handler for nutrition, because it's a bit complex
     private long lastDrinkTick;
     private float thirst;
     private int healTimer;
@@ -47,20 +46,16 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     {
         this.sourcePlayer = sourcePlayer;
         this.originalStats = originalStats;
-        this.nutrients = new float[Nutrient.TOTAL];
+        this.nutritionStats = new NutritionStats(0.5f, 0.0f);
         this.thirst = MAX_PLAYER_THIRST;
-
-        Arrays.fill(nutrients, 0.8f * MAX_PLAYER_NUTRIENTS);
     }
 
     @Override
     public void addStats(int hungerAmount, float saturationAmount)
     {
-        // In TFC, all foods have a constant amount of food filled (In 1.7.10 this was 5oz, out of a 24 oz stomach.) We will go with real units, and just make this 1/5 of the sourcePlayer's food bar (4 haunches)
-        // However, old vanilla foods have a bonus to their saturation based on their hunger value
-        // Vanilla foods are generally in the range 0.0 - 1.0 for saturation, and 1 - 8 for hunger
-        float extraSaturationModifier = 1f + (hungerAmount - FOOD_HUNGER_AMOUNT) * 0.125f;
-        originalStats.addStats(FOOD_HUNGER_AMOUNT, saturationAmount * extraSaturationModifier);
+        // This should never be called directly - when it is we assume it's direct stat modifications (saturation potion, eating cake)
+        // We make modifications to vanilla logic, as saturation needs to be unaffected by hunger
+        // todo: handle cake
     }
 
     @Override
@@ -70,19 +65,14 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         IFood foodCap = stack.getCapability(CapabilityFood.CAPABILITY, null);
         if (foodCap != null)
         {
+            FoodData data = foodCap.getData();
             if (!foodCap.isRotten())
             {
-                // Add nutrients
-                for (Nutrient nutrient : Nutrient.values())
-                {
-                    addNutrient(nutrient.ordinal(), foodCap.getNutrient(stack, nutrient));
-                }
+                addThirst(data.getWater());
+                nutritionStats.addNutrients(data);
 
-                // Add water
-                addThirst(foodCap.getWater());
-
-                // Add food
-                originalStats.addStats(FOOD_HUNGER_AMOUNT, foodCap.getCalories());
+                // In order to get the exact saturation we want, apply this scaling factor here
+                originalStats.addStats(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
             }
             else
             {
@@ -99,8 +89,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
         else
         {
-            // Default behavior, shouldn't happen except in *very* special cases
-            originalStats.addStats(foodItem, stack);
+            TerraFirmaCraft.getLog().info("Player ate a weird food: {} / {} that we don't know what to do with.", foodItem, stack);
         }
     }
 
@@ -127,38 +116,24 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             {
                 if (needFood())
                 {
-                    player.foodStats.setFoodLevel(player.foodStats.getFoodLevel() + 1);
+                    setFoodLevel(getFoodLevel() + 1);
                 }
 
                 if (thirst < MAX_PLAYER_THIRST)
                 {
                     addThirst(5f);
                 }
-
-                for (int i = 0; i < nutrients.length; i++)
-                {
-                    addNutrient(i, 5f);
-                }
             }
         }
         else
         {
             // Passive exhaustion - call the source player instead of the local method
-            player.addExhaustion(PASSIVE_EXHAUSTION * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier);
+            player.addExhaustion(PASSIVE_EXHAUSTION / EXHAUSTION_MULTIPLIER * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier);
 
-            // Same check as the original food stats, so hunger, thirst, and nutrition loss are synced
+            // Same check as the original food stats, so hunger and thirst loss are synced
             if (originalStats.foodExhaustionLevel >= 4.0F)
             {
                 addThirst(-(float) ConfigTFC.GENERAL.playerThirstModifier);
-
-                // Nutrition only decays when food decays. The base ratio (in config), is 0.8 nutrition / haunch
-                if (getSaturationLevel() <= 0f)
-                {
-                    for (int i = 0; i < nutrients.length; i++)
-                    {
-                        addNutrient(i, -(float) ConfigTFC.GENERAL.playerNutritionDecayModifier);
-                    }
-                }
             }
 
             if (difficulty == EnumDifficulty.PEACEFUL)
@@ -217,7 +192,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         // Since this is only called server side, and vanilla has a custom packet for this stuff, we need our own
         if (player instanceof EntityPlayerMP)
         {
-            TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsUpdate(nutrients, thirst), (EntityPlayerMP) player);
+            TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsUpdate(nutritionStats.getNutrients(), thirst), (EntityPlayerMP) player);
         }
     }
 
@@ -229,10 +204,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         lastDrinkTick = nbt.getLong("lastDrinkTick");
 
         // Nutrients
-        for (Nutrient nutrient : Nutrient.values())
-        {
-            nutrients[nutrient.ordinal()] = nbt.getFloat(nutrient.name().toLowerCase());
-        }
+        nutritionStats.deserializeNBT(nbt.getCompoundTag("nutrients"));
 
         // Food
         originalStats.readNBT(nbt);
@@ -246,10 +218,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         nbt.setFloat("lastDrinkTick", lastDrinkTick);
 
         // Nutrients
-        for (Nutrient nutrient : Nutrient.values())
-        {
-            nbt.setFloat(nutrient.name().toLowerCase(), this.nutrients[nutrient.ordinal()]);
-        }
+        nbt.setTag("nutrients", nutritionStats.serializeNBT());
 
         // Food
         originalStats.writeNBT(nbt);
@@ -279,6 +248,14 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         originalStats.setFoodLevel(foodLevelIn);
     }
 
+    /**
+     * Use instead of {@link FoodStats#setFoodSaturationLevel(float)} as it's client only
+     */
+    public void setSaturation(float saturation)
+    {
+        originalStats.foodSaturationLevel = saturation;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void setFoodSaturationLevel(float foodSaturationLevelIn)
@@ -289,25 +266,27 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     @SideOnly(Side.CLIENT)
     public void onReceivePacket(float[] nutrients, float thirst)
     {
-        System.arraycopy(nutrients, 0, this.nutrients, 0, this.nutrients.length);
+        this.nutritionStats.onReceivePacket(nutrients);
         this.thirst = thirst;
     }
 
     @Override
     public float getHealthModifier()
     {
-        float totalNutrients = 0;
-        for (float nutrient : nutrients)
-        {
-            totalNutrients += nutrient;
-        }
-        return 0.2f + totalNutrients / (MAX_PLAYER_NUTRIENTS * Nutrient.TOTAL);
+        return 0.25f + 1.5f * nutritionStats.getAverageNutrition();
     }
 
     @Override
     public float getThirst()
     {
         return thirst;
+    }
+
+    @Nonnull
+    @Override
+    public NutritionStats getNutrition()
+    {
+        return nutritionStats;
     }
 
     @Override
@@ -319,7 +298,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             if (!simulate)
             {
                 // One drink every so often
-                lastDrinkTick = sourcePlayer.world.getTotalWorldTime();
+                resetCooldown();
                 addThirst(value);
             }
             return true;
@@ -328,52 +307,23 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     }
 
     @Override
-    public void addThirst(float value)
+    public void setThirst(float thirst)
     {
-        this.thirst += value;
+        this.thirst = thirst;
         if (thirst < 0)
         {
-            thirst = 0;
+            this.thirst = 0;
         }
         if (thirst > MAX_PLAYER_THIRST)
         {
-            thirst = MAX_PLAYER_THIRST;
+            this.thirst = MAX_PLAYER_THIRST;
         }
     }
 
     @Override
-    public float getNutrient(@Nonnull Nutrient nutrient)
+    public void resetCooldown()
     {
-        return nutrients[nutrient.ordinal()];
-    }
-
-    /**
-     * Sets the nutrient value directly. Used by command nutrients and for debug purposes
-     *
-     * @param nutrient the nutrient to set
-     * @param value    the value to set to, in [0, 100]
-     */
-    @Override
-    public void setNutrient(@Nonnull Nutrient nutrient, float value)
-    {
-        setNutrient(nutrient.ordinal(), value);
-    }
-
-    private void addNutrient(int index, float amount)
-    {
-        setNutrient(index, nutrients[index] + amount);
-    }
-
-    private void setNutrient(int index, float amount)
-    {
-        nutrients[index] = amount;
-        if (nutrients[index] < 0)
-        {
-            nutrients[index] = 0;
-        }
-        else if (nutrients[index] > MAX_PLAYER_NUTRIENTS)
-        {
-            nutrients[index] = MAX_PLAYER_NUTRIENTS;
-        }
+        // Using total world time is okay here because it's done on a per-player basis
+        lastDrinkTick = sourcePlayer.world.getTotalWorldTime();
     }
 }

@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:fire_bricks"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.make_fire_bricks.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_fire_bricks.description"
+    }
+  },
+  "parent": "tfc:main/make_fire_clay",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:fire_bricks",
+            "count": 4
+          }
+        ]
+      }
+    }
+  }
+}

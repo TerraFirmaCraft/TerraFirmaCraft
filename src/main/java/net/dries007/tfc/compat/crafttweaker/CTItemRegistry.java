@@ -14,6 +14,7 @@ import crafttweaker.api.liquid.ILiquidStack;
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageResistance;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodData;
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.ForgeableHandler;
@@ -188,34 +189,31 @@ public class CTItemRegistry
 
     @ZenMethod
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void registerFood(crafttweaker.api.item.IIngredient input, float[] nutrients, float calories, float water, float decay)
+    public static void registerFood(crafttweaker.api.item.IIngredient input, int hunger, float water, float saturation, float decay, float grain, float veg, float fruit, float meat, float dairy)
     {
-        if (input == null) throw new IllegalArgumentException("Input not allowed to be empty!");
+        if (input == null)
+        {
+            throw new IllegalArgumentException("Input not allowed to be empty!");
+        }
         if (input instanceof ILiquidStack)
+        {
             throw new IllegalArgumentException("There is a fluid where it's supposed to be an item!");
+        }
         IIngredient inputIngredient = CTHelper.getInternalIngredient(input);
-        if (nutrients.length != 5) throw new IllegalArgumentException("There are 5 nutrients that must be specified!");
-        if (CapabilityFood.CUSTOM_FOODS.get(inputIngredient) != null)
+        CraftTweakerAPI.apply(new IAction()
         {
-            throw new IllegalStateException("Food registered more than once!");
-        }
-        else
-        {
-            CraftTweakerAPI.apply(new IAction()
+            @Override
+            public void apply()
             {
-                @Override
-                public void apply()
-                {
-                    CapabilityFood.CUSTOM_FOODS.put(inputIngredient, () -> new FoodHandler(null, nutrients, calories, water, decay));
-                }
+                CapabilityFood.CUSTOM_FOODS.put(inputIngredient, () -> new FoodHandler(null, new FoodData(hunger, water, saturation, grain, fruit, veg, meat, dairy, decay)));
+            }
 
-                @Override
-                public String describe()
-                {
-                    return "Registered food stats for " + input.toCommandString();
-                }
-            });
-        }
+            @Override
+            public String describe()
+            {
+                return "Registered food stats for " + input.toCommandString();
+            }
+        });
     }
 
     @ZenMethod
@@ -260,7 +258,7 @@ public class CTItemRegistry
         //noinspection unchecked
         IIngredient<ItemStack> ing = CTHelper.getInternalIngredient(itemInput);
         Fuel fuel = new Fuel(ing, burnTicks, temperature, forgeFuel, bloomeryFuel);
-        if (FuelManager.canRegister(fuel))
+        if (!FuelManager.canRegister(fuel))
         {
             throw new IllegalStateException("Fuel already registered!");
         }

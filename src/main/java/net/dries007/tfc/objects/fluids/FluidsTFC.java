@@ -5,6 +5,10 @@
 
 package net.dries007.tfc.objects.fluids;
 
+import java.awt.*;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -14,6 +18,7 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -69,6 +74,8 @@ public final class FluidsTFC
     private static ImmutableMap<Metal, FluidWrapper> allMetalFluids;
     private static ImmutableSet<FluidWrapper> allOtherFiniteFluids;
 
+    private static final Map<EnumDyeColor, FluidWrapper> DYE_FLUIDS = new EnumMap<>(EnumDyeColor.class);
+
     public static ImmutableSet<FluidWrapper> getAllAlcoholsFluids()
     {
         return allAlcoholsFluids;
@@ -112,6 +119,12 @@ public final class FluidsTFC
     public static Metal getMetalFromFluid(@Nonnull Fluid fluid)
     {
         return getWrapper(fluid).get(MetalProperty.METAL).getMetal();
+    }
+
+    @Nonnull
+    public static FluidWrapper getFluidFromDye(@Nonnull EnumDyeColor dyeColor)
+    {
+        return DYE_FLUIDS.get(dyeColor);
     }
 
     public static void registerFluids()
@@ -177,6 +190,14 @@ public final class FluidsTFC
                     ))
             )
             .build();
+
+        DYE_FLUIDS.putAll(Arrays.stream(EnumDyeColor.values()).collect(Collectors.toMap(
+            color -> color,
+            color -> {
+                float[] c = color.getColorComponentValues();
+                String actualName = color == EnumDyeColor.SILVER ? "light_gray" : color.getName();
+                return registerFluid(new Fluid(actualName + "_dye", STILL, FLOW, new Color(c[0], c[1], c[2]).getRGB()));
+            })));
     }
 
     @Nonnull

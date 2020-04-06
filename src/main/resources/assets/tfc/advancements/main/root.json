@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/hammer/wrought_iron"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.root.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.root.description"
+    },
+    "background": "tfc:textures/blocks/stonetypes/raw/andesite.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "in-game": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

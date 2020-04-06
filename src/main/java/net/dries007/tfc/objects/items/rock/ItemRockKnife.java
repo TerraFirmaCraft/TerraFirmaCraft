@@ -78,7 +78,7 @@ public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.NORMAL;
+        return Size.NORMAL; // Stored in large vessels
     }
 
     @Nonnull

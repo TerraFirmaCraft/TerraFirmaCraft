@@ -77,7 +77,7 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.LARGE;
+        return Size.LARGE; // Stored only in chests
     }
 
     @Nonnull

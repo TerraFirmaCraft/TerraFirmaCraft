@@ -1,0 +1,79 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:food/wheat_bread"
+    },
+    "title": {
+      "translate": "advancements.tfc.world.baker.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.baker.description"
+    }
+  },
+  "parent": "tfc:world/farming",
+  "criteria": {
+    "barley": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/barley_bread"
+          }
+        ]
+      }
+    },
+    "corn": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/cornbread"
+          }
+        ]
+      }
+    },
+    "oat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/oat_bread"
+          }
+        ]
+      }
+    },
+    "rice": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/rice_bread"
+          }
+        ]
+      }
+    },
+    "rye": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/rye_bread"
+          }
+        ]
+      }
+    },
+    "wheat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/wheat_bread"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["barley", "corn", "oat", "rice", "rye", "wheat"]
+  ]
+}

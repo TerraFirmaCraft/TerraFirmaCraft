@@ -17,7 +17,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -29,7 +28,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.api.types.Ore;
 import net.dries007.tfc.util.skills.ProspectingSkill;
 import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
@@ -71,8 +70,8 @@ public class ItemProspectorPick extends ItemMetalTool
                 player.getCooldownTracker().setCooldown(this, COOLDOWN);
 
                 RANDOM.setSeed(pos.toLong());
-                ItemStack targetStack = getOreStack(state, false);
-                if (targetStack != null)
+                ItemStack targetStack = getOreStack(worldIn, pos, state, false);
+                if (!targetStack.isEmpty())
                 {
                     // Just clicked on an ore block
                     player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found").appendText(" " + targetStack.getDisplayName()), ConfigTFC.CLIENT.propickOutputToActionBar);
@@ -158,8 +157,8 @@ public class ItemProspectorPick extends ItemMetalTool
         Map<String, ProspectResult> results = new HashMap<>();
         for (BlockPos.MutableBlockPos pos : BlockPos.MutableBlockPos.getAllInBoxMutable(center.add(-PROSPECT_RADIUS, -PROSPECT_RADIUS, -PROSPECT_RADIUS), center.add(PROSPECT_RADIUS, PROSPECT_RADIUS, PROSPECT_RADIUS)))
         {
-            ItemStack stack = getOreStack(world.getBlockState(pos), true);
-            if (stack != null)
+            ItemStack stack = getOreStack(world, pos, world.getBlockState(pos), true);
+            if (!stack.isEmpty())
             {
                 String oreName = stack.getDisplayName();
                 if (results.containsKey(oreName))
@@ -175,28 +174,27 @@ public class ItemProspectorPick extends ItemMetalTool
         return results.values();
     }
 
-    @Nullable
-    private ItemStack getOreStack(IBlockState blockState, boolean ignoreGrade)
+    @Nonnull
+    private ItemStack getOreStack(World world, BlockPos pos, IBlockState state, boolean ignoreGrade)
     {
-        if (BlocksTFC.isGround(blockState))
-        {
-            return null;
-        }
         for (VeinType vein : VeinRegistry.INSTANCE.getVeins().values())
         {
-            if (vein.isOreBlock(blockState))
+            if (vein.isOreBlock(state))
             {
-                Block block = blockState.getBlock();
-                if (vein.getOre() != null)
-                    if (vein.getOre().isGraded() && !ignoreGrade)
-                        return new ItemStack(block.getItemDropped(blockState, null, 0), 1, block.getMetaFromState(blockState));
-                    else
-                        return new ItemStack(block.getItemDropped(blockState, null, 0), 1, 0);
+                Block block = state.getBlock();
+                if (vein.getOre() != null && vein.getOre().isGraded() && !ignoreGrade)
+                {
+                    ItemStack result = block.getPickBlock(state, null, world, pos, null);
+                    result.setItemDamage(Ore.Grade.NORMAL.getMeta()); // ignore grade
+                    return result;
+                }
                 else
-                    return new ItemStack(Item.getItemFromBlock(block), 1, block.getMetaFromState(blockState));
+                {
+                    return block.getPickBlock(state, null, world, pos, null);
+                }
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     private void addHitBlockParticle(World world, BlockPos pos, EnumFacing side, IBlockState state)
@@ -247,6 +245,5 @@ public class ItemProspectorPick extends ItemMetalTool
             ore = itemStack;
             score = num;
         }
-
     }
 }

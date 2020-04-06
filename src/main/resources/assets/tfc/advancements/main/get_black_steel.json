@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/black_steel"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.main.get_black_steel.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.get_black_steel.description"
+    }
+  },
+  "parent": "tfc:main/get_steel",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/ingot/black_steel"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

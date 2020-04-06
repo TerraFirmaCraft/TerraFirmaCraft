@@ -56,6 +56,7 @@ public final class DefaultTrees
     public static final ITreeGenerator GEN_KAPOK = new TreeGenKapok();
     public static final ITreeGenerator GEN_SEQUOIA = new TreeGenSequoia();
     public static final ITreeGenerator GEN_KAPOK_COMPOSITE = new TreeGenComposite().add(0.4f, GEN_TALL).add(0.6f, GEN_KAPOK);
+    public static final ITreeGenerator GEN_BUSHES = new TreeGenBushes();
 
     @SubscribeEvent
     public static void onPreRegisterRockCategory(TFCRegistryEvent.RegisterPreBlock<Tree> event)

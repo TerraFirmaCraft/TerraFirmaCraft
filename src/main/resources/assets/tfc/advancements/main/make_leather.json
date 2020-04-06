@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:leather"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.make_leather.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_leather.description"
+    }
+  },
+  "parent": "tfc:main/scraped_hide",
+  "criteria": {
+    "acacia": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:leather"
+          }
+        ]
+      }
+    }
+  }
+}

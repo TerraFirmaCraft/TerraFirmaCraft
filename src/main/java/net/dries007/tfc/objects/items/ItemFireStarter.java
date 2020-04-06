@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.objects.te.TELogPile;
@@ -177,6 +179,7 @@ public class ItemFireStarter extends ItemTFC
                     if (te != null)
                     {
                         te.light();
+                        TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) player, state.getBlock()); // Trigger lit block
                     }
                     if (Blocks.FIRE.canPlaceBlockAt(world, pos))
                     {
@@ -193,6 +196,7 @@ public class ItemFireStarter extends ItemTFC
                     if (te != null)
                     {
                         te.tryLight();
+                        TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) player, state.getBlock()); // Trigger lit block
                     }
                 }
             }
@@ -241,6 +245,7 @@ public class ItemFireStarter extends ItemTFC
                         {
                             log.setDead();
                         }
+                        TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) player, world.getBlockState(pos).getBlock()); // Trigger lit block
                     }
                 }
                 else
@@ -259,14 +264,14 @@ public class ItemFireStarter extends ItemTFC
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.SMALL;
+        return Size.SMALL; // Stored anywhere
     }
 
     @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.LIGHT;
+        return Weight.LIGHT; // Stacksize is always 1, don't need to change this
     }
 
     @Override

@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:bone"
+    },
+    "frame": "challenge",
+    "title": {
+      "translate": "advancements.tfc.world.wolf_familiarity.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.wolf_familiarity.description"
+    }
+  },
+  "parent": "tfc:world/first_familiarity",
+  "criteria": {
+    "familiarity": {
+      "trigger": "tfc:familiarity_changed",
+      "conditions": {
+        "animal": "tfc:wolftfc",
+        "familiarity": 1.0
+      }
+    }
+  },
+  "rewards": {
+    "experience": 100
+  }
+}

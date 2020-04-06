@@ -1,0 +1,209 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:wood/log/oak"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.logging.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.logging.description"
+    }
+  },
+  "parent": "tfc:main/stone_age",
+  "criteria": {
+    "acacia": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/acacia"
+          }
+        ]
+      }
+    },
+    "ash": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/ash"
+          }
+        ]
+      }
+    },
+    "aspen": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/aspen"
+          }
+        ]
+      }
+    },
+    "birch": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/birch"
+          }
+        ]
+      }
+    },
+    "blackwood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/blackwood"
+          }
+        ]
+      }
+    },
+    "chestnut": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/chestnut"
+          }
+        ]
+      }
+    },
+    "douglas_fir": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/douglas_fir"
+          }
+        ]
+      }
+    },
+    "hickory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/hickory"
+          }
+        ]
+      }
+    },
+    "kapok": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/kapok"
+          }
+        ]
+      }
+    },
+    "maple": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/maple"
+          }
+        ]
+      }
+    },
+    "oak": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/oak"
+          }
+        ]
+      }
+    },
+    "palm": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/palm"
+          }
+        ]
+      }
+    },
+    "pine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/pine"
+          }
+        ]
+      }
+    },
+    "rosewood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/rosewood"
+          }
+        ]
+      }
+    },
+    "sequoia": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/sequoia"
+          }
+        ]
+      }
+    },
+    "spruce": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/spruce"
+          }
+        ]
+      }
+    },
+    "sycamore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/sycamore"
+          }
+        ]
+      }
+    },
+    "white_cedar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/white_cedar"
+          }
+        ]
+      }
+    },
+    "willow": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:wood/log/willow"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["acacia", "ash", "aspen", "birch", "blackwood", "chestnut", "douglas_fir", "hickory", "kapok", "maple", "oak", "palm", "pine", "rosewood", "sequoia", "spruce", "sycamore", "white_cedar", "willow"]
+  ]
+}

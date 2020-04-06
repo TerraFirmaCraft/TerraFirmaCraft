@@ -220,19 +220,16 @@ public class EntityFallingBlockTFC extends Entity
     @Override
     public void fall(float distance, float damageMultiplier)
     {
-        if (distance > 1.0F)
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+        for (Entity entity : list)
         {
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
-            for (Entity entity : list)
+            if (!ConfigTFC.GENERAL.disableFallableBlocksHurtEntities && distance > 1.0F && entity instanceof EntityLivingBase)
             {
-                if (!ConfigTFC.GENERAL.disableFallableBlocksHurtEntities && entity instanceof EntityLivingBase)
-                {
-                    entity.attackEntityFrom(DamageSource.FALLING_BLOCK, distance);
-                }
-                else if (!ConfigTFC.GENERAL.disableFallableBlocksDestroyLooseItems && entity instanceof EntityItem)
-                {
-                    entity.setDead();
-                }
+                entity.attackEntityFrom(DamageSource.FALLING_BLOCK, distance);
+            }
+            else if (!ConfigTFC.GENERAL.disableFallableBlocksDestroyLooseItems && entity instanceof EntityItem)
+            {
+                entity.setDead();
             }
         }
     }

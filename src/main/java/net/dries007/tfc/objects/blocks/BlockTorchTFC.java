@@ -16,6 +16,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -34,6 +35,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TETickCounter;
@@ -63,14 +65,14 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.NORMAL;
+        return Size.SMALL; // Can store anywhere
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.LIGHT;
+        return Weight.LIGHT; // Stacksize = 32
     }
 
     @Override
@@ -140,6 +142,7 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
             {
                 if (BlockTorchTFC.canLight(stack))
                 {
+                    TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) playerIn, state.getBlock()); // Trigger lit block
                     worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, true));
                     TETickCounter tile = Helpers.getTE(worldIn, pos, TETickCounter.class);
                     if (tile != null)

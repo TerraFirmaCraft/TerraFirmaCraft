@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/anvil/wrought_iron"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.main.iron_age.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.iron_age.description"
+    }
+  },
+  "parent": "tfc:main/iron_bloom",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/ingot/wrought_iron"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

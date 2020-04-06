@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:bucket"
+    },
+    "frame": "challenge",
+    "title": {
+      "translate": "advancements.tfc.main.ultimate_goal.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.ultimate_goal.description"
+    }
+  },
+  "parent": "tfc:main/blue_steel_bucket",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:bucket"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 500
+  }
+}

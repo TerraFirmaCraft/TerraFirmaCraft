@@ -72,7 +72,6 @@ public final class DefaultPlants
     public static final ResourceLocation SNAPDRAGON_YELLOW = new ResourceLocation(MOD_ID, "snapdragon_yellow");
     public static final ResourceLocation SPANISH_MOSS = new ResourceLocation(MOD_ID, "spanish_moss");
     public static final ResourceLocation STRELITZIA = new ResourceLocation(MOD_ID, "strelitzia");
-    public static final ResourceLocation SUGAR_CANE = new ResourceLocation(MOD_ID, "sugar_cane");
     public static final ResourceLocation SWITCHGRASS = new ResourceLocation(MOD_ID, "switchgrass");
     public static final ResourceLocation SWORD_FERN = new ResourceLocation(MOD_ID, "sword_fern");
     public static final ResourceLocation TALL_FESCUE_GRASS = new ResourceLocation(MOD_ID, "tall_fescue_grass");
@@ -145,7 +144,6 @@ public final class DefaultPlants
             new Plant(SNAPDRAGON_YELLOW, Plant.PlantType.STANDARD, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}, false, false, 15f, 25f, -28f, 36f, 150f, 300f, 12, 15, 1, 0.8D, null),
             new Plant(SPANISH_MOSS, Plant.PlantType.HANGING, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, true, 20f, 40f, 0f, 40f, 300f, 500f, 4, 15, 3, 0.7D, null),
             new Plant(STRELITZIA, Plant.PlantType.STANDARD, new int[] {0, 0, 1, 1, 2, 2, 0, 0, 1, 1, 2, 2}, false, false, 20f, 40f, 5f, 50f, 50f, 300f, 12, 15, 1, 0.8D, null),
-            new Plant(SUGAR_CANE, Plant.PlantType.TALL_REED, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 18f, 40f, 10f, 40f, 300f, 500f, 12, 15, 3, 0.6D, "sugarcane"),
             new Plant(SWITCHGRASS, Plant.PlantType.TALL_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0}, false, false, 13f, 25f, -29f, 32f, 100f, 300f, 9, 15, 2, 0.7D, null),
             new Plant(SWORD_FERN, Plant.PlantType.STANDARD, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 18f, 25f, -40f, 30f, 100f, 500f, 4, 11, 1, 0.7D, null),
             new Plant(TALL_FESCUE_GRASS, Plant.PlantType.TALL_GRASS, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, false, false, 15f, 25f, -29f, 30f, 300f, 500f, 12, 15, 2, 0.5D, null),

@@ -17,6 +17,15 @@
         "model": "tfc:firepit/unlit"
       }
     },
+    "attachment": {
+      "none": {},
+      "cooking_pot": {
+        "submodel": "tfc:firepit/cooking_pot"
+      },
+      "grill": {
+        "submodel": "tfc:firepit/grill"
+      }
+    },
     "inventory": [
       {
         "transform": "forge:default-block",

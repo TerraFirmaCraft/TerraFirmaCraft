@@ -31,13 +31,13 @@ public class BlockFireBrick extends Block implements IItemSize
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.VERY_SMALL;
+        return Size.SMALL; // Stored everywhere
     }
 
     @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.LIGHT; // Stacksize = 32
     }
 }

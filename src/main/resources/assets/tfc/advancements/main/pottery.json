@@ -1,0 +1,219 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ceramics/fired/vessel"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.pottery.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.pottery.description"
+    }
+  },
+  "parent": "tfc:main/find_clay",
+  "criteria": {
+    "ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/ingot"
+          }
+        ]
+      }
+    },
+    "small_vessel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/vessel"
+          }
+        ]
+      }
+    },
+    "glazed_vessel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/vessel_glazed"
+          }
+        ]
+      }
+    },
+    "large_vessel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/large_vessel"
+          }
+        ]
+      }
+    },
+    "pick_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/pick_head"
+          }
+        ]
+      }
+    },
+    "shovel_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/shovel_head"
+          }
+        ]
+      }
+    },
+    "axe_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/axe_head"
+          }
+        ]
+      }
+    },
+    "hoe_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/hoe_head"
+          }
+        ]
+      }
+    },
+    "chisel_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/chisel_head"
+          }
+        ]
+      }
+    },
+    "sword_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/sword_blade"
+          }
+        ]
+      }
+    },
+    "mace_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/mace_head"
+          }
+        ]
+      }
+    },
+    "saw_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/saw_blade"
+          }
+        ]
+      }
+    },
+    "javelin_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/javelin_head"
+          }
+        ]
+      }
+    },
+    "hammer_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/hammer_head"
+          }
+        ]
+      }
+    },
+    "propick_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/propick_head"
+          }
+        ]
+      }
+    },
+    "knife_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/knife_blade"
+          }
+        ]
+      }
+    },
+    "scythe_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/scythe_blade"
+          }
+        ]
+      }
+    },
+    "pot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/pot"
+          }
+        ]
+      }
+    },
+    "bowl": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/bowl"
+          }
+        ]
+      }
+    },
+    "jug": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/jug"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["ingot", "small_vessel", "glazed_vessel", "large_vessel", "pick_head", "shovel_head", "axe_head", "hoe_head", "chisel_head", "sword_head", "mace_head", "saw_head", "javelin_head", "hammer_head", "propick_head", "knife_head", "scythe_head", "pot", "bowl", "jug"]
+  ]
+}

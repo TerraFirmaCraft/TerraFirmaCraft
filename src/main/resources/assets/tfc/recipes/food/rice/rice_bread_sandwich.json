@@ -1,0 +1,44 @@
+{
+  "type": "tfc:sandwich",
+  "pattern": [
+    " BK",
+    "FFF",
+    " B "
+  ],
+  "key": {
+    "K": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "knife"
+      }
+    ],
+    "B": {
+      "item": "tfc:food/rice_bread"
+    },
+    "F": [
+      {
+        "type": "minecraft:empty"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryFruit"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryCookedMeat"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryVegetable"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryDairy"
+      }
+    ]
+  },
+  "result": {
+    "item": "tfc:food/rice_bread_sandwich",
+    "count": 2
+  }
+}

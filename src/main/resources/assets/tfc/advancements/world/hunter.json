@@ -1,0 +1,57 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:stone/javelin/igneous_extrusive"
+    },
+    "title": {
+      "translate": "advancements.tfc.world.hunter.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.hunter.description"
+    }
+  },
+  "parent": "tfc:world/root",
+  "criteria": {
+    "native_copper": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "bear": {
+          "type": "tfc:beartfc"
+        },
+        "chicken": {
+          "type": "tfc:chickentfc"
+        },
+        "cow": {
+          "type": "tfc:cowtfc"
+        },
+        "deer": {
+          "type": "tfc:deertfc"
+        },
+        "donkey": {
+          "type": "tfc:donkeytfc"
+        },
+        "horse": {
+          "type": "tfc:horsetfc"
+        },
+        "mule": {
+          "type": "tfc:muletfc"
+        },
+        "pheasant": {
+          "type": "tfc:pheasanttfc"
+        },
+        "pig": {
+          "type": "tfc:pigtfc"
+        },
+        "rabbit": {
+          "type": "tfc:rabbittfc"
+        },
+        "sheep": {
+          "type": "tfc:sheeptfc"
+        },
+        "wolf": {
+          "type": "tfc:wolftfc"
+        }
+      }
+    }
+  }
+}

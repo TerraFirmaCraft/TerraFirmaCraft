@@ -1,0 +1,60 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/helmet/wrought_iron"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.main.iron_armor.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.iron_armor.description"
+    }
+  },
+  "parent": "tfc:main/iron_age",
+  "criteria": {
+    "helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/helmet/wrought_iron"
+          }
+        ]
+      }
+    },
+    "chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/chestplate/wrought_iron"
+          }
+        ]
+      }
+    },
+    "greaves": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/greaves/wrought_iron"
+          }
+        ]
+      }
+    },
+    "boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/boots/wrought_iron"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

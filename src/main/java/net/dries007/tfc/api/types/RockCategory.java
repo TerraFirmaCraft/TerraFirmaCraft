@@ -12,6 +12,8 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
 /**
  * todo: document API
  */
@@ -82,6 +84,12 @@ public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
     public boolean hasAnvil()
     {
         return hasAnvil;
+    }
+
+    public String getTranslationKey()
+    {
+        //noinspection ConstantConditions
+        return MOD_ID + ".types.rock_category." + getRegistryName().getPath();
     }
 
     @Override

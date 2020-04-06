@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:quern"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.make_quern.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_quern.description"
+    }
+  },
+  "parent": "tfc:main/mining",
+  "criteria": {
+    "acacia": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:quern"
+          },
+          {
+            "item": "tfc:handstone"
+          }
+        ]
+      }
+    }
+  }
+}

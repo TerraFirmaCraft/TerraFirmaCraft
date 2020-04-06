@@ -1,0 +1,39 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ore/bituminous_coal"
+    },
+    "title": {
+      "translate": "advancements.tfc.world.find_coal.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.find_coal.description"
+    }
+  },
+  "parent": "tfc:world/make_propick",
+  "criteria": {
+    "bituminous_coal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/bituminous_coal"
+          }
+        ]
+      }
+    },
+    "lignite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/lignite"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["bituminous_coal", "lignite"]
+  ]
+}

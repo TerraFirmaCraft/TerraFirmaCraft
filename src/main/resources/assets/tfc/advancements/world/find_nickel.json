@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ore/garnierite"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.world.find_nickel.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.find_nickel.description"
+    }
+  },
+  "parent": "tfc:world/make_propick",
+  "criteria": {
+    "find_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/garnierite"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

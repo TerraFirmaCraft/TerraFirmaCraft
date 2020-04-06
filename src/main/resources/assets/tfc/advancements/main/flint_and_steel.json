@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.flint_and_steel.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.flint_and_steel.description"
+    }
+  },
+  "parent": "tfc:main/get_steel",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:flint_and_steel"
+          }
+        ]
+      }
+    }
+  }
+}

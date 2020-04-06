@@ -1,0 +1,53 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ore/hematite"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.world.find_iron.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.find_iron.description"
+    }
+  },
+  "parent": "tfc:world/make_propick",
+  "criteria": {
+    "hematite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/hematite"
+          }
+        ]
+      }
+    },
+    "limonite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/limonite"
+          }
+        ]
+      }
+    },
+    "magnetite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/magnetite"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["hematite", "limonite", "magnetite"]
+  ],
+  "rewards": {
+    "experience": 25
+  }
+}

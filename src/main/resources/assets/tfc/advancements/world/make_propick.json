@@ -1,0 +1,109 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/propick/copper"
+    },
+    "title": {
+      "translate": "advancements.tfc.world.make_propick.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.make_propick.description"
+    }
+  },
+  "parent": "tfc:world/pick_nugget",
+  "criteria": {
+    "copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/copper"
+          }
+        ]
+      }
+    },
+    "bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/bronze"
+          }
+        ]
+      }
+    },
+    "bismuth_bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/bismuth_bronze"
+          }
+        ]
+      }
+    },
+    "black_bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/black_bronze"
+          }
+        ]
+      }
+    },
+    "wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/wrought_iron"
+          }
+        ]
+      }
+    },
+    "steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/steel"
+          }
+        ]
+      }
+    },
+    "black_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/black_steel"
+          }
+        ]
+      }
+    },
+    "blue_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/blue_steel"
+          }
+        ]
+      }
+    },
+    "red_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/red_steel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["copper", "bronze", "bismuth_bronze", "black_bronze", "wrought_iron", "steel", "black_steel", "blue_steel", "red_steel"]
+  ]
+}

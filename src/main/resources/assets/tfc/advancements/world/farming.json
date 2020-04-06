@@ -1,0 +1,239 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/hoe/wrought_iron"
+    },
+    "title": {
+      "translate": "advancements.tfc.world.farming.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.farming.description"
+    }
+  },
+  "parent": "tfc:world/gatherer",
+  "criteria": {
+    "barley": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/barley"
+          }
+        ]
+      }
+    },
+    "maize": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/maize"
+          }
+        ]
+      }
+    },
+    "oat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/oat"
+          }
+        ]
+      }
+    },
+    "rice": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/rice"
+          }
+        ]
+      }
+    },
+    "rye": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/rye"
+          }
+        ]
+      }
+    },
+    "wheat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/wheat"
+          }
+        ]
+      }
+    },
+    "beet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/beet"
+          }
+        ]
+      }
+    },
+    "cabbage": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/cabbage"
+          }
+        ]
+      }
+    },
+    "carrot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/carrot"
+          }
+        ]
+      }
+    },
+    "garlic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/garlic"
+          }
+        ]
+      }
+    },
+    "green_bean": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/green_bean"
+          }
+        ]
+      }
+    },
+    "green_bell_pepper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/green_bell_pepper"
+          }
+        ]
+      }
+    },
+    "onion": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/onion"
+          }
+        ]
+      }
+    },
+    "potato": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/potato"
+          }
+        ]
+      }
+    },
+    "soybean": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/soybean"
+          }
+        ]
+      }
+    },
+    "squash": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/squash"
+          }
+        ]
+      }
+    },
+    "tomato": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/tomato"
+          }
+        ]
+      }
+    },
+    "red_bell_pepper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/red_bell_pepper"
+          }
+        ]
+      }
+    },
+    "yellow_bell_pepper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:food/yellow_bell_pepper"
+          }
+        ]
+      }
+    },
+    "jute": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:crop/product/jute"
+          }
+        ]
+      }
+    },
+    "pumpkin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:pumpkin"
+          }
+        ]
+      }
+    },
+    "melon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:melon"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["barley", "maize", "oat", "rice", "rye", "wheat", "beet", "cabbage", "carrot", "garlic", "green_bean", "green_bell_pepper", "onion", "potato", "soybean", "squash", "tomato", "red_bell_pepper", "yellow_bell_pepper", "jute", "pumpkin", "melon"]
+  ]
+}

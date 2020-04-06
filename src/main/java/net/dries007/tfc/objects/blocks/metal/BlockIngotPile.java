@@ -73,6 +73,9 @@ public class BlockIngotPile extends Block
     @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
+        TEIngotPile te = Helpers.getTE(worldIn, pos, TEIngotPile.class);
+        if (te != null && te.getCount() == 64 && face == EnumFacing.UP)
+            return BlockFaceShape.SOLID;
         return BlockFaceShape.UNDEFINED;
     }
 

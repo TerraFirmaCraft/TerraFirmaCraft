@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ore/kaolinite"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.world.find_kaolinite.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.find_kaolinite.description"
+    }
+  },
+  "parent": "tfc:world/make_propick",
+  "criteria": {
+    "find_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/kaolinite"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}
