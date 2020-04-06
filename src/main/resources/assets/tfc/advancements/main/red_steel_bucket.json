@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/bucket/red_steel"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.main.red_steel_bucket.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.red_steel_bucket.description"
+    }
+  },
+  "parent": "tfc:main/get_red_steel",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/bucket/red_steel"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 50
+  }
+}

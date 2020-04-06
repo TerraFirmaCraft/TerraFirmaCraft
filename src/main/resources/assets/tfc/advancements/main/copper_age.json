@@ -1,0 +1,163 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/copper"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.main.copper_age.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.copper_age.description"
+    }
+  },
+  "parent": "tfc:main/pottery",
+  "criteria": {
+    "ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/ingot/copper"
+          }
+        ]
+      }
+    },
+    "pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/pick/copper"
+          }
+        ]
+      }
+    },
+    "shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shovel/copper"
+          }
+        ]
+      }
+    },
+    "axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/axe/copper"
+          }
+        ]
+      }
+    },
+    "hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/hoe/copper"
+          }
+        ]
+      }
+    },
+    "chisel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/chisel/copper"
+          }
+        ]
+      }
+    },
+    "sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/sword/copper"
+          }
+        ]
+      }
+    },
+    "mace": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/mace/copper"
+          }
+        ]
+      }
+    },
+    "saw": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/copper"
+          }
+        ]
+      }
+    },
+    "javelin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/javelin/copper"
+          }
+        ]
+      }
+    },
+    "hammer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/hammer/copper"
+          }
+        ]
+      }
+    },
+    "propick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/propick/copper"
+          }
+        ]
+      }
+    },
+    "knife": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/knife/copper"
+          }
+        ]
+      }
+    },
+    "scythe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/scythe/copper"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["ingot", "pickaxe", "shovel", "axe", "hoe", "chisel", "sword", "mace", "saw", "javelin", "hammer", "propick", "knife", "scythe"]
+  ],
+  "rewards": {
+    "experience": 25
+  }
+}

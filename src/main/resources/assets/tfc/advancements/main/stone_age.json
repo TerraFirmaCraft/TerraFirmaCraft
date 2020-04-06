@@ -1,0 +1,264 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:stone/javelin_head/igneous_intrusive"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.stone_age.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.stone_age.description"
+    }
+  },
+  "parent": "tfc:main/pick_rock",
+  "criteria": {
+    "axe_ig_in": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/axe/igneous_intrusive"
+          }
+        ]
+      }
+    },
+    "shovel_ig_in": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/shovel/igneous_intrusive"
+          }
+        ]
+      }
+    },
+    "hoe_ig_in": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/hoe/igneous_intrusive"
+          }
+        ]
+      }
+    },
+    "knife_ig_in": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/knife/igneous_intrusive"
+          }
+        ]
+      }
+    },
+    "javelin_ig_in": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/javelin/igneous_intrusive"
+          }
+        ]
+      }
+    },
+    "hammer_ig_in": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/hammer/igneous_intrusive"
+          }
+        ]
+      }
+    },
+    "axe_ig_ex": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/axe/igneous_extrusive"
+          }
+        ]
+      }
+    },
+    "shovel_ig_ex": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/shovel/igneous_extrusive"
+          }
+        ]
+      }
+    },
+    "hoe_ig_ex": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/hoe/igneous_extrusive"
+          }
+        ]
+      }
+    },
+    "knife_ig_ex": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/knife/igneous_extrusive"
+          }
+        ]
+      }
+    },
+    "javelin_ig_ex": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/javelin/igneous_extrusive"
+          }
+        ]
+      }
+    },
+    "hammer_ig_ex": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/hammer/igneous_extrusive"
+          }
+        ]
+      }
+    },
+    "axe_sed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/axe/sedimentary"
+          }
+        ]
+      }
+    },
+    "shovel_sed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/shovel/sedimentary"
+          }
+        ]
+      }
+    },
+    "hoe_sed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/hoe/sedimentary"
+          }
+        ]
+      }
+    },
+    "knife_sed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/knife/sedimentary"
+          }
+        ]
+      }
+    },
+    "javelin_sed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/javelin/sedimentary"
+          }
+        ]
+      }
+    },
+    "hammer_sed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/hammer/sedimentary"
+          }
+        ]
+      }
+    },
+    "axe_met": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/axe/metamorphic"
+          }
+        ]
+      }
+    },
+    "shovel_met": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/shovel/metamorphic"
+          }
+        ]
+      }
+    },
+    "hoe_met": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/hoe/metamorphic"
+          }
+        ]
+      }
+    },
+    "knife_met": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/knife/metamorphic"
+          }
+        ]
+      }
+    },
+    "javelin_met": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/javelin/metamorphic"
+          }
+        ]
+      }
+    },
+    "hammer_met": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:stone/hammer/metamorphic"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "axe_ig_in", "shovel_ig_in", "hoe_ig_in", "knife_ig_in", "javelin_ig_in", "hammer_ig_in",
+      "axe_ig_ex", "shovel_ig_ex", "hoe_ig_ex", "knife_ig_ex", "javelin_ig_ex", "hammer_ig_ex",
+      "axe_sed", "shovel_sed", "hoe_sed", "knife_sed", "javelin_sed", "hammer_sed",
+      "axe_met", "shovel_met", "hoe_met", "knife_met", "javelin_met", "hammer_met"
+    ]
+  ]
+}

@@ -137,7 +137,7 @@ public class ContainerChestTFC extends Container
             IItemSize cap = CapabilityItemSize.getIItemSize(stack);
             if (cap != null)
             {
-                return cap.getSize(stack).isSmallerThan(Size.LARGE);
+                return cap.getSize(stack).isSmallerThan(Size.VERY_LARGE);
             }
             return true;
         }

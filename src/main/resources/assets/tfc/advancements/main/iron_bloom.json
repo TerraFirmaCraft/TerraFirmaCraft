@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:bloom/unrefined"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.iron_bloom.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.iron_bloom.description"
+    }
+  },
+  "parent": "tfc:main/make_bloomery",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:bloom/unrefined"
+          }
+        ]
+      }
+    }
+  }
+}

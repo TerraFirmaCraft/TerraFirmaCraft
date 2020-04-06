@@ -1,0 +1,109 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/shield/copper"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.make_shield.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_shield.description"
+    }
+  },
+  "parent": "tfc:main/metal_sheet",
+  "criteria": {
+    "copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/copper"
+          }
+        ]
+      }
+    },
+    "bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/bronze"
+          }
+        ]
+      }
+    },
+    "bismuth_bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/bismuth_bronze"
+          }
+        ]
+      }
+    },
+    "black_bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/black_bronze"
+          }
+        ]
+      }
+    },
+    "wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/wrought_iron"
+          }
+        ]
+      }
+    },
+    "steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/steel"
+          }
+        ]
+      }
+    },
+    "black_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/black_steel"
+          }
+        ]
+      }
+    },
+    "blue_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/blue_steel"
+          }
+        ]
+      }
+    },
+    "red_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/shield/red_steel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["copper", "bronze", "bismuth_bronze", "black_bronze", "wrought_iron", "steel", "black_steel", "blue_steel", "red_steel"]
+  ]
+}

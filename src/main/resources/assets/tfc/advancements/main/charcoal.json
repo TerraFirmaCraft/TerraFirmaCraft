@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:coal",
+      "data": 1
+    },
+    "title": {
+      "translate": "advancements.tfc.main.charcoal.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.charcoal.description"
+    }
+  },
+  "parent": "tfc:main/logging",
+  "criteria": {
+    "native_copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:coal",
+            "data": 1
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/steel"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.main.get_steel.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.get_steel.description"
+    }
+  },
+  "parent": "tfc:main/make_blast_furnace",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/ingot/steel"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/saw/copper"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.carpentry.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.carpentry.description"
+    }
+  },
+  "parent": "tfc:main/copper_age",
+  "criteria": {
+    "copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/copper"
+          }
+        ]
+      }
+    },
+    "bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/bronze"
+          }
+        ]
+      }
+    },
+    "bismuth_bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/bismuth_bronze"
+          }
+        ]
+      }
+    },
+    "black_bronze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/black_bronze"
+          }
+        ]
+      }
+    },
+    "wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/wrought_iron"
+          }
+        ]
+      }
+    },
+    "steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/steel"
+          }
+        ]
+      }
+    },
+    "black_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/black_steel"
+          }
+        ]
+      }
+    },
+    "blue_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/blue_steel"
+          }
+        ]
+      }
+    },
+    "red_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/saw/red_steel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["copper", "bronze", "bismuth_bronze", "black_bronze", "wrought_iron", "steel", "black_steel", "blue_steel", "red_steel"]
+  ]
+}

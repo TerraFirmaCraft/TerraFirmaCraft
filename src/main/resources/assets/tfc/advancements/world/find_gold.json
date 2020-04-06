@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ore/native_gold"
+    },
+    "title": {
+      "translate": "advancements.tfc.world.find_gold.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.find_gold.description"
+    }
+  },
+  "parent": "tfc:world/make_propick",
+  "criteria": {
+    "find_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/native_gold"
+          }
+        ]
+      }
+    }
+  }
+}

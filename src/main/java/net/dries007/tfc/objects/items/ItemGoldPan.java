@@ -40,6 +40,14 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+/**
+ * todo: this whole thing needs to be rewritten, possibly sometime after 1.14
+ * - metadata variants need to be changed to use separate items
+ * - clay / dirt variants can be re-added / enabled
+ * - each gold pan operation (clay, sand, gravel, etc.) should be a json (in 1.14), possibly even using a loot table
+ * - if multiple options are loaded, it should choose one randomly (weighted?)
+ * - we also need to supply an implementation of a loot table / json that can access the chunk ore (current functionality)
+ */
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemGoldPan extends ItemTFC
@@ -99,7 +107,6 @@ public class ItemGoldPan extends ItemTFC
                             chunkDataTFC.addWork(6);
                             stack.setItemDamage(0);
                         }
-                        // todo: pan for seeds or stuff in dirt / grass / clay????
                         else
                         {
                             player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.goldpan.chunkworked"));
@@ -133,14 +140,6 @@ public class ItemGoldPan extends ItemTFC
                 else if (type == Rock.Type.GRAVEL)
                 {
                     stack.setItemDamage(2);
-                }
-                else if (type == Rock.Type.CLAY)
-                {
-                    stack.setItemDamage(3);
-                }
-                else if (type == Rock.Type.DIRT || type == Rock.Type.GRASS)
-                {
-                    stack.setItemDamage(4);
                 }
                 if (stack.getItemDamage() > 0 && Constants.RNG.nextFloat() < 0.10f)
                 {
@@ -185,14 +184,14 @@ public class ItemGoldPan extends ItemTFC
     @Override
     public Size getSize(ItemStack stack)
     {
-        return Size.SMALL;
+        return Size.NORMAL; // Stored in large vessels and chests
     }
 
     @Nonnull
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.LIGHT;
+        return Weight.MEDIUM; // Stacksize = 16
     }
 
     @Override

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:spindle"
+    },
+    "title": {
+      "translate": "advancements.tfc.world.make_spindle.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.make_spindle.description"
+    }
+  },
+  "parent": "tfc:world/root",
+  "criteria": {
+    "crafting_table": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:spindle"
+          }
+        ]
+      }
+    }
+  }
+}

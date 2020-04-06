@@ -270,9 +270,6 @@ FLUIDS = {
     'salt_water': 'salt_water',
     'fresh_water': 'fresh_water',
     'hot_water': 'hot_water',
-    'finite_salt_water': 'salt_water',
-    'finite_fresh_water': 'fresh_water',
-    'finite_hot_water': 'hot_water',
     'rum': 'rum',
     'beer': 'beer',
     'whiskey': 'whiskey',
@@ -289,6 +286,22 @@ FLUIDS = {
     'limewater': 'limewater',
     'milk_curdled': 'milk_curdled',
     'milk_vinegar': 'milk_vinegar',
+    'black_dye': 'black_dye',
+    'red_dye': 'red_dye',
+    'green_dye': 'green_dye',
+    'brown_dye': 'brown_dye',
+    'blue_dye': 'blue_dye',
+    'purple_dye': 'purple_dye',
+    'cyan_dye': 'cyan_dye',
+    'light_gray_dye': 'light_gray_dye',
+    'gray_dye': 'gray_dye',
+    'pink_dye': 'pink_dye',
+    'lime_dye': 'lime_dye',
+    'yellow_dye': 'yellow_dye',
+    'light_blue_dye': 'light_blue_dye',
+    'magenta_dye': 'magenta_dye',
+    'orange_dye': 'orange_dye',
+    'white_dye': 'white_dye'
 }
 
 # all crops
@@ -407,7 +420,23 @@ FOODS = [
     'cooked_pheasant',
     'cooked_wolf',
     'cooked_venison',
-    'cooked_rabbit'
+    'cooked_rabbit',
+    'barley_bread_sandwich',
+    'cornbread_sandwich',
+    'oat_bread_sandwich',
+    'rice_bread_sandwich',
+    'rye_bread_sandwich',
+    'wheat_bread_sandwich',
+    'soup_grain',
+    'soup_fruit',
+    'soup_vegetable',
+    'soup_meat',
+    'soup_dairy',
+    'salad_grain',
+    'salad_fruit',
+    'salad_vegetable',
+    'salad_meat',
+    'salad_dairy'
 ]
 
 # Special 'hardcoded' cases
@@ -580,7 +609,6 @@ def item(filename_parts, *layers, parent='item/generated'):
     model(('item', *filename_parts), parent,
           None if len(layers) == 0 else {'layer%d' % i: v for i, v in enumerate(layers)})
 
-
 #   ____  _            _        _        _
 #  |  _ \| |          | |      | |      | |
 #  | |_) | | ___   ___| | _____| |_ __ _| |_ ___  ___
@@ -677,7 +705,7 @@ for rock_type in ROCK_TYPES:
     for block_type in GRASS_TYPES:
         blockstate((block_type, rock_type), 'tfc:grass', textures={
             ('all', 'particle'): 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
-            'particle': 'tfc:blocks/stonetypes/dirt/%s' % rock_type,
+            'particle': 'tfc:blocks/grass_top',
             'top': 'tfc:blocks/%s_top' % block_type,
             ('north', 'south', 'east', 'west'): 'tfc:blocks/%s_side' % block_type,
         }, variants={
@@ -1046,7 +1074,7 @@ for item_type, tool_item in METAL_ITEMS.items():
             parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
             if item_type in ['knife', 'javelin']:
                 parent = 'tfc:item/handheld_flipped'
-            item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type.replace('unfinished_', ''), metal),
+            item(('metal', item_type, metal), 'tfc:items/metal/%s/%s' % (item_type, metal),
                  parent=parent)
 for metal in STEEL:
     for type in ['high_carbon', 'weak']:

@@ -415,6 +415,10 @@ public class TEAnvilTFC extends TEInventory
             {
                 shouldSendUpdate = setRecipe(capRecipe);
             }
+            else if (AnvilRecipe.getAllFor(stack).size() == 1)
+            {
+                shouldSendUpdate = setRecipe(AnvilRecipe.getAllFor(stack).get(0));
+            }
         }
         return shouldSendUpdate;
     }

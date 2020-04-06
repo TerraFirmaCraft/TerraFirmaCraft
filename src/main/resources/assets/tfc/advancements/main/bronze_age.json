@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/anvil/bronze"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.main.bronze_age.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.bronze_age.description"
+    }
+  },
+  "parent": "tfc:main/metal_anvil",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/anvil/bronze"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

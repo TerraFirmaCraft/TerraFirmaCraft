@@ -43,14 +43,14 @@ public class ItemBloom extends ItemTFC implements IMetalItem
     @Override
     public Size getSize(@Nonnull ItemStack stack)
     {
-        return Size.LARGE;
+        return Size.LARGE; // Stored in chests
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return Weight.HEAVY;
+        return Weight.HEAVY; // Stacksize = 4
     }
 
     @Nullable

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:blast_furnace"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.make_blast_furnace.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_blast_furnace.description"
+    }
+  },
+  "parent": "tfc:main/iron_age",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:blast_furnace"
+          }
+        ]
+      }
+    }
+  }
+}

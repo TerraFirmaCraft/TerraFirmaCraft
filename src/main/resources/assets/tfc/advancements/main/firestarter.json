@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:firestarter"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.firestarter.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.firestarter.description"
+    }
+  },
+  "parent": "tfc:main/pick_rock",
+  "criteria": {
+    "native_copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:firestarter"
+          }
+        ]
+      }
+    }
+  }
+}

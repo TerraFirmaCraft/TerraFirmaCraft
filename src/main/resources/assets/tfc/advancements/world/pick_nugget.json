@@ -1,0 +1,149 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ore/small/native_copper"
+    },
+    "title": {
+      "translate": "advancements.tfc.world.pick_nugget.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.pick_nugget.description"
+    }
+  },
+  "parent": "tfc:world/root",
+  "criteria": {
+    "native_copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/native_copper"
+          }
+        ]
+      }
+    },
+    "native_gold": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/native_gold"
+          }
+        ]
+      }
+    },
+    "native_platinum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/native_platinum"
+          }
+        ]
+      }
+    },
+    "hematite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/hematite"
+          }
+        ]
+      }
+    },
+    "native_silver": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/native_silver"
+          }
+        ]
+      }
+    },
+    "cassiterite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/cassiterite"
+          }
+        ]
+      }
+    },
+    "galena": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/galena"
+          }
+        ]
+      }
+    },
+    "bismuthinite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/bismuthinite"
+          }
+        ]
+      }
+    },
+    "malachite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/malachite"
+          }
+        ]
+      }
+    },
+    "magnetite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/magnetite"
+          }
+        ]
+      }
+    },
+    "limonite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/limonite"
+          }
+        ]
+      }
+    },
+    "sphalerite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/sphalerite"
+          }
+        ]
+      }
+    },
+    "tetrahedrite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ore/small/tetrahedrite"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["native_copper", "native_gold", "native_platinum", "hematite", "native_silver", "cassiterite", "galena", "bismuthinite", "malachite", "magnetite", "limonite", "sphalerite", "tetrahedrite"]
+  ]
+}

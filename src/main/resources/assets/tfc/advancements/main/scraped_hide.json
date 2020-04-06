@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:hide/scraped/medium"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.scraped_hide.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.scraped_hide.description"
+    }
+  },
+  "parent": "tfc:main/make_barrel",
+  "criteria": {
+    "small": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:hide/scraped/small"
+          }
+        ]
+      }
+    },
+    "medium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:hide/scraped/medium"
+          }
+        ]
+      }
+    },
+    "large": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:hide/scraped/large"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["small", "medium", "large"]
+  ]
+}

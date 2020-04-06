@@ -1,0 +1,149 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ceramics/fired/mold/pick_head"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.metal_casting.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.metal_casting.description"
+    }
+  },
+  "parent": "tfc:main/pottery",
+  "criteria": {
+    "pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/pick_head"
+          }
+        ]
+      }
+    },
+    "shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/shovel_head"
+          }
+        ]
+      }
+    },
+    "axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/axe_head"
+          }
+        ]
+      }
+    },
+    "hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/hoe_head"
+          }
+        ]
+      }
+    },
+    "chisel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/chisel_head"
+          }
+        ]
+      }
+    },
+    "sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/sword_blade"
+          }
+        ]
+      }
+    },
+    "mace": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/mace_head"
+          }
+        ]
+      }
+    },
+    "saw": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/saw_blade"
+          }
+        ]
+      }
+    },
+    "javelin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/javelin_head"
+          }
+        ]
+      }
+    },
+    "hammer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/hammer_head"
+          }
+        ]
+      }
+    },
+    "propick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/propick_head"
+          }
+        ]
+      }
+    },
+    "knife": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/knife_blade"
+          }
+        ]
+      }
+    },
+    "scythe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fired/mold/scythe_blade"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["pickaxe", "shovel", "axe", "hoe", "chisel", "sword", "mace", "saw", "javelin", "hammer", "propick", "knife", "scythe"]
+  ]
+}

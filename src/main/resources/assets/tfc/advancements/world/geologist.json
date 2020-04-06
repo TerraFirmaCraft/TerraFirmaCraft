@@ -1,0 +1,379 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/propick/steel"
+    },
+    "frame": "challenge",
+    "title": {
+      "translate": "advancements.tfc.world.geologist.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.geologist.description"
+    }
+  },
+  "parent": "tfc:world/pick_nugget",
+  "criteria": {
+    "granite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/granite"
+          }
+        ]
+      }
+    },
+    "diorite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/diorite"
+          }
+        ]
+      }
+    },
+    "gabbro": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/gabbro"
+          }
+        ]
+      }
+    },
+    "shale": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/shale"
+          }
+        ]
+      }
+    },
+    "claystone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/claystone"
+          }
+        ]
+      }
+    },
+    "rocksalt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/rocksalt"
+          }
+        ]
+      }
+    },
+    "limestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/limestone"
+          }
+        ]
+      }
+    },
+    "conglomerate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/conglomerate"
+          }
+        ]
+      }
+    },
+    "dolomite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/dolomite"
+          }
+        ]
+      }
+    },
+    "chert": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/chert"
+          }
+        ]
+      }
+    },
+    "chalk": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/chalk"
+          }
+        ]
+      }
+    },
+    "rhyolite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/rhyolite"
+          }
+        ]
+      }
+    },
+    "basalt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/basalt"
+          }
+        ]
+      }
+    },
+    "andesite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/andesite"
+          }
+        ]
+      }
+    },
+    "dacite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/dacite"
+          }
+        ]
+      }
+    },
+    "quartzite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/quartzite"
+          }
+        ]
+      }
+    },
+    "slate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/slate"
+          }
+        ]
+      }
+    },
+    "phyllite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/phyllite"
+          }
+        ]
+      }
+    },
+    "schist": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/schist"
+          }
+        ]
+      }
+    },
+    "gneiss": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/gneiss"
+          }
+        ]
+      }
+    },
+    "marble": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:rock/marble"
+          }
+        ]
+      }
+    },
+    "agate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/agate"
+          }
+        ]
+      }
+    },
+    "amethyst": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/amethyst"
+          }
+        ]
+      }
+    },
+    "beryl": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/beryl"
+          }
+        ]
+      }
+    },
+    "diamond": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/diamond"
+          }
+        ]
+      }
+    },
+    "emerald": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/emerald"
+          }
+        ]
+      }
+    },
+    "garnet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/garnet"
+          }
+        ]
+      }
+    },
+    "jade": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/jade"
+          }
+        ]
+      }
+    },
+    "jasper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/jasper"
+          }
+        ]
+      }
+    },
+    "opal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/opal"
+          }
+        ]
+      }
+    },
+    "ruby": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/ruby"
+          }
+        ]
+      }
+    },
+    "sapphire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/sapphire"
+          }
+        ]
+      }
+    },
+    "topaz": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/topaz"
+          }
+        ]
+      }
+    },
+    "tourmaline": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:gem/tourmaline"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["granite", "diorite", "gabbro"],
+    ["shale", "claystone", "rocksalt", "limestone", "conglomerate", "dolomite", "chert", "chalk"],
+    ["rhyolite", "basalt", "andesite", "dacite"],
+    ["quartzite", "slate", "phyllite", "schist", "gneiss", "marble"],
+    ["agate"],
+    ["amethyst"],
+    ["beryl"],
+    ["diamond"],
+    ["emerald"],
+    ["garnet"],
+    ["jade"],
+    ["jasper"],
+    ["opal"],
+    ["ruby"],
+    ["sapphire"],
+    ["topaz"],
+    ["tourmaline"]
+  ],
+  "rewards": {
+    "experience": 250
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/unknown"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.get_unknown.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.get_unknown.description"
+    },
+    "hidden": true
+  },
+  "parent": "tfc:main/pottery",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:metal/ingot/unknown"
+          }
+        ]
+      }
+    }
+  }
+}

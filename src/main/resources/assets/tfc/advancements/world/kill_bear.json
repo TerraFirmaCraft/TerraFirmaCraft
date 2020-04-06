@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:food/bear"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.world.kill_bear.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.kill_bear.description"
+    }
+  },
+  "parent": "tfc:world/hunter",
+  "criteria": {
+    "native_copper": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "tfc:beartfc"
+        }
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

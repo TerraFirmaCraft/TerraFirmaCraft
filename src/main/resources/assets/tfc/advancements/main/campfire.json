@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:firepit"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.campfire.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.campfire.description"
+    }
+  },
+  "parent": "tfc:main/firestarter",
+  "criteria": {
+    "firepit": {
+      "trigger": "tfc:lit_device",
+      "conditions": {
+        "block": "tfc:firepit"
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@
 package net.dries007.tfc.api.capability.player;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +21,7 @@ import net.dries007.tfc.util.skills.SkillType;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@ParametersAreNonnullByDefault
 public final class CapabilityPlayerData
 {
     @CapabilityInject(IPlayerData.class)

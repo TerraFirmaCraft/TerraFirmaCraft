@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:bloomery"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.make_bloomery.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_bloomery.description"
+    }
+  },
+  "parent": "tfc:main/bronze_age",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:bloomery"
+          }
+        ]
+      }
+    }
+  }
+}

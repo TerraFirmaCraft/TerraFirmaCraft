@@ -7,8 +7,10 @@ package net.dries007.tfc.objects.te;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -43,9 +45,10 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
+@ParametersAreNonnullByDefault
 public class TESluice extends TEBase implements ITickable
 {
-    private static final int MAX_SOIL = 50;
+    public static final int MAX_SOIL = 50;
     private int soil;
     private int ticksRemaining, delayTimer;
 
@@ -70,7 +73,7 @@ public class TESluice extends TEBase implements ITickable
                             {
                                 Chunk chunk = world.getChunk(x, z);
                                 ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
-                                if (chunkData.canWork(1) && chunkData.getGeneratedVeins().size() > 0)
+                                if (chunkData.canWork(1) && chunkData.getGeneratedVeins().stream().anyMatch(vein -> vein.getType() != null && vein.getType().getOre() != null))
                                 {
                                     chunks.add(chunk);
                                 }
@@ -80,14 +83,17 @@ public class TESluice extends TEBase implements ITickable
                         {
                             Chunk workingChunk = chunks.get(Constants.RNG.nextInt(chunks.size()));
                             ChunkDataTFC chunkData = ChunkDataTFC.get(workingChunk);
-                            chunkData.addWork();
-                            List<Vein> veinList = new ArrayList<>(chunkData.getGeneratedVeins());
+
+                            // Only check for not null veins
+                            List<Vein> veinList = chunkData.getGeneratedVeins()
+                                .stream().filter(vein -> vein.getType() != null && vein.getType().getOre() != null)
+                                .collect(Collectors.toList());
+
+                            //noinspection ConstantConditions
                             Ore ore = veinList.get(Constants.RNG.nextInt(veinList.size())).getType().getOre();
-                            if (ore != null)
-                            {
-                                ItemStack output = new ItemStack(ItemSmallOre.get(ore));
-                                Helpers.spawnItemStack(world, getFrontWaterPos(), output);
-                            }
+                            ItemStack output = new ItemStack(ItemSmallOre.get(ore));
+                            Helpers.spawnItemStack(world, getFrontWaterPos(), output);
+                            chunkData.addWork();
                         }
                     }
                     if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceGemChance)
@@ -131,17 +137,14 @@ public class TESluice extends TEBase implements ITickable
                             BlockRockVariant rockBlock = (BlockRockVariant) ((ItemBlock) stack.getItem()).getBlock();
                             if (rockBlock.getType() == Rock.Type.SAND || rockBlock.getType() == Rock.Type.GRAVEL)
                             {
-                                soil += 20;
-                                if (soil > MAX_SOIL)
-                                {
-                                    soil = MAX_SOIL;
-                                }
+                                soil += 20; // Overflows to not consume an stack until a full soil worth is consumed
                                 stack.shrink(1);
                                 if (stack.getCount() <= 0)
                                 {
                                     entityItem.setDead();
                                     break;
                                 }
+                                updateBlock();
                             }
                         }
                     }
@@ -214,6 +217,11 @@ public class TESluice extends TEBase implements ITickable
         return null;
     }
 
+    public int getSoil()
+    {
+        return soil;
+    }
+
     private BlockPos getFrontWaterPos()
     {
         //noinspection ConstantConditions
@@ -242,17 +250,29 @@ public class TESluice extends TEBase implements ITickable
         return false;
     }
 
+    private void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
+    }
+
     private void consumeSoil()
     {
         if (soil > 0 && hasFlow())
         {
             soil--;
             ticksRemaining = ConfigTFC.GENERAL.sluiceTicks;
+            updateBlock();
         }
         else
         {
-            soil = 0;
             ticksRemaining = 0;
+            if (soil > 0)
+            {
+                soil = 0;
+                updateBlock();
+            }
         }
     }
 

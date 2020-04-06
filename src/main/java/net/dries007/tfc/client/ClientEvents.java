@@ -244,7 +244,7 @@ public class ClientEvents
             IFood nutrients = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (nutrients != null)
             {
-                nutrients.addNutrientInfo(stack, tt);
+                nutrients.addTooltipInfo(stack, tt, event.getEntityPlayer());
             }
             IEgg eggInfo = stack.getCapability(CapabilityEgg.CAPABILITY, null);
             if (eggInfo != null)

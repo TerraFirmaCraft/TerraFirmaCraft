@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:bellows"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.main.make_bellows.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_bellows.description"
+    }
+  },
+  "parent": "tfc:main/make_leather",
+  "criteria": {
+    "acacia": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:bellows"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

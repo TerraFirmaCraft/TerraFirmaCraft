@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:bed"
+    },
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.world.make_bed.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.make_bed.description"
+    }
+  },
+  "parent": "tfc:world/make_loom",
+  "criteria": {
+    "crafting_table": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:bed"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

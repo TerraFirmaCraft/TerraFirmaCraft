@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "tfc:ceramics/fire_clay"
+    },
+    "title": {
+      "translate": "advancements.tfc.main.make_fire_clay.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.main.make_fire_clay.description"
+    }
+  },
+  "parent": "tfc:main/iron_age",
+  "criteria": {
+    "anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tfc:ceramics/fire_clay"
+          }
+        ]
+      }
+    }
+  }
+}
