@@ -25,30 +25,20 @@ public class ContainerQuiver extends ContainerItemStack implements ISlotCallback
     }
 
     @Override
-    public boolean isItemValid(int slot, @Nonnull ItemStack stack)
-    {
-        IItemHandler quiverCapability = this.stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (quiverCapability instanceof ItemQuiver.QuiverCapability)
-        {
-            return quiverCapability.isItemValid(slot, stack);
-        }
-        return false;
-    }
-
-    @Override
     protected void addContainerSlots()
     {
         IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        if (inventory != null)
+        if (inventory instanceof ISlotCallback)
         {
-            addSlotToContainer(new SlotCallback(inventory, 0, 53, 23, this));
-            addSlotToContainer(new SlotCallback(inventory, 1, 71, 23, this));
-            addSlotToContainer(new SlotCallback(inventory, 2, 89, 23, this));
-            addSlotToContainer(new SlotCallback(inventory, 3, 107, 23, this));
-            addSlotToContainer(new SlotCallback(inventory, 4, 53, 41, this));
-            addSlotToContainer(new SlotCallback(inventory, 5, 71, 41, this));
-            addSlotToContainer(new SlotCallback(inventory, 6, 89, 41, this));
-            addSlotToContainer(new SlotCallback(inventory, 7, 107, 41, this));
+            ISlotCallback callback = (ISlotCallback) inventory;
+            addSlotToContainer(new SlotCallback(inventory, 0, 53, 23, callback));
+            addSlotToContainer(new SlotCallback(inventory, 1, 71, 23, callback));
+            addSlotToContainer(new SlotCallback(inventory, 2, 89, 23, callback));
+            addSlotToContainer(new SlotCallback(inventory, 3, 107, 23, callback));
+            addSlotToContainer(new SlotCallback(inventory, 4, 53, 41, callback));
+            addSlotToContainer(new SlotCallback(inventory, 5, 71, 41, callback));
+            addSlotToContainer(new SlotCallback(inventory, 6, 89, 41, callback));
+            addSlotToContainer(new SlotCallback(inventory, 7, 107, 41, callback));
         }
     }
 }
