@@ -50,10 +50,7 @@ import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
 import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.EggHandler;
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.FoodHandler;
-import net.dries007.tfc.api.capability.food.FoodStatsTFC;
-import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
+import net.dries007.tfc.api.capability.food.*;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.ForgeableHeatableHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -343,7 +340,7 @@ public final class CommonEventHandler
                 }
                 else
                 {
-                    foodHandler = new FoodHandler(stack.getTagCompound(), new float[] {1, 0, 0, 0, 0}, 0, 0, 1);
+                    foodHandler = new FoodHandler(stack.getTagCompound(), new FoodData());
                     event.addCapability(CapabilityFood.KEY, foodHandler);
                 }
             }
@@ -674,13 +671,16 @@ public final class CommonEventHandler
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
         // Since cobble is a gravity block, placing it can lead to world crashes, so we avoid doing that and place rhyolite instead
-        if (event.getNewState().getBlock() == Blocks.STONE)
+        if (!ConfigTFC.GENERAL.disableLavaWaterPlacesTFCBlocks)
         {
-            event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
-        }
-        if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
-        {
-            event.setNewState(BlockRockVariant.get(Rock.RHYOLITE, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
+            if (event.getNewState().getBlock() == Blocks.STONE)
+            {
+                event.setNewState(BlockRockVariant.get(Rock.BASALT, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
+            }
+            if (event.getNewState().getBlock() == Blocks.COBBLESTONE)
+            {
+                event.setNewState(BlockRockVariant.get(Rock.RHYOLITE, Rock.Type.RAW).getDefaultState().withProperty(BlockRockRaw.CAN_FALL, false));
+            }
         }
     }
 
@@ -726,7 +726,7 @@ public final class CommonEventHandler
         int hugeHeavyCount = 0;
         for (ItemStack stack : inventory.mainInventory)
         {
-            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
             {
                 hugeHeavyCount++;
                 if (hugeHeavyCount >= 2)
@@ -737,7 +737,7 @@ public final class CommonEventHandler
         }
         for (ItemStack stack : inventory.armorInventory)
         {
-            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
             {
                 hugeHeavyCount++;
                 if (hugeHeavyCount >= 2)
@@ -748,7 +748,7 @@ public final class CommonEventHandler
         }
         for (ItemStack stack : inventory.offHandInventory)
         {
-            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.HEAVY))
+            if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
             {
                 hugeHeavyCount++;
                 if (hugeHeavyCount >= 2)

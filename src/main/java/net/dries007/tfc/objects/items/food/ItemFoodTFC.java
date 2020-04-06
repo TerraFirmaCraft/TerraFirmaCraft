@@ -17,7 +17,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodHeatHandler;
-import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
 
@@ -35,11 +34,11 @@ public class ItemFoodTFC extends ItemFood
         return new ItemStack(MAP.get(food), amount);
     }
 
-    private final Food food;
+    protected final Food food;
 
     public ItemFoodTFC(@Nonnull Food food)
     {
-        super(IFoodStatsTFC.FOOD_HUNGER_AMOUNT, food.getCalories(), food.getCategory() == Food.Category.MEAT);
+        super(0, 0, food.getCategory() == Food.Category.MEAT || food.getCategory() == Food.Category.COOKED_MEAT);
         this.food = food;
         if (MAP.put(food, this) != null)
         {

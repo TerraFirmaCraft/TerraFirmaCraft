@@ -73,13 +73,15 @@ public class WorldGenLooseRocks implements IWorldGenerator
                     return;
                 }
 
-                int lowestYScan = world.getTopSolidOrLiquidBlock(chunkBlockPos).getY() - 35; // Same as in 1.7.10, 35 below the surface
+                // Default to 35 below the surface, like classic
+                int lowestYScan = Math.max(10, world.getTopSolidOrLiquidBlock(chunkBlockPos).getY() - ConfigTFC.WORLD.looseRockScan);
+
 
                 veins = WorldGenOreVeins.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
                 if (!veins.isEmpty())
                 {
                     veins.removeIf(v -> {
-                        if (!v.getType().hasLooseRocks() || v.getHighestY() < lowestYScan)
+                        if (v.getType() == null || !v.getType().hasLooseRocks() || v.getHighestY() < lowestYScan)
                         {
                             return true;
                         }
@@ -121,7 +123,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
             if (tile != null)
             {
                 ItemStack stack = ItemStack.EMPTY;
-                if (vein != null)
+                if (vein != null && vein.getType() != null)
                 {
                     stack = vein.getType().getLooseRockItem();
                 }

@@ -46,7 +46,7 @@ import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TECharcoalForge;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Multiblock;
+import net.dries007.tfc.util.block.Multiblock;
 
 @ParametersAreNonnullByDefault
 public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, ILightableBlock

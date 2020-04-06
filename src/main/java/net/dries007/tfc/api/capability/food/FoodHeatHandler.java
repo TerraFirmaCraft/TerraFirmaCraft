@@ -9,7 +9,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -30,28 +29,22 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
 
     public FoodHeatHandler()
     {
-        this(null, new float[] {0f, 0f, 0f, 0f, 0f}, 0.5f, 0f, 1f, 1, 100);
+        this(null, new FoodData(), 1, 100);
     }
 
     public FoodHeatHandler(@Nullable NBTTagCompound nbt, @Nonnull Food food)
     {
-        this(nbt, food.getNutrients(), food.getCalories(), food.getWater(), food.getDecayModifier(), food.getHeatCapacity(), food.getCookingTemp());
+        this(nbt, food.getData(), food.getHeatCapacity(), food.getCookingTemp());
     }
 
-    public FoodHeatHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier, float heatCapacity, float meltTemp)
+    public FoodHeatHandler(@Nullable NBTTagCompound nbt, FoodData data, float heatCapacity, float meltTemp)
     {
         this.heatCapacity = heatCapacity;
         this.meltTemp = meltTemp;
 
-        this.internalFoodCap = new FoodHandler(nbt, nutrients, calories, water, decayModifier);
+        this.internalFoodCap = new FoodHandler(nbt, data);
 
         deserializeNBT(nbt);
-    }
-
-    @Override
-    public float getNutrient(ItemStack stack, Nutrient nutrient)
-    {
-        return internalFoodCap.getNutrient(stack, nutrient);
     }
 
     @Override
@@ -72,16 +65,11 @@ public class FoodHeatHandler extends ItemHeatHandler implements IFood, ICapabili
         return internalFoodCap.getRottenDate();
     }
 
+    @Nonnull
     @Override
-    public float getWater()
+    public FoodData getData()
     {
-        return internalFoodCap.getWater();
-    }
-
-    @Override
-    public float getCalories()
-    {
-        return internalFoodCap.getCalories();
+        return internalFoodCap.getData();
     }
 
     @Override

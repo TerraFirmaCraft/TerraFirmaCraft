@@ -5,7 +5,7 @@
     "model": "tfc:grass",
     "textures": {
       "all": "tfc:blocks/stonetypes/dirt/marble",
-      "particle": "tfc:blocks/stonetypes/dirt/marble",
+      "particle": "tfc:blocks/grass_top",
       "top": "tfc:blocks/grass_top",
       "north": "tfc:blocks/grass_side",
       "south": "tfc:blocks/grass_side",

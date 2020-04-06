@@ -22,6 +22,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.collections.WeightedCollection;
 import net.dries007.tfc.world.classic.worldgen.WorldGenOreVeins;
@@ -72,30 +73,29 @@ public enum VeinRegistry
             throw new Error("Problem creating TFC extra config directory.");
         }
 
-        // If the directory is empty, then create a new one
-        try
+        // Create or overwrite our default ore gen file
+        if (ConfigTFC.WORLD.enableDefaultOreGenFileOverwrite)
         {
-            if (!Files.list(tfcConfigDir.toPath()).findAny().isPresent())
+            // Create default vein file
+            try
             {
-                // Create default vein file
                 File defaultFile = new File(tfcConfigDir, "ore_spawn_data.json");
-                try
+                if (defaultFile.exists())
                 {
-                    if (defaultFile.createNewFile())
-                    {
-                        FileUtils.copyInputStreamToFile(Objects.requireNonNull(VeinRegistry.class.getClassLoader().getResourceAsStream(DEFAULT_ORE_SPAWN_LOCATION)), defaultFile);
-                    }
+                    // Back up the file, in case of illiteracy
+                    FileUtils.copyFile(defaultFile, new File(defaultFile.getPath() + ".old"));
+                    // And replace the contents
+                    FileUtils.copyInputStreamToFile(Objects.requireNonNull(VeinRegistry.class.getClassLoader().getResourceAsStream(DEFAULT_ORE_SPAWN_LOCATION)), defaultFile);
                 }
-                catch (IOException e)
+                else if (defaultFile.createNewFile())
                 {
-                    throw new Error("Problem creating default ore vein config file.", e);
+                    FileUtils.copyInputStreamToFile(Objects.requireNonNull(VeinRegistry.class.getClassLoader().getResourceAsStream(DEFAULT_ORE_SPAWN_LOCATION)), defaultFile);
                 }
             }
-        }
-        catch (IOException e)
-        {
-            TerraFirmaCraft.getLog().error("Problem trying to create default ore gen config file");
-            TerraFirmaCraft.getLog().error("Exception: ", e);
+            catch (IOException e)
+            {
+                throw new Error("Problem creating default ore vein config file.", e);
+            }
         }
     }
 
@@ -141,6 +141,8 @@ public enum VeinRegistry
 
                         veinTypeRegistry.put(properVeinName, vein);
                         weightedVeinTypes.add(vein.getWeight(), vein);
+
+                        TerraFirmaCraft.getLog().info("Registered new vein " + vein.toString());
                     }
                     catch (JsonParseException e)
                     {

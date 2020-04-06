@@ -43,7 +43,7 @@ public class GuiNutrition extends GuiContainerTFC
         {
             for (Nutrient n : Nutrient.values())
             {
-                cachedNutrients[n.ordinal()] = ((IFoodStatsTFC) foodStats).getNutrient(n);
+                cachedNutrients[n.ordinal()] = ((IFoodStatsTFC) foodStats).getNutrition().getNutrient(n);
             }
         }
     }
@@ -77,7 +77,7 @@ public class GuiNutrition extends GuiContainerTFC
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
         for (Nutrient n : Nutrient.values())
         {
-            int scaledNutrient = (int) (cachedNutrients[n.ordinal()] / 2f);
+            int scaledNutrient = (int) (cachedNutrients[n.ordinal()] * 50);
             drawTexturedModalRect(guiLeft + 118, guiTop + 21 + 13 * n.ordinal(), 176, 0, scaledNutrient, 5);
         }
     }

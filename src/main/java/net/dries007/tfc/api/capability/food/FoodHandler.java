@@ -10,7 +10,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -36,46 +35,29 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         FoodHandler.markStacksNonDecaying = markStacksNonDecaying;
     }
 
-    private final List<FoodTrait> foodTraits;
-    private final float[] nutrients;
-    private final float decayModifier;
-    private final float water;
-    private final float calories;
+    protected final List<FoodTrait> foodTraits;
+    protected FoodData data;
 
-    private long creationDate;
-    private boolean isNonDecaying; // This is intentionally not serialized, as we don't want it to preserve over `ItemStack.copy()` operations
+    protected long creationDate;
+    protected boolean isNonDecaying; // This is intentionally not serialized, as we don't want it to preserve over `ItemStack.copy()` operations
 
     public FoodHandler()
     {
-        this(null, new float[] {0f, 0f, 0f, 0f, 0f}, 0.5f, 0f, 1f);
+        this(null, new FoodData(4, 0, 0, 0, 0, 0, 0, 0, 1));
     }
 
     public FoodHandler(@Nullable NBTTagCompound nbt, @Nonnull Food food)
     {
-        this(nbt, food.getNutrients(), food.getCalories(), food.getWater(), food.getDecayModifier());
+        this(nbt, food.getData());
     }
 
-    public FoodHandler(@Nullable NBTTagCompound nbt, float[] nutrients, float calories, float water, float decayModifier)
+    public FoodHandler(@Nullable NBTTagCompound nbt, FoodData data)
     {
         this.foodTraits = new ArrayList<>(2);
-        this.nutrients = new float[Nutrient.TOTAL];
-        this.decayModifier = decayModifier;
-        this.water = water;
-        this.calories = calories;
+        this.data = data;
         this.isNonDecaying = FoodHandler.markStacksNonDecaying;
-        System.arraycopy(nutrients, 0, this.nutrients, 0, nutrients.length);
 
         deserializeNBT(nbt);
-    }
-
-    @Override
-    public float getNutrient(ItemStack stack, Nutrient nutrient)
-    {
-        if (isRotten())
-        {
-            return 0;
-        }
-        return nutrients[nutrient.ordinal()];
     }
 
     @Override
@@ -118,22 +100,17 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     }
 
     @Override
-    public float getWater()
+    @Nonnull
+    public FoodData getData()
     {
-        return water;
-    }
-
-    @Override
-    public float getCalories()
-    {
-        return calories;
+        return data;
     }
 
     @Override
     public float getDecayDateModifier()
     {
         // Decay modifiers are higher = shorter
-        float mod = decayModifier * (float) ConfigTFC.GENERAL.foodDecayModifier;
+        float mod = data.getDecayModifier() * (float) ConfigTFC.GENERAL.foodDecayModifier;
         for (FoodTrait trait : foodTraits)
         {
             mod *= trait.getDecayModifier();
@@ -174,6 +151,10 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setLong("creationDate", getCreationDate());
+        if (isDynamic())
+        {
+            nbt.setTag("foodData", data.serializeNBT());
+        }
         // Traits are sorted so they match when trying to stack them
         NBTTagList traitList = new NBTTagList();
         for (FoodTrait trait : foodTraits)
@@ -188,26 +169,31 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     public void deserializeNBT(@Nullable NBTTagCompound nbt)
     {
         foodTraits.clear();
-        if (nbt != null && nbt.hasKey("creationDate"))
+        if (nbt != null)
         {
-            creationDate = nbt.getLong("creationDate");
-            if (creationDate == 0)
+            if (isDynamic())
             {
-                // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
-                creationDate = (int) (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
+                data.deserializeNBT(nbt.getCompoundTag("foodData"));
             }
             NBTTagList traitList = nbt.getTagList("traits", 8 /* String */);
             for (int i = 0; i < traitList.tagCount(); i++)
             {
                 foodTraits.add(FoodTrait.getTraits().get(traitList.getStringTagAt(i)));
             }
+            creationDate = nbt.getLong("creationDate");
         }
-        else
+        if (creationDate == 0)
         {
-            // Don't default to zero
-            // Food decay initially is synced with the hour. This allows items grabbed within a minute to stack
-            creationDate = CalendarTFC.PLAYER_TIME.getTotalHours() * ICalendar.TICKS_IN_HOUR;
+            initDefaultCreationDate();
         }
+    }
+
+    /**
+     * This marks if the food data should be serialized. For normal food items, it isn't, because all values are provided on construction via CapabilityFood. Only mark this if food data will change per item stack
+     */
+    protected boolean isDynamic()
+    {
+        return false;
     }
 
     private long calculateRottenDate(long creationDateIn)
@@ -219,5 +205,11 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
             return Long.MAX_VALUE;
         }
         return creationDateIn + (long) (decayMod * CapabilityFood.DEFAULT_ROT_TICKS);
+    }
+
+    private void initDefaultCreationDate()
+    {
+        // Stop defaulting to zero, in cases where the item stack is cloned or copied from one that was initialized at load (and thus was before the calendar was initialized)
+        creationDate = (int) (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
     }
 }

@@ -104,23 +104,23 @@ public class ItemAnimalHide extends ItemTFC
     @Nonnull
     public Size getSize(ItemStack stack)
     {
-        switch (size)
-        {
-            case LARGE:
-                return Size.SMALL;
-            case MEDIUM:
-                return Size.VERY_SMALL;
-            case SMALL:
-            default:
-                return Size.TINY;
-        }
+        return Size.NORMAL; // Stored in chests and Large Vessels
     }
 
     @Override
     @Nonnull
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.LIGHT;
+        switch (size)
+        {
+            case LARGE:
+                return Weight.MEDIUM; // Stacksize = 16
+            case MEDIUM:
+                return Weight.LIGHT; // Stacksize = 32
+            case SMALL:
+            default:
+                return Weight.VERY_LIGHT; // Stacksize = 64
+        }
     }
 
     public enum HideSize implements IStringSerializable

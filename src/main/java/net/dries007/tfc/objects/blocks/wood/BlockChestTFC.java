@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.blocks.wood;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -18,6 +19,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
@@ -27,6 +29,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.inventory.capability.TFCInventoryLargeChest;
@@ -34,7 +39,7 @@ import net.dries007.tfc.objects.te.TEChestTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
-public class BlockChestTFC extends BlockChest
+public class BlockChestTFC extends BlockChest implements IItemSize
 {
     private static final Map<Tree, BlockChestTFC> MAP_BASIC = new HashMap<>();
     private static final Map<Tree, BlockChestTFC> MAP_TRAP = new HashMap<>();
@@ -147,6 +152,20 @@ public class BlockChestTFC extends BlockChest
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TEChestTFC();
+    }
+
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.LARGE; // Can only be stored in itself (and since this can't be carried with items, makes sense
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.LIGHT; // Stacksize = 32
     }
 
     private boolean isBlocked(World worldIn, BlockPos pos)

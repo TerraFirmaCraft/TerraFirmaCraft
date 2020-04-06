@@ -27,11 +27,9 @@ import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.biomes.BiomeTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
-import net.dries007.tfc.world.classic.worldgen.trees.TreeGenBushes;
 
 public class WorldGenTrees implements IWorldGenerator
 {
-    private static final ITreeGenerator GEN_BUSHES = new TreeGenBushes();
 
     public static void generateLooseSticks(Random rand, int chunkX, int chunkZ, World world, int amount)
     {
@@ -134,10 +132,10 @@ public class WorldGenTrees implements IWorldGenerator
                 final int z = chunkZ * 16 + random.nextInt(16) + 8;
                 final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
                 final Tree tree = getTree(trees, density, random);
-
-                if (GEN_BUSHES.canGenerateTree(world, pos, tree))
+                ITreeGenerator bushGen = tree.getBushGen();
+                if (bushGen != null && tree.hasBushes() && bushGen.canGenerateTree(world, pos, tree))
                 {
-                    GEN_BUSHES.generateTree(manager, world, pos, tree, random, true);
+                    bushGen.generateTree(manager, world, pos, tree, random, true);
                 }
             }
         }

@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.recipes;
 import javax.annotation.Nonnull;
 
 import com.google.gson.JsonObject;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -22,6 +21,7 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+@SuppressWarnings("unused")
 public class ShapelessDamageAddItemRecipe extends ShapelessOreRecipe
 {
     private ItemStack out;
@@ -39,30 +39,7 @@ public class ShapelessDamageAddItemRecipe extends ShapelessOreRecipe
     @Nonnull
     public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inventoryCrafting)
     {
-        final NonNullList<ItemStack> remainingItems = NonNullList.withSize(inventoryCrafting.getSizeInventory(), ItemStack.EMPTY);
-
-        for (int i = 0; i < remainingItems.size(); ++i)
-        {
-            final ItemStack itemstack = inventoryCrafting.getStackInSlot(i);
-
-            // If the stack isn't empty and the stack is damageable we can damage it, otherwise delegate to containerItem.
-            if (!itemstack.isEmpty() && itemstack.getItem().isDamageable())
-            {
-                remainingItems.set(i, damageStack(itemstack));
-            }
-            else
-            {
-                remainingItems.set(i, ForgeHooks.getContainerItem(itemstack));
-            }
-        }
-
-        EntityPlayer player = ForgeHooks.getCraftingPlayer();
-        if (player != null)
-        {
-            player.addItemStackToInventory(out.copy());
-        }
-
-        return remainingItems;
+        return ShapelessDamageRecipe.getRemainingItemsDamaged(inventoryCrafting);
     }
 
     @Override

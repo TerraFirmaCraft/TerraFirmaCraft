@@ -30,7 +30,7 @@ public enum Heat
 
     public static float maxVisibleTemperature()
     {
-        return BRILLIANT_WHITE.max;
+        return BRILLIANT_WHITE.getMax();
     }
 
     @Nullable
@@ -63,7 +63,7 @@ public enum Heat
             {
                 for (int i = 1; i <= 4; i++)
                 {
-                    if (temperature <= heat.min + ((float) i * 0.2f) * (heat.max - heat.min))
+                    if (temperature <= heat.getMin() + ((float) i * 0.2f) * (heat.getMax() - heat.getMin()))
                         continue;
                     b.append("\u2605");
                 }
@@ -71,26 +71,6 @@ public enum Heat
             return b.toString();
         }
         return null;
-    }
-
-    /**
-     * Compare the equality of two temperatures.
-     * Used to sync IItemHeat instances on client
-     *
-     * @return true if Heat are equally the same, false if should be sync
-     */
-    public static boolean compareHeat(float temperature1, float temperature2)
-    {
-        Heat heat1 = Heat.getHeat(temperature1);
-        Heat heat2 = Heat.getHeat(temperature2);
-        if (heat1 == heat2 && heat1 != null)
-        {
-            float value = ((heat1.max - heat1.min) / 0.2f); // A "*" value
-            float heat1Value = (int) ((temperature1 - heat1.min) / value);
-            float heat2Value = (int) ((temperature2 - heat2.min) / value);
-            return Math.abs(heat1Value - heat2Value) > 0.5D; // Half the amount so we can catch when client is about to decline one "*"
-        }
-        return false;
     }
 
     @Nullable
@@ -117,8 +97,8 @@ public enum Heat
         return tooltip;
     }
 
-    final float min;
-    final float max;
+    private final float min;
+    private final float max;
     final TextFormatting format, alternate;
 
     Heat(float min, float max, TextFormatting format, TextFormatting alternate)
@@ -132,5 +112,15 @@ public enum Heat
     Heat(float min, float max, TextFormatting format)
     {
         this(min, max, format, format);
+    }
+
+    public float getMin()
+    {
+        return min;
+    }
+
+    public float getMax()
+    {
+        return max;
     }
 }
