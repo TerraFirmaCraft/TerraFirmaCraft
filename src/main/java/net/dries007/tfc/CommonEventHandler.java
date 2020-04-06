@@ -8,7 +8,6 @@ package net.dries007.tfc;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -22,10 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.FoodStats;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameRules;
@@ -39,11 +35,8 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -767,19 +760,33 @@ public final class CommonEventHandler
         return hugeHeavyCount;
     }
 
-    //go last, so if other mods cancel this event, we never see it.
+    //go last, so if other mods handle this event, we don't.
     @SubscribeEvent(priority=EventPriority.LOWEST)
-    public static void checkArrowRefill(ArrowLooseEvent event)
+    public static void checkArrowFill(ArrowNockEvent event)
     {
-        //check the easy negations first, is the bow enchanted, is it charged enough?
-        if (event.hasAmmo() && !(EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, event.getBow()) > 0)) {
-            float f = ItemBow.getArrowVelocity(event.getCharge());
-            if ((double) f >= 0.1D) {
-                final EntityPlayer player = event.getEntityPlayer();
-                if (player != null && !player.capabilities.isCreativeMode )
+        //if we didn't have ammo in main inventory and no other mod has handled the event
+        if (!event.hasAmmo() && event.getAction() == null) {
+            final EntityPlayer player = event.getEntityPlayer();
+            if (player != null && !player.capabilities.isCreativeMode )
+            {
+                if (ItemQuiver.replenishArrow(player))
                 {
-                    ItemQuiver.replenishArrows(player);
+                    event.setAction(new ActionResult<ItemStack>(EnumActionResult.PASS, event.getBow()));
                 }
+            }
+        }
+    }
+
+    //go last to avoid cancelled events
+    @SubscribeEvent(priority=EventPriority.LOWEST)
+    public static void pickupQuiverItems(EntityItemPickupEvent event) //only pickups of EntityItem, not EntityArrow
+    {
+        if (!event.isCanceled())
+        {
+            if (ItemQuiver.pickupAmmo(event))
+            {
+                event.setResult(Event.Result.ALLOW);
+                event.getItem().getItem().setCount(0);
             }
         }
     }
