@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    " X ",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:crop/product/jute_fiber"
+    }
+  },
+  "result": {
+    "item": "tfc:crop/product/jute_net",
+    "count": 1
+  }
+}
