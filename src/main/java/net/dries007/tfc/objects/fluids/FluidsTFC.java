@@ -61,6 +61,7 @@ public final class FluidsTFC
     public static FluidWrapper CURDLED_MILK;
     public static FluidWrapper MILK_VINEGAR;
     public static FluidWrapper OLIVE_OIL;
+    public static FluidWrapper OLIVE_OIL_WATER;
     // Alcohols
     public static FluidWrapper CIDER;
     public static FluidWrapper VODKA;
@@ -173,6 +174,7 @@ public final class FluidsTFC
                 BRINE = registerFluid(new Fluid("brine", STILL, FLOW, 0xFFDCD3C9)),
                 MILK = registerFluid(new Fluid("milk", STILL, FLOW, 0xFFFFFFFF)),
                 OLIVE_OIL = registerFluid(new Fluid("olive_oil", STILL, FLOW, 0xFF6A7537).setRarity(EnumRarity.RARE)),
+                OLIVE_OIL_WATER = registerFluid(new Fluid("olive_oil_water", STILL, FLOW, 0xFF4A4702)),
                 TANNIN = registerFluid(new Fluid("tannin", STILL, FLOW, 0xFF63594E)),
                 LIMEWATER = registerFluid(new Fluid("limewater", STILL, FLOW, 0xFFB4B4B4)),
                 CURDLED_MILK = registerFluid(new Fluid("milk_curdled", STILL, FLOW, 0xFFFFFBE8)),

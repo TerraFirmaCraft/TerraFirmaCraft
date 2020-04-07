@@ -3898,6 +3898,7 @@ item.tfc.food.gooseberry.name=Gooseberry
 item.tfc.food.green_apple.name=Green Apple
 item.tfc.food.lemon.name=Lemon
 item.tfc.food.olive.name=Olive
+item.tfc.food.olive_paste.name=Olive Paste
 item.tfc.food.orange.name=Orange
 item.tfc.food.peach.name=Peach
 item.tfc.food.plum.name=Plum
@@ -4018,6 +4019,10 @@ item.tfc.crop.seeds.melon.name=Melon Seeds
 
 item.tfc.crop.product.jute.name=Jute
 item.tfc.crop.product.jute_fiber.name=Jute Fiber
+item.tfc.crop.product.dirty_jute_net.name=Dirty Jute Net
+item.tfc.crop.product.jute_net.name=Jute Net
+item.tfc.crop.product.jute_disc.name=Jute Disc
+item.tfc.crop.product.olive_jute_disc.name=Olive Jute Disc
 item.tfc.crop.product.burlap_cloth.name=Burlap Cloth
 
 item.tfc.bloom.unrefined.unknown.name=Raw Bloom
