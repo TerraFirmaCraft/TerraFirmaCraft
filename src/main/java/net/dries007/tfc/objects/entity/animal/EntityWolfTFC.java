@@ -39,6 +39,8 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.objects.LootTablesTFC;
@@ -399,6 +401,15 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
             {
                 if (!this.isAngry() && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
                 {
+                    // Refuses to eat rotten stuff
+                    IFood cap = itemstack.getCapability(CapabilityFood.CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        if (cap.isRotten())
+                        {
+                            return false;
+                        }
+                    }
                     if (this.isHungry())
                     {
                         if (!this.world.isRemote)
@@ -406,7 +417,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
                             lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                             lastFDecay = lastFed; //No decay needed
                             this.consumeItemFromStack(player, itemstack);
-                            if (this.getFamiliarity() < getAdultFamiliarityCap())
+                            if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
                             {
                                 float familiarity = this.getFamiliarity() + 0.06f;
                                 if (this.getAge() != Age.CHILD)
