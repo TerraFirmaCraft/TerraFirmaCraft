@@ -42,6 +42,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
@@ -105,6 +107,21 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     public int getMaxGroupSize()
     {
         return 5;
+    }
+
+    @Override
+    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
+    {
+        // Refuses to eat rotten stuff
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (cap != null)
+        {
+            if (cap.isRotten())
+            {
+                return false;
+            }
+        }
+        return super.eatFood(stack, player);
     }
 
     @Override

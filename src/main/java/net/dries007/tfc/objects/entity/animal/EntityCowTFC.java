@@ -38,6 +38,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -206,6 +208,21 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
         {
             return super.processInteract(player, hand);
         }
+    }
+
+    @Override
+    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
+    {
+        // Refuses to eat rotten stuff
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (cap != null)
+        {
+            if (cap.isRotten())
+            {
+                return false;
+            }
+        }
+        return super.eatFood(stack, player);
     }
 
     protected long getMilkedDay()

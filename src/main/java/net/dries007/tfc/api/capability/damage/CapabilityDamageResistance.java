@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
@@ -23,10 +25,12 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.Constants.GSON;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityDamageResistance
@@ -42,6 +46,39 @@ public final class CapabilityDamageResistance
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IDamageResistance.class, new DumbStorage<>(), () -> new IDamageResistance() {});
+    }
+
+    /**
+     * Output to log
+     */
+    public static void postInit()
+    {
+        TerraFirmaCraft.getLog().info("Entity resistance data initialized, loaded a total of {} resistance configurations", ENTITY_RESISTANCE.size());
+    }
+
+    /**
+     * Read json data and load entities damage resistances from it
+     *
+     * @param jsonElements the json elements to read
+     */
+    public static void readFile(Set<Map.Entry<String, JsonElement>> jsonElements)
+    {
+        for (Map.Entry<String, JsonElement> entry : jsonElements)
+        {
+            try
+            {
+                String entityName = entry.getKey();
+                if ("#loader".equals(entityName)) continue; // Skip loader
+                DamageResistance resistance = GSON.fromJson(entry.getValue(), DamageResistance.class);
+
+                ENTITY_RESISTANCE.put(entityName, () -> resistance);
+            }
+            catch (JsonParseException e)
+            {
+                TerraFirmaCraft.getLog().error("An entity resistance is specified incorrectly! Skipping.");
+                TerraFirmaCraft.getLog().error("Error: ", e);
+            }
+        }
     }
 
     @Nullable

@@ -21,7 +21,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
 import net.dries007.tfc.api.capability.damage.CapabilityDamageResistance;
-import net.dries007.tfc.api.capability.damage.DamageResistanceRegistry;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodHandler;
@@ -43,9 +42,9 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.proxy.IProxy;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.fuel.FuelManager;
+import net.dries007.tfc.util.json.JsonConfigRegistry;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
-import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -133,8 +132,7 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketLargeVesselUpdate.Handler(), PacketLargeVesselUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
-        VeinRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
-        DamageResistanceRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
+        JsonConfigRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());
 
         CapabilityChunkData.preInit();
         CapabilityItemSize.preInit();
@@ -202,8 +200,7 @@ public final class TerraFirmaCraft
             log.warn("You are not running an official build. Please do not use this and then report bugs or issues.");
         }
         FuelManager.postInit();
-        VeinRegistry.INSTANCE.postInit();
-        DamageResistanceRegistry.INSTANCE.postInit();
+        JsonConfigRegistry.INSTANCE.postInit();
     }
 
     @Mod.EventHandler

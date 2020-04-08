@@ -221,28 +221,11 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             {
                 return super.processInteract(player, hand); // Let vanilla spawn a baby
             }
-            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            else if (this.isFood(itemstack) && player.isSneaking() && getCreatureType() == CreatureType.LIVESTOCK)
             {
                 if (this.isHungry())
                 {
-                    if (!this.world.isRemote)
-                    {
-                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
-                        lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, itemstack);
-                        if (this.getFamiliarity() < getAdultFamiliarityCap())
-                        {
-                            float familiarity = this.getFamiliarity() + 0.06f;
-                            if (this.getAge() != Age.CHILD)
-                            {
-                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
-                            }
-                            this.setFamiliarity(familiarity);
-                        }
-                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
-                        TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
-                    }
-                    return true;
+                    return eatFood(itemstack, player);
                 }
                 else
                 {
@@ -351,6 +334,36 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         {
             return getAnimalName().getFormattedText();
         }
+    }
+
+    /**
+     * Eat food + raises familiarization
+     * If your animal would refuse to eat said stack (because rotten or anything), return false here
+     * This function is called after every other check is made (animal is hungry for the day + this is a valid food)
+     *
+     * @param stack the food stack to eat
+     * @return true if eaten, false otherwise
+     */
+    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
+    {
+        if (!this.world.isRemote)
+        {
+            lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+            lastFDecay = lastFed; //No decay needed
+            this.consumeItemFromStack(player, stack);
+            if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
+            {
+                float familiarity = this.getFamiliarity() + 0.06f;
+                if (this.getAge() != Age.CHILD)
+                {
+                    familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                }
+                this.setFamiliarity(familiarity);
+            }
+            world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
+        }
+        return true;
     }
 
     @Override

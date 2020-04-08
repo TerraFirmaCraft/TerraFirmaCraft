@@ -1,4 +1,5 @@
 {
+  "#loader": "tfc:damage_resistance",
   "minecraft:skeleton": {
     "crushing_resistance": 0,
     "piercing_resistance": 1000000000,
