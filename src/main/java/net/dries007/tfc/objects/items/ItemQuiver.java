@@ -30,6 +30,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
@@ -75,6 +76,23 @@ public class ItemQuiver extends ItemArmorTFC
 
     static QuiverCapability findQuiver(InventoryPlayer playerInv)
     {
+        int mainToSearch = 0;
+        switch (ConfigTFC.GENERAL.quiverSearch) {
+            case "none":
+                return null;
+            case "armor":
+                break; // search nowhere else
+            case "hotbar":
+                mainToSearch = playerInv.getHotbarSize();
+                break;
+            case "main":
+                mainToSearch = playerInv.mainInventory.size();
+                break;
+            default:
+                TerraFirmaCraft.getLog().warn("Invalid quiverSearch configuration string: '" + ConfigTFC.GENERAL.quiverSearch + "' Should be none, armor, hotbar, or main!");
+                return null;
+        }
+
         ItemStack cur = null;
         boolean found = false;
         for (int i = 0; i < playerInv.armorInventory.size(); i++)
@@ -86,20 +104,9 @@ public class ItemQuiver extends ItemArmorTFC
                 break;
             }
         }
-        int tosearch = 0;
-        switch (ConfigTFC.GENERAL.quiverSearch) {
-            case "armor":
-                break; // search nowhere else
-            case "hotbar":
-                tosearch = playerInv.getHotbarSize();
-                break;
-            case "main":
-                tosearch = playerInv.mainInventory.size();
-                break;
-        }
         if (!found)
         {
-            for (int i = 0; i < tosearch; i++)
+            for (int i = 0; i < mainToSearch; i++)
             {
                 cur = playerInv.mainInventory.get(i);
                 if (cur.getItem() instanceof ItemQuiver)
@@ -153,11 +160,11 @@ public class ItemQuiver extends ItemArmorTFC
         return false;
     }
 
+    //true = we picked up the whole stack, false = none or some picked up
     public static boolean pickupAmmo(EntityItemPickupEvent event)
     {
         ItemStack stack = event.getItem().getItem(); //really.
-        Item item = stack.getItem();
-        if (item instanceof ItemRockJavelin || item instanceof ItemMetalJavelin)
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "javelin"))
         { // if no javelin on hotbar, don't put in quiver unless no empty slots
             InventoryPlayer inv = event.getEntityPlayer().inventory;
             boolean found = false;
@@ -169,7 +176,7 @@ public class ItemQuiver extends ItemArmorTFC
                     empty = true;
                     continue;
                 }
-                if (slot.getItem() instanceof ItemMetalJavelin || slot.getItem() instanceof ItemRockJavelin)
+                if (OreDictionaryHelper.doesStackMatchOre(slot, "javelin"))
                 {
                     found = true;
                     break;
@@ -180,7 +187,8 @@ public class ItemQuiver extends ItemArmorTFC
                 return false;
             }
         }
-        if (item instanceof ItemRockJavelin || item instanceof ItemMetalJavelin || item instanceof ItemArrow)
+        Item item = stack.getItem();
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "javelin") || item instanceof ItemArrow)
         {
             QuiverCapability quiver = findQuiver(event.getEntityPlayer().inventory);
             if (quiver != null)
@@ -240,8 +248,7 @@ public class ItemQuiver extends ItemArmorTFC
             for (int i = 0; i < getSlots(); i++)
             {
                 ItemStack stack = extractItem(i, 1, true);
-                if (!stack.isEmpty() && (stack.getItem() instanceof ItemMetalJavelin ||
-                                         stack.getItem() instanceof ItemRockJavelin))
+                if (!stack.isEmpty() && (OreDictionaryHelper.doesStackMatchOre(stack, "javelin")))
                 {
                     return extractItem(i, 1, false);
                 }
