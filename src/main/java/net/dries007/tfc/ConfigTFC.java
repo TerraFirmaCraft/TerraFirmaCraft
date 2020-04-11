@@ -403,6 +403,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.nutritionRotationHungerWindow")
         @Config.RangeInt(min = 4)
         public int nutritionRotationHungerWindow = 4 * 20;
+
+        @Config.Comment("Where Quivers will function, armor = only in armor slots; hotbar = armor slots and hotbar; main = armor slots, hotbar, and main inventory.")
+        @Config.LangKey("config." + MOD_ID + ".general.quiverSearch")
+        public String quiverSearch = "hotbar";
     }
 
     public static class ClientCFG

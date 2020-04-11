@@ -29,6 +29,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
@@ -85,9 +86,20 @@ public class ItemQuiver extends ItemArmorTFC
                 break;
             }
         }
+        int tosearch = 0;
+        switch (ConfigTFC.GENERAL.quiverSearch) {
+            case "armor":
+                break; // search nowhere else
+            case "hotbar":
+                tosearch = playerInv.getHotbarSize();
+                break;
+            case "main":
+                tosearch = playerInv.mainInventory.size();
+                break;
+        }
         if (!found)
         {
-            for (int i = 0; i < playerInv.mainInventory.size(); i++)
+            for (int i = 0; i < tosearch; i++)
             {
                 cur = playerInv.mainInventory.get(i);
                 if (cur.getItem() instanceof ItemQuiver)
