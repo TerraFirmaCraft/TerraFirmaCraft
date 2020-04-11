@@ -281,8 +281,6 @@ public final class ItemsTFC
             OreDictionaryHelper.register(firedBowl, "bowl");
 
             registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
-            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot");
-            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl");
             registerPottery(simpleItems, r, "ceramics/unfired/fire_brick", "ceramics/fired/fire_brick");
 
             simpleItems.add(register(r, "ceramics/fire_clay", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT, "fire_clay"), CT_MISC));
