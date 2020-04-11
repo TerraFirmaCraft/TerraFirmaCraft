@@ -296,6 +296,9 @@ config.tfc.general.collapseChance.tooltip=Chance that mining a raw rock triggers
 config.tfc.general.propagateCollapseChance=Propagate Collapse Chance
 config.tfc.general.propagateCollapseChance.tooltip=Chance that collapsing blocks propagate the collapse. Influenced by distance from epicenter of collapse.
 
+config.tfc.general.quiverSearch=Quiver Search Locations
+config.tfc.general.quiverSearch.tooltip=Which inventory slots will ammo refill/pickup search for quivers? none, armor, hotbar, or main
+
 config.tfc.general.slashingDamageSources=Slashing Damage Sources
 config.tfc.general.slashingDamageSources.tooltip=Damage Source Types that will default to Slashing damage.
 
