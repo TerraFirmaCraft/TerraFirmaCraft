@@ -18,6 +18,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -91,16 +92,19 @@ public class BlockLeavesTFC extends BlockLeaves
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        // Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
-        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
-        entityIn.fallDistance = 0;
-        // Entity motion is reduced by leaves.
-        entityIn.motionX *= ConfigTFC.GENERAL.leafDensity;
-        if (entityIn.motionY < 0)
+        if ((!(entityIn instanceof EntityPlayer) || !((EntityPlayer) entityIn).isCreative()))
         {
-            entityIn.motionY *= ConfigTFC.GENERAL.leafDensity;
+            // Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
+            entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
+            entityIn.fallDistance = 0;
+            // Entity motion is reduced by leaves.
+            entityIn.motionX *= ConfigTFC.GENERAL.leafMovementModifier;
+            if (entityIn.motionY < 0)
+            {
+                entityIn.motionY *= ConfigTFC.GENERAL.leafMovementModifier;
+            }
+            entityIn.motionZ *= ConfigTFC.GENERAL.leafMovementModifier;
         }
-        entityIn.motionZ *= ConfigTFC.GENERAL.leafDensity;
     }
 
     @Override

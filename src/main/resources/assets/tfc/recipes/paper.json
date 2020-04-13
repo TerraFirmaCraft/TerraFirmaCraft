@@ -1,0 +1,20 @@
+{
+  "type": "tfc:damage_item_shaped",
+  "pattern": [
+    " K ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "tfc:food/sugarcane"
+    },
+    "K": {
+      "type": "forge:ore_dict",
+      "ore": "knife"
+    }
+  },
+  "result": {
+    "item": "minecraft:paper",
+    "count": 3
+  }
+}

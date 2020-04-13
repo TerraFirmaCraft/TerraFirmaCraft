@@ -169,8 +169,9 @@ public class OreDictionaryHelper
                 MAP.put(thing, toString(prefixParts, type, "dry"));
                 break;
             case CLAY:
+                MAP.put(thing, toString(prefixParts, "block", type, "dirt"));
+                break;
             case CLAY_GRASS:
-                MAP.put(thing, toString(prefixParts, "block", type));
                 MAP.put(thing, toString(prefixParts, "block", type));
                 break;
             case SAND:

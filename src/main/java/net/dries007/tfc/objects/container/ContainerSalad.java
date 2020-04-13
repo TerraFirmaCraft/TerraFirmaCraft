@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.container;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -27,11 +28,11 @@ import net.dries007.tfc.objects.items.food.ItemDynamicBowlFood;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 
 /**
  * We don't extend the item stack container because it's not linked to the item stack
  */
+@ParametersAreNonnullByDefault
 public class ContainerSalad extends ContainerSimple implements ISlotCallback
 {
     public static final int SLOT_INPUT_START = 0;
@@ -172,7 +173,7 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
                     IFood saladCap = salad.getCapability(CapabilityFood.CAPABILITY, null);
                     if (saladCap instanceof ItemDynamicBowlFood.DynamicFoodHandler)
                     {
-                        saladCap.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks());
+                        saladCap.setCreationDate(CapabilityFood.getRoundedCreationDate());
                         ((ItemDynamicBowlFood.DynamicFoodHandler) saladCap).initCreationDataAndBowl(bowlStack.copy(), new FoodData(4, water, saturation, nutrition, Food.SALAD_VEGETABLE.getData().getDecayModifier()));
                     }
                     inventory.setStackInSlot(SLOT_OUTPUT, salad);

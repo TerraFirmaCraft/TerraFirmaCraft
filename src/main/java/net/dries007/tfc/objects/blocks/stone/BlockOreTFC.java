@@ -110,12 +110,6 @@ public class BlockOreTFC extends Block
     }
 
     @Override
-    public int quantityDropped(IBlockState state, int fortune, Random random)
-    {
-        return super.quantityDropped(state, fortune, random); // todo: see how 1710 handles this
-    }
-
-    @Override
     @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {

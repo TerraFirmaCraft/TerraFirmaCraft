@@ -37,6 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IBerryBush;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TETickCounter;
@@ -237,16 +238,19 @@ public class BlockBerryBush extends Block
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        //Entity motion is reduced (like leaves).
-        entityIn.motionX *= 0.1D;
-        if (entityIn.motionY < 0)
+        if ((!(entityIn instanceof EntityPlayer) || !((EntityPlayer) entityIn).isCreative()))
         {
-            entityIn.motionY *= 0.1D;
-        }
-        entityIn.motionZ *= 0.1D;
-        if (bush.isSpiky() && entityIn instanceof EntityLivingBase)
-        {
-            entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
+            // Entity motion is reduced (like leaves).
+            entityIn.motionX *= ConfigTFC.GENERAL.berryBushMovementModifier;
+            if (entityIn.motionY < 0)
+            {
+                entityIn.motionY *= ConfigTFC.GENERAL.berryBushMovementModifier;
+            }
+            entityIn.motionZ *= ConfigTFC.GENERAL.berryBushMovementModifier;
+            if (bush.isSpiky() && entityIn instanceof EntityLivingBase)
+            {
+                entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
+            }
         }
     }
 

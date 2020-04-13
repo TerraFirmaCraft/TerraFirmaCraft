@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.client.model.animal.ModelSheepWoolTFC;
 import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 
@@ -22,6 +23,7 @@ import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 public class LayerSheepWoolTFC implements LayerRenderer<EntitySheepTFC>
 {
     private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft:textures/entity/sheep/sheep_fur.png");
+    private static final ResourceLocation OLD_TEXTURE = new ResourceLocation("minecraft:textures/entity/sheep/sheep_fur_old.png");
     private final RenderSheepTFC sheepRenderer;
     private final ModelSheepWoolTFC sheepModel = new ModelSheepWoolTFC();
 
@@ -35,7 +37,7 @@ public class LayerSheepWoolTFC implements LayerRenderer<EntitySheepTFC>
     {
         if (sheep.hasWool() && !sheep.isInvisible())
         {
-            this.sheepRenderer.bindTexture(TEXTURE);
+            this.sheepRenderer.bindTexture(sheep.getAge() == IAnimalTFC.Age.OLD ? OLD_TEXTURE : TEXTURE);
 
             float[] afloat = EntitySheep.getDyeRgb(sheep.getDyeColor());
             GlStateManager.color(afloat[0], afloat[1], afloat[2]);

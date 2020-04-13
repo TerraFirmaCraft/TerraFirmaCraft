@@ -167,10 +167,17 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         // Entity X/Z motion is reduced by plants. Affine combination of age modifier and actual modifier
-        double modifier = 0.25 * (4 - state.getValue(AGE));
-        modifier = (1 - modifier) * plant.getMovementMod() + modifier;
-        entityIn.motionX *= modifier;
-        entityIn.motionZ *= modifier;
+        if (!(entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).isCreative()))
+        {
+            double modifier = 0.25 * (4 - state.getValue(AGE));
+            modifier = (1 - modifier) * plant.getMovementMod() + modifier;
+            if (modifier < ConfigTFC.GENERAL.minimumPlantMovementModifier)
+            {
+                modifier = ConfigTFC.GENERAL.minimumPlantMovementModifier;
+            }
+            entityIn.motionX *= modifier;
+            entityIn.motionZ *= modifier;
+        }
     }
 
     @Override
