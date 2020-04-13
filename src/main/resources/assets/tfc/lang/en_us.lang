@@ -115,6 +115,9 @@ tfc.tooltip.firepit_cooking_pot_empty=Empty
 tfc.tooltip.firepit_cooking_pot_waiting=Add Ingredients
 tfc.tooltip.firepit_cooking_pot_boiling=Boiling
 tfc.tooltip.firepit_cooking_pot_servings=Servings: %d
+tfc.tooltip.fertilized=Fertilized
+tfc.tooltip.egg_hatch=Will hatch in %d days
+tfc.tooltip.egg_hatch_today=Will hatch today!
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=This %s is too old to mate.
@@ -122,8 +125,8 @@ tfc.tooltip.animal.mating.low_familiarity=This %s has low familiarity to mate.
 tfc.tooltip.animal.mating.pregnant=This %s is pregnant!
 tfc.tooltip.animal.mating.resting=This %s is resting from today's mating.
 
-tfc.tooltip.animal.product.old=This %s is too young.
-tfc.tooltip.animal.product.young=This %s is too old.
+tfc.tooltip.animal.product.old=This %s is too old.
+tfc.tooltip.animal.product.young=This %s is too young.
 tfc.tooltip.animal.product.low_familiarity=This %s has low familiarity.
 
 tfc.tooltip.animal.product.male_milk=This is a male!
@@ -355,7 +358,6 @@ config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=If true, this will 
 config.tfc.general.forceReplaceVanillaAnimals=Force Replace Vanilla Animals
 config.tfc.general.forceReplaceVanillaAnimals.tooltip=If true, this will replace vanilla animals with the TFC counterpart under any spawning circumstances (ie: mob spawner, etc).
 
-
 config.tfc.general.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
 
@@ -517,6 +519,33 @@ config.tfc.world.floraDensitySpreadFactor.tooltip=This controls how spread the f
 
 config.tfc.world.enableDefaultOreGenFileOverwrite=Disable Default Ore Gen File
 config.tfc.world.enableDefaultOreGenFileOverwrite.tooltip=Disable the default ore gen file overwriting existing ore modifications. Pack makers: disable in order to be able to modify the ore gen, otherwise your changes will all be overwritten
+
+config.tfc.world.livestockSpawnRarity=Livestock Spawn Rarity
+config.tfc.world.livestockSpawnRarity.tooltip=This controls how spread apart livestock (familiarizable) animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+
+config.tfc.world.livestockRespawnWeight=Livestock Respawn Weight
+config.tfc.world.livestockRespawnWeight.tooltip=This controls the chance livestock (familiarizable) animals are chosen to respawn against other animal types. Use 0 to disable livestock respawns.
+
+config.tfc.general.huntableSpawnRarity=Huntable Spawn Rarity
+config.tfc.general.huntableSpawnRarity.tooltip=This controls how spread apart huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+
+config.tfc.general.huntableRespawnWeight=Huntable Respawn Weight
+config.tfc.general.huntableRespawnWeight.tooltip=This controls the chance huntable animals are chosen to respawn against other animal types. Use 0 to disable huntable respawns.
+
+config.tfc.general.predatorSpawnRarity=Predator Spawn Rarity
+config.tfc.general.predatorSpawnRarity.tooltip=This controls how spread apart predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+
+config.tfc.general.predatorRespawnWeight=Predator Respawn Weight
+config.tfc.general.predatorRespawnWeight.tooltip=This controls the chance predators are chosen to respawn against other animal types. Use 0 to disable predator respawns.
+
+config.tfc.general.animalSpawnCount=Animal Spawn Count
+config.tfc.general.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
+
+config.tfc.general.mobSpawnCount=Mob Spawn Count
+config.tfc.general.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
+
+config.tfc.general.preventMobsOnSurface=Prevent Mobs On Surface
+config.tfc.general.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
@@ -3973,6 +4002,10 @@ item.tfc.food.pheasant.name=Raw Pheasant
 item.tfc.food.venison.name=Raw Venison
 item.tfc.food.rabbit.name=Raw Rabbit Meat
 item.tfc.food.wolf.name=Raw Wolf Meat
+item.tfc.food.viande.name=Raw Viande
+item.tfc.food.duck.name=Raw Duck
+item.tfc.food.chevon.name=Raw Chevon
+item.tfc.food.gran_feline.name=Raw Gran Feline Meat
 item.tfc.food.cooked_beef.name=Cooked Beef
 item.tfc.food.cooked_pork.name=Cooked Pork
 item.tfc.food.cooked_chicken.name=Cooked Chicken
@@ -3985,6 +4018,10 @@ item.tfc.food.cooked_pheasant.name=Cooked Pheasant
 item.tfc.food.cooked_venison.name=Cooked Venison
 item.tfc.food.cooked_rabbit.name=Cooked Rabbit Meat
 item.tfc.food.cooked_wolf.name=Cooked Wolf
+item.tfc.food.cooked_viande.name=Cooked Viande
+item.tfc.food.cooked_duck.name=Cooked Duck
+item.tfc.food.cooked_chevon.name=Cooked Chevon
+item.tfc.food.cooked_gran_feline.name=Cooked Gran Feline
 item.tfc.food.barley_bread_sandwich.name=Barley Bread Sandwich
 item.tfc.food.cornbread_sandwich.name=Cornbread Sandwich
 item.tfc.food.rye_bread_sandwich.name=Rye Bread Sandwich
@@ -4055,6 +4092,16 @@ entity.wolftfc.name=Wolf
 entity.horsetfc.name=Horse
 entity.donkeytfc.name=Donkey
 entity.muletfc.name=Mule
+entity.parrottfc.name=Parrot
+entity.llamatfc.name=Llama
+entity.polarbeartfc.name=Polar Bear
+entity.alpacatfc.name=Alpaca
+entity.ducktfc.name=Duck
+entity.goattfc.name=Goat
+entity.panthertfc.name=Black Panther
+entity.ocelottfc.name=Ocelot
+entity.sabertoothtfc.name=Saber Tooth
+entity.cameltfc.name=Camel
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
@@ -4073,18 +4120,42 @@ tfc.animal.pigtfc.male=Pig♂
 tfc.animal.pigtfc.female=Pig♀
 tfc.animal.chickentfc.male=Rooster
 tfc.animal.chickentfc.female=Chicken
+tfc.animal.deertfc.male=Buck
+tfc.animal.deertfc.female=Doe
 tfc.animal.pheasanttfc.male=Pheasant♂
 tfc.animal.pheasanttfc.female=Pheasant♀
 tfc.animal.rabbittfc.male=Rabbit♂
 tfc.animal.rabbittfc.female=Rabbit♀
 tfc.animal.wolftfc.male=Wolf♂
 tfc.animal.wolftfc.female=Wolf♀
-tfc.animal.horsetfc.male=Horse♂
-tfc.animal.horsetfc.female=Horse♀
+tfc.animal.horsetfc.male=Stallion
+tfc.animal.horsetfc.female=Mare
 tfc.animal.donkeytfc.male=Donkey♂
 tfc.animal.donkeytfc.female=Donkey♀
 tfc.animal.muletfc.male=Mule♂
 tfc.animal.muletfc.female=Mule♀
+tfc.animal.parrottfc.male=Parrot♂
+tfc.animal.parrottfc.female=Parrot♀
+tfc.animal.llamatfc.male=Llama♂
+tfc.animal.llamatfc.female=Llama♀
+tfc.animal.polarbeartfc.male=Polar Bear♂
+tfc.animal.poarbeartfc.female=Polar Bear♀
+tfc.animal.alpacatfc.male=Alpaca♂
+tfc.animal.alpacatfc.female=Alpaca♀
+tfc.animal.ducktfc.male=Drake
+tfc.animal.ducktfc.female=Duck
+tfc.animal.goattfc.male=Goat♂
+tfc.animal.goattfc.female=Goat♀
+tfc.animal.ocelottfc.male=Ocelot♂
+tfc.animal.ocelottfc.female=Ocelot♀
+tfc.animal.cattfc.male=Cat♂
+tfc.animal.cattfc.female=Cat♀
+tfc.animal.panthertfc.male=Panther♂
+tfc.animal.panthertfc.female=Panther♀
+tfc.animal.sabertoothtfc.male=Saber Tooth♂
+tfc.animal.sabertoothtfc.female=Saber Tooth♀
+tfc.animal.cameltfc.male=Camel♂
+tfc.animal.cameltfc.female=Camel♀
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic item breaks
@@ -4110,6 +4181,31 @@ tfc.animal.pheasant.say=Pheasant clucks
 tfc.animal.pheasant.chick.say=Baby pheasant clucks
 tfc.animal.pheasant.hurt=Pheasant hurts
 tfc.animal.pheasant.death=Pheasant dies
+tfc.animal.alpaca.say=Alpaca bleats
+tfc.animal.alpaca.cry=Alpaca bleats
+tfc.animal.alpaca.hurt=Alpaca hurt
+tfc.animal.alpaca.death=Alpaca dies
+tfc.animal.alpaca.step=Footsteps
+tfc.animal.duck.say=Duck clucks
+tfc.animal.duck.cry=Duck clucks
+tfc.animal.duck.hurt=Duck hurt
+tfc.animal.duck.death=Duck dies
+tfc.animal.goat.say=Goat baahs
+tfc.animal.goat.cry=Goat baahs
+tfc.animal.goat.hurt=Goat hurt
+tfc.animal.goat.death=Goat dies
+tfc.animal.camel.say=Camel grunts
+tfc.animal.camel.cry=Camel cries
+tfc.animal.camel.hurt=Camel hurt
+tfc.animal.camel.death=Camel dies
+tfc.animal.panther.say=Panther grunts
+tfc.animal.panther.cry=Panther cries
+tfc.animal.panther.hurt=Panther hurt
+tfc.animal.panther.death=Panther dies
+tfc.animal.sabertooth.say=Saber Tooth grunts
+tfc.animal.sabertooth.cry=Saber Tooth cries
+tfc.animal.sabertooth.hurt=Saber Tooth hurt
+tfc.animal.sabertooth.death=Saber Tooth dies
 tfc.animal.cricket=Crickets
 tfc.animal.frog=Frogs
 

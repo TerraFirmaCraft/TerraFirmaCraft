@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -25,15 +26,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityDeerTFC extends EntityAnimalMammal
+public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
 {
     private static final int DAYS_TO_ADULTHOOD = 720;
     private static final int DAYS_TO_FULL_GESTATION = 210;
@@ -51,9 +56,15 @@ public class EntityDeerTFC extends EntityAnimalMammal
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TUNDRA))
+        {
+            return ConfigTFC.WORLD.huntableSpawnRarity;
+        }
+        return 0;
     }
 
     @Override
@@ -100,7 +111,7 @@ public class EntityDeerTFC extends EntityAnimalMammal
     }
 
     @Override
-    public boolean isFood(ItemStack stack)
+    public boolean isFood(@Nonnull ItemStack stack)
     {
         return OreDictionaryHelper.doesStackMatchOre(stack, "salt");
     }

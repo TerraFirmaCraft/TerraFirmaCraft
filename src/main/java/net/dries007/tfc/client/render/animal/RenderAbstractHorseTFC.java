@@ -8,7 +8,6 @@ package net.dries007.tfc.client.render.animal;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import net.minecraft.client.model.ModelHorse;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -17,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.client.model.animal.ModelHorseTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDonkeyTFC;
 import net.dries007.tfc.objects.entity.animal.EntityMuleTFC;
 
@@ -44,7 +44,7 @@ public class RenderAbstractHorseTFC extends RenderLiving<AbstractHorse>
 
     public RenderAbstractHorseTFC(RenderManager renderManagerIn, float scaleIn)
     {
-        super(renderManagerIn, new ModelHorse(), 0.75F);
+        super(renderManagerIn, new ModelHorseTFC(), 0.75F);
         this.scale = scaleIn;
     }
 

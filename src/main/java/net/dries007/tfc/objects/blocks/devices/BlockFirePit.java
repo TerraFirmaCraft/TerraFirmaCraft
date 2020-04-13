@@ -270,10 +270,14 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
     {
-        return new BlockStateContainer(this, LIT, ATTACHMENT);
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
     }
 
     @Override
@@ -302,14 +306,10 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
-    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    @Nonnull
+    protected BlockStateContainer createBlockState()
     {
-        IBlockState state = worldIn.getBlockState(pos);
-        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
-        {
-            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
-        }
-        super.onEntityWalk(worldIn, pos, entityIn);
+        return new BlockStateContainer(this, LIT, ATTACHMENT);
     }
 
     @Override

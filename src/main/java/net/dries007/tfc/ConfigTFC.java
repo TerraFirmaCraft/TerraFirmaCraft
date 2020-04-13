@@ -539,5 +539,49 @@ public class ConfigTFC
         @Config.Comment("Disable the default ore gen file overwriting existing ore modifications. Pack makers: disable in order to be able to modify the ore gen, otherwise your changes will all be overwritten")
         @Config.LangKey("config." + MOD_ID + ".world.enableDefaultOreGenFileOverwrite")
         public boolean enableDefaultOreGenFileOverwrite = true;
+
+        @Config.Comment("This controls how spread apart livestock (familiarizable) animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.livestockSpawnRarity")
+        public int livestockSpawnRarity = 50;
+
+        @Config.Comment("This controls the chance livestock (familiarizable) animals are chosen to respawn against other animal types. Use 0 to disable livestock respawns.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.livestockRespawnWeight")
+        public int livestockRespawnWeight = 0;
+
+        @Config.Comment("This controls how spread apart huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.huntableSpawnRarity")
+        public int huntableSpawnRarity = 50;
+
+        @Config.Comment("This controls the chance huntable animals are chosen to respawn against other animal types. Use 0 to disable huntable respawns.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.huntableRespawnWeight")
+        public int huntableRespawnWeight = 70;
+
+        @Config.Comment("This controls how spread apart predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.predatorSpawnRarity")
+        public int predatorSpawnRarity = 70;
+
+        @Config.Comment("This controls the chance predators are chosen to respawn against other animal types. Use 0 to disable predator respawns.")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.predatorRespawnWeight")
+        public int predatorRespawnWeight = 30;
+
+        @Config.Comment("This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.animalSpawnCount")
+        public int animalSpawnCount = 75;
+
+        @Config.Comment("This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high can also negatively impact performance)")
+        @Config.RangeInt(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".world.mobSpawnCount")
+        public int mobSpawnCount = 140;
+
+        @Config.Comment("Prevent mob spawning on surface?")
+        @Config.LangKey("config." + MOD_ID + ".world.preventMobsOnSurface")
+        public boolean preventMobsOnSurface = true;
     }
 }

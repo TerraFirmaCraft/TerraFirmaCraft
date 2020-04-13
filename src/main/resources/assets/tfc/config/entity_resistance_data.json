@@ -1,0 +1,43 @@
+{
+  "#loader": "tfc:damage_resistance",
+  "minecraft:skeleton": {
+    "crushing_resistance": 0,
+    "piercing_resistance": 1000000000,
+    "slashing_resistance": 50
+  },
+  "minecraft:wither_skeleton": {
+    "crushing_resistance": 0,
+    "piercing_resistance": 1000000000,
+    "slashing_resistance": 50
+  },
+  "minecraft:stray": {
+    "crushing_resistance": 0,
+    "piercing_resistance": 1000000000,
+    "slashing_resistance": 50
+  },
+  "minecraft:creeper": {
+    "crushing_resistance": 50,
+    "piercing_resistance": 0,
+    "slashing_resistance": 15
+  },
+  "minecraft:enderman": {
+    "crushing_resistance": 10,
+    "piercing_resistance": 10,
+    "slashing_resistance": 10
+  },
+  "minecraft:zombie": {
+    "crushing_resistance": 50,
+    "piercing_resistance": 15,
+    "slashing_resistance": 0
+  },
+  "minecraft:husk": {
+    "crushing_resistance": 50,
+    "piercing_resistance": 15,
+    "slashing_resistance": 0
+  },
+  "minecraft:zombie_villager": {
+    "crushing_resistance": 50,
+    "piercing_resistance": 15,
+    "slashing_resistance": 0
+  }
+}

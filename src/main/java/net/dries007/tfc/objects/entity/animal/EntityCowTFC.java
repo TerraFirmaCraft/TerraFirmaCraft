@@ -36,14 +36,20 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityCowTFC extends EntityAnimalMammal
+public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
 {
     private static final int DAYS_TO_ADULTHOOD = 1080;
     private static final int DAYS_TO_FULL_GESTATION = 270;
@@ -64,9 +70,15 @@ public class EntityCowTFC extends EntityAnimalMammal
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
+        {
+            return ConfigTFC.WORLD.livestockSpawnRarity;
+        }
+        return 0;
     }
 
     @Override
@@ -85,20 +97,6 @@ public class EntityCowTFC extends EntityAnimalMammal
     public int getMaxGroupSize()
     {
         return 4;
-    }
-
-    @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote)
-        {
-            if (this.getMilkedDay() > CalendarTFC.PLAYER_TIME.getTotalDays())
-            {
-                //Calendar went backwards by command! this need to update
-                this.setMilkedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            }
-        }
     }
 
     @Override
@@ -210,6 +208,21 @@ public class EntityCowTFC extends EntityAnimalMammal
         {
             return super.processInteract(player, hand);
         }
+    }
+
+    @Override
+    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
+    {
+        // Refuses to eat rotten stuff
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (cap != null)
+        {
+            if (cap.isRotten())
+            {
+                return false;
+            }
+        }
+        return super.eatFood(stack, player);
     }
 
     protected long getMilkedDay()

@@ -144,9 +144,9 @@ public class LitTrigger implements ICriterionTrigger<LitTrigger.Instance>
         private void trigger(Block block)
         {
             this.listeners.stream()
-                    .filter(listener -> listener.getCriterionInstance().test(block))
-                    .collect(Collectors.toList()) // This line is needed to avoid ConcurrentModificationException
-                    .forEach(listener -> listener.grantCriterion(this.playerAdvancements));
+                .filter(listener -> listener.getCriterionInstance().test(block))
+                .collect(Collectors.toList()) // This line is needed to avoid ConcurrentModificationException
+                .forEach(listener -> listener.grantCriterion(this.playerAdvancements));
         }
     }
 }

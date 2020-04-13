@@ -21,12 +21,14 @@ public interface ICreatureTFC
     /**
      * Gets the random weight (1 in N chunks) to spawn this creature
      *
-     * @param biome       the biome in chunk that is trying to spawn this creature
-     * @param temperature the average temperature of this region
-     * @param rainfall    the average rainfall of this region
-     * @return 0 if can't spawn, 1 or more for how ofter this creature spawn in said biome
+     * @param biome          the biome in chunk that is trying to spawn this creature
+     * @param temperature    the average temperature of this region
+     * @param rainfall       the average rainfall of this region
+     * @param floraDensity   the average flora density of this region
+     * @param floraDiversity the average floraDiversity of this region
+     * @return 0 if can't spawn, 1 or more for how ofter this creature spawn in conditions
      */
-    int getSpawnWeight(Biome biome, float temperature, float rainfall);
+    int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity);
 
     /**
      * Returns the grouping rules (one or more) for spawn
@@ -58,5 +60,17 @@ public interface ICreatureTFC
     default int getMaxGroupSize()
     {
         return 1;
+    }
+
+    /**
+     * Returns this creature type
+     *
+     * @return CreatureType of this entity
+     */
+    CreatureType getCreatureType();
+
+    enum CreatureType
+    {
+        PREDATOR, HUNTABLE, LIVESTOCK
     }
 }

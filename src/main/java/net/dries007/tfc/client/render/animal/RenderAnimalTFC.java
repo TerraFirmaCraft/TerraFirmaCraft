@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.client.render.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.model.ModelBase;
@@ -22,13 +23,14 @@ public abstract class RenderAnimalTFC<T extends EntityLiving> extends RenderLivi
     private final ResourceLocation youngTexture;
     private final ResourceLocation oldTexture;
 
-    protected RenderAnimalTFC(RenderManager rendermanagerIn, ModelBase modelbaseIn, float shadowsizeIn, ResourceLocation youngTextures, ResourceLocation oldTextures)
+    protected RenderAnimalTFC(RenderManager rendermanagerIn, ModelBase modelbaseIn, float shadowsizeIn, @Nonnull ResourceLocation youngTextures, @Nonnull ResourceLocation oldTextures)
     {
         super(rendermanagerIn, modelbaseIn, shadowsizeIn);
         this.youngTexture = youngTextures;
         this.oldTexture = oldTextures;
     }
 
+    @Nonnull
     @Override
     protected ResourceLocation getEntityTexture(T entity)
     {

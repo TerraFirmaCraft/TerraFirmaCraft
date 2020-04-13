@@ -11,11 +11,13 @@ import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.ICreatureTFC;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
@@ -27,7 +29,14 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 @SuppressWarnings("WeakerAccess")
 public final class WorldEntitySpawnerTFC
 {
-    //todo customization for spawning other mods' creatures. maybe a Map<Entity, SpawnRules>, where SpawnRules is a new class with biomes, grouping and spawn weight
+    public static void init()
+    {
+        EnumCreatureType.MONSTER.maxNumberOfCreature = ConfigTFC.WORLD.mobSpawnCount;
+        EnumCreatureType.CREATURE.maxNumberOfCreature = ConfigTFC.WORLD.animalSpawnCount;
+        // Using enum helper to add creature types adds more issues than resolve.
+        // Although it worked in dev and with only minor mods, I had too much trouble with a larger modpack
+    }
+
 
 
     /**
@@ -42,10 +51,12 @@ public final class WorldEntitySpawnerTFC
      */
     public static void performWorldGenSpawning(World worldIn, Biome biomeIn, int centerX, int centerZ, int diameterX, int diameterZ, Random randomIn)
     {
-        BlockPos chunkBlockPos = new BlockPos(centerX, 0, centerZ);
+        final BlockPos chunkBlockPos = new BlockPos(centerX, 0, centerZ);
 
-        float temperature = ClimateTFC.getAvgTemp(worldIn, chunkBlockPos);
-        float rainfall = ChunkDataTFC.getRainfall(worldIn, chunkBlockPos);
+        final float temperature = ClimateTFC.getAvgTemp(worldIn, chunkBlockPos);
+        final float rainfall = ChunkDataTFC.getRainfall(worldIn, chunkBlockPos);
+        final float floraDensity = ChunkDataTFC.getFloraDensity(worldIn, chunkBlockPos);
+        final float floraDiversity = ChunkDataTFC.getFloraDiversity(worldIn, chunkBlockPos);
 
         // Spawns only one group
         ForgeRegistries.ENTITIES.getValuesCollection().stream()
@@ -55,7 +66,7 @@ public final class WorldEntitySpawnerTFC
                     Entity ent = x.newInstance(worldIn);
                     if (ent instanceof ICreatureTFC)
                     {
-                        int weight = ((ICreatureTFC) ent).getSpawnWeight(biomeIn, temperature, rainfall);
+                        int weight = ((ICreatureTFC) ent).getSpawnWeight(biomeIn, temperature, rainfall, floraDensity, floraDiversity);
                         return weight > 0 && randomIn.nextInt(weight) == 0;
                     }
                 }

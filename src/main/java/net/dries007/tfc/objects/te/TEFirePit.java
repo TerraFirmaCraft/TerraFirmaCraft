@@ -494,6 +494,17 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         return super.writeToNBT(nbt);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            return (T) new ItemHandlerSidedWrapper(this, inventory, facing);
+        }
+        return super.getCapability(capability, facing);
+    }
+
     @Override
     public void onBreakBlock(World world, BlockPos pos, IBlockState state)
     {
@@ -509,6 +520,13 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     {
         // Output slots can have anything, everything else is 1 max
         return slot == SLOT_OUTPUT_1 || slot == SLOT_OUTPUT_2 ? 64 : 1;
+    }
+
+    public void onCreate(ItemStack log)
+    {
+        Fuel fuel = FuelManager.getFuel(log);
+        burnTicks = fuel.getAmount();
+        burnTemperature = fuel.getTemperature();
     }
 
     @Override
@@ -544,13 +562,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         }
     }
 
-    public void onCreate(ItemStack log)
-    {
-        Fuel fuel = FuelManager.getFuel(log);
-        burnTicks = fuel.getAmount();
-        burnTemperature = fuel.getTemperature();
-    }
-
     public int getSoupServings()
     {
         return soupServings;
@@ -575,17 +586,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         cookingPotStage = CookingPotStage.WAITING;
         // And also reset the temperature
         temperature = 0;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            return (T) new ItemHandlerSidedWrapper(this, inventory, facing);
-        }
-        return super.getCapability(capability, facing);
     }
 
     @Nonnull

@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.capability.damage.DamageType;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -55,11 +56,13 @@ public class ItemRockShovel extends ItemSpade implements IItemSize, IRockObject
         super(category.getToolMaterial());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
-        attackDamage = 1.5f * category.getToolMaterial().getAttackDamage();
+        attackDamage = 0.875f * category.getToolMaterial().getAttackDamage();
+        attackSpeed = -3f;
         setHarvestLevel("shovel", category.getToolMaterial().getHarvestLevel());
         OreDictionaryHelper.register(this, "shovel");
         OreDictionaryHelper.register(this, "shovel", "stone");
         OreDictionaryHelper.register(this, "shovel", "stone", category);
+        OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
     }
 
     @Override

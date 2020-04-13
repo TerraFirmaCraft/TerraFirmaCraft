@@ -38,16 +38,21 @@ import net.minecraft.world.biome.Biome;
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
+public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestock
 {
     protected static final int DAYS_TO_ADULTHOOD = 1120;
     protected static final int DAYS_TO_FULL_GESTATION = 240;
@@ -185,7 +190,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
     @Override
     public boolean isReadyToMate()
     {
-        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.isHungry())
+        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || this.isHungry())
             return false;
         return this.matingTime == -1 || this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
     }
@@ -245,9 +250,15 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.PLAINS))
+        {
+            return ConfigTFC.WORLD.livestockSpawnRarity;
+        }
+        return 0;
     }
 
     @Override
@@ -408,17 +419,29 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
             {
                 if (this.isHungry())
                 {
+                    // Refuses to eat rotten stuff
+                    IFood cap = itemstack.getCapability(CapabilityFood.CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        if (cap.isRotten())
+                        {
+                            return false;
+                        }
+                    }
                     if (!this.world.isRemote)
                     {
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, itemstack);
-                        float familiarity = this.getFamiliarity() + 0.06f;
-                        if (this.getAge() != Age.CHILD)
+                        if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
                         {
-                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            float familiarity = this.getFamiliarity() + 0.06f;
+                            if (this.getAge() != Age.CHILD)
+                            {
+                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            }
+                            this.setFamiliarity(familiarity);
                         }
-                        this.setFamiliarity(familiarity);
                         world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
                         TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
                     }
@@ -438,6 +461,12 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
             }
         }
         return super.processInteract(player, hand);
+    }
+
+    @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
     }
 
     @Override
@@ -474,7 +503,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
     }
 
     /**
-     * Find and charms a near female horse/donkey/mule
+     * Find and charms a near female horse/donkey
      * Used by males to try mating with females
      *
      * @return true if found and charmed a female
@@ -484,7 +513,8 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC
         List<AbstractHorse> list = this.world.getEntitiesWithinAABB(AbstractHorse.class, this.getEntityBoundingBox().grow(8.0D));
         for (AbstractHorse ent : list)
         {
-            if (ent instanceof IAnimalTFC && ((IAnimalTFC) ent).getGender() == Gender.FEMALE && !ent.isInLove() && ((IAnimalTFC) ent).isReadyToMate())
+            if ((ent instanceof EntityHorseTFC || ent instanceof EntityDonkeyTFC) &&
+                ((IAnimalTFC) ent).getGender() == Gender.FEMALE && !ent.isInLove() && ((IAnimalTFC) ent).isReadyToMate())
             {
                 ent.setInLove(null);
                 return true;

@@ -60,18 +60,45 @@ public class BlockQuern extends Block implements IItemSize, IHighlightHandler
         setSoundType(SoundType.STONE);
     }
 
+    /**
+     * Gets the selection place player is looking at
+     * Used for interaction / selection box drawing
+     */
+    private static SelectionPlace getPlayerSelection(World world, BlockPos pos, EntityPlayer player)
+    {
+        // This will compute a line from the camera center (crosshair) starting at the player eye pos and a little after this block
+        // so we can grab the exact point regardless from which face player is looking from
+        double length = Math.sqrt(pos.distanceSqToCenter(player.posX, player.posY, player.posZ)) + 0.7D;
+        Vec3d eyePos = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3d lookingPos = eyePos.add(new Vec3d(player.getLookVec().x * length, player.getLookVec().y * length, player.getLookVec().z * length));
+
+        TEQuern teQuern = Helpers.getTE(world, pos, TEQuern.class);
+
+        if (teQuern != null)
+        {
+            IItemHandler inventory = teQuern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            // Draws the correct selection box depending on where the player is looking at
+            if (!teQuern.isGrinding() && teQuern.hasHandstone() && HANDLE_AABB.offset(pos).calculateIntercept(eyePos, lookingPos) != null)
+            {
+                return SelectionPlace.HANDLE;
+            }
+            else if (!teQuern.isGrinding() && teQuern.hasHandstone() && (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() || (inventory != null && !inventory.getStackInSlot(TEQuern.SLOT_INPUT).isEmpty())) && INPUT_SLOT_AABB.offset(pos).calculateIntercept(eyePos, lookingPos) != null)
+            {
+                return SelectionPlace.INPUT_SLOT;
+            }
+            else if ((teQuern.hasHandstone() || teQuern.isItemValid(TEQuern.SLOT_HANDSTONE, player.getHeldItem(EnumHand.MAIN_HAND))) && HANDSTONE_AABB.offset(pos).calculateIntercept(eyePos, lookingPos) != null)
+            {
+                return SelectionPlace.HANDSTONE;
+            }
+        }
+        return SelectionPlace.BASE;
+    }
+
     @Override
     @Nonnull
     public Size getSize(ItemStack stack)
     {
         return Size.VERY_LARGE; // Can't store anywhere, but don't overburden
-    }
-
-    @Override
-    @Nonnull
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.VERY_HEAVY; // Stacksize = 1
     }
 
     @SuppressWarnings("deprecation")
@@ -167,38 +194,11 @@ public class BlockQuern extends Block implements IItemSize, IHighlightHandler
         super.breakBlock(world, pos, state);
     }
 
-    /**
-     * Gets the selection place player is looking at
-     * Used for interaction / selection box drawing
-     */
-    private static SelectionPlace getPlayerSelection(World world, BlockPos pos, EntityPlayer player)
+    @Override
+    @Nonnull
+    public Weight getWeight(ItemStack stack)
     {
-        // This will compute a line from the camera center (crosshair) starting at the player eye pos and a little after this block
-        // so we can grab the exact point regardless from which face player is looking from
-        double length = Math.sqrt(pos.distanceSqToCenter(player.posX, player.posY, player.posZ)) + 0.7D;
-        Vec3d eyePos = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3d lookingPos = eyePos.add(new Vec3d(player.getLookVec().x * length, player.getLookVec().y * length, player.getLookVec().z * length));
-
-        TEQuern teQuern = Helpers.getTE(world, pos, TEQuern.class);
-
-        if (teQuern != null)
-        {
-            IItemHandler inventory = teQuern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            // Draws the correct selection box depending on where the player is looking at
-            if (!teQuern.isGrinding() && teQuern.hasHandstone() && HANDLE_AABB.offset(pos).calculateIntercept(eyePos, lookingPos) != null)
-            {
-                return SelectionPlace.HANDLE;
-            }
-            else if (!teQuern.isGrinding() && teQuern.hasHandstone() && (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() || (inventory != null && !inventory.getStackInSlot(TEQuern.SLOT_INPUT).isEmpty())) && INPUT_SLOT_AABB.offset(pos).calculateIntercept(eyePos, lookingPos) != null)
-            {
-                return SelectionPlace.INPUT_SLOT;
-            }
-            else if ((teQuern.hasHandstone() || teQuern.isItemValid(SLOT_HANDSTONE, player.getHeldItem(EnumHand.MAIN_HAND))) && HANDSTONE_AABB.offset(pos).calculateIntercept(eyePos, lookingPos) != null)
-            {
-                return SelectionPlace.HANDSTONE;
-            }
-        }
-        return SelectionPlace.BASE;
+        return Weight.VERY_HEAVY; // Stacksize = 1
     }
 
     @Override

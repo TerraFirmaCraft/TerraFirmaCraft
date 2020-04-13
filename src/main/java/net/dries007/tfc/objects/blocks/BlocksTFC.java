@@ -318,20 +318,20 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/polished/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/bricks/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
 
-            for (EnumDyeColor dyeColor : EnumDyeColor.values())
-            {
-                BlockDecorativeStone polished = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
-                BlockDecorativeStone bricks = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
-                BlockDecorativeStone raw = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
+        for (EnumDyeColor dyeColor : EnumDyeColor.values())
+        {
+            BlockDecorativeStone polished = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
+            BlockDecorativeStone bricks = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
+            BlockDecorativeStone raw = new BlockDecorativeStone(MapColor.getBlockColor(dyeColor));
 
-                normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/polished/" + dyeColor.getName(), polished, CT_DECORATIONS)));
-                normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/bricks/" + dyeColor.getName(), bricks, CT_DECORATIONS)));
-                normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/raw/" + dyeColor.getName(), raw, CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/polished/" + dyeColor.getName(), polished, CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/bricks/" + dyeColor.getName(), bricks, CT_DECORATIONS)));
+            normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/raw/" + dyeColor.getName(), raw, CT_DECORATIONS)));
 
-                BlockDecorativeStone.ALABASTER_POLISHED.put(dyeColor, polished);
-                BlockDecorativeStone.ALABASTER_BRICKS.put(dyeColor, bricks);
-                BlockDecorativeStone.ALABASTER_RAW.put(dyeColor, raw);
-            }
+            BlockDecorativeStone.ALABASTER_POLISHED.put(dyeColor, polished);
+            BlockDecorativeStone.ALABASTER_BRICKS.put(dyeColor, bricks);
+            BlockDecorativeStone.ALABASTER_RAW.put(dyeColor, raw);
+        }
 
         {
             // Apparently this is the way we're supposed to do things even though the fluid registry defaults. So we'll do it this way.

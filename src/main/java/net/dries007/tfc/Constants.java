@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.util.ResourceLocation;
 
+import net.dries007.tfc.api.capability.damage.DamageResistance;
+import net.dries007.tfc.util.json.DamageResistanceJson;
 import net.dries007.tfc.util.json.LowercaseEnumTypeAdapterFactory;
 import net.dries007.tfc.util.json.ResourceLocationJson;
 import net.dries007.tfc.util.json.VeinTypeJson;
@@ -22,6 +24,7 @@ public final class Constants
         .registerTypeAdapter(ResourceLocation.class, new ResourceLocationJson())
         .registerTypeAdapterFactory(new LowercaseEnumTypeAdapterFactory())
         .registerTypeAdapter(VeinType.class, new VeinTypeJson())
+        .registerTypeAdapter(DamageResistance.class, new DamageResistanceJson())
         .create();
     public static final String GUI_FACTORY = "net.dries007.tfc.client.TFCModGuiFactory";
 

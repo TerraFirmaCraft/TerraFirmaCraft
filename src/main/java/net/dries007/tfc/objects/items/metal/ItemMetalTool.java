@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items.metal;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -63,18 +64,23 @@ public class ItemMetalTool extends ItemMetal
         switch (type)
         {
             case PICK:
+                // Non-Weapon (50% efficient for damaging, tweaks in attack speed / damage)
                 setHarvestLevel("pickaxe", harvestLevel);
-                typeDamage = 1.2f; // todo: use some central spot for this (config maybe?) and make the rock equivalents use the same numbers.
+                typeDamage = 0.75f;
                 areaOfEffect = 1;
                 attackSpeed = -2.8f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case SHOVEL:
+                // Non-Weapon
                 setHarvestLevel("shovel", harvestLevel);
-                typeDamage = 1.3f;
+                typeDamage = 0.875f;
                 areaOfEffect = 1;
                 attackSpeed = -3f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case AXE:
+                // Weapon
                 setHarvestLevel("axe", harvestLevel);
                 typeDamage = 1.5f;
                 areaOfEffect = 1;
@@ -82,78 +88,96 @@ public class ItemMetalTool extends ItemMetal
                 OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case HOE:
+                // Non-Weapon
                 setHarvestLevel("hoe", harvestLevel);
-                typeDamage = 0.7f;
+                typeDamage = 0.875f;
                 areaOfEffect = 1;
                 attackSpeed = -3;
+                OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case CHISEL:
+                // Non-Weapon
                 setHarvestLevel("chisel", harvestLevel);
-                typeDamage = 0.7f;
+                typeDamage = 0.27f;
                 areaOfEffect = 1;
-                attackSpeed = 0;
+                attackSpeed = -1.5f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case SAW:
+                // Non-Weapon (should be even worse than non-weapons)
                 setHarvestLevel("axe", harvestLevel);
                 setHarvestLevel("saw", harvestLevel);
                 typeDamage = 0.5f;
                 areaOfEffect = 1;
-                attackSpeed = -1;
+                attackSpeed = -3;
+                OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case PROPICK:
-                typeDamage = 1f;
+                // Non-Weapon (should be even worse than non-weapons)
+                typeDamage = 0.5f;
                 areaOfEffect = 1;
-                attackSpeed = -3.5f;
+                attackSpeed = -2.8f;
                 setMaxDamage(material.getMaxUses() / 3);
                 efficiency = material.getEfficiency() * 0.5F;
+                OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case SCYTHE:
+                // Weapon
                 setHarvestLevel("scythe", harvestLevel);
                 setMaxDamage((int) (material.getMaxUses() * 1.5));
-                typeDamage = 1.5f;
+                typeDamage = 2f;
                 areaOfEffect = 2;
-                attackSpeed = -3.5f;
+                attackSpeed = -3.2f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case SHEARS:
+                // Worst Non-Weapon, ever!
                 setHarvestLevel("shears", harvestLevel);
                 setMaxDamage((int) (material.getMaxUses() * 0.3));
-                typeDamage = 0.5f;
+                typeDamage = 0.2f;
                 areaOfEffect = 1;
-                attackSpeed = -3;
+                attackSpeed = -2.8f;
+                OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case KNIFE:
+                // Weapon
                 setHarvestLevel("knife", harvestLevel);
-                typeDamage = 0.5f;
+                typeDamage = 0.54f;
                 areaOfEffect = 1;
-                attackSpeed = 3f;
+                attackSpeed = -1.5f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case HAMMER:
+                // Non-Weapon
                 setHarvestLevel("hammer", harvestLevel);
-                typeDamage = 2f;
+                typeDamage = 1f;
                 areaOfEffect = 1;
-                attackSpeed = -3.5f;
+                attackSpeed = -3f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case SWORD:
+                // Weapon, but it has it's own class now
                 typeDamage = 1f;
                 areaOfEffect = 1;
-                attackSpeed = -0.75f;
+                attackSpeed = -2.4f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.SLASHING);
                 break;
             case MACE:
-                typeDamage = 1.1f;
+                // Weapon
+                typeDamage = 1.3f;
                 areaOfEffect = 1;
-                attackSpeed = -1;
+                attackSpeed = -2.8f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.CRUSHING);
                 break;
             case JAVELIN:
-                typeDamage = 1f;
+                // Weapon
+                typeDamage = 0.7f;
                 areaOfEffect = 1;
-                attackSpeed = -1;
+                attackSpeed = -1.8f;
                 OreDictionaryHelper.registerDamageType(this, DamageType.PIERCING);
                 break;
             case SHIELD:
+                // Non Weapon (or, is the best attack, defense?)
                 typeDamage = 0.1f;
                 areaOfEffect = 1;
                 attackSpeed = -3;
@@ -302,7 +326,7 @@ public class ItemMetalTool extends ItemMetal
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
     {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
         if (slot == EntityEquipmentSlot.MAINHAND)
         {
             multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", attackDamage, 0));
