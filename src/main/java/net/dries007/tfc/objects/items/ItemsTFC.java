@@ -153,6 +153,15 @@ public final class ItemsTFC
     @GameRegistry.ObjectHolder("ore/gypsum")
     public static final ItemOreTFC GYPSUM = getNull();
 
+    @GameRegistry.ObjectHolder("crop/product/jute_disc")
+    public static final Item JUTE_DISC = getNull();
+    @GameRegistry.ObjectHolder("crop/product/jute_net")
+    public static final Item JUTE_NET = getNull();
+    @GameRegistry.ObjectHolder("crop/product/dirty_jute_net")
+    public static final Item DIRTY_JUTE_NET = getNull();
+    @GameRegistry.ObjectHolder("food/olive_paste")
+    public static final Item OLIVE_PASTE = getNull();
+
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
     private static ImmutableList<ItemGem> allGemItems;
@@ -322,6 +331,13 @@ public final class ItemsTFC
         {
             simpleItems.add(register(r, "food/" + food.name().toLowerCase(), new ItemDynamicBowlFood(food), CT_FOOD));
         }
+
+        //olive oil production
+        simpleItems.add(register(r,"food/olive_paste", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_FOOD)); //not edible
+        simpleItems.add(register(r,"crop/product/jute_disc", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r,"crop/product/olive_jute_disc", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_FOOD)); //not edible
+        simpleItems.add(register(r,"crop/product/jute_net", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r,"crop/product/dirty_jute_net", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_MISC));
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT, "kindling", "straw"), CT_MISC));
