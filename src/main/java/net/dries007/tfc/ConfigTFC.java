@@ -423,6 +423,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.drinkDelay")
         @Config.RangeInt(min = 1)
         public int drinkDelay = 12;
+
+        @Config.Comment("Which inventory slots will ammo refill/pickup search for quivers? none = nowhere, they're just extra inventory spaces; armor = only in armor slots; hotbar = add hotbar; main = add main inventory.")
+        @Config.LangKey("config." + MOD_ID + ".general.quiverSearch")
+        public String quiverSearch = "hotbar";
     }
 
     public static class ClientCFG

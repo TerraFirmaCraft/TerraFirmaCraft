@@ -29,6 +29,7 @@ public class ArmorMaterialTFC implements IArmorMaterialTFC
     //copper is a little better than vanilla's leather and bronzes are in between wrought iron and copper.
 
     //LEATHER?
+    public static final IArmorMaterialTFC QUIVER = new ArmorMaterialTFC(EnumHelper.addArmorMaterial("quiver", MOD_ID + ":quiver", 10, new int[] {0, 0, 0, 0}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F), 0, 0, 0f);
     public static final IArmorMaterialTFC COPPER = new ArmorMaterialTFC(EnumHelper.addArmorMaterial("copper", MOD_ID + ":copper", 14, new int[] {1, 3, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F), 10, 10, 6.25f);
     public static final IArmorMaterialTFC BISMUTH_BRONZE = new ArmorMaterialTFC(EnumHelper.addArmorMaterial("bismuth_bronze", MOD_ID + ":bismuth_bronze", 21, new int[] {1, 4, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F), 15, 10, 8.25f);
     public static final IArmorMaterialTFC BLACK_BRONZE = new ArmorMaterialTFC(EnumHelper.addArmorMaterial("black_bronze", MOD_ID + ":black_bronze", 21, new int[] {1, 4, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F), 10, 15, 8.25f);

@@ -43,6 +43,8 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+import net.dries007.tfc.objects.items.ItemQuiver;
+
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
@@ -150,6 +152,7 @@ public class ItemRockJavelin extends ItemTool implements IItemSize, IRockObject
                 }
                 player.inventory.deleteStack(stack);
                 player.addStat(StatList.getObjectUseStats(this));
+                ItemQuiver.replenishJavelin(player.inventory); //Use a quiver if possible
             }
         }
     }
