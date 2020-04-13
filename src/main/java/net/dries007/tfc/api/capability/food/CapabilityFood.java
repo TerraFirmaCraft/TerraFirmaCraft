@@ -19,6 +19,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
@@ -228,6 +229,14 @@ public class CapabilityFood
             }
         }
         return inputStack;
+    }
+
+    /**
+     * @return Gets the creation date to set a piece of food to, in order to stack items created nearby in time
+     */
+    public static long getRoundedCreationDate()
+    {
+        return (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
     }
 
     /**

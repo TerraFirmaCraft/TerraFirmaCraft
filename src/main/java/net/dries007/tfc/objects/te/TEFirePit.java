@@ -79,7 +79,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     private int airTicks; // Ticks of bellows provided air remaining
     private float burnTemperature; // Temperature provided from the current item of fuel
     private long lastPlayerTick; // Last player tick this forge was ticked (for purposes of catching up)
-    private Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
+    private final Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
 
     // Attachments
     private ItemStack attachedItemStack;
@@ -93,7 +93,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     private long soupCreationDate;
 
     // Grill
-    private HeatRecipe[] cachedGrillRecipes;
+    private final HeatRecipe[] cachedGrillRecipes;
 
     public TEFirePit()
     {
@@ -287,7 +287,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                                 soupContents = new FoodData(4, water, saturation, nutrition, Food.SOUP_GRAIN.getData().getDecayModifier());
                                 soupServings = (int) (ingredientCount / 2f) + 1;
                                 soupNutrient = maxNutrient; // the max nutrient determines the item you get
-                                soupCreationDate = CalendarTFC.PLAYER_TIME.getTicks();
+                                soupCreationDate = CapabilityFood.getRoundedCreationDate();
 
                                 cookingPotStage = CookingPotStage.FINISHED;
                             }

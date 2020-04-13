@@ -40,6 +40,8 @@ import net.dries007.tfc.client.gui.overlay.IHighlightHandler;
 import net.dries007.tfc.objects.te.TEQuern;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.objects.te.TEQuern.SLOT_HANDSTONE;
+
 @ParametersAreNonnullByDefault
 public class BlockQuern extends Block implements IItemSize, IHighlightHandler
 {
@@ -191,7 +193,7 @@ public class BlockQuern extends Block implements IItemSize, IHighlightHandler
             {
                 return SelectionPlace.INPUT_SLOT;
             }
-            else if ((teQuern.hasHandstone() || teQuern.isItemValid(TEQuern.SLOT_HANDSTONE, player.getHeldItem(EnumHand.MAIN_HAND))) && HANDSTONE_AABB.offset(pos).calculateIntercept(eyePos, lookingPos) != null)
+            else if ((teQuern.hasHandstone() || teQuern.isItemValid(SLOT_HANDSTONE, player.getHeldItem(EnumHand.MAIN_HAND))) && HANDSTONE_AABB.offset(pos).calculateIntercept(eyePos, lookingPos) != null)
             {
                 return SelectionPlace.HANDSTONE;
             }
@@ -224,10 +226,10 @@ public class BlockQuern extends Block implements IItemSize, IHighlightHandler
                         teQuern.setAndUpdateSlots(TEQuern.SLOT_INPUT);
                         return true;
                     }
-                    else if (selection == SelectionPlace.HANDSTONE && inventory.getStackInSlot(TEQuern.SLOT_INPUT).isEmpty())
+                    else if (selection == SelectionPlace.HANDSTONE && inventory.getStackInSlot(SLOT_HANDSTONE).isEmpty() && inventory.isItemValid(SLOT_HANDSTONE, heldStack))
                     {
-                        playerIn.setHeldItem(EnumHand.MAIN_HAND, teQuern.insertOrSwapItem(TEQuern.SLOT_HANDSTONE, heldStack));
-                        teQuern.setAndUpdateSlots(TEQuern.SLOT_HANDSTONE);
+                        playerIn.setHeldItem(EnumHand.MAIN_HAND, teQuern.insertOrSwapItem(SLOT_HANDSTONE, heldStack));
+                        teQuern.setAndUpdateSlots(SLOT_HANDSTONE);
                         return true;
                     }
                     else if (selection == SelectionPlace.BASE && !inventory.getStackInSlot(TEQuern.SLOT_OUTPUT).isEmpty())

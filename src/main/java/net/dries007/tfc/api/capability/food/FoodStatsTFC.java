@@ -293,7 +293,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public boolean attemptDrink(float value, boolean simulate)
     {
         int ticksPassed = (int) (sourcePlayer.world.getTotalWorldTime() - lastDrinkTick);
-        if (ticksPassed >= 20 && thirst < MAX_PLAYER_THIRST)
+        if (ticksPassed >= ConfigTFC.GENERAL.drinkDelay && thirst < MAX_PLAYER_THIRST)
         {
             if (!simulate)
             {

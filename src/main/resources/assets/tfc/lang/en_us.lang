@@ -165,6 +165,8 @@ tfc.food_traits.brined_active=Brining
 tfc.food_traits.salted=Salted
 tfc.food_traits.pickled=Pickled
 tfc.food_traits.preserved=Preserved
+tfc.food_traits.charcoal_grilled=Charcoal Grilled
+tfc.food_traits.wood_grilled=Wood Grilled
 tfc.tooltip.barrel_recipe_pickling=Pickling
 tfc.tooltip.barrel_recipe_brining=Brining
 
@@ -420,8 +422,11 @@ config.tfc.general.tankCrucible.tooltip=How much metal (units / mB) can a crucib
 config.tfc.general.disableCobbleGenOverride=Disable TFC Cobble Generation Changes
 config.tfc.general.disableCobbleGenOverride.tooltip=Turn this on if you want to edit this with other mods or have a way to get vanilla cobblestone.
 
-config.tfc.general.leafDensity=Leaf Density
-config.tfc.general.leafDensity.tooltip=How mush leaves should slow the player down. Lower = Slower, Higher = Faster. 1 = None.
+config.tfc.general.leafMovementModifier=Leaf Movement Modifier
+config.tfc.general.leafMovementModifier.tooltip=Leaf block movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)
+
+config.tfc.general.berryBushMovementModifier=Berry Bush Movement Modifier
+config.tfc.general.berryBushMovementModifier.tooltip=Berry bush movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)
 
 config.tfc.general.disableTorchOverride=Disable Torch Override
 config.tfc.general.disableTorchOverride.tooltip=Turn this on if you want to edit this with other mods.
@@ -429,9 +434,13 @@ config.tfc.general.disableTorchOverride.tooltip=Turn this on if you want to edit
 config.tfc.general.disableTreeFelling=Disable Tree Felling
 config.tfc.general.disableTreeFelling.tooltip=Turn this on if you want to edit this with other mods.
 
-## Client Config
 config.tfc.general.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
 config.tfc.general.woodenBucketWhitelist.tooltip=Allowed fluids to be picked up by the wooden bucket.
+
+config.tfc.general.drinkDelay=Drink Delay
+config.tfc.general.drinkDelay.tooltip=Delay (in ticks) for drinking water by hand
+
+## Client Config
 
 config.tfc.client=Client Settings
 config.tfc.client.toolip=Client side only.
@@ -2695,13 +2704,13 @@ tile.tfc.fruit_trees.leaves.red_apple.name=Red Apple Leaves
 
 tile.tfc.berry_bush.blackberry.name=Blackberry Bush
 tile.tfc.berry_bush.blueberry.name=Blueberry Bush
-tile.tfc.berry_bush.bunch_berry.name=Bunch Berry Bush
-tile.tfc.berry_bush.cloud_berry.name=Cloud Berry Bush
+tile.tfc.berry_bush.bunch_berry.name=Bunchberry Bush
+tile.tfc.berry_bush.cloud_berry.name=Cloudberry Bush
 tile.tfc.berry_bush.cranberry.name=Cranberry Bush
 tile.tfc.berry_bush.elderberry.name=Elderberry Bush
 tile.tfc.berry_bush.gooseberry.name=Gooseberry Bush
 tile.tfc.berry_bush.raspberry.name=Raspberry Bush
-tile.tfc.berry_bush.snow_berry.name=Snow Berry Bush
+tile.tfc.berry_bush.snow_berry.name=Snowberry Bush
 tile.tfc.berry_bush.strawberry.name=Strawberry Bush
 tile.tfc.berry_bush.wintergreen_berry.name=Wintergreen Berry Bush
 
@@ -3889,9 +3898,9 @@ item.tfc.hide.sheepskin.large.name=Large Sheep Skin
 item.tfc.food.banana.name=Banana
 item.tfc.food.blackberry.name=Blackberry
 item.tfc.food.blueberry.name=Blueberry
-item.tfc.food.bunch_berry.name=Bunch Berry
+item.tfc.food.bunch_berry.name=Bunchberry
 item.tfc.food.cherry.name=Cherry
-item.tfc.food.cloud_berry.name=Cloud Berry
+item.tfc.food.cloud_berry.name=Cloudberry
 item.tfc.food.cranberry.name=Cranberry
 item.tfc.food.elderberry.name=Elderberry
 item.tfc.food.gooseberry.name=Gooseberry
@@ -3903,7 +3912,7 @@ item.tfc.food.peach.name=Peach
 item.tfc.food.plum.name=Plum
 item.tfc.food.raspberry.name=Raspberry
 item.tfc.food.red_apple.name=Red Apple
-item.tfc.food.snow_berry.name=Snow Berry
+item.tfc.food.snow_berry.name=Snowberry
 item.tfc.food.strawberry.name=Strawberry
 item.tfc.food.wintergreen_berry.name=Wintergreen Berry
 item.tfc.food.barley.name=Barley

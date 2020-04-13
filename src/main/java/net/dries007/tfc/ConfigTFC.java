@@ -98,10 +98,25 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.leafStickDropChance")
         public double leafStickDropChance = 0.1;
 
-        @Config.Comment("Leaf block density. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow")
+        @Config.Comment("Leaf block movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)")
         @Config.RangeDouble(min = 0, max = 1)
-        @Config.LangKey("config." + MOD_ID + ".general.leafDensity")
-        public double leafDensity = 0.1;
+        @Config.LangKey("config." + MOD_ID + ".general.leafMovementModifier")
+        public double leafMovementModifier = 0.1;
+
+        @Config.Comment("Berry bush movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.berryBushMovementModifier")
+        public double berryBushMovementModifier = 0.1;
+
+        @Config.Comment("Generic movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. Note: this is a little different than other densities (leaf / berry bush), because this actually functions as a maximum slow down. Actual value is dependent on the plant and it's age.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.minimumPlantMovementModifier")
+        public double minimumPlantMovementModifier = 0;
+
+        @Config.Comment("Generic snow movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down.")
+        @Config.RangeDouble(min = 0, max = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.snowMovementModifier")
+        public double snowMovementModifier = 0.85;
 
         @Config.Comment("Bonus leaf drop chance for sticks")
         @Config.RangeDouble(min = 0, max = 1)
@@ -403,6 +418,11 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.nutritionRotationHungerWindow")
         @Config.RangeInt(min = 4)
         public int nutritionRotationHungerWindow = 4 * 20;
+
+        @Config.Comment("Delay (in ticks) for drinking water by hand")
+        @Config.LangKey("config." + MOD_ID + ".general.drinkDelay")
+        @Config.RangeInt(min = 1)
+        public int drinkDelay = 12;
     }
 
     public static class ClientCFG
