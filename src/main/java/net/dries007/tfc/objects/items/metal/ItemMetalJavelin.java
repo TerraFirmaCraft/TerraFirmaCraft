@@ -23,6 +23,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
+import net.dries007.tfc.objects.items.ItemQuiver;
 
 public class ItemMetalJavelin extends ItemMetalTool
 {
@@ -86,6 +87,7 @@ public class ItemMetalJavelin extends ItemMetalTool
                 }
                 player.inventory.deleteStack(stack);
                 player.addStat(StatList.getObjectUseStats(this));
+                ItemQuiver.replenishJavelin(player.inventory); //Use a quiver if possible
             }
         }
     }
