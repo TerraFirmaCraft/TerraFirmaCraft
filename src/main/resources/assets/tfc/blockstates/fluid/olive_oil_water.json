@@ -1,0 +1,15 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "forge:fluid",
+    "textures": {}
+  },
+  "variants": {
+    "normal": {
+      "transform": "forge:default-item",
+      "custom": {
+        "fluid": "olive_oil_water"
+      }
+    }
+  }
+}
