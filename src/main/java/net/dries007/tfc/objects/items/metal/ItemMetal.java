@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -34,8 +35,13 @@ public class ItemMetal extends ItemTFC implements IMetalItem
 {
     private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetal>> TABLE = new HashMap<>();
 
-    public static ItemMetal get(Metal metal, Metal.ItemType type)
+    public static Item get(Metal metal, Metal.ItemType type)
     {
+        if (type == Metal.ItemType.SWORD)
+        {
+            // Make sure to not crash (in 1.15+, don't forget to rewrite all metal items to extend the proper vanilla classes)
+            return ItemMetalSword.get(metal);
+        }
         return TABLE.get(metal).get(type);
     }
 

@@ -47,12 +47,6 @@ public class CommandPlayerTFC extends CommandBase
     }
 
     @Override
-    public int getRequiredPermissionLevel()
-    {
-        return 2;
-    }
-
-    @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (sender.getCommandSenderEntity() instanceof EntityPlayer)
@@ -94,6 +88,12 @@ public class CommandPlayerTFC extends CommandBase
         }
     }
 
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
+    }
+
     @Nonnull
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
@@ -131,13 +131,13 @@ public class CommandPlayerTFC extends CommandBase
         else
         {
             sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients",
-                    String.format("%.2f", nutritionStats.getAverageNutrition())
+                String.format("%.2f", nutritionStats.getAverageNutrition())
             ));
             for (Nutrient nutrient : Nutrient.values())
             {
                 sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients_nutrient",
-                        new TextComponentTranslation(Helpers.getEnumName(nutrient)),
-                        String.format("%.2f", nutritionStats.getNutrient(nutrient))
+                    new TextComponentTranslation(Helpers.getEnumName(nutrient)),
+                    String.format("%.2f", nutritionStats.getNutrient(nutrient))
                 ));
             }
             FoodData lastRecord = nutritionStats.getMostRecentRecord();
@@ -145,15 +145,15 @@ public class CommandPlayerTFC extends CommandBase
             {
                 float[] nutrients = lastRecord.getNutrients();
                 sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients_last_eaten",
-                        lastRecord.getHunger(),
-                        String.format("%.2f", lastRecord.getSaturation()),
-                        String.format("%.2f", lastRecord.getDecayModifier())
+                    lastRecord.getHunger(),
+                    String.format("%.2f", lastRecord.getSaturation()),
+                    String.format("%.2f", lastRecord.getDecayModifier())
                 ));
                 for (Nutrient nutrient : Nutrient.values())
                 {
                     sender.sendMessage(new TextComponentTranslation("tfc.command.playertfc.get_nutrients_last_eaten_nutrient",
-                            new TextComponentTranslation(Helpers.getEnumName(nutrient)),
-                            String.format("%.2f", nutrients[nutrient.ordinal()])
+                        new TextComponentTranslation(Helpers.getEnumName(nutrient)),
+                        String.format("%.2f", nutrients[nutrient.ordinal()])
                     ));
                 }
             }

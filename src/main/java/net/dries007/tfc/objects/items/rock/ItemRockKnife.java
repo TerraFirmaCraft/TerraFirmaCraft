@@ -50,7 +50,7 @@ public class ItemRockKnife extends ItemTool implements IItemSize, IRockObject
 
     public ItemRockKnife(RockCategory category)
     {
-        super(0.5f * category.getToolMaterial().getAttackDamage(), 3, category.getToolMaterial(), ImmutableSet.of());
+        super(0.54f * category.getToolMaterial().getAttackDamage(), -1.5f, category.getToolMaterial(), ImmutableSet.of());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("knife", category.getToolMaterial().getHarvestLevel());

@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
@@ -23,10 +25,12 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.Constants.GSON;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityDamageResistance
@@ -36,10 +40,45 @@ public final class CapabilityDamageResistance
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "damage_resistance");
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ARMOR = new HashMap<>(); //Used inside CT, set custom IDamageResistance for armor items outside TFC
+    public static final Map<String, Supplier<ICapabilityProvider>> ENTITY_RESISTANCE = new HashMap<>(); // Map entities -> Capability to damage resistance
+
 
     public static void preInit()
     {
         CapabilityManager.INSTANCE.register(IDamageResistance.class, new DumbStorage<>(), () -> new IDamageResistance() {});
+    }
+
+    /**
+     * Output to log
+     */
+    public static void postInit()
+    {
+        TerraFirmaCraft.getLog().info("Entity resistance data initialized, loaded a total of {} resistance configurations", ENTITY_RESISTANCE.size());
+    }
+
+    /**
+     * Read json data and load entities damage resistances from it
+     *
+     * @param jsonElements the json elements to read
+     */
+    public static void readFile(Set<Map.Entry<String, JsonElement>> jsonElements)
+    {
+        for (Map.Entry<String, JsonElement> entry : jsonElements)
+        {
+            try
+            {
+                String entityName = entry.getKey();
+                if ("#loader".equals(entityName)) continue; // Skip loader
+                DamageResistance resistance = GSON.fromJson(entry.getValue(), DamageResistance.class);
+
+                ENTITY_RESISTANCE.put(entityName, () -> resistance);
+            }
+            catch (JsonParseException e)
+            {
+                TerraFirmaCraft.getLog().error("An entity resistance is specified incorrectly! Skipping.");
+                TerraFirmaCraft.getLog().error("Error: ", e);
+            }
+        }
     }
 
     @Nullable
@@ -67,25 +106,9 @@ public final class CapabilityDamageResistance
             if (entityType != null)
             {
                 String entityTypeName = entityType.toString();
-                // todo: make this configurable via json or CT or something
-                switch (entityTypeName)
+                if (ENTITY_RESISTANCE.containsKey(entityTypeName))
                 {
-                    case "minecraft:skeleton":
-                    case "minecraft:wither_skeleton":
-                    case "minecraft:stray":
-                        event.addCapability(KEY, new DamageResistance(-20, Float.POSITIVE_INFINITY, 20));
-                        break;
-                    case "minecraft:creeper":
-                        event.addCapability(KEY, new DamageResistance(+20, -20, 0));
-                        break;
-                    case "minecraft:enderman":
-                        event.addCapability(KEY, new DamageResistance(-10, -10, -10));
-                        break;
-                    case "minecraft:zombie":
-                    case "minecraft:husk":
-                    case "minecraft:zombie_villager":
-                        event.addCapability(KEY, new DamageResistance(+20, 0, -20));
-                        break;
+                    event.addCapability(KEY, ENTITY_RESISTANCE.get(entityTypeName).get());
                 }
             }
         }

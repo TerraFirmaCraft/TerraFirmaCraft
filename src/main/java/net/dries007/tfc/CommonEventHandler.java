@@ -19,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
@@ -75,6 +76,7 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.ICreatureTFC;
+import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketCalendarUpdate;
@@ -89,10 +91,12 @@ import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.MonsterEquipment;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SmithingSkill;
+import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -566,38 +570,52 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onLivingSpawnEvent(LivingSpawnEvent.CheckSpawn event)
     {
+        World world = event.getWorld();
+        BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
+
+        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false) || event.getEntity() instanceof IPredator)
+        {
+            // Prevent predators and mobs from spawning where the player lives.
+            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
+            if (ConfigTFC.GENERAL.spawnProtectionEnable && (ConfigTFC.GENERAL.spawnProtectionMinY <= event.getY()) && data.isSpawnProtected())
+            {
+                event.setResult(Event.Result.DENY);
+            }
+        }
+
         // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
         if (event.getEntity() instanceof ICreatureTFC)
         {
             ICreatureTFC creature = (ICreatureTFC) event.getEntity();
-            World world = event.getWorld();
-            BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
-
             float rainfall = ChunkDataTFC.getRainfall(world, pos);
             float temperature = ClimateTFC.getAvgTemp(world, pos);
+            float floraDensity = ChunkDataTFC.getFloraDensity(world, pos);
+            float floraDiversity = ChunkDataTFC.getFloraDiversity(world, pos);
             Biome biome = world.getBiome(pos);
 
             // We don't roll spawning again since vanilla is handling it
-            if (creature.getSpawnWeight(biome, temperature, rainfall) <= 0)
+            if (creature.getSpawnWeight(biome, temperature, rainfall, floraDensity, floraDiversity) <= 0)
             {
                 event.setResult(Event.Result.DENY);
             }
         }
 
         // Stop mob spawning in thatch - the list of non-spawnable light-blocking, non-collidable blocks is hardcoded in WorldEntitySpawner#canEntitySpawnBody
-        BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
         if (event.getWorld().getBlockState(pos).getBlock() == BlocksTFC.THATCH || event.getWorld().getBlockState(pos.up()).getBlock() == BlocksTFC.THATCH)
         {
             event.setResult(Event.Result.DENY);
         }
 
-        // Stop mob spawning in spawn protected chunks
-        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
+        // Stop mob spawning in surface
+        if (ConfigTFC.WORLD.preventMobsOnSurface)
         {
-            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
-            if (ConfigTFC.GENERAL.spawnProtectionEnable && (ConfigTFC.GENERAL.spawnProtectionMinY <= event.getY()) && data.isSpawnProtected())
+            if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
             {
-                event.setResult(Event.Result.DENY);
+                int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2) / 2 + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
+                if (pos.getY() >= maximumY || world.canSeeSky(pos))
+                {
+                    event.setResult(Event.Result.DENY);
+                }
             }
         }
     }
@@ -605,16 +623,27 @@ public final class CommonEventHandler
     @SubscribeEvent
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
     {
+        Entity entity = event.getEntity();
         // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
-        if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(event.getEntity()))
+        if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
         {
-            Entity TFCReplacement = Helpers.getTFCReplacement(event.getEntity());
+            Entity TFCReplacement = Helpers.getTFCReplacement(entity);
             if (TFCReplacement != null)
             {
-                TFCReplacement.setPositionAndRotation(event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, event.getEntity().rotationYaw, event.getEntity().rotationPitch);
+                TFCReplacement.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
                 event.getWorld().spawnEntity(TFCReplacement); // Fires another spawning event for the TFC replacement
             }
             event.setCanceled(true); // Cancel the vanilla spawn
+        }
+        // Set equipment to some mobs
+        MonsterEquipment equipment = MonsterEquipment.get(entity);
+        if (equipment != null)
+        {
+            entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, equipment.getWeapon(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, equipment.getHelmet(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, equipment.getChestplate(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, equipment.getLeggings(Constants.RNG));
+            entity.setItemStackToSlot(EntityEquipmentSlot.FEET, equipment.getBoots(Constants.RNG));
         }
     }
 

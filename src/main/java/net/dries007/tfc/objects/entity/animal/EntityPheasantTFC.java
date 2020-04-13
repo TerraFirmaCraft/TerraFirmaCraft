@@ -25,12 +25,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityPheasantTFC extends EntityAnimalTFC
+public class EntityPheasantTFC extends EntityAnimalTFC implements ILivestock
 {
     private static final int DAYS_TO_ADULTHOOD = 60;
 
@@ -54,9 +58,16 @@ public class EntityPheasantTFC extends EntityAnimalTFC
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA
+                || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+        {
+            return ConfigTFC.WORLD.huntableSpawnRarity;
+        }
+        return 0;
     }
 
     @Override

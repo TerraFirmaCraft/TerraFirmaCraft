@@ -1,19 +1,19 @@
 {
-    "display": {
-        "icon": {
-            "item": "tfc:food/oat_grain"
-        },
-        "title": {
-            "translate": "advancements.tfc.world.first_familiarity.title"
-        },
-        "description": {
-            "translate": "advancements.tfc.world.first_familiarity.description"
-        }
+  "display": {
+    "icon": {
+      "item": "tfc:food/oat_grain"
     },
-    "parent": "tfc:world/farming",
-    "criteria":{
-        "familiarity": {
-            "trigger": "tfc:familiarity_changed"
-        }
+    "title": {
+      "translate": "advancements.tfc.world.first_familiarity.title"
+    },
+    "description": {
+      "translate": "advancements.tfc.world.first_familiarity.description"
     }
+  },
+  "parent": "tfc:world/farming",
+  "criteria": {
+    "familiarity": {
+      "trigger": "tfc:familiarity_changed"
+    }
+  }
 }

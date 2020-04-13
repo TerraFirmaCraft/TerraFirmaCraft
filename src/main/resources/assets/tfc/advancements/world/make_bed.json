@@ -1,30 +1,30 @@
 {
-    "display": {
-        "icon": {
-            "item": "minecraft:bed"
-        },
-        "frame":"goal",
-        "title": {
-            "translate": "advancements.tfc.world.make_bed.title"
-        },
-        "description": {
-            "translate": "advancements.tfc.world.make_bed.description"
-        }
+  "display": {
+    "icon": {
+      "item": "minecraft:bed"
     },
-    "parent": "tfc:world/make_loom",
-    "criteria": {
-        "crafting_table": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "minecraft:bed"
-                    }
-                ]
-            }
-        }
+    "frame": "goal",
+    "title": {
+      "translate": "advancements.tfc.world.make_bed.title"
     },
-    "rewards":{
-        "experience": 25
+    "description": {
+      "translate": "advancements.tfc.world.make_bed.description"
     }
+  },
+  "parent": "tfc:world/make_loom",
+  "criteria": {
+    "crafting_table": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:bed"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
 }

@@ -175,7 +175,7 @@ public final class FluidsTFC
                 TANNIN = registerFluid(new Fluid("tannin", STILL, FLOW, 0xFF63594E)),
                 LIMEWATER = registerFluid(new Fluid("limewater", STILL, FLOW, 0xFFB4B4B4)),
                 CURDLED_MILK = registerFluid(new Fluid("milk_curdled", STILL, FLOW, 0xFFFFFBE8)),
-                    MILK_VINEGAR = registerFluid(new Fluid("milk_vinegar", STILL, FLOW, 0xFFFFFBE8))
+                MILK_VINEGAR = registerFluid(new Fluid("milk_vinegar", STILL, FLOW, 0xFFFFFBE8))
             )
             .build();
 
@@ -192,12 +192,12 @@ public final class FluidsTFC
             .build();
 
         DYE_FLUIDS.putAll(Arrays.stream(EnumDyeColor.values()).collect(Collectors.toMap(
-                color -> color,
-                color -> {
-                    float[] c = color.getColorComponentValues();
-                    String actualName = color == EnumDyeColor.SILVER ? "light_gray" : color.getName();
-                    return registerFluid(new Fluid(actualName + "_dye", STILL, FLOW, new Color(c[0], c[1], c[2]).getRGB()));
-                })));
+            color -> color,
+            color -> {
+                float[] c = color.getColorComponentValues();
+                String actualName = color == EnumDyeColor.SILVER ? "light_gray" : color.getName();
+                return registerFluid(new Fluid(actualName + "_dye", STILL, FLOW, new Color(c[0], c[1], c[2]).getRGB()));
+            })));
     }
 
     @Nonnull

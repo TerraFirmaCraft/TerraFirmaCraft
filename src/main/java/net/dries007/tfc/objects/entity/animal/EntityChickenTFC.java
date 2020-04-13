@@ -34,20 +34,23 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
-import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.BiomeHelper;
+import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
+public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 {
     private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
     private static final int DAYS_TO_ADULTHOOD = 124;
@@ -58,7 +61,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     public float oFlapSpeed;
     public float oFlap;
     public float wingRotDelta = 1.0F;
-    private long lastLaying; //The last time(in ticks) this chicken has laid eggs
+    protected long lastLaying; //The last time(in ticks) this chicken has laid eggs
 
     public EntityChickenTFC(World worldIn)
     {
@@ -73,9 +76,15 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     }
 
     @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall)
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        return 100;
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
+        {
+            return ConfigTFC.WORLD.livestockSpawnRarity;
+        }
+        return 0;
     }
 
     @Override
@@ -100,7 +109,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements IAnimalTFC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        if (this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
+        if (this.getClass() == EntityChickenTFC.class && this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
         {
             this.world.playSound(null, this.getPosition(), TFCSounds.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
         }

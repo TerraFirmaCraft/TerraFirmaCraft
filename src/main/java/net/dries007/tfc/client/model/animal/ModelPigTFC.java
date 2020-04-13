@@ -56,7 +56,6 @@ public class ModelPigTFC extends ModelQuadruped
 
         float percent = (float) pig.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
-        float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
 
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
         if (pig.getGender() == EntityAnimalTFC.Gender.MALE)
@@ -69,17 +68,10 @@ public class ModelPigTFC extends ModelQuadruped
         }
 
         GlStateManager.pushMatrix();
-
-        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
-        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
-        GlStateManager.translate(0.0F, (ageScale - 1) * -0.125f, 0.1875f - (0.1875f * percent));
-        head.render(par7);
-        GlStateManager.popMatrix();
-
-        GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
+        head.render(par7);
         body.render(par7);
         leg1.render(par7);
         leg2.render(par7);

@@ -8,6 +8,8 @@ package net.dries007.tfc.world.classic.biomes;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.RegistryEvent;
@@ -131,6 +133,13 @@ public final class BiomesTFC
         if (isWorldGen)
         {
             WORLD_GEN_BIOMES.add(biome);
+        }
+
+        if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.WATER))
+        {
+            // Register aquatic creatures
+            biome.getSpawnableList(EnumCreatureType.WATER_CREATURE).add(new Biome.SpawnListEntry(EntitySquid.class, 20, 3, 7));
+            // todo add fish (either in 1.15+ or if someone makes fish entities)
         }
     }
 

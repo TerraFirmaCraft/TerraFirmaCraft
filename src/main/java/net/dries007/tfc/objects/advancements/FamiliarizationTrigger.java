@@ -160,9 +160,9 @@ public class FamiliarizationTrigger implements ICriterionTrigger<Familiarization
         private <T extends EntityAnimal & IAnimalTFC> void trigger(T animal)
         {
             this.listeners.stream()
-                    .filter(listener -> listener.getCriterionInstance().test(animal))
-                    .collect(Collectors.toList()) // This line is needed to avoid ConcurrentModificationException
-                    .forEach(listener -> listener.grantCriterion(this.playerAdvancements));
+                .filter(listener -> listener.getCriterionInstance().test(animal))
+                .collect(Collectors.toList()) // This line is needed to avoid ConcurrentModificationException
+                .forEach(listener -> listener.grantCriterion(this.playerAdvancements));
         }
     }
 }

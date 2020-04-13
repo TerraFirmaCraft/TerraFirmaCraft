@@ -55,7 +55,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
      */
     public static int getRandomGrowth(int daysToAdulthood)
     {
-        int lifeTimeDays = daysToAdulthood + Constants.RNG.nextInt(daysToAdulthood * 3);
+        int lifeTimeDays = daysToAdulthood + Constants.RNG.nextInt((int) (daysToAdulthood * ConfigTFC.GENERAL.factorAnimalAging));
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
@@ -135,7 +135,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     @Override
     public boolean isReadyToMate()
     {
-        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.isHungry())
+        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || this.isHungry())
             return false;
         return this.matingTime == -1 || this.matingTime + MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
     }
@@ -154,50 +154,21 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
     }
 
-    @Override
-    public void onLivingUpdate()
+    /**
+     * Find and charms a near female animal of this animal
+     * Used by males to try mating with females
+     */
+    public static <T extends EntityAnimal & IAnimalTFC> void findFemaleMate(T maleAnimal)
     {
-        super.onLivingUpdate();
-        if (!this.world.isRemote)
+        List<EntityAnimal> list = maleAnimal.world.getEntitiesWithinAABB(maleAnimal.getClass(), maleAnimal.getEntityBoundingBox().grow(8.0D));
+        for (EntityAnimal femaleAnimal : list)
         {
-            // Is it time to decay familiarity?
-            // If this entity was never fed(eg: new born, wild)
-            // or wasn't fed yesterday(this is the starting of the second day)
-            if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
+            IAnimalTFC female = (IAnimalTFC) femaleAnimal;
+            if (female.getGender() == Gender.FEMALE && !femaleAnimal.isInLove() && female.isReadyToMate())
             {
-                float familiarity = getFamiliarity();
-                if (familiarity < 0.3f)
-                {
-                    familiarity -= 0.02 * (CalendarTFC.PLAYER_TIME.getTotalDays() - this.lastFDecay);
-                    this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
-                    this.setFamiliarity(familiarity);
-                }
-            }
-            if (this.getGender() == Gender.MALE && this.isReadyToMate())
-            {
-                this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
-                if (findFemaleMate())
-                {
-                    this.setInLove(null);
-                }
-            }
-            if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
-            {
-                if (lastDeath == -1)
-                {
-                    // First time check, to avoid dying at the same time this animal spawned, we skip the first day
-                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                }
-                else
-                {
-                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                    // Randomly die of old age, tied to entity UUID and calendar time
-                    final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
-                    {
-                        this.setDead();
-                    }
-                }
+                femaleAnimal.setInLove(null);
+                maleAnimal.setInLove(null);
+                break;
             }
         }
     }
@@ -250,25 +221,11 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             {
                 return super.processInteract(player, hand); // Let vanilla spawn a baby
             }
-            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            else if (this.isFood(itemstack) && player.isSneaking() && getCreatureType() == CreatureType.LIVESTOCK)
             {
                 if (this.isHungry())
                 {
-                    if (!this.world.isRemote)
-                    {
-                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
-                        lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, itemstack);
-                        float familiarity = this.getFamiliarity() + 0.06f;
-                        if (this.getAge() != Age.CHILD)
-                        {
-                            familiarity = Math.min(familiarity, getAdultFamiliarityCap());
-                        }
-                        this.setFamiliarity(familiarity);
-                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
-                        TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
-                    }
-                    return true;
+                    return eatFood(itemstack, player);
                 }
                 else
                 {
@@ -380,23 +337,77 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     }
 
     /**
-     * Find and charms a near female animal of this animal
-     * Used by males to try mating with females
+     * Eat food + raises familiarization
+     * If your animal would refuse to eat said stack (because rotten or anything), return false here
+     * This function is called after every other check is made (animal is hungry for the day + this is a valid food)
      *
-     * @return true if found and charmed a female
+     * @param stack the food stack to eat
+     * @return true if eaten, false otherwise
      */
-    @SuppressWarnings("WeakerAccess")
-    protected boolean findFemaleMate()
+    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
     {
-        List<EntityAnimalTFC> list = this.world.getEntitiesWithinAABB(this.getClass(), this.getEntityBoundingBox().grow(8.0D));
-        for (EntityAnimalTFC ent : list)
+        if (!this.world.isRemote)
         {
-            if (ent.getGender() == Gender.FEMALE && !ent.isInLove() && ent.isReadyToMate())
+            lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+            lastFDecay = lastFed; //No decay needed
+            this.consumeItemFromStack(player, stack);
+            if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
             {
-                ent.setInLove(null);
-                return true;
+                float familiarity = this.getFamiliarity() + 0.06f;
+                if (this.getAge() != Age.CHILD)
+                {
+                    familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                }
+                this.setFamiliarity(familiarity);
+            }
+            world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
+        }
+        return true;
+    }
+
+    @Override
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        if (!this.world.isRemote)
+        {
+            // Is it time to decay familiarity?
+            // If this entity was never fed(eg: new born, wild)
+            // or wasn't fed yesterday(this is the starting of the second day)
+            if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
+            {
+                float familiarity = getFamiliarity();
+                if (familiarity < 0.3f)
+                {
+                    familiarity -= 0.02 * (CalendarTFC.PLAYER_TIME.getTotalDays() - this.lastFDecay);
+                    this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
+                    this.setFamiliarity(familiarity);
+                }
+            }
+            if (this.getGender() == Gender.MALE && this.isReadyToMate())
+            {
+                this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
+                findFemaleMate(this);
+            }
+            if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
+            {
+                if (lastDeath == -1)
+                {
+                    // First time check, to avoid dying at the same time this animal spawned, we skip the first day
+                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                }
+                else
+                {
+                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                    // Randomly die of old age, tied to entity UUID and calendar time
+                    final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
+                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    {
+                        this.setDead();
+                    }
+                }
             }
         }
-        return false;
     }
 }
