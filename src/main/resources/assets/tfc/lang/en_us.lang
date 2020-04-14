@@ -788,6 +788,7 @@ fluid.cider=Cider
 fluid.vinegar=Vinegar
 fluid.brine=Brine
 fluid.olive_oil=Olive Oil
+fluid.olive_oil_water=Olive Oil Water
 fluid.tannin=Tannin
 fluid.limewater=Limewater
 fluid.milk=Milk

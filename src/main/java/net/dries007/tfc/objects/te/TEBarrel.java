@@ -54,12 +54,12 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public static final int SLOT_ITEM = 2;
     public static final int BARREL_MAX_FLUID_TEMPERATURE = 500;
 
-    private FluidTank tank = new FluidTankCallback(this, 0, ConfigTFC.GENERAL.tankBarrel);
+    private final FluidTank tank = new FluidTankCallback(this, 0, ConfigTFC.GENERAL.tankBarrel);
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
     private int tickCounter;
-    private Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
+    private final Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
     private boolean checkInstantRecipe = false;
 
     public TEBarrel()
@@ -98,6 +98,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
             }
         }
         sealed = true;
+        recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
         markDirty();
         TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick, sealed), world.provider.getDimension());
     }
