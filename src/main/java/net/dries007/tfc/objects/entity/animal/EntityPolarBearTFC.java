@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityPolarBear;
@@ -34,6 +35,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@ParametersAreNonnullByDefault
 public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, IPredator
 {
     private static final int DAYS_TO_ADULTHOOD = 1440;
@@ -74,6 +76,22 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
         super.entityInit();
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
+    }
+
+    @Override
+    public boolean attackEntityAsMob(Entity entityIn)
+    {
+        double attackDamage = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        if (this.isChild())
+        {
+            attackDamage /= 2;
+        }
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) attackDamage);
+        if (flag)
+        {
+            this.applyEnchantments(this, entityIn);
+        }
+        return flag;
     }
 
     @Override
@@ -148,22 +166,6 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     {
         String entityString = EntityList.getEntityString(this);
         return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
-    }
-
-    @Override
-    public boolean attackEntityAsMob(Entity entityIn)
-    {
-        double attackDamage = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-        if (this.isChild())
-        {
-            attackDamage /= 2;
-        }
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) attackDamage);
-        if (flag)
-        {
-            this.applyEnchantments(this, entityIn);
-        }
-        return flag;
     }
 
     @Override

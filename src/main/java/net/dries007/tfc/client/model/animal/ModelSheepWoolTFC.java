@@ -53,8 +53,6 @@ public class ModelSheepWoolTFC extends ModelQuadruped
         float ageScale = 2.0F - percent;
 
 
-
-
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);

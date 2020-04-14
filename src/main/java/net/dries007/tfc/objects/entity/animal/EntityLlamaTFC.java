@@ -52,11 +52,11 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestock
 {
     protected static final int DAYS_TO_FULL_GESTATION = 330;
-    private static final int DAYS_TO_ADULTHOOD = 900;
     //Values that has a visual effect on client
     protected static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.VARINT);
     protected static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.FLOAT);
+    private static final int DAYS_TO_ADULTHOOD = 900;
     protected long lastFed; //Last time(in days) this entity was fed
     protected long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     protected boolean fertilized; //Is this female fertilized?

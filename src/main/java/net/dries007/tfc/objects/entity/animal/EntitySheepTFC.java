@@ -110,21 +110,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     }
 
     @Override
-    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
-    {
-        // Refuses to eat rotten stuff
-        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (cap != null)
-        {
-            if (cap.isRotten())
-            {
-                return false;
-            }
-        }
-        return super.eatFood(stack, player);
-    }
-
-    @Override
     public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -306,6 +291,21 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
         super.entityInit();
         this.dataManager.register(DYE_COLOR, 0);
         this.dataManager.register(SHEARED, 0);
+    }
+
+    @Override
+    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
+    {
+        // Refuses to eat rotten stuff
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (cap != null)
+        {
+            if (cap.isRotten())
+            {
+                return false;
+            }
+        }
+        return super.eatFood(stack, player);
     }
 
     @Override

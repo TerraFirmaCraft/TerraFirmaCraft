@@ -282,20 +282,20 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     }
 
     @Override
+    protected void initEntityAI()
+    {
+        super.initEntityAI();
+        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, sheep -> true));
+        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntitySheepTFC.class, false, rabbit -> true));
+    }
+
+    @Override
     protected void entityInit()
     {
         super.entityInit();
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
         getDataManager().register(FAMILIARITY, 0f);
-    }
-
-    @Override
-    protected void initEntityAI()
-    {
-        super.initEntityAI();
-        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, sheep -> true));
-        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntitySheepTFC.class, false, rabbit -> true));
     }
 
     @Override

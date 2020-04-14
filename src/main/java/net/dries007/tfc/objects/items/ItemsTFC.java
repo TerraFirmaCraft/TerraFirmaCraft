@@ -333,11 +333,11 @@ public final class ItemsTFC
         }
 
         //olive oil production
-        simpleItems.add(register(r,"food/olive_paste", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_FOOD)); //not edible
-        simpleItems.add(register(r,"crop/product/jute_disc", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_MISC));
-        simpleItems.add(register(r,"crop/product/olive_jute_disc", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_FOOD)); //not edible
-        simpleItems.add(register(r,"crop/product/jute_net", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_MISC));
-        simpleItems.add(register(r,"crop/product/dirty_jute_net", new ItemMisc(Size.VERY_SMALL,Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r, "food/olive_paste", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT), CT_FOOD)); //not edible
+        simpleItems.add(register(r, "crop/product/jute_disc", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/olive_jute_disc", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT), CT_FOOD)); //not edible
+        simpleItems.add(register(r, "crop/product/jute_net", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT), CT_MISC));
+        simpleItems.add(register(r, "crop/product/dirty_jute_net", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT), CT_MISC));
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT, "kindling", "straw"), CT_MISC));

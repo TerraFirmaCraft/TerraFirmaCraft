@@ -109,7 +109,7 @@ public class TFCGuiHandler implements IGuiHandler
             case CRAFTING:
                 return new ContainerInventoryCrafting(player.inventory, player.world);
             case QUIVER:
-                return new ContainerQuiver(player.inventory,stack.getItem() instanceof ItemQuiver ? stack : player.getHeldItemOffhand());
+                return new ContainerQuiver(player.inventory, stack.getItem() instanceof ItemQuiver ? stack : player.getHeldItemOffhand());
             case CHEST:
                 if (world.getBlockState(pos).getBlock() instanceof BlockChestTFC)
                 {
@@ -222,7 +222,7 @@ public class TFCGuiHandler implements IGuiHandler
         QUIVER,
         NULL; // This is special, it is a non-null null.
 
-        private static Type[] values = values();
+        private static final Type[] values = values();
 
         @Nonnull
         public static Type valueOf(int id)

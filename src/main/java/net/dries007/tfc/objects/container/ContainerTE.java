@@ -154,6 +154,12 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
         super.addPlayerInventorySlots(playerInv, yOffset);
     }
 
+    @Override
+    public void setCapabilityListener(IContainerListener capabilityListener)
+    {
+        this.capabilityListener = capabilityListener;
+    }
+
     protected abstract void addContainerSlots();
 
     protected void detectAndSendFieldChanges()
@@ -189,12 +195,6 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
                 }
             }
         }
-    }
-
-    @Override
-    public void setCapabilityListener(IContainerListener capabilityListener)
-    {
-        this.capabilityListener = capabilityListener;
     }
 
     protected boolean transferStackOutOfContainer(ItemStack stack, int containerSlots)

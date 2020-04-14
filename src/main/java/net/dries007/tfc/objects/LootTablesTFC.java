@@ -56,7 +56,6 @@ public class LootTablesTFC
         ANIMALS_GRAN_FELINE = register("animals/gran_feline");
 
 
-
         // Loot function for skill drop multiplier
         LootFunctionManager.registerFunction(new ApplySimpleSkill.Serializer(new ResourceLocation(MOD_ID, "apply_skill")));
     }
