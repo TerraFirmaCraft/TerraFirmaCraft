@@ -206,7 +206,7 @@ config.tfc.tooltip=Settings for TerraFirmaCraft
 
 ## General Config
 config.tfc.general=General Settings
-config.tfc.general.toolip=Non side specific settings.
+config.tfc.general.tooltip=Non side specific settings.
 
 config.tfc.general.debug=Debug Mode
 config.tfc.general.debug.tooltip=Various debug options. Activates some extra wand features. Enables extra item tooltips.
@@ -464,7 +464,7 @@ config.tfc.general.nutritionRotationHungerWindow.tooltip=This is the amount of h
 ## Client Config
 
 config.tfc.client=Client Settings
-config.tfc.client.toolip=Client side only.
+config.tfc.client.tooltip=Client side only.
 
 config.tfc.client.makeWorldTypeClassicDefault=Make TFC Classic World Type Default
 config.tfc.client.makeWorldTypeClassicDefault.tooltip=Only works client side! Servers require the world type to be set to 'tfc_classic'
