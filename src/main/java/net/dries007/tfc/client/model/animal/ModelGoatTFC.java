@@ -138,20 +138,20 @@ public class ModelGoatTFC extends ModelBase
         setRotation(udders, 0F, 0F, 0F);
 
         leg1 = new ModelRenderer(this, 0, 40);
-        leg1.addBox(-1F, -4F, -1.5F, 4, 12, 4);
-        leg1.setRotationPoint(-3.6F, 16F, 7F);
+        leg1.addBox(-1F, -1F, -2F, 4, 12, 4);
+        leg1.setRotationPoint(-3.6F, 13F, 7.2F);
 
         leg2 = new ModelRenderer(this, 0, 40);
-        leg2.addBox(0F, -4F, -1.5F, 4, 12, 4);
-        leg2.setRotationPoint(0.6F, 16F, 7F);
+        leg2.addBox(0F, -1F, -2F, 4, 12, 4);
+        leg2.setRotationPoint(0.6F, 13F, 7.2F);
 
         leg3 = new ModelRenderer(this, 0, 40);
-        leg3.addBox(-1F, -4F, -1.5F, 4, 12, 4);
-        leg3.setRotationPoint(-3.6F, 16F, -3F);
+        leg3.addBox(-1F, -1F, -2F, 4, 12, 4);
+        leg3.setRotationPoint(-3.6F, 13F, -2.5F);
 
         leg4 = new ModelRenderer(this, 0, 40);
-        leg4.addBox(0F, -4F, -1.5F, 4, 12, 4);
-        leg4.setRotationPoint(0.6F, 16F, -3F);
+        leg4.addBox(0F, -1F, -2F, 4, 12, 4);
+        leg4.setRotationPoint(0.6F, 13F, -2.5F);
 
         this.head1.addChild(this.babyhorn1);
         this.head1.addChild(this.babyhorn2);
@@ -175,6 +175,13 @@ public class ModelGoatTFC extends ModelBase
 
         float percent = (float) goat.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
+        float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
+        GlStateManager.pushMatrix();
+
+        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
+        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
+        GlStateManager.translate(0.0F, 0, 0.1875f - (0.1875f * percent));
+
 
         if (goat.getGender() == EntityAnimalTFC.Gender.MALE)
         {
@@ -246,13 +253,15 @@ public class ModelGoatTFC extends ModelBase
             }
         }
 
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
-        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
-
         head1.render(par7);
         head2.render(par7);
         neck.render(par7);
+
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
+        GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
+
         body.render(par7);
         udders.render(par7);
         leg1.render(par7);
