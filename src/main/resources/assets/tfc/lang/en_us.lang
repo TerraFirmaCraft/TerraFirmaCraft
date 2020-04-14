@@ -433,6 +433,12 @@ config.tfc.general.leafMovementModifier.tooltip=Leaf block movement modifier. Lo
 config.tfc.general.berryBushMovementModifier=Berry Bush Movement Modifier
 config.tfc.general.berryBushMovementModifier.tooltip=Berry bush movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)
 
+config.tfc.general.snowMovementModifier=Snow Movement Modifier
+config.tfc.general.snowMovementModifier.tooltip=Generic snow movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down.
+
+config.tfc.general.minimumPlantMovementModifier=Minimum Plant Movement Modifier
+config.tfc.general.minimumPlantMovementModifier.tooltip=Generic movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. Note: this is a little different than other densities (leaf / berry bush), because this actually functions as a maximum slow down. Actual value is dependent on the plant and it's age.
+
 config.tfc.general.disableTorchOverride=Disable Torch Override
 config.tfc.general.disableTorchOverride.tooltip=Turn this on if you want to edit this with other mods.
 
@@ -444,6 +450,16 @@ config.tfc.general.woodenBucketWhitelist.tooltip=Allowed fluids to be picked up 
 
 config.tfc.general.drinkDelay=Drink Delay
 config.tfc.general.drinkDelay.tooltip=Delay (in ticks) for drinking water by hand
+
+config.tfc.general.blueSteelBucketWhitelist=Blue Steel Bucket Whitelist
+config.tfc.general.blueSteelBucketWhitelist.tooltip=List of fluids allowed to be picked up by blue steel bucket
+
+config.tfc.general.redSteelBucketWhitelist=Red Steel Bucket Whitelist
+config.tfc.general.redSteelBucketWhitelist.tooltip=List of fluids allowed to be picked up by red steel bucket
+
+config.tfc.general.nutritionRotationHungerWindow=Nutrition Rotation Hunger Window
+config.tfc.general.nutritionRotationHungerWindow.tooltip=This is the amount of hunger (consumed) required for a player to completely refresh their nutrition stats. In TFC, almost all foods have 4 hunger, so this is 4x [number of foods required to refresh nutrition stats]. This will update next time you consume a food.
+
 
 ## Client Config
 
@@ -529,26 +545,26 @@ config.tfc.world.livestockSpawnRarity.tooltip=This controls how spread apart liv
 config.tfc.world.livestockRespawnWeight=Livestock Respawn Weight
 config.tfc.world.livestockRespawnWeight.tooltip=This controls the chance livestock (familiarizable) animals are chosen to respawn against other animal types. Use 0 to disable livestock respawns.
 
-config.tfc.general.huntableSpawnRarity=Huntable Spawn Rarity
-config.tfc.general.huntableSpawnRarity.tooltip=This controls how spread apart huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+config.tfc.world.huntableSpawnRarity=Huntable Spawn Rarity
+config.tfc.world.huntableSpawnRarity.tooltip=This controls how spread apart huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
 
-config.tfc.general.huntableRespawnWeight=Huntable Respawn Weight
-config.tfc.general.huntableRespawnWeight.tooltip=This controls the chance huntable animals are chosen to respawn against other animal types. Use 0 to disable huntable respawns.
+config.tfc.world.huntableRespawnWeight=Huntable Respawn Weight
+config.tfc.world.huntableRespawnWeight.tooltip=This controls the chance huntable animals are chosen to respawn against other animal types. Use 0 to disable huntable respawns.
 
-config.tfc.general.predatorSpawnRarity=Predator Spawn Rarity
-config.tfc.general.predatorSpawnRarity.tooltip=This controls how spread apart predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+config.tfc.world.predatorSpawnRarity=Predator Spawn Rarity
+config.tfc.world.predatorSpawnRarity.tooltip=This controls how spread apart predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
 
-config.tfc.general.predatorRespawnWeight=Predator Respawn Weight
-config.tfc.general.predatorRespawnWeight.tooltip=This controls the chance predators are chosen to respawn against other animal types. Use 0 to disable predator respawns.
+config.tfc.world.predatorRespawnWeight=Predator Respawn Weight
+config.tfc.world.predatorRespawnWeight.tooltip=This controls the chance predators are chosen to respawn against other animal types. Use 0 to disable predator respawns.
 
-config.tfc.general.animalSpawnCount=Animal Spawn Count
-config.tfc.general.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
+config.tfc.world.animalSpawnCount=Animal Spawn Count
+config.tfc.world.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
 
-config.tfc.general.mobSpawnCount=Mob Spawn Count
-config.tfc.general.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
+config.tfc.world.mobSpawnCount=Mob Spawn Count
+config.tfc.world.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
 
-config.tfc.general.preventMobsOnSurface=Prevent Mobs On Surface
-config.tfc.general.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
+config.tfc.world.preventMobsOnSurface=Prevent Mobs On Surface
+config.tfc.world.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
 
 # Misc
 itemGroup.tfc.misc=TFC Misc

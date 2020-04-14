@@ -42,7 +42,7 @@ public class ClimateHelper
             hourOfDay = 24 - hourOfDay;
         }
         // Range: -1 - 1
-        float hourModifier = 1f - (hourOfDay / 6f);
+        float hourModifier = (hourOfDay / 6f) - 1f;
 
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
         long day = ICalendar.getTotalDays(CalendarTFC.CALENDAR_TIME.getTicks() + timeOffset);
