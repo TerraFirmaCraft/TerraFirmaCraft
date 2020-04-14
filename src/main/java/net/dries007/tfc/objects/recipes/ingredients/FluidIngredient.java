@@ -44,7 +44,7 @@ public class FluidIngredient extends Ingredient
         return output.toArray(new ItemStack[0]);
     }
 
-    private FluidStack fluid;
+    private final FluidStack fluid;
 
     public FluidIngredient(String fluidName)
     {
