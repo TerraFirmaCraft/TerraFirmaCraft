@@ -5,8 +5,8 @@
 # 以及其他很多提出过建议和意见的朋友。
 
 # Command
-tfc.command.time.usage=/timetfc [add|query|set] [参数]
-tfc.command.time.usage_expected_first_argument=在 /timetfc 后应有 [add|query|set]
+tfc.command.time.usage=/timetfc <add|query|set> [参数]
+tfc.command.time.usage_expected_first_argument=在 /timetfc 后应有 <add|query|set>
 tfc.command.time.usage_expected_second_argument_query=在 /timetfc query 后应有 [daytime|day|gametime|playerticks|calendarticks]
 tfc.command.time.usage_expected_second_argument_set=在 /timetfc set 后应有 [<刻>|day|night|monthlength <值>]
 tfc.command.time.usage_expected_second_argument_add=在 /timetfc add 后应有 [days|months|years] <值>
@@ -47,7 +47,7 @@ tfc.command.playertfc.get_water=口渴值：%.1f%%
 tfc.command.playertfc.set_water=将口渴值设置为 %.1f%%
 
 tfc.command.veins.usage=/findveins [all|<矿脉名称>] <半径> [dump|rate]
-tfc.command.veins.usage_expected_player=必须由玩家执行
+tfc.command.veins.usage_expected_player=必须由玩家使用
 tfc.command.veins.usage_first_argument_not_vein=未发现名为 %s 的矿脉
 
 
@@ -121,6 +121,9 @@ tfc.tooltip.firepit_cooking_pot_empty=空
 tfc.tooltip.firepit_cooking_pot_waiting=请添加食材
 tfc.tooltip.firepit_cooking_pot_boiling=沸腾
 tfc.tooltip.firepit_cooking_pot_servings=剩余份数：%d
+tfc.tooltip.fertilized=已受精
+tfc.tooltip.egg_hatch=将在 %d 天后孵化
+tfc.tooltip.egg_hatch_today=将在今天孵化！
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.old=这只 %s 太老了，不能给它配种。
@@ -128,8 +131,8 @@ tfc.tooltip.animal.mating.low_familiarity=这只 %s 和你的亲密度太低，�
 tfc.tooltip.animal.pregnant=这只 %s 怀孕了！
 tfc.tooltip.animal.resting=这只 %s 今天交配过了，正在休息。
 
-tfc.tooltip.animal.product.old=这只 %s 太年轻了。
-tfc.tooltip.animal.product.young=这只 %s 太老了。
+tfc.tooltip.animal.product.old=这只 %s 太老了。
+tfc.tooltip.animal.product.young=这只 %s 太年轻了。
 tfc.tooltip.animal.product.low_familiarity=这只 %s 和你的亲密度太低。
 
 tfc.tooltip.animal.product.male_milk=这是公的！
@@ -171,6 +174,8 @@ tfc.food_traits.brined_active=盐渍中
 tfc.food_traits.salted=抹盐
 tfc.food_traits.pickled=腌制
 tfc.food_traits.preserved=储存
+tfc.food_traits.charcoal_grilled=木炭烤制
+tfc.food_traits.wood_grilled=原木烤制
 tfc.tooltip.barrel_recipe_pickling=腌制中
 tfc.tooltip.barrel_recipe_brining=盐渍中
 
@@ -302,6 +307,9 @@ config.tfc.general.collapseChance.tooltip=挖掘未加工岩石引发塌方的�
 config.tfc.general.propagateCollapseChance=塌方扩散几率
 config.tfc.general.propagateCollapseChance.tooltip=塌方的方块扩散塌方的几率。受与塌方中心的距离影响。
 
+config.tfc.general.quiverSearch=箭袋搜索位置
+config.tfc.general.quiverSearch.tooltip=箭袋会从哪些地方填充弹药？可选值有 none, armor, hotbar, main
+
 config.tfc.general.slashingDamageSources=砍击伤害来源
 config.tfc.general.slashingDamageSources.tooltip=伤害来源类型将默认为砍击伤害。
 
@@ -359,7 +367,6 @@ config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=若为 true，将�
 config.tfc.general.forceNoVanillaAnimals=强制替换原版动物
 config.tfc.general.forceNoVanillaAnimals.tooltip=若为 true，在任何情况下生成的原版动物（例如：刷怪箱，刷怪蛋，等等）将被群峦传说的相应动物替换。
 
-
 config.tfc.general.peacefulDifficultyPassiveRegeneration=和平难度被动恢复
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饥饿值，口渴值？
 
@@ -379,7 +386,7 @@ config.tfc.general.foodDecayStackTime=食物腐烂叠加时间
 config.tfc.general.foodDecayStackTime.tooltip=食物初始保质期的同步值。当食物首次成为物品时，其初始保质期将四舍五入至该值最接近的倍数（以小时为单位）。
 
 config.tfc.general.foodPassiveExhaustionMultiplier=饱食度被动消耗速度
-config.tfc.general.foodPassiveExhaustionMultiplier.tooltip=饱食度被动消耗的速度。0 = 无被动消耗，更高的值 = 更快的消耗。
+config.tfc.general.foodPassiveExhaustionMultiplier.tooltip=饱食度被动消耗的速度。0 = 无被动消耗，更大的值 = 更快的消耗。
 
 config.tfc.general.oreDictIron=矿物词典 锻铁 - iron
 config.tfc.general.oreDictIron.tooltip=向锻铁物品添加 iron 的矿物词典吗？
@@ -426,8 +433,11 @@ config.tfc.general.tankCrucible.tooltip=坩埚能容纳多少金属？（单位/
 config.tfc.general.disableCobbleGenOverride=禁用群峦圆石生成修改
 config.tfc.general.disableCobbleGenOverride.tooltip=如果你希望用其他模组修改圆石生成或有某种获取原版圆石的方法，将该选项启用。
 
-config.tfc.general.leafDensity=树叶减速程度
-config.tfc.general.leafDensity.tooltip=树叶应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。
+config.tfc.general.leafDensity=树叶减速程度 
+config.tfc.general.leafDensity.tooltip=树叶应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此项 = 真正速度）
+
+config.tfc.general.berryBushMovementModifier=灌木减速程度
+config.tfc.general.berryBushMovementModifier.tooltip=浆果灌木应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此项 = 真正速度）
 
 config.tfc.general.disableTorchOverride=禁用火把覆盖
 config.tfc.general.disableTorchOverride.tooltip=如果你希望用其他模组覆盖原版火把，将该选项启用。
@@ -435,9 +445,13 @@ config.tfc.general.disableTorchOverride.tooltip=如果你希望用其他模组�
 config.tfc.general.disableTreeFelling=禁用树木倒塌
 config.tfc.general.disableTreeFelling.tooltip=如果你希望用其他模组实现树木倒塌，将该选项启用。
 
-## Client Config
 config.tfc.general.woodenBucketWhitelist=木桶液体白名单
 config.tfc.general.woodenBucketWhitelist.tooltip=允许木桶盛装的液体列表。
+
+config.tfc.general.drinkDelay=饮水用时
+config.tfc.general.drinkDelay.tooltip=通过手中物品饮水所需的时间（以刻为单位）。
+
+## Client Config
 
 config.tfc.client=客户端设置
 config.tfc.client.toolip=仅作用于客户端。
@@ -446,7 +460,7 @@ config.tfc.client.makeWorldTypeClassicDefault=将群峦传说经典生成设为�
 config.tfc.client.makeWorldTypeClassicDefault.tooltip=仅在客户端有效！服务器需要将世界类型设置为 tfc_classic。
 
 config.tfc.client.showToolClassTooltip=显示物品工具类别提示
-config.tfc.client.showToolClassTooltip.tooltip=启用高级提示时显示 ItemStack 工具类。（F3+ H）
+config.tfc.client.showToolClassTooltip.tooltip=启用高级提示时显示 ItemStack 工具类。（F3+H）
 
 config.tfc.client.showOreDictionaryTooltip=显示物品矿物词典提示
 config.tfc.client.showOreDictionaryTooltip.tooltip=启用高级提示时显示 ItemStack 矿物词典匹配。（F3+H）
@@ -501,19 +515,46 @@ config.tfc.world.looseRocksFrequency=零散石子频率
 config.tfc.world.looseRocksFrequency.tooltip=每个区块生成地表零散石子的尝试次数。包括地表矿石样本。
 
 config.tfc.world.looseRockScan=零散石子矿脉扫描
-config.tfc.world.looseRockScan.tooltip=控制生成零散石子时扫描矿脉的深度。更高的值 = 更多的矿石样本。
+config.tfc.world.looseRockScan.tooltip=控制生成零散石子时扫描矿脉的深度。更大的值 = 更多的矿石样本。
 
 config.tfc.world.rainfallSpreadFactor=降雨量分布因子
-config.tfc.world.rainfallSpreadFactor.tooltip=控制降雨量如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
+config.tfc.world.rainfallSpreadFactor.tooltip=控制降雨量如何分布。更大的值使分布更极端。警告：可能导致世界生成非常怪异。
 
 config.tfc.world.floraDiversitySpreadFactor=植物群多样性分布因子
-config.tfc.world.floraDiversitySpreadFactor.tooltip=控制植物群多样性如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
+config.tfc.world.floraDiversitySpreadFactor.tooltip=控制植物群多样性如何分布。更大的值使分布更极端。警告：可能导致世界生成非常怪异。
 
 config.tfc.world.floraDensitySpreadFactor=植物群密度分布因子
-config.tfc.world.floraDensitySpreadFactor.tooltip=控制植物群密度如何分布。更高的值使分布更极端。警告：可能导致世界生成非常怪异。
+config.tfc.world.floraDensitySpreadFactor.tooltip=控制植物群密度如何分布。更大的值使分布更极端。警告：可能导致世界生成非常怪异。
 
 config.tfc.world.enableDefaultOreGenFileOverwrite=禁用默认矿石生成文件
 config.tfc.world.enableDefaultOreGenFileOverwrite.tooltip=禁用默认的矿石生成文件盖写已经存在的矿石修改。整合包作者：禁用此项以修改矿物生成，否则你的修改将被盖写
+
+config.tfc.world.livestockSpawnRarity=牲畜生成稀有度
+config.tfc.world.livestockSpawnRarity.tooltip=控制可驯服的动物生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
+
+config.tfc.world.livestockRespawnWeight=牲畜重生成权重
+config.tfc.world.livestockRespawnWeight.tooltip=控制重生成时生成可驯服的动物而不是其他动物的可能性。设为 0 以禁用牲畜重生成。
+
+config.tfc.general.huntableSpawnRarity=猎物生成稀有度
+config.tfc.general.huntableSpawnRarity.tooltip=控制可狩猎的动物生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
+
+config.tfc.general.huntableRespawnWeight=猎物重生成权重
+config.tfc.general.huntableRespawnWeight.tooltip=控制重生成时生成可狩猎的动物而不是其他动物的可能性。设为 0 以禁用猎物重生成。
+
+config.tfc.general.predatorSpawnRarity=捕食者生成稀有度
+config.tfc.general.predatorSpawnRarity.tooltip=控制捕食者生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
+
+config.tfc.general.predatorRespawnWeight=捕食者生成权重
+config.tfc.general.predatorRespawnWeight.tooltip=控制重生成时生成捕食者而不是其他动物的可能性。设为 0 以禁用捕食者重生成。
+
+config.tfc.general.animalSpawnCount=动物生成计数
+config.tfc.general.animalSpawnCount.tooltip=控制平均每名玩家的动物上限，加载（生成）的所有种类动物 / 玩家。更大的值意味着玩家周围有更多的动物，增加了难度和肉类丰度（注意，过高的值可能对性能有负面影响）。
+
+config.tfc.general.mobSpawnCount=怪物生成计数
+config.tfc.general.mobSpawnCount.tooltip=控制平均每名玩家的怪物上限，加载（生成）的怪物 / 玩家。更大的值意味着玩家周围有更多的怪物，增加了难度（注意，过高的值可能对性能有负面影响）。
+
+config.tfc.general.preventMobsOnSurface=禁止怪物地表生成
+config.tfc.general.preventMobsOnSurface.tooltip=禁止在地表生成怪物吗？
 
 # Misc
 itemGroup.tfc.misc=群峦传说 | 杂项
@@ -2689,15 +2730,15 @@ tile.tfc.fruit_trees.sapling.peach.name=桃子幼苗
 tile.tfc.fruit_trees.sapling.plum.name=李子幼苗
 tile.tfc.fruit_trees.sapling.red_apple.name=红苹果幼苗
 
-tile.tfc.fruit_trees.leaves.banana.name=香蕉叶
-tile.tfc.fruit_trees.leaves.cherry.name=樱桃叶
-tile.tfc.fruit_trees.leaves.green_apple.name=青苹果叶
-tile.tfc.fruit_trees.leaves.lemon.name=柠檬叶
-tile.tfc.fruit_trees.leaves.olive.name=橄榄叶
-tile.tfc.fruit_trees.leaves.orange.name=橙子叶
-tile.tfc.fruit_trees.leaves.peach.name=桃子叶
-tile.tfc.fruit_trees.leaves.plum.name=李子叶
-tile.tfc.fruit_trees.leaves.red_apple.name=红苹果叶
+tile.tfc.fruit_trees.leaves.banana.name=香蕉树叶
+tile.tfc.fruit_trees.leaves.cherry.name=樱桃树叶
+tile.tfc.fruit_trees.leaves.green_apple.name=青苹果树叶
+tile.tfc.fruit_trees.leaves.lemon.name=柠檬树叶
+tile.tfc.fruit_trees.leaves.olive.name=橄榄树叶
+tile.tfc.fruit_trees.leaves.orange.name=橙子树叶
+tile.tfc.fruit_trees.leaves.peach.name=桃子树叶
+tile.tfc.fruit_trees.leaves.plum.name=李子树叶
+tile.tfc.fruit_trees.leaves.red_apple.name=红苹果树叶
 
 tile.tfc.berry_bush.blackberry.name=黑莓灌木
 tile.tfc.berry_bush.blueberry.name=蓝莓灌木
@@ -2707,9 +2748,9 @@ tile.tfc.berry_bush.cranberry.name=蔓越莓灌木
 tile.tfc.berry_bush.elderberry.name=接骨木莓灌木
 tile.tfc.berry_bush.gooseberry.name=鹅莓灌木
 tile.tfc.berry_bush.raspberry.name=树莓灌木
-tile.tfc.berry_bush.snow_berry.name=雪果灌木
+tile.tfc.berry_bush.snow_berry.name=雪莓灌木
 tile.tfc.berry_bush.strawberry.name=草莓灌木
-tile.tfc.berry_bush.wintergreen_berry.name=冬青浆果灌木
+tile.tfc.berry_bush.wintergreen_berry.name=冬青莓灌木
 
 tile.tfc.stone.button.granite.name=花岗岩按钮
 tile.tfc.stone.button.diorite.name=闪长岩按钮
@@ -3265,7 +3306,7 @@ item.tfc.metal.pick.black_bronze.name=黑铜镐
 item.tfc.metal.pick.bronze.name=青铜镐
 item.tfc.metal.pick.copper.name=铜镐
 item.tfc.metal.pick.wrought_iron.name=锻铁镐
-item.tfc.metal.pick.steel.name=钢制镐
+item.tfc.metal.pick.steel.name=钢镐
 item.tfc.metal.pick.black_steel.name=黑钢镐
 item.tfc.metal.pick.blue_steel.name=蓝钢镐
 item.tfc.metal.pick.red_steel.name=红钢镐
@@ -3463,7 +3504,7 @@ item.tfc.metal.propick.black_bronze.name=黑铜勘矿镐
 item.tfc.metal.propick.bronze.name=青铜勘矿镐
 item.tfc.metal.propick.copper.name=铜勘矿镐
 item.tfc.metal.propick.wrought_iron.name=锻铁勘矿镐
-item.tfc.metal.propick.steel.name=钢制勘矿镐
+item.tfc.metal.propick.steel.name=钢勘矿镐
 item.tfc.metal.propick.black_steel.name=黑钢勘矿镐
 item.tfc.metal.propick.blue_steel.name=蓝钢勘矿镐
 item.tfc.metal.propick.red_steel.name=红钢勘矿镐
@@ -3472,7 +3513,7 @@ item.tfc.metal.propick_head.black_bronze.name=黑铜勘矿镐头
 item.tfc.metal.propick_head.bronze.name=青铜勘矿镐头
 item.tfc.metal.propick_head.copper.name=铜勘矿镐头
 item.tfc.metal.propick_head.wrought_iron.name=锻铁勘矿镐头
-item.tfc.metal.propick_head.steel.name=钢制勘矿镐头
+item.tfc.metal.propick_head.steel.name=钢勘矿镐头
 item.tfc.metal.propick_head.black_steel.name=黑钢勘矿镐头
 item.tfc.metal.propick_head.blue_steel.name=蓝钢勘矿镐头
 item.tfc.metal.propick_head.red_steel.name=红钢勘矿镐头
@@ -3499,7 +3540,7 @@ item.tfc.metal.scythe.black_bronze.name=黑铜镰刀
 item.tfc.metal.scythe.bronze.name=青铜镰刀
 item.tfc.metal.scythe.copper.name=铜镰刀
 item.tfc.metal.scythe.wrought_iron.name=锻铁镰刀
-item.tfc.metal.scythe.steel.name=钢制镰刀
+item.tfc.metal.scythe.steel.name=钢镰刀
 item.tfc.metal.scythe.black_steel.name=黑钢镰刀
 item.tfc.metal.scythe.blue_steel.name=蓝钢镰刀
 item.tfc.metal.scythe.red_steel.name=红钢镰刀
@@ -3507,7 +3548,7 @@ item.tfc.metal.scythe_blade.bismuth_bronze.name=铋铜镰刀头
 item.tfc.metal.scythe_blade.black_bronze.name=黑铜镰刀头
 item.tfc.metal.scythe_blade.bronze.name=青铜镰刀头
 item.tfc.metal.scythe_blade.copper.name=铜镰刀头
-item.tfc.metal.scythe_blade.wrought_iron.name=铁制镰刀头
+item.tfc.metal.scythe_blade.wrought_iron.name=铁镰刀头
 item.tfc.metal.scythe_blade.steel.name=钢镰刀头
 item.tfc.metal.scythe_blade.black_steel.name=黑钢镰刀头
 item.tfc.metal.scythe_blade.blue_steel.name=蓝钢镰刀头
@@ -3747,86 +3788,86 @@ item.tfc.ceramics.fired.mold.pick_head.name=镐头模具
 item.tfc.ceramics.fired.mold.shovel_head.name=铲头模具
 item.tfc.ceramics.fired.mold.axe_head.name=斧头模具
 item.tfc.ceramics.fired.mold.hoe_head.name=锄头模具
-item.tfc.ceramics.fired.mold.chisel_head.name=凿子模具
-item.tfc.ceramics.fired.mold.sword_blade.name=剑模具
-item.tfc.ceramics.fired.mold.mace_head.name=槌模具
+item.tfc.ceramics.fired.mold.chisel_head.name=凿头模具
+item.tfc.ceramics.fired.mold.sword_blade.name=剑刃模具
+item.tfc.ceramics.fired.mold.mace_head.name=狼牙棒头模具
 item.tfc.ceramics.fired.mold.saw_blade.name=锯片模具
 item.tfc.ceramics.fired.mold.javelin_head.name=标枪头模具
 item.tfc.ceramics.fired.mold.hammer_head.name=锤头模具
-item.tfc.ceramics.fired.mold.propick_head.name=勘矿镐模具
-item.tfc.ceramics.fired.mold.knife_blade.name=刀模具
-item.tfc.ceramics.fired.mold.scythe_blade.name=镰刀模具
+item.tfc.ceramics.fired.mold.propick_head.name=勘矿镐头模具
+item.tfc.ceramics.fired.mold.knife_blade.name=刀刃模具
+item.tfc.ceramics.fired.mold.scythe_blade.name=镰刀头模具
 
 item.tfc.ceramics.fired.mold.pick_head.bronze.name=青铜镐头模具
 item.tfc.ceramics.fired.mold.shovel_head.bronze.name=青铜铲头模具
 item.tfc.ceramics.fired.mold.axe_head.bronze.name=青铜斧头模具
 item.tfc.ceramics.fired.mold.hoe_head.bronze.name=青铜锄头模具
-item.tfc.ceramics.fired.mold.chisel_head.bronze.name=青铜凿子模具
-item.tfc.ceramics.fired.mold.sword_blade.bronze.name=青铜剑模具
-item.tfc.ceramics.fired.mold.mace_head.bronze.name=青铜槌模具
+item.tfc.ceramics.fired.mold.chisel_head.bronze.name=青铜凿头模具
+item.tfc.ceramics.fired.mold.sword_blade.bronze.name=青铜剑刃模具
+item.tfc.ceramics.fired.mold.mace_head.bronze.name=青铜狼牙棒头模具
 item.tfc.ceramics.fired.mold.saw_blade.bronze.name=青铜锯片模具
 item.tfc.ceramics.fired.mold.javelin_head.bronze.name=青铜标枪头模具
 item.tfc.ceramics.fired.mold.hammer_head.bronze.name=青铜锤头模具
-item.tfc.ceramics.fired.mold.propick_head.bronze.name=青铜勘矿镐模具
-item.tfc.ceramics.fired.mold.knife_blade.bronze.name=青铜刀模具
-item.tfc.ceramics.fired.mold.scythe_blade.bronze.name=青铜镰刀模具
+item.tfc.ceramics.fired.mold.propick_head.bronze.name=青铜勘矿镐头模具
+item.tfc.ceramics.fired.mold.knife_blade.bronze.name=青铜刀刃模具
+item.tfc.ceramics.fired.mold.scythe_blade.bronze.name=青铜镰刀头模具
 
 item.tfc.ceramics.fired.mold.pick_head.black_bronze.name=黑铜镐头模具
 item.tfc.ceramics.fired.mold.shovel_head.black_bronze.name=黑铜铲头模具
 item.tfc.ceramics.fired.mold.axe_head.black_bronze.name=黑铜斧头模具
 item.tfc.ceramics.fired.mold.hoe_head.black_bronze.name=黑铜锄头模具
-item.tfc.ceramics.fired.mold.chisel_head.black_bronze.name=黑铜凿子模具
-item.tfc.ceramics.fired.mold.sword_blade.black_bronze.name=黑铜剑模具
-item.tfc.ceramics.fired.mold.mace_head.black_bronze.name=黑铜槌模具
+item.tfc.ceramics.fired.mold.chisel_head.black_bronze.name=黑铜凿头模具
+item.tfc.ceramics.fired.mold.sword_blade.black_bronze.name=黑铜剑刃模具
+item.tfc.ceramics.fired.mold.mace_head.black_bronze.name=黑铜狼牙棒头模具
 item.tfc.ceramics.fired.mold.saw_blade.black_bronze.name=黑铜锯片模具
 item.tfc.ceramics.fired.mold.javelin_head.black_bronze.name=黑铜标枪头模具
 item.tfc.ceramics.fired.mold.hammer_head.black_bronze.name=黑铜锤头模具
-item.tfc.ceramics.fired.mold.propick_head.black_bronze.name=黑铜勘矿镐模具
-item.tfc.ceramics.fired.mold.knife_blade.black_bronze.name=黑铜刀模具
-item.tfc.ceramics.fired.mold.scythe_blade.black_bronze.name=黑铜镰刀模具
+item.tfc.ceramics.fired.mold.propick_head.black_bronze.name=黑铜勘矿镐头模具
+item.tfc.ceramics.fired.mold.knife_blade.black_bronze.name=黑铜刀刃模具
+item.tfc.ceramics.fired.mold.scythe_blade.black_bronze.name=黑铜镰刀头模具
 
 item.tfc.ceramics.fired.mold.pick_head.bismuth_bronze.name=铋铜镐头模具
 item.tfc.ceramics.fired.mold.shovel_head.bismuth_bronze.name=铋铜铲头模具
 item.tfc.ceramics.fired.mold.axe_head.bismuth_bronze.name=铋铜斧头模具
 item.tfc.ceramics.fired.mold.hoe_head.bismuth_bronze.name=铋铜锄头模具
-item.tfc.ceramics.fired.mold.chisel_head.bismuth_bronze.name=铋铜凿子模具
-item.tfc.ceramics.fired.mold.sword_blade.bismuth_bronze.name=铋铜剑模具
-item.tfc.ceramics.fired.mold.mace_head.bismuth_bronze.name=铋铜槌模具
+item.tfc.ceramics.fired.mold.chisel_head.bismuth_bronze.name=铋铜凿头模具
+item.tfc.ceramics.fired.mold.sword_blade.bismuth_bronze.name=铋铜剑刃模具
+item.tfc.ceramics.fired.mold.mace_head.bismuth_bronze.name=铋铜狼牙棒头模具
 item.tfc.ceramics.fired.mold.saw_blade.bismuth_bronze.name=铋铜锯片模具
 item.tfc.ceramics.fired.mold.javelin_head.bismuth_bronze.name=铋铜标枪头模具
 item.tfc.ceramics.fired.mold.hammer_head.bismuth_bronze.name=铋铜锤头模具
-item.tfc.ceramics.fired.mold.propick_head.bismuth_bronze.name=铋铜勘矿镐模具
-item.tfc.ceramics.fired.mold.knife_blade.bismuth_bronze.name=铋铜刀模具
-item.tfc.ceramics.fired.mold.scythe_blade.bismuth_bronze.name=铋铜镰刀模具
+item.tfc.ceramics.fired.mold.propick_head.bismuth_bronze.name=铋铜勘矿镐头模具
+item.tfc.ceramics.fired.mold.knife_blade.bismuth_bronze.name=铋铜刀刃模具
+item.tfc.ceramics.fired.mold.scythe_blade.bismuth_bronze.name=铋铜镰刀头模具
 
 item.tfc.ceramics.fired.mold.pick_head.copper.name=铜镐头模具
 item.tfc.ceramics.fired.mold.shovel_head.copper.name=铜铲头模具
 item.tfc.ceramics.fired.mold.axe_head.copper.name=铜斧头模具
 item.tfc.ceramics.fired.mold.hoe_head.copper.name=铜锄头模具
-item.tfc.ceramics.fired.mold.chisel_head.copper.name=铜凿子模具
-item.tfc.ceramics.fired.mold.sword_blade.copper.name=铜剑模具
-item.tfc.ceramics.fired.mold.mace_head.copper.name=铜槌模具
+item.tfc.ceramics.fired.mold.chisel_head.copper.name=铜凿头模具
+item.tfc.ceramics.fired.mold.sword_blade.copper.name=铜剑刃模具
+item.tfc.ceramics.fired.mold.mace_head.copper.name=铜狼牙棒头模具
 item.tfc.ceramics.fired.mold.saw_blade.copper.name=铜锯片模具
 item.tfc.ceramics.fired.mold.javelin_head.copper.name=铜标枪头模具
 item.tfc.ceramics.fired.mold.hammer_head.copper.name=铜锤头模具
-item.tfc.ceramics.fired.mold.propick_head.copper.name=铜勘矿镐模具
-item.tfc.ceramics.fired.mold.knife_blade.copper.name=铜刀模具
-item.tfc.ceramics.fired.mold.scythe_blade.copper.name=铜镰刀模具
+item.tfc.ceramics.fired.mold.propick_head.copper.name=铜勘矿镐头模具
+item.tfc.ceramics.fired.mold.knife_blade.copper.name=铜刀刃模具
+item.tfc.ceramics.fired.mold.scythe_blade.copper.name=铜镰刀头模具
 
 item.tfc.ceramics.unfired.mold.ingot.name=未烧制的铸锭模具
 item.tfc.ceramics.unfired.mold.pick_head.name=未烧制的镐头模具
 item.tfc.ceramics.unfired.mold.shovel_head.name=未烧制的铲头模具
 item.tfc.ceramics.unfired.mold.axe_head.name=未烧制的斧头模具
 item.tfc.ceramics.unfired.mold.hoe_head.name=未烧制的锄头模具
-item.tfc.ceramics.unfired.mold.chisel_head.name=未烧制的凿子模具
-item.tfc.ceramics.unfired.mold.sword_blade.name=未烧制的剑模具
-item.tfc.ceramics.unfired.mold.mace_head.name=未烧制的槌模具
+item.tfc.ceramics.unfired.mold.chisel_head.name=未烧制的凿头模具
+item.tfc.ceramics.unfired.mold.sword_blade.name=未烧制的剑刃模具
+item.tfc.ceramics.unfired.mold.mace_head.name=未烧制的狼牙棒头模具
 item.tfc.ceramics.unfired.mold.saw_blade.name=未烧制的锯片模具
 item.tfc.ceramics.unfired.mold.javelin_head.name=未烧制的标枪头模具
 item.tfc.ceramics.unfired.mold.hammer_head.name=未烧制的锤头模具
-item.tfc.ceramics.unfired.mold.propick_head.name=未烧制的勘矿镐模具
-item.tfc.ceramics.unfired.mold.knife_blade.name=未烧制的刀模具
-item.tfc.ceramics.unfired.mold.scythe_blade.name=未烧制的镰刀模具
+item.tfc.ceramics.unfired.mold.propick_head.name=未烧制的勘矿镐头模具
+item.tfc.ceramics.unfired.mold.knife_blade.name=未烧制的刀刃模具
+item.tfc.ceramics.unfired.mold.scythe_blade.name=未烧制的镰刀头模具
 
 item.tfc.ceramics.fired.vessel.name=小缸
 item.tfc.ceramics.unfired.vessel.name=未烧制的小缸
@@ -3904,14 +3945,15 @@ item.tfc.food.gooseberry.name=鹅莓
 item.tfc.food.green_apple.name=青苹果
 item.tfc.food.lemon.name=柠檬
 item.tfc.food.olive.name=橄榄
+item.tfc.food.olive_paste.name=橄榄酱
 item.tfc.food.orange.name=橙子
 item.tfc.food.peach.name=桃子
 item.tfc.food.plum.name=李子
 item.tfc.food.raspberry.name=树莓
 item.tfc.food.red_apple.name=红苹果
-item.tfc.food.snow_berry.name=雪果
+item.tfc.food.snow_berry.name=雪莓
 item.tfc.food.strawberry.name=草莓
-item.tfc.food.wintergreen_berry.name=冬青浆果
+item.tfc.food.wintergreen_berry.name=冬青莓
 item.tfc.food.barley.name=大麦
 item.tfc.food.barley_grain.name=大麦粒
 item.tfc.food.barley_flour.name=大麦面粉
@@ -3946,7 +3988,7 @@ item.tfc.food.cabbage.name=卷心菜
 item.tfc.food.carrot.name=胡萝卜
 item.tfc.food.garlic.name=大蒜
 item.tfc.food.green_bean.name=绿豆
-item.tfc.food.green_bell_pepper.name=青椒
+item.tfc.food.green_bell_pepper.name=青甜椒
 item.tfc.food.onion.name=洋葱
 item.tfc.food.potato.name=马铃薯
 item.tfc.food.red_bell_pepper.name=红甜椒
@@ -3970,6 +4012,10 @@ item.tfc.food.pheasant.name=生雉鸡肉
 item.tfc.food.venison.name=生鹿肉
 item.tfc.food.rabbit.name=生兔肉
 item.tfc.food.wolf.name=生狼肉
+item.tfc.food.viande.name=生Viande
+item.tfc.food.duck.name=生鸭肉
+item.tfc.food.chevon.name=生山羊肉
+item.tfc.food.gran_feline.name=生Gran Feline Meat
 item.tfc.food.cooked_beef.name=熟牛肉
 item.tfc.food.cooked_pork.name=熟猪肉
 item.tfc.food.cooked_chicken.name=熟鸡肉
@@ -3982,6 +4028,10 @@ item.tfc.food.cooked_pheasant.name=熟雉鸡肉
 item.tfc.food.cooked_venison.name=熟鹿肉
 item.tfc.food.cooked_rabbit.name=熟兔肉
 item.tfc.food.cooked_wolf.name=熟狼肉
+item.tfc.food.cooked_viande.name=Cooked Viande
+item.tfc.food.cooked_duck.name=熟鸭肉
+item.tfc.food.cooked_chevon.name=熟山羊肉
+item.tfc.food.cooked_gran_feline.name=Cooked Gran Feline
 item.tfc.food.barley_bread_sandwich.name=大麦面包三明治
 item.tfc.food.cornbread_sandwich.name=玉米面包三明治
 item.tfc.food.rye_bread_sandwich.name=黑麦面包三明治
@@ -4024,6 +4074,10 @@ item.tfc.crop.seeds.melon.name=西瓜种子
 
 item.tfc.crop.product.jute.name=黄麻
 item.tfc.crop.product.jute_fiber.name=黄麻纤维
+item.tfc.crop.product.dirty_jute_net.name=脏黄麻网
+item.tfc.crop.product.jute_net.name=黄麻网
+item.tfc.crop.product.jute_disc.name=黄麻 Disc
+item.tfc.crop.product.olive_jute_disc.name=Olive 黄麻 Disc
 item.tfc.crop.product.burlap_cloth.name=粗麻布
 
 item.tfc.bloom.unrefined.unknown.name=生方坯
@@ -4054,6 +4108,16 @@ entity.wolftfc.name=狼
 entity.horsetfc.name=马
 entity.donkeytfc.name=驴
 entity.muletfc.name=骡
+entity.parrottfc.name=鹦鹉
+entity.llamatfc.name=Llama
+entity.polarbeartfc.name=北极熊
+entity.alpacatfc.name=Alpaca
+entity.ducktfc.name=鸭
+entity.goattfc.name=山羊
+entity.panthertfc.name=黑豹
+entity.ocelottfc.name=豹猫
+entity.sabertoothtfc.name=剑齿虎
+entity.cameltfc.name=骆驼
 
 #TFC death messages
 death.attack.dehydration=%1$s 死于脱水
@@ -4072,10 +4136,12 @@ tfc.animal.pigtfc.male=公猪
 tfc.animal.pigtfc.female=母猪
 tfc.animal.chickentfc.male=公鸡
 tfc.animal.chickentfc.female=母鸡
+tfc.animal.deertfc.male=公鹿
+tfc.animal.deertfc.female=母鹿
 tfc.animal.pheasanttfc.male=公雉鸡
 tfc.animal.pheasanttfc.female=母雉鸡
-tfc.animal.rabbittfc.male=公兔子
-tfc.animal.rabbittfc.female=母兔子
+tfc.animal.rabbittfc.male=雄兔子
+tfc.animal.rabbittfc.female=雌兔子
 tfc.animal.wolftfc.male=公狼
 tfc.animal.wolftfc.female=母狼
 tfc.animal.horsetfc.male=公马
@@ -4084,6 +4150,28 @@ tfc.animal.donkeytfc.male=公驴
 tfc.animal.donkeytfc.female=母驴
 tfc.animal.muletfc.male=公骡
 tfc.animal.muletfc.female=母骡
+tfc.animal.parrottfc.male=雄鹦鹉
+tfc.animal.parrottfc.female=雌鹦鹉
+tfc.animal.llamatfc.male=Llama♂
+tfc.animal.llamatfc.female=Llama♀
+tfc.animal.polarbeartfc.male=公北极熊
+tfc.animal.poarbeartfc.female=母北极熊
+tfc.animal.alpacatfc.male=Alpaca♂
+tfc.animal.alpacatfc.female=Alpaca♀
+tfc.animal.ducktfc.male=公鸭
+tfc.animal.ducktfc.female=母鸭
+tfc.animal.goattfc.male=公山羊
+tfc.animal.goattfc.female=母山羊
+tfc.animal.ocelottfc.male=公豹猫
+tfc.animal.ocelottfc.female=母豹猫
+tfc.animal.cattfc.male=公猫
+tfc.animal.cattfc.female=母猫
+tfc.animal.panthertfc.male=公黑豹
+tfc.animal.panthertfc.female=母黑豹
+tfc.animal.sabertoothtfc.male=公剑齿虎
+tfc.animal.sabertoothtfc.female=母剑齿虎
+tfc.animal.cameltfc.male=公骆驼
+tfc.animal.cameltfc.female=母骆驼
 
 # Sound Events
 tfc.item.ceramicbreak=陶器：被破坏
@@ -4109,6 +4197,31 @@ tfc.animal.pheasant.say=雉鸡：咯咯叫
 tfc.animal.pheasant.chick.say=幼雉鸡：啾~
 tfc.animal.pheasant.hurt=雉鸡：受伤
 tfc.animal.pheasant.death=雉鸡：死亡
+tfc.animal.alpaca.say=Alpaca bleats
+tfc.animal.alpaca.cry=Alpaca bleats
+tfc.animal.alpaca.hurt=Alpaca hurt
+tfc.animal.alpaca.death=Alpaca dies
+tfc.animal.alpaca.step=Footsteps
+tfc.animal.duck.say=Duck clucks
+tfc.animal.duck.cry=Duck clucks
+tfc.animal.duck.hurt=Duck hurt
+tfc.animal.duck.death=Duck dies
+tfc.animal.goat.say=Goat baahs
+tfc.animal.goat.cry=Goat baahs
+tfc.animal.goat.hurt=Goat hurt
+tfc.animal.goat.death=Goat dies
+tfc.animal.camel.say=Camel grunts
+tfc.animal.camel.cry=Camel cries
+tfc.animal.camel.hurt=Camel hurt
+tfc.animal.camel.death=Camel dies
+tfc.animal.panther.say=Panther grunts
+tfc.animal.panther.cry=Panther cries
+tfc.animal.panther.hurt=Panther hurt
+tfc.animal.panther.death=Panther dies
+tfc.animal.sabertooth.say=Saber Tooth grunts
+tfc.animal.sabertooth.cry=Saber Tooth cries
+tfc.animal.sabertooth.hurt=Saber Tooth hurt
+tfc.animal.sabertooth.death=Saber Tooth dies
 tfc.animal.cricket=蟋蟀叫
 tfc.animal.frog=蛙鸣
 
@@ -4118,7 +4231,7 @@ tfc.animal.frog=蛙鸣
 # Stone Age
 advancements.tfc.main.root.title=群峦传说
 advancements.tfc.main.root.description=群峦传说主进度线。
-advancements.tfc.main.pick_rock.title=确凿无疑是块岩石
+advancements.tfc.main.pick_rock.title=一起捡石子
 advancements.tfc.main.pick_rock.description=从地上捡起一块石子。
 advancements.tfc.main.stone_age.title=石器时代！
 advancements.tfc.main.stone_age.description=用石子互相敲击制作工具，进入石器时代。
@@ -4126,9 +4239,9 @@ advancements.tfc.main.get_straw.title=修剪草坪
 advancements.tfc.main.get_straw.description=用刀或镰刀割些草，获得干草。
 advancements.tfc.main.logging.title=木材！
 advancements.tfc.main.logging.description=用斧砍倒一棵树。
-advancements.tfc.main.firestarter.title=火花
+advancements.tfc.main.firestarter.title=摩擦取火
 advancements.tfc.main.firestarter.description=用两根木棍制作起火器
-advancements.tfc.main.campfire.title=篝火
+advancements.tfc.main.campfire.title=篝火派对
 advancements.tfc.main.campfire.description=把一根原木和三根木棍扔到地上，然后点燃它们。
 advancements.tfc.main.charcoal.title=更好的燃料
 advancements.tfc.main.charcoal.description=挖个坑，堆满原木，引燃，之后密封。
@@ -4154,8 +4267,8 @@ advancements.tfc.main.make_barrel.description=锯一些木材，做一个大桶�
 advancements.tfc.main.make_quern.title=苦差事
 advancements.tfc.main.make_quern.description=制作一座手推磨。
 advancements.tfc.main.get_flux.title=千锤万凿出深山
-advancements.tfc.main.get_flux.description=找到助焊剂。
-advancements.tfc.main.metal_anvil.title=锵锵！
+advancements.tfc.main.get_flux.description=生产助焊剂。
+advancements.tfc.main.metal_anvil.title=锵锵~
 advancements.tfc.main.metal_anvil.description=焊接铜双锭，制作铜砧。
 advancements.tfc.main.metal_sheet.title=降维打击
 advancements.tfc.main.metal_sheet.description=把金属双锭敲成金属薄板。
@@ -4198,7 +4311,7 @@ advancements.tfc.main.get_red_steel.title=红钢
 advancements.tfc.main.get_red_steel.description=获得红钢锭。
 advancements.tfc.main.blue_steel_bucket.title=小心烫口
 advancements.tfc.main.blue_steel_bucket.description=制作蓝钢桶。
-advancements.tfc.main.red_steel_bucket.title=无尽之水
+advancements.tfc.main.red_steel_bucket.title=水源
 advancements.tfc.main.red_steel_bucket.description=制作红钢桶。
 advancements.tfc.main.ultimate_goal.title=就这？！
 advancements.tfc.main.ultimate_goal.description=用红钢桶和蓝钢桶合成原版桶。
@@ -4207,11 +4320,11 @@ advancements.tfc.main.ultimate_goal.description=用红钢桶和蓝钢桶合成�
 #Farming and Animals
 advancements.tfc.world.root.title=群峦传说 世界
 advancements.tfc.world.root.description=探索群峦传说的世界，获取物资。
-advancements.tfc.world.gatherer.title=播种
+advancements.tfc.world.gatherer.title=收集种子
 advancements.tfc.world.gatherer.description=从野生作物中获取种子。
-advancements.tfc.world.farming.title=收获
+advancements.tfc.world.farming.title=收获作物
 advancements.tfc.world.farming.description=收获成熟的作物。
-advancements.tfc.world.baker.title=烘焙
+advancements.tfc.world.baker.title=烘焙师
 advancements.tfc.world.baker.description=烤出一条面包。
 advancements.tfc.world.botanist.title=神农氏
 advancements.tfc.world.botanist.description=获得所有作物的种子。
@@ -4233,7 +4346,7 @@ advancements.tfc.world.kill_bear.title=战斗民族
 advancements.tfc.world.kill_bear.description=杀死一头棕熊。
 # Minerals
 advancements.tfc.world.pick_nugget.title=五色石
-advancements.tfc.world.pick_nugget.description=从地上捡起一块矿石。
+advancements.tfc.world.pick_nugget.description=这块石头看起来似乎有点特别。
 advancements.tfc.world.make_propick.title=大地回声
 advancements.tfc.world.make_propick.description=制作一把勘矿镐。
 advancements.tfc.world.geologist.title=岩石学家
