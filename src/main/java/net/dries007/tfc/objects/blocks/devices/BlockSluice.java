@@ -40,6 +40,7 @@ import net.dries007.tfc.util.block.BoundingBox;
 @MethodsReturnNonnullByDefault
 public class BlockSluice extends BlockHorizontal implements IItemSize
 {
+    public static final PropertyBool UPPER = PropertyBool.create("upper"); //true if this is the upper half
     // From bottom to top, 1 step (4/16 block) at a time
     // [0=lower half, 1=upper half][step]
     private static final BoundingBox[][] BOXES =
@@ -57,10 +58,7 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
                 new BoundingBox(0.5D, 0.5D, 0.875D, 0.5D, 0.5D, 0.125D, EnumFacing.SOUTH)
             }
         };
-
     private static final AxisAlignedBB LOWER_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 0.5D, 1D);
-
-    public static final PropertyBool UPPER = PropertyBool.create("upper"); //true if this is the upper half
 
     public BlockSluice()
     {
@@ -104,6 +102,35 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
     }
 
     @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        if (state.getValue(UPPER))
+        {
+            return FULL_BLOCK_AABB;
+        }
+        else
+        {
+            return LOWER_AABB;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
+    {
+        EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+        boolean upper = world.getBlockState(pos).getValue(UPPER);
+
+        BoundingBox[] part = BOXES[upper ? 1 : 0];
+
+        for (int i = 0; i < 4; i++)
+        {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, part[i].getAABB(facing));
+        }
+    }
+
+    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -142,35 +169,6 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return state.getValue(UPPER) ? Item.getItemFromBlock(this) : Items.AIR;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        if (state.getValue(UPPER))
-        {
-            return FULL_BLOCK_AABB;
-        }
-        else
-        {
-            return LOWER_AABB;
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
-    {
-        EnumFacing facing = world.getBlockState(pos).getValue(FACING);
-        boolean upper = world.getBlockState(pos).getValue(UPPER);
-
-        BoundingBox[] part = BOXES[upper ? 1 : 0];
-
-        for (int i = 0; i < 4; i++)
-        {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, part[i].getAABB(facing));
-        }
     }
 
     @Override

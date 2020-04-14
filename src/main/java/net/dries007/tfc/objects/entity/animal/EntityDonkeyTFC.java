@@ -266,6 +266,12 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     }
 
     @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
+    }
+
+    @Override
     protected void mountTo(EntityPlayer player)
     {
         if (!this.isTame() && !this.getLeashed())
@@ -273,12 +279,6 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
             return;
         }
         super.mountTo(player);
-    }
-
-    @Override
-    protected boolean handleEating(EntityPlayer player, ItemStack stack)
-    {
-        return false; // Stop exploits
     }
 
     @Override

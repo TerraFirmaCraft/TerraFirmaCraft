@@ -71,7 +71,9 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     public static final float COOKING_POT_BOILING_TEMPERATURE = Heat.VERY_HOT.getMin();
 
     private final IItemHandler[] inventoryWrappers;
-
+    private final Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
+    // Grill
+    private final HeatRecipe[] cachedGrillRecipes;
     private HeatRecipe cachedRecipe;
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
@@ -79,11 +81,8 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     private int airTicks; // Ticks of bellows provided air remaining
     private float burnTemperature; // Temperature provided from the current item of fuel
     private long lastPlayerTick; // Last player tick this forge was ticked (for purposes of catching up)
-    private final Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
-
     // Attachments
     private ItemStack attachedItemStack;
-
     // Cooking Pot
     private CookingPotStage cookingPotStage;
     private int boilingTicks;
@@ -91,9 +90,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     private int soupServings;
     private Nutrient soupNutrient;
     private long soupCreationDate;
-
-    // Grill
-    private final HeatRecipe[] cachedGrillRecipes;
 
     public TEFirePit()
     {
@@ -522,13 +518,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         return slot == SLOT_OUTPUT_1 || slot == SLOT_OUTPUT_2 ? 64 : 1;
     }
 
-    public void onCreate(ItemStack log)
-    {
-        Fuel fuel = FuelManager.getFuel(log);
-        burnTicks = fuel.getAmount();
-        burnTemperature = fuel.getTemperature();
-    }
-
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
@@ -560,6 +549,13 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             default: // Other fuel slots + output slots
                 return false;
         }
+    }
+
+    public void onCreate(ItemStack log)
+    {
+        Fuel fuel = FuelManager.getFuel(log);
+        burnTicks = fuel.getAmount();
+        burnTemperature = fuel.getTemperature();
     }
 
     public int getSoupServings()

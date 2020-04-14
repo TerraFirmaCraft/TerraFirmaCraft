@@ -41,9 +41,8 @@ import net.dries007.tfc.api.types.RockCategory;
 import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.entity.projectile.EntityThrownJavelin;
-import net.dries007.tfc.util.OreDictionaryHelper;
-
 import net.dries007.tfc.objects.items.ItemQuiver;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault

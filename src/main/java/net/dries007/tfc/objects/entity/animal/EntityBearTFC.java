@@ -135,6 +135,22 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
         return DAYS_TO_FULL_GESTATION;
     }
 
+    public boolean isStanding()
+    {
+        return this.dataManager.get(IS_STANDING);
+    }
+
+    public void setStanding(boolean standing)
+    {
+        this.dataManager.set(IS_STANDING, standing);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getStandingAnimationScale(float p_189795_1_)
+    {
+        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * p_189795_1_) / 6.0F;
+    }
+
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
@@ -163,49 +179,10 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
         return flag;
     }
 
-    public boolean isStanding()
-    {
-        return this.dataManager.get(IS_STANDING);
-    }
-
-    @Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
-    }
-
-    @Override
-    protected SoundEvent getAmbientSound()
-    {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY;
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable()
-    {
-        return LootTablesTFC.ANIMALS_BEAR;
-    }
-
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
-    }
-
-    public void setStanding(boolean standing)
-    {
-        this.dataManager.set(IS_STANDING, standing);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public float getStandingAnimationScale(float p_189795_1_)
-    {
-        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * p_189795_1_) / 6.0F;
     }
 
     @Override
@@ -218,6 +195,17 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+    }
+
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
     }
 
     public void onUpdate()
@@ -243,6 +231,18 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
 
     }
 
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY;
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return LootTablesTFC.ANIMALS_BEAR;
+    }
+
     protected void playWarningSound()
     {
         if (this.warningSoundTicks <= 0)
@@ -266,13 +266,6 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
             super(EntityBearTFC.this, 1.25D, true);
         }
 
-        @Override
-        public void resetTask()
-        {
-            EntityBearTFC.this.setStanding(false);
-            super.resetTask();
-        }
-
         /*
          * Adults are aggressive (at day), children won't attack **UNLESS** hit by target
          */
@@ -280,6 +273,13 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
         public boolean shouldExecute()
         {
             return ((((EntityAnimalTFC) this.attacker).getAge() != IAnimalTFC.Age.CHILD && this.attacker.world.isDaytime()) || this.attacker.getRevengeTarget() != null) && super.shouldExecute();
+        }
+
+        @Override
+        public void resetTask()
+        {
+            EntityBearTFC.this.setStanding(false);
+            super.resetTask();
         }
 
         @Override

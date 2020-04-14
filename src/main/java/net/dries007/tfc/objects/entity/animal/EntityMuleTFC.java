@@ -78,9 +78,6 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     }
 
     @Override
-    public boolean isFertilized() { return false; }
-
-    @Override
     public Gender getGender()
     {
         return Gender.valueOf(this.dataManager.get(GENDER));
@@ -125,10 +122,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     }
 
     @Override
-    protected boolean handleEating(EntityPlayer player, ItemStack stack)
-    {
-        return false; // Stop exploits
-    }
+    public boolean isFertilized() { return false; }
 
     @Override
     public void setFertilized(boolean value)
@@ -230,6 +224,12 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     {
         double ageScale = 1 / (2.0D - getPercentToAdulthood());
         this.setScale((float) ageScale);
+    }
+
+    @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
     }
 
     @Override
