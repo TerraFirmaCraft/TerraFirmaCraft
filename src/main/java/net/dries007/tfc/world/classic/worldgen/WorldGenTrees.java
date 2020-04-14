@@ -7,6 +7,7 @@ package net.dries007.tfc.world.classic.worldgen;
 
 import java.util.*;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -30,7 +31,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
 public class WorldGenTrees implements IWorldGenerator
 {
-
     public static void generateLooseSticks(Random rand, int chunkX, int chunkZ, World world, int amount)
     {
         for (int i = 0; i < amount; i++)
@@ -42,7 +42,8 @@ public class WorldGenTrees implements IWorldGenerator
             // Use air, so it doesn't replace other replaceable world gen
             // This matches the check in BlockPlacedItemFlat for if the block can stay
             // Also, only add on soil, since this is called by the world regen handler later
-            if (world.isAirBlock(pos) && world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
+            IBlockState stateDown = world.getBlockState(pos.down());
+            if (world.isAirBlock(pos) && stateDown.isSideSolid(world, pos.down(), EnumFacing.UP) && BlocksTFC.isGround(stateDown))
             {
                 world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
                 TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
@@ -149,5 +150,4 @@ public class WorldGenTrees implements IWorldGenerator
         }
         return trees.get(1 + random.nextInt(trees.size() - 1));
     }
-
 }
