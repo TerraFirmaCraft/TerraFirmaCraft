@@ -419,17 +419,17 @@
       "tfc:lionhurt2"
     ]
   },
-  "animal.lion.roar": {
+  "animal.lion.cry": {
     "category": "ambient",
-    "subtitle": "tfc.animal.lion.roar",
+    "subtitle": "tfc.animal.lion.cry",
     "sounds": [
       "tfc:lionroarshort",
       "tfc:lionroarlong"
     ]
   },
-  "animal.lion.ambient": {
+  "animal.lion.say": {
     "category": "ambient",
-    "subtitle": "tfc.animal.lion.ambient",
+    "subtitle": "tfc.animal.lion.say",
     "sounds": [
       "tfc:lionambient"
     ]

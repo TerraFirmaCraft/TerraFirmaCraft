@@ -170,11 +170,12 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected void initEntityAI()
     {
+        EntityAIWander wander = new EntityAIWanderHuntArea(this, 1.0D);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAILeapAtTarget(this, 0.5F));
-        this.tasks.addTask(2, new EntityAILionAttack());
+        this.tasks.addTask(2, new EntityAILionAttack().setWanderAI(wander));
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
-        this.tasks.addTask(5, new EntityAIWanderHuntArea(this, 1.0D));
+        this.tasks.addTask(5, wander);
         this.tasks.addTask(7, new EntityAILookIdle(this));
 
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
@@ -194,7 +195,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_LION_ROAR : TFCSounds.ANIMAL_LION_AMBIENT;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_LION_CRY : TFCSounds.ANIMAL_LION_SAY;
     }
 
     @Nullable
@@ -216,7 +217,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // Close enough
     }
 
     /**
