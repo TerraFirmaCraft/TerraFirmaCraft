@@ -404,6 +404,36 @@
       "tfc:pheasantdeath1"
     ]
   },
+  "animal.lion.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.death",
+    "sounds": [
+      "tfc:liondeath"
+    ]
+  },
+  "animal.lion.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.hurt",
+    "sounds": [
+      "tfc:lionhurt1",
+      "tfc:lionhurt2"
+    ]
+  },
+  "animal.lion.roar": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.roar",
+    "sounds": [
+      "tfc:lionroarshort",
+      "tfc:lionroarlong"
+    ]
+  },
+  "animal.lion.ambient": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.ambient",
+    "sounds": [
+      "tfc:lionambient"
+    ]
+  },
   "animal.cricket": {
     "category": "ambient",
     "subtitle": "tfc.animal.cricket",
