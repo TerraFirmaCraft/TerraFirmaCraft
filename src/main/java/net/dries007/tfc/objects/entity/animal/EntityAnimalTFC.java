@@ -10,7 +10,6 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockIce;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -32,6 +31,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -209,7 +209,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
             && !this.world.containsAnyLiquid(getEntityBoundingBox())
-            && !(this.world.getBlockState(this.getPosition().down()).getBlock() instanceof BlockIce);
+            && BlocksTFC.isGround(this.world.getBlockState(this.getPosition().down()));
     }
 
     @Override
