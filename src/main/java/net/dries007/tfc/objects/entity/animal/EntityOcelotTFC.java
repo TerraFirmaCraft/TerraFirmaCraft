@@ -11,6 +11,7 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.BlockIce;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -354,7 +355,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_WOLF; // todo
+        return LootTablesTFC.ANIMALS_OCELOT;
     }
 
     @Override
@@ -485,7 +486,8 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && !(this.world.getBlockState(this.getPosition().down()).getBlock() instanceof BlockIce);
     }
 
     @Nonnull

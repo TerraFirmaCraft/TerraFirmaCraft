@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.BlockIce;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -191,7 +192,8 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && !(this.world.getBlockState(this.getPosition().down()).getBlock() instanceof BlockIce);
     }
 
     @Override
@@ -249,7 +251,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_PHEASANT; // todo
+        return LootTablesTFC.ANIMALS_PARROT;
     }
 
     @Override
