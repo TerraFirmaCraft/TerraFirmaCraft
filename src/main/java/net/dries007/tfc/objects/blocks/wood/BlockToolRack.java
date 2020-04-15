@@ -7,9 +7,9 @@ package net.dries007.tfc.objects.blocks.wood;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.BlockFaceShape;
@@ -39,14 +39,15 @@ import net.dries007.tfc.util.Helpers;
 import static net.minecraft.block.BlockHorizontal.FACING;
 import static net.minecraft.block.material.Material.WOOD;
 
-public class BlockToolRack extends BlockContainer implements IItemSize
+@ParametersAreNonnullByDefault
+public class BlockToolRack extends Block implements IItemSize
 {
     protected static final AxisAlignedBB RACK_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
     protected static final AxisAlignedBB RACK_WEST_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB RACK_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
     protected static final AxisAlignedBB RACK_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
 
-    public Tree wood;
+    public final Tree wood;
 
     public BlockToolRack(Tree wood)
     {
@@ -73,11 +74,32 @@ public class BlockToolRack extends BlockContainer implements IItemSize
         return Weight.VERY_HEAVY; // Stacksize = 1
     }
 
-    @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        return new TEToolRack();
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (!Helpers.canHangAt(worldIn, pos, state.getValue(FACING)))
+        {
+            dropBlockAsItem(worldIn, pos, state, 0);
+            TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+            if (te != null)
+            {
+                te.onBreakBlock();
+            }
+            worldIn.setBlockToAir(pos);
+        }
+    }
+
+    @Override
+    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
+    {
+        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+        if (te != null)
+        {
+            te.onBreakBlock();
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -136,15 +158,9 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public boolean hasTileEntity(IBlockState state)
     {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (Helpers.canHangAt(worldIn, pos, state.getValue(FACING))) return;
-        dropBlockAsItem(worldIn, pos, state, 0);
-        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        if (te != null) te.onBreakBlock();
-        worldIn.setBlockToAir(pos);
+        return true;
     }
 
     @Override
@@ -177,24 +193,11 @@ public class BlockToolRack extends BlockContainer implements IItemSize
         return new BlockStateContainer(this, FACING);
     }
 
+    @Nullable
     @Override
-    @Nonnull
-    public ItemStack getPickBlock(@Nonnull IBlockState state, @Nullable RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        if (target != null)
-        {
-            Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
-            TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
-            if (te != null)
-            {
-                ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
-                if (!item.isEmpty())
-                {
-                    return item;
-                }
-            }
-        }
-        return super.getPickBlock(state, target, world, pos, player);
+        return new TEToolRack();
     }
 
     public int getSlotFromPos(IBlockState state, float x, float y, float z)
@@ -214,10 +217,23 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     }
 
     @Override
-    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
+    @Nonnull
+    @SuppressWarnings("ConstantConditions")
+    public ItemStack getPickBlock(IBlockState state, @Nullable RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        if (te != null) te.onBreakBlock();
-        super.breakBlock(worldIn, pos, state);
+        if (target != null)
+        {
+            Vec3d vec = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
+            TEToolRack te = Helpers.getTE(world, pos, TEToolRack.class);
+            if (te != null)
+            {
+                ItemStack item = te.getItems().get(getSlotFromPos(state, (float) vec.x, (float) vec.y, (float) vec.z));
+                if (!item.isEmpty())
+                {
+                    return item;
+                }
+            }
+        }
+        return super.getPickBlock(state, target, world, pos, player);
     }
 }
