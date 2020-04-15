@@ -128,10 +128,10 @@ public class TFCSounds
     public static final SoundEvent ANIMAL_LION_DEATH = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.lion.hurt")
     public static final SoundEvent ANIMAL_LION_HURT = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.lion.roar")
-    public static final SoundEvent ANIMAL_LION_ROAR = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.lion.ambient")
-    public static final SoundEvent ANIMAL_LION_AMBIENT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.lion.cry")
+    public static final SoundEvent ANIMAL_LION_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.lion.say")
+    public static final SoundEvent ANIMAL_LION_SAY = getNull();
 
     // These are static initialized because we need a custom sound type which uses the sounds before initialization
     private static final SoundEvent CHARCOAL_PILE_BREAK = createSoundEvent("block.charcoal.break");
@@ -200,7 +200,11 @@ public class TFCSounds
             createSoundEvent("animal.sabertooth.cry"),
             createSoundEvent("animal.sabertooth.say"),
             createSoundEvent("animal.sabertooth.hurt"),
-            createSoundEvent("animal.sabertooth.death")
+            createSoundEvent("animal.sabertooth.death"),
+            createSoundEvent("animal.lion.cry"),
+            createSoundEvent("animal.lion.say"),
+            createSoundEvent("animal.lion.hurt"),
+            createSoundEvent("animal.lion.death")
         );
     }
 

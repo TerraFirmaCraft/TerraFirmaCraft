@@ -4113,6 +4113,7 @@ entity.panthertfc.name=Black Panther
 entity.ocelottfc.name=Ocelot
 entity.sabertoothtfc.name=Saber Tooth
 entity.cameltfc.name=Camel
+entity.liontfc.name=Lion
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
@@ -4167,6 +4168,8 @@ tfc.animal.sabertoothtfc.male=Saber Tooth♂
 tfc.animal.sabertoothtfc.female=Saber Tooth♀
 tfc.animal.cameltfc.male=Camel♂
 tfc.animal.cameltfc.female=Camel♀
+tfc.animal.liontfc.male=Lion
+tfc.animal.liontfc.female=Lioness
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic item breaks
@@ -4217,6 +4220,10 @@ tfc.animal.sabertooth.say=Saber Tooth grunts
 tfc.animal.sabertooth.cry=Saber Tooth cries
 tfc.animal.sabertooth.hurt=Saber Tooth hurt
 tfc.animal.sabertooth.death=Saber Tooth dies
+tfc.animal.lion.say=Lion grunts
+tfc.animal.lion.cry=Lion roars
+tfc.animal.lion.hurt=Lion hurt
+tfc.animal.lion.death=Lion dies
 tfc.animal.cricket=Crickets
 tfc.animal.frog=Frogs
 
