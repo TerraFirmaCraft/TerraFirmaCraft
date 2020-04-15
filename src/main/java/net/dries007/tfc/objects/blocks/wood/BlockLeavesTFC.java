@@ -95,7 +95,7 @@ public class BlockLeavesTFC extends BlockLeaves
         if ((!(entityIn instanceof EntityPlayer) || !((EntityPlayer) entityIn).isCreative()))
         {
             // Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
-            entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
+            entityIn.fall((entityIn.fallDistance - 6), 1.0F);
             entityIn.fallDistance = 0;
             // Entity motion is reduced by leaves.
             entityIn.motionX *= ConfigTFC.GENERAL.leafMovementModifier;

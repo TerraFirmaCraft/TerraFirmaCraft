@@ -60,4 +60,14 @@ public abstract class TEBase extends TileEntity
     {
         return oldState.getBlock() != newSate.getBlock();
     }
+
+    /**
+     * Marks the TE for syncing. Will send all normal NBT saved data to clients.
+     */
+    public void markForSync()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
+    }
 }

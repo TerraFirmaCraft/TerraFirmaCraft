@@ -34,6 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
@@ -169,17 +170,20 @@ public class BlockFruitTreeLeaves extends BlockLeaves
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        //Copy-paste from BlockLeavesTFC
-        //Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
-        entityIn.fall((entityIn.fallDistance - 6), 1.0F); // TODO: 17/4/18 Balance fall distance reduction.
-        entityIn.fallDistance = 0;
-        //Entity motion is reduced by leaves.
-        entityIn.motionX *= 0.1D;
-        if (entityIn.motionY < 0)
+        // Duplicated from BlockLeavesTFC#onEntityCollision
+        if ((!(entityIn instanceof EntityPlayer) || !((EntityPlayer) entityIn).isCreative()))
         {
-            entityIn.motionY *= 0.1D;
+            // Player will take damage when falling through leaves if fall is over 9 blocks, fall damage is then set to 0.
+            entityIn.fall((entityIn.fallDistance - 6), 1.0F);
+            entityIn.fallDistance = 0;
+            // Entity motion is reduced by leaves.
+            entityIn.motionX *= ConfigTFC.GENERAL.leafMovementModifier;
+            if (entityIn.motionY < 0)
+            {
+                entityIn.motionY *= ConfigTFC.GENERAL.leafMovementModifier;
+            }
+            entityIn.motionZ *= ConfigTFC.GENERAL.leafMovementModifier;
         }
-        entityIn.motionZ *= 0.1D;
     }
 
     @Override

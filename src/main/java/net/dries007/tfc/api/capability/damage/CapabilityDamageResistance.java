@@ -28,7 +28,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.Constants.GSON;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -36,7 +35,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class CapabilityDamageResistance
 {
     @CapabilityInject(IDamageResistance.class)
-    public static final Capability<IDamageResistance> CAPABILITY = Helpers.getNull();
+    public static Capability<IDamageResistance> CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "damage_resistance");
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ARMOR = new HashMap<>(); //Used inside CT, set custom IDamageResistance for armor items outside TFC

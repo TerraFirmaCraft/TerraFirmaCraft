@@ -22,14 +22,13 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityItemHeat
 {
     @CapabilityInject(IItemHeat.class)
-    public static final Capability<IItemHeat> ITEM_HEAT_CAPABILITY = Helpers.getNull();
+    public static Capability<IItemHeat> ITEM_HEAT_CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemHeat for items outside TFC

@@ -15,7 +15,6 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.api.capability.DumbStorage;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.skills.Skill;
 import net.dries007.tfc.util.skills.SkillType;
 
@@ -25,7 +24,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class CapabilityPlayerData
 {
     @CapabilityInject(IPlayerData.class)
-    public static final Capability<IPlayerData> CAPABILITY = Helpers.getNull();
+    public static Capability<IPlayerData> CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "player_skills");
 
     public static void preInit()
