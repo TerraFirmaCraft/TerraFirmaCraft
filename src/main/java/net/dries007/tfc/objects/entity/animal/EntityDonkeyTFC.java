@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.BlockIce;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -199,7 +200,8 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && !(this.world.getBlockState(this.getPosition().down()).getBlock() instanceof BlockIce);
     }
 
     @Override

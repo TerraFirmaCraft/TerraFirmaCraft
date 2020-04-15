@@ -283,7 +283,7 @@
     "category": "ambient",
     "subtitle": "tfc.animal.camel.say",
     "sounds": [
-      "tfc:camel",
+      "tfc:camel1",
       "tfc:camel2",
       "tfc:camel3"
     ]
@@ -316,7 +316,7 @@
     "category": "ambient",
     "subtitle": "tfc.animal.panther.say",
     "sounds": [
-      "tfc:pantherl",
+      "tfc:panther1",
       "tfc:panther2",
       "tfc:panther3"
     ]

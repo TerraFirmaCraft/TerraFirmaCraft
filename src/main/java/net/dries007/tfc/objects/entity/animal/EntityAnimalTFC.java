@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.BlockIce;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -207,7 +208,8 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && !(this.world.getBlockState(this.getPosition().down()).getBlock() instanceof BlockIce);
     }
 
     @Override

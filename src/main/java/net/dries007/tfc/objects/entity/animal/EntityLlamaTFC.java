@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.BlockIce;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -215,7 +216,8 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && !(this.world.getBlockState(this.getPosition().down()).getBlock() instanceof BlockIce);
     }
 
     @Override
@@ -458,7 +460,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_HORSE; // todo
+        return LootTablesTFC.ANIMALS_LLAMA;
     }
 
     @Override
