@@ -46,8 +46,6 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
-//import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
-
 @ParametersAreNonnullByDefault
 public class EntityBearTFC extends EntityAnimalMammal implements IPredator, EntityAIStandAttack.IEntityStandAttack
 {
