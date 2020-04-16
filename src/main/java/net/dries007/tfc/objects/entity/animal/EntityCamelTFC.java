@@ -34,6 +34,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeSavanna;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -293,7 +294,7 @@ public class EntityCamelTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.DESERT))
+            (biomeType == BiomeHelper.BiomeType.DESERT || biomeType ==BiomeHelper.BiomeType.SAVANNA))
         {
             return ConfigTFC.WORLD.livestockSpawnRarity;
         }
