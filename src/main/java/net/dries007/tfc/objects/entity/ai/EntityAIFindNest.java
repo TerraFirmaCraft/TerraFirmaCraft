@@ -23,13 +23,13 @@ import net.dries007.tfc.util.calendar.ICalendar;
 public class EntityAIFindNest extends EntityAIBase
 {
     private final double speed;
-    private EntityAnimal theCreature;
+    private final EntityAnimal theCreature;
     private int currentTick;
-    private World theWorld;
+    private final World theWorld;
     private int maxSittingTicks;
 
     //This is a helper map to prevent chickens not choose unreachable nest boxes.
-    private Map<BlockPos, Long> failureDepressionMap;
+    private final Map<BlockPos, Long> failureDepressionMap;
     private boolean end;
 
     private BlockPos nestPos = null;
@@ -154,6 +154,6 @@ public class EntityAIFindNest extends EntityAIBase
                 failureDepressionMap.remove(pos);
         }
         TENestBox te = Helpers.getTE(world, pos, TENestBox.class);
-        return te != null && te.hasFreeSlot() && (te.getBird() == this.theCreature || !te.hasBird());
+        return te != null && te.hasFreeSlot() && (!te.hasBird() || te.getBird() == this.theCreature);
     }
 }
