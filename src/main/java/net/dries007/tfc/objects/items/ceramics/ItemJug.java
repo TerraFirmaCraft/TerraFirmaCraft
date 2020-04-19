@@ -47,6 +47,7 @@ public class ItemJug extends ItemPottery
     public ItemJug()
     {
         setHasSubtypes(true);
+        setContainerItem(this);
     }
 
     @SuppressWarnings("ConstantConditions")

@@ -111,7 +111,7 @@ public final class Helpers
      * @param creature the entityLiving that will sit on this block
      * @param yOffset  the y offset of the top facing
      */
-    public static void sitOnBlock(World world, BlockPos pos, EntityLiving creature, double yOffset)
+    public static void sitOnBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLiving creature, double yOffset)
     {
         if (!world.isRemote && !world.getBlockState(pos).getMaterial().isReplaceable())
         {
@@ -129,14 +129,14 @@ public final class Helpers
      * @return the entity which is sitting on this block, or null if none
      */
     @Nullable
-    public static Entity getSittingEntity(World world, BlockPos pos)
+    public static Entity getSittingEntity(@Nonnull World world, @Nonnull BlockPos pos)
     {
         if (!world.isRemote)
         {
             List<EntitySeatOn> seats = world.getEntitiesWithinAABB(EntitySeatOn.class, new AxisAlignedBB(pos).grow(1D));
             for (EntitySeatOn seat : seats)
             {
-                if (seat.getPos().equals(pos))
+                if (pos.equals(seat.getPos()))
                 {
                     return seat.getSittingEntity();
                 }
