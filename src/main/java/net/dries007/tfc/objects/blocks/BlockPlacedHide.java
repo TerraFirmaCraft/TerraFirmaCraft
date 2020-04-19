@@ -157,11 +157,11 @@ public class BlockPlacedHide extends Block
             if (!worldIn.isRemote)
             {
                 stack.damageItem(1, playerIn);
-            }
-            TEPlacedHide tile = Helpers.getTE(worldIn, pos, TEPlacedHide.class);
-            if (tile != null)
-            {
-                tile.onClicked(hitX, hitZ);
+                TEPlacedHide tile = Helpers.getTE(worldIn, pos, TEPlacedHide.class);
+                if (tile != null)
+                {
+                    tile.onClicked(hitX, hitZ);
+                }
             }
             return true;
         }

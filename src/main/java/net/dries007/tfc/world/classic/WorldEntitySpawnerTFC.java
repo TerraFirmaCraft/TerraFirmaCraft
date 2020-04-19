@@ -38,7 +38,6 @@ public final class WorldEntitySpawnerTFC
     }
 
 
-
     /**
      * **Modified version from vanilla's {@link net.minecraft.world.WorldEntitySpawner}
      * Called during chunk generation to spawn initial creatures.

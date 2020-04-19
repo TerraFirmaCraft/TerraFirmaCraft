@@ -289,6 +289,12 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     }
 
     @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
+    }
+
+    @Override
     protected void mountTo(EntityPlayer player)
     {
         if (!this.isTame() && !this.getLeashed())
@@ -463,12 +469,6 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
             }
         }
         return super.processInteract(player, hand);
-    }
-
-    @Override
-    protected boolean handleEating(EntityPlayer player, ItemStack stack)
-    {
-        return false; // Stop exploits
     }
 
     @Override

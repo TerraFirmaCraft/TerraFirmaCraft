@@ -88,16 +88,6 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     }
 
     @Override
-    protected void initEntityAI()
-    {
-        super.initEntityAI();
-        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityPheasantTFC.class, false, pheasant -> true));
-        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityChickenTFC.class, false, chicken -> true));
-        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityDuckTFC.class, false, duck -> true));
-        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, rabbit -> true));
-    }
-
-    @Override
     public Gender getGender()
     {
         return Gender.valueOf(this.dataManager.get(GENDER));
@@ -311,6 +301,16 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
             }
             this.world.spawnEntity(baby);
         }
+    }
+
+    @Override
+    protected void initEntityAI()
+    {
+        super.initEntityAI();
+        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityPheasantTFC.class, false, pheasant -> true));
+        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityChickenTFC.class, false, chicken -> true));
+        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityDuckTFC.class, false, duck -> true));
+        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, rabbit -> true));
     }
 
     @Override

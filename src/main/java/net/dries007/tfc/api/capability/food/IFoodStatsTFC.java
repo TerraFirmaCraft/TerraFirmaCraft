@@ -15,6 +15,8 @@ public interface IFoodStatsTFC
 
     float getThirst();
 
+    void setThirst(float value);
+
     @Nonnull
     NutritionStats getNutrition();
 
@@ -35,8 +37,6 @@ public interface IFoodStatsTFC
     {
         setThirst(getThirst() + value);
     }
-
-    void setThirst(float value);
 
     /**
      * Resets cooldown to prevent arm swinging in client when it attempts to drink water

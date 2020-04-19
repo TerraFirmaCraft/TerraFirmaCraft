@@ -20,14 +20,13 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityForgeable
 {
     @CapabilityInject(IForgeable.class)
-    public static final Capability<IForgeable> FORGEABLE_CAPABILITY = Helpers.getNull();
+    public static Capability<IForgeable> FORGEABLE_CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_forge");
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IForgeable for items outside TFC

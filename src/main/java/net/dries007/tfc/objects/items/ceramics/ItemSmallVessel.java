@@ -47,6 +47,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 import net.dries007.tfc.util.Alloy;
@@ -62,6 +63,19 @@ public class ItemSmallVessel extends ItemPottery
     {
         this.glazed = glazed;
         setHasSubtypes(glazed);
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        return CapabilityContainerListener.readShareTag(stack);
+    }
+
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        CapabilityContainerListener.applyShareTag(stack, nbt);
     }
 
     @Override

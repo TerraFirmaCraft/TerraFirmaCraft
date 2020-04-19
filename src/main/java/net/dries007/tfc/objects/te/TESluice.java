@@ -199,6 +199,11 @@ public class TESluice extends TEBase implements ITickable
         return INFINITE_EXTENT_AABB;
     }
 
+    public int getSoil()
+    {
+        return soil;
+    }
+
     @Nullable
     private BlockFluidBase getFlowingFluidBlock()
     {
@@ -215,11 +220,6 @@ public class TESluice extends TEBase implements ITickable
             return ((BlockFluidBase) block);
         }
         return null;
-    }
-
-    public int getSoil()
-    {
-        return soil;
     }
 
     private BlockPos getFrontWaterPos()
