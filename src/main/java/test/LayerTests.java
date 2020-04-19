@@ -21,12 +21,12 @@ import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
 
 import imageutil.Images;
-import net.dries007.tfc.world.gen.layer.*;
-import net.dries007.tfc.world.gen.rock.RockCategory;
+import net.dries007.tfc.api.RockCategory;
+import net.dries007.tfc.world.layer.*;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-import static net.dries007.tfc.world.gen.layer.TFCLayerUtil.*;
+import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
 /**
  * Test class for overworld biome layer generation

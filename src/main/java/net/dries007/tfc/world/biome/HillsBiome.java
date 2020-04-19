@@ -5,12 +5,9 @@
 
 package net.dries007.tfc.world.biome;
 
-import javax.annotation.Nonnull;
-
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
-
-import static net.dries007.tfc.world.gen.TFCOverworldChunkGenerator.SEA_LEVEL;
 
 public class HillsBiome extends TFCBiome
 {
@@ -20,14 +17,11 @@ public class HillsBiome extends TFCBiome
     {
         super(new Builder().category(Category.PLAINS));
         this.height = height;
-
-        TFCDefaultBiomeFeatures.addCarvers(this);
     }
 
-    @Nonnull
     @Override
     public INoise2D createNoiseLayer(long seed)
     {
-        return new SimplexNoise2D(seed).octaves(4).spread(0.06f).scaled(SEA_LEVEL - 5, SEA_LEVEL + height);
+        return new SimplexNoise2D(seed).octaves(4).spread(0.06f).scaled(TFCConfig.COMMON.seaLevel.get() - 5, TFCConfig.COMMON.seaLevel.get() + height);
     }
 }

@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/diorite",
     "cobble": "tfc:rock/cobble/diorite",
     "gravel": "tfc:rock/gravel/diorite",
-    "smooth": "tfc:rock/smooth/diorite"
+    "smooth": "tfc:rock/smooth/diorite",
+    "spike": "tfc:rock/spike/diorite"
   },
   "category": "igneous_intrusive"
 }

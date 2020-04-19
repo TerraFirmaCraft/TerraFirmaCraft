@@ -1,21 +1,40 @@
-from mcresources import *
+from mcresources import ResourceManager
 
 from data.constants import *
 
 
 def generate(rm: ResourceManager):
     # Rock block variants
-    for rock in ROCKS:
+    for rock in ROCKS.keys():
         for block_type in ROCK_BLOCK_TYPES:
-            rm.blockstate(('rock', block_type, rock))
-            rm.block_model(('rock', block_type, rock), 'tfc:block/rock/%s/%s' % (block_type, rock))
-            rm.block_item_model(('rock', block_type, rock))
-            rm.block_loot(('rock', block_type, rock), 'tfc:rock/%s/%s' % (block_type, rock))
+            if block_type == 'spike':
+                # Spikes have special block states
+                rm.blockstate(('rock', block_type, rock), variants=dict(
+                    ('part=%s' % part, {'model': 'tfc:block/rock/%s/%s_%s' % (block_type, rock, part)})
+                    for part in ROCK_SPIKE_PARTS))
+                for part in ROCK_SPIKE_PARTS:
+                    rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
+                        'texture': 'tfc:block/rock/raw/%s' % rock
+                    }, parent='tfc:block/rock/spike_%s' % part)
+                rm.block_item_model(('rock', block_type, rock))
+            else:
+                rm.blockstate(('rock', block_type, rock))
+                rm.block_model(('rock', block_type, rock), 'tfc:block/rock/%s/%s' % (block_type, rock))
+                rm.block_item_model(('rock', block_type, rock))
+                rm.block_loot(('rock', block_type, rock), 'tfc:rock/%s/%s' % (block_type, rock))
+
+        # Ores
+        for ore, ore_data in ORES.items():
+            rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock))
+            rm.block_model(('ore', ore, rock), {
+                'all': 'tfc/block/rock/%s' % rock, 'particle': 'tfc/block/rock/%s' % rock,
+                'overlay': 'tfc:block/ore/%s' % ore
+            })
 
     for rock, rock_data in ROCKS.items():
         rm.data(('tfc', 'rocks', rock), {
             'blocks': dict((block_type, 'tfc:rock/%s/%s' % (block_type, rock)) for block_type in ROCK_BLOCK_TYPES),
-            **rock_data
+            'category': rock_data.category
         })
 
     # Sand

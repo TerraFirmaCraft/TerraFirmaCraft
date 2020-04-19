@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/rocksalt",
     "cobble": "tfc:rock/cobble/rocksalt",
     "gravel": "tfc:rock/gravel/rocksalt",
-    "smooth": "tfc:rock/smooth/rocksalt"
+    "smooth": "tfc:rock/smooth/rocksalt",
+    "spike": "tfc:rock/spike/rocksalt"
   },
   "category": "sedimentary"
 }

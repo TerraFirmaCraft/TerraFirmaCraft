@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "tfc/block/rock/dolomite",
+    "particle": "tfc/block/rock/dolomite",
+    "overlay": "tfc:block/ore/kaolinite"
+  }
+}

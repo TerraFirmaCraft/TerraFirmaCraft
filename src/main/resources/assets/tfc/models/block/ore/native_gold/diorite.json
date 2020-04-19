@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "tfc/block/rock/diorite",
+    "particle": "tfc/block/rock/diorite",
+    "overlay": "tfc:block/ore/native_gold"
+  }
+}

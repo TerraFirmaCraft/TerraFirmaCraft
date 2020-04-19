@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/dolomite",
     "cobble": "tfc:rock/cobble/dolomite",
     "gravel": "tfc:rock/gravel/dolomite",
-    "smooth": "tfc:rock/smooth/dolomite"
+    "smooth": "tfc:rock/smooth/dolomite",
+    "spike": "tfc:rock/spike/dolomite"
   },
   "category": "sedimentary"
 }

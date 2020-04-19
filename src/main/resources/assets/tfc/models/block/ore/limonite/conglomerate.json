@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "tfc/block/rock/conglomerate",
+    "particle": "tfc/block/rock/conglomerate",
+    "overlay": "tfc:block/ore/limonite"
+  }
+}

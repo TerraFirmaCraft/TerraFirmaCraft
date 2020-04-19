@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "part=base": {
+      "model": "tfc:block/rock/spike/gneiss_base"
+    },
+    "part=middle": {
+      "model": "tfc:block/rock/spike/gneiss_middle"
+    },
+    "part=tip": {
+      "model": "tfc:block/rock/spike/gneiss_tip"
+    }
+  }
+}

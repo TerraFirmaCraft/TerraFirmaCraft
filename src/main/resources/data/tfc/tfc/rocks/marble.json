@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/marble",
     "cobble": "tfc:rock/cobble/marble",
     "gravel": "tfc:rock/gravel/marble",
-    "smooth": "tfc:rock/smooth/marble"
+    "smooth": "tfc:rock/smooth/marble",
+    "spike": "tfc:rock/spike/marble"
   },
   "category": "metamorphic"
 }
