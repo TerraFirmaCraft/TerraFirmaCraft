@@ -8,6 +8,7 @@ package net.dries007.tfc.world.classic.worldgen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +29,6 @@ import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 public class WorldGenOreVeins implements IWorldGenerator
 {
     private static final Random LOCAL_RANDOM = new Random();
-    public static int NUM_ROLLS = 2;
     public static int CHUNK_RADIUS = 1;
 
     // Used to generate chunk
@@ -49,13 +49,10 @@ public class WorldGenOreVeins implements IWorldGenerator
     private static void getVeinsAtChunk(List<Vein> listToAdd, int chunkX, int chunkZ, long worldSeed)
     {
         LOCAL_RANDOM.setSeed(worldSeed + chunkX * 341873128712L + chunkZ * 132897987541L);
-        for (int i = 0; i < NUM_ROLLS; i++)
-        {
-            if (LOCAL_RANDOM.nextDouble() < VeinRegistry.INSTANCE.getVeins().getTotalWeight())
-            {
-                listToAdd.add(VeinRegistry.INSTANCE.getVeins().getRandomEntry(LOCAL_RANDOM).createVein(LOCAL_RANDOM, chunkX, chunkZ));
-            }
-        }
+        listToAdd.addAll(VeinRegistry.INSTANCE.getVeins().values().stream()
+            .filter(veinType -> LOCAL_RANDOM.nextInt(veinType.getRarity()) == 0)
+            .map(veinType -> veinType.createVein(LOCAL_RANDOM, chunkX, chunkZ))
+            .collect(Collectors.toList()));
     }
 
     @Override
