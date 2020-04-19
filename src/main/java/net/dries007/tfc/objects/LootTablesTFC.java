@@ -61,7 +61,7 @@ public class LootTablesTFC
         ANIMALS_LLAMA = register("animals/llama");
         ANIMALS_OCELOT = register("animals/ocelot");
         ANIMALS_SQUID = register("animals/squid");
-        ANIMALS_SQUID = register("animals/parrot");
+        ANIMALS_PARROT = register("animals/parrot");
 
         // Loot function for skill drop multiplier
         LootFunctionManager.registerFunction(new ApplySimpleSkill.Serializer(new ResourceLocation(MOD_ID, "apply_skill")));
