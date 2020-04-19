@@ -119,7 +119,6 @@ public class ModelCamelTFC extends ModelBase
         headNode = new ModelRenderer(this, 40, 34);
         headNode.setRotationPoint(0.0F, 0.5F, -10.0F);
         headNode.addBox(-2.5F, -3.5F, -8.0F, 1, 1, 1, 0.0F);
-        //setRotation(headNode, 0.10471975803375246F, 0.0F, 0.0F);
         tail = new ModelRenderer(this, 26, 0);
         tail.setRotationPoint(-0.5F, 1.5F, 8.0F);
         tail.addBox(-0.5F, 0.0F, -0.5F, 1, 12, 1, 0.0F);
@@ -348,22 +347,24 @@ public class ModelCamelTFC extends ModelBase
         frontLegLeftBottom.addChild(toesFrontLeft);
         backLegRightBottom.addChild(toesBackRight);
         neckUpper.addChild(head);
-        head.addChild(this.bridleLeft2);
-        head.addChild(this.bridleFront2);
-        head.addChild(this.bridleBack2);
-        head.addChild(this.bridleFront1);
-        head.addChild(this.bridleFrontLeft1);
-        head.addChild(this.bridleBack1);
-        head.addChild(this.bridleRight1);
-        head.addChild(this.bridleFrontBottom2);
-        head.addChild(this.bridleRight2);
-        head.addChild(this.bridleFrontRight1);
-        head.addChild(this.bridleFrontBottom1);
-        head.addChild(this.bridleLeft1);
-        head.addChild(this.bridleFrontTop1);
-        head.addChild(this.bridleFrontTop2);
-        head.addChild(this.bridleFrontLeft2);
-        head.addChild(this.bridleFrontRight2);
+        head.addChild(bridleLeft2);
+        head.addChild(bridleFront2);
+        head.addChild(bridleBack2);
+        head.addChild(bridleFront1);
+        head.addChild(bridleFrontLeft1);
+        head.addChild(bridleBack1);
+        head.addChild(bridleRight1);
+        head.addChild(bridleFrontBottom2);
+        head.addChild(bridleRight2);
+        head.addChild(bridleFrontRight1);
+        head.addChild(bridleFrontBottom1);
+        head.addChild(bridleLeft1);
+        head.addChild(bridleFrontTop1);
+        head.addChild(bridleFrontTop2);
+        head.addChild(bridleFrontLeft2);
+        head.addChild(bridleFrontRight2);
+        head.addChild(reinsLeft);
+        head.addChild(reinsRight);
 
         frontLegLeftTop.addChild(this.frontLegLeftMiddle);
         frontLegRightMiddle.addChild(this.frontLegRightBottom);
@@ -377,7 +378,7 @@ public class ModelCamelTFC extends ModelBase
         AbstractChestHorse abstractchesthorse = (AbstractChestHorse) entityIn;
         boolean flag1 = !abstractchesthorse.isChild() && abstractchesthorse.hasChest();
         boolean flag2 = !abstractchesthorse.isChild() && abstractchesthorse.isHorseSaddled();
-        //boolean flag3 = abstractchesthorse.isBeingRidden();
+        boolean flag3 = !abstractchesthorse.isChild() &&abstractchesthorse.isBeingRidden();
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 
         if (((EntityAnimal) entityIn).isChild())
@@ -419,6 +420,8 @@ public class ModelCamelTFC extends ModelBase
         bridleFrontBottom2.isHidden = true;
         bridleFrontLeft2.isHidden = true;
         bridleFrontRight2.isHidden = true;
+        reinsLeft.isHidden = true;
+        reinsRight.isHidden = true;
 
         if (flag1)
         {
@@ -445,20 +448,20 @@ public class ModelCamelTFC extends ModelBase
             bridleFrontBottom2.isHidden = false;
             bridleFrontLeft2.isHidden = false;
             bridleFrontRight2.isHidden = false;
-            reinsLeft.isHidden = true;
-            reinsRight.isHidden = true;
             strapChestRightAngle.isHidden = false;
             strapChestLeftAngle.isHidden = false;
             strapBellyRightAngle.isHidden = false;
             strapBellyLeftAngle.isHidden = false;
+            reinsLeft.isHidden = true;
+            reinsRight.isHidden = true;
 
-            if (abstractchesthorse.isBeingRidden())// not sure if this is running
+            if (flag3)
             {
                 reinsLeft.isHidden = false;
                 reinsRight.isHidden = false;
             }
 
-            if (abstractchesthorse.wearsArmor())// needs to check for only carpet as having a saddle is considered armor
+            if (flag1)//would preferably check for carpet
             {
                 strapChestRightAngle.isHidden = true;
                 strapChestLeftAngle.isHidden = true;
@@ -484,8 +487,6 @@ public class ModelCamelTFC extends ModelBase
     @Override
     public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime)
     {
-        //code for head animation while riding, giving really large neckBase rotation of 300+
-        // ideally would not rotate it and leave it at default
         super.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTickTime);
         float f = this.updateHorseRotation(entitylivingbaseIn.prevRenderYawOffset, entitylivingbaseIn.renderYawOffset, partialTickTime);
         float f1 = this.updateHorseRotation(entitylivingbaseIn.prevRotationYawHead, entitylivingbaseIn.rotationYawHead, partialTickTime);
@@ -501,16 +502,10 @@ public class ModelCamelTFC extends ModelBase
             f4 += MathHelper.cos(limbSwing * 0.4F) * 0.15F * limbSwingAmount;
         }
 
-        AbstractHorse abstracthorse = (AbstractHorse) entitylivingbaseIn;
-        float f5 = abstracthorse.getGrassEatingAmount(partialTickTime);
-        float f6 = abstracthorse.getRearingAmount(partialTickTime);
-
-        this.headNode.rotateAngleX = 5.5235988F + f4;
-        this.headNode.rotateAngleY = f3 * 5.017453292F;
-        this.headNode.rotateAngleX = f6 * (0.2617994F + f4) + f5 * 2.1816616F + (1.0F - Math.max(f6, f5)) * this.headNode.rotateAngleX;
-        this.headNode.rotateAngleY = f6 * f3 * 0.017453292F + (1.0F - Math.max(f6, f5)) * this.headNode.rotateAngleY;
-        this.headNode.rotationPointY = f6 * 0.0F + f5 * 11.0F + (1.0F - Math.max(f6, f5)) * this.headNode.rotationPointY;
-        this.headNode.rotationPointZ = f6 * 10.0F + f5 * -10.0F + (1.0F - Math.max(f6, f5)) * this.headNode.rotationPointZ;
+        this.headNode.rotateAngleX = -0.2835988F + f4;
+        this.headNode.rotateAngleY = f3 * -0.2835988F;
+        this.headNode.rotateAngleX = (0.2617994F + f4)  * 2.1816616F * this.headNode.rotateAngleX;
+        this.headNode.rotateAngleY = f3 * 0.017453292F * this.headNode.rotateAngleY;
 
         this.neckBase.rotationPointY = this.headNode.rotationPointY;
         this.neckBase.rotationPointZ = this.headNode.rotationPointZ;
@@ -519,15 +514,17 @@ public class ModelCamelTFC extends ModelBase
 
 
 
-    private float updateHorseRotation(float p_110683_1_, float p_110683_2_, float p_110683_3_)
+    private float updateHorseRotation(float f1, float f2, float f3)
     {
-        float f = p_110683_2_ - p_110683_1_;
+        float f = f2 - f1;
 
         while (f < -180.0F) { f += 360.0F; }
         while (f >= 180.0F) { f -= 360.0F; }
 
-        return p_110683_1_ + p_110683_3_ * f;
+        return f1 + f3 * f;
     }
+
+
 
     private void setRotation(ModelRenderer model, float x, float y, float z)
     {
