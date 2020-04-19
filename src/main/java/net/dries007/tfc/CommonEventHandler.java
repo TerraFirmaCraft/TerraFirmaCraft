@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -635,6 +636,13 @@ public final class CommonEventHandler
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
     {
         Entity entity = event.getEntity();
+
+        // Fix chickens spawning in caves (which is caused by zombie jockeys)
+        if (entity instanceof EntityChicken && ((EntityChicken) entity).isChickenJockey())
+        {
+            event.setResult(Event.Result.DENY);
+        }
+
         // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
         if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
         {
