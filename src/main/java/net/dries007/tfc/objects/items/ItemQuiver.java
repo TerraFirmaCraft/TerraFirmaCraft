@@ -36,54 +36,101 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.ArmorMaterialTFC;
 import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
-import net.dries007.tfc.objects.items.metal.ItemMetalJavelin;
-import net.dries007.tfc.objects.items.rock.ItemRockJavelin;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
 public class ItemQuiver extends ItemArmorTFC
 {
-    public ItemQuiver()
+    public static void replenishJavelin(InventoryPlayer playerInv)
     {
-        super(ArmorMaterialTFC.QUIVER, 1 /* chest*/, EntityEquipmentSlot.CHEST);
-    }
-
-    @Override
-    @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        if (!worldIn.isRemote && !playerIn.isSneaking())
+        QuiverCapability quiver = findQuiver(playerInv);
+        if (quiver != null)
         {
-            TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.QUIVER);
+            ItemStack newJav = quiver.findJavelin();
+            if (newJav != null)
+            {
+                playerInv.setInventorySlotContents(playerInv.currentItem, newJav);
+                playerInv.markDirty();
+            }
         }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
-    @Nonnull
-    @Override
-    public Size getSize(ItemStack stack)
+    //called from ArrowNockEvent handler, we know there are no arrows in current inventory
+    public static boolean replenishArrow(EntityPlayer player)
     {
-        return Size.NORMAL;
+        //empty destination slot for single arrow from quiver
+        int empty = player.inventory.getFirstEmptyStack();
+
+        if (empty >= 0)
+        {
+            QuiverCapability quiver = findQuiver(player.inventory);
+            if (quiver != null)
+            {
+                ItemStack newArrow = quiver.findArrow();
+                if (newArrow != null)
+                {
+                    player.inventory.setInventorySlotContents(empty, newArrow);
+                    player.inventory.markDirty();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    @Nonnull
-    @Override
-    public Weight getWeight(ItemStack stack)
+    //true = we picked up the whole stack, false = none or some picked up
+    public static boolean pickupAmmo(EntityItemPickupEvent event)
     {
-        return Weight.MEDIUM;
+        ItemStack stack = event.getItem().getItem(); //really.
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "javelin"))
+        { // if no javelin on hotbar, don't put in quiver unless no empty slots
+            InventoryPlayer inv = event.getEntityPlayer().inventory;
+            boolean found = false;
+            boolean empty = false;
+            for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++)
+            {
+                ItemStack slot = inv.getStackInSlot(i);
+                if (!empty && slot.isEmpty())
+                {
+                    empty = true;
+                    continue;
+                }
+                if (OreDictionaryHelper.doesStackMatchOre(slot, "javelin"))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && empty)
+            {
+                return false;
+            }
+        }
+        Item item = stack.getItem();
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "javelin") || item instanceof ItemArrow)
+        {
+            QuiverCapability quiver = findQuiver(event.getEntityPlayer().inventory);
+            if (quiver != null)
+            {
+                stack.setCount(ItemHandlerHelper.insertItem(quiver, stack, false).getCount());
+                // Tell forge if we picked the whole stack up
+                return stack.isEmpty();
+            }
+        }
+        return false;
     }
 
     static QuiverCapability findQuiver(InventoryPlayer playerInv)
     {
         int mainToSearch = 0;
-        switch (ConfigTFC.GENERAL.quiverSearch) {
+        switch (ConfigTFC.GENERAL.quiverSearch)
+        {
             case "none":
                 return null;
             case "armor":
                 break; // search nowhere else
             case "hotbar":
-                mainToSearch = playerInv.getHotbarSize();
+                mainToSearch = InventoryPlayer.getHotbarSize();
                 break;
             case "main":
                 mainToSearch = playerInv.mainInventory.size();
@@ -119,86 +166,40 @@ public class ItemQuiver extends ItemArmorTFC
         if (found)
         {
             IItemHandler quiverCapability = cur.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            return (QuiverCapability)quiverCapability;
+            return (QuiverCapability) quiverCapability;
         }
         return null;
     }
 
-    public static void replenishJavelin(InventoryPlayer playerInv)
+    public ItemQuiver()
     {
-        QuiverCapability quiver = findQuiver(playerInv);
-        if (quiver != null)
-        {
-            ItemStack newJav = quiver.findJavelin();
-            if (newJav != null)
-            {
-                playerInv.setInventorySlotContents(playerInv.currentItem, newJav);
-                playerInv.markDirty();
-            }
-        }
+        super(ArmorMaterialTFC.QUIVER, 1 /* chest*/, EntityEquipmentSlot.CHEST);
     }
 
-    //called from ArrowNockEvent handler, we know there are no arrows in current inventory
-    public static boolean replenishArrow(EntityPlayer player)
+    @Override
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        //empty destination slot for single arrow from quiver
-        int empty = player.inventory.getFirstEmptyStack();
-
-        if (empty >= 0 )
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        if (!worldIn.isRemote && !playerIn.isSneaking())
         {
-            QuiverCapability quiver = findQuiver(player.inventory);
-            if (quiver != null) {
-                ItemStack newArrow = quiver.findArrow();
-                if (newArrow != null)
-                {
-                    player.inventory.setInventorySlotContents(empty, newArrow);
-                    player.inventory.markDirty();
-                    return true;
-                }
-            }
+            TFCGuiHandler.openGui(worldIn, playerIn, TFCGuiHandler.Type.QUIVER);
         }
-        return false;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
-    //true = we picked up the whole stack, false = none or some picked up
-    public static boolean pickupAmmo(EntityItemPickupEvent event)
+    @Nonnull
+    @Override
+    public Size getSize(ItemStack stack)
     {
-        ItemStack stack = event.getItem().getItem(); //really.
-        if (OreDictionaryHelper.doesStackMatchOre(stack, "javelin"))
-        { // if no javelin on hotbar, don't put in quiver unless no empty slots
-            InventoryPlayer inv = event.getEntityPlayer().inventory;
-            boolean found = false;
-            boolean empty = false;
-            for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++)
-            {
-                ItemStack slot = inv.getStackInSlot(i);
-                if (!empty && slot.isEmpty()) {
-                    empty = true;
-                    continue;
-                }
-                if (OreDictionaryHelper.doesStackMatchOre(slot, "javelin"))
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && empty)
-            {
-                return false;
-            }
-        }
-        Item item = stack.getItem();
-        if (OreDictionaryHelper.doesStackMatchOre(stack, "javelin") || item instanceof ItemArrow)
-        {
-            QuiverCapability quiver = findQuiver(event.getEntityPlayer().inventory);
-            if (quiver != null)
-            {
-                stack.setCount(ItemHandlerHelper.insertItem(quiver, stack, false).getCount());
-                // Tell forge if we picked the whole stack up
-                return stack.isEmpty();
-            }
-        }
-        return false;
+        return Size.NORMAL;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.MEDIUM;
     }
 
     @Nullable
@@ -240,7 +241,7 @@ public class ItemQuiver extends ItemArmorTFC
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
             return OreDictionaryHelper.doesStackMatchOre(stack, "javelin") ||
-                   stack.getItem() instanceof ItemArrow;
+                stack.getItem() instanceof ItemArrow;
         }
 
         public ItemStack findJavelin()

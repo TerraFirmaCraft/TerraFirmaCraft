@@ -5,7 +5,6 @@
 
 package net.dries007.tfc;
 
-import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -49,7 +48,7 @@ public class ConfigTFC
     {
         @Config.Comment("Various debug options. Activates some extra wand features. Enables extra item tooltips.")
         @Config.LangKey("config." + MOD_ID + ".general.debug")
-        public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
+        public boolean debug = false;
 
         @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never fall.")
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
@@ -397,7 +396,7 @@ public class ConfigTFC
         @Config.Comment("Enable a 3x3 crafting inventory via key binding. 0 = Disabled, 1 = Enabled, Always, 2 = Enabled, If the player has a crafting table in inventory. (ore dictionary name: 'workbench')")
         @Config.RangeInt(min = 0, max = 2)
         @Config.LangKey("config." + MOD_ID + ".general.inventoryCraftingTableMode")
-        public int inventoryCraftingTableMode = 0;
+        public int inventoryCraftingTableMode = 2;
 
         @Config.Comment("How much metal (units / mB) can a small vessel hold?")
         @Config.RangeInt(min = 100)

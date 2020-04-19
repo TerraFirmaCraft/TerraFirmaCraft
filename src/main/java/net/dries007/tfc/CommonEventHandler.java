@@ -767,6 +767,38 @@ public final class CommonEventHandler
         }
     }
 
+    //go last, so if other mods handle this event, we don't.
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void checkArrowFill(ArrowNockEvent event)
+    {
+        //if we didn't have ammo in main inventory and no other mod has handled the event
+        if (!event.hasAmmo() && event.getAction() == null)
+        {
+            final EntityPlayer player = event.getEntityPlayer();
+            if (player != null && !player.capabilities.isCreativeMode)
+            {
+                if (ItemQuiver.replenishArrow(player))
+                {
+                    event.setAction(new ActionResult<>(EnumActionResult.PASS, event.getBow()));
+                }
+            }
+        }
+    }
+
+    //go last to avoid cancelled events
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void pickupQuiverItems(EntityItemPickupEvent event) //only pickups of EntityItem, not EntityArrow
+    {
+        if (!event.isCanceled())
+        {
+            if (ItemQuiver.pickupAmmo(event))
+            {
+                event.setResult(Event.Result.ALLOW);
+                event.getItem().getItem().setCount(0);
+            }
+        }
+    }
+
     private static int countPlayerOverburdened(InventoryPlayer inventory)
     {
         // This is just optimized (probably uselessly, but whatever) for use in onPlayerTick
@@ -805,36 +837,5 @@ public final class CommonEventHandler
             }
         }
         return hugeHeavyCount;
-    }
-
-    //go last, so if other mods handle this event, we don't.
-    @SubscribeEvent(priority=EventPriority.LOWEST)
-    public static void checkArrowFill(ArrowNockEvent event)
-    {
-        //if we didn't have ammo in main inventory and no other mod has handled the event
-        if (!event.hasAmmo() && event.getAction() == null) {
-            final EntityPlayer player = event.getEntityPlayer();
-            if (player != null && !player.capabilities.isCreativeMode )
-            {
-                if (ItemQuiver.replenishArrow(player))
-                {
-                    event.setAction(new ActionResult<ItemStack>(EnumActionResult.PASS, event.getBow()));
-                }
-            }
-        }
-    }
-
-    //go last to avoid cancelled events
-    @SubscribeEvent(priority=EventPriority.LOWEST)
-    public static void pickupQuiverItems(EntityItemPickupEvent event) //only pickups of EntityItem, not EntityArrow
-    {
-        if (!event.isCanceled())
-        {
-            if (ItemQuiver.pickupAmmo(event))
-            {
-                event.setResult(Event.Result.ALLOW);
-                event.getItem().getItem().setCount(0);
-            }
-        }
     }
 }

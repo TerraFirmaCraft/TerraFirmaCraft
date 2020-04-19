@@ -248,19 +248,19 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         originalStats.setFoodLevel(foodLevelIn);
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void setFoodSaturationLevel(float foodSaturationLevelIn)
+    {
+        originalStats.setFoodSaturationLevel(foodSaturationLevelIn);
+    }
+
     /**
      * Use instead of {@link FoodStats#setFoodSaturationLevel(float)} as it's client only
      */
     public void setSaturation(float saturation)
     {
         originalStats.foodSaturationLevel = saturation;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void setFoodSaturationLevel(float foodSaturationLevelIn)
-    {
-        originalStats.setFoodSaturationLevel(foodSaturationLevelIn);
     }
 
     @SideOnly(Side.CLIENT)

@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.objects.container;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -14,7 +12,6 @@ import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
 import net.dries007.tfc.objects.inventory.slot.SlotCallback;
-import net.dries007.tfc.objects.items.ItemQuiver;
 
 public class ContainerQuiver extends ContainerItemStack implements ISlotCallback
 {

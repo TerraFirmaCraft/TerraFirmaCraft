@@ -104,6 +104,13 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     }
 
     @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D); // Less health
+    }
+
+    @Override
     protected SoundEvent getAmbientSound()
     {
         return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_GOAT_CRY : TFCSounds.ANIMAL_GOAT_SAY;
@@ -126,12 +133,5 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     {
         // Every 3rd day
         return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() + 2 > getMilkedDay());
-    }
-
-    @Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D); // Less health
     }
 }

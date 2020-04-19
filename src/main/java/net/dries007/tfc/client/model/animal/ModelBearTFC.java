@@ -24,21 +24,21 @@ import net.dries007.tfc.objects.entity.animal.EntityBearTFC;
 @ParametersAreNonnullByDefault
 public class ModelBearTFC extends ModelBase
 {
-    private ModelRenderer bearHead;
-    private ModelRenderer rearBody;
-    private ModelRenderer frontBody;
-    private ModelRenderer ear2;
-    private ModelRenderer ear1;
-    private ModelRenderer nose;
-    private ModelRenderer tail;
-    private ModelRenderer leg1;
-    private ModelRenderer leg2;
-    private ModelRenderer leg3;
-    private ModelRenderer leg4;
-    private ModelRenderer paw1;
-    private ModelRenderer paw2;
-    private ModelRenderer paw3;
-    private ModelRenderer paw4;
+    private final ModelRenderer bearHead;
+    private final ModelRenderer rearBody;
+    private final ModelRenderer frontBody;
+    private final ModelRenderer ear2;
+    private final ModelRenderer ear1;
+    private final ModelRenderer nose;
+    private final ModelRenderer tail;
+    private final ModelRenderer leg1;
+    private final ModelRenderer leg2;
+    private final ModelRenderer leg3;
+    private final ModelRenderer leg4;
+    private final ModelRenderer paw1;
+    private final ModelRenderer paw2;
+    private final ModelRenderer paw3;
+    private final ModelRenderer paw4;
 
 
     public ModelBearTFC()
@@ -154,7 +154,6 @@ public class ModelBearTFC extends ModelBase
         leg4.render(f5);
         GlStateManager.popMatrix();
     }
-
 
 
     @Override

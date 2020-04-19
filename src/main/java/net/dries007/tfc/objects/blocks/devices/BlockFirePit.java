@@ -97,6 +97,14 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
@@ -105,14 +113,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, ATTACHMENT_AABB);
         }
-    }
-
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -281,6 +281,13 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, LIT, ATTACHMENT);
+    }
+
+    @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
@@ -303,13 +310,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
     {
         return offset.equals(TEBellows.OFFSET_LEVEL);
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, LIT, ATTACHMENT);
     }
 
     @Override

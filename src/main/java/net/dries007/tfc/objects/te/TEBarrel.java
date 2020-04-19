@@ -55,11 +55,11 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     public static final int BARREL_MAX_FLUID_TEMPERATURE = 500;
 
     private final FluidTank tank = new FluidTankCallback(this, 0, ConfigTFC.GENERAL.tankBarrel);
+    private final Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
     private BarrelRecipe recipe;
     private int tickCounter;
-    private final Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
     private boolean checkInstantRecipe = false;
 
     public TEBarrel()

@@ -47,7 +47,7 @@ public class ItemRockHoe extends ItemHoe implements IItemSize, IRockObject
 
     public final RockCategory category;
 
-    private float attackDamage;
+    private final float attackDamage;
 
     public ItemRockHoe(RockCategory category)
     {
@@ -67,6 +67,18 @@ public class ItemRockHoe extends ItemHoe implements IItemSize, IRockObject
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add("Rock type: " + OreDictionaryHelper.toString(category));
+    }
+
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
+    {
+        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
+        if (slot == EntityEquipmentSlot.MAINHAND)
+        {
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", attackDamage, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -3, 0));
+        }
+        return multimap;
     }
 
     @Nonnull
@@ -101,17 +113,5 @@ public class ItemRockHoe extends ItemHoe implements IItemSize, IRockObject
     public RockCategory getRockCategory(ItemStack stack)
     {
         return category;
-    }
-
-    @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
-    {
-        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
-        if (slot == EntityEquipmentSlot.MAINHAND)
-        {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", attackDamage, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -3, 0));
-        }
-        return multimap;
     }
 }

@@ -22,7 +22,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -31,7 +30,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class CapabilityFood
 {
     @CapabilityInject(IFood.class)
-    public static final Capability<IFood> CAPABILITY = Helpers.getNull();
+    public static Capability<IFood> CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "food");
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_FOODS = new HashMap<>(); //Used inside CT, set custom IFood for food items outside TFC
