@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
 
-import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 
 public final class TFCItemGroup extends ItemGroup

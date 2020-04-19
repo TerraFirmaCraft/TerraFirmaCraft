@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/gneiss",
     "cobble": "tfc:rock/cobble/gneiss",
     "gravel": "tfc:rock/gravel/gneiss",
-    "smooth": "tfc:rock/smooth/gneiss"
+    "smooth": "tfc:rock/smooth/gneiss",
+    "spike": "tfc:rock/spike/gneiss"
   },
   "category": "metamorphic"
 }

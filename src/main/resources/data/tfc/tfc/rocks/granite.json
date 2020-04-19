@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/granite",
     "cobble": "tfc:rock/cobble/granite",
     "gravel": "tfc:rock/gravel/granite",
-    "smooth": "tfc:rock/smooth/granite"
+    "smooth": "tfc:rock/smooth/granite",
+    "spike": "tfc:rock/spike/granite"
   },
   "category": "igneous_intrusive"
 }

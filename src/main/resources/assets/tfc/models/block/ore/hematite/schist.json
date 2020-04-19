@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "tfc/block/rock/schist",
+    "particle": "tfc/block/rock/schist",
+    "overlay": "tfc:block/ore/hematite"
+  }
+}

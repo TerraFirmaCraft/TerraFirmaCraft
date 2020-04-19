@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/basalt",
     "cobble": "tfc:rock/cobble/basalt",
     "gravel": "tfc:rock/gravel/basalt",
-    "smooth": "tfc:rock/smooth/basalt"
+    "smooth": "tfc:rock/smooth/basalt",
+    "spike": "tfc:rock/spike/basalt"
   },
   "category": "igneous_extrusive"
 }

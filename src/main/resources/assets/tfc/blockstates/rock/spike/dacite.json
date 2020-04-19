@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "part=base": {
+      "model": "tfc:block/rock/spike/dacite_base"
+    },
+    "part=middle": {
+      "model": "tfc:block/rock/spike/dacite_middle"
+    },
+    "part=tip": {
+      "model": "tfc:block/rock/spike/dacite_tip"
+    }
+  }
+}
