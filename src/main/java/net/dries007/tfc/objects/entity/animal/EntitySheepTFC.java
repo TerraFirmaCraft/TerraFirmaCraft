@@ -50,6 +50,7 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -69,6 +70,19 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     public EntitySheepTFC(World worldIn)
     {
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD), EntitySheep.getRandomSheepColor(Constants.RNG));
+    }
+
+    @Override
+    public void setProductsCooldown()
+    {
+        this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+    }
+
+    @Override
+    public long getProductsCooldown()
+    {
+        // Just here for the time being, in 1.15 gonna see changes here to match other animals better
+        return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) / ICalendar.TICKS_IN_DAY);
     }
 
     public EntitySheepTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
