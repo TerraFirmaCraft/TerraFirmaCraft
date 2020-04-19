@@ -110,6 +110,7 @@ public class EntityAIFindNest extends EntityAIBase
                         te.insertEgg(egg);
                     }
                     animal.setFertilized(false);
+                    animal.setProductsCooldown();
                     this.end = true;
                 }
                 else if (te.getBird() != theCreature)
