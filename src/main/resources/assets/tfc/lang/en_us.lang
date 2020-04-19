@@ -149,12 +149,12 @@ tfc.tooltip.veins_command.output=Found vein %s at %s
 tfc.tooltip.veins_command.output_file=File saved at %s
 
 ## Prospecting Result Messages
-tfc.propick.found=Found
-tfc.propick.found_traces=Found traces of
-tfc.propick.found_small=Found a small sample of
-tfc.propick.found_medium=Found a medium sample of
-tfc.propick.found_large=Found a large sample of
-tfc.propick.found_very_large=Found a very large sample of
+tfc.propick.found=Found %s
+tfc.propick.found_traces=Found traces of %s
+tfc.propick.found_small=Found a small sample of %s
+tfc.propick.found_medium=Found a medium sample of %s
+tfc.propick.found_large=Found a large sample of %s
+tfc.propick.found_very_large=Found a very large sample of %s
 tfc.propick.found_nothing=Found nothing of interest.
 
 ## Thatch Bed
