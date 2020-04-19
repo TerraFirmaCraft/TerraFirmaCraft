@@ -82,7 +82,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     public long getProductsCooldown()
     {
         // Just here for the time being, in 1.15 gonna see changes here to match other animals better
-        return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) / ICalendar.TICKS_IN_DAY);
+        return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
     }
 
     public EntitySheepTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
