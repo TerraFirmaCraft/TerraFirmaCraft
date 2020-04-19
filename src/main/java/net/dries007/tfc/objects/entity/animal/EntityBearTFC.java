@@ -15,7 +15,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,18 +36,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
+import net.dries007.tfc.objects.entity.ai.EntityAIStandAttack;
+import net.dries007.tfc.objects.entity.ai.EntityAIWanderHuntArea;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
-//import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
-
 @ParametersAreNonnullByDefault
-public class EntityBearTFC extends EntityAnimalMammal implements IPredator
+public class EntityBearTFC extends EntityAnimalMammal implements IPredator, EntityAIStandAttack.IEntityStandAttack
 {
     private static final int DAYS_TO_ADULTHOOD = 1800;
     private static final int DAYS_TO_FULL_GESTATION = 210;
@@ -135,22 +134,6 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
         return DAYS_TO_FULL_GESTATION;
     }
 
-    public boolean isStanding()
-    {
-        return this.dataManager.get(IS_STANDING);
-    }
-
-    public void setStanding(boolean standing)
-    {
-        this.dataManager.set(IS_STANDING, standing);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public float getStandingAnimationScale(float p_189795_1_)
-    {
-        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * p_189795_1_) / 6.0F;
-    }
-
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
@@ -179,6 +162,29 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
         return flag;
     }
 
+    public boolean isStanding()
+    {
+        return this.dataManager.get(IS_STANDING);
+    }
+
+    @Override
+    public void setStanding(boolean standing)
+    {
+        this.dataManager.set(IS_STANDING, standing);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY;
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return LootTablesTFC.ANIMALS_BEAR;
+    }
+
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
@@ -186,12 +192,40 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
+    public void playWarningSound()
+    {
+        if (this.warningSoundTicks <= 0)
+        {
+            this.playSound(SoundEvents.ENTITY_POLAR_BEAR_WARNING, 1.0F, 1.0F);
+            this.warningSoundTicks = 40;
+        }
+
+    }
+
+    @Override
+    protected void updateAITasks()
+    {
+        super.updateAITasks();
+        if (!this.hasHome())
+        {
+            this.setHomePosAndDistance(this.getPosition(), 80);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getStandingAnimationScale(float p_189795_1_)
+    {
+        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * p_189795_1_) / 6.0F;
+    }
+
+    @Override
     protected void initEntityAI()
     {
+        EntityAIWander wander = new EntityAIWanderHuntArea(this, 1.0D);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityBearTFC.AIBearStandAttack());
+        this.tasks.addTask(1, new EntityAIStandAttack<>(this, 1.2D, 2.0D, EntityAIAttackMeleeTFC.AttackBehavior.DAYLIGHT_ONLY).setWanderAI(wander));
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(5, wander);
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
@@ -203,11 +237,12 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
     }
 
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -232,92 +267,9 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected SoundEvent getAmbientSound()
-    {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY;
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable()
-    {
-        return LootTablesTFC.ANIMALS_BEAR;
-    }
-
-    protected void playWarningSound()
-    {
-        if (this.warningSoundTicks <= 0)
-        {
-            this.playSound(SoundEvents.ENTITY_POLAR_BEAR_WARNING, 1.0F, 1.0F);
-            this.warningSoundTicks = 40;
-        }
-
-    }
-
     protected void entityInit()
     {
         super.entityInit();
         this.dataManager.register(IS_STANDING, false);
     }
-
-    private class AIBearStandAttack extends EntityAIAttackMelee
-    {
-        public AIBearStandAttack()
-        {
-            super(EntityBearTFC.this, 1.25D, true);
-        }
-
-        /*
-         * Adults are aggressive (at day), children won't attack **UNLESS** hit by target
-         */
-        @Override
-        public boolean shouldExecute()
-        {
-            return ((((EntityAnimalTFC) this.attacker).getAge() != IAnimalTFC.Age.CHILD && this.attacker.world.isDaytime()) || this.attacker.getRevengeTarget() != null) && super.shouldExecute();
-        }
-
-        @Override
-        public void resetTask()
-        {
-            EntityBearTFC.this.setStanding(false);
-            super.resetTask();
-        }
-
-        @Override
-        protected void checkAndPerformAttack(EntityLivingBase enemy, double distToEnemySqr)
-        {
-            double d0 = this.getAttackReachSqr(enemy);
-            if (distToEnemySqr <= d0 && this.attackTick <= 0)
-            {
-                this.attackTick = 20;
-                this.attacker.attackEntityAsMob(enemy);
-                EntityBearTFC.this.setStanding(false);
-            }
-            else if (distToEnemySqr <= d0 * 2.0D)
-            {
-                if (this.attackTick <= 0)
-                {
-                    EntityBearTFC.this.setStanding(false);
-                    this.attackTick = 20;
-                }
-
-                if (this.attackTick <= 10)
-                {
-                    EntityBearTFC.this.setStanding(true);
-                    EntityBearTFC.this.playWarningSound();
-                }
-            }
-            else
-            {
-                this.attackTick = 20;
-                EntityBearTFC.this.setStanding(false);
-            }
-
-        }
-
-        protected double getAttackReachSqr(EntityLivingBase attackTarget)
-        {
-            return 3.0F + attackTarget.width;
-        }
-    }
-
 }
