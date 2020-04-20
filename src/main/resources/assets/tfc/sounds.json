@@ -434,6 +434,38 @@
       "tfc:lionambient"
     ]
   },
+  "animal.hyena.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.hyena.say",
+    "sounds": [
+      "tfc:hyena1",
+      "tfc:hyena2",
+      "tfc:hyena3"
+    ]
+  },
+  "animal.hyena.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.hyena.cry",
+    "sounds": [
+      "tfc:hyenacry1",
+      "tfc:hyenacry2",
+      "tfc:hyenacry3"
+    ]
+  },
+  "animal.hyena.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.hyena.death",
+    "sounds": [
+      "tfc:hyenadeath1"
+    ]
+  },
+  "animal.hyena.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.hyena.hurt",
+    "sounds": [
+      "tfc:hyenahurt1"
+    ]
+  },
   "animal.cricket": {
     "category": "ambient",
     "subtitle": "tfc.animal.cricket",

@@ -40,6 +40,7 @@ public class LootTablesTFC
     public static ResourceLocation ANIMALS_OCELOT;
     public static ResourceLocation ANIMALS_SQUID;
     public static ResourceLocation ANIMALS_PARROT;
+    public static ResourceLocation ANIMALS_HYENA;
 
     public static void init()
     {
@@ -61,7 +62,8 @@ public class LootTablesTFC
         ANIMALS_LLAMA = register("animals/llama");
         ANIMALS_OCELOT = register("animals/ocelot");
         ANIMALS_SQUID = register("animals/squid");
-        ANIMALS_SQUID = register("animals/parrot");
+        ANIMALS_PARROT = register("animals/parrot");
+        ANIMALS_HYENA = register("animals/hyena");
 
 
         // Loot function for skill drop multiplier

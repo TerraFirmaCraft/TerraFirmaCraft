@@ -58,7 +58,7 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
             return ConfigTFC.WORLD.predatorSpawnRarity;
         }
@@ -91,10 +91,10 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_PANTHER_HURT; }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_HYENA_HURT; }
 
     @Override
-    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_PANTHER_DEATH; }
+    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_HYENA_DEATH; }
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn)
@@ -132,9 +132,9 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.32D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.5D);
     }
 
     @Override
@@ -150,19 +150,19 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_PANTHER_CRY : TFCSounds.ANIMAL_PANTHER_SAY;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_HYENA_CRY : TFCSounds.ANIMAL_HYENA_SAY;
     }
 
     @Nullable
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_GRAN_FELINE;
+        return LootTablesTFC.ANIMALS_HYENA;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // Close enough
+        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F); // Close enough
     }
 }

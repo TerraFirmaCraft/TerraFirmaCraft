@@ -25,7 +25,7 @@ public class LayerCamelDecor implements LayerRenderer<EntityCamelTFC>
 {
     private static final ResourceLocation[]CAMEL_DECOR_TEXTURES = new ResourceLocation[]{new ResourceLocation(MOD_ID, "textures/entity/animal/decor/white.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/orange.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/magenta.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/light_blue.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/yellow.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/lime.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/pink.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/gray.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/silver.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/cyan.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/purple.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/blue.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/brown.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/green.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/red.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/black.png")};
     private final RenderCamelTFC renderer;
-    private final ModelCamelTFC model = new ModelCamelTFC(0.5F);
+    private final ModelCamelTFC model = new ModelCamelTFC(0.51F);
 
     public LayerCamelDecor(RenderCamelTFC p_i47184_1_) {
         this.renderer = p_i47184_1_;
