@@ -1,7 +1,7 @@
 # Contributions
 # 感谢为中文本地化贡献力量的所有人。
 # 初稿：青乌 人间之蟹 zhanj gdufw hidfug HeartyYF
-# 校对：hidfug HeartyYF zhanj xwjcool123 3TUSK wje5
+# 校对：hidfug HeartyYF zhanj xwjcool123 3TUSK wje5 LaursenW Vip_Brooklyn11
 # 以及其他很多提出过建议和意见的朋友。
 
 # Command
@@ -156,11 +156,11 @@ tfc.tooltip.veins_command.output_file=文件存储为 %s
 
 ## Prospecting Result Messages
 tfc.propick.found=发现
-tfc.propick.found_traces=发现痕量
-tfc.propick.found_small=发现少量
-tfc.propick.found_medium=发现中量
-tfc.propick.found_large=发现大量
-tfc.propick.found_very_large=发现巨量
+tfc.propick.found_traces=发现痕量 %s
+tfc.propick.found_small=发现少量 %s
+tfc.propick.found_medium=发现中量 %s
+tfc.propick.found_large=发现大量 %s
+tfc.propick.found_very_large=发现巨量 %s
 tfc.propick.found_nothing=没发现什么有意思的。
 
 ## Thatch Bed
@@ -212,7 +212,7 @@ config.tfc.tooltip=群峦传说设置
 
 ## General Config
 config.tfc.general=通用设置
-config.tfc.general.toolip=适用于客户端和服务端。
+config.tfc.general.tooltip=适用于客户端和服务端。
 
 config.tfc.general.debug=调试模式
 config.tfc.general.debug.tooltip=各种调试选项。激活一些额外的调试魔杖特性。启用额外的物品提示。
@@ -271,8 +271,8 @@ config.tfc.general.firePitCookingPotBoilingTime.tooltip=在篝火上烧开一锅
 config.tfc.general.pitKilnTime=坑窑时间
 config.tfc.general.pitKilnTime.tooltip=坑窑燃烧完毕所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 8 小时。
 
-config.tfc.general.torchTime=火炬烧尽时间
-config.tfc.general.torchTime.tooltip=火炬燃烧殆尽所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 72 小时。设置为 -1 永不烧尽。
+config.tfc.general.torchTime=火把烧尽时间
+config.tfc.general.torchTime.tooltip=火把燃烧殆尽所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 72 小时。设置为 -1 永不烧尽。
 
 config.tfc.general.bloomeryTime=炼铁炉时间
 config.tfc.general.bloomeryTime.tooltip=炼铁炉完成所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 15 小时。
@@ -364,8 +364,8 @@ config.tfc.general.overworkChunk.tooltip=若为 true，忽略对淘金盘和洗�
 config.tfc.general.forceNoVanillaNaturalRegeneration=强制无原版自然恢复
 config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=若为 true，将把游戏规则 naturalRegeneration 强制设置为 false 。注意：这不会影响群峦的自然恢复。若将 naturalRegeneration 设置为 true ，将同时有群峦和正常原版（比群峦快多了）的恢复。
 
-config.tfc.general.forceNoVanillaAnimals=强制替换原版动物
-config.tfc.general.forceNoVanillaAnimals.tooltip=若为 true，在任何情况下生成的原版动物（例如：刷怪箱，刷怪蛋，等等）将被群峦传说的相应动物替换。
+config.tfc.general.forceReplaceVanillaAnimals=强制替换原版动物
+config.tfc.general.forceReplaceVanillaAnimals.tooltip=若为 true，在任何情况下生成的原版动物（例如：刷怪箱，刷怪蛋，等等）将被群峦传说的相应动物替换。
 
 config.tfc.general.peacefulDifficultyPassiveRegeneration=和平难度被动恢复
 config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饥饿值，口渴值？
@@ -385,8 +385,8 @@ config.tfc.general.worldRegenerationSticksRocksModifier.tooltip=地表上零散�
 config.tfc.general.foodDecayStackTime=食物腐烂叠加时间
 config.tfc.general.foodDecayStackTime.tooltip=食物初始保质期的同步值。当食物首次成为物品时，其初始保质期将四舍五入至该值最接近的倍数（以小时为单位）。
 
-config.tfc.general.foodPassiveExhaustionMultiplier=饱食度被动消耗速度
-config.tfc.general.foodPassiveExhaustionMultiplier.tooltip=饱食度被动消耗的速度。0 = 无被动消耗，更大的值 = 更快的消耗。
+config.tfc.general.foodPassiveExhaustionMultiplier=饥饿值被动消耗速度
+config.tfc.general.foodPassiveExhaustionMultiplier.tooltip=饥饿值被动消耗的速度。0 = 无被动消耗，更大的值 = 更快的消耗。
 
 config.tfc.general.oreDictIron=矿物词典 锻铁 - iron
 config.tfc.general.oreDictIron.tooltip=向锻铁物品添加 iron 的矿物词典吗？
@@ -433,11 +433,17 @@ config.tfc.general.tankCrucible.tooltip=坩埚能容纳多少金属？（单位/
 config.tfc.general.disableCobbleGenOverride=禁用群峦圆石生成修改
 config.tfc.general.disableCobbleGenOverride.tooltip=如果你希望用其他模组修改圆石生成或有某种获取原版圆石的方法，将该选项启用。
 
-config.tfc.general.leafDensity=树叶减速程度 
-config.tfc.general.leafDensity.tooltip=树叶应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此项 = 真正速度）
+config.tfc.general.leafMovementModifier=树叶减速系数 
+config.tfc.general.leafMovementModifier.tooltip=树叶应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此系数 = 实际速度）
 
-config.tfc.general.berryBushMovementModifier=灌木减速程度
-config.tfc.general.berryBushMovementModifier.tooltip=浆果灌木应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此项 = 真正速度）
+config.tfc.general.berryBushMovementModifier=灌木减速系数
+config.tfc.general.berryBushMovementModifier.tooltip=浆果灌木应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此系数 = 实际速度）
+
+config.tfc.general.snowMovementModifier=雪减速系数
+config.tfc.general.snowMovementModifier.tooltip=雪应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此系数 = 实际速度）
+
+config.tfc.general.minimumPlantMovementModifier=植物最大减速系数
+config.tfc.general.minimumPlantMovementModifier.tooltip=植物减速玩家的最大程度，较小的值 = 较慢，较大的值 = 较快。1 = 不减速。注意：实际减速程度与植物种类与其生长阶段有关。（原速度 * 此系数 = 最小速度）
 
 config.tfc.general.disableTorchOverride=禁用火把覆盖
 config.tfc.general.disableTorchOverride.tooltip=如果你希望用其他模组覆盖原版火把，将该选项启用。
@@ -451,10 +457,20 @@ config.tfc.general.woodenBucketWhitelist.tooltip=允许木桶盛装的液体列�
 config.tfc.general.drinkDelay=饮水用时
 config.tfc.general.drinkDelay.tooltip=通过手中物品饮水所需的时间（以刻为单位）。
 
+config.tfc.general.blueSteelBucketWhitelist=蓝钢桶白名单
+config.tfc.general.blueSteelBucketWhitelist.tooltip=允许蓝钢桶盛装的液体列表。
+
+config.tfc.general.redSteelBucketWhitelist=红钢桶白名单
+config.tfc.general.redSteelBucketWhitelist.tooltip=允许红钢桶盛装的液体列表。
+
+config.tfc.general.nutritionRotationHungerWindow=营养刷新的饥饿值窗口期
+config.tfc.general.nutritionRotationHungerWindow.tooltip=玩家完全刷新其营养状态所需要消耗的饥饿值。在群峦传说中，几乎所有食物都提供 4 饥饿值，因此该选项的值大概是你所需要食用食物数量的四倍。修改该值将在下次进食时更新。
+
+
 ## Client Config
 
 config.tfc.client=客户端设置
-config.tfc.client.toolip=仅作用于客户端。
+config.tfc.client.tooltip=仅作用于客户端。
 
 config.tfc.client.makeWorldTypeClassicDefault=将群峦传说经典生成设为默认
 config.tfc.client.makeWorldTypeClassicDefault.tooltip=仅在客户端有效！服务器需要将世界类型设置为 tfc_classic。
@@ -535,26 +551,26 @@ config.tfc.world.livestockSpawnRarity.tooltip=控制可驯服的动物生成时�
 config.tfc.world.livestockRespawnWeight=牲畜重生成权重
 config.tfc.world.livestockRespawnWeight.tooltip=控制重生成时生成可驯服的动物而不是其他动物的可能性。设为 0 以禁用牲畜重生成。
 
-config.tfc.general.huntableSpawnRarity=猎物生成稀有度
-config.tfc.general.huntableSpawnRarity.tooltip=控制可狩猎的动物生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
+config.tfc.world.huntableSpawnRarity=猎物生成稀有度
+config.tfc.world.huntableSpawnRarity.tooltip=控制可狩猎的动物生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
 
-config.tfc.general.huntableRespawnWeight=猎物重生成权重
-config.tfc.general.huntableRespawnWeight.tooltip=控制重生成时生成可狩猎的动物而不是其他动物的可能性。设为 0 以禁用猎物重生成。
+config.tfc.world.huntableRespawnWeight=猎物重生成权重
+config.tfc.world.huntableRespawnWeight.tooltip=控制重生成时生成可狩猎的动物而不是其他动物的可能性。设为 0 以禁用猎物重生成。
 
-config.tfc.general.predatorSpawnRarity=捕食者生成稀有度
-config.tfc.general.predatorSpawnRarity.tooltip=控制捕食者生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
+config.tfc.world.predatorSpawnRarity=捕食者生成稀有度
+config.tfc.world.predatorSpawnRarity.tooltip=控制捕食者生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
 
-config.tfc.general.predatorRespawnWeight=捕食者生成权重
-config.tfc.general.predatorRespawnWeight.tooltip=控制重生成时生成捕食者而不是其他动物的可能性。设为 0 以禁用捕食者重生成。
+config.tfc.world.predatorRespawnWeight=捕食者生成权重
+config.tfc.world.predatorRespawnWeight.tooltip=控制重生成时生成捕食者而不是其他动物的可能性。设为 0 以禁用捕食者重生成。
 
-config.tfc.general.animalSpawnCount=动物生成计数
-config.tfc.general.animalSpawnCount.tooltip=控制平均每名玩家的动物上限，加载（生成）的所有种类动物 / 玩家。更大的值意味着玩家周围有更多的动物，增加了难度和肉类丰度（注意，过高的值可能对性能有负面影响）。
+config.tfc.world.animalSpawnCount=动物生成计数
+config.tfc.world.animalSpawnCount.tooltip=控制平均每名玩家的动物上限，加载（生成）的所有种类动物 / 玩家。更大的值意味着玩家周围有更多的动物，增加了难度和肉类丰度（注意，过高的值可能对性能有负面影响）。
 
-config.tfc.general.mobSpawnCount=怪物生成计数
-config.tfc.general.mobSpawnCount.tooltip=控制平均每名玩家的怪物上限，加载（生成）的怪物 / 玩家。更大的值意味着玩家周围有更多的怪物，增加了难度（注意，过高的值可能对性能有负面影响）。
+config.tfc.world.mobSpawnCount=怪物生成计数
+config.tfc.world.mobSpawnCount.tooltip=控制平均每名玩家的怪物上限，加载（生成）的怪物 / 玩家。更大的值意味着玩家周围有更多的怪物，增加了难度（注意，过高的值可能对性能有负面影响）。
 
-config.tfc.general.preventMobsOnSurface=禁止怪物地表生成
-config.tfc.general.preventMobsOnSurface.tooltip=禁止在地表生成怪物吗？
+config.tfc.world.preventMobsOnSurface=禁止怪物地表生成
+config.tfc.world.preventMobsOnSurface.tooltip=禁止在地表生成怪物吗？
 
 # Misc
 itemGroup.tfc.misc=群峦传说 | 杂项
@@ -794,6 +810,7 @@ fluid.cider=苹果酒
 fluid.vinegar=醋
 fluid.brine=卤水
 fluid.olive_oil=橄榄油
+fluid.olive_oil_water=毛橄榄油
 fluid.tannin=鞣酸
 fluid.limewater=石灰水
 fluid.milk=牛奶
@@ -891,7 +908,7 @@ tile.tfc.thatch.name=干草块
 tile.tfc.firepit.name=篝火
 tile.tfc.bellows.name=风箱
 tile.tfc.crucible.name=坩埚
-tile.tfc.torch.name=火炬
+tile.tfc.torch.name=火把
 tile.tfc.blast_furnace.name=高炉
 tile.tfc.bloomery.name=锻铁炉
 tile.tfc.fire_bricks.name=耐火砖
@@ -4003,7 +4020,7 @@ item.tfc.food.sugarcane.name=甘蔗
 item.tfc.food.beef.name=生牛肉
 item.tfc.food.pork.name=生猪肉
 item.tfc.food.chicken.name=生鸡肉
-item.tfc.food.mutton.name=生羊肉
+item.tfc.food.mutton.name=生绵羊肉
 item.tfc.food.fish.name=生鱼
 item.tfc.food.bear.name=生熊肉
 item.tfc.food.calamari.name=生鱿鱼
@@ -4012,14 +4029,14 @@ item.tfc.food.pheasant.name=生雉鸡肉
 item.tfc.food.venison.name=生鹿肉
 item.tfc.food.rabbit.name=生兔肉
 item.tfc.food.wolf.name=生狼肉
-item.tfc.food.viande.name=生Viande
+item.tfc.food.viande.name=生驼肉
 item.tfc.food.duck.name=生鸭肉
 item.tfc.food.chevon.name=生山羊肉
-item.tfc.food.gran_feline.name=生Gran Feline Meat
+item.tfc.food.gran_feline.name=生大猫肉
 item.tfc.food.cooked_beef.name=熟牛肉
 item.tfc.food.cooked_pork.name=熟猪肉
 item.tfc.food.cooked_chicken.name=熟鸡肉
-item.tfc.food.cooked_mutton.name=熟羊肉
+item.tfc.food.cooked_mutton.name=熟绵羊肉
 item.tfc.food.cooked_fish.name=熟鱼
 item.tfc.food.cooked_bear.name=熟熊肉
 item.tfc.food.cooked_calamari.name=熟鱿鱼
@@ -4028,10 +4045,10 @@ item.tfc.food.cooked_pheasant.name=熟雉鸡肉
 item.tfc.food.cooked_venison.name=熟鹿肉
 item.tfc.food.cooked_rabbit.name=熟兔肉
 item.tfc.food.cooked_wolf.name=熟狼肉
-item.tfc.food.cooked_viande.name=Cooked Viande
+item.tfc.food.cooked_viande.name=熟驼肉
 item.tfc.food.cooked_duck.name=熟鸭肉
 item.tfc.food.cooked_chevon.name=熟山羊肉
-item.tfc.food.cooked_gran_feline.name=Cooked Gran Feline
+item.tfc.food.cooked_gran_feline.name=熟大猫肉
 item.tfc.food.barley_bread_sandwich.name=大麦面包三明治
 item.tfc.food.cornbread_sandwich.name=玉米面包三明治
 item.tfc.food.rye_bread_sandwich.name=黑麦面包三明治
@@ -4076,8 +4093,8 @@ item.tfc.crop.product.jute.name=黄麻
 item.tfc.crop.product.jute_fiber.name=黄麻纤维
 item.tfc.crop.product.dirty_jute_net.name=脏黄麻网
 item.tfc.crop.product.jute_net.name=黄麻网
-item.tfc.crop.product.jute_disc.name=黄麻 Disc
-item.tfc.crop.product.olive_jute_disc.name=Olive 黄麻 Disc
+item.tfc.crop.product.jute_disc.name=黄麻碟
+item.tfc.crop.product.olive_jute_disc.name=橄榄油黄麻碟
 item.tfc.crop.product.burlap_cloth.name=粗麻布
 
 item.tfc.bloom.unrefined.unknown.name=生方坯
@@ -4096,28 +4113,29 @@ item.tfc.quiver.name=箭袋
 ## Entities
 
 # Animals
-entity.sheeptfc.name=羊
+entity.sheeptfc.name=绵羊
 entity.cowtfc.name=牛
 entity.beartfc.name=熊
 entity.pigtfc.name=猪
 entity.chickentfc.name=鸡
 entity.deertfc.name=鹿
 entity.pheasanttfc.name=雉鸡
-entity.rabbittfc.name=兔子
+entity.rabbittfc.name=兔
 entity.wolftfc.name=狼
 entity.horsetfc.name=马
 entity.donkeytfc.name=驴
 entity.muletfc.name=骡
 entity.parrottfc.name=鹦鹉
-entity.llamatfc.name=Llama
+entity.llamatfc.name=驼马
 entity.polarbeartfc.name=北极熊
-entity.alpacatfc.name=Alpaca
+entity.alpacatfc.name=羊驼
 entity.ducktfc.name=鸭
 entity.goattfc.name=山羊
 entity.panthertfc.name=黑豹
 entity.ocelottfc.name=豹猫
 entity.sabertoothtfc.name=剑齿虎
 entity.cameltfc.name=骆驼
+entity.liontfc.name=狮
 
 #TFC death messages
 death.attack.dehydration=%1$s 死于脱水
@@ -4140,8 +4158,8 @@ tfc.animal.deertfc.male=公鹿
 tfc.animal.deertfc.female=母鹿
 tfc.animal.pheasanttfc.male=公雉鸡
 tfc.animal.pheasanttfc.female=母雉鸡
-tfc.animal.rabbittfc.male=雄兔子
-tfc.animal.rabbittfc.female=雌兔子
+tfc.animal.rabbittfc.male=雄兔
+tfc.animal.rabbittfc.female=雌兔
 tfc.animal.wolftfc.male=公狼
 tfc.animal.wolftfc.female=母狼
 tfc.animal.horsetfc.male=公马
@@ -4152,12 +4170,12 @@ tfc.animal.muletfc.male=公骡
 tfc.animal.muletfc.female=母骡
 tfc.animal.parrottfc.male=雄鹦鹉
 tfc.animal.parrottfc.female=雌鹦鹉
-tfc.animal.llamatfc.male=Llama♂
-tfc.animal.llamatfc.female=Llama♀
+tfc.animal.llamatfc.male=公驼马
+tfc.animal.llamatfc.female=母驼马
 tfc.animal.polarbeartfc.male=公北极熊
 tfc.animal.poarbeartfc.female=母北极熊
-tfc.animal.alpacatfc.male=Alpaca♂
-tfc.animal.alpacatfc.female=Alpaca♀
+tfc.animal.alpacatfc.male=公羊驼
+tfc.animal.alpacatfc.female=母羊驼
 tfc.animal.ducktfc.male=公鸭
 tfc.animal.ducktfc.female=母鸭
 tfc.animal.goattfc.male=公山羊
@@ -4166,12 +4184,14 @@ tfc.animal.ocelottfc.male=公豹猫
 tfc.animal.ocelottfc.female=母豹猫
 tfc.animal.cattfc.male=公猫
 tfc.animal.cattfc.female=母猫
-tfc.animal.panthertfc.male=公黑豹
-tfc.animal.panthertfc.female=母黑豹
-tfc.animal.sabertoothtfc.male=公剑齿虎
-tfc.animal.sabertoothtfc.female=母剑齿虎
+tfc.animal.panthertfc.male=雄黑豹
+tfc.animal.panthertfc.female=雌黑豹
+tfc.animal.sabertoothtfc.male=雄剑齿虎
+tfc.animal.sabertoothtfc.female=雌剑齿虎
 tfc.animal.cameltfc.male=公骆驼
 tfc.animal.cameltfc.female=母骆驼
+tfc.animal.liontfc.male=雄狮
+tfc.animal.liontfc.female=雌狮
 
 # Sound Events
 tfc.item.ceramicbreak=陶器：被破坏
@@ -4197,31 +4217,35 @@ tfc.animal.pheasant.say=雉鸡：咯咯叫
 tfc.animal.pheasant.chick.say=幼雉鸡：啾~
 tfc.animal.pheasant.hurt=雉鸡：受伤
 tfc.animal.pheasant.death=雉鸡：死亡
-tfc.animal.alpaca.say=Alpaca bleats
-tfc.animal.alpaca.cry=Alpaca bleats
-tfc.animal.alpaca.hurt=Alpaca hurt
-tfc.animal.alpaca.death=Alpaca dies
-tfc.animal.alpaca.step=Footsteps
-tfc.animal.duck.say=Duck clucks
-tfc.animal.duck.cry=Duck clucks
-tfc.animal.duck.hurt=Duck hurt
-tfc.animal.duck.death=Duck dies
-tfc.animal.goat.say=Goat baahs
-tfc.animal.goat.cry=Goat baahs
-tfc.animal.goat.hurt=Goat hurt
-tfc.animal.goat.death=Goat dies
-tfc.animal.camel.say=Camel grunts
-tfc.animal.camel.cry=Camel cries
-tfc.animal.camel.hurt=Camel hurt
-tfc.animal.camel.death=Camel dies
-tfc.animal.panther.say=Panther grunts
-tfc.animal.panther.cry=Panther cries
-tfc.animal.panther.hurt=Panther hurt
-tfc.animal.panther.death=Panther dies
-tfc.animal.sabertooth.say=Saber Tooth grunts
-tfc.animal.sabertooth.cry=Saber Tooth cries
-tfc.animal.sabertooth.hurt=Saber Tooth hurt
-tfc.animal.sabertooth.death=Saber Tooth dies
+tfc.animal.alpaca.say=羊驼：呼噜
+tfc.animal.alpaca.cry=羊驼：吼叫
+tfc.animal.alpaca.hurt=羊驼：受伤
+tfc.animal.alpaca.death=羊驼：死亡
+tfc.animal.alpaca.step=脚步声
+tfc.animal.duck.say=鸭：呱呱叫
+tfc.animal.duck.cry=鸭：呱呱叫
+tfc.animal.duck.hurt=鸭：受伤
+tfc.animal.duck.death=鸭：死亡
+tfc.animal.goat.say=山羊：咩~
+tfc.animal.goat.cry=山羊：咩
+tfc.animal.goat.hurt=山羊：受伤
+tfc.animal.goat.death=山羊：死亡
+tfc.animal.camel.say=骆驼：呼噜
+tfc.animal.camel.cry=骆驼：吼叫
+tfc.animal.camel.hurt=骆驼：受伤
+tfc.animal.camel.death=骆驼：死亡
+tfc.animal.panther.say=黑豹：呼噜
+tfc.animal.panther.cry=黑豹：吼叫
+tfc.animal.panther.hurt=黑豹：受伤
+tfc.animal.panther.death=黑豹：死亡
+tfc.animal.sabertooth.say=剑齿虎：呼噜
+tfc.animal.sabertooth.cry=剑齿虎：吼叫
+tfc.animal.sabertooth.hurt=剑齿虎：受伤
+tfc.animal.sabertooth.death=剑齿虎：死亡
+tfc.animal.lion.say=狮：呼噜
+tfc.animal.lion.cry=狮：咆哮
+tfc.animal.lion.hurt=狮：受伤
+tfc.animal.lion.death=狮：死亡
 tfc.animal.cricket=蟋蟀叫
 tfc.animal.frog=蛙鸣
 
@@ -4357,7 +4381,7 @@ advancements.tfc.world.find_coal.title=黑色的金子
 advancements.tfc.world.find_coal.description=在沉积岩岩层中找到烟煤或褐煤。
 advancements.tfc.world.find_graphite.title=石墨
 advancements.tfc.world.find_graphite.description=生成岩层：大理岩、片麻岩、石英岩、片岩。
-advancements.tfc.world.find_kaolinite.title=粉红色Unicorn
+advancements.tfc.world.find_kaolinite.title=Pink Unicorn
 advancements.tfc.world.find_kaolinite.description=在沉积岩岩层中找到高岭石。
 advancements.tfc.world.find_sylvite.title=金坷垃
 advancements.tfc.world.find_sylvite.description=在盐岩岩层中找到钾石盐。
@@ -4369,3 +4393,27 @@ advancements.tfc.world.find_silver.title=银色子弹
 advancements.tfc.world.find_silver.description=在花岗岩岩层或片麻岩岩层中找到原生银矿。
 advancements.tfc.world.find_nickel.title=硬币
 advancements.tfc.world.find_nickel.description=在辉长岩岩层中找到镍矿。
+
+# Overwrite Vanilla
+entity.Rabbit.name=兔
+subtitles.entity.rabbit.ambient=兔：吱吱叫
+subtitles.entity.rabbit.attack=兔：攻击
+subtitles.entity.rabbit.death=兔：死亡
+subtitles.entity.rabbit.hurt=兔：受伤
+subtitles.entity.rabbit.jump=兔：跳动
+
+entity.Sheep.name=绵羊
+subtitles.entity.sheep.ambient=绵羊：咩~
+subtitles.entity.sheep.death=绵羊：死亡
+subtitles.entity.sheep.hurt=绵羊：受伤
+
+entity.Llama.name=驼马
+subtitles.entity.llama.ambient=驼马：吼叫
+subtitles.entity.llama.angry=驼马：怒吼
+subtitles.entity.llama.chest=驼马：装备箱子
+subtitles.entity.llama.death=驼马：死亡
+subtitles.entity.llama.eat=驼马：进食
+subtitles.entity.llama.hurt=驼马：受伤
+subtitles.entity.llama.spit=驼马：喷射唾沫
+subtitles.entity.llama.step=驼马：踏步
+subtitles.entity.llama.swag=驼马：被装饰
