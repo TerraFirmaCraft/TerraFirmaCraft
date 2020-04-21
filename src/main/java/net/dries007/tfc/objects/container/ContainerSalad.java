@@ -74,7 +74,7 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
         for (int i = 0; i < inventory.getSlots(); i++)
         {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty())
+            if (!stack.isEmpty() && i != SLOT_OUTPUT) // Skip the salad slot
             {
                 ItemHandlerHelper.giveItemToPlayer(playerIn, stack);
             }
