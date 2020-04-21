@@ -36,6 +36,10 @@ public class LootTablesTFC
     public static ResourceLocation ANIMALS_GOAT;
     public static ResourceLocation ANIMALS_CAMEL;
     public static ResourceLocation ANIMALS_GRAN_FELINE;
+    public static ResourceLocation ANIMALS_LLAMA;
+    public static ResourceLocation ANIMALS_OCELOT;
+    public static ResourceLocation ANIMALS_SQUID;
+    public static ResourceLocation ANIMALS_PARROT;
 
     public static void init()
     {
@@ -54,7 +58,10 @@ public class LootTablesTFC
         ANIMALS_GOAT = register("animals/goat");
         ANIMALS_CAMEL = register("animals/camel");
         ANIMALS_GRAN_FELINE = register("animals/gran_feline");
-
+        ANIMALS_LLAMA = register("animals/llama");
+        ANIMALS_OCELOT = register("animals/ocelot");
+        ANIMALS_SQUID = register("animals/squid");
+        ANIMALS_PARROT = register("animals/parrot");
 
         // Loot function for skill drop multiplier
         LootFunctionManager.registerFunction(new ApplySimpleSkill.Serializer(new ResourceLocation(MOD_ID, "apply_skill")));
@@ -69,6 +76,12 @@ public class LootTablesTFC
             remove(event, "minecraft:entities/zombie_villager", "pool1");
             remove(event, "minecraft:entities/zombie", "pool1");
             remove(event, "minecraft:entities/husk", "pool1");
+        }
+
+        // Add calamari to squid's loot table
+        if ("minecraft:entities/squid".equals(event.getName().toString()))
+        {
+            event.getTable().addPool(event.getLootTableManager().getLootTableFromLocation(ANIMALS_SQUID).getPool("roll1"));
         }
     }
 

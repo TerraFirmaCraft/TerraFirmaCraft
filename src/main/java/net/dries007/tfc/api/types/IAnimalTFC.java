@@ -205,6 +205,24 @@ public interface IAnimalTFC extends ICreatureTFC
     }
 
     /**
+     * Set this animal on produce cooldown
+     * This means that you just sheared a sheep, your chicken just laiyed eggs or you just milked your cow
+     */
+    default void setProductsCooldown()
+    {
+    }
+
+    /**
+     * Returns the number of ticks remaining for this animal to finish it's produce cooldown
+     *
+     * @return ticks remaining to finish cooldown
+     */
+    default long getProductsCooldown()
+    {
+        return 0;
+    }
+
+    /**
      * Get the tooltip for ** Why this animal is not ready? **
      * Common usages: Cows not having milk, chickens already layed eggs today, sheeps' fleece not grown, not enough familiarity
      *
