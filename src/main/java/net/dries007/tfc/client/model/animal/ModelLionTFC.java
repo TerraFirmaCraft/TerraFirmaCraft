@@ -8,20 +8,25 @@ package net.dries007.tfc.client.model.animal;
 //Made with Blockbench
 //Paste this code into your mod.
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.util.math.MathHelper;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
+import net.dries007.tfc.objects.entity.animal.EntityGoatTFC;
 import net.dries007.tfc.objects.entity.animal.EntityLionTFC;
 
 public class ModelLionTFC extends ModelBase
 {
-    public ModelRenderer frontBody;
-    public ModelRenderer backBody;
+    public ModelRenderer frontBodyM;
+    public ModelRenderer backBodyM;
     public ModelRenderer mane2;
     public ModelRenderer mane3;
     public ModelRenderer tail;
@@ -53,6 +58,10 @@ public class ModelLionTFC extends ModelBase
     public ModelRenderer backLeftLegMiddle;
     public ModelRenderer backLeftLegBottom;
     public ModelRenderer backLeftPaw;
+    public ModelRenderer frontBodyF;
+    public ModelRenderer backBodyF;
+    public ModelRenderer neckF;
+
 
     public ModelLionTFC()
     {
@@ -70,10 +79,10 @@ public class ModelLionTFC extends ModelBase
         mouthBottom.addBox(-2.0F, 0.0F, -4.0F, 3, 2, 4, 0.0F);
         tailTip2 = new ModelRenderer(this, 42, 50);
         tailTip2.setRotationPoint(0.0F, -0.9F, 6.2F);
-        tailTip2.addBox(-1.0F, 0.13F, 3.63F, 2, 0, 1, 0.0F);
+        tailTip2.addBox(-1.0F, 0.13F, 3.63F, 2, 0, 2, 0.0F);
         setRotation(tailTip2, 0.6981317007977318F, 0.0F, 0.0F);
         earFR = new ModelRenderer(this, 71, 70);
-        earFR.setRotationPoint(-2.0F, -3.0F, -1.0F);
+        earFR.setRotationPoint(-1.5F, -3.0F, -1.0F);
         earFR.addBox(-2.0F, -3.0F, -2.0F, 3, 3, 1, 0.0F);
         setRotation(earFR, 0.0F, -0.17453292519943295F, -0.17453292519943295F);
         mouthTop = new ModelRenderer(this, 55, 53);
@@ -84,10 +93,10 @@ public class ModelLionTFC extends ModelBase
         mane2.addBox(-7.0F, -17.9F, -10.0F, 14, 9, 7, 0.0F);
         tailTip1 = new ModelRenderer(this, 44, 50);
         tailTip1.setRotationPoint(0.0F, -0.9F, 6.2F);
-        tailTip1.addBox(0.0F, -0.87F, 3.63F, 0, 2, 1, 0.0F);
+        tailTip1.addBox(0.0F, -0.87F, 3.63F, 0, 2, 2, 0.0F);
         setRotation(tailTip1, 0.6981317007977318F, 0.0F, 0.0F);
         tail = new ModelRenderer(this, 38, 60);
-        tail.setRotationPoint(0.0F, -14.0F, 10.0F);
+        tail.setRotationPoint(0.0F, 8.0F, 10.0F);
         tail.addBox(-0.5F, -1.0F, 0.0F, 1, 1, 6, 0.0F);
         setRotation(tail, -0.9599310885968813F, 0.0F, 0.0F);
         mane3 = new ModelRenderer(this, 8, 37);
@@ -101,22 +110,33 @@ public class ModelLionTFC extends ModelBase
         earML.setRotationPoint(2.0F, -2.0F, -1.0F);
         earML.addBox(-1.0F, -4.0F, -2.0F, 3, 3, 1, 0.0F);
         head = new ModelRenderer(this, 50, 68);
-        head.setRotationPoint(0.0F, -15.0F, -9.0F);
+        head.setRotationPoint(0.0F, 6.0F, -9.0F);
         head.addBox(-3.0F, -4.0F, -7.0F, 6, 7, 7, 0.0F);
         earFL = new ModelRenderer(this, 71, 70);
-        earFL.setRotationPoint(2.0F, -3.0F, -1.0F);
+        earFL.setRotationPoint(1.5F, -3.0F, -1.0F);
         earFL.addBox(-1.0F, -3.0F, -2.0F, 3, 3, 1, 0.0F);
         setRotation(earFL, 0.0F, 0.17453292519943295F, 0.17453292519943295F);
-        frontBody = new ModelRenderer(this, 41, 0);
-        frontBody.setRotationPoint(0.0F, 21.0F, 0.0F);
-        frontBody.addBox(-4.0F, -14.9F, -9.0F, 8, 11, 13, 0.0F);
+        frontBodyM = new ModelRenderer(this, 41, 0);
+        frontBodyM.setRotationPoint(0.0F, 21.0F, 0.0F);
+        frontBodyM.addBox(-4.0F, -14.9F, -9.0F, 8, 11, 13, 0.0F);
         nose = new ModelRenderer(this, 56, 60);
         nose.setRotationPoint(0.0F, -0.8F, -5.8F);
         nose.addBox(-1.0F, -2.0F, -4.7F, 2, 2, 5, 0.0F);
         setRotation(nose, 0.3490658503988659F, 0.0F, 0.0F);
-        backBody = new ModelRenderer(this, 49, 25);
-        backBody.setRotationPoint(0.0F, 21.0F, 0.0F);
-        backBody.addBox(-3.0F, -14.9F, 4.0F, 6, 9, 7, 0.0F);
+        backBodyM = new ModelRenderer(this, 49, 25);
+        backBodyM.setRotationPoint(0.0F, 21.0F, 0.0F);
+        backBodyM.addBox(-3.0F, -14.9F, 4.0F, 6, 9, 7, 0.0F);
+
+        frontBodyF = new ModelRenderer(this, 41, 2);
+        frontBodyF.setRotationPoint(0.0F, 21.0F, 0.0F);
+        frontBodyF.addBox(-4.0F, -14.9F, -9.0F, 8, 9, 13, 0.0F);
+        backBodyF = new ModelRenderer(this, 49, 27);
+        backBodyF.setRotationPoint(0.0F, 21.0F, 0.0F);
+        backBodyF.addBox(-3.0F, -14.9F, 4.0F, 6, 7, 7, 0.0F);
+        neckF = new ModelRenderer(this, 52, 27);
+        neckF.setRotationPoint(0.0F, -12.0F, -6.4F);
+        neckF.addBox(-2.5F, -2.5F, -5.0F, 5, 6, 5, 0.0F);
+        setRotation(neckF, -0.6108652381980153F, 0.0F, 0.0F);
 
         frontRightLegTop = new ModelRenderer(this, 0, 75);
         frontRightLegTop.setRotationPoint(-4.0F, 8.0F, -6.5F);
@@ -191,12 +211,11 @@ public class ModelLionTFC extends ModelBase
         tail.addChild(tailTip2);
         head.addChild(earMR);
         tail.addChild(tailTip1);
-        frontBody.addChild(tail);
         tail.addChild(tail1);
         head.addChild(earFL);
-        frontBody.addChild(head);
         head.addChild(earML);
         head.addChild(nose);
+        frontBodyF.addChild(neckF);
 
         frontRightLegTop.addChild(frontRightLegMiddle);
         frontRightLegMiddle.addChild(frontRightLegBottom);
@@ -214,18 +233,21 @@ public class ModelLionTFC extends ModelBase
 
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(@Nonnull Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
+        this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
+
         EntityLionTFC lion = ((EntityLionTFC) entity);
 
         float percent = (float) lion.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
         float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
+        GlStateManager.pushMatrix();
 
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
+        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
+        GlStateManager.translate(0.0F, 0, 0.1875f - (0.1875f * percent));
 
-        float age = 1;
 
         if (lion.getGender() == EntityAnimalTFC.Gender.MALE)
         {
@@ -233,6 +255,13 @@ public class ModelLionTFC extends ModelBase
             earFR.isHidden = true;
             earML.isHidden = false;
             earMR.isHidden = false;
+            frontBodyM.isHidden = false;
+            backBodyM.isHidden = false;
+            frontBodyF.isHidden = true;
+            backBodyF.isHidden = true;
+            mane2.isHidden = false;
+            mane3.isHidden = false;
+
         }
         else
         {
@@ -240,35 +269,39 @@ public class ModelLionTFC extends ModelBase
             earFR.isHidden = false;
             earML.isHidden = true;
             earMR.isHidden = true;
+            frontBodyM.isHidden = true;
+            backBodyM.isHidden = true;
+            frontBodyF.isHidden = false;
+            backBodyF.isHidden = false;
+            //neckF.isHidden = false;
+            mane2.isHidden = true;
+            mane3.isHidden = true;
         }
 
+        head.render(par7);
 
-        if (isChild)
-        {
-            float aa = 2F - (1.0F - age);
-            GlStateManager.pushMatrix();
-            float ab = (float) Math.sqrt(1.0F / aa);
-            GlStateManager.scale(ab, ab, ab);
-            GlStateManager.translate(0.0F, 24F * f5 * age / aa, 2F * f5 * age / ab);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(1.0F / aa, 1.0F / aa, 1.0F / aa);
-            GlStateManager.translate(0.0F, 24F * f5 * age, 0.0F);
-            frontBody.render(f5);
-            backBody.render(f5);
-            mane2.render(f5);
-            mane3.render(f5);
-            GlStateManager.popMatrix();
-        }
-        else
-        {
-            frontBody.render(f5);
-            backBody.render(f5);
-            mane2.render(f5);
-            mane3.render(f5);
-        }
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
+        GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
 
+        frontBodyM.render(par7);
+        frontBodyF.render(par7);
+        backBodyM.render(par7);
+        backBodyF.render(par7);
+        tail.render(par7);
+        mane2.render(par7);
+        mane3.render(par7);
+
+        frontLeftLegTop.render(par7);
+        frontRightLegTop.render(par7);
+        backLeftLegTop.render(par7);
+        backRightLegTop.render(par7);
+
+
+        GlStateManager.popMatrix();
     }
+
 
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity ent)
