@@ -16,13 +16,16 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
@@ -185,5 +188,23 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
             geneVariant = 0;
             this.world.spawnEntity(baby);
         }
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_CAMEL_CRY : TFCSounds.ANIMAL_CAMEL_SAY;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    {
+        return TFCSounds.ANIMAL_CAMEL_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound()
+    {
+        return TFCSounds.ANIMAL_CAMEL_DEATH;
     }
 }

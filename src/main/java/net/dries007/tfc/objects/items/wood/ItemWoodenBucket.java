@@ -47,6 +47,7 @@ public class ItemWoodenBucket extends ItemTFC
     public ItemWoodenBucket()
     {
         setHasSubtypes(true);
+        setContainerItem(this);
     }
 
     @Nonnull

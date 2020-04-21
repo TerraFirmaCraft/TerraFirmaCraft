@@ -31,6 +31,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -57,25 +58,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     {
         int lifeTimeDays = daysToAdulthood + Constants.RNG.nextInt((int) (daysToAdulthood * ConfigTFC.GENERAL.factorAnimalAging));
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
-    }
-
-    /**
-     * Find and charms a near female animal of this animal
-     * Used by males to try mating with females
-     */
-    public static <T extends EntityAnimal & IAnimalTFC> void findFemaleMate(T maleAnimal)
-    {
-        List<EntityAnimal> list = maleAnimal.world.getEntitiesWithinAABB(maleAnimal.getClass(), maleAnimal.getEntityBoundingBox().grow(8.0D));
-        for (EntityAnimal femaleAnimal : list)
-        {
-            IAnimalTFC female = (IAnimalTFC) femaleAnimal;
-            if (female.getGender() == Gender.FEMALE && !femaleAnimal.isInLove() && female.isReadyToMate())
-            {
-                femaleAnimal.setInLove(null);
-                maleAnimal.setInLove(null);
-                break;
-            }
-        }
     }
 
     private long lastFed; //Last time(in days) this entity was fed
@@ -173,6 +155,104 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
     }
 
+    /**
+     * Find and charms a near female animal of this animal
+     * Used by males to try mating with females
+     */
+    public static <T extends EntityAnimal & IAnimalTFC> void findFemaleMate(T maleAnimal)
+    {
+        List<EntityAnimal> list = maleAnimal.world.getEntitiesWithinAABB(maleAnimal.getClass(), maleAnimal.getEntityBoundingBox().grow(8.0D));
+        for (EntityAnimal femaleAnimal : list)
+        {
+            IAnimalTFC female = (IAnimalTFC) femaleAnimal;
+            if (female.getGender() == Gender.FEMALE && !femaleAnimal.isInLove() && female.isReadyToMate())
+            {
+                femaleAnimal.setInLove(null);
+                maleAnimal.setInLove(null);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setBoolean("gender", getGender().toBool());
+        nbt.setInteger("birth", getBirthDay());
+        nbt.setLong("fed", lastFed);
+        nbt.setLong("decay", lastFDecay);
+        nbt.setBoolean("fertilized", this.fertilized);
+        nbt.setLong("mating", matingTime);
+        nbt.setFloat("familiarity", getFamiliarity());
+        nbt.setLong("lastDeath", lastDeath);
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
+        this.setBirthDay(nbt.getInteger("birth"));
+        this.lastFed = nbt.getLong("fed");
+        this.lastFDecay = nbt.getLong("decay");
+        this.matingTime = nbt.getLong("mating");
+        this.fertilized = nbt.getBoolean("fertilized");
+        this.setFamiliarity(nbt.getFloat("familiarity"));
+        this.lastDeath = nbt.getLong("lastDeath");
+
+    }
+
+    @Override
+    public boolean getCanSpawnHere()
+    {
+        return this.world.checkNoEntityCollision(getEntityBoundingBox())
+            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && BlocksTFC.isGround(this.world.getBlockState(this.getPosition().down()));
+    }
+
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
+    {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (!itemstack.isEmpty())
+        {
+            if (itemstack.getItem() == Items.SPAWN_EGG)
+            {
+                return super.processInteract(player, hand); // Let vanilla spawn a baby
+            }
+            else if (this.isFood(itemstack) && player.isSneaking() && getCreatureType() == CreatureType.LIVESTOCK)
+            {
+                if (this.isHungry())
+                {
+                    return eatFood(itemstack, player);
+                }
+                else
+                {
+                    if (!this.world.isRemote)
+                    {
+                        //Show tooltips
+                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
+        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+    }
+
     @Nullable
     @Override
     public EntityAgeable createChild(@Nonnull EntityAgeable other)
@@ -258,6 +338,36 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         }
     }
 
+    /**
+     * Eat food + raises familiarization
+     * If your animal would refuse to eat said stack (because rotten or anything), return false here
+     * This function is called after every other check is made (animal is hungry for the day + this is a valid food)
+     *
+     * @param stack the food stack to eat
+     * @return true if eaten, false otherwise
+     */
+    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
+    {
+        if (!this.world.isRemote)
+        {
+            lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+            lastFDecay = lastFed; //No decay needed
+            this.consumeItemFromStack(player, stack);
+            if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
+            {
+                float familiarity = this.getFamiliarity() + 0.06f;
+                if (this.getAge() != Age.CHILD)
+                {
+                    familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                }
+                this.setFamiliarity(familiarity);
+            }
+            world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
+        }
+        return true;
+    }
+
     @Override
     public void onLivingUpdate()
     {
@@ -301,113 +411,5 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                 }
             }
         }
-    }
-
-    @Override
-    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.writeEntityToNBT(nbt);
-        nbt.setBoolean("gender", getGender().toBool());
-        nbt.setInteger("birth", getBirthDay());
-        nbt.setLong("fed", lastFed);
-        nbt.setLong("decay", lastFDecay);
-        nbt.setBoolean("fertilized", this.fertilized);
-        nbt.setLong("mating", matingTime);
-        nbt.setFloat("familiarity", getFamiliarity());
-        nbt.setLong("lastDeath", lastDeath);
-    }
-
-    @Override
-    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.readEntityFromNBT(nbt);
-        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
-        this.setBirthDay(nbt.getInteger("birth"));
-        this.lastFed = nbt.getLong("fed");
-        this.lastFDecay = nbt.getLong("decay");
-        this.matingTime = nbt.getLong("mating");
-        this.fertilized = nbt.getBoolean("fertilized");
-        this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.lastDeath = nbt.getLong("lastDeath");
-
-    }
-
-    @Override
-    public boolean getCanSpawnHere()
-    {
-        return this.world.checkNoEntityCollision(getEntityBoundingBox())
-            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
-    }
-
-    @Override
-    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
-    {
-        ItemStack itemstack = player.getHeldItem(hand);
-
-        if (!itemstack.isEmpty())
-        {
-            if (itemstack.getItem() == Items.SPAWN_EGG)
-            {
-                return super.processInteract(player, hand); // Let vanilla spawn a baby
-            }
-            else if (this.isFood(itemstack) && player.isSneaking() && getCreatureType() == CreatureType.LIVESTOCK)
-            {
-                if (this.isHungry())
-                {
-                    return eatFood(itemstack, player);
-                }
-                else
-                {
-                    if (!this.world.isRemote)
-                    {
-                        //Show tooltips
-                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
-    }
-
-    /**
-     * Eat food + raises familiarization
-     * If your animal would refuse to eat said stack (because rotten or anything), return false here
-     * This function is called after every other check is made (animal is hungry for the day + this is a valid food)
-     *
-     * @param stack the food stack to eat
-     * @return true if eaten, false otherwise
-     */
-    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
-    {
-        if (!this.world.isRemote)
-        {
-            lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
-            lastFDecay = lastFed; //No decay needed
-            this.consumeItemFromStack(player, stack);
-            if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
-            {
-                float familiarity = this.getFamiliarity() + 0.06f;
-                if (this.getAge() != Age.CHILD)
-                {
-                    familiarity = Math.min(familiarity, getAdultFamiliarityCap());
-                }
-                this.setFamiliarity(familiarity);
-            }
-            world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
-            TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
-        }
-        return true;
     }
 }

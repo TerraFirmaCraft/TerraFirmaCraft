@@ -24,6 +24,7 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -96,6 +97,13 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     public boolean hasWool()
     {
         return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
+    }
+
+    @Override
+    public long getProductsCooldown()
+    {
+        // Just here for the time being, in 1.15 gonna see changes here to match other animals better
+        return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
     }
 
     @Override
