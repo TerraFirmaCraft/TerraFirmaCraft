@@ -23,9 +23,7 @@ import net.dries007.tfc.util.Helpers;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.api.types.Rock.FallingBlockType.*;
 
-/**
- * todo: document API
- */
+
 public class Rock extends IForgeRegistryEntry.Impl<Rock>
 {
     @GameRegistry.ObjectHolder("tfc:granite")

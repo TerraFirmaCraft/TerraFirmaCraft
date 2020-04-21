@@ -273,7 +273,17 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
     {
         IBlockState state = worldIn.getBlockState(pos);
-        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase)
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
+    }
+
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase)
         {
             entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
         }

@@ -55,7 +55,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     {
         // This should never be called directly - when it is we assume it's direct stat modifications (saturation potion, eating cake)
         // We make modifications to vanilla logic, as saturation needs to be unaffected by hunger
-        // todo: handle cake
     }
 
     @Override
