@@ -112,7 +112,7 @@ public class ModelHyenaTFC extends ModelBase
         earLeft.addBox(-1.0F, -1.0F, -0.5F, 2, 3, 1, 0.0F);
         setRotation(earLeft, 0.0F, 0.0F, 0.4363323129985824F);
         headManeCenter = new ModelRenderer(this, 0, 16);
-        headManeCenter.setRotationPoint(-1.0F, -4.0F, -0.5F);
+        headManeCenter.setRotationPoint(0.0F, -4.0F, -0.5F);
         headManeCenter.addBox(0.0F, -1.0F, -1.5F, 0, 2, 3, 0.0F);
         nose = new ModelRenderer(this, 2, 1);
         nose.setRotationPoint(0.0F, -1.3F, -4.7F);
