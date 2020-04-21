@@ -57,7 +57,7 @@ public class ModelSaberToothTFC extends ModelBase
         textureHeight = 64;
 
         tailBottom = new ModelRenderer(this, 34, 3);
-        tailBottom.setRotationPoint(-1.0F, 13.3F, 14.0F);
+        tailBottom.setRotationPoint(-1.0F, 13.3F, 12.5F);
         tailBottom.addBox(0.0F, 0.0F, 0.0F, 2, 4, 2, -0.1F);
         setRotation(tailBottom, 0.9560913642424937F, 0.0F, 0.0F);
         ear1 = new ModelRenderer(this, 0, 4);

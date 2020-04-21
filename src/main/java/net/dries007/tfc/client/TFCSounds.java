@@ -213,7 +213,11 @@ public class TFCSounds
             createSoundEvent("animal.lion.cry"),
             createSoundEvent("animal.lion.say"),
             createSoundEvent("animal.lion.hurt"),
-            createSoundEvent("animal.lion.death")
+            createSoundEvent("animal.lion.death"),
+            createSoundEvent("animal.hyena.cry"),
+            createSoundEvent("animal.hyena.say"),
+            createSoundEvent("animal.hyena.hurt"),
+            createSoundEvent("animal.hyena.death")
         );
     }
 
