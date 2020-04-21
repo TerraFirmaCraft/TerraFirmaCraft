@@ -116,7 +116,7 @@ public class ModelPantherTFC extends ModelBase
         setRotation(frontRightLegMiddle, 0.08726646259971647F, 0.0F, 0.0F);
         frontRightLegBottom = new ModelRenderer(this, 18, 39);
         frontRightLegBottom.setRotationPoint(-1.0F, 5.9F, -0.5F);
-        frontRightLegBottom.addBox(-1.0F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
+        frontRightLegBottom.addBox(-0.99F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
         setRotation(frontRightLegBottom, -0.2617993877991494F, 0.0F, 0.0F);
         frontRightPaw = new ModelRenderer(this, 17, 34);
         frontRightPaw.setRotationPoint(0.0F, 2.4F, 0.5F);
@@ -132,7 +132,7 @@ public class ModelPantherTFC extends ModelBase
         setRotation(backRightLegMiddle, 0.2617993877991494F, 0.0F, 0.0F);
         backRightLegBottom = new ModelRenderer(this, 3, 40);
         backRightLegBottom.setRotationPoint(0.0F, 5.8F, 0.0F);
-        backRightLegBottom.addBox(-1.0F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
+        backRightLegBottom.addBox(-0.99F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
         setRotation(backRightLegBottom, -0.3490658503988659F, 0.0F, 0.0F);
         backRightPaw = new ModelRenderer(this, 2, 35);
         backRightPaw.setRotationPoint(0.0F, 2.5F, 0.5F);
@@ -149,7 +149,7 @@ public class ModelPantherTFC extends ModelBase
         setRotation(frontLeftLegMiddle, 0.08726646259971647F, 0.0F, 0.0F);
         frontLeftLegBottom = new ModelRenderer(this, 18, 39);
         frontLeftLegBottom.setRotationPoint(-1.0F, 5.9F, 0.0F);
-        frontLeftLegBottom.addBox(-1.0F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
+        frontLeftLegBottom.addBox(-1.01F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
         setRotation(frontLeftLegBottom, -0.2617993877991494F, 0.0F, 0.0F);
         frontLeftPaw = new ModelRenderer(this, 17, 34);
         frontLeftPaw.setRotationPoint(0.0F, 2.4F, 0.5F);
@@ -165,7 +165,7 @@ public class ModelPantherTFC extends ModelBase
         setRotation(backLeftLegMiddle, 0.2617993877991494F, 0.0F, 0.0F);
         backLeftLegBottom = new ModelRenderer(this, 3, 40);
         backLeftLegBottom.setRotationPoint(0.0F, 5.8F, 0.0F);
-        backLeftLegBottom.addBox(-1.0F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
+        backLeftLegBottom.addBox(-1.01F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
         setRotation(backLeftLegBottom, -0.3490658503988659F, 0.0F, 0.0F);
         backLeftPaw = new ModelRenderer(this, 2, 35);
         backLeftPaw.setRotationPoint(0.0F, 2.5F, 0.5F);

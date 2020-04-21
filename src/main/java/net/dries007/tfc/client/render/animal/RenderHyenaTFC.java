@@ -42,7 +42,7 @@ public class RenderHyenaTFC extends RenderLiving<EntityHyenaTFC>
     @Override
     protected void preRenderCallback(EntityHyenaTFC hyenaTFC, float par2)
     {
-        GlStateManager.scale(1.3f, 1.3f, 1.3f);
+        GlStateManager.scale(1.1f, 1.1f, 1.1f);
     }
 
     @Override
