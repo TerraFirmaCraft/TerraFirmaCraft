@@ -188,6 +188,7 @@ tfc.enum.skilltier.master=Master
 tfc.key.craft=Crafting GUI
 tfc.key.placeblock=Place Item Holder Block
 tfc.key.itemmode=Change Item Mode
+tfc.key.stack=Stack food
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
