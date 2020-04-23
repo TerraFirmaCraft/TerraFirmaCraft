@@ -25,7 +25,7 @@ public class PacketStackFood implements IMessage
 {
     private int slotNumber;
 
-    @SupressWarnings("unused")
+    @SuppressWarnings("unused")
     @Deprecated
     public PacketStackFood()
     {
@@ -106,7 +106,7 @@ public class PacketStackFood implements IMessage
             {
                 if (slot.getSlotIndex() == targetSlot.getSlotIndex()) continue;
                 ItemStack stack = slot.getStack();
-                if (stack.isItemEqual(targetSlot.getStack()))
+                if (CapabilityFood.areStacksStackableExceptCreationDate(targetSlot.getStack(), stack))
                 {
                     stackableSlots.add(slot);
                 }
