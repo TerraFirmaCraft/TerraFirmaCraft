@@ -81,7 +81,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.TAIGA))
         {
             return ConfigTFC.WORLD.predatorSpawnRarity;
         }
