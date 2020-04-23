@@ -41,9 +41,8 @@ import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_
 @ParametersAreNonnullByDefault
 public class UnmoldRecipe extends ShapelessOreRecipe
 {
-    private Metal.ItemType type;
-    /* This is return chance, not break chance */
-    private float chance;
+    private final Metal.ItemType type;
+    private final float chance; // Return chance
 
     private UnmoldRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull Metal.ItemType type, float chance)
     {
@@ -93,7 +92,10 @@ public class UnmoldRecipe extends ShapelessOreRecipe
 
     @Override
     @Nonnull
-    public ItemStack getRecipeOutput() { return ItemStack.EMPTY; }
+    public ItemStack getRecipeOutput()
+    {
+        return ItemStack.EMPTY;
+    }
 
     @Override
     @Nonnull

@@ -43,4 +43,11 @@ public class SlotCallback extends SlotItemHandler
     {
         return Math.min(callback.getSlotLimit(getSlotIndex()), super.getSlotStackLimit());
     }
+
+    @Override
+    public void putStack(@Nonnull ItemStack stack)
+    {
+        callback.beforePutStack(this, stack);
+        super.putStack(stack);
+    }
 }

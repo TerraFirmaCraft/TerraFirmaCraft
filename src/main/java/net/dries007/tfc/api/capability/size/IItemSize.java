@@ -28,11 +28,6 @@ import net.dries007.tfc.util.Helpers;
  */
 public interface IItemSize
 {
-    static int getStackSize(Size size, Weight weight, boolean canStack)
-    {
-        return canStack ? weight.stackSize : 1;
-    }
-
     @Nonnull
     Size getSize(@Nonnull ItemStack stack);
 
@@ -50,9 +45,11 @@ public interface IItemSize
         text.add("\u2696 " + I18n.format(Helpers.getEnumName(getWeight(stack))) + " \u21F2 " + I18n.format(Helpers.getEnumName(getSize(stack))));
     }
 
+    /**
+     * Should be called from {@link net.minecraft.item.Item#getItemStackLimit(ItemStack)}
+     */
     default int getStackSize(@Nonnull ItemStack stack)
     {
-        return getStackSize(getSize(stack), getWeight(stack), canStack(stack));
+        return canStack(stack) ? getWeight(stack).stackSize : 1;
     }
-
 }
