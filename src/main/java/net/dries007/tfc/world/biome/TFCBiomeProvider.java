@@ -6,6 +6,7 @@
 package net.dries007.tfc.world.biome;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.BlockState;
@@ -50,6 +51,12 @@ public class TFCBiomeProvider extends BiomeProvider
             }
             return false;
         });
+    }
+
+    @Override
+    public List<Biome> getBiomesToSpawnIn()
+    {
+        return super.getBiomesToSpawnIn();
     }
 
     @Override

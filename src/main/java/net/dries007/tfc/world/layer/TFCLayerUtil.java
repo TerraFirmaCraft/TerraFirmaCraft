@@ -26,34 +26,34 @@ import net.minecraftforge.registries.ForgeRegistry;
 import imageutil.Images;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.biome.TFCBiomes;
-import test.LayerTests;
 
-import static test.LayerTests.IMAGES;
+import static net.dries007.tfc.world.layer.LayerDrawingUtil.IMAGES;
 
 public class TFCLayerUtil
 {
+    public static boolean isDebugMode = false;
+    // Cheeky hacks to avoid classloading some vanilla classes,
     private static int id = 0;
-
     /* Biomes */
-    public static final int OCEAN = getId(TFCBiomes.OCEAN);
-    public static final int DEEP_OCEAN = getId(TFCBiomes.DEEP_OCEAN);
-    public static final int DEEP_OCEAN_RIDGE = getId(TFCBiomes.DEEP_OCEAN_RIDGE);
-    public static final int PLAINS = getId(TFCBiomes.PLAINS);
-    public static final int HILLS = getId(TFCBiomes.HILLS);
-    public static final int LOWLANDS = getId(TFCBiomes.LOWLANDS);
-    public static final int LOW_CANYONS = getId(TFCBiomes.LOW_CANYONS);
-    public static final int ROLLING_HILLS = getId(TFCBiomes.ROLLING_HILLS);
-    public static final int BADLANDS = getId(TFCBiomes.BADLANDS);
-    public static final int PLATEAU = getId(TFCBiomes.PLATEAU);
-    public static final int OLD_MOUNTAINS = getId(TFCBiomes.OLD_MOUNTAINS);
-    public static final int MOUNTAINS = getId(TFCBiomes.MOUNTAINS);
-    public static final int FLOODED_MOUNTAINS = getId(TFCBiomes.FLOODED_MOUNTAINS);
-    public static final int CANYONS = getId(TFCBiomes.CANYONS);
-    public static final int SHORE = getId(TFCBiomes.SHORE);
-    public static final int STONE_SHORE = getId(TFCBiomes.STONE_SHORE);
-    public static final int MOUNTAINS_EDGE = getId(TFCBiomes.MOUNTAINS_EDGE);
-    public static final int LAKE = getId(TFCBiomes.LAKE);
-    public static final int RIVER = getId(TFCBiomes.RIVER);
+    public static final int OCEAN = isDebugMode ? id++ : getId(TFCBiomes.OCEAN);
+    public static final int DEEP_OCEAN = isDebugMode ? id++ : getId(TFCBiomes.DEEP_OCEAN);
+    public static final int DEEP_OCEAN_RIDGE = isDebugMode ? id++ : getId(TFCBiomes.DEEP_OCEAN_RIDGE);
+    public static final int PLAINS = isDebugMode ? id++ : getId(TFCBiomes.PLAINS);
+    public static final int HILLS = isDebugMode ? id++ : getId(TFCBiomes.HILLS);
+    public static final int LOWLANDS = isDebugMode ? id++ : getId(TFCBiomes.LOWLANDS);
+    public static final int LOW_CANYONS = isDebugMode ? id++ : getId(TFCBiomes.LOW_CANYONS);
+    public static final int ROLLING_HILLS = isDebugMode ? id++ : getId(TFCBiomes.ROLLING_HILLS);
+    public static final int BADLANDS = isDebugMode ? id++ : getId(TFCBiomes.BADLANDS);
+    public static final int PLATEAU = isDebugMode ? id++ : getId(TFCBiomes.PLATEAU);
+    public static final int OLD_MOUNTAINS = isDebugMode ? id++ : getId(TFCBiomes.OLD_MOUNTAINS);
+    public static final int MOUNTAINS = isDebugMode ? id++ : getId(TFCBiomes.MOUNTAINS);
+    public static final int FLOODED_MOUNTAINS = isDebugMode ? id++ : getId(TFCBiomes.FLOODED_MOUNTAINS);
+    public static final int CANYONS = isDebugMode ? id++ : getId(TFCBiomes.CANYONS);
+    public static final int SHORE = isDebugMode ? id++ : getId(TFCBiomes.SHORE);
+    public static final int STONE_SHORE = isDebugMode ? id++ : getId(TFCBiomes.STONE_SHORE);
+    public static final int MOUNTAINS_EDGE = isDebugMode ? id++ : getId(TFCBiomes.MOUNTAINS_EDGE);
+    public static final int LAKE = isDebugMode ? id++ : getId(TFCBiomes.LAKE);
+    public static final int RIVER = isDebugMode ? id++ : getId(TFCBiomes.RIVER);
 
     public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, TFCGenerationSettings settings)
     {
@@ -62,7 +62,7 @@ public class TFCLayerUtil
         IAreaFactory<LazyArea> mainLayer, riverLayer;
         int layerCount = 0;
 
-        IMAGES.color(LayerTests::landColor).size(20);
+        IMAGES.color(LayerDrawingUtil::landColor).size(20);
 
         // Ocean / Continents
 
@@ -92,7 +92,7 @@ public class TFCLayerUtil
 
         // Oceans and Continents => Elevation Mapping
 
-        IMAGES.color(LayerTests::elevationColor);
+        IMAGES.color(LayerDrawingUtil::elevationColor);
         layerCount = 0;
 
         mainLayer = ElevationLayer.INSTANCE.apply(contextFactory.apply(1009L), mainLayer);
@@ -114,14 +114,14 @@ public class TFCLayerUtil
         }
 
         riverLayer = RiverLayer.INSTANCE.apply(contextFactory.apply(1018L), riverLayer);
-        IMAGES.size(640).color(LayerTests::riverColor).draw("layer_river_" + ++layerCount, riverLayer, 0, 0, -320, -320, 320, 320);
+        IMAGES.size(640).color(LayerDrawingUtil::riverColor).draw("layer_river_" + ++layerCount, riverLayer, 0, 0, -320, -320, 320, 320);
 
         riverLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), riverLayer);
         IMAGES.draw("layer_river_" + ++layerCount, riverLayer, 0, 0, -80, -80, 80, 80);
 
         // Elevation Mapping => Biomes
 
-        IMAGES.color(LayerTests::biomeColor);
+        IMAGES.color(LayerDrawingUtil::biomeColor);
         layerCount = 0;
 
         mainLayer = BiomeLayer.INSTANCE.apply(contextFactory.apply(1011L), mainLayer);
@@ -267,8 +267,6 @@ public class TFCLayerUtil
 
     private static <T extends Biome> int getId(RegistryObject<T> biome)
     {
-        // todo: once finished with testing, inline this method
-        if (LayerTests.isTestMode) return ++id; // For switching between testing mode and minecraft mode
         return ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(biome.get());
     }
 }
