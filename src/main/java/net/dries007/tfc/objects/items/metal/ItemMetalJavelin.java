@@ -85,7 +85,8 @@ public class ItemMetalJavelin extends ItemMetalTool
                     worldIn.spawnEntity(javelin);
                     worldIn.playSound(null, player.posX, player.posY, player.posZ, TFCSounds.ITEM_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F / (Constants.RNG.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
                 }
-                player.inventory.deleteStack(stack);
+                if (!((EntityPlayer) entityLiving).isCreative())
+                    player.inventory.deleteStack(stack);
                 player.addStat(StatList.getObjectUseStats(this));
                 ItemQuiver.replenishJavelin(player.inventory); //Use a quiver if possible
             }
