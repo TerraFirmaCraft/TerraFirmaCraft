@@ -48,7 +48,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityCamelTFC extends EntityLlama implements IAnimalTFC, ILivestock
+public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
 {
     protected static final int DAYS_TO_FULL_GESTATION = 350;
     private static final int DAYS_TO_ADULTHOOD = 980;
