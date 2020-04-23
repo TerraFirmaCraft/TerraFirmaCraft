@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.items.food;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +19,7 @@ import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.Nutrient;
 import net.dries007.tfc.util.agriculture.Food;
 
+@ParametersAreNonnullByDefault
 public class ItemSandwich extends ItemFoodTFC
 {
     public ItemSandwich(@Nonnull Food food)

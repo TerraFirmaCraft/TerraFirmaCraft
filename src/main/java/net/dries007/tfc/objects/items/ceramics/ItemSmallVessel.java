@@ -13,6 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,6 +51,7 @@ import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.capability.ISlotCallback;
+import net.dries007.tfc.objects.inventory.slot.SlotCallback;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -411,6 +413,21 @@ public class ItemSmallVessel extends ItemPottery
                 return size.getSize(stack).isSmallerThan(Size.NORMAL);
             }
             return false;
+        }
+
+        /**
+         * This is used for a very unique situation, see #1083
+         * By tracing the call path through {@link net.minecraft.inventory.Container#slotClick(int, int, ClickType, EntityPlayer)}, the *only* method that can possibly intercept in that massive chain, for clicking on a slot with a stack is either this one (in which case we handle the previous item stack in the slot which a reference has been obtained to)
+         * Thus, we don't actually care about the stack being put in the slot. We do assume that since this stack is being put in the slot, a different stack is being taken out.
+         */
+        @Override
+        public void beforePutStack(SlotCallback slot, @Nonnull ItemStack stack)
+        {
+            IFood cap = slot.getStack().getCapability(CapabilityFood.CAPABILITY, null);
+            if (cap != null)
+            {
+                CapabilityFood.removeTrait(cap, FoodTrait.PRESERVED);
+            }
         }
 
         @Override
