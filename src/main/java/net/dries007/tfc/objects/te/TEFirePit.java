@@ -199,14 +199,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                     ItemStack outputStack = leftover.peek();
 
                     // Try inserting in any slot
-                    outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
-                    outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
-
-                    // Try merging in any slot
-                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_1));
-                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_2));
-
-                    //If any of the above succeeds
+                    outputStack = mergeOutputStack(outputStack);
                     if (outputStack.isEmpty())
                     {
                         leftover.poll();
@@ -778,22 +771,10 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             inputStack.shrink(1);
             if (!outputStack.isEmpty())
             {
-                outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
+                outputStack = mergeOutputStack(outputStack);
                 if (!outputStack.isEmpty())
                 {
-                    outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
-                }
-                if (!outputStack.isEmpty()) // Couldn't merge directly
-                {
-                    // If both the output and input are the same food item, try merging-updating the creation date to the earliest one
-                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_1));
-                    // We can run this safely since CapabilityFood#mergeStack is nice and only merges if possible
-                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_2));
-                    if (!outputStack.isEmpty())
-                    {
-                        // Since we couldn't merge anyway, let's put it into a queue, like barrels
-                        leftover.add(outputStack);
-                    }
+                    leftover.add(outputStack);
                 }
             }
         }
@@ -808,6 +789,21 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             CapabilityFood.applyTrait(output, FoodTrait.WOOD_GRILLED);
             inventory.setStackInSlot(slot, output);
         }
+    }
+
+    /**
+     * Merges a stack into the two output slots
+     *
+     * @param outputStack the stack to merge.
+     * @return the leftover outputStack that wasn't merged
+     */
+    private ItemStack mergeOutputStack(ItemStack outputStack)
+    {
+        outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
+        inventory.setStackInSlot(SLOT_OUTPUT_1, CapabilityFood.mergeItemStacksIgnoreCreationDate(inventory.getStackInSlot(SLOT_OUTPUT_1), outputStack));
+        outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
+        inventory.setStackInSlot(SLOT_OUTPUT_2, CapabilityFood.mergeItemStacksIgnoreCreationDate(inventory.getStackInSlot(SLOT_OUTPUT_2), outputStack));
+        return outputStack;
     }
 
     private Item getSoupItem()

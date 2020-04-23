@@ -25,8 +25,8 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe> implement
         return TFCRegistries.QUERN.getValuesCollection().stream().filter(x -> x.isValidInput(item)).findFirst().orElse(null);
     }
 
-    private IIngredient<ItemStack> inputItem;
-    private ItemStack outputItem;
+    protected IIngredient<ItemStack> inputItem;
+    protected ItemStack outputItem;
 
     public QuernRecipe(IIngredient<ItemStack> input, ItemStack output)
     {
