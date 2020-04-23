@@ -19,6 +19,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEIngotPile;
@@ -35,7 +36,7 @@ public class ItemIngot extends ItemMetal
     @Nonnull
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (player.isSneaking())
+        if (player.isSneaking() && ConfigTFC.GENERAL.placeIngotPiles)
         {
             ItemStack stack = player.getHeldItem(hand);
             ItemIngot item = (ItemIngot) stack.getItem();
