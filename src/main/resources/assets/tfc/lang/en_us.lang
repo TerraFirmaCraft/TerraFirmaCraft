@@ -54,6 +54,7 @@ tfc.tooltip.oredictionaryentry=§fOre Dictionary name:§7 %s
 tfc.tooltip.oredictionaryentries=§fOre Dictionary names:
 tfc.tooltip.metal=§fMetal:§7 %s
 tfc.tooltip.units=%d units
+tfc.tooltip.crucible_units=%d / %d units
 tfc.tooltip.smelting=Smelt in %s
 tfc.tooltip.liquid= - Liquid
 tfc.tooltip.solid= - Solid
