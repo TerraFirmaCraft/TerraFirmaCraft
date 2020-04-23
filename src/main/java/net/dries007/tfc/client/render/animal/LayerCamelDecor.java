@@ -5,10 +5,12 @@
 
 package net.dries007.tfc.client.render.animal;
 
+import java.util.stream.IntStream;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,7 +25,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class LayerCamelDecor implements LayerRenderer<EntityCamelTFC>
 {
-    private static final ResourceLocation[]CAMEL_DECOR_TEXTURES = new ResourceLocation[]{new ResourceLocation(MOD_ID, "textures/entity/animal/decor/white.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/orange.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/magenta.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/light_blue.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/yellow.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/lime.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/pink.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/gray.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/silver.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/cyan.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/purple.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/blue.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/brown.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/green.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/red.png"), new ResourceLocation(MOD_ID, "textures/entity/animal/decor/black.png")};
+    private static final ResourceLocation[] CAMEL_DECOR_TEXTURES = IntStream.range(0, 16).mapToObj(i -> new ResourceLocation(MOD_ID, "textures/entity/animal/decor/" + EnumDyeColor.byMetadata(i).getName() + ".png")).toArray(ResourceLocation[]::new);
     private final RenderCamelTFC renderer;
     private final ModelCamelTFC model = new ModelCamelTFC(0.51F);
 
