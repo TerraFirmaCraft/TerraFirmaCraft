@@ -426,6 +426,10 @@ public class ConfigTFC
         @Config.Comment("Which inventory slots will ammo refill/pickup search for quivers? none = nowhere, they're just extra inventory spaces; armor = only in armor slots; hotbar = add hotbar; main = add main inventory.")
         @Config.LangKey("config." + MOD_ID + ".general.quiverSearch")
         public String quiverSearch = "hotbar";
+
+        @Config.Comment("Disable the ability to create ingot piles?")
+        @Config.LangKey("config." + MOD_ID + ".general.disableIngotPile")
+        public boolean placeIngotPiles = false;
     }
 
     public static class ClientCFG
