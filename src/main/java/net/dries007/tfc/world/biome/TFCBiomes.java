@@ -101,7 +101,7 @@ public class TFCBiomes
         ROLLING_HILLS.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
 
         addCarvers(BADLANDS);
-        BADLANDS.get().setSurfaceBuilder(SurfaceBuilder.BADLANDS, SurfaceBuilder.RED_SAND_WHITE_TERRACOTTA_GRAVEL_CONFIG);
+        BADLANDS.get().setSurfaceBuilder(SurfaceBuilder.WOODED_BADLANDS, SurfaceBuilder.RED_SAND_WHITE_TERRACOTTA_GRAVEL_CONFIG);
 
         addCarvers(PLATEAU);
         PLATEAU.get().setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);

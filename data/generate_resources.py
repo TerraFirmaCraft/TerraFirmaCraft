@@ -13,6 +13,8 @@ def main():
     assets.generate(rm)
     ore_veins.generate(rm)
 
+    rm.flush()
+
 
 if __name__ == '__main__':
     main()

@@ -5,17 +5,17 @@
 
 package net.dries007.tfc.world.noise;
 
-final class Vec2
+public final class Vec2
 {
-    final float x, y;
+    public final float x, y;
 
-    Vec2(float x, float y)
+    public Vec2(float x, float y)
     {
         this.x = x;
         this.y = y;
     }
 
-    final float dot(float x, float y)
+    public final float dot(float x, float y)
     {
         return this.x * x + this.y * y;
     }

@@ -110,12 +110,12 @@ public class ChunkBlockReplacer
         {
             for (int z = 0; z < 16; z++)
             {
+                float noise = random.nextFloat() - random.nextFloat(); // One simple gaussian noise value per column
                 for (int y = 0; y <= chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, x, z); y++)
                 {
                     pos.setPos(xStart + x, y, zStart + z);
                     Block defaultBlock = chunk.getBlockState(pos).getBlock();
                     IBlockReplacer replacer = replacements.get(defaultBlock);
-                    float noise = random.nextFloat() - random.nextFloat(); // One simple gaussian noise value per column
                     if (replacer != null)
                     {
                         BlockState replacementState = replacer.getReplacement(rockData, x, y, z, rainfall, temperature, noise);

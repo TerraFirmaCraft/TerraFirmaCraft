@@ -15,18 +15,17 @@ def generate(rm: ResourceManager):
                 for part in ROCK_SPIKE_PARTS:
                     rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
                         'texture': 'tfc:block/rock/raw/%s' % rock
-                    }, parent='tfc:block/rock/spike_%s' % part)
-                rm.block_item_model(('rock', block_type, rock))
+                    }, parent='tfc:block/rock/spike_%s' % part).with_item_model()
             else:
-                rm.blockstate(('rock', block_type, rock))
-                rm.block_model(('rock', block_type, rock), 'tfc:block/rock/%s/%s' % (block_type, rock))
-                rm.block_item_model(('rock', block_type, rock))
-                rm.block_loot(('rock', block_type, rock), 'tfc:rock/%s/%s' % (block_type, rock))
+                rm.blockstate(('rock', block_type, rock)) \
+                    .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
+                    .with_item_model() \
+                    .with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
 
         # Ores
         for ore, ore_data in ORES.items():
-            rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock))
-            rm.block_model(('ore', ore, rock), {
+            rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock)) \
+                .with_block_model({
                 'all': 'tfc/block/rock/%s' % rock, 'particle': 'tfc/block/rock/%s' % rock,
                 'overlay': 'tfc:block/ore/%s' % ore
             })
@@ -39,19 +38,19 @@ def generate(rm: ResourceManager):
 
     # Sand
     for sand in SAND_BLOCK_TYPES:
-        rm.blockstate(('sand', sand))
-        rm.block_model(('sand', sand), textures='tfc:block/sand/%s' % sand)
-        rm.block_item_model(('sand', sand))
-        rm.block_loot(('sand', sand), 'tfc:sand/%s' % sand)
+        rm.blockstate(('sand', sand)) \
+            .with_block_model('tfc:block/sand/%s' % sand) \
+            .with_item_model() \
+            .with_block_loot('tfc:sand/%s' % sand)
 
     # Dirt
     for dirt in SOIL_BLOCK_VARIANTS:
         rm.blockstate(('dirt', dirt),
                       variants={'': [{'model': 'tfc:block/dirt/%s' % dirt, 'y': i} for i in range(0, 360, 90)]},
-                      use_default_model=False)
-        rm.block_model(('dirt', dirt))
-        rm.block_item_model(('dirt', dirt))
-        rm.block_loot(('dirt', dirt), 'tfc:dirt/%s' % dirt)
+                      use_default_model=False) \
+            .with_block_model() \
+            .with_item_model() \
+            .with_block_loot('tfc:dirt/%s' % dirt)
 
     # Grass
     north_face = {
@@ -73,7 +72,10 @@ def generate(rm: ResourceManager):
             ({'east': False}, {'model': 'tfc:block/grass/%s_side' % var, 'y': 90}),
             ({'south': False}, {'model': 'tfc:block/grass/%s_side' % var, 'y': 180}),
             ({'west': False}, {'model': 'tfc:block/grass/%s_side' % var, 'y': 270}),
-        ])
+        ]) \
+            .with_block_loot('tfc:dirt/%s' % var) \
+            .with_tag('grass')  # add the block to a tag. This functions differently than EVERY OTHER METHOD
+        # Grass Models, one for the side, top and bottom
         rm.block_model(('grass', '%s_top' % var), {
             'overlay': 'tfc:block/grass_top',
             'particle': 'tfc:block/dirt/%s' % var
@@ -87,6 +89,3 @@ def generate(rm: ResourceManager):
             'texture': 'tfc:block/dirt/%s' % var,
             'particle': 'tfc:block/dirt/%s' % var
         }, parent='block/block', elements=[north_face])
-        rm.block_loot(('grass', var), 'tfc:dirt/%s' % var)
-
-    rm.block_tag('grass', *['tfc:grass/%s' % var for var in SOIL_BLOCK_VARIANTS])
