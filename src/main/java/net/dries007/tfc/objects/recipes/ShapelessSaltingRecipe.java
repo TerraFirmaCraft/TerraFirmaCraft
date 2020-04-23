@@ -54,6 +54,12 @@ public class ShapelessSaltingRecipe extends ShapelessOreRecipe
         return result;
     }
 
+    @Override
+    public boolean isDynamic()
+    {
+        return true;
+    }
+
     public static class Factory implements IRecipeFactory
     {
         @Override

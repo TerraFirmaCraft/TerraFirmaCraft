@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -17,10 +18,14 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodHeatHandler;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
 
-public class ItemFoodTFC extends ItemFood
+@ParametersAreNonnullByDefault
+public class ItemFoodTFC extends ItemFood implements IItemSize
 {
     private static final Map<Food, ItemFoodTFC> MAP = new HashMap<>();
 
@@ -61,5 +66,25 @@ public class ItemFoodTFC extends ItemFood
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return food.isHeatable() ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
+    }
+
+    @Nonnull
+    @Override
+    public Size getSize(@Nonnull ItemStack stack)
+    {
+        return Size.SMALL;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(@Nonnull ItemStack stack)
+    {
+        return Weight.VERY_LIGHT;
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        return getStackSize(stack);
     }
 }
