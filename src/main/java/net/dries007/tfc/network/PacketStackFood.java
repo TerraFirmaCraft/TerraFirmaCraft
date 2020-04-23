@@ -25,6 +25,8 @@ public class PacketStackFood implements IMessage
 {
     private int slotNumber;
 
+    @SupressWarnings("unused")
+    @Deprecated
     public PacketStackFood()
     {
     }
