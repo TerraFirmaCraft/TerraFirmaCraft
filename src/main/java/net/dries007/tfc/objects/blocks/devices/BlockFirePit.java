@@ -40,6 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.util.IBellowsConsumerBlock;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -146,8 +147,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         double z = pos.getZ() + 0.5;
 
         world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + rng.nextFloat() - 0.5, y, z + rng.nextFloat() - 0.5, 0.0D, 0.2D, 0.0D);
-        if (rng.nextFloat() > 0.75)
-            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + rng.nextFloat() - 0.5, y, z + rng.nextFloat() - 0.5, 0.0D, 0.1D, 0.0D);
+        TFCParticles.FIRE_PIT_SMOKE.spawn(world, x, y, z, 0, 0.2D, 0, 120);
     }
 
     @Override
