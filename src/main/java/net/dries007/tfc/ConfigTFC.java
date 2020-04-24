@@ -430,6 +430,16 @@ public class ConfigTFC
         @Config.Comment("Disable the ability to create ingot piles?")
         @Config.LangKey("config." + MOD_ID + ".general.disableIngotPile")
         public boolean placeIngotPiles = false;
+
+        @Config.Comment("Entities that can be plucked for feathers.")
+        @Config.LangKey("config." + MOD_ID + ".general.pluckableEntities")
+        public String[] pluckableEntities = new String[] {"tfc:chickentfc", "tfc:pheasanttfc", "tfc:parrottfc", "tfc:ducktfc"};
+
+        @Config.Comment("Damage dealt to an entity when a feather is harvested.")
+        @Config.RangeDouble(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".general.damagePerFeather")
+        public double damagePerFeather = 0.6;
+
     }
 
     public static class ClientCFG
