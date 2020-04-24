@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
@@ -156,5 +157,12 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     public void grow(World world, Random random, BlockPos blockPos, IBlockState blockState)
     {
         wood.makeTree(world, blockPos, random, false);
+    }
+
+    @Override
+    @Nonnull
+    public Block.EnumOffsetType getOffsetType()
+    {
+        return Block.EnumOffsetType.XZ;
     }
 }
