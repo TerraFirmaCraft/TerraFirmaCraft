@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "tfc:block/ore",
   "textures": {
-    "all": "tfc/block/rock/diorite",
-    "particle": "tfc/block/rock/diorite",
+    "all": "tfc:block/rock/raw/diorite",
+    "particle": "tfc:block/rock/raw/diorite",
     "overlay": "tfc:block/ore/sulfur"
   }
 }

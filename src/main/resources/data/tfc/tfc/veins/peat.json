@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:disc",
+  "rarity": 50,
+  "min_y": 90,
+  "max_y": 120,
+  "size": 25,
+  "density": 100,
+  "blocks": [
+    {
+      "stone": [
+        "tfc:dirt/silt",
+        "tfc:dirt/loam",
+        "tfc:dirt/sandy_loam",
+        "tfc:dirt/clay_loam"
+      ],
+      "ore": "tfc:dirt/peat"
+    },
+    {
+      "stone": [
+        "tfc:grass/silt",
+        "tfc:grass/loam",
+        "tfc:grass/sandy_loam",
+        "tfc:grass/clay_loam"
+      ],
+      "ore": "tfc:grass/peat"
+    }
+  ]
+}

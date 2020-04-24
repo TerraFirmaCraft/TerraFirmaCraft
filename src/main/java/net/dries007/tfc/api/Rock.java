@@ -68,7 +68,6 @@ public class Rock implements IResourceNameable
         GABBRO,
         SHALE,
         CLAYSTONE,
-        ROCKSALT,
         LIMESTONE,
         CONGLOMERATE,
         DOLOMITE,

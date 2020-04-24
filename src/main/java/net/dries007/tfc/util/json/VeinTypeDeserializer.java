@@ -2,88 +2,66 @@ package net.dries007.tfc.util.json;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import net.minecraft.block.BlockState;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
-import net.dries007.tfc.util.collections.IWeighted;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.vein.ClusterVeinType;
+import net.dries007.tfc.world.vein.DiscVeinType;
+import net.dries007.tfc.world.vein.PipeVeinType;
 import net.dries007.tfc.world.vein.VeinType;
 
-public enum VeinTypeDeserializer implements JsonDeserializer<VeinType>
+/**
+ * Root deserializer for all vein types
+ * To add new vein types simply call {@code VeinTypeDeserializer.INSTANCE.register()}
+ */
+public enum VeinTypeDeserializer implements JsonDeserializer<VeinType<?>>
 {
     INSTANCE;
 
-    @Override
-    public VeinType deserialize(JsonElement element, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private final Map<ResourceLocation, BiFunction<JsonObject, JsonDeserializationContext, ? extends VeinType<?>>> deserializers;
+
+    VeinTypeDeserializer()
     {
-        JsonObject json = element.getAsJsonObject();
+        deserializers = new HashMap<>();
+        deserializers.put(Helpers.identifier("cluster"), ClusterVeinType::new);
+        deserializers.put(Helpers.identifier("disc"), DiscVeinType::new);
+        deserializers.put(Helpers.identifier("pipe"), PipeVeinType::new);
+    }
 
-        ResourceLocation groupName = null;
-        int groupWeight = 0;
-        if (json.has("group"))
+    public void register(ResourceLocation name, BiFunction<JsonObject, JsonDeserializationContext, ? extends VeinType<?>> deserializer)
+    {
+        if (!deserializers.containsKey(name))
         {
-            JsonObject groupJson = JSONUtils.getJsonObject(json, "group");
-            groupName = new ResourceLocation(JSONUtils.getString(groupJson, "name"));
-            groupWeight = JSONUtils.getInt(groupJson, "weight");
+            LOGGER.info("Registered Vein Type: {}", name);
+            deserializers.put(name, deserializer);
         }
+        else
+        {
+            LOGGER.info("Denied registration of Vein Type {} as it would overwrite an existing vein type!", name);
+        }
+    }
 
-        int rarity = JSONUtils.getInt(json, "rarity", 10);
-        if (rarity <= 0)
+    @Override
+    public VeinType<?> deserialize(JsonElement element, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+    {
+        JsonObject json = JSONUtils.getJsonObject(element, "vein");
+        ResourceLocation type = new ResourceLocation(JSONUtils.getString(json, "type"));
+        if (deserializers.containsKey(type))
         {
-            throw new JsonParseException("Rarity must be > 0.");
+            return deserializers.get(type).apply(json, context);
         }
-        int minY = JSONUtils.getInt(json, "min_y", 16);
-        int maxY = JSONUtils.getInt(json, "max_y", 128);
-        if (minY < 0 || maxY > 256 || minY > maxY)
+        else
         {
-            throw new JsonParseException("Min Y and Max Y must be within [0, 256], and Min Y must be <= Max Y.");
+            throw new JsonParseException("Unknown vein type: " + type);
         }
-        int verticalSize = JSONUtils.getInt(json, "vertical_size", 8);
-        if (verticalSize <= 0)
-        {
-            throw new JsonParseException("Vertical Size must be > 0.");
-        }
-        int horizontalSize = JSONUtils.getInt(json, "horizontal_size", 15);
-        if (horizontalSize <= 0)
-        {
-            throw new JsonParseException("Horizontal Size must be > 0.");
-        }
-        int density = JSONUtils.getInt(json, "density", 20);
-        if (density <= 0)
-        {
-            throw new JsonParseException("Density must be > 0.");
-        }
-
-        Map<BlockState, IWeighted<BlockState>> blocks = new HashMap<>();
-        JsonArray blocksJson = JSONUtils.getJsonArray(json, "blocks");
-        for (JsonElement blocksElement : blocksJson)
-        {
-            // Parse each element of blocks
-            JsonObject blockJson = blocksElement.getAsJsonObject();
-            List<BlockState> stoneStates = context.deserialize(blockJson.get("stone"), new TypeToken<List<BlockState>>() {}.getType());
-            if (stoneStates.isEmpty())
-            {
-                throw new JsonParseException("Stone states cannot be empty.");
-            }
-            IWeighted<BlockState> oreStates = context.deserialize(blockJson.get("ore"), new TypeToken<IWeighted<BlockState>>() {}.getType());
-            if (oreStates.isEmpty())
-            {
-                throw new JsonParseException("Ore states cannot be empty.");
-            }
-
-            for (BlockState stoneState : stoneStates)
-            {
-                blocks.put(stoneState, oreStates);
-            }
-
-        }
-        IWeighted<VeinType.Indicator> indicator = json.has("indicator") ? context.deserialize(json.get("indicator"), new TypeToken<IWeighted<VeinType.Indicator>>() {}.getType()) : IWeighted.empty();
-
-        return new VeinType(groupName, groupWeight, blocks, indicator, rarity, minY, maxY, verticalSize, horizontalSize, density);
     }
 }

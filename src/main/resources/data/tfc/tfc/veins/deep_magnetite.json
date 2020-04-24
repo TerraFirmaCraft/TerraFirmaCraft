@@ -1,0 +1,130 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 120,
+  "min_y": 5,
+  "max_y": 60,
+  "size": 30,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/chalk",
+      "ore": [
+        {
+          "weight": 10,
+          "block": "tfc:ore/magnetite/chalk[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/magnetite/chalk[grade=normal]"
+        },
+        {
+          "weight": 60,
+          "block": "tfc:ore/magnetite/chalk[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/chert",
+      "ore": [
+        {
+          "weight": 10,
+          "block": "tfc:ore/magnetite/chert[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/magnetite/chert[grade=normal]"
+        },
+        {
+          "weight": 60,
+          "block": "tfc:ore/magnetite/chert[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/claystone",
+      "ore": [
+        {
+          "weight": 10,
+          "block": "tfc:ore/magnetite/claystone[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/magnetite/claystone[grade=normal]"
+        },
+        {
+          "weight": 60,
+          "block": "tfc:ore/magnetite/claystone[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/conglomerate",
+      "ore": [
+        {
+          "weight": 10,
+          "block": "tfc:ore/magnetite/conglomerate[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/magnetite/conglomerate[grade=normal]"
+        },
+        {
+          "weight": 60,
+          "block": "tfc:ore/magnetite/conglomerate[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/dolomite",
+      "ore": [
+        {
+          "weight": 10,
+          "block": "tfc:ore/magnetite/dolomite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/magnetite/dolomite[grade=normal]"
+        },
+        {
+          "weight": 60,
+          "block": "tfc:ore/magnetite/dolomite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/limestone",
+      "ore": [
+        {
+          "weight": 10,
+          "block": "tfc:ore/magnetite/limestone[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/magnetite/limestone[grade=normal]"
+        },
+        {
+          "weight": 60,
+          "block": "tfc:ore/magnetite/limestone[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/shale",
+      "ore": [
+        {
+          "weight": 10,
+          "block": "tfc:ore/magnetite/shale[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/magnetite/shale[grade=normal]"
+        },
+        {
+          "weight": 60,
+          "block": "tfc:ore/magnetite/shale[grade=rich]"
+        }
+      ]
+    }
+  ]
+}

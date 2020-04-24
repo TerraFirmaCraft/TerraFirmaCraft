@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "tfc:block/ore",
   "textures": {
-    "all": "tfc/block/rock/andesite",
-    "particle": "tfc/block/rock/andesite",
+    "all": "tfc:block/rock/raw/andesite",
+    "particle": "tfc:block/rock/raw/andesite",
     "overlay": "tfc:block/ore/sulfur"
   }
 }

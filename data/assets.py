@@ -15,7 +15,8 @@ def generate(rm: ResourceManager):
                 for part in ROCK_SPIKE_PARTS:
                     rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
                         'texture': 'tfc:block/rock/raw/%s' % rock
-                    }, parent='tfc:block/rock/spike_%s' % part).with_item_model()
+                    }, parent='tfc:block/rock/spike_%s' % part) \
+                        .with_item_model()
             else:
                 rm.blockstate(('rock', block_type, rock)) \
                     .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
@@ -26,9 +27,10 @@ def generate(rm: ResourceManager):
         for ore, ore_data in ORES.items():
             rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock)) \
                 .with_block_model({
-                'all': 'tfc/block/rock/%s' % rock, 'particle': 'tfc/block/rock/%s' % rock,
+                'all': 'tfc:block/rock/raw/%s' % rock,
+                'particle': 'tfc:block/rock/raw/%s' % rock,
                 'overlay': 'tfc:block/ore/%s' % ore
-            })
+            }, parent='tfc:block/ore')
 
     for rock, rock_data in ROCKS.items():
         rm.data(('tfc', 'rocks', rock), {
@@ -74,7 +76,7 @@ def generate(rm: ResourceManager):
             ({'west': False}, {'model': 'tfc:block/grass/%s_side' % var, 'y': 270}),
         ]) \
             .with_block_loot('tfc:dirt/%s' % var) \
-            .with_tag('grass')  # add the block to a tag. This functions differently than EVERY OTHER METHOD
+            .with_tag('grass')
         # Grass Models, one for the side, top and bottom
         rm.block_model(('grass', '%s_top' % var), {
             'overlay': 'tfc:block/grass_top',

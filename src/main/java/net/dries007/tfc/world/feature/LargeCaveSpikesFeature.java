@@ -1,24 +1,16 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.Random;
-import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
 
-import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.objects.blocks.rock.RockSpikeBlock;
 
 public class LargeCaveSpikesFeature extends CaveSpikesFeature
 {
-    public LargeCaveSpikesFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn)
-    {
-        super(configFactoryIn);
-    }
-
     /**
      * Different placement
      */

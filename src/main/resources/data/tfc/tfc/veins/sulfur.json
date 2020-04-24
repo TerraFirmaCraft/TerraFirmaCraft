@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 120,
+  "min_y": 5,
+  "max_y": 100,
+  "size": 10,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/andesite",
+      "ore": "tfc:ore/sulfur/andesite"
+    },
+    {
+      "stone": "tfc:rock/raw/basalt",
+      "ore": "tfc:ore/sulfur/basalt"
+    },
+    {
+      "stone": "tfc:rock/raw/dacite",
+      "ore": "tfc:ore/sulfur/dacite"
+    },
+    {
+      "stone": "tfc:rock/raw/rhyolite",
+      "ore": "tfc:ore/sulfur/rhyolite"
+    }
+  ]
+}

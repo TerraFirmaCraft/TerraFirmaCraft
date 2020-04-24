@@ -1,9 +1,9 @@
 package net.dries007.tfc.util.json;
 
+import java.lang.reflect.Type;
 import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -21,7 +21,6 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.IResourceNameable;
 
-@ParametersAreNonnullByDefault
 public class GenericJsonReloadListener<T extends IResourceNameable> extends JsonReloadListener
 {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -32,10 +31,10 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
     protected final List<T> orderedTypes;
     private final List<Runnable> callbacks;
     private final Gson gson;
-    private final Class<T> resourceClass;
+    private final Type resourceType;
     private final String typeName;
 
-    public GenericJsonReloadListener(Gson gson, String domain, Class<T> resourceClass, String typeName)
+    public GenericJsonReloadListener(Gson gson, String domain, Type resourceType, String typeName)
     {
         super(gson, TerraFirmaCraft.MOD_ID + "/" + domain);
 
@@ -44,7 +43,7 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
         this.orderedTypes = new ArrayList<>();
         this.callbacks = new ArrayList<>();
         this.gson = gson;
-        this.resourceClass = resourceClass;
+        this.resourceType = resourceType;
         this.typeName = typeName;
     }
 
@@ -107,7 +106,7 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
             {
                 if (CraftingHelper.processConditions(json, "conditions"))
                 {
-                    T object = gson.fromJson(json, resourceClass);
+                    T object = gson.fromJson(json, resourceType);
                     object.setId(name);
                     types.put(name, object);
                     sortedEntries.put(name, object);
@@ -119,7 +118,7 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
             }
             catch (IllegalArgumentException | JsonParseException e)
             {
-                LOGGER.warn("{} '{}' failed to parse. This is most likely caused by incorrectly specified JSON.", typeName, entry.getKey());
+                LOGGER.warn("{} '{}' failed to parse. This is most likely caused by incorrectly specified JSON.", typeName, name);
                 LOGGER.warn("Error: ", e);
             }
         }

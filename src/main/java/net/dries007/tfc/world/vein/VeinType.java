@@ -1,94 +1,179 @@
 package net.dries007.tfc.world.vein;
 
 import java.util.*;
-import javax.annotation.Nonnull;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
+import net.dries007.tfc.util.IResourceNameable;
 import net.dries007.tfc.util.collections.IWeighted;
 
-public class VeinType
+public abstract class VeinType<V extends Vein<?>> implements IResourceNameable
 {
     protected final IWeighted<Indicator> indicator;
-    protected final int verticalSize;
-    protected final int horizontalSize;
+    protected final int size;
     protected final float density;
     protected final int rarity;
     protected final int minY;
     protected final int maxY;
-    private final ResourceLocation group;
-    private final double groupWeight;
-    protected Map<BlockState, IWeighted<BlockState>> blocks;
+    protected final Map<BlockState, IWeighted<BlockState>> blocks;
+    private ResourceLocation id;
 
-    public VeinType(@Nullable ResourceLocation group, int groupWeight, Map<BlockState, IWeighted<BlockState>> blocks, IWeighted<Indicator> indicator, int rarity, int minY, int maxY, int verticalSize, int horizontalSize, int density)
+    public VeinType(JsonObject json, JsonDeserializationContext context)
     {
-        this.group = group;
-        this.groupWeight = groupWeight;
-        this.blocks = blocks;
-        this.indicator = indicator;
-        this.rarity = rarity;
-        this.minY = minY;
-        this.maxY = maxY;
-        this.verticalSize = verticalSize;
-        this.horizontalSize = horizontalSize;
-        this.density = density;
+        rarity = JSONUtils.getInt(json, "rarity", 10);
+        if (rarity <= 0)
+        {
+            throw new JsonParseException("Rarity must be > 0.");
+        }
+        minY = JSONUtils.getInt(json, "min_y", 16);
+        maxY = JSONUtils.getInt(json, "max_y", 128);
+        if (minY < 0 || maxY > 256 || minY > maxY)
+        {
+            throw new JsonParseException("Min Y and Max Y must be within [0, 256], and Min Y must be <= Max Y.");
+        }
+        size = JSONUtils.getInt(json, "size", 8);
+        if (size <= 0)
+        {
+            throw new JsonParseException("Vertical Size must be > 0.");
+        }
+        density = JSONUtils.getInt(json, "density", 20);
+        if (density <= 0)
+        {
+            throw new JsonParseException("Density must be > 0.");
+        }
+
+        blocks = new HashMap<>();
+        JsonArray blocksJson = JSONUtils.getJsonArray(json, "blocks");
+        for (JsonElement blocksElement : blocksJson)
+        {
+            // Parse each element of blocks
+            JsonObject blockJson = JSONUtils.getJsonObject(blocksElement, "blocks");
+            List<BlockState> stoneStates = context.deserialize(blockJson.get("stone"), new TypeToken<List<BlockState>>() {}.getType());
+            if (stoneStates.isEmpty())
+            {
+                throw new JsonParseException("Stone states cannot be empty.");
+            }
+            IWeighted<BlockState> oreStates = context.deserialize(blockJson.get("ore"), new TypeToken<IWeighted<BlockState>>() {}.getType());
+            if (oreStates.isEmpty())
+            {
+                throw new JsonParseException("Ore states cannot be empty.");
+            }
+
+            for (BlockState stoneState : stoneStates)
+            {
+                blocks.put(stoneState, oreStates);
+            }
+        }
+        indicator = json.has("indicator") ? context.deserialize(json.get("indicator"), new TypeToken<IWeighted<Indicator>>() {}.getType()) : IWeighted.empty();
     }
 
+    @Override
+    public ResourceLocation getId()
+    {
+        return id;
+    }
+
+    @Override
+    public void setId(ResourceLocation id)
+    {
+        this.id = id;
+    }
+
+    public int getRarity()
+    {
+        return rarity;
+    }
+
+    public int getMinY()
+    {
+        return minY;
+    }
+
+    public int getMaxY()
+    {
+        return maxY;
+    }
+
+    /**
+     * Gets an indicator for this vein type
+     *
+     * @param random A random to use to select an indicator
+     * @return An Indicator if it exists, or null if not
+     */
     @Nullable
-    public ResourceLocation getGroup()
+    public Indicator getIndicator(Random random)
     {
-        return group;
+        return indicator != null ? indicator.get(random) : null;
     }
 
-    public double getGroupWeight()
+    public int getChunkRadius()
     {
-        return groupWeight;
+        return 1 + (size >> 4);
     }
 
-    public static class Indicator
+    public boolean isValidState(BlockState state)
     {
-        private final int maxDepth;
-        private final int rarity;
-        private final boolean ignoreLiquids;
+        return blocks.containsKey(state);
+    }
 
-        private final IWeighted<BlockState> states;
-        private final Set<BlockState> underStates;
+    public BlockState getStateToGenerate(BlockState stoneState, Random random)
+    {
+        return blocks.get(stoneState).get(random);
+    }
 
-        public Indicator(int maxDepth, int rarity, boolean ignoreLiquids, IWeighted<BlockState> states, List<BlockState> underStates)
+    public Collection<BlockState> getOreStates()
+    {
+        return blocks.values().stream().flatMap(weighted -> weighted.values().stream()).collect(Collectors.toList());
+    }
+
+    /**
+     * Creates an instance of a vein
+     *
+     * @param chunkXStart The chunk X start
+     * @param chunkZStart The chunk Z start
+     * @param rand        a random to use in generation
+     * @return a new vein instance
+     */
+    public abstract V createVein(int chunkXStart, int chunkZStart, Random rand);
+
+    /**
+     * Checks if the vein is in range of a point.
+     *
+     * @param x 0-centered x position
+     * @param z 0-centered z position
+     * @return if the vein can generate at any y position in that column
+     */
+    public abstract boolean inRange(V vein, int x, int z);
+
+    /**
+     * Gets the chance to generate at a position
+     * This should typically call {@code getType().getChanceToGenerate()}
+     *
+     * @param x 0-centered x position
+     * @param y 0-centered y position
+     * @param z 0-centered z position
+     * @return a chance, with <= 0 meaning no chance, >= 1 indicating 100% chance
+     */
+    public abstract float getChanceToGenerate(V vein, int x, int y, int z);
+
+    protected int defaultYPos(int verticalShrinkRange, Random rand)
+    {
+        int actualRange = maxY - minY - 2 * verticalShrinkRange;
+        int yPos;
+        if (actualRange > 0)
         {
-            this.maxDepth = maxDepth;
-            this.rarity = rarity;
-            this.ignoreLiquids = ignoreLiquids;
-            this.states = states;
-            this.underStates = new HashSet<>(underStates);
+            yPos = minY + verticalShrinkRange + rand.nextInt(actualRange);
         }
-
-        @Nonnull
-        public BlockState getStateToGenerate(Random random)
+        else
         {
-            return states.get(random);
+            yPos = (minY + maxY) / 2;
         }
-
-        public boolean validUnderState(BlockState state)
-        {
-            return underStates.isEmpty() || underStates.contains(state);
-        }
-
-        public int getMaxDepth()
-        {
-            return maxDepth;
-        }
-
-        public int getRarity()
-        {
-            return rarity;
-        }
-
-        public boolean shouldIgnoreLiquids()
-        {
-            return ignoreLiquids;
-        }
+        return yPos;
     }
 }

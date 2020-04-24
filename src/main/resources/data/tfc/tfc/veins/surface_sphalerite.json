@@ -1,0 +1,113 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 80,
+  "min_y": 60,
+  "max_y": 120,
+  "size": 15,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/gneiss",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/sphalerite/gneiss[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/sphalerite/gneiss[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/sphalerite/gneiss[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/marble",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/sphalerite/marble[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/sphalerite/marble[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/sphalerite/marble[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/phyllite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/sphalerite/phyllite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/sphalerite/phyllite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/sphalerite/phyllite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/quartzite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/sphalerite/quartzite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/sphalerite/quartzite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/sphalerite/quartzite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/schist",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/sphalerite/schist[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/sphalerite/schist[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/sphalerite/schist[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/slate",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/sphalerite/slate[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/sphalerite/slate[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/sphalerite/slate[grade=rich]"
+        }
+      ]
+    }
+  ]
+}

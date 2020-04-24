@@ -15,6 +15,7 @@ public class PacketHandler
         return CHANNEL;
     }
 
+    @SuppressWarnings("UnusedAssignment")
     public static void setup()
     {
         int id = 0;

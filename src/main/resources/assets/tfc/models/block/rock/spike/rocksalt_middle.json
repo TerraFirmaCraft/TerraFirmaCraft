@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/rock/spike_middle",
-  "textures": {
-    "texture": "tfc:block/rock/raw/rocksalt"
-  }
-}

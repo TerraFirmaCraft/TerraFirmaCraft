@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "tfc:block/ore",
   "textures": {
-    "all": "tfc/block/rock/marble",
-    "particle": "tfc/block/rock/marble",
+    "all": "tfc:block/rock/raw/marble",
+    "particle": "tfc:block/rock/raw/marble",
     "overlay": "tfc:block/ore/magnetite"
   }
 }

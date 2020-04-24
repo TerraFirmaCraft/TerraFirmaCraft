@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "tfc:block/ore",
   "textures": {
-    "all": "tfc/block/rock/limestone",
-    "particle": "tfc/block/rock/limestone",
+    "all": "tfc:block/rock/raw/limestone",
+    "particle": "tfc:block/rock/raw/limestone",
     "overlay": "tfc:block/ore/saltpeter"
   }
 }

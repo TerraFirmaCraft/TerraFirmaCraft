@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 120,
+  "min_y": 5,
+  "max_y": 100,
+  "size": 10,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/granite",
+      "ore": "tfc:ore/cryolite/granite"
+    }
+  ]
+}
