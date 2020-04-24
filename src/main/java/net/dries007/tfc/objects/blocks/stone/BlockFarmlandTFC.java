@@ -65,6 +65,7 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
         setDefaultState(blockState.getBaseState().withProperty(MOISTURE, 1)); // 1 is default so it doesn't instantly turn back to dirt
         setTickRandomly(true);
         setLightOpacity(255);
+        useNeighborBrightness = true;
     }
 
     @Override
@@ -106,6 +107,13 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return (side != EnumFacing.DOWN && side != EnumFacing.UP);
     }
 
     @Override
