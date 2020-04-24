@@ -160,7 +160,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
-        if (player.getHeldItem(hand).getTagCompound() != null)
+        if (player.getHeldItem(hand).getTagCompound() == null)
         {
             RayTraceResult rayTrace = rayTrace(worldIn, player, true);
             //noinspection ConstantConditions - ray trace can be null
