@@ -5,12 +5,12 @@ from data.constants import *
 
 def generate(rm: ResourceManager):
     for vein_name, vein in ORE_VEINS.items():
-        ore = ORES[vein.ore]
-        rocks = expand_rocks(vein.rocks, vein_name)
-        if ore.graded:
-            for grade in ORE_GRADES:
-                rm.data(vein_name, {
-                    'group': 'tfc:%s' % vein_name,
+        if vein.ore in ORES:
+            rocks = expand_rocks(vein.rocks, vein_name)
+            ore = ORES[vein.ore]  # standard ore
+            if ore.graded:  # graded ore vein
+                rm.data(('tfc', 'veins', vein_name), {
+                    'type': 'tfc:' + vein.type,
                     'rarity': vein.rarity,
                     'min_y': vein.min_y,
                     'max_y': vein.max_y,
@@ -18,11 +18,51 @@ def generate(rm: ResourceManager):
                     'density': vein.density,
                     'blocks': [{
                         'stone': 'tfc:rock/raw/%s' % rock,
-                        'ore': 'tfc:ore/%s/%s[grade=%s]' % (vein_name, rock, grade)
+                        'ore': [{
+                            'weight': vein.poor,
+                            'block': 'tfc:ore/%s/%s[grade=poor]' % (vein.ore, rock)
+                        }, {
+                            'weight': vein.normal,
+                            'block': 'tfc:ore/%s/%s[grade=normal]' % (vein.ore, rock)
+                        }, {
+                            'weight': vein.rich,
+                            'block': 'tfc:ore/%s/%s[grade=rich]' % (vein.ore, rock)
+                        }]
                     } for rock in rocks]
-                }, root_domain='tfc/veins')
-        else:
-            rm.data(vein_name, {
+                })
+            else:  # non-graded ore vein (mineral)
+                rm.data(('tfc', 'veins', vein_name), {
+                    'type': 'tfc:' + vein.type,
+                    'rarity': vein.rarity,
+                    'min_y': vein.min_y,
+                    'max_y': vein.max_y,
+                    'size': vein.size,
+                    'density': vein.density,
+                    'blocks': [{
+                        'stone': 'tfc:rock/raw/%s' % rock,
+                        'ore': 'tfc:ore/%s/%s' % (vein.ore, rock)
+                    } for rock in rocks]
+                })
+        elif vein.rocks == ['soil']:  # clay or peat discs
+            rm.data(('tfc', 'veins', vein_name), {
+                'type': 'tfc:' + vein.type,
+                'rarity': vein.rarity,
+                'min_y': vein.min_y,
+                'max_y': vein.max_y,
+                'size': vein.size,
+                'density': vein.density,
+                'blocks': [{
+                    'stone': ['tfc:dirt/%s' % variant for variant in STANDARD_SOIL_BLOCK_VARIANTS],
+                    'ore': 'tfc:dirt/%s' % vein.ore
+                }] + [{
+                    'stone': ['tfc:grass/%s' % variant for variant in STANDARD_SOIL_BLOCK_VARIANTS],
+                    'ore': 'tfc:grass/%s' % vein.ore
+                }]
+            })
+        elif vein.ore == 'gravel':  # Not an ore, but still spawns per rock type
+            rocks = expand_rocks(vein.rocks, vein_name)
+            rm.data(('tfc', 'veins', vein_name), {
+                'type': 'tfc:' + vein.type,
                 'rarity': vein.rarity,
                 'min_y': vein.min_y,
                 'max_y': vein.max_y,
@@ -30,9 +70,9 @@ def generate(rm: ResourceManager):
                 'density': vein.density,
                 'blocks': [{
                     'stone': 'tfc:rock/raw/%s' % rock,
-                    'ore': 'tfc:ore/%s/%s' % (vein_name, rock)
+                    'ore': 'tfc:rock/gravel/%s' % rock
                 } for rock in rocks]
-            }, root_domain='tfc/veins')
+            })
 
 
 def expand_rocks(rocks_list: List, path: str) -> List[str]:

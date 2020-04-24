@@ -2,6 +2,7 @@ package net.dries007.tfc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.command.CommandSource;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -15,8 +16,11 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import com.mojang.brigadier.CommandDispatcher;
+import net.dries007.tfc.command.ClearWorldCommand;
 import net.dries007.tfc.network.ChunkDataRequestPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.types.RockManager;
@@ -77,6 +81,15 @@ public final class ForgeEventHandler
     }
 
     @SubscribeEvent
+    public static void onServerStarting(FMLServerStartingEvent event)
+    {
+        LOGGER.debug("On Server Starting");
+
+        CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
+        ClearWorldCommand.register(dispatcher);
+    }
+
+    @SubscribeEvent
     public static void onChunkWatch(ChunkWatchEvent.Watch event)
     {
         /*ChunkPos pos = event.getPos();
@@ -110,26 +123,4 @@ public final class ForgeEventHandler
             PacketHandler.get().send(PacketDistributor.SERVER.noArg(), new ChunkDataRequestPacket(pos.x, pos.z));
         }
     }
-/*
-    @SubscribeEvent
-    public static void onNeighborChange(BlockEvent.NeighborNotifyEvent event)
-    {
-        // We handle grass block "updates" here because they need to listen for just further than neighbors
-        if (event.getState().getBlock() instanceof TFCGrassBlock)
-        {
-            // Notify neighbors one block to the side and one blockup
-            for (Direction direction : Direction.Plane.HORIZONTAL)
-            {
-                BlockPos targetPos = event.getPos().up().offset(direction);
-                BlockState target = event.getWorld().getBlockState(targetPos);
-                if (target.getBlock() instanceof TFCGrassBlock)
-                {
-                    target.getBlock().updateDiagonalNeighbors();
-                    target.getBlock().neighborChanged(target, event.getWorld(), targetPos, target.getBlock(), event.getPos().up(), false);
-                }
-            }
-        }
-    }
-
- */
 }

@@ -5,7 +5,8 @@ Rock = namedtuple('Rock', ('category',))
 Metal = namedtuple('Metal', ('tier', 'usable'))
 Ore = namedtuple('Ore', ('metal', 'graded'))
 OreGrade = namedtuple('OreGrade', ('weight',))
-Vein = namedtuple('Vein', ('ore', 'rarity', 'size', 'min_y', 'max_y', 'density', 'shape', 'rocks'))
+Vein = namedtuple('Vein',
+                  ('ore', 'type', 'rarity', 'size', 'min_y', 'max_y', 'density', 'poor', 'normal', 'rich', 'rocks'))
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -17,7 +18,6 @@ ROCKS: Dict[str, Rock] = {
     'conglomerate': Rock('sedimentary'),
     'dolomite': Rock('sedimentary'),
     'limestone': Rock('sedimentary'),
-    'rocksalt': Rock('sedimentary'),
     'shale': Rock('sedimentary'),
     'gneiss': Rock('metamorphic'),
     'marble': Rock('metamorphic'),
@@ -82,7 +82,8 @@ ORES: Dict[str, Ore] = {
     'saltpeter': Ore(None, False),
     'sylvite': Ore(None, False),
     'borax': Ore(None, False),
-    'lapis_lazuli': Ore(None, False)
+    'lapis_lazuli': Ore(None, False),
+    'halite': Ore(None, False)
 }
 ORE_GRADES: Dict[str, OreGrade] = {
     'normal': OreGrade(50),
@@ -90,35 +91,56 @@ ORE_GRADES: Dict[str, OreGrade] = {
     'rich': OreGrade(20)
 }
 ORE_VEINS: Dict[str, Vein] = {
-    'native_copper': Vein('native_copper', 120, 40, 5, 80, 70, 'cluster', ['igneous_extrusive']),
-    'native_gold': Vein('native_gold', 160, 50, 5, 65, 70, 'cluster', ['igneous_extrusive', 'igneous_intrusive']),
-    'native_silver': Vein('native_silver', 140, 30, 5, 65, 70, 'cluster', ['granite', 'gneiss']),
-    'hematite': Vein('hematite', 120, 40, 5, 80, 70, 'cluster', ['igneous_extrusive']),
-    'cassiterite': Vein('cassiterite', 100, 30, 5, 80, 70, 'cluster', ['igneous_intrusive']),
-    'bismuthinite': Vein('bismuthinite', 100, 40, 5, 80, 70, 'cluster', ['igneous_extrusive', 'sedimentary']),
-    'garnierite': Vein('garnierite', 60, 30, 5, 45, 90, ['cluster'], ['gabbro']),
-    'malachite': Vein('malachite', 100, 30, 5, 80, 70, 'cluster', ['limestone', 'marble']),
-    'magnetite': Vein('magnetite', 150, 50, 5, 70, 70, 'cluster', ['sedimentary']),
-    'limonite': Vein('limonite', 150, 50, 5, 70, 70, 'cluster', ['sedimentary']),
-    'sphalerite': Vein('sphalerite', 90, 30, 40, 110, 70, 'cluster', ['metamorphic']),
-    'tetrahedrite': Vein('tetrahedrite', 100, 30, 5, 90, 70, 'cluster', ['metamorphic']),
-    'bituminous_coal': Vein('bituminous_coal', 130, 60, 5, 180, 90, 'cluster', ['sedimentary']),
-    'lignite': Vein('lignite', 150, 30, 5, 80, 70, 'cluster', ['sedimentary']),
-    'kaolinite': Vein('kaolinite', 90, 30, 20, 90, 70, 'cluster', ['sedimentary']),
-    'graphite': Vein('graphite', 90, 30, 20, 90, 70, 'cluster', ['marble', 'gneiss', 'quartzite', 'schist']),
-    'cinnabar': Vein('cinnabar', 120, 20, 5, 60, 90, 'cluster', ['igneous_extrusive', 'shale', 'quartzite']),
-    'cryolite': Vein('cryolite', 120, 20, 40, 80, 90, 'cluster', ['granite']),
-    'saltpeter': Vein('saltpeter', 140, 20, 60, 180, 90, 'cluster', ['sedimentary']),
-    'sulfur': Vein('sulfur', 140, 20, 60, 180, 90, 'cluster', ['sedimentary', 'metamorphic']),
-    'sylvite': Vein('sylvite', 100, 20, 5, 80, 70, 'cluster', ['rocksalt']),
-    'borax': Vein('borax', 100, 20, 5, 80, 70, 'cluster', ['shale', 'slate']),
-    'gypsum': Vein('gypsum', 100, 20, 5, 80, 70, 'cluster', ['chalk']),
-    'lapis_lazuli': Vein('lapis_lazuli', 100, 40, 5, 80, 70, 'cluster', ['marble']),
-    'surface_native_copper': Vein('native_copper', 80, 20, 60, 80, 70, 'cluster', ['igneous_extrusive']),
-    'surface_cassiterite': Vein('cassiterite', 70, 15, 60, 80, 70, 'cluster', ['igneous_intrusive']),
-    'surface_bismuthinite': Vein('bismuthinite', 70, 20, 60, 80, 70, 'cluster', ['igneous_extrusive', 'sedimentary']),
-    'surface_sphalerite': Vein('sphalerite', 70, 15, 80, 180, 70, 'cluster', ['metamorphic']),
-    'surface_tetrahedrite': Vein('tetrahedrite', 80, 15, 60, 90, 70, 'cluster', ['metamorphic']),
+    'normal_native_copper': Vein('native_copper', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
+    'surface_native_copper': Vein('native_copper', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['igneous_extrusive']),
+    'normal_native_gold': Vein('native_gold', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30,
+                               ['igneous_extrusive', 'igneous_intrusive']),
+    'deep_native_gold': Vein('native_gold', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60,
+                             ['igneous_extrusive', 'igneous_intrusive']),
+    'normal_native_silver': Vein('native_silver', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['granite', 'gneiss']),
+    'poor_native_silver': Vein('native_silver', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['granite', 'metamorphic']),
+    'normal_hematite': Vein('hematite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
+    'deep_hematite': Vein('hematite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['igneous_extrusive']),
+    'normal_cassiterite': Vein('cassiterite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_intrusive']),
+    'surface_cassiterite': Vein('cassiterite', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['igneous_intrusive']),
+    'normal_bismuthinite': Vein('bismuthinite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30,
+                                ['igneous_intrusive', 'sedimentary']),
+    'surface_bismuthinite': Vein('bismuthinite', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10,
+                                 ['igneous_intrusive', 'sedimentary']),
+    'normal_garnierite': Vein('garnierite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['gabbro']),
+    'poor_garnierite': Vein('garnierite', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['igneous_intrusive']),
+    'normal_malachite': Vein('malachite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['marble', 'limestone']),
+    'poor_malachite': Vein('malachite', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10,
+                           ['marble', 'limestone', 'phyllite', 'chalk', 'dolomite']),
+    'normal_magnetite': Vein('magnetite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['sedimentary']),
+    'deep_magnetite': Vein('magnetite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['sedimentary']),
+    'normal_limonite': Vein('limonite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['sedimentary']),
+    'deep_limonite': Vein('limonite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['sedimentary']),
+    'normal_sphalerite': Vein('sphalerite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
+    'surface_sphalerite': Vein('sphalerite', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['metamorphic']),
+    'normal_tetrahedrite': Vein('tetrahedrite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
+    'surface_tetrahedrite': Vein('tetrahedrite', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['metamorphic']),
+
+    'bituminous_coal': Vein('bituminous_coal', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
+    'lignite': Vein('lignite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
+    'kaolinite': Vein('kaolinite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
+    'graphite': Vein('graphite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['gneiss', 'marble', 'quartzite', 'schist']),
+    'cinnabar': Vein('cinnabar', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['igneous_extrusive', 'quartzite', 'shale']),
+    'cryolite': Vein('cryolite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['granite']),
+    'saltpeter': Vein('saltpeter', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
+    'sulfur': Vein('sulfur', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['igneous_extrusive']),
+    'sylvite': Vein('sylvite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['shale', 'claystone', 'chert']),
+    'borax': Vein('borax', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['slate']),
+    'gypsum': Vein('gypsum', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['metamorphic']),
+    'lapis_lazuli': Vein('lapis_lazuli', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['limestone', 'marble']),
+
+    'clay': Vein('clay', 'disc', 20, 14, 90, 120, 100, 0, 0, 0, ['soil']),
+    'peat': Vein('peat', 'disc', 50, 25, 90, 120, 100, 0, 0, 0, ['soil']),
+    'gravel': Vein('gravel', 'disc', 100, 40, 20, 80, 60, 0, 0, 0,
+                   ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']),
+    'halite': Vein('halite', 'disc', 120, 30, 80, 100, 80, 0, 0, 0, ['sedimentary']),
+
+    'kimberlite': Vein('kimberlite', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
 }
 
 ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'spike']
@@ -126,3 +148,4 @@ ROCK_SPIKE_PARTS = ['base', 'middle', 'tip']
 SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'gray']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam', 'clay_loam', 'clay', 'peat']
+STANDARD_SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'clay_loam']

@@ -1,0 +1,91 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:disc",
+  "rarity": 100,
+  "min_y": 20,
+  "max_y": 80,
+  "size": 40,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/chalk",
+      "ore": "tfc:rock/gravel/chalk"
+    },
+    {
+      "stone": "tfc:rock/raw/chert",
+      "ore": "tfc:rock/gravel/chert"
+    },
+    {
+      "stone": "tfc:rock/raw/claystone",
+      "ore": "tfc:rock/gravel/claystone"
+    },
+    {
+      "stone": "tfc:rock/raw/conglomerate",
+      "ore": "tfc:rock/gravel/conglomerate"
+    },
+    {
+      "stone": "tfc:rock/raw/dolomite",
+      "ore": "tfc:rock/gravel/dolomite"
+    },
+    {
+      "stone": "tfc:rock/raw/limestone",
+      "ore": "tfc:rock/gravel/limestone"
+    },
+    {
+      "stone": "tfc:rock/raw/shale",
+      "ore": "tfc:rock/gravel/shale"
+    },
+    {
+      "stone": "tfc:rock/raw/gneiss",
+      "ore": "tfc:rock/gravel/gneiss"
+    },
+    {
+      "stone": "tfc:rock/raw/marble",
+      "ore": "tfc:rock/gravel/marble"
+    },
+    {
+      "stone": "tfc:rock/raw/phyllite",
+      "ore": "tfc:rock/gravel/phyllite"
+    },
+    {
+      "stone": "tfc:rock/raw/quartzite",
+      "ore": "tfc:rock/gravel/quartzite"
+    },
+    {
+      "stone": "tfc:rock/raw/schist",
+      "ore": "tfc:rock/gravel/schist"
+    },
+    {
+      "stone": "tfc:rock/raw/slate",
+      "ore": "tfc:rock/gravel/slate"
+    },
+    {
+      "stone": "tfc:rock/raw/andesite",
+      "ore": "tfc:rock/gravel/andesite"
+    },
+    {
+      "stone": "tfc:rock/raw/basalt",
+      "ore": "tfc:rock/gravel/basalt"
+    },
+    {
+      "stone": "tfc:rock/raw/dacite",
+      "ore": "tfc:rock/gravel/dacite"
+    },
+    {
+      "stone": "tfc:rock/raw/rhyolite",
+      "ore": "tfc:rock/gravel/rhyolite"
+    },
+    {
+      "stone": "tfc:rock/raw/diorite",
+      "ore": "tfc:rock/gravel/diorite"
+    },
+    {
+      "stone": "tfc:rock/raw/gabbro",
+      "ore": "tfc:rock/gravel/gabbro"
+    },
+    {
+      "stone": "tfc:rock/raw/granite",
+      "ore": "tfc:rock/gravel/granite"
+    }
+  ]
+}

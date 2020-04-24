@@ -1,0 +1,79 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 100,
+  "min_y": 30,
+  "max_y": 100,
+  "size": 20,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/andesite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/hematite/andesite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/hematite/andesite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/hematite/andesite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/basalt",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/hematite/basalt[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/hematite/basalt[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/hematite/basalt[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/dacite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/hematite/dacite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/hematite/dacite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/hematite/dacite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/rhyolite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/hematite/rhyolite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/hematite/rhyolite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/hematite/rhyolite[grade=rich]"
+        }
+      ]
+    }
+  ]
+}

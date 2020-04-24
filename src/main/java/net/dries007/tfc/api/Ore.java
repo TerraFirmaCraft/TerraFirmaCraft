@@ -42,7 +42,8 @@ public class Ore
         SALTPETER(false),
         SYLVITE(false),
         BORAX(false),
-        LAPIS_LAZULI(false);
+        LAPIS_LAZULI(false),
+        HALITE(false);
 
         private final boolean graded;
 

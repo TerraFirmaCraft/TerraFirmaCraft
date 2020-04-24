@@ -25,7 +25,7 @@ public abstract class AbstractSimplexNoise
         short[] p = PERMUTATION_BASE.clone();
         Random rand = new Random(seed);
 
-        //the seed determines the swaps that occur between the default order and the order we're actually going to use
+        // the seed determines the swaps that occur between the default order and the order we're actually going to use
         for (int i = 0; i < 400; i++)
         {
             int swapFrom = rand.nextInt(p.length);

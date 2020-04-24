@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.objects;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -72,7 +70,6 @@ public final class TFCItemTier implements IItemTier
     }
 
     @Override
-    @Nonnull
     public Ingredient getRepairMaterial()
     {
         return Ingredient.EMPTY; // todo: make this use an item or something

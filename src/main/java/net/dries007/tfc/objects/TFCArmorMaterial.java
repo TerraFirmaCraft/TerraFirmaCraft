@@ -6,8 +6,6 @@
 package net.dries007.tfc.objects;
 
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
@@ -19,7 +17,6 @@ import net.dries007.tfc.api.IArmorMaterialTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@ParametersAreNonnullByDefault
 public final class TFCArmorMaterial implements IArmorMaterial, IArmorMaterialTFC
 {
     public static final IArmorMaterialTFC COPPER = new TFCArmorMaterial(MOD_ID + ":copper", 14, new int[] {1, 3, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F, () -> Ingredient.EMPTY, 10, 10, 6.25f);
@@ -111,21 +108,18 @@ public final class TFCArmorMaterial implements IArmorMaterial, IArmorMaterialTFC
     }
 
     @Override
-    @Nonnull
     public SoundEvent getSoundEvent()
     {
         return equipSound;
     }
 
     @Override
-    @Nonnull
     public Ingredient getRepairMaterial()
     {
         return repairMaterialSupplier.get();
     }
 
     @Override
-    @Nonnull
     public String getName()
     {
         return name;

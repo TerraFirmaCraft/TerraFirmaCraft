@@ -6,7 +6,6 @@
 package net.dries007.tfc.objects;
 
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +47,6 @@ public final class TFCItemGroup extends ItemGroup
     }
 
     @Override
-    @Nonnull
     public ItemStack createIcon()
     {
         if (stack == null)

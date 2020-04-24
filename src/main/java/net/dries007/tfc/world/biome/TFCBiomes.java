@@ -15,6 +15,7 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 import net.minecraft.world.gen.placement.CaveEdgeConfig;
+import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.fml.RegistryObject;
@@ -130,6 +131,12 @@ public class TFCBiomes
 
         addCarvers(RIVER);
         RIVER.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_CONFIG);
+
+        // Features applied to ALL biomes
+        for (RegistryObject<? extends Biome> biome : ALL_BIOMES)
+        {
+            biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFCFeatures.VEINS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(NoPlacementConfig.NO_PLACEMENT_CONFIG)));
+        }
     }
 
     public static void addCarvers(RegistryObject<? extends Biome> biomeIn)

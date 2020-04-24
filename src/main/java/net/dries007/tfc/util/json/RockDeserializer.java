@@ -3,7 +3,6 @@ package net.dries007.tfc.util.json;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.gson.*;
 import net.minecraft.block.Block;
@@ -14,7 +13,6 @@ import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.api.RockCategory;
 import net.dries007.tfc.util.Helpers;
 
-@ParametersAreNonnullByDefault
 public enum RockDeserializer implements JsonDeserializer<Rock>
 {
     INSTANCE;

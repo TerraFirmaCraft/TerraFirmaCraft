@@ -20,7 +20,7 @@ public class LayerDrawingUtil
 
     static
     {
-        IMAGES.size(1000).color(Images.Colors.LINEAR_GRAY);
+        IMAGES.size(1000).color(Images.Colors.LINEAR_GRAY).disable();
     }
 
     public static Color biomeColor(double val, double min, double max)

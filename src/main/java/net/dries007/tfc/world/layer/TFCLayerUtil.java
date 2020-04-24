@@ -31,9 +31,10 @@ import static net.dries007.tfc.world.layer.LayerDrawingUtil.IMAGES;
 
 public class TFCLayerUtil
 {
+    /* Cheeky hacks to avoid classloading some vanilla classes. this WILL BREAK EVERYTHING */
     public static boolean isDebugMode = false;
-    // Cheeky hacks to avoid classloading some vanilla classes,
-    private static int id = 0;
+    public static int id = 0;
+
     /* Biomes */
     public static final int OCEAN = isDebugMode ? id++ : getId(TFCBiomes.OCEAN);
     public static final int DEEP_OCEAN = isDebugMode ? id++ : getId(TFCBiomes.DEEP_OCEAN);

@@ -1,0 +1,62 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 140,
+  "min_y": 5,
+  "max_y": 100,
+  "size": 15,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/diorite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/garnierite/diorite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/garnierite/diorite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/garnierite/diorite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/gabbro",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/garnierite/gabbro[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/garnierite/gabbro[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/garnierite/gabbro[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/granite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/garnierite/granite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/garnierite/granite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/garnierite/granite[grade=rich]"
+        }
+      ]
+    }
+  ]
+}
