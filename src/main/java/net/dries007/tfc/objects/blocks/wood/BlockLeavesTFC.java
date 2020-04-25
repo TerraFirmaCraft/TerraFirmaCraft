@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -124,7 +125,7 @@ public class BlockLeavesTFC extends BlockLeaves
     @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(BlockSaplingTFC.get(wood));
+        return ConfigTFC.GENERAL.doLeavesDropSaplings ? Item.getItemFromBlock(BlockSaplingTFC.get(wood)) : Items.AIR;
     }
 
     @Override

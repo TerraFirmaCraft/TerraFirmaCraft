@@ -448,6 +448,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.doLogsRequireAxe")
         public boolean doLogsRequireAxe = true;
 
+        @Config.Comment("If false, leaves will not drop saplings.")
+        @Config.LangKey("config." + MOD_ID + ".general.doLeavesDropSaplings")
+        public boolean doLeavesDropSaplings = true;
+
     }
 
     public static class ClientCFG
