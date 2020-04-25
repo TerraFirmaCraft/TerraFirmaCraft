@@ -59,7 +59,12 @@ public class ShapelessFluidFoodRecipe extends ShapelessOreRecipe
             else
             {
                 handler.drain(Fluid.BUCKET_VOLUME, true);
-                ret.set(i, handler.getContainer().copy());
+                ItemStack updatedItem = handler.getContainer().copy();
+                if (updatedItem.hasTagCompound() && updatedItem.getTagCompound().isEmpty())
+                {
+                    updatedItem.setTagCompound(null);
+                }
+                ret.set(i, updatedItem);
             }
         }
         return ret;
