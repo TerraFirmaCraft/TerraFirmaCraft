@@ -427,6 +427,15 @@ public class ConfigTFC
         @Config.Comment("Which inventory slots will ammo refill/pickup search for quivers? none = nowhere, they're just extra inventory spaces; armor = only in armor slots; hotbar = add hotbar; main = add main inventory.")
         @Config.LangKey("config." + MOD_ID + ".general.quiverSearch")
         public String quiverSearch = "hotbar";
+
+        @Config.Comment("Which fluids will be valid metal lamp fuels?")
+        @Config.LangKey("config." + MOD_ID + ".general.metalLampFuels")
+        public String[] metalLampFuels  =  {"olive_oil"};
+
+        @Config.Comment("How fast will lamps consume fuel (mb/hour)? 1 = lamp life of 250 hours, 0.125 = lamp life of 2000 hours, 0 = infinite fuel")
+        @Config.RangeDouble(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".general.oilLampBurnRate")
+        public double oilLampBurnRate = 0.125;
     }
 
     public static class ClientCFG
