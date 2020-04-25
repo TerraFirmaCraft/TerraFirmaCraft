@@ -27,11 +27,11 @@ public class EntitiesTFC
         register("boat", EntityBoatTFC.class);
         registerLiving("sheeptfc", EntitySheepTFC.class, 0xFFFFFF, 0xFF6347);
         registerLiving("cowtfc", EntityCowTFC.class, 0xA52A2A, 0xFFFFFF);
-        registerLiving("beartfc", EntityBearTFC.class, 0x557755, 0xF1FFF1);
+        registerLiving("beartfc", EntityBearTFC.class, 0xB22222, 0xDEB887);
         registerLiving("chickentfc", EntityChickenTFC.class, 0x557755, 0xFFF91F);
-        registerLiving("pheasanttfc", EntityPheasantTFC.class, 0xAA7722, 0xF81FFA);
+        registerLiving("pheasanttfc", EntityPheasantTFC.class, 0x5577FF, 0xFFFA90);
         registerLiving("deertfc", EntityDeerTFC.class, 0x55FF55, 0x5FFAAF);
-        registerLiving("pigtfc", EntityPigTFC.class, 0x5577FF, 0xFFFA90);
+        registerLiving("pigtfc", EntityPigTFC.class, 0xAA7722, 0xFFEBCD);
         registerLiving("wolftfc", EntityWolfTFC.class, 0xB0ACAC, 0x796555);
         registerLiving("rabbittfc", EntityRabbitTFC.class, 0x885040, 0x462612);
         registerLiving("horsetfc", EntityHorseTFC.class, 0xA5886B, 0xABA400);
@@ -45,7 +45,7 @@ public class EntitiesTFC
         registerLiving("ducktfc", EntityDuckTFC.class, 0xFFF91F, 0x462612);
         registerLiving("alpacatfc", EntityAlpacaTFC.class, 0x00CC66, 0x006633);
         registerLiving("goattfc", EntityGoatTFC.class, 0xA0A0A0, 0x404040);
-        registerLiving("sabertoothtfc", EntitySaberToothTFC.class, 0xFF8000, 0xF1FFF1);
+        registerLiving("sabertoothtfc", EntitySaberToothTFC.class, 0xFF8000, 0xFFD700);
         registerLiving("cameltfc", EntityCamelTFC.class, 0xA5886B, 0x006633);
         registerLiving("liontfc", EntityLionTFC.class, 0xDAA520, 0xA0522D);
         registerLiving("hyenatfc", EntityHyenaTFC.class, 0x666600, 0x331900);
