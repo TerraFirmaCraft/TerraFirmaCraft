@@ -56,6 +56,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
 
     private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
     private static final AxisAlignedBB FIREPIT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
+    private static final AxisAlignedBB FIREPIT_WITH_SHIT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.7, 1);
     private static final AxisAlignedBB ATTACHMENT_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.6875, 0.8125);
 
     public BlockFirePit()
@@ -65,6 +66,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         disableStats();
         setTickRandomly(true);
         setLightLevel(1F);
+        setHardness(0.3F);
     }
 
     @Override
@@ -93,6 +95,10 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
+        if (state.getValue(ATTACHMENT) != FirePitAttachment.NONE)
+        {
+            return FIREPIT_WITH_SHIT_AABB;
+        }
         return DEFAULT_AABB;
     }
 
