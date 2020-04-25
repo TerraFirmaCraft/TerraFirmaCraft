@@ -792,7 +792,7 @@ jei.tooltips.tfc.vein.loose_rock=Loose Rock
 # Fluids
 fluid.salt_water=Salt Water
 fluid.fresh_water=Fresh Water
-fluid.hot_water=Hot Water
+fluid.hot_water=Hot Spring Water
 fluid.rum=Rum
 fluid.beer=Beer
 fluid.whiskey=Whiskey
