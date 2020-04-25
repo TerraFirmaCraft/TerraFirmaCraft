@@ -444,6 +444,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.shouldCropsDie")
         public boolean shouldCropsDie = true;
 
+        @Config.Comment("If false, logs will drop logs when punched.")
+        @Config.LangKey("config." + MOD_ID + ".general.doLogsRequireAxe")
+        public boolean doLogsRequireAxe = true;
+
     }
 
     public static class ClientCFG
