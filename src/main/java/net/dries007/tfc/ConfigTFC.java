@@ -501,6 +501,16 @@ public class ConfigTFC
         @Config.Comment({"Hide the thirst bar?"})
         @Config.LangKey("config." + MOD_ID + ".client.hideThirstBar")
         public boolean hideThirstBar = false;
+
+        @Config.Comment({"Ore tooltip info mode.",
+            "0 = No tooltip info.",
+            "1 = Ore Unit only info.",
+            "2 = Stack unit total info.",
+            "3 = All info."
+        })
+        @Config.LangKey("config." + MOD_ID + ".general.oreTooltipMode")
+        @Config.RangeInt(min = 0, max = 3)
+        public int oreTooltipMode = 3;
     }
 
     public static class WorldCFG
