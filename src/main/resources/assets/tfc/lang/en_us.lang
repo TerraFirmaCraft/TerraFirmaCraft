@@ -4136,6 +4136,7 @@ death.attack.dehydration=%1$s died of dehydration
 
 #Effects
 effectsTFC.overburdened=Overburdened
+effectsTFC.thirst=Thirst
 
 # Animal names by gender
 tfc.animal.sheeptfc.male=Sheep♂
