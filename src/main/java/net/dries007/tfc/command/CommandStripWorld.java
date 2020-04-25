@@ -40,13 +40,13 @@ public class CommandStripWorld extends CommandBase
     @Nonnull
     public String getUsage(ICommandSender sender)
     {
-        return "/stripworld <radius> -> [DANGER] Strips all stone variant blocks + water.";
+        return "/stripworld <radiusInBlocks> -> [DANGER] Strips all stone variant blocks + water.";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length != 1) throw new WrongUsageException("1 argument required.");
+        if (args.length != 1) throw new WrongUsageException("/stripworld <radiusInBlocks>");
         int radius = parseInt(args[0], 1, 250);
 
         if (sender.getCommandSenderEntity() == null) return;
