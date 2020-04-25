@@ -682,6 +682,23 @@ for key in METAL_TYPES:
             }
         })
 
+# LAMP
+for key in METAL_TYPES:
+    blockstate(('lamp', key), 'tfc:lamp', textures={
+        ('all', 'top'): 'tfc:blocks/metal/%s' % key
+    }, variants={
+        'lit': {
+            'true': {
+                "textures": {
+                    'all': 'tfc:blocks/metal/%s' % key,
+                    'top': 'tfc:blocks/metal/%s' % key
+                }
+            },
+            'false': {}
+        }
+    })
+
+
 # METAL SHEETS
 for key in METAL_TYPES:
     blockstate(('sheet', key), 'tfc:empty', textures={

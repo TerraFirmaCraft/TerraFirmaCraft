@@ -34,6 +34,7 @@ import net.dries007.tfc.objects.blocks.agriculture.*;
 import net.dries007.tfc.objects.blocks.devices.*;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
+import net.dries007.tfc.objects.blocks.metal.BlockMetalLamp;
 import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
@@ -114,6 +115,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockChestTFC> allChestBlocks;
     private static ImmutableList<BlockAnvilTFC> allAnvils;
     private static ImmutableList<BlockMetalSheet> allSheets;
+    private static ImmutableList<BlockMetalLamp> allLamps;
     private static ImmutableList<BlockToolRack> allToolRackBlocks;
     private static ImmutableList<BlockCropTFC> allCropBlocks;
     private static ImmutableList<BlockCropDead> allDeadCropBlocks;
@@ -217,6 +219,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockMetalSheet> getAllSheets()
     {
         return allSheets;
+    }
+
+    public static ImmutableList<BlockMetalLamp> getAllLamps()
+    {
+        return allLamps;
     }
 
     public static ImmutableList<BlockToolRack> getAllToolRackBlocks()
@@ -514,6 +521,7 @@ public final class BlocksTFC
         {
             Builder<BlockAnvilTFC> anvils = ImmutableList.builder();
             Builder<BlockMetalSheet> sheets = ImmutableList.builder();
+            Builder<BlockMetalLamp> lamps = ImmutableList.builder();
 
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
@@ -521,10 +529,13 @@ public final class BlocksTFC
                     anvils.add(register(r, "anvil/" + metal.getRegistryName().getPath(), new BlockAnvilTFC(metal), CT_METAL));
                 if (Metal.ItemType.SHEET.hasType(metal))
                     sheets.add(register(r, "sheet/" + metal.getRegistryName().getPath(), new BlockMetalSheet(metal), CT_METAL));
+                if (Metal.ItemType.LAMP.hasType(metal))
+                    lamps.add(register(r, "lamp/" + metal.getRegistryName().getPath(), new BlockMetalLamp(metal), CT_METAL));
             }
 
             allAnvils = anvils.build();
             allSheets = sheets.build();
+            allLamps = lamps.build();
         }
 
         {
@@ -663,6 +674,7 @@ public final class BlocksTFC
         register(TEFirePit.class, "fire_pit");
         register(TEToolRack.class, "tool_rack");
         register(TELoom.class, "loom");
+        register(TELamp.class, "lamp");
         register(TEBellows.class, "bellows");
         register(TEBarrel.class, "barrel");
         register(TECharcoalForge.class, "charcoal_forge");
