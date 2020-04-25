@@ -103,7 +103,7 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
                             worldIn.destroyBlock(pos, true); //drop the replaceable block (ie: torches, flowers...)
                         }
 
-                        FluidStack fluidStack = bucketCap.drain(CAPACITY, true);
+                        FluidStack fluidStack = bucketCap.drain(CAPACITY, !playerIn.isCreative());
                         if (fluidStack != null)
                         {
                             Fluid fluid = fluidStack.getFluid();
@@ -124,6 +124,10 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
                             }
                         }
                         worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                        if (stack.hasTagCompound() && stack.getTagCompound().isEmpty())
+                        {
+                            stack.setTagCompound(null);
+                        }
                         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }
