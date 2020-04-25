@@ -44,7 +44,7 @@ public class PipeVeinType extends VeinType<PipeVeinType.PipeVein>
 
     static class PipeVein extends Vein<PipeVeinType>
     {
-        public PipeVein(PipeVeinType type, BlockPos pos)
+        PipeVein(PipeVeinType type, BlockPos pos)
         {
             super(type, pos);
         }

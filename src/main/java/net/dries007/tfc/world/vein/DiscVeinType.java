@@ -30,7 +30,7 @@ public class DiscVeinType extends VeinType<DiscVeinType.DiscVein>
     @Override
     public boolean inRange(DiscVein vein, int x, int z)
     {
-        return Math.abs(x - vein.getPos().getX()) <= size || Math.abs(z - vein.getPos().getZ()) <= size;
+        return -size <= x && x <= size && -size <= z && z <= size;
     }
 
     @Override

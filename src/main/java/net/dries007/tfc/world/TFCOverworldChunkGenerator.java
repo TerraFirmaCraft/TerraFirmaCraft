@@ -104,27 +104,16 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
     /**
      * See {@link net.minecraft.world.chunk.ChunkStatus#SURFACE}
-     * Builds surface, makes bedrock, and replaces blocks in chunk with TFC variants
+     * Since we build surface in {@link TFCOverworldChunkGenerator#makeBase(IWorld, IChunk)}, we just have to make bedrock and replace surface with TFC blocks here
      */
     @Override
     public void func_225551_a_(WorldGenRegion worldGenRegion, IChunk chunk)
     {
+
         ChunkPos chunkPos = chunk.getPos();
         SharedSeedRandom random = new SharedSeedRandom();
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
         BlockPos.Mutable pos = new BlockPos.Mutable();
-
-        for (int x = 0; x < 16; ++x)
-        {
-            for (int z = 0; z < 16; ++z)
-            {
-                int posX = chunkPos.getXStart() + x;
-                int posZ = chunkPos.getZStart() + z;
-                int posY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-                double noise = this.surfaceDepthNoise.noiseAt(posX * 0.0625, posZ * 0.0625, 0.0625, x * 0.0625) * 15;
-                worldGenRegion.getBiome(pos.setPos(chunkPos.getXStart() + x, posY, chunkPos.getZStart() + z)).buildSurface(random, chunk, posX, posZ, posY, noise, getSettings().getDefaultBlock(), getSettings().getDefaultFluid(), getSeaLevel(), world.getSeed());
-            }
-        }
 
         makeBedrock(chunk, random);
 
@@ -141,7 +130,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     }
 
     /**
-     * This runs after biome generation. We skip biome generation there as we do it in tandem with noise generation
+     * This runs after biome generation. In order to do accurate surface placement, we don't use the already generated biome container, as the biome magnifier really sucks for definition on cliffs
      */
     @Override
     public void makeBase(IWorld world, IChunk chunk)
@@ -154,6 +143,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         // The spread biomes (for calculating terrain smoothing), and the 16x16 biome grid (for height map creation)
         TFCBiome[] spreadBiomes = new TFCBiome[24 * 24];
+        TFCBiome[] localBiomes = new TFCBiome[16 * 16];
         BlockPos.Mutable pos = new BlockPos.Mutable();
         for (int i = 0; i < 24; i++)
         {
@@ -186,6 +176,8 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 }
 
                 // The biome to reference when building the initial surface
+                TFCBiome biomeAt = spreadBiomes[(x + 4) + 24 * (z + 4)];
+                TFCBiome shoreBiomeAt = biomeAt, standardBiomeAt = biomeAt;
                 double maxShoreWeight = 0, maxStandardBiomeWeight = 0;
 
                 // calculate the total height based on the biome noise map, using a custom Noise2D for each biome
@@ -206,11 +198,13 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
                         if (maxShoreWeight < weight)
                         {
+                            shoreBiomeAt = entry.getKey();
                             maxShoreWeight = weight;
                         }
                     }
                     else if (maxStandardBiomeWeight < weight)
                     {
+                        standardBiomeAt = entry.getKey();
                         maxStandardBiomeWeight = weight;
                     }
                 }
@@ -230,11 +224,17 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                         double adjustedAboveWaterDelta = 0.02 * aboveWaterDelta * (40 - aboveWaterDelta) - 0.48;
                         actualHeight = riverHeight / riverWeight + adjustedAboveWaterDelta;
                     }
+                    biomeAt = TFCBiomes.RIVER.get(); // Use river surface for the bottom of the river + small shore beneath cliffs
                 }
                 else if (riverWeight > 0)
                 {
                     double adjustedRiverWeight = 0.6 * riverWeight;
                     actualHeight = (totalHeight - riverHeight) * ((1 - adjustedRiverWeight) / (1 - riverWeight)) + riverHeight * (adjustedRiverWeight / riverWeight);
+
+                    if (biomeAt == TFCBiomes.RIVER.get())
+                    {
+                        biomeAt = standardBiomeAt;
+                    }
                 }
 
                 // Flatten shores, and create cliffs on the edges
@@ -244,14 +244,21 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                     {
                         actualHeight = getSeaLevel() + 1;
                     }
+                    biomeAt = shoreBiomeAt;
                 }
                 else if (shoreWeight > 0)
                 {
                     double adjustedShoreWeight = 0.4 * shoreWeight;
                     actualHeight = (actualHeight - shoreHeight) * ((1 - adjustedShoreWeight) / (1 - shoreWeight)) + shoreHeight * (adjustedShoreWeight / shoreWeight);
+
+                    if (biomeAt == shoreBiomeAt)
+                    {
+                        biomeAt = standardBiomeAt;
+                    }
                 }
 
                 baseHeight[x + 16 * z] = actualHeight;
+                localBiomes[x + 16 * z] = biomeAt;
             }
         }
 
@@ -267,11 +274,25 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                     chunk.setBlockState(pos, settings.getDefaultBlock(), false);
                 }
 
-                for (int y = (int) totalHeight + 1; y <= getSeaLevel(); y++)
+                for (int y = (int) totalHeight + 1; y < getSeaLevel(); y++)
                 {
                     pos.setPos(chunkX + x, y, chunkZ + z);
                     chunk.setBlockState(pos, settings.getDefaultFluid(), false);
                 }
+            }
+        }
+
+        // Build vanilla surface
+        // We do this here because we want to have more accuracy with biome / surface placement
+        for (int x = 0; x < 16; ++x)
+        {
+            for (int z = 0; z < 16; ++z)
+            {
+                int posX = chunkPos.getXStart() + x;
+                int posZ = chunkPos.getZStart() + z;
+                int posY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
+                double noise = surfaceDepthNoise.noiseAt(posX * 0.0625, posZ * 0.0625, 0.0625, x * 0.0625) * 15;
+                localBiomes[x + 16 * z].buildSurface(random, chunk, posX, posZ, posY, noise, getSettings().getDefaultBlock(), getSettings().getDefaultFluid(), getSeaLevel(), world.getSeed());
             }
         }
     }

@@ -28,7 +28,7 @@ public class ClusterVeinType extends VeinType<ClusterVeinType.ClusterVein>
     @Override
     public boolean inRange(ClusterVein vein, int x, int z)
     {
-        return Math.abs(x - vein.getPos().getX()) <= size || Math.abs(z - vein.getPos().getZ()) <= size;
+        return -size <= x && x <= size && -size <= z && z <= size;
     }
 
     @Override
