@@ -18,6 +18,8 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.IResourceNameable;
 
@@ -26,9 +28,9 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
     private static final Logger LOGGER = LogManager.getLogger();
 
     protected final BiMap<ResourceLocation, T> types;
-    protected final BiMap<Integer, T> typeIds;
-
+    protected final Object2IntMap<T> typeIds;
     protected final List<T> orderedTypes;
+
     private final List<Runnable> callbacks;
     private final Gson gson;
     private final Type resourceType;
@@ -39,7 +41,7 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
         super(gson, TerraFirmaCraft.MOD_ID + "/" + domain);
 
         this.types = HashBiMap.create();
-        this.typeIds = HashBiMap.create();
+        this.typeIds = new Object2IntOpenHashMap<>();
         this.orderedTypes = new ArrayList<>();
         this.callbacks = new ArrayList<>();
         this.gson = gson;
@@ -61,12 +63,12 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
 
     public int getId(T type)
     {
-        return typeIds.inverse().get(type);
+        return typeIds.getInt(type);
     }
 
     public T get(int id)
     {
-        return typeIds.get(id);
+        return orderedTypes.get(id);
     }
 
     @Nonnull
@@ -96,8 +98,8 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
     protected void apply(Map<ResourceLocation, JsonObject> resources, IResourceManager resourceManager, IProfiler profiler)
     {
         types.clear();
+        typeIds.clear();
         orderedTypes.clear();
-        SortedMap<ResourceLocation, T> sortedEntries = new TreeMap<>();
         for (Map.Entry<ResourceLocation, JsonObject> entry : resources.entrySet())
         {
             ResourceLocation name = entry.getKey();
@@ -109,7 +111,7 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
                     T object = gson.fromJson(json, resourceType);
                     object.setId(name);
                     types.put(name, object);
-                    sortedEntries.put(name, object);
+                    orderedTypes.add(object);
                 }
                 else
                 {
@@ -123,13 +125,13 @@ public class GenericJsonReloadListener<T extends IResourceNameable> extends Json
             }
         }
 
-        LOGGER.info("Registered {} {}s Successfully.", types.size(), typeName);
+        LOGGER.info("Registered {} {}(s) Successfully.", types.size(), typeName);
 
         // Setup entry -> id map from sorted names
-        int id = 0;
-        for (ResourceLocation name : sortedEntries.keySet())
+        orderedTypes.sort(Comparator.comparing(IResourceNameable::getId));
+        for (int i = 0; i < orderedTypes.size(); i++)
         {
-            typeIds.put(id++, types.get(name));
+            typeIds.put(orderedTypes.get(i), i);
         }
 
         postProcess();

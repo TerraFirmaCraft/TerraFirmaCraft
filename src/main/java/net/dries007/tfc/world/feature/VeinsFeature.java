@@ -47,7 +47,7 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
         RANDOM.setSeed(seed);
         for (VeinType<?> type : VeinTypeManager.INSTANCE.getOrderedValues())
         {
-            if (RANDOM.nextInt(type.getRarity()) == 0)
+            if (RANDOM.nextInt(type.getRarity()) <= 5) // todo: change back to == 0, this is only for testing
             {
                 veins.add(type.createVein(chunkX << 4, chunkZ << 4, RANDOM));
             }
