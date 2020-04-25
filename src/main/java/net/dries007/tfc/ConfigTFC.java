@@ -440,6 +440,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.damagePerFeather")
         public double damagePerFeather = 0.6;
 
+        @Config.Comment("If true, crops will never die under any circumstances. THIS DOES NOT MEAN THEY WILL ALWAYS GROW!")
+        @Config.LangKey("config." + MOD_ID + ".general.shouldCropsDie")
+        public boolean shouldCropsDie = true;
+
     }
 
     public static class ClientCFG
