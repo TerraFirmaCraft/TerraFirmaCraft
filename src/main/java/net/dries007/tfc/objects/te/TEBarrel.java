@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -393,10 +394,34 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     {
         if (state.getValue(SEALED))
         {
-            // Drop the sealed barrel
-            ItemStack stack = new ItemStack(state.getBlock());
-            stack.setTagCompound(getItemTag());
-            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+            ItemStack barrelStack = new ItemStack(state.getBlock());
+
+            if (recipe != null)
+            {
+                // Drop the sealed barrel with inventory only if it's a valid recipe.
+                barrelStack.setTagCompound(getItemTag());
+                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
+            }
+            else
+            {
+                // Drop the sealed barrel minus inventory if there is no recipe.
+                int slotsToDrop = inventory.getSlots();
+                for (int i = 0; i < slotsToDrop; i++)
+                {
+                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
+                    inventory.setStackInSlot(i, new ItemStack(Items.AIR, 0));
+                }
+                if (!surplus.isEmpty())
+                {
+                    for (ItemStack surplusToDrop : surplus)
+                    {
+                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), surplusToDrop);
+                    }
+                    surplus.clear();
+                }
+                barrelStack.setTagCompound(getItemTag());
+                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
+            }
         }
         else
         {
