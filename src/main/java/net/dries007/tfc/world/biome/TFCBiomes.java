@@ -144,7 +144,7 @@ public class TFCBiomes
         biomeIn.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CAVE.get(), new ProbabilityConfig(0.10f)));
         biomeIn.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CANYON.get(), new ProbabilityConfig(0.015f)));
 
-        biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.03f))));
+        biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.02f))));
         biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.09f))));
     }
 
@@ -157,7 +157,7 @@ public class TFCBiomes
         //biomeIn.get().addCarver(GenerationStage.Carving.LIQUID, Biome.createCarver(TFCWorldCarvers.UNDERWATER_CANYON.get(), new ProbabilityConfig(0.02f)));
         //biomeIn.get().addCarver(GenerationStage.Carving.LIQUID, Biome.createCarver(TFCWorldCarvers.UNDERWATER_CAVE.get(), new ProbabilityConfig(0.06666667f)));
 
-        biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.02f))));
+        biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.015f))));
         biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.08f))));
     }
 }
