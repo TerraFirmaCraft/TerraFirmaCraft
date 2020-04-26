@@ -19,7 +19,12 @@
       }
     },
     "lit": {
-      "true": {},
+      "true": {
+        "textures": {
+          "side": "tfc:blocks/devices/charcoal_forge/lit",
+          "end": "tfc:blocks/devices/charcoal_forge/lit"
+        }
+      },
       "false": {}
     },
     "normal": [

@@ -22,7 +22,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -84,16 +83,16 @@ public class CommandFindVeins extends CommandBase
             if (args[2].equalsIgnoreCase("dump"))
             {
                 type = 1;
-                sender.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.dump_veins"));
+                sender.sendMessage(new TextComponentTranslation("tfc.command.findveins.dump_veins"));
             }
             else if (args[2].equalsIgnoreCase("rate"))
             {
                 type = 2;
-                sender.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.rate_veins"));
+                sender.sendMessage(new TextComponentTranslation("tfc.command.findveins.rate_veins"));
             }
             else
             {
-                throw new WrongUsageException("tfc.command.veins.usage");
+                throw new WrongUsageException("tfc.command.findveins.usage");
             }
         }
 
@@ -192,7 +191,7 @@ public class CommandFindVeins extends CommandBase
                 world = DimensionManager.getWorld(DIMENSION);
                 if (world == null)
                 {
-                    listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.failed", DIMENSION));
+                    listener.sendMessage(new TextComponentTranslation("tfc.command.findveins.failed", DIMENSION));
                     chunks.clear();
                     return false;
                 }
@@ -207,7 +206,7 @@ public class CommandFindVeins extends CommandBase
                 {
                     if (type > 0)
                     {
-                        this.listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.remaining_chunks", chunks.size(), jobSize));
+                        this.listener.sendMessage(new TextComponentTranslation("tfc.command.findveins.remaining_chunks", chunks.size(), jobSize));
                     }
                     lastNotifcationTime = System.currentTimeMillis();
                 }
@@ -222,7 +221,7 @@ public class CommandFindVeins extends CommandBase
                 {
                     if (type > 0)
                     {
-                        this.listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.remaining_chunks", chunks.size(), jobSize));
+                        this.listener.sendMessage(new TextComponentTranslation("tfc.command.findveins.remaining_chunks", chunks.size(), jobSize));
                     }
                     lastNotifcationTime = System.currentTimeMillis();
                 }
@@ -249,7 +248,7 @@ public class CommandFindVeins extends CommandBase
                         }
                         if (type == 0)
                         {
-                            listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.output", veinName, vein.getPos()));
+                            listener.sendMessage(new TextComponentTranslation("tfc.command.findveins.output", veinName, vein.getPos()));
                         }
                         else if (type == 1)
                         {
@@ -316,11 +315,11 @@ public class CommandFindVeins extends CommandBase
                             writer.newLine();
                         }
 
-                        listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.output_file", file.getAbsolutePath()));
+                        listener.sendMessage(new TextComponentTranslation("tfc.command.findveins.output_file", file.getAbsolutePath()));
                     }
                     catch (IOException error)
                     {
-                        listener.sendMessage(new TextComponentString("Error while trying to write dump file: " + error.toString()));
+                        listener.sendMessage(new TextComponentTranslation("tfc.command.findveins.output_file.error", error.toString()));
                     }
 
                 }
@@ -350,11 +349,11 @@ public class CommandFindVeins extends CommandBase
                             writer.newLine();
                         }
 
-                        listener.sendMessage(new TextComponentTranslation("tfc.tooltip.veins_command.output_file", file.getAbsolutePath()));
+                        listener.sendMessage(new TextComponentTranslation("tfc.command.findveins.output_file", file.getAbsolutePath()));
                     }
                     catch (IOException error)
                     {
-                        listener.sendMessage(new TextComponentString("Error while trying to write dump file: " + error.toString()));
+                        listener.sendMessage(new TextComponentTranslation("tfc.command.findveins.output_file.error", error.toString()));
                     }
                 }
                 if (keepingLoaded)

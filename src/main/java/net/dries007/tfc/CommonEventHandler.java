@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.passive.EntityChicken;
@@ -89,6 +90,7 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
+import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemQuiver;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
@@ -101,6 +103,7 @@ import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+import static net.dries007.tfc.Constants.PLUCKING;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("unused")
@@ -803,6 +806,30 @@ public final class CommonEventHandler
             {
                 event.setResult(Event.Result.ALLOW);
                 event.getItem().getItem().setCount(0);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event)
+    {
+        ResourceLocation entityType = EntityList.getKey(event.getTarget());
+        Entity target = event.getTarget();
+        EntityPlayer player = event.getEntityPlayer();
+
+        for (String entityName : ConfigTFC.GENERAL.pluckableEntities)
+        {
+            if (!event.getTarget().getEntityWorld().isRemote && player.getHeldItemMainhand().isEmpty() && player.isSneaking())
+            {
+                if (target.hurtResistantTime == 0)
+                {
+                    target.dropItem(Items.FEATHER, 1);
+                    target.attackEntityFrom(PLUCKING, (float) ConfigTFC.GENERAL.damagePerFeather);
+                }
+                if (target instanceof EntityAnimalTFC)
+                {
+                    ((EntityAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);
+                }
             }
         }
     }

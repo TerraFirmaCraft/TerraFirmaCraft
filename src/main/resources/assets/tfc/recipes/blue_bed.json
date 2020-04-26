@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:bed"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyeBlue"
+    }
+  ],
+  "result": {
+    "item": "minecraft:bed_blue",
+    "count": 1
+  }
+}

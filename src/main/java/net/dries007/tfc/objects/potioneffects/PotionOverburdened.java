@@ -41,6 +41,6 @@ public class PotionOverburdened extends PotionTFC
     @Override
     public boolean isInstant()
     {
-        return true;
+        return false;
     }
 }

@@ -327,7 +327,7 @@ public class BlockRockVariant extends Block implements IItemSize
             case Plains:
                 return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.DRY_GRASS || type == Rock.Type.CLAY || type == Rock.Type.CLAY_GRASS;
             case Crop:
-                return type == Rock.Type.DIRT || type == Rock.Type.GRASS || type == Rock.Type.FARMLAND || type == Rock.Type.DRY_GRASS;
+                return type == Rock.Type.FARMLAND;
             case Desert:
                 return type == Rock.Type.SAND;
             case Cave:

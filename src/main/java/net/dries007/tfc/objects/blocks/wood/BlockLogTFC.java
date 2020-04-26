@@ -188,7 +188,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             // False so vanilla will not drop a log itemstack (which would lead to an exploit)
             return false;
         }
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
+        return super.removedByPlayer(state, world, pos, player, ConfigTFC.GENERAL.doLogsRequireAxe);
     }
 
     @Override
