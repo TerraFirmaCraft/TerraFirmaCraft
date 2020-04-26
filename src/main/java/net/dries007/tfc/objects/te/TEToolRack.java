@@ -14,6 +14,8 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -68,6 +70,13 @@ public class TEToolRack extends TEBase
         return nbt;
     }
 
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+    {
+        super.onDataPacket(net, pkt);
+        markBlockUpdate();
+    }
+
     public boolean onRightClick(EntityPlayer player, EnumHand hand, int slot)
     {
         ItemStack slotItem = items.get(slot);
@@ -85,7 +94,7 @@ public class TEToolRack extends TEBase
         {
             return false;
         }
-        markForSync();
+        markBlockUpdate();
         return true;
     }
 }

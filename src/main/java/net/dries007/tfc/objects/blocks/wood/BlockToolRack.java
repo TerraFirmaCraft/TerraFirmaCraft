@@ -171,9 +171,15 @@ public class BlockToolRack extends Block implements IItemSize
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        if (te == null) return true;
-        return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
+        if (!worldIn.isRemote)
+        {
+            TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+            if (te != null)
+            {
+                return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
+            }
+        }
+        return true;
     }
 
     @Override
@@ -182,7 +188,9 @@ public class BlockToolRack extends Block implements IItemSize
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         if (facing.getAxis() == EnumFacing.Axis.Y)
+        {
             facing = placer.getHorizontalFacing().getOpposite();
+        }
         return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, facing, EnumFacing.HORIZONTALS));
     }
 
@@ -203,8 +211,14 @@ public class BlockToolRack extends Block implements IItemSize
     public int getSlotFromPos(IBlockState state, float x, float y, float z)
     {
         int slot = 0;
-        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
-        if (y < .5f) slot += 2;
+        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f)
+        {
+            slot += 1;
+        }
+        if (y < 0.5f)
+        {
+            slot += 2;
+        }
         return slot;
     }
 
