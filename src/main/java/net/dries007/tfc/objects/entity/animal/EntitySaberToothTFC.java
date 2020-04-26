@@ -50,7 +50,7 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     public EntitySaberToothTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.5F, 1.2F);
+        this.setSize(1.4F, 1.3F);
     }
 
     @Override

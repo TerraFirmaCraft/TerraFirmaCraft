@@ -14,8 +14,8 @@
               "skill": "butchering",
               "add": 0.12,
               "count": {
-                "min": 10,
-                "max": 14
+                "min": 4,
+                "max": 10
               }
             },
             {
