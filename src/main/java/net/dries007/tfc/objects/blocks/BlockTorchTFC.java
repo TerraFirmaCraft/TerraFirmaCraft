@@ -45,7 +45,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBlock
 {
-    public static boolean canLight(ItemStack stack)
+    private static boolean canLight(ItemStack stack)
     {
         return stack.getItem() == Item.getItemFromBlock(Blocks.TORCH) || ItemFireStarter.canIgnite(stack);
     }
