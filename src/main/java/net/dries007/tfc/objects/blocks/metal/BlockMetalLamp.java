@@ -24,7 +24,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -39,6 +38,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -57,7 +57,8 @@ public class BlockMetalLamp extends Block implements ILightableBlock
 {
 
     private static final Map<Metal, BlockMetalLamp> MAP = new HashMap<>();
-    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0, 0.25, 0.75, 0.5, 0.75);
+    private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.25, 0, 0.25, 0.75, 0.5, 0.75);
+    private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.25, .5, 0.25, 0.75, 1, 0.75);
 
     private final Metal metal;
 
@@ -116,6 +117,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     //Don't need to do any clientside display ticking
     //public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
 
+    @SuppressWarnings("deprecation")
     @Override
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
@@ -152,7 +154,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     {
         int i = 0; //DOWN
 
-        switch ((EnumFacing)state.getValue(FACING))
+        switch (state.getValue(FACING))
         {
             case DOWN:
                 break;
@@ -256,15 +258,16 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     {
         if (!worldIn.isRemote)
         {
-            // Set the initial counter value
-            NBTTagCompound nbt = stack.getTagCompound();
+            // Set the initial counter value and fill from item
             TELamp tile = Helpers.getTE(worldIn, pos, TELamp.class);
             if (tile != null)
             {
                 tile.resetCounter();
-                if (nbt != null)
+                IFluidHandlerItem itemCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                IFluidHandler teCap = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+                if (itemCap != null && teCap != null)
                 {
-                    tile.readFromItemTag(nbt);
+                    teCap.fill(itemCap.drain(TELamp.CAPACITY,false), true); //don't drain creative item
                 }
             }
             super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
@@ -301,8 +304,36 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isBlockNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isNormalCube(IBlockState state)
+    {
+        return false;
+    }
+
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -318,7 +349,14 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return AABB;
+        switch (state.getValue(FACING))
+        {
+            case UP:
+                return AABB_UP;
+            case DOWN:
+            default:
+                return AABB_DOWN;
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -337,6 +375,79 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         return getBoundingBox(state, worldIn, pos).offset(pos);
     }
 
+    private boolean canPlaceOn(World worldIn, BlockPos pos)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
+    }
+
+
+    //Lifted directly from BlockTorch
+    /**
+     * Checks if this block can be placed exactly at the given position.
+     */
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        for (EnumFacing enumfacing : FACING.getAllowedValues())
+        {
+            if (this.canPlaceAt(worldIn, pos, enumfacing))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
+    {
+        if (!FACING.getAllowedValues().contains(facing))
+        {
+            return false;
+        }
+
+        BlockPos blockpos = pos.offset(facing.getOpposite());
+        IBlockState iblockstate = worldIn.getBlockState(blockpos);
+        Block block = iblockstate.getBlock();
+        BlockFaceShape blockfaceshape = iblockstate.getBlockFaceShape(worldIn, blockpos, facing);
+
+        if (facing.equals(EnumFacing.UP) && this.canPlaceOn(worldIn, blockpos))
+        {
+            return true;
+        }
+        else if (facing != EnumFacing.UP && facing != EnumFacing.DOWN)
+        {
+            return !isExceptBlockForAttachWithPiston(block) && blockfaceshape == BlockFaceShape.SOLID;
+        }
+        else if (facing == EnumFacing.DOWN && blockfaceshape == BlockFaceShape.SOLID)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
+     * IBlockstate
+     */
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        if (this.canPlaceAt(worldIn, pos, facing))
+        {
+            return this.getDefaultState().withProperty(FACING, facing);
+        }
+        else
+        {
+            return this.getDefaultState();
+        }
+    }
+
     @Override
     public boolean hasTileEntity(IBlockState state)
     {
@@ -350,7 +461,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         return new TELamp();
     }
 
-    @Override
+/*    @Override
     @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world,
                                   BlockPos pos, EntityPlayer player)
@@ -362,5 +473,5 @@ public class BlockMetalLamp extends Block implements ILightableBlock
             stack.setTagCompound(tile.getItemTag());
         }
         return stack;
-    }
+    }*/
 }

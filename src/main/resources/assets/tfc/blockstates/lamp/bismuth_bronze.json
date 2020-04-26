@@ -5,7 +5,8 @@
     "model": "tfc:lamp",
     "textures": {
       "all": "tfc:blocks/metal/bismuth_bronze",
-      "top": "tfc:blocks/metal/bismuth_bronze"
+      "top": "tfc:blocks/metal/bismuth_bronze",
+      "particle": "tfc:blocks/metal/bismuth_bronze"
     }
   },
   "variants": {
@@ -20,6 +21,12 @@
         }
       },
       "false": {}
+    },
+    "facing": {
+      "up": {},
+      "down": {
+        "x": 180
+      }
     }
   }
 }

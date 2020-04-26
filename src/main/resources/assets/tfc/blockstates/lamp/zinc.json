@@ -5,7 +5,8 @@
     "model": "tfc:lamp",
     "textures": {
       "all": "tfc:blocks/metal/zinc",
-      "top": "tfc:blocks/metal/zinc"
+      "top": "tfc:blocks/metal/zinc",
+      "particle": "tfc:blocks/metal/zinc"
     }
   },
   "variants": {
@@ -20,6 +21,12 @@
         }
       },
       "false": {}
+    },
+    "facing": {
+      "up": {},
+      "down": {
+        "x": 180
+      }
     }
   }
 }

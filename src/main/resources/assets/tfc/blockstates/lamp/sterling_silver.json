@@ -5,7 +5,8 @@
     "model": "tfc:lamp",
     "textures": {
       "all": "tfc:blocks/metal/sterling_silver",
-      "top": "tfc:blocks/metal/sterling_silver"
+      "top": "tfc:blocks/metal/sterling_silver",
+      "particle": "tfc:blocks/metal/sterling_silver"
     }
   },
   "variants": {
@@ -20,6 +21,12 @@
         }
       },
       "false": {}
+    },
+    "facing": {
+      "up": {},
+      "down": {
+        "x": 180
+      }
     }
   }
 }

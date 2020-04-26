@@ -5,7 +5,8 @@
     "model": "tfc:lamp",
     "textures": {
       "all": "tfc:blocks/metal/rose_gold",
-      "top": "tfc:blocks/metal/rose_gold"
+      "top": "tfc:blocks/metal/rose_gold",
+      "particle": "tfc:blocks/metal/rose_gold"
     }
   },
   "variants": {
@@ -20,6 +21,12 @@
         }
       },
       "false": {}
+    },
+    "facing": {
+      "up": {},
+      "down": {
+        "x": 180
+      }
     }
   }
 }

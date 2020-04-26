@@ -29,32 +29,13 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
     }
 
     /**
-     * Called when this TileEntity was created by placing an item
-     * Loads its data from the Item's NBTTagCompound without loading xyz coordinates.
-     *
-     * @param nbt The NBTTagCompound to load from.
-     */
-    public void readFromItemTag(NBTTagCompound nbt)
-    {
-        tank.readFromNBT(nbt.getCompoundTag("tank"));
-        if (tank.getFluidAmount() > tank.getCapacity())
-        {
-            // Fix config changes
-            FluidStack fluidStack = tank.getFluid();
-            //noinspection ConstantConditions
-            fluidStack.amount = tank.getCapacity();
-            tank.setFluid(fluidStack);
-        }
-        markDirty();
-    }
-
-    /**
      * Called to get the NBTTagCompound that is put on Lamps.
      *
      * Public access needed from getPickBlock
      *
      * @return An NBTTagCompound containing tank data.
      */
+/*
     public NBTTagCompound getItemTag()
     {
         NBTTagCompound nbt = new NBTTagCompound();
@@ -62,6 +43,7 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
 
         return nbt;
     }
+*/
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
