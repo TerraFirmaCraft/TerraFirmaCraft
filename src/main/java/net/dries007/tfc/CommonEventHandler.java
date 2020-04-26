@@ -828,7 +828,7 @@ public final class CommonEventHandler
                 }
                 if (target instanceof EntityAnimalTFC)
                 {
-                    ((EntityAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.4f);
+                    ((EntityAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);
                 }
             }
         }
