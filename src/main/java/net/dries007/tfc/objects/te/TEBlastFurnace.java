@@ -74,6 +74,10 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         return 1;
     }
 
+    public Long getburnTicksLeft()
+    {
+        return burnTicksLeft;
+    }
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {

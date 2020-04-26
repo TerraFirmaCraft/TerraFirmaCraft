@@ -177,6 +177,12 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         return isLit;
     }
 
+    public Long getLitTick()
+    {
+        return litTick;
+    }
+
+
     public boolean hasFuel()
     {
         return !(logItems.stream().anyMatch(ItemStack::isEmpty) || strawItems.stream().anyMatch(ItemStack::isEmpty));

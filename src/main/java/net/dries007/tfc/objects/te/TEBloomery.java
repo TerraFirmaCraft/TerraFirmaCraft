@@ -220,6 +220,10 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
         return lastPlayerTick;
     }
 
+    public long getBurnTicksLeft()
+    {
+        return burnTicksLeft;
+    }
     @Override
     public void setLastUpdateTick(long tick)
     {
