@@ -583,13 +583,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         return cookingPotStage;
     }
 
-    public void debug()
-    {
-        TerraFirmaCraft.getLog().debug("Debugging Fire pit:");
-        TerraFirmaCraft.getLog().debug("Temp {} | Burn Temp {} | Fuel Ticks {}", temperature, burnTemperature, burnTicks);
-        TerraFirmaCraft.getLog().debug("Burning? {}", world.getBlockState(pos).getValue(LIT));
-    }
-
     @Override
     public int getFieldCount()
     {

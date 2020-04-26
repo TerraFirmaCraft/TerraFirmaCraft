@@ -8,25 +8,32 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
 import net.dries007.tfc.objects.items.metal.ItemMetalSheet;
 
 @ParametersAreNonnullByDefault
 public class TEMetalSheet extends TEBase
 {
-    private boolean[] faces;
+    private final boolean[] faces;
 
     public TEMetalSheet()
     {
         this.faces = new boolean[6];
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+    {
+        super.onDataPacket(net, pkt);
+        markBlockUpdate();
     }
 
     /**
@@ -39,7 +46,10 @@ public class TEMetalSheet extends TEBase
         int n = 0;
         for (boolean b : faces)
         {
-            if (b) n++;
+            if (b)
+            {
+                n++;
+            }
         }
         return n;
     }
@@ -60,13 +70,7 @@ public class TEMetalSheet extends TEBase
         if (!world.isRemote)
         {
             faces[facing.getIndex()] = value;
-            markDirty();
-            IBlockState state = world.getBlockState(pos);
-            for (EnumFacing face : EnumFacing.values())
-            {
-                state = state.withProperty(BlockMetalSheet.FACE_PROPERTIES[face.getIndex()], faces[face.getIndex()]);
-            }
-            world.setBlockState(pos, state);
+            markBlockUpdate();
         }
     }
 
