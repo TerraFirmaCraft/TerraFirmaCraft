@@ -67,11 +67,12 @@ public class UnmoldRecipe extends ShapelessOreRecipe
                     EntityPlayer player = ForgeHooks.getCraftingPlayer();
                     if (!player.world.isRemote)
                     {
-                        if (Constants.RNG.nextFloat() <= chance)
+                        stack = getMoldResult(stack);
+                        if (!stack.isEmpty())
                         {
                             // This can't use the remaining items, because vanilla doesn't sync them on crafting, thus it gives a desync error
                             // To fix: ContainerWorkbench#onCraftMatrixChanged needs to call Container#detectAndSendChanges
-                            ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(stack.getItem()));
+                            ItemHandlerHelper.giveItemToPlayer(player, stack);
                         }
                         else
                         {
@@ -215,6 +216,24 @@ public class UnmoldRecipe extends ShapelessOreRecipe
             return output;
         }
         return ItemStack.EMPTY;
+    }
+
+    /**
+     * Performs breaking check
+     *
+     * @param moldIn the mold to do a breaking check
+     * @return ItemStack.EMPTY on break, the mold (empty) if pass
+     */
+    public ItemStack getMoldResult(ItemStack moldIn)
+    {
+        if (Constants.RNG.nextFloat() <= chance)
+        {
+            return new ItemStack(moldIn.getItem());
+        }
+        else
+        {
+            return ItemStack.EMPTY;
+        }
     }
 
     @SuppressWarnings("unused")

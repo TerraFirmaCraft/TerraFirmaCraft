@@ -24,10 +24,8 @@ import net.dries007.tfc.objects.te.TEChestTFC;
 @SuppressWarnings("WeakerAccess")
 public class TFCDoubleChestItemHandler extends VanillaDoubleChestItemHandler
 {
-    public static final TFCDoubleChestItemHandler TFC_NO_ADJACENT_CHESTS_INSTANCE = new TFCDoubleChestItemHandler(null, null, false);
-
     @Nullable
-    public static TFCDoubleChestItemHandler get(TileEntityChest chest)
+    public static VanillaDoubleChestItemHandler get(TileEntityChest chest)
     {
         World world = chest.getWorld();
         BlockPos pos = chest.getPos();
@@ -57,7 +55,7 @@ public class TFCDoubleChestItemHandler extends VanillaDoubleChestItemHandler
                 }
             }
         }
-        return TFC_NO_ADJACENT_CHESTS_INSTANCE; //All alone
+        return NO_ADJACENT_CHESTS_INSTANCE; //All alone
     }
 
     public TFCDoubleChestItemHandler(@Nullable TileEntityChest mainChest, @Nullable TileEntityChest other, boolean mainChestIsUpper)
