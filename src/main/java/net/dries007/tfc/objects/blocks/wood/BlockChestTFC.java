@@ -28,6 +28,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.EnumHelper;
 
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -41,6 +42,11 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class BlockChestTFC extends BlockChest implements IItemSize
 {
+    // Using custom types here to make our chests not connect to vanilla's (fixes https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/855)
+    // in 1.15, if this is still needed we should re-evaluate the option to not extend vanilla's BlockChest and make one of our own
+    public static final Type TFCBASIC = EnumHelper.addEnum(BlockChest.Type.class, "TFCBASIC", new Class<?>[0]);
+    public static final Type TFCTRAP = EnumHelper.addEnum(BlockChest.Type.class, "TFCTRAP", new Class<?>[0]);
+
     private static final Map<Tree, BlockChestTFC> MAP_BASIC = new HashMap<>();
     private static final Map<Tree, BlockChestTFC> MAP_TRAP = new HashMap<>();
 
@@ -62,22 +68,23 @@ public class BlockChestTFC extends BlockChest implements IItemSize
         this.wood = wood;
         setHardness(2.5F);
         setSoundType(SoundType.WOOD);
-        switch (type)
+        if (type == TFCBASIC)
         {
-            case BASIC:
-                if (MAP_BASIC.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-                OreDictionaryHelper.register(this, "chest");
-                //noinspection ConstantConditions
-                OreDictionaryHelper.register(this, "chest", wood.getRegistryName().getPath());
-                break;
-            case TRAP:
-                if (MAP_TRAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-                OreDictionaryHelper.register(this, "chest", "trapped");
-                //noinspection ConstantConditions
-                OreDictionaryHelper.register(this, "chest", "trapped", wood.getRegistryName().getPath());
-                break;
-            default:
-                throw new IllegalStateException();
+            if (MAP_BASIC.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+            OreDictionaryHelper.register(this, "chest");
+            //noinspection ConstantConditions
+            OreDictionaryHelper.register(this, "chest", wood.getRegistryName().getPath());
+        }
+        else if (type == TFCTRAP)
+        {
+            if (MAP_TRAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+            OreDictionaryHelper.register(this, "chest", "trapped");
+            //noinspection ConstantConditions
+            OreDictionaryHelper.register(this, "chest", "trapped", wood.getRegistryName().getPath());
+        }
+        else
+        {
+            throw new IllegalStateException("TFC Chest must use TFC chest type");
         }
         Blocks.FIRE.setFireInfo(this, 5, 20);
     }
@@ -180,7 +187,7 @@ public class BlockChestTFC extends BlockChest implements IItemSize
 
     private boolean isOcelotSittingOnChest(World worldIn, BlockPos pos)
     {
-        for (Entity entity : worldIn.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB((double) pos.getX(), (double) (pos.getY() + 1), (double) pos.getZ(), (double) (pos.getX() + 1), (double) (pos.getY() + 2), (double) (pos.getZ() + 1))))
+        for (Entity entity : worldIn.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)))
         {
             EntityOcelot entityocelot = (EntityOcelot) entity;
 
