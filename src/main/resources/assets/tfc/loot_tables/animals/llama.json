@@ -7,7 +7,7 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:food/viande",
+          "name": "tfc:food/camelidae",
           "functions": [
             {
               "function": "tfc:apply_skill",
@@ -15,7 +15,7 @@
               "add": 0.12,
               "count": {
                 "min": 10,
-                "max": 16
+                "max": 18
               }
             },
             {
