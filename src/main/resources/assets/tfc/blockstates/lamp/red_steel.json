@@ -5,7 +5,8 @@
     "model": "tfc:lamp",
     "textures": {
       "all": "tfc:blocks/metal/red_steel",
-      "top": "tfc:blocks/metal/red_steel"
+      "top": "tfc:blocks/metal/red_steel",
+      "particle": "tfc:blocks/metal/red_steel"
     }
   },
   "variants": {
@@ -20,6 +21,12 @@
         }
       },
       "false": {}
+    },
+    "facing": {
+      "up": {},
+      "down": {
+        "x": 180
+      }
     }
   }
 }

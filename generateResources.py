@@ -685,7 +685,7 @@ for key in METAL_TYPES:
 # LAMP
 for key in METAL_TYPES:
     blockstate(('lamp', key), 'tfc:lamp', textures={
-        ('all', 'top'): 'tfc:blocks/metal/%s' % key
+        ('all', 'top', 'particle'): 'tfc:blocks/metal/%s' % key
     }, variants={
         'lit': {
             'true': {
@@ -695,7 +695,9 @@ for key in METAL_TYPES:
                 }
             },
             'false': {}
-        }
+        },
+        'facing': {'up': {}, 'down': {'x': 180}}
+
     })
 
 

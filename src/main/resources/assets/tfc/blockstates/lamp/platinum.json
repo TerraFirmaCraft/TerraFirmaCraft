@@ -5,7 +5,8 @@
     "model": "tfc:lamp",
     "textures": {
       "all": "tfc:blocks/metal/platinum",
-      "top": "tfc:blocks/metal/platinum"
+      "top": "tfc:blocks/metal/platinum",
+      "particle": "tfc:blocks/metal/platinum"
     }
   },
   "variants": {
@@ -20,6 +21,12 @@
         }
       },
       "false": {}
+    },
+    "facing": {
+      "up": {},
+      "down": {
+        "x": 180
+      }
     }
   }
 }
