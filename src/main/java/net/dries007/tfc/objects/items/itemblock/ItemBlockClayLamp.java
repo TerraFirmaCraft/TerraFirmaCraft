@@ -24,38 +24,18 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.capability.metal.IMetalItem;
-import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.blocks.metal.BlockMetalLamp;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandler;
+import net.dries007.tfc.objects.items.ItemTFC;
 
 /**
  * todo: this
  */
-public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
+public class ItemBlockClayLamp extends ItemTFC
 {
-    public final static int CAPACITY = 250;
-
-    public final ToolMaterial material;
-
-    public ItemBlockMetalLamp(Metal metal)
-    {
-        super(BlockMetalLamp.get(metal));
-
-        material = metal.getToolMetal();
-        setMaxStackSize(1);
-    }
-
-    @Override
-    public boolean canStack(@Nonnull ItemStack stack)
-    {
-        IFluidHandler lampCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if (lampCap != null)
-        {
-            return lampCap.drain(CAPACITY, false) == null;
-        }
-        return true;
-    }
+    public final static int CAPACITY = 25;
 
     @Override
     @Nonnull
@@ -95,7 +75,7 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
 
     public Set<Fluid> getValidFluids()
     {
-        String[] fluidNames = ConfigTFC.GENERAL.metalLampFuels;
+        String[] fluidNames = {};//= ConfigTFC.GENERAL.clayLampFuels;
         Set<Fluid> validFluids = new HashSet<>();
         for (String fluidName : fluidNames)
         {
@@ -104,32 +84,29 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
         return validFluids;
     }
 
-    //no need for @Override itemRightClick to fill or place since fluidhandler interactions and placement are handled before it is called
-
     @Override
     public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new FluidWhitelistHandler(stack, CAPACITY, getValidFluids());
+        return new FluidWhitelistHandler(stack, CAPACITY,getValidFluids());
     }
 
-    /**
-     * @param stack the item stack. This can assume that it is of the right item type and do casts without checking
-     * @return the metal of the stack
-     */
-    @Nullable
+    @Nonnull
     @Override
-    public Metal getMetal(ItemStack stack)
+    public Size getSize(@Nonnull ItemStack stack)
     {
-        return ((BlockMetalLamp)(super.block)).getMetal();
+        return Size.SMALL;
     }
 
-    /**
-     * @param stack The item stack
-     * @return the amount of liquid metal that this item will create (in TFC units or mB: 1 unit = 1 mB)
-     */
+    @Nonnull
     @Override
-    public int getSmeltAmount(ItemStack stack)
+    public Weight getWeight(@Nonnull ItemStack stack)
     {
-        return 100;
+        return Weight.LIGHT;
+    }
+
+    @Override
+    public boolean canStack(@Nonnull ItemStack stack)
+    {
+        return false;
     }
 }
