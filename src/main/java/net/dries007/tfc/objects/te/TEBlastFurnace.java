@@ -74,7 +74,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         return 1;
     }
 
-    public Long getburnTicksLeft()
+    public long getburnTicksLeft()
     {
         return burnTicksLeft;
     }

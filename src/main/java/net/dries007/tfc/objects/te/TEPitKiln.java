@@ -177,7 +177,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         return isLit;
     }
 
-    public Long getLitTick()
+    public long getLitTick()
     {
         return litTick;
     }
