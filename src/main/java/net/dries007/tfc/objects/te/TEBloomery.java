@@ -45,8 +45,8 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
     // Gets the external block, the front of the facing to dump contents in world.
     private static final Vec3i OFFSET_EXTERNAL = new Vec3i(-1, 0, 0);
-    private List<ItemStack> oreStacks = new ArrayList<>();
-    private List<ItemStack> fuelStacks = new ArrayList<>();
+    private final List<ItemStack> oreStacks = new ArrayList<>();
+    private final List<ItemStack> fuelStacks = new ArrayList<>();
 
     private int maxFuel = 0, maxOre = 0, delayTimer = 0; // Helper variables, not necessary to serialize
     private long burnTicksLeft; // Ticks left to finish the current operation
@@ -224,6 +224,11 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     public void setLastUpdateTick(long tick)
     {
         this.lastPlayerTick = tick;
+    }
+
+    public long getBurnTicksLeft()
+    {
+        return burnTicksLeft;
     }
 
     public boolean canIgnite()
