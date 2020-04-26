@@ -7,58 +7,50 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
-import net.dries007.tfc.objects.blocks.rock.RockSpikeBlock;
-
 public class LargeCaveSpikesFeature extends CaveSpikesFeature
 {
     /**
-     * Different placement
+     * Much larger spikes, calls to the smaller spikes on the outsides
      */
     public void place(IWorld worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
         BlockPos.Mutable mutablePos = new BlockPos.Mutable(pos);
-        int thickHeight = rand.nextInt(2);
-
-        // Sides
-        for (Direction side : Direction.Plane.HORIZONTAL)
+        float height = 6 + rand.nextInt(11);
+        int radius = 1 + rand.nextInt(3);
+        for (int y = -4; y <= height; y++)
         {
-            mutablePos.setPos(pos).offset(side);
-            int height = thickHeight + rand.nextInt(3);
-            for (int y = 0; y < height; y++)
+            float radiusSquared = radius * (1 - 1.3f * Math.abs(y) / height);
+            radiusSquared *= radiusSquared;
+            for (int x = -radius; x <= radius; x++)
             {
-                if (replaceBlock(worldIn, mutablePos, raw))
+                for (int z = -radius; z <= radius; z++)
                 {
-                    break;
+                    mutablePos.setPos(pos).move(x, y * direction.getYOffset(), z);
+                    float actualRadius = ((x * x) + (z * z)) / radiusSquared;
+                    if (actualRadius < 0.7)
+                    {
+                        // Fill in actual blocks
+                        replaceBlock(worldIn, mutablePos, raw);
+                    }
+                    else if (actualRadius < 0.85 && rand.nextBoolean())
+                    {
+                        // Only fill in if continuing downwards
+                        if (worldIn.getBlockState(mutablePos.add(0, -direction.getYOffset(), 0)) == raw)
+                        {
+                            replaceBlock(worldIn, mutablePos, raw);
+                        }
+                    }
+                    else if (actualRadius < 1 && rand.nextInt(3) == 0)
+                    {
+                        placeSmallSpike(worldIn, mutablePos, spike, raw, direction, rand);
+                    }
+                    else if (x == 0 && z == 0)
+                    {
+                        placeSmallSpike(worldIn, mutablePos, spike, raw, direction, rand);
+                        return;
+                    }
                 }
-                mutablePos.move(direction);
             }
-        }
-
-        // Middle spike
-        mutablePos.setPos(pos);
-        int height = 2 + thickHeight + rand.nextInt(3);
-        for (int y = 0; y <= height; y++)
-        {
-            if (replaceBlock(worldIn, mutablePos, raw))
-            {
-                return;
-            }
-            mutablePos.move(direction);
-        }
-
-        // Thinner peaks
-        for (RockSpikeBlock.Part part : RockSpikeBlock.Part.values())
-        {
-            if (replaceBlock(worldIn, mutablePos, spike.with(RockSpikeBlock.PART, part)))
-            {
-                return;
-            }
-            mutablePos.move(direction);
-            if (replaceBlock(worldIn, mutablePos, spike.with(RockSpikeBlock.PART, part)))
-            {
-                return;
-            }
-            mutablePos.move(direction);
         }
     }
 }
