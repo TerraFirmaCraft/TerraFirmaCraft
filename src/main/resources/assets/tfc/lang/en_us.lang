@@ -4396,3 +4396,6 @@ advancements.tfc.world.find_silver.title=Silver Bullet
 advancements.tfc.world.find_silver.description=Find Navite Silver Ore.
 advancements.tfc.world.find_nickel.title=Dime and Nickel
 advancements.tfc.world.find_nickel.description=Find Garnierite Ore.
+#JEI Descriptions for uncraftable mechanics
+tfc.jei.description.pitkiln=Used for firing of pottery and melting of soft metals.  Place up to 4 items (Default Hotkey: V) into a 1x1 hole. Fill (right-click) with 8 straw and 8 logs. Light with a fire starter or drop a torch on top. Wait for fire to go out and retrieve items.
+tfc.jei.description.placeditem=Items can be placed on the ground, mostly for placing into a pit kiln. Use the Place key (default V) to place each item (up to 4) on a single block.

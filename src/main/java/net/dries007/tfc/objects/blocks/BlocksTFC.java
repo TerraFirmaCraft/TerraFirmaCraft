@@ -622,15 +622,15 @@ public final class BlocksTFC
         // Registering JEI only blocks (for info)
         inventoryItemBlocks.add(new ItemBlock(register(r, "firepit", new BlockFirePit())));
         inventoryItemBlocks.add(new ItemBlock(register(r, "charcoal_forge", new BlockCharcoalForge())));
+        inventoryItemBlocks.add(new ItemBlock(register(r, "pit_kiln", new BlockPitKiln())));
+        inventoryItemBlocks.add(new ItemBlock(register(r, "placed_item", new BlockPlacedItem())));
         // technical blocks
         // These have no ItemBlock or Creative Tab
         register(r, "placed_item_flat", new BlockPlacedItemFlat());
-        register(r, "placed_item", new BlockPlacedItem());
         register(r, "placed_hide", new BlockPlacedHide());
         register(r, "charcoal_pile", new BlockCharcoalPile());
         register(r, "ingot_pile", new BlockIngotPile());
         register(r, "log_pile", new BlockLogPile());
-        register(r, "pit_kiln", new BlockPitKiln());
         register(r, "molten", new BlockMolten());
         register(r, "bloom", new BlockBloom());
         register(r, "thatch_bed", new BlockThatchBed());
