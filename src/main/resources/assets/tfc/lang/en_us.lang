@@ -1,22 +1,27 @@
 # Command
-tfc.command.time.usage=/timetfc <add|query|set> [args...]
-tfc.command.time.usage_expected_first_argument=Expected <add|query|set> after /timetfc
-tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
-tfc.command.time.usage_expected_second_argument_set=Expected [<ticks>|day|night|monthlength <value>] after /timetfc set
-tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
-tfc.command.time.set_month_length=Set Month Length to %d Days / Month
-tfc.command.time.set_day=Time set to the next daylight
-tfc.command.time.set_night=Time set to the next nighttime
-tfc.command.time.set_ticks=Day time set to %d
-tfc.command.time.add_days=Added %d days to time (%d ticks)
-tfc.command.time.add_months=Added %d months to time (%d ticks)
-tfc.command.time.add_years=Added %d years to time (%d ticks)
-tfc.command.time.add_ticks=Added %d ticks to time
-tfc.command.time.query_calendarticks=Calendar ticks is %d
-tfc.command.time.query_playerticks=Player ticks is %d
-tfc.command.time.query_gametime=Game time is %d ticks
-tfc.command.time.query_day=Current day is %d
-tfc.command.time.query_daytime=Current day time is %d
+tfc.command.timetfc.usage=/timetfc <add|query|set> [args...]
+tfc.command.timetfc.usage_expected_first_argument=Expected <add|query|set> after /timetfc
+tfc.command.timetfc.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
+tfc.command.timetfc.usage_expected_second_argument_set=Expected [<ticks>|day|night|monthlength <value>] after /timetfc set
+tfc.command.timetfc.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
+tfc.command.timetfc.set_month_length=Set Month Length to %d days.
+tfc.command.timetfc.set_day=Time set to the next daylight
+tfc.command.timetfc.set_night=Time set to the next nighttime
+tfc.command.timetfc.set_ticks=Day time set to %d
+tfc.command.timetfc.add_days=Added %d days to time (%d ticks)
+tfc.command.timetfc.add_months=Added %d months to time (%d ticks)
+tfc.command.timetfc.add_years=Added %d years to time (%d ticks)
+tfc.command.timetfc.add_ticks=Added %d ticks to time
+tfc.command.timetfc.query_calendarticks=Calendar ticks is %d
+tfc.command.timetfc.query_playerticks=Player ticks is %d
+tfc.command.timetfc.query_gametime=Game time is %d ticks
+tfc.command.timetfc.query_day=Current day is %d
+tfc.command.timetfc.query_daytime=Current day time is %d
+tfc.command.timetfc.set_player_time=Set Player Time to %d.
+tfc.command.timetfc.set_calendar_time=Set Calendar Time to %s.
+
+tfc.command.time.disabled=This command has been disabled by TFC. Use /timetfc instead!
+
 tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <name>] [value]
 tfc.command.playertfc.usage_expected_first_argument=Expected <get|set|add|reset> after /playertfc
 tfc.command.playertfc.usage_expected_second_argument=Expected [nutrition|food|saturation|water|skill <name>] after /playertfc %s
@@ -40,10 +45,32 @@ tfc.command.playertfc.set_saturation=Set saturation to %.2f
 tfc.command.playertfc.get_water=Water: %.1f%%
 tfc.command.playertfc.set_water=Set water to %.1f%%
 
-tfc.command.veins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
-tfc.command.veins.usage_expected_player=Can only be used by a player
-tfc.command.veins.usage_first_argument_not_vein=No Vein found with name %s
+tfc.command.findveins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
+tfc.command.findveins.usage_expected_player=Can only be used by a player.
+tfc.command.findveins.usage_first_argument_not_vein=No Vein found with name %s
+tfc.command.findveins.dump_veins=Dumping all veins in specified radius, this is gonna take a while...
+tfc.command.findveins.rate_veins=Dumping vein rates in specified radius, this is gonna take a while...
+tfc.command.findveins.failed=Failed to load dimension %d
+tfc.command.findveins.remaining_chunks=Chunks Remaining: %d / %d
+tfc.command.findveins.output=Found vein %s at %s
+tfc.command.findveins.output_file=File saved at %s
+tfc.command.findveins.output_file.error=Error while trying to write dump file: %s
 
+tfc.command.debuginfo.usage=/tfcdebuginfodump - write a lot of debug info to the log... like, A LOT. Don't use unless a dev asks you to.
+
+tfc.command.gentree.useage=/maketree [wood] -> Grows a tree of the type specified.
+tfc.command.gentree.failed=Missing Wood argument! /maketree [wood]
+tfc.command.gentree.failed.woodtype=Tree type %s not found!
+tfc.command.gentree.failed.grow=Conditions not met to make tree here!
+
+tfc.command.heat.usage=/heat <amount> -> sets the itemheat to amount.
+tfc.command.heat.failed=Missing amount argument! /heat <amount>
+tfc.command.heat.failed.missingcap=The item in your mainhand does not have the item heat capability!
+tfc.command.heat.failed.usage_expected_player=Can only be used by a player.
+
+tfc.command.stripworld.usage=/stripworld <radiusInBlocks> -> [DANGER] Strips all stone variant blocks + water.
+tfc.command.stripworld.failed=Missing radius! /stripworld <radiusInBlocks>
+tfc.command.stripworld.done=Done!
 
 # Gui
 
@@ -137,17 +164,6 @@ tfc.tooltip.animal.product.no_wool=This %s wool has not grown up yet.
 tfc.tooltip.animal.product.no_milk=This %s is not ready to be milked.
 tfc.tooltip.animal.product.no_egg=This %s is not ready to lay eggs.
 
-## Command Tooltips / Messages
-tfc.tooltip.set_month_length=Set Month Length to %d days.
-tfc.tooltip.time_command_set_player_time=Set Player Time to %d.
-tfc.tooltip.time_command_set_calendar_time=Set Calendar Time to %s.
-tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
-tfc.tooltip.veins_command.dump_veins=Dumping all veins in specified radius, this is gonna take a while...
-tfc.tooltip.veins_command.rate_veins=Dumping vein rates in specified radius, this is gonna take a while...
-tfc.tooltip.veins_command.failed=Failed to load dimension %d
-tfc.tooltip.veins_command.remaining_chunks=Chunks Remaining: %d / %d
-tfc.tooltip.veins_command.output=Found vein %s at %s
-tfc.tooltip.veins_command.output_file=File saved at %s
 
 ## Prospecting Result Messages
 tfc.propick.found=Found %s
@@ -461,6 +477,26 @@ config.tfc.general.redSteelBucketWhitelist.tooltip=List of fluids allowed to be 
 config.tfc.general.nutritionRotationHungerWindow=Nutrition Rotation Hunger Window
 config.tfc.general.nutritionRotationHungerWindow.tooltip=This is the amount of hunger (consumed) required for a player to completely refresh their nutrition stats. In TFC, almost all foods have 4 hunger, so this is 4x [number of foods required to refresh nutrition stats]. This will update next time you consume a food.
 
+config.tfc.general.oreTooltipMode=Ore Tooltip Mode
+config.tfc.general.oreTooltipMode.tooltip=Mode used on ore tooltips.
+
+config.tfc.general.disableIngotPile=Disable Ingot stacks
+config.tfc.general.disableIngotPile.tooltip=Are Ingot Piles disabled?
+
+config.tfc.general.pluckableEntities=Pluckable Entities
+config.tfc.general.pluckableEntities.tooltip=Entities that drop a feather when shift right clicked.
+
+config.tfc.general.damagePerFeather=Pluckable Entities Damage Per Feather
+config.tfc.general.damagePerFeather.tooltip=How much damage is done to an entity when a feather is plucked.
+
+config.tfc.general.shouldCropsDie=Should Crops Die
+config.tfc.general.shouldCropsDie.tooltip=Allows crops to die under any curcumstance.
+
+config.tfc.general.doLogsRequireAxe=Do Logs Require Axe
+config.tfc.general.doLogsRequireAxe.tooltip=If a log requires an axe it will not drop anything without one.
+
+config.tfc.general.doLeavesDropSaplings=Do Leaves Drop Saplings
+config.tfc.general.doLeavesDropSaplings.tooltip=If leaves should drop saplings or not when broken.
 
 ## Client Config
 

@@ -42,7 +42,7 @@ public class CommandDebugInfo extends CommandBase
     @Nonnull
     public String getUsage(ICommandSender sender)
     {
-        return "/tfcdebuginfodump - write a lot of debug info to the log... like, A LOT. Don't use unless a dev asks you to";
+        return "tfc.command.debuginfo.usage";
     }
 
     @Override
