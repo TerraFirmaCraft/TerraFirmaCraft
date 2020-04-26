@@ -1,22 +1,27 @@
 # Command
-tfc.command.time.usage=/timetfc <add|query|set> [args...]
-tfc.command.time.usage_expected_first_argument=Expected <add|query|set> after /timetfc
-tfc.command.time.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
-tfc.command.time.usage_expected_second_argument_set=Expected [<ticks>|day|night|monthlength <value>] after /timetfc set
-tfc.command.time.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
-tfc.command.time.set_month_length=Set Month Length to %d Days / Month
-tfc.command.time.set_day=Time set to the next daylight
-tfc.command.time.set_night=Time set to the next nighttime
-tfc.command.time.set_ticks=Day time set to %d
-tfc.command.time.add_days=Added %d days to time (%d ticks)
-tfc.command.time.add_months=Added %d months to time (%d ticks)
-tfc.command.time.add_years=Added %d years to time (%d ticks)
-tfc.command.time.add_ticks=Added %d ticks to time
-tfc.command.time.query_calendarticks=Calendar ticks is %d
-tfc.command.time.query_playerticks=Player ticks is %d
-tfc.command.time.query_gametime=Game time is %d ticks
-tfc.command.time.query_day=Current day is %d
-tfc.command.time.query_daytime=Current day time is %d
+tfc.command.timetfc.usage=/timetfc <add|query|set> [args...]
+tfc.command.timetfc.usage_expected_first_argument=Expected <add|query|set> after /timetfc
+tfc.command.timetfc.usage_expected_second_argument_query=Expected [daytime|day|gametime|playerticks|calendarticks] after /timetfc query
+tfc.command.timetfc.usage_expected_second_argument_set=Expected [<ticks>|day|night|monthlength <value>] after /timetfc set
+tfc.command.timetfc.usage_expected_second_argument_add=Expected [days|months|years] <value> after /timetfc add
+tfc.command.timetfc.set_month_length=Set Month Length to %d days.
+tfc.command.timetfc.set_day=Time set to the next daylight
+tfc.command.timetfc.set_night=Time set to the next nighttime
+tfc.command.timetfc.set_ticks=Day time set to %d
+tfc.command.timetfc.add_days=Added %d days to time (%d ticks)
+tfc.command.timetfc.add_months=Added %d months to time (%d ticks)
+tfc.command.timetfc.add_years=Added %d years to time (%d ticks)
+tfc.command.timetfc.add_ticks=Added %d ticks to time
+tfc.command.timetfc.query_calendarticks=Calendar ticks is %d
+tfc.command.timetfc.query_playerticks=Player ticks is %d
+tfc.command.timetfc.query_gametime=Game time is %d ticks
+tfc.command.timetfc.query_day=Current day is %d
+tfc.command.timetfc.query_daytime=Current day time is %d
+tfc.command.timetfc.set_player_time=Set Player Time to %d.
+tfc.command.timetfc.set_calendar_time=Set Calendar Time to %s.
+
+tfc.command.time.disabled=This command has been disabled by TFC. Use /timetfc instead!
+
 tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <name>] [value]
 tfc.command.playertfc.usage_expected_first_argument=Expected <get|set|add|reset> after /playertfc
 tfc.command.playertfc.usage_expected_second_argument=Expected [nutrition|food|saturation|water|skill <name>] after /playertfc %s
@@ -40,10 +45,32 @@ tfc.command.playertfc.set_saturation=Set saturation to %.2f
 tfc.command.playertfc.get_water=Water: %.1f%%
 tfc.command.playertfc.set_water=Set water to %.1f%%
 
-tfc.command.veins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
-tfc.command.veins.usage_expected_player=Can only be used by a player
-tfc.command.veins.usage_first_argument_not_vein=No Vein found with name %s
+tfc.command.findveins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
+tfc.command.findveins.usage_expected_player=Can only be used by a player.
+tfc.command.findveins.usage_first_argument_not_vein=No Vein found with name %s
+tfc.command.findveins.dump_veins=Dumping all veins in specified radius, this is gonna take a while...
+tfc.command.findveins.rate_veins=Dumping vein rates in specified radius, this is gonna take a while...
+tfc.command.findveins.failed=Failed to load dimension %d
+tfc.command.findveins.remaining_chunks=Chunks Remaining: %d / %d
+tfc.command.findveins.output=Found vein %s at %s
+tfc.command.findveins.output_file=File saved at %s
+tfc.command.findveins.output_file.error=Error while trying to write dump file: %s
 
+tfc.command.debuginfo.usage=/tfcdebuginfodump - write a lot of debug info to the log... like, A LOT. Don't use unless a dev asks you to.
+
+tfc.command.gentree.useage=/maketree [wood] -> Grows a tree of the type specified.
+tfc.command.gentree.failed=Missing Wood argument! /maketree [wood]
+tfc.command.gentree.failed.woodtype=Tree type %s not found!
+tfc.command.gentree.failed.grow=Conditions not met to make tree here!
+
+tfc.command.heat.usage=/heat <amount> -> sets the itemheat to amount.
+tfc.command.heat.failed=Missing amount argument! /heat <amount>
+tfc.command.heat.failed.missingcap=The item in your mainhand does not have the item heat capability!
+tfc.command.heat.failed.usage_expected_player=Can only be used by a player.
+
+tfc.command.stripworld.usage=/stripworld <radiusInBlocks> -> [DANGER] Strips all stone variant blocks + water.
+tfc.command.stripworld.failed=Missing radius! /stripworld <radiusInBlocks>
+tfc.command.stripworld.done=Done!
 
 # Gui
 
@@ -54,6 +81,8 @@ tfc.tooltip.oredictionaryentry=§fOre Dictionary name:§7 %s
 tfc.tooltip.oredictionaryentries=§fOre Dictionary names:
 tfc.tooltip.metal=§fMetal:§7 %s
 tfc.tooltip.units=%d units
+tfc.tooltip.crucible_units=%d / %d units
+tfc.tooltip.units.total=§6%d total units
 tfc.tooltip.smelting=Smelt in %s
 tfc.tooltip.liquid= - Liquid
 tfc.tooltip.solid= - Solid
@@ -136,25 +165,14 @@ tfc.tooltip.animal.product.no_wool=This %s wool has not grown up yet.
 tfc.tooltip.animal.product.no_milk=This %s is not ready to be milked.
 tfc.tooltip.animal.product.no_egg=This %s is not ready to lay eggs.
 
-## Command Tooltips / Messages
-tfc.tooltip.set_month_length=Set Month Length to %d days.
-tfc.tooltip.time_command_set_player_time=Set Player Time to %d.
-tfc.tooltip.time_command_set_calendar_time=Set Calendar Time to %s.
-tfc.tooltip.time_command_disabled=This command has been disabled by TFC. Use /timetfc instead!
-tfc.tooltip.veins_command.dump_veins=Dumping all veins in specified radius, this is gonna take a while...
-tfc.tooltip.veins_command.rate_veins=Dumping vein rates in specified radius, this is gonna take a while...
-tfc.tooltip.veins_command.failed=Failed to load dimension %d
-tfc.tooltip.veins_command.remaining_chunks=Chunks Remaining: %d / %d
-tfc.tooltip.veins_command.output=Found vein %s at %s
-tfc.tooltip.veins_command.output_file=File saved at %s
 
 ## Prospecting Result Messages
-tfc.propick.found=Found
-tfc.propick.found_traces=Found traces of
-tfc.propick.found_small=Found a small sample of
-tfc.propick.found_medium=Found a medium sample of
-tfc.propick.found_large=Found a large sample of
-tfc.propick.found_very_large=Found a very large sample of
+tfc.propick.found=Found %s
+tfc.propick.found_traces=Found traces of %s
+tfc.propick.found_small=Found a small sample of %s
+tfc.propick.found_medium=Found a medium sample of %s
+tfc.propick.found_large=Found a large sample of %s
+tfc.propick.found_very_large=Found a very large sample of %s
 tfc.propick.found_nothing=Found nothing of interest.
 
 ## Thatch Bed
@@ -188,6 +206,7 @@ tfc.enum.skilltier.master=Master
 tfc.key.craft=Crafting GUI
 tfc.key.placeblock=Place Item Holder Block
 tfc.key.itemmode=Change Item Mode
+tfc.key.stack=Stack food
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
@@ -206,7 +225,7 @@ config.tfc.tooltip=Settings for TerraFirmaCraft
 
 ## General Config
 config.tfc.general=General Settings
-config.tfc.general.toolip=Non side specific settings.
+config.tfc.general.tooltip=Non side specific settings.
 
 config.tfc.general.debug=Debug Mode
 config.tfc.general.debug.tooltip=Various debug options. Activates some extra wand features. Enables extra item tooltips.
@@ -433,6 +452,12 @@ config.tfc.general.leafMovementModifier.tooltip=Leaf block movement modifier. Lo
 config.tfc.general.berryBushMovementModifier=Berry Bush Movement Modifier
 config.tfc.general.berryBushMovementModifier.tooltip=Berry bush movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)
 
+config.tfc.general.snowMovementModifier=Snow Movement Modifier
+config.tfc.general.snowMovementModifier.tooltip=Generic snow movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down.
+
+config.tfc.general.minimumPlantMovementModifier=Minimum Plant Movement Modifier
+config.tfc.general.minimumPlantMovementModifier.tooltip=Generic movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. Note: this is a little different than other densities (leaf / berry bush), because this actually functions as a maximum slow down. Actual value is dependent on the plant and it's age.
+
 config.tfc.general.disableTorchOverride=Disable Torch Override
 config.tfc.general.disableTorchOverride.tooltip=Turn this on if you want to edit this with other mods.
 
@@ -445,10 +470,40 @@ config.tfc.general.woodenBucketWhitelist.tooltip=Allowed fluids to be picked up 
 config.tfc.general.drinkDelay=Drink Delay
 config.tfc.general.drinkDelay.tooltip=Delay (in ticks) for drinking water by hand
 
+config.tfc.general.blueSteelBucketWhitelist=Blue Steel Bucket Whitelist
+config.tfc.general.blueSteelBucketWhitelist.tooltip=List of fluids allowed to be picked up by blue steel bucket
+
+config.tfc.general.redSteelBucketWhitelist=Red Steel Bucket Whitelist
+config.tfc.general.redSteelBucketWhitelist.tooltip=List of fluids allowed to be picked up by red steel bucket
+
+config.tfc.general.nutritionRotationHungerWindow=Nutrition Rotation Hunger Window
+config.tfc.general.nutritionRotationHungerWindow.tooltip=This is the amount of hunger (consumed) required for a player to completely refresh their nutrition stats. In TFC, almost all foods have 4 hunger, so this is 4x [number of foods required to refresh nutrition stats]. This will update next time you consume a food.
+
+config.tfc.general.oreTooltipMode=Ore Tooltip Mode
+config.tfc.general.oreTooltipMode.tooltip=Mode used on ore tooltips.
+
+config.tfc.general.disableIngotPile=Disable Ingot stacks
+config.tfc.general.disableIngotPile.tooltip=Are Ingot Piles disabled?
+
+config.tfc.general.pluckableEntities=Pluckable Entities
+config.tfc.general.pluckableEntities.tooltip=Entities that drop a feather when shift right clicked.
+
+config.tfc.general.damagePerFeather=Pluckable Entities Damage Per Feather
+config.tfc.general.damagePerFeather.tooltip=How much damage is done to an entity when a feather is plucked.
+
+config.tfc.general.shouldCropsDie=Should Crops Die
+config.tfc.general.shouldCropsDie.tooltip=Allows crops to die under any curcumstance.
+
+config.tfc.general.doLogsRequireAxe=Do Logs Require Axe
+config.tfc.general.doLogsRequireAxe.tooltip=If a log requires an axe it will not drop anything without one.
+
+config.tfc.general.doLeavesDropSaplings=Do Leaves Drop Saplings
+config.tfc.general.doLeavesDropSaplings.tooltip=If leaves should drop saplings or not when broken.
+
 ## Client Config
 
 config.tfc.client=Client Settings
-config.tfc.client.toolip=Client side only.
+config.tfc.client.tooltip=Client side only.
 
 config.tfc.client.makeWorldTypeClassicDefault=Make TFC Classic World Type Default
 config.tfc.client.makeWorldTypeClassicDefault.tooltip=Only works client side! Servers require the world type to be set to 'tfc_classic'
@@ -529,26 +584,26 @@ config.tfc.world.livestockSpawnRarity.tooltip=This controls how spread apart liv
 config.tfc.world.livestockRespawnWeight=Livestock Respawn Weight
 config.tfc.world.livestockRespawnWeight.tooltip=This controls the chance livestock (familiarizable) animals are chosen to respawn against other animal types. Use 0 to disable livestock respawns.
 
-config.tfc.general.huntableSpawnRarity=Huntable Spawn Rarity
-config.tfc.general.huntableSpawnRarity.tooltip=This controls how spread apart huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+config.tfc.world.huntableSpawnRarity=Huntable Spawn Rarity
+config.tfc.world.huntableSpawnRarity.tooltip=This controls how spread apart huntable animals spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
 
-config.tfc.general.huntableRespawnWeight=Huntable Respawn Weight
-config.tfc.general.huntableRespawnWeight.tooltip=This controls the chance huntable animals are chosen to respawn against other animal types. Use 0 to disable huntable respawns.
+config.tfc.world.huntableRespawnWeight=Huntable Respawn Weight
+config.tfc.world.huntableRespawnWeight.tooltip=This controls the chance huntable animals are chosen to respawn against other animal types. Use 0 to disable huntable respawns.
 
-config.tfc.general.predatorSpawnRarity=Predator Spawn Rarity
-config.tfc.general.predatorSpawnRarity.tooltip=This controls how spread apart predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
+config.tfc.world.predatorSpawnRarity=Predator Spawn Rarity
+config.tfc.world.predatorSpawnRarity.tooltip=This controls how spread apart predators spawn, in number of chunks (chunk generation only). Higher values mean their spawns are very sparse, also making them more rare.
 
-config.tfc.general.predatorRespawnWeight=Predator Respawn Weight
-config.tfc.general.predatorRespawnWeight.tooltip=This controls the chance predators are chosen to respawn against other animal types. Use 0 to disable predator respawns.
+config.tfc.world.predatorRespawnWeight=Predator Respawn Weight
+config.tfc.world.predatorRespawnWeight.tooltip=This controls the chance predators are chosen to respawn against other animal types. Use 0 to disable predator respawns.
 
-config.tfc.general.animalSpawnCount=Animal Spawn Count
-config.tfc.general.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
+config.tfc.world.animalSpawnCount=Animal Spawn Count
+config.tfc.world.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
 
-config.tfc.general.mobSpawnCount=Mob Spawn Count
-config.tfc.general.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
+config.tfc.world.mobSpawnCount=Mob Spawn Count
+config.tfc.world.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
 
-config.tfc.general.preventMobsOnSurface=Prevent Mobs On Surface
-config.tfc.general.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
+config.tfc.world.preventMobsOnSurface=Prevent Mobs On Surface
+config.tfc.world.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
@@ -776,7 +831,7 @@ jei.tooltips.tfc.vein.loose_rock=Loose Rock
 # Fluids
 fluid.salt_water=Salt Water
 fluid.fresh_water=Fresh Water
-fluid.hot_water=Hot Water
+fluid.hot_water=Hot Spring Water
 fluid.rum=Rum
 fluid.beer=Beer
 fluid.whiskey=Whiskey
@@ -864,6 +919,7 @@ vein.cryolite.name=Cryolite
 vein.saltpeter.name=Saltpeter
 vein.sylvite.name=Sylvite
 vein.borax.name=Borax
+vein.gypsum.name=Gypsum
 vein.lapis_lazuli.name=Lapis Lazuli
 vein.surface_native_copper.name=Surface Native Copper
 vein.surface_cassiterite.name=Surface Cassiterite
@@ -4028,26 +4084,28 @@ item.tfc.food.pheasant.name=Raw Pheasant
 item.tfc.food.venison.name=Raw Venison
 item.tfc.food.rabbit.name=Raw Rabbit Meat
 item.tfc.food.wolf.name=Raw Wolf Meat
-item.tfc.food.viande.name=Raw Viande
+item.tfc.food.hyena.name=Raw Hyena Meat
 item.tfc.food.duck.name=Raw Duck
 item.tfc.food.chevon.name=Raw Chevon
 item.tfc.food.gran_feline.name=Raw Gran Feline Meat
+item.tfc.food.camelidae.name=Raw Camelidae
 item.tfc.food.cooked_beef.name=Cooked Beef
 item.tfc.food.cooked_pork.name=Cooked Pork
 item.tfc.food.cooked_chicken.name=Cooked Chicken
 item.tfc.food.cooked_mutton.name=Cooked Mutton
 item.tfc.food.cooked_fish.name=Cooked Fish
-item.tfc.food.cooked_bear.name=Cooked Bear
+item.tfc.food.cooked_bear.name=Cooked Bear Meat
 item.tfc.food.cooked_calamari.name=Cooked Calamari
 item.tfc.food.cooked_horse_meat.name=Cooked Horse Meat
 item.tfc.food.cooked_pheasant.name=Cooked Pheasant
 item.tfc.food.cooked_venison.name=Cooked Venison
 item.tfc.food.cooked_rabbit.name=Cooked Rabbit Meat
-item.tfc.food.cooked_wolf.name=Cooked Wolf
-item.tfc.food.cooked_viande.name=Cooked Viande
+item.tfc.food.cooked_wolf.name=Cooked Wolf Meat
+item.tfc.food.cooked_hyena.name=Cooked Hyena Meat
 item.tfc.food.cooked_duck.name=Cooked Duck
 item.tfc.food.cooked_chevon.name=Cooked Chevon
 item.tfc.food.cooked_gran_feline.name=Cooked Gran Feline
+item.tfc.food.cooked_camelidae.name=Cooked Camelidae
 item.tfc.food.barley_bread_sandwich.name=Barley Bread Sandwich
 item.tfc.food.cornbread_sandwich.name=Cornbread Sandwich
 item.tfc.food.rye_bread_sandwich.name=Rye Bread Sandwich
@@ -4134,12 +4192,15 @@ entity.panthertfc.name=Black Panther
 entity.ocelottfc.name=Ocelot
 entity.sabertoothtfc.name=Saber Tooth
 entity.cameltfc.name=Camel
+entity.liontfc.name=Lion
+entity.hyenatfc.name=Hyena
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
 
 #Effects
 effectsTFC.overburdened=Overburdened
+effectsTFC.thirst=Thirst
 
 # Animal names by gender
 tfc.animal.sheeptfc.male=Sheep♂
@@ -4188,6 +4249,10 @@ tfc.animal.sabertoothtfc.male=Saber Tooth♂
 tfc.animal.sabertoothtfc.female=Saber Tooth♀
 tfc.animal.cameltfc.male=Camel♂
 tfc.animal.cameltfc.female=Camel♀
+tfc.animal.liontfc.male=Lion
+tfc.animal.liontfc.female=Lioness
+tfc.animal.hyenatfc.male=Hyena♂
+tfc.animal.hyenatfc.female=Hyena♀
 
 # Sound Events
 tfc.item.ceramicbreak=Ceramic item breaks
@@ -4238,6 +4303,14 @@ tfc.animal.sabertooth.say=Saber Tooth grunts
 tfc.animal.sabertooth.cry=Saber Tooth cries
 tfc.animal.sabertooth.hurt=Saber Tooth hurt
 tfc.animal.sabertooth.death=Saber Tooth dies
+tfc.animal.lion.say=Lion grunts
+tfc.animal.lion.cry=Lion roars
+tfc.animal.lion.hurt=Lion hurt
+tfc.animal.lion.death=Lion dies
+tfc.animal.hyena.say=Hyena grunts
+tfc.animal.hyena.cry=Hyena cries
+tfc.animal.hyena.hurt=Hyena hurts
+tfc.animal.hyena.death=Hyena dies
 tfc.animal.cricket=Crickets
 tfc.animal.frog=Frogs
 
@@ -4297,7 +4370,7 @@ advancements.tfc.main.make_leather.description=Soak a scraped hide in fresh wate
 advancements.tfc.main.make_bellows.title=Blow You Away
 advancements.tfc.main.make_bellows.description=Use leather to make a bellows.
 advancements.tfc.main.bronze_age.title=The Bronze Age
-advancements.tfc.main.bronze_age.description=Enter the Bronze Age by crafting a Bronze Anvil.
+advancements.tfc.main.bronze_age.description=Enter the Bronze Age by crafting any Bronze Anvil.
 # Iron Age
 advancements.tfc.main.make_bloomery.title=Ironworks
 advancements.tfc.main.make_bloomery.description=Craft a Bloomery.
@@ -4385,3 +4458,6 @@ advancements.tfc.world.find_silver.title=Silver Bullet
 advancements.tfc.world.find_silver.description=Find Navite Silver Ore.
 advancements.tfc.world.find_nickel.title=Dime and Nickel
 advancements.tfc.world.find_nickel.description=Find Garnierite Ore.
+#JEI Descriptions for uncraftable mechanics
+tfc.jei.description.pitkiln=Used for firing of pottery and melting of soft metals.  Place up to 4 items (Default Hotkey: V) into a 1x1 hole. Fill (right-click) with 8 straw and 8 logs. Light with a fire starter or drop a torch on top. Wait for fire to go out and retrieve items.
+tfc.jei.description.placeditem=Items can be placed on the ground, mostly for placing into a pit kiln. Use the Place key (default V) to place each item (up to 4) on a single block.

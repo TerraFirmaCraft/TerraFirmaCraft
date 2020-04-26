@@ -23,22 +23,21 @@ import net.dries007.tfc.objects.entity.animal.EntityPolarBearTFC;
 @ParametersAreNonnullByDefault
 public class ModelPolarBearTFC extends ModelBase
 {
-    private ModelRenderer head;
-    private ModelRenderer rearbody;
-    private ModelRenderer frontbody;
-    private ModelRenderer ear2;
-    private ModelRenderer ear1;
-    private ModelRenderer nose;
-    private ModelRenderer tail;
-    private ModelRenderer leg1;
-    private ModelRenderer leg2;
-    private ModelRenderer leg3;
-    private ModelRenderer leg4;
-    private ModelRenderer paw1;
-    private ModelRenderer paw2;
-    private ModelRenderer paw3;
-    private ModelRenderer paw4;
-
+    private final ModelRenderer head;
+    private final ModelRenderer rearbody;
+    private final ModelRenderer frontbody;
+    private final ModelRenderer ear2;
+    private final ModelRenderer ear1;
+    private final ModelRenderer nose;
+    private final ModelRenderer tail;
+    private final ModelRenderer leg1;
+    private final ModelRenderer leg2;
+    private final ModelRenderer leg3;
+    private final ModelRenderer leg4;
+    private final ModelRenderer paw1;
+    private final ModelRenderer paw2;
+    private final ModelRenderer paw3;
+    private final ModelRenderer paw4;
 
 
     public ModelPolarBearTFC()
@@ -117,6 +116,7 @@ public class ModelPolarBearTFC extends ModelBase
         --this.leg4.rotationPointZ;
         //this.childZOffset += 2.0F;;
     }
+
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
     {

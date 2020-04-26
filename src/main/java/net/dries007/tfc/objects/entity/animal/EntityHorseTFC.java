@@ -44,6 +44,7 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -220,7 +221,8 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && BlocksTFC.isGround(this.world.getBlockState(this.getPosition().down()));
     }
 
     @Override
@@ -254,7 +256,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.PLAINS))
+            (biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.PLAINS))
         {
             return ConfigTFC.WORLD.livestockSpawnRarity;
         }
@@ -284,6 +286,12 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     {
         double ageScale = 1 / (2.0D - getPercentToAdulthood());
         this.setScale((float) ageScale);
+    }
+
+    @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
     }
 
     @Override
@@ -461,12 +469,6 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
             }
         }
         return super.processInteract(player, hand);
-    }
-
-    @Override
-    protected boolean handleEating(EntityPlayer player, ItemStack stack)
-    {
-        return false; // Stop exploits
     }
 
     @Override

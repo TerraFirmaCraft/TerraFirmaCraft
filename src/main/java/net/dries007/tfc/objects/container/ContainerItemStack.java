@@ -47,6 +47,41 @@ public abstract class ContainerItemStack extends Container implements ICapabilit
         addPlayerInventorySlots(playerInv);
     }
 
+    /**
+     * This functionality duplicated from {@link ContainerTE#detectAndSendChanges()}
+     */
+    @Override
+    public void detectAndSendChanges()
+    {
+        for (int i = 0; i < inventorySlots.size(); ++i)
+        {
+            ItemStack newStack = inventorySlots.get(i).getStack();
+            ItemStack cachedStack = inventoryItemStacks.get(i);
+
+            if (!ItemStack.areItemStacksEqual(cachedStack, newStack))
+            {
+                // Duplicated from Container#detectAndSendChanges
+                boolean clientStackChanged = !ItemStack.areItemStacksEqualUsingNBTShareTag(cachedStack, newStack);
+                cachedStack = newStack.isEmpty() ? ItemStack.EMPTY : newStack.copy();
+                this.inventoryItemStacks.set(i, cachedStack);
+
+                if (clientStackChanged)
+                {
+                    for (IContainerListener listener : this.listeners)
+                    {
+                        listener.sendSlotContents(this, i, cachedStack);
+                    }
+                }
+                else if (capabilityListener != null)
+                {
+                    // There's a capability difference ONLY that needs to be synced, so we use our own handler here, as to not conflict with vanilla's sync, because this won't overwrite the client side item stack
+                    // The listener will check if the item actually needs a sync based on capabilities we know we need to sync
+                    capabilityListener.sendSlotContents(this, i, cachedStack);
+                }
+            }
+        }
+    }
+
     @Override
     @Nonnull
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
@@ -101,66 +136,6 @@ public abstract class ContainerItemStack extends Container implements ICapabilit
         return itemstack;
     }
 
-    /**
-     * This functionality duplicated from {@link ContainerTE#detectAndSendChanges()}
-     */
-    @Override
-    public void detectAndSendChanges()
-    {
-        for (int i = 0; i < inventorySlots.size(); ++i)
-        {
-            ItemStack newStack = inventorySlots.get(i).getStack();
-            ItemStack cachedStack = inventoryItemStacks.get(i);
-
-            if (!ItemStack.areItemStacksEqual(cachedStack, newStack))
-            {
-                // Duplicated from Container#detectAndSendChanges
-                boolean clientStackChanged = !ItemStack.areItemStacksEqualUsingNBTShareTag(cachedStack, newStack);
-                cachedStack = newStack.isEmpty() ? ItemStack.EMPTY : newStack.copy();
-                this.inventoryItemStacks.set(i, cachedStack);
-
-                if (clientStackChanged)
-                {
-                    for (IContainerListener listener : this.listeners)
-                    {
-                        listener.sendSlotContents(this, i, cachedStack);
-                    }
-                }
-                else if (capabilityListener != null)
-                {
-                    // There's a capability difference ONLY that needs to be synced, so we use our own handler here, as to not conflict with vanilla's sync, because this won't overwrite the client side item stack
-                    // The listener will check if the item actually needs a sync based on capabilities we know we need to sync
-                    capabilityListener.sendSlotContents(this, i, cachedStack);
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer playerIn)
-    {
-        return true;
-    }
-
-    protected abstract void addContainerSlots();
-
-    protected void addPlayerInventorySlots(InventoryPlayer playerInv)
-    {
-        // Add Player Inventory Slots
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-
-        for (int k = 0; k < 9; k++)
-        {
-            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142));
-        }
-    }
-
     @Override
     @Nonnull
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player)
@@ -181,8 +156,33 @@ public abstract class ContainerItemStack extends Container implements ICapabilit
     }
 
     @Override
+    public boolean canInteractWith(EntityPlayer playerIn)
+    {
+        return true;
+    }
+
+    @Override
     public void setCapabilityListener(IContainerListener capabilityListener)
     {
         this.capabilityListener = capabilityListener;
+    }
+
+    protected abstract void addContainerSlots();
+
+    protected void addPlayerInventorySlots(InventoryPlayer playerInv)
+    {
+        // Add Player Inventory Slots
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+            }
+        }
+
+        for (int k = 0; k < 9; k++)
+        {
+            addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 142));
+        }
     }
 }

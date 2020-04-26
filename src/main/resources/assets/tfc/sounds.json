@@ -283,7 +283,7 @@
     "category": "ambient",
     "subtitle": "tfc.animal.camel.say",
     "sounds": [
-      "tfc:camel",
+      "tfc:camel1",
       "tfc:camel2",
       "tfc:camel3"
     ]
@@ -316,7 +316,7 @@
     "category": "ambient",
     "subtitle": "tfc.animal.panther.say",
     "sounds": [
-      "tfc:pantherl",
+      "tfc:panther1",
       "tfc:panther2",
       "tfc:panther3"
     ]
@@ -402,6 +402,68 @@
     "subtitle": "tfc.animal.pheasant.death",
     "sounds": [
       "tfc:pheasantdeath1"
+    ]
+  },
+  "animal.lion.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.death",
+    "sounds": [
+      "tfc:liondeath"
+    ]
+  },
+  "animal.lion.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.hurt",
+    "sounds": [
+      "tfc:lionhurt1",
+      "tfc:lionhurt2"
+    ]
+  },
+  "animal.lion.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.cry",
+    "sounds": [
+      "tfc:lionroarshort",
+      "tfc:lionroarlong"
+    ]
+  },
+  "animal.lion.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.say",
+    "sounds": [
+      "tfc:lionambient"
+    ]
+  },
+  "animal.hyena.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.hyena.say",
+    "sounds": [
+      "tfc:hyena1",
+      "tfc:hyena2",
+      "tfc:hyena3"
+    ]
+  },
+  "animal.hyena.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.hyena.cry",
+    "sounds": [
+      "tfc:hyenacry1",
+      "tfc:hyenacry2",
+      "tfc:hyenacry3"
+    ]
+  },
+  "animal.hyena.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.hyena.death",
+    "sounds": [
+      "tfc:hyenadeath1"
+    ]
+  },
+  "animal.hyena.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.hyena.hurt",
+    "sounds": [
+      "tfc:hyenahurt1"
     ]
   },
   "animal.cricket": {

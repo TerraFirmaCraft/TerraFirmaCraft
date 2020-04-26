@@ -34,14 +34,14 @@ public class CommandHeat extends CommandBase
     @Nonnull
     public String getUsage(ICommandSender sender)
     {
-        return "/heat <amount> -> sets the itemheat to amount";
+        return "tfc.command.heat.usage";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length != 1) throw new WrongUsageException("1 argument required.");
-        double heat = parseDouble(args[0], 0, 1600);
+        if (args.length != 1) throw new WrongUsageException("tfc.command.heat.failed");
+        double heat = parseDouble(args[0], 0);
 
         Entity entity = sender.getCommandSenderEntity();
         if (entity instanceof EntityPlayer)
@@ -50,12 +50,12 @@ public class CommandHeat extends CommandBase
             ItemStack stack = player.getHeldItemMainhand();
             IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             if (cap == null)
-                throw new WrongUsageException("The held item in mainhand does not have the item heat capability");
+                throw new WrongUsageException("tfc.command.heat.failed.missingcap");
             cap.setTemperature((float) heat);
         }
         else
         {
-            throw new WrongUsageException("Can only be used by a player");
+            throw new WrongUsageException("tfc.command.heat.failed.usage_expected_player");
         }
     }
 

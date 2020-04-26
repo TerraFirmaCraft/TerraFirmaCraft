@@ -67,7 +67,7 @@ public class BlockWorkbenchTFC extends BlockWorkbench
     @Override
     public BlockRenderLayer getRenderLayer()
     {
-        return BlockRenderLayer.TRANSLUCENT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

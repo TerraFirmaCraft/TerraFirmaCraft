@@ -33,9 +33,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockOreTFC;
 import net.dries007.tfc.util.IFallingBlock;
 
-/**
- * todo: add entity damage
- */
+
 @ParametersAreNonnullByDefault
 public class EntityFallingBlockTFC extends Entity
 {

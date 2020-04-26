@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.items.metal;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,7 @@ import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
 import net.dries007.tfc.objects.te.TEMetalSheet;
 import net.dries007.tfc.util.Helpers;
 
+@ParametersAreNonnullByDefault
 public class ItemMetalSheet extends ItemMetal
 {
     public ItemMetalSheet(Metal metal, Metal.ItemType type)
@@ -57,7 +59,7 @@ public class ItemMetalSheet extends ItemMetal
                 // Place a new block
                 if (!worldIn.isRemote)
                 {
-                    worldIn.setBlockState(posAt, BlockMetalSheet.get(sheet.metal).getDefaultState().withProperty(BlockMetalSheet.FACE_PROPERTIES[facing.getIndex()], true));
+                    worldIn.setBlockState(posAt, BlockMetalSheet.get(sheet.metal).getDefaultState());
                     stack.shrink(1);
                     player.setHeldItem(hand, stack);
                     placeSheet(worldIn, posAt, facing);

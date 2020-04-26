@@ -35,12 +35,12 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 /**
  * A Chicken of the colder regions!
- * Actually, ducks takes longer to reach maturity, but produce double the amount of eggs!
+ * Actually, ducks takes longer to reach maturity, but hey, they are cute!
  */
 @ParametersAreNonnullByDefault
 public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
 {
-    private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY / 2; // Faster egg laying
+    private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
     private static final int DAYS_TO_ADULTHOOD = 210;
     private static final int DAYS_TO_HATCH_EGG = 28;
 

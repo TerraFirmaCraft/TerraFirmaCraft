@@ -290,7 +290,7 @@ public class BlockMetalSheet extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    public boolean isSideSolid(IBlockState baseState, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         return false;
     }

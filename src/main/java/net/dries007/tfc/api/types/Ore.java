@@ -19,9 +19,7 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-/**
- * todo: document API
- */
+
 @GameRegistry.ObjectHolder(MOD_ID)
 public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {

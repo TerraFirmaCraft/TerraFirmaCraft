@@ -77,46 +77,6 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         setTickRandomly(true);
     }
 
-    @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
-    {
-        ItemStack stack = ItemStack.EMPTY;
-        IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
-        if (cap != null)
-        {
-            stack = cap.getHarvestingTool();
-        }
-        if (stack.isEmpty())
-        {
-            stack = player.getHeldItemMainhand();
-        }
-        final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
-        if (!ConfigTFC.GENERAL.disableTreeFelling && toolClasses.contains("axe") && !toolClasses.contains("saw"))
-        {
-            if (!state.getValue(PLACED))
-            {
-                player.setHeldItem(EnumHand.MAIN_HAND, stack); // Reset so we can damage however we want before vanilla
-                if (!removeTree(world, pos, player, stack, OreDictionaryHelper.doesStackMatchOre(stack, "axeStone") || OreDictionaryHelper.doesStackMatchOre(stack, "hammerStone")))
-                {
-                    return false;
-                }
-                return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
-            }
-        }
-        else if (toolClasses.contains("hammer"))
-        {
-            // Break log and spawn some sticks
-            world.setBlockToAir(pos);
-            if (!world.isRemote)
-            {
-                Helpers.spawnItemStack(world, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
-            }
-            // False so vanilla will not drop a log itemstack (which would lead to an exploit)
-            return false;
-        }
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public boolean isFullBlock(IBlockState state)
@@ -189,6 +149,46 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         {
             removeTree(worldIn, pos, null, ItemStack.EMPTY, false);
         }
+    }
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        ItemStack stack = ItemStack.EMPTY;
+        IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+        if (cap != null)
+        {
+            stack = cap.getHarvestingTool();
+        }
+        if (stack.isEmpty())
+        {
+            stack = player.getHeldItemMainhand();
+        }
+        final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
+        if (!ConfigTFC.GENERAL.disableTreeFelling && toolClasses.contains("axe") && !toolClasses.contains("saw"))
+        {
+            if (!state.getValue(PLACED))
+            {
+                player.setHeldItem(EnumHand.MAIN_HAND, stack); // Reset so we can damage however we want before vanilla
+                if (!removeTree(world, pos, player, stack, OreDictionaryHelper.doesStackMatchOre(stack, "axeStone") || OreDictionaryHelper.doesStackMatchOre(stack, "hammerStone")))
+                {
+                    return false;
+                }
+                return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
+            }
+        }
+        else if (toolClasses.contains("hammer"))
+        {
+            // Break log and spawn some sticks
+            world.setBlockToAir(pos);
+            if (!world.isRemote)
+            {
+                Helpers.spawnItemStack(world, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
+            }
+            // False so vanilla will not drop a log itemstack (which would lead to an exploit)
+            return false;
+        }
+        return super.removedByPlayer(state, world, pos, player, ConfigTFC.GENERAL.doLogsRequireAxe);
     }
 
     @Override

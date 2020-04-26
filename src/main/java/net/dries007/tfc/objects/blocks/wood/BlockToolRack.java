@@ -7,9 +7,9 @@ package net.dries007.tfc.objects.blocks.wood;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.BlockFaceShape;
@@ -39,14 +39,15 @@ import net.dries007.tfc.util.Helpers;
 import static net.minecraft.block.BlockHorizontal.FACING;
 import static net.minecraft.block.material.Material.WOOD;
 
-public class BlockToolRack extends BlockContainer implements IItemSize
+@ParametersAreNonnullByDefault
+public class BlockToolRack extends Block implements IItemSize
 {
     protected static final AxisAlignedBB RACK_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
     protected static final AxisAlignedBB RACK_WEST_AABB = new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB RACK_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
     protected static final AxisAlignedBB RACK_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
 
-    public Tree wood;
+    public final Tree wood;
 
     public BlockToolRack(Tree wood)
     {
@@ -73,11 +74,32 @@ public class BlockToolRack extends BlockContainer implements IItemSize
         return Weight.VERY_HEAVY; // Stacksize = 1
     }
 
-    @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        return new TEToolRack();
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (!Helpers.canHangAt(worldIn, pos, state.getValue(FACING)))
+        {
+            dropBlockAsItem(worldIn, pos, state, 0);
+            TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+            if (te != null)
+            {
+                te.onBreakBlock();
+            }
+            worldIn.setBlockToAir(pos);
+        }
+    }
+
+    @Override
+    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
+    {
+        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+        if (te != null)
+        {
+            te.onBreakBlock();
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -136,15 +158,9 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public boolean hasTileEntity(IBlockState state)
     {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (Helpers.canHangAt(worldIn, pos, state.getValue(FACING))) return;
-        dropBlockAsItem(worldIn, pos, state, 0);
-        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        if (te != null) te.onBreakBlock();
-        worldIn.setBlockToAir(pos);
+        return true;
     }
 
     @Override
@@ -155,9 +171,15 @@ public class BlockToolRack extends BlockContainer implements IItemSize
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        if (te == null) return true;
-        return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
+        if (!worldIn.isRemote)
+        {
+            TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+            if (te != null)
+            {
+                return te.onRightClick(playerIn, hand, getSlotFromPos(state, hitX, hitY, hitZ));
+            }
+        }
+        return true;
     }
 
     @Override
@@ -166,7 +188,9 @@ public class BlockToolRack extends BlockContainer implements IItemSize
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         if (facing.getAxis() == EnumFacing.Axis.Y)
+        {
             facing = placer.getHorizontalFacing().getOpposite();
+        }
         return this.getDefaultState().withProperty(FACING, Helpers.getASolidFacing(worldIn, pos, facing, EnumFacing.HORIZONTALS));
     }
 
@@ -177,9 +201,39 @@ public class BlockToolRack extends BlockContainer implements IItemSize
         return new BlockStateContainer(this, FACING);
     }
 
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TEToolRack();
+    }
+
+    public int getSlotFromPos(IBlockState state, float x, float y, float z)
+    {
+        int slot = 0;
+        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f)
+        {
+            slot += 1;
+        }
+        if (y < 0.5f)
+        {
+            slot += 2;
+        }
+        return slot;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.MODEL;
+    }
+
     @Override
     @Nonnull
-    public ItemStack getPickBlock(@Nonnull IBlockState state, @Nullable RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player)
+    @SuppressWarnings("ConstantConditions")
+    public ItemStack getPickBlock(IBlockState state, @Nullable RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         if (target != null)
         {
@@ -195,29 +249,5 @@ public class BlockToolRack extends BlockContainer implements IItemSize
             }
         }
         return super.getPickBlock(state, target, world, pos, player);
-    }
-
-    public int getSlotFromPos(IBlockState state, float x, float y, float z)
-    {
-        int slot = 0;
-        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f) slot += 1;
-        if (y < .5f) slot += 2;
-        return slot;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
-    {
-        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        if (te != null) te.onBreakBlock();
-        super.breakBlock(worldIn, pos, state);
     }
 }

@@ -26,13 +26,12 @@ import net.dries007.tfc.api.capability.DumbStorage;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public final class CapabilityMetalItem
 {
     @CapabilityInject(IMetalItem.class)
-    public static final Capability<IMetalItem> METAL_OBJECT_CAPABILITY = Helpers.getNull();
+    public static Capability<IMetalItem> METAL_OBJECT_CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(TerraFirmaCraft.MOD_ID, "metal_object");
 
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_METAL_ITEMS = new HashMap<>(); //Used inside CT, set custom IMetalItem for items outside TFC

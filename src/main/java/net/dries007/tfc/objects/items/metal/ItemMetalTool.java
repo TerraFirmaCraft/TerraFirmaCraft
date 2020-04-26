@@ -304,6 +304,8 @@ public class ItemMetalTool extends ItemMetal
                 return material == Material.SNOW || material == Material.CRAFTED_SNOW;
             case SCYTHE:
                 return material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES;
+            case KNIFE:
+                return material == Material.VINE || material == Material.LEAVES;
             case SWORD:
                 return material == Material.WEB;
         }

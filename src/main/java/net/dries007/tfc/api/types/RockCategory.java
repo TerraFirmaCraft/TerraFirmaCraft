@@ -14,9 +14,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-/**
- * todo: document API
- */
+
 public class RockCategory extends IForgeRegistryEntry.Impl<RockCategory>
 {
     private final float caveGenMod;

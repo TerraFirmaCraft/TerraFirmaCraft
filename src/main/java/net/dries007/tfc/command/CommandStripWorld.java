@@ -19,7 +19,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 
@@ -40,13 +40,13 @@ public class CommandStripWorld extends CommandBase
     @Nonnull
     public String getUsage(ICommandSender sender)
     {
-        return "/stripworld <radius> -> [DANGER] Strips all stone variant blocks + water.";
+        return "tfc.command.stripworld.usage";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length != 1) throw new WrongUsageException("1 argument required.");
+        if (args.length != 1) throw new WrongUsageException("tfc.command.stripworld.failed");
         int radius = parseInt(args[0], 1, 250);
 
         if (sender.getCommandSenderEntity() == null) return;
@@ -78,7 +78,7 @@ public class CommandStripWorld extends CommandBase
         }
 
 
-        sender.sendMessage(new TextComponentString("Done."));
+        sender.sendMessage(new TextComponentTranslation("tfc.command.stripworld.done"));
     }
 
     @Override
