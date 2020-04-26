@@ -47,17 +47,6 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
     }
 
     @Override
-    public boolean canStack(@Nonnull ItemStack stack)
-    {
-        IFluidHandler lampCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if (lampCap != null)
-        {
-            return lampCap.drain(CAPACITY, false) == null;
-        }
-        return true;
-    }
-
-    @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack)
     {
