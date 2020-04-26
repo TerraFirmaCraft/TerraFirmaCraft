@@ -45,6 +45,6 @@ public class PotionThirst extends PotionTFC
     @Override
     public boolean isInstant()
     {
-        return true;
+        return false;
     }
 }
