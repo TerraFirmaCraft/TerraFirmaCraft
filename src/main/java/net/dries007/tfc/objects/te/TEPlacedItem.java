@@ -101,7 +101,7 @@ public class TEPlacedItem extends TEInventory
     public boolean onRightClick(EntityPlayer player, ItemStack stack, boolean x, boolean z)
     {
         final int slot = (x ? 1 : 0) + (z ? 2 : 0);
-        if ((player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty()) || player.isSneaking())
+        if ((player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) || player.isSneaking())
         {
             ItemStack current;
             if (isHoldingLargeItem)
