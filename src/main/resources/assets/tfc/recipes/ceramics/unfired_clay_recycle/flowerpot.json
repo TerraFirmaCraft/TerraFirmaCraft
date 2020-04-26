@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:ceramics/unfired/clay_flower_pot"
+    }
+  ],
+  "result": {
+    "item": "minecraft:clay_ball",
+    "count": 1
+  }
+}

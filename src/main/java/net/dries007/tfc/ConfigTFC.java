@@ -426,6 +426,32 @@ public class ConfigTFC
         @Config.Comment("Which inventory slots will ammo refill/pickup search for quivers? none = nowhere, they're just extra inventory spaces; armor = only in armor slots; hotbar = add hotbar; main = add main inventory.")
         @Config.LangKey("config." + MOD_ID + ".general.quiverSearch")
         public String quiverSearch = "hotbar";
+
+        @Config.Comment("Disable the ability to create ingot piles?")
+        @Config.LangKey("config." + MOD_ID + ".general.disableIngotPile")
+        public boolean placeIngotPiles = false;
+
+        @Config.Comment("Entities that can be plucked for feathers.")
+        @Config.LangKey("config." + MOD_ID + ".general.pluckableEntities")
+        public String[] pluckableEntities = new String[] {"tfc:chickentfc", "tfc:pheasanttfc", "tfc:parrottfc", "tfc:ducktfc"};
+
+        @Config.Comment("Damage dealt to an entity when a feather is harvested.")
+        @Config.RangeDouble(min = 0)
+        @Config.LangKey("config." + MOD_ID + ".general.damagePerFeather")
+        public double damagePerFeather = 0.6;
+
+        @Config.Comment("If true, crops will never die under any circumstances. THIS DOES NOT MEAN THEY WILL ALWAYS GROW!")
+        @Config.LangKey("config." + MOD_ID + ".general.shouldCropsDie")
+        public boolean shouldCropsDie = true;
+
+        @Config.Comment("If false, logs will drop logs when punched.")
+        @Config.LangKey("config." + MOD_ID + ".general.doLogsRequireAxe")
+        public boolean doLogsRequireAxe = true;
+
+        @Config.Comment("If false, leaves will not drop saplings.")
+        @Config.LangKey("config." + MOD_ID + ".general.doLeavesDropSaplings")
+        public boolean doLeavesDropSaplings = true;
+
     }
 
     public static class ClientCFG
@@ -475,6 +501,16 @@ public class ConfigTFC
         @Config.Comment({"Hide the thirst bar?"})
         @Config.LangKey("config." + MOD_ID + ".client.hideThirstBar")
         public boolean hideThirstBar = false;
+
+        @Config.Comment({"Ore tooltip info mode.",
+            "0 = No tooltip info.",
+            "1 = Ore Unit only info.",
+            "2 = Stack unit total info.",
+            "3 = All info."
+        })
+        @Config.LangKey("config." + MOD_ID + ".general.oreTooltipMode")
+        @Config.RangeInt(min = 0, max = 3)
+        public int oreTooltipMode = 3;
     }
 
     public static class WorldCFG

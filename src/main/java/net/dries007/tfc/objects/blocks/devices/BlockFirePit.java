@@ -55,9 +55,9 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
 {
     public static final PropertyEnum<FirePitAttachment> ATTACHMENT = PropertyEnum.create("attachment", FirePitAttachment.class);
 
-    private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
     private static final AxisAlignedBB FIREPIT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
-    private static final AxisAlignedBB ATTACHMENT_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.6875, 0.8125);
+    private static final AxisAlignedBB FIREPIT_ATTACHMENT_SELECTION_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.7, 1);
+    private static final AxisAlignedBB ATTACHMENT_COLLISION_ADDITION_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.6875, 0.8125);
 
     public BlockFirePit()
     {
@@ -66,6 +66,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         disableStats();
         setTickRandomly(true);
         setLightLevel(1F);
+        setHardness(0.3F);
     }
 
     @Override
@@ -94,7 +95,11 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return DEFAULT_AABB;
+        if (state.getValue(ATTACHMENT) != FirePitAttachment.NONE)
+        {
+            return FIREPIT_ATTACHMENT_SELECTION_AABB;
+        }
+        return FIREPIT_AABB;
     }
 
     @Override
@@ -112,7 +117,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         addCollisionBoxToList(pos, entityBox, collidingBoxes, FIREPIT_AABB);
         if (state.getValue(ATTACHMENT) != FirePitAttachment.NONE)
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, ATTACHMENT_AABB);
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, ATTACHMENT_COLLISION_ADDITION_AABB);
         }
     }
 

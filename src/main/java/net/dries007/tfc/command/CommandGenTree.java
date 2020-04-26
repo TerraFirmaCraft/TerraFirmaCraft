@@ -15,7 +15,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -41,17 +41,17 @@ public class CommandGenTree extends CommandBase
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/maketree [wood] -> Grows a tree of the type specified";
+        return "tfc.command.gentree.useage";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length != 1) throw new WrongUsageException("1 argument required.");
+        if (args.length != 1) throw new WrongUsageException("tfc.command.gentree.failed");
 
         Tree tree = TFCRegistries.TREES.getValue(new ResourceLocation(args[0]));
         if (tree == null) tree = TFCRegistries.TREES.getValue(new ResourceLocation(MOD_ID, args[0]));
-        if (tree == null) throw new WrongUsageException("Tree type " + args[0] + " not found");
+        if (tree == null) throw new WrongUsageException("tfc.command.gentree.failed.woodtype", args[0]);
 
         if (sender.getCommandSenderEntity() == null) return;
 
@@ -61,7 +61,7 @@ public class CommandGenTree extends CommandBase
 
         if (!tree.makeTree(manager, world, center, random, false))
         {
-            sender.sendMessage(new TextComponentString("Conditions not met to make tree here!"));
+            sender.sendMessage(new TextComponentTranslation("tfc.command.gentree.failed.grow"));
         }
     }
 

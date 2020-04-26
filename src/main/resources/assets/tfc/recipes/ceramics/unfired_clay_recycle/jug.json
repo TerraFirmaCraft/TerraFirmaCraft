@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:ceramics/unfired/jug"
+    }
+  ],
+  "result": {
+    "item": "minecraft:clay_ball",
+    "count": 3
+  }
+}

@@ -26,7 +26,8 @@ public final class PotionEffectsTFC
     public static void registerPotionEffects(RegistryEvent.Register<Potion> event)
     {
         event.getRegistry().registerAll(
-            new PotionOverburdened().setRegistryName(MOD_ID, "overburdened")
+            new PotionOverburdened().setRegistryName(MOD_ID, "overburdened"),
+            new PotionThirst().setRegistryName(MOD_ID, "thirst")
         );
     }
 }
