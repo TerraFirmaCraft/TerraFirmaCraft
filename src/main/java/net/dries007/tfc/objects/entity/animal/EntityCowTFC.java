@@ -43,6 +43,7 @@ import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -51,10 +52,11 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
 {
+    private static final int DEFAULT_TICKS_TO_MILK = ICalendar.TICKS_IN_DAY;
     private static final int DAYS_TO_ADULTHOOD = 1080;
     private static final int DAYS_TO_FULL_GESTATION = 270;
 
-    private long lastMilked;
+    protected long lastMilked;
 
     @SuppressWarnings("unused")
     public EntityCowTFC(World worldIn)
@@ -66,7 +68,6 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.9F, 1.3F);
-        this.setMilkedDay(-1); //Spawn with milk
     }
 
     @Override
@@ -103,14 +104,14 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
-        compound.setLong("milked", this.getMilkedDay());
+        compound.setLong("milked", this.lastMilked);
     }
 
     @Override
     public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        this.setMilkedDay(compound.getInteger("milked"));
+        this.lastMilked = compound.getLong("milked");
     }
 
     @Override
@@ -189,7 +190,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
             if (this.getFamiliarity() > 0.15f && isReadyForAnimalProduct())
             {
                 player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
-                this.setMilkedDay(CalendarTFC.PLAYER_TIME.getTotalDays());
+                this.setProductsCooldown();
                 player.setHeldItem(hand, FluidUtil.tryFillContainerAndStow(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
                     new PlayerInvWrapper(player.inventory), Fluid.BUCKET_VOLUME, player, true).getResult());
             }
@@ -225,14 +226,16 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
         return super.eatFood(stack, player);
     }
 
-    protected long getMilkedDay()
+    @Override
+    public void setProductsCooldown()
     {
-        return this.lastMilked;
+        this.lastMilked = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
-    protected void setMilkedDay(long value)
+    @Override
+    public long getProductsCooldown()
     {
-        this.lastMilked = value;
+        return Math.max(0, this.lastMilked + DEFAULT_TICKS_TO_MILK - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -292,6 +295,6 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
 
     protected boolean hasMilk()
     {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (this.getMilkedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() > getMilkedDay());
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && getProductsCooldown() == 0;
     }
 }

@@ -10,8 +10,9 @@ For IntelliJ instructions, see README.md.
 
 import json
 import os
-import time
 import zipfile
+
+import time
 
 
 def zipfolder(zip_name, target_dir):
@@ -545,6 +546,24 @@ STAIR_VARIANTS = {
     'facing=south,half=top,shape=inner_left': {'model': 'inner_stairs', 'x': 180, 'y': 90},
     'facing=north,half=top,shape=inner_left': {'model': 'inner_stairs', 'x': 180, 'y': 270}
 }
+FENCE_GATE_VARIANTS = {
+    'facing=south,in_wall=false,open=false': {'model': 'fence_gate_closed'},
+    'facing=west,in_wall=false,open=false': {'model': 'fence_gate_closed', 'y': 90},
+    'facing=north,in_wall=false,open=false': {'model': 'fence_gate_closed', 'y': 180},
+    'facing=east,in_wall=false,open=false': {'model': 'fence_gate_closed', 'y': 270},
+    'facing=south,in_wall=false,open=true': {'model': 'fence_gate_open'},
+    'facing=west,in_wall=false,open=true': {'model': 'fence_gate_open', 'y': 90},
+    'facing=north,in_wall=false,open=true': {'model': 'fence_gate_open', 'y': 180},
+    'facing=east,in_wall=false,open=true': {'model': 'fence_gate_open', 'y': 270},
+    'facing=south,in_wall=true,open=false': {'model': 'wall_gate_closed'},
+    'facing=west,in_wall=true,open=false': {'model': 'wall_gate_closed', 'y': 90},
+    'facing=north,in_wall=true,open=false': {'model': 'wall_gate_closed', 'y': 180},
+    'facing=east,in_wall=true,open=false': {'model': 'wall_gate_closed', 'y': 270},
+    'facing=south,in_wall=true,open=true': {'model': 'wall_gate_open'},
+    'facing=west,in_wall=true,open=true': {'model': 'wall_gate_open', 'y': 90},
+    'facing=north,in_wall=true,open=true': {'model': 'wall_gate_open', 'y': 180},
+    'facing=east,in_wall=true,open=true': {'model': 'wall_gate_open', 'y': 270}
+}
 
 
 def del_none(d):
@@ -884,21 +903,6 @@ for wood_type in WOOD_TYPES:
         'west': {'true': {'submodel': 'fence_side', 'y': 270}, 'false': {}},
     })
 
-    # FENCE GATES
-    blockstate(('wood', 'fence_gate', wood_type), 'fence_gate_closed', textures={
-        'texture': 'tfc:blocks/wood/planks/%s' % wood_type
-    }, variants={
-        'inventory': [{}],
-        'facing': {
-            'south': {},
-            'west': {'y': 90},
-            'north': {'y': 180},
-            'east': {'y': 270},
-        },
-        'open': {'true': {'model': 'fence_gate_open'}, 'false': {}},
-        'in_wall': {'true': {'transform': {'translation': [0, -3 / 16, 0]}}, 'false': {}},
-    })
-
     # SAPLINGS
     blockstate(('wood', 'sapling', wood_type), 'cross', textures={
         ('cross', 'layer0'): 'tfc:blocks/saplings/%s' % wood_type
@@ -946,6 +950,11 @@ for wood_type in WOOD_TYPES:
     blockstate(('wood', 'trapdoor', wood_type), None, textures={
         'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type
     }, variants=TRAPDOOR_VARIANTS)
+
+    # FenceGates
+    blockstate(('wood', 'fence_gate', wood_type), None, textures={
+        'texture': 'tfc:blocks/wood/planks/%s' % wood_type
+    }, variants=FENCE_GATE_VARIANTS, uvlock=True)
 
     # CHESTS
     blockstate(('wood', 'chest', wood_type), 'tfc:chest', textures={
@@ -1075,7 +1084,7 @@ for rock_type in ROCK_TYPES:
     for item_type in ['rock', 'brick']:
         item((item_type, rock_type), 'tfc:items/stonetypes/%s/%s' % (item_type, rock_type))
 
-# DOORS / TRAPDOORS
+# DOORS / TRAPDOORS /FENCE_GATE
 for wood_type in WOOD_TYPES:
     item(('wood', 'log', wood_type), 'tfc:items/wood/log/%s' % wood_type)
     item(('wood', 'door', wood_type), 'tfc:items/wood/door/%s' % wood_type)
@@ -1083,6 +1092,8 @@ for wood_type in WOOD_TYPES:
     # Trapdoors are special - their item model needs to reference the blockstate #texture
     model(('item', 'wood', 'trapdoor', wood_type), 'block/trapdoor_bottom',
           {'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type})
+    model(('item', 'wood', 'fence_gate', wood_type), 'block/fence_gate_closed',
+          {'texture': 'tfc:blocks/wood/planks/%s' % wood_type})
 
 # GEMS
 for gem in GEM_TYPES:

@@ -21,9 +21,6 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-/**
- * todo: document API
- */
 public class Metal extends IForgeRegistryEntry.Impl<Metal>
 {
     @GameRegistry.ObjectHolder(MOD_ID + ":unknown")

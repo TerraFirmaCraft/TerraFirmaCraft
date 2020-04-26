@@ -72,7 +72,6 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     {
         super(worldIn, gender, birthDay);
         this.setSize(0.9F, 0.9F);
-        this.lastLaying = -1;
     }
 
     @Override
@@ -192,6 +191,18 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     }
 
     @Override
+    public void setProductsCooldown()
+    {
+        this.lastLaying = CalendarTFC.PLAYER_TIME.getTicks();
+    }
+
+    @Override
+    public long getProductsCooldown()
+    {
+        return Math.max(0, this.lastLaying + DEFAULT_TICKS_TO_LAY_EGGS - CalendarTFC.PLAYER_TIME.getTicks());
+    }
+
+    @Override
     public TextComponentTranslation getTooltip()
     {
         if (this.getGender() == Gender.MALE)
@@ -274,6 +285,6 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 
     protected boolean hasEggs()
     {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying + DEFAULT_TICKS_TO_LAY_EGGS;
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && getProductsCooldown() == 0;
     }
 }

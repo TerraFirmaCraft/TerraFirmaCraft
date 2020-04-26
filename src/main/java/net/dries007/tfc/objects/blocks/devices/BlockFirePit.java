@@ -40,6 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.util.IBellowsConsumerBlock;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -54,9 +55,9 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
 {
     public static final PropertyEnum<FirePitAttachment> ATTACHMENT = PropertyEnum.create("attachment", FirePitAttachment.class);
 
-    private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
     private static final AxisAlignedBB FIREPIT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
-    private static final AxisAlignedBB ATTACHMENT_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.6875, 0.8125);
+    private static final AxisAlignedBB FIREPIT_ATTACHMENT_SELECTION_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.7, 1);
+    private static final AxisAlignedBB ATTACHMENT_COLLISION_ADDITION_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.6875, 0.8125);
 
     public BlockFirePit()
     {
@@ -65,6 +66,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         disableStats();
         setTickRandomly(true);
         setLightLevel(1F);
+        setHardness(0.3F);
     }
 
     @Override
@@ -93,7 +95,19 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return DEFAULT_AABB;
+        if (state.getValue(ATTACHMENT) != FirePitAttachment.NONE)
+        {
+            return FIREPIT_ATTACHMENT_SELECTION_AABB;
+        }
+        return FIREPIT_AABB;
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -103,16 +117,8 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         addCollisionBoxToList(pos, entityBox, collidingBoxes, FIREPIT_AABB);
         if (state.getValue(ATTACHMENT) != FirePitAttachment.NONE)
         {
-            addCollisionBoxToList(pos, entityBox, collidingBoxes, ATTACHMENT_AABB);
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, ATTACHMENT_COLLISION_ADDITION_AABB);
         }
-    }
-
-    @Override
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -146,8 +152,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         double z = pos.getZ() + 0.5;
 
         world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + rng.nextFloat() - 0.5, y, z + rng.nextFloat() - 0.5, 0.0D, 0.2D, 0.0D);
-        if (rng.nextFloat() > 0.75)
-            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + rng.nextFloat() - 0.5, y, z + rng.nextFloat() - 0.5, 0.0D, 0.1D, 0.0D);
+        TFCParticles.FIRE_PIT_SMOKE.spawn(world, x, y, z, 0, 0.2D, 0, 120);
     }
 
     @Override
@@ -273,11 +278,28 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
     {
         IBlockState state = worldIn.getBlockState(pos);
-        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase)
         {
             entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
         }
         super.onEntityWalk(worldIn, pos, entityIn);
+    }
+
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase)
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, LIT, ATTACHMENT);
     }
 
     @Override
@@ -303,13 +325,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public boolean canIntakeFrom(TEBellows te, Vec3i offset, EnumFacing facing)
     {
         return offset.equals(TEBellows.OFFSET_LEVEL);
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, LIT, ATTACHMENT);
     }
 
     @Override

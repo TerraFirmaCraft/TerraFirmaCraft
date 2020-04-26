@@ -47,6 +47,7 @@ public class ItemWoodenBucket extends ItemTFC
     public ItemWoodenBucket()
     {
         setHasSubtypes(true);
+        setContainerItem(this);
     }
 
     @Nonnull
@@ -145,6 +146,10 @@ public class ItemWoodenBucket extends ItemTFC
                             }
                         }
                         worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                        if (stack.hasTagCompound() && stack.getTagCompound().isEmpty())
+                        {
+                            stack.setTagCompound(null);
+                        }
                         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }

@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.items.ceramics;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +18,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.items.ItemTFC;
 
+@ParametersAreNonnullByDefault
 public class ItemPottery extends ItemTFC
 {
     @Nonnull

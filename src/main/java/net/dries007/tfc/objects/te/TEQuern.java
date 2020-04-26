@@ -180,18 +180,13 @@ public class TEQuern extends TEInventory implements ITickable
             if (recipe != null && !world.isRemote)
             {
                 inputStack.shrink(1);
-                ItemStack remainder = inventory.insertItem(SLOT_OUTPUT, recipe.getOutputItem(inputStack), false);
-                if (!remainder.isEmpty())
+                ItemStack outputStack = recipe.getOutputItem(inputStack);
+                outputStack = inventory.insertItem(SLOT_OUTPUT, outputStack, false);
+                inventory.setStackInSlot(SLOT_OUTPUT, CapabilityFood.mergeItemStacksIgnoreCreationDate(inventory.getStackInSlot(SLOT_OUTPUT), outputStack));
+                if (!outputStack.isEmpty())
                 {
-                    // Failed inserting/merging output directly
-                    ItemStack currentStack = inventory.getStackInSlot(SLOT_OUTPUT);
-                    ItemStack leftover = CapabilityFood.mergeStack(remainder, currentStack);
-                    inventory.setStackInSlot(SLOT_OUTPUT, currentStack);
-                    if (!leftover.isEmpty())
-                    {
-                        // Still having leftover items, dumping in world
-                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), leftover);
-                    }
+                    // Still having leftover items, dumping in world
+                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), outputStack);
                 }
             }
         }

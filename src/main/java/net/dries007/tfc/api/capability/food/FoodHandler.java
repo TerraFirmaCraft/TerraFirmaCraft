@@ -172,7 +172,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
         {
             if (isDynamic())
             {
-                data.deserializeNBT(nbt.getCompoundTag("foodData"));
+                data = new FoodData(nbt.getCompoundTag("foodData"));
             }
             NBTTagList traitList = nbt.getTagList("traits", 8 /* String */);
             for (int i = 0; i < traitList.tagCount(); i++)

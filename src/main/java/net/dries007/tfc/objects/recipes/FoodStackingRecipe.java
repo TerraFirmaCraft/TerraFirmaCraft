@@ -20,6 +20,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 
+@SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 public class FoodStackingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
@@ -46,7 +47,7 @@ public class FoodStackingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
                 else
                 {
                     // Another stack, so compare. If not equal, or one is not a food, the recipe is invalid
-                    if (!foodStack.isItemEqual(stack))
+                    if (!CapabilityFood.areStacksStackableExceptCreationDate(stack, foodStack))
                     {
                         return false;
                     }
@@ -119,7 +120,6 @@ public class FoodStackingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
         return true;
     }
 
-    @SuppressWarnings("unused")
     public static class Factory implements IRecipeFactory
     {
         @Override

@@ -43,6 +43,7 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -84,16 +85,6 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
         this.lastDeath = -1;
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.fertilized = false;
-    }
-
-    @Override
-    protected void initEntityAI()
-    {
-        super.initEntityAI();
-        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityPheasantTFC.class, false, pheasant -> true));
-        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityChickenTFC.class, false, chicken -> true));
-        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityDuckTFC.class, false, duck -> true));
-        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, rabbit -> true));
     }
 
     @Override
@@ -313,6 +304,16 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     }
 
     @Override
+    protected void initEntityAI()
+    {
+        super.initEntityAI();
+        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityPheasantTFC.class, false, pheasant -> true));
+        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityChickenTFC.class, false, chicken -> true));
+        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityDuckTFC.class, false, duck -> true));
+        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, rabbit -> true));
+    }
+
+    @Override
     protected void entityInit()
     {
         super.entityInit();
@@ -354,7 +355,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_WOLF; // todo
+        return LootTablesTFC.ANIMALS_OCELOT;
     }
 
     @Override
@@ -485,7 +486,8 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && BlocksTFC.isGround(this.world.getBlockState(this.getPosition().down()));
     }
 
     @Nonnull

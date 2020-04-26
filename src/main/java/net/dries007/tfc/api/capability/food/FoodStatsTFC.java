@@ -55,7 +55,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     {
         // This should never be called directly - when it is we assume it's direct stat modifications (saturation potion, eating cake)
         // We make modifications to vanilla logic, as saturation needs to be unaffected by hunger
-        // todo: handle cake
     }
 
     @Override
@@ -248,19 +247,19 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         originalStats.setFoodLevel(foodLevelIn);
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void setFoodSaturationLevel(float foodSaturationLevelIn)
+    {
+        originalStats.setFoodSaturationLevel(foodSaturationLevelIn);
+    }
+
     /**
      * Use instead of {@link FoodStats#setFoodSaturationLevel(float)} as it's client only
      */
     public void setSaturation(float saturation)
     {
         originalStats.foodSaturationLevel = saturation;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void setFoodSaturationLevel(float foodSaturationLevelIn)
-    {
-        originalStats.setFoodSaturationLevel(foodSaturationLevelIn);
     }
 
     @SideOnly(Side.CLIENT)

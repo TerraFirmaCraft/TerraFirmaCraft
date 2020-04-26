@@ -25,6 +25,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Metal;
@@ -75,7 +76,9 @@ public class BlockIngotPile extends Block
     {
         TEIngotPile te = Helpers.getTE(worldIn, pos, TEIngotPile.class);
         if (te != null && te.getCount() == 64 && face == EnumFacing.UP)
+        {
             return BlockFaceShape.SOLID;
+        }
         return BlockFaceShape.UNDEFINED;
     }
 
@@ -146,7 +149,7 @@ public class BlockIngotPile extends Block
                     {
                         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
-                    playerIn.addItemStackToInventory(new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+                    ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
                 }
                 return true;
             }
@@ -164,7 +167,7 @@ public class BlockIngotPile extends Block
                             {
                                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                             }
-                            playerIn.addItemStackToInventory(new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+                            ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
                         }
                         return true;
                     }

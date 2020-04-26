@@ -47,7 +47,7 @@ public class RenderPantherTFC extends RenderLiving<EntityPantherTFC>
     @Override
     protected void preRenderCallback(EntityPantherTFC pantherTFC, float par2)
     {
-        GlStateManager.scale(1.3f, 1.3f, 1.3f);
+        GlStateManager.scale(1.2f, 1.2f, 1.2f);
     }
 
     @Override

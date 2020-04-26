@@ -113,6 +113,7 @@ public class TENestBox extends TEInventory implements ITickable, IItemHandlerSid
         Helpers.sitOnBlock(this.world, this.pos, bird, 0.0D);
     }
 
+    @Nullable
     public Entity getBird()
     {
         return Helpers.getSittingEntity(this.world, this.pos);

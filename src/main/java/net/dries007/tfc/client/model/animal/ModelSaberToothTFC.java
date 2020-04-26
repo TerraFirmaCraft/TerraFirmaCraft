@@ -32,33 +32,32 @@ public class ModelSaberToothTFC extends ModelBase
     private ModelRenderer tooth2;
     private ModelRenderer mouthBottom;
     private ModelRenderer mouthTop;
-    private ModelRenderer upperLeg1;
-    private ModelRenderer upperLeg2;
-    private ModelRenderer upperLeg3;
-    private ModelRenderer upperLeg4;
-    private ModelRenderer leg1;
-    private ModelRenderer leg2;
-    private ModelRenderer leg3;
-    private ModelRenderer leg4;
-    private ModelRenderer paw1;
-    private ModelRenderer paw2;
-    private ModelRenderer paw3;
-    private ModelRenderer paw4;
+    public ModelRenderer frontRightLegTop;
+    public ModelRenderer frontRightLegMiddle;
+    public ModelRenderer frontRightLegBottom;
+    public ModelRenderer frontRightPaw;
+    public ModelRenderer frontLeftLegTop;
+    public ModelRenderer frontLeftLegMiddle;
+    public ModelRenderer frontLeftLegBottom;
+    public ModelRenderer frontLeftPaw;
+    public ModelRenderer backRightLegTop;
+    public ModelRenderer backRightLegMiddle;
+    public ModelRenderer backRightLegBottom;
+    public ModelRenderer backRightPaw;
+    public ModelRenderer backLeftLegTop;
+    public ModelRenderer backLeftLegMiddle;
+    public ModelRenderer backLeftLegBottom;
+    public ModelRenderer backLeftPaw;
+
 
 
     public ModelSaberToothTFC()
     {
-        textureWidth = 64;
+        textureWidth = 80;
         textureHeight = 64;
 
-        paw1 = new ModelRenderer(this, 21, 37);
-        paw1.setRotationPoint(0.0F, 10.0F, -2.0F);
-        paw1.addBox(-2.0F, -1.0F, -1.0F, 3, 2, 1, 0.0F);
-        paw4 = new ModelRenderer(this, 21, 37);
-        paw4.setRotationPoint(0.5F, 10.0F, -2.0F);
-        paw4.addBox(-2.0F, -1.0F, -1.0F, 3, 2, 1, 0.0F);
-        tailBottom = new ModelRenderer(this, 44, 7);
-        tailBottom.setRotationPoint(-1.0F, 13.3F, 14.0F);
+        tailBottom = new ModelRenderer(this, 34, 3);
+        tailBottom.setRotationPoint(-1.0F, 13.3F, 12.5F);
         tailBottom.addBox(0.0F, 0.0F, 0.0F, 2, 4, 2, -0.1F);
         setRotation(tailBottom, 0.9560913642424937F, 0.0F, 0.0F);
         ear1 = new ModelRenderer(this, 0, 4);
@@ -70,77 +69,43 @@ public class ModelSaberToothTFC extends ModelBase
         ear2.setRotationPoint(-4.0F, -5.4F, -0.9F);
         ear2.addBox(0.0F, 0.0F, 0.0F, 1, 3, 2, 0.0F);
         setRotation(ear2, -0.728F, 0.0F, -0.409F);
-        upperLeg4 = new ModelRenderer(this, 1, 38);
-        upperLeg4.setRotationPoint(-3.8F, 10.4F, 8.5F);
-        upperLeg4.addBox(-2.0F, -4.0F, -2.0F, 4, 8, 4, 0.0F);
         head = new ModelRenderer(this, 1, 4);
-        head.setRotationPoint(0.5F, 10.0F, -10.5F);
+        head.setRotationPoint(0.5F, 10.0F, -11.5F);
         head.addBox(-3.0F, -4.0F, -4.5F, 5, 6, 5, 0.1F);
-        leg1 = new ModelRenderer(this, 19, 40);
-        leg1.mirror = true;
-        leg1.setRotationPoint(0.4F, 2.8F, 0.5F);
-        leg1.addBox(-2.0F, 0.0F, -2.0F, 3, 11, 3, 0.0F);
-        paw3 = new ModelRenderer(this, 21, 37);
-        paw3.setRotationPoint(0.0F, 10.0F, -2.0F);
-        paw3.addBox(-2.0F, -1.0F, -1.0F, 3, 2, 1, 0.0F);
-        upperLeg2 = new ModelRenderer(this, 0, 50);
-        upperLeg2.setRotationPoint(-4.0F, 10.2F, -4.6F);
-        upperLeg2.addBox(-2.0F, -4.5F, -2.5F, 4, 9, 5, 0.0F);
-        tailBody = new ModelRenderer(this, 42, 19);
-        tailBody.setRotationPoint(0.0F, 9.2F, 11.5F);
+        tailBody = new ModelRenderer(this, 32, 15);
+        tailBody.setRotationPoint(0.0F, 9.2F, 10.0F);
         tailBody.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3, -0.2F);
         setRotation(tailBody, 0.5989969992844539F, 0.0F, 0.0F);
-        neck = new ModelRenderer(this, 2, 16);
-        neck.setRotationPoint(0.0F, 8.6F, -5.0F);
+        neck = new ModelRenderer(this, 53, 4);
+        neck.setRotationPoint(0.0F, 8.6F, -6.0F);
         neck.addBox(-2.0F, -2.5F, -6.5F, 4, 5, 5, 0.0F);
         setRotation(neck, 0.091106186954104F, 0.0F, 0.0F);
-        upperLeg3 = new ModelRenderer(this, 1, 38);
-        upperLeg3.setRotationPoint(3.8F, 10.4F, 8.5F);
-        upperLeg3.addBox(-2.0F, -4.0F, -2.0F, 4, 8, 4, 0.0F);
-        upperLeg1 = new ModelRenderer(this, 0, 50);
-        upperLeg1.setRotationPoint(4.0F, 10.2F, -4.6F);
-        upperLeg1.addBox(-2.0F, -4.5F, -2.5F, 4, 9, 5, 0.0F);
-        leg4 = new ModelRenderer(this, 19, 40);
-        leg4.setRotationPoint(0.0F, 2.6F, 0.5F);
-        leg4.addBox(-1.5F, 0.0F, -2.0F, 3, 11, 3, 0.0F);
-        paw2 = new ModelRenderer(this, 21, 37);
-        paw2.setRotationPoint(0.0F, 10.0F, -1.899999976158142F);
-        paw2.addBox(-2.0F, -1.0F, -1.0F, 3, 2, 1, 0.0F);
-        frontBody = new ModelRenderer(this, 28, 43);
-        frontBody.setRotationPoint(0.5F, 10.0F, -7.8F);
+        frontBody = new ModelRenderer(this, 44, 43);
+        frontBody.setRotationPoint(0.5F, 10.0F, -8.8F);
         frontBody.addBox(-4.0F, -5.0F, 0.0F, 7, 10, 11, 0.0F);
         setRotation(frontBody, -0.07592182246175333F, 0.0F, 0.0F);
         nose = new ModelRenderer(this, 16, 3);
         nose.setRotationPoint(-1.5F, -2.299999952316284F, -8.600000381469727F);
         nose.addBox(0.0F, 0.0F, 0.4000000059604645F, 2, 2, 4, 0.0F);
         setRotation(nose, 0.1820378452539444F, 0.0F, 0.0F);
-
-        backBody = new ModelRenderer(this, 32, 25);
-        backBody.setRotationPoint(0.0F, 10.4F, 5.8F);
+        backBody = new ModelRenderer(this, 46, 25);
+        backBody.setRotationPoint(0.0F, 10.4F, 4.8F);
         backBody.addBox(-3.0F, -4.0F, -4.0F, 6, 8, 10, 0.0F);
         setRotation(backBody, -0.028623399732707F, 0.0F, 0.0F);
-        leg2 = new ModelRenderer(this, 19, 40);
-        leg2.setRotationPoint(0.6F, 2.8F, 0.5F);
-        leg2.addBox(-2.0F, 0.0F, -2.0F, 3, 11, 3, 0.0F);
-        leg3 = new ModelRenderer(this, 19, 40);
-        leg3.mirror = true;
-        leg3.setRotationPoint(0.5F, 2.6F, 0.5F);
-        leg3.addBox(-2.0F, 0.0F, -2.0F, 3, 11, 3, 0.0F);
-        neckBase = new ModelRenderer(this, 0, 26);
-        neckBase.setRotationPoint(0.5F, 9.4F, -5.8F);
+        neckBase = new ModelRenderer(this, 51, 14);
+        neckBase.setRotationPoint(0.5F, 9.4F, -6.8F);
         neckBase.addBox(-4.0F, -4.0F, -3.0F, 7, 7, 4, -0.1F);
         setRotation(neckBase, 0.136659280431156F, 0.0F, 0.0F);
-        mouthBottom = new ModelRenderer(this, 23, 14);
+        mouthBottom = new ModelRenderer(this, 5, 15);
         mouthBottom.setRotationPoint(-2.0F, -0.10000000149011612F, -8.0F);
         mouthBottom.addBox(0.0F, 0.0F, 0.5F, 3, 2, 3, 0.0F);
-        tailTop = new ModelRenderer(this, 44, 13);
-        tailTop.setRotationPoint(-1.0F, 10.8F, 11.3F);
+        tailTop = new ModelRenderer(this, 34, 9);
+        tailTop.setRotationPoint(-1.0F, 10.8F, 9.8F);
         tailTop.addBox(0.0F, 0.0F, 0.0F, 2, 4, 2, 0.0F);
         setRotation(tailTop, 0.8337679215359916F, 0.0F, 0.0F);
-        mouthTop = new ModelRenderer(this, 21, 19);
+        mouthTop = new ModelRenderer(this, 3, 20);
         mouthTop.setRotationPoint(-2.5F, -2.0F, -8.300000190734863F);
         mouthTop.addBox(0.0F, 0.0F, 0.5F, 4, 3, 4, 0.0F);
-
         tooth1 = new ModelRenderer(this, 16, 0);
         tooth1.setRotationPoint(2.7F, 1.2F, 8.2F);
         tooth1.addBox(0.2F, -0.2F, -7.2F, 1, 4, 1, -0.1F);
@@ -150,24 +115,73 @@ public class ModelSaberToothTFC extends ModelBase
         tooth2.addBox(-2.8F, -0.2F, -7.2F, 1, 4, 1, -0.1F);
         setRotation(tooth2, 0.2F, 0.0F, 0.0F);
 
+        frontRightLegTop = new ModelRenderer(this, 25, 52);
+        frontRightLegTop.setRotationPoint(-4.0F, 8.0F, -6.5F);
+        frontRightLegTop.addBox(-1.5F, -1.0F, -1.0F, 4, 7, 5, 0.0F);
+        setRotation(frontRightLegTop, 0.08726646259971647F, 0.0F, 0.0F);
+        frontRightLegMiddle = new ModelRenderer(this, 27, 41);
+        frontRightLegMiddle.setRotationPoint(1.0F, 6.0F, 1.6F);
+        frontRightLegMiddle.addBox(-2.0F, -1.0F, -2.0F, 3, 7, 4, 0.0F);
+        setRotation(frontRightLegMiddle, 0.08726646259971647F, 0.0F, 0.0F);
+        frontRightLegBottom = new ModelRenderer(this, 28, 34);
+        frontRightLegBottom.setRotationPoint(-0.99F, 6.0F, 0.2F);
+        frontRightLegBottom.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
+        setRotation(frontRightLegBottom, -0.2617993877991494F, 0.0F, 0.0F);
+        frontRightPaw = new ModelRenderer(this, 27, 28);
+        frontRightPaw.setRotationPoint(-0.009F, 3.0F, 1.0F);
+        frontRightPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
+        setRotation(frontRightPaw, 0.17453292519943295F, 0.0F, 0.0F);
+        backRightLegTop = new ModelRenderer(this, 0, 52);
+        backRightLegTop.setRotationPoint(-3.5F, 8.5F, 5.0F);
+        backRightLegTop.addBox(-1.5F, -1.0F, -1.0F, 4, 7, 5, 0.0F);
+        setRotation(backRightLegTop, -0.08726646259971647F, 0.0F, 0.0F);
+        backRightLegMiddle = new ModelRenderer(this, 2, 41);
+        backRightLegMiddle.setRotationPoint(1.0F, 5.8F, 1.4F);
+        backRightLegMiddle.addBox(-2.0F, -1.0F, -2.0F, 3, 7, 4, 0.0F);
+        setRotation(backRightLegMiddle, 0.2617993877991494F, 0.0F, 0.0F);
+        backRightLegBottom = new ModelRenderer(this, 3, 34);
+        backRightLegBottom.setRotationPoint(-0.99F, 6.0F, 0.1F);
+        backRightLegBottom.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
+        setRotation(backRightLegBottom, -0.3490658503988659F, 0.0F, 0.0F);
+        backRightPaw = new ModelRenderer(this, 2, 28);
+        backRightPaw.setRotationPoint(-0.009F, 2.9F, 1.0F);
+        backRightPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
+        setRotation(backRightPaw, 0.08726646259971647F, 0.0F, 0.0F);
 
-        //tooth1a = new ModelRenderer(this, 16, 0);
-        //tooth1a.setRotationPoint(0.8F, 10.1F, -10.2F);
-        //tooth1a.addBox(0.2F, -0.2F, -7.2F, 1, 1, 1, -0.05F);
-        //setRotation(tooth1a, 0.136659280431156F, 0.0F, 0.0F);
-        //tooth1b = new ModelRenderer(this, 16, 1);
-        //tooth1b.setRotationPoint(0.8F, 10.9F, -10.1F);
-        //tooth1b.addBox(0.2F, -0.2F, -7.2F, 1, 1, 1, -0.1F);
-        //setRotation(tooth1b, 0.136659280431156F, 0.0F, 0.0F);
-        //tooth1c = new ModelRenderer(this, 16, 2);
-        //tooth1c.setRotationPoint(0.8F, 11.2F, -10.1F);
-        //tooth1c.addBox(0.2F, -0.2F, -7.2F, 1, 1, 1, -0.16F);
-        //setRotation(tooth1c, 0.18203784098300857F, 0.0F, 0.0F);
-        //tooth1d = new ModelRenderer(this, 16, 3);
-        //tooth1d.setRotationPoint(0.8F, 11.7F, -10.0F);
-        //tooth1d.addBox(0.2F, -0.2F, -7.2F, 1, 1, 1, -0.25F);
-        //setRotation(tooth1d, 0.2F, 0.0F, 0.0F);
+        frontLeftLegTop = new ModelRenderer(this, 25, 52);
+        frontLeftLegTop.setRotationPoint(3.0F, 8.0F, -6.5F);
+        frontLeftLegTop.addBox(-1.5F, -1.0F, -1.0F, 4, 7, 5, 0.0F);
+        setRotation(frontLeftLegTop, 0.08726646259971647F, 0.0F, 0.0F);
+        frontLeftLegMiddle = new ModelRenderer(this, 27, 41);
+        frontLeftLegMiddle.setRotationPoint(1.0F, 6.0F, 1.6F);
+        frontLeftLegMiddle.addBox(-2.0F, -1.0F, -2.0F, 3, 7, 4, 0.0F);
+        setRotation(frontLeftLegMiddle, 0.08726646259971647F, 0.0F, 0.0F);
+        frontLeftLegBottom = new ModelRenderer(this, 28, 34);
+        frontLeftLegBottom.setRotationPoint(-1.009F, 6.0F, 0.2F);
+        frontLeftLegBottom.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
+        setRotation(frontLeftLegBottom, -0.2617993877991494F, 0.0F, 0.0F);
+        frontLeftPaw = new ModelRenderer(this, 27, 28);
+        frontLeftPaw.setRotationPoint(0.009F, 3.0F, 1.0F);
+        frontLeftPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
+        setRotation(frontLeftPaw, 0.17453292519943295F, 0.0F, 0.0F);
+        backLeftLegTop = new ModelRenderer(this, 0, 52);
+        backLeftLegTop.setRotationPoint(2.5F, 8.5F, 5.0F);
+        backLeftLegTop.addBox(-1.5F, -1.0F, -1.0F, 4, 7, 5, 0.0F);
+        setRotation(backLeftLegTop, -0.08726646259971647F, 0.0F, 0.0F);
+        backLeftLegMiddle = new ModelRenderer(this, 2, 41);
+        backLeftLegMiddle.setRotationPoint(1.0F, 5.8F, 1.4F);
+        backLeftLegMiddle.addBox(-2.0F, -1.0F, -2.0F, 3, 7, 4, 0.0F);
+        setRotation(backLeftLegMiddle, 0.2617993877991494F, 0.0F, 0.0F);
+        backLeftLegBottom = new ModelRenderer(this, 3, 34);
+        backLeftLegBottom.setRotationPoint(-1.009F, 6.0F, 0.1F);
+        backLeftLegBottom.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
+        setRotation(backLeftLegBottom, -0.3490658503988659F, 0.0F, 0.0F);
+        backLeftPaw = new ModelRenderer(this, 2, 28);
+        backLeftPaw.setRotationPoint(0.009F, 2.9F, 1.0F);
+        backLeftPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
+        setRotation(backLeftPaw, 0.08726646259971647F, 0.0F, 0.0F);
 
+        
         head.addChild(nose);
         head.addChild(ear1);
         head.addChild(ear2);
@@ -175,14 +189,19 @@ public class ModelSaberToothTFC extends ModelBase
         head.addChild(mouthTop);
         mouthTop.addChild(tooth1);
         mouthTop.addChild(tooth2);
-        upperLeg1.addChild(leg1);
-        upperLeg2.addChild(leg2);
-        upperLeg3.addChild(leg3);
-        upperLeg4.addChild(leg4);
-        leg1.addChild(paw1);
-        leg2.addChild(paw2);
-        leg3.addChild(paw3);
-        leg4.addChild(paw4);
+
+        frontRightLegTop.addChild(frontRightLegMiddle);
+        frontRightLegMiddle.addChild(frontRightLegBottom);
+        frontRightLegBottom.addChild(frontRightPaw);
+        backRightLegTop.addChild(backRightLegMiddle);
+        backRightLegMiddle.addChild(backRightLegBottom);
+        backRightLegBottom.addChild(backRightPaw);
+        frontLeftLegTop.addChild(frontLeftLegMiddle);
+        frontLeftLegMiddle.addChild(frontLeftLegBottom);
+        frontLeftLegBottom.addChild(frontLeftPaw);
+        backLeftLegTop.addChild(backLeftLegMiddle);
+        backLeftLegMiddle.addChild(backLeftLegBottom);
+        backLeftLegBottom.addChild(backLeftPaw);
 
     }
 
@@ -219,26 +238,23 @@ public class ModelSaberToothTFC extends ModelBase
         tailBody.render(f5);
         tailTop.render(f5);
         tailBottom.render(f5);
-        upperLeg1.render(f5);
-        upperLeg2.render(f5);
-        upperLeg3.render(f5);
-        upperLeg4.render(f5);
+        frontRightLegTop.render(f5);
+        frontLeftLegTop.render(f5);
+        backRightLegTop.render(f5);
+        backLeftLegTop.render(f5);
         GlStateManager.popMatrix();
     }
 
     @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
-        //super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
         head.rotateAngleX = f4 / (180F / (float) Math.PI);
         head.rotateAngleY = f3 / (180F / (float) Math.PI);
-        //tooth2.rotateAngleX = f4 / (180F / (float) Math.PI);
-        //tooth2.rotateAngleY = f3 / (180F / (float) Math.PI);
 
-        upperLeg3.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        upperLeg4.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
-        upperLeg1.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
-        upperLeg2.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+        frontRightLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
+        frontLeftLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;
+        backRightLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;
+        backLeftLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

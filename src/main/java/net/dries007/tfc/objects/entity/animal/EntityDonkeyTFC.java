@@ -44,6 +44,7 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -199,7 +200,8 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && BlocksTFC.isGround(this.world.getBlockState(this.getPosition().down()));
     }
 
     @Override
@@ -266,6 +268,12 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     }
 
     @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
+    }
+
+    @Override
     protected void mountTo(EntityPlayer player)
     {
         if (!this.isTame() && !this.getLeashed())
@@ -273,12 +281,6 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
             return;
         }
         super.mountTo(player);
-    }
-
-    @Override
-    protected boolean handleEating(EntityPlayer player, ItemStack stack)
-    {
-        return false; // Stop exploits
     }
 
     @Override

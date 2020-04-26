@@ -9,8 +9,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -46,6 +49,7 @@ import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -78,6 +82,7 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.network.PacketPlayerDataUpdate;
+import net.dries007.tfc.objects.blocks.BlockFluidTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.devices.BlockQuern;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
@@ -85,6 +90,8 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
+import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
+import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemQuiver;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.Helpers;
@@ -96,6 +103,7 @@ import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
+import static net.dries007.tfc.Constants.PLUCKING;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("unused")
@@ -580,6 +588,16 @@ public final class CommonEventHandler
             }
         }
 
+        if (event.getEntity() instanceof EntitySquid && world.getBlockState(pos).getBlock() instanceof BlockFluidTFC)
+        {
+            // Prevents squids spawning outside of salt water (eg: oceans)
+            Fluid fluid = ((BlockFluidTFC) world.getBlockState(pos).getBlock()).getFluid();
+            if (FluidsTFC.SALT_WATER.get() != fluid)
+            {
+                event.setResult(Event.Result.DENY);
+            }
+        }
+
         // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
         if (event.getEntity() instanceof ICreatureTFC)
         {
@@ -621,6 +639,13 @@ public final class CommonEventHandler
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
     {
         Entity entity = event.getEntity();
+
+        // Fix chickens spawning in caves (which is caused by zombie jockeys)
+        if (entity instanceof EntityChicken && ((EntityChicken) entity).isChickenJockey())
+        {
+            event.setResult(Event.Result.DENY);
+        }
+
         // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
         if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
         {
@@ -753,6 +778,62 @@ public final class CommonEventHandler
         }
     }
 
+    //go last, so if other mods handle this event, we don't.
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void checkArrowFill(ArrowNockEvent event)
+    {
+        //if we didn't have ammo in main inventory and no other mod has handled the event
+        if (!event.hasAmmo() && event.getAction() == null)
+        {
+            final EntityPlayer player = event.getEntityPlayer();
+            if (player != null && !player.capabilities.isCreativeMode)
+            {
+                if (ItemQuiver.replenishArrow(player))
+                {
+                    event.setAction(new ActionResult<>(EnumActionResult.PASS, event.getBow()));
+                }
+            }
+        }
+    }
+
+    //go last to avoid cancelled events
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void pickupQuiverItems(EntityItemPickupEvent event) //only pickups of EntityItem, not EntityArrow
+    {
+        if (!event.isCanceled())
+        {
+            if (ItemQuiver.pickupAmmo(event))
+            {
+                event.setResult(Event.Result.ALLOW);
+                event.getItem().getItem().setCount(0);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event)
+    {
+        ResourceLocation entityType = EntityList.getKey(event.getTarget());
+        Entity target = event.getTarget();
+        EntityPlayer player = event.getEntityPlayer();
+
+        for (String entityName : ConfigTFC.GENERAL.pluckableEntities)
+        {
+            if (!event.getTarget().getEntityWorld().isRemote && player.getHeldItemMainhand().isEmpty() && player.isSneaking())
+            {
+                if (target.hurtResistantTime == 0)
+                {
+                    target.dropItem(Items.FEATHER, 1);
+                    target.attackEntityFrom(PLUCKING, (float) ConfigTFC.GENERAL.damagePerFeather);
+                }
+                if (target instanceof EntityAnimalTFC)
+                {
+                    ((EntityAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);
+                }
+            }
+        }
+    }
+
     private static int countPlayerOverburdened(InventoryPlayer inventory)
     {
         // This is just optimized (probably uselessly, but whatever) for use in onPlayerTick
@@ -791,36 +872,5 @@ public final class CommonEventHandler
             }
         }
         return hugeHeavyCount;
-    }
-
-    //go last, so if other mods handle this event, we don't.
-    @SubscribeEvent(priority=EventPriority.LOWEST)
-    public static void checkArrowFill(ArrowNockEvent event)
-    {
-        //if we didn't have ammo in main inventory and no other mod has handled the event
-        if (!event.hasAmmo() && event.getAction() == null) {
-            final EntityPlayer player = event.getEntityPlayer();
-            if (player != null && !player.capabilities.isCreativeMode )
-            {
-                if (ItemQuiver.replenishArrow(player))
-                {
-                    event.setAction(new ActionResult<ItemStack>(EnumActionResult.PASS, event.getBow()));
-                }
-            }
-        }
-    }
-
-    //go last to avoid cancelled events
-    @SubscribeEvent(priority=EventPriority.LOWEST)
-    public static void pickupQuiverItems(EntityItemPickupEvent event) //only pickups of EntityItem, not EntityArrow
-    {
-        if (!event.isCanceled())
-        {
-            if (ItemQuiver.pickupAmmo(event))
-            {
-                event.setResult(Event.Result.ALLOW);
-                event.getItem().getItem().setCount(0);
-            }
-        }
     }
 }

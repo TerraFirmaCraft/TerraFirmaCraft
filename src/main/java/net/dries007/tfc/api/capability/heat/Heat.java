@@ -97,9 +97,9 @@ public enum Heat
         return tooltip;
     }
 
+    final TextFormatting format, alternate;
     private final float min;
     private final float max;
-    final TextFormatting format, alternate;
 
     Heat(float min, float max, TextFormatting format, TextFormatting alternate)
     {

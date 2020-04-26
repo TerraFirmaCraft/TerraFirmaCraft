@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 
+import net.dries007.tfc.objects.inventory.slot.SlotCallback;
+
 /**
  * This is a callback for various methods on an ItemStackHandler.
  * Methods are default to support overriding as many or as little as nessecary
@@ -45,4 +47,6 @@ public interface ISlotCallback
      * @param slot the slot index, or -1 if the call method had no specific slot
      */
     default void setAndUpdateSlots(int slot) {}
+
+    default void beforePutStack(@Nonnull SlotCallback slot, @Nonnull ItemStack stack) {}
 }

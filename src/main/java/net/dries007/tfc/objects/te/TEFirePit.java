@@ -71,7 +71,9 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     public static final float COOKING_POT_BOILING_TEMPERATURE = Heat.VERY_HOT.getMin();
 
     private final IItemHandler[] inventoryWrappers;
-
+    private final Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
+    // Grill
+    private final HeatRecipe[] cachedGrillRecipes;
     private HeatRecipe cachedRecipe;
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
@@ -79,11 +81,8 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     private int airTicks; // Ticks of bellows provided air remaining
     private float burnTemperature; // Temperature provided from the current item of fuel
     private long lastPlayerTick; // Last player tick this forge was ticked (for purposes of catching up)
-    private final Queue<ItemStack> leftover = new LinkedList<>(); // Leftover items when we can't merge output into any output slot.
-
     // Attachments
     private ItemStack attachedItemStack;
-
     // Cooking Pot
     private CookingPotStage cookingPotStage;
     private int boilingTicks;
@@ -91,9 +90,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     private int soupServings;
     private Nutrient soupNutrient;
     private long soupCreationDate;
-
-    // Grill
-    private final HeatRecipe[] cachedGrillRecipes;
 
     public TEFirePit()
     {
@@ -203,14 +199,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
                     ItemStack outputStack = leftover.peek();
 
                     // Try inserting in any slot
-                    outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
-                    outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
-
-                    // Try merging in any slot
-                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_1));
-                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_2));
-
-                    //If any of the above succeeds
+                    outputStack = mergeOutputStack(outputStack);
                     if (outputStack.isEmpty())
                     {
                         leftover.poll();
@@ -522,13 +511,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         return slot == SLOT_OUTPUT_1 || slot == SLOT_OUTPUT_2 ? 64 : 1;
     }
 
-    public void onCreate(ItemStack log)
-    {
-        Fuel fuel = FuelManager.getFuel(log);
-        burnTicks = fuel.getAmount();
-        burnTemperature = fuel.getTemperature();
-    }
-
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
@@ -562,6 +544,13 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
         }
     }
 
+    public void onCreate(ItemStack log)
+    {
+        Fuel fuel = FuelManager.getFuel(log);
+        burnTicks = fuel.getAmount();
+        burnTemperature = fuel.getTemperature();
+    }
+
     public int getSoupServings()
     {
         return soupServings;
@@ -592,13 +581,6 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     public CookingPotStage getCookingPotStage()
     {
         return cookingPotStage;
-    }
-
-    public void debug()
-    {
-        TerraFirmaCraft.getLog().debug("Debugging Fire pit:");
-        TerraFirmaCraft.getLog().debug("Temp {} | Burn Temp {} | Fuel Ticks {}", temperature, burnTemperature, burnTicks);
-        TerraFirmaCraft.getLog().debug("Burning? {}", world.getBlockState(pos).getValue(LIT));
     }
 
     @Override
@@ -782,22 +764,10 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             inputStack.shrink(1);
             if (!outputStack.isEmpty())
             {
-                outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
+                outputStack = mergeOutputStack(outputStack);
                 if (!outputStack.isEmpty())
                 {
-                    outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
-                }
-                if (!outputStack.isEmpty()) // Couldn't merge directly
-                {
-                    // If both the output and input are the same food item, try merging-updating the creation date to the earliest one
-                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_1));
-                    // We can run this safely since CapabilityFood#mergeStack is nice and only merges if possible
-                    outputStack = CapabilityFood.mergeStack(outputStack, inventory.getStackInSlot(SLOT_OUTPUT_2));
-                    if (!outputStack.isEmpty())
-                    {
-                        // Since we couldn't merge anyway, let's put it into a queue, like barrels
-                        leftover.add(outputStack);
-                    }
+                    leftover.add(outputStack);
                 }
             }
         }
@@ -812,6 +782,21 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             CapabilityFood.applyTrait(output, FoodTrait.WOOD_GRILLED);
             inventory.setStackInSlot(slot, output);
         }
+    }
+
+    /**
+     * Merges a stack into the two output slots
+     *
+     * @param outputStack the stack to merge.
+     * @return the leftover outputStack that wasn't merged
+     */
+    private ItemStack mergeOutputStack(ItemStack outputStack)
+    {
+        outputStack = inventory.insertItem(SLOT_OUTPUT_1, outputStack, false);
+        inventory.setStackInSlot(SLOT_OUTPUT_1, CapabilityFood.mergeItemStacksIgnoreCreationDate(inventory.getStackInSlot(SLOT_OUTPUT_1), outputStack));
+        outputStack = inventory.insertItem(SLOT_OUTPUT_2, outputStack, false);
+        inventory.setStackInSlot(SLOT_OUTPUT_2, CapabilityFood.mergeItemStacksIgnoreCreationDate(inventory.getStackInSlot(SLOT_OUTPUT_2), outputStack));
+        return outputStack;
     }
 
     private Item getSoupItem()

@@ -40,15 +40,23 @@ public abstract class TEBase extends TileEntity
     @Override
     public NBTTagCompound getUpdateTag()
     {
-        return writeToNBT(super.getUpdateTag());
+        NBTTagCompound nbt = new NBTTagCompound();
+        writeToNBT(nbt);
+        return nbt;
     }
 
+    /**
+     * Handles updating on client side when a block update is received
+     */
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
         readFromNBT(pkt.getNbtCompound());
     }
 
+    /**
+     * Reads the update tag attached to a chunk or TE packet
+     */
     @Override
     public void handleUpdateTag(NBTTagCompound nbt)
     {
@@ -59,5 +67,16 @@ public abstract class TEBase extends TileEntity
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+    /**
+     * Marks the TE for syncing. Will send all normal NBT saved data to clients.
+     * Note: if the TE uses getActualState, this needs to be called from {@link TEBase#onDataPacket(NetworkManager, SPacketUpdateTileEntity)} as well
+     */
+    public void markBlockUpdate()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        markDirty();
     }
 }

@@ -42,6 +42,7 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -76,9 +77,6 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         this.lastDeath = -1;
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
     }
-
-    @Override
-    public boolean isFertilized() { return false; }
 
     @Override
     public Gender getGender()
@@ -125,10 +123,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     }
 
     @Override
-    protected boolean handleEating(EntityPlayer player, ItemStack stack)
-    {
-        return false; // Stop exploits
-    }
+    public boolean isFertilized() { return false; }
 
     @Override
     public void setFertilized(boolean value)
@@ -172,7 +167,8 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     {
         return this.world.checkNoEntityCollision(getEntityBoundingBox())
             && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
+            && !this.world.containsAnyLiquid(getEntityBoundingBox())
+            && BlocksTFC.isGround(this.world.getBlockState(this.getPosition().down()));
     }
 
     @Override
@@ -230,6 +226,12 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     {
         double ageScale = 1 / (2.0D - getPercentToAdulthood());
         this.setScale((float) ageScale);
+    }
+
+    @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
     }
 
     @Override

@@ -38,18 +38,15 @@ public class RenderThrownWeapon<T extends EntityThrownWeapon> extends Render<T>
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.enableRescaleNormal();
 
-
         doRenderTransformations(entity, partialTicks);
 
         bindTexture(getEntityTexture(entity));
 
         if (this.renderOutlines)
         {
-
             GlStateManager.enableColorMaterial();
             GlStateManager.enableOutlineMode(getTeamColor(entity));
         }
-
 
         ItemStack weapon = entity.getWeapon();
         if (!weapon.isEmpty())
@@ -59,7 +56,6 @@ public class RenderThrownWeapon<T extends EntityThrownWeapon> extends Render<T>
 
         if (this.renderOutlines)
         {
-
             GlStateManager.disableOutlineMode();
             GlStateManager.disableColorMaterial();
         }

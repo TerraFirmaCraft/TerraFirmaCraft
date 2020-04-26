@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -337,5 +338,11 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addAdvancedGuiHandlers(new TFCInventoryGuiHandler<>(GuiCalendar.class));
         registry.addAdvancedGuiHandlers(new TFCInventoryGuiHandler<>(GuiNutrition.class));
         registry.addAdvancedGuiHandlers(new TFCInventoryGuiHandler<>(GuiSkills.class));
+
+        //Add JEI descriptions for basic mechanics
+
+        registry.addIngredientInfo(new ItemStack(BlocksTFC.PIT_KILN,1), VanillaTypes.ITEM, new TextComponentTranslation(TerraFirmaCraft.MOD_ID + ".jei.description.pitkiln").getFormattedText());
+        registry.addIngredientInfo(new ItemStack(BlocksTFC.PLACED_ITEM,1), VanillaTypes.ITEM, new TextComponentTranslation(TerraFirmaCraft.MOD_ID + ".jei.description.placeditem").getFormattedText());
+
     }
 }

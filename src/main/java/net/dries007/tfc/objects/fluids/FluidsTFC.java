@@ -47,7 +47,7 @@ public final class FluidsTFC
     private static final HashBiMap<Fluid, FluidWrapper> WRAPPERS = HashBiMap.create();
     private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "blocks/lava_still");
     private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "blocks/lava_flow");
-
+    private static final Map<EnumDyeColor, FluidWrapper> DYE_FLUIDS = new EnumMap<>(EnumDyeColor.class);
     // Water variants
     public static FluidWrapper HOT_WATER;
     public static FluidWrapper FRESH_WATER;
@@ -71,12 +71,9 @@ public final class FluidsTFC
     public static FluidWrapper WHISKEY;
     public static FluidWrapper BEER;
     public static FluidWrapper RUM;
-
     private static ImmutableSet<FluidWrapper> allAlcoholsFluids;
     private static ImmutableMap<Metal, FluidWrapper> allMetalFluids;
     private static ImmutableSet<FluidWrapper> allOtherFiniteFluids;
-
-    private static final Map<EnumDyeColor, FluidWrapper> DYE_FLUIDS = new EnumMap<>(EnumDyeColor.class);
 
     public static ImmutableSet<FluidWrapper> getAllAlcoholsFluids()
     {
@@ -131,7 +128,7 @@ public final class FluidsTFC
 
     public static void registerFluids()
     {
-        FRESH_WATER = registerFluid(new Fluid("fresh_water", STILL, FLOW, 0xFF1F32DA)).with(DrinkableProperty.DRINKABLE, player -> {
+        FRESH_WATER = registerFluid(new Fluid("fresh_water", STILL, FLOW, 0xFF1F5099)).with(DrinkableProperty.DRINKABLE, player -> {
             if (player.getFoodStats() instanceof FoodStatsTFC)
             {
                 ((FoodStatsTFC) player.getFoodStats()).addThirst(40);

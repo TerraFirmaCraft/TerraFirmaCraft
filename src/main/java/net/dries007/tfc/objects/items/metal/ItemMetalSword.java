@@ -45,16 +45,14 @@ public class ItemMetalSword extends ItemSword implements IMetalItem, IItemSize
 {
     private static final Map<Metal, ItemMetalSword> TABLE = new HashMap<>();
 
-    private float attackDamage;
-
     @Nullable
     public static ItemMetalSword get(Metal metal)
     {
         return TABLE.get(metal);
     }
-
     public final ToolMaterial material;
     private final Metal metal;
+    private final float attackDamage;
 
     public ItemMetalSword(Metal metal)
     {
@@ -86,6 +84,18 @@ public class ItemMetalSword extends ItemSword implements IMetalItem, IItemSize
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
         return false;
+    }
+
+    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
+    {
+        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
+        if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
+        {
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316D, 0));
+        }
+
+        return multimap;
     }
 
     @Nullable
@@ -141,17 +151,5 @@ public class ItemMetalSword extends ItemSword implements IMetalItem, IItemSize
     public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.MEDIUM;
-    }
-
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
-    {
-        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
-        if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
-        {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316D, 0));
-        }
-
-        return multimap;
     }
 }

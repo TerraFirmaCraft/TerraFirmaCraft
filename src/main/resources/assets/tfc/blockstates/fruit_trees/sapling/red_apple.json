@@ -3,8 +3,8 @@
   "defaults": {
     "model": "cross",
     "textures": {
-      "cross": "tfc:blocks/fruit_trees/sapling/banana",
-      "layer0": "tfc:blocks/fruit_trees/sapling/banana"
+      "cross": "tfc:blocks/fruit_trees/sapling/red_apple",
+      "layer0": "tfc:blocks/fruit_trees/sapling/red_apple"
     }
   },
   "variants": {

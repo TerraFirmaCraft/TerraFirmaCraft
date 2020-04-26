@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.container;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -56,6 +57,10 @@ public class CapabilityContainerListener implements IContainerListener
         SYNC_CAPS.put(CapabilityFood.KEY.toString(), CapabilityFood.CAPABILITY);
     }
 
+    /**
+     * Adds the listener to a container, and also handles any instances of {@link ICapabilityUpdateContainer}
+     * Executes server side
+     */
     public static void addTo(Container container, EntityPlayerMP player)
     {
         // Add the listener to the container, and also register it for containers that need additional sync logic
@@ -64,6 +69,51 @@ public class CapabilityContainerListener implements IContainerListener
         if (container instanceof ICapabilityUpdateContainer)
         {
             ((ICapabilityUpdateContainer) container).setCapabilityListener(listener);
+        }
+    }
+
+    /**
+     * Reads capability data and the stack compound tag into a joint share tag. Should be called by {@link net.minecraft.item.Item#getNBTShareTag(ItemStack)}
+     */
+    @Nonnull
+    public static NBTTagCompound readShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound stackNbt = stack.getTagCompound();
+        if (stackNbt != null)
+        {
+            if (stackNbt.isEmpty())
+            {
+                nbt.setBoolean("empty", true);
+            }
+            nbt.setTag("stack", stackNbt);
+        }
+        NBTTagCompound capNbt = readCapabilityData(stack);
+        if (!capNbt.isEmpty())
+        {
+            nbt.setTag("caps", capNbt);
+        }
+        return nbt;
+    }
+
+    /**
+     * Applies the share tag from a stack to an item.
+     * This should be called via {@link net.minecraft.item.Item#readNBTShareTag(ItemStack, NBTTagCompound)}
+     */
+    public static void applyShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        if (nbt != null)
+        {
+            NBTTagCompound stackNbt = nbt.getCompoundTag("stack");
+            if (!stackNbt.isEmpty() || nbt.getBoolean("empty"))
+            {
+                stack.setTagCompound(stackNbt);
+            }
+            NBTTagCompound capNbt = nbt.getCompoundTag("caps");
+            if (!capNbt.isEmpty())
+            {
+                applyCapabilityData(stack, capNbt);
+            }
         }
     }
 
