@@ -2,7 +2,7 @@
   "type": "tfc:sandwich",
   "pattern": [
     " BK",
-    "FFF",
+    "FGH",
     " B "
   ],
   "key": {
@@ -34,6 +34,48 @@
       {
         "type": "forge:ore_dict",
         "ore": "categoryDairy"
+      }
+    ],
+    "G": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryVegetable"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryCookedMeat"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryDairy"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryFruit"
+      },
+      {
+        "type": "minecraft:empty"
+      }
+    ],
+    "H": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryDairy"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryFruit"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryVegetable"
+      },
+      {
+        "type": "minecraft:empty"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "categoryCookedMeat"
       }
     ]
   },
