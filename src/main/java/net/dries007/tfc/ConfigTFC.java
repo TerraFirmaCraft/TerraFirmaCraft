@@ -49,7 +49,7 @@ public class ConfigTFC
     {
         @Config.Comment("Various debug options. Activates some extra wand features. Enables extra item tooltips.")
         @Config.LangKey("config." + MOD_ID + ".general.debug")
-        public boolean debug = Launch.blackboard.get("fml.deobfuscatedEnvironment") != null;
+        public boolean debug = false;
 
         @Config.Comment("If true, fallable blocks (ie: dirt, stone) will never fall.")
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocks")
