@@ -31,7 +31,8 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
     private final FluidTank tank = new FluidTankCallback(this, 0, CAPACITY);
     private boolean powered = false;
 
-    public TELamp() {
+    public TELamp()
+    {
         super();
         this.tank.setTileEntity(this);
     }
@@ -122,6 +123,6 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
 
     public void setPowered(boolean pow)
     {
-        powered=pow;
+        powered = pow;
     }
 }

@@ -256,7 +256,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
             if (usage >= 1) // minimize rounding issues
             {
                 FluidStack used = fluidHandler.drain((int) usage, true); // use fuel
-                if (used == null || used.amount < (int)usage)
+                if (used == null || used.amount < (int) usage)
                 {
                     worldIn.setBlockState(pos, state.withProperty(LIT, false));
                     ranOut = true;
@@ -470,7 +470,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         {
             return this.getDefaultState().withProperty(FACING, facing);
         }
-        else if (this.canPlaceAt(worldIn, pos, EnumFacing.UP) )
+        else if (this.canPlaceAt(worldIn, pos, EnumFacing.UP))
         {
             return this.getDefaultState().withProperty(FACING, EnumFacing.UP);
         }
