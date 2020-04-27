@@ -29,7 +29,7 @@ public class IngredientFluidStack implements IIngredient<FluidStack>
     @Override
     public NonNullList<FluidStack> getValidIngredients()
     {
-        return NonNullList.withSize(1, inputFluid);
+        return NonNullList.withSize(1, inputFluid.copy());
     }
 
     @Override
