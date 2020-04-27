@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/limestone",
     "cobble": "tfc:rock/cobble/limestone",
     "gravel": "tfc:rock/gravel/limestone",
-    "smooth": "tfc:rock/smooth/limestone"
+    "smooth": "tfc:rock/smooth/limestone",
+    "spike": "tfc:rock/spike/limestone"
   },
   "category": "sedimentary"
 }

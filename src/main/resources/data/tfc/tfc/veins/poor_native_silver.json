@@ -1,0 +1,130 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 140,
+  "min_y": 5,
+  "max_y": 100,
+  "size": 15,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/granite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/native_silver/granite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/granite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/native_silver/granite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/gneiss",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/native_silver/gneiss[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/gneiss[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/native_silver/gneiss[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/marble",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/native_silver/marble[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/marble[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/native_silver/marble[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/phyllite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/native_silver/phyllite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/phyllite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/native_silver/phyllite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/quartzite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/native_silver/quartzite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/quartzite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/native_silver/quartzite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/schist",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/native_silver/schist[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/schist[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/native_silver/schist[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/slate",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/native_silver/slate[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/slate[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/native_silver/slate[grade=rich]"
+        }
+      ]
+    }
+  ]
+}

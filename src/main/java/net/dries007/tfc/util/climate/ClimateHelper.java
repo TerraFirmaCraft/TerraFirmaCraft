@@ -7,9 +7,8 @@ package net.dries007.tfc.util.climate;
 
 import java.util.Random;
 
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Month;
-
-import static net.dries007.tfc.world.gen.TFCOverworldChunkGenerator.SEA_LEVEL;
 
 public class ClimateHelper
 {
@@ -73,10 +72,10 @@ public class ClimateHelper
      */
     public static float heightFactor(int y)
     {
-        if (y > SEA_LEVEL)
+        if (y > TFCConfig.COMMON.seaLevel.get())
         {
             // This is much simpler and works just as well
-            float scale = (y - SEA_LEVEL) * 0.16225f;
+            float scale = (y - TFCConfig.COMMON.seaLevel.get()) * 0.16225f;
             if (scale > 17.822f)
             {
                 scale = 17.822f;

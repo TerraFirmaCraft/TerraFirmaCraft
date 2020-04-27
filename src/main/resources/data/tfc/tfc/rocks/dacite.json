@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/dacite",
     "cobble": "tfc:rock/cobble/dacite",
     "gravel": "tfc:rock/gravel/dacite",
-    "smooth": "tfc:rock/smooth/dacite"
+    "smooth": "tfc:rock/smooth/dacite",
+    "spike": "tfc:rock/spike/dacite"
   },
   "category": "igneous_extrusive"
 }

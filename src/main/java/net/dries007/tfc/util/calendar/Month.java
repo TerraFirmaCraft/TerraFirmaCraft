@@ -6,7 +6,6 @@
 package net.dries007.tfc.util.calendar;
 
 import java.util.Arrays;
-import javax.annotation.Nonnull;
 
 public enum Month
 {
@@ -26,7 +25,6 @@ public enum Month
     private static final Month[] VALUES = values();
     public static final float AVERAGE_TEMPERATURE_MODIFIER = (float) Arrays.stream(VALUES).mapToDouble(Month::getTemperatureModifier).average().orElse(0);
 
-    @Nonnull
     public static Month valueOf(int id)
     {
         return id >= 0 && id < VALUES.length ? VALUES[id] : JANUARY;

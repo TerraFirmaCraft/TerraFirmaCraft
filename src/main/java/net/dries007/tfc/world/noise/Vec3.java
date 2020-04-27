@@ -5,18 +5,18 @@
 
 package net.dries007.tfc.world.noise;
 
-final class Vec3
+public final class Vec3
 {
-    final float x, y, z;
+    public final float x, y, z;
 
-    Vec3(float x, float y, float z)
+    public Vec3(float x, float y, float z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    final float dot(float x, float y, float z)
+    public final float dot(float x, float y, float z)
     {
         return this.x * x + this.y * y + this.z * z;
     }

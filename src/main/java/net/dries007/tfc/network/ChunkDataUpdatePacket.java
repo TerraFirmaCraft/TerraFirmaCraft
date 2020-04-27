@@ -13,9 +13,10 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class ChunkDataUpdatePacket
 {
-    private int chunkX;
-    private int chunkZ;
-    private float rainfall, regionalTemp;
+    private final int chunkX;
+    private final int chunkZ;
+    private final float rainfall;
+    private final float regionalTemp;
 
     public ChunkDataUpdatePacket(int chunkX, int chunkZ, ChunkData data)
     {

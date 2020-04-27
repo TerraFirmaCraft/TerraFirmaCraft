@@ -11,22 +11,22 @@ import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.biome.provider.BiomeProviderType;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.ChunkGeneratorType;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.biome.provider.TFCBiomeProvider;
-import net.dries007.tfc.world.gen.TFCGenerationSettings;
-import net.dries007.tfc.world.gen.TFCOverworldChunkGenerator;
+import net.dries007.tfc.world.biome.TFCBiomeProvider;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCWorldType extends WorldType
 {
-    @ObjectHolder(MOD_ID + ":overworld")
-    public static final ChunkGeneratorType<TFCGenerationSettings, TFCOverworldChunkGenerator> CHUNK_GENERATOR_TYPE = Helpers.getNull();
+    public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATORS = new DeferredRegister<>(ForgeRegistries.CHUNK_GENERATOR_TYPES, MOD_ID);
+    public static final DeferredRegister<BiomeProviderType<?, ?>> BIOME_PROVIDERS = new DeferredRegister<>(ForgeRegistries.BIOME_PROVIDER_TYPES, MOD_ID);
 
-    @ObjectHolder(MOD_ID + ":overworld")
-    public static final BiomeProviderType<TFCGenerationSettings, TFCBiomeProvider> BIOME_PROVIDER_TYPE = Helpers.getNull();
+    public static final RegistryObject<ChunkGeneratorType<TFCGenerationSettings, TFCOverworldChunkGenerator>> CHUNK_GENERATOR_TYPE = CHUNK_GENERATORS.register("overworld", () -> new ChunkGeneratorType<>(TFCOverworldChunkGenerator::new, false, TFCGenerationSettings::new));
+
+    public static final RegistryObject<BiomeProviderType<TFCGenerationSettings, TFCBiomeProvider>> BIOME_PROVIDER_TYPE = BIOME_PROVIDERS.register("overworld", () -> new BiomeProviderType<>(TFCBiomeProvider::new, TFCGenerationSettings::new));
 
     public TFCWorldType()
     {
@@ -36,16 +36,9 @@ public class TFCWorldType extends WorldType
     @Override
     public ChunkGenerator<?> createChunkGenerator(World world)
     {
-        // Create default settings objects
-        // todo: are these able to be customized via gui somehow?
-
-        TFCGenerationSettings settings = CHUNK_GENERATOR_TYPE.createSettings();
-        //TFCGenerationSettings biomeGenSettings = BIOME_PROVIDER_TYPE.createSettings();
-
+        TFCGenerationSettings settings = CHUNK_GENERATOR_TYPE.get().createSettings();
         settings.setWorldInfo(world.getWorldInfo());
-
-        // Create biome provider and chunk generator
-        BiomeProvider biomeProvider = BIOME_PROVIDER_TYPE.create(settings);
-        return CHUNK_GENERATOR_TYPE.create(world, biomeProvider, settings);
+        BiomeProvider biomeProvider = BIOME_PROVIDER_TYPE.get().create(settings);
+        return CHUNK_GENERATOR_TYPE.get().create(world, biomeProvider, settings);
     }
 }

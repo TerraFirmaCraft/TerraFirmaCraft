@@ -6,7 +6,6 @@
 package net.dries007.tfc.objects;
 
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
 
-import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 
 public final class TFCItemGroup extends ItemGroup
@@ -48,7 +47,6 @@ public final class TFCItemGroup extends ItemGroup
     }
 
     @Override
-    @Nonnull
     public ItemStack createIcon()
     {
         if (stack == null)

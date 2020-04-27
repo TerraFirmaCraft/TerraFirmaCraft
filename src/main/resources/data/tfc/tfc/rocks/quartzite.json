@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/quartzite",
     "cobble": "tfc:rock/cobble/quartzite",
     "gravel": "tfc:rock/gravel/quartzite",
-    "smooth": "tfc:rock/smooth/quartzite"
+    "smooth": "tfc:rock/smooth/quartzite",
+    "spike": "tfc:rock/spike/quartzite"
   },
   "category": "metamorphic"
 }

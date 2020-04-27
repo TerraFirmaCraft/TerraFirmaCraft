@@ -12,8 +12,8 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class ChunkDataRequestPacket
 {
-    private int chunkX;
-    private int chunkZ;
+    private final int chunkX;
+    private final int chunkZ;
 
     public ChunkDataRequestPacket(int chunkX, int chunkZ)
     {

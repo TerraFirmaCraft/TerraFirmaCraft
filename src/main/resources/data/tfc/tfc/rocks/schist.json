@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/schist",
     "cobble": "tfc:rock/cobble/schist",
     "gravel": "tfc:rock/gravel/schist",
-    "smooth": "tfc:rock/smooth/schist"
+    "smooth": "tfc:rock/smooth/schist",
+    "spike": "tfc:rock/spike/schist"
   },
   "category": "metamorphic"
 }

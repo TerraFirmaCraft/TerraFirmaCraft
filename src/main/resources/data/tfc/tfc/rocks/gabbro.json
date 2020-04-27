@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/gabbro",
     "cobble": "tfc:rock/cobble/gabbro",
     "gravel": "tfc:rock/gravel/gabbro",
-    "smooth": "tfc:rock/smooth/gabbro"
+    "smooth": "tfc:rock/smooth/gabbro",
+    "spike": "tfc:rock/spike/gabbro"
   },
   "category": "igneous_intrusive"
 }

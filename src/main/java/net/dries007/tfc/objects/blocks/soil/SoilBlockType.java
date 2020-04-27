@@ -13,6 +13,13 @@ public enum SoilBlockType
     GRASS,
     GRASS_PATH;
 
+    public static final SoilBlockType[] VALUES = values();
+
+    public static SoilBlockType valueOf(int i)
+    {
+        return i >= 0 && i < VALUES.length ? VALUES[i] : DIRT;
+    }
+
     public Block create()
     {
         switch (this)

@@ -1,0 +1,62 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 100,
+  "min_y": 30,
+  "max_y": 100,
+  "size": 20,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/diorite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/cassiterite/diorite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/cassiterite/diorite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/cassiterite/diorite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/gabbro",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/cassiterite/gabbro[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/cassiterite/gabbro[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/cassiterite/gabbro[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/granite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/cassiterite/granite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/cassiterite/granite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/cassiterite/granite[grade=rich]"
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/chalk",
     "cobble": "tfc:rock/cobble/chalk",
     "gravel": "tfc:rock/gravel/chalk",
-    "smooth": "tfc:rock/smooth/chalk"
+    "smooth": "tfc:rock/smooth/chalk",
+    "spike": "tfc:rock/spike/chalk"
   },
   "category": "sedimentary"
 }

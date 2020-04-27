@@ -1,23 +1,27 @@
 package net.dries007.tfc.util.json;
 
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Map;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import net.minecraft.block.Block;
 import net.minecraft.util.JSONUtils;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.world.gen.rock.RockCategory;
+import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.api.RockCategory;
+import net.dries007.tfc.util.Helpers;
 
-@ParametersAreNonnullByDefault
-public class RockDeserializer extends TFCTypeDeserializer<Rock>
+public enum RockDeserializer implements JsonDeserializer<Rock>
 {
+    INSTANCE;
+
     @Override
-    protected Rock create(JsonObject obj)
+    public Rock deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
+        JsonObject obj = JSONUtils.getJsonObject(json, "rock");
+
         // Rock category
         String rockCategoryName = JSONUtils.getString(obj, "category");
         RockCategory category;
@@ -31,7 +35,7 @@ public class RockDeserializer extends TFCTypeDeserializer<Rock>
         }
 
         // Rock blocks
-        Map<Rock.BlockType, Block> blockVariants = findRegistryObjects(obj, "blocks", ForgeRegistries.BLOCKS, Rock.BlockType.values(), type -> type.name().toLowerCase());
+        Map<Rock.BlockType, Block> blockVariants = Helpers.findRegistryObjects(obj, "blocks", ForgeRegistries.BLOCKS, Arrays.asList(Rock.BlockType.values()), type -> type.name().toLowerCase());
         return new Rock(category, blockVariants);
     }
 }
