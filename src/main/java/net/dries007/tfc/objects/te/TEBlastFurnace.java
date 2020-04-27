@@ -49,8 +49,8 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     public static final int SLOT_TUYERE = 0;
     public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3, FIELD_ORE_UNITS = 4, CHIMNEY_LEVELS = 5;
 
-    private List<ItemStack> oreStacks = new ArrayList<>();
-    private List<ItemStack> fuelStacks = new ArrayList<>();
+    private final List<ItemStack> oreStacks = new ArrayList<>();
+    private final List<ItemStack> fuelStacks = new ArrayList<>();
 
     private int maxFuel = 0, maxOre = 0, delayTimer = 0, meltAmount = 0, chimney = 0;
     private long burnTicksLeft = 0, airTicks = 0;
@@ -59,7 +59,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     private int temperature = 0;
     private float burnTemperature = 0;
 
-    private Alloy alloy;
+    private final Alloy alloy;
 
     public TEBlastFurnace()
     {
@@ -78,6 +78,11 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     public boolean isItemValid(int slot, ItemStack stack)
     {
         return OreDictionaryHelper.doesStackMatchOre(stack, "tuyere");
+    }
+
+    public long getBurnTicksLeft()
+    {
+        return burnTicksLeft;
     }
 
     @Override
