@@ -28,8 +28,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -47,7 +49,6 @@ import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlockTorchTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.te.TELamp;
-import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -87,7 +88,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     {
         super(Material.IRON);
         this.metal = metal;
-        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN).withProperty(LIT, false));
+        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(LIT, false));
         setHardness(1f);
         setLightLevel(0.9375F);
         setTickRandomly(true);
@@ -113,9 +114,10 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         return metal;
     }
 
-    //Don't need to do any clientside display ticking
+    //Don't need to do any clientside display ticking, as no smoke particles... yet
     //public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
 
+    //may support wall attachments sometime
     @SuppressWarnings("deprecation")
     @Override
     @Nonnull
@@ -197,24 +199,10 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     {
         if (state.getValue(LIT) && ConfigTFC.GENERAL.oilLampBurnRate > 0)
         {
-            TETickCounter tel = Helpers.getTE(worldIn, pos, TELamp.class);
+            TELamp tel = Helpers.getTE(worldIn, pos, TELamp.class);
             if (tel != null)
             {
-                IFluidHandler fluidHandler = tel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                if (!worldIn.isRemote && fluidHandler != null)
-                {
-                    long ticks = tel.getTicksSinceUpdate();
-                    double usage = ConfigTFC.GENERAL.oilLampBurnRate * ticks / ICalendar.TICKS_IN_HOUR;
-                    if (usage >= 10) // minimize rounding issues
-                    {
-                        FluidStack remaining = fluidHandler.drain((int) usage, true); // use fuel
-                        if (remaining == null || remaining.amount < usage)
-                        {
-                            worldIn.setBlockState(pos, state.withProperty(LIT, false));
-                        }
-                        tel.resetCounter();
-                    }
-                }
+                checkFuel(worldIn, pos, state, tel);
             }
         }
     }
@@ -228,19 +216,11 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         {
             if (state.getValue(LIT))
             {
-                long ticks = tel.getTicksSinceUpdate();
-                double usage = ConfigTFC.GENERAL.oilLampBurnRate * ticks / ICalendar.TICKS_IN_HOUR;
-                if (usage >= 1) // minimize rounding issues
+                if (!checkFuel(worldIn, pos, state, tel)) //if it didn't run out turn it off
                 {
-                    IFluidHandler fluidHandler = tel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                    if (fluidHandler != null)
-                    {
-                        fluidHandler.drain((int) usage, true); // use fuel
-                    }
+                    worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, false));
+                    tel.resetCounter();
                 }
-                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, false));
-                tel.resetCounter();
-                tel.markDirty();
             }
             else if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
             { //refill only if not lit
@@ -252,22 +232,52 @@ public class BlockMetalLamp extends Block implements ILightableBlock
                 }
             }
             else if (BlockTorchTFC.canLight(stack))
-            { // light if has fuel
-                IFluidHandler fluidHandler = tel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                if (fluidHandler !=  null)
+            {
+                if (lightWithFuel(worldIn, pos, state, tel))
                 {
-                    FluidStack fuelStack = fluidHandler.drain(Fluid.BUCKET_VOLUME,false);
-                    if (fuelStack != null && fuelStack.amount > 0)
-                    {
-                        TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) playerIn, state.getBlock()); // Trigger lit block
-                        worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, true));
-                        tel.resetCounter();
-                        tel.markDirty();
-                    }
+                    TFCTriggers.LIT_TRIGGER.trigger((EntityPlayerMP) playerIn, state.getBlock()); // Trigger lit block
                 }
             }
         }
         return true;
+    }
+
+    private boolean lightWithFuel(World worldIn, BlockPos pos, IBlockState state, TELamp tel)
+    {
+        IFluidHandler fluidHandler = tel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        if (!worldIn.isRemote && fluidHandler != null)
+        {
+            FluidStack fuelStack = fluidHandler.drain(Fluid.BUCKET_VOLUME, false);
+            if (fuelStack != null && fuelStack.amount > 0)
+            {
+                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, true));
+                tel.resetCounter();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkFuel(World worldIn, BlockPos pos, IBlockState state, TELamp tel)
+    {
+        IFluidHandler fluidHandler = tel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        boolean ranOut = false;
+        if (!worldIn.isRemote && fluidHandler != null)
+        {
+            long ticks = tel.getTicksSinceUpdate();
+            double usage = ConfigTFC.GENERAL.oilLampBurnRate * ticks / ICalendar.TICKS_IN_HOUR;
+            if (usage >= 1) // minimize rounding issues
+            {
+                FluidStack used = fluidHandler.drain((int) usage, true); // use fuel
+                if (used == null || used.amount < (int)usage)
+                {
+                    worldIn.setBlockState(pos, state.withProperty(LIT, false));
+                    ranOut = true;
+                }
+                tel.resetCounter();
+            }
+        }
+        return ranOut;
     }
 
     @Override
@@ -284,9 +294,10 @@ public class BlockMetalLamp extends Block implements ILightableBlock
                 IFluidHandler teCap = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
                 if (itemCap != null && teCap != null)
                 {
-                    teCap.fill(itemCap.drain(TELamp.CAPACITY,false), true); //don't drain creative item
+                    teCap.fill(itemCap.drain(TELamp.CAPACITY, false), true); //don't drain creative item
                 }
             }
+            worldIn.setBlockState(pos, state.withProperty(LIT, false));
             super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
         }
     }
@@ -295,26 +306,31 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (worldIn.isBlockPowered(pos))
+        TELamp tel = Helpers.getTE(worldIn, pos, TELamp.class);
+        if (worldIn.isBlockPowered(pos) && tel != null)
         {
-            worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, true));
-            TELamp te = Helpers.getTE(worldIn, pos, TELamp.class);
-            if (te != null)
-            {
-                te.resetCounter();
-            }
+            lightWithFuel(worldIn, pos, state, tel);
         }
-        else //may need to add powered boolean blockstate to avoid turning off when non power events occur?
+        else if (tel != null) //may need to add powered boolean blockstate to avoid turning off when non power events occur?
         {
-            worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, false));
-            TELamp te = Helpers.getTE(worldIn, pos, TELamp.class);
-            if (te != null)
+            if (!checkFuel(worldIn, pos, state, tel)) //if it didn't run out turn it off anyway
             {
-                te.resetCounter();
+                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, false));
+                tel.resetCounter();
             }
         }
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TELamp tile = Helpers.getTE(worldIn, pos, TELamp.class);
+        if (tile != null)
+        {
+            tile.onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
 
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
@@ -402,7 +418,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     }
 
 
-    //Lifted directly from BlockTorch
+    //Lifted from BlockTorch
     /**
      * Checks if this block can be placed exactly at the given position.
      */
@@ -416,7 +432,6 @@ public class BlockMetalLamp extends Block implements ILightableBlock
                 return true;
             }
         }
-
         return false;
     }
 
@@ -463,10 +478,15 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         {
             return this.getDefaultState().withProperty(FACING, facing);
         }
-        else
+        else if (this.canPlaceAt(worldIn, pos, EnumFacing.UP) )
         {
-            return this.getDefaultState();
+            return this.getDefaultState().withProperty(FACING, EnumFacing.UP);
         }
+        else if (this.canPlaceAt(worldIn, pos, EnumFacing.DOWN)) // last resort, must have matched in canPlaceAt test
+        {
+            return this.getDefaultState().withProperty(FACING, EnumFacing.DOWN);
+        }
+        return this.getDefaultState(); //should never happen
     }
 
     @Override
@@ -482,17 +502,21 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         return new TELamp();
     }
 
-/*    @Override
+    @Override //drops handled by TE
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+    }
+
+    @Override
     @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world,
                                   BlockPos pos, EntityPlayer player)
     {
-        ItemStack stack = new ItemStack(state.getBlock());
         TELamp tile = Helpers.getTE(world, pos, TELamp.class);
         if (tile != null)
         {
-            stack.setTagCompound(tile.getItemTag());
+            return tile.getItemStack(tile, state);
         }
-        return stack;
-    }*/
+        return new ItemStack(state.getBlock());
+    }
 }
