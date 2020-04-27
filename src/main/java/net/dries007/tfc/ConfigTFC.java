@@ -457,10 +457,15 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.metalLampFuels")
         public String[] metalLampFuels  =  {"olive_oil"};
 
-        @Config.Comment("How fast will lamps consume fuel (mb/hour)? 1 = lamp life of 250 hours, 0.125 = lamp life of 2000 hours, 0 = infinite fuel")
+        @Config.Comment("How fast will lamps consume fuel (mb/hour)? 1 = lamp life of 1 hour pre mb, 0.125 = lamp life of 2000 hours by default, 0 = infinite fuel")
         @Config.RangeDouble(min = 0)
         @Config.LangKey("config." + MOD_ID + ".general.oilLampBurnRate")
         public double oilLampBurnRate = 0.125;
+
+        @Config.Comment("How much fuel will lamps hold? 250mb is default")
+        @Config.RangeInt(min = 1)
+        @Config.LangKey("config." + MOD_ID + ".general.metalLampCapacity")
+        public int metalLampCapacity = 250;
     }
 
     public static class ClientCFG
