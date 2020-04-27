@@ -90,7 +90,6 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
         return stack;
     }
 
-
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
