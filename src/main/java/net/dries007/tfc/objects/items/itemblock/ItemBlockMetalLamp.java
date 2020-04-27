@@ -32,14 +32,12 @@ import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.metal.BlockMetalLamp;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
+import net.dries007.tfc.objects.te.TELamp;
 import net.dries007.tfc.util.Helpers;
 
-/**
- * todo: this
- */
 public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
 {
-    public final static int CAPACITY = 250;
+    public final static int CAPACITY = TELamp.CAPACITY;
 
     public final ToolMaterial material;
 

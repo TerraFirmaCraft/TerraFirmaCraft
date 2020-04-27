@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.FluidTankCallback;
 import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
@@ -25,9 +26,10 @@ import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 
 public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidHandlerSidedCallback
 {
-    public final static int CAPACITY = 250;
+    public final static int CAPACITY = ConfigTFC.GENERAL.metalLampCapacity;
 
-    private final FluidTank tank = new FluidTankCallback(this, 0, 250);
+    private final FluidTank tank = new FluidTankCallback(this, 0, CAPACITY);
+    private boolean powered = false;
 
     public TELamp() {
         super();
@@ -82,7 +84,7 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
         IFluidHandler teCap = tel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
         if (itemCap != null && teCap != null)
         {
-            itemCap.fill(teCap.drain(TELamp.CAPACITY, false), true); //don't drain creative item
+            itemCap.fill(teCap.drain(CAPACITY, false), true); //don't drain creative item
         }
         return stack;
     }
@@ -101,6 +103,7 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
             fluidStack.amount = tank.getCapacity();
             tank.setFluid(fluidStack);
         }
+        powered = nbt.getBoolean("powered");
     }
 
     @Nonnull
@@ -108,7 +111,17 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+        nbt.setBoolean("powered", powered);
         return super.writeToNBT(nbt);
     }
 
+    public boolean isPowered()
+    {
+        return powered;
+    }
+
+    public void setPowered(boolean pow)
+    {
+        powered=pow;
+    }
 }

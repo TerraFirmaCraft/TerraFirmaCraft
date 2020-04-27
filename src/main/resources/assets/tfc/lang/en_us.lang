@@ -500,6 +500,15 @@ config.tfc.general.doLogsRequireAxe.tooltip=If a log requires an axe it will not
 config.tfc.general.doLeavesDropSaplings=Do Leaves Drop Saplings
 config.tfc.general.doLeavesDropSaplings.tooltip=If leaves should drop saplings or not when broken.
 
+config.tfc.general.metalLampFuels=Lamp Fuel Fluids
+config.tfc.general.metalLampFuels.tooltip=List of fluids which will act as lamp fuels.
+
+config.tfc.general.oilLampBurnRate=Lamp Fuel Burn Rate
+config.tfc.general.oilLampBurnRate.tooltip=How fast lamps burn fuel in mb/hour.
+
+config.tfc.general.metalLampCapacity=Lamp Capacity
+config.tfc.general.metalLampCapacity.tooltip=How many millibuckets(mb) will lamps hold.
+
 ## Client Config
 
 config.tfc.client=Client Settings

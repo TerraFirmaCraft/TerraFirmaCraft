@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "lamp",
-		"1": "#sheet"
+		"1": "#sheet",
+		"2": "#lamp"
 	},
 	"elements": [
 		{
@@ -23,10 +23,10 @@
 			"from": [6, 1, 6],
 			"to": [10, 6, 10],
 			"faces": {
-				"north": {"uv": [1, 10, 5, 15], "texture": "#0"},
-				"east": {"uv": [1, 10, 5, 15], "texture": "#0"},
-				"south": {"uv": [1, 10, 5, 15], "texture": "#0"},
-				"west": {"uv": [1, 10, 5, 15], "texture": "#0"}
+				"north": {"uv": [0, 0, 4, 5], "texture": "#2"},
+				"east": {"uv": [0, 0, 4, 5], "texture": "#2"},
+				"south": {"uv": [0, 0, 4, 5], "texture": "#2"},
+				"west": {"uv": [0, 0, 4, 5], "texture": "#2"}
 			}
 		},
 		{
@@ -39,7 +39,7 @@
 				"south": {"uv": [0, 9, 6, 10], "texture": "#1"},
 				"west": {"uv": [0, 9, 6, 10], "texture": "#1"},
 				"up": {"uv": [10, 10, 16, 16], "texture": "#1"},
-				"down": {"uv": [11, 11, 15, 15], "texture": "#0"}
+				"down": {"uv": [0, 0, 5, 5], "texture": "#2"}
 			}
 		},
 		{

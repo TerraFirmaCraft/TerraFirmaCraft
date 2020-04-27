@@ -58,8 +58,8 @@ public class BlockMetalLamp extends Block implements ILightableBlock
 {
 
     private static final Map<Metal, BlockMetalLamp> MAP = new HashMap<>();
-    private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.25, 0, 0.25, 0.75, 0.5, 0.75);
-    private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.25, .5, 0.25, 0.75, 1, 0.75);
+    private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.3125, 0, 0.3125, 0.6875, 0.5, 0.6875);
+    private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.3125, 0, 0.3125, 0.6875, 1, 0.6875);
 
     private final Metal metal;
 
@@ -70,19 +70,6 @@ public class BlockMetalLamp extends Block implements ILightableBlock
             return p_apply_1_ == EnumFacing.DOWN || p_apply_1_ == EnumFacing.UP;
         }
     });
-
-    /* 1.7 lamp render bounds
-                    renderer.setRenderBounds(0.275, 0.0, 0.275, 0.725, 0.0625F, 0.725);
-                renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(0.25, 0.0625, 0.25, 0.75, 0.375F, 0.75);
-                renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(0.3125, 0.375, 0.3125, 0.6875, 0.4375, 0.6875);
-                renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(0.375, 0.4375, 0.375, 0.625, 0.5, 0.625);
-                renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(0.46875, 0.5, 0.46875, 0.53125, 0.5625F, 0.53125);
-    */
-
 
     public BlockMetalLamp(Metal metal)
     {
@@ -307,16 +294,21 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         TELamp tel = Helpers.getTE(worldIn, pos, TELamp.class);
-        if (worldIn.isBlockPowered(pos) && tel != null)
+        if (tel != null)
         {
-            lightWithFuel(worldIn, pos, state, tel);
-        }
-        else if (tel != null) //may need to add powered boolean blockstate to avoid turning off when non power events occur?
-        {
-            if (!checkFuel(worldIn, pos, state, tel)) //if it didn't run out turn it off anyway
+            if (worldIn.isBlockPowered(pos) && !tel.isPowered()) //power on
             {
-                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, false));
-                tel.resetCounter();
+                lightWithFuel(worldIn, pos, state, tel);
+                tel.setPowered(true);
+            }
+            else if (!worldIn.isBlockPowered(pos) && tel.isPowered()) //power off
+            {
+                if (!checkFuel(worldIn, pos, state, tel)) //if it didn't run out turn it off anyway
+                {
+                    worldIn.setBlockState(pos, state.withProperty(LIT, false));
+                    tel.setPowered(false);
+                    tel.resetCounter();
+                }
             }
         }
     }
