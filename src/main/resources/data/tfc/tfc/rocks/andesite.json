@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/andesite",
     "cobble": "tfc:rock/cobble/andesite",
     "gravel": "tfc:rock/gravel/andesite",
-    "smooth": "tfc:rock/smooth/andesite"
+    "smooth": "tfc:rock/smooth/andesite",
+    "spike": "tfc:rock/spike/andesite"
   },
   "category": "igneous_extrusive"
 }

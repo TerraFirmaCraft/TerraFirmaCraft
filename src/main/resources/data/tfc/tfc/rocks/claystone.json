@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/claystone",
     "cobble": "tfc:rock/cobble/claystone",
     "gravel": "tfc:rock/gravel/claystone",
-    "smooth": "tfc:rock/smooth/claystone"
+    "smooth": "tfc:rock/smooth/claystone",
+    "spike": "tfc:rock/spike/claystone"
   },
   "category": "sedimentary"
 }

@@ -7,7 +7,6 @@ package net.dries007.tfc.world.chunkdata;
 
 import java.util.Map;
 import java.util.Random;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.math.ChunkPos;
@@ -21,15 +20,14 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
-import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
-import net.dries007.tfc.types.TFCTypeManager;
+import net.dries007.tfc.objects.types.RockManager;
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
-import net.dries007.tfc.world.gen.TFCGenerationSettings;
-import net.dries007.tfc.world.gen.TFCOverworldChunkGenerator;
-import net.dries007.tfc.world.gen.layer.TFCLayerUtil;
-import net.dries007.tfc.world.gen.rock.RockData;
+import net.dries007.tfc.world.TFCGenerationSettings;
+import net.dries007.tfc.world.TFCOverworldChunkGenerator;
+import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -86,7 +84,6 @@ public class ChunkDataProvider
         this.rainfallNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).scaled(-25, 525).flattened(0, 500).spread(0.002f);
     }
 
-    @Nonnull
     public ChunkData get(ChunkPos pos)
     {
         if (world.chunkExists(pos.x, pos.z))
@@ -96,7 +93,6 @@ public class ChunkDataProvider
         return getOrCreate(pos);
     }
 
-    @Nonnull
     public ChunkData get(IChunk chunkIn)
     {
         if (chunkIn instanceof Chunk)
@@ -107,7 +103,6 @@ public class ChunkDataProvider
         return getOrCreate(chunkIn.getPos());
     }
 
-    @Nonnull
     public ChunkData getOrCreate(ChunkPos pos)
     {
         if (cachedChunkData.containsKey(pos))
@@ -117,7 +112,6 @@ public class ChunkDataProvider
         return createData(pos);
     }
 
-    @Nonnull
     private ChunkData createData(ChunkPos pos)
     {
         ChunkData data = new ChunkData();
@@ -134,7 +128,7 @@ public class ChunkDataProvider
         SoilBlockType.Variant[] soilLayer = new SoilBlockType.Variant[256];
         SandBlockType[] sandLayer = new SandBlockType[256];
 
-        int totalRocks = TFCTypeManager.ROCKS.getValues().size();
+        int totalRocks = RockManager.INSTANCE.getValues().size();
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
@@ -142,11 +136,11 @@ public class ChunkDataProvider
                 // From the seed, generate a combination of rock, sand, and soil profile
                 int seed = seedArea.getValue(chunkX + x, chunkZ + z);
                 int topRockValue = seed % totalRocks;
-                topLayer[x + 16 * z] = TFCTypeManager.ROCKS.get(topRockValue);
+                topLayer[x + 16 * z] = RockManager.INSTANCE.get(topRockValue);
                 seed /= totalRocks;
 
                 int bottomRockValue = seed % totalRocks;
-                bottomLayer[x + 16 * z] = TFCTypeManager.ROCKS.get(bottomRockValue);
+                bottomLayer[x + 16 * z] = RockManager.INSTANCE.get(bottomRockValue);
                 seed /= totalRocks;
 
                 int soilValue = seed % 3; // Only generate silty, sandy, and loamy

@@ -1,0 +1,181 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 100,
+  "min_y": 30,
+  "max_y": 100,
+  "size": 20,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/diorite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/diorite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/diorite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/diorite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/gabbro",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/gabbro[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/gabbro[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/gabbro[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/granite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/granite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/granite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/granite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/chalk",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/chalk[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/chalk[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/chalk[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/chert",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/chert[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/chert[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/chert[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/claystone",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/claystone[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/claystone[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/claystone[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/conglomerate",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/conglomerate[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/conglomerate[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/conglomerate[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/dolomite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/dolomite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/dolomite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/dolomite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/limestone",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/limestone[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/limestone[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/limestone[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/shale",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/bismuthinite/shale[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/bismuthinite/shale[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/bismuthinite/shale[grade=rich]"
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -15,8 +14,6 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
-
-import net.dries007.tfc.world.gen.rock.RockData;
 
 public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 {
@@ -45,7 +42,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         initWithDefaultValues();
     }
 
-    @Nonnull
     public RockData getRockData()
     {
         return rockData;
@@ -96,9 +92,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         isValid = valid;
     }
 
-    @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         return cap == ChunkDataCapability.CAPABILITY ? capability.cast() : LazyOptional.empty();
     }

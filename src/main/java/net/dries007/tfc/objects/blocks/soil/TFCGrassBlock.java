@@ -1,5 +1,6 @@
 package net.dries007.tfc.objects.blocks.soil;
 
+import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -13,6 +14,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.util.tags.TFCBlockTags;
 
@@ -51,34 +54,86 @@ public class TFCGrassBlock extends Block
     }
 
     @Override
-    @Nonnull
     @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        BooleanProperty property = getPropertyForFace(facing);
-        if (property != null)
+        worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
+        worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    {
+        worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state), 2);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        if (newState.getBlock() != state.getBlock())
         {
-            return stateIn.with(property, TFCBlockTags.GRASS.contains(worldIn.getBlockState(facingPos.down()).getBlock()));
+            updateSurroundingGrassConnections(worldIn, pos);
         }
-        return stateIn;
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
     @Nonnull
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        IBlockReader world = context.getWorld();
-        BlockPos pos = context.getPos().down();
-        return getDefaultState()
-            .with(NORTH, TFCBlockTags.GRASS.contains(world.getBlockState(pos.offset(Direction.NORTH)).getBlock()))
-            .with(EAST, TFCBlockTags.GRASS.contains(world.getBlockState(pos.offset(Direction.EAST)).getBlock()))
-            .with(WEST, TFCBlockTags.GRASS.contains(world.getBlockState(pos.offset(Direction.WEST)).getBlock()))
-            .with(SOUTH, TFCBlockTags.GRASS.contains(world.getBlockState(pos.offset(Direction.SOUTH)).getBlock()));
+        return updateStateFromNeighbors(context.getWorld(), context.getPos(), getDefaultState());
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(NORTH, EAST, SOUTH, WEST);
+    }
+
+    private void updateSurroundingGrassConnections(IWorld world, BlockPos pos)
+    {
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            BlockPos targetPos = pos.up().offset(direction);
+            BlockState targetState = world.getBlockState(targetPos);
+            if (targetState.getBlock() instanceof TFCGrassBlock)
+            {
+                world.setBlockState(targetPos, updateStateFromDirection(world, targetPos, targetState, direction.getOpposite()), 2);
+            }
+        }
+    }
+
+    private BlockState updateStateFromNeighbors(IBlockReader worldIn, BlockPos pos, BlockState state)
+    {
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            state = updateStateFromDirection(worldIn, pos, state, direction);
+        }
+        return state;
+    }
+
+    /**
+     * Updates the provided state based on the specific direction passed in
+     *
+     * @param pos       the position of the grass block to update
+     * @param direction the direction in which to update
+     */
+    private BlockState updateStateFromDirection(IBlockReader worldIn, BlockPos pos, BlockState stateIn, Direction direction)
+    {
+        BooleanProperty property = getPropertyForFace(direction);
+        if (property != null)
+        {
+            return stateIn.with(property, TFCBlockTags.GRASS.contains(worldIn.getBlockState(pos.offset(direction).down()).getBlock()));
+        }
+        return stateIn;
     }
 }

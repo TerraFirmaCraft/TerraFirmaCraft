@@ -5,9 +5,19 @@
 
 package net.dries007.tfc.util;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nonnull;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.NonNullFunction;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
@@ -49,5 +59,46 @@ public final class Helpers
         {
             array[i] = byteConverter.get(byteArray[i]);
         }
+    }
+
+    public static <K, V extends IForgeRegistryEntry<V>> Map<K, V> findRegistryObjects(JsonObject obj, String path, IForgeRegistry<V> registry, Collection<K> keyValues, NonNullFunction<K, String> keyStringMapper)
+    {
+        return findRegistryObjects(obj, path, registry, keyValues, Collections.emptyList(), keyStringMapper);
+    }
+
+    public static <K, V extends IForgeRegistryEntry<V>> Map<K, V> findRegistryObjects(JsonObject obj, String path, IForgeRegistry<V> registry, Collection<K> keyValues, Collection<K> optionalKeyValues, NonNullFunction<K, String> keyStringMapper)
+    {
+        if (obj.has(path))
+        {
+            Map<K, V> objects = new HashMap<>();
+            JsonObject objectsJson = JSONUtils.getJsonObject(obj, path);
+            for (K expectedKey : keyValues)
+            {
+                String jsonKey = keyStringMapper.apply(expectedKey);
+                ResourceLocation id = new ResourceLocation(JSONUtils.getString(objectsJson, jsonKey));
+                V registryObject = registry.getValue(id);
+                if (registryObject == null)
+                {
+                    throw new JsonParseException("Unknown registry object: " + id);
+                }
+                objects.put(expectedKey, registryObject);
+            }
+            for (K optionalKey : optionalKeyValues)
+            {
+                String jsonKey = keyStringMapper.apply(optionalKey);
+                if (objectsJson.has(jsonKey))
+                {
+                    ResourceLocation id = new ResourceLocation(JSONUtils.getString(objectsJson, jsonKey));
+                    V registryObject = registry.getValue(id);
+                    if (registryObject == null)
+                    {
+                        throw new JsonParseException("Unknown registry object: " + id);
+                    }
+                    objects.put(optionalKey, registryObject);
+                }
+            }
+            return objects;
+        }
+        return Collections.emptyMap();
     }
 }

@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/phyllite",
     "cobble": "tfc:rock/cobble/phyllite",
     "gravel": "tfc:rock/gravel/phyllite",
-    "smooth": "tfc:rock/smooth/phyllite"
+    "smooth": "tfc:rock/smooth/phyllite",
+    "spike": "tfc:rock/spike/phyllite"
   },
   "category": "metamorphic"
 }

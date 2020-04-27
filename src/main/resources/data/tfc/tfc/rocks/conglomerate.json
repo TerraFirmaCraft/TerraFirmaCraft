@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/conglomerate",
     "cobble": "tfc:rock/cobble/conglomerate",
     "gravel": "tfc:rock/gravel/conglomerate",
-    "smooth": "tfc:rock/smooth/conglomerate"
+    "smooth": "tfc:rock/smooth/conglomerate",
+    "spike": "tfc:rock/spike/conglomerate"
   },
   "category": "sedimentary"
 }

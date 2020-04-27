@@ -10,14 +10,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.JSONUtils;
 
 import net.dries007.tfc.util.collections.IWeighted;
-import net.dries007.tfc.world.vein.VeinType;
+import net.dries007.tfc.world.vein.Indicator;
 
-public enum VeinIndicatorDeserializer implements JsonDeserializer<VeinType.Indicator>
+public enum VeinIndicatorDeserializer implements JsonDeserializer<Indicator>
 {
     INSTANCE;
 
     @Override
-    public VeinType.Indicator deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+    public Indicator deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
         if (!json.isJsonObject())
         {
@@ -41,6 +41,6 @@ public enum VeinIndicatorDeserializer implements JsonDeserializer<VeinType.Indic
             throw new JsonParseException("Block states cannot be empty!");
         }
         List<BlockState> underStates = obj.has("blocks_under") ? context.deserialize(obj.get("blocks_under"), new TypeToken<List<BlockState>>() {}.getType()) : Collections.emptyList();
-        return new VeinType.Indicator(maxDepth, rarity, ignoreLiquids, states, underStates);
+        return new Indicator(maxDepth, rarity, ignoreLiquids, states, underStates);
     }
 }

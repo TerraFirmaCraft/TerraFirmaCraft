@@ -5,7 +5,7 @@
 
 package net.dries007.tfc.world.noise;
 
-public class NoiseUtil
+public final class NoiseUtil
 {
     public static float lerp(float start, float end, float t)
     {

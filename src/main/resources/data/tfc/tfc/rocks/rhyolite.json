@@ -5,7 +5,8 @@
     "bricks": "tfc:rock/bricks/rhyolite",
     "cobble": "tfc:rock/cobble/rhyolite",
     "gravel": "tfc:rock/gravel/rhyolite",
-    "smooth": "tfc:rock/smooth/rhyolite"
+    "smooth": "tfc:rock/smooth/rhyolite",
+    "spike": "tfc:rock/spike/rhyolite"
   },
   "category": "igneous_extrusive"
 }

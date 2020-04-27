@@ -1,0 +1,45 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 100,
+  "min_y": 30,
+  "max_y": 100,
+  "size": 20,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/granite",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/native_silver/granite[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/native_silver/granite[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/granite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/gneiss",
+      "ore": [
+        {
+          "weight": 20,
+          "block": "tfc:ore/native_silver/gneiss[grade=poor]"
+        },
+        {
+          "weight": 50,
+          "block": "tfc:ore/native_silver/gneiss[grade=normal]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/native_silver/gneiss[grade=rich]"
+        }
+      ]
+    }
+  ]
+}

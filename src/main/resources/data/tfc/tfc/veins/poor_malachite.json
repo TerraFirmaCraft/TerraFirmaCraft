@@ -1,0 +1,96 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 140,
+  "min_y": 5,
+  "max_y": 100,
+  "size": 15,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/marble",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/malachite/marble[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/malachite/marble[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/malachite/marble[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/limestone",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/malachite/limestone[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/malachite/limestone[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/malachite/limestone[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/phyllite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/malachite/phyllite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/malachite/phyllite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/malachite/phyllite[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/chalk",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/malachite/chalk[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/malachite/chalk[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/malachite/chalk[grade=rich]"
+        }
+      ]
+    },
+    {
+      "stone": "tfc:rock/raw/dolomite",
+      "ore": [
+        {
+          "weight": 60,
+          "block": "tfc:ore/malachite/dolomite[grade=poor]"
+        },
+        {
+          "weight": 30,
+          "block": "tfc:ore/malachite/dolomite[grade=normal]"
+        },
+        {
+          "weight": 10,
+          "block": "tfc:ore/malachite/dolomite[grade=rich]"
+        }
+      ]
+    }
+  ]
+}

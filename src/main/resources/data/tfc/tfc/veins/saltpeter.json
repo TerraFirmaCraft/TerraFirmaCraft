@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 120,
+  "min_y": 5,
+  "max_y": 100,
+  "size": 10,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/chalk",
+      "ore": "tfc:ore/saltpeter/chalk"
+    },
+    {
+      "stone": "tfc:rock/raw/chert",
+      "ore": "tfc:ore/saltpeter/chert"
+    },
+    {
+      "stone": "tfc:rock/raw/claystone",
+      "ore": "tfc:ore/saltpeter/claystone"
+    },
+    {
+      "stone": "tfc:rock/raw/conglomerate",
+      "ore": "tfc:ore/saltpeter/conglomerate"
+    },
+    {
+      "stone": "tfc:rock/raw/dolomite",
+      "ore": "tfc:ore/saltpeter/dolomite"
+    },
+    {
+      "stone": "tfc:rock/raw/limestone",
+      "ore": "tfc:ore/saltpeter/limestone"
+    },
+    {
+      "stone": "tfc:rock/raw/shale",
+      "ore": "tfc:ore/saltpeter/shale"
+    }
+  ]
+}
