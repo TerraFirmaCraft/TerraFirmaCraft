@@ -480,8 +480,8 @@ config.tfc.general.nutritionRotationHungerWindow.tooltip=This is the amount of h
 config.tfc.general.oreTooltipMode=Ore Tooltip Mode
 config.tfc.general.oreTooltipMode.tooltip=Mode used on ore tooltips.
 
-config.tfc.general.disableIngotPile=Disable Ingot stacks
-config.tfc.general.disableIngotPile.tooltip=Are Ingot Piles disabled?
+config.tfc.general.disableIngotPile=Can you stack ingots in ingot piles.
+config.tfc.general.disableIngotPile.tooltip=Can in world Ingot Piles be created?
 
 config.tfc.general.pluckableEntities=Pluckable Entities
 config.tfc.general.pluckableEntities.tooltip=Entities that drop a feather when shift right clicked.
