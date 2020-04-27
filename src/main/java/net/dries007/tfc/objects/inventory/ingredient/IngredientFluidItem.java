@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.inventory.ingredient;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -27,12 +26,6 @@ public class IngredientFluidItem implements IIngredient<ItemStack>
     public IngredientFluidItem(@Nonnull FluidStack stack)
     {
         this.stack = stack;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getValidIngredients()
-    {
-        return null;
     }
 
     @Override
@@ -57,5 +50,25 @@ public class IngredientFluidItem implements IIngredient<ItemStack>
     public int getAmount()
     {
         return stack.amount;
+    }
+
+    /*
+     * This looks ugly, but w/e
+     * We can't use getValidIngredients since it should return an ItemStack
+     * We can't change this class to use IIngredient<FluidStack> instead since it expects
+     * a fluid container ItemStack.
+     *
+     * **Needed for BarrelRecipeFluidMixing JEI wrapper**
+     *
+     * Suggestion for 1.15: Do like CraftTweaker and use something akin to #getInternal()
+     * which would return the specific object of test, if possible
+     * ie: String for ore dict, or in 1.15, tag
+     * Held Item, ItemStack, Fluid or FluidStack instance, used for comparison in #test()
+     *
+     * Currently, only used in Barrel JEI wrapper
+     */
+    public FluidStack getFluid()
+    {
+        return stack;
     }
 }

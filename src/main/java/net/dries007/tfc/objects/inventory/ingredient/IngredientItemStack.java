@@ -23,7 +23,7 @@ public class IngredientItemStack implements IIngredient<ItemStack>
     @Override
     public NonNullList<ItemStack> getValidIngredients()
     {
-        return NonNullList.withSize(1, inputStack);
+        return NonNullList.withSize(1, inputStack.copy());
     }
 
     @Override
