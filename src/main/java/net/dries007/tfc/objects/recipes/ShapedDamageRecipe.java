@@ -26,9 +26,12 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 @SuppressWarnings("unused")
 public class ShapedDamageRecipe extends ShapedOreRecipe
 {
-    public ShapedDamageRecipe(ResourceLocation group, CraftingHelper.ShapedPrimer input, @Nonnull ItemStack result)
+    private int damage;
+
+    public ShapedDamageRecipe(ResourceLocation group, CraftingHelper.ShapedPrimer input, @Nonnull ItemStack result, int damage)
     {
         super(group, result, input);
+        this.damage = damage;
     }
 
     @Override
@@ -66,7 +69,7 @@ public class ShapedDamageRecipe extends ShapedOreRecipe
     private ItemStack damageStack(ItemStack stack)
     {
         ItemStack damagedStack = stack.copy();
-        damagedStack.damageItem(1, ForgeHooks.getCraftingPlayer());
+        damagedStack.damageItem(damage, ForgeHooks.getCraftingPlayer());
 
         return damagedStack;
     }
@@ -82,7 +85,11 @@ public class ShapedDamageRecipe extends ShapedOreRecipe
             CraftingHelper.ShapedPrimer primer = RecipeUtils.parsePhaped(context, json);
 
             ItemStack result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
-            return new ShapedDamageRecipe(group.isEmpty() ? null : new ResourceLocation(group), primer, result);
+            final int damage;
+            if (JsonUtils.hasField(json, "damage"))
+                damage = JsonUtils.getInt(json, "damage");
+            else damage = 1;
+            return new ShapedDamageRecipe(group.isEmpty() ? null : new ResourceLocation(group), primer, result, damage);
         }
     }
 }

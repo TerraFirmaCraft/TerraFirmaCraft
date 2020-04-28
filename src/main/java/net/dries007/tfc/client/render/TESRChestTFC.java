@@ -8,6 +8,7 @@ package net.dries007.tfc.client.render;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.objects.te.TEChestTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -57,13 +59,13 @@ public class TESRChestTFC extends TileEntitySpecialRenderer<TEChestTFC>
 
         if (te.hasWorld())
         {
-            BlockChest block = (BlockChest) te.getWorld().getBlockState(te.getPos()).getBlock();
+            Block block = te.getBlockType();
             meta = te.getBlockMetadata();
             wood = te.getWood();
 
-            if (meta == 0)
+            if (block instanceof BlockChestTFC && meta == 0)
             {
-                block.checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
+                ((BlockChestTFC) block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
                 meta = te.getBlockMetadata();
             }
 

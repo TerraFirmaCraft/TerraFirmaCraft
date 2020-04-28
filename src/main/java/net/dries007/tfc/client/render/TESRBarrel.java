@@ -6,6 +6,7 @@
 package net.dries007.tfc.client.render;
 
 import org.lwjgl.opengl.GL11;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -34,10 +35,12 @@ public class TESRBarrel extends TileEntitySpecialRenderer<TEBarrel>
     @Override
     public void render(TEBarrel te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        if (te.getWorld().getBlockState(te.getPos()).getValue(BlockBarrel.SEALED))
-        {
-            return;
-        }
+        Block block = te.getBlockType();
+        if (block instanceof BlockBarrel)
+            if (te.getWorld().getBlockState(te.getPos()).getValue(BlockBarrel.SEALED))
+            {
+                return;
+            }
 
         IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
         IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
