@@ -35,8 +35,8 @@ import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.recipes.ChiselRecipe;
 import net.dries007.tfc.api.recipes.ChiselRecipe.Mode;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.container.ContainerEmpty;
+import net.dries007.tfc.util.ICollapsableBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
@@ -45,7 +45,7 @@ public class ItemMetalChisel extends ItemMetalTool
     private static final int[] STAIR_PATTERN_INDICES = {0, 3, 4, 6, 7, 8};
     private static final int[] SLAB_PATTERN_INDICES = {0, 1, 2};
 
-    private static final int COOLDOWN = 10; // todo: make optional cooldown scale by metal tier or tool speed
+    private static final int COOLDOWN = 10;
 
     /**
      * Calculates the block that would be set in the specified position if the chisel were used.
@@ -73,16 +73,11 @@ public class ItemMetalChisel extends ItemMetalTool
         if (hasHammerForChisel(player))
         {
             IBlockState state = worldIn.getBlockState(pos);
-
-            // no chiseling for raw stone that is blocked
-            if (!isRawAndBlocked(worldIn, state, pos))
+            // get the capability that tells us the current player selected mode for chiseling
+            IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (capability != null)
             {
-                // get the capability that tells us the current player selected mode for chiseling
-                IPlayerData capability = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
-                if (capability != null)
-                {
-                    return getRecipeResult(player, worldIn, pos, facing, capability.getChiselMode(), state, hitX, hitY, hitZ);
-                }
+                return getRecipeResult(player, worldIn, pos, facing, capability.getChiselMode(), state, hitX, hitY, hitZ);
             }
         }
         return null;
@@ -123,6 +118,7 @@ public class ItemMetalChisel extends ItemMetalTool
         }
         else if (chiselMode == Mode.SLAB || chiselMode == Mode.STAIR)
         {
+            //noinspection ConstantConditions
             ItemStack targetStack = targetState.getBlock().getPickBlock(targetState, null, worldIn, pos, player);
             ItemStack resultItemStack = findCraftingResult(worldIn, targetStack, (chiselMode == Mode.SLAB ? SLAB_PATTERN_INDICES : STAIR_PATTERN_INDICES));
 
@@ -179,20 +175,6 @@ public class ItemMetalChisel extends ItemMetalTool
         return null;
     }
 
-    private static boolean isRawAndBlocked(World world, IBlockState state, BlockPos pos)
-    {
-        if (!BlocksTFC.isRawStone(state))
-        {
-            return false;
-        }
-
-        IBlockState above1 = world.getBlockState(pos.up(1));
-        IBlockState above2 = world.getBlockState(pos.up(2));
-
-        return BlocksTFC.isRawStone(above1) && BlocksTFC.isRawStone(above2);
-
-    }
-
     public ItemMetalChisel(Metal metal, Metal.ItemType type)
     {
         super(metal, type);
@@ -222,6 +204,11 @@ public class ItemMetalChisel extends ItemMetalTool
             if (!worldIn.isRemote)
             {
                 // replace the block with a new block
+                IBlockState oldState = worldIn.getBlockState(pos);
+                if (oldState.getBlock() instanceof ICollapsableBlock && ConfigTFC.GENERAL.doesChiselingCauseCaveIns)
+                {
+                    ((ICollapsableBlock) oldState.getBlock()).checkCollapsingArea(worldIn, pos);
+                }
                 worldIn.setBlockState(pos, newState);
 
                 // spawn a slab if necessary

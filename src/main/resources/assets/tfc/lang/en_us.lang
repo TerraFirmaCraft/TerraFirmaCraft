@@ -500,6 +500,9 @@ config.tfc.general.doLogsRequireAxe.tooltip=Should logs require tools (axes and 
 config.tfc.general.doLeavesDropSaplings=Do Leaves Drop Saplings
 config.tfc.general.doLeavesDropSaplings.tooltip=If leaves should drop saplings or not when broken.
 
+config.tfc.general.doesChiselingCauseCaveIns=Does Chiseling Cause Cave Ins
+config.tfc.general.doesChiselingCauseCaveIns.tooltip=Should chiseling raw stone blocks cause cave ins?
+
 ## Client Config
 
 config.tfc.client=Client Settings
