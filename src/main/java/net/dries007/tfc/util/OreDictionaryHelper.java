@@ -112,10 +112,12 @@ public class OreDictionaryHelper
         OreDictionary.registerOre("dyeBrown", new ItemStack(ItemPowder.get(Powder.FERTILIZER)));
 
         BlockDecorativeStone.ALABASTER_BRICKS.forEach((dyeColor, blockDecorativeStone) -> OreDictionary.registerOre("alabasterBricks", new ItemStack(blockDecorativeStone)));
+        BlockDecorativeStone.ALABASTER_BRICKS.forEach((dyeColor, blockDecorativeStone) -> OreDictionary.registerOre("bricksAlabaster", new ItemStack(blockDecorativeStone)));
         BlockDecorativeStone.ALABASTER_POLISHED.forEach((dyeColor, blockDecorativeStone) -> OreDictionary.registerOre("alabasterPolished", new ItemStack(blockDecorativeStone)));
         BlockDecorativeStone.ALABASTER_RAW.forEach((dyeColor, blockDecorativeStone) -> OreDictionary.registerOre("alabasterRaw", new ItemStack(blockDecorativeStone)));
 
         OreDictionary.registerOre("alabasterBricks", new ItemStack(BlocksTFC.ALABASTER_BRICKS_PLAIN));
+        OreDictionary.registerOre("bricksAlabaster", new ItemStack(BlocksTFC.ALABASTER_BRICKS_PLAIN));
         OreDictionary.registerOre("alabasterRaw", new ItemStack(BlocksTFC.ALABASTER_RAW_PLAIN));
         OreDictionary.registerOre("alabasterPolished", new ItemStack(BlocksTFC.ALABASTER_POLISHED_PLAIN));
 
@@ -156,7 +158,6 @@ public class OreDictionaryHelper
                 MAP.put(thing, toString(prefixParts, "stone"));
                 break;
             case SMOOTH:
-                MAP.put(thing, toString(prefixParts, "stone"));
                 MAP.put(thing, toString(prefixParts, "stone", "polished"));
                 break;
             case COBBLE:
@@ -164,6 +165,7 @@ public class OreDictionaryHelper
                 break;
             case BRICKS:
                 MAP.put(thing, toString(prefixParts, "stone", "brick"));
+                MAP.put(thing, toString(prefixParts, "brick", "stone"));
                 break;
             case DRY_GRASS:
                 MAP.put(thing, toString(prefixParts, type, "dry"));
