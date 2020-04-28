@@ -32,7 +32,7 @@ public class CommandTimeTFC extends CommandBase
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "tfc.command.time.usage";
+        return "tfc.command.timetfc.usage";
     }
 
     @Override
@@ -44,13 +44,13 @@ public class CommandTimeTFC extends CommandBase
             {
                 if (args.length < 2)
                 {
-                    throw new WrongUsageException("tfc.command.time.usage_expected_second_argument_set");
+                    throw new WrongUsageException("tfc.command.timetfc.usage_expected_second_argument_set");
                 }
                 else if ("monthlength".equals(args[1]))
                 {
                     int newMonthLength = parseInt(args[2], 8, 128);
                     CalendarTFC.INSTANCE.setMonthLength(newMonthLength);
-                    notifyCommandListener(sender, this, "tfc.command.time.set_month_length", newMonthLength);
+                    notifyCommandListener(sender, this, "tfc.command.timetfc.set_month_length", newMonthLength);
                 }
                 else
                 {
@@ -58,17 +58,17 @@ public class CommandTimeTFC extends CommandBase
                     if ("day".equals(args[1]))
                     {
                         resultWorldTime = 1000;
-                        notifyCommandListener(sender, this, "tfc.command.time.set_day");
+                        notifyCommandListener(sender, this, "tfc.command.timetfc.set_day");
                     }
                     else if ("night".equals(args[1]))
                     {
                         resultWorldTime = 13000;
-                        notifyCommandListener(sender, this, "tfc.command.time.set_night");
+                        notifyCommandListener(sender, this, "tfc.command.timetfc.set_night");
                     }
                     else
                     {
                         resultWorldTime = parseInt(args[1], 0);
-                        notifyCommandListener(sender, this, "tfc.command.time.set_ticks", resultWorldTime);
+                        notifyCommandListener(sender, this, "tfc.command.timetfc.set_ticks", resultWorldTime);
                     }
                     setAllWorldTimes(server, resultWorldTime);
                     CalendarTFC.INSTANCE.setTimeFromWorldTime(resultWorldTime);
@@ -78,7 +78,7 @@ public class CommandTimeTFC extends CommandBase
             {
                 if (args.length < 2)
                 {
-                    throw new WrongUsageException("tfc.command.time.usage_expected_second_argument_add");
+                    throw new WrongUsageException("tfc.command.timetfc.usage_expected_second_argument_add");
                 }
                 long timeToAdd;
                 switch (args[1])
@@ -86,21 +86,21 @@ public class CommandTimeTFC extends CommandBase
                     case "months":
                         int months = parseInt(args[2], 0);
                         timeToAdd = ICalendar.TICKS_IN_DAY * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * months;
-                        notifyCommandListener(sender, this, "tfc.command.time.add_months", months, timeToAdd);
+                        notifyCommandListener(sender, this, "tfc.command.timetfc.add_months", months, timeToAdd);
                         break;
                     case "years":
                         int years = parseInt(args[2], 0);
                         timeToAdd = ICalendar.TICKS_IN_DAY * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * 12 * years;
-                        notifyCommandListener(sender, this, "tfc.command.time.add_years", years, timeToAdd);
+                        notifyCommandListener(sender, this, "tfc.command.timetfc.add_years", years, timeToAdd);
                         break;
                     case "days":
                         int days = parseInt(args[2], 0);
                         timeToAdd = ICalendar.TICKS_IN_DAY * days;
-                        notifyCommandListener(sender, this, "tfc.command.time.add_days", days, timeToAdd);
+                        notifyCommandListener(sender, this, "tfc.command.timetfc.add_days", days, timeToAdd);
                         break;
                     default:
                         timeToAdd = parseInt(args[1], 0);
-                        notifyCommandListener(sender, this, "tfc.command.time.add_ticks", timeToAdd);
+                        notifyCommandListener(sender, this, "tfc.command.timetfc.add_ticks", timeToAdd);
                 }
                 long newCalendarTime = CalendarTFC.CALENDAR_TIME.getTicks() + timeToAdd;
                 CalendarTFC.INSTANCE.setTimeFromCalendarTime(newCalendarTime);
@@ -109,51 +109,51 @@ public class CommandTimeTFC extends CommandBase
             {
                 if (args.length < 2)
                 {
-                    throw new WrongUsageException("tfc.command.time.usage_expected_second_argument_query");
+                    throw new WrongUsageException("tfc.command.timetfc.usage_expected_second_argument_query");
                 }
                 else if ("daytime".equals(args[1]))
                 {
                     int daytime = (int) (sender.getEntityWorld().getWorldTime() % ICalendar.TICKS_IN_DAY);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, daytime);
-                    notifyCommandListener(sender, this, "tfc.command.time.query_daytime", daytime);
+                    notifyCommandListener(sender, this, "tfc.command.timetfc.query_daytime", daytime);
                 }
                 else if ("day".equals(args[1]))
                 {
                     int day = (int) (CalendarTFC.CALENDAR_TIME.getTotalDays() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, day);
-                    notifyCommandListener(sender, this, "tfc.command.time.query_day", day);
+                    notifyCommandListener(sender, this, "tfc.command.timetfc.query_day", day);
                 }
                 else if ("gametime".equals(args[1]))
                 {
                     int gameTime = (int) (sender.getEntityWorld().getTotalWorldTime() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "tfc.command.time.query_gametime", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.timetfc.query_gametime", gameTime);
                 }
                 else if ("playerticks".equals(args[1]))
                 {
                     int gameTime = (int) (CalendarTFC.PLAYER_TIME.getTicks() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "tfc.command.time.query_playerticks", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.timetfc.query_playerticks", gameTime);
                 }
                 else if ("calendarticks".equals(args[1]))
                 {
                     int gameTime = (int) (CalendarTFC.CALENDAR_TIME.getTicks() % Integer.MAX_VALUE);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gameTime);
-                    notifyCommandListener(sender, this, "tfc.command.time.query_calendarticks", gameTime);
+                    notifyCommandListener(sender, this, "tfc.command.timetfc.query_calendarticks", gameTime);
                 }
                 else
                 {
-                    throw new WrongUsageException("tfc.command.time.usage_expected_second_argument_query");
+                    throw new WrongUsageException("tfc.command.timetfc.usage_expected_second_argument_query");
                 }
             }
             else
             {
-                throw new WrongUsageException("tfc.command.time.usage_expected_first_argument");
+                throw new WrongUsageException("tfc.command.timetfc.usage_expected_first_argument");
             }
         }
         else
         {
-            throw new WrongUsageException("tfc.command.time.usage_expected_first_argument");
+            throw new WrongUsageException("tfc.command.timetfc.usage_expected_first_argument");
         }
     }
 
