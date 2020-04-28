@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.dries007.tfc.util.Helpers;
+
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -146,7 +147,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     public boolean isFertilized() { return dataManager.get(FERTILIZED); }
 
     @Override
-    public void setFertilized(boolean value){ dataManager.set(FERTILIZED, value); }
+    public void setFertilized(boolean value) { dataManager.set(FERTILIZED, value); }
 
     @Override
     public void onFertilized(@Nonnull IAnimalTFC male)
@@ -563,5 +564,6 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     }
 
     public long getPregnantTime() { return dataManager.get(PREGNANT_TIME); }
+
     public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
 }

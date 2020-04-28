@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.dries007.tfc.util.Helpers;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -292,13 +293,16 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
         return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && getProductsCooldown() == 0;
     }
 
-    public long lastLaying() {
+    public long lastLaying()
+    {
         return dataManager.get(LASTLAYING);
     }
 
-    protected void setLastLaying(long lastLaying) {
+    protected void setLastLaying(long lastLaying)
+    {
         dataManager.set(LASTLAYING, lastLaying);
     }
+
     @Override
     protected void entityInit()
     {

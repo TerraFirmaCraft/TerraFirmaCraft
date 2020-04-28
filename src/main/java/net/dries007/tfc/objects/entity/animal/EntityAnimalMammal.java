@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.dries007.tfc.util.Helpers;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -38,10 +39,13 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
         setPregnantTime(-1);
     }
 
-    public long getPregnantTime() {
+    public long getPregnantTime()
+    {
         return dataManager.get(PREGNANT_TIME);
     }
-    private void setPregnantTime(long day) {
+
+    private void setPregnantTime(long day)
+    {
         dataManager.set(PREGNANT_TIME, day);
     }
 
