@@ -1,5 +1,6 @@
 package net.dries007.tfc.client;
 
+import net.dries007.tfc.api.Tree;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
@@ -8,6 +9,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.FoliageColors;
 import net.minecraft.world.GrassColors;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +24,10 @@ import net.dries007.tfc.util.climate.ClimateTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ClientEventHandler
 {
@@ -35,6 +41,7 @@ public final class ClientEventHandler
         // Rock blocks
         TFCBlocks.ROCKS.values().stream().map(map -> map.get(Rock.BlockType.SPIKE)).forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutout()));
         TFCBlocks.ORES.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutout())));
+        TFCBlocks.LEAVES.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutoutMipped()));
 
         // Grass
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutoutMipped()));
@@ -58,6 +65,24 @@ public final class ClientEventHandler
             return -1;
         };
 
+        IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> {
+            if (pos != null && tintIndex == 0)
+            {
+                // todo: change this to use monthly temp
+                double temp = MathHelper.clamp((ClimateTFC.getAvgTemp(pos) + 30) / 60, 0, 1);
+                double rain = MathHelper.clamp((ClimateTFC.getRainfall(pos) - 50) / 400, 0, 1);
+                return FoliageColors.get(temp, rain);
+            }
+            return  -1;
+        };
+
         blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
+
+        List<Tree.Default> tintableLeaves = TFCBlocks.LEAVES.keySet().stream().filter(reg -> !Tree.Default.NO_TINT.contains(reg)).collect(Collectors.toList());
+        List<Block> tintableBlocks = new ArrayList<>();
+        for (Tree.Default entry : tintableLeaves) {
+            tintableBlocks.add(TFCBlocks.LEAVES.get(entry).get());
+        }
+        blockColors.register(foliageColor, tintableBlocks.toArray(new Block[0]));
     }
 }
