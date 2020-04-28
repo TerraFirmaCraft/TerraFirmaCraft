@@ -44,7 +44,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
-import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.api.types.ILivestockAI;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
@@ -57,7 +57,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, ILivestock
+public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, ILivestockAI
 {
     private static final int DAYS_TO_ADULTHOOD = 360;
     private static final int DAYS_TO_GROW_WOOL = 7;
@@ -337,18 +337,9 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     protected void initEntityAI()
     {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.3D));
-        this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-        for (ItemStack is : OreDictionary.getOres("grain"))
-        {
-            Item item = is.getItem();
-            this.tasks.addTask(3, new EntityAITempt(this, 1.1D, item, false));
-        }
-        this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
+        addCommonTasks(this);
+
+        this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
     }
 
     @Override
