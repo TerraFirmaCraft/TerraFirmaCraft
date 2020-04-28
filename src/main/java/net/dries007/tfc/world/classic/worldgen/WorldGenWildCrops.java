@@ -54,13 +54,10 @@ public class WorldGenWildCrops extends WorldGenerator
             for (int i = 0; i < 14 + rng.nextInt(5); ++i)
             {
                 BlockPos pos = start.add(rng.nextInt(8) - rng.nextInt(8), rng.nextInt(4) - rng.nextInt(4), rng.nextInt(8) - rng.nextInt(8));
-                if (world.isAirBlock(pos) && cropBlock.canPlaceBlockAt(world, pos))
+                if (world.isAirBlock(pos) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
                 {
-                    if (BlocksTFC.isSoil(world.getBlockState(pos.add(0, -1, 0))))
-                    {
-                        int growth = 2 + rng.nextInt(crop.getMaxStage() - 2);
-                        world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth).withProperty(WILD, true), 2);
-                    }
+                    int growth = 2 + rng.nextInt(crop.getMaxStage() - 2);
+                    world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth).withProperty(WILD, true), 2);
 
                 }
             }
