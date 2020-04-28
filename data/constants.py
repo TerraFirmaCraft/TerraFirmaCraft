@@ -149,3 +149,22 @@ SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'gray']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam', 'clay_loam', 'clay', 'peat']
 STANDARD_SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'clay_loam']
+TREES = ['acacia',
+         'ash',
+         'aspen',
+         'birch',
+         'blackwood',
+         'chestnut',
+         'douglas_fir',
+         'hickory',
+         'kapok',
+         'maple',
+         'oak',
+         'palm',
+         'pine',
+         'rosewood',
+         'sequoia',
+         'spruce',
+         'sycamore',
+         'white_cedar',
+         'willow']
