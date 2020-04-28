@@ -5,6 +5,8 @@
 
 package net.dries007.tfc;
 
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
@@ -75,10 +77,7 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
-import net.dries007.tfc.api.types.ICreatureTFC;
-import net.dries007.tfc.api.types.IPredator;
-import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.api.types.Rock;
+import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.network.PacketPlayerDataUpdate;
@@ -817,19 +816,14 @@ public final class CommonEventHandler
         Entity target = event.getTarget();
         EntityPlayer player = event.getEntityPlayer();
 
-        for (String entityName : ConfigTFC.GENERAL.pluckableEntities)
+        if (entityType != null && target.hurtResistantTime == 0 && !target.getEntityWorld().isRemote && player.getHeldItemMainhand().isEmpty()
+            && player.isSneaking() && Arrays.asList(ConfigTFC.GENERAL.pluckableEntities).contains(entityType.toString()))
         {
-            if (!event.getTarget().getEntityWorld().isRemote && player.getHeldItemMainhand().isEmpty() && player.isSneaking())
+            target.dropItem(Items.FEATHER, 1);
+            target.attackEntityFrom(PLUCKING, (float) ConfigTFC.GENERAL.damagePerFeather);
+            if (target instanceof IAnimalTFC)
             {
-                if (target.hurtResistantTime == 0)
-                {
-                    target.dropItem(Items.FEATHER, 1);
-                    target.attackEntityFrom(PLUCKING, (float) ConfigTFC.GENERAL.damagePerFeather);
-                }
-                if (target instanceof EntityAnimalTFC)
-                {
-                    ((EntityAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);
-                }
+                ((IAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);
             }
         }
     }
