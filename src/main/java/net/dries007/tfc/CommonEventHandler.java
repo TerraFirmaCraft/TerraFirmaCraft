@@ -92,6 +92,7 @@ import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemQuiver;
+import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MonsterEquipment;
@@ -346,18 +347,15 @@ public final class CommonEventHandler
             }
 
             // Food
-            if (stack.getItem() instanceof ItemFood)
+            // Because our foods supply a custom capability in Item#initCapabilities, we need to avoid attaching a duplicate, otherwise it breaks food stacking recipes.
+            if (stack.getItem() instanceof ItemFood && !(stack.getItem() instanceof ItemFoodTFC))
             {
                 ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
-                if (foodHandler != null)
-                {
-                    event.addCapability(CapabilityFood.KEY, foodHandler);
-                }
-                else
+                if (foodHandler == null)
                 {
                     foodHandler = new FoodHandler(stack.getTagCompound(), new FoodData());
-                    event.addCapability(CapabilityFood.KEY, foodHandler);
                 }
+                event.addCapability(CapabilityFood.KEY, foodHandler);
             }
 
             // Forge / Metal / Heat. Try forge first, because it's more specific
