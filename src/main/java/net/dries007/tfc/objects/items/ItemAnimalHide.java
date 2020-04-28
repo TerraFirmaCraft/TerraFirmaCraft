@@ -52,6 +52,27 @@ public class ItemAnimalHide extends ItemTFC
         TABLE.get(type).put(size, this);
     }
 
+    @Override
+    public ItemStack getContainerItem(ItemStack itemStack)
+    {
+        switch (size)
+        {
+            case SMALL:
+                return new ItemStack(ItemAnimalHide.get(HideType.RAW, HideSize.SMALL));
+            case MEDIUM:
+                return new ItemStack(ItemAnimalHide.get(HideType.RAW, HideSize.MEDIUM));
+            case LARGE:
+                return new ItemStack(ItemAnimalHide.get(HideType.RAW, HideSize.LARGE));
+        }
+        return new ItemStack(ItemAnimalHide.get(HideType.RAW, HideSize.SMALL));
+    }
+
+    @Override
+    public boolean hasContainerItem(ItemStack stack)
+    {
+        return type == HideType.SHEEPSKIN;
+    }
+
     @Nonnull
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)

@@ -1,5 +1,5 @@
 {
-  "type": "tfc:damage_add_item_shapeless",
+  "type": "tfc:damage_item_shapeless",
   "ingredients": [
     {
       "item": "tfc:hide/sheepskin/medium"
@@ -12,10 +12,6 @@
   "result": {
     "item": "tfc:animal/product/wool",
     "count": 2
-  },
-  "output": {
-    "item": "tfc:hide/raw/medium",
-    "count": 1
   },
   "damage": 2
 }
