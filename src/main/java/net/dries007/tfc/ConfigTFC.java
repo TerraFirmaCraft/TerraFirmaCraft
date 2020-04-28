@@ -80,6 +80,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksHurtEntities")
         public boolean disableFallableBlocksHurtEntities = false;
 
+        @Config.Comment("Should chiseling raw stone blocks cause cave ins?")
+        @Config.LangKey("config." + MOD_ID + ".general.doesChiselingCauseCaveIns")
+        public boolean doesChiselingCauseCaveIns = true;
+
         @Config.Comment("If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.")
         @Config.LangKey("config." + MOD_ID + ".general.forceTFCWorldTypeOnServer")
         public boolean forceTFCWorldTypeOnServer = true;
