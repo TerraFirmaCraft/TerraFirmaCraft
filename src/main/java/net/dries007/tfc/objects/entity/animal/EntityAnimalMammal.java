@@ -8,7 +8,10 @@ package net.dries007.tfc.objects.entity.animal;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.util.Helpers;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
@@ -20,7 +23,8 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 @ParametersAreNonnullByDefault
 public abstract class EntityAnimalMammal extends EntityAnimalTFC
 {
-    private long pregnantTime; // The time(in days) this entity became pregnant
+    // The time(in days) this entity became pregnant
+    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityAnimalMammal.class, Helpers.LONG_DATA_SERIALIZER);
 
     @SuppressWarnings("unused")
     public EntityAnimalMammal(World worldIn)
@@ -31,7 +35,14 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
     public EntityAnimalMammal(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.pregnantTime = -1;
+        setPregnantTime(-1);
+    }
+
+    public long getPregnantTime() {
+        return dataManager.get(PREGNANT_TIME);
+    }
+    private void setPregnantTime(long day) {
+        dataManager.set(PREGNANT_TIME, day);
     }
 
     @Override
@@ -40,7 +51,7 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + gestationDays())
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
             {
                 birthChildren();
                 this.setFertilized(false);
@@ -52,21 +63,21 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
     public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setLong("pregnant", pregnantTime);
+        nbt.setLong("pregnant", getPregnantTime());
     }
 
     @Override
     public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.pregnantTime = nbt.getLong("pregnant");
+        this.setPregnantTime(nbt.getLong("pregnant"));
     }
 
     @Override
     public void onFertilized(IAnimalTFC male)
     {
         //Mark the day this female became pregnant
-        this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
+        setPregnantTime(CalendarTFC.PLAYER_TIME.getTotalDays());
     }
 
     @Override
@@ -86,4 +97,11 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
      * @return long value in days
      */
     public abstract long gestationDays();
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(PREGNANT_TIME, -1L);
+    }
 }

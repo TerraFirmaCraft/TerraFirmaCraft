@@ -16,7 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.*;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,7 +33,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeSavanna;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -48,22 +46,11 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
+    public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
 {
     protected static final int DAYS_TO_FULL_GESTATION = 350;
     private static final int DAYS_TO_ADULTHOOD = 980;
-    private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.VARINT);
-    private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> DATA_COLOR_ID = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.VARINT);
-    private long lastFed; //Last time(in days) this entity was fed
-    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-    private boolean fertilized; //Is this female fertilized?
-    private long matingTime; //The last time(in ticks) this male tried fertilizing females
-    private long lastDeath; //Last time(in days) this entity checked for dying of old age
-    private long pregnantTime; // The time(in days) this entity became pregnant
-    private float geneJump, geneHealth, geneSpeed, geneStrength; // Basic genetic selection based on vanilla's llama offspring
-    private int geneVariant;
 
     public EntityCamelTFC(World world)
     {
@@ -73,77 +60,13 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
 
     public EntityCamelTFC(World world, IAnimalTFC.Gender gender, int birthDay)
     {
-        super(world);
-        this.setGender(gender);
-        this.setBirthDay(birthDay);
-        this.setFamiliarity(0);
-        this.setGrowingAge(0); //We don't use this
-        this.lastFed = -1;
-        this.matingTime = -1;
-        this.lastDeath = -1;
-        this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
-        this.fertilized = false;
-        this.geneHealth = 0;
-        this.geneJump = 0;
-        this.geneSpeed = 0;
-        this.geneStrength = 0;
-        this.geneVariant = 0;
+        super(world, gender, birthDay);
     }
-
-    @Override
-    public Gender getGender()
-    {
-        return Gender.valueOf(this.dataManager.get(GENDER));
-    }
-
-    @Override
-    public void setGender(Gender gender)
-    {
-        this.dataManager.set(GENDER, gender.toBool());
-    }
-
-    @Override
-    public int getBirthDay()
-    {
-        return this.dataManager.get(BIRTHDAY);
-    }
-
-    @Override
-    public void setBirthDay(int value)
-    {
-        this.dataManager.set(BIRTHDAY, value);
-    }
-
-    @Override
-    public float getAdultFamiliarityCap()
-    {
-        return 0.35f;
-    }
-
-    @Override
-    public float getFamiliarity()
-    {
-        return this.dataManager.get(FAMILIARITY);
-    }
-
-    @Override
-    public void setFamiliarity(float value)
-    {
-        if (value < 0f) value = 0f;
-        if (value > 1f) value = 1f;
-        this.dataManager.set(FAMILIARITY, value);
-    }
-
-    @Override
-    public boolean isFertilized() { return this.fertilized; }
-
-    @Override
-    public void setFertilized(boolean value) { this.fertilized = value; }
 
     @Override
     public void onFertilized(@Nonnull IAnimalTFC male)
     {
-        this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
+        this.setPregnantTime(CalendarTFC.PLAYER_TIME.getTotalDays());
         int selection = this.rand.nextInt(9);
         int i;
         if (selection < 4)
@@ -184,19 +107,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.isHungry())
             return false;
         return this.matingTime == -1 || this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
-    }
-
-    @Override
-    public boolean isHungry()
-    {
-        if (lastFed == -1) return true;
-        return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
-    }
-
-    @Override
-    public IAnimalTFC.Type getType()
-    {
-        return IAnimalTFC.Type.MAMMAL;
     }
 
     @Override
@@ -263,31 +173,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         return super.processInteract(player, hand);
     }
 
-    @Override
-    public void setGrowingAge(int age)
-    {
-        super.setGrowingAge(0); // Ignoring this
-    }
-
-    @Override
-    public boolean isChild()
-    {
-        return this.getAge() == IAnimalTFC.Age.CHILD;
-    }
-
-    @Nonnull
-    @Override
-    public String getName()
-    {
-        if (this.hasCustomName())
-        {
-            return this.getCustomNameTag();
-        }
-        else
-        {
-            return getAnimalName().getFormattedText();
-        }
-    }
 
     @Override
     public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
@@ -342,7 +227,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + DAYS_TO_FULL_GESTATION)
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + DAYS_TO_FULL_GESTATION)
             {
                 birthChildren();
                 this.setFertilized(false);
@@ -390,21 +275,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setBoolean("gender", getGender().toBool());
-        nbt.setInteger("birth", getBirthDay());
-        nbt.setLong("fed", lastFed);
-        nbt.setLong("decay", lastFDecay);
-        nbt.setBoolean("fertilized", this.fertilized);
-        nbt.setLong("mating", matingTime);
-        nbt.setFloat("familiarity", getFamiliarity());
-        nbt.setLong("lastDeath", lastDeath);
-        nbt.setLong("pregnant", pregnantTime);
-        nbt.setFloat("geneSpeed", geneSpeed);
-        nbt.setFloat("geneJump", geneJump);
-        nbt.setFloat("geneHealth", geneHealth);
-        nbt.setFloat("geneStrength", geneStrength);
-        nbt.setInteger("geneVariant", geneVariant);
-        super.writeEntityToNBT(nbt);
         nbt.setInteger("Variant", this.getVariant());
         nbt.setInteger("Strength", this.getStrength());
         if (!this.horseChest.getStackInSlot(1).isEmpty()) {
@@ -416,22 +286,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
-        this.setBirthDay(nbt.getInteger("birth"));
-        this.lastFed = nbt.getLong("fed");
-        this.lastFDecay = nbt.getLong("decay");
-        this.matingTime = nbt.getLong("mating");
-        this.fertilized = nbt.getBoolean("fertilized");
-        this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.lastDeath = nbt.getLong("lastDeath");
-        this.pregnantTime = nbt.getLong("pregnant");
-        this.geneSpeed = nbt.getFloat("geneSpeed");
-        this.geneJump = nbt.getFloat("geneSpeed");
-        this.geneHealth = nbt.getFloat("geneSpeed");
-        this.geneStrength = nbt.getFloat("geneStrength");
-        this.geneVariant = nbt.getInteger("geneVariant");
         this.setStrength(nbt.getInteger("Strength"));
-        super.readEntityFromNBT(nbt);
         this.setVariant(nbt.getInteger("Variant"));
         if (nbt.hasKey("DecorItem", 10)) {
             this.horseChest.setInventorySlotContents(1, new ItemStack(nbt.getCompoundTag("DecorItem")));
@@ -443,9 +298,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     protected void entityInit()
     {
         super.entityInit();
-        getDataManager().register(GENDER, true);
-        getDataManager().register(BIRTHDAY, 0);
-        getDataManager().register(FAMILIARITY, 0f);
         getDataManager().register(DATA_COLOR_ID, -1);
     }
 
@@ -473,7 +325,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
         {
-            this.fertilized = true;
+            super.setFertilized(true);
             this.resetInLove();
             this.onFertilized((IAnimalTFC) other);
         }

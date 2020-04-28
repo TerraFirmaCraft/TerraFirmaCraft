@@ -53,7 +53,7 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, this.lastMilked + DEFAULT_TICKS_TO_MILK - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, this.lastMilked() + DEFAULT_TICKS_TO_MILK - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override

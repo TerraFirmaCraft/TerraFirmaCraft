@@ -62,7 +62,8 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-    private boolean fertilized; //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
+    //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
+    private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityAnimalTFC.class, DataSerializers.BOOLEAN);
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
     private long lastDeath; //Last time(in days) this entity checked for dying of old age
 
@@ -83,7 +84,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         this.matingTime = -1;
         this.lastDeath = -1;
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
-        this.fertilized = false;
+        this.setFertilized(false);
     }
 
     @Override
@@ -125,13 +126,10 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     }
 
     @Override
-    public boolean isFertilized() { return this.fertilized; }
+    public boolean isFertilized() { return dataManager.get(FERTILIZED); }
 
     @Override
-    public void setFertilized(boolean value)
-    {
-        this.fertilized = value;
-    }
+    public void setFertilized(boolean value) { dataManager.set(FERTILIZED, value); }
 
     @Override
     public boolean isReadyToMate()
@@ -182,7 +180,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         nbt.setInteger("birth", getBirthDay());
         nbt.setLong("fed", lastFed);
         nbt.setLong("decay", lastFDecay);
-        nbt.setBoolean("fertilized", this.fertilized);
+        nbt.setBoolean("fertilized", this.isFertilized());
         nbt.setLong("mating", matingTime);
         nbt.setFloat("familiarity", getFamiliarity());
         nbt.setLong("lastDeath", lastDeath);
@@ -197,7 +195,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         this.lastFed = nbt.getLong("fed");
         this.lastFDecay = nbt.getLong("decay");
         this.matingTime = nbt.getLong("mating");
-        this.fertilized = nbt.getBoolean("fertilized");
+        this.setFertilized(nbt.getBoolean("fertilized"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
         this.lastDeath = nbt.getLong("lastDeath");
 
@@ -260,7 +258,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
         {
-            this.fertilized = true;
+            this.setFertilized(true);
             this.resetInLove();
             this.onFertilized((IAnimalTFC) other);
         }
@@ -290,6 +288,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
         getDataManager().register(FAMILIARITY, 0f);
+        getDataManager().register(FERTILIZED, false);
     }
 
     @Override
