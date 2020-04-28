@@ -43,6 +43,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IHuntable;
+import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -281,10 +282,13 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
             Item item = is.getItem();
             this.tasks.addTask(3, new EntityAITempt(this, 1.4D, item, false));
         }
-        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 8.0F, 2.0D, 2.0D));
-        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityMob.class, 4.0F, 2.0D, 2.0D));
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityWolfTFC.class, 8.0F, 1.5D, 2.0D));
+        this.tasks.addTask(4, new EntityAIAvoidEntity(this, IPredator.class, 8.0F, 1.5D, 2.0D)); //every IPredator is an Entity. Hmm.
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 12.0F, 1.5D, 2.0D));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
+        this.tasks.addTask(8, new EntityAILookIdle(this));
+
     }
 
     @Override
