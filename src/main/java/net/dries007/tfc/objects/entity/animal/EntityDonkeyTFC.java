@@ -140,10 +140,16 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     }
 
     @Override
-    public boolean isFertilized() { return dataManager.get(FERTILIZED); }
+    public boolean isFertilized()
+    {
+        return dataManager.get(FERTILIZED);
+    }
 
     @Override
-    public void setFertilized(boolean value){ dataManager.set(FERTILIZED, value); }
+    public void setFertilized(boolean value)
+    {
+        dataManager.set(FERTILIZED, value);
+    }
 
     @Override
     public void onFertilized(@Nonnull IAnimalTFC male)
@@ -538,6 +544,13 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         this.world.spawnEntity(animal);
     }
 
-    public long getPregnantTime() { return dataManager.get(PREGNANT_TIME); }
-    public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
+    public long getPregnantTime()
+    {
+        return dataManager.get(PREGNANT_TIME);
+    }
+
+    public void setPregnantTime(long pregnantTime)
+    {
+        dataManager.set(PREGNANT_TIME, pregnantTime);
+    }
 }

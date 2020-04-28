@@ -46,7 +46,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-    public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
+public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
 {
     protected static final int DAYS_TO_FULL_GESTATION = 350;
     private static final int DAYS_TO_ADULTHOOD = 980;
@@ -179,7 +179,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.DESERT || biomeType ==BiomeHelper.BiomeType.SAVANNA))
+            (biomeType == BiomeHelper.BiomeType.DESERT || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
             return ConfigTFC.WORLD.livestockSpawnRarity;
         }
@@ -277,7 +277,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
         super.writeEntityToNBT(nbt);
         nbt.setInteger("Variant", this.getVariant());
         nbt.setInteger("Strength", this.getStrength());
-        if (!this.horseChest.getStackInSlot(1).isEmpty()) {
+        if (!this.horseChest.getStackInSlot(1).isEmpty())
+        {
             nbt.setTag("DecorItem", this.horseChest.getStackInSlot(1).writeToNBT(new NBTTagCompound()));
         }
     }
@@ -288,7 +289,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
         super.readEntityFromNBT(nbt);
         this.setStrength(nbt.getInteger("Strength"));
         this.setVariant(nbt.getInteger("Variant"));
-        if (nbt.hasKey("DecorItem", 10)) {
+        if (nbt.hasKey("DecorItem", 10))
+        {
             this.horseChest.setInventorySlotContents(1, new ItemStack(nbt.getCompoundTag("DecorItem")));
         }
         this.updateHorseSlots();
@@ -371,88 +373,114 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
         }
     }
 
-    public boolean wearsArmor() {
+    public boolean wearsArmor()
+    {
         return true;
     }
 
-    public boolean isArmor(ItemStack stack) {
+    public boolean isArmor(ItemStack stack)
+    {
         return stack.getItem() == Item.getItemFromBlock(Blocks.CARPET);
     }
 
     public boolean canBeSaddled() {return true;}
 
-    public void onInventoryChanged(IInventory invBasic) {
+    public void onInventoryChanged(IInventory invBasic)
+    {
         EnumDyeColor enumdyecolor = this.getColor();
         super.onInventoryChanged(invBasic);
         EnumDyeColor enumdyecolor1 = this.getColor();
-        if (this.ticksExisted > 20 && enumdyecolor1 != null && enumdyecolor1 != enumdyecolor) {
+        if (this.ticksExisted > 20 && enumdyecolor1 != null && enumdyecolor1 != enumdyecolor)
+        {
             this.playSound(SoundEvents.ENTITY_LLAMA_SWAG, 0.5F, 1.0F);
         }
         boolean flag = this.isHorseSaddled();
         this.updateHorseSlots();
-        if (this.ticksExisted > 20 && !flag && this.isHorseSaddled()) {
+        if (this.ticksExisted > 20 && !flag && this.isHorseSaddled())
+        {
             this.playSound(SoundEvents.ENTITY_HORSE_SADDLE, 0.5F, 1.0F);
         }
     }
 
-    protected void updateHorseSlots() {
-        if (!this.world.isRemote) {
+    protected void updateHorseSlots()
+    {
+        if (!this.world.isRemote)
+        {
             super.updateHorseSlots();
             this.setColorByItem(this.horseChest.getStackInSlot(1));
         }
     }
 
-    private void setColorByItem(ItemStack stack) {
-        if (this.isArmor(stack)) {
+    private void setColorByItem(ItemStack stack)
+    {
+        if (this.isArmor(stack))
+        {
             this.setColor(EnumDyeColor.byMetadata(stack.getMetadata()));
-        } else {
-            this.setColor((EnumDyeColor)null);
+        }
+        else
+        {
+            this.setColor((EnumDyeColor) null);
         }
     }
 
-    private void setColor(@Nullable EnumDyeColor color) {
+    private void setColor(@Nullable EnumDyeColor color)
+    {
         this.dataManager.set(DATA_COLOR_ID, color == null ? -1 : color.getMetadata());
     }
 
     @Nullable
-    public EnumDyeColor getColor() {
+    public EnumDyeColor getColor()
+    {
         int i = this.dataManager.get(DATA_COLOR_ID);
         return i == -1 ? null : EnumDyeColor.byMetadata(i);
     }
 
-    public boolean canBeSteered() {
+    public boolean canBeSteered()
+    {
         return this.getControllingPassenger() instanceof EntityLivingBase;
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+    public Entity getControllingPassenger()
+    {
+        return this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
     }
 
-    protected void playGallopSound(SoundType p_190680_1_) {
+    protected void playGallopSound(SoundType p_190680_1_)
+    {
         this.playSound(SoundEvents.ENTITY_HORSE_GALLOP, p_190680_1_.getVolume() * 0.15F, p_190680_1_.getPitch());
     }
 
-    protected void playStepSound(BlockPos pos, Block blockIn) {
-        if (!blockIn.getDefaultState().getMaterial().isLiquid()) {
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        if (!blockIn.getDefaultState().getMaterial().isLiquid())
+        {
             SoundType soundtype = blockIn.getSoundType();
-            if (this.world.getBlockState(pos.up()).getBlock() == Blocks.SNOW_LAYER) {
+            if (this.world.getBlockState(pos.up()).getBlock() == Blocks.SNOW_LAYER)
+            {
                 soundtype = Blocks.SNOW_LAYER.getSoundType();
             }
 
-            if (this.isBeingRidden() && this.canGallop) {
+            if (this.isBeingRidden() && this.canGallop)
+            {
                 ++this.gallopTime;
-                if (this.gallopTime > 5 && this.gallopTime % 3 == 0) {
+                if (this.gallopTime > 5 && this.gallopTime % 3 == 0)
+                {
                     this.playGallopSound(soundtype);
-                } else if (this.gallopTime <= 5) {
+                }
+                else if (this.gallopTime <= 5)
+                {
                     this.playSound(SoundEvents.ENTITY_HORSE_STEP_WOOD, soundtype.getVolume() * 0.15F, soundtype.getPitch());
                 }
-            } else if (soundtype == SoundType.WOOD) {
+            }
+            else if (soundtype == SoundType.WOOD)
+            {
                 this.playSound(SoundEvents.ENTITY_HORSE_STEP_WOOD, soundtype.getVolume() * 0.15F, soundtype.getPitch());
-            } else {
+            }
+            else
+            {
                 this.playSound(SoundEvents.ENTITY_HORSE_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
             }
         }
-
     }
 }
