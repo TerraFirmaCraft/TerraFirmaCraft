@@ -39,6 +39,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.api.types.ILivestockAI;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
@@ -50,7 +51,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
+public class EntityChickenTFC extends EntityAnimalTFC implements ILivestockAI
 {
     private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
     private static final int DAYS_TO_ADULTHOOD = 124;
@@ -243,18 +244,9 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     @Override
     protected void initEntityAI()
     {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
-        this.tasks.addTask(2, new EntityAIMate(this, 1D));
-        for (ItemStack is : OreDictionary.getOres("grain"))
-        {
-            Item item = is.getItem();
-            this.tasks.addTask(3, new EntityAITempt(this, 1.1D, item, false));
-        }
-        this.tasks.addTask(4, new EntityAIFindNest(this, 1D));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
+        addCommonTasks(this);
+
+        this.tasks.addTask(5, new EntityAIFindNest(this, 1D));
     }
 
     @Override
