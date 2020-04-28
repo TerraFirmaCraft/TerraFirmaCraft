@@ -138,7 +138,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
         this.tasks.addTask(3, new EntityAITempt(this, 1.1D, ItemsTFC.SALT, false));
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.0D));
         this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 12.0F, 0.7D, 1.2D));
-        this.tasks.addTask(4, new EntityAIAvoidEntity(this, IPredator.class, 8.0F, 0.7D, 1.2D)); //every IPredator is an Entity. Hmm.
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntitySaberToothTFC.class, 8.0F, 0.7D, 1.2D)); //every IPredator is an Entity. Hmm.
         this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityWolfTFC.class, 8.0F, 0.7D, 1.2D));
         this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityMob.class, 8.0F, 0.7D, 1.2D));
         this.tasks.addTask(6, new EntityAIEatGrass(this));
