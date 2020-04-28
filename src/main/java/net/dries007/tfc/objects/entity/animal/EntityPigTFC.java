@@ -14,17 +14,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;

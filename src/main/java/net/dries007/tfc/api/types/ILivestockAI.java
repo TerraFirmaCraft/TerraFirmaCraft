@@ -22,6 +22,8 @@ import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.dries007.tfc.objects.entity.animal.EntityLionTFC;
+import net.dries007.tfc.objects.entity.animal.EntitySaberToothTFC;
 import net.dries007.tfc.objects.entity.animal.EntityWolfTFC;
 
 /**
@@ -43,8 +45,9 @@ public interface ILivestockAI extends ILivestock
             animal.tasks.addTask(3, new EntityAITempt(animal, 1.1D, item, false));
         }
         animal.tasks.addTask(4, new EntityAIAvoidEntity<>(animal, EntityPlayer.class, 12.0F, 0.5D, 1.1D));
-        animal.tasks.addTask(4, new EntityAIAvoidEntity(animal, IPredator.class, 8.0F, 0.5D, 1.1D)); //every IPredator is an Entity. Hmm.
         animal.tasks.addTask(4, new EntityAIAvoidEntity<>(animal, EntityWolfTFC.class, 8.0F, 0.5D, 1.1D));
+        animal.tasks.addTask(4, new EntityAIAvoidEntity<>(animal, EntityLionTFC.class, 8.0F, 0.5D, 1.1D)); //every IPredator is an Entity. Hmm.
+        animal.tasks.addTask(4, new EntityAIAvoidEntity<>(animal, EntitySaberToothTFC.class, 8.0F, 0.5D, 1.1D)); //every IPredator is an Entity. Hmm.
         // space for follow parent for mammals, and find nest for oviparous
         animal.tasks.addTask(6, new EntityAIEatGrass(animal));
         animal.tasks.addTask(7, new EntityAIWanderAvoidWater(animal, 1.0D));
