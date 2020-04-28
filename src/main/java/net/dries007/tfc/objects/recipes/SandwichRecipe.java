@@ -14,13 +14,11 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodData;
@@ -30,19 +28,11 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 @SuppressWarnings("unused")
-public class SandwichRecipe extends ShapedOreRecipe
+public class SandwichRecipe extends ShapedDamageRecipe
 {
-    public SandwichRecipe(ResourceLocation group, CraftingHelper.ShapedPrimer input, @Nonnull ItemStack result)
+    public SandwichRecipe(ResourceLocation group, CraftingHelper.ShapedPrimer input, @Nonnull ItemStack result, int damage)
     {
-        super(group, result, input);
-    }
-
-    @Nonnull
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
-    {
-        // Damage knives present
-        return ShapelessDamageRecipe.getRemainingItemsDamaged(inv);
+        super(group, input, result, damage);
     }
 
     @Nonnull
@@ -115,7 +105,11 @@ public class SandwichRecipe extends ShapedOreRecipe
             CraftingHelper.ShapedPrimer primer = RecipeUtils.parsePhaped(context, json);
 
             ItemStack result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
-            return new SandwichRecipe(group.isEmpty() ? null : new ResourceLocation(group), primer, result);
+            final int damage;
+            if (JsonUtils.hasField(json, "damage"))
+                damage = JsonUtils.getInt(json, "damage");
+            else damage = 1;
+            return new SandwichRecipe(group.isEmpty() ? null : new ResourceLocation(group), primer, result, damage);
         }
     }
 }

@@ -118,7 +118,23 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
         {
             // Like classic, "Metal: xx units"
             String info = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
-            tooltip.add(info);
+            // not like Classic, "Metal: xx total units" Adds the whole stacks worth up.
+            String stackTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.total", getSmeltAmount(stack) * stack.getCount()));
+
+            switch (ConfigTFC.CLIENT.oreTooltipMode)
+            {
+                case 0:
+                    break;
+                case 1:
+                    tooltip.add(info);
+                    break;
+                case 2:
+                    tooltip.add(stackTotal);
+                    break;
+                case 3:
+                    tooltip.add(info);
+                    tooltip.add(stackTotal);
+            }
         }
     }
 

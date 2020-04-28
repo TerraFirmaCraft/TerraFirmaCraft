@@ -427,9 +427,9 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.quiverSearch")
         public String quiverSearch = "hotbar";
 
-        @Config.Comment("Disable the ability to create ingot piles?")
+        @Config.Comment("Should you be able to create ingot piles.")
         @Config.LangKey("config." + MOD_ID + ".general.disableIngotPile")
-        public boolean placeIngotPiles = false;
+        public boolean placeIngotPiles = true;
 
         @Config.Comment("Entities that can be plucked for feathers.")
         @Config.LangKey("config." + MOD_ID + ".general.pluckableEntities")
