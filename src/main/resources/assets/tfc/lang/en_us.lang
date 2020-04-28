@@ -495,7 +495,7 @@ config.tfc.general.shouldCropsDie=Should Crops Die
 config.tfc.general.shouldCropsDie.tooltip=If crops should die under any circumstance.
 
 config.tfc.general.doLogsRequireAxe=Do Logs Require Axe
-config.tfc.general.doLogsRequireAxe.tooltip=If a log requires an axe it will not drop anything without one.
+config.tfc.general.doLogsRequireAxe.tooltip=Should logs require tools (axes and saws, or hammers for sticks) to be mined? If false, breaking logs with an empty hand will still drop items.
 
 config.tfc.general.doLeavesDropSaplings=Do Leaves Drop Saplings
 config.tfc.general.doLeavesDropSaplings.tooltip=If leaves should drop saplings or not when broken.

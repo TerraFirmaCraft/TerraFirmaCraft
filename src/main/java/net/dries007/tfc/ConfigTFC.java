@@ -444,7 +444,7 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.shouldCropsDie")
         public boolean shouldCropsDie = true;
 
-        @Config.Comment("If false, logs will drop logs when punched.")
+        @Config.Comment("Should logs require tools (axes and saws, or hammers for sticks) to be mined? If false, breaking logs with an empty hand will still drop items.")
         @Config.LangKey("config." + MOD_ID + ".general.doLogsRequireAxe")
         public boolean doLogsRequireAxe = true;
 
