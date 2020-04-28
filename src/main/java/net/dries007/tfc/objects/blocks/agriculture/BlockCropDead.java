@@ -113,19 +113,15 @@ public class BlockCropDead extends BlockBush
     {
         // dead crops always drop at least 1 seed
         int count = 1;
-
         if (state.getValue(MATURE))
         {
             // (mature and dead) crops always drop 1 extra seed
             count++;
-
             // mature crops have a chance to drop a bonus, dead or alive
             EntityPlayer player = harvesters.get();
-
             if (player != null)
             {
                 SimpleSkill skill = CapabilityPlayerData.getSkill(player, SkillType.AGRICULTURE);
-
                 if (skill != null)
                 {
                     count += Crop.getSkillSeedBonus(skill, RANDOM);
