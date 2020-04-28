@@ -19,6 +19,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -152,6 +154,42 @@ public class BlockLogTFC extends BlockLog implements IItemSize
     }
 
     @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        // Do this check again, so we can drop items now
+        final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
+        if (toolClasses.contains("axe") || toolClasses.contains("saw"))
+        {
+            // Harvest the block normally, saws and axes are valid tools regardless
+            super.harvestBlock(worldIn, player, pos, state, te, stack);
+        }
+        else if (toolClasses.contains("hammer"))
+        {
+            // Hammers drop sticks here - we duplicate the original method
+            //noinspection ConstantConditions
+            player.addStat(StatList.getBlockStats(this));
+            player.addExhaustion(0.005F);
+
+            if (!worldIn.isRemote)
+            {
+                Helpers.spawnItemStack(worldIn, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
+            }
+        }
+        else if (ConfigTFC.GENERAL.doLogsRequireAxe)
+        {
+            // Here, there was no valid tool used. Deny spawning any drops since logs require axes
+            //noinspection ConstantConditions
+            player.addStat(StatList.getBlockStats(this));
+            player.addExhaustion(0.005F);
+        }
+        else
+        {
+            // No tool, but handle normally
+            super.harvestBlock(worldIn, player, pos, state, te, stack);
+        }
+    }
+
+    @Override
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
         ItemStack stack = ItemStack.EMPTY;
@@ -165,13 +203,15 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             stack = player.getHeldItemMainhand();
         }
         final Set<String> toolClasses = stack.getItem().getToolClasses(stack);
-        if (!ConfigTFC.GENERAL.disableTreeFelling && toolClasses.contains("axe") && !toolClasses.contains("saw"))
+        if (toolClasses.contains("axe") && !toolClasses.contains("saw"))
         {
-            if (!state.getValue(PLACED))
+            // Axes, not saws, cause tree felling
+            if (!state.getValue(PLACED) && !ConfigTFC.GENERAL.disableTreeFelling)
             {
                 player.setHeldItem(EnumHand.MAIN_HAND, stack); // Reset so we can damage however we want before vanilla
                 if (!removeTree(world, pos, player, stack, OreDictionaryHelper.doesStackMatchOre(stack, "axeStone") || OreDictionaryHelper.doesStackMatchOre(stack, "hammerStone")))
                 {
+                    // Don't remove the block, the rest of the tree broke instead
                     return false;
                 }
                 return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
@@ -179,26 +219,15 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         }
         else if (toolClasses.contains("hammer"))
         {
-            // Break log and spawn some sticks
-            world.setBlockToAir(pos);
-            if (!world.isRemote)
-            {
-                Helpers.spawnItemStack(world, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
-            }
-            // False so vanilla will not drop a log itemstack (which would lead to an exploit)
-            return false;
+            // Hammers drop sticks instead
+            return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
         }
-        if (ConfigTFC.GENERAL.doLogsRequireAxe)
-        {
-            super.removedByPlayer(state, world, pos, player, willHarvest);
-        }
-        return false;
+        return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
 
     @Override
     public boolean isToolEffective(String type, IBlockState state)
     {
-        // Avoids NPE
         return "hammer".equals(type) || super.isToolEffective(type, state);
     }
 
