@@ -437,15 +437,16 @@ public class ItemSmallVessel extends ItemPottery
             fluidMode = tank.getFluidAmount() > 0;
             nbt.setBoolean("fluidMode", fluidMode);
 
-            float temp = getTemperature();
-            nbt.setFloat("heat", temp);
-            if (temp <= 0)
+            // Duplicated from ItemHeatHandler
+            if (getTemperature() <= 0)
             {
                 nbt.setLong("ticks", -1);
+                nbt.setFloat("heat", 0);
             }
             else
             {
-                nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
+                nbt.setLong("ticks", lastUpdateTick);
+                nbt.setFloat("heat", temperature);
             }
 
             if (fluidMode)

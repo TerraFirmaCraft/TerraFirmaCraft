@@ -192,16 +192,20 @@ public abstract class BlockCropTFC extends BlockBush
                 {
                     foodStack.setCount(1 + Crop.getSkillFoodBonus(skill, RANDOM));
                     seedStack.setCount(1 + Crop.getSkillSeedBonus(skill, RANDOM));
+                    skill.add(0.04f);
                 }
-                skill.add(0.04f);
             }
         }
 
         // add items to drop
         if (!foodStack.isEmpty())
+        {
             drops.add(foodStack);
+        }
         if (!seedStack.isEmpty())
+        {
             drops.add(seedStack);
+        }
     }
 
     @Override
