@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.util.Helpers;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -63,10 +64,12 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.FLOAT);
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-    private boolean fertilized; //Is this female fertilized?
+    //Is this female fertilized?
+    private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.BOOLEAN);
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
     private long lastDeath; //Last time(in days) this entity checked for dying of old age
-    private long pregnantTime; // The time(in days) this entity became pregnant
+    // The time(in days) this entity became pregnant
+    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityDonkeyTFC.class, Helpers.LONG_DATA_SERIALIZER);
     private boolean birthMule;
     private float geneJump, geneHealth, geneSpeed; // Basic genetic selection based on vanilla's horse offspring
 
@@ -86,7 +89,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         this.matingTime = -1;
         this.lastDeath = -1;
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
-        this.fertilized = false;
+        this.setFertilized(false);
         this.geneHealth = 0;
         this.geneJump = 0;
         this.geneSpeed = 0;
@@ -137,18 +140,15 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     }
 
     @Override
-    public boolean isFertilized() { return this.fertilized; }
+    public boolean isFertilized() { return dataManager.get(FERTILIZED); }
 
     @Override
-    public void setFertilized(boolean value)
-    {
-        this.fertilized = value;
-    }
+    public void setFertilized(boolean value){ dataManager.set(FERTILIZED, value); }
 
     @Override
     public void onFertilized(@Nonnull IAnimalTFC male)
     {
-        this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
+        this.setPregnantTime(CalendarTFC.PLAYER_TIME.getTotalDays());
         // If mating with other types of horse, mark children to be mules
         if (male.getClass() != this.getClass())
         {
@@ -289,7 +289,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + DAYS_TO_FULL_GESTATION)
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + DAYS_TO_FULL_GESTATION)
             {
                 birthChildren();
                 this.setFertilized(false);
@@ -361,7 +361,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
         {
-            this.fertilized = true;
+            this.setFertilized(true);
             this.resetInLove();
             this.onFertilized((IAnimalTFC) other);
         }
@@ -382,6 +382,8 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
         getDataManager().register(FAMILIARITY, 0f);
+        getDataManager().register(FERTILIZED, false);
+        getDataManager().register(PREGNANT_TIME, -1L);
     }
 
     @Override
@@ -392,11 +394,11 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         nbt.setInteger("birth", getBirthDay());
         nbt.setLong("fed", lastFed);
         nbt.setLong("decay", lastFDecay);
-        nbt.setBoolean("fertilized", this.fertilized);
+        nbt.setBoolean("fertilized", this.isFertilized());
         nbt.setLong("mating", matingTime);
         nbt.setFloat("familiarity", getFamiliarity());
         nbt.setLong("lastDeath", lastDeath);
-        nbt.setLong("pregnant", pregnantTime);
+        nbt.setLong("pregnant", getPregnantTime());
         nbt.setBoolean("birthMule", birthMule);
         nbt.setFloat("geneSpeed", geneSpeed);
         nbt.setFloat("geneJump", geneJump);
@@ -412,10 +414,10 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         this.lastFed = nbt.getLong("fed");
         this.lastFDecay = nbt.getLong("decay");
         this.matingTime = nbt.getLong("mating");
-        this.fertilized = nbt.getBoolean("fertilized");
+        this.setFertilized(nbt.getBoolean("fertilized"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
         this.lastDeath = nbt.getLong("lastDeath");
-        this.pregnantTime = nbt.getLong("pregnant");
+        this.setPregnantTime(nbt.getLong("pregnant"));
         this.birthMule = nbt.getBoolean("birthMule");
         this.geneSpeed = nbt.getFloat("geneSpeed");
         this.geneJump = nbt.getFloat("geneSpeed");
@@ -535,4 +537,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         geneJump = 0;
         this.world.spawnEntity(animal);
     }
+
+    public long getPregnantTime() { return dataManager.get(PREGNANT_TIME); }
+    public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
 }
