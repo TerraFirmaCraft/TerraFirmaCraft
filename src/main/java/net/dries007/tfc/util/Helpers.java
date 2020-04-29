@@ -55,6 +55,29 @@ public final class Helpers
 
     private static final boolean JEI = Loader.isModLoaded("jei");
 
+    public static final DataSerializer<Long> LONG_DATA_SERIALIZER = new DataSerializer<Long>()
+    {
+        public void write(PacketBuffer buf, Long value)
+        {
+            buf.writeLong(value);
+        }
+
+        public Long read(PacketBuffer buf) throws IOException
+        {
+            return buf.readLong();
+        }
+
+        public DataParameter<Long> createKey(int id)
+        {
+            return new DataParameter(id, this);
+        }
+
+        public Long copyValue(Long value)
+        {
+            return value;
+        }
+    };
+
     private static final Map<Class<? extends Entity>, Class<? extends Entity>> VANILLA_REPLACEMENTS;
 
     static
@@ -73,6 +96,7 @@ public final class Helpers
         VANILLA_REPLACEMENTS.put(EntityPolarBear.class, EntityPolarBearTFC.class);
         VANILLA_REPLACEMENTS.put(EntityParrot.class, EntityParrotTFC.class);
         VANILLA_REPLACEMENTS.put(EntityLlama.class, EntityLlamaTFC.class);
+        DataSerializers.registerSerializer(LONG_DATA_SERIALIZER);
     }
 
     public static boolean isJEIEnabled()
@@ -477,26 +501,5 @@ public final class Helpers
     public static <T> T getNull()
     {
         return null;
-    }
-
-    public static final DataSerializer<Long> LONG_DATA_SERIALIZER = new DataSerializer<Long>() {
-        public void write(PacketBuffer buf, Long value) {
-            buf.writeLong(value);
-        }
-
-        public Long read(PacketBuffer buf) throws IOException {
-            return buf.readLong();
-        }
-
-        public DataParameter<Long> createKey(int id) {
-            return new DataParameter(id, this);
-        }
-
-        public Long copyValue(Long value) {
-            return value;
-        }
-    };
-    static {
-        DataSerializers.registerSerializer(LONG_DATA_SERIALIZER);
     }
 }
