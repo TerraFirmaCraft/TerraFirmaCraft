@@ -140,7 +140,9 @@ public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
     @Override
     protected void initEntityAI()
     {
-        EntityAnimalTFC.addCommonPreyAI(this, 1.3D);
+        double speedMult = 1.3D;
+        EntityAnimalTFC.addWildPreyAI(this, speedMult);
+        EntityAnimalTFC.addCommonPreyAI(this, speedMult);
     }
 
     @Override
