@@ -25,6 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
@@ -66,6 +67,28 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
         setDefaultState(blockState.getBaseState().withProperty(UPPER, false));
         setHardness(8.0f);
         setHarvestLevel("axe", 0);
+    }
+
+    @Override
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
+    {
+        BlockPos end = pos.offset(state.getValue(FACING), -1);
+        System.out.println(end.getX() + " " + end.getY() + " " + end.getZ());
+        System.out.println(worldIn.getBlockState(end).getBlock().getRegistryName());
+        worldIn.setBlockToAir(end.down());
+
+        super.onPlayerDestroy(worldIn, pos, state);
+    }
+
+    @Override
+    public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+
+        BlockPos end = pos.offset(state.getValue(FACING), 1);
+        worldIn.setBlockToAir(end.down());
+
+        super.onExplosionDestroy(worldIn, pos, explosionIn);
     }
 
     @Nonnull
