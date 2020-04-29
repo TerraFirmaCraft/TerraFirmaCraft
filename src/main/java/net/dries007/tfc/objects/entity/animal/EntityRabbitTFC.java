@@ -274,20 +274,17 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected void initEntityAI()
     {
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityRabbitTFC.AIPanic(this, 2.2D));
+        EntityAnimalTFC.addCommonPreyAI(this, 2.2D);
+
+        this.tasks.taskEntries.removeIf(entry -> entry.action instanceof EntityAIPanic);
+
+        this.tasks.addTask(1, new EntityRabbitTFC.AIPanic(this, 1.4D*2.2D));
         this.tasks.addTask(2, new EntityAIMate(this, 1.2D));
         for (ItemStack is : OreDictionary.getOres("carrot"))
         {
             Item item = is.getItem();
             this.tasks.addTask(3, new EntityAITempt(this, 1.4D, item, false));
         }
-        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityWolfTFC.class, 8.0F, 1.5D, 2.0D));
-        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 12.0F, 1.5D, 2.0D));
-        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-
     }
 
     @Override

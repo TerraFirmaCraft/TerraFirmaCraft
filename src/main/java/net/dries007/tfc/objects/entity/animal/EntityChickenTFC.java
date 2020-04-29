@@ -34,7 +34,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.egg.IEgg;
-import net.dries007.tfc.api.types.ILivestockAI;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
@@ -46,7 +46,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityChickenTFC extends EntityAnimalTFC implements ILivestockAI
+public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 {
     private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
     private static final int DAYS_TO_ADULTHOOD = 124;
@@ -239,7 +239,9 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestockAI
     @Override
     protected void initEntityAI()
     {
-        addCommonTasks(this);
+        EntityAnimalTFC.addCommonPreyAI(this, 1.3D);
+        EntityAnimalTFC.addCommonLivestockAI(this);
+
         this.tasks.addTask(5, new EntityAIFindNest(this, 1D));
     }
 

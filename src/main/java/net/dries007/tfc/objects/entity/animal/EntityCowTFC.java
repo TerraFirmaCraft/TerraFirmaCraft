@@ -38,7 +38,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
-import net.dries007.tfc.api.types.ILivestockAI;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -48,7 +48,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-public class EntityCowTFC extends EntityAnimalMammal implements ILivestockAI
+public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
 {
     private static final int DEFAULT_TICKS_TO_MILK = ICalendar.TICKS_IN_DAY;
     private static final int DAYS_TO_ADULTHOOD = 1080;
@@ -251,7 +251,8 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestockAI
     @Override
     protected void initEntityAI()
     {
-        addCommonTasks(this);
+        EntityAnimalTFC.addCommonPreyAI(this, 1.2);
+        EntityAnimalTFC.addCommonLivestockAI(this);
 
         this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
     }

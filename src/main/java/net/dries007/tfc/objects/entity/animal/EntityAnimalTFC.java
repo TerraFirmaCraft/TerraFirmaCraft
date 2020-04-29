@@ -12,11 +12,14 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.ai.*;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -26,6 +29,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+
+import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -411,5 +416,40 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                 }
             }
         }
+    }
+
+    public static void addCommonLivestockAI(EntityAnimal entity)
+    {
+        entity.tasks.addTask(2, new EntityAIMate(entity, 1.0D));
+
+        for (ItemStack is : OreDictionary.getOres("grain"))
+        {
+            Item item = is.getItem();
+            entity.tasks.addTask(3, new EntityAITempt(entity, 1.1D, item, false));
+        }
+        entity.tasks.addTask(6, new EntityAIEatGrass(entity));
+    }
+
+    public static void addCommonPreyAI(EntityAnimal entity, double speedMult)
+    {
+        double farSpeed = .5D * speedMult;
+        double nearSpeed = 1.1D * speedMult;
+
+        entity.tasks.addTask(0, new EntityAISwimming(entity));
+        entity.tasks.addTask(1, new EntityAIPanic(entity, 1.4D * speedMult));
+        //space for livestock AIMate and AITempt
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPlayer.class, 12.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityWolfTFC.class, 8.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityLionTFC.class, 8.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPolarBearTFC.class, 8.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntitySaberToothTFC.class, 8.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPantherTFC.class, 8.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityBearTFC.class, 8.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityHyenaTFC.class, 8.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityMob.class, 8.0F, farSpeed * 0.7D, nearSpeed * 0.7D));
+        // space for follow parent for mammals, find nest for oviparous, and eat grass for livestock
+        entity.tasks.addTask(7, new EntityAIWanderAvoidWater(entity, 1.0D));
+        entity.tasks.addTask(8, new EntityAIWatchClosest(entity, EntityPlayer.class, 6.0F));
+        entity.tasks.addTask(9, new EntityAILookIdle(entity));
     }
 }
