@@ -16,8 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -132,7 +130,9 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected void initEntityAI()
     {
-        EntityAnimalTFC.addCommonPreyAI(this, 1.4D);
+        double speedMult = 1.4D;
+        EntityAnimalTFC.addWildPreyAI(this, speedMult);
+        EntityAnimalTFC.addCommonPreyAI(this, speedMult);
 
         this.tasks.addTask(3, new EntityAITempt(this, 1.1D, ItemsTFC.SALT, false));
 

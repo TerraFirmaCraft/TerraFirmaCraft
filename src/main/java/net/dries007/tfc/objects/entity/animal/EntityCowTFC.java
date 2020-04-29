@@ -251,8 +251,8 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     @Override
     protected void initEntityAI()
     {
+        EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
         EntityAnimalTFC.addCommonPreyAI(this, 1.2);
-        EntityAnimalTFC.addCommonLivestockAI(this);
 
         this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
     }

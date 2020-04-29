@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Predicates;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.ai.*;
@@ -35,8 +36,10 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.ai.EntityAITamableAvoidPlayer;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -418,7 +421,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         }
     }
 
-    public static void addCommonLivestockAI(EntityAnimal entity)
+    public static void addCommonLivestockAI(EntityAnimalTFC entity, double speedMult)
     {
         entity.tasks.addTask(2, new EntityAIMate(entity, 1.0D));
 
@@ -427,7 +430,19 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             Item item = is.getItem();
             entity.tasks.addTask(3, new EntityAITempt(entity, 1.1D, item, false));
         }
+
+        double farSpeed = .5D * speedMult;
+        double nearSpeed = 1.1D * speedMult;
+        entity.tasks.addTask(4, new EntityAITamableAvoidPlayer(entity, EntityPlayer.class, 6.0F, farSpeed, nearSpeed));
         entity.tasks.addTask(6, new EntityAIEatGrass(entity));
+    }
+
+    public static void addWildPreyAI(EntityAnimal entity, double speedMult)
+    {
+        double farSpeed = .5D * speedMult;
+        double nearSpeed = 1.1D * speedMult;
+
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPlayer.class, 12.0F, farSpeed, nearSpeed));
     }
 
     public static void addCommonPreyAI(EntityAnimal entity, double speedMult)
@@ -438,14 +453,8 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         entity.tasks.addTask(0, new EntityAISwimming(entity));
         entity.tasks.addTask(1, new EntityAIPanic(entity, 1.4D * speedMult));
         //space for livestock AIMate and AITempt
-        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPlayer.class, 12.0F, farSpeed, nearSpeed));
         entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityWolfTFC.class, 8.0F, farSpeed, nearSpeed));
-        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityLionTFC.class, 8.0F, farSpeed, nearSpeed));
-        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPolarBearTFC.class, 8.0F, farSpeed, nearSpeed));
-        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntitySaberToothTFC.class, 8.0F, farSpeed, nearSpeed));
-        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPantherTFC.class, 8.0F, farSpeed, nearSpeed));
-        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityBearTFC.class, 8.0F, farSpeed, nearSpeed));
-        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityHyenaTFC.class, 8.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityAnimalMammal.class, Predicates.instanceOf(IPredator.class), 12.0F, farSpeed, nearSpeed));
         entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityMob.class, 8.0F, farSpeed * 0.7D, nearSpeed * 0.7D));
         // space for follow parent for mammals, find nest for oviparous, and eat grass for livestock
         entity.tasks.addTask(7, new EntityAIWanderAvoidWater(entity, 1.0D));

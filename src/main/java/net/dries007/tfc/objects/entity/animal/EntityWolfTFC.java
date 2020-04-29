@@ -46,6 +46,7 @@ import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.ai.EntityAITamableAvoidPlayer;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -286,7 +287,10 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     @Override
     protected void initEntityAI()
     {
+        //AIBeg task at priority 9 will allow getting closer
+        this.tasks.addTask(10, new EntityAITamableAvoidPlayer(this, EntityPlayer.class, 8F, 1D, 1.5D));
         super.initEntityAI();
+
         this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, sheep -> true));
         this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntitySheepTFC.class, false, rabbit -> true));
     }
