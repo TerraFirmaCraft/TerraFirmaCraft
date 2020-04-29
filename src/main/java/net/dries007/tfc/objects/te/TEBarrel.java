@@ -81,8 +81,10 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         {
             // Fix config changes
             FluidStack fluidStack = tank.getFluid();
-            //noinspection ConstantConditions
-            fluidStack.amount = tank.getCapacity();
+            if (fluidStack != null )
+            {
+                fluidStack.amount = tank.getCapacity();
+            }
             tank.setFluid(fluidStack);
         }
         inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
@@ -322,8 +324,10 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         {
             // Fix config changes
             FluidStack fluidStack = tank.getFluid();
-            //noinspection ConstantConditions
-            fluidStack.amount = tank.getCapacity();
+            if (fluidStack != null )
+            {
+                fluidStack.amount = tank.getCapacity();
+            }
             tank.setFluid(fluidStack);
         }
         sealedTick = nbt.getLong("sealedTick");

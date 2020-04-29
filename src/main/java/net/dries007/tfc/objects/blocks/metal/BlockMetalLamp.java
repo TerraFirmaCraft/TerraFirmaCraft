@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -63,13 +64,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
 
     private final Metal metal;
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate<EnumFacing>()
-    {
-        public boolean apply(@Nullable EnumFacing p_apply_1_)
-        {
-            return p_apply_1_ == EnumFacing.DOWN || p_apply_1_ == EnumFacing.UP;
-        }
-    });
+    public static final PropertyDirection FACING = (PropertyDirection) PropertyEnum.create("facing", EnumFacing.class, EnumFacing.Plane.VERTICAL);
 
     public BlockMetalLamp(Metal metal)
     {
@@ -112,58 +107,13 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     {
         IBlockState iblockstate = this.getDefaultState();
 
-        switch (meta)
-        {
-            case 0:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.DOWN);
-                break;
-            case 1:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
-                break;
-            case 2:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.WEST);
-                break;
-            case 3:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.SOUTH);
-                break;
-            case 4:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.NORTH);
-                break;
-            case 5:
-            default:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.UP);
-        }
-
-        return iblockstate.withProperty(LIT, meta >= 6);
+        return iblockstate.withProperty(FACING, EnumFacing.byIndex(meta % 2)).withProperty(LIT, meta >= 2);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        int i = 0; //DOWN
-
-        switch (state.getValue(FACING))
-        {
-            case DOWN:
-                break;
-            case EAST:
-                i = i | 1;
-                break;
-            case WEST:
-                i = i | 2;
-                break;
-            case SOUTH:
-                i = i | 3;
-                break;
-            case NORTH:
-                i = i | 4;
-                break;
-            case UP:
-            default:
-                i = i | 5;
-        }
-
-        return i + (state.getValue(LIT) ? 6 : 0);
+        return state.getValue(FACING).getIndex() + (state.getValue(LIT) ? 2 : 1);
     }
 
     @Override
