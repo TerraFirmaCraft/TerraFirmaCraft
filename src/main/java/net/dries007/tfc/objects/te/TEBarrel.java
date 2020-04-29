@@ -81,7 +81,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         {
             // Fix config changes
             FluidStack fluidStack = tank.getFluid();
-            if (fluidStack != null )
+            if (fluidStack != null)
             {
                 fluidStack.amount = tank.getCapacity();
             }
@@ -324,7 +324,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         {
             // Fix config changes
             FluidStack fluidStack = tank.getFluid();
-            if (fluidStack != null )
+            if (fluidStack != null)
             {
                 fluidStack.amount = tank.getCapacity();
             }

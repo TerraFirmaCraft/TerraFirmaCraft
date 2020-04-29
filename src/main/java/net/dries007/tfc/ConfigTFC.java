@@ -454,7 +454,7 @@ public class ConfigTFC
 
         @Config.Comment("Which fluids will be valid metal lamp fuels?")
         @Config.LangKey("config." + MOD_ID + ".general.metalLampFuels")
-        public String[] metalLampFuels  =  {"olive_oil"};
+        public String[] metalLampFuels = {"olive_oil"};
 
         @Config.Comment("How fast will lamps consume fuel (mb/hour)? 1 = lamp life of 1 hour pre mb, 0.125 = lamp life of 2000 hours by default, 0 = infinite fuel")
         @Config.RangeDouble(min = 0)

@@ -361,6 +361,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
 
 
     //Lifted from BlockTorch
+
     /**
      * Checks if this block can be placed exactly at the given position.
      */
