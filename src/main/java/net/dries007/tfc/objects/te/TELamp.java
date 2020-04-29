@@ -99,7 +99,7 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
         {
             // Fix config changes
             FluidStack fluidStack = tank.getFluid();
-            if (fluidStack != null )
+            if (fluidStack != null)
             {
                 fluidStack.amount = tank.getCapacity();
             }
