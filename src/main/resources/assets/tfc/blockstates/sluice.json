@@ -3,8 +3,8 @@
   "defaults": {
     "model": "tfc:sluice/upper",
     "textures": {
-      "texture": "tfc:blocks/sluice/sluice_sheetwood",
-      "particle": "tfc:blocks/sluice/sluice_sheetwood"
+      "texture": "tfc:blocks/devices/sluice/sluice_sheetwood",
+      "particle": "tfc:blocks/devices/sluice/sluice_sheetwood"
     }
   },
   "variants": {
