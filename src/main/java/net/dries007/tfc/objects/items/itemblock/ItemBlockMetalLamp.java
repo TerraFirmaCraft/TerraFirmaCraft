@@ -37,14 +37,14 @@ import net.dries007.tfc.util.Helpers;
 
 public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
 {
-    public final static int CAPACITY = TELamp.CAPACITY;
+    public static int CAPACITY;
 
     public final ToolMaterial material;
 
     public ItemBlockMetalLamp(Metal metal)
     {
         super(BlockMetalLamp.get(metal));
-
+        CAPACITY = ConfigTFC.GENERAL.metalLampCapacity;
         material = metal.getToolMetal();
     }
 
