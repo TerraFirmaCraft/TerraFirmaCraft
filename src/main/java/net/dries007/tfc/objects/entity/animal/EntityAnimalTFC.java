@@ -433,7 +433,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 
         double farSpeed = .5D * speedMult;
         double nearSpeed = 1.1D * speedMult;
-        entity.tasks.addTask(4, new EntityAITamableAvoidPlayer(entity, EntityPlayer.class, 6.0F, farSpeed, nearSpeed));
+        entity.tasks.addTask(4, new EntityAITamableAvoidPlayer<>(entity, 6.0F, farSpeed, nearSpeed));
         entity.tasks.addTask(6, new EntityAIEatGrass(entity));
     }
 
