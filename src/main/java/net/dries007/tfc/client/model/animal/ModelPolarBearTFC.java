@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.model.ModelBase;
@@ -118,10 +119,9 @@ public class ModelPolarBearTFC extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(@Nonnull Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
         float age = 1;
 
@@ -131,36 +131,35 @@ public class ModelPolarBearTFC extends ModelBase
             GlStateManager.pushMatrix();
             float ab = (float) Math.sqrt(1.0F / aa);
             GlStateManager.scale(ab, ab, ab);
-            GlStateManager.translate(0.0F, 24F * f5 * age / aa, 2F * f5 * age / ab);
-            head.render(f5);
+            GlStateManager.translate(0.0F, 24F * scale * age / aa, 2F * scale * age / ab);
+            head.render(scale);
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             GlStateManager.scale(1.0F / aa, 1.0F / aa, 1.0F / aa);
-            GlStateManager.translate(0.0F, 24F * f5 * age, 0.0F);
-            rearbody.render(f5);
-            frontbody.render(f5);
-            leg1.render(f5);
-            leg2.render(f5);
-            leg3.render(f5);
-            leg4.render(f5);
+            GlStateManager.translate(0.0F, 24F * scale * age, 0.0F);
+            rearbody.render(scale);
+            frontbody.render(scale);
+            leg1.render(scale);
+            leg2.render(scale);
+            leg3.render(scale);
+            leg4.render(scale);
             GlStateManager.popMatrix();
         }
         else
         {
-            head.render(f5);
-            rearbody.render(f5);
-            frontbody.render(f5);
-            leg1.render(f5);
-            leg2.render(f5);
-            leg3.render(f5);
-            leg4.render(f5);
+            head.render(scale);
+            rearbody.render(scale);
+            frontbody.render(scale);
+            leg1.render(scale);
+            leg2.render(scale);
+            leg3.render(scale);
+            leg4.render(scale);
         }
     }
 
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
-
         head.rotateAngleX = headPitch / (180F / (float) Math.PI);
         head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
@@ -169,26 +168,20 @@ public class ModelPolarBearTFC extends ModelBase
         leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
         leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
-
-        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
-        float f = ageInTicks - (float) entityIn.ticksExisted;
-        float f1 = ((EntityPolarBearTFC) entityIn).getStandingAnimationScale(f);
+        float f1 = ((EntityPolarBearTFC) entityIn).getStandingAnimationScale(ageInTicks);
         f1 *= f1;
         float f2 = 1.0F - f1;
         frontbody.rotateAngleX = 1.5707964F - f1 * 3.1415927F * 0.35F;
         frontbody.rotationPointY = 9.0F * f2 + 11.0F * f1;
         leg3.rotationPointY = 14.0F * f2 + -6.0F * f1;
         leg3.rotationPointZ = -8.0F * f2 + -4.0F * f1;
-        ModelRenderer var10000 = leg3;
-        var10000.rotateAngleX -= f1 * 3.1415927F * 0.45F;
+        leg3.rotateAngleX -= f1 * 3.1415927F * 0.45F;
         leg4.rotationPointY = leg3.rotationPointY;
         leg4.rotationPointZ = leg3.rotationPointZ;
-        var10000 = this.leg4;
-        var10000.rotateAngleX -= f1 * 3.1415927F * 0.45F;
+        leg4.rotateAngleX -= f1 * 3.1415927F * 0.45F;
         head.rotationPointY = 10.0F * f2 + -12.0F * f1;
         head.rotationPointZ = -16.0F * f2 + -3.0F * f1;
-        var10000 = head;
-        var10000.rotateAngleX += f1 * 3.1415927F * 0.15F;
+        head.rotateAngleX += f1 * 3.1415927F * 0.15F;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

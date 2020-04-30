@@ -213,9 +213,9 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     }
 
     @SideOnly(Side.CLIENT)
-    public float getStandingAnimationScale(float p_189795_1_)
+    public float getStandingAnimationScale(float partialTicks)
     {
-        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * p_189795_1_) / 6.0F;
+        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * partialTicks) / 6.0F;
     }
 
     @Override
