@@ -347,6 +347,8 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         {
             sealed = true;
         }
+
+        recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
     }
 
     @Override

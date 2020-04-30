@@ -63,32 +63,51 @@ public class BarrelCategory extends BaseRecipeCategory<BarrelRecipeWrapper>
     public void setRecipe(IRecipeLayout recipeLayout, BarrelRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        itemStackGroup.init(0, true, 25, 22);
-        itemStackGroup.init(1, false, 79, 22);
-
-        if (ingredients.getInputs(VanillaTypes.ITEM).size() > 0)
-        {
-            itemStackGroup.set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
-        }
-        if (ingredients.getOutputs(VanillaTypes.ITEM).size() > 0)
-        {
-            itemStackGroup.set(1, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
-        }
-
         IGuiFluidStackGroup fluidStackGroup = recipeLayout.getFluidStacks();
-        int slot = 0;
+        int fluidSlot = 0;
+        int itemSlot = 0;
+
+        // Shows input fluid (slot + fluidstack) only if the recipe has one
         if (ingredients.getInputs(VanillaTypes.FLUID).size() > 0)
         {
             List<FluidStack> inputFluid = ingredients.getInputs(VanillaTypes.FLUID).get(0);
-            fluidStackGroup.init(slot, true, 6, 6, 8, 50, inputFluid.get(0).amount, false, null);
-            fluidStackGroup.set(slot, inputFluid);
-            slot++;
+            fluidStackGroup.init(fluidSlot, true, 6, 6, 8, 50, inputFluid.get(0).amount, false, null);
+            fluidStackGroup.set(fluidSlot, inputFluid);
+            fluidSlot++;
         }
+
+        if (recipeWrapper.isFluidMixing())
+        {
+            // If this is a fluid mixing recipe, fill the input slot with the "bucket" fluid
+            List<FluidStack> inputFluid = ingredients.getInputs(VanillaTypes.FLUID).get(1);
+            fluidStackGroup.init(fluidSlot, true, 26, 23, 16, 16, inputFluid.get(0).amount, false, null);
+            fluidStackGroup.set(fluidSlot, inputFluid);
+            fluidSlot++;
+        }
+        else
+        {
+            // Draws the input slot and stack othewise
+            itemStackGroup.init(itemSlot, true, 25, 22);
+            if (ingredients.getInputs(VanillaTypes.ITEM).size() > 0)
+            {
+                itemStackGroup.set(itemSlot, ingredients.getInputs(VanillaTypes.ITEM).get(0));
+            }
+            itemSlot++;
+        }
+
+        // Shows output fluid (slot + fluidstack) only if the recipe has one
         if (ingredients.getOutputs(VanillaTypes.FLUID).size() > 0)
         {
             List<FluidStack> outputFluid = ingredients.getOutputs(VanillaTypes.FLUID).get(0);
-            fluidStackGroup.init(slot, false, 108, 6, 8, 50, outputFluid.get(0).amount, false, null);
-            fluidStackGroup.set(slot, outputFluid);
+            fluidStackGroup.init(fluidSlot, false, 108, 6, 8, 50, outputFluid.get(0).amount, false, null);
+            fluidStackGroup.set(fluidSlot, outputFluid);
+        }
+
+        // Draws the output slot and stack
+        itemStackGroup.init(itemSlot, false, 79, 22);
+        if (ingredients.getOutputs(VanillaTypes.ITEM).size() > 0)
+        {
+            itemStackGroup.set(itemSlot, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
         }
     }
 }

@@ -32,9 +32,9 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 @ParametersAreNonnullByDefault
 public class ShapelessDamageFoodRecipe extends ShapelessDamageRecipe
 {
-    private ShapelessDamageFoodRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull ItemStack result)
+    private ShapelessDamageFoodRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull ItemStack result, int damage)
     {
-        super(group, input, result);
+        super(group, input, result, damage);
     }
 
     @Override
@@ -83,8 +83,13 @@ public class ShapelessDamageFoodRecipe extends ShapelessDamageRecipe
             final String group = JsonUtils.getString(json, "group", "");
             final NonNullList<Ingredient> ingredients = RecipeUtils.parseShapeless(context, json);
             final ItemStack result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
+            final int damage;
+            if (JsonUtils.hasField(json, "damage"))
+                damage = JsonUtils.getInt(json, "damage");
+            else damage = 1;
+
             //noinspection ConstantConditions
-            return new ShapelessDamageFoodRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result);
+            return new ShapelessDamageFoodRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result, damage);
         }
     }
 }

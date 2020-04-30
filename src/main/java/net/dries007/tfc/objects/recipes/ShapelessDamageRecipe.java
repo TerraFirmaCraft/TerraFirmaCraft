@@ -27,7 +27,16 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 @SuppressWarnings("unused")
 public class ShapelessDamageRecipe extends ShapelessOreRecipe
 {
-    public static NonNullList<ItemStack> getRemainingItemsDamaged(final InventoryCrafting inv)
+    private int damage;
+
+    public ShapelessDamageRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull ItemStack result, int damage)
+    {
+        super(group, input, result);
+        this.isSimple = false;
+        this.damage = damage;
+    }
+
+    public NonNullList<ItemStack> getRemainingItemsDamaged(final InventoryCrafting inv)
     {
         final NonNullList<ItemStack> remainingItems = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
         for (int i = 0; i < remainingItems.size(); ++i)
@@ -47,17 +56,12 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
         return remainingItems;
     }
 
-    private static ItemStack damageStack(ItemStack stack)
+    private ItemStack damageStack(ItemStack stack)
     {
         ItemStack damagedStack = stack.copy();
-        damagedStack.damageItem(1, ForgeHooks.getCraftingPlayer());
-        return damagedStack;
-    }
+        damagedStack.damageItem(damage, ForgeHooks.getCraftingPlayer());
 
-    public ShapelessDamageRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull ItemStack result)
-    {
-        super(group, input, result);
-        this.isSimple = false;
+        return damagedStack;
     }
 
     @Override
@@ -83,8 +87,12 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
             final String group = JsonUtils.getString(json, "group", "");
             final NonNullList<Ingredient> ingredients = RecipeUtils.parseShapeless(context, json);
             final ItemStack result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
+            final int damage;
+            if (JsonUtils.hasField(json, "damage"))
+                damage = JsonUtils.getInt(json, "damage");
+            else damage = 1;
 
-            return new ShapelessDamageRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result);
+            return new ShapelessDamageRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result, damage);
         }
     }
 }
