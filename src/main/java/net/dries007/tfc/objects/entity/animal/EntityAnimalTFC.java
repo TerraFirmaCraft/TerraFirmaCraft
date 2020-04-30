@@ -431,7 +431,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             entity.tasks.addTask(3, new EntityAITempt(entity, 1.1D, item, false));
         }
 
-        double farSpeed = .5D * speedMult;
+        double farSpeed = .8D * speedMult;
         double nearSpeed = 1.1D * speedMult;
         entity.tasks.addTask(4, new EntityAITamableAvoidPlayer<>(entity, 6.0F, farSpeed, nearSpeed));
         entity.tasks.addTask(6, new EntityAIEatGrass(entity));
@@ -439,7 +439,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 
     public static void addWildPreyAI(EntityAnimal entity, double speedMult)
     {
-        double farSpeed = .5D * speedMult;
+        double farSpeed = .8D * speedMult;
         double nearSpeed = 1.1D * speedMult;
 
         entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPlayer.class, 12.0F, farSpeed, nearSpeed));
@@ -447,7 +447,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
 
     public static void addCommonPreyAI(EntityAnimal entity, double speedMult)
     {
-        double farSpeed = .5D * speedMult;
+        double farSpeed = .8D * speedMult;
         double nearSpeed = 1.1D * speedMult;
 
         entity.tasks.addTask(0, new EntityAISwimming(entity));
