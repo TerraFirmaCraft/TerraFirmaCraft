@@ -123,10 +123,9 @@ public class ModelBearTFC extends ModelBase
     }
 
     @Override
-    public void render(@Nonnull Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(@Nonnull Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
         if (((EntityAnimal) entity).isChild())
         {
@@ -141,17 +140,17 @@ public class ModelBearTFC extends ModelBase
             GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
 
-        bearHead.render(f5);
+        bearHead.render(scale);
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0D, 1.0D, 1.0D);
 
-        frontBody.render(f5);
-        rearBody.render(f5);
-        leg1.render(f5);
-        leg2.render(f5);
-        leg3.render(f5);
-        leg4.render(f5);
+        frontBody.render(scale);
+        rearBody.render(scale);
+        leg1.render(scale);
+        leg2.render(scale);
+        leg3.render(scale);
+        leg4.render(scale);
         GlStateManager.popMatrix();
     }
 
@@ -159,7 +158,6 @@ public class ModelBearTFC extends ModelBase
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
-        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         bearHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
         bearHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
@@ -168,25 +166,20 @@ public class ModelBearTFC extends ModelBase
         leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
         leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
-
-        float f = ageInTicks - (float) entityIn.ticksExisted;
-        float f1 = ((EntityBearTFC) entityIn).getStandingAnimationScale(f);
+        float f1 = ((EntityBearTFC) entityIn).getStandingAnimationScale(ageInTicks);
         f1 *= f1;
         float f2 = 1.0F - f1;
         this.frontBody.rotateAngleX = 1.5707964F - f1 * 3.1415927F * 0.35F;
         this.frontBody.rotationPointY = 9.0F * f2 + 11.0F * f1;
         this.leg1.rotationPointY = 14.0F * f2 + -6.0F * f1;
         this.leg1.rotationPointZ = -8.0F * f2 + -4.0F * f1;
-        ModelRenderer var10000 = this.leg1;
-        var10000.rotateAngleX -= f1 * 3.1415927F * 0.45F;
+        this.leg1.rotateAngleX -= f1 * 3.1415927F * 0.45F;
         this.leg2.rotationPointY = this.leg1.rotationPointY;
         this.leg2.rotationPointZ = this.leg1.rotationPointZ;
-        var10000 = this.leg2;
-        var10000.rotateAngleX -= f1 * 3.1415927F * 0.45F;
+        this.leg1.rotateAngleX -= f1 * 3.1415927F * 0.45F;
         this.bearHead.rotationPointY = 8.0F * f2 + -12.0F * f1;
         this.bearHead.rotationPointZ = -14.8F * f2 + -3.0F * f1;
-        var10000 = this.bearHead;
-        var10000.rotateAngleX += f1 * 3.1415927F * 0.15F;
+        this.leg1.rotateAngleX += f1 * 3.1415927F * 0.15F;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)
