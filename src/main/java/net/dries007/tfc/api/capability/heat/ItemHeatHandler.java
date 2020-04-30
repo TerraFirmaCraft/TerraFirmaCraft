@@ -109,15 +109,18 @@ public class ItemHeatHandler implements ICapabilitySerializable<NBTTagCompound>,
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = new NBTTagCompound();
-        float temp = getTemperature();
-        nbt.setFloat("heat", temp);
-        if (temp <= 0)
+        if (getTemperature() <= 0)
         {
+            // Reset temperature to zero
             nbt.setLong("ticks", -1);
+            nbt.setFloat("heat", 0);
         }
         else
         {
-            nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
+            // Serialize existing values - this is intentionally lazy (and not using the result of getTemperature())
+            // Why? So we don't update the serialization unnecessarily. Important for not sending unnecessary client syncs.
+            nbt.setLong("ticks", lastUpdateTick);
+            nbt.setFloat("heat", temperature);
         }
         return nbt;
     }

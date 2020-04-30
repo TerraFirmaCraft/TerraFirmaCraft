@@ -46,7 +46,6 @@ import net.dries007.tfc.objects.container.ContainerEmpty;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.recipes.UnmoldRecipe;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
@@ -296,15 +295,17 @@ public class ItemMold extends ItemPottery
         public NBTTagCompound serializeNBT()
         {
             NBTTagCompound nbt = new NBTTagCompound();
-            float temp = getTemperature();
-            nbt.setFloat("heat", temp);
-            if (temp <= 0)
+
+            // Duplicated from ItemHeatHandler
+            if (getTemperature() <= 0)
             {
                 nbt.setLong("ticks", -1);
+                nbt.setFloat("heat", 0);
             }
             else
             {
-                nbt.setLong("ticks", CalendarTFC.PLAYER_TIME.getTicks());
+                nbt.setLong("ticks", lastUpdateTick);
+                nbt.setFloat("heat", temperature);
             }
             return tank.writeToNBT(nbt);
         }

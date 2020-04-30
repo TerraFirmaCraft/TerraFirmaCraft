@@ -10,9 +10,9 @@ tfc.command.time.usage_expected_first_argument=在 /timetfc 后应有 <add|query
 tfc.command.time.usage_expected_second_argument_query=在 /timetfc query 后应有 [daytime|day|gametime|playerticks|calendarticks]
 tfc.command.time.usage_expected_second_argument_set=在 /timetfc set 后应有 [<刻>|day|night|monthlength <值>]
 tfc.command.time.usage_expected_second_argument_add=在 /timetfc add 后应有 [days|months|years] <值>
-tfc.command.time.set_month_length=将月长度设置为 %d 天/月
-tfc.command.time.set_day=已将时间设置为下一个白天
-tfc.command.time.set_night=已将时间设置为下一个晚上
+tfc.command.time.set_month_length=将月长度设为 %d 天/月
+tfc.command.time.set_day=已将时间设为下一个白天
+tfc.command.time.set_night=已将时间设为下一个晚上
 tfc.command.time.set_ticks=已将时间设为下一天的 %d
 tfc.command.time.add_days=将时间调快了 %d 天（%d 刻）
 tfc.command.time.add_months=将时间调快了 %d 月（%d 刻）
@@ -23,6 +23,11 @@ tfc.command.time.query_playerticks=玩家刻是 %d
 tfc.command.time.query_gametime=游戏时间是 %d 刻
 tfc.command.time.query_day=现在是第 %d 天
 tfc.command.time.query_daytime=现在是一日中的 %d 刻
+tfc.command.timetfc.set_player_time=将玩家时设为 %d。
+tfc.command.timetfc.set_calendar_time=将日历时设为 %s。
+
+tfc.tooltip.time.disabled=此命令已被群峦传说禁用。作为替代，请使用 /timetfc ！
+
 tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <名称>] [值]
 tfc.command.playertfc.usage_expected_first_argument=在 /playertfc 后应有 <get|set|add|reset>
 tfc.command.playertfc.usage_expected_second_argument=在 /playertfc %s 后应有 [nutrition|food|saturation|water|skill <名称>]
@@ -46,10 +51,32 @@ tfc.command.playertfc.set_saturation=将饱和度设置为 %.2f
 tfc.command.playertfc.get_water=口渴值：%.1f%%
 tfc.command.playertfc.set_water=将口渴值设置为 %.1f%%
 
-tfc.command.veins.usage=/findveins [all|<矿脉名称>] <半径> [dump|rate]
-tfc.command.veins.usage_expected_player=必须由玩家使用
-tfc.command.veins.usage_first_argument_not_vein=未发现名为 %s 的矿脉
+tfc.command.findveins.usage=/findveins [all|<矿脉名称>] <半径> [dump|rate]
+tfc.command.findveins.usage_expected_player=必须由玩家使用。
+tfc.command.findveins.usage_first_argument_not_vein=未发现名为 %s 的矿脉
+tfc.command.findveins.dump_veins=正在存储指定半径的所有矿脉，这可能需要一点时间...
+tfc.command.findveins.rate_veins=正在存储指定半径的矿脉比率，这可能需要一点时间...
+tfc.command.findveins.failed=加载维度 %d 失败
+tfc.command.findveins.remaining_chunks=剩余区块：%d / %d
+tfc.command.findveins.output=在 %2$s 发现矿脉 %1$s
+tfc.command.findveins.output_file=文件存储为 %s
+tfc.command.findveins.output_file.error=存储文件时发生错误：%s
 
+tfc.command.debuginfo.usage=/tfcdebuginfodump - 向日志中输出大量调试信息...非常非常多。除非开发人员要你这么干，否则别这样。
+
+tfc.command.gentree.useage=/maketree [树种] -> 生成一棵指定的树。
+tfc.command.gentree.failed=缺少树种参数！/maketree [树种]
+tfc.command.gentree.failed.woodtype=不存在名为 %s 的树种！
+tfc.command.gentree.failed.grow=此处环境状况不满足生成该树种的条件！
+
+tfc.command.heat.usage=/heat <数目> -> 将物品受热程度设为指定值。
+tfc.command.heat.failed=缺少数目参数！/heat <数目>
+tfc.command.heat.failed.missingcap=你主手中的物品不具有受热能力！
+tfc.command.heat.failed.usage_expected_player=必须由玩家使用。
+
+tfc.command.stripworld.usage=/stripworld <以方块为单位的半径> -> [危险] 剥掉所有种类的石头和水。
+tfc.command.stripworld.failed=缺少半径！/stripworld <以方块为单位的半径>
+tfc.command.stripworld.done=完成！
 
 # Gui
 
@@ -60,6 +87,8 @@ tfc.tooltip.oredictionaryentry=§f矿物词典名称：§7%s
 tfc.tooltip.oredictionaryentries=§f矿物词典名称：
 tfc.tooltip.metal=§f金属：§7%s
 tfc.tooltip.units=%d 单元
+tfc.tooltip.crucible_units=%d / %d 单元
+tfc.tooltip.units.total=§6总共 %d 单元
 tfc.tooltip.smelting=在 %s 中熔炼
 tfc.tooltip.liquid= - 液态
 tfc.tooltip.solid= - 固态
@@ -142,20 +171,9 @@ tfc.tooltip.animal.product.no_wool=这只 %s 的毛还没长出来。
 tfc.tooltip.animal.product.no_milk=这只 %s 没做好产奶的准备。
 tfc.tooltip.animal.product.no_egg=这只 %s 没做好下蛋的准备。
 
-## Command Tooltips / Messages
-tfc.tooltip.set_month_length=将月长度设置为 %d 天。
-tfc.tooltip.time_command_set_player_time=将玩家时间设置为 %d 。
-tfc.tooltip.time_command_set_calendar_time=将日历时间设置为 %s 。
-tfc.tooltip.time_command_disabled=此命令已被群峦传说禁用。作为替代，请使用 /timetfc ！
-tfc.tooltip.veins_command.dump_veins=正在存储指定半径的所有矿脉，这可能需要一点时间...
-tfc.tooltip.veins_command.rate_veins=正在存储指定半径的矿脉比率，这可能需要一点时间...
-tfc.tooltip.veins_command.failed=加载维度 %d 失败
-tfc.tooltip.veins_command.remaining_chunks=剩余区块：%d / %d
-tfc.tooltip.veins_command.output=在 %2$s 发现矿脉 %1$s
-tfc.tooltip.veins_command.output_file=文件存储为 %s
 
 ## Prospecting Result Messages
-tfc.propick.found=发现
+tfc.propick.found=发现 %s
 tfc.propick.found_traces=发现痕量 %s
 tfc.propick.found_small=发现少量 %s
 tfc.propick.found_medium=发现中量 %s
@@ -194,6 +212,7 @@ tfc.enum.skilltier.master=大师
 tfc.key.craft=工作台界面
 tfc.key.placeblock=在方块上放置物品
 tfc.key.itemmode=切换物品模式
+tfc.key.stack=堆叠食物
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=生成模糊化半径
@@ -466,6 +485,26 @@ config.tfc.general.redSteelBucketWhitelist.tooltip=允许红钢桶盛装的液�
 config.tfc.general.nutritionRotationHungerWindow=营养刷新的饥饿值窗口期
 config.tfc.general.nutritionRotationHungerWindow.tooltip=玩家完全刷新其营养状态所需要消耗的饥饿值。在群峦传说中，几乎所有食物都提供 4 饥饿值，因此该选项的值大概是你所需要食用食物数量的四倍。修改该值将在下次进食时更新。
 
+config.tfc.general.oreTooltipMode=矿石提息模式
+config.tfc.general.oreTooltipMode.tooltip=矿石提示信息的模式。0：无信息。1：仅矿物单元。2：堆叠后的总矿物单元。3：所有。
+
+config.tfc.general.disableIngotPile=禁用金属锭堆叠
+config.tfc.general.disableIngotPile.tooltip=禁用金属锭堆叠吗？
+
+config.tfc.general.pluckableEntities=羽毛采集实体
+config.tfc.general.pluckableEntities.tooltip=Shift + 右键点击时掉落羽毛的实体。
+
+config.tfc.general.damagePerFeather=羽毛采集伤害
+config.tfc.general.damagePerFeather.tooltip=当采集实体的羽毛时，对其造成的伤害。
+
+config.tfc.general.shouldCropsDie=谷物死亡
+config.tfc.general.shouldCropsDie.tooltip=若为 false，谷物无论如何都不会死亡。这不意味着谷物会一直生长！
+
+config.tfc.general.doLogsRequireAxe=原木需要斧
+config.tfc.general.doLogsRequireAxe.tooltip=若为 false，不使用斧破坏原木时什么都不会掉落。
+
+config.tfc.general.doLeavesDropSaplings=树叶掉落树苗
+config.tfc.general.doLeavesDropSaplings.tooltip=若为 false，树叶将不会掉落树苗。
 
 ## Client Config
 
@@ -503,7 +542,7 @@ config.tfc.client.useVanillaHunger=使用原版饥饿条
 config.tfc.client.useVanillaHunger.tooltip=禁用群峦传说的饥饿条，使用原版的？
 
 config.tfc.client.hideThirstBar=隐藏口渴条
-config.tfc.client.hideThirstBar.tooltip=隐藏口渴条？口渴机制不受影响。
+config.tfc.client.hideThirstBar.tooltip=隐藏口渴条吗？口渴机制不受影响。
 
 ## World Config
 config.tfc.world=世界生成设置
@@ -798,7 +837,7 @@ jei.tooltips.tfc.vein.loose_rock=零散石子
 # Fluids
 fluid.salt_water=咸水
 fluid.fresh_water=淡水
-fluid.hot_water=热水
+fluid.hot_water=热泉水
 fluid.rum=朗姆酒
 fluid.beer=啤酒
 fluid.whiskey=威士忌
@@ -886,6 +925,7 @@ vein.cryolite.name=冰晶石
 vein.saltpeter.name=硝石
 vein.sylvite.name=钾石盐
 vein.borax.name=硼砂
+vein.gypsum.name=石墨
 vein.lapis_lazuli.name=青金石
 vein.surface_native_copper.name=表层原生铜
 vein.surface_cassiterite.name=表层锡石
@@ -4145,6 +4185,7 @@ death.attack.dehydration=%1$s 死于脱水
 
 #Effects
 effectsTFC.overburdened=负担过重
+effectsTFC.thirst=干渴
 
 # Animal names by gender
 tfc.animal.sheeptfc.male=公羊
@@ -4402,6 +4443,9 @@ advancements.tfc.world.find_silver.title=银色子弹
 advancements.tfc.world.find_silver.description=在花岗岩岩层或片麻岩岩层中找到原生银矿。
 advancements.tfc.world.find_nickel.title=硬币
 advancements.tfc.world.find_nickel.description=在辉长岩岩层中找到镍矿。
+#JEI Descriptions for uncraftable mechanics
+tfc.jei.description.pitkiln=用于烧制陶器和融化软金属。将不超过四件物品放置（默认为 V）在 1x1 的坑中，用 8 干草和 8 原木填充（右键）。用起火器点燃或在上面丢个火把。等到火熄灭后取回物品。
+tfc.jei.description.placeditem=物品可以放置在地面上，主要放置到坑窑中。使用放置键（默认为 V）将物品（不超过 4 件）放置在一个方块上。
 
 # Overwrite Vanilla
 entity.Rabbit.name=兔

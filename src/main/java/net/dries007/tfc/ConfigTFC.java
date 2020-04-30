@@ -80,6 +80,10 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.disableFallableBlocksHurtEntities")
         public boolean disableFallableBlocksHurtEntities = false;
 
+        @Config.Comment("Should chiseling raw stone blocks cause cave ins?")
+        @Config.LangKey("config." + MOD_ID + ".general.doesChiselingCauseCaveIns")
+        public boolean doesChiselingCauseCaveIns = true;
+
         @Config.Comment("If true, TFC will try and force the `level-type` setting to `tfc_classic` during DedicatedServer startup.")
         @Config.LangKey("config." + MOD_ID + ".general.forceTFCWorldTypeOnServer")
         public boolean forceTFCWorldTypeOnServer = true;
@@ -427,9 +431,9 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.quiverSearch")
         public String quiverSearch = "hotbar";
 
-        @Config.Comment("Disable the ability to create ingot piles?")
+        @Config.Comment("Should you be able to create ingot piles.")
         @Config.LangKey("config." + MOD_ID + ".general.disableIngotPile")
-        public boolean placeIngotPiles = false;
+        public boolean placeIngotPiles = true;
 
         @Config.Comment("Entities that can be plucked for feathers.")
         @Config.LangKey("config." + MOD_ID + ".general.pluckableEntities")
@@ -444,7 +448,7 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.shouldCropsDie")
         public boolean shouldCropsDie = true;
 
-        @Config.Comment("If false, logs will drop logs when punched.")
+        @Config.Comment("Should logs require tools (axes and saws, or hammers for sticks) to be mined? If false, breaking logs with an empty hand will still drop items.")
         @Config.LangKey("config." + MOD_ID + ".general.doLogsRequireAxe")
         public boolean doLogsRequireAxe = true;
 

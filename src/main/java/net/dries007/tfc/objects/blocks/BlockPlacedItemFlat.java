@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -17,6 +18,8 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -221,5 +224,12 @@ public class BlockPlacedItemFlat extends Block
     public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
     {
         return true;
+    }
+
+    @Nonnull
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Items.AIR;
     }
 }

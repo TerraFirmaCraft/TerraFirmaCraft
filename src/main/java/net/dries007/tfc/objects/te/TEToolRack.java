@@ -20,6 +20,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.items.metal.ItemMetalTool;
 
 @ParametersAreNonnullByDefault
@@ -30,7 +31,7 @@ public class TEToolRack extends TEBase
      */
     public static boolean isItemEligible(Item item)
     {
-        return item instanceof ItemMetalTool || item instanceof ItemTool || item instanceof ItemBow || item instanceof ItemHoe || item instanceof ItemSword;
+        return item instanceof ItemMetalTool || item instanceof ItemTool || item instanceof ItemBow || item instanceof ItemHoe || item instanceof ItemSword || item instanceof ItemFireStarter;
     }
 
     public static boolean isItemEligible(@Nullable ItemStack item)
