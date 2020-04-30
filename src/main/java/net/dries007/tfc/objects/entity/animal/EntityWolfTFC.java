@@ -287,8 +287,8 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     @Override
     protected void initEntityAI()
     {
-        //AIBeg task at priority 9 will allow getting closer
-        this.tasks.addTask(10, new EntityAITamableAvoidPlayer(this, EntityPlayer.class, 8F, 1D, 1.5D));
+        //AIBeg task at priority 9 and distance 8 will disable this
+        this.tasks.addTask(10, new EntityAITamableAvoidPlayer<>(this, 7F, 1D, 1.5D));
         super.initEntityAI();
 
         this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, sheep -> true));
