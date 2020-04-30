@@ -66,7 +66,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     }
 
     @Override
-    public EntityAgeable createChild(EntityAgeable ageable)
+    public EntityAgeable createChild(@Nonnull EntityAgeable ageable)
     {
         return new EntityPolarBearTFC(this.world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays()); // Used by spawn eggs
     }
@@ -179,7 +179,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn)
+    public boolean attackEntityAsMob(@Nonnull Entity entityIn)
     {
         double attackDamage = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
         if (this.isChild())
@@ -284,6 +284,12 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+    }
+
+    @Override
+    public void setStanding(boolean standing)
+    {
+        super.setStanding(standing);
     }
 
     @Override
