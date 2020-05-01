@@ -12,6 +12,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.PropertyManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
@@ -49,7 +50,7 @@ import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @Mod.EventBusSubscriber
-@Mod(modid = MOD_ID, name = TerraFirmaCraft.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, dependencies = "required:forge@[14.23.5.2816,);after:jei@[4.14.2,);after:crafttweaker@[4.1.11,)")
+@Mod(modid = MOD_ID, name = TerraFirmaCraft.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, dependencies = "required:forge@[14.23.5.2816,);after:jei@[4.14.2,);after:crafttweaker@[4.1.11,);after:waila@(1.8.25,)")
 public final class TerraFirmaCraft
 {
     public static final String MOD_ID = "tfc";
@@ -163,6 +164,14 @@ public final class TerraFirmaCraft
         LootTablesTFC.init();
         CapabilityFood.init();
         TFCTriggers.init();
+
+        //Waila/TOP/initialization
+        if (Loader.isModLoaded("waila"))
+        {
+            FMLInterModComms.sendMessage("waila", "register", "net.dries007.tfc.compat.wailatop.WailaBlocks.callbackRegister");
+            FMLInterModComms.sendMessage("waila", "register", "net.dries007.tfc.compat.wailatop.WailaEntities.callbackRegister");
+
+        }
 
         if (event.getSide().isClient())
         {
