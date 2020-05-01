@@ -46,7 +46,9 @@ public final class WailaBlocks implements IWailaDataProvider
     public static void callbackRegister(IWailaRegistrar registrar)
     {
 
-        registrar.addConfig("TFC", "tfc.displayTemp");
+        registrar.addConfig("TFC", "tfc.displayTemp", true);
+        registrar.addConfig("TFC", "tfc.newtotfc", true);
+
 
         WailaBlocks dataProvider = new WailaBlocks();
 
@@ -179,7 +181,7 @@ public final class WailaBlocks implements IWailaDataProvider
 
         if (isLit)
         {
-            long remainingMinutes = Math.round(((long) ConfigTFC.GENERAL.pitKilnTime - (CalendarTFC.PLAYER_TIME.getTicks() - litTick)) / 1200);
+            long remainingMinutes = Math.round(((long) ConfigTFC.GENERAL.pitKilnTime - (CalendarTFC.PLAYER_TIME.getTicks() - litTick)) / 1200)+ 1;
             key = remainingMinutes + " " + new TextComponentTranslation("waila.remaining").getFormattedText();
         }
         else
@@ -220,7 +222,7 @@ public final class WailaBlocks implements IWailaDataProvider
             key = new TextComponentTranslation("item.tfc.ore." + orename + "." + gradename + ".name").getFormattedText();
         }
         currenttip.add(key);
-        if (metal != null)
+        if (metal != null && config.getConfig("tfc.newtotfc"))
         {
             currenttip.add("(" + new TextComponentTranslation(metal.getTranslationKey()).getFormattedText() + ")");
         }
@@ -288,13 +290,12 @@ public final class WailaBlocks implements IWailaDataProvider
 
     private List<String> PlacedItemFlatBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
-        TEPlacedItemFlat te = (TEPlacedItemFlat) accessor.getTileEntity();
         if (itemStack.getItem() instanceof ItemSmallOre)
         {
             ItemSmallOre nugget = (ItemSmallOre) itemStack.getItem();
             Ore ore = nugget.getOre();
             Metal metal = ore.getMetal();
-            if (metal != null)
+            if (metal != null && config.getConfig("tfc.newtotfc"))
             {
                 currenttip.add("(" + new TextComponentTranslation(metal.getTranslationKey()).getFormattedText() + ")");
             }
@@ -303,7 +304,7 @@ public final class WailaBlocks implements IWailaDataProvider
         {
             ItemRock pebble = (ItemRock) itemStack.getItem();
             Rock rock = pebble.getRock(itemStack);
-            if (rock.isFluxStone())
+            if (rock.isFluxStone() && config.getConfig("tfc.newtotfc"))
             {
                 currenttip.add("(" + new TextComponentTranslation("waila.fluxstone").getFormattedText() + ")");
             }
@@ -317,14 +318,19 @@ public final class WailaBlocks implements IWailaDataProvider
     {
         BlockBarrel b = (BlockBarrel) accessor.getBlock();
         TEBarrel te = (TEBarrel) accessor.getTileEntity();
-        currenttip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".name").getFormattedText());
+
         if (te.isSealed())
         {
             String sealedDate;
             sealedDate = te.getSealedDate();
-            currenttip.add(sealedDate);
+            currenttip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".sealed.name").getFormattedText());
+            currenttip.add(new TextComponentTranslation("waila.sealed").getFormattedText() + ":" + sealedDate);
 
 
+        }
+        else
+        {
+            currenttip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".name").getFormattedText());
         }
         return currenttip;
     }
