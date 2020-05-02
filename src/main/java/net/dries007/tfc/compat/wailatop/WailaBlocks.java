@@ -62,7 +62,6 @@ public final class WailaBlocks implements IWailaDataProvider
         registrar.registerHeadProvider(dataProvider, BlockFruitTreeLeaves.class);
         registrar.registerHeadProvider(dataProvider, BlockFruitTreeTrunk.class);
         registrar.registerHeadProvider(dataProvider, BlockFruitTreeBranch.class);
-
         //Body
         registrar.registerBodyProvider(dataProvider, BlockOreTFC.class);
         registrar.registerBodyProvider(dataProvider, TEPitKiln.class);
@@ -77,7 +76,6 @@ public final class WailaBlocks implements IWailaDataProvider
         registrar.registerBodyProvider(dataProvider, BlockFruitTreeLeaves.class);
         registrar.registerBodyProvider(dataProvider, BlockBerryBush.class);
         registrar.registerBodyProvider(dataProvider, BlockCropDead.class);
-
         //Tail
         registrar.registerTailProvider(dataProvider, BlockRockVariant.class);
 
@@ -91,13 +89,11 @@ public final class WailaBlocks implements IWailaDataProvider
         ItemStack stack = ItemStack.EMPTY;
 
         if (b instanceof BlockOreTFC)
-        {
             stack = getOreTFCStack(accessor, config);
-        }
+
         else if (b instanceof BlockCropSimple)
-        {
             stack = getCropSimpleStack(accessor, config);
-        }
+
         return stack;
     }
 
@@ -107,14 +103,17 @@ public final class WailaBlocks implements IWailaDataProvider
         Block b = accessor.getBlock();
         TileEntity te = accessor.getTileEntity();
 
-        if (b instanceof BlockOreTFC) currentTooltip = getOreTFCHead(stack, currentTooltip, accessor, config);
-        if (b instanceof BlockBarrel) currentTooltip = getBarrelHead(stack, currentTooltip, accessor, config);
-        if (te instanceof TECropBase) currentTooltip = getCropSimpleHead(stack, currentTooltip, accessor, config);
-        if (b instanceof BlockCropDead) currentTooltip = getCropDeadHead(stack, currentTooltip, accessor, config);
+        if (b instanceof BlockOreTFC)
+            currentTooltip = getOreTFCHead(stack, currentTooltip, accessor, config);
+        if (b instanceof BlockBarrel)
+            currentTooltip = getBarrelHead(stack, currentTooltip, accessor, config);
+        if (te instanceof TECropBase)
+            currentTooltip = getCropSimpleHead(stack, currentTooltip, accessor, config);
+        if (b instanceof BlockCropDead)
+            currentTooltip = getCropDeadHead(stack, currentTooltip, accessor, config);
         if (b instanceof BlockFruitTreeTrunk | b instanceof BlockFruitTreeLeaves | b instanceof BlockFruitTreeBranch)
-        {
             currentTooltip = getFruitTreeHead(stack, currentTooltip, accessor, config);
-        }
+
         return currentTooltip;
     }
 
@@ -125,24 +124,33 @@ public final class WailaBlocks implements IWailaDataProvider
         TileEntity te = accessor.getTileEntity();
 
         // Mechanics
-        if (b instanceof BlockOreTFC) currentTooltip = getOreTFCBody(stack, currentTooltip, accessor, config);
+        if (b instanceof BlockOreTFC)
+            currentTooltip = getOreTFCBody(stack, currentTooltip, accessor, config);
         else if (te instanceof TEPlacedItemFlat)
             currentTooltip = getPlacedItemFlatBody(stack, currentTooltip, accessor, config);
-        else if (te instanceof TEPitKiln) currentTooltip = getPitKilnBody(stack, currentTooltip, accessor, config);
+        else if (te instanceof TEPitKiln)
+            currentTooltip = getPitKilnBody(stack, currentTooltip, accessor, config);
         else if (te instanceof TECharcoalForge)
             currentTooltip = getCharcoalForgeBody(stack, currentTooltip, accessor, config);
-        else if (te instanceof TELogPile) currentTooltip = getLogPileBody(stack, currentTooltip, accessor, config);
-        else if (te instanceof TEBarrel) currentTooltip = getBarrelBody(stack, currentTooltip, accessor, config);
-        else if (te instanceof TEBloomery) currentTooltip = getBloomeryBody(stack, currentTooltip, accessor, config);
+        else if (te instanceof TELogPile)
+            currentTooltip = getLogPileBody(stack, currentTooltip, accessor, config);
+        else if (te instanceof TEBarrel)
+            currentTooltip = getBarrelBody(stack, currentTooltip, accessor, config);
+        else if (te instanceof TEBloomery)
+            currentTooltip = getBloomeryBody(stack, currentTooltip, accessor, config);
         else if (te instanceof TEBlastFurnace)
             currentTooltip = getBlastFurnaceBody(stack, currentTooltip, accessor, config);
-        else if (te instanceof TEFirePit) currentTooltip = getFirepitBody(stack, currentTooltip, accessor, config);
+        else if (te instanceof TEFirePit)
+            currentTooltip = getFirepitBody(stack, currentTooltip, accessor, config);
             // Crops and Trees
-        else if (te instanceof TECropBase) currentTooltip = getCropSimpleBody(stack, currentTooltip, accessor, config);
+        else if (te instanceof TECropBase)
+            currentTooltip = getCropSimpleBody(stack, currentTooltip, accessor, config);
         else if (b instanceof BlockFruitTreeLeaves)
             currentTooltip = getFruitTreeLeavesBody(stack, currentTooltip, accessor, config);
-        else if (b instanceof BlockBerryBush) currentTooltip = getBerryBushBody(stack, currentTooltip, accessor, config);
-        else if (b instanceof BlockCropDead) currentTooltip = getCropDeadBody(stack, currentTooltip, accessor, config);
+        else if (b instanceof BlockBerryBush)
+            currentTooltip = getBerryBushBody(stack, currentTooltip, accessor, config);
+        else if (b instanceof BlockCropDead)
+            currentTooltip = getCropDeadBody(stack, currentTooltip, accessor, config);
         else if (b instanceof BlockFruitTreeLeaves)
             currentTooltip = getFruitTreeLeavesBody(stack, currentTooltip, accessor, config);
 
