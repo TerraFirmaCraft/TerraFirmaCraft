@@ -46,7 +46,7 @@ public class EntityAIAttackMeleeTFC<T extends EntityCreature & IAnimalTFC> exten
      * @param wander the Wander AI
      * @return this object for convenience, to be used in the initialization process of creatures
      */
-    public EntityAIAttackMeleeTFC setWanderAI(EntityAIWander wander)
+    public EntityAIAttackMeleeTFC<T> setWanderAI(EntityAIWander wander)
     {
         this.wander = wander;
         return this;
@@ -100,6 +100,17 @@ public class EntityAIAttackMeleeTFC<T extends EntityCreature & IAnimalTFC> exten
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean shouldContinueExecuting()
+    {
+        boolean flag = super.shouldContinueExecuting();
+        if (flag && this.attacker.isRiding())
+        {
+            this.attacker.dismountRidingEntity();
+        }
+        return flag;
     }
 
     @Override
