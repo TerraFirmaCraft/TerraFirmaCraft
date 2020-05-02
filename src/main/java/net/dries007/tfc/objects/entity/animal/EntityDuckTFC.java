@@ -126,6 +126,6 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     @Override
     protected boolean hasEggs()
     {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying + DEFAULT_TICKS_TO_LAY_EGGS;
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying() + DEFAULT_TICKS_TO_LAY_EGGS;
     }
 }

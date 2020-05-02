@@ -13,6 +13,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.util.Helpers;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -20,6 +22,8 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -57,7 +61,8 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     public float oFlapSpeed;
     public float oFlap;
     public float wingRotDelta = 1.0F;
-    protected long lastLaying; //The last time(in ticks) this chicken has laid eggs
+    //The last time(in ticks) this chicken has laid eggs
+    private static final DataParameter<Long> LASTLAYING = EntityDataManager.createKey(EntityChickenTFC.class, Helpers.LONG_DATA_SERIALIZER);
 
     public EntityChickenTFC(World worldIn)
     {
@@ -132,14 +137,14 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setLong("laying", lastLaying);
+        nbt.setLong("laying", lastLaying());
     }
 
     @Override
     public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.lastLaying = nbt.getLong("laying");
+        this.setLastLaying(nbt.getLong("laying"));
     }
 
     @Override
@@ -189,13 +194,13 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public void setProductsCooldown()
     {
-        this.lastLaying = CalendarTFC.PLAYER_TIME.getTicks();
+        this.setLastLaying(CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, this.lastLaying + DEFAULT_TICKS_TO_LAY_EGGS - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, this.lastLaying() + DEFAULT_TICKS_TO_LAY_EGGS - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -274,5 +279,22 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     protected boolean hasEggs()
     {
         return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && getProductsCooldown() == 0;
+    }
+
+    public long lastLaying()
+    {
+        return dataManager.get(LASTLAYING);
+    }
+
+    protected void setLastLaying(long lastLaying)
+    {
+        dataManager.set(LASTLAYING, lastLaying);
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(LASTLAYING, 0L);
     }
 }

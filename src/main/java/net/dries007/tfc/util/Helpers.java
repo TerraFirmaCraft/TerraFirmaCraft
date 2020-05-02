@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.util;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -25,6 +26,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -50,6 +55,29 @@ public final class Helpers
 
     private static final boolean JEI = Loader.isModLoaded("jei");
 
+    public static final DataSerializer<Long> LONG_DATA_SERIALIZER = new DataSerializer<Long>()
+    {
+        public void write(PacketBuffer buf, Long value)
+        {
+            buf.writeLong(value);
+        }
+
+        public Long read(PacketBuffer buf) throws IOException
+        {
+            return buf.readLong();
+        }
+
+        public DataParameter<Long> createKey(int id)
+        {
+            return new DataParameter(id, this);
+        }
+
+        public Long copyValue(Long value)
+        {
+            return value;
+        }
+    };
+
     private static final Map<Class<? extends Entity>, Class<? extends Entity>> VANILLA_REPLACEMENTS;
 
     static
@@ -68,6 +96,7 @@ public final class Helpers
         VANILLA_REPLACEMENTS.put(EntityPolarBear.class, EntityPolarBearTFC.class);
         VANILLA_REPLACEMENTS.put(EntityParrot.class, EntityParrotTFC.class);
         VANILLA_REPLACEMENTS.put(EntityLlama.class, EntityLlamaTFC.class);
+        DataSerializers.registerSerializer(LONG_DATA_SERIALIZER);
     }
 
     public static boolean isJEIEnabled()
