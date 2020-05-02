@@ -31,4 +31,10 @@ public class ItemStackHandlerCallback extends ItemStackHandler
     {
         return callback.isItemValid(slot, stack);
     }
+
+    @Override
+    protected void onContentsChanged(int slot)
+    {
+        callback.setAndUpdateSlots(slot);
+    }
 }
