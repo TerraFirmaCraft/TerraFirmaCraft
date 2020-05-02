@@ -16,8 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -132,15 +130,14 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected void initEntityAI()
     {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.3D));
+        double speedMult = 1.4D;
+        EntityAnimalTFC.addWildPreyAI(this, speedMult);
+        EntityAnimalTFC.addCommonPreyAI(this, speedMult);
+
         this.tasks.addTask(3, new EntityAITempt(this, 1.1D, ItemsTFC.SALT, false));
-        this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
-        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 6.0F, 1.1D, 1.1D));
-        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityMob.class, 4.0F, 1.1D, 1.1D));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
+
+        this.tasks.addTask(5, new EntityAIFollowParent(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIEatGrass(this));
     }
 
     @Override

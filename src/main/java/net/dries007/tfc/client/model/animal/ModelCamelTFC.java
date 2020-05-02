@@ -92,7 +92,8 @@ public class ModelCamelTFC extends ModelBase
     public ModelRenderer strapBellyRightAngle;
     public ModelRenderer headNode;
 
-    public ModelCamelTFC(float scale) {
+    public ModelCamelTFC(float scale)
+    {
 
         textureWidth = 128;
         textureHeight = 80;
@@ -378,7 +379,7 @@ public class ModelCamelTFC extends ModelBase
         AbstractChestHorse abstractchesthorse = (AbstractChestHorse) entityIn;
         boolean flag1 = !abstractchesthorse.isChild() && abstractchesthorse.hasChest();
         boolean flag2 = !abstractchesthorse.isChild() && abstractchesthorse.isHorseSaddled();
-        boolean flag3 = !abstractchesthorse.isChild() &&abstractchesthorse.isBeingRidden();
+        boolean flag3 = !abstractchesthorse.isChild() && abstractchesthorse.isBeingRidden();
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 
         if (((EntityAnimal) entityIn).isChild())
@@ -504,14 +505,13 @@ public class ModelCamelTFC extends ModelBase
 
         this.headNode.rotateAngleX = -0.2835988F + f4;
         this.headNode.rotateAngleY = f3 * -0.2835988F;
-        this.headNode.rotateAngleX = (0.2617994F + f4)  * 2.1816616F * this.headNode.rotateAngleX;
+        this.headNode.rotateAngleX = (0.2617994F + f4) * 2.1816616F * this.headNode.rotateAngleX;
         this.headNode.rotateAngleY = f3 * 0.017453292F * this.headNode.rotateAngleY;
 
         this.neckBase.rotationPointY = this.headNode.rotationPointY;
         this.neckBase.rotationPointZ = this.headNode.rotationPointZ;
         this.neckBase.rotateAngleX = this.headNode.rotateAngleX;
     }
-
 
 
     private float updateHorseRotation(float f1, float f2, float f3)
@@ -523,7 +523,6 @@ public class ModelCamelTFC extends ModelBase
 
         return f1 + f3 * f;
     }
-
 
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

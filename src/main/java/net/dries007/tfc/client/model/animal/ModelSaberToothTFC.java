@@ -50,7 +50,6 @@ public class ModelSaberToothTFC extends ModelBase
     public ModelRenderer backLeftPaw;
 
 
-
     public ModelSaberToothTFC()
     {
         textureWidth = 80;
@@ -181,7 +180,7 @@ public class ModelSaberToothTFC extends ModelBase
         backLeftPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
         setRotation(backLeftPaw, 0.08726646259971647F, 0.0F, 0.0F);
 
-        
+
         head.addChild(nose);
         head.addChild(ear1);
         head.addChild(ear2);
