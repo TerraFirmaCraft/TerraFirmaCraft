@@ -17,7 +17,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
-
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.api.types.ICrop;
@@ -161,7 +160,7 @@ public final class WailaBlocks implements IWailaDataProvider
     {
         if (config.getConfig("tfc.displayTemp"))
         {
-            currenttip.add(new TextComponentTranslation("waila.temperature").getFormattedText() + " : " + String.valueOf(Math.round(ClimateTFC.getActualTemp(accessor.getWorld(), accessor.getPosition(), 0))) + new TextComponentTranslation("waila.tempsymbol").getFormattedText());
+            currenttip.add(new TextComponentTranslation("waila.tfc.temperature").getFormattedText() + " : " + String.valueOf(Math.round(ClimateTFC.getActualTemp(accessor.getWorld(), accessor.getPosition(), 0))) + new TextComponentTranslation("waila.tfc.tempsymbol").getFormattedText());
         }
         return currenttip;
     }
@@ -182,19 +181,19 @@ public final class WailaBlocks implements IWailaDataProvider
         if (isLit)
         {
             long remainingMinutes = Math.round(((long) ConfigTFC.GENERAL.pitKilnTime - (CalendarTFC.PLAYER_TIME.getTicks() - litTick)) / 1200)+ 1;
-            key = remainingMinutes + " " + new TextComponentTranslation("waila.remaining").getFormattedText();
+            key = remainingMinutes + " " + new TextComponentTranslation("waila.tfc.remaining").getFormattedText();
         }
         else
         {
-            Integer straw = te.getStrawCount();
-            Integer logs = te.getLogCount();
+            int straw = te.getStrawCount();
+            int logs = te.getLogCount();
             if (straw == 8 && logs == 8)
             {
                 key = new TextComponentTranslation("unlit").getFormattedText();
             }
             else
             {
-                key = straw + " " + new TextComponentTranslation("waila.straw").getFormattedText() + " " + logs + " " + new TextComponentTranslation("waila.logs").getFormattedText();
+                key = straw + " " + new TextComponentTranslation("waila.tfc.straw").getFormattedText() + " " + logs + " " + new TextComponentTranslation("waila.tfc.logs").getFormattedText();
             }
         }
         currenttip.add(key);
@@ -214,7 +213,7 @@ public final class WailaBlocks implements IWailaDataProvider
 
         if (gradevalue == Ore.Grade.NORMAL)
         {
-            key = new TextComponentTranslation("waila.normal").getFormattedText() + " " + new TextComponentTranslation("item.tfc.ore." + orename + ".name").getFormattedText();
+            key = new TextComponentTranslation("waila.tfc.normal").getFormattedText() + " " + new TextComponentTranslation("item.tfc.ore." + orename + ".name").getFormattedText();
         }
         else
         {
@@ -252,7 +251,7 @@ public final class WailaBlocks implements IWailaDataProvider
     private List<String> FruitTreeHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         String name = accessor.getBlock().getTranslationKey();
-        String output = "waila.fruit_trees." + name.substring(name.lastIndexOf(".") + 1) + ".name";
+        String output = "waila.tfc.fruit_trees." + name.substring(name.lastIndexOf(".") + 1) + ".name";
 
         currenttip.set(0, new TextComponentTranslation(output).getFormattedText());
 
@@ -265,7 +264,7 @@ public final class WailaBlocks implements IWailaDataProvider
         BlockCropTFC b = (BlockCropTFC) accessor.getBlock();
         ICrop crop = b.getCrop();
         IBlockState blockstate = accessor.getBlockState();
-        Integer curStage = blockstate.getValue(b.getStageProperty());
+        int curStage = blockstate.getValue(b.getStageProperty());
         ItemStack foodDrop = crop.getFoodDrop(curStage);
 
 
@@ -306,7 +305,7 @@ public final class WailaBlocks implements IWailaDataProvider
             Rock rock = pebble.getRock(itemStack);
             if (rock.isFluxStone() && config.getConfig("tfc.newtotfc"))
             {
-                currenttip.add("(" + new TextComponentTranslation("waila.fluxstone").getFormattedText() + ")");
+                currenttip.add("(" + new TextComponentTranslation("waila.tfc.fluxstone").getFormattedText() + ")");
             }
 
         }
@@ -324,7 +323,7 @@ public final class WailaBlocks implements IWailaDataProvider
             String sealedDate;
             sealedDate = te.getSealedDate();
             currenttip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".sealed.name").getFormattedText());
-            currenttip.add(new TextComponentTranslation("waila.sealed").getFormattedText() + ":" + sealedDate);
+            currenttip.add(new TextComponentTranslation("waila.tfc.sealed").getFormattedText() + ":" + sealedDate);
 
 
         }
@@ -337,7 +336,7 @@ public final class WailaBlocks implements IWailaDataProvider
 
     private List<String> CropDeadBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
-        currenttip.add(new TextComponentTranslation("waila.deadcrop").getFormattedText());
+        currenttip.add(new TextComponentTranslation("waila.tfc.deadcrop").getFormattedText());
         return currenttip;
     }
 
@@ -394,10 +393,10 @@ public final class WailaBlocks implements IWailaDataProvider
         TECropBase te = (TECropBase) accessor.getTileEntity();
         BlockCropSimple bs = (BlockCropSimple) accessor.getBlock();
         ICrop crop = bs.getCrop();
-        Integer maxStage = crop.getMaxStage();
+        int maxStage = crop.getMaxStage();
         Float totalGrowthTime = crop.getGrowthTime();
         IBlockState blockstate = accessor.getBlockState();
-        Integer curStage = blockstate.getValue(bs.getStageProperty());
+        int curStage = blockstate.getValue(bs.getStageProperty());
 
         Boolean isWild = blockstate.getValue(BlockCropTFC.WILD);
         long tick = te.getLastUpdateTick();
@@ -409,7 +408,7 @@ public final class WailaBlocks implements IWailaDataProvider
         String text;
         if (isWild)
         {
-            text = new TextComponentTranslation("waila.wild").getFormattedText();
+            text = new TextComponentTranslation("waila.tfc.wild").getFormattedText();
             if (completionPerc <= 100)
             {
                 text = text + TextFormatting.GRAY.toString() + " : " + completionPerc + "%";
@@ -417,7 +416,7 @@ public final class WailaBlocks implements IWailaDataProvider
         }
         else if (crop.isValidForGrowth(temp, rainfall))
         {
-            text = TextFormatting.GREEN.toString() + new TextComponentTranslation("waila.growing").getFormattedText();
+            text = TextFormatting.GREEN.toString() + new TextComponentTranslation("waila.tfc.growing").getFormattedText();
             if (completionPerc <= 100)
             {
                 text = text + TextFormatting.GRAY.toString() + " : " + completionPerc + "%";
@@ -425,13 +424,13 @@ public final class WailaBlocks implements IWailaDataProvider
         }
         else
         {
-            text = TextFormatting.RED.toString() + new TextComponentTranslation("waila.notgrowing").getFormattedText();
+            text = TextFormatting.RED.toString() + new TextComponentTranslation("waila.tfc.notgrowing").getFormattedText();
         }
 
         if (completionPerc > 100)
         {
             //Should test here if crop is 'pickable' and indicate as the action is different for each
-            text = text + TextFormatting.GREEN.toString() + " : " + new TextComponentTranslation("waila.mature").getFormattedText();
+            text = text + TextFormatting.GREEN.toString() + " : " + new TextComponentTranslation("waila.tfc.mature").getFormattedText();
         }
         currenttip.add(text);
 
@@ -462,18 +461,18 @@ public final class WailaBlocks implements IWailaDataProvider
             if (recipe != null)
             {
 
-                result = new TextComponentTranslation("waila.making").getFormattedText() + " " + recipe.getResultName();
+                result = new TextComponentTranslation("waila.tfc.making").getFormattedText() + " " + recipe.getResultName();
                 currenttip.add(result);
             }
             else
             {
-                result = new TextComponentTranslation("waila.norecipe").getFormattedText();
+                result = new TextComponentTranslation("waila.tfc.norecipe").getFormattedText();
                 currenttip.add(result);
             }
         }
         if (amount > 0)
         {
-            result = new TextComponentTranslation("waila.contains").getFormattedText() + " " + amount + " units of " + fullfluid;
+            result = new TextComponentTranslation("waila.tfc.contains").getFormattedText() + " " + amount + " units of " + fullfluid;
             currenttip.add(result);
         }
 
