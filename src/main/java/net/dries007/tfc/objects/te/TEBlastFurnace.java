@@ -51,15 +51,12 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
 
     private final List<ItemStack> oreStacks = new ArrayList<>();
     private final List<ItemStack> fuelStacks = new ArrayList<>();
-
+    private final Alloy alloy;
     private int maxFuel = 0, maxOre = 0, delayTimer = 0, meltAmount = 0, chimney = 0;
     private long burnTicksLeft = 0, airTicks = 0;
     private int fuelCount = 0, oreCount = 0, oreUnits; // Used to show on client's GUI how much ore/fuel TE has
-
     private int temperature = 0;
     private float burnTemperature = 0;
-
-    private final Alloy alloy;
 
     public TEBlastFurnace()
     {

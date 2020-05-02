@@ -18,9 +18,9 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 
 public class MetalHeatingRecipeWrapper implements IRecipeWrapper
 {
-    private ItemStack stack;
-    private FluidStack output;
-    private float meltingTemp;
+    private final ItemStack stack;
+    private final FluidStack output;
+    private final float meltingTemp;
 
     public MetalHeatingRecipeWrapper(ItemStack stack, Metal metal, int amount, float meltingTemp)
     {

@@ -16,10 +16,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class CapabilityEgg
 {
+    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "egg");
     @CapabilityInject(IEgg.class)
     public static Capability<IEgg> CAPABILITY;
-
-    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "egg");
 
     public static void preInit()
     {

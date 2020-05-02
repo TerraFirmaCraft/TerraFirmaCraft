@@ -23,11 +23,11 @@ import net.dries007.tfc.objects.entity.animal.EntityCowTFC;
 @ParametersAreNonnullByDefault
 public class ModelCowTFC extends ModelQuadruped
 {
-    private ModelRenderer udders;
-    private ModelRenderer horn1;
-    private ModelRenderer horn2;
-    private ModelRenderer horn1b;
-    private ModelRenderer horn2b;
+    private final ModelRenderer udders;
+    private final ModelRenderer horn1;
+    private final ModelRenderer horn2;
+    private final ModelRenderer horn1b;
+    private final ModelRenderer horn2b;
 
     public ModelCowTFC()
     {

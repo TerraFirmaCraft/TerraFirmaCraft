@@ -38,7 +38,7 @@ public class EntityAIWanderHuntArea extends EntityAIWander
         if (this.entity.hasHome())
         {
             BlockPos blockpos = this.entity.getHomePosition();
-            return RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 16, 7, new Vec3d((double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ()));
+            return RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 16, 7, new Vec3d(blockpos.getX(), blockpos.getY(), blockpos.getZ()));
         }
         return null;
     }

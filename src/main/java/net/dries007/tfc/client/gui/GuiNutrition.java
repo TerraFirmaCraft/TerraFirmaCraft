@@ -30,7 +30,7 @@ public class GuiNutrition extends GuiContainerTFC
 {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_nutrition.png");
 
-    private float[] cachedNutrients;
+    private final float[] cachedNutrients;
 
     public GuiNutrition(Container container, InventoryPlayer playerInv)
     {

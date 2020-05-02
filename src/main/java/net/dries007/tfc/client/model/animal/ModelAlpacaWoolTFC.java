@@ -22,20 +22,20 @@ import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 @ParametersAreNonnullByDefault
 public class ModelAlpacaWoolTFC extends ModelBase
 {
-    private ModelRenderer ear1f;
-    private ModelRenderer ear2f;
-    private ModelRenderer ear1m;
-    private ModelRenderer ear2m;
-    private ModelRenderer head;
-    private ModelRenderer neck1;
-    private ModelRenderer neck2;
-    private ModelRenderer body;
-    private ModelRenderer tailf;
-    private ModelRenderer tailm;
-    private ModelRenderer leg1;
-    private ModelRenderer leg2;
-    private ModelRenderer leg3;
-    private ModelRenderer leg4;
+    private final ModelRenderer ear1f;
+    private final ModelRenderer ear2f;
+    private final ModelRenderer ear1m;
+    private final ModelRenderer ear2m;
+    private final ModelRenderer head;
+    private final ModelRenderer neck1;
+    private final ModelRenderer neck2;
+    private final ModelRenderer body;
+    private final ModelRenderer tailf;
+    private final ModelRenderer tailm;
+    private final ModelRenderer leg1;
+    private final ModelRenderer leg2;
+    private final ModelRenderer leg3;
+    private final ModelRenderer leg4;
 
     public ModelAlpacaWoolTFC()
     {

@@ -16,8 +16,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,7 +41,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IHuntable;
-import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -199,6 +196,31 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
         this.jumpTicks = 0;
     }
 
+    @Override
+    public void birthChildren()
+    {
+        int numberOfChilds = 5 + rand.nextInt(5); // 5-10
+        for (int i = 0; i < numberOfChilds; i++)
+        {
+            EntityRabbitTFC baby = new EntityRabbitTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            this.world.spawnEntity(baby);
+        }
+    }
+
+    @Override
+    public long gestationDays()
+    {
+        return DAYS_TO_FULL_GESTATION;
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(RABBIT_TYPE, 0);
+    }
+
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
@@ -227,24 +249,6 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
         this.setRabbitType(compound.getInteger("RabbitType"));
     }
 
-    @Override
-    public void birthChildren()
-    {
-        int numberOfChilds = 5 + rand.nextInt(5); // 5-10
-        for (int i = 0; i < numberOfChilds; i++)
-        {
-            EntityRabbitTFC baby = new EntityRabbitTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            this.world.spawnEntity(baby);
-        }
-    }
-
-    @Override
-    public long gestationDays()
-    {
-        return DAYS_TO_FULL_GESTATION;
-    }
-
     @Nonnull
     @Override
     public SoundCategory getSoundCategory()
@@ -265,13 +269,6 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     }
 
     @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataManager.register(RABBIT_TYPE, 0);
-    }
-
-    @Override
     protected void initEntityAI()
     {
         double speedMult = 2.2D;
@@ -280,7 +277,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
 
         this.tasks.taskEntries.removeIf(entry -> entry.action instanceof EntityAIPanic);
 
-        this.tasks.addTask(1, new EntityRabbitTFC.AIPanic(this, 1.4D*speedMult));
+        this.tasks.addTask(1, new EntityRabbitTFC.AIPanic(this, 1.4D * speedMult));
         this.tasks.addTask(2, new EntityAIMate(this, 1.2D));
         for (ItemStack is : OreDictionary.getOres("carrot"))
         {

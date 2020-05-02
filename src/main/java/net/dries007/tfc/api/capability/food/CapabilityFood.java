@@ -30,12 +30,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class CapabilityFood
 {
-    @CapabilityInject(IFood.class)
-    public static Capability<IFood> CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "food");
-
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_FOODS = new HashMap<>(); //Used inside CT, set custom IFood for food items outside TFC
-
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
      * That puts decay times at 25% - 100% of this value
@@ -43,6 +39,8 @@ public class CapabilityFood
      * Other modifiers are applied on top of that
      */
     public static final int DEFAULT_ROT_TICKS = ICalendar.TICKS_IN_DAY * 22;
+    @CapabilityInject(IFood.class)
+    public static Capability<IFood> CAPABILITY;
 
     public static void preInit()
     {

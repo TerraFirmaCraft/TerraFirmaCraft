@@ -23,16 +23,16 @@ import net.dries007.tfc.objects.entity.animal.EntityChickenTFC;
 @ParametersAreNonnullByDefault
 public class ModelChickenTFC extends ModelBase
 {
-    private ModelRenderer head;
-    private ModelRenderer body;
-    private ModelRenderer rightLeg;
-    private ModelRenderer leftLeg;
-    private ModelRenderer rightWing;
-    private ModelRenderer leftWing;
-    private ModelRenderer bill;
-    private ModelRenderer chin;
-    private ModelRenderer[] tails;
-    private ModelRenderer crown;
+    private final ModelRenderer head;
+    private final ModelRenderer body;
+    private final ModelRenderer rightLeg;
+    private final ModelRenderer leftLeg;
+    private final ModelRenderer rightWing;
+    private final ModelRenderer leftWing;
+    private final ModelRenderer bill;
+    private final ModelRenderer chin;
+    private final ModelRenderer[] tails;
+    private final ModelRenderer crown;
 
     public ModelChickenTFC()
     {

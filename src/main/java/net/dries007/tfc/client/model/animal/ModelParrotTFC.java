@@ -24,14 +24,14 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 @ParametersAreNonnullByDefault
 public class ModelParrotTFC extends ModelBase
 {
-    private ModelRenderer body;
-    private ModelRenderer tail;
-    private ModelRenderer wingLeft;
-    private ModelRenderer wingRight;
-    private ModelRenderer head;
-    private ModelRenderer feather;
-    private ModelRenderer legLeft;
-    private ModelRenderer legRight;
+    private final ModelRenderer body;
+    private final ModelRenderer tail;
+    private final ModelRenderer wingLeft;
+    private final ModelRenderer wingRight;
+    private final ModelRenderer head;
+    private final ModelRenderer feather;
+    private final ModelRenderer legLeft;
+    private final ModelRenderer legRight;
     private State state;
 
     public ModelParrotTFC()

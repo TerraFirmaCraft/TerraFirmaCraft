@@ -44,7 +44,7 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
 
     public static final int FIELD_TEMPERATURE = 0;
 
-    private HeatRecipe[] cachedRecipes = new HeatRecipe[5];
+    private final HeatRecipe[] cachedRecipes = new HeatRecipe[5];
     private boolean requiresSlotUpdate = false;
     private float temperature; // Current Temperature
     private int burnTicks; // Ticks remaining on the current item of fuel

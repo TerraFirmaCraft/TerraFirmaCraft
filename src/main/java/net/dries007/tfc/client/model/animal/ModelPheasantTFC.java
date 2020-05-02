@@ -21,21 +21,21 @@ import net.dries007.tfc.objects.entity.animal.EntityPheasantTFC;
 @ParametersAreNonnullByDefault
 public class ModelPheasantTFC extends ModelBase
 {
-    private ModelRenderer body;
-    private ModelRenderer tail;
-    private ModelRenderer leftLeg;
-    private ModelRenderer rightLeg;
-    private ModelRenderer tailFeather;
-    private ModelRenderer leftLowerLeg;
-    private ModelRenderer rightLowerLeg;
-    private ModelRenderer neck;
-    private ModelRenderer head;
-    private ModelRenderer beak;
-    private ModelRenderer chest;
-    private ModelRenderer leftWing;
-    private ModelRenderer rightWing;
-    private ModelRenderer leftFoot;
-    private ModelRenderer rightFoot;
+    private final ModelRenderer body;
+    private final ModelRenderer tail;
+    private final ModelRenderer leftLeg;
+    private final ModelRenderer rightLeg;
+    private final ModelRenderer tailFeather;
+    private final ModelRenderer leftLowerLeg;
+    private final ModelRenderer rightLowerLeg;
+    private final ModelRenderer neck;
+    private final ModelRenderer head;
+    private final ModelRenderer beak;
+    private final ModelRenderer chest;
+    private final ModelRenderer leftWing;
+    private final ModelRenderer rightWing;
+    private final ModelRenderer leftFoot;
+    private final ModelRenderer rightFoot;
 
     public ModelPheasantTFC()
     {

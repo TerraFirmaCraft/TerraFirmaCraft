@@ -19,9 +19,9 @@ import net.dries007.tfc.compat.jei.TFCJEIPlugin;
 
 public class BlastFurnaceRecipeWrapper implements IRecipeWrapper
 {
-    private List<ItemStack> ingredients;
-    private List<ItemStack> additives;
-    private ItemStack output;
+    private final List<ItemStack> ingredients;
+    private final List<ItemStack> additives;
+    private final ItemStack output;
 
     public BlastFurnaceRecipeWrapper(BlastFurnaceRecipe recipe)
     {

@@ -116,19 +116,6 @@ public class ItemMold extends ItemPottery
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
-    @Nullable
-    @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack)
-    {
-        return CapabilityContainerListener.readShareTag(stack);
-    }
-
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        CapabilityContainerListener.applyShareTag(stack, nbt);
-    }
-
     @Override
     @Nonnull
     public String getTranslationKey(ItemStack stack)
@@ -144,6 +131,19 @@ public class ItemMold extends ItemPottery
             }
         }
         return super.getTranslationKey(stack);
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        return CapabilityContainerListener.readShareTag(stack);
+    }
+
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        CapabilityContainerListener.applyShareTag(stack, nbt);
     }
 
     @Nullable

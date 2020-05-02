@@ -18,7 +18,7 @@ import net.dries007.tfc.api.capability.food.Nutrient;
 
 public class PacketFoodStatsUpdate implements IMessage
 {
-    private float[] nutrients;
+    private final float[] nutrients;
     private float thirst;
 
     @SuppressWarnings("unused")

@@ -26,7 +26,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 @SuppressWarnings("unused")
 public class ShapedDamageRecipe extends ShapedOreRecipe
 {
-    private int damage;
+    private final int damage;
 
     public ShapedDamageRecipe(ResourceLocation group, CraftingHelper.ShapedPrimer input, @Nonnull ItemStack result, int damage)
     {

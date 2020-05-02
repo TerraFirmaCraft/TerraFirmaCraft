@@ -19,7 +19,7 @@ import net.dries007.tfc.api.types.IArmorMaterialTFC;
 
 public class ItemArmorTFC extends ItemArmor implements IItemSize, IDamageResistance
 {
-    private IArmorMaterialTFC materialTFC;
+    private final IArmorMaterialTFC materialTFC;
 
     public ItemArmorTFC(IArmorMaterialTFC materialTFC, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn)
     {

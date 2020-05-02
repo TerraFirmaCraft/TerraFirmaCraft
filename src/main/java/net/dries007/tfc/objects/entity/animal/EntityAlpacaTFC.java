@@ -94,16 +94,16 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     }
 
     @Override
-    public boolean hasWool()
-    {
-        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
-    }
-
-    @Override
     public long getProductsCooldown()
     {
         // Just here for the time being, in 1.15 gonna see changes here to match other animals better
         return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
+    }
+
+    @Override
+    public boolean hasWool()
+    {
+        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
     }
 
     @Override

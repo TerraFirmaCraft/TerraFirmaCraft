@@ -11,16 +11,12 @@ package net.dries007.tfc.client.model.animal;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.util.math.MathHelper;
 
-import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
-import net.dries007.tfc.objects.entity.animal.EntityGoatTFC;
 import net.dries007.tfc.objects.entity.animal.EntityLionTFC;
 
 public class ModelLionTFC extends ModelBase

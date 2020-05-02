@@ -195,10 +195,12 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
 
     public static class Builder
     {
-        private float minTemp;
-        private float maxTemp;
-        private float minRain;
-        private float maxRain;
+        private final float minTemp;
+        private final float maxTemp;
+        private final float minRain;
+        private final float maxRain;
+        private final ITreeGenerator gen;
+        private final ResourceLocation name;
         private float minDensity;
         private float maxDensity;
         private float dominance;
@@ -211,8 +213,6 @@ public class Tree extends IForgeRegistryEntry.Impl<Tree>
         private float minGrowthTime;
         private float burnTemp;
         private int burnTicks;
-        private ITreeGenerator gen;
-        private ResourceLocation name;
 
         public Builder(@Nonnull ResourceLocation name, float minRain, float maxRain, float minTemp, float maxTemp, @Nonnull ITreeGenerator gen)
         {

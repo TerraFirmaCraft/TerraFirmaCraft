@@ -61,13 +61,6 @@ public class ItemFoodTFC extends ItemFood implements IItemSize
         }
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return food.isHeatable() ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
-    }
-
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
@@ -86,5 +79,12 @@ public class ItemFoodTFC extends ItemFood implements IItemSize
     public int getItemStackLimit(ItemStack stack)
     {
         return getStackSize(stack);
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return food.isHeatable() ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
     }
 }

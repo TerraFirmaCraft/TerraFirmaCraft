@@ -109,6 +109,13 @@ public class BlockCropDead extends BlockBush
     }
 
     @Override
+    @Nonnull
+    public Block.EnumOffsetType getOffsetType()
+    {
+        return Block.EnumOffsetType.XZ;
+    }
+
+    @Override
     public int quantityDropped(IBlockState state, int fortune, Random random)
     {
         // dead crops always drop at least 1 seed
@@ -153,12 +160,5 @@ public class BlockCropDead extends BlockBush
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
         return EnumPlantType.Crop;
-    }
-
-    @Override
-    @Nonnull
-    public Block.EnumOffsetType getOffsetType()
-    {
-        return Block.EnumOffsetType.XZ;
     }
 }

@@ -162,6 +162,13 @@ public abstract class BlockCropTFC extends BlockBush
     }
 
     @Override
+    @Nonnull
+    public Block.EnumOffsetType getOffsetType()
+    {
+        return Block.EnumOffsetType.XZ;
+    }
+
+    @Override
     public boolean hasTileEntity(IBlockState state)
     {
         return true;
@@ -275,11 +282,4 @@ public abstract class BlockCropTFC extends BlockBush
     }
 
     public abstract PropertyInteger getStageProperty();
-
-    @Override
-    @Nonnull
-    public Block.EnumOffsetType getOffsetType()
-    {
-        return Block.EnumOffsetType.XZ;
-    }
 }

@@ -24,10 +24,10 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements 
         return TFCRegistries.LOOM.getValuesCollection().stream().filter(x -> x.isValidInput(item)).findFirst().orElse(null);
     }
 
-    private IIngredient<ItemStack> inputItem;
-    private ItemStack outputItem;
-    private int stepCount;
-    private ResourceLocation inProgressTexture;
+    private final IIngredient<ItemStack> inputItem;
+    private final ItemStack outputItem;
+    private final int stepCount;
+    private final ResourceLocation inProgressTexture;
 
     public LoomRecipe(ResourceLocation name, IIngredient<ItemStack> input, ItemStack output, int stepsRequired, ResourceLocation inProgressTexture)
     {

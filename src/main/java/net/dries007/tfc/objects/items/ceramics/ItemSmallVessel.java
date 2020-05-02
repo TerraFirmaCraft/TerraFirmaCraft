@@ -67,19 +67,6 @@ public class ItemSmallVessel extends ItemPottery
         setHasSubtypes(glazed);
     }
 
-    @Nullable
-    @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack)
-    {
-        return CapabilityContainerListener.readShareTag(stack);
-    }
-
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        CapabilityContainerListener.applyShareTag(stack, nbt);
-    }
-
     @Override
     @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
@@ -135,6 +122,19 @@ public class ItemSmallVessel extends ItemPottery
                 }
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        return CapabilityContainerListener.readShareTag(stack);
+    }
+
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        CapabilityContainerListener.applyShareTag(stack, nbt);
     }
 
     @Override
@@ -415,21 +415,6 @@ public class ItemSmallVessel extends ItemPottery
             return false;
         }
 
-        /**
-         * This is used for a very unique situation, see #1083
-         * By tracing the call path through {@link net.minecraft.inventory.Container#slotClick(int, int, ClickType, EntityPlayer)}, the *only* method that can possibly intercept in that massive chain, for clicking on a slot with a stack is either this one (in which case we handle the previous item stack in the slot which a reference has been obtained to)
-         * Thus, we don't actually care about the stack being put in the slot. We do assume that since this stack is being put in the slot, a different stack is being taken out.
-         */
-        @Override
-        public void beforePutStack(SlotCallback slot, @Nonnull ItemStack stack)
-        {
-            IFood cap = slot.getStack().getCapability(CapabilityFood.CAPABILITY, null);
-            if (cap != null)
-            {
-                CapabilityFood.removeTrait(cap, FoodTrait.PRESERVED);
-            }
-        }
-
         @Override
         public NBTTagCompound serializeNBT()
         {
@@ -485,6 +470,21 @@ public class ItemSmallVessel extends ItemPottery
                 }
             }
             updateFluidData(tank.getFluid());
+        }
+
+        /**
+         * This is used for a very unique situation, see #1083
+         * By tracing the call path through {@link net.minecraft.inventory.Container#slotClick(int, int, ClickType, EntityPlayer)}, the *only* method that can possibly intercept in that massive chain, for clicking on a slot with a stack is either this one (in which case we handle the previous item stack in the slot which a reference has been obtained to)
+         * Thus, we don't actually care about the stack being put in the slot. We do assume that since this stack is being put in the slot, a different stack is being taken out.
+         */
+        @Override
+        public void beforePutStack(SlotCallback slot, @Nonnull ItemStack stack)
+        {
+            IFood cap = slot.getStack().getCapability(CapabilityFood.CAPABILITY, null);
+            if (cap != null)
+            {
+                CapabilityFood.removeTrait(cap, FoodTrait.PRESERVED);
+            }
         }
 
         private void updateFluidData(@Nullable FluidStack fluid)

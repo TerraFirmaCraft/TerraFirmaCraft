@@ -21,10 +21,10 @@ import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 @ParametersAreNonnullByDefault
 public class ModelSheepBodyTFC extends ModelQuadruped
 {
-    private ModelRenderer horn1;
-    private ModelRenderer horn2;
-    private ModelRenderer horn1b;
-    private ModelRenderer horn2b;
+    private final ModelRenderer horn1;
+    private final ModelRenderer horn2;
+    private final ModelRenderer horn1b;
+    private final ModelRenderer horn2b;
 
     public ModelSheepBodyTFC()
     {

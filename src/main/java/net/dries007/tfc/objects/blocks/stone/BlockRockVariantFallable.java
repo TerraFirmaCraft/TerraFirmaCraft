@@ -44,9 +44,9 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
         if (rand.nextInt(16) != 0) return;
         if (shouldFall(worldIn, pos, pos))
         {
-            double d0 = (double) ((float) pos.getX() + rand.nextFloat());
+            double d0 = (float) pos.getX() + rand.nextFloat();
             double d1 = (double) pos.getY() - 0.05D;
-            double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
+            double d2 = (float) pos.getZ() + rand.nextFloat();
             worldIn.spawnParticle(EnumParticleTypes.FALLING_DUST, d0, d1, d2, 0.0D, 0.0D, 0.0D, Block.getStateId(stateIn));
         }
     }

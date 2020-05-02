@@ -30,12 +30,11 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 
 public final class CapabilityMetalItem
 {
-    @CapabilityInject(IMetalItem.class)
-    public static Capability<IMetalItem> METAL_OBJECT_CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(TerraFirmaCraft.MOD_ID, "metal_object");
-
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_METAL_ITEMS = new HashMap<>(); //Used inside CT, set custom IMetalItem for items outside TFC
     public static final Map<String, Metal.ItemType> ORE_DICT_METAL_ITEMS = new LinkedHashMap<>();
+    @CapabilityInject(IMetalItem.class)
+    public static Capability<IMetalItem> METAL_OBJECT_CAPABILITY;
 
     public static void preInit()
     {

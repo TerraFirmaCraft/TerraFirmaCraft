@@ -34,13 +34,11 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityDamageResistance
 {
-    @CapabilityInject(IDamageResistance.class)
-    public static Capability<IDamageResistance> CAPABILITY;
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "damage_resistance");
-
     public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ARMOR = new HashMap<>(); //Used inside CT, set custom IDamageResistance for armor items outside TFC
     public static final Map<String, Supplier<ICapabilityProvider>> ENTITY_RESISTANCE = new HashMap<>(); // Map entities -> Capability to damage resistance
-
+    @CapabilityInject(IDamageResistance.class)
+    public static Capability<IDamageResistance> CAPABILITY;
 
     public static void preInit()
     {

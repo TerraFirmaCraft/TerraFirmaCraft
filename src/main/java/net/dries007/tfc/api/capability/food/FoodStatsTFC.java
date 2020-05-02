@@ -281,6 +281,20 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         return thirst;
     }
 
+    @Override
+    public void setThirst(float thirst)
+    {
+        this.thirst = thirst;
+        if (thirst < 0)
+        {
+            this.thirst = 0;
+        }
+        if (thirst > MAX_PLAYER_THIRST)
+        {
+            this.thirst = MAX_PLAYER_THIRST;
+        }
+    }
+
     @Nonnull
     @Override
     public NutritionStats getNutrition()
@@ -303,20 +317,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void setThirst(float thirst)
-    {
-        this.thirst = thirst;
-        if (thirst < 0)
-        {
-            this.thirst = 0;
-        }
-        if (thirst > MAX_PLAYER_THIRST)
-        {
-            this.thirst = MAX_PLAYER_THIRST;
-        }
     }
 
     @Override

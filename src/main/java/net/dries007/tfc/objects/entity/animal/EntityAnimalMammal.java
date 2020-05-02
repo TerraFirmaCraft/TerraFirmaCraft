@@ -8,14 +8,13 @@ package net.dries007.tfc.objects.entity.animal;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 /**
@@ -50,34 +49,6 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
     }
 
     @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote)
-        {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
-            {
-                birthChildren();
-                this.setFertilized(false);
-            }
-        }
-    }
-
-    @Override
-    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.writeEntityToNBT(nbt);
-        nbt.setLong("pregnant", getPregnantTime());
-    }
-
-    @Override
-    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.readEntityFromNBT(nbt);
-        this.setPregnantTime(nbt.getLong("pregnant"));
-    }
-
-    @Override
     public void onFertilized(IAnimalTFC male)
     {
         //Mark the day this female became pregnant
@@ -107,5 +78,33 @@ public abstract class EntityAnimalMammal extends EntityAnimalTFC
     {
         super.entityInit();
         getDataManager().register(PREGNANT_TIME, -1L);
+    }
+
+    @Override
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        if (!this.world.isRemote)
+        {
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
+            {
+                birthChildren();
+                this.setFertilized(false);
+            }
+        }
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setLong("pregnant", getPregnantTime());
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.setPregnantTime(nbt.getLong("pregnant"));
     }
 }

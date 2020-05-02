@@ -116,7 +116,7 @@ public class ItemBoatTFC extends ItemTFC
             {
                 if (entity.canBeCollidedWith())
                 {
-                    AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double) entity.getCollisionBorderSize());
+                    AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
 
                     if (axisalignedbb.contains(vec3d))
                     {

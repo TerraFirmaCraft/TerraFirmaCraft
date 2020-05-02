@@ -27,7 +27,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 @SuppressWarnings("unused")
 public class ShapelessDamageRecipe extends ShapelessOreRecipe
 {
-    private int damage;
+    private final int damage;
 
     public ShapelessDamageRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull ItemStack result, int damage)
     {
@@ -56,14 +56,6 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
         return remainingItems;
     }
 
-    private ItemStack damageStack(ItemStack stack)
-    {
-        ItemStack damagedStack = stack.copy();
-        damagedStack.damageItem(damage, ForgeHooks.getCraftingPlayer());
-
-        return damagedStack;
-    }
-
     @Override
     @Nonnull
     public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inventoryCrafting)
@@ -76,6 +68,14 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
     public String getGroup()
     {
         return group == null ? "" : group.toString();
+    }
+
+    private ItemStack damageStack(ItemStack stack)
+    {
+        ItemStack damagedStack = stack.copy();
+        damagedStack.damageItem(damage, ForgeHooks.getCraftingPlayer());
+
+        return damagedStack;
     }
 
     @SuppressWarnings("unused")

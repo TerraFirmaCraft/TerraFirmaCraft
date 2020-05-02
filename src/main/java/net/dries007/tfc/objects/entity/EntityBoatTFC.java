@@ -81,28 +81,6 @@ public class EntityBoatTFC extends EntityBoat
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound compound)
-    {
-        super.writeEntityToNBT(compound);
-        Tree wood = getWood();
-        if (wood != null)
-        {
-            //noinspection ConstantConditions
-            compound.setString("Wood", this.getWood().getRegistryName().getPath().toLowerCase());
-        }
-    }
-
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound compound)
-    {
-        super.readEntityFromNBT(compound);
-        if (compound.hasKey("Wood"))
-        {
-            this.dataManager.set(WOOD_NAME, compound.getString("Wood"));
-        }
-    }
-
-    @Override
     public void onUpdate()
     {
         this.previousStatus = this.status;
@@ -187,5 +165,27 @@ public class EntityBoatTFC extends EntityBoat
             }
         }
         this.doBlockCollisions();
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        Tree wood = getWood();
+        if (wood != null)
+        {
+            //noinspection ConstantConditions
+            compound.setString("Wood", this.getWood().getRegistryName().getPath().toLowerCase());
+        }
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        if (compound.hasKey("Wood"))
+        {
+            this.dataManager.set(WOOD_NAME, compound.getString("Wood"));
+        }
     }
 }

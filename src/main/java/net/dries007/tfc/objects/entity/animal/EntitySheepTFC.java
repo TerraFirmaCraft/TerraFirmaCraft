@@ -70,19 +70,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD), EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
-    @Override
-    public void setProductsCooldown()
-    {
-        this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-    }
-
-    @Override
-    public long getProductsCooldown()
-    {
-        // Just here for the time being, in 1.15 gonna see changes here to match other animals better
-        return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
-    }
-
     public EntitySheepTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
     {
         super(worldIn, gender, birthDay);
@@ -122,22 +109,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     }
 
     @Override
-    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
-    {
-        super.writeEntityToNBT(compound);
-        compound.setInteger("sheared", this.getShearedDay());
-        compound.setInteger("dyecolor", this.getDyeColor().getMetadata());
-    }
-
-    @Override
-    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
-    {
-        super.readEntityFromNBT(compound);
-        this.setShearedDay(compound.getInteger("sheared"));
-        this.setDyeColor(EnumDyeColor.byMetadata(compound.getByte("dyecolor")));
-    }
-
-    @Override
     public void birthChildren()
     {
         int numberOfChilds = Constants.RNG.nextInt(3) + 1; //1-3
@@ -154,6 +125,30 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     public long gestationDays()
     {
         return DAYS_TO_FULL_GESTATION;
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(DYE_COLOR, 0);
+        this.dataManager.register(SHEARED, 0);
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("sheared", this.getShearedDay());
+        compound.setInteger("dyecolor", this.getDyeColor().getMetadata());
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        this.setShearedDay(compound.getInteger("sheared"));
+        this.setDyeColor(EnumDyeColor.byMetadata(compound.getByte("dyecolor")));
     }
 
     @Override
@@ -179,6 +174,19 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     {
         // Only white for now
         return Collections.singletonList(new ItemStack(ItemsTFC.WOOL, 1));
+    }
+
+    @Override
+    public void setProductsCooldown()
+    {
+        this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+    }
+
+    @Override
+    public long getProductsCooldown()
+    {
+        // Just here for the time being, in 1.15 gonna see changes here to match other animals better
+        return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
     }
 
     @Override
@@ -295,14 +303,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
         {
             return super.processInteract(player, hand);
         }
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataManager.register(DYE_COLOR, 0);
-        this.dataManager.register(SHEARED, 0);
     }
 
     @Override

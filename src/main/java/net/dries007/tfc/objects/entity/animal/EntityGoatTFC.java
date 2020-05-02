@@ -51,12 +51,6 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     }
 
     @Override
-    public long getProductsCooldown()
-    {
-        return Math.max(0, this.lastMilked() + DEFAULT_TICKS_TO_MILK - CalendarTFC.PLAYER_TIME.getTicks());
-    }
-
-    @Override
     public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
@@ -97,6 +91,12 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     public int getDaysToAdulthood()
     {
         return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public long getProductsCooldown()
+    {
+        return Math.max(0, this.lastMilked() + DEFAULT_TICKS_TO_MILK - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override

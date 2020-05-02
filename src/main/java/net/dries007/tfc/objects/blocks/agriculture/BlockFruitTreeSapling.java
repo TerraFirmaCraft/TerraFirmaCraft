@@ -93,6 +93,13 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
     }
 
     @Override
+    @Nonnull
+    public Block.EnumOffsetType getOffsetType()
+    {
+        return Block.EnumOffsetType.XZ;
+    }
+
+    @Override
     public boolean hasTileEntity(IBlockState state)
     {
         return true;
@@ -104,7 +111,6 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
     {
         return new TETickCounter();
     }
-
 
     @SuppressWarnings("deprecation")
     @Override
@@ -137,12 +143,5 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
                 world.setBlockState(blockPos.up(), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, false));
             }
         }
-    }
-
-    @Override
-    @Nonnull
-    public Block.EnumOffsetType getOffsetType()
-    {
-        return Block.EnumOffsetType.XZ;
     }
 }

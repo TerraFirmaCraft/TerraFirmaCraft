@@ -23,9 +23,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public final class CapabilityPlayerData
 {
+    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "player_skills");
     @CapabilityInject(IPlayerData.class)
     public static Capability<IPlayerData> CAPABILITY;
-    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "player_skills");
 
     public static void preInit()
     {

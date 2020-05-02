@@ -21,8 +21,8 @@ import net.dries007.tfc.objects.items.metal.ItemMetal;
 
 public class UnmoldRecipeWrapper implements IRecipeWrapper
 {
-    private ItemStack mold;
-    private ItemStack output;
+    private final ItemStack mold;
+    private final ItemStack output;
 
     public UnmoldRecipeWrapper(Metal metal, Metal.ItemType type)
     {

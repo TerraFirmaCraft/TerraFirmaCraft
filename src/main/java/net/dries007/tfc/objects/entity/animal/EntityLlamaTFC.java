@@ -12,8 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -45,6 +43,7 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -60,15 +59,14 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     protected static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.VARINT);
     protected static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.FLOAT);
     private static final int DAYS_TO_ADULTHOOD = 900;
-    protected long lastFed; //Last time(in days) this entity was fed
-    protected long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-
     //Is this female fertilized?
     private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
-    protected long matingTime; //The last time(in ticks) this male tried fertilizing females
-    protected long lastDeath; //Last time(in days) this entity checked for dying of old age
     // The time(in days) this entity became pregnant
     private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityLlamaTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    protected long lastFed; //Last time(in days) this entity was fed
+    protected long lastFDecay; //Last time(in days) this entity's familiarity had decayed
+    protected long matingTime; //The last time(in ticks) this male tried fertilizing females
+    protected long lastDeath; //Last time(in days) this entity checked for dying of old age
     protected float geneJump, geneHealth, geneSpeed, geneStrength; // Basic genetic selection based on vanilla's llama offspring
     protected int geneVariant;
 

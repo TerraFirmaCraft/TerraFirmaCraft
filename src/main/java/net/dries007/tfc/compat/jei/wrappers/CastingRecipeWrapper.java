@@ -20,8 +20,8 @@ import net.dries007.tfc.objects.items.ceramics.ItemMold;
 
 public class CastingRecipeWrapper implements IRecipeWrapper
 {
-    private ItemStack mold;
-    private FluidStack input;
+    private final ItemStack mold;
+    private final FluidStack input;
 
     public CastingRecipeWrapper(Metal metal, Metal.ItemType type)
     {

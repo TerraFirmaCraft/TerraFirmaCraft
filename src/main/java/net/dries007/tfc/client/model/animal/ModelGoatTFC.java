@@ -23,26 +23,26 @@ import net.dries007.tfc.objects.entity.animal.EntityGoatTFC;
 @ParametersAreNonnullByDefault
 public class ModelGoatTFC extends ModelBase
 {
-    private ModelRenderer babyhorn1;
-    private ModelRenderer babyhorn2;
-    private ModelRenderer horn1f;
-    private ModelRenderer horn2f;
-    private ModelRenderer horn1ma;
-    private ModelRenderer horn1mb;
-    private ModelRenderer horn2ma;
-    private ModelRenderer horn2mb;
-    private ModelRenderer ear1;
-    private ModelRenderer ear2;
-    private ModelRenderer head1;
-    private ModelRenderer head2;
-    private ModelRenderer neck;
-    private ModelRenderer body;
-    private ModelRenderer tail;
-    private ModelRenderer udders;
-    private ModelRenderer leg1;
-    private ModelRenderer leg2;
-    private ModelRenderer leg3;
-    private ModelRenderer leg4;
+    private final ModelRenderer babyhorn1;
+    private final ModelRenderer babyhorn2;
+    private final ModelRenderer horn1f;
+    private final ModelRenderer horn2f;
+    private final ModelRenderer horn1ma;
+    private final ModelRenderer horn1mb;
+    private final ModelRenderer horn2ma;
+    private final ModelRenderer horn2mb;
+    private final ModelRenderer ear1;
+    private final ModelRenderer ear2;
+    private final ModelRenderer head1;
+    private final ModelRenderer head2;
+    private final ModelRenderer neck;
+    private final ModelRenderer body;
+    private final ModelRenderer tail;
+    private final ModelRenderer udders;
+    private final ModelRenderer leg1;
+    private final ModelRenderer leg2;
+    private final ModelRenderer leg3;
+    private final ModelRenderer leg4;
 
 
     public ModelGoatTFC()

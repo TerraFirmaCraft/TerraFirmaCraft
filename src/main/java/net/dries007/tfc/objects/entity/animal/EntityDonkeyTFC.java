@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.Helpers;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -46,6 +45,7 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -62,14 +62,14 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.FLOAT);
-    private long lastFed; //Last time(in days) this entity was fed
-    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     //Is this female fertilized?
     private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.BOOLEAN);
-    private long matingTime; //The last time(in ticks) this male tried fertilizing females
-    private long lastDeath; //Last time(in days) this entity checked for dying of old age
     // The time(in days) this entity became pregnant
     private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityDonkeyTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    private long lastFed; //Last time(in days) this entity was fed
+    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
+    private long matingTime; //The last time(in ticks) this male tried fertilizing females
+    private long lastDeath; //Last time(in days) this entity checked for dying of old age
     private boolean birthMule;
     private float geneJump, geneHealth, geneSpeed; // Basic genetic selection based on vanilla's horse offspring
 
@@ -343,6 +343,16 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         }
     }
 
+    public long getPregnantTime()
+    {
+        return dataManager.get(PREGNANT_TIME);
+    }
+
+    public void setPregnantTime(long pregnantTime)
+    {
+        dataManager.set(PREGNANT_TIME, pregnantTime);
+    }
+
     @Override
     protected ResourceLocation getLootTable()
     {
@@ -542,15 +552,5 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         geneSpeed = 0;
         geneJump = 0;
         this.world.spawnEntity(animal);
-    }
-
-    public long getPregnantTime()
-    {
-        return dataManager.get(PREGNANT_TIME);
-    }
-
-    public void setPregnantTime(long pregnantTime)
-    {
-        dataManager.set(PREGNANT_TIME, pregnantTime);
     }
 }

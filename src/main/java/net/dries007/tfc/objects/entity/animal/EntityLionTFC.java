@@ -122,6 +122,13 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
         return DAYS_TO_FULL_GESTATION;
     }
 
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(MOUTH_TICKS, 0);
+    }
+
     public int getMouthTicks()
     {
         return this.dataManager.get(MOUTH_TICKS);
@@ -130,13 +137,6 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     public void setMouthTicks(int value)
     {
         this.dataManager.set(MOUTH_TICKS, value);
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        getDataManager().register(MOUTH_TICKS, 0);
     }
 
     @Override

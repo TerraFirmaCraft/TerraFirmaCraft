@@ -202,22 +202,6 @@ public class UnmoldRecipe extends ShapelessOreRecipe
         return true;
     }
 
-    private ItemStack getOutputItem(final IMoldHandler moldHandler, final Metal.ItemType type)
-    {
-        Metal m = moldHandler.getMetal();
-        if (m != null)
-        {
-            ItemStack output = new ItemStack(ItemMetal.get(m, type));
-            IItemHeat heat = output.getCapability(ITEM_HEAT_CAPABILITY, null);
-            if (heat != null)
-            {
-                heat.setTemperature(moldHandler.getTemperature());
-            }
-            return output;
-        }
-        return ItemStack.EMPTY;
-    }
-
     /**
      * Performs breaking check
      *
@@ -234,6 +218,22 @@ public class UnmoldRecipe extends ShapelessOreRecipe
         {
             return ItemStack.EMPTY;
         }
+    }
+
+    private ItemStack getOutputItem(final IMoldHandler moldHandler, final Metal.ItemType type)
+    {
+        Metal m = moldHandler.getMetal();
+        if (m != null)
+        {
+            ItemStack output = new ItemStack(ItemMetal.get(m, type));
+            IItemHeat heat = output.getCapability(ITEM_HEAT_CAPABILITY, null);
+            if (heat != null)
+            {
+                heat.setTemperature(moldHandler.getTemperature());
+            }
+            return output;
+        }
+        return ItemStack.EMPTY;
     }
 
     @SuppressWarnings("unused")

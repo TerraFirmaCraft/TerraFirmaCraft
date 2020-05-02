@@ -187,6 +187,13 @@ public class BlockPitKiln extends Block implements ILightableBlock
         super.breakBlock(worldIn, pos, state);
     }
 
+    @Nonnull
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Items.AIR;
+    }
+
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
@@ -277,12 +284,5 @@ public class BlockPitKiln extends Block implements ILightableBlock
     public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
     {
         return true;
-    }
-
-    @Nonnull
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Items.AIR;
     }
 }
