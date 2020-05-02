@@ -75,6 +75,7 @@ tfc.command.stripworld.done=Done!
 # Gui
 
 ## Tooltips
+tfc.tooltip.food_expiry_date.days=Will decay in about %s day(s)!
 tfc.tooltip.toolclass=§fTool Class:§7 %s
 tfc.tooltip.toolclasses=§fTool Classes:
 tfc.tooltip.oredictionaryentry=§fOre Dictionary name:§7 %s
@@ -499,6 +500,9 @@ config.tfc.general.doLogsRequireAxe.tooltip=If a log requires an axe it will not
 
 config.tfc.general.doLeavesDropSaplings=Do Leaves Drop Saplings
 config.tfc.general.doLeavesDropSaplings.tooltip=If leaves should drop saplings or not when broken.
+
+config.tfc.general.decayTooltipMode=Specific Decay Tooltip Mode
+config.tfc.general.decayTooltipMode.tooltip=Mode used on decay tooltips.
 
 ## Client Config
 
