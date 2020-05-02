@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 import net.dries007.tfc.objects.items.metal.*;
 import net.dries007.tfc.util.Helpers;
 
@@ -182,7 +183,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         NUGGET(false, 10),
         SHEET(false, 200, ItemMetalSheet::new),
         DOUBLE_SHEET(false, 400),
-        LAMP(false, 100, ItemLamp::new),
+        LAMP(false, 100, (metal, itemType) -> new ItemBlockMetalLamp(metal)),
 
         ANVIL(true, 1400, ItemAnvil::new),
         TUYERE(true, 400),
