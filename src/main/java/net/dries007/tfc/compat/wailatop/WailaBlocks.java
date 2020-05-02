@@ -73,9 +73,7 @@ public final class WailaBlocks implements IWailaDataProvider
         registrar.registerBodyProvider(dataProvider, TEBarrel.class);
         registrar.registerBodyProvider(dataProvider, TELogPile.class);
         registrar.registerBodyProvider(dataProvider, TEPlacedItemFlat.class);
-
         registrar.registerBodyProvider(dataProvider, TECropBase.class);
-        registrar.registerBodyProvider(dataProvider, BlockFarmlandTFC.class);
         registrar.registerBodyProvider(dataProvider, BlockFruitTreeLeaves.class);
         registrar.registerBodyProvider(dataProvider, BlockBerryBush.class);
         registrar.registerBodyProvider(dataProvider, BlockCropDead.class);
@@ -94,11 +92,11 @@ public final class WailaBlocks implements IWailaDataProvider
 
         if (b instanceof BlockOreTFC)
         {
-            itemstack = OreTFCStack(accessor, config);
+            itemstack = getOreTFCStack(accessor, config);
         }
         else if (b instanceof BlockCropSimple)
         {
-            itemstack = CropSimpleStack(accessor, config);
+            itemstack = getCropSimpleStack(accessor, config);
         }
         return itemstack;
     }
@@ -109,13 +107,13 @@ public final class WailaBlocks implements IWailaDataProvider
         Block b = accessor.getBlock();
         TileEntity te = accessor.getTileEntity();
 
-        if (b instanceof BlockOreTFC) currenttip = OreTFCHead(itemStack, currenttip, accessor, config);
-        if (b instanceof BlockBarrel) currenttip = BarrelHead(itemStack, currenttip, accessor, config);
-        if (te instanceof TECropBase) currenttip = CropSimpleHead(itemStack, currenttip, accessor, config);
-        if (b instanceof BlockCropDead) currenttip = CropDeadHead(itemStack, currenttip, accessor, config);
+        if (b instanceof BlockOreTFC) currenttip = getOreTFCHead(itemStack, currenttip, accessor, config);
+        if (b instanceof BlockBarrel) currenttip = getBarrelHead(itemStack, currenttip, accessor, config);
+        if (te instanceof TECropBase) currenttip = getCropSimpleHead(itemStack, currenttip, accessor, config);
+        if (b instanceof BlockCropDead) currenttip = getCropDeadHead(itemStack, currenttip, accessor, config);
         if (b instanceof BlockFruitTreeTrunk | b instanceof BlockFruitTreeLeaves | b instanceof BlockFruitTreeBranch)
         {
-            currenttip = FruitTreeHead(itemStack, currenttip, accessor, config);
+            currenttip = getFruitTreeHead(itemStack, currenttip, accessor, config);
         }
         return currenttip;
     }
@@ -127,30 +125,26 @@ public final class WailaBlocks implements IWailaDataProvider
         TileEntity te = accessor.getTileEntity();
 
         // Mechanics
-        if (b instanceof BlockOreTFC) currenttip = OreTFCBody(itemStack, currenttip, accessor, config);
+        if (b instanceof BlockOreTFC) currenttip = getOreTFCBody(itemStack, currenttip, accessor, config);
         else if (te instanceof TEPlacedItemFlat)
-            currenttip = PlacedItemFlatBody(itemStack, currenttip, accessor, config);
-        else if (te instanceof TEPitKiln) currenttip = PitKilnBody(itemStack, currenttip, accessor, config);
+            currenttip = getPlacedItemFlatBody(itemStack, currenttip, accessor, config);
+        else if (te instanceof TEPitKiln) currenttip = getPitKilnBody(itemStack, currenttip, accessor, config);
         else if (te instanceof TECharcoalForge)
-            currenttip = CharcoalForgeBody(itemStack, currenttip, accessor, config);
-        else if (te instanceof TELogPile) currenttip = LogPileBody(itemStack, currenttip, accessor, config);
-        else if (te instanceof TEBarrel) currenttip = BarrelBody(itemStack, currenttip, accessor, config);
-        else if (te instanceof TEBloomery) currenttip = BloomeryBody(itemStack, currenttip, accessor, config);
+            currenttip = getCharcoalForgeBody(itemStack, currenttip, accessor, config);
+        else if (te instanceof TELogPile) currenttip = getLogPileBody(itemStack, currenttip, accessor, config);
+        else if (te instanceof TEBarrel) currenttip = getBarrelBody(itemStack, currenttip, accessor, config);
+        else if (te instanceof TEBloomery) currenttip = getBloomeryBody(itemStack, currenttip, accessor, config);
         else if (te instanceof TEBlastFurnace)
-            currenttip = BlastFurnaceBody(itemStack, currenttip, accessor, config);
-        else if (te instanceof TEFirePit) currenttip = FirepitBody(itemStack, currenttip, accessor, config);
+            currenttip = getBlastFurnaceBody(itemStack, currenttip, accessor, config);
+        else if (te instanceof TEFirePit) currenttip = getFirepitBody(itemStack, currenttip, accessor, config);
             // Crops and Trees
-        else if (te instanceof TECropBase) currenttip = CropSimpleBody(itemStack, currenttip, accessor, config);
-        else if (te instanceof TECropSpreading)
-            currenttip = CropSpreadingBody(itemStack, currenttip, accessor, config);
+        else if (te instanceof TECropBase) currenttip = getCropSimpleBody(itemStack, currenttip, accessor, config);
         else if (b instanceof BlockFruitTreeLeaves)
-            currenttip = FruitTreeLeavesBody(itemStack, currenttip, accessor, config);
-        else if (b instanceof BlockBerryBush) currenttip = BerryBushBody(itemStack, currenttip, accessor, config);
-        else if (b instanceof BlockFarmlandTFC)
-            currenttip = FarmlandTFCBody(itemStack, currenttip, accessor, config);
-        else if (b instanceof BlockCropDead) currenttip = CropDeadBody(itemStack, currenttip, accessor, config);
+            currenttip = getFruitTreeLeavesBody(itemStack, currenttip, accessor, config);
+        else if (b instanceof BlockBerryBush) currenttip = getBerryBushBody(itemStack, currenttip, accessor, config);
+        else if (b instanceof BlockCropDead) currenttip = getCropDeadBody(itemStack, currenttip, accessor, config);
         else if (b instanceof BlockFruitTreeLeaves)
-            currenttip = FruitTreeLeavesBody(itemStack, currenttip, accessor, config);
+            currenttip = getFruitTreeLeavesBody(itemStack, currenttip, accessor, config);
 
         return currenttip;
     }
@@ -165,18 +159,18 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    public List<String> FirepitBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getFirepitBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
-    public List<String> PitKilnBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getPitKilnBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         Block b = accessor.getBlock();
         TEPitKiln te = (TEPitKiln) accessor.getTileEntity();
         String key;
-        Boolean isLit = te.isLit();
-        Long litTick = te.getLitTick();
+        boolean isLit = te.isLit();
+        long litTick = te.getLitTick();
 
         if (isLit)
         {
@@ -201,7 +195,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    public List<String> OreTFCBody(ItemStack itemStack, List<java.lang.String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getOreTFCBody(ItemStack itemStack, List<java.lang.String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
 
         BlockOreTFC b = (BlockOreTFC) accessor.getBlock();
@@ -229,7 +223,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    public ItemStack OreTFCStack(IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public ItemStack getOreTFCStack(IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
 
         BlockOreTFC b = (BlockOreTFC) accessor.getBlock();
@@ -239,7 +233,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return itemstack;
     }
 
-    private List<String> BlastFurnaceBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getBlastFurnaceBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         //todo
         TEBlastFurnace te = (TEBlastFurnace) accessor.getTileEntity();
@@ -248,7 +242,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private List<String> FruitTreeHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getFruitTreeHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         String name = accessor.getBlock().getTranslationKey();
         String output = "waila.tfc.fruit_trees." + name.substring(name.lastIndexOf(".") + 1) + ".name";
@@ -258,20 +252,20 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private ItemStack CropSimpleStack(IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private ItemStack getCropSimpleStack(IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
 
         BlockCropTFC b = (BlockCropTFC) accessor.getBlock();
         ICrop crop = b.getCrop();
         IBlockState blockstate = accessor.getBlockState();
         int curStage = blockstate.getValue(b.getStageProperty());
-        ItemStack foodDrop = crop.getFoodDrop(curStage);
+        ItemStack itemStack = crop.getFoodDrop(curStage);
 
 
-        return foodDrop;
+        return itemStack;
     }
 
-    private List<String> CropDeadHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getCropDeadHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         BlockCropDead b = (BlockCropDead) accessor.getBlock();
         ICrop crop = b.getCrop();
@@ -279,7 +273,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private List<String> CropSimpleHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getCropSimpleHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         BlockCropTFC b = (BlockCropTFC) accessor.getBlock();
         currenttip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".name").getFormattedText());
@@ -287,7 +281,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private List<String> PlacedItemFlatBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getPlacedItemFlatBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         if (itemStack.getItem() instanceof ItemSmallOre)
         {
@@ -313,7 +307,7 @@ public final class WailaBlocks implements IWailaDataProvider
 
     }
 
-    private List<String> BarrelHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getBarrelHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         BlockBarrel b = (BlockBarrel) accessor.getBlock();
         TEBarrel te = (TEBarrel) accessor.getTileEntity();
@@ -334,19 +328,14 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private List<String> CropDeadBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getCropDeadBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         currenttip.add(new TextComponentTranslation("waila.tfc.deadcrop").getFormattedText());
         return currenttip;
     }
 
-    private List<String> FarmlandTFCBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
-    {
-        //anything to do here?
-        return currenttip;
-    }
 
-    private List<String> BerryBushBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getBerryBushBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         BlockBerryBush b = (BlockBerryBush) accessor.getBlock();
         String text = "";
@@ -364,7 +353,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private List<String> FruitTreeLeavesBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getFruitTreeLeavesBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         BlockFruitTreeLeaves b = (BlockFruitTreeLeaves) accessor.getBlock();
         String text = "";
@@ -382,26 +371,19 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private List<String> CropSpreadingBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
-    {
-        //Currently unused
-        return currenttip;
-    }
-
-    private List<String> CropSimpleBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getCropSimpleBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         TECropBase te = (TECropBase) accessor.getTileEntity();
         BlockCropSimple bs = (BlockCropSimple) accessor.getBlock();
         ICrop crop = bs.getCrop();
         int maxStage = crop.getMaxStage();
-        Float totalGrowthTime = crop.getGrowthTime();
+        float totalGrowthTime = crop.getGrowthTime();
         IBlockState blockstate = accessor.getBlockState();
         int curStage = blockstate.getValue(bs.getStageProperty());
-
-        Boolean isWild = blockstate.getValue(BlockCropTFC.WILD);
+        boolean isWild = blockstate.getValue(BlockCropTFC.WILD);
         long tick = te.getLastUpdateTick();
-        Float totalTime = totalGrowthTime * maxStage;
-        Float currentTime = (curStage * totalGrowthTime) + (CalendarTFC.PLAYER_TIME.getTicks() - tick);
+        float totalTime = totalGrowthTime * maxStage;
+        float currentTime = (curStage * totalGrowthTime) + (CalendarTFC.PLAYER_TIME.getTicks() - tick);
         int completionPerc = Math.round(currentTime / totalTime * 100);
         float temp = ClimateTFC.getActualTemp(accessor.getWorld(), accessor.getPosition(), -tick);
         float rainfall = ChunkDataTFC.getRainfall(accessor.getWorld(), accessor.getPosition());
@@ -437,13 +419,13 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private List<String> BloomeryBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getBloomeryBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         //todo
         return currenttip;
     }
 
-    private List<String> BarrelBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getBarrelBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         TEBarrel te = (TEBarrel) accessor.getTileEntity();
 
@@ -479,19 +461,19 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    private List<String> LogPileBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getLogPileBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         //todo
         return currenttip;
     }
 
-    private List<String> CharcoalForgeBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getCharcoalForgeBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         //todo
         return currenttip;
     }
 
-    private List<String> OreTFCHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getOreTFCHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         BlockOreTFC b = (BlockOreTFC) accessor.getBlock();
         currenttip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".name").getFormattedText());
