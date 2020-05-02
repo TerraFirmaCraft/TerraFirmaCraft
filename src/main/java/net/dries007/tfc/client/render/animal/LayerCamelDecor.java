@@ -9,7 +9,6 @@ import java.util.stream.IntStream;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;

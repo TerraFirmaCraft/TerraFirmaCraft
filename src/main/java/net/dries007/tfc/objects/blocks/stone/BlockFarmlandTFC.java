@@ -110,13 +110,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
-    {
-        return (side != EnumFacing.DOWN && side != EnumFacing.UP);
-    }
-
-    @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
         int current = state.getValue(MOISTURE);
@@ -139,6 +132,13 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, MOISTURE);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return (side != EnumFacing.DOWN && side != EnumFacing.UP);
     }
 
     @Override

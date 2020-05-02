@@ -76,34 +76,6 @@ public class BlockToolRack extends Block implements IItemSize
 
     @Override
     @SuppressWarnings("deprecation")
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if (!Helpers.canHangAt(worldIn, pos, state.getValue(FACING)))
-        {
-            dropBlockAsItem(worldIn, pos, state, 0);
-            TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-            if (te != null)
-            {
-                te.onBreakBlock();
-            }
-            worldIn.setBlockToAir(pos);
-        }
-    }
-
-    @Override
-    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
-    {
-        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
-        if (te != null)
-        {
-            te.onBreakBlock();
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     @Nonnull
     public IBlockState getStateFromMeta(int meta)
     {
@@ -121,6 +93,14 @@ public class BlockToolRack extends Block implements IItemSize
     public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override
@@ -158,9 +138,31 @@ public class BlockToolRack extends Block implements IItemSize
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        return true;
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if (!Helpers.canHangAt(worldIn, pos, state.getValue(FACING)))
+        {
+            dropBlockAsItem(worldIn, pos, state, 0);
+            TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+            if (te != null)
+            {
+                te.onBreakBlock();
+            }
+            worldIn.setBlockToAir(pos);
+        }
+    }
+
+    @Override
+    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
+    {
+        TEToolRack te = Helpers.getTE(worldIn, pos, TEToolRack.class);
+        if (te != null)
+        {
+            te.onBreakBlock();
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -201,33 +203,17 @@ public class BlockToolRack extends Block implements IItemSize
         return new BlockStateContainer(this, FACING);
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEToolRack();
-    }
-
-    public int getSlotFromPos(IBlockState state, float x, float y, float z)
-    {
-        int slot = 0;
-        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f)
-        {
-            slot += 1;
-        }
-        if (y < 0.5f)
-        {
-            slot += 2;
-        }
-        return slot;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.MODEL;
     }
 
     @Override
@@ -249,5 +235,19 @@ public class BlockToolRack extends Block implements IItemSize
             }
         }
         return super.getPickBlock(state, target, world, pos, player);
+    }
+
+    public int getSlotFromPos(IBlockState state, float x, float y, float z)
+    {
+        int slot = 0;
+        if ((state.getValue(FACING).getAxis().equals(EnumFacing.Axis.Z) ? x : z) > .5f)
+        {
+            slot += 1;
+        }
+        if (y < 0.5f)
+        {
+            slot += 2;
+        }
+        return slot;
     }
 }

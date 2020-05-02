@@ -5,10 +5,10 @@
 
 package net.dries007.tfc.network;
 
-import io.netty.buffer.ByteBuf;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.IFood;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -17,10 +17,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import io.netty.buffer.ByteBuf;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.IFood;
 
 public class PacketStackFood implements IMessage
 {
@@ -35,6 +35,18 @@ public class PacketStackFood implements IMessage
     public PacketStackFood(int slotNumber)
     {
         this.slotNumber = slotNumber;
+    }
+
+    @Override
+    public void fromBytes(ByteBuf byteBuf)
+    {
+        slotNumber = byteBuf.readInt();
+    }
+
+    @Override
+    public void toBytes(ByteBuf byteBuf)
+    {
+        byteBuf.writeInt(slotNumber);
     }
 
     public static final class Handler implements IMessageHandler<PacketStackFood, IMessage>
@@ -116,17 +128,5 @@ public class PacketStackFood implements IMessage
             return stackableSlots;
         }
 
-    }
-
-    @Override
-    public void fromBytes(ByteBuf byteBuf)
-    {
-        slotNumber = byteBuf.readInt();
-    }
-
-    @Override
-    public void toBytes(ByteBuf byteBuf)
-    {
-        byteBuf.writeInt(slotNumber);
     }
 }

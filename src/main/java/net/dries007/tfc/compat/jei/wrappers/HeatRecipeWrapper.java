@@ -12,7 +12,7 @@ import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 
 public class HeatRecipeWrapper extends SimpleRecipeWrapper
 {
-    private HeatRecipe recipe;
+    private final HeatRecipe recipe;
 
     public HeatRecipeWrapper(HeatRecipe recipeWrapper)
     {

@@ -32,12 +32,22 @@ import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.metal.BlockMetalLamp;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
-import net.dries007.tfc.objects.te.TELamp;
 import net.dries007.tfc.util.Helpers;
 
 public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
 {
     public static int CAPACITY;
+
+    public static Set<Fluid> getValidFluids()
+    {
+        String[] fluidNames = ConfigTFC.GENERAL.metalLampFuels;
+        Set<Fluid> validFluids = new HashSet<>();
+        for (String fluidName : fluidNames)
+        {
+            validFluids.add(FluidRegistry.getFluid(fluidName));
+        }
+        return validFluids;
+    }
 
     public final ToolMaterial material;
 
@@ -76,6 +86,54 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
         return super.getItemStackDisplayName(stack);
     }
 
+    @Override
+    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new FluidWhitelistHandlerComplex(stack, CAPACITY, getValidFluids());
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (isInCreativeTab(tab))
+        {
+            items.add(new ItemStack(this));
+            for (Fluid fluid : getValidFluids())
+            {
+                ItemStack stack = new ItemStack(this);
+                IFluidHandlerItem cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                if (cap != null)
+                {
+                    cap.fill(new FluidStack(fluid, CAPACITY), true);
+                }
+                items.add(stack);
+            }
+        }
+    }
+
+    //no need for @Override itemRightClick to fill or place since fluidhandler interactions and placement are handled before it is called
+
+    /**
+     * @param stack the item stack. This can assume that it is of the right item type and do casts without checking
+     * @return the metal of the stack
+     */
+    @Nullable
+    @Override
+    public Metal getMetal(ItemStack stack)
+    {
+        return ((BlockMetalLamp) (super.block)).getMetal();
+    }
+
+    /**
+     * @param stack The item stack
+     * @return the amount of liquid metal that this item will create (in TFC units or mB: 1 unit = 1 mB)
+     */
+    @Override
+    public int getSmeltAmount(ItemStack stack)
+    {
+        return 100;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void addMetalInfo(ItemStack stack, List<String> text) // shamelessly co-opted to show liquid too
@@ -104,64 +162,5 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
             text.add(I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
             text.add(I18n.format(Helpers.getEnumName(metal.getTier())));
         }
-    }
-
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
-    {
-        if (isInCreativeTab(tab))
-        {
-            items.add(new ItemStack(this));
-            for (Fluid fluid : getValidFluids())
-            {
-                ItemStack stack = new ItemStack(this);
-                IFluidHandlerItem cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                if (cap != null)
-                {
-                    cap.fill(new FluidStack(fluid, CAPACITY), true);
-                }
-                items.add(stack);
-            }
-        }
-    }
-
-    public static Set<Fluid> getValidFluids()
-    {
-        String[] fluidNames = ConfigTFC.GENERAL.metalLampFuels;
-        Set<Fluid> validFluids = new HashSet<>();
-        for (String fluidName : fluidNames)
-        {
-            validFluids.add(FluidRegistry.getFluid(fluidName));
-        }
-        return validFluids;
-    }
-
-    //no need for @Override itemRightClick to fill or place since fluidhandler interactions and placement are handled before it is called
-
-    @Override
-    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        return new FluidWhitelistHandlerComplex(stack, CAPACITY, getValidFluids());
-    }
-
-    /**
-     * @param stack the item stack. This can assume that it is of the right item type and do casts without checking
-     * @return the metal of the stack
-     */
-    @Nullable
-    @Override
-    public Metal getMetal(ItemStack stack)
-    {
-        return ((BlockMetalLamp) (super.block)).getMetal();
-    }
-
-    /**
-     * @param stack The item stack
-     * @return the amount of liquid metal that this item will create (in TFC units or mB: 1 unit = 1 mB)
-     */
-    @Override
-    public int getSmeltAmount(ItemStack stack)
-    {
-        return 100;
     }
 }

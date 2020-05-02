@@ -56,6 +56,26 @@ public class BlockFluidTFC extends BlockFluidClassic
         // and DO NOT call updateTick with it.
     }
 
+    // NOTE: All of the effects are removed from the fluid, seems to be the only way to fix gray particles coming from the fluids.
+    @Override
+    public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity)
+    {
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
+    {
+        return true;
+    }
+
     @Override
     public void updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand)
     {
@@ -417,26 +437,6 @@ public class BlockFluidTFC extends BlockFluidClassic
 
         // adjacent air or non-mergeable liquids
         return 0;
-    }
-
-    // NOTE: All of the effects are removed from the fluid, seems to be the only way to fix gray particles coming from the fluids.
-    @Override
-    public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity)
-    {
-        return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
-    {
-        return true;
     }
 
     protected boolean isMergeableFluid(@Nonnull IBlockState blockstate)

@@ -13,9 +13,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class ItemHandlerSidedWrapper implements IItemHandlerModifiable
 {
-    private IItemHandlerSidedCallback callback;
-    private IItemHandlerModifiable handler;
-    private EnumFacing side;
+    private final IItemHandlerSidedCallback callback;
+    private final IItemHandlerModifiable handler;
+    private final EnumFacing side;
 
     public ItemHandlerSidedWrapper(IItemHandlerSidedCallback callback, IItemHandlerModifiable handler, EnumFacing side)
     {

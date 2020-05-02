@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModelIngot extends ModelBox
 {
-    private TexturedQuad[] quadList;
+    private final TexturedQuad[] quadList;
 
     public ModelIngot(ModelRenderer renderer, int textureOffsetX, int textureOffsetY)
     {

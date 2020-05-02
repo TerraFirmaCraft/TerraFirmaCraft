@@ -14,7 +14,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class SlotKnappingOutput extends SlotItemHandler
 {
-    private Runnable onSlotTake;
+    private final Runnable onSlotTake;
 
     public SlotKnappingOutput(IItemHandler inventory, int idx, int x, int y, Runnable onSlotTake)
     {

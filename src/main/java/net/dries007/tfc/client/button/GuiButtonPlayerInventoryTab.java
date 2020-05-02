@@ -21,7 +21,14 @@ public class GuiButtonPlayerInventoryTab extends GuiButtonTFC
 
     private final TFCGuiHandler.Type guiType;
     private final boolean isActive;
-    private int textureU, textureV, renderWidth, iconU, iconV, iconX, iconY, guiLeft;
+    private final int textureU;
+    private final int textureV;
+    private final int iconU;
+    private final int iconV;
+    private final int iconY;
+    private int renderWidth;
+    private int iconX;
+    private int guiLeft;
 
     public GuiButtonPlayerInventoryTab(TFCGuiHandler.Type guiType, int guiLeft, int guiTop, int buttonId, boolean isActive)
     {

@@ -108,7 +108,8 @@ public class AlloyRecipe extends IForgeRegistryEntry.Impl<AlloyRecipe>
      */
     public static final class DoubleRange
     {
-        private double min, max;
+        private final double min;
+        private final double max;
 
         DoubleRange(double min, double max)
         {

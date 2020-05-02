@@ -23,9 +23,9 @@ import net.dries007.tfc.objects.entity.animal.EntityPigTFC;
 @ParametersAreNonnullByDefault
 public class ModelPigTFC extends ModelQuadruped
 {
-    private ModelRenderer tusk1;
-    private ModelRenderer tusk2;
-    private ModelRenderer snout;
+    private final ModelRenderer tusk1;
+    private final ModelRenderer tusk2;
+    private final ModelRenderer snout;
 
     public ModelPigTFC()
     {

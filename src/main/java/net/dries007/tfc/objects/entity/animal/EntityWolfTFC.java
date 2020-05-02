@@ -13,8 +13,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -49,6 +47,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAITamableAvoidPlayer;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -66,15 +65,14 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.FLOAT);
-
-    private long lastFed; //Last time(in days) this entity was fed
-    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     //Is this female fertilized?
     private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
-    private long matingTime; //The last time(in ticks) this male tried fertilizing females
-    private long lastDeath; //Last time(in days) this entity checked for dying of old age
     // The time(in days) this entity became pregnant
     private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityWolfTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    private long lastFed; //Last time(in days) this entity was fed
+    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
+    private long matingTime; //The last time(in ticks) this male tried fertilizing females
+    private long lastDeath; //Last time(in days) this entity checked for dying of old age
 
     @SuppressWarnings("unused")
     public EntityWolfTFC(World worldIn)
@@ -287,6 +285,10 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
             return getAnimalName().getFormattedText();
         }
     }
+
+    public long getPregnantTime() { return dataManager.get(PREGNANT_TIME); }
+
+    public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
 
     @Override
     protected void initEntityAI()
@@ -525,8 +527,4 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         EntityWolfTFC other = (EntityWolfTFC) otherAnimal;
         return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
     }
-
-    public long getPregnantTime() { return dataManager.get(PREGNANT_TIME); }
-
-    public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
 }

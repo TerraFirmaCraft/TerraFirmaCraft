@@ -138,16 +138,6 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected void updateAITasks()
-    {
-        super.updateAITasks();
-        if (!this.hasHome())
-        {
-            this.setHomePosAndDistance(this.getPosition(), 80);
-        }
-    }
-
-    @Override
     protected SoundEvent getAmbientSound()
     {
         return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_HYENA_CRY : TFCSounds.ANIMAL_HYENA_SAY;
@@ -158,6 +148,16 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_HYENA;
+    }
+
+    @Override
+    protected void updateAITasks()
+    {
+        super.updateAITasks();
+        if (!this.hasHome())
+        {
+            this.setHomePosAndDistance(this.getPosition(), 80);
+        }
     }
 
     @Override

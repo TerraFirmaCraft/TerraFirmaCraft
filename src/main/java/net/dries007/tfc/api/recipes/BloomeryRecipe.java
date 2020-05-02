@@ -30,8 +30,8 @@ public class BloomeryRecipe extends IForgeRegistryEntry.Impl<BloomeryRecipe>
         return TFCRegistries.BLOOMERY.getValuesCollection().stream().filter(x -> x.isValidInput(inputItem)).findFirst().orElse(null);
     }
 
-    private Metal metal; // Melting metal (which will be stored in a bloom)
-    private IIngredient<ItemStack> additive; // The additive used in the process (charcoal is the default for iron)
+    private final Metal metal; // Melting metal (which will be stored in a bloom)
+    private final IIngredient<ItemStack> additive; // The additive used in the process (charcoal is the default for iron)
 
     public BloomeryRecipe(@Nonnull Metal metal, IIngredient<ItemStack> additive)
     {

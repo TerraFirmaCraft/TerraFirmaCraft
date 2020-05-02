@@ -27,11 +27,10 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class CapabilityItemHeat
 {
+    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
+    public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemHeat for items outside TFC
     @CapabilityInject(IItemHeat.class)
     public static Capability<IItemHeat> ITEM_HEAT_CAPABILITY;
-    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
-
-    public static final Map<IIngredient<ItemStack>, Supplier<ICapabilityProvider>> CUSTOM_ITEMS = new HashMap<>(); //Used inside CT, set custom IItemHeat for items outside TFC
 
     public static void preInit()
     {

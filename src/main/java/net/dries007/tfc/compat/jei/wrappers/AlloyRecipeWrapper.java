@@ -25,8 +25,8 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 @ParametersAreNonnullByDefault
 public class AlloyRecipeWrapper implements IRecipeWrapper
 {
-    private String[] slotContent = {"", "", "", ""};
-    private AlloyRecipe recipe;
+    private final String[] slotContent = {"", "", "", ""};
+    private final AlloyRecipe recipe;
 
     public AlloyRecipeWrapper(AlloyRecipe recipe)
     {

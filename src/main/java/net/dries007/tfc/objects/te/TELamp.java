@@ -2,6 +2,7 @@ package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
@@ -24,6 +25,7 @@ import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
 import net.dries007.tfc.objects.fluids.capability.IFluidTankCallback;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 
+@ParametersAreNonnullByDefault
 public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidHandlerSidedCallback
 {
     public static int CAPACITY;
@@ -64,6 +66,10 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
     @Override
     public boolean canFill(FluidStack resource, EnumFacing side)
     {
+        if (resource == null)
+        {
+            return false;
+        }
         return ItemBlockMetalLamp.getValidFluids().contains(resource.getFluid());
     }
 

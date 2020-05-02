@@ -213,10 +213,14 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         this.setScale((float) ageScale);
     }
 
-    @Nullable
-    public Entity getControllingPassenger()
+    @Override
+    protected void mountTo(EntityPlayer player)
     {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+        if (!this.isTame() || !this.getLeashed())
+        {
+            return;
+        }
+        super.mountTo(player);
     }
 
     @Override
@@ -371,6 +375,44 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         }
     }
 
+    public boolean canBeSteered()
+    {
+        return this.getControllingPassenger() instanceof EntityLivingBase;
+    }
+
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        if (!blockIn.getDefaultState().getMaterial().isLiquid())
+        {
+            SoundType soundtype = blockIn.getSoundType();
+            if (this.world.getBlockState(pos.up()).getBlock() == Blocks.SNOW_LAYER)
+            {
+                soundtype = Blocks.SNOW_LAYER.getSoundType();
+            }
+
+            if (this.isBeingRidden() && this.canGallop)
+            {
+                ++this.gallopTime;
+                if (this.gallopTime > 5 && this.gallopTime % 3 == 0)
+                {
+                    this.playGallopSound(soundtype);
+                }
+                else if (this.gallopTime <= 5)
+                {
+                    this.playSound(SoundEvents.ENTITY_HORSE_STEP_WOOD, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+                }
+            }
+            else if (soundtype == SoundType.WOOD)
+            {
+                this.playSound(SoundEvents.ENTITY_HORSE_STEP_WOOD, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+            else
+            {
+                this.playSound(SoundEvents.ENTITY_HORSE_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+        }
+    }
+
     public boolean wearsArmor()
     {
         return true;
@@ -409,21 +451,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         }
     }
 
-    @Override
-    protected void mountTo(EntityPlayer player)
-    {
-        if (!this.isTame() || !this.getLeashed())
-        {
-            return;
-        }
-        super.mountTo(player);
-    }
-
-    private void setColor(@Nullable EnumDyeColor color)
-    {
-        this.dataManager.set(DATA_COLOR_ID, color == null ? -1 : color.getMetadata());
-    }
-
     @Nullable
     public EnumDyeColor getColor()
     {
@@ -431,9 +458,20 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         return i == -1 ? null : EnumDyeColor.byMetadata(i);
     }
 
-    public boolean canBeSteered()
+    private void setColor(@Nullable EnumDyeColor color)
     {
-        return this.getControllingPassenger() instanceof EntityLivingBase;
+        this.dataManager.set(DATA_COLOR_ID, color == null ? -1 : color.getMetadata());
+    }
+
+    protected void playGallopSound(SoundType p_190680_1_)
+    {
+        this.playSound(SoundEvents.ENTITY_HORSE_GALLOP, p_190680_1_.getVolume() * 0.15F, p_190680_1_.getPitch());
+    }
+
+    @Nullable
+    public Entity getControllingPassenger()
+    {
+        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
     }
 
     private void setColorByItem(ItemStack stack)
@@ -445,44 +483,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         else
         {
             this.setColor(null);
-        }
-    }
-
-    protected void playGallopSound(SoundType p_190680_1_)
-    {
-        this.playSound(SoundEvents.ENTITY_HORSE_GALLOP, p_190680_1_.getVolume() * 0.15F, p_190680_1_.getPitch());
-    }
-
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        if (!blockIn.getDefaultState().getMaterial().isLiquid())
-        {
-            SoundType soundtype = blockIn.getSoundType();
-            if (this.world.getBlockState(pos.up()).getBlock() == Blocks.SNOW_LAYER)
-            {
-                soundtype = Blocks.SNOW_LAYER.getSoundType();
-            }
-
-            if (this.isBeingRidden() && this.canGallop)
-            {
-                ++this.gallopTime;
-                if (this.gallopTime > 5 && this.gallopTime % 3 == 0)
-                {
-                    this.playGallopSound(soundtype);
-                }
-                else if (this.gallopTime <= 5)
-                {
-                    this.playSound(SoundEvents.ENTITY_HORSE_STEP_WOOD, soundtype.getVolume() * 0.15F, soundtype.getPitch());
-                }
-            }
-            else if (soundtype == SoundType.WOOD)
-            {
-                this.playSound(SoundEvents.ENTITY_HORSE_STEP_WOOD, soundtype.getVolume() * 0.15F, soundtype.getPitch());
-            }
-            else
-            {
-                this.playSound(SoundEvents.ENTITY_HORSE_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
-            }
         }
     }
 }

@@ -12,8 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -44,6 +42,7 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
@@ -103,20 +102,6 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     }
 
     @Override
-    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
-    {
-        super.writeEntityToNBT(compound);
-        compound.setLong("milked", lastMilked());
-    }
-
-    @Override
-    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
-    {
-        super.readEntityFromNBT(compound);
-        setLastMilked(compound.getLong("milked"));
-    }
-
-    @Override
     public void birthChildren()
     {
         int numberOfChilds = 1; //one always
@@ -136,6 +121,27 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     }
 
     @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(LASTMILKED, 0L);
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        compound.setLong("milked", lastMilked());
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        setLastMilked(compound.getLong("milked"));
+    }
+
+    @Override
     public float getAdultFamiliarityCap()
     {
         return 0.35F;
@@ -151,6 +157,18 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     public boolean isReadyForAnimalProduct()
     {
         return getFamiliarity() > 0.15f && hasMilk();
+    }
+
+    @Override
+    public void setProductsCooldown()
+    {
+        setLastMilked(CalendarTFC.PLAYER_TIME.getTicks());
+    }
+
+    @Override
+    public long getProductsCooldown()
+    {
+        return Math.max(0, lastMilked() + DEFAULT_TICKS_TO_MILK - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -229,18 +247,6 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     }
 
     @Override
-    public void setProductsCooldown()
-    {
-        setLastMilked(CalendarTFC.PLAYER_TIME.getTicks());
-    }
-
-    @Override
-    public long getProductsCooldown()
-    {
-        return Math.max(0, lastMilked() + DEFAULT_TICKS_TO_MILK - CalendarTFC.PLAYER_TIME.getTicks());
-    }
-
-    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return SoundEvents.ENTITY_COW_HURT;
@@ -300,12 +306,5 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     protected void setLastMilked(long day)
     {
         dataManager.set(LASTMILKED, day);
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        getDataManager().register(LASTMILKED, 0L);
     }
 }

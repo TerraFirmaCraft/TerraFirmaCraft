@@ -22,7 +22,7 @@ import net.dries007.tfc.world.classic.genlayers.river.GenLayerRiverTFC;
 public abstract class GenLayerTFC extends GenLayer
 {
     // Distinct colors for debug map gen
-    private static Color[] COLORS = new Color[] {
+    private static final Color[] COLORS = new Color[] {
         new Color(0xFFB300),    // Vivid Yellow
         new Color(0x803E75),    // Strong Purple
         new Color(0xFF6800),    // Vivid Orange

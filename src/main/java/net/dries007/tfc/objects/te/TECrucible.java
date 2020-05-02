@@ -56,7 +56,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     private final IItemHandler inventoryWrapperExtract;
     private final IItemHandler inventoryWrapperInsert;
 
-    private HeatRecipe[] cachedRecipes;
+    private final HeatRecipe[] cachedRecipes;
     private Metal alloyResult;
     private float temperature;
     private float targetTemperature;

@@ -14,8 +14,8 @@ import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerRiverMixTFC extends GenLayerTFC
 {
-    private GenLayer biomePatternGeneratorChain;
-    private GenLayer riverPatternGeneratorChain;
+    private final GenLayer biomePatternGeneratorChain;
+    private final GenLayer riverPatternGeneratorChain;
     private int[] layerBiomes;
     private int[] layerRivers;
     private int[] layerOut;

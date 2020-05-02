@@ -12,7 +12,7 @@ import net.dries007.tfc.api.recipes.WeldingRecipe;
 
 public class WeldingRecipeWrapper extends SimpleRecipeWrapper
 {
-    private WeldingRecipe recipe;
+    private final WeldingRecipe recipe;
 
     public WeldingRecipeWrapper(WeldingRecipe recipeWrapper)
     {

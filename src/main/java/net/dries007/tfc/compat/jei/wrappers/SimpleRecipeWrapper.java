@@ -21,7 +21,7 @@ import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 @ParametersAreNonnullByDefault
 public class SimpleRecipeWrapper implements IRecipeWrapper
 {
-    private IJEISimpleRecipe recipeWrapper;
+    private final IJEISimpleRecipe recipeWrapper;
 
     public SimpleRecipeWrapper(IJEISimpleRecipe recipeWrapper)
     {

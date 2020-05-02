@@ -135,6 +135,41 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     }
 
     @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(IS_STANDING, false);
+    }
+
+    public boolean isStanding()
+    {
+        return this.dataManager.get(IS_STANDING);
+    }
+
+    @Override
+    public void setStanding(boolean standing)
+    {
+        this.dataManager.set(IS_STANDING, standing);
+    }
+
+    @Override
+    public void playWarningSound()
+    {
+        if (this.warningSoundTicks <= 0)
+        {
+            this.playSound(SoundEvents.ENTITY_POLAR_BEAR_WARNING, 1.0F, 1.0F);
+            this.warningSoundTicks = 40;
+        }
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getStandingAnimationScale(float partialTicks)
+    {
+        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * partialTicks) / 6.0F;
+    }
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return TFCSounds.ANIMAL_BEAR_HURT;
@@ -162,44 +197,10 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
         return flag;
     }
 
-    public boolean isStanding()
-    {
-        return this.dataManager.get(IS_STANDING);
-    }
-
-    @Override
-    public void setStanding(boolean standing)
-    {
-        this.dataManager.set(IS_STANDING, standing);
-    }
-
-    @Override
-    protected SoundEvent getAmbientSound()
-    {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY;
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable()
-    {
-        return LootTablesTFC.ANIMALS_BEAR;
-    }
-
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
-    }
-
-    @Override
-    public void playWarningSound()
-    {
-        if (this.warningSoundTicks <= 0)
-        {
-            this.playSound(SoundEvents.ENTITY_POLAR_BEAR_WARNING, 1.0F, 1.0F);
-            this.warningSoundTicks = 40;
-        }
-
     }
 
     @Override
@@ -210,12 +211,6 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
         {
             this.setHomePosAndDistance(this.getPosition(), 80);
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public float getStandingAnimationScale(float partialTicks)
-    {
-        return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * partialTicks) / 6.0F;
     }
 
     @Override
@@ -267,9 +262,14 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     }
 
     @Override
-    protected void entityInit()
+    protected SoundEvent getAmbientSound()
     {
-        super.entityInit();
-        this.dataManager.register(IS_STANDING, false);
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_BEAR_CRY : TFCSounds.ANIMAL_BEAR_SAY;
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return LootTablesTFC.ANIMALS_BEAR;
     }
 }

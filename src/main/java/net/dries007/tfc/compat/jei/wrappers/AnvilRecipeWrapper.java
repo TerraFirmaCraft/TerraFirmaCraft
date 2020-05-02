@@ -21,7 +21,7 @@ import net.dries007.tfc.util.forge.ForgeStep;
 
 public class AnvilRecipeWrapper extends SimpleRecipeWrapper
 {
-    private AnvilRecipe recipe;
+    private final AnvilRecipe recipe;
 
     public AnvilRecipeWrapper(AnvilRecipe recipeWrapper)
     {

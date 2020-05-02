@@ -6,10 +6,10 @@
 package net.dries007.tfc.client;
 
 import org.lwjgl.input.Keyboard;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Slot;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;

@@ -14,9 +14,9 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class FluidHandlerSided implements IFluidHandler
 {
-    private IFluidHandlerSidedCallback callback;
-    private IFluidHandler handler;
-    private EnumFacing side;
+    private final IFluidHandlerSidedCallback callback;
+    private final IFluidHandler handler;
+    private final EnumFacing side;
 
     public FluidHandlerSided(IFluidHandlerSidedCallback callback, IFluidHandler handler, EnumFacing side)
     {

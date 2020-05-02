@@ -30,8 +30,8 @@ import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 
 public class WorldGenLooseRocks implements IWorldGenerator
 {
+    private final boolean generateOres;
     private double factor;
-    private boolean generateOres;
 
     public WorldGenLooseRocks(boolean generateOres)
     {

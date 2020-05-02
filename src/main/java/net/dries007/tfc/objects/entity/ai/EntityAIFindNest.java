@@ -24,12 +24,11 @@ public class EntityAIFindNest extends EntityAIBase
 {
     private final double speed;
     private final EntityAnimal theCreature;
-    private int currentTick;
     private final World theWorld;
-    private int maxSittingTicks;
-
     //This is a helper map to prevent chickens not choose unreachable nest boxes.
     private final Map<BlockPos, Long> failureDepressionMap;
+    private int currentTick;
+    private int maxSittingTicks;
     private boolean end;
 
     private BlockPos nestPos = null;

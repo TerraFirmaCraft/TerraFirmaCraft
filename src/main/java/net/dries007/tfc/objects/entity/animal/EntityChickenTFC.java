@@ -13,8 +13,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.Helpers;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -42,6 +40,7 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
@@ -55,14 +54,14 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
     private static final int DAYS_TO_ADULTHOOD = 124;
     private static final int DAYS_TO_HATCH_EGG = 21;
+    //The last time(in ticks) this chicken has laid eggs
+    private static final DataParameter<Long> LASTLAYING = EntityDataManager.createKey(EntityChickenTFC.class, Helpers.LONG_DATA_SERIALIZER);
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
     public float destPos;
     public float oFlapSpeed;
     public float oFlap;
     public float wingRotDelta = 1.0F;
-    //The last time(in ticks) this chicken has laid eggs
-    private static final DataParameter<Long> LASTLAYING = EntityDataManager.createKey(EntityChickenTFC.class, Helpers.LONG_DATA_SERIALIZER);
 
     public EntityChickenTFC(World worldIn)
     {
@@ -103,48 +102,6 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     public int getMaxGroupSize()
     {
         return 5;
-    }
-
-    @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (this.getClass() == EntityChickenTFC.class && this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
-        {
-            this.world.playSound(null, this.getPosition(), TFCSounds.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
-        }
-        this.oFlap = this.wingRotation;
-        this.oFlapSpeed = this.destPos;
-        this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
-        this.destPos = MathHelper.clamp(this.destPos, 0.0F, 1.0F);
-
-        if (!this.onGround && this.wingRotDelta < 1.0F)
-        {
-            this.wingRotDelta = 1.0F;
-        }
-
-        this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
-
-        if (!this.onGround && this.motionY < 0.0D)
-        {
-            this.motionY *= 0.6D;
-        }
-
-        this.wingRotation += this.wingRotDelta * 2.0F;
-    }
-
-    @Override
-    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.writeEntityToNBT(nbt);
-        nbt.setLong("laying", lastLaying());
-    }
-
-    @Override
-    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.readEntityFromNBT(nbt);
-        this.setLastLaying(nbt.getLong("laying"));
     }
 
     @Override
@@ -229,6 +186,11 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
         return null;
     }
 
+    public long lastLaying()
+    {
+        return dataManager.get(LASTLAYING);
+    }
+
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
@@ -281,11 +243,6 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
         return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && getProductsCooldown() == 0;
     }
 
-    public long lastLaying()
-    {
-        return dataManager.get(LASTLAYING);
-    }
-
     protected void setLastLaying(long lastLaying)
     {
         dataManager.set(LASTLAYING, lastLaying);
@@ -296,5 +253,47 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     {
         super.entityInit();
         getDataManager().register(LASTLAYING, 0L);
+    }
+
+    @Override
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        if (this.getClass() == EntityChickenTFC.class && this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
+        {
+            this.world.playSound(null, this.getPosition(), TFCSounds.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
+        }
+        this.oFlap = this.wingRotation;
+        this.oFlapSpeed = this.destPos;
+        this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
+        this.destPos = MathHelper.clamp(this.destPos, 0.0F, 1.0F);
+
+        if (!this.onGround && this.wingRotDelta < 1.0F)
+        {
+            this.wingRotDelta = 1.0F;
+        }
+
+        this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
+
+        if (!this.onGround && this.motionY < 0.0D)
+        {
+            this.motionY *= 0.6D;
+        }
+
+        this.wingRotation += this.wingRotDelta * 2.0F;
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setLong("laying", lastLaying());
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.setLastLaying(nbt.getLong("laying"));
     }
 }

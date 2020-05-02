@@ -28,7 +28,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderBoatTFC extends Render<EntityBoatTFC>
 {
-    private ModelBase modelBoat = new ModelBoat();
+    private final ModelBase modelBoat = new ModelBoat();
 
     public RenderBoatTFC(RenderManager renderManagerIn)
     {

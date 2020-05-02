@@ -19,16 +19,11 @@ public class EntityAITamableAvoidPlayer<T extends EntityCreature & IAnimalTFC> e
     public boolean shouldExecute()
     {
         EntityCreature animal = this.entity;
-        if (((IAnimalTFC)animal).getFamiliarity() > 0  || isBegging(animal)) //since AITempt actually changes movement, and begging just turns the head
+        if (((IAnimalTFC) animal).getFamiliarity() > 0 || isBegging(animal)) //since AITempt actually changes movement, and begging just turns the head
         {
             return false;
         }
         return super.shouldExecute();
-    }
-
-    public boolean isBegging(EntityCreature wolf)
-    {
-        return wolf instanceof EntityWolf && ((EntityWolf)wolf).isBegging();
     }
 
     @Override
@@ -39,5 +34,10 @@ public class EntityAITamableAvoidPlayer<T extends EntityCreature & IAnimalTFC> e
             return false;
         }
         return super.shouldContinueExecuting();
+    }
+
+    public boolean isBegging(EntityCreature wolf)
+    {
+        return wolf instanceof EntityWolf && ((EntityWolf) wolf).isBegging();
     }
 }

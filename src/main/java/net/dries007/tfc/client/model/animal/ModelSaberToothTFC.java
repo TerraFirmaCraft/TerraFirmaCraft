@@ -17,21 +17,21 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 @ParametersAreNonnullByDefault
 public class ModelSaberToothTFC extends ModelBase
 {
-    private ModelRenderer frontBody;
-    private ModelRenderer neckBase;
-    private ModelRenderer neck;
-    private ModelRenderer backBody;
-    private ModelRenderer tailBody;
-    private ModelRenderer tailTop;
-    private ModelRenderer tailBottom;
-    private ModelRenderer head;
-    private ModelRenderer ear2;
-    private ModelRenderer ear1;
-    private ModelRenderer nose;
-    private ModelRenderer tooth1;
-    private ModelRenderer tooth2;
-    private ModelRenderer mouthBottom;
-    private ModelRenderer mouthTop;
+    private final ModelRenderer frontBody;
+    private final ModelRenderer neckBase;
+    private final ModelRenderer neck;
+    private final ModelRenderer backBody;
+    private final ModelRenderer tailBody;
+    private final ModelRenderer tailTop;
+    private final ModelRenderer tailBottom;
+    private final ModelRenderer head;
+    private final ModelRenderer ear2;
+    private final ModelRenderer ear1;
+    private final ModelRenderer nose;
+    private final ModelRenderer tooth1;
+    private final ModelRenderer tooth2;
+    private final ModelRenderer mouthBottom;
+    private final ModelRenderer mouthTop;
     public ModelRenderer frontRightLegTop;
     public ModelRenderer frontRightLegMiddle;
     public ModelRenderer frontRightLegBottom;

@@ -51,10 +51,6 @@ import net.dries007.tfc.objects.entity.animal.*;
 
 public final class Helpers
 {
-    private static final Joiner JOINER_DOT = Joiner.on('.');
-
-    private static final boolean JEI = Loader.isModLoaded("jei");
-
     public static final DataSerializer<Long> LONG_DATA_SERIALIZER = new DataSerializer<Long>()
     {
         public void write(PacketBuffer buf, Long value)
@@ -77,7 +73,8 @@ public final class Helpers
             return value;
         }
     };
-
+    private static final Joiner JOINER_DOT = Joiner.on('.');
+    private static final boolean JEI = Loader.isModLoaded("jei");
     private static final Map<Class<? extends Entity>, Class<? extends Entity>> VANILLA_REPLACEMENTS;
 
     static
