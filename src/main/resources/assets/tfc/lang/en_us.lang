@@ -4495,3 +4495,45 @@ advancements.tfc.world.find_nickel.description=Find Garnierite Ore.
 #JEI Descriptions for uncraftable mechanics
 tfc.jei.description.pitkiln=Used for firing of pottery and melting of soft metals.  Place up to 4 items (Default Hotkey: V) into a 1x1 hole. Fill (right-click) with 8 straw and 8 logs. Light with a fire starter or drop a torch on top. Wait for fire to go out and retrieve items.
 tfc.jei.description.placeditem=Items can be placed on the ground, mostly for placing into a pit kiln. Use the Place key (default V) to place each item (up to 4) on a single block.
+
+#Waila/TOP
+waila.tfc.normal=Normal
+waila.tfc.remaining=Minutes Remaining
+waila.tfc.unlit=Unlit
+waila.tfc.straw=Straw
+waila.tfc.logs=Logs
+waila.tfc.mature=Mature
+waila.tfc.deadcrop=Dead Crop
+waila.tfc.making=Making
+waila.tfc.contains=Contains
+waila.tfc.norecipe=No Recipe
+waila.tfc.sealed=Sealed
+waila.tfc.fluxstone=Flux stone
+waila.tfc.wild=Wild
+waila.tfc.growing=Growing
+waila.tfc.notgrowing=Not Growing
+waila.tfc.temperature=Air Temperature
+waila.tfc.tempsymbol=°
+# Animal stuff
+waila.tfc.female=Female
+waila.tfc.male=Male
+waila.tfc.milked=Can Milk
+waila.tfc.pregnant=Pregnant
+waila.tfc.baby=Baby
+waila.tfc.getbusy=Can Mate
+waila.tfc.haseggs=Has Eggs
+waila.tfc.childhoodend=Aging date
+waila.tfc.familiarized=Familiarized
+waila.tfc.notfamiliarized=Not familiarized
+waila.tfc.old=Animal is old
+waila.tfc.pregnancyend=Pregnancy end date
+waila.tfc.canshear=Shearable
+waila.tfc.fruit_trees.banana.name=Banana Tree
+waila.tfc.fruit_trees.cherry.name=Cherry Tree
+waila.tfc.fruit_trees.green_apple.name=Green Apple Tree
+waila.tfc.fruit_trees.lemon.name=Lemon Tree
+waila.tfc.fruit_trees.olive.name=Olive Tree
+waila.tfc.fruit_trees.orange.name=Orange Tree
+waila.tfc.fruit_trees.peach.name=Peach Tree
+waila.tfc.fruit_trees.plum.name=Plum Tree
+waila.tfc.fruit_trees.red_apple.name=Red Apple Tree
