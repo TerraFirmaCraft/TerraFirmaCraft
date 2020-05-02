@@ -42,32 +42,32 @@ public class WailaEntities implements IWailaEntityProvider
         boolean familiarized = animal.getFamiliarity() > 0.15f;
         if (animal.getAdultFamiliarityCap() > 0)
         {
-            currenttip.add(new TextComponentTranslation(familiarized ? "waila.familiarized" : "waila.notfamiliarized").getFormattedText());
+            currenttip.add(new TextComponentTranslation(familiarized ? "waila.tfc.familiarized" : "waila.tfc.notfamiliarized").getFormattedText());
         }
         switch (animal.getAge())
         {
             case CHILD:
-                currenttip.add(new TextComponentTranslation("waila.childhoodend").getFormattedText()
+                currenttip.add(new TextComponentTranslation("waila.tfc.childhoodend").getFormattedText()
                     + ": " + ICalendarFormatted.getTimeAndDate(
                     ICalendar.TICKS_IN_DAY * (animal.getBirthDay() + animal.getDaysToAdulthood())
                     , CalendarTFC.CALENDAR_TIME.getDaysInMonth()));
                 break;
             case OLD:
-                currenttip.add(new TextComponentTranslation("waila.old").getFormattedText());
+                currenttip.add(new TextComponentTranslation("waila.tfc.old").getFormattedText());
                 break;
             case ADULT:
                 if (familiarized)
                 {
                     if (animal.isReadyToMate())
                     {
-                        currenttip.add(new TextComponentTranslation("waila.getbusy").getFormattedText());
+                        currenttip.add(new TextComponentTranslation("waila.tfc.getbusy").getFormattedText());
                     }
                     if (animal.isFertilized())
                     {
                         NBTTagCompound nbt = accessor.getNBTData();
                         long pregnancyDate = nbt.getLong("pregnant");
                         if (pregnancyDate > 0)
-                            currenttip.add(new TextComponentTranslation("waila.pregnancyend").getFormattedText()
+                            currenttip.add(new TextComponentTranslation("waila.tfc.pregnancyend").getFormattedText()
                                 + ": " + ICalendarFormatted.getTimeAndDate(
                                 ICalendar.TICKS_IN_DAY * (pregnancyDate + 240), CalendarTFC.CALENDAR_TIME.getDaysInMonth()));
                     }
@@ -76,11 +76,11 @@ public class WailaEntities implements IWailaEntityProvider
                         if (animal.getGender() == IAnimalTFC.Gender.FEMALE && (animal instanceof EntityCowTFC || animal instanceof EntityChickenTFC))
                         {
                             currenttip.add(new TextComponentTranslation(
-                                (animal instanceof EntityAnimalMammal) ? "waila.milked" : "waila.haseggs").getFormattedText());
+                                (animal instanceof EntityAnimalMammal) ? "waila.tfc.milked" : "waila.tfc.haseggs").getFormattedText());
                         }
                         if (animal instanceof EntitySheepTFC)
                         {
-                            currenttip.add(new TextComponentTranslation("waila.canshear").getFormattedText());
+                            currenttip.add(new TextComponentTranslation("waila.tfc.canshear").getFormattedText());
                         }
 
                     }
