@@ -16,11 +16,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -32,7 +29,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.oredict.OreDictionary;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -243,18 +239,10 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     @Override
     protected void initEntityAI()
     {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
-        this.tasks.addTask(2, new EntityAIMate(this, 1D));
-        for (ItemStack is : OreDictionary.getOres("grain"))
-        {
-            Item item = is.getItem();
-            this.tasks.addTask(3, new EntityAITempt(this, 1.1D, item, false));
-        }
-        this.tasks.addTask(4, new EntityAIFindNest(this, 1D));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
+        EntityAnimalTFC.addCommonLivestockAI(this, 1.3D);
+        EntityAnimalTFC.addCommonPreyAI(this, 1.3D);
+
+        this.tasks.addTask(5, new EntityAIFindNest(this, 1D));
     }
 
     @Override

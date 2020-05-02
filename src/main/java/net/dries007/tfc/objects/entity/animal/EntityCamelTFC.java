@@ -294,7 +294,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.DESERT || biomeType ==BiomeHelper.BiomeType.SAVANNA))
+            (biomeType == BiomeHelper.BiomeType.DESERT || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
             return ConfigTFC.WORLD.livestockSpawnRarity;
         }
@@ -403,7 +403,8 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         super.writeEntityToNBT(nbt);
         nbt.setInteger("Variant", this.getVariant());
         nbt.setInteger("Strength", this.getStrength());
-        if (!this.horseChest.getStackInSlot(1).isEmpty()) {
+        if (!this.horseChest.getStackInSlot(1).isEmpty())
+        {
             nbt.setTag("DecorItem", this.horseChest.getStackInSlot(1).writeToNBT(new NBTTagCompound()));
         }
     }
@@ -429,7 +430,8 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         this.setStrength(nbt.getInteger("Strength"));
         super.readEntityFromNBT(nbt);
         this.setVariant(nbt.getInteger("Variant"));
-        if (nbt.hasKey("DecorItem", 10)) {
+        if (nbt.hasKey("DecorItem", 10))
+        {
             this.horseChest.setInventorySlotContents(1, new ItemStack(nbt.getCompoundTag("DecorItem")));
         }
         this.updateHorseSlots();
@@ -515,26 +517,31 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         }
     }
 
-    public boolean wearsArmor() {
+    public boolean wearsArmor()
+    {
         return true;
     }
 
-    public boolean isArmor(ItemStack stack) {
+    public boolean isArmor(ItemStack stack)
+    {
         return stack.getItem() == Item.getItemFromBlock(Blocks.CARPET);
     }
 
     public boolean canBeSaddled() {return true;}
 
-    public void onInventoryChanged(IInventory invBasic) {
+    public void onInventoryChanged(IInventory invBasic)
+    {
         EnumDyeColor enumdyecolor = this.getColor();
         super.onInventoryChanged(invBasic);
         EnumDyeColor enumdyecolor1 = this.getColor();
-        if (this.ticksExisted > 20 && enumdyecolor1 != null && enumdyecolor1 != enumdyecolor) {
+        if (this.ticksExisted > 20 && enumdyecolor1 != null && enumdyecolor1 != enumdyecolor)
+        {
             this.playSound(SoundEvents.ENTITY_LLAMA_SWAG, 0.5F, 1.0F);
         }
         boolean flag = this.isHorseSaddled();
         this.updateHorseSlots();
-        if (this.ticksExisted > 20 && !flag && this.isHorseSaddled()) {
+        if (this.ticksExisted > 20 && !flag && this.isHorseSaddled())
+        {
             this.playSound(SoundEvents.ENTITY_HORSE_SADDLE, 0.5F, 1.0F);
         }
     }
@@ -602,16 +609,24 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
                 soundtype = Blocks.SNOW_LAYER.getSoundType();
             }
 
-            if (this.isBeingRidden() && this.canGallop) {
+            if (this.isBeingRidden() && this.canGallop)
+            {
                 ++this.gallopTime;
-                if (this.gallopTime > 5 && this.gallopTime % 3 == 0) {
+                if (this.gallopTime > 5 && this.gallopTime % 3 == 0)
+                {
                     this.playGallopSound(soundtype);
-                } else if (this.gallopTime <= 5) {
+                }
+                else if (this.gallopTime <= 5)
+                {
                     this.playSound(SoundEvents.ENTITY_HORSE_STEP_WOOD, soundtype.getVolume() * 0.15F, soundtype.getPitch());
                 }
-            } else if (soundtype == SoundType.WOOD) {
+            }
+            else if (soundtype == SoundType.WOOD)
+            {
                 this.playSound(SoundEvents.ENTITY_HORSE_STEP_WOOD, soundtype.getVolume() * 0.15F, soundtype.getPitch());
-            } else {
+            }
+            else
+            {
                 this.playSound(SoundEvents.ENTITY_HORSE_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
             }
         }

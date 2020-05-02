@@ -29,12 +29,15 @@ public class LayerCamelDecor implements LayerRenderer<EntityCamelTFC>
     private final RenderCamelTFC renderer;
     private final ModelCamelTFC model = new ModelCamelTFC(0.51F);
 
-    public LayerCamelDecor(RenderCamelTFC p_i47184_1_) {
+    public LayerCamelDecor(RenderCamelTFC p_i47184_1_)
+    {
         this.renderer = p_i47184_1_;
     }
 
-    public void doRenderLayer(EntityCamelTFC entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (entitylivingbaseIn.hasColor()) {
+    public void doRenderLayer(EntityCamelTFC entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    {
+        if (entitylivingbaseIn.hasColor())
+        {
             this.renderer.bindTexture(CAMEL_DECOR_TEXTURES[entitylivingbaseIn.getColor().getMetadata()]);
             this.model.setModelAttributes(this.renderer.getMainModel());
             this.model.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
@@ -42,7 +45,8 @@ public class LayerCamelDecor implements LayerRenderer<EntityCamelTFC>
 
     }
 
-    public boolean shouldCombineTextures() {
+    public boolean shouldCombineTextures()
+    {
         return false;
     }
 }
