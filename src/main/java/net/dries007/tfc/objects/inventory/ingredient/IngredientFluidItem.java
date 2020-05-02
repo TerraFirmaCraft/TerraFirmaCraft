@@ -69,6 +69,6 @@ public class IngredientFluidItem implements IIngredient<ItemStack>
      */
     public FluidStack getFluid()
     {
-        return stack;
+        return stack.copy();
     }
 }
