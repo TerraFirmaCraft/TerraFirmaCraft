@@ -16,7 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.*;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -29,12 +28,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeSavanna;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -326,14 +326,10 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         this.setScale((float) ageScale);
     }
 
-    @Override
-    protected void mountTo(EntityPlayer player)
+    @Nullable
+    public Entity getControllingPassenger()
     {
-        if (!this.isTame() && !this.getLeashed())
-        {
-            return;
-        }
-        super.mountTo(player);
+        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
     }
 
     @Override
@@ -543,48 +539,66 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         }
     }
 
-    protected void updateHorseSlots() {
-        if (!this.world.isRemote) {
+    protected void updateHorseSlots()
+    {
+        if (!this.world.isRemote)
+        {
             super.updateHorseSlots();
             this.setColorByItem(this.horseChest.getStackInSlot(1));
         }
     }
 
-    private void setColorByItem(ItemStack stack) {
-        if (this.isArmor(stack)) {
-            this.setColor(EnumDyeColor.byMetadata(stack.getMetadata()));
-        } else {
-            this.setColor((EnumDyeColor)null);
+    @Override
+    protected void mountTo(EntityPlayer player)
+    {
+        if (!this.isTame() || !this.getLeashed())
+        {
+            return;
         }
+        super.mountTo(player);
     }
 
-    private void setColor(@Nullable EnumDyeColor color) {
+    private void setColor(@Nullable EnumDyeColor color)
+    {
         this.dataManager.set(DATA_COLOR_ID, color == null ? -1 : color.getMetadata());
     }
 
     @Nullable
-    public EnumDyeColor getColor() {
+    public EnumDyeColor getColor()
+    {
         int i = this.dataManager.get(DATA_COLOR_ID);
         return i == -1 ? null : EnumDyeColor.byMetadata(i);
     }
 
-    public boolean canBeSteered() {
+    public boolean canBeSteered()
+    {
         return this.getControllingPassenger() instanceof EntityLivingBase;
     }
 
-    @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+    private void setColorByItem(ItemStack stack)
+    {
+        if (this.isArmor(stack))
+        {
+            this.setColor(EnumDyeColor.byMetadata(stack.getMetadata()));
+        }
+        else
+        {
+            this.setColor(null);
+        }
     }
 
-    protected void playGallopSound(SoundType p_190680_1_) {
+    protected void playGallopSound(SoundType p_190680_1_)
+    {
         this.playSound(SoundEvents.ENTITY_HORSE_GALLOP, p_190680_1_.getVolume() * 0.15F, p_190680_1_.getPitch());
     }
 
-    protected void playStepSound(BlockPos pos, Block blockIn) {
-        if (!blockIn.getDefaultState().getMaterial().isLiquid()) {
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        if (!blockIn.getDefaultState().getMaterial().isLiquid())
+        {
             SoundType soundtype = blockIn.getSoundType();
-            if (this.world.getBlockState(pos.up()).getBlock() == Blocks.SNOW_LAYER) {
+            if (this.world.getBlockState(pos.up()).getBlock() == Blocks.SNOW_LAYER)
+            {
                 soundtype = Blocks.SNOW_LAYER.getSoundType();
             }
 

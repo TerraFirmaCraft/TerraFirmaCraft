@@ -276,7 +276,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (!this.isTame() && !this.getLeashed())
+        if (!this.isTame() || !this.getLeashed())
         {
             return;
         }
