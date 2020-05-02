@@ -75,7 +75,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     @Nullable
     public FluidStack getOutputFluid()
     {
-        return outputFluid;
+        return outputFluid != null ? outputFluid.copy() : null;
     }
 
     /**
