@@ -159,12 +159,12 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    public List<String> getFirepitBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getFirepitBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
-    public List<String> getPitKilnBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getPitKilnBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         Block b = accessor.getBlock();
         TEPitKiln te = (TEPitKiln) accessor.getTileEntity();
@@ -195,7 +195,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    public List<String> getOreTFCBody(ItemStack itemStack, List<java.lang.String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private List<String> getOreTFCBody(ItemStack itemStack, List<java.lang.String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
 
         BlockOreTFC b = (BlockOreTFC) accessor.getBlock();
@@ -223,7 +223,7 @@ public final class WailaBlocks implements IWailaDataProvider
         return currenttip;
     }
 
-    public ItemStack getOreTFCStack(IWailaDataAccessor accessor, IWailaConfigHandler config)
+    private ItemStack getOreTFCStack(IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
 
         BlockOreTFC b = (BlockOreTFC) accessor.getBlock();
