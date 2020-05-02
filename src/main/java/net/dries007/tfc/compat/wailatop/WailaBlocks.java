@@ -150,8 +150,6 @@ public final class WailaBlocks implements IWailaDataProvider
             currentTooltip = getBerryBushBody(stack, currentTooltip, accessor, config);
         else if (b instanceof BlockCropDead)
             currentTooltip = getCropDeadBody(stack, currentTooltip, accessor, config);
-        else if (b instanceof BlockFruitTreeLeaves)
-            currentTooltip = getFruitTreeLeavesBody(stack, currentTooltip, accessor, config);
 
         return currentTooltip;
     }
