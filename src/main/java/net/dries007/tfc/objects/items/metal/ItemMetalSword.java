@@ -50,6 +50,7 @@ public class ItemMetalSword extends ItemSword implements IMetalItem, IItemSize
     {
         return TABLE.get(metal);
     }
+
     public final ToolMaterial material;
     private final Metal metal;
     private final float attackDamage;
