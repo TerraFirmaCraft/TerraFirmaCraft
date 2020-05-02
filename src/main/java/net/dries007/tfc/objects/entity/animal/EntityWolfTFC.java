@@ -13,6 +13,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.util.Helpers;
+
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -67,10 +69,12 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-    private boolean fertilized; //Is this female fertilized?
+    //Is this female fertilized?
+    private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
     private long lastDeath; //Last time(in days) this entity checked for dying of old age
-    private long pregnantTime; // The time(in days) this entity became pregnant
+    // The time(in days) this entity became pregnant
+    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityWolfTFC.class, Helpers.LONG_DATA_SERIALIZER);
 
     @SuppressWarnings("unused")
     public EntityWolfTFC(World worldIn)
@@ -89,8 +93,8 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         this.matingTime = -1;
         this.lastDeath = -1;
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
-        this.fertilized = false;
-        this.pregnantTime = -1;
+        this.setFertilized(false);
+        this.setPregnantTime(-1);
         this.setSize(0.6F, 0.85F);
         this.setTamed(false);
     }
@@ -187,19 +191,19 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     }
 
     @Override
-    public boolean isFertilized() { return this.fertilized; }
+    public boolean isFertilized() { return dataManager.get(FERTILIZED); }
 
     @Override
     public void setFertilized(boolean value)
     {
-        this.fertilized = value;
+        dataManager.set(FERTILIZED, value);
     }
 
     @Override
     public void onFertilized(IAnimalTFC male)
     {
         //Mark the day this female became pregnant
-        this.pregnantTime = CalendarTFC.PLAYER_TIME.getTotalDays();
+        this.setPregnantTime(CalendarTFC.PLAYER_TIME.getTotalDays());
     }
 
     @Override
@@ -302,6 +306,8 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
         getDataManager().register(FAMILIARITY, 0f);
+        getDataManager().register(PREGNANT_TIME, -1L);
+        getDataManager().register(FERTILIZED, false);
     }
 
     @Override
@@ -312,11 +318,11 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         nbt.setInteger("birth", getBirthDay());
         nbt.setLong("fed", lastFed);
         nbt.setLong("decay", lastFDecay);
-        nbt.setBoolean("fertilized", this.fertilized);
+        nbt.setBoolean("fertilized", this.isFertilized());
         nbt.setLong("mating", matingTime);
         nbt.setFloat("familiarity", getFamiliarity());
         nbt.setLong("lastDeath", lastDeath);
-        nbt.setLong("pregnant", pregnantTime);
+        nbt.setLong("pregnant", getPregnantTime());
     }
 
     @Override
@@ -328,10 +334,10 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         this.lastFed = nbt.getLong("fed");
         this.lastFDecay = nbt.getLong("decay");
         this.matingTime = nbt.getLong("mating");
-        this.fertilized = nbt.getBoolean("fertilized");
+        this.setFertilized(nbt.getBoolean("fertilized"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
         this.lastDeath = nbt.getLong("lastDeath");
-        this.pregnantTime = nbt.getLong("pregnant");
+        this.setPregnantTime(nbt.getLong("pregnant"));
     }
 
     @Override
@@ -347,7 +353,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + DAYS_TO_FULL_GESTATION)
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + DAYS_TO_FULL_GESTATION)
             {
                 birthChildren();
                 this.setFertilized(false);
@@ -484,7 +490,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
         {
-            this.fertilized = true;
+            this.setFertilized(true);
             this.resetInLove();
             this.onFertilized((IAnimalTFC) other);
         }
@@ -519,4 +525,8 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         EntityWolfTFC other = (EntityWolfTFC) otherAnimal;
         return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
     }
+
+    public long getPregnantTime() { return dataManager.get(PREGNANT_TIME); }
+
+    public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
 }
