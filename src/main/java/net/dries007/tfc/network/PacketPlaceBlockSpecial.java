@@ -74,7 +74,17 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                                     TEPlacedItemFlat tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItemFlat.class);
                                     if (tile != null)
                                     {
-                                        tile.setStack(stack.splitStack(1));
+                                        ItemStack input;
+                                        if(player.isCreative())
+                                        {
+                                            input = stack.copy();
+                                            input.setCount(1);
+                                        }
+                                        else
+                                        {
+                                            input = stack.splitStack(1);
+                                        }
+                                        tile.setStack(input);
                                     }
                                 }
                                 else
