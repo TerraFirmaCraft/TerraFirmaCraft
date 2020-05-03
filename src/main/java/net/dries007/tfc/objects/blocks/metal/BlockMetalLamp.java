@@ -210,17 +210,6 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         }
     }
 
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TELamp tile = Helpers.getTE(worldIn, pos, TELamp.class);
-        if (tile != null)
-        {
-            tile.onBreakBlock(worldIn, pos, state);
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     @Nonnull
@@ -368,9 +357,21 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         return new TELamp();
     }
 
-    @Override //drops handled by TE
+    @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
+        TELamp tile = Helpers.getTE(world, pos, TELamp.class);
+        if (tile != null)
+        {
+            if (tile.getFuel() == 0)
+            {
+                super.getDrops(drops, world, pos, state, fortune);
+            }
+            else
+            {
+                drops.add(tile.getItemStack(tile, state));
+            }
+        }
     }
 
     @Override
@@ -388,16 +389,11 @@ public class BlockMetalLamp extends Block implements ILightableBlock
 
     private boolean lightWithFuel(World worldIn, BlockPos pos, IBlockState state, TELamp tel)
     {
-        IFluidHandler fluidHandler = tel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-        if (!worldIn.isRemote && fluidHandler != null)
+        if (tel.getFuel() > 0)
         {
-            FluidStack fuelStack = fluidHandler.drain(Fluid.BUCKET_VOLUME, false);
-            if (fuelStack != null && fuelStack.amount > 0)
-            {
-                worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, true));
-                tel.resetCounter();
-                return true;
-            }
+            worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(LIT, true));
+            tel.resetCounter();
+            return true;
         }
         return false;
     }
