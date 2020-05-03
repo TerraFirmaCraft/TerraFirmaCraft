@@ -29,6 +29,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.ItemTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class ItemMetal extends ItemTFC implements IMetalItem
@@ -41,6 +42,10 @@ public class ItemMetal extends ItemTFC implements IMetalItem
         {
             // Make sure to not crash (in 1.15+, don't forget to rewrite all metal items to extend the proper vanilla classes)
             return ItemMetalSword.get(metal);
+        }
+        if (type == Metal.ItemType.LAMP)
+        {
+            return ItemBlockMetalLamp.get(metal);
         }
         return TABLE.get(metal).get(type);
     }
