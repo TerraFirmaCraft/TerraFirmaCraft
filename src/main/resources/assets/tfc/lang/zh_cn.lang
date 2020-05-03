@@ -81,6 +81,7 @@ tfc.command.stripworld.done=完成！
 # Gui
 
 ## Tooltips
+tfc.tooltip.food_expiry_date.days=将在约 %s 天后过期！
 tfc.tooltip.toolclass=§f工具种类：§7%s
 tfc.tooltip.toolclasses=§f工具种类
 tfc.tooltip.oredictionaryentry=§f矿物词典名称：§7%s
@@ -126,7 +127,7 @@ tfc.tooltip.nutrition=营养值：
 tfc.tooltip.nutrition_saturation= - 饱和度：%s%%
 tfc.tooltip.nutrition_water= - 口渴值：%s%%
 tfc.tooltip.nutrition_nutrient= - %s：%s
-tfc.tooltip.hold_shift_for_nutrition_info=按住 (Shift) 查看营养值信息	
+tfc.tooltip.hold_shift_for_nutrition_info=按住 (Shift) 查看营养值信息
 tfc.tooltip.plant_cold=%s过冷%s
 tfc.tooltip.plant_dry=%s过干%s
 tfc.tooltip.plant_hot=%s过热%s
@@ -155,30 +156,30 @@ tfc.tooltip.egg_hatch=将在 %d 天后孵化
 tfc.tooltip.egg_hatch_today=将在今天孵化！
 
 ## Animal Tooltips / Messages
-tfc.tooltip.animal.old=这只 %s 太老了，不能给它配种。
-tfc.tooltip.animal.mating.low_familiarity=这只 %s 和你的亲密度太低，不能给它配种。
-tfc.tooltip.animal.pregnant=这只 %s 怀孕了！
-tfc.tooltip.animal.resting=这只 %s 今天交配过了，正在休息。
+tfc.tooltip.animal.old=这只%s太老了，不能给它配种。
+tfc.tooltip.animal.mating.low_familiarity=这只%s和你的亲密度太低，不能给它配种。
+tfc.tooltip.animal.pregnant=这只%s怀孕了！
+tfc.tooltip.animal.resting=这只%s今天交配过了，正在休息。
 
-tfc.tooltip.animal.product.old=这只 %s 太老了。
-tfc.tooltip.animal.product.young=这只 %s 太年轻了。
-tfc.tooltip.animal.product.low_familiarity=这只 %s 和你的亲密度太低。
+tfc.tooltip.animal.product.old=这只%s太老了。
+tfc.tooltip.animal.product.young=这只%s太年轻了。
+tfc.tooltip.animal.product.low_familiarity=这只%s和你的亲密度太低。
 
 tfc.tooltip.animal.product.male_milk=这是公的！
 tfc.tooltip.animal.product.male_egg=这是公的！
 
-tfc.tooltip.animal.product.no_wool=这只 %s 的毛还没长出来。
-tfc.tooltip.animal.product.no_milk=这只 %s 没做好产奶的准备。
-tfc.tooltip.animal.product.no_egg=这只 %s 没做好下蛋的准备。
+tfc.tooltip.animal.product.no_wool=这只%s的毛还没长出来。
+tfc.tooltip.animal.product.no_milk=这只%s没做好产奶的准备。
+tfc.tooltip.animal.product.no_egg=这只%s没做好下蛋的准备。
 
 
 ## Prospecting Result Messages
-tfc.propick.found=发现 %s
-tfc.propick.found_traces=发现痕量 %s
-tfc.propick.found_small=发现少量 %s
-tfc.propick.found_medium=发现中量 %s
-tfc.propick.found_large=发现大量 %s
-tfc.propick.found_very_large=发现巨量 %s
+tfc.propick.found=发现%s
+tfc.propick.found_traces=发现痕量%s
+tfc.propick.found_small=发现少量%s
+tfc.propick.found_medium=发现中量%s
+tfc.propick.found_large=发现大量%s
+tfc.propick.found_very_large=发现巨量%s
 tfc.propick.found_nothing=没发现什么有意思的。
 
 ## Thatch Bed
@@ -485,11 +486,11 @@ config.tfc.general.redSteelBucketWhitelist.tooltip=允许红钢桶盛装的液�
 config.tfc.general.nutritionRotationHungerWindow=营养刷新的饥饿值窗口期
 config.tfc.general.nutritionRotationHungerWindow.tooltip=玩家完全刷新其营养状态所需要消耗的饥饿值。在群峦传说中，几乎所有食物都提供 4 饥饿值，因此该选项的值大概是你所需要食用食物数量的四倍。修改该值将在下次进食时更新。
 
-config.tfc.general.oreTooltipMode=矿石提息模式
-config.tfc.general.oreTooltipMode.tooltip=矿石提示信息的模式。0：无信息。1：仅矿物单元。2：堆叠后的总矿物单元。3：所有。
+config.tfc.general.oreTooltipMode=矿石信息模式
+config.tfc.general.oreTooltipMode.tooltip=矿石提示信息的模式。0：无信息。1：仅矿物单元。2：仅堆叠后的总矿物单元。3：所有。
 
-config.tfc.general.disableIngotPile=禁用金属锭堆叠
-config.tfc.general.disableIngotPile.tooltip=禁用金属锭堆叠吗？
+config.tfc.general.disableIngotPile=金属锭堆摆放
+config.tfc.general.disableIngotPile.tooltip=允许 Shift + 右键在地上摆放金属锭堆吗？
 
 config.tfc.general.pluckableEntities=羽毛采集实体
 config.tfc.general.pluckableEntities.tooltip=Shift + 右键点击时掉落羽毛的实体。
@@ -501,10 +502,25 @@ config.tfc.general.shouldCropsDie=谷物死亡
 config.tfc.general.shouldCropsDie.tooltip=若为 false，谷物无论如何都不会死亡。这不意味着谷物会一直生长！
 
 config.tfc.general.doLogsRequireAxe=原木需要斧
-config.tfc.general.doLogsRequireAxe.tooltip=若为 false，不使用斧破坏原木时什么都不会掉落。
+config.tfc.general.doLogsRequireAxe.tooltip=原木需要相对应的工具（斧和锯，或对木棍来说锤）才能开采吗？若为 false，空手破坏原木时什么都不会掉落。
 
 config.tfc.general.doLeavesDropSaplings=树叶掉落树苗
 config.tfc.general.doLeavesDropSaplings.tooltip=若为 false，树叶将不会掉落树苗。
+
+config.tfc.general.decayTooltipMode=腐烂信息模式
+config.tfc.general.decayTooltipMode.tooltip=食物腐烂提示信息的模式。0：无信息。1：仅腐烂日期。2：仅腐烂前剩余的天数。3：所有。
+
+config.tfc.general.doesChiselingCauseCaveIns=凿石引起塌方
+config.tfc.general.doesChiselingCauseCaveIns.tooltip=凿未加工的石头时可能引起塌方吗？
+
+config.tfc.general.metalLampFuels=灯燃料液体
+config.tfc.general.metalLampFuels.tooltip=可以充当灯燃料的液体。
+
+config.tfc.general.oilLampBurnRate=灯燃料燃烧速度
+config.tfc.general.oilLampBurnRate.tooltip=灯燃料燃烧的速度，以 mb/小时 为单位。
+
+config.tfc.general.metalLampCapacity=灯容量
+config.tfc.general.metalLampCapacity.tooltip=灯能容纳多少燃料，以 mb 为单位。一桶 = 1000 mb。
 
 ## Client Config
 
@@ -967,8 +983,8 @@ tile.tfc.alabaster.bricks.black.name=黑色雪花石膏砖块
 tile.tfc.alabaster.bricks.magenta.name=品红色雪花石膏砖块
 tile.tfc.alabaster.bricks.orange.name=橙色雪花石膏砖块
 tile.tfc.alabaster.bricks.lime.name=黄绿色雪花石膏砖块
-tile.tfc.alabaster.bricks.plain.name= 雪花石膏砖块
-tile.tfc.alabaster.bricks.blue.name=Blue 雪花石膏砖块
+tile.tfc.alabaster.bricks.plain.name=雪花石膏砖块
+tile.tfc.alabaster.bricks.blue.name=蓝色雪花石膏砖块
 tile.tfc.alabaster.bricks.purple.name=紫色雪花石膏砖块
 tile.tfc.alabaster.bricks.light_blue.name=淡蓝色雪花石膏砖块
 tile.tfc.alabaster.bricks.gray.name=灰色雪花石膏砖块
@@ -985,8 +1001,8 @@ tile.tfc.alabaster.raw.black.name=黑色雪花石膏
 tile.tfc.alabaster.raw.magenta.name=品红色雪花石膏
 tile.tfc.alabaster.raw.orange.name=橙色雪花石膏
 tile.tfc.alabaster.raw.lime.name=黄绿色雪花石膏
-tile.tfc.alabaster.raw.plain.name= 雪花石膏
-tile.tfc.alabaster.raw.blue.name=Blue 雪花石膏
+tile.tfc.alabaster.raw.plain.name=雪花石膏
+tile.tfc.alabaster.raw.blue.name=蓝色雪花石膏
 tile.tfc.alabaster.raw.purple.name=紫色雪花石膏
 tile.tfc.alabaster.raw.light_blue.name=淡蓝色雪花石膏
 tile.tfc.alabaster.raw.gray.name=灰色雪花石膏
@@ -1003,8 +1019,8 @@ tile.tfc.alabaster.polished.black.name=黑色平滑雪花石膏
 tile.tfc.alabaster.polished.magenta.name=品红色平滑雪花石膏
 tile.tfc.alabaster.polished.orange.name=橙色平滑雪花石膏
 tile.tfc.alabaster.polished.lime.name=黄绿色平滑雪花石膏
-tile.tfc.alabaster.polished.plain.name= 平滑雪花石膏
-tile.tfc.alabaster.polished.blue.name=Blue 平滑雪花石膏
+tile.tfc.alabaster.polished.plain.name=平滑雪花石膏
+tile.tfc.alabaster.polished.blue.name=蓝色平滑雪花石膏
 tile.tfc.alabaster.polished.purple.name=紫色平滑雪花石膏
 tile.tfc.alabaster.polished.light_blue.name=淡蓝色平滑雪花石膏
 tile.tfc.alabaster.polished.gray.name=灰色平滑雪花石膏
@@ -2852,6 +2868,49 @@ tile.tfc.crop.tomato.name=西红柿
 tile.tfc.crop.wheat.name=小麦
 tile.tfc.crop.yellow_bell_pepper.name=黄甜椒
 
+tile.tfc.lamp.bismuth.name=铋灯
+tile.tfc.lamp.bismuth_bronze.name=铋铜灯
+tile.tfc.lamp.black_bronze.name=黑铜灯
+tile.tfc.lamp.brass.name=黄铜灯
+tile.tfc.lamp.bronze.name=青铜灯
+tile.tfc.lamp.copper.name=铜灯
+tile.tfc.lamp.gold.name=金灯
+tile.tfc.lamp.lead.name=铅灯
+tile.tfc.lamp.nickel.name=镍灯
+tile.tfc.lamp.rose_gold.name=玫瑰金灯
+tile.tfc.lamp.silver.name=银灯
+tile.tfc.lamp.tin.name=锡灯
+tile.tfc.lamp.zinc.name=锌灯
+tile.tfc.lamp.sterling_silver.name=纯银灯
+tile.tfc.lamp.wrought_iron.name=锻铁灯
+tile.tfc.lamp.pig_iron.name=生铁灯
+tile.tfc.lamp.steel.name=钢灯
+tile.tfc.lamp.platinum.name=铂灯
+tile.tfc.lamp.black_steel.name=黑钢灯
+tile.tfc.lamp.blue_steel.name=蓝钢灯
+tile.tfc.lamp.red_steel.name=红钢灯
+
+tile.tfc.lamp.bismuth.filled.name=%s铋灯
+tile.tfc.lamp.bismuth_bronze.filled.name=%s铋铜灯
+tile.tfc.lamp.black_bronze.filled.name=%s黑铜灯
+tile.tfc.lamp.brass.filled.name=%s黄铜灯
+tile.tfc.lamp.bronze.filled.name=%s青铜灯
+tile.tfc.lamp.copper.filled.name=%s铜灯
+tile.tfc.lamp.gold.filled.name=%s金灯
+tile.tfc.lamp.lead.filled.name=%s铅灯
+tile.tfc.lamp.nickel.filled.name=%s镍灯
+tile.tfc.lamp.rose_gold.filled.name=%s玫瑰金灯
+tile.tfc.lamp.silver.filled.name=%s银灯
+tile.tfc.lamp.tin.filled.name=%s锡灯
+tile.tfc.lamp.zinc.filled.name=%s锌灯
+tile.tfc.lamp.sterling_silver.filled.name=%s纯银灯
+tile.tfc.lamp.wrought_iron.filled.name=%s锻铁灯
+tile.tfc.lamp.pig_iron.filled.name=%s生铁灯
+tile.tfc.lamp.steel.filled.name=%s钢灯
+tile.tfc.lamp.platinum.filled.name=%s铂灯
+tile.tfc.lamp.black_steel.filled.name=%s黑钢灯
+tile.tfc.lamp.blue_steel.filled.name=%s蓝钢灯
+tile.tfc.lamp.red_steel.filled.name=%s红钢灯
 
 ### ======================= ITEMS ======================
 
@@ -4017,6 +4076,7 @@ item.tfc.food.barley_flour.name=大麦面粉
 item.tfc.food.barley_dough.name=大麦面团
 item.tfc.food.barley_bread.name=大麦面包
 item.tfc.food.maize.name=玉米
+item.tfc.food.maize_grain.name=玉米粒
 item.tfc.food.cornbread.name=玉米面包
 item.tfc.food.cornmeal_flour.name=玉米面粉
 item.tfc.food.cornmeal_dough.name=玉米面团
@@ -4446,6 +4506,42 @@ advancements.tfc.world.find_nickel.description=在辉长岩岩层中找到镍矿
 #JEI Descriptions for uncraftable mechanics
 tfc.jei.description.pitkiln=用于烧制陶器和融化软金属。将不超过四件物品放置（默认为 V）在 1x1 的坑中，用 8 干草和 8 原木填充（右键）。用起火器点燃或在上面丢个火把。等到火熄灭后取回物品。
 tfc.jei.description.placeditem=物品可以放置在地面上，主要放置到坑窑中。使用放置键（默认为 V）将物品（不超过 4 件）放置在一个方块上。
+
+# Waila
+waila.tfc.ore_drop=含 %s
+waila.tfc.remaining=剩余 %d 分钟
+waila.tfc.unlit=未点燃
+waila.tfc.straw=需要 %d 干草
+waila.tfc.logs=需要 %d 原木
+waila.tfc.mature=成熟
+waila.tfc.deadcrop=死作物
+waila.tfc.making=制作中：%s
+waila.tfc.no_recipe=无配方
+waila.tfc.barrel_contents=含 %dmB %s
+waila.tfc.sealed=密封：%s
+waila.tfc.flux_stone=助焊石
+waila.tfc.wild=野生作物
+waila.tfc.growth=生长阶段：%s
+waila.tfc.growing=生长中
+waila.tfc.not_growing=不生长
+waila.tfc.temperature=空气温度：%dºC
+waila.tfc.harvesting_months=收获季节：
+
+
+# Animal stuff
+waila.tfc.female=母/雌
+waila.tfc.male=公/雄
+waila.tfc.has_milk=可产奶
+waila.tfc.pregnant=怀孕
+waila.tfc.baby=幼崽
+waila.tfc.can_mate=可交配
+waila.tfc.has_eggs=有蛋
+waila.tfc.childhood_end=%s 天后成年
+waila.tfc.familiarized=已驯服
+waila.tfc.notfamiliarized=未驯服
+waila.tfc.old=已老
+waila.tfc.pregnancyend=%s 天后生产
+waila.tfc.canshear=可剪毛
 
 # Overwrite Vanilla
 entity.Rabbit.name=兔
