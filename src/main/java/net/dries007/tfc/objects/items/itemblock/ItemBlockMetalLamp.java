@@ -8,11 +8,14 @@ package net.dries007.tfc.objects.items.itemblock;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -29,6 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
+import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.metal.BlockMetalLamp;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
@@ -37,6 +41,7 @@ import net.dries007.tfc.util.Helpers;
 public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
 {
     public static int CAPACITY;
+    private static final Map<Metal, ItemBlockMetalLamp> TABLE = new HashMap<>();
 
     public static Set<Fluid> getValidFluids()
     {
@@ -49,13 +54,17 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
         return validFluids;
     }
 
-    public final ToolMaterial material;
+    public static Item get(Metal metal)
+    {
+        return TABLE.get(metal);
+    }
 
     public ItemBlockMetalLamp(Metal metal)
     {
         super(BlockMetalLamp.get(metal));
         CAPACITY = ConfigTFC.GENERAL.metalLampCapacity;
-        material = metal.getToolMetal();
+        if (!TABLE.containsKey(metal))
+            TABLE.put(metal, this);
     }
 
     @Override

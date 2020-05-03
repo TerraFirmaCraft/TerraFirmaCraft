@@ -5,12 +5,9 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -29,6 +26,11 @@ import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidHandlerSidedCallback
 {
     public static int CAPACITY;
+
+    public int getFuel()
+    {
+        return tank.getFluidAmount();
+    }
 
     private final FluidTank tank = new FluidTankCallback(this, 0, CAPACITY);
     private boolean powered = false;
@@ -77,11 +79,6 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
     public boolean canDrain(EnumFacing side)
     {
         return true;
-    }
-
-    public void onBreakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), getItemStack(this, state));
     }
 
     public ItemStack getItemStack(TELamp tel, IBlockState state)
