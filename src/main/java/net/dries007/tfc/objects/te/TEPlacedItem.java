@@ -142,7 +142,17 @@ public class TEPlacedItem extends TEInventory
                 // Normal and smaller can be placed normally
                 if (inventory.getStackInSlot(slot).isEmpty())
                 {
-                    inventory.setStackInSlot(slot, stack.splitStack(1));
+                    ItemStack input;
+                    if(player.isCreative())
+                    {
+                        input = stack.copy();
+                        input.setCount(1);
+                    }
+                    else
+                    {
+                        input = stack.splitStack(1);
+                    }
+                    inventory.setStackInSlot(slot, input);
                     updateBlock();
                     return true;
                 }
@@ -152,7 +162,17 @@ public class TEPlacedItem extends TEInventory
                 // Large items are placed in the single center slot
                 if (isEmpty())
                 {
-                    inventory.setStackInSlot(SLOT_LARGE_ITEM, stack.splitStack(1));
+                    ItemStack input;
+                    if(player.isCreative())
+                    {
+                        input = stack.copy();
+                        input.setCount(1);
+                    }
+                    else
+                    {
+                        input = stack.splitStack(1);
+                    }
+                    inventory.setStackInSlot(SLOT_LARGE_ITEM, input);
                     isHoldingLargeItem = true;
                     updateBlock();
                     return true;
