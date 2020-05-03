@@ -9,22 +9,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 @ParametersAreNonnullByDefault
-public abstract class ContainerItemStack extends Container implements ICapabilityUpdateContainer
+public abstract class ContainerItemStack extends Container
 {
     protected final ItemStack stack;
     protected final EntityPlayer player;
     protected int itemIndex;
     protected int itemDragIndex;
     protected boolean isOffhand;
-    protected IContainerListener capabilityListener;
 
     protected ContainerItemStack(InventoryPlayer playerInv, ItemStack stack)
     {
@@ -53,32 +52,10 @@ public abstract class ContainerItemStack extends Container implements ICapabilit
     @Override
     public void detectAndSendChanges()
     {
-        for (int i = 0; i < inventorySlots.size(); ++i)
+        super.detectAndSendChanges();
+        if (player instanceof EntityPlayerMP)
         {
-            ItemStack newStack = inventorySlots.get(i).getStack();
-            ItemStack cachedStack = inventoryItemStacks.get(i);
-
-            if (!ItemStack.areItemStacksEqual(cachedStack, newStack))
-            {
-                // Duplicated from Container#detectAndSendChanges
-                boolean clientStackChanged = !ItemStack.areItemStacksEqualUsingNBTShareTag(cachedStack, newStack);
-                cachedStack = newStack.isEmpty() ? ItemStack.EMPTY : newStack.copy();
-                this.inventoryItemStacks.set(i, cachedStack);
-
-                if (clientStackChanged)
-                {
-                    for (IContainerListener listener : this.listeners)
-                    {
-                        listener.sendSlotContents(this, i, cachedStack);
-                    }
-                }
-                else if (capabilityListener != null)
-                {
-                    // There's a capability difference ONLY that needs to be synced, so we use our own handler here, as to not conflict with vanilla's sync, because this won't overwrite the client side item stack
-                    // The listener will check if the item actually needs a sync based on capabilities we know we need to sync
-                    capabilityListener.sendSlotContents(this, i, cachedStack);
-                }
-            }
+            CapabilityContainerListener.syncCapabilityOnlyChanges(this, (EntityPlayerMP) player);
         }
     }
 
@@ -159,12 +136,6 @@ public abstract class ContainerItemStack extends Container implements ICapabilit
     public boolean canInteractWith(EntityPlayer playerIn)
     {
         return true;
-    }
-
-    @Override
-    public void setCapabilityListener(IContainerListener capabilityListener)
-    {
-        this.capabilityListener = capabilityListener;
     }
 
     protected abstract void addContainerSlots();

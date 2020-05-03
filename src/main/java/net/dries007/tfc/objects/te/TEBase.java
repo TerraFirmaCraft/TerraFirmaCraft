@@ -71,7 +71,6 @@ public abstract class TEBase extends TileEntity
 
     /**
      * Marks the TE for syncing. Will send all normal NBT saved data to clients.
-     * Note: if the TE uses getActualState, this needs to be called from {@link TEBase#onDataPacket(NetworkManager, SPacketUpdateTileEntity)} as well
      */
     public void markBlockUpdate()
     {

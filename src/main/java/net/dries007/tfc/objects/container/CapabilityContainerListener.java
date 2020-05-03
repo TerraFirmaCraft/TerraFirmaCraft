@@ -37,7 +37,6 @@ import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
  *
  * @author Choonster
  * @author AlcatrazEscapee
- * @see ICapabilityUpdateContainer
  *
  * Below is a forge PR that would solve all these problems, but will likely not get implemented in 1.12.
  * <a href="https://github.com/MinecraftForge/MinecraftForge/pull/5009/files">Capability Sync PR for 1.12</>
@@ -50,6 +49,11 @@ public class CapabilityContainerListener implements IContainerListener
      */
     public static final Map<String, Capability<? extends INBTSerializable<? extends NBTBase>>> SYNC_CAPS = new HashMap<>();
 
+    /**
+     * Container listeners for each player.
+     */
+    private static final Map<EntityPlayerMP, IContainerListener> CAPABILITY_LISTENERS = new HashMap<>();
+
     static
     {
         SYNC_CAPS.put(CapabilityItemHeat.KEY.toString(), CapabilityItemHeat.ITEM_HEAT_CAPABILITY);
@@ -58,17 +62,49 @@ public class CapabilityContainerListener implements IContainerListener
     }
 
     /**
-     * Adds the listener to a container, and also handles any instances of {@link ICapabilityUpdateContainer}
+     * Adds the listener for a given player to the current container
      * Executes server side
      */
     public static void addTo(Container container, EntityPlayerMP player)
     {
-        // Add the listener to the container, and also register it for containers that need additional sync logic
-        CapabilityContainerListener listener = new CapabilityContainerListener(player);
-        container.addListener(listener);
-        if (container instanceof ICapabilityUpdateContainer)
+        container.addListener(CAPABILITY_LISTENERS.computeIfAbsent(player, CapabilityContainerListener::new));
+    }
+
+    /**
+     * Removes the listener for a given player on log out
+     * Executes server side
+     */
+    public static void removeFrom(EntityPlayerMP player)
+    {
+        CAPABILITY_LISTENERS.remove(player);
+    }
+
+    /**
+     * Called from various places to do what {@link Container#detectAndSendChanges()} does not: syncs changes in capabilities only.
+     */
+    public static void syncCapabilityOnlyChanges(Container container, EntityPlayerMP player)
+    {
+        IContainerListener listener = CAPABILITY_LISTENERS.computeIfAbsent(player, CapabilityContainerListener::new);
+        for (int i = 0; i < container.inventorySlots.size(); ++i)
         {
-            ((ICapabilityUpdateContainer) container).setCapabilityListener(listener);
+            ItemStack newStack = container.inventorySlots.get(i).getStack();
+            ItemStack cachedStack = container.inventoryItemStacks.get(i);
+
+            if (!ItemStack.areItemStacksEqual(cachedStack, newStack))
+            {
+                // Duplicated from Container#detectAndSendChanges
+                boolean clientStackChanged = !ItemStack.areItemStacksEqualUsingNBTShareTag(cachedStack, newStack);
+                cachedStack = newStack.isEmpty() ? ItemStack.EMPTY : newStack.copy();
+                container.inventoryItemStacks.set(i, cachedStack);
+
+                // If true, the difference will already be handled by vanilla's sync
+                if (!clientStackChanged)
+                {
+                    // There's a capability difference ONLY that needs to be synced, so we use our own handler here, as to not conflict with vanilla's sync, because this won't overwrite the client side item stack
+                    // The listener will check if the item actually needs a sync based on capabilities we know we need to sync
+                    listener.sendSlotContents(container, i, cachedStack);
+                }
+            }
         }
     }
 
