@@ -75,6 +75,7 @@ tfc.command.stripworld.done=Done!
 # Gui
 
 ## Tooltips
+tfc.tooltip.food_expiry_date.days=Will decay in about %s day(s)!
 tfc.tooltip.toolclass=§fTool Class:§7 %s
 tfc.tooltip.toolclasses=§fTool Classes:
 tfc.tooltip.oredictionaryentry=§fOre Dictionary name:§7 %s
@@ -511,6 +512,9 @@ config.tfc.general.oilLampBurnRate.tooltip=How fast lamps burn fuel in mb/hour.
 
 config.tfc.general.metalLampCapacity=Lamp Capacity
 config.tfc.general.metalLampCapacity.tooltip=How many millibuckets(mb) will lamps hold.
+
+config.tfc.general.decayTooltipMode=Specific Decay Tooltip Mode
+config.tfc.general.decayTooltipMode.tooltip=Mode used on decay tooltips.
 
 ## Client Config
 
@@ -4070,6 +4074,7 @@ item.tfc.food.barley_flour.name=Barley Flour
 item.tfc.food.barley_dough.name=Barley Dough
 item.tfc.food.barley_bread.name=Barley Bread
 item.tfc.food.maize.name=Maize
+item.tfc.food.maize_grain.name=Maize Grain
 item.tfc.food.cornbread.name=Cornbread
 item.tfc.food.cornmeal_flour.name=Cornmeal Flour
 item.tfc.food.cornmeal_dough.name=Cornmeal Dough
