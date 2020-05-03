@@ -15,6 +15,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityMule;
 import net.minecraft.entity.player.EntityPlayer;
@@ -222,6 +223,15 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     }
 
     @Override
+    protected void initEntityAI()
+    {
+        EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
+        EntityAnimalTFC.addCommonPreyAI(this, 1.2);
+
+        this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
+    }
+
+    @Override
     public void setScaleForAge(boolean child)
     {
         double ageScale = 1 / (2.0D - getPercentToAdulthood());
@@ -237,11 +247,10 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (!this.isTame() || !this.getLeashed())
+        if (this.isTame() || this.getLeashed())
         {
-            return;
+            super.mountTo(player);
         }
-        super.mountTo(player);
     }
 
     @Override

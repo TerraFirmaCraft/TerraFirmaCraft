@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
@@ -281,6 +282,19 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
         return 5;
     }
 
+    public long getPregnantTime() { return dataManager.get(PREGNANT_TIME); }
+
+    public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
+
+    @Override
+    protected void initEntityAI()
+    {
+        EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
+        EntityAnimalTFC.addCommonPreyAI(this, 1.2);
+
+        this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
+    }
+
     @Override
     public void setScaleForAge(boolean child)
     {
@@ -297,11 +311,10 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (!this.isTame() || !this.getLeashed())
+        if (this.isTame() || this.getLeashed())
         {
-            return;
+            super.mountTo(player);
         }
-        super.mountTo(player);
     }
 
     @Override
@@ -356,10 +369,6 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
             }
         }
     }
-
-    public long getPregnantTime() { return dataManager.get(PREGNANT_TIME); }
-
-    public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
 
     @Override
     protected void entityInit()

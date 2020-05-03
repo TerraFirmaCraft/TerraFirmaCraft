@@ -43,6 +43,7 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.ai.EntityAIPanicTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
@@ -348,11 +349,10 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (!this.isTame() || !this.getLeashed())
+        if (this.isTame() || this.getLeashed())
         {
-            return;
+            super.mountTo(player);
         }
-        super.mountTo(player);
     }
 
     @Override
@@ -443,6 +443,13 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
         this.geneHealth = nbt.getFloat("geneSpeed");
         this.geneStrength = nbt.getFloat("geneStrength");
         this.geneVariant = nbt.getInteger("geneVariant");
+    }
+
+    @Override
+    protected void initEntityAI()
+    {
+        super.initEntityAI();
+        this.tasks.addTask(1, new EntityAIPanicTFC(this, 1.4D));
     }
 
     @Override
