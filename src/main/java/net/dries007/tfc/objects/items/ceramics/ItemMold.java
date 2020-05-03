@@ -75,40 +75,38 @@ public class ItemMold extends ItemPottery
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote && !player.isSneaking())
+        if (!world.isRemote)
         {
             IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-            if (cap != null)
+            if (!player.isSneaking() && cap != null && cap.isMolten())
             {
-                if (cap.isMolten())
-                {
-                    TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.MOLD);
-                }
-                else
-                {
-                    // Unmold on right click, if possible
-                    InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerEmpty(), 3, 3);
-                    craftMatrix.setInventorySlotContents(0, stack);
-                    for (IRecipe recipe : ForgeRegistries.RECIPES.getValuesCollection())
-                    {
-                        if (recipe instanceof UnmoldRecipe && recipe.matches(craftMatrix, world))
-                        {
-                            ItemStack result = recipe.getCraftingResult(craftMatrix);
-                            if (!result.isEmpty())
-                            {
-                                ItemStack moldResult = ((UnmoldRecipe) recipe).getMoldResult(stack);
-                                player.setHeldItem(hand, result);
-                                if (!moldResult.isEmpty())
-                                {
-                                    ItemHandlerHelper.giveItemToPlayer(player, moldResult);
-                                }
-                                else
-                                {
-                                    player.world.playSound(null, player.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                                }
-                            }
+                TFCGuiHandler.openGui(world, player, TFCGuiHandler.Type.MOLD);
+            }
 
+            if (player.isSneaking())
+            {
+                // Unmold on right click, if possible
+                InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerEmpty(), 3, 3);
+                craftMatrix.setInventorySlotContents(0, stack);
+                for (IRecipe recipe : ForgeRegistries.RECIPES.getValuesCollection())
+                {
+                    if (recipe instanceof UnmoldRecipe && recipe.matches(craftMatrix, world))
+                    {
+                        ItemStack result = recipe.getCraftingResult(craftMatrix);
+                        if (!result.isEmpty())
+                        {
+                            ItemStack moldResult = ((UnmoldRecipe) recipe).getMoldResult(stack);
+                            player.setHeldItem(hand, result);
+                            if (!moldResult.isEmpty())
+                            {
+                                ItemHandlerHelper.giveItemToPlayer(player, moldResult);
+                            }
+                            else
+                            {
+                                player.world.playSound(null, player.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                            }
                         }
+
                     }
                 }
             }

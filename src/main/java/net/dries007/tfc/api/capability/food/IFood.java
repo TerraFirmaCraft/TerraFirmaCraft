@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
 /**
@@ -122,9 +123,25 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
             }
             else
             {
-                // Calculate the date to display in calendar time
+                // Date food rots on.
                 long rottenCalendarTime = rottenDate - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
-                text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
+                // Days till food rots.
+                long daysToRotInTicks = rottenCalendarTime - CalendarTFC.CALENDAR_TIME.getTicks();
+                switch (ConfigTFC.CLIENT.decayTooltipMode)
+                {
+                    case 0:
+                        return;
+                    case 1:
+                        text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
+                        return;
+                    case 2:
+                        text.add(TextFormatting.BLUE + I18n.format("tfc.tooltip.food_expiry_date.days", String.valueOf(ICalendar.getTotalDays(daysToRotInTicks))));
+                        return;
+                    case 3:
+                        text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
+                        text.add(TextFormatting.BLUE + I18n.format("tfc.tooltip.food_expiry_date.days", String.valueOf(ICalendar.getTotalDays(daysToRotInTicks))));
+                        return;
+                }
             }
         }
         if (ConfigTFC.GENERAL.debug)

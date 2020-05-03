@@ -528,6 +528,16 @@ public class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".general.oreTooltipMode")
         @Config.RangeInt(min = 0, max = 3)
         public int oreTooltipMode = 3;
+
+        @Config.Comment({"Specific Food decay tooltip mode.",
+            "0 = No Specific tooltip info.",
+            "1 = Specific Decay date only.",
+            "2 = Specific Days to decay only.",
+            "3 = All Specific info."
+        })
+        @Config.LangKey("config." + MOD_ID + ".general.decayTooltipMode")
+        @Config.RangeInt(min = 0, max = 3)
+        public int decayTooltipMode = 3;
     }
 
     public static class WorldCFG
