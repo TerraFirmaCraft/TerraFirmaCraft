@@ -38,6 +38,7 @@ import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.ai.EntityAIPanicTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAITamableAvoidPlayer;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -88,7 +89,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         }
     }
 
-    public static void addCommonLivestockAI(EntityAnimalTFC entity, double speedMult)
+    public static <T extends EntityAnimal & IAnimalTFC> void addCommonLivestockAI(T entity, double speedMult)
     {
         entity.tasks.addTask(2, new EntityAIMate(entity, 1.0D));
 
@@ -118,7 +119,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         double nearSpeed = 1.1D * speedMult;
 
         entity.tasks.addTask(0, new EntityAISwimming(entity));
-        entity.tasks.addTask(1, new EntityAIPanic(entity, 1.4D * speedMult));
+        entity.tasks.addTask(1, new EntityAIPanicTFC(entity, 1.4D * speedMult));
         //space for livestock AIMate and AITempt
         entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityWolfTFC.class, 8.0F, farSpeed, nearSpeed));
         entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityAnimalMammal.class, Predicates.instanceOf(IPredator.class), 12.0F, farSpeed, nearSpeed));

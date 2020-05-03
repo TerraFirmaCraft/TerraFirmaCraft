@@ -216,11 +216,10 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (!this.isTame() || !this.getLeashed())
+        if (this.isTame() || this.getLeashed())
         {
-            return;
+            super.mountTo(player);
         }
-        super.mountTo(player);
     }
 
     @Override
