@@ -830,7 +830,7 @@ jei.category.tfc.welding=Welding recipes
 jei.tooltips.tfc.barrel.instant=Instant
 jei.tooltips.tfc.barrel.duration=%d hours
 
-#JEI Descriptions
+## JEI Descriptions
 jei.description.tfc.pit_kiln=Used for firing pottery and melting your first metals. Place up to 4 items (Default Hotkey: V) into a 1x1 hole, then fill (right-click) with 8 straw and 8 logs and light it with a fire starter or drop a torch on top. Recipe is complete after the fire on top goes out.
 jei.description.tfc.placed_item=Items can be placed on the ground, mostly for placing into a pit kiln. Use the Place key (default V) to place each item (up to 4) on a single block.
 
