@@ -836,6 +836,10 @@ jei.category.tfc.welding=焊接配方
 jei.tooltips.tfc.barrel.instant=立即
 jei.tooltips.tfc.barrel.duration=%d 小时
 
+## JEI Descriptions
+jei.description.tfc.pit_kiln=用于烧制陶器和融化软金属。将不超过四件物品放置（默认为 V）在 1x1 的坑中，用 8 干草和 8 原木填充（右键）。用起火器点燃或在上面丢个火把。等到火熄灭后取回物品。
+jei.description.tfc.placed_item=物品可以放置在地面上，主要放置到坑窑中。使用放置键（默认为 V）将物品（不超过 4 件）放置在一个方块上。
+
 ### Rock Layer
 jei.tooltips.tfc.rock_layer.category=岩石类别
 jei.tooltips.tfc.rock_layer.layers=所在层
@@ -4503,45 +4507,47 @@ advancements.tfc.world.find_silver.title=银色子弹
 advancements.tfc.world.find_silver.description=在花岗岩岩层或片麻岩岩层中找到原生银矿。
 advancements.tfc.world.find_nickel.title=硬币
 advancements.tfc.world.find_nickel.description=在辉长岩岩层中找到镍矿。
-#JEI Descriptions for uncraftable mechanics
-tfc.jei.description.pitkiln=用于烧制陶器和融化软金属。将不超过四件物品放置（默认为 V）在 1x1 的坑中，用 8 干草和 8 原木填充（右键）。用起火器点燃或在上面丢个火把。等到火熄灭后取回物品。
-tfc.jei.description.placeditem=物品可以放置在地面上，主要放置到坑窑中。使用放置键（默认为 V）将物品（不超过 4 件）放置在一个方块上。
 
 # Waila
 waila.tfc.ore_drop=含 %s
-waila.tfc.remaining=剩余 %d 分钟
-waila.tfc.unlit=未点燃
-waila.tfc.straw=需要 %d 干草
-waila.tfc.logs=需要 %d 原木
-waila.tfc.mature=成熟
-waila.tfc.deadcrop=死作物
-waila.tfc.making=制作中：%s
-waila.tfc.no_recipe=无配方
-waila.tfc.barrel_contents=含 %dmB %s
-waila.tfc.sealed=密封：%s
 waila.tfc.flux_stone=助焊石
-waila.tfc.wild=野生作物
-waila.tfc.growth=生长阶段：%s
-waila.tfc.growing=生长中
-waila.tfc.not_growing=不生长
 waila.tfc.temperature=空气温度：%dºC
-waila.tfc.harvesting_months=收获季节：
+waila.tfc.metal.output=Contains %d units of %s
+
+## Devices
+waila.tfc.devices.remaining=剩余 %d 分钟
+waila.tfc.pitkiln.unlit=未点燃
+waila.tfc.pitkiln.straw=需要 %d 干草
+waila.tfc.pitkiln.logs=需要 %d 原木
+waila.tfc.barrel.recipe=制作中：%s
+waila.tfc.barrel.no_recipe=无配方
+waila.tfc.barrel.contents=含 %dmB %s
+waila.tfc.barrel.sealed=密封：%s
+waila.tfc.bloomery.output=Making: %d units of %s
+waila.tfc.bloomery.ores=Ores: %d/%d
+waila.tfc.bloomery.fuel=Fuel: %d/%d
+waila.tfc.blast_furnace.not_formed=Not Formed
+
+## Agriculture
+waila.tfc.agriculture.harvesting_months=收获季节：
+waila.tfc.crop.mature=成熟
+waila.tfc.crop.dead_crop=死作物
+waila.tfc.crop.wild=野生作物
+waila.tfc.crop.growth=生长阶段：%s
+waila.tfc.crop.growing=生长中
+waila.tfc.crop.not_growing=不生长
 
 
-# Animal stuff
-waila.tfc.female=母/雌
-waila.tfc.male=公/雄
-waila.tfc.has_milk=可产奶
-waila.tfc.pregnant=怀孕
-waila.tfc.baby=幼崽
-waila.tfc.can_mate=可交配
-waila.tfc.has_eggs=有蛋
-waila.tfc.childhood_end=%s 天后成年
-waila.tfc.familiarized=已驯服
-waila.tfc.notfamiliarized=未驯服
-waila.tfc.old=已老
-waila.tfc.pregnancyend=%s 天后生产
-waila.tfc.canshear=可剪毛
+## Animal stuff
+waila.tfc.animal.has_milk=可产奶
+waila.tfc.animal.can_mate=可交配
+waila.tfc.animal.has_eggs=有蛋
+waila.tfc.animal.childhood_end=%s 天后成年
+waila.tfc.animal.familiarized=已驯服
+waila.tfc.animal.not_familiarized=未驯服
+waila.tfc.animal.old=已老
+waila.tfc.animal.pregnancy_end=%s 天后生产
+waila.tfc.animal.can_shear=可剪毛
 
 # Overwrite Vanilla
 entity.Rabbit.name=兔
