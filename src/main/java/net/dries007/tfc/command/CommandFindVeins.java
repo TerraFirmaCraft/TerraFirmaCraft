@@ -49,15 +49,15 @@ public class CommandFindVeins extends CommandBase
     @Nonnull
     public String getUsage(ICommandSender sender)
     {
-        return "tfc.command.veins.usage";
+        return "tfc.command.findveins.usage";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (sender.getCommandSenderEntity() == null)
-            throw new WrongUsageException("tfc.command.veins.usage_expected_player");
-        if (args.length != 2 && args.length != 3) throw new WrongUsageException("tfc.command.veins.usage");
+            throw new WrongUsageException("tfc.command.findveins.usage_expected_player");
+        if (args.length != 2 && args.length != 3) throw new WrongUsageException("tfc.command.findveins.usage");
 
         VeinType filter;
         if ("all".equals(args[0]))
@@ -69,7 +69,7 @@ public class CommandFindVeins extends CommandBase
             filter = VeinRegistry.INSTANCE.getVein(args[0]);
             if (filter == null)
             {
-                throw new WrongUsageException("tfc.command.veins.usage_first_argument_not_vein", args[0]);
+                throw new WrongUsageException("tfc.command.findveins.usage_first_argument_not_vein", args[0]);
             }
         }
 
