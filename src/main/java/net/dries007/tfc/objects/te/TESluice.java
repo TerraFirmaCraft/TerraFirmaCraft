@@ -276,7 +276,7 @@ public class TESluice extends TEBase implements ITickable
         }
     }
 
-    private boolean isValidFluid(Fluid fluid)
+    public static boolean isValidFluid(Fluid fluid)
     {
         return fluid == FluidsTFC.FRESH_WATER.get() || fluid == FluidsTFC.SALT_WATER.get();
     }

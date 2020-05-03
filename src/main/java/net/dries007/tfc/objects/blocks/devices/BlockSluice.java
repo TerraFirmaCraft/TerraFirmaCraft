@@ -29,6 +29,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.Fluid;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.capability.size.IItemSize;
@@ -72,11 +73,16 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
     @Override
     public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
     {
-        BlockPos end = pos.offset(state.getValue(FACING), -1);
-        System.out.println(end.getX() + " " + end.getY() + " " + end.getZ());
-        System.out.println(worldIn.getBlockState(end).getBlock().getRegistryName());
-        worldIn.setBlockToAir(end.down());
-
+        BlockPos fluidPos = pos.offset(state.getValue(FACING), -1).down();
+        Block block = state.getBlock();
+        if (block instanceof BlockFluidBase)
+        {
+            Fluid fluid = ((BlockFluidBase) block).getFluid();
+            if(TESluice.isValidFluid(fluid))
+            {
+                worldIn.setBlockToAir(fluidPos);
+            }
+        }
         super.onPlayerDestroy(worldIn, pos, state);
     }
 
@@ -84,10 +90,16 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
     public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
     {
         IBlockState state = worldIn.getBlockState(pos);
-
-        BlockPos end = pos.offset(state.getValue(FACING), 1);
-        worldIn.setBlockToAir(end.down());
-
+        BlockPos fluidPos = pos.offset(state.getValue(FACING), -1).down();
+        Block block = state.getBlock();
+        if (block instanceof BlockFluidBase)
+        {
+            Fluid fluid = ((BlockFluidBase) block).getFluid();
+            if(TESluice.isValidFluid(fluid))
+            {
+                worldIn.setBlockToAir(fluidPos);
+            }
+        }
         super.onExplosionDestroy(worldIn, pos, explosionIn);
     }
 
