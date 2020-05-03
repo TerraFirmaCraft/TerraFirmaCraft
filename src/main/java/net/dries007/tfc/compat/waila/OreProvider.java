@@ -31,19 +31,6 @@ public class OreProvider implements IWailaDataProvider, IWailaPlugin
         return ItemStack.EMPTY;
     }
 
-    /*
-    @Nonnull
-    @Override
-    public List<String> getWailaHead(ItemStack stack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)
-    {
-        if(accessor.getBlock() instanceof BlockOreTFC)
-        {
-            BlockOreTFC b = (BlockOreTFC) accessor.getBlock();
-            currentTooltip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".name").getFormattedText());
-        }
-        return currentTooltip;
-    }*/
-
     @Nonnull
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)

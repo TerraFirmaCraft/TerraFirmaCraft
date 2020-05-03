@@ -35,7 +35,7 @@ public class BarrelProvider implements IWailaDataProvider, IWailaPlugin
             if (te.isSealed())
             {
                 currentTooltip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".sealed.name").getFormattedText());
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.sealed", te.getSealedDate()).getFormattedText());
+                currentTooltip.add(new TextComponentTranslation("waila.tfc.barrel.sealed", te.getSealedDate()).getFormattedText());
             }
             else
             {
@@ -60,16 +60,16 @@ public class BarrelProvider implements IWailaDataProvider, IWailaPlugin
                 BarrelRecipe recipe = te.getRecipe();
                 if (recipe != null)
                 {
-                    currentTooltip.add(new TextComponentTranslation("waila.tfc.making", recipe.getResultName()).getFormattedText());
+                    currentTooltip.add(new TextComponentTranslation("waila.tfc.barrel.recipe", recipe.getResultName()).getFormattedText());
                 }
                 else
                 {
-                    currentTooltip.add(new TextComponentTranslation("waila.tfc.no_recipe").getFormattedText());
+                    currentTooltip.add(new TextComponentTranslation("waila.tfc.barrel.no_recipe").getFormattedText());
                 }
             }
             if (fluid != null && fluid.amount > 0)
             {
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.barrel_contents", fluid.amount, fluid.getLocalizedName()).getFormattedText());
+                currentTooltip.add(new TextComponentTranslation("waila.tfc.barrel.contents", fluid.amount, fluid.getLocalizedName()).getFormattedText());
             }
         }
         return currentTooltip;

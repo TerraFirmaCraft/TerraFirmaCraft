@@ -32,7 +32,7 @@ public class AnimalProvider implements IWailaEntityProvider, IWailaPlugin
             boolean familiarized = animal.getFamiliarity() > 0.15f;
             if (animal.getAdultFamiliarityCap() > 0)
             {
-                currentTooltip.add(new TextComponentTranslation(familiarized ? "waila.tfc.familiarized" : "waila.tfc.not_familiarized").getFormattedText());
+                currentTooltip.add(new TextComponentTranslation(familiarized ? "waila.tfc.animal.familiarized" : "waila.tfc.animal.not_familiarized").getFormattedText());
             }
             switch (animal.getAge())
             {
@@ -40,17 +40,17 @@ public class AnimalProvider implements IWailaEntityProvider, IWailaPlugin
                     String date = ICalendarFormatted.getTimeAndDate(
                         ICalendar.TICKS_IN_DAY * (animal.getBirthDay() + animal.getDaysToAdulthood())
                         , CalendarTFC.CALENDAR_TIME.getDaysInMonth());
-                    currentTooltip.add(new TextComponentTranslation("waila.tfc.childhood_end", date).getFormattedText());
+                    currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.childhood_end", date).getFormattedText());
                     break;
                 case OLD:
-                    currentTooltip.add(new TextComponentTranslation("waila.tfc.old").getFormattedText());
+                    currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.old").getFormattedText());
                     break;
                 case ADULT:
                     if (familiarized)
                     {
                         if (animal.isReadyToMate())
                         {
-                            currentTooltip.add(new TextComponentTranslation("waila.tfc.get_busy").getFormattedText());
+                            currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.can_mate").getFormattedText());
                         }
                         if (animal.isFertilized())
                         {
@@ -60,22 +60,22 @@ public class AnimalProvider implements IWailaEntityProvider, IWailaPlugin
                             {
                                 String enddate = ICalendarFormatted.getTimeAndDate(
                                     ICalendar.TICKS_IN_DAY * (pregnancyDate + 240), CalendarTFC.CALENDAR_TIME.getDaysInMonth());
-                                currentTooltip.add(new TextComponentTranslation("waila.tfc.pregnancy_end", enddate).getFormattedText());
+                                currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.pregnancy_end", enddate).getFormattedText());
                             }
                         }
                         if (animal.isReadyForAnimalProduct())
                         {
                             if (animal instanceof IShearable)
                             {
-                                currentTooltip.add(new TextComponentTranslation("waila.tfc.can_shear").getFormattedText());
+                                currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.can_shear").getFormattedText());
                             }
                             else if (animal.getType() == IAnimalTFC.Type.OVIPAROUS)
                             {
-                                currentTooltip.add(new TextComponentTranslation("waila.tfc.has_eggs").getFormattedText());
+                                currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.has_eggs").getFormattedText());
                             }
                             else
                             {
-                                currentTooltip.add(new TextComponentTranslation("waila.tfc.has_milk").getFormattedText());
+                                currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.has_milk").getFormattedText());
                             }
                         }
                     }

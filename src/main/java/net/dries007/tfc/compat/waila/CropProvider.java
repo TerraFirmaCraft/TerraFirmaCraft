@@ -83,26 +83,26 @@ public class CropProvider implements IWailaDataProvider, IWailaPlugin
 
             if (isWild)
             {
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.wild").getFormattedText());
+                currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.wild").getFormattedText());
             }
             else if (crop.isValidForGrowth(temp, rainfall))
             {
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.growing").getFormattedText());
+                currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.growing").getFormattedText());
             }
             else
             {
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.not_growing").getFormattedText());
+                currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.not_growing").getFormattedText());
             }
             String growth = String.format("%d%%", completionPerc);
             if (completionPerc >= 100)
             {
-                growth = new TextComponentTranslation("waila.tfc.mature").getFormattedText();
+                growth = new TextComponentTranslation("waila.tfc.crop.mature").getFormattedText();
             }
-            currentTooltip.add(new TextComponentTranslation("waila.tfc.growth", growth).getFormattedText());
+            currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.growth", growth).getFormattedText());
         }
         else if (accessor.getBlock() instanceof BlockCropDead)
         {
-            currentTooltip.add(new TextComponentTranslation("waila.tfc.deadcrop").getFormattedText());
+            currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.dead_crop").getFormattedText());
         }
         return currentTooltip;
     }

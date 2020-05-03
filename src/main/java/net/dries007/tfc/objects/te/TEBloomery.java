@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.InventoryHelper;
@@ -30,6 +31,7 @@ import net.dries007.tfc.api.recipes.BloomeryRecipe;
 import net.dries007.tfc.objects.blocks.BlockCharcoalPile;
 import net.dries007.tfc.objects.blocks.BlockMolten;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.devices.BlockBloomery;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
@@ -45,17 +47,16 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
     // Gets the external block, the front of the facing to dump contents in world.
     private static final Vec3i OFFSET_EXTERNAL = new Vec3i(-1, 0, 0);
-    private final List<ItemStack> oreStacks = new ArrayList<>();
-    private final List<ItemStack> fuelStacks = new ArrayList<>();
+    protected final List<ItemStack> oreStacks = new ArrayList<>();
+    protected final List<ItemStack> fuelStacks = new ArrayList<>();
 
-    private int maxFuel = 0, maxOre = 0, delayTimer = 0; // Helper variables, not necessary to serialize
-    private long burnTicksLeft; // Ticks left to finish the current operation
-    private long lastPlayerTick; // Last player tick this bloomery was ticked (for purposes of catching up)
-    private EnumFacing direction = null;
+    protected int maxFuel = 0, maxOre = 0, delayTimer = 0; // Helper variables, not necessary to serialize
+    protected long burnTicksLeft; // Ticks left to finish the current operation
+    protected long lastPlayerTick; // Last player tick this bloomery was ticked (for purposes of catching up)
 
-    private BlockPos internalBlock = null, externalBlock = null;
+    protected BlockPos internalBlock = null, externalBlock = null;
 
-    private BloomeryRecipe cachedRecipe = null;
+    protected BloomeryRecipe cachedRecipe = null;
 
     public TEBloomery()
     {
@@ -110,23 +111,30 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
         super.onBreakBlock(world, pos, state);
     }
 
+    public ImmutableList<ItemStack> getFuelStacks()
+    {
+        return ImmutableList.copyOf(fuelStacks);
+    }
+
+    public ImmutableList<ItemStack> getOreStacks()
+    {
+        return ImmutableList.copyOf(oreStacks);
+    }
+
     @Override
     public void update()
     {
         ICalendarTickable.super.update();
-
-        if (world.isRemote) return;
         IBlockState state = world.getBlockState(pos);
-        if (--delayTimer <= 0)
+
+        if (!world.isRemote && --delayTimer <= 0)
         {
             delayTimer = 20;
             // Update multiblock status
-            if (direction == null)
-            {
-                direction = world.getBlockState(pos).getValue(FACING);
-            }
+            boolean updateClient = false;
 
-            int newMaxItems = BlocksTFC.BLOOMERY.getChimneyLevels(world, getInternalBlock()) * 8;
+            int newMaxItems = BlockBloomery.getChimneyLevels(world, getInternalBlock()) * 8;
+            EnumFacing direction = world.getBlockState(pos).getValue(FACING);
             if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), direction))
             {
                 newMaxItems = 0;
@@ -137,6 +145,7 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
             boolean turnOff = false;
             while (maxOre < oreStacks.size())
             {
+                updateClient = true;
                 turnOff = true;
                 // Structure lost one or more chimney levels
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), oreStacks.get(0));
@@ -144,6 +153,7 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
             }
             while (maxFuel < fuelStacks.size())
             {
+                updateClient = true;
                 turnOff = true;
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), fuelStacks.get(0));
                 fuelStacks.remove(0);
@@ -168,42 +178,56 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
 
             if (isInternalBlockComplete())
             {
+                int oldFuel = fuelStacks.size();
+                int oldOre = oreStacks.size();
                 addItemsFromWorld();
+                if (oldFuel != fuelStacks.size() || oldOre != oreStacks.size())
+                {
+                    updateClient = true;
+                }
             }
 
             updateSlagBlock(state.getValue(LIT));
+            if (updateClient)
+            {
+                // Send internal contents to client
+                world.notifyBlockUpdate(pos, state, state, 3);
+            }
         }
         if (state.getValue(LIT))
         {
             if (--burnTicksLeft <= 0)
             {
                 burnTicksLeft = 0;
-                if (cachedRecipe == null && !oreStacks.isEmpty())
+                if (!world.isRemote)
                 {
-                    cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
-                    if (cachedRecipe == null)
+                    if (cachedRecipe == null && !oreStacks.isEmpty())
                     {
-                        this.dumpItems();
+                        cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
+                        if (cachedRecipe == null)
+                        {
+                            this.dumpItems();
+                        }
                     }
-                }
-                if (cachedRecipe != null)
-                {
-                    world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
-
-                    TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
-                    if (te != null)
+                    if (cachedRecipe != null)
                     {
-                        te.setBloom(cachedRecipe.getOutput(oreStacks));
+                        world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
+
+                        TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
+                        if (te != null)
+                        {
+                            te.setBloom(cachedRecipe.getOutput(oreStacks));
+                        }
                     }
+
+                    oreStacks.clear();
+                    fuelStacks.clear();
+                    cachedRecipe = null; // Clear recipe
+
+                    updateSlagBlock(false);
+                    world.setBlockState(pos, state.withProperty(LIT, false));
+                    markDirty();
                 }
-
-                oreStacks.clear();
-                fuelStacks.clear();
-                cachedRecipe = null; // Clear recipe
-
-                updateSlagBlock(false);
-                world.setBlockState(pos, state.withProperty(LIT, false));
-                markDirty();
             }
         }
     }
@@ -212,6 +236,8 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     public void onCalendarUpdate(long playerTickDelta)
     {
         burnTicksLeft = Math.max(0, burnTicksLeft - playerTickDelta);
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
     }
 
     @Override
@@ -250,10 +276,11 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
      *
      * @return BlockPos of the internal block
      */
-    protected BlockPos getInternalBlock()
+    public BlockPos getInternalBlock()
     {
         if (internalBlock == null)
         {
+            EnumFacing direction = world.getBlockState(pos).getValue(FACING);
             internalBlock = pos.up(OFFSET_INTERNAL.getY())
                 .offset(direction, OFFSET_INTERNAL.getX())
                 .offset(direction.rotateY(), OFFSET_INTERNAL.getZ());
@@ -266,10 +293,11 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
      *
      * @return BlockPos to dump items in world
      */
-    protected BlockPos getExternalBlock()
+    public BlockPos getExternalBlock()
     {
         if (externalBlock == null)
         {
+            EnumFacing direction = world.getBlockState(pos).getValue(FACING);
             externalBlock = pos.up(OFFSET_EXTERNAL.getY())
                 .offset(direction, OFFSET_EXTERNAL.getX())
                 .offset(direction.rotateY(), OFFSET_EXTERNAL.getZ());
@@ -277,7 +305,7 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
         return externalBlock;
     }
 
-    private void dumpItems()
+    protected void dumpItems()
     {
         //Dump everything in world
         for (int i = 1; i < 4; i++)
@@ -291,13 +319,13 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
         fuelStacks.forEach(i -> InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), i));
     }
 
-    private boolean isInternalBlockComplete()
+    protected boolean isInternalBlockComplete()
     {
         IBlockState inside = world.getBlockState(getInternalBlock());
         return inside.getBlock() == BlocksTFC.CHARCOAL_PILE && inside.getValue(BlockCharcoalPile.LAYERS) >= 8;
     }
 
-    private void addItemsFromWorld()
+    protected void addItemsFromWorld()
     {
         if (cachedRecipe == null && !oreStacks.isEmpty())
         {
@@ -352,7 +380,7 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
         }
     }
 
-    private void updateSlagBlock(boolean cooking)
+    protected void updateSlagBlock(boolean cooking)
     {
         int slag = fuelStacks.size() + oreStacks.size();
         //If there's at least one item, show one layer so player knows that it is holding stacks

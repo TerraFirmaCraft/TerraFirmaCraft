@@ -100,14 +100,13 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     @Override
     public void update()
     {
-        if (world.isRemote) return;
-
         temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, (float) ConfigTFC.GENERAL.temperatureModifierHeating);
         if (targetTemperature > 0)
         {
             // Crucible target temperature decays constantly, since it is set by outside providers
             targetTemperature -= (float) ConfigTFC.GENERAL.temperatureModifierHeating;
         }
+        if (world.isRemote) return;
 
         // Input draining
         boolean needsClientUpdate = false;

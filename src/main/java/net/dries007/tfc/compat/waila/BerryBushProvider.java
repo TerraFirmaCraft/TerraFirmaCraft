@@ -25,7 +25,7 @@ public class BerryBushProvider implements IWailaDataProvider, IWailaPlugin
     {
         if (accessor.getBlock() instanceof BlockBerryBush)
         {
-            currentTooltip.add(new TextComponentTranslation("waila.tfc.harvesting_months").getFormattedText());
+            currentTooltip.add(new TextComponentTranslation("waila.tfc.agriculture.harvesting_months").getFormattedText());
             BlockBerryBush b = (BlockBerryBush) accessor.getBlock();
             for (Month month : Month.values())
             {

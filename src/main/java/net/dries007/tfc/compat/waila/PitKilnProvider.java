@@ -33,7 +33,7 @@ public class PitKilnProvider implements IWailaDataProvider, IWailaPlugin
             {
                 long remainingTicks = ConfigTFC.GENERAL.pitKilnTime - (CalendarTFC.PLAYER_TIME.getTicks() - te.getLitTick());
                 long remainingMinutes = Math.round(remainingTicks / 1200.0f);
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.remaining", remainingMinutes).getFormattedText());
+                currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.remaining", remainingMinutes).getFormattedText());
             }
             else
             {
@@ -41,17 +41,17 @@ public class PitKilnProvider implements IWailaDataProvider, IWailaPlugin
                 int logs = te.getLogCount();
                 if (straw == 8 && logs == 8)
                 {
-                    currentTooltip.add(new TextComponentTranslation("waila.tfc.unlit").getFormattedText());
+                    currentTooltip.add(new TextComponentTranslation("waila.tfc.pitkiln.unlit").getFormattedText());
                 }
                 else
                 {
                     if (straw < 8)
                     {
-                        currentTooltip.add(new TextComponentTranslation("waila.tfc.straw", 8 - straw).getFormattedText());
+                        currentTooltip.add(new TextComponentTranslation("waila.tfc.pitkiln.straw", 8 - straw).getFormattedText());
                     }
                     if (logs < 8)
                     {
-                        currentTooltip.add(new TextComponentTranslation("waila.tfc.logs", 8 - logs).getFormattedText());
+                        currentTooltip.add(new TextComponentTranslation("waila.tfc.pitkiln.logs", 8 - logs).getFormattedText());
                     }
                 }
             }

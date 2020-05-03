@@ -826,6 +826,10 @@ jei.category.tfc.welding=Welding recipes
 jei.tooltips.tfc.barrel.instant=Instant
 jei.tooltips.tfc.barrel.duration=%d hours
 
+#JEI Descriptions
+jei.description.tfc.pit_kiln=Used for firing pottery and melting your first metals. Place up to 4 items (Default Hotkey: V) into a 1x1 hole, then fill (right-click) with 8 straw and 8 logs and light it with a fire starter or drop a torch on top. Recipe is complete after the fire on top goes out.
+jei.description.tfc.placed_item=Items can be placed on the ground, mostly for placing into a pit kiln. Use the Place key (default V) to place each item (up to 4) on a single block.
+
 ### Rock Layer
 jei.tooltips.tfc.rock_layer.category=Category
 jei.tooltips.tfc.rock_layer.layers=Layers
@@ -4492,42 +4496,44 @@ advancements.tfc.world.find_silver.title=Silver Bullet
 advancements.tfc.world.find_silver.description=Find Navite Silver Ore.
 advancements.tfc.world.find_nickel.title=Dime and Nickel
 advancements.tfc.world.find_nickel.description=Find Garnierite Ore.
-#JEI Descriptions for uncraftable mechanics
-tfc.jei.description.pitkiln=Used for firing of pottery and melting of soft metals.  Place up to 4 items (Default Hotkey: V) into a 1x1 hole. Fill (right-click) with 8 straw and 8 logs. Light with a fire starter or drop a torch on top. Wait for fire to go out and retrieve items.
-tfc.jei.description.placeditem=Items can be placed on the ground, mostly for placing into a pit kiln. Use the Place key (default V) to place each item (up to 4) on a single block.
 
 # Waila
 waila.tfc.ore_drop=Contains %s
-waila.tfc.remaining=%d Minutes Remaining
-waila.tfc.unlit=Unlit
-waila.tfc.straw=Needs %d Straw
-waila.tfc.logs=Needs %d Logs
-waila.tfc.mature=Mature
-waila.tfc.deadcrop=Dead Crop
-waila.tfc.making=Making: %s
-waila.tfc.no_recipe=No Recipe
-waila.tfc.barrel_contents=Contains %dmB of %s
-waila.tfc.sealed=Sealed: %s
 waila.tfc.flux_stone=Flux
-waila.tfc.wild=Wild Crop
-waila.tfc.growth=Growth: %s
-waila.tfc.growing=Growing
-waila.tfc.not_growing=Not Growing
 waila.tfc.temperature=Air Temperature: %dºC
-waila.tfc.harvesting_months=Harvesting Seasons:
+waila.tfc.metal.output=Contains %d units of %s
+
+## Devices
+waila.tfc.devices.remaining=%d Minutes Remaining
+waila.tfc.pitkiln.unlit=Unlit
+waila.tfc.pitkiln.straw=Needs %d Straw
+waila.tfc.pitkiln.logs=Needs %d Logs
+waila.tfc.barrel.recipe=Making: %s
+waila.tfc.barrel.no_recipe=No Recipe
+waila.tfc.barrel.contents=Contains %dmB of %s
+waila.tfc.barrel.sealed=Sealed: %s
+waila.tfc.bloomery.output=Making: %d units of %s
+waila.tfc.bloomery.ores=Ores: %d/%d
+waila.tfc.bloomery.fuel=Fuel: %d/%d
+waila.tfc.blast_furnace.not_formed=Not Formed
+
+## Agriculture
+waila.tfc.agriculture.harvesting_months=Harvesting Seasons:
+waila.tfc.crop.mature=Mature
+waila.tfc.crop.dead_crop=Dead Crop
+waila.tfc.crop.wild=Wild Crop
+waila.tfc.crop.growth=Growth: %s
+waila.tfc.crop.growing=Growing
+waila.tfc.crop.not_growing=Not Growing
 
 
 ## Animal stuff
-waila.tfc.female=Female
-waila.tfc.male=Male
-waila.tfc.has_milk=Can Milk
-waila.tfc.pregnant=Pregnant
-waila.tfc.baby=Baby
-waila.tfc.can_mate=Can Mate
-waila.tfc.has_eggs=Has Eggs
-waila.tfc.childhood_end=Becomes adult in %s
-waila.tfc.familiarized=Familiarized
-waila.tfc.not_familiarized=Not familiarized
-waila.tfc.old=Animal is old
-waila.tfc.pregnancy_end=Pregnancy ends in %s
-waila.tfc.can_shear=Shearable
+waila.tfc.animal.has_milk=Can Milk
+waila.tfc.animal.can_mate=Can Mate
+waila.tfc.animal.has_eggs=Has Eggs
+waila.tfc.animal.childhood_end=Becomes adult in %s
+waila.tfc.animal.familiarized=Familiarized
+waila.tfc.animal.not_familiarized=Not familiarized
+waila.tfc.animal.old=Animal is old
+waila.tfc.animal.pregnancy_end=Pregnancy ends in %s
+waila.tfc.animal.can_shear=Shearable

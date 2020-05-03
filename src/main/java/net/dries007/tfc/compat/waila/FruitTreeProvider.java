@@ -25,7 +25,7 @@ public class FruitTreeProvider implements IWailaDataProvider, IWailaPlugin
     {
         if (accessor.getBlock() instanceof BlockFruitTreeLeaves)
         {
-            currentTooltip.add(new TextComponentTranslation("waila.tfc.harvesting_months").getFormattedText());
+            currentTooltip.add(new TextComponentTranslation("waila.tfc.agriculture.harvesting_months").getFormattedText());
             BlockFruitTreeLeaves b = (BlockFruitTreeLeaves) accessor.getBlock();
             for (Month month : Month.values())
             {
