@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -16,11 +17,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.te.TEBloom;
 import net.dries007.tfc.util.Helpers;
 
@@ -78,5 +81,25 @@ public class BlockBloom extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEBloom();
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    {
+        TEBloom tile = Helpers.getTE(world, pos, TEBloom.class);
+        if (tile != null)
+        {
+            IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (cap != null)
+            {
+                ItemStack stack = cap.extractItem(0, 1, true);
+                if(!stack.isEmpty())
+                {
+                    return stack;
+                }
+            }
+        }
+        return new ItemStack(ItemsTFC.UNREFINED_BLOOM);
     }
 }

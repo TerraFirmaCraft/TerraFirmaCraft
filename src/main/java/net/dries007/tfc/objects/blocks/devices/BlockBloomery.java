@@ -179,7 +179,7 @@ public class BlockBloomery extends BlockHorizontal implements IItemSize, ILighta
             .withProperty(OPEN, false));
     }
 
-    public int getChimneyLevels(World world, BlockPos centerPos)
+    public static int getChimneyLevels(World world, BlockPos centerPos)
     {
         for (int i = 1; i < 4; i++)
         {

@@ -341,8 +341,8 @@ public final class TFCJEIPlugin implements IModPlugin
 
         //Add JEI descriptions for basic mechanics
 
-        registry.addIngredientInfo(new ItemStack(BlocksTFC.PIT_KILN, 1), VanillaTypes.ITEM, new TextComponentTranslation(TerraFirmaCraft.MOD_ID + ".jei.description.pitkiln").getFormattedText());
-        registry.addIngredientInfo(new ItemStack(BlocksTFC.PLACED_ITEM, 1), VanillaTypes.ITEM, new TextComponentTranslation(TerraFirmaCraft.MOD_ID + ".jei.description.placeditem").getFormattedText());
+        registry.addIngredientInfo(new ItemStack(BlocksTFC.PIT_KILN, 1), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.pit_kiln").getFormattedText());
+        registry.addIngredientInfo(new ItemStack(BlocksTFC.PLACED_ITEM, 1), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.placed_item").getFormattedText());
 
     }
 }

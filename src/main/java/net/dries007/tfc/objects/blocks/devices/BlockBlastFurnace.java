@@ -88,7 +88,7 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
      * @param pos   this block pos
      * @return [0, 5] where 0 means this blast furnace can't operate.
      */
-    public int getChimneyLevels(World world, BlockPos pos)
+    public static int getChimneyLevels(World world, BlockPos pos)
     {
         for (int i = 1; i < 6; i++)
         {

@@ -101,15 +101,6 @@ repositories {
         name = "Hwyla maven"
         url "http://tehnut.info/maven"
     }
-    maven { // TOP
-        name 'tterrag maven'
-        url "https://maven.tterrag.com/"
-    }
-    maven {
-        name = "CoFH Maven"
-        url = "https://maven.covers1624.net/"
-    }
-
 }
 
 String mcVersion = config.minecraft.version
@@ -122,8 +113,6 @@ dependencies {
     deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
     deobfCompile "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
-    deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.12-6"
-
 }
 
 processResources {
