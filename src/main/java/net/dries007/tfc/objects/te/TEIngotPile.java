@@ -45,7 +45,7 @@ public class TEIngotPile extends TEBase
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
         //noinspection ConstantConditions
-        tag.setString("metal", (metal == null) ? Metal.UNKNOWN.toString() : metal.getRegistryName().toString());
+        tag.setString("metal", (metal == null) ? Metal.UNKNOWN.getRegistryName().toString() : metal.getRegistryName().toString());
         tag.setInteger("count", count);
         return super.writeToNBT(tag);
     }
@@ -77,6 +77,7 @@ public class TEIngotPile extends TEBase
     public void setMetal(Metal metal)
     {
         this.metal = metal;
+        markBlockUpdate();
     }
 
     public int getCount()
@@ -87,5 +88,6 @@ public class TEIngotPile extends TEBase
     public void setCount(int count)
     {
         this.count = count;
+        markBlockUpdate();
     }
 }

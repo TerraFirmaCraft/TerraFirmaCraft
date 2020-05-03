@@ -59,6 +59,7 @@ public class TEToolRack extends TEBase
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
+        items.clear();
         ItemStackHelper.loadAllItems(nbt.getCompoundTag("items"), items);
     }
 
@@ -89,7 +90,7 @@ public class TEToolRack extends TEBase
         }
         else if (isItemEligible(heldItem))
         {
-            items.set(slot, player.isCreative() ? new ItemStack(heldItem.getItem(), 1, heldItem.getMetadata(), heldItem.getTagCompound()) : heldItem.splitStack(1));
+            items.set(slot, player.isCreative() ? heldItem.copy() : heldItem.splitStack(1));
         }
         else
         {

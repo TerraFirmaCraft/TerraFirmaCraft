@@ -122,59 +122,47 @@ public class BlockIngotPile extends Block
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TEIngotPile te = Helpers.getTE(worldIn, pos, TEIngotPile.class);
-        if (te != null) te.onBreakBlock();
+        if (te != null)
+        {
+            te.onBreakBlock();
+        }
         super.breakBlock(worldIn, pos, state);
     }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (playerIn.isSneaking()) return true;
-
-        TEIngotPile te = Helpers.getTE(worldIn, pos, TEIngotPile.class);
-        if (te == null) return true;
-
-        BlockPos posTop = pos;
-        IBlockState stateTop;
-        do
+        if (!playerIn.isSneaking())
         {
-            posTop = posTop.up();
-            stateTop = worldIn.getBlockState(posTop);
-            if (stateTop.getBlock() != BlocksTFC.INGOT_PILE && te != null)
+            TEIngotPile te = Helpers.getTE(worldIn, pos, TEIngotPile.class);
+            if (te != null)
             {
-                te.setCount(te.getCount() - 1);
-                if (!worldIn.isRemote)
+                BlockPos posTop = pos;
+                IBlockState stateTop;
+                do
                 {
-                    if (te.getCount() <= 0)
+                    posTop = posTop.up();
+                    stateTop = worldIn.getBlockState(posTop);
+                    if (stateTop.getBlock() != BlocksTFC.INGOT_PILE && te != null)
                     {
-                        worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+                        return removeIngot(worldIn, pos, playerIn, te);
                     }
-                    ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
-                }
-                return true;
-            }
-            else
-            {
-                te = Helpers.getTE(worldIn, posTop, TEIngotPile.class);
-                if (te != null)
-                {
-                    if (te.getCount() < 64)
+                    else
                     {
-                        te.setCount(te.getCount() - 1);
-                        if (!worldIn.isRemote)
+                        te = Helpers.getTE(worldIn, posTop, TEIngotPile.class);
+                        if (te != null)
                         {
-                            if (te.getCount() <= 0)
+                            if (te.getCount() < 64)
                             {
-                                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+                                return removeIngot(worldIn, pos, playerIn, te);
                             }
-                            ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
                         }
-                        return true;
                     }
-                }
+                } while (posTop.getY() <= 256);
+                return false;
             }
-        } while (posTop.getY() <= 256);
-        return false;
+        }
+        return true;
     }
 
     @SuppressWarnings("deprecation")
@@ -182,8 +170,25 @@ public class BlockIngotPile extends Block
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         TEIngotPile te = Helpers.getTE(world, pos, TEIngotPile.class);
-        if (te == null) return false;
+        if (te == null)
+        {
+            return false;
+        }
         return te.getCount() == 64;
+    }
+
+    private boolean removeIngot(World worldIn, BlockPos pos, EntityPlayer playerIn, TEIngotPile te)
+    {
+        if (!worldIn.isRemote)
+        {
+            te.setCount(te.getCount() - 1);
+            if (te.getCount() <= 0)
+            {
+                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+            }
+            ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+        }
+        return true;
     }
 
     @Override

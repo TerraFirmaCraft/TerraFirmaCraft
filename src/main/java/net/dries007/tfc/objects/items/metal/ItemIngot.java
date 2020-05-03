@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.items.metal;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +26,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEIngotPile;
 import net.dries007.tfc.util.Helpers;
 
+@ParametersAreNonnullByDefault
 public class ItemIngot extends ItemMetal
 {
     public ItemIngot(Metal metal, Metal.ItemType type)

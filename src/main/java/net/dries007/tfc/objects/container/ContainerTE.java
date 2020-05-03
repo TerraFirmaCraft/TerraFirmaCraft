@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
@@ -25,7 +26,7 @@ import net.dries007.tfc.objects.te.TEInventory;
  * @param <T> The Tile Entity class
  */
 @ParametersAreNonnullByDefault
-public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple implements ICapabilityUpdateContainer
+public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
 {
     protected final T tile;
     protected final EntityPlayer player;
@@ -34,7 +35,6 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
     private final int yOffset; // The number of pixels higher than normal (If the gui is larger than normal, see Anvil)
 
     private int[] cachedFields;
-    private IContainerListener capabilityListener; // Set via ICapabilityUpdateContainer, used to sync cap only updates
 
     protected ContainerTE(InventoryPlayer playerInv, T tile)
     {
@@ -59,32 +59,10 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
         {
             detectAndSendFieldChanges();
         }
-        for (int i = 0; i < inventorySlots.size(); ++i)
+        super.detectAndSendChanges();
+        if (player instanceof EntityPlayerMP)
         {
-            ItemStack newStack = inventorySlots.get(i).getStack();
-            ItemStack cachedStack = inventoryItemStacks.get(i);
-
-            if (!ItemStack.areItemStacksEqual(cachedStack, newStack))
-            {
-                // Duplicated from Container#detectAndSendChanges
-                boolean clientStackChanged = !ItemStack.areItemStacksEqualUsingNBTShareTag(cachedStack, newStack);
-                cachedStack = newStack.isEmpty() ? ItemStack.EMPTY : newStack.copy();
-                this.inventoryItemStacks.set(i, cachedStack);
-
-                if (clientStackChanged)
-                {
-                    for (IContainerListener listener : this.listeners)
-                    {
-                        listener.sendSlotContents(this, i, cachedStack);
-                    }
-                }
-                else if (capabilityListener != null)
-                {
-                    // There's a capability difference ONLY that needs to be synced, so we use our own handler here, as to not conflict with vanilla's sync, because this won't overwrite the client side item stack
-                    // The listener will check if the item actually needs a sync based on capabilities we know we need to sync
-                    capabilityListener.sendSlotContents(this, i, cachedStack);
-                }
-            }
+            CapabilityContainerListener.syncCapabilityOnlyChanges(this, (EntityPlayerMP) player);
         }
     }
 
@@ -152,12 +130,6 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
     protected void addPlayerInventorySlots(InventoryPlayer playerInv)
     {
         super.addPlayerInventorySlots(playerInv, yOffset);
-    }
-
-    @Override
-    public void setCapabilityListener(IContainerListener capabilityListener)
-    {
-        this.capabilityListener = capabilityListener;
     }
 
     protected abstract void addContainerSlots();

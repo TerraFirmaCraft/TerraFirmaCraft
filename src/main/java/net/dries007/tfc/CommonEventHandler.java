@@ -473,6 +473,21 @@ public final class CommonEventHandler
     }
 
     /**
+     * Fired on server only when a player logs out
+     *
+     * @param event {@link PlayerEvent.PlayerLoggedOutEvent}
+     */
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
+    {
+        if (event.player instanceof EntityPlayerMP)
+        {
+            // Capability sync handler, we can remove it now
+            CapabilityContainerListener.removeFrom((EntityPlayerMP) event.player);
+        }
+    }
+
+    /**
      * Fired on server only when a player dies and respawns, or travels through dimensions
      *
      * @param event {@link PlayerEvent.PlayerRespawnEvent event}
@@ -772,6 +787,13 @@ public final class CommonEventHandler
                 // Player is barely able to move
                 event.player.addPotionEffect(new PotionEffect(PotionEffectsTFC.OVERBURDENED, 25, 125, false, false));
             }
+        }
+
+        if (event.phase == TickEvent.Phase.START && event.player.openContainer != null && event.player instanceof EntityPlayerMP)
+        {
+            // Sync capability only changes in the player's container
+            // We do this for containers (such as the player's inventory), which don't sync capability changes through detectAndSendChanges
+            CapabilityContainerListener.syncCapabilityOnlyChanges(event.player.openContainer, (EntityPlayerMP) event.player);
         }
     }
 

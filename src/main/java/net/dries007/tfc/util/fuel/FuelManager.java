@@ -59,7 +59,7 @@ public final class FuelManager
         // Charcoal
         FUELS.add(new Fuel(IIngredient.of("charcoal"), 1800, 1350f, true, true));
 
-        //Peat
+        // Peat
         FUELS.add(new Fuel(IIngredient.of("peat"), 2500, 680));
     }
 
