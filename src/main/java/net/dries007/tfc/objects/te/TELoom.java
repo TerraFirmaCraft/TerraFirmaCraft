@@ -193,6 +193,7 @@ public class TELoom extends TEInventory implements ITickable
     {
         if (recipe != null)
         {
+            LoomRecipe recipe = this.recipe; // Avoids NPE on slot changes
             if (needsUpdate)
             {
                 if (world.getTotalWorldTime() - lastPushed >= 20)

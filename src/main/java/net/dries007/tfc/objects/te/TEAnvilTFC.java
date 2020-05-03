@@ -257,6 +257,7 @@ public class TEAnvilTFC extends TEInventory
             // Handle possible recipe completion
             if (recipe != null)
             {
+                AnvilRecipe recipe = this.recipe; // Avoids NPE on slot changes
                 if (workingProgress == workingTarget && recipe.matches(steps))
                 {
                     //Consume input

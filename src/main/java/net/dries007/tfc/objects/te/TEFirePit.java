@@ -716,8 +716,9 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
 
         if (cachedRecipe != null && cap != null && cachedRecipe.isValidTemperature(cap.getTemperature()))
         {
+            HeatRecipe recipe = cachedRecipe; // Avoids NPE on slot changes
             // Handle possible metal output
-            FluidStack fluidStack = cachedRecipe.getOutputFluid(stack);
+            FluidStack fluidStack = recipe.getOutputFluid(stack);
             float itemTemperature = cap.getTemperature();
             if (fluidStack != null)
             {
@@ -759,7 +760,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
 
             // Handle removal of input
             ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
-            ItemStack outputStack = cachedRecipe.getOutputStack(inputStack);
+            ItemStack outputStack = recipe.getOutputStack(inputStack);
 
             inputStack.shrink(1);
             if (!outputStack.isEmpty())
