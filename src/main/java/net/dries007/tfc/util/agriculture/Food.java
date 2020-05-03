@@ -42,8 +42,8 @@ public enum Food
     BARLEY_FLOUR(GRAIN, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.5f, "flour_barley", "flour"),
     BARLEY_DOUGH(GRAIN, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3f, 1f, 200f),
     BARLEY_BREAD(BREAD, 4, 1f, 0f, 1.5f, 0f, 0f, 0f, 0f, 1f, 1f, 480f),
-    MAIZE(GRAIN, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 2f, "maize", "grain"),
-    //TODO: Add Maize "grain"
+    MAIZE(GRAIN, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 2f, "maize"),
+    MAIZE_GRAIN(GRAIN, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.25f, "grain_maize", "grain"),
     CORNBREAD(BREAD, 4, 1f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 1f, 480f),
     CORNMEAL_FLOUR(GRAIN, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.5f, "flour_cornmeal", "flour"),
     CORNMEAL_DOUGH(GRAIN, 4, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 3f, 1f, 200f),
