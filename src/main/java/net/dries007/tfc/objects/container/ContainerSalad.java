@@ -182,7 +182,9 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
             }
         }
         // Failed to make a salad
+        skipOutputUpdates = true; // Since we can cheat... hehe
         inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
+        skipOutputUpdates = false;
     }
 
     @Nonnull
