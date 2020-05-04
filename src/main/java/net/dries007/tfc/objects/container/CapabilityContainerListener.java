@@ -95,7 +95,6 @@ public class CapabilityContainerListener implements IContainerListener
                 // Duplicated from Container#detectAndSendChanges
                 boolean clientStackChanged = !ItemStack.areItemStacksEqualUsingNBTShareTag(cachedStack, newStack);
                 cachedStack = newStack.isEmpty() ? ItemStack.EMPTY : newStack.copy();
-                container.inventoryItemStacks.set(i, cachedStack);
 
                 // If true, the difference will already be handled by vanilla's sync
                 if (!clientStackChanged)

@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
@@ -60,10 +59,6 @@ public abstract class ContainerTE<T extends TEInventory> extends ContainerSimple
             detectAndSendFieldChanges();
         }
         super.detectAndSendChanges();
-        if (player instanceof EntityPlayerMP)
-        {
-            CapabilityContainerListener.syncCapabilityOnlyChanges(this, (EntityPlayerMP) player);
-        }
     }
 
     @Override
