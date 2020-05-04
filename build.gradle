@@ -101,6 +101,14 @@ repositories {
         name = "Hwyla maven"
         url "http://tehnut.info/maven"
     }
+    maven { // TOP
+        name 'tterrag maven'
+        url "https://maven.tterrag.com/"
+    }
+    maven {
+        name = "CoFH Maven"
+        url = "https://maven.covers1624.net/"
+    }
 }
 
 String mcVersion = config.minecraft.version
@@ -113,6 +121,7 @@ dependencies {
     deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
     deobfCompile "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
+    deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.12-6"
 }
 
 processResources {
@@ -178,8 +187,8 @@ artifacts {
 project.tasks.withType(Jar) { jarTask -> // For all jar tasks
     jarTask.manifest {
         attributes 'FMLAT': 'tfc_at.cfg' // See FML source code
-        attributes 'GIT_HASH': runGitCommand("log -n 1 --format='%H'")
-        attributes 'GIT_SUBJECT': runGitCommand("log -n 1 --format='%s'")
+  //      attributes 'GIT_HASH': runGitCommand("log -n 1 --format='%H'")
+ //       attributes 'GIT_SUBJECT': runGitCommand("log -n 1 --format='%s'")
     }
     // Add "MC${mcversion}" to the jar, so the name ends up `TerraFirmaCraft-MC1.12.2-0.0.0.0.jar`
     // This didn't used to have the `MC` prefix, but it confuses some hosting websites as the actual version numbers then.
