@@ -68,9 +68,13 @@ public class TEBellows extends TEBase
     {
         int time = (int) (world.getTotalWorldTime() - lastPushed);
         if (time < 10)
+        {
             return (double) time * 0.05 + 0.125;
+        }
         else if (time < 20)
+        {
             return (double) (20 - time) * 0.05 + 0.125;
+        }
         return 0.125;
     }
 
@@ -99,8 +103,6 @@ public class TEBellows extends TEBase
                 ((IBellowsConsumerBlock) block).onAirIntake(this, world, posx, BELLOWS_AIR);
                 if (world.isRemote)
                 {
-                    //TODO: actual sound, better particles and animation
-                    // old bellows just shot particles outwards, that was simpler.
                     posx = pos.offset(direction);
                     world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, posx.getX() + .5d, posx.getY() + .5d, posx.getZ() + .5d, 0, 0, 0);
                 }

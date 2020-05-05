@@ -121,12 +121,6 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         markForSync();
     }
 
-    public void onReceivePacket(long sealedCalendarTick, boolean sealed)
-    {
-        this.sealedCalendarTick = sealedCalendarTick;
-        this.sealed = sealed;
-    }
-
     public boolean isSealed()
     {
         return sealed;

@@ -58,6 +58,7 @@ public class TELoom extends TEInventory implements ITickable
     {
         super.readFromNBT(nbt);
         progress = nbt.getInteger("progress");
+        lastPushed = nbt.getLong("lastPushed");
         recipe = nbt.hasKey("recipe") ? TFCRegistries.LOOM.getValue(new ResourceLocation(nbt.getString("recipe"))) : null;
     }
 
@@ -67,17 +68,13 @@ public class TELoom extends TEInventory implements ITickable
     {
         super.writeToNBT(nbt);
         nbt.setInteger("progress", progress);
+        nbt.setLong("lastPushed", lastPushed);
         if (recipe != null)
         {
             //noinspection ConstantConditions
             nbt.setString("recipe", recipe.getRegistryName().toString());
         }
         return nbt;
-    }
-
-    public void onReceivePacket(long lastPushed)
-    {
-        this.lastPushed = lastPushed;
     }
 
     @SideOnly(Side.CLIENT)

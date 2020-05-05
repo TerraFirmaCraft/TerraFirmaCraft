@@ -209,22 +209,6 @@ public class TEAnvilTFC extends TEInventory
     }
 
     /**
-     * Used to set all server-side only fields on the client, for rendering purposes
-     *
-     * @param recipe          The current recipe
-     * @param steps           The current steps
-     * @param workingProgress The working progress
-     * @param workingTarget   The working target
-     */
-    public void onReceivePacket(@Nullable AnvilRecipe recipe, @Nonnull ForgeSteps steps, int workingProgress, int workingTarget)
-    {
-        this.recipe = recipe;
-        this.steps = steps;
-        this.workingProgress = workingProgress;
-        this.workingTarget = workingTarget;
-    }
-
-    /**
      * Only occurs on server side
      */
     public void addStep(@Nonnull EntityPlayer player, @Nullable ForgeStep step)

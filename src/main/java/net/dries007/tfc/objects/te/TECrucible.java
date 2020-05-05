@@ -377,18 +377,6 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
     }
 
     /**
-     * Used on CLIENT to update the alloy contents
-     * Also updates cached alloy result
-     *
-     * @param nbt the nbt from the packet
-     */
-    public void setAlloy(@Nonnull NBTTagCompound nbt)
-    {
-        alloy.deserializeNBT(nbt);
-        alloyResult = alloy.getResult();
-    }
-
-    /**
      * Used on CLIENT for quicker rendering - doesn't have to calculate the alloy every render tick
      *
      * @return the current result of getAlloy().getResult()
