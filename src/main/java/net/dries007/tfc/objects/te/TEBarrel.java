@@ -200,13 +200,6 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         markForSync();
     }
 
-    public void onReceivePacket(@Nullable BarrelRecipe recipe, long sealedCalendarTick, boolean sealed)
-    {
-        this.recipe = recipe;
-        this.sealedCalendarTick = sealedCalendarTick;
-        this.sealed = sealed;
-    }
-
     @Override
     public void update()
     {

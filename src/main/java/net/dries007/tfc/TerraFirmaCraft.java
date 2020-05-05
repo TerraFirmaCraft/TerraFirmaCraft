@@ -48,6 +48,7 @@ import net.dries007.tfc.world.classic.chunkdata.CapabilityChunkData;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@SuppressWarnings("FieldMayBeFinal")
 @Mod.EventBusSubscriber
 @Mod(modid = MOD_ID, name = TerraFirmaCraft.MOD_NAME, useMetadata = true, guiFactory = Constants.GUI_FACTORY, dependencies = "required:forge@[14.23.5.2816,);after:jei@[4.14.2,);after:crafttweaker@[4.1.11,);after:waila@(1.8.25,)")
 public final class TerraFirmaCraft
@@ -56,10 +57,10 @@ public final class TerraFirmaCraft
     public static final String MOD_NAME = "TerraFirmaCraft";
 
     @Mod.Instance
-    private static final TerraFirmaCraft INSTANCE = null;
+    private static TerraFirmaCraft INSTANCE = null;
 
     @SidedProxy(modId = MOD_ID, clientSide = "net.dries007.tfc.proxy.ClientProxy", serverSide = "net.dries007.tfc.proxy.ServerProxy")
-    private static final IProxy proxy = null;
+    private static IProxy PROXY = null;
 
     static
     {
@@ -73,7 +74,7 @@ public final class TerraFirmaCraft
 
     public static IProxy getProxy()
     {
-        return proxy;
+        return PROXY;
     }
 
     public static WorldTypeTFC getWorldType()
