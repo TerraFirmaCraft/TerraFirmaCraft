@@ -124,8 +124,8 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
                 // At least one bowl exists, so create a salad
                 float water = 0, saturation = 0;
                 float[] nutrition = new float[Nutrient.TOTAL];
-                int ingredientCount = 0;
-                int minIngredientCount = 64;
+                int ingredientCount = 0; // The number of unique ingredients
+                int minIngredientCount = 64; // The minimum stack size of the ingredients
                 for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
                 {
                     ItemStack ingredient = inventory.getStackInSlot(i);
@@ -152,9 +152,9 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
                         }
                     }
                 }
-                if (bowlStack.getCount() < ingredientCount)
+                if (bowlStack.getCount() < minIngredientCount)
                 {
-                    ingredientCount = bowlStack.getCount();
+                    minIngredientCount = bowlStack.getCount();
                 }
                 if (ingredientCount > 0)
                 {
@@ -188,7 +188,10 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
                 }
             }
             // Failed to make a salad
-            inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
+            if (!inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
+            {
+                inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
+            }
         }
     }
 
