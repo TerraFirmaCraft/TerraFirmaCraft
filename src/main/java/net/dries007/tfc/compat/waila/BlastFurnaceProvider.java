@@ -37,7 +37,7 @@ public class BlastFurnaceProvider implements IWailaDataProvider, IWailaPlugin
                 int maxItems = chinmey * 4;
                 int oreStacks = blastFurnace.getOreStacks().size();
                 int fuelStacks = blastFurnace.getFuelStacks().size();
-                int temperature = blastFurnace.getField(TEBlastFurnace.FIELD_TEMPERATURE);
+                float temperature = accessor.getNBTData().getFloat("temperature");
                 String heatTooltip = Heat.getTooltip(temperature);
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.bloomery.ores", oreStacks, maxItems).getFormattedText());
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.bloomery.fuel", fuelStacks, maxItems).getFormattedText());

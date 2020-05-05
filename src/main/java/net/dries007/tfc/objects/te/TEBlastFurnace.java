@@ -244,7 +244,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
                     airTicks = 0;
                 }
 
-                if (!world.isRemote && --burnTicksLeft <= 0)
+                if (--burnTicksLeft <= 0)
                 {
                     if (!fuelStacks.isEmpty())
                     {
