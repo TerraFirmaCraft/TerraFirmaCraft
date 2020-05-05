@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIFollowParent;
+import net.minecraft.entity.ai.EntityAIRunAroundLikeCrazy;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityMule;
 import net.minecraft.entity.player.EntityPlayer;
@@ -227,7 +228,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     {
         EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
         EntityAnimalTFC.addCommonPreyAI(this, 1.2);
-
+        this.tasks.addTask(1, new EntityAIRunAroundLikeCrazy(this, 1.2D));
         this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
     }
 
