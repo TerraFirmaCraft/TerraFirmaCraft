@@ -96,13 +96,4 @@ public abstract class TEInventory extends TEBase implements ISlotCallback
     {
         return this.world.getTileEntity(pos) == this && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
     }
-
-    protected void markDirtyFast()
-    {
-        if (world != null)
-        {
-            getBlockMetadata();
-            world.markChunkDirty(pos, this);
-        }
-    }
 }

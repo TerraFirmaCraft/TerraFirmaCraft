@@ -20,13 +20,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
-import net.dries007.tfc.network.PacketLargeVesselUpdate;
 import net.dries007.tfc.objects.blocks.BlockLargeVessel;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
@@ -61,8 +59,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
         sealed = true;
-        markDirty();
-        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick, sealed), world.provider.getDimension());
+        markForSync();
     }
 
     /**
@@ -107,7 +104,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         sealedTick = CalendarTFC.PLAYER_TIME.getTicks();
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         sealed = true;
-        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick, sealed), world.provider.getDimension());
+        markForSync();
     }
 
     public void onUnseal()
@@ -121,7 +118,7 @@ public class TELargeVessel extends TEInventory implements IItemHandlerSidedCallb
         // Update sealed tick info and sync to client
         sealedTick = sealedCalendarTick = 0;
         sealed = false;
-        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLargeVesselUpdate(this, sealedCalendarTick, sealed), world.provider.getDimension());
+        markForSync();
     }
 
     public void onReceivePacket(long sealedCalendarTick, boolean sealed)

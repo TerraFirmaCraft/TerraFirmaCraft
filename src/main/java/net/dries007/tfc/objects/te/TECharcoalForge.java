@@ -33,7 +33,7 @@ import net.dries007.tfc.util.fuel.FuelManager;
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 
 @ParametersAreNonnullByDefault
-public class TECharcoalForge extends TEInventory implements ICalendarTickable, ITileFields
+public class TECharcoalForge extends TETickableInventory implements ICalendarTickable, ITileFields
 {
     public static final int SLOT_FUEL_MIN = 0;
     public static final int SLOT_FUEL_MAX = 4;
@@ -80,8 +80,8 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
     @Override
     public void update()
     {
-        ICalendarTickable.super.update();
-
+        super.update();
+        checkForCalendarUpdate();
         if (!world.isRemote)
         {
             IBlockState state = world.getBlockState(pos);
@@ -170,7 +170,7 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
             {
                 cascadeFuelSlots();
             }
-            markDirtyFast();
+            markDirty();
         }
     }
 
@@ -251,7 +251,7 @@ public class TECharcoalForge extends TEInventory implements ICalendarTickable, I
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        this.markDirty();
+        super.setAndUpdateSlots(slot);
         requiresSlotUpdate = true;
         updateCachedRecipes();
     }

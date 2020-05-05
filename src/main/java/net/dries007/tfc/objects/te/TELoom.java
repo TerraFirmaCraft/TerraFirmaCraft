@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,11 +18,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.LoomRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.network.PacketLoomUpdate;
 import net.dries007.tfc.objects.blocks.wood.BlockLoom;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
@@ -123,7 +120,7 @@ public class TELoom extends TEInventory implements ITickable
                     {
                         recipe = null;
                     }
-                    updateBlock();
+                    markForBlockUpdate();
                     return true;
                 }
             }
@@ -139,7 +136,7 @@ public class TELoom extends TEInventory implements ITickable
                 heldItem.shrink(1);
                 recipe = LoomRecipe.get(inventory.getStackInSlot(0));
 
-                updateBlock();
+                markForBlockUpdate();
                 return true;
             }
             else if (!inventory.getStackInSlot(0).isEmpty())
@@ -149,7 +146,7 @@ public class TELoom extends TEInventory implements ITickable
                     heldItem.shrink(1);
                     inventory.getStackInSlot(0).grow(1);
 
-                    updateBlock();
+                    markForBlockUpdate();
                     return true;
                 }
             }
@@ -162,11 +159,12 @@ public class TELoom extends TEInventory implements ITickable
                     {
                         long time = world.getTotalWorldTime() - lastPushed;
                         if (time < 20)
+                        {
                             return true;
+                        }
                         lastPushed = world.getTotalWorldTime();
                         needsUpdate = true;
-
-                        TerraFirmaCraft.getNetwork().sendToDimension(new PacketLoomUpdate(this, lastPushed), world.provider.getDimension());
+                        markForSync();
                     }
                     return true;
                 }
@@ -180,7 +178,7 @@ public class TELoom extends TEInventory implements ITickable
                     inventory.setStackInSlot(1, ItemStack.EMPTY);
                     progress = 0;
                     recipe = null;
-                    updateBlock();
+                    markForBlockUpdate();
                     return true;
                 }
             }
@@ -206,7 +204,7 @@ public class TELoom extends TEInventory implements ITickable
                         inventory.setStackInSlot(0, ItemStack.EMPTY);
                         inventory.setStackInSlot(1, recipe.getOutputItem());
                     }
-                    updateBlock();
+                    markForBlockUpdate();
                 }
             }
         }
@@ -240,12 +238,5 @@ public class TELoom extends TEInventory implements ITickable
     public ResourceLocation getInProgressTexture()
     {
         return recipe.getInProgressTexture();
-    }
-
-    private void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        markDirty();
     }
 }

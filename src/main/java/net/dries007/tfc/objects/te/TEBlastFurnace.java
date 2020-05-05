@@ -46,7 +46,7 @@ import net.dries007.tfc.util.fuel.FuelManager;
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 
 @ParametersAreNonnullByDefault
-public class TEBlastFurnace extends TEInventory implements ITickable, ITileFields
+public class TEBlastFurnace extends TETickableInventory implements ITickable, ITileFields
 {
     public static final int SLOT_TUYERE = 0;
     public static final int FIELD_TEMPERATURE = 0, FIELD_ORE = 1, FIELD_FUEL = 2, FIELD_MELT = 3, FIELD_ORE_UNITS = 4, CHIMNEY_LEVELS = 5;
@@ -79,6 +79,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
         return OreDictionaryHelper.doesStackMatchOre(stack, "tuyere");
     }
 
+    @SuppressWarnings("unused")
     public long getBurnTicksLeft()
     {
         return burnTicksLeft;
@@ -231,10 +232,89 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
     @Override
     public void update()
     {
-        IBlockState state = world.getBlockState(pos);
-
+        super.update();
         if (!world.isRemote)
         {
+            IBlockState state = world.getBlockState(pos);
+            if (state.getValue(LIT))
+            {
+                // Update bellows air
+                if (--airTicks <= 0)
+                {
+                    airTicks = 0;
+                }
+
+                if (!world.isRemote && --burnTicksLeft <= 0)
+                {
+                    if (!fuelStacks.isEmpty())
+                    {
+                        ItemStack fuelStack = fuelStacks.get(0);
+                        fuelStacks.remove(0);
+                        Fuel fuel = FuelManager.getFuel(fuelStack);
+                        burnTicksLeft = (int) (Math.ceil(fuel.getAmount() / ConfigTFC.GENERAL.blastFurnaceConsumption));
+                        burnTemperature = fuel.getTemperature();
+                    }
+                    else
+                    {
+                        burnTemperature = 0;
+                    }
+                    markForSync();
+                }
+
+                if (temperature > 0 || burnTemperature > 0)
+                {
+                    float targetTemperature = burnTemperature + airTicks;
+                    if (temperature < targetTemperature)
+                    {
+                        // Modifier for heating = 2x for bellows
+                        temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                    }
+                    else if (temperature > targetTemperature)
+                    {
+                        // Modifier for cooling = 0.5x for bellows
+                        temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                    }
+                    // Provide heat to blocks that are one block bellow AKA crucible
+                    Block blockCrucible = world.getBlockState(pos.down()).getBlock();
+                    if (blockCrucible instanceof IHeatConsumerBlock)
+                    {
+                        ((IHeatConsumerBlock) blockCrucible).acceptHeat(world, pos.down(), temperature);
+                    }
+                    if (!world.isRemote)
+                    {
+                        oreStacks.removeIf(stack ->
+                        {
+                            IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                            if (cap != null)
+                            {
+                                // Update temperature of item
+                                float itemTemp = cap.getTemperature();
+                                if (temperature > itemTemp)
+                                {
+                                    CapabilityItemHeat.addTemp(cap);
+                                }
+                                if (cap.isMolten())
+                                {
+                                    convertToMolten(stack);
+                                    ItemStack tuyereStack = inventory.getStackInSlot(0);
+                                    if (!tuyereStack.isEmpty())
+                                    {
+                                        Helpers.damageItem(tuyereStack);
+                                    }
+                                    return true;
+                                }
+                            }
+                            return false;
+                        });
+                    }
+                    if (temperature <= 0 && burnTemperature <= 0)
+                    {
+                        temperature = 0;
+                        world.setBlockState(pos, state.withProperty(LIT, false));
+                    }
+                }
+            }
+
             meltAmount = alloy.getAmount(); //update for client GUI
             if (--delayTimer <= 0)
             {
@@ -277,8 +357,7 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
 
                 if (oldChimney != chimney || oldOre != oreCount || oldFuel != fuelCount)
                 {
-                    // Update client
-                    world.notifyBlockUpdate(pos, state, state, 3);
+                    markForSync();
                 }
             }
             if (alloy.removeAlloy(1, true) > 0)
@@ -290,85 +369,6 @@ public class TEBlastFurnace extends TEInventory implements ITickable, ITileField
                 if (te != null && te.addMetal(alloy.getResult(), 1) <= 0)
                 {
                     alloy.removeAlloy(1, false);
-                }
-            }
-        }
-        if (state.getValue(LIT))
-        {
-            // Update bellows air
-            if (--airTicks <= 0)
-            {
-                airTicks = 0;
-            }
-
-            if (!world.isRemote && --burnTicksLeft <= 0)
-            {
-                if (!fuelStacks.isEmpty())
-                {
-                    ItemStack fuelStack = fuelStacks.get(0);
-                    fuelStacks.remove(0);
-                    Fuel fuel = FuelManager.getFuel(fuelStack);
-                    burnTicksLeft = (int) (Math.ceil(fuel.getAmount() / ConfigTFC.GENERAL.blastFurnaceConsumption));
-                    burnTemperature = fuel.getTemperature();
-                    this.markDirty();
-                }
-                else
-                {
-                    burnTemperature = 0;
-                }
-                world.notifyBlockUpdate(pos, state, state, 3);
-            }
-
-            if (temperature > 0 || burnTemperature > 0)
-            {
-                float targetTemperature = burnTemperature + airTicks;
-                if (temperature < targetTemperature)
-                {
-                    // Modifier for heating = 2x for bellows
-                    temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
-                }
-                else if (temperature > targetTemperature)
-                {
-                    // Modifier for cooling = 0.5x for bellows
-                    temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
-                }
-                // Provide heat to blocks that are one block bellow AKA crucible
-                Block blockCrucible = world.getBlockState(pos.down()).getBlock();
-                if (blockCrucible instanceof IHeatConsumerBlock)
-                {
-                    ((IHeatConsumerBlock) blockCrucible).acceptHeat(world, pos.down(), temperature);
-                }
-                if (!world.isRemote)
-                {
-                    oreStacks.removeIf(stack ->
-                    {
-                        IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                        if (cap != null)
-                        {
-                            // Update temperature of item
-                            float itemTemp = cap.getTemperature();
-                            if (temperature > itemTemp)
-                            {
-                                CapabilityItemHeat.addTemp(cap);
-                            }
-                            if (cap.isMolten())
-                            {
-                                convertToMolten(stack);
-                                ItemStack tuyereStack = inventory.getStackInSlot(0);
-                                if (!tuyereStack.isEmpty())
-                                {
-                                    Helpers.damageItem(tuyereStack);
-                                }
-                                return true;
-                            }
-                        }
-                        return false;
-                    });
-                }
-                if (temperature <= 0 && burnTemperature <= 0)
-                {
-                    temperature = 0;
-                    world.setBlockState(pos, state.withProperty(LIT, false));
                 }
             }
         }

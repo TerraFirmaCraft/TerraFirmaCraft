@@ -8,13 +8,17 @@ package net.dries007.tfc.compat.waila;
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 
 import mcp.mobius.waila.api.*;
 import net.dries007.tfc.api.capability.heat.Heat;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.objects.blocks.devices.BlockCrucible;
 import net.dries007.tfc.objects.te.TECrucible;
 
 @WailaPlugin
@@ -32,7 +36,7 @@ public class CrucibleProvider implements IWailaDataProvider, IWailaPlugin
                 Metal metal = crucible.getAlloyResult();
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.metal.output", crucible.getAlloy().getAmount(), new TextComponentTranslation(metal.getTranslationKey()).getFormattedText()).getFormattedText());
             }
-            int temperature = crucible.getField(TECrucible.FIELD_TEMPERATURE);
+            float temperature = accessor.getNBTData().getFloat("temp");
             String heatTooltip = Heat.getTooltip(temperature);
             if (heatTooltip != null)
             {
@@ -42,9 +46,17 @@ public class CrucibleProvider implements IWailaDataProvider, IWailaPlugin
         return currentTooltip;
     }
 
+    @Nonnull
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
+    {
+        return te.writeToNBT(tag);
+    }
+
     @Override
     public void register(IWailaRegistrar registrar)
     {
-        registrar.registerBodyProvider(this, BlockCrucible.class);
+        registrar.registerBodyProvider(this, TECrucible.class);
+        registrar.registerNBTProvider(this, TECrucible.class);
     }
 }

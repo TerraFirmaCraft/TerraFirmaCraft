@@ -37,7 +37,7 @@ public class TEPlacedHide extends TEBase
         int xPos = (int) (hitX * 4);
         int zPos = (int) (hitZ * 4);
         positions |= 1 << (xPos + zPos * 4);
-        markBlockUpdate();
+        markForBlockUpdate();
     }
 
     @Override

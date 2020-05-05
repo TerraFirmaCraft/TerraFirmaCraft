@@ -8,8 +8,13 @@ package net.dries007.tfc.compat.waila;
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 
 import mcp.mobius.waila.api.*;
 import net.dries007.tfc.api.capability.heat.Heat;
@@ -49,9 +54,17 @@ public class BlastFurnaceProvider implements IWailaDataProvider, IWailaPlugin
         return currentTooltip;
     }
 
+    @Nonnull
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
+    {
+        return te.writeToNBT(tag);
+    }
+
     @Override
     public void register(IWailaRegistrar registrar)
     {
-        registrar.registerBodyProvider(this, BlockBlastFurnace.class);
+        registrar.registerBodyProvider(this, TEBlastFurnace.class);
+        registrar.registerNBTProvider(this, TEBlastFurnace.class);
     }
 }

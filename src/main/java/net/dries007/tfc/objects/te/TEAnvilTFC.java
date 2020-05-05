@@ -20,7 +20,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextComponentTranslation;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -31,7 +30,6 @@ import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.network.PacketAnvilUpdate;
 import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
 import net.dries007.tfc.util.Helpers;
@@ -149,7 +147,7 @@ public class TEAnvilTFC extends TEInventory
         {
             if (checkRecipeUpdate())
             {
-                TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilUpdate(this), world.provider.getDimension());
+                markForSync();
             }
         }
     }
@@ -233,7 +231,6 @@ public class TEAnvilTFC extends TEInventory
     {
         ItemStack input = inventory.getStackInSlot(SLOT_INPUT_1);
         IForgeable cap = input.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
-
         if (cap != null)
         {
             // Add step to stack + tile
@@ -257,21 +254,21 @@ public class TEAnvilTFC extends TEInventory
             // Handle possible recipe completion
             if (recipe != null)
             {
-                AnvilRecipe recipe = this.recipe; // Avoids NPE on slot changes
-                if (workingProgress == workingTarget && recipe.matches(steps))
+                AnvilRecipe completedRecipe = recipe; // Hold the current recipe, as setting the input slot to empty will clear it
+                if (workingProgress == workingTarget && completedRecipe.matches(steps))
                 {
                     //Consume input
                     inventory.setStackInSlot(SLOT_INPUT_1, ItemStack.EMPTY);
 
                     // Add Skill
                     SmithingSkill skill = CapabilityPlayerData.getSkill(player, SkillType.SMITHING);
-                    if (skill != null && recipe.getSkillBonusType() != null)
+                    if (skill != null && completedRecipe.getSkillBonusType() != null)
                     {
-                        skill.addSkill(recipe.getSkillBonusType(), 1);
+                        skill.addSkill(completedRecipe.getSkillBonusType(), 1);
                     }
 
                     //Produce output
-                    for (ItemStack output : recipe.getOutput(input))
+                    for (ItemStack output : completedRecipe.getOutput(input))
                     {
                         if (!output.isEmpty())
                         {
@@ -280,9 +277,9 @@ public class TEAnvilTFC extends TEInventory
                             {
                                 outputCap.setTemperature(((IItemHeat) cap).getTemperature());
                             }
-                            if (skill != null && recipe.getSkillBonusType() != null)
+                            if (skill != null && completedRecipe.getSkillBonusType() != null)
                             {
-                                SmithingSkill.applySkillBonus(skill, output, recipe.getSkillBonusType());
+                                SmithingSkill.applySkillBonus(skill, output, completedRecipe.getSkillBonusType());
                             }
 
                             if (inventory.getStackInSlot(SLOT_INPUT_1).isEmpty())
@@ -313,10 +310,7 @@ public class TEAnvilTFC extends TEInventory
                     world.playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
                 }
             }
-
-            // Step was added, so send update regardless
-            TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilUpdate(this), world.provider.getDimension());
-            markDirty();
+            markForSync();
         }
     }
 

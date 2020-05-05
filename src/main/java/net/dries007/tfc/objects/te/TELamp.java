@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.te;
 
 import javax.annotation.Nonnull;
@@ -44,8 +49,7 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
     @Override
     public void setAndUpdateFluidTank(int fluidTankID)
     {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
+        markForBlockUpdate();
     }
 
     @Override

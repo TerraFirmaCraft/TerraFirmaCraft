@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
@@ -44,19 +43,6 @@ public abstract class ContainerItemStack extends Container
 
         addContainerSlots();
         addPlayerInventorySlots(playerInv);
-    }
-
-    /**
-     * This functionality duplicated from {@link ContainerTE#detectAndSendChanges()}
-     */
-    @Override
-    public void detectAndSendChanges()
-    {
-        super.detectAndSendChanges();
-        if (player instanceof EntityPlayerMP)
-        {
-            CapabilityContainerListener.syncCapabilityOnlyChanges(this, (EntityPlayerMP) player);
-        }
     }
 
     @Override

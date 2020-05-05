@@ -76,7 +76,7 @@ public class TEToolRack extends TEBase
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
         super.onDataPacket(net, pkt);
-        markBlockUpdate();
+        markForBlockUpdate();
     }
 
     public boolean onRightClick(EntityPlayer player, EnumHand hand, int slot)
@@ -96,7 +96,7 @@ public class TEToolRack extends TEBase
         {
             return false;
         }
-        markBlockUpdate();
+        markForBlockUpdate();
         return true;
     }
 }

@@ -9,8 +9,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -19,7 +24,6 @@ import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeableMeasurableMetal;
 import net.dries007.tfc.api.recipes.BloomeryRecipe;
-import net.dries007.tfc.objects.blocks.BlockBloom;
 import net.dries007.tfc.objects.blocks.devices.BlockBloomery;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.te.TEBloom;
@@ -80,10 +84,20 @@ public class BloomeryProvider implements IWailaDataProvider, IWailaPlugin
         return currentTooltip;
     }
 
+    @Nonnull
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
+    {
+        return te.writeToNBT(tag);
+    }
+
     @Override
     public void register(IWailaRegistrar registrar)
     {
-        registrar.registerBodyProvider(this, BlockBloomery.class);
-        registrar.registerBodyProvider(this, BlockBloom.class);
+        registrar.registerBodyProvider(this, TEBloomery.class);
+        registrar.registerBodyProvider(this, TEBloom.class);
+
+        registrar.registerNBTProvider(this, TEBloomery.class);
+        registrar.registerNBTProvider(this, TEBloom.class);
     }
 }
