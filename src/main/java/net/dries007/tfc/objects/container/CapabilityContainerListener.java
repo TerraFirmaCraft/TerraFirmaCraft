@@ -29,17 +29,13 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 
 /**
- * This is a {@link IContainerListener} which will monitor containers and send any capability data changes for included capabilities
- * Capabilities which are applied to all items (heat, forgeable, food, etc) are synced via this handler
- * We do NOT use {@link ItemStack#setTagCompound(NBTTagCompound)} to save capability data, as that results in duplication of information
+ * This is a central synchronization manager for item stack capability data that needs to be synced in containers (inventories) of all kinds
+ * Since capability data is noy synced by default, but a lot of our applications require it to be client visible, we do two things:
+ * - On player tick, we perform a second pass of {@link Container#detectAndSendChanges()}, in order to detect and send updates for cases where ONLY capabilities have changed. These are not detected by vanilla's implementation of this method and as a result no packets are sent
+ * - This listener itself is used to sync capability data WITHOUT overwriting the client side item stack. It uses {@link INBTSerializable} capabilities and calls deserialization on the client to accomplish this. This avoids issues with packets arriving out of order resulting in perceived "flickering" on the client.
  *
- * For containers under our control, they may need to send constant capability updates. In order to avoid ghost items, they ONLY call this listener when they need to sync changes.
- *
- * @author Choonster
- * @author AlcatrazEscapee
- *
- * Below is a forge PR that would solve all these problems, but will likely not get implemented in 1.12.
- * <a href="https://github.com/MinecraftForge/MinecraftForge/pull/5009/files">Capability Sync PR for 1.12</>
+ * To register a capability for synchronization, add it to {@link CapabilityContainerListener#SYNC_CAPS}
+ * This will automatically sync any containers it can, as it is added during various spots from {@link net.dries007.tfc.CommonEventHandler}
  */
 @ParametersAreNonnullByDefault
 public class CapabilityContainerListener implements IContainerListener
