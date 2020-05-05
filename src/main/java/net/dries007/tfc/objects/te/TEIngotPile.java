@@ -77,7 +77,7 @@ public class TEIngotPile extends TEBase
     public void setMetal(Metal metal)
     {
         this.metal = metal;
-        markBlockUpdate();
+        markForBlockUpdate();
     }
 
     public int getCount()
@@ -88,6 +88,6 @@ public class TEIngotPile extends TEBase
     public void setCount(int count)
     {
         this.count = count;
-        markBlockUpdate();
+        markForBlockUpdate();
     }
 }

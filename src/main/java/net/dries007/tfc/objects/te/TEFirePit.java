@@ -53,7 +53,7 @@ import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.ATTACHMENT;
 import static net.dries007.tfc.objects.blocks.devices.BlockFirePit.LIT;
 
 @ParametersAreNonnullByDefault
-public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFields, IItemHandlerSidedCallback
+public class TEFirePit extends TETickableInventory implements ICalendarTickable, ITileFields, IItemHandlerSidedCallback
 {
     // Slot 0 - 3 = fuel slots with 3 being input, 4 = normal input slot, 5 and 6 are output slots 1 + 2
     public static final int SLOT_FUEL_CONSUME = 0;
@@ -118,8 +118,8 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
     @Override
     public void update()
     {
-        ICalendarTickable.super.update();
-
+        super.update();
+        checkForCalendarUpdate();
         if (!world.isRemote)
         {
             IBlockState state = world.getBlockState(pos);
@@ -312,7 +312,7 @@ public class TEFirePit extends TEInventory implements ICalendarTickable, ITileFi
             {
                 cascadeFuelSlots();
             }
-            markDirtyFast();
+            markDirty();
         }
     }
 

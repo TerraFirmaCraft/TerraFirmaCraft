@@ -29,10 +29,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
-import net.dries007.tfc.network.PacketBarrelUpdate;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.FluidTankCallback;
@@ -48,7 +46,7 @@ import net.dries007.tfc.util.calendar.ICalendarFormatted;
 import static net.dries007.tfc.objects.blocks.wood.BlockBarrel.SEALED;
 
 @ParametersAreNonnullByDefault
-public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback, IFluidTankCallback
+public class TEBarrel extends TETickableInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback, IFluidTankCallback
 {
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
@@ -102,8 +100,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
         }
         sealed = true;
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
-        markDirty();
-        TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick, sealed), world.provider.getDimension());
+        markForSync();
     }
 
     /**
@@ -135,8 +132,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public void setAndUpdateFluidTank(int fluidTankID)
     {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
+        markForSync();
     }
 
     @Override
@@ -181,8 +177,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 CapabilityFood.applyTrait(sealedStack, property.getTrait());
             }
         }
-
-        TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick, sealed), world.provider.getDimension());
+        markForSync();
     }
 
     public void onUnseal()
@@ -202,8 +197,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                 CapabilityFood.removeTrait(sealedStack, property.getTrait());
             }
         }
-
-        TerraFirmaCraft.getNetwork().sendToDimension(new PacketBarrelUpdate(this, recipe, sealedCalendarTick, sealed), world.provider.getDimension());
+        markForSync();
     }
 
     public void onReceivePacket(@Nullable BarrelRecipe recipe, long sealedCalendarTick, boolean sealed)
@@ -216,10 +210,10 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
     @Override
     public void update()
     {
+        super.update();
         if (!world.isRemote)
         {
             tickCounter++;
-
             if (tickCounter == 10)
             {
                 tickCounter = 0;
@@ -266,8 +260,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                         output.remove(0);
                         inventory.setStackInSlot(SLOT_ITEM, first);
                         surplus.addAll(output);
-                        IBlockState state = world.getBlockState(pos);
-                        world.notifyBlockUpdate(pos, state, state, 3);
+                        markForSync();
                         onSealed(); //run the sealed check again in case we have a new valid recipe.
                     }
                     else
@@ -291,9 +284,7 @@ public class TEBarrel extends TEInventory implements ITickable, IItemHandlerSide
                     inventory.setStackInSlot(SLOT_ITEM, first);
                     surplus.addAll(output);
                     instantRecipe.onRecipeComplete(world, pos);
-
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos, state, state, 3);
+                    markForSync();
                 }
                 else
                 {

@@ -144,7 +144,7 @@ public class TESluice extends TEBase implements ITickable
                                     entityItem.setDead();
                                     break;
                                 }
-                                updateBlock();
+                                markForBlockUpdate();
                             }
                         }
                     }
@@ -250,20 +250,13 @@ public class TESluice extends TEBase implements ITickable
         return false;
     }
 
-    private void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        markDirty();
-    }
-
     private void consumeSoil()
     {
         if (soil > 0 && hasFlow())
         {
             soil--;
             ticksRemaining = ConfigTFC.GENERAL.sluiceTicks;
-            updateBlock();
+            markForBlockUpdate();
         }
         else
         {
@@ -271,7 +264,7 @@ public class TESluice extends TEBase implements ITickable
             if (soil > 0)
             {
                 soil = 0;
-                updateBlock();
+                markForBlockUpdate();
             }
         }
     }

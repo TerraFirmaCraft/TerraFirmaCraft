@@ -49,7 +49,6 @@ public class OreProvider implements IWailaDataProvider, IWailaPlugin
     public void register(IWailaRegistrar registrar)
     {
         registrar.registerStackProvider(this, BlockOreTFC.class);
-        //registrar.registerHeadProvider(this, BlockOreTFC.class);
         registrar.registerBodyProvider(this, BlockOreTFC.class);
     }
 }

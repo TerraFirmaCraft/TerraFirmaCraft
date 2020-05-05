@@ -56,10 +56,10 @@ public final class TerraFirmaCraft
     public static final String MOD_NAME = "TerraFirmaCraft";
 
     @Mod.Instance
-    private static TerraFirmaCraft INSTANCE = null;
+    private static final TerraFirmaCraft INSTANCE = null;
 
     @SidedProxy(modId = MOD_ID, clientSide = "net.dries007.tfc.proxy.ClientProxy", serverSide = "net.dries007.tfc.proxy.ServerProxy")
-    private static IProxy proxy = null;
+    private static final IProxy proxy = null;
 
     static
     {
@@ -92,7 +92,7 @@ public final class TerraFirmaCraft
     }
 
     private final Logger log = LogManager.getLogger(MOD_ID);
-    private boolean isSignedBuild = true;
+    private final boolean isSignedBuild = true;
     private WorldTypeTFC worldTypeTFC;
     private SimpleNetworkWrapper network;
 
@@ -119,18 +119,12 @@ public final class TerraFirmaCraft
         network.registerMessage(new PacketStackFood.Handler(), PacketStackFood.class, ++id, Side.SERVER);
 
         // Received on client
-        network.registerMessage(new PacketAnvilUpdate.Handler(), PacketAnvilUpdate.class, ++id, Side.CLIENT);
-        network.registerMessage(new PacketCrucibleUpdate.Handler(), PacketCrucibleUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketChunkData.Handler(), PacketChunkData.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCapabilityContainerUpdate.Handler(), PacketCapabilityContainerUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketCalendarUpdate.Handler(), PacketCalendarUpdate.class, ++id, Side.CLIENT);
-        network.registerMessage(new PacketBarrelUpdate.Handler(), PacketBarrelUpdate.class, ++id, Side.CLIENT);
-        network.registerMessage(new PacketLoomUpdate.Handler(), PacketLoomUpdate.class, ++id, Side.CLIENT);
-        network.registerMessage(new PacketBellowsUpdate.Handler(), PacketBellowsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketFoodStatsUpdate.Handler(), PacketFoodStatsUpdate.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketFoodStatsReplace.Handler(), PacketFoodStatsReplace.class, ++id, Side.CLIENT);
         network.registerMessage(new PacketPlayerDataUpdate.Handler(), PacketPlayerDataUpdate.class, ++id, Side.CLIENT);
-        network.registerMessage(new PacketLargeVesselUpdate.Handler(), PacketLargeVesselUpdate.class, ++id, Side.CLIENT);
 
         EntitiesTFC.preInit();
         JsonConfigRegistry.INSTANCE.preInit(event.getModConfigurationDirectory());

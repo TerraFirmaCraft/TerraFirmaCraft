@@ -6,7 +6,6 @@
 package net.dries007.tfc.util.calendar;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 
 /**
  * This is implemented on TileEntities that need to receive updates whenever the calendar changes drastically
@@ -14,18 +13,22 @@ import net.minecraft.util.ITickable;
  *
  * @see CalendarTFC#runTransaction(long, long, Runnable)
  */
-public interface ICalendarTickable extends ITickable
+public interface ICalendarTickable
 {
+    default TileEntity getTileEntity()
+    {
+        return (TileEntity) this;
+    }
+
     /**
      * Here we check every tick for a calendar discrepancy. This only checks for differences in player time, and calls {@link ICalendarTickable#onCalendarUpdate(long playerTickDelta)} as necessary
      *
      * Implementations MUST call {@code ICalendarTickable.super.update()} in their implementation
      */
-    @Override
-    default void update()
+    @SuppressWarnings("ConstantConditions")
+    default void checkForCalendarUpdate()
     {
-        TileEntity te = (TileEntity) this;
-        //noinspection ConstantConditions
+        TileEntity te = getTileEntity();
         if (te.getWorld() != null && !te.getWorld().isRemote)
         {
             long playerTick = CalendarTFC.PLAYER_TIME.getTicks();

@@ -8,12 +8,16 @@ package net.dries007.tfc.compat.waila;
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 
 import mcp.mobius.waila.api.*;
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.objects.blocks.devices.BlockPitKiln;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
@@ -59,9 +63,17 @@ public class PitKilnProvider implements IWailaDataProvider, IWailaPlugin
         return currentTooltip;
     }
 
+    @Nonnull
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
+    {
+        return te.writeToNBT(tag);
+    }
+
     @Override
     public void register(IWailaRegistrar registrar)
     {
-        registrar.registerBodyProvider(this, BlockPitKiln.class);
+        registrar.registerBodyProvider(this, TEPitKiln.class);
+        registrar.registerNBTProvider(this, TEPitKiln.class);
     }
 }

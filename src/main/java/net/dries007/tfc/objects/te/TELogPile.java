@@ -189,7 +189,7 @@ public class TELogPile extends TEInventory implements ITickable
         burning = true;
         startBurningTick = CalendarTFC.PLAYER_TIME.getTicks();
         tryLightNearby();
-        markDirtyFast();
+        markDirty();
     }
 
     public int countLogs()

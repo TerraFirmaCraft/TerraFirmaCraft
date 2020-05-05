@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -210,9 +209,7 @@ public class TEPlacedItem extends TEInventory
         }
         else
         {
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 3); // sync TE
-            markDirty(); // make sure everything saves to disk
+            markForBlockUpdate();
         }
     }
 

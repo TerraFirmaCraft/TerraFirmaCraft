@@ -11,11 +11,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.network.PacketAnvilUpdate;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 
 public class ContainerAnvilPlan extends ContainerTE<TEAnvilTFC> implements IButtonHandler
@@ -35,8 +33,7 @@ public class ContainerAnvilPlan extends ContainerTE<TEAnvilTFC> implements IButt
             AnvilRecipe recipe = TFCRegistries.ANVIL.getValue(new ResourceLocation(recipeName));
             if (tile.setRecipe(recipe))
             {
-                // Send an update to the client
-                TerraFirmaCraft.getNetwork().sendToDimension(new PacketAnvilUpdate(tile), tile.getWorld().provider.getDimension());
+                tile.markForSync();
             }
 
             // Switch to anvil GUI

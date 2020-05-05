@@ -33,7 +33,7 @@ public class TEMetalSheet extends TEBase
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
         super.onDataPacket(net, pkt);
-        markBlockUpdate();
+        markForBlockUpdate();
     }
 
     /**
@@ -70,7 +70,7 @@ public class TEMetalSheet extends TEBase
         if (!world.isRemote)
         {
             faces[facing.getIndex()] = value;
-            markBlockUpdate();
+            markForBlockUpdate();
         }
     }
 

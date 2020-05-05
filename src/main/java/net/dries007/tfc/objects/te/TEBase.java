@@ -13,9 +13,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 /**
  * TE Implementation that syncs NBT on world / chunk load, and on block updates
@@ -70,12 +72,39 @@ public abstract class TEBase extends TileEntity
     }
 
     /**
-     * Marks the TE for syncing. Will send all normal NBT saved data to clients.
+     * Syncs the TE data to client via means of a block update
+     * Use for stuff that is updated infrequently, for data that is analogous to changing the state.
+     * DO NOT call every tick
      */
-    public void markBlockUpdate()
+    public void markForBlockUpdate()
     {
         IBlockState state = world.getBlockState(pos);
         world.notifyBlockUpdate(pos, state, state, 3);
         markDirty();
+    }
+
+    /**
+     * Marks a tile entity for syncing without sending a block update.
+     * Use preferentially over {@link TEBase#markForBlockUpdate()} if there's no reason to have a block update.
+     * For container based integer synchronization, see ITileFields
+     * DO NOT call every tick
+     */
+    public void markForSync()
+    {
+        sendVanillaUpdatePacket();
+        markDirty();
+    }
+
+    private void sendVanillaUpdatePacket()
+    {
+        SPacketUpdateTileEntity packet = getUpdatePacket();
+        if (packet != null && world instanceof WorldServer)
+        {
+            PlayerChunkMapEntry chunk = ((WorldServer) world).getPlayerChunkMap().getEntry(pos.getX() >> 4, pos.getZ() >> 4);
+            if (chunk != null)
+            {
+                chunk.sendPacket(packet);
+            }
+        }
     }
 }

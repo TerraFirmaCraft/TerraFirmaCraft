@@ -45,7 +45,11 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
 
     public ContainerSalad(InventoryPlayer playerInv)
     {
-        inventory = new ItemStackHandlerCallback(this, 7);
+        inventory = new ItemStackHandlerCallback(this, 7)
+        {
+            @Override
+            protected void onContentsChanged(int slot) {}
+        };
 
         // move bowls from inventory to bowl slot
         ItemStack bowl = playerInv.player.getHeldItemMainhand();
@@ -111,80 +115,81 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        // Check salad creation
-        if (skipOutputUpdates)
+        // This batches output updates, as we don't want to get stuck in an update loop.
+        if (!skipOutputUpdates)
         {
-            return; // cheeky hack to prevent output from getting updated in the middle of a shift click transaction
-        }
-        ItemStack bowlStack = inventory.getStackInSlot(SLOT_BOWLS);
-        if (!bowlStack.isEmpty())
-        {
-            // At least one bowl exists, so create a salad
-            float water = 0, saturation = 0;
-            float[] nutrition = new float[Nutrient.TOTAL];
-            int ingredientCount = 0;
-            int minIngredientCount = 64;
-            for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
+            ItemStack bowlStack = inventory.getStackInSlot(SLOT_BOWLS);
+            if (!bowlStack.isEmpty())
             {
-                ItemStack ingredient = inventory.getStackInSlot(i);
-                IFood food = ingredient.getCapability(CapabilityFood.CAPABILITY, null);
-                if (food != null)
+                // At least one bowl exists, so create a salad
+                float water = 0, saturation = 0;
+                float[] nutrition = new float[Nutrient.TOTAL];
+                int ingredientCount = 0;
+                int minIngredientCount = 64;
+                for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
                 {
-                    if (food.isRotten())
+                    ItemStack ingredient = inventory.getStackInSlot(i);
+                    IFood food = ingredient.getCapability(CapabilityFood.CAPABILITY, null);
+                    if (food != null)
                     {
-                        // Rotten food is not allowed
-                        ingredientCount = 0;
-                        break;
+                        if (food.isRotten())
+                        {
+                            // Rotten food is not allowed
+                            ingredientCount = 0;
+                            break;
+                        }
+                        water += food.getData().getWater();
+                        saturation += food.getData().getSaturation();
+                        float[] ingredientNutrition = food.getData().getNutrients();
+                        for (Nutrient nutrient : Nutrient.values())
+                        {
+                            nutrition[nutrient.ordinal()] += ingredientNutrition[nutrient.ordinal()];
+                        }
+                        ingredientCount++;
+                        if (ingredient.getCount() < minIngredientCount)
+                        {
+                            minIngredientCount = ingredient.getCount();
+                        }
                     }
-                    water += food.getData().getWater();
-                    saturation += food.getData().getSaturation();
-                    float[] ingredientNutrition = food.getData().getNutrients();
+                }
+                if (bowlStack.getCount() < ingredientCount)
+                {
+                    ingredientCount = bowlStack.getCount();
+                }
+                if (ingredientCount > 0)
+                {
+                    float multiplier = 0.75f; // salad multiplier
+                    water *= multiplier;
+                    saturation *= multiplier;
+                    Nutrient maxNutrient = null;
+                    float maxNutrientValue = 0;
                     for (Nutrient nutrient : Nutrient.values())
                     {
-                        nutrition[nutrient.ordinal()] += ingredientNutrition[nutrient.ordinal()];
+                        nutrition[nutrient.ordinal()] *= multiplier;
+                        if (nutrition[nutrient.ordinal()] > maxNutrientValue)
+                        {
+                            maxNutrientValue = nutrition[nutrient.ordinal()];
+                            maxNutrient = nutrient;
+                        }
                     }
-                    ingredientCount++;
-                    if (ingredient.getCount() < minIngredientCount)
-                    {
-                        minIngredientCount = ingredient.getCount();
-                    }
-                }
-            }
-            if (ingredientCount > 0)
-            {
-                float multiplier = 0.75f; // salad multiplier
-                water *= multiplier;
-                saturation *= multiplier;
-                Nutrient maxNutrient = null;
-                float maxNutrientValue = 0;
-                for (Nutrient nutrient : Nutrient.values())
-                {
-                    nutrition[nutrient.ordinal()] *= multiplier;
-                    if (nutrition[nutrient.ordinal()] > maxNutrientValue)
-                    {
-                        maxNutrientValue = nutrition[nutrient.ordinal()];
-                        maxNutrient = nutrient;
-                    }
-                }
 
-                if (maxNutrient != null)
-                {
-                    ItemStack salad = new ItemStack(getSaladItem(maxNutrient), minIngredientCount);
-                    IFood saladCap = salad.getCapability(CapabilityFood.CAPABILITY, null);
-                    if (saladCap instanceof ItemDynamicBowlFood.DynamicFoodHandler)
+                    if (maxNutrient != null)
                     {
-                        saladCap.setCreationDate(CapabilityFood.getRoundedCreationDate());
-                        ((ItemDynamicBowlFood.DynamicFoodHandler) saladCap).initCreationDataAndBowl(bowlStack.copy(), new FoodData(4, water, saturation, nutrition, Food.SALAD_VEGETABLE.getData().getDecayModifier()));
+                        ItemStack salad = new ItemStack(getSaladItem(maxNutrient), minIngredientCount);
+                        IFood saladCap = salad.getCapability(CapabilityFood.CAPABILITY, null);
+                        if (saladCap instanceof ItemDynamicBowlFood.DynamicFoodHandler)
+                        {
+                            saladCap.setCreationDate(CapabilityFood.getRoundedCreationDate());
+                            ((ItemDynamicBowlFood.DynamicFoodHandler) saladCap).initCreationDataAndBowl(bowlStack.copy(), new FoodData(4, water, saturation, nutrition, Food.SALAD_VEGETABLE.getData().getDecayModifier()));
+                        }
+                        inventory.setStackInSlot(SLOT_OUTPUT, salad);
+                        return;
                     }
-                    inventory.setStackInSlot(SLOT_OUTPUT, salad);
-                    return;
                 }
             }
+            // Failed to make a salad
+            inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
         }
-        // Failed to make a salad
-        skipOutputUpdates = true; // Since we can cheat... hehe
-        inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
-        skipOutputUpdates = false;
     }
 
     @Nonnull

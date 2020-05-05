@@ -41,7 +41,7 @@ import static net.minecraft.block.BlockHorizontal.FACING;
 
 @SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class TEBloomery extends TEInventory implements ICalendarTickable, ITickable
+public class TEBloomery extends TETickableInventory implements ICalendarTickable, ITickable
 {
     // Gets the internal block, should be charcoal pile/bloom
     private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
@@ -124,15 +124,51 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     @Override
     public void update()
     {
-        ICalendarTickable.super.update();
-        IBlockState state = world.getBlockState(pos);
-
+        super.update();
+        checkForCalendarUpdate();
         if (!world.isRemote && --delayTimer <= 0)
         {
-            delayTimer = 20;
-            // Update multiblock status
-            boolean updateClient = false;
+            IBlockState state = world.getBlockState(pos);
+            if (state.getValue(LIT))
+            {
+                if (--burnTicksLeft <= 0)
+                {
+                    burnTicksLeft = 0;
+                    if (!world.isRemote)
+                    {
+                        if (cachedRecipe == null && !oreStacks.isEmpty())
+                        {
+                            cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
+                            if (cachedRecipe == null)
+                            {
+                                this.dumpItems();
+                            }
+                        }
+                        if (cachedRecipe != null)
+                        {
+                            world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
 
+                            TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
+                            if (te != null)
+                            {
+                                te.setBloom(cachedRecipe.getOutput(oreStacks));
+                            }
+                        }
+
+                        oreStacks.clear();
+                        fuelStacks.clear();
+                        cachedRecipe = null; // Clear recipe
+
+                        updateSlagBlock(false);
+                        world.setBlockState(pos, state.withProperty(LIT, false));
+                        markDirty();
+                    }
+                }
+            }
+
+            delayTimer = 20;
+
+            // Update multiblock status
             int newMaxItems = BlockBloomery.getChimneyLevels(world, getInternalBlock()) * 8;
             EnumFacing direction = world.getBlockState(pos).getValue(FACING);
             if (!BlocksTFC.BLOOMERY.isFormed(world, getInternalBlock(), direction))
@@ -145,18 +181,18 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
             boolean turnOff = false;
             while (maxOre < oreStacks.size())
             {
-                updateClient = true;
                 turnOff = true;
                 // Structure lost one or more chimney levels
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), oreStacks.get(0));
                 oreStacks.remove(0);
+                markForSync();
             }
             while (maxFuel < fuelStacks.size())
             {
-                updateClient = true;
                 turnOff = true;
                 InventoryHelper.spawnItemStack(world, getExternalBlock().getX(), getExternalBlock().getY(), getExternalBlock().getZ(), fuelStacks.get(0));
                 fuelStacks.remove(0);
+                markForSync();
             }
             // Structure became compromised, unlit if needed
             if (turnOff && state.getValue(LIT))
@@ -183,52 +219,10 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
                 addItemsFromWorld();
                 if (oldFuel != fuelStacks.size() || oldOre != oreStacks.size())
                 {
-                    updateClient = true;
+                    markForSync();
                 }
             }
-
             updateSlagBlock(state.getValue(LIT));
-            if (updateClient)
-            {
-                // Send internal contents to client
-                world.notifyBlockUpdate(pos, state, state, 3);
-            }
-        }
-        if (state.getValue(LIT))
-        {
-            if (--burnTicksLeft <= 0)
-            {
-                burnTicksLeft = 0;
-                if (!world.isRemote)
-                {
-                    if (cachedRecipe == null && !oreStacks.isEmpty())
-                    {
-                        cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
-                        if (cachedRecipe == null)
-                        {
-                            this.dumpItems();
-                        }
-                    }
-                    if (cachedRecipe != null)
-                    {
-                        world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
-
-                        TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
-                        if (te != null)
-                        {
-                            te.setBloom(cachedRecipe.getOutput(oreStacks));
-                        }
-                    }
-
-                    oreStacks.clear();
-                    fuelStacks.clear();
-                    cachedRecipe = null; // Clear recipe
-
-                    updateSlagBlock(false);
-                    world.setBlockState(pos, state.withProperty(LIT, false));
-                    markDirty();
-                }
-            }
         }
     }
 
@@ -236,8 +230,7 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     public void onCalendarUpdate(long playerTickDelta)
     {
         burnTicksLeft = Math.max(0, burnTicksLeft - playerTickDelta);
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
+        markForSync();
     }
 
     @Override
@@ -261,8 +254,9 @@ public class TEBloomery extends TEInventory implements ICalendarTickable, ITicka
     {
         if (world.isRemote) return false;
         if (this.fuelStacks.size() < this.oreStacks.size() || this.oreStacks.isEmpty())
+        {
             return false;
-
+        }
         return isInternalBlockComplete();
     }
 

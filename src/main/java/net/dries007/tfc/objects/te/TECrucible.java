@@ -22,7 +22,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -34,7 +33,6 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.network.PacketCrucibleUpdate;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
@@ -44,7 +42,7 @@ import net.dries007.tfc.util.Helpers;
 
 @SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class TECrucible extends TEInventory implements ITickable, ITileFields, IItemHandlerSidedCallback
+public class TECrucible extends TETickableInventory implements ITickable, ITileFields, IItemHandlerSidedCallback
 {
     public static final int SLOT_INPUT_START = 0;
     public static final int SLOT_INPUT_END = 8;
@@ -89,116 +87,113 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
         int overflow = Math.max(0, alloy.getAmount() + amount - alloy.getMaxAmount()); // Amount which cannot be inserted
         alloy.add(metal, amount);
 
-        //Update crucible temperature to match
+        // Update crucible temperature to match
         temperature = metal.getMeltTemp();
         targetTemperature = metal.getMeltTemp();
 
-        TerraFirmaCraft.getNetwork().sendToAllTracking(new PacketCrucibleUpdate(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+        // Alloy changed, so sync to client
+        markForSync();
         return overflow;
     }
 
     @Override
     public void update()
     {
-        temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, (float) ConfigTFC.GENERAL.temperatureModifierHeating);
-        if (targetTemperature > 0)
+        super.update();
+        if (!world.isRemote)
         {
-            // Crucible target temperature decays constantly, since it is set by outside providers
-            targetTemperature -= (float) ConfigTFC.GENERAL.temperatureModifierHeating;
-        }
-        if (world.isRemote) return;
-
-        // Input draining
-        boolean needsClientUpdate = false;
-        boolean canFill = lastFillTimer <= 0;
-        for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
-        {
-            ItemStack inputStack = inventory.getStackInSlot(i);
-            IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-
-            if (cap != null)
+            temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, (float) ConfigTFC.GENERAL.temperatureModifierHeating);
+            if (targetTemperature > 0)
             {
-                // Always heat up the item regardless if it is melting or not
-                if (cap.getTemperature() < temperature)
+                // Crucible target temperature decays constantly, since it is set by outside providers
+                targetTemperature -= (float) ConfigTFC.GENERAL.temperatureModifierHeating;
+            }
+
+            // Input draining
+            boolean canFill = lastFillTimer <= 0;
+            for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
+            {
+                ItemStack inputStack = inventory.getStackInSlot(i);
+                IItemHeat cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                if (cap != null)
                 {
-                    CapabilityItemHeat.addTemp(cap);
-                }
-                if (cachedRecipes[i] != null)
-                {
-                    if (cachedRecipes[i].isValidTemperature(cap.getTemperature()))
+                    // Always heat up the item regardless if it is melting or not
+                    if (cap.getTemperature() < temperature)
                     {
-                        alloy.add(inputStack, cachedRecipes[i]);
-                        inventory.setStackInSlot(i, cachedRecipes[i].getOutputStack(inputStack));
-                        needsClientUpdate = true;
+                        CapabilityItemHeat.addTemp(cap);
+                    }
+                    if (cachedRecipes[i] != null)
+                    {
+                        if (cachedRecipes[i].isValidTemperature(cap.getTemperature()))
+                        {
+                            alloy.add(inputStack, cachedRecipes[i]);
+                            inventory.setStackInSlot(i, cachedRecipes[i].getOutputStack(inputStack));
+                            markForSync();
+                        }
                     }
                 }
-            }
-            // Try and drain fluid
-            if (cap instanceof IMoldHandler)
-            {
-                IMoldHandler mold = (IMoldHandler) cap;
-                if (canFill)
+                // Try and drain fluid
+                if (cap instanceof IMoldHandler)
                 {
-                    if (mold.isMolten())
+                    IMoldHandler mold = (IMoldHandler) cap;
+                    if (canFill)
                     {
-                        // Use mold.getMetal() to avoid off by one errors during draining
-                        Metal metal = mold.getMetal();
-                        FluidStack fluidStack = mold.drain(1, true);
-                        if (fluidStack != null && fluidStack.amount > 0)
+                        if (mold.isMolten())
                         {
-                            lastFillTimer = 5;
-                            if (!ConfigTFC.GENERAL.enableCruciblePouringAllSlots)
+                            // Use mold.getMetal() to avoid off by one errors during draining
+                            Metal metal = mold.getMetal();
+                            FluidStack fluidStack = mold.drain(1, true);
+                            if (fluidStack != null && fluidStack.amount > 0)
                             {
-                                canFill = false;
+                                lastFillTimer = 5;
+                                if (!ConfigTFC.GENERAL.enableCruciblePouringAllSlots)
+                                {
+                                    canFill = false;
+                                }
+                                alloy.add(metal, fluidStack.amount);
+                                markForSync();
                             }
-                            alloy.add(metal, fluidStack.amount);
-                            needsClientUpdate = true;
                         }
                     }
                 }
             }
-        }
-        if (lastFillTimer > 0)
-        {
-            lastFillTimer--;
-        }
-
-        // Output filling
-        ItemStack outputStack = inventory.getStackInSlot(SLOT_OUTPUT);
-        IItemHeat capOut = outputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-        if (capOut instanceof IMoldHandler)
-        {
-            IMoldHandler mold = (IMoldHandler) capOut;
-
-            // Check that the crucible metal is molten
-            Metal alloyMetal = alloy.getResult();
-            if (temperature > alloyMetal.getMeltTemp())
+            if (lastFillTimer > 0)
             {
-                // Fill from the current alloy
-                int amountToFill = alloy.removeAlloy(1, true);
-                if (amountToFill > 0)
+                lastFillTimer--;
+            }
+
+            // Output filling
+            ItemStack outputStack = inventory.getStackInSlot(SLOT_OUTPUT);
+            IItemHeat capOut = outputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (capOut instanceof IMoldHandler)
+            {
+                IMoldHandler mold = (IMoldHandler) capOut;
+
+                // Check that the crucible metal is molten
+                Metal alloyMetal = alloy.getResult();
+                if (temperature > alloyMetal.getMeltTemp())
                 {
-                    // Do fill of the mold
-                    Fluid metalFluid = FluidsTFC.getFluidFromMetal(alloyMetal);
-                    FluidStack fluidStack = new FluidStack(metalFluid, amountToFill);
-                    int amountFilled = mold.fill(fluidStack, true);
-
-                    if (amountFilled > 0)
+                    // Fill from the current alloy
+                    int amountToFill = alloy.removeAlloy(1, true);
+                    if (amountToFill > 0)
                     {
-                        // Actually remove fluid from the alloy
-                        alloy.removeAlloy(amountFilled, false);
+                        // Do fill of the mold
+                        Fluid metalFluid = FluidsTFC.getFluidFromMetal(alloyMetal);
+                        FluidStack fluidStack = new FluidStack(metalFluid, amountToFill);
+                        int amountFilled = mold.fill(fluidStack, true);
 
-                        // Set the output item to high temperature
-                        capOut.setTemperature(temperature);
-                        needsClientUpdate = true;
+                        if (amountFilled > 0)
+                        {
+                            // Actually remove fluid from the alloy
+                            alloy.removeAlloy(amountFilled, false);
+
+                            // Set the output item to high temperature
+                            capOut.setTemperature(temperature);
+                            markForSync();
+                        }
                     }
                 }
             }
-        }
-
-        if (needsClientUpdate)
-        {
-            TerraFirmaCraft.getNetwork().sendToAllTracking(new PacketCrucibleUpdate(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
         }
     }
 
@@ -276,7 +271,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
         {
             cachedRecipes[i] = HeatRecipe.get(inventory.getStackInSlot(i));
         }
-
     }
 
     @Override
@@ -285,7 +279,6 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     {
         nbt.setTag("alloy", alloy.serializeNBT());
         nbt.setFloat("temp", temperature);
-
         return super.writeToNBT(nbt);
     }
 
@@ -316,7 +309,7 @@ public class TECrucible extends TEInventory implements ITickable, ITileFields, I
     @Override
     public void onBreakBlock(World world, BlockPos pos, IBlockState state)
     {
-        //Only carry to itemstack the alloy fluid
+        // Only carry to itemstack the alloy fluid
         super.onBreakBlock(world, pos, state);
         ItemStack stack = new ItemStack(BlocksTFC.CRUCIBLE);
         if (alloy.getAmount() > 0)

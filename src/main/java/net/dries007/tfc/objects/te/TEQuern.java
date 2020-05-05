@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.te;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
@@ -78,7 +77,7 @@ public class TEQuern extends TEInventory implements ITickable
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        updateBlock();
+        markForBlockUpdate();
         if (slot == SLOT_HANDSTONE)
         {
             hasHandstone = OreDictionaryHelper.doesStackMatchOre(inventory.getStackInSlot(SLOT_HANDSTONE), "handstone");
@@ -126,7 +125,7 @@ public class TEQuern extends TEInventory implements ITickable
     public void grind()
     {
         this.rotationTimer = 90;
-        updateBlock();
+        markForBlockUpdate();
     }
 
     @Override
@@ -162,13 +161,6 @@ public class TEQuern extends TEInventory implements ITickable
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(getPos(), getPos().add(1, 2, 1));
-    }
-
-    private void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        markDirty();
     }
 
     private void grindItem()

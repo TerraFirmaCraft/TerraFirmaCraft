@@ -7,9 +7,11 @@ package net.dries007.tfc.objects.te;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -21,7 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.util.IBellowsConsumerBlock;
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.network.PacketBellowsUpdate;
 import net.dries007.tfc.objects.blocks.devices.BlockCharcoalForge;
 import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
 
@@ -33,7 +34,7 @@ public class TEBellows extends TEBase
     public static final Vec3i OFFSET_LEVEL = new Vec3i(1, 0, 0);
     public static final Vec3i OFFSET_INSET = new Vec3i(1, -1, 0);
 
-    private static final Set<Vec3i> offsets = new HashSet<>();
+    private static final Set<Vec3i> OFFSETS = new HashSet<>();
     private static final int BELLOWS_AIR = 200;
 
     static
@@ -56,7 +57,7 @@ public class TEBellows extends TEBase
      */
     public static void addBellowsOffset(Vec3i offset)
     {
-        offsets.add(offset);
+        OFFSETS.add(offset);
     }
 
     private long lastPushed = 0L;
@@ -73,11 +74,6 @@ public class TEBellows extends TEBase
         return 0.125;
     }
 
-    public void onReceivePacket(long lastPushed)
-    {
-        this.lastPushed = lastPushed;
-    }
-
     public boolean onRightClick()
     {
         long time = world.getTotalWorldTime() - lastPushed;
@@ -88,11 +84,11 @@ public class TEBellows extends TEBase
         if (!world.isRemote)
         {
             lastPushed = world.getTotalWorldTime();
-            TerraFirmaCraft.getNetwork().sendToDimension(new PacketBellowsUpdate(this, lastPushed), world.provider.getDimension());
+            markForBlockUpdate();
         }
 
         EnumFacing direction = world.getBlockState(pos).getValue(FACING); // It is a better idea to inherit the direction directly from the block.
-        for (Vec3i offset : offsets)
+        for (Vec3i offset : OFFSETS)
         {
             BlockPos posx = pos.up(offset.getY())
                 .offset(direction, offset.getX())
@@ -119,5 +115,20 @@ public class TEBellows extends TEBase
         TerraFirmaCraft.getLog().debug("Debugging Bellows");
         TerraFirmaCraft.getLog().debug("Now: {} | Then: {} | Difference: {}", world.getTotalWorldTime(), lastPushed, (world.getTotalWorldTime() - lastPushed));
         TerraFirmaCraft.getLog().debug("Total Height: {}", getHeight());
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        lastPushed = nbt.getLong("lastPushed");
+        super.readFromNBT(nbt);
+    }
+
+    @Nonnull
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setLong("lastPushed", lastPushed);
+        return super.writeToNBT(nbt);
     }
 }
