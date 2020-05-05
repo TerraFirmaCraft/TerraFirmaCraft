@@ -316,6 +316,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         }
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
+        sealed = nbt.getBoolean("sealed");
 
         surplus.clear();
         if (nbt.hasKey("surplus"))
@@ -325,11 +326,6 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
             {
                 surplus.add(new ItemStack(surplusItems.getCompoundTagAt(i)));
             }
-        }
-
-        if (sealedTick > 0)
-        {
-            sealed = true;
         }
 
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
@@ -342,6 +338,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
         nbt.setLong("sealedTick", sealedTick);
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+        nbt.setBoolean("sealed", sealed);
 
         if (!surplus.isEmpty())
         {
