@@ -27,12 +27,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
 {
     private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_chick.png");
+    private static final ResourceLocation MALE_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_male.png");
+    private static final ResourceLocation FEMALE_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_female.png");
 
-    private static final ResourceLocation MALE_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_male_young.png");
-    private static final ResourceLocation MALE_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_male_old.png");
-
-    private static final ResourceLocation FEMALE_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_female_young.png");
-    private static final ResourceLocation FEMALE_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_female_old.png");
 
     public RenderPheasantTFC(RenderManager manager)
     {
@@ -57,11 +54,11 @@ public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
         }
         else if (chicken.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            return chicken.getAge() == IAnimalTFC.Age.OLD ? MALE_OLD : MALE_YOUNG;
+            return MALE_TEXTURE;
         }
         else
         {
-            return chicken.getAge() == IAnimalTFC.Age.OLD ? FEMALE_OLD : FEMALE_YOUNG;
+            return FEMALE_TEXTURE;
         }
     }
 
