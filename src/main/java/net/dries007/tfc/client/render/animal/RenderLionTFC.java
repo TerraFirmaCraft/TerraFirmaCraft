@@ -24,12 +24,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderLionTFC extends RenderLiving<EntityLionTFC>
 {
-    private static final ResourceLocation LION_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/lion_young.png");
-    private static final ResourceLocation LION_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/lion_old.png");
-
-    private static final ResourceLocation LIONESS_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/lioness_young.png");
-    private static final ResourceLocation LIONESS_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/lioness_old.png");
-
+    private static final ResourceLocation LION_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/lion.png");
+    private static final ResourceLocation LIONESS_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/lioness.png");
 
     public RenderLionTFC(RenderManager manager)
     {
@@ -50,11 +46,11 @@ public class RenderLionTFC extends RenderLiving<EntityLionTFC>
 
         if (lion.getGender() != EntityAnimalTFC.Gender.MALE || percent < .75f)
         {
-            return lion.getAge() == IAnimalTFC.Age.OLD ? LIONESS_OLD : LIONESS_YOUNG;
+            return LION_TEXTURE;
         }
         else
         {
-            return lion.getAge() == IAnimalTFC.Age.OLD ? LION_OLD : LION_YOUNG;
+            return LIONESS_TEXTURE;
         }
     }
 
