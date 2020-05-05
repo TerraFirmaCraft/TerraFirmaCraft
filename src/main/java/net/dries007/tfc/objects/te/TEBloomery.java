@@ -55,7 +55,6 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
     protected long lastPlayerTick; // Last player tick this bloomery was ticked (for purposes of catching up)
 
     protected BlockPos internalBlock = null, externalBlock = null;
-
     protected BloomeryRecipe cachedRecipe = null;
 
     public TEBloomery()
@@ -134,35 +133,31 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
                 if (--burnTicksLeft <= 0)
                 {
                     burnTicksLeft = 0;
-                    if (!world.isRemote)
+                    if (cachedRecipe == null && !oreStacks.isEmpty())
                     {
-                        if (cachedRecipe == null && !oreStacks.isEmpty())
+                        cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
+                        if (cachedRecipe == null)
                         {
-                            cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
-                            if (cachedRecipe == null)
-                            {
-                                this.dumpItems();
-                            }
+                            dumpItems();
                         }
-                        if (cachedRecipe != null)
-                        {
-                            world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
-
-                            TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
-                            if (te != null)
-                            {
-                                te.setBloom(cachedRecipe.getOutput(oreStacks));
-                            }
-                        }
-
-                        oreStacks.clear();
-                        fuelStacks.clear();
-                        cachedRecipe = null; // Clear recipe
-
-                        updateSlagBlock(false);
-                        world.setBlockState(pos, state.withProperty(LIT, false));
-                        markDirty();
                     }
+                    if (cachedRecipe != null)
+                    {
+                        world.setBlockState(getInternalBlock(), BlocksTFC.BLOOM.getDefaultState());
+                        TEBloom te = Helpers.getTE(world, getInternalBlock(), TEBloom.class);
+                        if (te != null)
+                        {
+                            te.setBloom(cachedRecipe.getOutput(oreStacks));
+                        }
+                    }
+
+                    oreStacks.clear();
+                    fuelStacks.clear();
+                    cachedRecipe = null; // Clear recipe
+
+                    updateSlagBlock(false);
+                    world.setBlockState(pos, state.withProperty(LIT, false));
+                    markDirty();
                 }
             }
 
