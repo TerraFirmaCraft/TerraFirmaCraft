@@ -111,29 +111,38 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn)
     {
         Metal metal = getMetal(stack);
         if (metal != null)
         {
-            // Like classic, "Metal: xx units"
-            String info = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", getSmeltAmount(stack)));
-            // not like Classic, "Metal: xx total units" Adds the whole stacks worth up.
-            String stackTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.total", getSmeltAmount(stack) * stack.getCount()));
-
+            int smeltAmount = this.getSmeltAmount(stack);
             switch (ConfigTFC.CLIENT.oreTooltipMode)
             {
                 case 0:
                     break;
                 case 1:
+                    // Like classic, "Metal: xx units"
+                    String info = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", smeltAmount));
                     tooltip.add(info);
                     break;
                 case 2:
+                    // not like Classic, "Metal: xx total units" Adds the whole stacks worth up.
+                    String stackTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.total", smeltAmount * stack.getCount()));
                     tooltip.add(stackTotal);
                     break;
                 case 3:
-                    tooltip.add(info);
-                    tooltip.add(stackTotal);
+                    // All info: "Metal: xx units / xx total"
+                    String infoTotal;
+                    if(stack.getCount() > 1)
+                    {
+                        infoTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.info_total", smeltAmount, smeltAmount * stack.getCount()));
+                    }
+                    else
+                    {
+                        infoTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", smeltAmount));
+                    }
+                    tooltip.add(infoTotal);
             }
         }
     }
