@@ -79,7 +79,6 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.network.PacketCalendarUpdate;
-import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.network.PacketPlayerDataUpdate;
 import net.dries007.tfc.objects.blocks.BlockFluidTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -442,11 +441,9 @@ public final class CommonEventHandler
             CapabilityContainerListener.addTo(player.inventoryContainer, player);
 
             // Food Stats
-            FoodStats originalStats = player.getFoodStats();
-            if (!(originalStats instanceof FoodStatsTFC))
+            FoodStatsTFC.replaceFoodStats(player);
+            if (player.getFoodStats() instanceof IFoodStatsTFC)
             {
-                player.foodStats = new FoodStatsTFC(player, originalStats);
-
                 // Also need to read the food stats from nbt, as they were not present when the player was loaded
                 MinecraftServer server = player.world.getMinecraftServer();
                 if (server != null)
@@ -459,11 +456,9 @@ public final class CommonEventHandler
                         player.foodStats.readNBT(nbt);
                     }
                 }
-
-                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
             }
 
-            // Skills
+            // Skills / Player Data
             IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
             if (skills != null)
             {
@@ -502,14 +497,9 @@ public final class CommonEventHandler
             CapabilityContainerListener.addTo(player.inventoryContainer, player);
 
             // Food Stats
-            FoodStats originalStats = event.player.getFoodStats();
-            if (!(originalStats instanceof FoodStatsTFC))
-            {
-                event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
-                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
-            }
+            FoodStatsTFC.replaceFoodStats(player);
 
-            // Skills
+            // Skills / Player data
             IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
             if (skills != null)
             {
@@ -555,12 +545,7 @@ public final class CommonEventHandler
             CapabilityContainerListener.addTo(player.inventoryContainer, player);
 
             // Food Stats
-            FoodStats originalStats = event.player.getFoodStats();
-            if (!(originalStats instanceof FoodStatsTFC))
-            {
-                event.player.foodStats = new FoodStatsTFC(event.player, originalStats);
-                TerraFirmaCraft.getNetwork().sendTo(new PacketFoodStatsReplace(), (EntityPlayerMP) event.player);
-            }
+            FoodStatsTFC.replaceFoodStats(player);
 
             // Skills
             IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
