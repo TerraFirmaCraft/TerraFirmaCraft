@@ -41,13 +41,13 @@ public class ShapelessSaltingRecipe extends ShapelessOreRecipe
         for (int i = 0; i < inv.getSizeInventory(); i++)
         {
             ItemStack stack = inv.getStackInSlot(i).copy();
+            stack.setCount(1);
             IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
-            if (food != null)
+            if (food != null && !food.getTraits().contains(FoodTrait.SALTED))
             {
                 // Only apply salt to first food item found
                 CapabilityFood.applyTrait(food, FoodTrait.SALTED);
-                result = stack.copy();
-                result.setCount(1);
+                result = stack;
                 break;
             }
         }

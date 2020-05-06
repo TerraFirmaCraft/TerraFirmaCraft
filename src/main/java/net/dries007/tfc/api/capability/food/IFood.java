@@ -130,17 +130,17 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
                 switch (ConfigTFC.CLIENT.decayTooltipMode)
                 {
                     case 0:
-                        return;
+                        break;
                     case 1:
                         text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
-                        return;
+                        break;
                     case 2:
                         text.add(TextFormatting.BLUE + I18n.format("tfc.tooltip.food_expiry_date.days", String.valueOf(ICalendar.getTotalDays(daysToRotInTicks))));
-                        return;
+                        break;
                     case 3:
                         text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
                         text.add(TextFormatting.BLUE + I18n.format("tfc.tooltip.food_expiry_date.days", String.valueOf(ICalendar.getTotalDays(daysToRotInTicks))));
-                        return;
+                        break;
                 }
             }
         }
