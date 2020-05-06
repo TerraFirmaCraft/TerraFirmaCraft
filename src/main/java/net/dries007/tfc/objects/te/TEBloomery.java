@@ -34,7 +34,6 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.devices.BlockBloomery;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
 import static net.minecraft.block.BlockHorizontal.FACING;
@@ -127,7 +126,7 @@ public class TEBloomery extends TETickableInventory implements ITickable
             IBlockState state = world.getBlockState(pos);
             if (state.getValue(LIT))
             {
-                if (this.getReaminingTicks() <= 0)
+                if (this.getRemainingTicks() <= 0)
                 {
                     if (cachedRecipe == null && !oreStacks.isEmpty())
                     {
@@ -215,7 +214,7 @@ public class TEBloomery extends TETickableInventory implements ITickable
         }
     }
 
-    public long getReaminingTicks()
+    public long getRemainingTicks()
     {
         return ConfigTFC.GENERAL.bloomeryTime - (CalendarTFC.PLAYER_TIME.getTicks() - litTick);
     }
