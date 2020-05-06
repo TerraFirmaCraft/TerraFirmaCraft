@@ -63,7 +63,17 @@ public class CapabilityContainerListener implements IContainerListener
      */
     public static void addTo(Container container, EntityPlayerMP player)
     {
-        container.addListener(CAPABILITY_LISTENERS.computeIfAbsent(player, CapabilityContainerListener::new));
+        IContainerListener listener = CAPABILITY_LISTENERS.computeIfAbsent(player, CapabilityContainerListener::new);
+        try
+        {
+            container.addListener(listener);
+        }
+        catch (IllegalArgumentException e)
+        {
+            // Listener already listening, this is simpler than ATing and checking if it is
+            listener.sendAllContents(container, container.getInventory());
+            container.detectAndSendChanges();
+        }
     }
 
     /**

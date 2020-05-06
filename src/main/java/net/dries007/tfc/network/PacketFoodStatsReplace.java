@@ -6,7 +6,6 @@
 package net.dries007.tfc.network;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.FoodStats;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -14,7 +13,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
-import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 
 /**
  * This packet is send to client to signal that it may need to replace the vanilla FoodStats with a TFC version
@@ -32,11 +30,7 @@ public class PacketFoodStatsReplace implements IMessageEmpty
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    FoodStats stats = player.getFoodStats();
-                    if (!(stats instanceof IFoodStatsTFC))
-                    {
-                        player.foodStats = new FoodStatsTFC(player, stats);
-                    }
+                    FoodStatsTFC.replaceFoodStats(player);
                 }
             });
             return null;
