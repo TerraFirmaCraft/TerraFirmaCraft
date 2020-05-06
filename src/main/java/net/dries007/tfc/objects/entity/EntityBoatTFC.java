@@ -113,7 +113,12 @@ public class EntityBoatTFC extends EntityBoat
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        super.onUpdate();
+        if (!this.world.isRemote)
+        {
+            this.setFlag(6, this.isGlowing());
+        }
+
+        this.onEntityUpdate();
         this.tickLerp();
 
         if (this.canPassengerSteer())
