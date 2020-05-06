@@ -44,7 +44,7 @@ public class BloomeryProvider implements IWailaDataProvider, IWailaPlugin
             {
                 List<ItemStack> oreStacks = bloomery.getOreStacks();
                 BloomeryRecipe recipe = oreStacks.size() > 0 ? BloomeryRecipe.get(oreStacks.get(0)) : null;
-                long remainingMinutes = Math.round(bloomery.getBurnTicksLeft() / 1200.0f);
+                long remainingMinutes = Math.round(bloomery.getReaminingTicks() / 1200.0f);
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.remaining", remainingMinutes).getFormattedText());
                 if (recipe != null)
                 {
