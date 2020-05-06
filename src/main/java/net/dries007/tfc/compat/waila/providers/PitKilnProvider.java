@@ -3,34 +3,32 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.compat.waila;
+package net.dries007.tfc.compat.waila.providers;
 
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-import mcp.mobius.waila.api.*;
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.compat.waila.interfaces.IWailaBlock;
 import net.dries007.tfc.objects.te.TEPitKiln;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
-@WailaPlugin
-public class PitKilnProvider implements IWailaDataProvider, IWailaPlugin
+public class PitKilnProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getWailaBody(ItemStack itemStack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
     {
-        if (accessor.getTileEntity() instanceof TEPitKiln)
+        TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
+        if (te != null)
         {
-            TEPitKiln te = (TEPitKiln) accessor.getTileEntity();
             boolean isLit = te.isLit();
 
             if (isLit)
@@ -65,15 +63,15 @@ public class PitKilnProvider implements IWailaDataProvider, IWailaPlugin
 
     @Nonnull
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
+    public List<Class<?>> getBodyClassList()
     {
-        return te.writeToNBT(tag);
+        return Collections.singletonList(TEPitKiln.class);
     }
 
+    @Nonnull
     @Override
-    public void register(IWailaRegistrar registrar)
+    public List<Class<?>> getNBTClassList()
     {
-        registrar.registerBodyProvider(this, TEPitKiln.class);
-        registrar.registerNBTProvider(this, TEPitKiln.class);
+        return Collections.singletonList(TEPitKiln.class);
     }
 }

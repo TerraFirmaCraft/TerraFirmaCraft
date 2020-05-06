@@ -3,13 +3,13 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.compat.waila;
+package net.dries007.tfc.compat.waila.providers;
 
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -19,27 +19,27 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import mcp.mobius.waila.api.*;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeableMeasurableMetal;
 import net.dries007.tfc.api.recipes.BloomeryRecipe;
+import net.dries007.tfc.compat.waila.interfaces.IWailaBlock;
 import net.dries007.tfc.objects.blocks.devices.BlockBloomery;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.te.TEBloom;
 import net.dries007.tfc.objects.te.TEBloomery;
 
-@WailaPlugin
-public class BloomeryProvider implements IWailaDataProvider, IWailaPlugin
+public class BloomeryProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getWailaBody(ItemStack itemStack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
     {
-        if (accessor.getTileEntity() instanceof TEBloomery)
+        IBlockState state = world.getBlockState(pos);
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TEBloomery)
         {
-            TEBloomery bloomery = (TEBloomery) accessor.getTileEntity();
-            IBlockState state = accessor.getBlockState();
+            TEBloomery bloomery = (TEBloomery)tileEntity;
             if (state.getValue(ILightableBlock.LIT))
             {
                 List<ItemStack> oreStacks = bloomery.getOreStacks();
@@ -61,14 +61,14 @@ public class BloomeryProvider implements IWailaDataProvider, IWailaPlugin
             {
                 int ores = bloomery.getOreStacks().size();
                 int fuel = bloomery.getFuelStacks().size();
-                int max = BlockBloomery.getChimneyLevels(accessor.getWorld(), bloomery.getInternalBlock()) * 8;
+                int max = BlockBloomery.getChimneyLevels(world, bloomery.getInternalBlock()) * 8;
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.bloomery.ores", ores, max).getFormattedText());
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.bloomery.fuel", fuel, max).getFormattedText());
             }
         }
-        else if (accessor.getTileEntity() instanceof TEBloom)
+        else if (tileEntity instanceof TEBloom)
         {
-            TEBloom bloom = (TEBloom) accessor.getTileEntity();
+            TEBloom bloom = (TEBloom)tileEntity;
             IItemHandler cap = bloom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             if (cap != null)
             {
@@ -86,18 +86,15 @@ public class BloomeryProvider implements IWailaDataProvider, IWailaPlugin
 
     @Nonnull
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
+    public List<Class<?>> getBodyClassList()
     {
-        return te.writeToNBT(tag);
+        return ImmutableList.of(TEBloom.class, TEBloomery.class);
     }
 
+    @Nonnull
     @Override
-    public void register(IWailaRegistrar registrar)
+    public List<Class<?>> getNBTClassList()
     {
-        registrar.registerBodyProvider(this, TEBloomery.class);
-        registrar.registerBodyProvider(this, TEBloom.class);
-
-        registrar.registerNBTProvider(this, TEBloomery.class);
-        registrar.registerNBTProvider(this, TEBloom.class);
+        return ImmutableList.of(TEBloom.class, TEBloomery.class);
     }
 }

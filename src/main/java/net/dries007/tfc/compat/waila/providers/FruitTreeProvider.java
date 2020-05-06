@@ -3,30 +3,34 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.compat.waila;
+package net.dries007.tfc.compat.waila.providers;
 
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 
-import mcp.mobius.waila.api.*;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.compat.waila.interfaces.IWailaBlock;
 import net.dries007.tfc.objects.blocks.agriculture.BlockFruitTreeLeaves;
 import net.dries007.tfc.util.calendar.Month;
 
-@WailaPlugin
-public class FruitTreeProvider implements IWailaDataProvider, IWailaPlugin
+public class FruitTreeProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getWailaBody(ItemStack itemStack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
     {
-        if (accessor.getBlock() instanceof BlockFruitTreeLeaves)
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockFruitTreeLeaves)
         {
             currentTooltip.add(new TextComponentTranslation("waila.tfc.agriculture.harvesting_months").getFormattedText());
-            BlockFruitTreeLeaves b = (BlockFruitTreeLeaves) accessor.getBlock();
+            BlockFruitTreeLeaves b = (BlockFruitTreeLeaves) state.getBlock();
             for (Month month : Month.values())
             {
                 if (b.tree.isHarvestMonth(month))
@@ -38,9 +42,10 @@ public class FruitTreeProvider implements IWailaDataProvider, IWailaPlugin
         return currentTooltip;
     }
 
+    @Nonnull
     @Override
-    public void register(IWailaRegistrar registrar)
+    public List<Class<?>> getBodyClassList()
     {
-        registrar.registerBodyProvider(this, BlockFruitTreeLeaves.class);
+        return Collections.singletonList(BlockFruitTreeLeaves.class);
     }
 }

@@ -3,60 +3,64 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.compat.waila;
+package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import mcp.mobius.waila.api.*;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
-import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
+import net.dries007.tfc.compat.waila.interfaces.IWailaBlock;
 import net.dries007.tfc.objects.te.TEBarrel;
+import net.dries007.tfc.util.Helpers;
 
-@WailaPlugin
-public class BarrelProvider implements IWailaDataProvider, IWailaPlugin
+public class BarrelProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getWailaHead(ItemStack itemStack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getHeadTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
-        if (accessor.getBlock() instanceof BlockBarrel && accessor.getTileEntity() instanceof TEBarrel)
+        List<String> tooltip = new ArrayList<>();
+        IBlockState state = world.getBlockState(pos);
+        TEBarrel te = Helpers.getTE(world, pos, TEBarrel.class);
+        if (te != null)
         {
-            BlockBarrel b = (BlockBarrel) accessor.getBlock();
-            TEBarrel te = (TEBarrel) accessor.getTileEntity();
-
             if (te.isSealed())
             {
-                currentTooltip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".sealed.name").getFormattedText());
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.barrel.sealed", te.getSealedDate()).getFormattedText());
+                tooltip.add(TextFormatting.WHITE.toString() + new TextComponentTranslation(state.getBlock().getTranslationKey() + ".sealed.name").getFormattedText());
             }
             else
             {
-                currentTooltip.set(0, TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".name").getFormattedText());
+                tooltip.add(TextFormatting.WHITE.toString() + new TextComponentTranslation(state.getBlock().getTranslationKey() + ".name").getFormattedText());
             }
         }
-        return currentTooltip;
+        return tooltip;
     }
 
     @Nonnull
     @Override
-    public List<String> getWailaBody(ItemStack itemStack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
     {
-        if (accessor.getTileEntity() instanceof TEBarrel)
+        TEBarrel te = Helpers.getTE(world, pos, TEBarrel.class);
+        if (te != null)
         {
-            TEBarrel te = (TEBarrel) accessor.getTileEntity();
             IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
             FluidStack fluid = fluidHandler != null ? fluidHandler.drain(Integer.MAX_VALUE, false) : null;
 
             if (te.isSealed())
             {
+                currentTooltip.add(new TextComponentTranslation("waila.tfc.barrel.sealed", te.getSealedDate()).getFormattedText());
                 BarrelRecipe recipe = te.getRecipe();
                 if (recipe != null)
                 {
@@ -75,10 +79,17 @@ public class BarrelProvider implements IWailaDataProvider, IWailaPlugin
         return currentTooltip;
     }
 
+    @Nonnull
     @Override
-    public void register(IWailaRegistrar registrar)
+    public List<Class<?>> getHeadClassList()
     {
-        registrar.registerHeadProvider(this, BlockBarrel.class);
-        registrar.registerBodyProvider(this, BlockBarrel.class);
+        return Collections.singletonList(TEBarrel.class);
+    }
+
+    @Nonnull
+    @Override
+    public List<Class<?>> getBodyClassList()
+    {
+        return Collections.singletonList(TEBarrel.class);
     }
 }
