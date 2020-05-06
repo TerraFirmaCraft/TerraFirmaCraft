@@ -68,8 +68,7 @@ public class AnvilRecipeSplitting extends AnvilRecipeMeasurable
                     IForgeable cap = dump.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
                     if (cap instanceof IForgeableMeasurableMetal)
                     {
-                        cap.setWork(0); //Reset work without resetting temp
-                        cap.setRecipe((ResourceLocation) null);
+                        cap.reset();
                         ((IForgeableMeasurableMetal) cap).setMetalAmount(splitAmount);
                         ((IForgeableMeasurableMetal) cap).setMetal(metal);
                     }
@@ -81,8 +80,7 @@ public class AnvilRecipeSplitting extends AnvilRecipeMeasurable
                     IForgeable cap = dumpSurplus.getCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
                     if (cap instanceof IForgeableMeasurableMetal)
                     {
-                        cap.setWork(0); //Reset work without resetting temp
-                        cap.setRecipe((ResourceLocation) null);
+                        cap.reset();
                         ((IForgeableMeasurableMetal) cap).setMetalAmount(surplus);
                         ((IForgeableMeasurableMetal) cap).setMetal(metal);
                     }
