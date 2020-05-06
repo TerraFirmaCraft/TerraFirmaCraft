@@ -41,7 +41,7 @@ import static net.minecraft.block.BlockHorizontal.FACING;
 
 @SuppressWarnings("WeakerAccess")
 @ParametersAreNonnullByDefault
-public class TEBloomery extends TETickableInventory implements ICalendarTickable, ITickable
+public class TEBloomery extends TETickableInventory implements ITickable
 {
     // Gets the internal block, should be charcoal pile/bloom
     private static final Vec3i OFFSET_INTERNAL = new Vec3i(1, 0, 0);
@@ -50,9 +50,8 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
     protected final List<ItemStack> oreStacks = new ArrayList<>();
     protected final List<ItemStack> fuelStacks = new ArrayList<>();
 
-    protected int maxFuel = 0, maxOre = 0, delayTimer = 0; // Helper variables, not necessary to serialize
-    protected long burnTicksLeft; // Ticks left to finish the current operation
-    protected long lastPlayerTick; // Last player tick this bloomery was ticked (for purposes of catching up)
+    protected int maxFuel = 0, maxOre = 0; // Helper variables, not necessary to serialize
+    protected long litTick; // Tick that started the process
 
     protected BlockPos internalBlock = null, externalBlock = null;
     protected BloomeryRecipe cachedRecipe = null;
@@ -60,7 +59,6 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
     public TEBloomery()
     {
         super(0);
-        lastPlayerTick = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
@@ -79,7 +77,7 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
         {
             fuelStacks.add(new ItemStack(fuels.getCompoundTagAt(i)));
         }
-        burnTicksLeft = tag.getLong("burnTicksLeft");
+        litTick = tag.getLong("litTick");
         super.readFromNBT(tag);
     }
 
@@ -99,7 +97,7 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
             fuels.appendTag(stack.serializeNBT());
         }
         tag.setTag("fuels", fuels);
-        tag.setLong("burnTicksLeft", burnTicksLeft);
+        tag.setLong("litTick", litTick);
         return super.writeToNBT(tag);
     }
 
@@ -124,15 +122,13 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
     public void update()
     {
         super.update();
-        checkForCalendarUpdate();
-        if (!world.isRemote && --delayTimer <= 0)
+        if (!world.isRemote && world.getTotalWorldTime() % 20 == 0)
         {
             IBlockState state = world.getBlockState(pos);
             if (state.getValue(LIT))
             {
-                if (--burnTicksLeft <= 0)
+                if (this.getReaminingTicks() <= 0)
                 {
-                    burnTicksLeft = 0;
                     if (cachedRecipe == null && !oreStacks.isEmpty())
                     {
                         cachedRecipe = BloomeryRecipe.get(oreStacks.get(0));
@@ -156,12 +152,11 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
                     cachedRecipe = null; // Clear recipe
 
                     updateSlagBlock(false);
-                    world.setBlockState(pos, state.withProperty(LIT, false));
+                    state = state.withProperty(LIT, false);
+                    world.setBlockState(pos, state);
                     markDirty();
                 }
             }
-
-            delayTimer = 20;
 
             // Update multiblock status
             int newMaxItems = BlockBloomery.getChimneyLevels(world, getInternalBlock()) * 8;
@@ -192,7 +187,6 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
             // Structure became compromised, unlit if needed
             if (turnOff && state.getValue(LIT))
             {
-                burnTicksLeft = 0;
                 state = state.withProperty(LIT, false);
                 world.setBlockState(pos, state);
             }
@@ -221,28 +215,9 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
         }
     }
 
-    @Override
-    public void onCalendarUpdate(long playerTickDelta)
+    public long getReaminingTicks()
     {
-        burnTicksLeft = Math.max(0, burnTicksLeft - playerTickDelta);
-        markForSync();
-    }
-
-    @Override
-    public long getLastUpdateTick()
-    {
-        return lastPlayerTick;
-    }
-
-    @Override
-    public void setLastUpdateTick(long tick)
-    {
-        this.lastPlayerTick = tick;
-    }
-
-    public long getBurnTicksLeft()
-    {
-        return burnTicksLeft;
+        return ConfigTFC.GENERAL.bloomeryTime - (CalendarTFC.PLAYER_TIME.getTicks() - litTick);
     }
 
     public boolean canIgnite()
@@ -257,7 +232,7 @@ public class TEBloomery extends TETickableInventory implements ICalendarTickable
 
     public void onIgnite()
     {
-        this.burnTicksLeft = ConfigTFC.GENERAL.bloomeryTime;
+        this.litTick = CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     /**
