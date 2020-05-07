@@ -23,8 +23,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
 {
-    private static final ResourceLocation DEER_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/deer_young.png");
-    private static final ResourceLocation DEER_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/deer_old.png");
+    private static final ResourceLocation DEER_TEXTURE= new ResourceLocation(MOD_ID, "textures/entity/animal/deer.png");
 
     private static final ResourceLocation FAWN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer_fawn.png");
 
@@ -42,7 +41,7 @@ public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
         }
         else
         {
-            return deer.getAge() == IAnimalTFC.Age.OLD ? DEER_OLD : DEER_YOUNG;
+            return DEER_TEXTURE;
         }
     }
 
