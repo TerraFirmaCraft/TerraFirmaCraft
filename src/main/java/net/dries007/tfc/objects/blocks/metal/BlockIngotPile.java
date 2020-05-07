@@ -177,20 +177,6 @@ public class BlockIngotPile extends Block
         return te.getCount() == 64;
     }
 
-    private boolean removeIngot(World worldIn, BlockPos pos, EntityPlayer playerIn, TEIngotPile te)
-    {
-        if (!worldIn.isRemote)
-        {
-            te.setCount(te.getCount() - 1);
-            if (te.getCount() <= 0)
-            {
-                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
-            }
-            ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
-        }
-        return true;
-    }
-
     @Override
     public boolean hasTileEntity(IBlockState state)
     {
@@ -213,6 +199,20 @@ public class BlockIngotPile extends Block
             return new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT));
         }
         return ItemStack.EMPTY;
+    }
+
+    private boolean removeIngot(World worldIn, BlockPos pos, EntityPlayer playerIn, TEIngotPile te)
+    {
+        if (!worldIn.isRemote)
+        {
+            te.setCount(te.getCount() - 1);
+            if (te.getCount() <= 0)
+            {
+                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+            }
+            ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(ItemMetal.get(te.getMetal(), Metal.ItemType.INGOT)));
+        }
+        return true;
     }
 
     private boolean collapseDown(World world, BlockPos pos)
