@@ -58,8 +58,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 // Since this don't fit in the predators list, but should be respawned over time, putting it into the huntable list
 public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 360;
-    private static final int DAYS_TO_FULL_GESTATION = 70;
+    private static final float MONTHS_TO_ADULTHOOD = 12.0f;
+    private static final float MONTHS_TO_FULL_GESTATION = 2.3333333f;
 
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
@@ -77,7 +77,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     @SuppressWarnings("unused")
     public EntityWolfTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityWolfTFC(World worldIn, Gender gender, int birthDay)
@@ -207,7 +207,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -290,6 +290,11 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
 
     public void setPregnantTime(long pregnantTime) { dataManager.set(PREGNANT_TIME, pregnantTime); }
 
+    public long gestationDays()
+    {
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+    }
+
     @Override
     protected void initEntityAI()
     {
@@ -355,7 +360,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + DAYS_TO_FULL_GESTATION)
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
             {
                 birthChildren();
                 this.setFertilized(false);

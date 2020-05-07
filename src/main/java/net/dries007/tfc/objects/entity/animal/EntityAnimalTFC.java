@@ -60,13 +60,14 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
      * Gets a random growth for this animal
      * ** Static ** So it can be used by class constructor
      *
-     * @param daysToAdulthood the days for this animal to became adult (for randomizing the amount of days)
+     * @param monthsToAdulthood the number of months (float so you can use less than a month) for this animal to became adult (for randomizing the amount of days)
      * @return a random long value containing the days of growth for this animal to spawn
      * **Always spawn adults** (so vanilla respawn mechanics only creates adults of this animal)
      */
-    public static int getRandomGrowth(int daysToAdulthood)
+    public static int getRandomGrowth(float monthsToAdulthood)
     {
-        int lifeTimeDays = daysToAdulthood + Constants.RNG.nextInt((int) (daysToAdulthood * ConfigTFC.GENERAL.factorAnimalAging));
+        int days = Math.round(monthsToAdulthood * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        int lifeTimeDays = days + Constants.RNG.nextInt((int) (days * ConfigTFC.GENERAL.factorAnimalAging));
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 

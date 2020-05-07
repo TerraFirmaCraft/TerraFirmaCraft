@@ -48,7 +48,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivestock
 {
-    private static final int DAYS_TO_ADULTHOOD = 180;
+    private static final float MONTHS_TO_ADULTHOOD = 6.0f;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityParrotTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityParrotTFC.class, DataSerializers.VARINT);
@@ -62,7 +62,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     @SuppressWarnings("unused")
     public EntityParrotTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityParrotTFC(World world, IAnimalTFC.Gender gender, int birthDay)
@@ -80,7 +80,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     }
 
     @Override
-    public boolean setEntityOnShoulder(EntityPlayer p_191994_1_)
+    public boolean setEntityOnShoulder(@Nonnull EntityPlayer player)
     {
         // Because mojang won't let you render anything at player's shoulder, like, never!!! (or at least, not in 1.12)
         return false;
@@ -310,7 +310,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

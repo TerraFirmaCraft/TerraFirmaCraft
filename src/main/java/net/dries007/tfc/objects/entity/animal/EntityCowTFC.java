@@ -54,15 +54,15 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
 {
     private static final int DEFAULT_TICKS_TO_MILK = ICalendar.TICKS_IN_DAY;
-    private static final int DAYS_TO_ADULTHOOD = 1080;
-    private static final int DAYS_TO_FULL_GESTATION = 270;
+    private static final float MONTHS_TO_ADULTHOOD = 36.0f;
+    private static final float MONTHS_TO_FULL_GESTATION = 9.0f;
 
     private static final DataParameter<Long> LASTMILKED = EntityDataManager.createKey(EntityCowTFC.class, Helpers.LONG_DATA_SERIALIZER);
 
     @SuppressWarnings("unused")
     public EntityCowTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityCowTFC(World worldIn, Gender gender, int birthDay)
@@ -117,7 +117,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public long gestationDays()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -150,7 +150,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

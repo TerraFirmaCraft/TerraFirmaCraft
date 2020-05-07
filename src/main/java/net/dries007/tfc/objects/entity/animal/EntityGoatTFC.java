@@ -36,13 +36,13 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 public class EntityGoatTFC extends EntityCowTFC implements ILivestock
 {
     private static final long DEFAULT_TICKS_TO_MILK = ICalendar.TICKS_IN_DAY * 3;
-    private static final int DAYS_TO_ADULTHOOD = 150;
-    private static final int DAYS_TO_FULL_GESTATION = 150;
+    private static final float MONTHS_TO_ADULTHOOD = 5.0f;
+    private static final float MONTHS_TO_FULL_GESTATION = 5.0f;
 
     @SuppressWarnings("unused")
     public EntityGoatTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityGoatTFC(World worldIn, Gender gender, int birthDay)
@@ -78,7 +78,7 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     @Override
     public long gestationDays()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -90,7 +90,7 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

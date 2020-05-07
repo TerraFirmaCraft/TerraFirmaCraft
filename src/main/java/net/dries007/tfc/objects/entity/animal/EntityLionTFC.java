@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -44,8 +45,8 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityLionTFC extends EntityAnimalMammal implements IPredator
 {
-    private static final int DAYS_TO_ADULTHOOD = 1800;
-    private static final int DAYS_TO_FULL_GESTATION = 210;
+    private static final float MONTHS_TO_ADULTHOOD = 60.0f;
+    private static final float MONTHS_TO_FULL_GESTATION = 7.0f;
 
     //Values that has a visual effect on client
     private static final DataParameter<Integer> MOUTH_TICKS = EntityDataManager.createKey(EntityLionTFC.class, DataSerializers.VARINT);
@@ -53,7 +54,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @SuppressWarnings("unused")
     public EntityLionTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityLionTFC(World worldIn, Gender gender, int birthDay)
@@ -95,7 +96,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -119,7 +120,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     public long gestationDays()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -137,6 +138,12 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     public void setMouthTicks(int value)
     {
         this.dataManager.set(MOUTH_TICKS, value);
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        return false;
     }
 
     @Override

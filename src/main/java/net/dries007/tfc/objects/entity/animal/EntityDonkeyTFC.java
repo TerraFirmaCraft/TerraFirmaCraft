@@ -58,8 +58,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivestock
 {
-    protected static final int DAYS_TO_ADULTHOOD = 1120;
-    protected static final int DAYS_TO_FULL_GESTATION = 240;
+    protected static final float MONTHS_TO_ADULTHOOD = 37.333332f;
+    protected static final float MONTHS_TO_FULL_GESTATION = 8.0f;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityDonkeyTFC.class, DataSerializers.VARINT);
@@ -77,7 +77,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
 
     public EntityDonkeyTFC(World world)
     {
-        this(world, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(world, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityDonkeyTFC(World world, Gender gender, int birthDay)
@@ -172,7 +172,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -278,6 +278,11 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         dataManager.set(PREGNANT_TIME, pregnantTime);
     }
 
+    public long gestationDays()
+    {
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+    }
+
     @Override
     protected void initEntityAI()
     {
@@ -315,7 +320,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + DAYS_TO_FULL_GESTATION)
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
             {
                 birthChildren();
                 this.setFertilized(false);

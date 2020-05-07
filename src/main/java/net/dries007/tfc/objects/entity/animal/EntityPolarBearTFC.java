@@ -43,7 +43,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, IPredator, EntityAIStandAttack.IEntityStandAttack
 {
-    private static final int DAYS_TO_ADULTHOOD = 1440;
+    private static final float MONTHS_TO_ADULTHOOD = 48.0f;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityPolarBearTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityPolarBearTFC.class, DataSerializers.VARINT);
@@ -53,7 +53,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     @SuppressWarnings("unused")
     public EntityPolarBearTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityPolarBearTFC(World world, IAnimalTFC.Gender gender, int birthDay)
@@ -203,7 +203,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

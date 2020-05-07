@@ -68,7 +68,7 @@ public class CalendarEventHandler
         if ("time".equals(event.getCommand().getName()))
         {
             event.setCanceled(true);
-            event.getSender().sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.time_command_disabled"));
+            event.getSender().sendMessage(new TextComponentTranslation(MOD_ID + ".command.time.disabled"));
         }
     }
 

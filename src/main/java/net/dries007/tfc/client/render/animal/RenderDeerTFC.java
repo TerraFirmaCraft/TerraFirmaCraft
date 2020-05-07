@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.client.model.animal.ModelDeerTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDeerTFC;
 
@@ -23,7 +22,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
 {
-    private static final ResourceLocation DEER_TEXTURE= new ResourceLocation(MOD_ID, "textures/entity/animal/deer.png");
+    private static final ResourceLocation DEER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer.png");
 
     private static final ResourceLocation FAWN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer_fawn.png");
 

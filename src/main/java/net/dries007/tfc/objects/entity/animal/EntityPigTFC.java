@@ -34,13 +34,13 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
 {
-    private static final int DAYS_TO_ADULTHOOD = 450;
-    private static final int DAYS_TO_FULL_GESTATION = 111;
+    private static final float MONTHS_TO_ADULTHOOD = 15.0f;
+    private static final float MONTHS_TO_FULL_GESTATION = 3.7f;
 
     @SuppressWarnings("unused")
     public EntityPigTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityPigTFC(World worldIn, Gender gender, int birthDay)
@@ -96,7 +96,7 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public long gestationDays()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -108,7 +108,7 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

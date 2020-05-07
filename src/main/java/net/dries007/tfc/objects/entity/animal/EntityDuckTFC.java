@@ -41,12 +41,12 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
 {
     private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
-    private static final int DAYS_TO_ADULTHOOD = 210;
-    private static final int DAYS_TO_HATCH_EGG = 28;
+    private static final float MONTHS_TO_ADULTHOOD = 7.0f;
+    private static final float MONTHS_TO_HATCH_EGG = 0.93333334f;
 
     public EntityDuckTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityDuckTFC(World worldIn, Gender gender, int birthDay)
@@ -70,7 +70,7 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -85,11 +85,17 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
             {
                 EntityDuckTFC chick = new EntityDuckTFC(this.world);
                 chick.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-                cap.setFertilized(chick, DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
+                cap.setFertilized(chick, daysToHatch() + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
         eggs.add(egg);
         return eggs;
+    }
+
+    @Override
+    public long daysToHatch()
+    {
+        return (long) Math.ceil(MONTHS_TO_HATCH_EGG * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

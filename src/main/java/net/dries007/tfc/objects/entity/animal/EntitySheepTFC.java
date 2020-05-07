@@ -57,9 +57,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, ILivestock
 {
-    private static final int DAYS_TO_ADULTHOOD = 360;
-    private static final int DAYS_TO_GROW_WOOL = 7;
-    private static final int DAYS_TO_FULL_GESTATION = 150;
+    private static final float MONTHS_TO_ADULTHOOD = 12.0f;
+    private static final float MONTHS_TO_GROW_WOOL = 0.23333333f;
+    private static final float MONTHS_TO_FULL_GESTATION = 5.0F;
 
     private static final DataParameter<Integer> DYE_COLOR = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
@@ -67,7 +67,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @SuppressWarnings("unused")
     public EntitySheepTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD), EntitySheep.getRandomSheepColor(Constants.RNG));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD), EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
     public EntitySheepTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
@@ -124,7 +124,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     public long gestationDays()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -160,7 +160,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -186,7 +186,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     public long getProductsCooldown()
     {
         // Just here for the time being, in 1.15 gonna see changes here to match other animals better
-        return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
+        return (long) Math.max(0, (this.getShearedDay() + Math.ceil(MONTHS_TO_GROW_WOOL * CalendarTFC.CALENDAR_TIME.getDaysInMonth()) - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
     }
 
     @Override
@@ -254,7 +254,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
 
     public boolean hasWool()
     {
-        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
+        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + Math.ceil(MONTHS_TO_GROW_WOOL * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

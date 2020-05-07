@@ -135,7 +135,7 @@ public class ItemOreTFC extends ItemTFC implements IMetalItem
                 case 3:
                     // All info: "Metal: xx units / xx total"
                     String infoTotal;
-                    if(stack.getCount() > 1)
+                    if (stack.getCount() > 1)
                     {
                         infoTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.info_total", smeltAmount, smeltAmount * stack.getCount()));
                     }
