@@ -33,7 +33,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -294,6 +293,13 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     }
 
     @Override
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
+    {
+        super.harvestBlock(world, player, pos, state, te, tool);
+        world.setBlockToAir(pos);
+    }
+
+    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         if (!worldIn.isRemote)
@@ -341,16 +347,18 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         return false;
     }
 
+    //Lifted from BlockFlowerPot
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        return willHarvest || super.removedByPlayer(state, world, pos, player, willHarvest); //delay deletion of the block until after getDrops
+    }
+
     @Override
     public boolean hasTileEntity(IBlockState state)
     {
         return true;
-    }
-
-    //Lifted from BlockFlowerPot
-
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Nullable
@@ -375,19 +383,6 @@ public class BlockMetalLamp extends Block implements ILightableBlock
                 drops.add(tile.getItemStack(tile, state));
             }
         }
-    }
-
-    @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
-    {
-        return willHarvest || super.removedByPlayer(state, world, pos, player, willHarvest); //delay deletion of the block until after getDrops
-    }
-
-    @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
-    {
-        super.harvestBlock(world, player, pos, state, te, tool);
-        world.setBlockToAir(pos);
     }
 
     @Override
