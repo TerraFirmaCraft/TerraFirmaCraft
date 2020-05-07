@@ -6,7 +6,6 @@
 package net.dries007.tfc.compat.waila.providers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -16,17 +15,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.compat.waila.interfaces.IWailaBlock;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropDead;
-import net.dries007.tfc.objects.blocks.agriculture.BlockCropSimple;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
+import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TECropBase;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
@@ -34,42 +31,9 @@ public class CropProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public ItemStack getStack(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof BlockCropTFC)
-        {
-            BlockCropTFC b = (BlockCropTFC) state.getBlock();
-            ICrop crop = b.getCrop();
-            return crop.getFoodDrop(state.getValue(b.getStageProperty()));
-        }
-        return ItemStack.EMPTY;
-    }
-
-    @Nonnull
-    @Override
-    public List<String> getHeadTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
-    {
-        List<String> tooltip = new ArrayList<>();
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof BlockCropTFC)
-        {
-            BlockCropTFC b = (BlockCropTFC) state.getBlock();
-            tooltip.add(TextFormatting.WHITE.toString() + new TextComponentTranslation(b.getTranslationKey() + ".name").getFormattedText());
-        }
-        else if (state.getBlock() instanceof BlockCropDead)
-        {
-            BlockCropDead b = (BlockCropDead) state.getBlock();
-            ICrop crop = b.getCrop();
-            tooltip.add(TextFormatting.WHITE.toString() + new TextComponentTranslation("tile.tfc.crop." + crop.toString().toLowerCase() + ".name").getFormattedText());
-        }
-        return tooltip;
-    }
-
-    @Nonnull
-    @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
-    {
+        List<String> currentTooltip = new ArrayList<>();
         IBlockState state = world.getBlockState(pos);
         TECropBase te = Helpers.getTE(world, pos, TECropBase.class);
         if (state.getBlock() instanceof BlockCropTFC && te != null)
@@ -78,7 +42,7 @@ public class CropProvider implements IWailaBlock
             ICrop crop = bs.getCrop();
 
             boolean isWild = state.getValue(BlockCropTFC.WILD);
-            float temp = ClimateTFC.getActualTemp(world, pos, - te.getLastUpdateTick());
+            float temp = ClimateTFC.getActualTemp(world, pos, -te.getLastUpdateTick());
             float rainfall = ChunkDataTFC.getRainfall(world, pos);
 
             if (isWild)
@@ -97,7 +61,7 @@ public class CropProvider implements IWailaBlock
             int curStage = state.getValue(bs.getStageProperty());
             int maxStage = crop.getMaxStage();
 
-            if(curStage == maxStage)
+            if (curStage == maxStage)
             {
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.growth", new TextComponentTranslation("waila.tfc.crop.mature").getFormattedText()).getFormattedText());
             }
@@ -106,7 +70,7 @@ public class CropProvider implements IWailaBlock
                 float remainingTicksToGrow = Math.max(0, crop.getGrowthTime() - te.getTicksSinceUpdate());
                 float curStagePerc = 1.0F - remainingTicksToGrow / crop.getGrowthTime();
                 // Don't show 100% since it still needs to check on randomTick to grow
-                float totalPerc = Math.min(0.99f, curStagePerc / maxStage + (float)curStage / maxStage) * 100;
+                float totalPerc = Math.min(0.99f, curStagePerc / maxStage + (float) curStage / maxStage) * 100;
                 String growth = String.format("%d%%", Math.round(totalPerc));
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.growth", growth).getFormattedText());
             }
@@ -120,22 +84,59 @@ public class CropProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getStackClassList()
+    public String getTitle(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
-        return Collections.singletonList(BlockCropTFC.class);
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockCropTFC)
+        {
+            BlockCropTFC b = (BlockCropTFC) state.getBlock();
+            return new TextComponentTranslation(b.getTranslationKey() + ".name").getFormattedText();
+        }
+        else if (state.getBlock() instanceof BlockCropDead)
+        {
+            BlockCropDead b = (BlockCropDead) state.getBlock();
+            ICrop crop = b.getCrop();
+            return new TextComponentTranslation("tile.tfc.crop." + crop.toString().toLowerCase() + ".name").getFormattedText();
+        }
+        return "";
     }
 
     @Nonnull
     @Override
-    public List<Class<?>> getHeadClassList()
+    public ItemStack getIcon(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
-        return ImmutableList.of(BlockCropTFC.class, BlockCropDead.class);
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockCropTFC)
+        {
+            BlockCropTFC b = (BlockCropTFC) state.getBlock();
+            ICrop crop = b.getCrop();
+            return crop.getFoodDrop(state.getValue(b.getStageProperty()));
+        }
+        else if(state.getBlock() instanceof BlockCropDead)
+        {
+            BlockCropDead b = (BlockCropDead) state.getBlock();
+            ICrop crop = b.getCrop();
+            return new ItemStack(ItemSeedsTFC.get(crop));
+        }
+        return ItemStack.EMPTY;
     }
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
+    public List<Class<?>> getLookupClass()
     {
         return ImmutableList.of(BlockCropTFC.class, BlockCropDead.class);
+    }
+
+    @Override
+    public boolean overrideTitle()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean overrideIcon()
+    {
+        return true;
     }
 }

@@ -36,7 +36,7 @@ public class HwylaPluginTFC implements IWailaPlugin
     @Override
     public void register(IWailaRegistrar registrar)
     {
-        for(IWailaPlugin plugin : WAILA_PLUGINS)
+        for (IWailaPlugin plugin : WAILA_PLUGINS)
         {
             plugin.register(registrar);
         }

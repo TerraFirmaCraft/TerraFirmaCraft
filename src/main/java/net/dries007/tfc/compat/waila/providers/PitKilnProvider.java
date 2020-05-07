@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -24,8 +25,9 @@ public class PitKilnProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         TEPitKiln te = Helpers.getTE(world, pos, TEPitKiln.class);
         if (te != null)
         {
@@ -63,14 +65,7 @@ public class PitKilnProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
-    {
-        return Collections.singletonList(TEPitKiln.class);
-    }
-
-    @Nonnull
-    @Override
-    public List<Class<?>> getNBTClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(TEPitKiln.class);
     }

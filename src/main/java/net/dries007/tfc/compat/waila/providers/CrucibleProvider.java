@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -24,12 +25,13 @@ public class CrucibleProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         TECrucible crucible = Helpers.getTE(world, pos, TECrucible.class);
         if (crucible != null)
         {
-            if(crucible.getAlloy().getAmount() > 0)
+            if (crucible.getAlloy().getAmount() > 0)
             {
                 Metal metal = crucible.getAlloyResult();
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.metal.output", crucible.getAlloy().getAmount(), new TextComponentTranslation(metal.getTranslationKey()).getFormattedText()).getFormattedText());
@@ -46,14 +48,7 @@ public class CrucibleProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
-    {
-        return Collections.singletonList(TECrucible.class);
-    }
-
-    @Nonnull
-    @Override
-    public List<Class<?>> getNBTClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(TECrucible.class);
     }

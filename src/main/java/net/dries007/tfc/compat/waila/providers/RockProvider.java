@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -22,8 +23,9 @@ public class RockProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getTailTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         int temperature = Math.round(ClimateTFC.getActualTemp(world, pos, 0));
         currentTooltip.add(new TextComponentTranslation("waila.tfc.temperature", temperature).getFormattedText());
         return currentTooltip;
@@ -31,7 +33,7 @@ public class RockProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getTailClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(BlockRockVariant.class);
     }

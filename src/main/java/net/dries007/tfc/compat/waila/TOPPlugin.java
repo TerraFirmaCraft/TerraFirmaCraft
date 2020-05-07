@@ -38,18 +38,18 @@ public class TOPPlugin implements Function<ITheOneProbe, Void>
     @Override
     public Void apply(ITheOneProbe probe)
     {
-        for(TOPBlockInterface blockInterface : TOP_BLOCK_INTERFACES)
+        for (TOPBlockInterface blockInterface : TOP_BLOCK_INTERFACES)
         {
             probe.registerProvider(blockInterface);
-            if(blockInterface.overridesHeadInfo())
+            if (blockInterface.overridesHeadInfo())
             {
                 probe.registerBlockDisplayOverride(blockInterface);
             }
         }
-        for(TOPEntityInterface entityInterface : TOP_ENTITY_INTERFACES)
+        for (TOPEntityInterface entityInterface : TOP_ENTITY_INTERFACES)
         {
             probe.registerEntityProvider(entityInterface);
-            if(entityInterface.overridesHeadInfo())
+            if (entityInterface.overridesHeadInfo())
             {
                 probe.registerEntityDisplayOverride(entityInterface);
             }

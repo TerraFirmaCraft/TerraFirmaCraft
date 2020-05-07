@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import mcp.mobius.waila.api.*;
@@ -32,21 +33,15 @@ public class HwylaEntityInterface implements IWailaEntityProvider, IWailaPlugin
     public void register(IWailaRegistrar registrar)
     {
         // Register providers accordingly to each implementation
-        for(Class<?> headClass : internal.getHeadClassList())
+        for (Class<?> clazz : internal.getLookupClass())
         {
-            registrar.registerHeadProvider(this, headClass);
-        }
-        for(Class<?> bodyClass : internal.getBodyClassList())
-        {
-            registrar.registerBodyProvider(this, bodyClass);
-        }
-        for(Class<?> tailClass : internal.getTailClassList())
-        {
-            registrar.registerTailProvider(this, tailClass);
-        }
-        for(Class<?> nbtClass : internal.getNBTClassList())
-        {
-            registrar.registerTailProvider(this, nbtClass);
+            registrar.registerBodyProvider(this, clazz);
+            // Register to update NBT data on all entities.
+            registrar.registerNBTProvider(this, clazz);
+            if (internal.overrideTitle())
+            {
+                registrar.registerHeadProvider(this, clazz);
+            }
         }
     }
 
@@ -54,21 +49,16 @@ public class HwylaEntityInterface implements IWailaEntityProvider, IWailaPlugin
     @Override
     public List<String> getWailaHead(Entity entity, List<String> currentTooltip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
-        return internal.getHeadTooltip(entity, currentTooltip, accessor.getNBTData());
+        currentTooltip.clear();
+        currentTooltip.add(TextFormatting.WHITE.toString() + internal.getTitle(accessor.getEntity(), accessor.getNBTData()));
+        return currentTooltip;
     }
 
     @Nonnull
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currentTooltip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
-        return internal.getBodyTooltip(entity, currentTooltip, accessor.getNBTData());
-    }
-
-    @Nonnull
-    @Override
-    public List<String> getWailaTail(Entity entity, List<String> currentTooltip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
-    {
-        return internal.getTailTooltip(entity, currentTooltip, accessor.getNBTData());
+        return internal.getTooltip(entity, accessor.getNBTData());
     }
 
     @Nonnull

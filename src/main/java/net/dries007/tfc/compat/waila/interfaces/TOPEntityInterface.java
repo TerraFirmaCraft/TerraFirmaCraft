@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.compat.waila.interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -14,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import mcjty.theoneprobe.api.*;
+import net.dries007.tfc.TerraFirmaCraft;
 
 /**
  * Does the direct "translation" from IWailaEntity to The One Probe
@@ -36,47 +36,19 @@ public class TOPEntityInterface implements IProbeInfoEntityProvider, IEntityDisp
     @Override
     public void addProbeEntityInfo(ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, Entity entity, IProbeHitEntityData hitData)
     {
-        boolean stop = true;
-        if(entity == null)
+        if (entity == null)
         {
             return;
         }
-        for(Class<?> bodyClass : internal.getBodyClassList())
-        {
-            if(bodyClass.isInstance(entity))
-            {
-                stop = false;
-                break;
-            }
-        }
-        if(stop)
-        {
-            for (Class<?> tailClass : internal.getTailClassList())
-            {
-                if (tailClass.isInstance(entity))
-                {
-                    stop = false;
-                    break;
-                }
-            }
-        }
-        // Player isn't looking at one of the providers
-        if(stop)
+        if (!isLookingAtProvider(entity))
         {
             return;
         }
+
         NBTTagCompound nbt = entity.writeToNBT(new NBTTagCompound());
 
-        List<String> bodyTooltip = new ArrayList<>();
-        bodyTooltip = internal.getBodyTooltip(entity, bodyTooltip, nbt);
-        for(String string : bodyTooltip)
-        {
-            info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).text(string);
-        }
-
-        List<String> tailTooltip = new ArrayList<>();
-        tailTooltip = internal.getTailTooltip(entity, tailTooltip, nbt);
-        for(String string : tailTooltip)
+        List<String> tooltip = internal.getTooltip(entity, nbt);
+        for (String string : tooltip)
         {
             info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).text(string);
         }
@@ -85,40 +57,46 @@ public class TOPEntityInterface implements IProbeInfoEntityProvider, IEntityDisp
     @Override
     public boolean overrideStandardInfo(ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, Entity entity, IProbeHitEntityData hitData)
     {
-        boolean stop = true;
-        if(entity == null)
+        if (entity == null)
         {
             return false;
         }
-        for(Class<?> bodyClass : internal.getBodyClassList())
-        {
-            if(bodyClass.isInstance(entity))
-            {
-                stop = false;
-                break;
-            }
-        }
-        // Player isn't looking at one of the providers
-        if(stop)
+        if (!isLookingAtProvider(entity))
         {
             return false;
         }
-        boolean override = false;
         NBTTagCompound nbt = entity.writeToNBT(new NBTTagCompound());
 
-        List<String> headTooltip = new ArrayList<>();
-        headTooltip = internal.getHeadTooltip(entity, headTooltip, nbt);
+        String title = internal.getTitle(entity, nbt);
 
-        for(String string : headTooltip)
+        if (title.isEmpty())
         {
-            override = true;
-            info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).text(string);
+            return false;
         }
-        return override;
+        else
+        {
+            info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
+                .vertical()
+                .text(TextStyleClass.NAME + title)
+                .text(TextStyleClass.MODNAME + TerraFirmaCraft.MOD_NAME);
+            return true;
+        }
     }
 
     public boolean overridesHeadInfo()
     {
-        return !internal.getHeadClassList().isEmpty();
+        return internal.overrideTitle();
+    }
+
+    protected boolean isLookingAtProvider(Entity entity)
+    {
+        for (Class<?> clazz : internal.getLookupClass())
+        {
+            if (clazz.isInstance(entity))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

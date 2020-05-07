@@ -5,10 +5,8 @@
 
 package net.dries007.tfc.compat.waila.interfaces;
 
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,98 +19,69 @@ import net.minecraft.world.World;
 public interface IWailaBlock
 {
     /**
+     * Returns a list of tooltips to write on the Hwyla or TOP panel's body.
+     *
      * @param world world obj
-     * @param pos Block's pos
-     * @param currentTooltip the current tooltip, for modification (so other mods can modify ours)
-     * @param nbt the server sync nbt (not always possible, but non null for checking)
+     * @param pos   Block's pos
+     * @param nbt   the server sync nbt (not always possible, but non null for checking)
      * @return a List containing tooltips to write on the panel's body
      */
     @Nonnull
-    default List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
-    {
-        return currentTooltip;
-    }
+    List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt);
 
     /**
-     * Only in Hwyla, overrides the title
+     * Overrides the title (default to the name of the block looked upon)
+     *
      * @param world world obj
-     * @param pos Block's pos
-     * @param nbt the server sync nbt (not always possible, but non null for checking)
+     * @param pos   Block's pos
+     * @param nbt   the server sync nbt (not always possible, but non null for checking)
      * @return a List containing tooltips to write on the panel's head
      */
     @Nonnull
-    default List<String> getHeadTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
+    default String getTitle(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
-        return Collections.emptyList();
+        return "";
     }
 
     /**
+     * Overrides the ItemStack used for icon
+     *
      * @param world world obj
-     * @param pos Block's pos
-     * @param currentTooltip the current tooltip, for modification (so other mods can modify ours)
-     * @param nbt the server sync nbt (not always possible, but non null for checking)
-     * @return a List containing tooltips to write on the panel's tail
-     */
-    @Nonnull
-    default List<String> getTailTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
-    {
-        return currentTooltip;
-    }
-
-    /**
-     * @param world world obj
-     * @param pos Block's pos
-     * @param nbt the server sync nbt (not always possible, but non null for checking)
+     * @param pos   Block's pos
+     * @param nbt   the server sync nbt (not always possible, but non null for checking)
      * @return a ItemStack to be shown at the side of the panel.
      */
     @Nonnull
-    default ItemStack getStack(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
+    default ItemStack getIcon(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
         return ItemStack.EMPTY;
     }
 
     /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
+     * Returns a list of classes that Hwyla and TOP should assign to this provider
+     *
+     * @return List of classes (eg: <Block>.class, <TileEntity>.class)
      */
     @Nonnull
-    default List<Class<?>> getHeadClassList()
+    List<Class<?>> getLookupClass();
+
+    /**
+     * Overrides this to tell Hwyla and TOP to override the default title (eg: The name of the block you're looking at).
+     *
+     * @return true if you wish to override the name of the block you're looking at
+     */
+    default boolean overrideTitle()
     {
-        return Collections.emptyList();
+        return false;
     }
 
     /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
+     * Overrides this to tell Hwyla and TOP to override the default stack (eg: The icon that is shown when you're looking at something).
+     *
+     * @return true if you wish to override the stack icon of the block you're looking at
      */
-    @Nonnull
-    default List<Class<?>> getBodyClassList()
+    default boolean overrideIcon()
     {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
-     */
-    @Nonnull
-    default List<Class<?>> getTailClassList()
-    {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
-     */
-    @Nonnull
-    default List<Class<?>> getStackClassList()
-    {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
-     */
-    @Nonnull
-    default List<Class<?>> getNBTClassList()
-    {
-        return Collections.emptyList();
+        return false;
     }
 }
