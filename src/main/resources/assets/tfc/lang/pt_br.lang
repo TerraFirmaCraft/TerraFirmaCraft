@@ -1,22 +1,27 @@
 # Comandos
-tfc.command.time.usage=/timetfc <add|query|set> [args...]
-tfc.command.time.usage_expected_first_argument=Esperado <add|query|set> após /timetfc
-tfc.command.time.usage_expected_second_argument_query=Esperado [daytime|day|gametime|playerticks|calendarticks] após /timetfc query
-tfc.command.time.usage_expected_second_argument_set=Esperado [<ticks>|day|night|monthlength <value>] after /timetfc set
-tfc.command.time.usage_expected_second_argument_add=Esperado [days|months|years] <value> após /timetfc add
-tfc.command.time.set_month_length=Definir duração do mês para %d Dias / Mês
-tfc.command.time.set_day=Tempo definido para o próximo amanhecer
-tfc.command.time.set_night=Tempo definido para o próximo anoitecer
-tfc.command.time.set_ticks=Tempo do dia definido para %d
-tfc.command.time.add_days=Adicionado %d dias ao tempo (%d ticks)
-tfc.command.time.add_months=Adicionado %d meses ao tempo (%d ticks)
-tfc.command.time.add_years=Adicionado %d anos ao tempo (%d ticks)
-tfc.command.time.add_ticks=Adicionado %d ticks ao tempo
-tfc.command.time.query_calendarticks=Os ticks do calendário são %d
-tfc.command.time.query_playerticks=Os ticks do Player são %d
-tfc.command.time.query_gametime=O tempo do jogo é de %d ticks
-tfc.command.time.query_day=Hoje é dia %d
-tfc.command.time.query_daytime=O horário atual do dia é %d
+tfc.command.timetfc.usage=/timetfc <add|query|set> [args...]
+tfc.command.timetfc.usage_expected_first_argument=Esperado <add|query|set> após /timetfc
+tfc.command.timetfc.usage_expected_second_argument_query=Esperado [daytime|day|gametime|playerticks|calendarticks] após /timetfc query
+tfc.command.timetfc.usage_expected_second_argument_set=Esperado [<ticks>|day|night|monthlength <value>] after /timetfc set
+tfc.command.timetfc.usage_expected_second_argument_add=Esperado [days|months|years] <value> após /timetfc add
+tfc.command.timetfc.set_month_length=Definir duração do mês para %d Dias / Mês
+tfc.command.timetfc.set_day=Tempo definido para o próximo amanhecer
+tfc.command.timetfc.set_night=Tempo definido para o próximo anoitecer
+tfc.command.timetfc.set_ticks=Tempo do dia definido para %d
+tfc.command.timetfc.add_days=Adicionado %d dias ao tempo (%d ticks)
+tfc.command.timetfc.add_months=Adicionado %d meses ao tempo (%d ticks)
+tfc.command.timetfc.add_years=Adicionado %d anos ao tempo (%d ticks)
+tfc.command.timetfc.add_ticks=Adicionado %d ticks ao tempo
+tfc.command.timetfc.query_calendarticks=Os ticks do calendário são %d
+tfc.command.timetfc.query_playerticks=Os ticks do Player são %d
+tfc.command.timetfc.query_gametime=O tempo do jogo é de %d ticks
+tfc.command.timetfc.query_day=Hoje é dia %d
+tfc.command.timetfc.query_daytime=O horário atual do dia é %d
+tfc.command.timetfc.set_player_time=Tempo dos jogadores definido para %d.
+tfc.command.timetfc.set_calendar_time=Calendar definido para %s.
+
+tfc.command.time.disabled=Este comando foi desabilitado por TFC. Use /timetfc!
+
 tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <name>] [value]
 tfc.command.playertfc.usage_expected_first_argument=Esperado <get|set|add|reset> após /playertfc
 tfc.command.playertfc.usage_expected_second_argument=Esperado [nutrition|food|saturation|water|skill <name>] após /playertfc %s
@@ -40,10 +45,32 @@ tfc.command.playertfc.set_saturation=Redefinir saciedade para %.2f
 tfc.command.playertfc.get_water=Hidratação: %.1f%%
 tfc.command.playertfc.set_water=Redefinir hidratação para %.1f%%
 
-tfc.command.veins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
-tfc.command.veins.usage_expected_player=Somente pode ser utilizado por um jogador
-tfc.command.veins.usage_first_argument_not_vein=Nenhuma veia do tipo %s foi encontrada
+tfc.command.findveins.usage=/findveins [all|<vein name>] <radius> [dump|rate]
+tfc.command.findveins.usage_expected_player=Somente pode ser utilizado por um jogador
+tfc.command.findveins.usage_first_argument_not_vein=Nenhuma veia do tipo %s foi encontrada
+tfc.command.findveins.dump_veins=Criando dump com todas as veias no raio especificado, vai demorar um pouco...
+tfc.command.findveins.rate_veins=Criando dump com a taxa de todas as veias, vai demorar um pouco ...
+tfc.command.findveins.failed=Falhou em carregar a dimensão %d
+tfc.command.findveins.remaining_chunks=Chunks Faltando: %d / %d
+tfc.command.findveins.output=Veia encontrada %s em %s
+tfc.command.findveins.output_file=Arquivo salvo em %s
+tfc.command.findveins.output_file.error=Erro ao criar arquivo de dump: %s
 
+tfc.command.debuginfo.usage=/tfcdebuginfodump - Salva um monte de informação de debug em um arquivo. Não use à nao ser que um desenvolvedor o peça.
+
+tfc.command.gentree.useage=/maketree [wood] -> Cria uma árvore do tipo especificado.
+tfc.command.gentree.failed=Faltou o argumento [wood]! /maketree [wood]
+tfc.command.gentree.failed.woodtype=Árvore do tipo %s não encontrado
+tfc.command.gentree.failed.grow=Não há condições para criar uma árvore aqui!
+
+tfc.command.heat.usage=/heat <amount> -> Define a quantidade de calor no item que está em suas mãos.
+tfc.command.heat.failed=Faltou o argumento <amount>! /heat <amount>
+tfc.command.heat.failed.missingcap=O item que está em suas mãos não possui capacidade de calor!
+tfc.command.heat.failed.usage_expected_player=Só pode ser usado por um jogador.
+
+tfc.command.stripworld.usage=/stripworld <radiusInBlocks> -> [PERIGO] Limpa todas as variantes de pedra + líquidos pela região.
+tfc.command.stripworld.failed=Faltou o argumento <radius>! /stripworld <radiusInBlocks>
+tfc.command.stripworld.done=Feito!
 
 # Gui
 
@@ -57,6 +84,7 @@ tfc.tooltip.metal=§fMetal:§7 %s
 tfc.tooltip.units=%d unidades
 tfc.tooltip.crucible_units=%d / %d unidades
 tfc.tooltip.units.total=§6%d §7unidades no total
+tfc.tooltip.units.info_total=%d unidades / §6%d total
 tfc.tooltip.smelting=Derrete em %s
 tfc.tooltip.liquid= - Líquido
 tfc.tooltip.solid= - Sólido
@@ -104,7 +132,8 @@ tfc.tooltip.plant_valid=%sBom%s
 tfc.tooltip.plant_wet=%sMuito Molhado%s
 tfc.tooltip.blast_furnace_ore_amount=Minério
 tfc.tooltip.blast_furnace_fuel_amount=Combustível
-tfc.tooltip.blast_furnace_melt_amount=tfc.tooltip.blast_furnace_invalid_structure=Estrutura inválida!
+tfc.tooltip.blast_furnace_melt_amount=Derretido
+tfc.tooltip.blast_furnace_invalid_structure=Estrutura inválida!
 tfc.tooltip.large_vessel_seal=Selar o Jarro
 tfc.tooltip.large_vessel_unseal=Retirar selagem do Jarro
 tfc.tooltip.goldpan.chunkworked=Esta área se tornou escassa. Você provavelmente não encontrará mais nada.
@@ -138,17 +167,6 @@ tfc.tooltip.animal.product.no_wool=A lã desse(a) %s ainda não cresceu.
 tfc.tooltip.animal.product.no_milk=Esta %s ainda não está pronta para ser ordenhada.
 tfc.tooltip.animal.product.no_egg=Esta %s ainda não está pronta para botar ovos.
 
-## Comandos, Tooltips e Mensagens
-tfc.tooltip.set_month_length=Duração do Mês redefinida para %d dias.
-tfc.tooltip.time_command_set_player_time=Tempo do jogador redefinido para %d.
-tfc.tooltip.time_command_set_calendar_time=Redefinir tempo do Calendário para %s.
-tfc.tooltip.time_command_disabled=Este comando foi desabilidado pelo TFC. Use /timetfc no lugar!
-tfc.tooltip.veins_command.dump_veins=Descarregando todos os veios no raio especificado, isso vai demorar um pouco...
-tfc.tooltip.veins_command.rate_veins=Descarregando a proporção dos veios no raio especificado, isso vai demorar um pouco...
-tfc.tooltip.veins_command.failed=falha ao carregar dimensão %d
-tfc.tooltip.veins_command.remaining_chunks=Chunks Remanescentes: %d / %d
-tfc.tooltip.veins_command.output=Encontrado veio de %s em %s
-tfc.tooltip.veins_command.output_file=Arquivo salvo em %s
 
 ## Mensagens Resultantes da Prospecção
 tfc.propick.found=%s Encontrado
@@ -190,6 +208,7 @@ tfc.enum.skilltier.master=Mestre
 tfc.key.craft=Interface de fabricação
 tfc.key.placeblock=Colocar item no chão
 tfc.key.itemmode=Alteral Modo do Item
+tfc.key.stack=Combinar comida
 
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Raio de Confusão do Spawn
@@ -284,6 +303,7 @@ config.tfc.general.fireStarterChance.tooltip=Chance de Sucesso do acendedor
 
 config.tfc.general.playerNutritionDecayModifier=Modificador da taxa de decaimento dos nutrientes do jogador
 config.tfc.general.playerNutritionDecayModifier.tooltip=Modifica quão rápido o jogador consome seus nutrientes
+
 config.tfc.general.playerMinHealthModifier=Modificador do Valor Mínimo de Vida do Jogador
 config.tfc.general.playerMinHealthModifier.tooltip=Modifica o valor mínimo de vida que o jogador pode obter com baixos nutrientes.
 
@@ -461,6 +481,35 @@ config.tfc.general.redSteelBucketWhitelist.tooltip=Líquidos que podem ser manip
 config.tfc.general.nutritionRotationHungerWindow=Nutrition Rotation Hunger Window
 config.tfc.general.nutritionRotationHungerWindow.tooltip=Isto representa a quantidade de fome (consumida) requirida para que o jogador revigore completamente seues nutrientes. No TFC, quase todos os alimentos dão 4 pontos de fomer, desse modo é 4x [número de comidas para revigorar os nutrientes]. Isso atualiza cada vez que consome um alimento.
 
+config.tfc.general.disableIngotPile=Habilitar Pilha de Lingotes
+config.tfc.general.disableIngotPile.tooltip=Habilitar a criação de pilhas de lingotes?
+
+config.tfc.general.pluckableEntities=Arracar penas das Entidades
+config.tfc.general.pluckableEntities.tooltip=Entidades que pode-se arrancar penas.
+
+config.tfc.general.damagePerFeather=Dano por pena arrancada
+config.tfc.general.damagePerFeather.tooltip=Quanto de dano uma entidade recebe por uma pena ter sido arrancada?
+
+config.tfc.general.shouldCropsDie=Plantações Morrem
+config.tfc.general.shouldCropsDie.tooltip=Define se plantações podem morrer (principalmente no inverno).
+
+config.tfc.general.doLogsRequireAxe=Troncos requerem machado
+config.tfc.general.doLogsRequireAxe.tooltip=Define se cortar lenha só é possível com um machado.
+
+config.tfc.general.doLeavesDropSaplings=Folhas das árvores soltam sementes
+config.tfc.general.doLeavesDropSaplings.tooltip=Define se folhas das árvores podem soltar sementes quando destruídas.
+
+config.tfc.general.doesChiselingCauseCaveIns=Esculpir causa desmoronamento
+config.tfc.general.doesChiselingCauseCaveIns.tooltip=Define se esculpir pedras podem causar desmoronamento.
+
+config.tfc.general.metalLampFuels=Fluidos que queimam no lampião
+config.tfc.general.metalLampFuels.tooltip=Lista de fluidos que podem ser usados no lampião.
+
+config.tfc.general.oilLampBurnRate=Velocidade de queima do Lampião
+config.tfc.general.oilLampBurnRate.tooltip=Define o quão rápido o lampião queima combustível em mb/hora.
+
+config.tfc.general.metalLampCapacity=Capacidade do lampião
+config.tfc.general.metalLampCapacity.tooltip=Quanto (em mb) um lampião tem de capacidade?
 
 ## Configurações do Client 
 
@@ -499,6 +548,15 @@ config.tfc.client.useVanillaHunger.tooltip=Desabilitar a barra de fome do TFC e 
 
 config.tfc.client.hideThirstBar=Esconder a barra de sede
 config.tfc.client.hideThirstBar.tooltip=Quer esconder a barra de sede?
+
+config.tfc.client.oreTooltipMode=Modo de dica para Minérios
+config.tfc.client.oreTooltipMode.tooltip=Modo de exibição usado nas dicas para minérios.
+
+config.tfc.client.decayTooltipMode=Modo de dica para validade de comidas
+config.tfc.client.decayTooltipMode.tooltip=Modo de exibição usado nas dicas para comidas.
+
+config.tfc.client.timeTooltipMode=Modo de dica para tempo
+config.tfc.client.timeTooltipMode.tooltip=Modo de exibição usado nas dicas para tempo.
 
 ## World Config
 config.tfc.world=Configurações de geração do mundo
@@ -774,6 +832,10 @@ jei.category.tfc.welding=Receitas de Solda
 ## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=Instantâneo
 jei.tooltips.tfc.barrel.duration=%d Horas
+
+## JEI Descriptions
+jei.description.tfc.pit_kiln=Usado para a produção de ceramica e derreter seus primeiros metais. Ponha até 4 items (Hotkey padrão: V) em um buraco 1x1, então encha (click direito) com 8 palhas  e 8 troncos. Para acender, use um iniciador de fogo ou jogue uma tocha em cima.
+jei.description.tfc.placed_item=Items podem ser colocados no chão, principalmente usados para criar um forno de poço. Use a hotkey (padrão: V) para colocar items (até 4) em um único bloco.
 
 ### Rock Layer
 jei.tooltips.tfc.rock_layer.category=Categoria
@@ -4597,7 +4659,9 @@ waila.tfc.temperature=Temperatura do ar: %dºC
 waila.tfc.metal.output=Contém %d unidades de %s
 
 ## Devices
-waila.tfc.devices.remaining=%d Minutos remanescentes
+waila.tfc.devices.minutes_remaining=%d Minutos remanescentes
+waila.tfc.devices.hours_remaining=%d Horas remanescentes
+waila.tfc.devices.ticks_remaining=%d Ticks remanescentes
 waila.tfc.pitkiln.unlit=Apagado
 waila.tfc.pitkiln.straw=Precisa de %d palhas
 waila.tfc.pitkiln.logs=Precisa de %d troncos
@@ -4628,5 +4692,5 @@ waila.tfc.animal.childhood_end=Torna-se adulto em %s
 waila.tfc.animal.familiarized=Familiarizado
 waila.tfc.animal.not_familiarized=Não familiarizado
 waila.tfc.animal.old=O animal está velho
-waila.tfc.animal.pregnancy_end=Gravidez termina em %s
+waila.tfc.animal.pregnant=Prenha
 waila.tfc.animal.can_shear=Pode ser tosado
