@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -28,10 +29,11 @@ public class PlacedItemProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         TEPlacedItemFlat te = Helpers.getTE(world, pos, TEPlacedItemFlat.class);
-        if(te != null)
+        if (te != null)
         {
             ItemStack stack = te.getStack();
             if (stack.getItem() instanceof ItemSmallOre)
@@ -60,7 +62,7 @@ public class PlacedItemProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(TEPlacedItemFlat.class);
     }

@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -24,8 +25,9 @@ public class FruitTreeProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockFruitTreeLeaves)
         {
@@ -44,7 +46,7 @@ public class FruitTreeProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(BlockFruitTreeLeaves.class);
     }

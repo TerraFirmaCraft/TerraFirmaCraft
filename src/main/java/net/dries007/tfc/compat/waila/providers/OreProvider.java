@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -26,21 +27,9 @@ public class OreProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public ItemStack getStack(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof BlockOreTFC)
-        {
-            BlockOreTFC b = (BlockOreTFC) state.getBlock();
-            return ItemOreTFC.get(b.ore, 1);
-        }
-        return ItemStack.EMPTY;
-    }
-
-    @Nonnull
-    @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
-    {
+        List<String> currentTooltip = new ArrayList<>();
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof BlockOreTFC)
         {
@@ -54,14 +43,20 @@ public class OreProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
+    public ItemStack getIcon(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
-        return Collections.singletonList(BlockOreTFC.class);
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockOreTFC)
+        {
+            BlockOreTFC b = (BlockOreTFC) state.getBlock();
+            return ItemOreTFC.get(b.ore, 1);
+        }
+        return ItemStack.EMPTY;
     }
 
     @Nonnull
     @Override
-    public List<Class<?>> getStackClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(BlockOreTFC.class);
     }

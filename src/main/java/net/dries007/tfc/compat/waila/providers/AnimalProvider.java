@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -24,8 +25,9 @@ public class AnimalProvider implements IWailaEntity
 {
     @Nonnull
     @Override
-    public List<String> getBodyTooltip(@Nonnull Entity entity, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull Entity entity, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         if (entity instanceof IAnimalTFC)
         {
             IAnimalTFC animal = (IAnimalTFC) entity;
@@ -86,14 +88,7 @@ public class AnimalProvider implements IWailaEntity
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
-    {
-        return Collections.singletonList(IAnimalTFC.class);
-    }
-
-    @Nonnull
-    @Override
-    public List<Class<?>> getNBTClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(IAnimalTFC.class);
     }

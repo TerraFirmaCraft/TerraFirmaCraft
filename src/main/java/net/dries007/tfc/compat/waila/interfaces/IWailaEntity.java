@@ -5,10 +5,8 @@
 
 package net.dries007.tfc.compat.waila.interfaces;
 
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,74 +17,43 @@ import net.minecraft.nbt.NBTTagCompound;
 public interface IWailaEntity
 {
     /**
+     * Returns a list of tooltips to write on the Hwyla or TOP panel's body.
+     *
      * @param entity this entity
-     * @param currentTooltip the current tooltip, for modification (so other mods can modify ours)
-     * @param nbt the server sync nbt (not always possible, but non null for checking)
+     * @param nbt    the server sync nbt (not always possible, but non null for checking)
      * @return a List containing tooltips to write on the panel's body
      */
     @Nonnull
-    default List<String> getBodyTooltip(@Nonnull Entity entity, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
-    {
-        return currentTooltip;
-    }
+    List<String> getTooltip(@Nonnull Entity entity, @Nonnull NBTTagCompound nbt);
 
     /**
+     * Overrides the title (default to the name of the entity looked upon)
+     *
      * @param entity this entity
-     * @param currentTooltip the current tooltip, for modification (so other mods can modify ours)
-     * @param nbt the server sync nbt (not always possible, but non null for checking)
-     * @return a List containing tooltips to write on the panel's head
+     * @param nbt    the server sync nbt (not always possible, but non null for checking)
+     * @return the title
      */
     @Nonnull
-    default List<String> getHeadTooltip(@Nonnull Entity entity, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    default String getTitle(@Nonnull Entity entity, @Nonnull NBTTagCompound nbt)
     {
-        return currentTooltip;
+        return "";
     }
 
     /**
-     * @param entity this entity
-     * @param currentTooltip the current tooltip, for modification (so other mods can modify ours)
-     * @param nbt the server sync nbt (not always possible, but non null for checking)
-     * @return a List containing tooltips to write on the panel's tail
+     * Returns a list of classes that Hwyla and TOP should assign to this provider
+     *
+     * @return List of classes (eg: <Entity>.class)
      */
     @Nonnull
-    default List<String> getTailTooltip(@Nonnull Entity entity, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
-    {
-        return currentTooltip;
-    }
+    List<Class<?>> getLookupClass();
 
     /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
+     * Overrides this to tell Hwyla and TOP to override the default title (eg: The name of the entity you're looking at).
+     *
+     * @return true if you wish to override the name of the entity you're looking at
      */
-    @Nonnull
-    default List<Class<?>> getHeadClassList()
+    default boolean overrideTitle()
     {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
-     */
-    @Nonnull
-    default List<Class<?>> getBodyClassList()
-    {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
-     */
-    @Nonnull
-    default List<Class<?>> getTailClassList()
-    {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return a List containing all classes you wish to look after in this provider (eg: (TileEntity).class, (Block).class)
-     */
-    @Nonnull
-    default List<Class<?>> getNBTClassList()
-    {
-        return Collections.emptyList();
+        return false;
     }
 }

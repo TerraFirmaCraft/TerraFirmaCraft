@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -33,13 +34,14 @@ public class BloomeryProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         IBlockState state = world.getBlockState(pos);
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TEBloomery)
         {
-            TEBloomery bloomery = (TEBloomery)tileEntity;
+            TEBloomery bloomery = (TEBloomery) tileEntity;
             if (state.getValue(ILightableBlock.LIT))
             {
                 List<ItemStack> oreStacks = bloomery.getOreStacks();
@@ -68,7 +70,7 @@ public class BloomeryProvider implements IWailaBlock
         }
         else if (tileEntity instanceof TEBloom)
         {
-            TEBloom bloom = (TEBloom)tileEntity;
+            TEBloom bloom = (TEBloom) tileEntity;
             IItemHandler cap = bloom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             if (cap != null)
             {
@@ -86,14 +88,7 @@ public class BloomeryProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
-    {
-        return ImmutableList.of(TEBloom.class, TEBloomery.class);
-    }
-
-    @Nonnull
-    @Override
-    public List<Class<?>> getNBTClassList()
+    public List<Class<?>> getLookupClass()
     {
         return ImmutableList.of(TEBloom.class, TEBloomery.class);
     }

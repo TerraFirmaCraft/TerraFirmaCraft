@@ -14,7 +14,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -29,29 +28,9 @@ public class BarrelProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getHeadTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
-        List<String> tooltip = new ArrayList<>();
-        IBlockState state = world.getBlockState(pos);
-        TEBarrel te = Helpers.getTE(world, pos, TEBarrel.class);
-        if (te != null)
-        {
-            if (te.isSealed())
-            {
-                tooltip.add(TextFormatting.WHITE.toString() + new TextComponentTranslation(state.getBlock().getTranslationKey() + ".sealed.name").getFormattedText());
-            }
-            else
-            {
-                tooltip.add(TextFormatting.WHITE.toString() + new TextComponentTranslation(state.getBlock().getTranslationKey() + ".name").getFormattedText());
-            }
-        }
-        return tooltip;
-    }
-
-    @Nonnull
-    @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
-    {
+        List<String> currentTooltip = new ArrayList<>();
         TEBarrel te = Helpers.getTE(world, pos, TEBarrel.class);
         if (te != null)
         {
@@ -81,14 +60,7 @@ public class BarrelProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getHeadClassList()
-    {
-        return Collections.singletonList(TEBarrel.class);
-    }
-
-    @Nonnull
-    @Override
-    public List<Class<?>> getBodyClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(TEBarrel.class);
     }

@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -24,8 +25,9 @@ public class BlastFurnaceProvider implements IWailaBlock
 {
     @Nonnull
     @Override
-    public List<String> getBodyTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull List<String> currentTooltip, @Nonnull NBTTagCompound nbt)
+    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         TEBlastFurnace blastFurnace = Helpers.getTE(world, pos, TEBlastFurnace.class);
         if (blastFurnace != null)
         {
@@ -54,14 +56,7 @@ public class BlastFurnaceProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<Class<?>> getBodyClassList()
-    {
-        return Collections.singletonList(TEBlastFurnace.class);
-    }
-
-    @Nonnull
-    @Override
-    public List<Class<?>> getNBTClassList()
+    public List<Class<?>> getLookupClass()
     {
         return Collections.singletonList(TEBlastFurnace.class);
     }

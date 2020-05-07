@@ -312,7 +312,7 @@ public class BlockBarrel extends Block implements IItemSize
     {
         ItemStack stack = new ItemStack(state.getBlock());
         TEBarrel tile = Helpers.getTE(world, pos, TEBarrel.class);
-        if (tile != null)
+        if (tile != null && tile.isSealed())
         {
             stack.setTagCompound(tile.getItemTag());
         }
