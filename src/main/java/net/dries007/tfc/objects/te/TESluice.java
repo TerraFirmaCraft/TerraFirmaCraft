@@ -54,6 +54,7 @@ public class TESluice extends TEBase implements ITickable
     {
         return fluid == FluidsTFC.FRESH_WATER.get() || fluid == FluidsTFC.SALT_WATER.get();
     }
+
     private int soil;
     private int ticksRemaining, delayTimer;
 

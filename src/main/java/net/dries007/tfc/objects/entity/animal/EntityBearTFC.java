@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -49,8 +50,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityBearTFC extends EntityAnimalMammal implements IPredator, EntityAIStandAttack.IEntityStandAttack
 {
-    private static final int DAYS_TO_ADULTHOOD = 1800;
-    private static final int DAYS_TO_FULL_GESTATION = 210;
+    private static final float MONTHS_TO_ADULTHOOD = 60.0f;
     private static final DataParameter<Boolean> IS_STANDING;
 
     static
@@ -65,7 +65,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     @SuppressWarnings("unused")
     public EntityBearTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityBearTFC(World worldIn, Gender gender, int birthDay)
@@ -107,7 +107,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -131,7 +131,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     @Override
     public long gestationDays()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return 0;
     }
 
     @Override
@@ -167,6 +167,12 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     public float getStandingAnimationScale(float partialTicks)
     {
         return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * partialTicks) / 6.0F;
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        return false;
     }
 
     @Override

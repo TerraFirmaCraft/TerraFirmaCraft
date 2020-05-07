@@ -35,14 +35,14 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
 {
-    private static final int DAYS_TO_ADULTHOOD = 1080;
-    private static final int DAYS_TO_GROW_WOOL = 4;
-    private static final int DAYS_TO_FULL_GESTATION = 330;
+    private static final float MONTHS_TO_ADULTHOOD = 36.0f;
+    private static final float MONTHS_TO_GROW_WOOL = 0.13333334f;
+    private static final float MONTHS_TO_FULL_GESTATION = 11.0f;
 
     @SuppressWarnings("unused")
     public EntityAlpacaTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD), EntitySheep.getRandomSheepColor(Constants.RNG));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD), EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
     public EntityAlpacaTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
@@ -78,7 +78,7 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     @Override
     public long gestationDays()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -90,20 +90,20 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
     public long getProductsCooldown()
     {
         // Just here for the time being, in 1.15 gonna see changes here to match other animals better
-        return Math.max(0, (this.getShearedDay() + DAYS_TO_GROW_WOOL - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
+        return (long) Math.max(0, (this.getShearedDay() + Math.ceil(MONTHS_TO_GROW_WOOL * CalendarTFC.CALENDAR_TIME.getDaysInMonth()) - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
     }
 
     @Override
     public boolean hasWool()
     {
-        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + DAYS_TO_GROW_WOOL;
+        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + Math.ceil(MONTHS_TO_GROW_WOOL * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

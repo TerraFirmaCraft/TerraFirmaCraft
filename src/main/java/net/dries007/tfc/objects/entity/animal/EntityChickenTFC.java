@@ -52,8 +52,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 {
     private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
-    private static final int DAYS_TO_ADULTHOOD = 124;
-    private static final int DAYS_TO_HATCH_EGG = 21;
+    private static final float MONTHS_TO_ADULTHOOD = 4.133333f;
+    private static final float MONTHS_TO_HATCH_EGG = 0.7f;
     //The last time(in ticks) this chicken has laid eggs
     private static final DataParameter<Long> LASTLAYING = EntityDataManager.createKey(EntityChickenTFC.class, Helpers.LONG_DATA_SERIALIZER);
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
@@ -65,7 +65,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 
     public EntityChickenTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityChickenTFC(World worldIn, Gender gender, int birthDay)
@@ -113,7 +113,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -141,7 +141,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
             {
                 EntityChickenTFC chick = new EntityChickenTFC(this.world);
                 chick.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-                cap.setFertilized(chick, DAYS_TO_HATCH_EGG + CalendarTFC.PLAYER_TIME.getTotalDays());
+                cap.setFertilized(chick, daysToHatch() + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
         eggs.add(egg);
@@ -184,6 +184,11 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
             return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.no_egg", getAnimalName());
         }
         return null;
+    }
+
+    public long daysToHatch()
+    {
+        return (long) Math.ceil(MONTHS_TO_HATCH_EGG * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     public long lastLaying()

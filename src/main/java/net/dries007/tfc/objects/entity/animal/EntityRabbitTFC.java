@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,8 +51,8 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 240;
-    private static final int DAYS_TO_FULL_GESTATION = 30;
+    private static final float MONTHS_TO_ADULTHOOD = 8.0f;
+    private static final float MONTHS_TO_FULL_GESTATION = 1.0f;
 
     private static final DataParameter<Integer> RABBIT_TYPE = EntityDataManager.createKey(EntityRabbitTFC.class, DataSerializers.VARINT);
 
@@ -63,7 +64,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     @SuppressWarnings("unused")
     public EntityRabbitTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityRabbitTFC(World worldIn, Gender gender, int birthDay)
@@ -211,7 +212,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public long gestationDays()
     {
-        return DAYS_TO_FULL_GESTATION;
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -259,13 +260,19 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
     public boolean isFood(@Nonnull ItemStack stack)
     {
         return OreDictionaryHelper.doesStackMatchOre(stack, "carrot");
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        return false;
     }
 
     @Override

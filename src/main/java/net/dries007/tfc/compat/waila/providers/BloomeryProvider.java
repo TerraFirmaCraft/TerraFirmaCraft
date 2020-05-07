@@ -57,7 +57,7 @@ public class BloomeryProvider implements IWailaBlock
                         currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.ticks_remaining", remainingTicks).getFormattedText());
                         break;
                     case MINECRAFT_HOURS:
-                        long remainingHours = Math.round(remainingTicks / (float)ICalendar.TICKS_IN_HOUR);
+                        long remainingHours = Math.round(remainingTicks / (float) ICalendar.TICKS_IN_HOUR);
                         currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.hours_remaining", remainingHours).getFormattedText());
                         break;
                     case REAL_MINUTES:

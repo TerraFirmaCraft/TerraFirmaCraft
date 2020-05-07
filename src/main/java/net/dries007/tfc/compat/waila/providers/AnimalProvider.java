@@ -39,9 +39,10 @@ public class AnimalProvider implements IWailaEntity
             switch (animal.getAge())
             {
                 case CHILD:
-                    String date = ICalendarFormatted.getTimeAndDate(
-                        ICalendar.TICKS_IN_DAY * (animal.getBirthDay() + animal.getDaysToAdulthood())
-                        , CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+                    long endPlayerTick = (animal.getBirthDay() + animal.getDaysToAdulthood()) * ICalendar.TICKS_IN_DAY;
+                    long delta = endPlayerTick - CalendarTFC.PLAYER_TIME.getTicks();
+                    long endCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks() + delta;
+                    String date = ICalendarFormatted.getTimeAndDate(endCalendarTick, CalendarTFC.CALENDAR_TIME.getDaysInMonth());
                     currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.childhood_end", date).getFormattedText());
                     break;
                 case OLD:
@@ -54,15 +55,11 @@ public class AnimalProvider implements IWailaEntity
                         {
                             currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.can_mate").getFormattedText());
                         }
-                        if (animal.isFertilized())
+                        if (animal.isFertilized() && animal.getType() == IAnimalTFC.Type.MAMMAL)
                         {
-                            long pregnancyDate = nbt.getLong("pregnant");
-                            if (pregnancyDate > 0)
-                            {
-                                String enddate = ICalendarFormatted.getTimeAndDate(
-                                    ICalendar.TICKS_IN_DAY * (pregnancyDate + 240), CalendarTFC.CALENDAR_TIME.getDaysInMonth());
-                                currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.pregnancy_end", enddate).getFormattedText());
-                            }
+                            // Pregnancy end time not possible due to how it is handled currently
+                            // in 1.15, refactor animals to hold an object (`AnimalProperties`) with all needed data, serializable and sync to client via NBT
+                            currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.pregnant").getFormattedText());
                         }
                         if (animal.isReadyForAnimalProduct())
                         {

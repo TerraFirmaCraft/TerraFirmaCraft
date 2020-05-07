@@ -54,8 +54,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 // Should fit more in the huntable list
 public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntable
 {
-    protected static final int DAYS_TO_FULL_GESTATION = 330;
-    private static final int DAYS_TO_ADULTHOOD = 60;
+    protected static final float MONTHS_TO_ADULTHOOD = 11.0f;
+    private static final float MONTHS_TO_FULL_GESTATION = 2.0f;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityOcelotTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityOcelotTFC.class, DataSerializers.VARINT);
@@ -70,7 +70,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     @SuppressWarnings("unused")
     public EntityOcelotTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityOcelotTFC(World world, IAnimalTFC.Gender gender, int birthDay)
@@ -149,7 +149,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -236,13 +236,18 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
         return 4;
     }
 
+    public long gestationDays()
+    {
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+    }
+
     @Override
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + DAYS_TO_FULL_GESTATION)
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + gestationDays())
             {
                 birthChildren();
                 this.setFertilized(false);

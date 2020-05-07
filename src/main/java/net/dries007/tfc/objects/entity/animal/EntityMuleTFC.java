@@ -53,8 +53,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @MethodsReturnNonnullByDefault
 public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
 {
-    protected static final int DAYS_TO_ADULTHOOD = 1120;
-    protected static final int DAYS_TO_FULL_GESTATION = 240;
+    protected static final float MONTHS_TO_ADULTHOOD = 37.333332f;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.VARINT);
@@ -65,7 +64,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
 
     public EntityMuleTFC(World world)
     {
-        this(world, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(world, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
     }
 
     public EntityMuleTFC(World world, Gender gender, int birthDay)
@@ -135,7 +134,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override

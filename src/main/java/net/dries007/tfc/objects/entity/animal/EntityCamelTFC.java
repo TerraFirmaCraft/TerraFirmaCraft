@@ -50,13 +50,13 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
 {
-    protected static final int DAYS_TO_FULL_GESTATION = 350;
-    private static final int DAYS_TO_ADULTHOOD = 980;
+    private static final float MONTHS_TO_ADULTHOOD = 32.666668f;
+    private static final float MONTHS_TO_FULL_GESTATION = 11.666667f;
     private static final DataParameter<Integer> DATA_COLOR_ID = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.VARINT);
 
     public EntityCamelTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
         this.setSize(0.9F, 2.6F);
     }
 
@@ -100,7 +100,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     @Override
     public int getDaysToAdulthood()
     {
-        return DAYS_TO_ADULTHOOD;
+        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -228,7 +228,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         super.onLivingUpdate();
         if (!this.world.isRemote)
         {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + DAYS_TO_FULL_GESTATION)
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
             {
                 birthChildren();
                 this.setFertilized(false);
@@ -270,6 +270,12 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
                 }
             }
         }
+    }
+
+    @Override
+    public long gestationDays()
+    {
+        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
