@@ -33,11 +33,12 @@ public interface ICollapsableBlock
      *
      * @param worldIn the worldObj this block is in
      * @param pos     the BlockPos this block has been mined from
+     * @return true if a collapse did occur, false otherwise
      */
-    default void checkCollapsingArea(World worldIn, BlockPos pos)
+    default boolean checkCollapsingArea(World worldIn, BlockPos pos)
     {
         if (worldIn.isRemote || !worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
-            return; //First, let's check if this area is loaded and is on server
+            return false; //First, let's check if this area is loaded and is on server
         if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.collapseChance) //Then, we check rng if a collapse should trigger
         {
             //Rng the radius
@@ -55,12 +56,12 @@ public interface ICollapsableBlock
                         //Trigger collapse!
                         block.collapseArea(worldIn, checking);
                         worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                        return; //Don't need to check other blocks
+                        return true; //Don't need to check other blocks
                     }
                 }
             }
         }
-
+        return false;
     }
 
     /**
