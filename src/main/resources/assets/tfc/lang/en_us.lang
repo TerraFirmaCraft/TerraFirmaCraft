@@ -84,6 +84,7 @@ tfc.tooltip.metal=§fMetal:§7 %s
 tfc.tooltip.units=%d units
 tfc.tooltip.crucible_units=%d / %d units
 tfc.tooltip.units.total=§6%d total units
+tfc.tooltip.units.info_total=%d units / §6%d total
 tfc.tooltip.smelting=Smelt in %s
 tfc.tooltip.liquid= - Liquid
 tfc.tooltip.solid= - Solid
