@@ -257,7 +257,8 @@ public class ClientEvents
             float skillMod = SmithingSkill.getSkillBonus(stack);
             if (skillMod > 0)
             {
-                tt.add(I18n.format("tfc.tooltip.smithing_skill", skillMod * 100));
+                String skillValue = String.format("%.2f", skillMod * 100);
+                tt.add(I18n.format("tfc.tooltip.smithing_skill", skillValue));
             }
 
             if (event.getFlags().isAdvanced()) // Only added with advanced tooltip mode
