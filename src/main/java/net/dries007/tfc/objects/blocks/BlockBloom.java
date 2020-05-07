@@ -94,7 +94,7 @@ public class BlockBloom extends Block
             if (cap != null)
             {
                 ItemStack stack = cap.extractItem(0, 1, true);
-                if(!stack.isEmpty())
+                if (!stack.isEmpty())
                 {
                     return stack;
                 }

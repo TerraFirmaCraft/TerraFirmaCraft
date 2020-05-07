@@ -3,8 +3,10 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.compat.waila;
+package net.dries007.tfc.compat.waila.providers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -13,19 +15,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.IShearable;
 
-import mcp.mobius.waila.api.*;
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.compat.waila.interfaces.IWailaEntity;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
-@WailaPlugin
-public class AnimalProvider implements IWailaEntityProvider, IWailaPlugin
+public class AnimalProvider implements IWailaEntity
 {
     @Nonnull
     @Override
-    public List<String> getWailaBody(Entity entity, List<String> currentTooltip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
+    public List<String> getTooltip(@Nonnull Entity entity, @Nonnull NBTTagCompound nbt)
     {
+        List<String> currentTooltip = new ArrayList<>();
         if (entity instanceof IAnimalTFC)
         {
             IAnimalTFC animal = (IAnimalTFC) entity;
@@ -54,7 +56,6 @@ public class AnimalProvider implements IWailaEntityProvider, IWailaPlugin
                         }
                         if (animal.isFertilized())
                         {
-                            NBTTagCompound nbt = accessor.getNBTData();
                             long pregnancyDate = nbt.getLong("pregnant");
                             if (pregnancyDate > 0)
                             {
@@ -85,9 +86,10 @@ public class AnimalProvider implements IWailaEntityProvider, IWailaPlugin
         return currentTooltip;
     }
 
+    @Nonnull
     @Override
-    public void register(IWailaRegistrar registrar)
+    public List<Class<?>> getLookupClass()
     {
-        registrar.registerBodyProvider(this, IAnimalTFC.class);
+        return Collections.singletonList(IAnimalTFC.class);
     }
 }

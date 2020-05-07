@@ -49,6 +49,11 @@ import net.dries007.tfc.world.classic.worldgen.vein.Vein;
 public class TESluice extends TEBase implements ITickable
 {
     public static final int MAX_SOIL = 50;
+
+    public static boolean isValidFluid(Fluid fluid)
+    {
+        return fluid == FluidsTFC.FRESH_WATER.get() || fluid == FluidsTFC.SALT_WATER.get();
+    }
     private int soil;
     private int ticksRemaining, delayTimer;
 
@@ -267,10 +272,5 @@ public class TESluice extends TEBase implements ITickable
                 markForBlockUpdate();
             }
         }
-    }
-
-    public static boolean isValidFluid(Fluid fluid)
-    {
-        return fluid == FluidsTFC.FRESH_WATER.get() || fluid == FluidsTFC.SALT_WATER.get();
     }
 }

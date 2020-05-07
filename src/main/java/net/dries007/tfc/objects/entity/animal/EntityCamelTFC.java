@@ -379,6 +379,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         return this.getControllingPassenger() instanceof EntityLivingBase;
     }
 
+    @SuppressWarnings("deprecation")
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         if (!blockIn.getDefaultState().getMaterial().isLiquid())
