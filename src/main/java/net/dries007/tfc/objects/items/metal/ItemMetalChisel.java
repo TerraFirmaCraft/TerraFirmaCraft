@@ -207,7 +207,11 @@ public class ItemMetalChisel extends ItemMetalTool
                 IBlockState oldState = worldIn.getBlockState(pos);
                 if (oldState.getBlock() instanceof ICollapsableBlock && ConfigTFC.GENERAL.doesChiselingCauseCaveIns)
                 {
-                    ((ICollapsableBlock) oldState.getBlock()).checkCollapsingArea(worldIn, pos);
+                    worldIn.setBlockToAir(pos); // Set block to air before attempting a collapse mechanic
+                    if(((ICollapsableBlock) oldState.getBlock()).checkCollapsingArea(worldIn, pos))
+                    {
+                        return EnumActionResult.SUCCESS; // Collapse mechanic triggered, cancel chisel!
+                    }
                 }
                 worldIn.setBlockState(pos, newState);
 
