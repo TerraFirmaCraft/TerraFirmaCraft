@@ -31,19 +31,17 @@ import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidHandlerSidedCallback
 {
     public static int CAPACITY;
-
-    public int getFuel()
-    {
-        return tank.getFluidAmount();
-    }
-
     private final FluidTank tank = new FluidTankCallback(this, 0, CAPACITY);
     private boolean powered = false;
-
     public TELamp()
     {
         CAPACITY = ConfigTFC.GENERAL.metalLampCapacity;
         this.tank.setTileEntity(this);
+    }
+
+    public int getFuel()
+    {
+        return tank.getFluidAmount();
     }
 
     @Override

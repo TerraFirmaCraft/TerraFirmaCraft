@@ -5,11 +5,7 @@
 
 package net.dries007.tfc.objects.items.itemblock;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -32,7 +28,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
-import net.dries007.tfc.api.recipes.heat.HeatRecipeMetalMelting;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.metal.BlockMetalLamp;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
@@ -40,8 +35,8 @@ import net.dries007.tfc.util.Helpers;
 
 public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
 {
-    public static int CAPACITY;
     private static final Map<Metal, ItemBlockMetalLamp> TABLE = new HashMap<>();
+    public static int CAPACITY;
 
     public static Set<Fluid> getValidFluids()
     {

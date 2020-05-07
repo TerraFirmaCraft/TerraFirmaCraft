@@ -70,39 +70,6 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
         setHarvestLevel("axe", 0);
     }
 
-    @Override
-    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
-    {
-        BlockPos fluidPos = pos.offset(state.getValue(FACING), -1).down();
-        Block block = state.getBlock();
-        if (block instanceof BlockFluidBase)
-        {
-            Fluid fluid = ((BlockFluidBase) block).getFluid();
-            if(TESluice.isValidFluid(fluid))
-            {
-                worldIn.setBlockToAir(fluidPos);
-            }
-        }
-        super.onPlayerDestroy(worldIn, pos, state);
-    }
-
-    @Override
-    public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
-    {
-        IBlockState state = worldIn.getBlockState(pos);
-        BlockPos fluidPos = pos.offset(state.getValue(FACING), -1).down();
-        Block block = state.getBlock();
-        if (block instanceof BlockFluidBase)
-        {
-            Fluid fluid = ((BlockFluidBase) block).getFluid();
-            if(TESluice.isValidFluid(fluid))
-            {
-                worldIn.setBlockToAir(fluidPos);
-            }
-        }
-        super.onExplosionDestroy(worldIn, pos, explosionIn);
-    }
-
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
@@ -171,6 +138,22 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
         return false;
     }
 
+    @Override
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
+    {
+        BlockPos fluidPos = pos.offset(state.getValue(FACING), -1).down();
+        Block block = state.getBlock();
+        if (block instanceof BlockFluidBase)
+        {
+            Fluid fluid = ((BlockFluidBase) block).getFluid();
+            if (TESluice.isValidFluid(fluid))
+            {
+                worldIn.setBlockToAir(fluidPos);
+            }
+        }
+        super.onPlayerDestroy(worldIn, pos, state);
+    }
+
     @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
@@ -213,6 +196,23 @@ public class BlockSluice extends BlockHorizontal implements IItemSize
         {
             super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
         }
+    }
+
+    @Override
+    public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        BlockPos fluidPos = pos.offset(state.getValue(FACING), -1).down();
+        Block block = state.getBlock();
+        if (block instanceof BlockFluidBase)
+        {
+            Fluid fluid = ((BlockFluidBase) block).getFluid();
+            if (TESluice.isValidFluid(fluid))
+            {
+                worldIn.setBlockToAir(fluidPos);
+            }
+        }
+        super.onExplosionDestroy(worldIn, pos, explosionIn);
     }
 
     @Override
