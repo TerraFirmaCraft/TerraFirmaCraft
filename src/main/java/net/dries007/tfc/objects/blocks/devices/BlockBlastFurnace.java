@@ -73,14 +73,6 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
             .match(new BlockPos(1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class);
     }
 
-    public BlockBlastFurnace()
-    {
-        super(Material.IRON);
-        setHardness(2.0F);
-        setResistance(2.0F);
-        setHarvestLevel("pickaxe", 0);
-    }
-
     /**
      * Structural check of the blast furnace. Any value > 0 means this blast furnace can work
      *
@@ -100,6 +92,14 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
         }
         // Maximum levels
         return 5;
+    }
+
+    public BlockBlastFurnace()
+    {
+        super(Material.IRON);
+        setHardness(2.0F);
+        setResistance(2.0F);
+        setHarvestLevel("pickaxe", 0);
     }
 
     @SuppressWarnings("deprecation")

@@ -142,7 +142,7 @@ public class TEPlacedItem extends TEInventory
                 if (inventory.getStackInSlot(slot).isEmpty())
                 {
                     ItemStack input;
-                    if(player.isCreative())
+                    if (player.isCreative())
                     {
                         input = stack.copy();
                         input.setCount(1);
@@ -162,7 +162,7 @@ public class TEPlacedItem extends TEInventory
                 if (isEmpty())
                 {
                     ItemStack input;
-                    if(player.isCreative())
+                    if (player.isCreative())
                     {
                         input = stack.copy();
                         input.setCount(1);

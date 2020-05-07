@@ -112,7 +112,7 @@ public class CropProvider implements IWailaBlock
             ICrop crop = b.getCrop();
             return crop.getFoodDrop(state.getValue(b.getStageProperty()));
         }
-        else if(state.getBlock() instanceof BlockCropDead)
+        else if (state.getBlock() instanceof BlockCropDead)
         {
             BlockCropDead b = (BlockCropDead) state.getBlock();
             ICrop crop = b.getCrop();

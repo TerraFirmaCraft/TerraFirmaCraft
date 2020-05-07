@@ -75,7 +75,7 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                                     if (tile != null)
                                     {
                                         ItemStack input;
-                                        if(player.isCreative())
+                                        if (player.isCreative())
                                         {
                                             input = stack.copy();
                                             input.setCount(1);
