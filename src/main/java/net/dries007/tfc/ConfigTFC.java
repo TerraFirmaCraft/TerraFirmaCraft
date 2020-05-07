@@ -11,6 +11,8 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.util.config.TimeTooltipMode;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
@@ -525,9 +527,9 @@ public class ConfigTFC
             "2 = Stack unit total info.",
             "3 = All info."
         })
-        @Config.LangKey("config." + MOD_ID + ".general.oreTooltipMode")
+        @Config.LangKey("config." + MOD_ID + ".client.oreTooltipMode")
         @Config.RangeInt(min = 0, max = 3)
-        public int oreTooltipMode = 3;
+        public int oreTooltipMode = 3; // Don't change this to enums in 1.12, it will break old configs because forge tries to cast without safety checks
 
         @Config.Comment({"Specific Food decay tooltip mode.",
             "0 = No Specific tooltip info.",
@@ -535,9 +537,13 @@ public class ConfigTFC
             "2 = Specific Days to decay only.",
             "3 = All Specific info."
         })
-        @Config.LangKey("config." + MOD_ID + ".general.decayTooltipMode")
+        @Config.LangKey("config." + MOD_ID + ".client.decayTooltipMode")
         @Config.RangeInt(min = 0, max = 3)
-        public int decayTooltipMode = 3;
+        public int decayTooltipMode = 3; // Don't change this to enums in 1.12, it will break old configs because forge tries to cast without safety checks
+
+        @Config.Comment({"Time tooltip info mode."})
+        @Config.LangKey("config." + MOD_ID + ".client.timeTooltipMode")
+        public TimeTooltipMode timeTooltipMode = TimeTooltipMode.MINECRAFT_HOURS;
     }
 
     public static class WorldCFG

@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeableMeasurableMetal;
@@ -29,6 +30,7 @@ import net.dries007.tfc.objects.blocks.devices.BlockBloomery;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.te.TEBloom;
 import net.dries007.tfc.objects.te.TEBloomery;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public class BloomeryProvider implements IWailaBlock
 {
@@ -46,8 +48,23 @@ public class BloomeryProvider implements IWailaBlock
             {
                 List<ItemStack> oreStacks = bloomery.getOreStacks();
                 BloomeryRecipe recipe = oreStacks.size() > 0 ? BloomeryRecipe.get(oreStacks.get(0)) : null;
-                long remainingMinutes = Math.round(bloomery.getBurnTicksLeft() / 1200.0f);
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.remaining", remainingMinutes).getFormattedText());
+                long remainingTicks = bloomery.getBurnTicksLeft();
+                switch (ConfigTFC.CLIENT.timeTooltipMode)
+                {
+                    case NONE:
+                        break;
+                    case TICKS:
+                        currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.ticks_remaining", remainingTicks).getFormattedText());
+                        break;
+                    case MINECRAFT_HOURS:
+                        long remainingHours = Math.round(remainingTicks / (float)ICalendar.TICKS_IN_HOUR);
+                        currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.hours_remaining", remainingHours).getFormattedText());
+                        break;
+                    case REAL_MINUTES:
+                        long remainingMinutes = Math.round(remainingTicks / 1200.0f);
+                        currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.minutes_remaining", remainingMinutes).getFormattedText());
+                        break;
+                }
                 if (recipe != null)
                 {
                     ItemStack output = recipe.getOutput(oreStacks);

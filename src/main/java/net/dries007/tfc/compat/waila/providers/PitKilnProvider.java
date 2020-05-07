@@ -20,6 +20,7 @@ import net.dries007.tfc.compat.waila.interfaces.IWailaBlock;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public class PitKilnProvider implements IWailaBlock
 {
@@ -36,8 +37,22 @@ public class PitKilnProvider implements IWailaBlock
             if (isLit)
             {
                 long remainingTicks = ConfigTFC.GENERAL.pitKilnTime - (CalendarTFC.PLAYER_TIME.getTicks() - te.getLitTick());
-                long remainingMinutes = Math.round(remainingTicks / 1200.0f);
-                currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.remaining", remainingMinutes).getFormattedText());
+                switch (ConfigTFC.CLIENT.timeTooltipMode)
+                {
+                    case NONE:
+                        break;
+                    case TICKS:
+                        currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.ticks_remaining", remainingTicks).getFormattedText());
+                        break;
+                    case MINECRAFT_HOURS:
+                        long remainingHours = Math.round(remainingTicks / (float) ICalendar.TICKS_IN_HOUR);
+                        currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.hours_remaining", remainingHours).getFormattedText());
+                        break;
+                    case REAL_MINUTES:
+                        long remainingMinutes = Math.round(remainingTicks / 1200.0f);
+                        currentTooltip.add(new TextComponentTranslation("waila.tfc.devices.minutes_remaining", remainingMinutes).getFormattedText());
+                        break;
+                }
             }
             else
             {

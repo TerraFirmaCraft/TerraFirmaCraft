@@ -480,9 +480,6 @@ config.tfc.general.redSteelBucketWhitelist.tooltip=List of fluids allowed to be 
 config.tfc.general.nutritionRotationHungerWindow=Nutrition Rotation Hunger Window
 config.tfc.general.nutritionRotationHungerWindow.tooltip=This is the amount of hunger (consumed) required for a player to completely refresh their nutrition stats. In TFC, almost all foods have 4 hunger, so this is 4x [number of foods required to refresh nutrition stats]. This will update next time you consume a food.
 
-config.tfc.general.oreTooltipMode=Ore Tooltip Mode
-config.tfc.general.oreTooltipMode.tooltip=Mode used on ore tooltips.
-
 config.tfc.general.disableIngotPile=Can you stack ingots in ingot piles.
 config.tfc.general.disableIngotPile.tooltip=Can in world Ingot Piles be created?
 
@@ -512,9 +509,6 @@ config.tfc.general.oilLampBurnRate.tooltip=How fast lamps burn fuel in mb/hour.
 
 config.tfc.general.metalLampCapacity=Lamp Capacity
 config.tfc.general.metalLampCapacity.tooltip=How many millibuckets(mb) will lamps hold.
-
-config.tfc.general.decayTooltipMode=Specific Decay Tooltip Mode
-config.tfc.general.decayTooltipMode.tooltip=Mode used on decay tooltips.
 
 ## Client Config
 
@@ -553,6 +547,15 @@ config.tfc.client.useVanillaHunger.tooltip=Disable TFC hunger bar and use vanill
 
 config.tfc.client.hideThirstBar=Hide Thirst Bar
 config.tfc.client.hideThirstBar.tooltip=Hide the thirst bar?
+
+config.tfc.client.oreTooltipMode=Ore Tooltip Mode
+config.tfc.client.oreTooltipMode.tooltip=Mode used on ore tooltips.
+
+config.tfc.client.decayTooltipMode=Specific Decay Tooltip Mode
+config.tfc.client.decayTooltipMode.tooltip=Mode used on decay tooltips.
+
+config.tfc.client.timeTooltipMode=Time Tooltip Info Mode
+config.tfc.client.timeTooltipMode.tooltip=Mode used on time tooltips.
 
 ## World Config
 config.tfc.world=World Gen Settings
@@ -4509,7 +4512,9 @@ waila.tfc.temperature=Air Temperature: %dºC
 waila.tfc.metal.output=Contains %d units of %s
 
 ## Devices
-waila.tfc.devices.remaining=%d Minutes Remaining
+waila.tfc.devices.minutes_remaining=%d Minutes Remaining
+waila.tfc.devices.hours_remaining=%d Hours Remaining
+waila.tfc.devices.ticks_remaining=%d Ticks Remaining
 waila.tfc.pitkiln.unlit=Unlit
 waila.tfc.pitkiln.straw=Needs %d Straw
 waila.tfc.pitkiln.logs=Needs %d Logs
