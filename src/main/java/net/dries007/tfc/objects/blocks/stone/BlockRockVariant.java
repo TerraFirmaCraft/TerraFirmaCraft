@@ -108,12 +108,12 @@ public class BlockRockVariant extends Block implements IItemSize
             case BRICKS:
             case RAW:
             case SPIKE:
+            case SMOOTH:
                 setSoundType(SoundType.STONE);
                 setHardness(rock.getRockCategory().getHardness()).setResistance(rock.getRockCategory().getResistance());
                 setHarvestLevel("pickaxe", 0);
                 break;
             case COBBLE:
-            case SMOOTH:
                 setSoundType(SoundType.STONE);
                 setHardness(rock.getRockCategory().getHardness() * 0.75F).setResistance(rock.getRockCategory().getResistance());
                 setHarvestLevel("pickaxe", 0);

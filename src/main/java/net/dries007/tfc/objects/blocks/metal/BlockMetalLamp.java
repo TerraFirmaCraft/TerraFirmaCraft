@@ -110,7 +110,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(FACING).getIndex() + (state.getValue(LIT) ? 2 : 1);
+        return state.getValue(FACING).getIndex() + (state.getValue(LIT) ? 2 : 0);
     }
 
     @SuppressWarnings("deprecation")
@@ -347,8 +347,11 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         return true;
     }
 
+    //Lifted from BlockFlowerPot
 
-    //Lifted from BlockTorch
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        super.breakBlock(worldIn, pos, state);
+    }
 
     @Nullable
     @Override
@@ -372,6 +375,19 @@ public class BlockMetalLamp extends Block implements ILightableBlock
                 drops.add(tile.getItemStack(tile, state));
             }
         }
+    }
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        return willHarvest || super.removedByPlayer(state, world, pos, player, willHarvest); //delay deletion of the block until after getDrops
+    }
+
+    @Override
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
+    {
+        super.harvestBlock(world, player, pos, state, te, tool);
+        world.setBlockToAir(pos);
     }
 
     @Override
