@@ -6,28 +6,28 @@
 package net.dries007.tfc.client.render.animal;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelPolarBearTFC;
+import net.dries007.tfc.objects.entity.animal.EntityBearTFC;
 import net.dries007.tfc.objects.entity.animal.EntityPolarBearTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SideOnly(Side.CLIENT)
-public class RenderPolarBearTFC extends RenderAnimalTFC<EntityPolarBearTFC>
+@ParametersAreNonnullByDefault
+public class RenderPolarBearTFC extends RenderLiving<EntityPolarBearTFC>
 {
-    private static final ResourceLocation YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/polarbear_young.png");
-    private static final ResourceLocation OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/polarbear_old.png");
+    private static final ResourceLocation POLARBEAR_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/polarbear.png");
 
-    public RenderPolarBearTFC(RenderManager renderManager)
-    {
-        super(renderManager, new ModelPolarBearTFC(), 0.7F, YOUNG, OLD);
-    }
+    public RenderPolarBearTFC(RenderManager renderManager) { super(renderManager, new ModelPolarBearTFC(), 0.7F); }
 
     @Override
     public void doRender(@Nonnull EntityPolarBearTFC polarBearTFC, double par2, double par4, double par6, float par8, float par9)
@@ -43,8 +43,12 @@ public class RenderPolarBearTFC extends RenderAnimalTFC<EntityPolarBearTFC>
     }
 
     @Override
-    protected void preRenderCallback(EntityPolarBearTFC polarBearTFC, float par2)
+    protected void preRenderCallback(EntityPolarBearTFC polarBearTFC, float par2) { GlStateManager.scale(1.3f, 1.3f, 1.3f); }
+
+    @Override
+    protected ResourceLocation getEntityTexture(EntityPolarBearTFC entity)
     {
-        GlStateManager.scale(1.3f, 1.3f, 1.3f);
+        return POLARBEAR_TEXTURE;
     }
 }
+

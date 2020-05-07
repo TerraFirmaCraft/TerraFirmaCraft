@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,14 +22,13 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
-public class RenderBearTFC extends RenderAnimalTFC<EntityBearTFC>
+public class RenderBearTFC extends RenderLiving<EntityBearTFC>
 {
-    private static final ResourceLocation YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/bear_young.png");
-    private static final ResourceLocation OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/bear_old.png");
+    private static final ResourceLocation BEAR_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/bear.png");
 
     public RenderBearTFC(RenderManager renderManager)
     {
-        super(renderManager, new ModelBearTFC(), 0.7F, YOUNG, OLD);
+        super(renderManager, new ModelBearTFC(), 0.7F);
     }
 
     @Override
@@ -45,8 +45,14 @@ public class RenderBearTFC extends RenderAnimalTFC<EntityBearTFC>
     }
 
     @Override
-    protected void preRenderCallback(EntityBearTFC bear, float par2)
+    protected void preRenderCallback(EntityBearTFC bearTFC, float par2)
     {
         GlStateManager.scale(1.3f, 1.3f, 1.3f);
+    }
+
+    @Override
+    protected ResourceLocation getEntityTexture(EntityBearTFC entity)
+    {
+        return BEAR_TEXTURE;
     }
 }
