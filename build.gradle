@@ -112,7 +112,7 @@ dependencies {
     // Do not add dependencies without prior approval from the dev team. You can update existing ones.
     deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
-    deobfCompile "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
+    deobfProvided "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
 }
 
 processResources {
