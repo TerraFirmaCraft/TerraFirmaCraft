@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.BlockChest;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -227,20 +229,31 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
-        ItemStack itemstack = player.getHeldItem(hand);
+        ItemStack stack = player.getHeldItem(hand);
 
-        if (!itemstack.isEmpty())
+        if (!stack.isEmpty())
         {
-            if (itemstack.getItem() == Items.SPAWN_EGG)
+            boolean holdingChest = false;
+            if(stack.getItem() instanceof ItemBlock)
+            {
+                ItemBlock itemBlock = (ItemBlock) stack.getItem();
+                holdingChest = itemBlock.getBlock() instanceof BlockChest;
+            }
+            if (stack.getItem() == Items.SPAWN_EGG)
             {
                 return super.processInteract(player, hand); // Let vanilla spawn a baby
             }
-            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            else if (!this.hasChest() && this.isTame() && holdingChest)
+            {
+                this.setChested(true);
+                stack.shrink(1);
+            }
+            else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
                 if (this.isHungry())
                 {
                     // Refuses to eat rotten stuff
-                    IFood cap = itemstack.getCapability(CapabilityFood.CAPABILITY, null);
+                    IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                     if (cap != null)
                     {
                         if (cap.isRotten())
@@ -252,7 +265,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
                     {
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, itemstack);
+                        this.consumeItemFromStack(player, stack);
                         if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
                         {
                             float familiarity = this.getFamiliarity() + 0.06f;
