@@ -194,6 +194,11 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
                     }
                 }
             }
+            if(needsClientUpdate)
+            {
+                // Update cached alloy result, since TOP is executed server side.
+                alloyResult = alloy.getResult();
+            }
         }
     }
 
