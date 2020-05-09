@@ -58,7 +58,7 @@ public class BlockFruitTreeTrunk extends Block
         return MAP.get(tree);
     }
 
-    private final IFruitTree tree;
+    public final IFruitTree tree;
 
     public BlockFruitTreeTrunk(IFruitTree tree)
     {
