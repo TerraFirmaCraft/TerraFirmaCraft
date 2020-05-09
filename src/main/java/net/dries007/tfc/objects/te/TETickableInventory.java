@@ -13,7 +13,7 @@ import net.minecraftforge.items.ItemStackHandler;
  */
 public class TETickableInventory extends TEInventory implements ITickable
 {
-    private boolean needsClientUpdate;
+    protected boolean needsClientUpdate;
 
     protected TETickableInventory(int inventorySize)
     {
