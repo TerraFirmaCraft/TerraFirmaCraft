@@ -49,7 +49,6 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
-import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
@@ -334,6 +333,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
+                setScaleForAge(this.isChild());
                 float familiarity = getFamiliarity();
                 if (familiarity < 0.3f)
                 {
@@ -466,7 +466,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         if (!stack.isEmpty())
         {
             boolean holdingChest = false;
-            if(stack.getItem() instanceof ItemBlock)
+            if (stack.getItem() instanceof ItemBlock)
             {
                 ItemBlock itemBlock = (ItemBlock) stack.getItem();
                 holdingChest = itemBlock.getBlock() instanceof BlockChest;
@@ -495,6 +495,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
                     }
                     if (!this.world.isRemote)
                     {
+                        setScaleForAge(this.isChild());
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, stack);

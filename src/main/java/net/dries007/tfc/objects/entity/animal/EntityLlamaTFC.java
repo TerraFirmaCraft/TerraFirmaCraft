@@ -234,7 +234,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
         if (!stack.isEmpty())
         {
             boolean holdingChest = false;
-            if(stack.getItem() instanceof ItemBlock)
+            if (stack.getItem() instanceof ItemBlock)
             {
                 ItemBlock itemBlock = (ItemBlock) stack.getItem();
                 holdingChest = itemBlock.getBlock() instanceof BlockChest;
@@ -263,6 +263,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
                     }
                     if (!this.world.isRemote)
                     {
+                        setScaleForAge(this.isChild()); // Update hitbox
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, stack);
@@ -384,6 +385,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
+                setScaleForAge(this.isChild()); // Update hitbox
                 float familiarity = getFamiliarity();
                 if (familiarity < 0.3f)
                 {

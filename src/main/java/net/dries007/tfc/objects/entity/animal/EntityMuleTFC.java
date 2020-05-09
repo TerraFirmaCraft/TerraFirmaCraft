@@ -266,6 +266,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
+                setScaleForAge(this.isChild());
                 float familiarity = getFamiliarity();
                 if (familiarity < 0.3f)
                 {
@@ -362,7 +363,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         if (!stack.isEmpty())
         {
             boolean holdingChest = false;
-            if(stack.getItem() instanceof ItemBlock)
+            if (stack.getItem() instanceof ItemBlock)
             {
                 ItemBlock itemBlock = (ItemBlock) stack.getItem();
                 holdingChest = itemBlock.getBlock() instanceof BlockChest;
@@ -391,6 +392,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
                     }
                     if (!this.world.isRemote)
                     {
+                        setScaleForAge(this.isChild());
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, stack);
