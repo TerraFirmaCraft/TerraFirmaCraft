@@ -88,7 +88,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                 // In order to get the exact saturation we want, apply this scaling factor here
                 originalStats.addStats(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
             }
-            else
+            else if(this.sourcePlayer instanceof EntityPlayerMP) // Check for server side first
             {
                 // Minor effects from eating rotten food
                 if (Constants.RNG.nextFloat() < 0.6)
