@@ -18,17 +18,17 @@ import static net.dries007.tfc.api.types.IBerryBush.Size.*;
 
 public enum BerryBush implements IBerryBush
 {
-    BLACKBERRY(Food.BLACKBERRY, Month.MAY, 4, 5f, 25f, 125f, 400f, 0.8f, LARGE, true),
-    BLUEBERRY(Food.BLUEBERRY, Month.JUNE, 3, 5f, 25f, 125f, 200f, 0.8f, LARGE, false),
-    BUNCH_BERRY(Food.BUNCH_BERRY, Month.JUNE, 3, -5f, 20f, 125f, 280f, 0.8f, SMALL, false),
-    CLOUD_BERRY(Food.CLOUD_BERRY, Month.JUNE, 2, -5f, 20f, 175f, 280f, 0.8f, MEDIUM, false),
-    CRANBERRY(Food.CRANBERRY, Month.AUGUST, 3, -5f, 25f, 250f, 400f, 0.8f, MEDIUM, false),
-    ELDERBERRY(Food.ELDERBERRY, Month.JULY, 2, 5f, 25f, 175f, 280f, 0.8f, LARGE, false),
-    GOOSEBERRY(Food.GOOSEBERRY, Month.MARCH, 4, 5f, 25f, 175f, 280f, 0.8f, MEDIUM, false),
-    RASPBERRY(Food.RASPBERRY, Month.JUNE, 2, 5f, 25f, 175f, 280f, 0.8f, LARGE, true),
-    SNOW_BERRY(Food.SNOW_BERRY, Month.JULY, 2, -5f, 20f, 175f, 400f, 0.8f, SMALL, false),
-    STRAWBERRY(Food.STRAWBERRY, Month.MARCH, 3, 5f, 25f, 250f, 400f, 0.8f, SMALL, false),
-    WINTERGREEN_BERRY(Food.WINTERGREEN_BERRY, Month.AUGUST, 2, -5f, 20f, 250f, 400f, 0.8f, SMALL, false);
+    BLACKBERRY(Food.BLACKBERRY, Month.MAY, 4, 5f, 35f, 100f, 400f, 0.8f, LARGE, true),
+    BLUEBERRY(Food.BLUEBERRY, Month.JUNE, 3, 5f, 35f, 100f, 400f, 0.8f, LARGE, false),
+    BUNCH_BERRY(Food.BUNCH_BERRY, Month.JUNE, 3, 5f, 35f, 100f, 400f, 0.8f, SMALL, false),
+    CLOUD_BERRY(Food.CLOUD_BERRY, Month.JUNE, 2, 5f, 35f, 100f, 400f, 0.8f, MEDIUM, false),
+    CRANBERRY(Food.CRANBERRY, Month.AUGUST, 3, 5f, 35f, 100f, 400f, 0.8f, MEDIUM, false),
+    ELDERBERRY(Food.ELDERBERRY, Month.JULY, 2, 5f, 35f, 100f, 400f, 0.8f, LARGE, false),
+    GOOSEBERRY(Food.GOOSEBERRY, Month.MARCH, 4, 5f, 35f, 100f, 400f, 0.8f, MEDIUM, false),
+    RASPBERRY(Food.RASPBERRY, Month.JUNE, 2, 5f, 35f, 100f, 400f, 0.8f, LARGE, true),
+    SNOW_BERRY(Food.SNOW_BERRY, Month.JULY, 2, -5f, 25f, 100f, 400f, 0.8f, SMALL, false),
+    STRAWBERRY(Food.STRAWBERRY, Month.MARCH, 3, 5f, 35f, 100f, 400f, 0.8f, SMALL, false),
+    WINTERGREEN_BERRY(Food.WINTERGREEN_BERRY, Month.AUGUST, 2, -5f, 25f, 100f, 400f, 0.8f, SMALL, false);
 
     static
     {

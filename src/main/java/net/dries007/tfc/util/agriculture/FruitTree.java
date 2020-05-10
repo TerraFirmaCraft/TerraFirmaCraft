@@ -16,15 +16,15 @@ import net.dries007.tfc.world.classic.worldgen.WorldGenFruitTrees;
 
 public enum FruitTree implements IFruitTree
 {
-    BANANA(Food.BANANA, Month.APRIL, 2, Month.SEPTEMBER, 1, 5f, 35f, 100f, 400f, 0.33f),
-    CHERRY(Food.CHERRY, Month.APRIL, 1, Month.JUNE, 1, 5f, 35f, 100f, 400f, 0.33f),
-    GREEN_APPLE(Food.GREEN_APPLE, Month.MAY, 2, Month.OCTOBER, 2, 5f, 35f, 100f, 400f, 0.33f),
-    LEMON(Food.LEMON, Month.MAY, 2, Month.AUGUST, 1, 5f, 35f, 100f, 400f, 0.33f),
-    OLIVE(Food.OLIVE, Month.JUNE, 1, Month.OCTOBER, 1, 5f, 35f, 100f, 400f, 0.33f),
-    ORANGE(Food.ORANGE, Month.FEBRUARY, 3, Month.NOVEMBER, 1, 5f, 35f, 100f, 400f, 0.33f),
-    PEACH(Food.PEACH, Month.APRIL, 2, Month.SEPTEMBER, 1, 5f, 35f, 100f, 400f, 0.33f),
-    PLUM(Food.PLUM, Month.MAY, 2, Month.JULY, 2, 5f, 35f, 100f, 400f, 0.33f),
-    RED_APPLE(Food.RED_APPLE, Month.MAY, 2, Month.OCTOBER, 2, 5f, 35f, 100f, 400f, 0.33f);
+    BANANA(Food.BANANA, Month.APRIL, 2, Month.SEPTEMBER, 1, 26f, 35f, 300f, 400f, 0.33f),
+    CHERRY(Food.CHERRY, Month.APRIL, 1, Month.JUNE, 1, 5f, 18f, 100f, 350f, 0.33f),
+    GREEN_APPLE(Food.GREEN_APPLE, Month.MAY, 2, Month.OCTOBER, 2, 9f, 21f, 110f, 280f, 0.33f),
+    LEMON(Food.LEMON, Month.MAY, 2, Month.AUGUST, 1, 14f, 30f, 200f, 400f, 0.33f),
+    OLIVE(Food.OLIVE, Month.JUNE, 1, Month.OCTOBER, 1, 19f, 35f, 180f, 380f, 0.33f),
+    ORANGE(Food.ORANGE, Month.FEBRUARY, 3, Month.NOVEMBER, 1, 23f, 33f, 260f, 400f, 0.33f),
+    PEACH(Food.PEACH, Month.APRIL, 2, Month.SEPTEMBER, 1, 9f, 23f, 60f, 230f, 0.33f),
+    PLUM(Food.PLUM, Month.MAY, 2, Month.JULY, 2, 24f, 28f, 250f, 400f, 0.33f),
+    RED_APPLE(Food.RED_APPLE, Month.MAY, 2, Month.OCTOBER, 2, 9f, 21f, 100f, 280f, 0.33f);
 
     static
     {
