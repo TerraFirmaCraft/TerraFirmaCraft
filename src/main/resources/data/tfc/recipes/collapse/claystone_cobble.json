@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/claystone",
+    "tfc:ore/native_copper/claystone",
+    "tfc:ore/native_gold/claystone",
+    "tfc:ore/hematite/claystone",
+    "tfc:ore/native_silver/claystone",
+    "tfc:ore/cassiterite/claystone",
+    "tfc:ore/bismuthinite/claystone",
+    "tfc:ore/garnierite/claystone",
+    "tfc:ore/malachite/claystone",
+    "tfc:ore/magnetite/claystone",
+    "tfc:ore/limonite/claystone",
+    "tfc:ore/sphalerite/claystone",
+    "tfc:ore/tetrahedrite/claystone",
+    "tfc:ore/bituminous_coal/claystone",
+    "tfc:ore/lignite/claystone",
+    "tfc:ore/kaolinite/claystone",
+    "tfc:ore/gypsum/claystone",
+    "tfc:ore/graphite/claystone",
+    "tfc:ore/sulfur/claystone",
+    "tfc:ore/cinnabar/claystone",
+    "tfc:ore/cryolite/claystone",
+    "tfc:ore/saltpeter/claystone",
+    "tfc:ore/sylvite/claystone",
+    "tfc:ore/borax/claystone",
+    "tfc:ore/lapis_lazuli/claystone",
+    "tfc:ore/halite/claystone"
+  ],
+  "result": "tfc:rock/cobble/claystone"
+}

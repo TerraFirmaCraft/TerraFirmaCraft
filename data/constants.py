@@ -149,3 +149,7 @@ SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'gray']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam', 'clay_loam', 'clay', 'peat']
 STANDARD_SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'clay_loam']
+
+
+def lang(key: str, *args) -> str:
+    return ((key % args) if len(args) > 0 else key).replace('_', ' ').replace('/', ' ').title()

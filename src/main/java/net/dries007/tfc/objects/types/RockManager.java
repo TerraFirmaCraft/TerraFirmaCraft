@@ -4,32 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.util.json.BlockStateDeserializer;
-import net.dries007.tfc.util.json.GenericJsonReloadListener;
-import net.dries007.tfc.util.json.RockDeserializer;
+import net.dries007.tfc.util.data.DataManager;
 
-public class RockManager extends GenericJsonReloadListener<Rock>
+public class RockManager extends DataManager<Rock>
 {
-    public static final Gson GSON = new GsonBuilder()
-        .registerTypeAdapter(Rock.class, RockDeserializer.INSTANCE)
-        .registerTypeAdapter(BlockState.class, BlockStateDeserializer.INSTANCE)
-        .disableHtmlEscaping()
-        .setPrettyPrinting()
-        .create();
-
     public static final RockManager INSTANCE = new RockManager();
 
     private final Map<Block, Rock> rockBlocks;
 
     private RockManager()
     {
-        super(GSON, "rocks", Rock.class, "rock");
+        super(new GsonBuilder().create(), "rocks", "rock");
 
         rockBlocks = new HashMap<>();
     }
@@ -41,6 +32,12 @@ public class RockManager extends GenericJsonReloadListener<Rock>
     public Rock getRock(Block block)
     {
         return rockBlocks.get(block);
+    }
+
+    @Override
+    protected Rock read(ResourceLocation id, JsonObject obj)
+    {
+        return new Rock(id, obj);
     }
 
     @Override

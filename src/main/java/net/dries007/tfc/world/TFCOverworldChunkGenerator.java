@@ -68,7 +68,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         this.biomeNoiseMap = new HashMap<>();
         final long biomeNoiseSeed = seedGenerator.nextLong();
         TFCBiomes.getBiomes().forEach(biome -> biomeNoiseMap.put(biome, biome.createNoiseLayer(biomeNoiseSeed)));
-        surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, 3, 0);
+        surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, 3, 0); // From vanilla
 
         if (!(biomeProvider instanceof TFCBiomeProvider))
         {

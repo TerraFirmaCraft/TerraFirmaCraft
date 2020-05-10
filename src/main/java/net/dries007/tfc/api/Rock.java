@@ -5,44 +5,50 @@
 
 package net.dries007.tfc.api;
 
+import java.util.Arrays;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.NonNullFunction;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.objects.blocks.rock.RockSpikeBlock;
-import net.dries007.tfc.util.IResourceNameable;
+import net.dries007.tfc.util.Helpers;
 
-@ParametersAreNonnullByDefault
-public class Rock implements IResourceNameable
+public class Rock
 {
     private final RockCategory category;
     private final Map<BlockType, Block> blockVariants;
-    private ResourceLocation id;
+    private final ResourceLocation id;
 
-    public Rock(RockCategory category, Map<BlockType, Block> blockVariants)
+    public Rock(ResourceLocation id, JsonObject json)
     {
-        this.category = category;
-        this.blockVariants = blockVariants;
+        this.id = id;
+        String rockCategoryName = JSONUtils.getString(json, "category");
+        try
+        {
+            this.category = RockCategory.valueOf(rockCategoryName.toUpperCase());
+        }
+        catch (IllegalArgumentException e)
+        {
+            throw new JsonParseException("Unknown rock category " + rockCategoryName);
+        }
+
+        this.blockVariants = Helpers.findRegistryObjects(json, "blocks", ForgeRegistries.BLOCKS, Arrays.asList(Rock.BlockType.values()), type -> type.name().toLowerCase());
     }
 
-    @Override
     public ResourceLocation getId()
     {
         return id;
-    }
-
-    @Override
-    public void setId(ResourceLocation id)
-    {
-        this.id = id;
     }
 
     public Block getBlock(BlockType type)

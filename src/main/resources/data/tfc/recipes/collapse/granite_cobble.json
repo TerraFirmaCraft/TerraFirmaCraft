@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/granite",
+    "tfc:ore/native_copper/granite",
+    "tfc:ore/native_gold/granite",
+    "tfc:ore/hematite/granite",
+    "tfc:ore/native_silver/granite",
+    "tfc:ore/cassiterite/granite",
+    "tfc:ore/bismuthinite/granite",
+    "tfc:ore/garnierite/granite",
+    "tfc:ore/malachite/granite",
+    "tfc:ore/magnetite/granite",
+    "tfc:ore/limonite/granite",
+    "tfc:ore/sphalerite/granite",
+    "tfc:ore/tetrahedrite/granite",
+    "tfc:ore/bituminous_coal/granite",
+    "tfc:ore/lignite/granite",
+    "tfc:ore/kaolinite/granite",
+    "tfc:ore/gypsum/granite",
+    "tfc:ore/graphite/granite",
+    "tfc:ore/sulfur/granite",
+    "tfc:ore/cinnabar/granite",
+    "tfc:ore/cryolite/granite",
+    "tfc:ore/saltpeter/granite",
+    "tfc:ore/sylvite/granite",
+    "tfc:ore/borax/granite",
+    "tfc:ore/lapis_lazuli/granite",
+    "tfc:ore/halite/granite"
+  ],
+  "result": "tfc:rock/cobble/granite"
+}

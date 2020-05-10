@@ -37,7 +37,7 @@ public class ChunkBlockReplacer
 
         // Stone -> raw rock
         register(Blocks.STONE, (rockData, x, y, z, rainfall, temperature, random) -> {
-            if (y < rockData.getBottomRockHeight())
+            if (y < rockData.getRockHeight(x, z))
             {
                 return rockData.getBottomRock(x, z).getBlock(Rock.BlockType.RAW).getDefaultState();
             }
@@ -110,7 +110,7 @@ public class ChunkBlockReplacer
         {
             for (int z = 0; z < 16; z++)
             {
-                float noise = random.nextFloat() - random.nextFloat(); // One simple gaussian noise value per column
+                float noise = random.nextFloat() - random.nextFloat(); // One simple "gaussian" noise value per column
                 for (int y = 0; y <= chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, x, z); y++)
                 {
                     pos.setPos(xStart + x, y, zStart + z);

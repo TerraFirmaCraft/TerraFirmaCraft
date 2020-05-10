@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.objects.types.RockManager;
@@ -31,23 +30,37 @@ public class RockData implements INBTSerializable<CompoundNBT>
     private final Rock[] topLayer;
     private final SoilBlockType.Variant[] soilLayer;
     private final SandBlockType[] sandLayer;
+    private final int[] rockLayerHeight;
 
     public RockData()
     {
-        this(new Rock[256], new Rock[256], new SoilBlockType.Variant[256], new SandBlockType[256]);
+        this(new Rock[256], new Rock[256], new SoilBlockType.Variant[256], new SandBlockType[256], new int[256]);
     }
 
-    public RockData(Rock[] bottomLayer, Rock[] topLayer, SoilBlockType.Variant[] soilLayer, SandBlockType[] sandLayer)
+    public RockData(Rock[] bottomLayer, Rock[] topLayer, SoilBlockType.Variant[] soilLayer, SandBlockType[] sandLayer, int[] rockLayerHeight)
     {
         this.bottomLayer = bottomLayer;
         this.topLayer = topLayer;
         this.soilLayer = soilLayer;
         this.sandLayer = sandLayer;
+        this.rockLayerHeight = rockLayerHeight;
     }
 
-    public int getBottomRockHeight()
+    public Rock getRock(int x, int y, int z)
     {
-        return TFCConfig.COMMON.rockLayerHeight.get(); // todo: noisy
+        if (y > getRockHeight(x, z))
+        {
+            return getTopRock(x, z);
+        }
+        else
+        {
+            return getBottomRock(x, z);
+        }
+    }
+
+    public int getRockHeight(int x, int z)
+    {
+        return rockLayerHeight[(x & 15) + 16 * (z & 15)];
     }
 
     public Rock getTopRock(int x, int z)

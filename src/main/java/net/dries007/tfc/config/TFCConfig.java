@@ -5,6 +5,13 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
+/**
+ * Wrapper for all TFC config endpoints. Individual configuration options are in each specific config class
+ *
+ * @see CommonConfig
+ * @see ClientConfig
+ * @see ServerConfig
+ */
 public final class TFCConfig
 {
     public static final CommonConfig COMMON;
@@ -30,7 +37,7 @@ public final class TFCConfig
         SERVER = server.getLeft();
     }
 
-    public static void register()
+    public static void init()
     {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TFCConfig.COMMON_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TFCConfig.CLIENT_SPEC);

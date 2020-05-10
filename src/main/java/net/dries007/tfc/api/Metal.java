@@ -16,6 +16,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+// todo: replace with Metal / Default / Json pattern
 public class Metal extends ForgeRegistryEntry<Metal>
 {
     /*

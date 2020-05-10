@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/slate",
+    "tfc:ore/native_copper/slate",
+    "tfc:ore/native_gold/slate",
+    "tfc:ore/hematite/slate",
+    "tfc:ore/native_silver/slate",
+    "tfc:ore/cassiterite/slate",
+    "tfc:ore/bismuthinite/slate",
+    "tfc:ore/garnierite/slate",
+    "tfc:ore/malachite/slate",
+    "tfc:ore/magnetite/slate",
+    "tfc:ore/limonite/slate",
+    "tfc:ore/sphalerite/slate",
+    "tfc:ore/tetrahedrite/slate",
+    "tfc:ore/bituminous_coal/slate",
+    "tfc:ore/lignite/slate",
+    "tfc:ore/kaolinite/slate",
+    "tfc:ore/gypsum/slate",
+    "tfc:ore/graphite/slate",
+    "tfc:ore/sulfur/slate",
+    "tfc:ore/cinnabar/slate",
+    "tfc:ore/cryolite/slate",
+    "tfc:ore/saltpeter/slate",
+    "tfc:ore/sylvite/slate",
+    "tfc:ore/borax/slate",
+    "tfc:ore/lapis_lazuli/slate",
+    "tfc:ore/halite/slate"
+  ],
+  "result": "tfc:rock/cobble/slate"
+}

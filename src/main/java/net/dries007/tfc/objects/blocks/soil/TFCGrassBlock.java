@@ -17,7 +17,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-import net.dries007.tfc.util.tags.TFCBlockTags;
+import net.dries007.tfc.objects.TFCTags;
 
 @ParametersAreNonnullByDefault
 public class TFCGrassBlock extends Block
@@ -132,7 +132,7 @@ public class TFCGrassBlock extends Block
         BooleanProperty property = getPropertyForFace(direction);
         if (property != null)
         {
-            return stateIn.with(property, TFCBlockTags.GRASS.contains(worldIn.getBlockState(pos.offset(direction).down()).getBlock()));
+            return stateIn.with(property, TFCTags.GRASS.contains(worldIn.getBlockState(pos.offset(direction).down()).getBlock()));
         }
         return stateIn;
     }

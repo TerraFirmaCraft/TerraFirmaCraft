@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/basalt",
+    "tfc:ore/native_copper/basalt",
+    "tfc:ore/native_gold/basalt",
+    "tfc:ore/hematite/basalt",
+    "tfc:ore/native_silver/basalt",
+    "tfc:ore/cassiterite/basalt",
+    "tfc:ore/bismuthinite/basalt",
+    "tfc:ore/garnierite/basalt",
+    "tfc:ore/malachite/basalt",
+    "tfc:ore/magnetite/basalt",
+    "tfc:ore/limonite/basalt",
+    "tfc:ore/sphalerite/basalt",
+    "tfc:ore/tetrahedrite/basalt",
+    "tfc:ore/bituminous_coal/basalt",
+    "tfc:ore/lignite/basalt",
+    "tfc:ore/kaolinite/basalt",
+    "tfc:ore/gypsum/basalt",
+    "tfc:ore/graphite/basalt",
+    "tfc:ore/sulfur/basalt",
+    "tfc:ore/cinnabar/basalt",
+    "tfc:ore/cryolite/basalt",
+    "tfc:ore/saltpeter/basalt",
+    "tfc:ore/sylvite/basalt",
+    "tfc:ore/borax/basalt",
+    "tfc:ore/lapis_lazuli/basalt",
+    "tfc:ore/halite/basalt"
+  ],
+  "result": "tfc:rock/cobble/basalt"
+}

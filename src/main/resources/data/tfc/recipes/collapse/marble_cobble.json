@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/marble",
+    "tfc:ore/native_copper/marble",
+    "tfc:ore/native_gold/marble",
+    "tfc:ore/hematite/marble",
+    "tfc:ore/native_silver/marble",
+    "tfc:ore/cassiterite/marble",
+    "tfc:ore/bismuthinite/marble",
+    "tfc:ore/garnierite/marble",
+    "tfc:ore/malachite/marble",
+    "tfc:ore/magnetite/marble",
+    "tfc:ore/limonite/marble",
+    "tfc:ore/sphalerite/marble",
+    "tfc:ore/tetrahedrite/marble",
+    "tfc:ore/bituminous_coal/marble",
+    "tfc:ore/lignite/marble",
+    "tfc:ore/kaolinite/marble",
+    "tfc:ore/gypsum/marble",
+    "tfc:ore/graphite/marble",
+    "tfc:ore/sulfur/marble",
+    "tfc:ore/cinnabar/marble",
+    "tfc:ore/cryolite/marble",
+    "tfc:ore/saltpeter/marble",
+    "tfc:ore/sylvite/marble",
+    "tfc:ore/borax/marble",
+    "tfc:ore/lapis_lazuli/marble",
+    "tfc:ore/halite/marble"
+  ],
+  "result": "tfc:rock/cobble/marble"
+}

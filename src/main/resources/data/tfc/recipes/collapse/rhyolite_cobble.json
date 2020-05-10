@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/rhyolite",
+    "tfc:ore/native_copper/rhyolite",
+    "tfc:ore/native_gold/rhyolite",
+    "tfc:ore/hematite/rhyolite",
+    "tfc:ore/native_silver/rhyolite",
+    "tfc:ore/cassiterite/rhyolite",
+    "tfc:ore/bismuthinite/rhyolite",
+    "tfc:ore/garnierite/rhyolite",
+    "tfc:ore/malachite/rhyolite",
+    "tfc:ore/magnetite/rhyolite",
+    "tfc:ore/limonite/rhyolite",
+    "tfc:ore/sphalerite/rhyolite",
+    "tfc:ore/tetrahedrite/rhyolite",
+    "tfc:ore/bituminous_coal/rhyolite",
+    "tfc:ore/lignite/rhyolite",
+    "tfc:ore/kaolinite/rhyolite",
+    "tfc:ore/gypsum/rhyolite",
+    "tfc:ore/graphite/rhyolite",
+    "tfc:ore/sulfur/rhyolite",
+    "tfc:ore/cinnabar/rhyolite",
+    "tfc:ore/cryolite/rhyolite",
+    "tfc:ore/saltpeter/rhyolite",
+    "tfc:ore/sylvite/rhyolite",
+    "tfc:ore/borax/rhyolite",
+    "tfc:ore/lapis_lazuli/rhyolite",
+    "tfc:ore/halite/rhyolite"
+  ],
+  "result": "tfc:rock/cobble/rhyolite"
+}

@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/conglomerate",
+    "tfc:ore/native_copper/conglomerate",
+    "tfc:ore/native_gold/conglomerate",
+    "tfc:ore/hematite/conglomerate",
+    "tfc:ore/native_silver/conglomerate",
+    "tfc:ore/cassiterite/conglomerate",
+    "tfc:ore/bismuthinite/conglomerate",
+    "tfc:ore/garnierite/conglomerate",
+    "tfc:ore/malachite/conglomerate",
+    "tfc:ore/magnetite/conglomerate",
+    "tfc:ore/limonite/conglomerate",
+    "tfc:ore/sphalerite/conglomerate",
+    "tfc:ore/tetrahedrite/conglomerate",
+    "tfc:ore/bituminous_coal/conglomerate",
+    "tfc:ore/lignite/conglomerate",
+    "tfc:ore/kaolinite/conglomerate",
+    "tfc:ore/gypsum/conglomerate",
+    "tfc:ore/graphite/conglomerate",
+    "tfc:ore/sulfur/conglomerate",
+    "tfc:ore/cinnabar/conglomerate",
+    "tfc:ore/cryolite/conglomerate",
+    "tfc:ore/saltpeter/conglomerate",
+    "tfc:ore/sylvite/conglomerate",
+    "tfc:ore/borax/conglomerate",
+    "tfc:ore/lapis_lazuli/conglomerate",
+    "tfc:ore/halite/conglomerate"
+  ],
+  "result": "tfc:rock/cobble/conglomerate"
+}

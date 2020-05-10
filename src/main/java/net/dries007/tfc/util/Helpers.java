@@ -13,12 +13,16 @@ import javax.annotation.Nonnull;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.block.BlockState;
+import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -26,13 +30,16 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class Helpers
 {
+    /**
+     * Default {@link ResourceLocation}, except with a TFC namespace
+     */
     public static ResourceLocation identifier(String name)
     {
         return new ResourceLocation(MOD_ID, name);
     }
 
     /**
-     * Avoids IDE warnings by returning null for fields that are injected in by forge
+     * Avoids IDE warnings by returning null for fields that are injected in by forge.
      *
      * @return Not null!
      */
@@ -100,5 +107,28 @@ public final class Helpers
             return objects;
         }
         return Collections.emptyMap();
+    }
+
+    public static BlockState readBlockState(String block, boolean allowTags) throws JsonParseException
+    {
+        BlockStateParser parser = parseBlockState(block, allowTags);
+        if (parser.getState() != null)
+        {
+            return parser.getState();
+        }
+        throw new JsonParseException("Not a block state");
+    }
+
+    public static BlockStateParser parseBlockState(String block, boolean allowTags) throws JsonParseException
+    {
+        StringReader reader = new StringReader(block);
+        try
+        {
+            return new BlockStateParser(reader, allowTags).parse(false);
+        }
+        catch (CommandSyntaxException e)
+        {
+            throw new JsonParseException("Unable to parse block state", e);
+        }
     }
 }

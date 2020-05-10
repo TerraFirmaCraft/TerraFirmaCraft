@@ -10,18 +10,23 @@ def generate(rm: ResourceManager):
             if block_type == 'spike':
                 # Spikes have special block states
                 rm.blockstate(('rock', block_type, rock), variants=dict(
-                    ('part=%s' % part, {'model': 'tfc:block/rock/%s/%s_%s' % (block_type, rock, part)})
-                    for part in ROCK_SPIKE_PARTS))
+                    ('part=%s' % part, {'model': 'tfc:block/rock/%s/%s_%s' % (block_type, rock, part)}) for part in
+                    ROCK_SPIKE_PARTS)) \
+                    .with_lang(lang('%s Spike', rock))
                 for part in ROCK_SPIKE_PARTS:
                     rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
                         'texture': 'tfc:block/rock/raw/%s' % rock
                     }, parent='tfc:block/rock/spike_%s' % part) \
                         .with_item_model()
             else:
-                rm.blockstate(('rock', block_type, rock)) \
+                block = rm.blockstate(('rock', block_type, rock)) \
                     .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
                     .with_item_model() \
                     .with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
+                if block_type in {'smooth', 'raw'}:
+                    block.with_lang(lang('%s %s', block_type, rock))
+                else:
+                    block.with_lang(lang('%s %s', rock, block_type))
 
         # Ores
         for ore, ore_data in ORES.items():
@@ -30,7 +35,9 @@ def generate(rm: ResourceManager):
                 'all': 'tfc:block/rock/raw/%s' % rock,
                 'particle': 'tfc:block/rock/raw/%s' % rock,
                 'overlay': 'tfc:block/ore/%s' % ore
-            }, parent='tfc:block/ore')
+            }, parent='tfc:block/ore') \
+                .with_item_model() \
+                .with_lang(lang('%s %s', rock, ore))
 
     for rock, rock_data in ROCKS.items():
         rm.data(('tfc', 'rocks', rock), {
@@ -43,16 +50,18 @@ def generate(rm: ResourceManager):
         rm.blockstate(('sand', sand)) \
             .with_block_model('tfc:block/sand/%s' % sand) \
             .with_item_model() \
-            .with_block_loot('tfc:sand/%s' % sand)
+            .with_block_loot('tfc:sand/%s' % sand) \
+            .with_lang(lang('%s Sand', sand))
 
     # Dirt
-    for dirt in SOIL_BLOCK_VARIANTS:
-        rm.blockstate(('dirt', dirt),
-                      variants={'': [{'model': 'tfc:block/dirt/%s' % dirt, 'y': i} for i in range(0, 360, 90)]},
+    for soil in SOIL_BLOCK_VARIANTS:
+        rm.blockstate(('dirt', soil),
+                      variants={'': [{'model': 'tfc:block/dirt/%s' % soil, 'y': i} for i in range(0, 360, 90)]},
                       use_default_model=False) \
             .with_block_model() \
             .with_item_model() \
-            .with_block_loot('tfc:dirt/%s' % dirt)
+            .with_block_loot('tfc:dirt/%s' % soil) \
+            .with_lang(lang('%s Soil', soil))
 
     # Grass
     north_face = {
@@ -76,7 +85,8 @@ def generate(rm: ResourceManager):
             ({'west': False}, {'model': 'tfc:block/grass/%s_side' % var, 'y': 270}),
         ]) \
             .with_block_loot('tfc:dirt/%s' % var) \
-            .with_tag('grass')
+            .with_tag('grass') \
+            .with_lang(lang('%s Grass', var))
         # Grass Models, one for the side, top and bottom
         rm.block_model(('grass', '%s_top' % var), {
             'overlay': 'tfc:block/grass_top',

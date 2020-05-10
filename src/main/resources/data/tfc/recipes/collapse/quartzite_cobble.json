@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/quartzite",
+    "tfc:ore/native_copper/quartzite",
+    "tfc:ore/native_gold/quartzite",
+    "tfc:ore/hematite/quartzite",
+    "tfc:ore/native_silver/quartzite",
+    "tfc:ore/cassiterite/quartzite",
+    "tfc:ore/bismuthinite/quartzite",
+    "tfc:ore/garnierite/quartzite",
+    "tfc:ore/malachite/quartzite",
+    "tfc:ore/magnetite/quartzite",
+    "tfc:ore/limonite/quartzite",
+    "tfc:ore/sphalerite/quartzite",
+    "tfc:ore/tetrahedrite/quartzite",
+    "tfc:ore/bituminous_coal/quartzite",
+    "tfc:ore/lignite/quartzite",
+    "tfc:ore/kaolinite/quartzite",
+    "tfc:ore/gypsum/quartzite",
+    "tfc:ore/graphite/quartzite",
+    "tfc:ore/sulfur/quartzite",
+    "tfc:ore/cinnabar/quartzite",
+    "tfc:ore/cryolite/quartzite",
+    "tfc:ore/saltpeter/quartzite",
+    "tfc:ore/sylvite/quartzite",
+    "tfc:ore/borax/quartzite",
+    "tfc:ore/lapis_lazuli/quartzite",
+    "tfc:ore/halite/quartzite"
+  ],
+  "result": "tfc:rock/cobble/quartzite"
+}

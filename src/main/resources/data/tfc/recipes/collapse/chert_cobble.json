@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/chert",
+    "tfc:ore/native_copper/chert",
+    "tfc:ore/native_gold/chert",
+    "tfc:ore/hematite/chert",
+    "tfc:ore/native_silver/chert",
+    "tfc:ore/cassiterite/chert",
+    "tfc:ore/bismuthinite/chert",
+    "tfc:ore/garnierite/chert",
+    "tfc:ore/malachite/chert",
+    "tfc:ore/magnetite/chert",
+    "tfc:ore/limonite/chert",
+    "tfc:ore/sphalerite/chert",
+    "tfc:ore/tetrahedrite/chert",
+    "tfc:ore/bituminous_coal/chert",
+    "tfc:ore/lignite/chert",
+    "tfc:ore/kaolinite/chert",
+    "tfc:ore/gypsum/chert",
+    "tfc:ore/graphite/chert",
+    "tfc:ore/sulfur/chert",
+    "tfc:ore/cinnabar/chert",
+    "tfc:ore/cryolite/chert",
+    "tfc:ore/saltpeter/chert",
+    "tfc:ore/sylvite/chert",
+    "tfc:ore/borax/chert",
+    "tfc:ore/lapis_lazuli/chert",
+    "tfc:ore/halite/chert"
+  ],
+  "result": "tfc:rock/cobble/chert"
+}

@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/chalk",
+    "tfc:ore/native_copper/chalk",
+    "tfc:ore/native_gold/chalk",
+    "tfc:ore/hematite/chalk",
+    "tfc:ore/native_silver/chalk",
+    "tfc:ore/cassiterite/chalk",
+    "tfc:ore/bismuthinite/chalk",
+    "tfc:ore/garnierite/chalk",
+    "tfc:ore/malachite/chalk",
+    "tfc:ore/magnetite/chalk",
+    "tfc:ore/limonite/chalk",
+    "tfc:ore/sphalerite/chalk",
+    "tfc:ore/tetrahedrite/chalk",
+    "tfc:ore/bituminous_coal/chalk",
+    "tfc:ore/lignite/chalk",
+    "tfc:ore/kaolinite/chalk",
+    "tfc:ore/gypsum/chalk",
+    "tfc:ore/graphite/chalk",
+    "tfc:ore/sulfur/chalk",
+    "tfc:ore/cinnabar/chalk",
+    "tfc:ore/cryolite/chalk",
+    "tfc:ore/saltpeter/chalk",
+    "tfc:ore/sylvite/chalk",
+    "tfc:ore/borax/chalk",
+    "tfc:ore/lapis_lazuli/chalk",
+    "tfc:ore/halite/chalk"
+  ],
+  "result": "tfc:rock/cobble/chalk"
+}
