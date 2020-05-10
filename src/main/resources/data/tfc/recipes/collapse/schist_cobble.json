@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/schist",
+    "tfc:ore/native_copper/schist",
+    "tfc:ore/native_gold/schist",
+    "tfc:ore/hematite/schist",
+    "tfc:ore/native_silver/schist",
+    "tfc:ore/cassiterite/schist",
+    "tfc:ore/bismuthinite/schist",
+    "tfc:ore/garnierite/schist",
+    "tfc:ore/malachite/schist",
+    "tfc:ore/magnetite/schist",
+    "tfc:ore/limonite/schist",
+    "tfc:ore/sphalerite/schist",
+    "tfc:ore/tetrahedrite/schist",
+    "tfc:ore/bituminous_coal/schist",
+    "tfc:ore/lignite/schist",
+    "tfc:ore/kaolinite/schist",
+    "tfc:ore/gypsum/schist",
+    "tfc:ore/graphite/schist",
+    "tfc:ore/sulfur/schist",
+    "tfc:ore/cinnabar/schist",
+    "tfc:ore/cryolite/schist",
+    "tfc:ore/saltpeter/schist",
+    "tfc:ore/sylvite/schist",
+    "tfc:ore/borax/schist",
+    "tfc:ore/lapis_lazuli/schist",
+    "tfc:ore/halite/schist"
+  ],
+  "result": "tfc:rock/cobble/schist"
+}

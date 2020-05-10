@@ -1,14 +1,29 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+
+import com.mojang.datafixers.Dynamic;
 
 public class LargeCaveSpikesFeature extends CaveSpikesFeature
 {
+    @SuppressWarnings("unused")
+    public LargeCaveSpikesFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn)
+    {
+        super(configFactoryIn);
+    }
+
+    public LargeCaveSpikesFeature()
+    {
+        super(NoFeatureConfig::deserialize);
+    }
+
     /**
      * Much larger spikes, calls to the smaller spikes on the outsides
      */

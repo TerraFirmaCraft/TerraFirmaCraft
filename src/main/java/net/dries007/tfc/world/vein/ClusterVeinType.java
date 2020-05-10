@@ -2,8 +2,8 @@ package net.dries007.tfc.world.vein;
 
 import java.util.Random;
 
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 import net.dries007.tfc.world.noise.INoise3D;
@@ -14,9 +14,9 @@ import net.dries007.tfc.world.noise.Metaballs3D;
  */
 public class ClusterVeinType extends VeinType<ClusterVeinType.ClusterVein>
 {
-    public ClusterVeinType(JsonObject json, JsonDeserializationContext context)
+    public ClusterVeinType(ResourceLocation id, JsonObject json)
     {
-        super(json, context);
+        super(id, json);
     }
 
     @Override

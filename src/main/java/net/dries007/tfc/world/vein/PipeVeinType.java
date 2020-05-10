@@ -2,18 +2,18 @@ package net.dries007.tfc.world.vein;
 
 import java.util.Random;
 
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 public class PipeVeinType extends VeinType<PipeVeinType.PipeVein>
 {
     private final int radius;
 
-    public PipeVeinType(JsonObject json, JsonDeserializationContext context)
+    public PipeVeinType(ResourceLocation id, JsonObject json)
     {
-        super(json, context);
+        super(id, json);
 
         radius = JSONUtils.getInt(json, "radius", 3);
     }

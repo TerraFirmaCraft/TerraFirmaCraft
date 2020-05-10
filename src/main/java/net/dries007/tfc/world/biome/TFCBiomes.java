@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 import net.minecraft.world.gen.placement.CaveEdgeConfig;
+import net.minecraft.world.gen.placement.ChanceConfig;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
@@ -24,6 +27,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.world.carver.TFCWorldCarvers;
 import net.dries007.tfc.world.feature.TFCFeatures;
+import net.dries007.tfc.world.placement.TFCPlacements;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -136,6 +140,10 @@ public class TFCBiomes
         for (RegistryObject<? extends Biome> biome : ALL_BIOMES)
         {
             biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFCFeatures.VEINS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(NoPlacementConfig.NO_PLACEMENT_CONFIG)));
+
+            biome.get().addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(20))));
+            biome.get().addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.WATER.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+            biome.get().addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.LAVA.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(80))));
         }
     }
 

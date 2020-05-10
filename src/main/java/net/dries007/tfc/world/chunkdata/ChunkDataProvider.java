@@ -6,12 +6,12 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
-import javax.annotation.Nullable;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunk;
@@ -21,6 +21,7 @@ import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.objects.types.RockManager;
@@ -38,33 +39,28 @@ public class ChunkDataProvider
      * Only valid on server
      * Data is synced to client via custom packets
      */
-    @Nullable
-    @SuppressWarnings("ConstantConditions")
-    public static ChunkDataProvider get(World world)
+    public static Optional<ChunkDataProvider> get(IWorld world)
     {
-        AbstractChunkProvider chunkProvider = world.getChunkProvider();
         // Chunk provider can be null during the attach capabilities event
+        AbstractChunkProvider chunkProvider = world.getChunkProvider();
         if (chunkProvider instanceof ServerChunkProvider)
         {
             ChunkGenerator<?> chunkGenerator = ((ServerChunkProvider) chunkProvider).getChunkGenerator();
-            if (chunkGenerator != null)
+            if (chunkGenerator instanceof TFCOverworldChunkGenerator)
             {
-                if (chunkGenerator instanceof TFCOverworldChunkGenerator)
-                {
-                    return ((TFCOverworldChunkGenerator) chunkGenerator).getChunkDataProvider();
-                }
+                return Optional.of(((TFCOverworldChunkGenerator) chunkGenerator).getChunkDataProvider());
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     private final Map<ChunkPos, ChunkData> cachedChunkData;
     private final IWorld world;
     private final LazyArea seedArea;
-    private final int bottomLayerBaseHeight, middleLayerBaseHeight;
 
     private final INoise2D regionalTempNoise;
     private final INoise2D rainfallNoise;
+    private final INoise2D layerHeightNoise;
 
     public ChunkDataProvider(IWorld world, TFCGenerationSettings settings, Random seedGenerator)
     {
@@ -73,15 +69,19 @@ public class ChunkDataProvider
 
         this.seedArea = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings).make();
 
-        this.bottomLayerBaseHeight = 30;//settings.getBottomRockLayerBaseHeight();
-        this.middleLayerBaseHeight = 30;//settings.getMiddleRockLayerBaseHeight();
-
-        //this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).spread(0.1f);
+        int baseHeight = TFCConfig.COMMON.rockLayerHeight.get();
+        int range = TFCConfig.COMMON.rockLayerSpread.get();
+        this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
 
         // Climate
         // todo: config values
         this.regionalTempNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).scaled(-5.5f, 5.5f).flattened(-5, 5).spread(0.002f);
         this.rainfallNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).scaled(-25, 525).flattened(0, 500).spread(0.002f);
+    }
+
+    public ChunkData get(BlockPos pos)
+    {
+        return get(new ChunkPos(pos));
     }
 
     public ChunkData get(ChunkPos pos)
@@ -103,6 +103,21 @@ public class ChunkDataProvider
         return getOrCreate(chunkIn.getPos());
     }
 
+    /**
+     * Gets the chunk data from the local cache, or creates new chunk data
+     * Does NOT query the chunk capability for chunk data
+     * Used during world gen to avoid deadlocks where the chunk is in the process of being loaded
+     */
+    public ChunkData getOrCreate(BlockPos pos)
+    {
+        return getOrCreate(new ChunkPos(pos));
+    }
+
+    /**
+     * Gets the chunk data from the local cache, or creates new chunk data
+     * Does NOT query the chunk capability for chunk data
+     * Used during world gen to avoid deadlocks where the chunk is in the process of being loaded
+     */
     public ChunkData getOrCreate(ChunkPos pos)
     {
         if (cachedChunkData.containsKey(pos))
@@ -127,6 +142,7 @@ public class ChunkDataProvider
         Rock[] topLayer = new Rock[256];
         SoilBlockType.Variant[] soilLayer = new SoilBlockType.Variant[256];
         SandBlockType[] sandLayer = new SandBlockType[256];
+        int[] rockLayerHeight = new int[256];
 
         int totalRocks = RockManager.INSTANCE.getValues().size();
         for (int x = 0; x < 16; x++)
@@ -149,10 +165,12 @@ public class ChunkDataProvider
 
                 int sandValue = seed % SandBlockType.TOTAL;
                 sandLayer[x + 16 * z] = SandBlockType.valueOf(sandValue);
+
+                rockLayerHeight[x + 16 * z] = (int) layerHeightNoise.noise(x, z);
             }
         }
 
-        data.setRockData(new RockData(bottomLayer, topLayer, soilLayer, sandLayer));
+        data.setRockData(new RockData(bottomLayer, topLayer, soilLayer, sandLayer, rockLayerHeight));
         data.setValid(true);
         return data;
     }

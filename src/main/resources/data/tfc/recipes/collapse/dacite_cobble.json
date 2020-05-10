@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/dacite",
+    "tfc:ore/native_copper/dacite",
+    "tfc:ore/native_gold/dacite",
+    "tfc:ore/hematite/dacite",
+    "tfc:ore/native_silver/dacite",
+    "tfc:ore/cassiterite/dacite",
+    "tfc:ore/bismuthinite/dacite",
+    "tfc:ore/garnierite/dacite",
+    "tfc:ore/malachite/dacite",
+    "tfc:ore/magnetite/dacite",
+    "tfc:ore/limonite/dacite",
+    "tfc:ore/sphalerite/dacite",
+    "tfc:ore/tetrahedrite/dacite",
+    "tfc:ore/bituminous_coal/dacite",
+    "tfc:ore/lignite/dacite",
+    "tfc:ore/kaolinite/dacite",
+    "tfc:ore/gypsum/dacite",
+    "tfc:ore/graphite/dacite",
+    "tfc:ore/sulfur/dacite",
+    "tfc:ore/cinnabar/dacite",
+    "tfc:ore/cryolite/dacite",
+    "tfc:ore/saltpeter/dacite",
+    "tfc:ore/sylvite/dacite",
+    "tfc:ore/borax/dacite",
+    "tfc:ore/lapis_lazuli/dacite",
+    "tfc:ore/halite/dacite"
+  ],
+  "result": "tfc:rock/cobble/dacite"
+}

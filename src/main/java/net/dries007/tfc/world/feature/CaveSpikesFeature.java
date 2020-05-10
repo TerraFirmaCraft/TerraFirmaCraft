@@ -1,6 +1,7 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,12 +14,19 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
+import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.objects.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.objects.types.RockManager;
 
 public class CaveSpikesFeature extends Feature<NoFeatureConfig>
 {
+    @SuppressWarnings("unused")
+    public CaveSpikesFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn)
+    {
+        super(configFactoryIn);
+    }
+
     public CaveSpikesFeature()
     {
         super(NoFeatureConfig::deserialize);

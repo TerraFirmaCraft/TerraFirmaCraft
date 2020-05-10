@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/gneiss",
+    "tfc:ore/native_copper/gneiss",
+    "tfc:ore/native_gold/gneiss",
+    "tfc:ore/hematite/gneiss",
+    "tfc:ore/native_silver/gneiss",
+    "tfc:ore/cassiterite/gneiss",
+    "tfc:ore/bismuthinite/gneiss",
+    "tfc:ore/garnierite/gneiss",
+    "tfc:ore/malachite/gneiss",
+    "tfc:ore/magnetite/gneiss",
+    "tfc:ore/limonite/gneiss",
+    "tfc:ore/sphalerite/gneiss",
+    "tfc:ore/tetrahedrite/gneiss",
+    "tfc:ore/bituminous_coal/gneiss",
+    "tfc:ore/lignite/gneiss",
+    "tfc:ore/kaolinite/gneiss",
+    "tfc:ore/gypsum/gneiss",
+    "tfc:ore/graphite/gneiss",
+    "tfc:ore/sulfur/gneiss",
+    "tfc:ore/cinnabar/gneiss",
+    "tfc:ore/cryolite/gneiss",
+    "tfc:ore/saltpeter/gneiss",
+    "tfc:ore/sylvite/gneiss",
+    "tfc:ore/borax/gneiss",
+    "tfc:ore/lapis_lazuli/gneiss",
+    "tfc:ore/halite/gneiss"
+  ],
+  "result": "tfc:rock/cobble/gneiss"
+}

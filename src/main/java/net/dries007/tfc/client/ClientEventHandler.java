@@ -7,17 +7,20 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GrassColors;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
+import net.dries007.tfc.objects.entities.TFCEntities;
 import net.dries007.tfc.util.climate.ClimateTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -38,6 +41,8 @@ public final class ClientEventHandler
 
         // Grass
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutoutMipped()));
+
+        RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
     }
 
     @SubscribeEvent

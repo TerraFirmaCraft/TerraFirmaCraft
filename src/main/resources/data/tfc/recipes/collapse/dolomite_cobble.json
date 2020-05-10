@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/dolomite",
+    "tfc:ore/native_copper/dolomite",
+    "tfc:ore/native_gold/dolomite",
+    "tfc:ore/hematite/dolomite",
+    "tfc:ore/native_silver/dolomite",
+    "tfc:ore/cassiterite/dolomite",
+    "tfc:ore/bismuthinite/dolomite",
+    "tfc:ore/garnierite/dolomite",
+    "tfc:ore/malachite/dolomite",
+    "tfc:ore/magnetite/dolomite",
+    "tfc:ore/limonite/dolomite",
+    "tfc:ore/sphalerite/dolomite",
+    "tfc:ore/tetrahedrite/dolomite",
+    "tfc:ore/bituminous_coal/dolomite",
+    "tfc:ore/lignite/dolomite",
+    "tfc:ore/kaolinite/dolomite",
+    "tfc:ore/gypsum/dolomite",
+    "tfc:ore/graphite/dolomite",
+    "tfc:ore/sulfur/dolomite",
+    "tfc:ore/cinnabar/dolomite",
+    "tfc:ore/cryolite/dolomite",
+    "tfc:ore/saltpeter/dolomite",
+    "tfc:ore/sylvite/dolomite",
+    "tfc:ore/borax/dolomite",
+    "tfc:ore/lapis_lazuli/dolomite",
+    "tfc:ore/halite/dolomite"
+  ],
+  "result": "tfc:rock/cobble/dolomite"
+}

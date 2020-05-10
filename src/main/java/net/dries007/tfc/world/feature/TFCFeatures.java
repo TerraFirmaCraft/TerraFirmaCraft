@@ -15,4 +15,7 @@ public class TFCFeatures
     public static final RegistryObject<LargeCaveSpikesFeature> LARGE_CAVE_SPIKES = FEATURES.register("large_cave_spikes", LargeCaveSpikesFeature::new);
 
     public static final RegistryObject<VeinsFeature> VEINS = FEATURES.register("veins", VeinsFeature::new);
+
+    public static final RegistryObject<BouldersFeature> BOULDERS = FEATURES.register("boulders", BouldersFeature::new);
+    public static final RegistryObject<FissureFeature> FISSURES = FEATURES.register("fissures", FissureFeature::new);
 }

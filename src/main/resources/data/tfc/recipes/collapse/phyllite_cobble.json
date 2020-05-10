@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/phyllite",
+    "tfc:ore/native_copper/phyllite",
+    "tfc:ore/native_gold/phyllite",
+    "tfc:ore/hematite/phyllite",
+    "tfc:ore/native_silver/phyllite",
+    "tfc:ore/cassiterite/phyllite",
+    "tfc:ore/bismuthinite/phyllite",
+    "tfc:ore/garnierite/phyllite",
+    "tfc:ore/malachite/phyllite",
+    "tfc:ore/magnetite/phyllite",
+    "tfc:ore/limonite/phyllite",
+    "tfc:ore/sphalerite/phyllite",
+    "tfc:ore/tetrahedrite/phyllite",
+    "tfc:ore/bituminous_coal/phyllite",
+    "tfc:ore/lignite/phyllite",
+    "tfc:ore/kaolinite/phyllite",
+    "tfc:ore/gypsum/phyllite",
+    "tfc:ore/graphite/phyllite",
+    "tfc:ore/sulfur/phyllite",
+    "tfc:ore/cinnabar/phyllite",
+    "tfc:ore/cryolite/phyllite",
+    "tfc:ore/saltpeter/phyllite",
+    "tfc:ore/sylvite/phyllite",
+    "tfc:ore/borax/phyllite",
+    "tfc:ore/lapis_lazuli/phyllite",
+    "tfc:ore/halite/phyllite"
+  ],
+  "result": "tfc:rock/cobble/phyllite"
+}

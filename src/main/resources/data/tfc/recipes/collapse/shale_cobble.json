@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/shale",
+    "tfc:ore/native_copper/shale",
+    "tfc:ore/native_gold/shale",
+    "tfc:ore/hematite/shale",
+    "tfc:ore/native_silver/shale",
+    "tfc:ore/cassiterite/shale",
+    "tfc:ore/bismuthinite/shale",
+    "tfc:ore/garnierite/shale",
+    "tfc:ore/malachite/shale",
+    "tfc:ore/magnetite/shale",
+    "tfc:ore/limonite/shale",
+    "tfc:ore/sphalerite/shale",
+    "tfc:ore/tetrahedrite/shale",
+    "tfc:ore/bituminous_coal/shale",
+    "tfc:ore/lignite/shale",
+    "tfc:ore/kaolinite/shale",
+    "tfc:ore/gypsum/shale",
+    "tfc:ore/graphite/shale",
+    "tfc:ore/sulfur/shale",
+    "tfc:ore/cinnabar/shale",
+    "tfc:ore/cryolite/shale",
+    "tfc:ore/saltpeter/shale",
+    "tfc:ore/sylvite/shale",
+    "tfc:ore/borax/shale",
+    "tfc:ore/lapis_lazuli/shale",
+    "tfc:ore/halite/shale"
+  ],
+  "result": "tfc:rock/cobble/shale"
+}

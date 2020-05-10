@@ -3,16 +3,19 @@ package net.dries007.tfc.world.feature;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.FastRandom;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
+import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.world.vein.Vein;
 import net.dries007.tfc.world.vein.VeinType;
 import net.dries007.tfc.world.vein.VeinTypeManager;
@@ -27,31 +30,35 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
         CHUNK_RADIUS = 1 + VeinTypeManager.INSTANCE.getValues().stream().mapToInt(VeinType::getChunkRadius).max().orElse(0);
     }
 
-    public static List<Vein<?>> getNearbyVeins(int chunkX, int chunkZ, long worldSeed, int radius)
+    public static List<Vein<?>> getNearbyVeins(IWorld world, ChunkPos pos, int radius)
     {
         List<Vein<?>> veins = new ArrayList<>();
-        for (int x = chunkX - radius; x <= chunkX + radius; x++)
+        for (int x = pos.x - radius; x <= pos.x + radius; x++)
         {
-            for (int z = chunkZ - radius; z <= chunkZ + radius; z++)
+            for (int z = pos.z - radius; z <= pos.z + radius; z++)
             {
-                getVeinsAtChunk(veins, x, z, worldSeed);
+                getVeinsAtChunk(world, new ChunkPos(x, z), veins);
             }
         }
         return veins;
     }
 
-    private static void getVeinsAtChunk(List<Vein<?>> veins, int chunkX, int chunkZ, long worldSeed)
+    private static void getVeinsAtChunk(IWorld world, ChunkPos pos, List<Vein<?>> veins)
     {
-        long seed = FastRandom.mix(worldSeed, chunkX);
-        seed = FastRandom.mix(seed, chunkZ);
-        RANDOM.setSeed(seed);
+        RANDOM.setSeed(FastRandom.mix(FastRandom.mix(world.getSeed(), pos.x), pos.z));
         for (VeinType<?> type : VeinTypeManager.INSTANCE.getOrderedValues())
         {
-            if (RANDOM.nextInt(type.getRarity()) <= 5) // todo: change back to == 0, this is only for testing
+            if (RANDOM.nextInt(type.getRarity()) == 0 && type.canGenerateVein(world, pos))
             {
-                veins.add(type.createVein(chunkX << 4, chunkZ << 4, RANDOM));
+                veins.add(type.createVein(pos.getXStart(), pos.getZStart(), RANDOM));
             }
         }
+    }
+
+    @SuppressWarnings("unused")
+    public VeinsFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory)
+    {
+        super(configFactory);
     }
 
     public VeinsFeature()
@@ -62,7 +69,7 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
-        List<Vein<?>> veins = getNearbyVeins(pos.getX() >> 4, pos.getZ() >> 4, worldIn.getSeed(), CHUNK_RADIUS);
+        List<Vein<?>> veins = getNearbyVeins(worldIn, new ChunkPos(pos), CHUNK_RADIUS);
         if (!veins.isEmpty())
         {
             for (Vein<?> vein : veins)
@@ -87,11 +94,12 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
                     {
                         BlockPos posAt = new BlockPos(x, y, z);
                         BlockState stoneState = world.getBlockState(posAt);
-                        if (vein.getType().isValidState(stoneState) && random.nextFloat() < vein.getChanceToGenerate(posAt))
-                        {
-                            BlockState oreState = vein.getType().getStateToGenerate(stoneState, random);
-                            setBlockState(world, posAt, oreState);
-                        }
+                        vein.getType().getStateToGenerate(stoneState, random).ifPresent(oreState -> {
+                            if (random.nextFloat() < vein.getChanceToGenerate(posAt))
+                            {
+                                setBlockState(world, posAt, oreState);
+                            }
+                        });
                     }
                 }
             }

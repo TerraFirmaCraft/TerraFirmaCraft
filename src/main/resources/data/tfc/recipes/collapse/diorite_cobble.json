@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:rock/raw/diorite",
+    "tfc:ore/native_copper/diorite",
+    "tfc:ore/native_gold/diorite",
+    "tfc:ore/hematite/diorite",
+    "tfc:ore/native_silver/diorite",
+    "tfc:ore/cassiterite/diorite",
+    "tfc:ore/bismuthinite/diorite",
+    "tfc:ore/garnierite/diorite",
+    "tfc:ore/malachite/diorite",
+    "tfc:ore/magnetite/diorite",
+    "tfc:ore/limonite/diorite",
+    "tfc:ore/sphalerite/diorite",
+    "tfc:ore/tetrahedrite/diorite",
+    "tfc:ore/bituminous_coal/diorite",
+    "tfc:ore/lignite/diorite",
+    "tfc:ore/kaolinite/diorite",
+    "tfc:ore/gypsum/diorite",
+    "tfc:ore/graphite/diorite",
+    "tfc:ore/sulfur/diorite",
+    "tfc:ore/cinnabar/diorite",
+    "tfc:ore/cryolite/diorite",
+    "tfc:ore/saltpeter/diorite",
+    "tfc:ore/sylvite/diorite",
+    "tfc:ore/borax/diorite",
+    "tfc:ore/lapis_lazuli/diorite",
+    "tfc:ore/halite/diorite"
+  ],
+  "result": "tfc:rock/cobble/diorite"
+}

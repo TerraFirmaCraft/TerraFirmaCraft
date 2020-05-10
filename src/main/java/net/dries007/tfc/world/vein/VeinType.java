@@ -4,16 +4,21 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 
-import net.dries007.tfc.util.IResourceNameable;
+import net.dries007.tfc.objects.recipes.IBlockIngredient;
 import net.dries007.tfc.util.collections.IWeighted;
+import net.dries007.tfc.util.json.TFCJSONUtils;
 
-public abstract class VeinType<V extends Vein<?>> implements IResourceNameable
+public abstract class VeinType<V extends Vein<?>>
 {
     protected final IWeighted<Indicator> indicator;
     protected final int size;
@@ -21,11 +26,13 @@ public abstract class VeinType<V extends Vein<?>> implements IResourceNameable
     protected final int rarity;
     protected final int minY;
     protected final int maxY;
-    protected final Map<BlockState, IWeighted<BlockState>> blocks;
-    private ResourceLocation id;
+    protected final Map<IBlockIngredient, IWeighted<BlockState>> blocks;
+    protected final List<IVeinRule> rules;
+    private final ResourceLocation id;
 
-    public VeinType(JsonObject json, JsonDeserializationContext context)
+    public VeinType(ResourceLocation id, JsonObject json)
     {
+        this.id = id;
         rarity = JSONUtils.getInt(json, "rarity", 10);
         if (rarity <= 0)
         {
@@ -54,35 +61,22 @@ public abstract class VeinType<V extends Vein<?>> implements IResourceNameable
         {
             // Parse each element of blocks
             JsonObject blockJson = JSONUtils.getJsonObject(blocksElement, "blocks");
-            List<BlockState> stoneStates = context.deserialize(blockJson.get("stone"), new TypeToken<List<BlockState>>() {}.getType());
-            if (stoneStates.isEmpty())
-            {
-                throw new JsonParseException("Stone states cannot be empty.");
-            }
-            IWeighted<BlockState> oreStates = context.deserialize(blockJson.get("ore"), new TypeToken<IWeighted<BlockState>>() {}.getType());
+            IBlockIngredient stoneStates = IBlockIngredient.Serializer.INSTANCE.read(blockJson.get("stone"));
+            IWeighted<BlockState> oreStates = TFCJSONUtils.getWeighted(blockJson.get("ore"), TFCJSONUtils::getBlockState);
             if (oreStates.isEmpty())
             {
                 throw new JsonParseException("Ore states cannot be empty.");
             }
 
-            for (BlockState stoneState : stoneStates)
-            {
-                blocks.put(stoneState, oreStates);
-            }
+            blocks.put(stoneStates, oreStates);
         }
-        indicator = json.has("indicator") ? context.deserialize(json.get("indicator"), new TypeToken<IWeighted<Indicator>>() {}.getType()) : IWeighted.empty();
+        indicator = json.has("indicator") ? TFCJSONUtils.getWeighted(json.get("indicator"), Indicator.Serializer.INSTANCE::read) : IWeighted.empty();
+        rules = json.has("rules") ? TFCJSONUtils.getListLenient(json.get("rules"), IVeinRule.Serializer.INSTANCE::read) : Collections.emptyList();
     }
 
-    @Override
     public ResourceLocation getId()
     {
         return id;
-    }
-
-    @Override
-    public void setId(ResourceLocation id)
-    {
-        this.id = id;
     }
 
     public int getRarity()
@@ -117,19 +111,26 @@ public abstract class VeinType<V extends Vein<?>> implements IResourceNameable
         return 1 + (size >> 4);
     }
 
-    public boolean isValidState(BlockState state)
+    public Optional<BlockState> getStateToGenerate(BlockState stoneState, Random random)
     {
-        return blocks.containsKey(state);
-    }
-
-    public BlockState getStateToGenerate(BlockState stoneState, Random random)
-    {
-        return blocks.get(stoneState).get(random);
+        return blocks.entrySet().stream().filter(entry -> entry.getKey().test(stoneState)).map(entry -> entry.getValue().get(random)).findFirst();
     }
 
     public Collection<BlockState> getOreStates()
     {
         return blocks.values().stream().flatMap(weighted -> weighted.values().stream()).collect(Collectors.toList());
+    }
+
+    public boolean canGenerateVein(IWorld world, ChunkPos pos)
+    {
+        for (IVeinRule rule : rules)
+        {
+            if (!rule.test(world, pos))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

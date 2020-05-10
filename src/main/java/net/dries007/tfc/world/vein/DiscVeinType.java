@@ -2,9 +2,9 @@ package net.dries007.tfc.world.vein;
 
 import java.util.Random;
 
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 import net.dries007.tfc.world.noise.INoise2D;
@@ -14,9 +14,9 @@ public class DiscVeinType extends VeinType<DiscVeinType.DiscVein>
 {
     private final int height;
 
-    public DiscVeinType(JsonObject json, JsonDeserializationContext context)
+    public DiscVeinType(ResourceLocation id, JsonObject json)
     {
-        super(json, context);
+        super(id, json);
 
         height = JSONUtils.getInt(json, "height", 4);
     }

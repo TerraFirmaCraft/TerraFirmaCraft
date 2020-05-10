@@ -16,12 +16,16 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
+import net.dries007.tfc.objects.entities.TFCEntities;
 import net.dries007.tfc.objects.items.TFCItems;
+import net.dries007.tfc.objects.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCWorldCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.feature.TFCFeatures;
+import net.dries007.tfc.world.placement.TFCPlacements;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -56,21 +60,26 @@ public final class TerraFirmaCraft
 
         worldType = new TFCWorldType();
 
-        TFCConfig.register();
-
+        // Event bus subscribers
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(this);
 
         TFCBlocks.BLOCKS.register(modEventBus);
         TFCItems.ITEMS.register(modEventBus);
+        TFCEntities.ENTITIES.register(modEventBus);
+        TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
 
         TFCWorldType.BIOME_PROVIDERS.register(modEventBus);
         TFCWorldType.CHUNK_GENERATORS.register(modEventBus);
         TFCBiomes.BIOMES.register(modEventBus);
         TFCFeatures.FEATURES.register(modEventBus);
+        TFCPlacements.PLACEMENTS.register(modEventBus);
+        TFCSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
         TFCWorldCarvers.CARVERS.register(modEventBus);
 
-        PacketHandler.setup();
+        // Init methods
+        TFCConfig.init();
+        PacketHandler.init();
     }
 
     @SubscribeEvent
@@ -78,6 +87,7 @@ public final class TerraFirmaCraft
     {
         LOGGER.info("TFC Common Setup");
 
+        // Setup methods
         ChunkDataCapability.setup();
         TFCBiomes.setup();
     }
