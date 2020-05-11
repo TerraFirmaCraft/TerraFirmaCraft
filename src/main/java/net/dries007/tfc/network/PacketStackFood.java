@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -58,7 +59,7 @@ public class PacketStackFood implements IMessage
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    if (message.slotNumber < 0 || message.slotNumber >= player.openContainer.inventorySlots.size())
+                    if (!(player.openContainer instanceof ContainerPlayer) || message.slotNumber < 0 || message.slotNumber >= player.openContainer.inventorySlots.size())
                     {
                         return;
                     }

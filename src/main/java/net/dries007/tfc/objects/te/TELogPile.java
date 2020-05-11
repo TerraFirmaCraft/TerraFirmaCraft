@@ -115,6 +115,7 @@ public class TELogPile extends TEInventory implements ITickable
                 if (world.getBlockState(pos.up()).getBlock() == Blocks.FIRE)
                 {
                     burning = true;
+                    startBurningTick = CalendarTFC.PLAYER_TIME.getTicks();
                 }
             }
         }

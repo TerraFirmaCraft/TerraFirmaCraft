@@ -171,41 +171,47 @@ public class EntityFallingBlockTFC extends Entity
             motionZ *= 0.699999988079071D;
             motionY *= -0.5D;
 
-            if (current.getBlock() == Blocks.PISTON_EXTENSION) return;
-
-            setDead();
-
-            if (IFallingBlock.canFallThrough(world, pos, state.getMaterial()))
+            if (current.getBlock() != Blocks.PISTON_EXTENSION)
             {
-                if (!world.isRemote)
-                {
-                    world.destroyBlock(pos, true);
-                    world.setBlockState(pos, state, 3);
+                setDead();
 
-                    // Copy all TE data over default data (except pos[X,Y,Z]) if the TE is there. This is vanilla code.
-                    if (teData != null && block.hasTileEntity(state))
+                if (IFallingBlock.canFallThrough(world, pos, state.getMaterial()))
+                {
+                    if (!world.isRemote)
                     {
-                        TileEntity te = world.getTileEntity(pos);
-                        if (te != null)
+                        world.destroyBlock(pos, true);
+                        world.setBlockState(pos, state, 3);
+
+                        // Copy all TE data over default data (except pos[X,Y,Z]) if the TE is there. This is vanilla code.
+                        if (teData != null && block.hasTileEntity(state))
                         {
-                            NBTTagCompound currentTeData = te.writeToNBT(new NBTTagCompound());
-                            for (String s : teData.getKeySet())
+                            TileEntity te = world.getTileEntity(pos);
+                            if (te != null)
                             {
-                                if (!"x".equals(s) && !"y".equals(s) && !"z".equals(s))
+                                NBTTagCompound currentTeData = te.writeToNBT(new NBTTagCompound());
+                                for (String s : teData.getKeySet())
                                 {
-                                    currentTeData.setTag(s, teData.getTag(s).copy());
+                                    if (!"x".equals(s) && !"y".equals(s) && !"z".equals(s))
+                                    {
+                                        currentTeData.setTag(s, teData.getTag(s).copy());
+                                    }
                                 }
+                                te.readFromNBT(currentTeData);
+                                te.markDirty();
                             }
-                            te.readFromNBT(currentTeData);
-                            te.markDirty();
                         }
                     }
                 }
+                else if (world.getGameRules().getBoolean("doEntityDrops") && !world.isRemote)
+                {
+                    falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
+                }
             }
-            else if (world.getGameRules().getBoolean("doEntityDrops") && !world.isRemote)
+            else
             {
-                falling.getDropsFromFall(world, pos, state, teData, fallTime, fallDistance).forEach(x -> entityDropItem(x, 0));
+                return;
             }
+
         }
     }
 

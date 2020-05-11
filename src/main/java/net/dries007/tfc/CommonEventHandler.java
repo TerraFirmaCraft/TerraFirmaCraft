@@ -347,9 +347,11 @@ public final class CommonEventHandler
 
             // Food
             // Because our foods supply a custom capability in Item#initCapabilities, we need to avoid attaching a duplicate, otherwise it breaks food stacking recipes.
-            if (stack.getItem() instanceof ItemFood && !(stack.getItem() instanceof ItemFoodTFC))
+            // This problem goes away in 1.15 as all of these definitions (including ours) become tags)
+            // We allow custom defined capabilities to attach to non-food items, that should have rot (such as eggs).
+            ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
+            if ((foodHandler != null || stack.getItem() instanceof ItemFood) && !(stack.getItem() instanceof ItemFoodTFC))
             {
-                ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
                 if (foodHandler == null)
                 {
                     foodHandler = new FoodHandler(stack.getTagCompound(), new FoodData());

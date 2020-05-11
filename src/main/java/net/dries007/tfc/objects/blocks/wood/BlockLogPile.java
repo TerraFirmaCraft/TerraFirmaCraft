@@ -180,13 +180,17 @@ public class BlockLogPile extends Block implements ILightableBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (placer.getHorizontalFacing().getAxis().isHorizontal())
+        if (worldIn.getBlockState(pos.up()).getBlock() == Blocks.FIRE)
         {
-            return this.getDefaultState().withProperty(AXIS, placer.getHorizontalFacing().getAxis());
+            worldIn.setBlockState(pos, state.withProperty(LIT, true));
+            TELogPile te = Helpers.getTE(worldIn, pos, TELogPile.class);
+            if (te != null)
+            {
+                te.light();
+            }
         }
-        return this.getDefaultState();
     }
 
     @Override
@@ -198,6 +202,17 @@ public class BlockLogPile extends Block implements ILightableBlock
             ((TEInventory) te).onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        if (placer.getHorizontalFacing().getAxis().isHorizontal())
+        {
+            return getDefaultState().withProperty(AXIS, placer.getHorizontalFacing().getAxis());
+        }
+        return getDefaultState();
     }
 
     @Override

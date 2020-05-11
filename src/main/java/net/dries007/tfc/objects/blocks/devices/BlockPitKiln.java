@@ -75,33 +75,20 @@ public class BlockPitKiln extends Block implements ILightableBlock
     @SuppressWarnings("deprecation")
     public boolean isTopSolid(IBlockState state)
     {
-        // This is required for the fire code, because forge doesn't 'fix' it to use the location sensitive version.
-        return true;
+        return state.getValue(FULL);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState();
+        return getDefaultState().withProperty(LIT, (meta & 1) > 0).withProperty(FULL, (meta & 2) > 0);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return 0;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        TEPitKiln te = Helpers.getTE(worldIn, pos, TEPitKiln.class);
-        if (te != null)
-        {
-            return state.withProperty(BlockPitKiln.LIT, te.isLit()).withProperty(BlockPitKiln.FULL, te.hasFuel());
-        }
-        return state;
+        return (state.getValue(LIT) ? 1 : 0) + (state.getValue(FULL) ? 2 : 0);
     }
 
     @Override
