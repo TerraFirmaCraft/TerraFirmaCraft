@@ -174,7 +174,7 @@ public class ClientEvents
     {
         Minecraft mc = Minecraft.getMinecraft();
         List<String> list = event.getRight();
-        if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
+        if (mc.gameSettings.showDebugInfo)
         {
             //noinspection ConstantConditions
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
@@ -206,19 +206,23 @@ public class ClientEvents
 
                 // Always add calendar info
                 list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
-                list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
 
-                if (chunkDataValid)
+                if (ConfigTFC.GENERAL.debug)
                 {
-                    list.add(GRAY + "Rainfall: " + WHITE + data.getRainfall());
-                    list.add(GRAY + "Flora Density: " + WHITE + data.getFloraDensity());
-                    list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
+                    list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
 
-                    list.add(GRAY + "Valid Trees: ");
-                    data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.getRegistryName(), t.getDominance())));
+                    if (chunkDataValid)
+                    {
+                        list.add(GRAY + "Rainfall: " + WHITE + data.getRainfall());
+                        list.add(GRAY + "Flora Density: " + WHITE + data.getFloraDensity());
+                        list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
 
-                    list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
-                    list.add(GRAY + "Spawn Protection: " + WHITE + data.getSpawnProtection());
+                        list.add(GRAY + "Valid Trees: ");
+                        data.getValidTrees().forEach(t -> list.add(String.format("%s %s (%.1f)", WHITE, t.getRegistryName(), t.getDominance())));
+
+                        list.add(GRAY + "Sea level offset: " + WHITE + data.getSeaLevelOffset(x, z));
+                        list.add(GRAY + "Spawn Protection: " + WHITE + data.getSpawnProtection());
+                    }
                 }
             }
         }

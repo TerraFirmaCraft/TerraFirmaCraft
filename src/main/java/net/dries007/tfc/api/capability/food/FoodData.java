@@ -16,6 +16,7 @@ public class FoodData implements INBTSerializable<NBTTagCompound>
     public static final FoodData ROTTEN_FLESH = new FoodData(0, 0, 0, 0, 0, 0, 0, 0, Float.POSITIVE_INFINITY);
     public static final FoodData GOLDEN_APPLE = new FoodData(1, 0, 0, 0, 2.5f, 0, 0, 0, 0);
     public static final FoodData GOLDEN_CARROT = new FoodData(1, 0, 0, 0, 0, 2.5f, 0, 0, 0);
+    public static final FoodData RAW_EGG = new FoodData(1, 0, 0, 0, 0, 0, 0, 0, 4.5f);
 
     private final float[] nutrients; // Nutritional values
     private int hunger; // Hunger. In TFC (for now) this is almost always 4

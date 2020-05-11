@@ -37,10 +37,13 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.devices.BlockPitKiln;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+
+import static net.dries007.tfc.objects.blocks.devices.BlockPitKiln.FULL;
 
 @ParametersAreNonnullByDefault
 public class TEPitKiln extends TEPlacedItem implements ITickable
@@ -307,6 +310,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
                 isLit = true;
                 litTick = CalendarTFC.PLAYER_TIME.getTicks();
                 updateBlock();
+                world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockPitKiln.LIT, true));
                 world.setBlockState(above, Blocks.FIRE.getDefaultState());
                 //Light other adjacent pit kilns
                 for (Vec3i diagonal : DIAGONALS)
@@ -359,6 +363,14 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             // Reset item in inventory
             inventory.setStackInSlot(i, outputStack);
         }
+    }
+
+    @Override
+    protected void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.setBlockState(pos, state.withProperty(FULL, getStrawCount() == STRAW_NEEDED && getLogCount() == WOOD_NEEDED));
+        markForBlockUpdate();
     }
 
     private void addStrawBlock()
