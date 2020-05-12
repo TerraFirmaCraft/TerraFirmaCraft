@@ -207,7 +207,7 @@ public class ClientEvents
                 // Always add calendar info
                 list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
 
-                if (ConfigTFC.GENERAL.debug)
+                if (ConfigTFC.General.DEBUG.enable)
                 {
                     list.add(I18n.format("tfc.tooltip.debug_times", CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
 
