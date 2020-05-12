@@ -101,7 +101,7 @@ public abstract class BlockCropTFC extends BlockBush
         return STAGE_MAP.get(crop.getMaxStage() + 1);
     }
 
-    protected final ICrop crop;
+    private final ICrop crop;
 
     BlockCropTFC(ICrop crop)
     {
@@ -115,12 +115,6 @@ public abstract class BlockCropTFC extends BlockBush
 
         setSoundType(SoundType.PLANT);
         setHardness(0.6f);
-    }
-
-    @Nonnull
-    public ICrop getCrop()
-    {
-        return crop;
     }
 
     @Override
@@ -220,6 +214,12 @@ public abstract class BlockCropTFC extends BlockBush
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(ItemSeedsTFC.get(crop));
+    }
+
+    @Nonnull
+    public ICrop getCrop()
+    {
+        return crop;
     }
 
     public void checkGrowth(World worldIn, BlockPos pos, IBlockState state, Random random)

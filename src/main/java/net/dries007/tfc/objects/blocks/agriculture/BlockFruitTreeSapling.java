@@ -47,7 +47,7 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
         return MAP.get(tree);
     }
 
-    public final IFruitTree tree;
+    private final IFruitTree tree;
 
     public BlockFruitTreeSapling(IFruitTree tree)
     {
@@ -144,5 +144,11 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
                 world.setBlockState(blockPos.up(), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, false));
             }
         }
+    }
+
+    @Nonnull
+    public IFruitTree getTree()
+    {
+        return tree;
     }
 }

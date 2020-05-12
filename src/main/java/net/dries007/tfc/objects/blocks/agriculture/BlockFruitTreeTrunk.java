@@ -59,7 +59,7 @@ public class BlockFruitTreeTrunk extends Block
         return MAP.get(tree);
     }
 
-    public final IFruitTree tree;
+    private final IFruitTree tree;
 
     public BlockFruitTreeTrunk(IFruitTree tree)
     {
@@ -364,6 +364,12 @@ public class BlockFruitTreeTrunk extends Block
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(BlockFruitTreeSapling.get(tree));
+    }
+
+    @Nonnull
+    public IFruitTree getTree()
+    {
+        return tree;
     }
 
     private BlockPos getMissingLeaf(World world, BlockPos branchPos, EnumFacing branchFacing)

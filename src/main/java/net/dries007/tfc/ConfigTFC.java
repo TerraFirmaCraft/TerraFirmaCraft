@@ -97,6 +97,10 @@ public final class ConfigTFC
 
         public static final class OverridesCFG
         {
+            @Config.Comment("Enable ingot pile placement in world.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableIngotPiles")
+            public boolean enableIngotPiles = true;
+
             @Config.Comment("Turn this off if you have conflicts with other mods")
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableTorchOverride")
             public boolean enableTorchOverride = true;
@@ -126,7 +130,9 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.overrides.removeVanillaLoots")
             public boolean removeVanillaLoots = true;
 
-            @Config.Comment({"If true, this will force the gamerule naturalRegeneration to be false. ", "Note: this DOES NOT AFFECT TFC's natural regeneration. If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster)"})
+            @Config.Comment({"If true, this will force the gamerule naturalRegeneration to be false. ",
+                "Note: this DOES NOT AFFECT TFC's natural regeneration.",
+                "If you set naturalRegeneration to true, then you will have both TFC regeneration and normal vanilla regeneration (which is much faster)"})
             @Config.LangKey("config." + MOD_ID + ".general.overrides.forceNoVanillaNaturalRegeneration")
             public boolean forceNoVanillaNaturalRegeneration = true;
 
@@ -204,7 +210,7 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.tree.enableSaplings")
             public boolean enableSaplings = true;
 
-            @Config.Comment("Log return rate of stone axes (eg: How efficiently it is)")
+            @Config.Comment("Chance per log for an item to drop when using a stone axe.")
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.tree.stoneAxeReturnRate")
             public double stoneAxeReturnRate = 0.6;
@@ -214,26 +220,45 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.tree.leafStickDropChance")
             public double leafStickDropChance = 0.1;
 
-            @Config.Comment("Bonus leaf drop chance for sticks")
+            @Config.Comment("Chance that leaves will drop more sticks when harvested with configured tool classes.")
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.tree.leafStickDropChanceBonus")
             public double leafStickDropChanceBonus = 0.25;
 
-            @Config.Comment("Bonus leaf drop stick chance for sticks tool classes")
+            @Config.Comment("Tool classes that have the configured bonus to drop more sticks when harvesting leaves.")
             @Config.LangKey("config." + MOD_ID + ".general.tree.leafStickDropChanceBonusClasses")
             public String[] leafStickDropChanceBonusClasses = new String[] {"knife", "scythe"};
         }
 
         public static final class SpawnProtectionCFG
         {
-            @Config.Comment("Should living in a chunk block hostile mob and predators spawning over time?")
-            @Config.LangKey("config." + MOD_ID + ".general.spawn_protection.enable")
-            public boolean enable = true;
+            @Config.Comment("Should living in a chunk prevent hostile mob spawning over time?")
+            @Config.LangKey("config." + MOD_ID + ".general.spawn_protection.preventMobs")
+            public boolean preventMobs = true;
 
-            @Config.Comment("The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.")
+            @Config.Comment("Should living in a chunk prevent predators spawning over time?")
+            @Config.LangKey("config." + MOD_ID + ".general.spawn_protection.preventPredators")
+            public boolean preventPredators = true;
+
+            @Config.Comment("The min Y value a spawn has to be for spawn protection to prevent mobs. Anything below it will not be prevented.")
             @Config.RangeInt(min = 1, max = 255)
-            @Config.LangKey("config." + MOD_ID + ".general.spawn_protection.minY")
-            public int minY = 100;
+            @Config.LangKey("config." + MOD_ID + ".general.spawn_protection.minYMobs")
+            public int minYMobs = 100;
+
+            @Config.Comment("The max Y value a spawn has to be for spawn protection to prevent mobs. Anything above it will not be prevented.")
+            @Config.RangeInt(min = 1, max = 255)
+            @Config.LangKey("config." + MOD_ID + ".general.spawn_protection.maxYMobs")
+            public int maxYMobs = 255;
+
+            @Config.Comment("The min Y value a spawn has to be for spawn protection to prevent predators. Anything below it will not be prevented.")
+            @Config.RangeInt(min = 1, max = 255)
+            @Config.LangKey("config." + MOD_ID + ".general.spawn_protection.minYPredators")
+            public int minYPredators = 100;
+
+            @Config.Comment("The max Y value a spawn has to be for spawn protection to prevent predators. Anything above it will not be prevented.")
+            @Config.RangeInt(min = 1, max = 255)
+            @Config.LangKey("config." + MOD_ID + ".general.spawn_protection.maxYPredators")
+            public int maxYPredators = 255;
         }
 
         public static final class DamageCFG
@@ -269,22 +294,27 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.player.inventoryCraftingMode")
             public InventoryCraftingMode inventoryCraftingMode = InventoryCraftingMode.ENABLED;
 
-            @Config.Comment("Minimum health modifier player can obtain with low nutrition.")
-            @Config.RangeDouble(min = 0.1d, max = 1d)
+            @Config.Comment({"Minimum health modifier player can obtain with low nutrition.",
+                "Example 1(Vanilla): 20 * 0.2(mod) = 4 (or 2 hearts).",
+                "Example 2(TFC): 1000 * 0.2(mod) = 200."})
+            @Config.RangeDouble(min = 0.1, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.player.minHealthModifier")
-            public double minHealthModifier = 0.2d;
+            public double minHealthModifier = 0.2;
 
-            @Config.Comment("Maximum health modifier player can obtain with high nutrition.")
-            @Config.RangeDouble(min = 1d, max = 5d)
+            @Config.Comment({"Maximum health modifier player can obtain with high nutrition.",
+                "Example 1(Vanilla): 20 * 3(mod) = 60 (or 30 hearts).",
+                "Example 2(TFC): 1000 * 3(mod) = 3000."})
+            @Config.RangeDouble(min = 1, max = 5)
             @Config.LangKey("config." + MOD_ID + ".general.player.maxHealthModifier")
-            public double maxHealthModifier = 3d;
+            public double maxHealthModifier = 3;
 
-            @Config.Comment("Modifier for how quickly the players becomes thirsty.")
+            @Config.Comment("How quickly the players becomes thirsty when hunger is drained by actions/sprinting? 100 = full thirst bar.")
             @Config.RangeDouble(min = 0, max = 100)
             @Config.LangKey("config." + MOD_ID + ".general.player.thirstModifier")
             public double thirstModifier = 8.0;
 
-            @Config.Comment("Modifier for how quickly the player will naturally regenerate health.")
+            @Config.Comment({"Modifier for how quickly the player will naturally regenerate health.",
+                "When on full hunger and thirst bars, 1.0 = 3HP / 5 secs."})
             @Config.LangKey("config." + MOD_ID + ".general.player.naturalRegenerationModifier")
             @Config.RangeDouble(min = 0, max = 100)
             public double naturalRegenerationModifier = 1.0;
@@ -293,12 +323,13 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.player.peacefulDifficultyPassiveRegeneration")
             public boolean peacefulDifficultyPassiveRegeneration = false;
 
-            @Config.Comment("A multiplier for passive exhaustion (how fast your hunger decays. 0 = hunger doesn't decay passively, higher values = faster decay).")
+            @Config.Comment("Modifier for passive exhaustion (exhaustion that naturally occurs just by living). 1.0 = full hunger bar once 2.5 minecraft days.")
             @Config.LangKey("config." + MOD_ID + ".general.player.passiveExhaustionMultiplier")
             @Config.RangeDouble(min = 0, max = 100)
             public double passiveExhaustionMultiplier = 1;
 
-            @Config.Comment("This is the amount of hunger (consumed) required for a player to completely refresh their nutrition stats. In TFC, almost all foods have 4 hunger, so this is 4x [number of foods required to refresh nutrition stats]. This will update next time you consume a food.")
+            @Config.Comment({"The amount of replenished hunger before the player's nutrition will lose the first food consumed. Most TFC foods have 4 hunger.",
+                "Example: Multiply Vanilla hunger(20) by 4 to get one food bar worth of food before the first food is lost from the cycle."})
             @Config.LangKey("config." + MOD_ID + ".general.player.nutritionRotationHungerWindow")
             @Config.RangeInt(min = 4)
             public int nutritionRotationHungerWindow = 4 * 20;
@@ -316,7 +347,7 @@ public final class ConfigTFC
         public static final class WorldCFG
         {
             @Config.RequiresMcRestart
-            @Config.Comment({"This controls how the temperature gradient appears near the equator.", "1: south of equator is hot, north of equator is cold", "-1: south of equator is cold, north of equator is hot"})
+            @Config.Comment("Sets temperature in relation to the equator change. North = Cold, South = Hot or North = Hot, South = Cold.")
             @Config.LangKey("config." + MOD_ID + ".general.world.hemisphereType")
             public HemisphereType hemisphereType = HemisphereType.COLD_NORTH_HOT_SOUTH;
 
@@ -325,7 +356,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.world.temperatureMode")
             public TemperatureMode temperatureMode = TemperatureMode.CYCLIC;
 
-            @Config.Comment({"This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents the period of the wave."})
+            @Config.Comment({"If Cyclic, this controls the length (in blocks) of the temperature regions. The temperature values change in a wave-like pattern (sine wave).",
+                "Wandering straight in a direction increases or decreases temperature. When you travel this many blocks, the temperature begins changing in the other direction."})
             @Config.RangeInt(min = 1_000, max = 1_000_000)
             @Config.LangKey("config." + MOD_ID + ".general.world.latitudeTemperatureModifier")
             public int latitudeTemperatureModifier = 40_000;
@@ -345,26 +377,29 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.world.looseRocksFrequency")
             public int looseRocksFrequency = 18;
 
-            @Config.Comment("This controls how deep loose rocks scans for veins when generating. Higher values = more ore samples.")
+            @Config.Comment("This is how deep (in blocks) from the surface a loose rock will scan for a vein when generating, Higher values = More veins spawn samples thus adding more samples.")
             @Config.RangeInt(min = 1, max = 255)
             @Config.LangKey("config." + MOD_ID + ".general.world.looseRockScan")
             public int looseRockScan = 35;
 
             @Config.RequiresMcRestart
             @Config.RangeDouble(min = 0.05, max = 0.4)
-            @Config.Comment("This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+            @Config.Comment({"This controls how spread the rainfall distribution is. Higher values means the world will be distributed towards the extremes more, making more deserts and rain forests.",
+                "WARNING: This can cause very weird world generation conditions."})
             @Config.LangKey("config." + MOD_ID + ".general.world.rainfallSpreadFactor")
             public double rainfallSpreadFactor = 0.13;
 
             @Config.RequiresMcRestart
             @Config.RangeDouble(min = 0.05, max = 0.4)
-            @Config.Comment("This controls how spread the flora diversity distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+            @Config.Comment({"This controls how spread the flora diversity distribution is. Higher values means the world will be distributed towards the extremes more, making forests have much more different kinds of trees.",
+                "WARNING: This can cause very weird world generation conditions."})
             @Config.LangKey("config." + MOD_ID + ".general.world.floraDiversitySpreadFactor")
             public double floraDiversitySpreadFactor = 0.16;
 
             @Config.RequiresMcRestart
             @Config.RangeDouble(min = 0.05, max = 0.4)
-            @Config.Comment("This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.")
+            @Config.Comment({"This controls how spread the flora density distribution is. Higher values means the world will be distributed towards the extremes more, making more dense forest pockets.",
+                "WARNING: This can cause very weird world generation conditions."})
             @Config.LangKey("config." + MOD_ID + ".general.world.floraDensitySpreadFactor")
             public double floraDensitySpreadFactor = 0.16;
 
@@ -378,7 +413,7 @@ public final class ConfigTFC
 
         public static final class WorldRegenCFG
         {
-            @Config.Comment("The minimum time for a chunk to be unoccupied for it's resources to begin to naturally regenerate. (In days). After this amount, regeneration will scale up based on how long since this duration, up to a maximum of 4x")
+            @Config.Comment("The minimum time for a chunk to be unoccupied for it's resources (berry bushes, debris and crops) to naturally regenerate. (In days). After this amount, regeneration will scale up based on how long since this duration, up to a maximum of 4x.")
             @Config.RangeInt(min = 12, max = 1000)
             @Config.LangKey("config." + MOD_ID + ".general.world_regen.minimumTime")
             public int minimumTime = 24;
@@ -442,22 +477,22 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.misc.defaultMonthLength")
             public int defaultMonthLength = 8;
 
-            @Config.Comment("Percentage chance that plants (not crops) grow each update. Smaller number = slower growth.")
+            @Config.Comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth.")
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.misc.plantGrowthRate")
             public double plantGrowthRate = 0.01;
 
-            @Config.Comment("Leaf block movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)")
+            @Config.Comment("Leaf block movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow).")
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.misc.leafMovementModifier")
             public double leafMovementModifier = 0.1;
 
-            @Config.Comment("Berry bush movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)")
+            @Config.Comment("Berry bush movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow).")
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.misc.berryBushMovementModifier")
             public double berryBushMovementModifier = 0.1;
 
-            @Config.Comment("Generic snow movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down.")
+            @Config.Comment("Generic snow movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow).")
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.misc.snowMovementModifier")
             public double snowMovementModifier = 0.85;
@@ -467,7 +502,8 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.misc.minimumPlantMovementModifier")
             public double minimumPlantMovementModifier = 0;
 
-            @Config.Comment("Drop chance for gem from raw stone")
+            @Config.Comment({"Chance that mining a raw stone will drop a gem.",
+                "Gem grade is random from: 16/31 Chipped, 8/31 Flawed, 4/31 Normal, 2/31 Flawless and 1/31 Exquisite."})
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.misc.stoneGemDropChance")
             public double stoneGemDropChance = 31.0 / 8000.0; // 0.003875
@@ -497,15 +533,11 @@ public final class ConfigTFC
             @Config.RangeInt(min = 1, max = 10_000)
             public int richOreMetalAmount = 35;
 
-            @Config.Comment("Enable ingot pile placement in world.")
-            @Config.LangKey("config." + MOD_ID + ".general.misc.enableIngotPiles")
-            public boolean enableIngotPiles = true;
-
-            @Config.Comment("Add iron ore dictionary to wrought iron?")
+            @Config.Comment("Add iron ore dictionary (ie: ingotIron, oreIron) to wrought iron items?")
             @Config.LangKey("config." + MOD_ID + ".general.misc.dictionaryIron")
             public boolean dictionaryIron = false;
 
-            @Config.Comment("Add plate ore dictionary to sheets?")
+            @Config.Comment("Add plate ore dictionary (plateIron, plateBronze) to sheets?")
             @Config.LangKey("config." + MOD_ID + ".general.misc.dictionaryPlates")
             public boolean dictionaryPlates = false;
 
@@ -588,12 +620,12 @@ public final class ConfigTFC
 
         public static final class TemperatureCFG
         {
-            @Config.Comment("Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.")
+            @Config.Comment("Modifier for how quickly items will gain or lose heat. Smaller number = slower temperature changes.")
             @Config.RangeDouble(min = 0, max = 10)
             @Config.LangKey("config." + MOD_ID + ".devices.temperature.globalModifier")
             public double globalModifier = 0.5;
 
-            @Config.Comment("Modifier for how quickly devices (i.e. charcoal forge, fire pit) gain and lose heat. Smaller number = slower temperature changes.")
+            @Config.Comment("Modifier for how quickly devices (i.e. charcoal forge, fire pit) will gain or lose heat. Smaller number = slower temperature changes.")
             @Config.RangeDouble(min = 0, max = 10)
             @Config.LangKey("config." + MOD_ID + ".devices.temperature.heatingModifier")
             public double heatingModifier = 1;
@@ -609,7 +641,8 @@ public final class ConfigTFC
 
         public static final class BlastFurnaceCFG
         {
-            @Config.Comment("How fast the blast furnace consume fuels (compared to the charcoal forge).")
+            @Config.Comment({"How fast the blast furnace consume fuels (compared to the charcoal forge).",
+                "Example: Charcoal (without bellows) lasts for 1800 ticks in forge while 1800 / 4 = 450 ticks in blast furnace."})
             @Config.RangeDouble(min = 0.1D)
             @Config.LangKey("config." + MOD_ID + ".devices.blast_furnace.consumption")
             public double consumption = 4;
@@ -900,32 +933,32 @@ public final class ConfigTFC
 
         public static final class AlpacaCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 192;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 768;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 59;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 1;
 
-            @Config.Comment("How many ticks it is needed for this animal grow back wool?")
+            @Config.Comment("How many ticks are needed for this animal grow back wool?")
             @Config.RangeInt(min = 1_000)
             @Config.LangKey("config." + MOD_ID + ".animals.woolTicks")
             public int woolTicks = 96_000;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -938,32 +971,32 @@ public final class ConfigTFC
 
         public static final class SheepCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 64;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 256;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 27;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 2;
 
-            @Config.Comment("How many ticks it is needed for this animal grow back wool?")
+            @Config.Comment("How many ticks are needed for this animal grow back wool?")
             @Config.RangeInt(min = 1_000)
             @Config.LangKey("config." + MOD_ID + ".animals.woolTicks")
             public int woolTicks = 168_000;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -976,22 +1009,22 @@ public final class ConfigTFC
 
         public static final class CowCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 192;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 768;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 55;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 1;
@@ -1001,7 +1034,7 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.milkTicks")
             public int milkTicks = 24_000;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1014,22 +1047,22 @@ public final class ConfigTFC
 
         public static final class GoatCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 27;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 107;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 27;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 2;
@@ -1039,7 +1072,7 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.milkTicks")
             public int milkTicks = 72_000;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1052,12 +1085,12 @@ public final class ConfigTFC
 
         public static final class ChickenCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 22;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 88;
@@ -1072,7 +1105,7 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.eggTicks")
             public int eggTicks = 24_000;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1085,12 +1118,12 @@ public final class ConfigTFC
 
         public static final class DuckCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 40;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 160;
@@ -1105,7 +1138,7 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".animals.eggTicks")
             public int eggTicks = 30_000;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1118,27 +1151,27 @@ public final class ConfigTFC
 
         public static final class PigCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 80;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 320;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 19;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 10;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1151,27 +1184,27 @@ public final class ConfigTFC
 
         public static final class CamelCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 192;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 768;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 59;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 1;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1184,27 +1217,27 @@ public final class ConfigTFC
 
         public static final class LlamaCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 160;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 640;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 55;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 1;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1217,27 +1250,27 @@ public final class ConfigTFC
 
         public static final class HorseCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 200;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 800;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 43;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 1;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1250,27 +1283,27 @@ public final class ConfigTFC
 
         public static final class DonkeyCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 200;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 800;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 43;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 1;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1283,17 +1316,17 @@ public final class ConfigTFC
 
         public static final class MuleCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 200;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 800;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1306,27 +1339,27 @@ public final class ConfigTFC
 
         public static final class OcelotCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 59;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 236;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 8;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 2;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
@@ -1339,27 +1372,27 @@ public final class ConfigTFC
 
         public static final class WolfCFG
         {
-            @Config.Comment("How many days it is needed for this animal to be considered a fully grown adult?")
+            @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
             public int adulthood = 70;
 
-            @Config.Comment("How many more days it is needed for this animal to be considered an elder? 0 = Disable")
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.elder")
             public int elder = 280;
 
-            @Config.Comment("How many days it is needed for this animal finish a gestation period?")
+            @Config.Comment("How many days until this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.gestation")
             public int gestation = 10;
 
-            @Config.Comment("How many babies are born when this animal finishes gestation?")
+            @Config.Comment("How many babies are born when this animal gives birth?")
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".animals.babies")
             public int babies = 2;
 
-            @Config.Comment("If this animal is an elder, what is the chance it is gonna die on every new day? 0 = Disable")
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
             public double oldDeathChance = 0.1;
