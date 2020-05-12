@@ -241,6 +241,9 @@ config.tfc.general.debug.debugWorldGen.tooltip=Debug worldgen [DANGER] Your worl
 config.tfc.general.overrides=Override Settings
 config.tfc.general.overrides.tooltip=Various override settings, some for compatibility
 
+config.tfc.general.overrides.enableIngotPiles=Enable Ingot Piles
+config.tfc.general.overrides.enableIngotPiles.tooltip=Enable ingot pile placement in world.
+
 config.tfc.general.overrides.enableTorchOverride=Enable Torch Override
 config.tfc.general.overrides.enableTorchOverride.tooltip=Turn this off if you have conflicts with other mods.
 
@@ -323,26 +326,38 @@ config.tfc.general.tree.enableSaplings=Enable Saplings
 config.tfc.general.tree.enableFelling.tooltip=If false, leaves will not drop saplings.
 
 config.tfc.general.tree.stoneAxeReturnRate=Stone Axe Log Return Rate
-config.tfc.general.tree.stoneAxeReturnRate.tooltip=Log return rate of stone axes (eg: How efficiently it is)
+config.tfc.general.tree.stoneAxeReturnRate.tooltip=Chance per log for an item to drop when using a stone axe.
 
 config.tfc.general.tree.leafStickDropChance=Leaf Stick Drop Chance
 config.tfc.general.tree.leafStickDropChance.tooltip=Normal leaf drop chance for sticks
 
 config.tfc.general.tree.leafStickDropChanceBonus=Bonus Leaf Stick Drop Chance
-config.tfc.general.tree.leafStickDropChanceBonus.tooltip=Bonus leaf drop chance for sticks
+config.tfc.general.tree.leafStickDropChanceBonus.tooltip=Chance that leaves will drop more sticks when harvested with configured tool classes.
 
 config.tfc.general.tree.leafStickDropChanceBonusClasses=Leaf Stick Drop Chance Tool Classes
-config.tfc.general.tree.leafStickDropChanceBonusClasses.tooltip=Bonus leaf drop stick chance for sticks tool classes
+config.tfc.general.tree.leafStickDropChanceBonusClasses.tooltip=Tool classes that have the configured bonus to drop more sticks when harvesting leaves.
 
 
 ### Spawn Protection
 config.tfc.general.spawn_protection=Spawn Protection Settings
 
-config.tfc.general.spawn_protection.enable=Enable
-config.tfc.general.spawn_protection.spawnProtectionEnable.tooltip=Should living in a chunk block hostile mob and predators spawning over time?
+config.tfc.general.spawn_protection.preventMobs=Prevent Hostile Mobs
+config.tfc.general.spawn_protection.preventMobs.tooltip=Should living in a chunk prevent hostile mob spawning over time?
 
-config.tfc.general.spawn_protection.minY=Minimum Y Level
-config.tfc.general.spawn_protection.minY.tooltip=The min Y value a spawn has to be for spawn protection to be considered. (spawns under this level won't be stopped by spawn protection.
+config.tfc.general.spawn_protection.preventPredators=Prevent Predators
+config.tfc.general.spawn_protection.preventPredators.tooltip=Should living in a chunk prevent predators spawning over time?
+
+config.tfc.general.spawn_protection.minYMobs=Minimum Y Level for Mobs
+config.tfc.general.spawn_protection.minYMobs.tooltip=The min Y value a spawn has to be for spawn protection to prevent mobs. Anything below it will not be prevented.
+
+config.tfc.general.spawn_protection.maxYMobs=Maximum Y Level for Mobs
+config.tfc.general.spawn_protection.maxYMobs.tooltip=The max Y value a spawn has to be for spawn protection to prevent mobs. Anything above it will not be prevented.
+
+config.tfc.general.spawn_protection.minYPredators=Minimum Y Level for Predators
+config.tfc.general.spawn_protection.minYPredators.tooltip=The min Y value a spawn has to be for spawn protection to prevent predators. Anything below it will not be prevented.
+
+config.tfc.general.spawn_protection.maxYPredators=Maximum Y Level for Predators
+config.tfc.general.spawn_protection.maxYPredators.tooltip=The max Y value a spawn has to be for spawn protection to prevent predators. Anything above it will not be prevented.
 
 
 ### Damage
@@ -374,25 +389,25 @@ config.tfc.general.player.inventoryCraftingMode=Inventory Crafting Table
 config.tfc.general.player.inventoryCraftingMode.tooltip=Enable a 3x3 crafting inventory via key binding.
 
 config.tfc.general.player.minHealthModifier=Player Minimum Health Modifier
-config.tfc.general.player.minHealthModifier.tooltip=Minimum health modifier player can obtain with low nutrition.
+config.tfc.general.player.minHealthModifier.tooltip=Minimum health modifier player can obtain with low nutrition. Example 1(Vanilla): 20 * 0.2(mod) = 4 (or 2 hearts). Example 2(TFC): 1000 * 0.2(mod) = 200.
 
 config.tfc.general.player.maxHealthModifier=Player Maximum Health Modifier
-config.tfc.general.player.maxHealthModifier.tooltip=Maximum health modifier player can obtain with high nutrition.
+config.tfc.general.player.maxHealthModifier.tooltip=Maximum health modifier player can obtain with high nutrition. Example 1(Vanilla): 20 * 3(mod) = 60 (or 30 hearts). Example 2(TFC): 1000 * 3(mod) = 3000.
 
-config.tfc.general.player.thirstModifier=Player Thirst Decay Modifier
-config.tfc.general.player.thirstModifier.tooltip=Modifier for how quickly the players becomes thirsty.
+config.tfc.general.player.thirstModifier=Player Thirst Decay
+config.tfc.general.player.thirstModifier.tooltip=How quickly the players becomes thirsty when hunger is drained by actions/sprinting? 100 = full thirst bar.
 
 config.tfc.general.player.naturalRegenerationModifier=Player Natural Regeneration Modifier
-config.tfc.general.player.naturalRegenerationModifier.tooltip=Modifier for how quickly the player will naturally regenerate health.
+config.tfc.general.player.naturalRegenerationModifier.tooltip=Modifier for how quickly the player will naturally regenerate health. When on full hunger and thirst bars, 1.0 = 3HP / 5 secs.
 
 config.tfc.general.player.peacefulDifficultyPassiveRegeneration=Peaceful Difficulty Passive Stats Regen
 config.tfc.general.player.peacefulDifficultyPassiveRegeneration.tooltip=Should the player receive passive regeneration of health, food, and thirst, while in peaceful mode similar to vanilla?
 
-config.tfc.general.player.passiveExhaustionMultiplier=Hunger Passive Exhaustion Multiplier
-config.tfc.general.player.passiveExhaustionMultiplier.tooltip=A multiplier for passive exhaustion (how fast your hunger decays. 0 = hunger doesn't decay passively, higher values = faster decay).
+config.tfc.general.player.passiveExhaustionMultiplier=Hunger Passive Exhaustion Modifier
+config.tfc.general.player.passiveExhaustionMultiplier.tooltip=Modifier for passive exhaustion (exhaustion that naturally occurs just by living). 1.0 = full hunger bar once 2.5 minecraft days.
 
 config.tfc.general.player.nutritionRotationHungerWindow=Nutrition Rotation Hunger Window
-config.tfc.general.player.nutritionRotationHungerWindow.tooltip=This is the amount of hunger (consumed) required for a player to completely refresh their nutrition stats. In TFC, almost all foods have 4 hunger, so this is 4x [number of foods required to refresh nutrition stats]. This will update next time you consume a food.
+config.tfc.general.player.nutritionRotationHungerWindow.tooltip=The amount of replenished hunger before the player's nutrition will lose the first food consumed. Most TFC foods have 4 hunger. Example: Multiply Vanilla hunger(20) by 4 to get one food bar worth of food before the first food is lost from the cycle.
 
 config.tfc.general.player.drinkDelay=Drink Delay
 config.tfc.general.player.drinkDelay.tooltip=Delay (in ticks) for drinking water by hand
@@ -406,13 +421,13 @@ config.tfc.general.world=World Gen Settings
 config.tfc.general.world.tooltip=Various aspects of world generation
 
 config.tfc.general.world.hemisphereType=Hemisphere Type
-config.tfc.general.world.hemisphereType.tooltip=This controls how the temperature gradient appears near the equator.
+config.tfc.general.world.hemisphereType.tooltip=Sets temperature in relation to the equator change. North = Cold, South = Hot or North = Hot, South = Cold.
 
 config.tfc.general.world.temperatureMode=Temperature Mode
 config.tfc.general.world.temperatureMode.tooltip=This controls how temperature is affected by how far from equator you are.
 
 config.tfc.general.world.latitudeTemperatureModifier=Latitude Temperature Modifier
-config.tfc.general.world.latitudeTemperatureModifier.tooltip=This controls the size of the temperature regions. The size of each temperature zone is determined by a sin wave. This represents the period of the wave.
+config.tfc.general.world.latitudeTemperatureModifier.tooltip=If Cyclic, this controls the length (in blocks) of the temperature regions. The temperature values change in a wave-like pattern (sine wave). Wandering straight in a direction increases or decreases temperature. When you travel this many blocks, the temperature begins changing in the other direction.
 
 config.tfc.general.world.clayRarity=Clay Deposity Rarity
 config.tfc.general.world.clayRarity.tooltip=The rarity for clay pits to occur. On average 1 / N chunks will have a clay deposit, if the chunk in question is valid for clay to spawn.
@@ -424,16 +439,16 @@ config.tfc.general.world.looseRocksFrequency=Loose Rocks Frequency
 config.tfc.general.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
 
 config.tfc.general.world.looseRockScan=Loose Rocks Vein Scan
-config.tfc.general.world.looseRockScan.tooltip=This controls how deep loose rocks scans for veins when generating. Higher values = more ore samples.
+config.tfc.general.world.looseRockScan.tooltip=This is how deep (in blocks) from the surface a loose rock will scan for a vein when generating, Higher values = More veins spawn samples thus adding more samples.
 
 config.tfc.general.world.rainfallSpreadFactor=Rainfall Spread Factor
-config.tfc.general.world.rainfallSpreadFactor.tooltip=This controls how spread the rainfall distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
+config.tfc.general.world.rainfallSpreadFactor.tooltip=This controls how spread the rainfall distribution is. Higher values means the world will be distributed towards the extremes more, making more deserts and rain forests. WARNING: This can cause very weird world generation conditions.
 
 config.tfc.general.world.floraDiversitySpreadFactor=Flora Diversity Spread Factor
-config.tfc.general.world.floraDiversitySpreadFactor.tooltip=This controls how spread the flora diversity distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
+config.tfc.general.world.floraDiversitySpreadFactor.tooltip=This controls how spread the flora diversity distribution is. Higher values means the world will be distributed towards the extremes more, making forests have much more different kinds of trees. WARNING: This can cause very weird world generation conditions.
 
 config.tfc.general.world.floraDensitySpreadFactor=Flora Density Spread Factor
-config.tfc.general.world.floraDensitySpreadFactor.tooltip=This controls how spread the flora density distribution is. Higher values mean the world will be distributed towards the extremes more. WARNING: This is can cause very weird world generation conditions.
+config.tfc.general.world.floraDensitySpreadFactor.tooltip=This controls how spread the flora density distribution is. Higher values means the world will be distributed towards the extremes more, making more dense forest pockets. WARNING: This can cause very weird world generation conditions.
 
 config.tfc.general.world.respawnableCreatures=Respawnable Creatures
 config.tfc.general.world.respawnableCreatures.tooltip=This controls which registered entities can respawn in TFC biomes. You must specify by following the pattern 'modid:entity <rarity> <minGroupSpawn> <maxGroupSpawn>'. Invalid entries will be ignored.
@@ -443,7 +458,7 @@ config.tfc.general.world.respawnableCreatures.tooltip=This controls which regist
 config.tfc.general.world_regen=World Regen Settings
 
 config.tfc.general.world_regen.minimumTime=Min Time
-config.tfc.general.world_regen.minimumTime.tooltip=The minimum time for a chunk to be unoccupied for it's resources to begin to naturally regenerate. (In days). After this amount, regeneration will scale up based on how long since this duration, up to a maximum of 4x
+config.tfc.general.world_regen.minimumTime.tooltip=The minimum time for a chunk to be unoccupied for it's resources (berry bushes, debris and crops) to naturally regenerate. (In days). After this amount, regeneration will scale up based on how long since this duration, up to a maximum of 4x.
 
 config.tfc.general.world_regen.sticksRocksModifier=Debris Modifier
 config.tfc.general.world_regen.sticksRocksModifier.tooltip=The weight for loose rocks and sticks regeneration in the world.
@@ -489,22 +504,22 @@ config.tfc.general.misc.defaultMonthLength=Default Month Length
 config.tfc.general.misc.defaultMonthLength.tooltip=The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.
 
 config.tfc.general.misc.plantGrowthRate=Plant Growth Rate
-config.tfc.general.misc.plantGrowthRate.tooltip=Percentage chance that plants will grow each update. Smaller number = slower.
+config.tfc.general.misc.plantGrowthRate.tooltip=Chance for a plant to grow each random tick, does not include crops. Lower = slower growth.
 
 config.tfc.general.misc.leafMovementModifier=Leaf Movement Modifier
-config.tfc.general.misc.leafMovementModifier.tooltip=Leaf block movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)
+config.tfc.general.misc.leafMovementModifier.tooltip=Leaf block movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow).
 
 config.tfc.general.misc.berryBushMovementModifier=Berry Bush Movement Modifier
-config.tfc.general.misc.berryBushMovementModifier.tooltip=Berry bush movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow)
+config.tfc.general.misc.berryBushMovementModifier.tooltip=Berry bush movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow).
 
 config.tfc.general.misc.snowMovementModifier=Snow Movement Modifier
-config.tfc.general.misc.snowMovementModifier.tooltip=Generic snow movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down.
+config.tfc.general.misc.snowMovementModifier.tooltip=Generic snow movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. (Speed * this = slow).
 
 config.tfc.general.misc.minimumPlantMovementModifier=Minimum Plant Movement Modifier
 config.tfc.general.misc.minimumPlantMovementModifier.tooltip=Generic movement modifier. Lower = Slower, Higher = Faster. 1 = No slow down. Note: this is a little different than other densities (leaf / berry bush), because this actually functions as a maximum slow down. Actual value is dependent on the plant and it's age.
 
 config.tfc.general.misc.stoneGemDropChance=Stone Gem Drop Chance
-config.tfc.general.misc.stoneGemDropChance.tooltip=Chance of any gem to drop from raw stone
+config.tfc.general.misc.stoneGemDropChance.tooltip=Chance that mining a raw stone will drop a gem. Gem grade is random from: 16/31 Chipped, 8/31 Flawed, 4/31 Normal, 2/31 Flawless and 1/31 Exquisite.
 
 config.tfc.general.misc.fireStarterChance=Firestarter Success Chance
 config.tfc.general.misc.fireStarterChance.tooltip=Chance for the fire starter to be successful
@@ -521,14 +536,11 @@ config.tfc.general.misc.normalOreMetalAmount.tooltip=The amount of metal contain
 config.tfc.general.misc.richOreMetalAmount=Rich Ore Metal Amount
 config.tfc.general.misc.richOreMetalAmount.tooltip=The amount of metal contained in a rich ore.
 
-config.tfc.general.misc.enableIngotPiles=Enable Ingot Piles
-config.tfc.general.misc.enableIngotPiles.tooltip=Enable ingot pile placement in world.
-
 config.tfc.general.misc.dictionaryIron=Iron Ore Dictionary in Wrought Iron
-config.tfc.general.misc.dictionaryIron.tooltip=Add iron ore dictionary to wrought iron items?
+config.tfc.general.misc.dictionaryIron.tooltip=Add iron ore dictionary (ie: ingotIron, oreIron) to wrought iron items?
 
 config.tfc.general.misc.dictionaryPlates=Plate Ore Dictionary in Sheets
-config.tfc.general.misc.dictionaryPlates.tooltip=Add plate ore dictionary to sheet items?
+config.tfc.general.misc.dictionaryPlates.tooltip=Add plate ore dictionary (plateIron, plateBronze) to sheets?
 
 config.tfc.general.misc.woodenBucketWhitelist=Wooden Bucket Fluid Whitelist
 config.tfc.general.misc.woodenBucketWhitelist.tooltip=Allowed fluids to be picked up by the wooden bucket.
@@ -555,7 +567,7 @@ config.tfc.general.tooltip=Various configuration settings for devices (ie: Bloom
 config.tfc.devices.temperature=Temperature Settings
 
 config.tfc.devices.temperature.globalModifier=Global Temperature Modifier
-config.tfc.devices.temperature.globalModifier.tooltip=Modifier for how quickly items gains and loses heat. Smaller number = slower temperature changes.
+config.tfc.devices.temperature.globalModifier.tooltip=Modifier for how quickly items will gain or lose heat. Smaller number = slower temperature changes.
 
 config.tfc.devices.temperature.heatingModifier=Heating Temperature Modifier
 config.tfc.devices.temperature.heatingModifier.tooltip=Modifier for how quickly devices (i.e. charcoal forge, fire pit) gain and lose heat. Smaller number = slower temperature changes.
@@ -572,7 +584,7 @@ config.tfc.devices.barrel.tank.tooltip=How much fluid (mB) can a barrel hold?
 config.tfc.devices.blast_furnace=Blast Furnace
 
 config.tfc.devices.blast_furnace.consumption=Consumption
-config.tfc.devices.blast_furnace.consumption.tooltip=How fast the blast furnace consume fuels (compared to the charcoal forge).
+config.tfc.devices.blast_furnace.consumption.tooltip=How fast the blast furnace consume fuels (compared to the charcoal forge). Example: Charcoal (without bellows) lasts for 1800 ticks in forge while 1800 / 4 = 450 ticks in blast furnace.
 
 
 ### Bloomery
@@ -747,22 +759,22 @@ config.tfc.animals.rabbit=Rabbit
 
 ### Common
 config.tfc.animals.adulthood=Adulthood
-config.tfc.animals.adulthood.tooltip=How many days it is needed for this animal to be considered a fully grown adult?
+config.tfc.animals.adulthood.tooltip=How many days until this animal is a full grown adult?
 
 config.tfc.animals.elder=Elderly
-config.tfc.animals.elder.tooltip=How many more days it is needed for this animal to be considered an elder? 0 = Disable
+config.tfc.animals.elder.tooltip=How many days after becoming an adult until this animal is old? 0 = Disable
 
 config.tfc.animals.gestation=Gestation
-config.tfc.animals.gestation.tooltip=How many days it is needed for this animal finish a gestation period?
+config.tfc.animals.gestation.tooltip=How many days until this animal gives birth?
 
 config.tfc.animals.hatch=Hatch
 config.tfc.animals.hatch.tooltip=How many days it is needed for this animal finish hatching?
 
 config.tfc.animals.babies=Babies per Gestation
-config.tfc.animals.babies.tooltip=How many babies are born when this animal finishes gestation?
+config.tfc.animals.babies.tooltip=How many babies are born when this animal gives birth?
 
 config.tfc.animals.woolTicks=Wool Ticks Cooldown
-config.tfc.animals.woolTicks.tooltip=How many ticks it is needed for this animal grow back wool?
+config.tfc.animals.woolTicks.tooltip=How many ticks are needed for this animal grow back wool?
 
 config.tfc.animals.milkTicks=Milk Ticks Cooldown
 config.tfc.animals.milkTicks.tooltip=How many ticks it is needed for this animal give milk?

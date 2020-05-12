@@ -57,7 +57,7 @@ public class BlockFruitTreeLeaves extends BlockLeaves
         return MAP.get(tree);
     }
 
-    public final IFruitTree tree;
+    private final IFruitTree tree;
 
     public BlockFruitTreeLeaves(IFruitTree tree)
     {
@@ -255,6 +255,12 @@ public class BlockFruitTreeLeaves extends BlockLeaves
          */
         leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
         return true;// super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
+
+    @Nonnull
+    public IFruitTree getTree()
+    {
+        return tree;
     }
 
     @Override

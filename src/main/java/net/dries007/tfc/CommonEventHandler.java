@@ -575,11 +575,25 @@ public final class CommonEventHandler
         World world = event.getWorld();
         BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
 
-        if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false) || event.getEntity() instanceof IPredator)
+        if (ConfigTFC.General.SPAWN_PROTECTION.preventMobs && event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
         {
-            // Prevent predators and mobs from spawning where the player lives.
+            // Prevent Mobs
             ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
-            if (ConfigTFC.General.SPAWN_PROTECTION.enable && (ConfigTFC.General.SPAWN_PROTECTION.minY <= event.getY()) && data.isSpawnProtected())
+            int minY = ConfigTFC.General.SPAWN_PROTECTION.minYMobs;
+            int maxY = ConfigTFC.General.SPAWN_PROTECTION.maxYMobs;
+            if (data.isSpawnProtected() && minY <= maxY && event.getY() >= minY && event.getY() <= maxY)
+            {
+                event.setResult(Event.Result.DENY);
+            }
+        }
+
+        if (ConfigTFC.General.SPAWN_PROTECTION.preventPredators && event.getEntity() instanceof IPredator)
+        {
+            // Prevent Predators
+            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
+            int minY = ConfigTFC.General.SPAWN_PROTECTION.minYPredators;
+            int maxY = ConfigTFC.General.SPAWN_PROTECTION.maxYPredators;
+            if (data.isSpawnProtected() && minY <= maxY && event.getY() >= minY && event.getY() <= maxY)
             {
                 event.setResult(Event.Result.DENY);
             }

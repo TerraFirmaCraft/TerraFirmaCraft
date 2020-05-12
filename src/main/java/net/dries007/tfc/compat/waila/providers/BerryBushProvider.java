@@ -39,16 +39,16 @@ public class BerryBushProvider implements IWailaBlock
         if (state.getBlock() instanceof BlockBerryBush)
         {
             BlockBerryBush block = (BlockBerryBush) state.getBlock();
-            if (block.bush.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()) && !state.getValue(BlockBerryBush.FRUITING))
+            if (block.getBush().isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()) && !state.getValue(BlockBerryBush.FRUITING))
             {
                 float temp = ClimateTFC.getActualTemp(world, pos);
                 float rainfall = ChunkDataTFC.getRainfall(world, pos);
                 TETickCounter te = Helpers.getTE(world, pos, TETickCounter.class);
-                if (te != null && block.bush.isValidForGrowth(temp, rainfall))
+                if (te != null && block.getBush().isValidForGrowth(temp, rainfall))
                 {
                     long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
                     // Don't show 100% since it still needs to check on randomTick to grow
-                    float perc = Math.min(0.99F, hours / (block.bush.getGrowthTime() * (float) ConfigTFC.General.FOOD.berryBushGrowthTimeModifier)) * 100;
+                    float perc = Math.min(0.99F, hours / (block.getBush().getGrowthTime() * (float) ConfigTFC.General.FOOD.berryBushGrowthTimeModifier)) * 100;
                     String growth = String.format("%d%%", Math.round(perc));
                     currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.growth", growth).getFormattedText());
                 }
@@ -62,7 +62,7 @@ public class BerryBushProvider implements IWailaBlock
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.agriculture.harvesting_months").getFormattedText());
                 for (Month month : Month.values())
                 {
-                    if (block.bush.isHarvestMonth(month))
+                    if (block.getBush().isHarvestMonth(month))
                     {
                         currentTooltip.add(TerraFirmaCraft.getProxy().getMonthName(month, true));
                     }

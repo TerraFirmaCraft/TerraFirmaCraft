@@ -63,7 +63,7 @@ public class BlockBerryBush extends Block
         return MAP.get(bush);
     }
 
-    public final IBerryBush bush;
+    private final IBerryBush bush;
 
     public BlockBerryBush(IBerryBush bush)
     {
@@ -272,6 +272,12 @@ public class BlockBerryBush extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETickCounter();
+    }
+
+    @Nonnull
+    public IBerryBush getBush()
+    {
+        return bush;
     }
 
     private boolean canStay(IBlockAccess world, BlockPos pos)
