@@ -45,11 +45,11 @@ public class RenderLionTFC extends RenderLiving<EntityLionTFC>
 
         if (lion.getGender() != EntityAnimalTFC.Gender.MALE || percent < .75f)
         {
-            return LION_TEXTURE;
+            return LIONESS_TEXTURE;
         }
         else
         {
-            return LIONESS_TEXTURE;
+            return LION_TEXTURE;
         }
     }
 
