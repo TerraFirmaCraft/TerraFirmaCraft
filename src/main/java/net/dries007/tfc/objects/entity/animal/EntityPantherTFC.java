@@ -33,20 +33,19 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIWanderHuntArea;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
 {
-    private static final float MONTHS_TO_ADULTHOOD = 60.0f;
+    private static final int DAYS_TO_ADULTHOOD = 480;
 
     @SuppressWarnings("unused")
     public EntityPantherTFC(World worldIn)
     {
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
-            getRandomGrowth(MONTHS_TO_ADULTHOOD));
+            getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityPantherTFC(World worldIn, Gender gender, int birthDay)
@@ -62,7 +61,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.WORLD.predatorSpawnRarity;
+            return ConfigTFC.Animals.PANTHER.rarity;
         }
         return 0;
     }
@@ -70,7 +69,13 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
     }
 
     @Override
@@ -96,6 +101,12 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         return false;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return 0;
     }
 
     @Override

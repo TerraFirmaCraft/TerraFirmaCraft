@@ -28,14 +28,13 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
 {
-    private static final float MONTHS_TO_ADULTHOOD = 2.0f;
+    private static final int DAYS_TO_ADULTHOOD = 16;
 
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
@@ -47,7 +46,7 @@ public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
     @SuppressWarnings("unused")
     public EntityPheasantTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityPheasantTFC(World worldIn, Gender gender, int birthDay)
@@ -64,7 +63,7 @@ public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA
                 || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.WORLD.huntableSpawnRarity;
+            return ConfigTFC.Animals.PHEASANT.rarity;
         }
         return 0;
     }
@@ -112,9 +111,21 @@ public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
     }
 
     @Override
+    public double getOldDeathChance()
+    {
+        return 0;
+    }
+
+    @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
     }
 
     @Override

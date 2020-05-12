@@ -70,7 +70,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                 Fluid fluid = handler.drain(Fluid.BUCKET_VOLUME, false).getFluid();
                 if (fluid.getTemperature() < BARREL_MAX_FLUID_TEMPERATURE)
                 {
-                    FluidTank tank = new FluidTank(ConfigTFC.GENERAL.tankBarrel);
+                    FluidTank tank = new FluidTank(ConfigTFC.Devices.BARREL.tank);
                     boolean canCreateSources = false; //default
                     if (state.getBlock() instanceof BlockFluidClassic)
                     {
@@ -85,7 +85,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                     if (canCreateSources && fluidStack != null)
                     {
-                        fluidStack.amount = ConfigTFC.GENERAL.tankBarrel;
+                        fluidStack.amount = ConfigTFC.Devices.BARREL.tank;
                     }
                     tank.fill(fluidStack, true);
 
@@ -171,7 +171,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                 IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, rayTrace.sideHit);
                 if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
                 {
-                    FluidTank tank = new FluidTank(ConfigTFC.GENERAL.tankBarrel);
+                    FluidTank tank = new FluidTank(ConfigTFC.Devices.BARREL.tank);
                     boolean canCreateSources = false; //default
                     if (state.getBlock() instanceof BlockFluidClassic)
                     {
@@ -186,7 +186,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
                     FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
                     if (canCreateSources && fluidStack != null)
                     {
-                        fluidStack.amount = ConfigTFC.GENERAL.tankBarrel;
+                        fluidStack.amount = ConfigTFC.Devices.BARREL.tank;
                     }
                     tank.fill(fluidStack, true);
 

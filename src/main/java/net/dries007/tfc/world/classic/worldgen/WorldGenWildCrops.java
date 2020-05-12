@@ -6,63 +6,68 @@
 package net.dries007.tfc.world.classic.worldgen;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.world.classic.ChunkGenTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC.WILD;
-
 @ParametersAreNonnullByDefault
-public class WorldGenWildCrops extends WorldGenerator
+public class WorldGenWildCrops implements IWorldGenerator
 {
-    private final List<ICrop> crops;
+    private static final List<ICrop> CROPS = new ArrayList<>();
 
-    public WorldGenWildCrops()
+    public static void register(ICrop bush)
     {
-        this.crops = new ArrayList<>(BlockCropTFC.getCrops());
-        if (crops.size() == 0)
-        {
-            TerraFirmaCraft.getLog().warn("There are no wild crops registered to world gen!");
-        }
+        CROPS.add(bush);
     }
 
     @Override
-    public boolean generate(World world, Random rng, BlockPos start)
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
-        if (crops.size() <= 0)
+        if (chunkGenerator instanceof ChunkGenTFC && world.provider.getDimension() == 0 && CROPS.size() > 0 && ConfigTFC.General.FOOD.cropRarity > 0)
         {
-            return false;
-        }
-        ICrop crop = crops.get(rng.nextInt(crops.size()));
-        BlockCropTFC cropBlock = BlockCropTFC.get(crop);
-
-        float temperature = ClimateTFC.getAvgTemp(world, start);
-        float rainfall = ChunkDataTFC.getRainfall(world, start);
-        if (crop.isValidConditions(temperature, rainfall))
-        {
-            for (int i = 0; i < 14 + rng.nextInt(5); ++i)
+            if (random.nextInt(ConfigTFC.General.FOOD.cropRarity) == 0)
             {
-                BlockPos pos = start.add(rng.nextInt(8) - rng.nextInt(8), rng.nextInt(4) - rng.nextInt(4), rng.nextInt(8) - rng.nextInt(8));
-                if (world.isAirBlock(pos) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
-                {
-                    int growth = 2 + rng.nextInt(crop.getMaxStage() - 2);
-                    world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth).withProperty(WILD, true), 2);
+                // Guarantees crop generation if possible (easier to balance by config file while also making it random)
+                BlockPos chunkBlockPos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
 
+                Collections.shuffle(CROPS);
+                float temperature = ClimateTFC.getAvgTemp(world, chunkBlockPos);
+                float rainfall = ChunkDataTFC.getRainfall(world, chunkBlockPos);
+
+                ICrop crop = CROPS.stream().filter(x -> x.isValidConditions(temperature, rainfall)).findFirst().orElse(null);
+                if (crop != null)
+                {
+                    BlockCropTFC cropBlock = BlockCropTFC.get(crop);
+                    int cropsInChunk = 3 + random.nextInt(5);
+                    for (int i = 0; i < cropsInChunk; i++)
+                    {
+                        final int x = (chunkX << 4) + random.nextInt(16) + 8;
+                        final int z = (chunkZ << 4) + random.nextInt(16) + 8;
+                        final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
+                        if (world.isAirBlock(pos) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
+                        {
+                            int growth = 2 + random.nextInt(crop.getMaxStage() - 2);
+                            world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth).withProperty(BlockCropTFC.WILD, true), 2);
+
+                        }
+                    }
                 }
             }
         }
-
-        return true;
     }
 }

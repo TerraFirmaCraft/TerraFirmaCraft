@@ -209,7 +209,7 @@ public class ItemSmallVessel extends ItemPottery
         {
             super(4);
 
-            tank = new FluidTank(ConfigTFC.GENERAL.tankSmallVessel);
+            tank = new FluidTank(ConfigTFC.Devices.SMALL_VESSEL.tank);
             fluidMode = false;
             deserializeNBT(nbt);
         }

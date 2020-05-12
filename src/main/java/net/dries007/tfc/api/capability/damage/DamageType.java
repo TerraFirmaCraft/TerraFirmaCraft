@@ -69,21 +69,21 @@ public enum DamageType
         if (!source.isUnblockable())
         {
             // First try and match damage types specified via config
-            for (String damageType : ConfigTFC.GENERAL.slashingDamageSources)
+            for (String damageType : ConfigTFC.General.DAMAGE.slashingSources)
             {
                 if (damageType.equals(source.damageType))
                 {
                     return SLASHING;
                 }
             }
-            for (String damageType : ConfigTFC.GENERAL.crushingDamageSources)
+            for (String damageType : ConfigTFC.General.DAMAGE.crushingSources)
             {
                 if (damageType.equals(source.damageType))
                 {
                     return CRUSHING;
                 }
             }
-            for (String damageType : ConfigTFC.GENERAL.piercingDamageSources)
+            for (String damageType : ConfigTFC.General.DAMAGE.piercingSources)
             {
                 if (damageType.equals(source.damageType))
                 {
@@ -115,21 +115,21 @@ public enum DamageType
                 if (entityType != null)
                 {
                     String entityTypeName = entityType.toString();
-                    for (String damageType : ConfigTFC.GENERAL.slashingDamageEntities)
+                    for (String damageType : ConfigTFC.General.DAMAGE.slashingEntities)
                     {
                         if (damageType.equals(entityTypeName))
                         {
                             return SLASHING;
                         }
                     }
-                    for (String damageType : ConfigTFC.GENERAL.crushingDamageEntities)
+                    for (String damageType : ConfigTFC.General.DAMAGE.crushingEntities)
                     {
                         if (damageType.equals(entityTypeName))
                         {
                             return CRUSHING;
                         }
                     }
-                    for (String damageType : ConfigTFC.GENERAL.piercingDamageEntities)
+                    for (String damageType : ConfigTFC.General.DAMAGE.piercingEntities)
                     {
                         if (damageType.equals(entityTypeName))
                         {

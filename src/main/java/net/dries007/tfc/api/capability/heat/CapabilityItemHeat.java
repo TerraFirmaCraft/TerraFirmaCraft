@@ -76,7 +76,7 @@ public final class CapabilityItemHeat
     public static float adjustTemp(float temp, float heatCapacity, long ticksSinceUpdate)
     {
         if (ticksSinceUpdate <= 0) return temp;
-        final float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.GENERAL.temperatureModifierGlobal;
+        final float newTemp = temp - heatCapacity * (float) ticksSinceUpdate * (float) ConfigTFC.Devices.TEMPERATURE.globalModifier;
         return newTemp < 0 ? 0 : newTemp;
     }
 
@@ -93,7 +93,7 @@ public final class CapabilityItemHeat
      */
     public static void addTemp(IItemHeat instance, float modifier)
     {
-        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) ConfigTFC.GENERAL.temperatureModifierGlobal;
+        final float temp = instance.getTemperature() + modifier * instance.getHeatCapacity() * (float) ConfigTFC.Devices.TEMPERATURE.globalModifier;
         instance.setTemperature(temp);
     }
 

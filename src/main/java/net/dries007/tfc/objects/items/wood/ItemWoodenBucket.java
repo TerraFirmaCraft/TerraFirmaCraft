@@ -181,7 +181,7 @@ public class ItemWoodenBucket extends ItemTFC
         if (isInCreativeTab(tab))
         {
             items.add(new ItemStack(this));
-            for (String fluidName : ConfigTFC.GENERAL.woodenBucketWhitelist)
+            for (String fluidName : ConfigTFC.General.MISC.woodenBucketWhitelist)
             {
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
                 if (fluid != null)
@@ -201,6 +201,6 @@ public class ItemWoodenBucket extends ItemTFC
     @Override
     public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new FluidWhitelistHandler(stack, CAPACITY, ConfigTFC.GENERAL.woodenBucketWhitelist);
+        return new FluidWhitelistHandler(stack, CAPACITY, ConfigTFC.General.MISC.woodenBucketWhitelist);
     }
 }

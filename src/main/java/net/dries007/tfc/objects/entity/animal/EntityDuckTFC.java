@@ -29,7 +29,6 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -40,13 +39,9 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
 {
-    private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
-    private static final float MONTHS_TO_ADULTHOOD = 7.0f;
-    private static final float MONTHS_TO_HATCH_EGG = 0.93333334f;
-
     public EntityDuckTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.DUCK.adulthood, ConfigTFC.Animals.DUCK.elder));
     }
 
     public EntityDuckTFC(World worldIn, Gender gender, int birthDay)
@@ -62,7 +57,7 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.DUCK.rarity;
         }
         return 0;
     }
@@ -70,7 +65,13 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.DUCK.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.DUCK.elder;
     }
 
     @Override
@@ -85,7 +86,7 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
             {
                 EntityDuckTFC chick = new EntityDuckTFC(this.world);
                 chick.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-                cap.setFertilized(chick, daysToHatch() + CalendarTFC.PLAYER_TIME.getTotalDays());
+                cap.setFertilized(chick, ConfigTFC.Animals.DUCK.hatch + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
         eggs.add(egg);
@@ -93,9 +94,9 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     }
 
     @Override
-    public long daysToHatch()
+    public long getProductsCooldown()
     {
-        return (long) Math.ceil(MONTHS_TO_HATCH_EGG * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return Math.max(0, ConfigTFC.Animals.DUCK.eggTicks + getLaidTicks() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -130,8 +131,8 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     }
 
     @Override
-    protected boolean hasEggs()
+    public double getOldDeathChance()
     {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && CalendarTFC.PLAYER_TIME.getTicks() >= this.lastLaying() + DEFAULT_TICKS_TO_LAY_EGGS;
+        return ConfigTFC.Animals.DUCK.oldDeathChance;
     }
 }

@@ -54,8 +54,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 // Should fit more in the huntable list
 public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntable
 {
-    protected static final float MONTHS_TO_ADULTHOOD = 11.0f;
-    private static final float MONTHS_TO_FULL_GESTATION = 2.0f;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityOcelotTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityOcelotTFC.class, DataSerializers.VARINT);
@@ -70,7 +68,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     @SuppressWarnings("unused")
     public EntityOcelotTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(ConfigTFC.Animals.OCELOT.adulthood, ConfigTFC.Animals.OCELOT.elder));
     }
 
     public EntityOcelotTFC(World world, IAnimalTFC.Gender gender, int birthDay)
@@ -149,7 +147,13 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.OCELOT.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.OCELOT.elder;
     }
 
     @Override
@@ -213,7 +217,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.OCELOT.rarity;
         }
         return 0;
     }
@@ -238,7 +242,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
 
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.OCELOT.gestation;
     }
 
     @Override
@@ -282,7 +286,7 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
                     this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
                     // Randomly die of old age, tied to entity UUID and calendar time
                     final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    if (random.nextDouble() < ConfigTFC.Animals.OCELOT.oldDeathChance)
                     {
                         this.setDead();
                     }
@@ -293,8 +297,8 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
 
     public void birthChildren()
     {
-        int numberOfChilds = 1 + rand.nextInt(3); //1-3
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.OCELOT.babies;
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityOcelotTFC baby = new EntityOcelotTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);

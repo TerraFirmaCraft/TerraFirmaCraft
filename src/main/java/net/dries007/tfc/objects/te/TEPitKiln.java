@@ -139,7 +139,7 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             }
 
             // Check if complete
-            long remainingTicks = ConfigTFC.GENERAL.pitKilnTime - (CalendarTFC.PLAYER_TIME.getTicks() - litTick);
+            long remainingTicks = ConfigTFC.Devices.PIT_KILN.ticks - (CalendarTFC.PLAYER_TIME.getTicks() - litTick);
             if (remainingTicks <= 0)
             {
                 // Empty ingredients

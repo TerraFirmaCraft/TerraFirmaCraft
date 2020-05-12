@@ -105,7 +105,7 @@ public class ClientEvents
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event)
     {
-        if (ConfigTFC.CLIENT.makeWorldTypeClassicDefault && event.getGui() instanceof GuiCreateWorld)
+        if (ConfigTFC.General.OVERRIDES.forceTFCWorldType && event.getGui() instanceof GuiCreateWorld)
         {
             GuiCreateWorld gui = ((GuiCreateWorld) event.getGui());
             // Only change if default is selected, because coming back from customisation, this will be set already.
@@ -174,7 +174,7 @@ public class ClientEvents
     {
         Minecraft mc = Minecraft.getMinecraft();
         List<String> list = event.getRight();
-        if (ConfigTFC.GENERAL.debug && mc.gameSettings.showDebugInfo)
+        if (ConfigTFC.General.DEBUG.enable && mc.gameSettings.showDebugInfo)
         {
             //noinspection ConstantConditions
             BlockPos blockpos = new BlockPos(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().getEntityBoundingBox().minY, mc.getRenderViewEntity().posZ);
@@ -281,7 +281,7 @@ public class ClientEvents
                     }
                 }
 
-                if (ConfigTFC.CLIENT.showToolClassTooltip)
+                if (ConfigTFC.Client.TOOLTIP.showToolClassTooltip)
                 {
                     Set<String> toolClasses = item.getToolClasses(stack);
                     if (toolClasses.size() == 1)
@@ -297,7 +297,7 @@ public class ClientEvents
                         }
                     }
                 }
-                if (ConfigTFC.CLIENT.showOreDictionaryTooltip)
+                if (ConfigTFC.Client.TOOLTIP.showOreDictionaryTooltip)
                 {
                     int[] ids = OreDictionary.getOreIDs(stack);
                     if (ids.length == 1)
@@ -316,7 +316,7 @@ public class ClientEvents
                         tt.addAll(names);
                     }
                 }
-                if (ConfigTFC.CLIENT.showNBTTooltip)
+                if (ConfigTFC.Client.TOOLTIP.showNBTTooltip)
                 {
                     if (stack.hasTagCompound())
                     {

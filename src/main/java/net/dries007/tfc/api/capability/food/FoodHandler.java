@@ -109,7 +109,7 @@ public class FoodHandler implements IFood, ICapabilitySerializable<NBTTagCompoun
     public float getDecayDateModifier()
     {
         // Decay modifiers are higher = shorter
-        float mod = data.getDecayModifier() * (float) ConfigTFC.GENERAL.foodDecayModifier;
+        float mod = data.getDecayModifier() * (float) ConfigTFC.General.FOOD.decayModifier;
         for (FoodTrait trait : foodTraits)
         {
             mod *= trait.getDecayModifier();

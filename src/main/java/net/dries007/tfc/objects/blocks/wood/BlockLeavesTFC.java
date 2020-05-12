@@ -99,12 +99,12 @@ public class BlockLeavesTFC extends BlockLeaves
             entityIn.fall((entityIn.fallDistance - 6), 1.0F);
             entityIn.fallDistance = 0;
             // Entity motion is reduced by leaves.
-            entityIn.motionX *= ConfigTFC.GENERAL.leafMovementModifier;
+            entityIn.motionX *= ConfigTFC.General.MISC.leafMovementModifier;
             if (entityIn.motionY < 0)
             {
-                entityIn.motionY *= ConfigTFC.GENERAL.leafMovementModifier;
+                entityIn.motionY *= ConfigTFC.General.MISC.leafMovementModifier;
             }
-            entityIn.motionZ *= ConfigTFC.GENERAL.leafMovementModifier;
+            entityIn.motionZ *= ConfigTFC.General.MISC.leafMovementModifier;
         }
     }
 
@@ -125,7 +125,7 @@ public class BlockLeavesTFC extends BlockLeaves
     @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return ConfigTFC.GENERAL.doLeavesDropSaplings ? Item.getItemFromBlock(BlockSaplingTFC.get(wood)) : Items.AIR;
+        return ConfigTFC.General.TREE.enableSaplings ? Item.getItemFromBlock(BlockSaplingTFC.get(wood)) : Items.AIR;
     }
 
     @Override

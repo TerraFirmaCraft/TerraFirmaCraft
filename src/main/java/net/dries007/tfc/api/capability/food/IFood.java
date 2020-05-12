@@ -127,24 +127,24 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
                 long rottenCalendarTime = rottenDate - CalendarTFC.PLAYER_TIME.getTicks() + CalendarTFC.CALENDAR_TIME.getTicks();
                 // Days till food rots.
                 long daysToRotInTicks = rottenCalendarTime - CalendarTFC.CALENDAR_TIME.getTicks();
-                switch (ConfigTFC.CLIENT.decayTooltipMode)
+                switch (ConfigTFC.Client.TOOLTIP.decayTooltipMode)
                 {
-                    case 0:
+                    case HIDE:
                         break;
-                    case 1:
+                    case EXPIRATION_ONLY:
                         text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
                         break;
-                    case 2:
+                    case TIME_REMAINING_ONLY:
                         text.add(TextFormatting.BLUE + I18n.format("tfc.tooltip.food_expiry_date.days", String.valueOf(ICalendar.getTotalDays(daysToRotInTicks))));
                         break;
-                    case 3:
+                    case ALL_INFO:
                         text.add(TextFormatting.DARK_GREEN + I18n.format("tfc.tooltip.food_expiry_date", ICalendarFormatted.getTimeAndDate(rottenCalendarTime, CalendarTFC.CALENDAR_TIME.getDaysInMonth())));
                         text.add(TextFormatting.BLUE + I18n.format("tfc.tooltip.food_expiry_date.days", String.valueOf(ICalendar.getTotalDays(daysToRotInTicks))));
                         break;
                 }
             }
         }
-        if (ConfigTFC.GENERAL.debug)
+        if (ConfigTFC.General.DEBUG.enable)
         {
             text.add("Created at " + getCreationDate());
         }

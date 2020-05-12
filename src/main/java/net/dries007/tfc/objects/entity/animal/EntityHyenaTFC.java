@@ -33,20 +33,19 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIWanderHuntArea;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
 {
-    private static final float MONTHS_TO_ADULTHOOD = 60.0f;
+    private static final int DAYS_TO_ADULTHOOD = 480;
 
     @SuppressWarnings("unused")
     public EntityHyenaTFC(World worldIn)
     {
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
-            getRandomGrowth(MONTHS_TO_ADULTHOOD));
+            getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityHyenaTFC(World worldIn, Gender gender, int birthDay)
@@ -56,21 +55,39 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        return false;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return 0;
+    }
+
+    @Override
     public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
-            return ConfigTFC.WORLD.predatorSpawnRarity;
+            return ConfigTFC.Animals.HYENA.rarity;
         }
         return 0;
     }
 
     @Override
-    public int getDaysToAdulthood()
+    public int getMinGroupSize()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return 3;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 6;
     }
 
     @Override
@@ -90,12 +107,6 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     public long gestationDays()
     {
         return 0; // not farmable
-    }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        return false;
     }
 
     @Override
@@ -135,14 +146,9 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected void applyEntityAttributes()
+    public int getDaysToAdulthood()
     {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.32D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        return DAYS_TO_ADULTHOOD;
     }
 
     @Override
@@ -172,5 +178,22 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F); // Close enough
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
+    }
+
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.32D);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 }

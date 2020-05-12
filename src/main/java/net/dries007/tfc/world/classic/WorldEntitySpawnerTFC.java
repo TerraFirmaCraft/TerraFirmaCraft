@@ -31,8 +31,8 @@ public final class WorldEntitySpawnerTFC
 {
     public static void init()
     {
-        EnumCreatureType.MONSTER.maxNumberOfCreature = ConfigTFC.WORLD.mobSpawnCount;
-        EnumCreatureType.CREATURE.maxNumberOfCreature = ConfigTFC.WORLD.animalSpawnCount;
+        EnumCreatureType.MONSTER.maxNumberOfCreature = ConfigTFC.General.DIFFICULTY.mobSpawnCount;
+        EnumCreatureType.CREATURE.maxNumberOfCreature = ConfigTFC.General.DIFFICULTY.animalSpawnCount;
         // Using enum helper to add creature types adds more issues than resolve.
         // Although it worked in dev and with only minor mods, I had too much trouble with a larger modpack
     }

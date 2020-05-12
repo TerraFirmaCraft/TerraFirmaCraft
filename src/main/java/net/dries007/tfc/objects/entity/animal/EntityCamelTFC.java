@@ -43,13 +43,11 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
 {
-    private static final float MONTHS_TO_ADULTHOOD = 32.666668f;
-    private static final float MONTHS_TO_FULL_GESTATION = 11.666667f;
     private static final DataParameter<Integer> DATA_COLOR_ID = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.VARINT);
 
     public EntityCamelTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(ConfigTFC.Animals.CAMEL.adulthood, ConfigTFC.Animals.CAMEL.elder));
         this.setSize(0.9F, 2.6F);
     }
 
@@ -93,7 +91,13 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.CAMEL.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.CAMEL.elder;
     }
 
     @Override
@@ -103,7 +107,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.DESERT || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.CAMEL.rarity;
         }
         return 0;
     }
@@ -129,7 +133,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     @Override
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.CAMEL.gestation;
     }
 
     @Override
@@ -198,8 +202,8 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.CAMEL.babies; //one always
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityCamelTFC baby = new EntityCamelTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
@@ -220,13 +224,13 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
                 this.setStrength((int) this.geneStrength);
             }
             baby.setVariant(geneVariant);
-            geneJump = 0;
-            geneSpeed = 0;
-            geneJump = 0;
-            geneStrength = 0;
-            geneVariant = 0;
             this.world.spawnEntity(baby);
         }
+        geneJump = 0;
+        geneSpeed = 0;
+        geneJump = 0;
+        geneStrength = 0;
+        geneVariant = 0;
     }
 
     public boolean canBeSteered()

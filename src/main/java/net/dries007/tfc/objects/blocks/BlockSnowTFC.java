@@ -49,8 +49,8 @@ public class BlockSnowTFC extends BlockSnow
     {
         if (!(entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).isCreative()))
         {
-            entityIn.motionX *= ConfigTFC.GENERAL.snowMovementModifier;
-            entityIn.motionZ *= ConfigTFC.GENERAL.snowMovementModifier;
+            entityIn.motionX *= ConfigTFC.General.MISC.snowMovementModifier;
+            entityIn.motionZ *= ConfigTFC.General.MISC.snowMovementModifier;
         }
     }
 
@@ -59,8 +59,8 @@ public class BlockSnowTFC extends BlockSnow
     {
         if (!(entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).isCreative()))
         {
-            entityIn.motionX *= ConfigTFC.GENERAL.snowMovementModifier;
-            entityIn.motionZ *= ConfigTFC.GENERAL.snowMovementModifier;
+            entityIn.motionX *= ConfigTFC.General.MISC.snowMovementModifier;
+            entityIn.motionZ *= ConfigTFC.General.MISC.snowMovementModifier;
         }
     }
 

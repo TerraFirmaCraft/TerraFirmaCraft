@@ -55,7 +55,7 @@ public class AnimalProvider implements IWailaEntity
                         {
                             currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.can_mate").getFormattedText());
                         }
-                        if(animal.isFertilized())
+                        if (animal.isFertilized())
                         {
                             if (animal.getType() == IAnimalTFC.Type.MAMMAL)
                             {

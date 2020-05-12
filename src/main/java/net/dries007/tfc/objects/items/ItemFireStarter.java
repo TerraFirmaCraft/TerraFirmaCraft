@@ -142,7 +142,7 @@ public class ItemFireStarter extends ItemTFC
         final BlockPos pos = result.getBlockPos().add(0, 1, 0);
         final World world = player.world;
         // Base chance
-        float chance = (float) ConfigTFC.GENERAL.fireStarterChance;
+        float chance = (float) ConfigTFC.General.MISC.fireStarterChance;
         // Raining reduces chance by half
         if (world.isRainingAt(pos))
         {
