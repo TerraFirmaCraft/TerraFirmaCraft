@@ -123,7 +123,7 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     {
         super.getDrops(drops, world, pos, state, fortune);
         // Raw rocks drop random gems
-        if (RANDOM.nextDouble() < ConfigTFC.GENERAL.stoneGemDropChance)
+        if (RANDOM.nextDouble() < ConfigTFC.General.MISC.stoneGemDropChance)
         {
             drops.add(ItemGem.get(Gem.getRandomDropGem(RANDOM), Gem.Grade.randomGrade(RANDOM), 1));
         }

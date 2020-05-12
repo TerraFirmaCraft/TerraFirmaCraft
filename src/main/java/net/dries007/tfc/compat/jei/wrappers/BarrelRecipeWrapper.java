@@ -67,7 +67,7 @@ public class BarrelRecipeWrapper implements IRecipeWrapper
             {
                 highestFluid = outputFluid.amount;
             }
-            double maximumMultiplier = (double) ConfigTFC.GENERAL.tankBarrel / highestFluid; // Fix the multiplier to the maximum allowed value into a barrel
+            double maximumMultiplier = (double) ConfigTFC.Devices.BARREL.tank / highestFluid; // Fix the multiplier to the maximum allowed value into a barrel
             double multiplier = Math.min((double) Fluid.BUCKET_VOLUME / inputFluid.amount, maximumMultiplier);
             inputFluid.amount *= multiplier;
             fluidIngredients.forEach(x -> x.amount *= multiplier);

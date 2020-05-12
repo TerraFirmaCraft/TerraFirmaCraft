@@ -48,7 +48,7 @@ public enum JsonConfigRegistry
         }
 
         // Create or overwrite our default ore gen file
-        if (ConfigTFC.WORLD.enableDefaultOreGenFileOverwrite)
+        if (ConfigTFC.General.OVERRIDES.forceDefaultOreGenFile)
         {
             // Create default vein file
             try

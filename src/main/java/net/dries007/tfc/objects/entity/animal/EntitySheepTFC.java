@@ -48,7 +48,6 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -57,25 +56,21 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, ILivestock
 {
-    private static final float MONTHS_TO_ADULTHOOD = 12.0f;
-    private static final float MONTHS_TO_GROW_WOOL = 0.23333333f;
-    private static final float MONTHS_TO_FULL_GESTATION = 5.0F;
-
     private static final DataParameter<Integer> DYE_COLOR = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
+    private static final DataParameter<Long> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, Helpers.LONG_DATA_SERIALIZER);
 
     @SuppressWarnings("unused")
     public EntitySheepTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD), EntitySheep.getRandomSheepColor(Constants.RNG));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.SHEEP.adulthood, ConfigTFC.Animals.SHEEP.elder), EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
     public EntitySheepTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 1.3F);
-        this.setDyeColor(dye);
-        this.setShearedDay(-1); //Spawn with wool
+        setSize(0.9F, 1.3F);
+        setDyeColor(dye);
+        setShearedTick(0);
     }
 
     @Override
@@ -85,7 +80,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.SHEEP.rarity;
         }
         return 0;
     }
@@ -111,44 +106,113 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = Constants.RNG.nextInt(3) + 1; //1-3
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.SHEEP.babies;
+        for (int i = 0; i < numberOfChildren; i++)
         {
-            EntitySheepTFC baby = new EntitySheepTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), this.getDyeColor());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-            this.world.spawnEntity(baby);
+            EntitySheepTFC baby = new EntitySheepTFC(world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), getDyeColor());
+            baby.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
+            world.spawnEntity(baby);
         }
     }
 
     @Override
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.SHEEP.gestation;
     }
 
     @Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DYE_COLOR, 0);
-        this.dataManager.register(SHEARED, 0);
+        dataManager.register(DYE_COLOR, 0);
+        dataManager.register(SHEARED, 0L);
     }
 
     @Override
     public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
-        compound.setInteger("sheared", this.getShearedDay());
-        compound.setInteger("dyecolor", this.getDyeColor().getMetadata());
+        compound.setLong("shearedTick", getShearedTick());
+        compound.setInteger("dyecolor", getDyeColor().getMetadata());
     }
 
     @Override
     public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        this.setShearedDay(compound.getInteger("sheared"));
-        this.setDyeColor(EnumDyeColor.byMetadata(compound.getByte("dyecolor")));
+        setShearedTick(compound.getLong("shearedTick"));
+        setDyeColor(EnumDyeColor.byMetadata(compound.getByte("dyecolor")));
+    }
+
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+        if (OreDictionaryHelper.doesStackMatchOre(stack, "knife"))
+        {
+            if (!world.isRemote)
+            {
+                if (isReadyForAnimalProduct())
+                {
+                    stack.damageItem(1, player);
+                    ItemStack woolStack = new ItemStack(ItemsTFC.WOOL, 1);
+                    Helpers.spawnItemStack(player.world, new BlockPos(posX, posY, posZ), woolStack);
+                    playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
+                    setProductsCooldown();
+                }
+                else
+                {
+                    TextComponentTranslation tooltip = getTooltip();
+                    if (tooltip != null)
+                    {
+                        player.sendMessage(tooltip);
+                    }
+                }
+            }
+            return true;
+        }
+        else if (OreDictionaryHelper.doesStackMatchOre(stack, "shears"))
+        {
+            if (!world.isRemote)
+            {
+                if (!isReadyForAnimalProduct())
+                {
+                    TextComponentTranslation tooltip = getTooltip();
+                    if (tooltip != null)
+                    {
+                        player.sendMessage(tooltip);
+                    }
+                }
+            }
+            return false; // Process done in #onSheared by vanilla
+        }
+        else
+        {
+            return super.processInteract(player, hand);
+        }
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return ConfigTFC.Animals.SHEEP.oldDeathChance;
+    }
+
+    @Override
+    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
+    {
+        // Refuses to eat rotten stuff
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (cap != null)
+        {
+            if (cap.isRotten())
+            {
+                return false;
+            }
+        }
+        return super.eatFood(stack, player);
     }
 
     @Override
@@ -160,7 +224,13 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.SHEEP.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.SHEEP.elder;
     }
 
     @Override
@@ -179,20 +249,19 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     public void setProductsCooldown()
     {
-        this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+        setShearedTick(CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
     public long getProductsCooldown()
     {
-        // Just here for the time being, in 1.15 gonna see changes here to match other animals better
-        return (long) Math.max(0, (this.getShearedDay() + Math.ceil(MONTHS_TO_GROW_WOOL * CalendarTFC.CALENDAR_TIME.getDaysInMonth()) - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
+        return Math.max(0, ConfigTFC.Animals.SHEEP.woolTicks + getShearedTick() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
     public TextComponentTranslation getTooltip()
     {
-        if (this.getAge() == Age.CHILD)
+        if (getAge() == Age.CHILD)
         {
             return new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getAnimalName());
         }
@@ -209,12 +278,12 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
 
     public EnumDyeColor getDyeColor()
     {
-        return EnumDyeColor.byMetadata(this.dataManager.get(DYE_COLOR));
+        return EnumDyeColor.byMetadata(dataManager.get(DYE_COLOR));
     }
 
     public void setDyeColor(EnumDyeColor color)
     {
-        this.dataManager.set(DYE_COLOR, color.getMetadata());
+        dataManager.set(DYE_COLOR, color.getMetadata());
     }
 
     @Override
@@ -227,10 +296,10 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
-        this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
+        setProductsCooldown();
         List<ItemStack> products = getProducts();
         // Fortune makes this less random and more towards the maximum (3) amount.
-        int i = 1 + fortune + this.rand.nextInt(3 - Math.min(2, fortune));
+        int i = 1 + fortune + rand.nextInt(3 - Math.min(2, fortune));
 
         List<ItemStack> ret = new ArrayList<>();
         for (ItemStack stack : products)
@@ -238,86 +307,23 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
             stack.setCount(i);
             ret.add(stack);
         }
-        this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
+        playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
         return ret;
     }
 
-    public int getShearedDay()
+    public long getShearedTick()
     {
-        return this.dataManager.get(SHEARED);
+        return dataManager.get(SHEARED);
     }
 
-    public void setShearedDay(int value)
+    public void setShearedTick(long tick)
     {
-        this.dataManager.set(SHEARED, value);
+        dataManager.set(SHEARED, tick);
     }
 
     public boolean hasWool()
     {
-        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + Math.ceil(MONTHS_TO_GROW_WOOL * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
-    }
-
-    @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
-    {
-        ItemStack stack = player.getHeldItem(hand);
-        if (OreDictionaryHelper.doesStackMatchOre(stack, "knife"))
-        {
-            if (!this.world.isRemote)
-            {
-                if (this.isReadyForAnimalProduct())
-                {
-                    stack.damageItem(1, player);
-                    ItemStack woolStack = new ItemStack(ItemsTFC.WOOL, 1);
-                    Helpers.spawnItemStack(player.world, new BlockPos(this.posX, this.posY, this.posZ), woolStack);
-                    this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
-                    this.setShearedDay((int) CalendarTFC.PLAYER_TIME.getTotalDays());
-                }
-                else
-                {
-                    TextComponentTranslation tooltip = getTooltip();
-                    if (tooltip != null)
-                    {
-                        player.sendMessage(tooltip);
-                    }
-                }
-            }
-            return true;
-        }
-        else if (OreDictionaryHelper.doesStackMatchOre(stack, "shears"))
-        {
-            if (!this.world.isRemote)
-            {
-                if (!this.isReadyForAnimalProduct())
-                {
-                    TextComponentTranslation tooltip = getTooltip();
-                    if (tooltip != null)
-                    {
-                        player.sendMessage(tooltip);
-                    }
-                }
-            }
-            return false; // Process done in #onSheared by vanilla
-        }
-        else
-        {
-            return super.processInteract(player, hand);
-        }
-    }
-
-    @Override
-    protected boolean eatFood(@Nonnull ItemStack stack, EntityPlayer player)
-    {
-        // Refuses to eat rotten stuff
-        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (cap != null)
-        {
-            if (cap.isRotten())
-            {
-                return false;
-            }
-        }
-        return super.eatFood(stack, player);
+        return getShearedTick() <= 0 || getProductsCooldown() <= 0;
     }
 
     @Override
@@ -338,15 +344,15 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
         EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
         EntityAnimalTFC.addCommonPreyAI(this, 1.2D);
 
-        this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
+        tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
     }
 
     @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
     }
 
     @Override
@@ -364,6 +370,6 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
+        playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
     }
 }

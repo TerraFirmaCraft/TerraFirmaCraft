@@ -88,7 +88,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                 // In order to get the exact saturation we want, apply this scaling factor here
                 originalStats.addStats(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
             }
-            else
+            else if (this.sourcePlayer instanceof EntityPlayerMP) // Check for server side first
             {
                 // Minor effects from eating rotten food
                 if (Constants.RNG.nextFloat() < 0.6)
@@ -118,7 +118,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         EnumDifficulty difficulty = player.world.getDifficulty();
 
         // Extra-Peaceful Difficulty
-        if (difficulty == EnumDifficulty.PEACEFUL && ConfigTFC.GENERAL.peacefulDifficultyPassiveRegeneration)
+        if (difficulty == EnumDifficulty.PEACEFUL && ConfigTFC.General.PLAYER.peacefulDifficultyPassiveRegeneration)
         {
             // Copied / Modified from EntityPlayer#onLivingUpdate
             if (player.shouldHeal() && player.ticksExisted % 20 == 0)
@@ -142,12 +142,12 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         else
         {
             // Passive exhaustion - call the source player instead of the local method
-            player.addExhaustion(PASSIVE_EXHAUSTION / EXHAUSTION_MULTIPLIER * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier);
+            player.addExhaustion(PASSIVE_EXHAUSTION / EXHAUSTION_MULTIPLIER * (float) ConfigTFC.General.PLAYER.passiveExhaustionMultiplier);
 
             // Same check as the original food stats, so hunger and thirst loss are synced
             if (originalStats.foodExhaustionLevel >= 4.0F)
             {
-                addThirst(-(float) ConfigTFC.GENERAL.playerThirstModifier);
+                addThirst(-(float) ConfigTFC.General.PLAYER.thirstModifier);
             }
 
             if (difficulty == EnumDifficulty.PEACEFUL)
@@ -175,7 +175,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
 
             if (healTimer > 10)
             {
-                player.heal(multiplier * PASSIVE_HEAL_AMOUNT * (float) ConfigTFC.GENERAL.playerNaturalRegenerationModifier);
+                player.heal(multiplier * PASSIVE_HEAL_AMOUNT * (float) ConfigTFC.General.PLAYER.naturalRegenerationModifier);
                 healTimer = 0;
             }
         }
@@ -321,7 +321,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public boolean attemptDrink(float value, boolean simulate)
     {
         int ticksPassed = (int) (sourcePlayer.world.getTotalWorldTime() - lastDrinkTick);
-        if (ticksPassed >= ConfigTFC.GENERAL.drinkDelay && thirst < MAX_PLAYER_THIRST)
+        if (ticksPassed >= ConfigTFC.General.PLAYER.drinkDelay && thirst < MAX_PLAYER_THIRST)
         {
             if (!simulate)
             {

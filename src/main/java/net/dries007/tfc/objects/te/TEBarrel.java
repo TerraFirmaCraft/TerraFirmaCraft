@@ -53,7 +53,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
     public static final int SLOT_ITEM = 2;
     public static final int BARREL_MAX_FLUID_TEMPERATURE = 500;
 
-    private final FluidTank tank = new FluidTankCallback(this, 0, ConfigTFC.GENERAL.tankBarrel);
+    private final FluidTank tank = new FluidTankCallback(this, 0, ConfigTFC.Devices.BARREL.tank);
     private final Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
@@ -212,11 +212,11 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
                 tickCounter = 0;
 
                 ItemStack fluidContainerIn = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
-                FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, ConfigTFC.GENERAL.tankBarrel, world, pos);
+                FluidActionResult result = FluidTransferHelper.emptyContainerIntoTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, ConfigTFC.Devices.BARREL.tank, world, pos);
 
                 if (!result.isSuccess())
                 {
-                    result = FluidTransferHelper.fillContainerFromTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, ConfigTFC.GENERAL.tankBarrel, world, pos);
+                    result = FluidTransferHelper.fillContainerFromTank(fluidContainerIn, tank, inventory, SLOT_FLUID_CONTAINER_OUT, ConfigTFC.Devices.BARREL.tank, world, pos);
                 }
 
                 if (result.isSuccess())

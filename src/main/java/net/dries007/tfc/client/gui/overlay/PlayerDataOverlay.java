@@ -35,6 +35,7 @@ import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
+import net.dries007.tfc.util.config.HealthDisplayFormat;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -66,10 +67,10 @@ public final class PlayerDataOverlay
     {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.player.inventory.player;
-        GuiIngameForge.renderFood = ConfigTFC.CLIENT.useVanillaHunger;
-        GuiIngameForge.renderHealth = ConfigTFC.CLIENT.useVanillaHealth;
-        GuiIngameForge.renderArmor = ConfigTFC.CLIENT.useVanillaHealth; // Draws on top of health
-        GuiIngameForge.renderExperiance = ConfigTFC.CLIENT.useVanillaHealth && ConfigTFC.CLIENT.hideThirstBar; // Since it's below both, makes sense needing both enabled
+        GuiIngameForge.renderFood = ConfigTFC.Client.DISPLAY.useVanillaHunger;
+        GuiIngameForge.renderHealth = ConfigTFC.Client.DISPLAY.useVanillaHealth;
+        GuiIngameForge.renderArmor = ConfigTFC.Client.DISPLAY.useVanillaHealth; // Draws on top of health
+        GuiIngameForge.renderExperiance = ConfigTFC.Client.DISPLAY.useVanillaHealth && ConfigTFC.Client.DISPLAY.hideThirstBar; // Since it's below both, makes sense needing both enabled
 
         // We check for crosshairs just because it's always drawn and is before air bar
         if (event.getType() != ElementType.CROSSHAIRS)
@@ -78,18 +79,23 @@ public final class PlayerDataOverlay
         }
 
         FoodStats foodStats = player.getFoodStats();
-        float baseMaxHealth = (float) (20 * ConfigTFC.CLIENT.healthDisplayModifier);
+        float displayModifier = 1;
+        if (ConfigTFC.Client.DISPLAY.healthDisplayFormat == HealthDisplayFormat.TFC || ConfigTFC.Client.DISPLAY.healthDisplayFormat == HealthDisplayFormat.TFC_CURRENT_HEALTH)
+        {
+            displayModifier = 50;
+        }
+        float baseMaxHealth = 20 * displayModifier;
         float currentThirst = 100;
         if (foodStats instanceof IFoodStatsTFC)
         {
             IFoodStatsTFC foodStatsTFC = (IFoodStatsTFC) foodStats;
-            baseMaxHealth = (float) (20 * foodStatsTFC.getHealthModifier() * ConfigTFC.CLIENT.healthDisplayModifier);
+            baseMaxHealth = 20 * foodStatsTFC.getHealthModifier() * displayModifier;
             currentThirst = foodStatsTFC.getThirst();
         }
         // This is for air to be drawn above our bars
-        if (!ConfigTFC.CLIENT.hideThirstBar || !ConfigTFC.CLIENT.useVanillaHunger)
+        if (!ConfigTFC.Client.DISPLAY.hideThirstBar || !ConfigTFC.Client.DISPLAY.useVanillaHunger)
         {
-            GuiIngameForge.right_height += ConfigTFC.CLIENT.useVanillaHunger ? 6 : 10;
+            GuiIngameForge.right_height += ConfigTFC.Client.DISPLAY.useVanillaHunger ? 6 : 10;
         }
 
         ScaledResolution sr = event.getResolution();
@@ -116,20 +122,20 @@ public final class PlayerDataOverlay
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             // Food
-            if (!ConfigTFC.CLIENT.useVanillaHunger)
+            if (!ConfigTFC.Client.DISPLAY.useVanillaHunger)
             {
                 drawTexturedModalRect(mid + 1, healthRowHeight, 0, 20, 90, 5);
                 drawTexturedModalRect(mid + 1, healthRowHeight, 0, 25, (int) (90 * percentFood), 5);
             }
 
             // Water
-            if (!ConfigTFC.CLIENT.hideThirstBar)
+            if (!ConfigTFC.Client.DISPLAY.hideThirstBar)
             {
                 drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 20, 90, 5);
                 drawTexturedModalRect(mid + 1, healthRowHeight + 5, 90, 25, (int) (90 * percentThirst), 5);
             }
 
-            if (!ConfigTFC.CLIENT.useVanillaHealth)
+            if (!ConfigTFC.Client.DISPLAY.useVanillaHealth)
             {
                 //Draw Health
                 drawTexturedModalRect(mid - 91, healthRowHeight, 0, 0, 90, 10);
@@ -151,16 +157,7 @@ public final class PlayerDataOverlay
                     //Or just add more color bars to overlay icons.
                 }
                 //Draw Health value
-                String healthString;
-                try
-                {
-                    healthString = String.format(ConfigTFC.CLIENT.healthDisplayFormat, curHealth, baseMaxHealth);
-                }
-                catch (Exception e)
-                {
-                    // Silly users, illegally formatting their health just to crash
-                    healthString = String.format("%.0f / %.0f", curHealth, baseMaxHealth);
-                }
+                String healthString = ConfigTFC.Client.DISPLAY.healthDisplayFormat.format(curHealth, baseMaxHealth);
                 fontrenderer.drawString(healthString, mid - 45 - (fontrenderer.getStringWidth(healthString) / 2), healthRowHeight + 2, Color.white.getRGB());
             }
 
@@ -201,7 +198,7 @@ public final class PlayerDataOverlay
             }
 
             // Draw mount's health bar
-            if (player.getRidingEntity() instanceof EntityLivingBase && !ConfigTFC.CLIENT.useVanillaHealth)
+            if (player.getRidingEntity() instanceof EntityLivingBase && !ConfigTFC.Client.DISPLAY.useVanillaHealth)
             {
                 GuiIngameForge.renderHealthMount = false;
                 mc.renderEngine.bindTexture(ICONS);

@@ -71,7 +71,7 @@ public class BlockFruitTreeBranch extends Block
         return MAP.get(tree);
     }
 
-    public final IFruitTree tree;
+    private final IFruitTree tree;
 
     public BlockFruitTreeBranch(IFruitTree tree)
     {
@@ -290,6 +290,12 @@ public class BlockFruitTreeBranch extends Block
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(BlockFruitTreeSapling.get(tree));
+    }
+
+    @Nonnull
+    public IFruitTree getTree()
+    {
+        return tree;
     }
 
     private EnumFacing getFacing(IBlockAccess worldIn, BlockPos pos)

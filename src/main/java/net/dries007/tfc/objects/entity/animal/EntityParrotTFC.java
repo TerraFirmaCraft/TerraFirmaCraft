@@ -48,7 +48,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivestock
 {
-    private static final float MONTHS_TO_ADULTHOOD = 6.0f;
+    private static final int DAYS_TO_ADULTHOOD = 96;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityParrotTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityParrotTFC.class, DataSerializers.VARINT);
@@ -62,7 +62,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     @SuppressWarnings("unused")
     public EntityParrotTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityParrotTFC(World world, IAnimalTFC.Gender gender, int birthDay)
@@ -82,7 +82,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     @Override
     public boolean setEntityOnShoulder(@Nonnull EntityPlayer player)
     {
-        // Because mojang won't let you render anything at player's shoulder, like, never!!! (or at least, not in 1.12)
+        // todo if vanilla fixes the class enforcement in 1.15, do rework this animal
         return false;
     }
 
@@ -119,6 +119,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
                 }
                 else
                 {
+                    /* todo disabled for the time being, in 1.15 see if this animal can sit in player shoulder and do a proper mechanic here
                     this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
                     // Randomly die of old age, tied to entity UUID and calendar time
                     final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
@@ -126,6 +127,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
                     {
                         this.setDead();
                     }
+                    */
                 }
             }
         }
@@ -206,7 +208,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     }
 
     @Override
-    public EntityAgeable createChild(EntityAgeable ageable)
+    public EntityAgeable createChild(@Nonnull EntityAgeable ageable)
     {
         return new EntityParrotTFC(this.world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays()); // Used by spawn eggs
     }
@@ -310,7 +312,13 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
     }
 
     @Override
@@ -382,7 +390,7 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.PARROT.rarity;
         }
         return 0;
     }

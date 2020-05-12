@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.BlockChest;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -58,8 +60,6 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     protected static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.VARINT);
     protected static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.FLOAT);
-    private static final float MONTHS_TO_ADULTHOOD = 30.0f;
-    private static final float MONTHS_TO_FULL_GESTATION = 11.0f;
     //Is this female fertilized?
     private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
     // The time(in days) this entity became pregnant
@@ -74,7 +74,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @SuppressWarnings("unused")
     public EntityLlamaTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(ConfigTFC.Animals.LLAMA.adulthood, ConfigTFC.Animals.LLAMA.elder));
     }
 
     public EntityLlamaTFC(World world, IAnimalTFC.Gender gender, int birthDay)
@@ -184,7 +184,13 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.LLAMA.gestation;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.LLAMA.elder;
     }
 
     @Override
@@ -227,20 +233,31 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
-        ItemStack itemstack = player.getHeldItem(hand);
+        ItemStack stack = player.getHeldItem(hand);
 
-        if (!itemstack.isEmpty())
+        if (!stack.isEmpty())
         {
-            if (itemstack.getItem() == Items.SPAWN_EGG)
+            boolean holdingChest = false;
+            if (stack.getItem() instanceof ItemBlock)
+            {
+                ItemBlock itemBlock = (ItemBlock) stack.getItem();
+                holdingChest = itemBlock.getBlock() instanceof BlockChest;
+            }
+            if (stack.getItem() == Items.SPAWN_EGG)
             {
                 return super.processInteract(player, hand); // Let vanilla spawn a baby
             }
-            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            else if (!this.hasChest() && this.isTame() && holdingChest)
+            {
+                this.setChested(true);
+                stack.shrink(1);
+            }
+            else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
                 if (this.isHungry())
                 {
                     // Refuses to eat rotten stuff
-                    IFood cap = itemstack.getCapability(CapabilityFood.CAPABILITY, null);
+                    IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                     if (cap != null)
                     {
                         if (cap.isRotten())
@@ -250,9 +267,10 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
                     }
                     if (!this.world.isRemote)
                     {
+                        setScaleForAge(this.isChild()); // Update hitbox
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, itemstack);
+                        this.consumeItemFromStack(player, stack);
                         if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
                         {
                             float familiarity = this.getFamiliarity() + 0.06f;
@@ -316,7 +334,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TUNDRA))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.LLAMA.rarity;
         }
         return 0;
     }
@@ -371,6 +389,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
+                setScaleForAge(this.isChild()); // Update hitbox
                 float familiarity = getFamiliarity();
                 if (familiarity < 0.3f)
                 {
@@ -396,7 +415,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
                     this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
                     // Randomly die of old age, tied to entity UUID and calendar time
                     final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    if (random.nextDouble() < ConfigTFC.Animals.LLAMA.oldDeathChance)
                     {
                         this.setDead();
                     }
@@ -407,7 +426,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
 
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.LLAMA.gestation;
     }
 
     @Override
@@ -510,8 +529,8 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
 
     public void birthChildren()
     {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.LLAMA.babies; //one always
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityLlamaTFC baby = new EntityLlamaTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);

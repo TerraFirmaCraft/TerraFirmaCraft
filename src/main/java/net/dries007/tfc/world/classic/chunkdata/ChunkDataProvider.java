@@ -21,7 +21,7 @@ public final class ChunkDataProvider implements ICapabilitySerializable<NBTTagCo
     @CapabilityInject(ChunkDataTFC.class)
     public static final Capability<ChunkDataTFC> CHUNK_DATA_CAPABILITY = Helpers.getNull();
 
-    private ChunkDataTFC instance = CHUNK_DATA_CAPABILITY.getDefaultInstance();
+    private final ChunkDataTFC instance = CHUNK_DATA_CAPABILITY.getDefaultInstance();
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)

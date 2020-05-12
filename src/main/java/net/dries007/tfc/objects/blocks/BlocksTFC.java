@@ -700,7 +700,7 @@ public final class BlocksTFC
             new BlockSnowTFC().setRegistryName("minecraft", "snow_layer").setTranslationKey("snow")
         );
 
-        if (!ConfigTFC.GENERAL.disableTorchOverride)
+        if (ConfigTFC.General.OVERRIDES.enableTorchOverride)
         {
             event.getRegistry().register(new BlockTorchTFC().setRegistryName("minecraft", "torch").setTranslationKey("torch"));
         }

@@ -87,6 +87,7 @@ public class ChunkGenTFC implements IChunkGenerator
     private static final IWorldGenerator TREE_GEN = new WorldGenTrees();
     private static final IWorldGenerator BERRY_BUSH_GEN = new WorldGenBerryBushes();
     private static final IWorldGenerator FRUIT_TREE_GEN = new WorldGenFruitTrees();
+    private static final IWorldGenerator WILD_CROPS_GEN = new WorldGenWildCrops();
     private static final IWorldGenerator LOOSE_ROCKS_GEN = new WorldGenLooseRocks(true);
     private static final IWorldGenerator STALACTITE_GEN = new WorldGenSpikes(true, 300);
     private static final IWorldGenerator STALAGMITE_GEN = new WorldGenSpikes(false, 300);
@@ -188,9 +189,9 @@ public class ChunkGenTFC implements IChunkGenerator
         riverRavineGen = new MapGenRiverRavine(s.riverRavineRarity);
 
         // Load these now, because if config changes, shit will break
-        rainfallSpread = (float) ConfigTFC.WORLD.rainfallSpreadFactor;
-        floraDiversitySpread = (float) ConfigTFC.WORLD.floraDiversitySpreadFactor;
-        floraDensitySpread = (float) ConfigTFC.WORLD.floraDensitySpreadFactor;
+        rainfallSpread = (float) ConfigTFC.General.WORLD.rainfallSpreadFactor;
+        floraDiversitySpread = (float) ConfigTFC.General.WORLD.floraDiversitySpreadFactor;
+        floraDensitySpread = (float) ConfigTFC.General.WORLD.floraDensitySpreadFactor;
         world.setSeaLevel(WorldTypeTFC.SEALEVEL); // Set sea level so squids can spawn
         WorldEntitySpawnerTFC.init(); // Called here so only TFC Worlds are affected
     }
@@ -241,7 +242,7 @@ public class ChunkGenTFC implements IChunkGenerator
         ravineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         riverRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
 
-        if (ConfigTFC.WORLD.debugWorldGen)
+        if (ConfigTFC.General.DEBUG.debugWorldGen)
         {
             for (int x = 0; x < 16; ++x)
             {
@@ -320,6 +321,9 @@ public class ChunkGenTFC implements IChunkGenerator
         {
             WorldEntitySpawnerTFC.performWorldGenSpawning(world, biome, worldX + 8, worldZ + 8, 16, 16, rand);
         }
+
+        // To minimize the effects of this change, i'm putting this here, in the end of chunk generation
+        WILD_CROPS_GEN.generate(rand, chunkX, chunkZ, world, this, world.getChunkProvider());
 
         ForgeEventFactory.onChunkPopulate(false, this, world, rand, chunkX, chunkZ, false);
         BlockFalling.fallInstantly = false;

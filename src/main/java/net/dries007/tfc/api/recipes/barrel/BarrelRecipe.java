@@ -108,7 +108,7 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         if (outputFluid != null)
         {
             // Ignore input and replace with output
-            int outputAmount = Math.min(multiplier * outputFluid.amount, ConfigTFC.GENERAL.tankBarrel);
+            int outputAmount = Math.min(multiplier * outputFluid.amount, ConfigTFC.Devices.BARREL.tank);
             return new FluidStack(outputFluid.getFluid(), outputAmount);
         }
         else

@@ -49,7 +49,7 @@ public class BloomeryProvider implements IWailaBlock
                 List<ItemStack> oreStacks = bloomery.getOreStacks();
                 BloomeryRecipe recipe = oreStacks.size() > 0 ? BloomeryRecipe.get(oreStacks.get(0)) : null;
                 long remainingTicks = bloomery.getRemainingTicks();
-                switch (ConfigTFC.CLIENT.timeTooltipMode)
+                switch (ConfigTFC.Client.TOOLTIP.timeTooltipMode)
                 {
                     case NONE:
                         break;

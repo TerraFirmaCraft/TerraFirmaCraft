@@ -74,7 +74,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 if (!targetStack.isEmpty())
                 {
                     // Just clicked on an ore block
-                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found", targetStack.getDisplayName()), ConfigTFC.CLIENT.propickOutputToActionBar);
+                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found", targetStack.getDisplayName()), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
 
                     // Increment skill
                     if (skill != null)
@@ -85,7 +85,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 else if (RANDOM.nextFloat() < falseNegativeChance)
                 {
                     // False negative
-                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.CLIENT.propickOutputToActionBar);
+                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
                 }
                 else
                 {
@@ -93,7 +93,7 @@ public class ItemProspectorPick extends ItemMetalTool
                     if (results.isEmpty())
                     {
                         // Found nothing
-                        player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.CLIENT.propickOutputToActionBar);
+                        player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found_nothing"), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
                     }
                     else
                     {
@@ -122,9 +122,9 @@ public class ItemProspectorPick extends ItemMetalTool
                             translationKey = "tfc.propick.found_very_large";
                         }
 
-                        player.sendStatusMessage(new TextComponentTranslation(translationKey, result.ore.getDisplayName()), ConfigTFC.CLIENT.propickOutputToActionBar);
+                        player.sendStatusMessage(new TextComponentTranslation(translationKey, result.ore.getDisplayName()), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
 
-                        if (ConfigTFC.GENERAL.debug)
+                        if (ConfigTFC.General.DEBUG.enable)
                         {
                             for (ProspectResult debugResult : results)
                             {

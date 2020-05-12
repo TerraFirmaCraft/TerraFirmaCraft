@@ -42,7 +42,6 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -51,11 +50,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 {
-    private static final long DEFAULT_TICKS_TO_LAY_EGGS = ICalendar.TICKS_IN_DAY;
-    private static final float MONTHS_TO_ADULTHOOD = 4.133333f;
-    private static final float MONTHS_TO_HATCH_EGG = 0.7f;
     //The last time(in ticks) this chicken has laid eggs
-    private static final DataParameter<Long> LASTLAYING = EntityDataManager.createKey(EntityChickenTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    private static final DataParameter<Long> LAID = EntityDataManager.createKey(EntityChickenTFC.class, Helpers.LONG_DATA_SERIALIZER);
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
     public float destPos;
@@ -65,7 +61,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 
     public EntityChickenTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.CHICKEN.adulthood, ConfigTFC.Animals.CHICKEN.elder));
     }
 
     public EntityChickenTFC(World worldIn, Gender gender, int birthDay)
@@ -81,7 +77,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.CHICKEN.rarity;
         }
         return 0;
     }
@@ -113,7 +109,13 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.CHICKEN.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.CHICKEN.elder;
     }
 
     @Override
@@ -141,7 +143,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
             {
                 EntityChickenTFC chick = new EntityChickenTFC(this.world);
                 chick.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-                cap.setFertilized(chick, daysToHatch() + CalendarTFC.PLAYER_TIME.getTotalDays());
+                cap.setFertilized(chick, ConfigTFC.Animals.CHICKEN.hatch + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
         eggs.add(egg);
@@ -151,13 +153,13 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public void setProductsCooldown()
     {
-        this.setLastLaying(CalendarTFC.PLAYER_TIME.getTicks());
+        this.setLaidTicks(CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, this.lastLaying() + DEFAULT_TICKS_TO_LAY_EGGS - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, ConfigTFC.Animals.CHICKEN.eggTicks + getLaidTicks() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -186,14 +188,14 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
         return null;
     }
 
-    public long daysToHatch()
+    public long getLaidTicks()
     {
-        return (long) Math.ceil(MONTHS_TO_HATCH_EGG * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return dataManager.get(LAID);
     }
 
-    public long lastLaying()
+    protected void setLaidTicks(long ticks)
     {
-        return dataManager.get(LASTLAYING);
+        dataManager.set(LAID, ticks);
     }
 
     @Override
@@ -245,19 +247,14 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 
     protected boolean hasEggs()
     {
-        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && getProductsCooldown() == 0;
-    }
-
-    protected void setLastLaying(long lastLaying)
-    {
-        dataManager.set(LASTLAYING, lastLaying);
+        return this.getGender() == Gender.FEMALE && this.getAge() == Age.ADULT && (getLaidTicks() <= 0 || getProductsCooldown() <= 0);
     }
 
     @Override
     protected void entityInit()
     {
         super.entityInit();
-        getDataManager().register(LASTLAYING, 0L);
+        getDataManager().register(LAID, 0L);
     }
 
     @Override
@@ -292,13 +289,19 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setLong("laying", lastLaying());
+        nbt.setLong("laidTicks", getLaidTicks());
     }
 
     @Override
     public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.setLastLaying(nbt.getLong("laying"));
+        this.setLaidTicks(nbt.getLong("laidTicks"));
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return ConfigTFC.Animals.CHICKEN.oldDeathChance;
     }
 }

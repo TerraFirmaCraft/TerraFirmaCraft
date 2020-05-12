@@ -175,7 +175,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
                 Helpers.spawnItemStack(worldIn, pos.add(0.5D, 0.5D, 0.5D), new ItemStack(Items.STICK, 1 + (int) (Math.random() * 3)));
             }
         }
-        else if (ConfigTFC.GENERAL.doLogsRequireAxe)
+        else if (ConfigTFC.General.TREE.requiresAxe)
         {
             // Here, there was no valid tool used. Deny spawning any drops since logs require axes
             //noinspection ConstantConditions
@@ -206,7 +206,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         if (toolClasses.contains("axe") && !toolClasses.contains("saw"))
         {
             // Axes, not saws, cause tree felling
-            if (!state.getValue(PLACED) && !ConfigTFC.GENERAL.disableTreeFelling)
+            if (!state.getValue(PLACED) && ConfigTFC.General.TREE.enableFelling)
             {
                 player.setHeldItem(EnumHand.MAIN_HAND, stack); // Reset so we can damage however we want before vanilla
                 if (!removeTree(world, pos, player, stack, OreDictionaryHelper.doesStackMatchOre(stack, "axeStone") || OreDictionaryHelper.doesStackMatchOre(stack, "hammerStone")))
@@ -220,6 +220,11 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         else if (toolClasses.contains("hammer"))
         {
             // Hammers drop sticks instead
+            return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
+        }
+        else if (!toolClasses.contains("saw") && ConfigTFC.General.TREE.requiresAxe)
+        {
+            // Don't drop anything if broken by hand
             return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
         }
         return super.removedByPlayer(state, world, pos, player, willHarvest);
@@ -332,7 +337,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             else
             {
                 // Stone tools are 60% efficient (default config)
-                if (!stoneTool || Constants.RNG.nextFloat() < ConfigTFC.GENERAL.stoneAxeLogReturnRate && !world.isRemote)
+                if (!stoneTool || Constants.RNG.nextFloat() < ConfigTFC.General.TREE.stoneAxeReturnRate && !world.isRemote)
                 {
                     harvestBlock(world, player, pos1, world.getBlockState(pos1), null, stack);
                 }

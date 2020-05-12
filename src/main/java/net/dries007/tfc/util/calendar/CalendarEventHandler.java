@@ -88,7 +88,7 @@ public class CalendarEventHandler
                 long jump = CalendarTFC.INSTANCE.setTimeFromWorldTime(currentWorldTime);
                 // Consume food/water on all online players accordingly (EXHAUSTION_MULTIPLIER is here to de-compensate)
                 event.getEntity().getEntityWorld().getEntities(EntityPlayer.class, Objects::nonNull)
-                    .forEach(player -> player.addExhaustion(FoodStatsTFC.PASSIVE_EXHAUSTION * jump / FoodStatsTFC.EXHAUSTION_MULTIPLIER * (float) ConfigTFC.GENERAL.foodPassiveExhaustionMultiplier));
+                    .forEach(player -> player.addExhaustion(FoodStatsTFC.PASSIVE_EXHAUSTION * jump / FoodStatsTFC.EXHAUSTION_MULTIPLIER * (float) ConfigTFC.General.PLAYER.passiveExhaustionMultiplier));
 
             }
         }

@@ -16,9 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.*;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumDyeColor;
@@ -28,11 +26,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
@@ -45,18 +40,14 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 @ParametersAreNonnullByDefault
 public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
 {
-    private static final float MONTHS_TO_ADULTHOOD = 32.666668f;
-    private static final float MONTHS_TO_FULL_GESTATION = 11.666667f;
     private static final DataParameter<Integer> DATA_COLOR_ID = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.VARINT);
 
     public EntityCamelTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(ConfigTFC.Animals.CAMEL.adulthood, ConfigTFC.Animals.CAMEL.elder));
         this.setSize(0.9F, 2.6F);
     }
 
@@ -100,81 +91,14 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.CAMEL.adulthood;
     }
 
     @Override
-    public boolean isReadyToMate()
+    public int getDaysToElderly()
     {
-        if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || !this.isHungry())
-            return false;
-        return this.matingTime == -1 || this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
+        return ConfigTFC.Animals.CAMEL.elder;
     }
-
-    @Override
-    public TextComponentTranslation getAnimalName()
-    {
-        String entityString = EntityList.getEntityString(this);
-        return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
-    }
-
-    @Override
-    public boolean getCanSpawnHere()
-    {
-        return this.world.checkNoEntityCollision(getEntityBoundingBox())
-            && this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-            && !this.world.containsAnyLiquid(getEntityBoundingBox());
-    }
-
-    @Override
-    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
-    {
-        ItemStack itemstack = player.getHeldItem(hand);
-
-        if (!itemstack.isEmpty())
-        {
-            if (itemstack.getItem() == Items.SPAWN_EGG)
-            {
-                return super.processInteract(player, hand); // Let vanilla spawn a baby
-            }
-            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
-            {
-                if (this.isHungry())
-                {
-                    if (!this.world.isRemote)
-                    {
-                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
-                        lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, itemstack);
-                        if (this.getFamiliarity() < getAdultFamiliarityCap())
-                        {
-                            float familiarity = this.getFamiliarity() + 0.06f;
-                            if (this.getAge() != Age.CHILD)
-                            {
-                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
-                            }
-                            this.setFamiliarity(familiarity);
-                        }
-                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (!this.world.isRemote)
-                    {
-                        //Show tooltips
-                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
-                        }
-                    }
-                }
-            }
-        }
-        return super.processInteract(player, hand);
-    }
-
 
     @Override
     public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
@@ -183,7 +107,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.DESERT || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.CAMEL.rarity;
         }
         return 0;
     }
@@ -207,75 +131,9 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     }
 
     @Override
-    public void setScaleForAge(boolean child)
-    {
-        double ageScale = 1 / (2.0D - getPercentToAdulthood());
-        this.setScale((float) ageScale);
-    }
-
-    @Override
-    protected void mountTo(EntityPlayer player)
-    {
-        if (this.isTame() || this.getLeashed())
-        {
-            super.mountTo(player);
-        }
-    }
-
-    @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote)
-        {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
-            {
-                birthChildren();
-                this.setFertilized(false);
-            }
-            // Is it time to decay familiarity?
-            // If this entity was never fed(eg: new born, wild)
-            // or wasn't fed yesterday(this is the starting of the second day)
-            if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
-            {
-                float familiarity = getFamiliarity();
-                if (familiarity < 0.3f)
-                {
-                    familiarity -= 0.02 * (CalendarTFC.PLAYER_TIME.getTotalDays() - this.lastFDecay);
-                    this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
-                    this.setFamiliarity(familiarity);
-                }
-            }
-            if (this.getGender() == Gender.MALE && this.isReadyToMate())
-            {
-                this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
-                EntityAnimalTFC.findFemaleMate(this);
-            }
-            if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
-            {
-                if (lastDeath == -1)
-                {
-                    // First time check, to avoid dying at the same time this animal spawned, we skip the first day
-                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                }
-                else
-                {
-                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                    // Randomly die of old age, tied to entity UUID and calendar time
-                    final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
-                    {
-                        this.setDead();
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.CAMEL.gestation;
     }
 
     @Override
@@ -311,12 +169,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     }
 
     @Override
-    protected boolean handleEating(EntityPlayer player, ItemStack stack)
-    {
-        return false; // Stop exploits
-    }
-
-    @Override
     protected ResourceLocation getLootTable() { return LootTablesTFC.ANIMALS_CAMEL; }
 
     @Override
@@ -347,10 +199,11 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         return null;
     }
 
+    @Override
     public void birthChildren()
     {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.CAMEL.babies; //one always
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityCamelTFC baby = new EntityCamelTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
@@ -371,13 +224,13 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
                 this.setStrength((int) this.geneStrength);
             }
             baby.setVariant(geneVariant);
-            geneJump = 0;
-            geneSpeed = 0;
-            geneJump = 0;
-            geneStrength = 0;
-            geneVariant = 0;
             this.world.spawnEntity(baby);
         }
+        geneJump = 0;
+        geneSpeed = 0;
+        geneJump = 0;
+        geneStrength = 0;
+        geneVariant = 0;
     }
 
     public boolean canBeSteered()

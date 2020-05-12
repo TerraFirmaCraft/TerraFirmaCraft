@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -32,6 +33,7 @@ import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@ParametersAreNonnullByDefault
 public class ItemMetal extends ItemTFC implements IMetalItem
 {
     private static final Map<Metal, EnumMap<Metal.ItemType, ItemMetal>> TABLE = new HashMap<>();
@@ -71,7 +73,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, "ingot", "double", "Any", "Bronze");
             }
-            if (metal == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
+            if (metal == Metal.WROUGHT_IRON && ConfigTFC.General.MISC.dictionaryIron)
             {
                 OreDictionaryHelper.register(this, "ingot", "double", "Iron");
             }
@@ -83,7 +85,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, "sheet", "double", "Any", "Bronze");
             }
-            if (metal == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
+            if (metal == Metal.WROUGHT_IRON && ConfigTFC.General.MISC.dictionaryIron)
             {
                 OreDictionaryHelper.register(this, "sheet", "double", "Iron");
             }
@@ -99,14 +101,14 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             {
                 OreDictionaryHelper.register(this, type, "Any", "Bronze");
             }
-            if (type == Metal.ItemType.SHEET && ConfigTFC.GENERAL.oreDictPlate)
+            if (type == Metal.ItemType.SHEET && ConfigTFC.General.MISC.dictionaryPlates)
             {
                 OreDictionaryHelper.register(this, "plate", metal);
             }
-            if (metal == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
+            if (metal == Metal.WROUGHT_IRON && ConfigTFC.General.MISC.dictionaryIron)
             {
                 OreDictionaryHelper.register(this, type, "Iron");
-                if (type == Metal.ItemType.SHEET && ConfigTFC.GENERAL.oreDictPlate) //Register plate for iron too
+                if (type == Metal.ItemType.SHEET && ConfigTFC.General.MISC.dictionaryPlates) //Register plate for iron too
                 {
                     OreDictionaryHelper.register(this, "plate", "Iron");
                 }

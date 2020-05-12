@@ -102,7 +102,7 @@ public class WorldGenOreVeins implements IWorldGenerator
                 {
                     chunkData.markVeinGenerated(vein);
                 }
-                else if (ConfigTFC.GENERAL.debug)
+                else if (ConfigTFC.General.DEBUG.enable)
                 {
                     // Failed to generate, debug info
                     // This can be by a number of factors, mainly because at each expected replacing position we didn't find a matching raw rock.
