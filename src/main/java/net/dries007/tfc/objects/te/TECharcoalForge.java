@@ -133,7 +133,7 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
                 float targetTemperature = burnTemperature + airTicks;
                 if (temperature != targetTemperature)
                 {
-                    float delta = (float) ConfigTFC.GENERAL.temperatureModifierHeating;
+                    float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
                     temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, delta * (airTicks > 0 ? 2 : 1), delta * (airTicks > 0 ? 0.5f : 1));
                 }
 

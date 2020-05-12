@@ -182,7 +182,7 @@ public final class ChunkDataTFC
 
     public boolean canWork(int amount)
     {
-        return ConfigTFC.GENERAL.overworkChunk || chunkWorkage <= ConfigTFC.GENERAL.maxWorkChunk + amount;
+        return ConfigTFC.Devices.SLUICE.maxWorkChunk == 0 || chunkWorkage <= ConfigTFC.Devices.SLUICE.maxWorkChunk + amount;
     }
 
     public void addWork(int amount)

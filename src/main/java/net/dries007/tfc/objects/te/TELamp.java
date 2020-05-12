@@ -36,7 +36,7 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
 
     public TELamp()
     {
-        CAPACITY = ConfigTFC.GENERAL.metalLampCapacity;
+        CAPACITY = ConfigTFC.Devices.LAMP.tank;
         this.tank.setTileEntity(this);
     }
 

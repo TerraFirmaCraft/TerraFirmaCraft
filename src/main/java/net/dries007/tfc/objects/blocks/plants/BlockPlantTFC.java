@@ -171,9 +171,9 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
         {
             double modifier = 0.25 * (4 - state.getValue(AGE));
             modifier = (1 - modifier) * plant.getMovementMod() + modifier;
-            if (modifier < ConfigTFC.GENERAL.minimumPlantMovementModifier)
+            if (modifier < ConfigTFC.General.MISC.minimumPlantMovementModifier)
             {
-                modifier = ConfigTFC.GENERAL.minimumPlantMovementModifier;
+                modifier = ConfigTFC.General.MISC.minimumPlantMovementModifier;
             }
             entityIn.motionX *= modifier;
             entityIn.motionZ *= modifier;
@@ -256,8 +256,8 @@ public class BlockPlantTFC extends BlockBush implements IItemSize
 
     public double getGrowthRate(World world, BlockPos pos)
     {
-        if (world.isRainingAt(pos)) return ConfigTFC.GENERAL.plantGrowthRate * 5d;
-        else return ConfigTFC.GENERAL.plantGrowthRate;
+        if (world.isRainingAt(pos)) return ConfigTFC.General.MISC.plantGrowthRate * 5d;
+        else return ConfigTFC.General.MISC.plantGrowthRate;
     }
 
     @Override

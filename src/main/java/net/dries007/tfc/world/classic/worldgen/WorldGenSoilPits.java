@@ -53,8 +53,8 @@ public class WorldGenSoilPits implements IWorldGenerator
         // Otherwise, do not change this unless you are prepared to do some fairly large re-writes, similar to how ore gen is handled
         int radius = rng.nextInt(6) + 2;
         int depth = rng.nextInt(3) + 1;
-        if (rng.nextInt(ConfigTFC.WORLD.clayRarity) != 0 || start.getY() > WorldTypeTFC.SEALEVEL + 6) return;
-        if (ChunkDataTFC.getRainfall(world, start) < ConfigTFC.WORLD.clayRainfallThreshold) return;
+        if (rng.nextInt(ConfigTFC.General.WORLD.clayRarity) != 0 || start.getY() > WorldTypeTFC.SEALEVEL + 6) return;
+        if (ChunkDataTFC.getRainfall(world, start) < ConfigTFC.General.WORLD.clayRainfallThreshold) return;
 
         for (int x = -radius; x <= radius; x++)
         {

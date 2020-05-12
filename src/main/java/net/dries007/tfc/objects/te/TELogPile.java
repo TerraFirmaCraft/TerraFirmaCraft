@@ -104,7 +104,7 @@ public class TELogPile extends TEInventory implements ITickable
         {
             if (burning)
             {
-                if ((int) (CalendarTFC.PLAYER_TIME.getTicks() - startBurningTick) > ConfigTFC.GENERAL.charcoalPitTime)
+                if ((int) (CalendarTFC.PLAYER_TIME.getTicks() - startBurningTick) > ConfigTFC.Devices.CHARCOAL_PIT.ticks)
                 {
                     // Attempt to turn this log pile into charcoal
                     createCharcoal();
@@ -271,7 +271,7 @@ public class TELogPile extends TEInventory implements ITickable
             {
                 // Place what it can in the existing charcoal pit, then continue climbing
                 charcoal += state.getValue(LAYERS);
-                int toCreate = charcoal > 8 ? 8 : charcoal;
+                int toCreate = Math.min(charcoal, 8);
                 world.setBlockState(pos.down(k), BlocksTFC.CHARCOAL_PILE.getDefaultState().withProperty(LAYERS, toCreate));
                 charcoal -= toCreate;
             }

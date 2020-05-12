@@ -26,10 +26,11 @@ public class HeatRecipeVessel extends HeatRecipe
     @Nonnull
     public ItemStack getOutputStack(ItemStack input)
     {
-        if (input.getItem() instanceof ItemSmallVessel)
+        ItemStack output = input.copy();
+        if (output.getItem() instanceof ItemSmallVessel)
         {
-            return ((ItemSmallVessel) input.getItem()).getFiringResult(input);
+            return ((ItemSmallVessel) output.getItem()).getFiringResult(output);
         }
-        return input;
+        return output;
     }
 }

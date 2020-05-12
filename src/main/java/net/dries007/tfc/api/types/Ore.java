@@ -132,12 +132,12 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
             switch (this)
             {
                 case POOR:
-                    return ConfigTFC.GENERAL.poorOreMetalAmount;
+                    return ConfigTFC.General.MISC.poorOreMetalAmount;
                 case RICH:
-                    return ConfigTFC.GENERAL.richOreMetalAmount;
+                    return ConfigTFC.General.MISC.richOreMetalAmount;
                 case NORMAL:
                 default:
-                    return ConfigTFC.GENERAL.normalOreMetalAmount;
+                    return ConfigTFC.General.MISC.normalOreMetalAmount;
             }
         }
 

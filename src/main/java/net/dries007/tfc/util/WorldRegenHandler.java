@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -74,14 +73,14 @@ public final class WorldRegenHandler
 
                 // If past the update time, then run some regeneration of natural resources
                 long updateDelta = CalendarTFC.PLAYER_TIME.getTicks() - chunkDataTFC.getLastUpdateTick();
-                if (updateDelta > ConfigTFC.GENERAL.worldRegenerationMinimumTime * ICalendar.TICKS_IN_DAY && !chunkDataTFC.isSpawnProtected())
+                if (updateDelta > ConfigTFC.General.WORLD_REGEN.minimumTime * ICalendar.TICKS_IN_DAY && !chunkDataTFC.isSpawnProtected())
                 {
-                    float regenerationModifier = MathHelper.clamp((float) updateDelta / (4 * ConfigTFC.GENERAL.worldRegenerationMinimumTime * ICalendar.TICKS_IN_DAY), 0, 1);
+                    float regenerationModifier = MathHelper.clamp((float) updateDelta / (4 * ConfigTFC.General.WORLD_REGEN.minimumTime * ICalendar.TICKS_IN_DAY), 0, 1);
 
                     // Loose rocks - factors in time since last update
-                    if (ConfigTFC.GENERAL.worldRegenerationSticksRocksModifier > 0)
+                    if (ConfigTFC.General.WORLD_REGEN.sticksRocksModifier > 0)
                     {
-                        double rockModifier = ConfigTFC.GENERAL.worldRegenerationSticksRocksModifier * regenerationModifier;
+                        double rockModifier = ConfigTFC.General.WORLD_REGEN.sticksRocksModifier * regenerationModifier;
                         ROCKS_GEN.setFactor(rockModifier);
                         ROCKS_GEN.generate(RANDOM, pos.x, pos.z, event.world, chunkGenerator, chunkProvider);
 
@@ -97,9 +96,7 @@ public final class WorldRegenHandler
                 {
                     if (RANDOM.nextInt(20) == 0)
                     {
-                        BlockPos chunkPos = new BlockPos(pos.x << 4, 0, pos.z << 4);
-                        BlockPos start = event.world.getHeight(chunkPos.add(RANDOM.nextInt(16) + 8, 0, RANDOM.nextInt(16) + 8));
-                        CROPS_GEN.generate(event.world, RANDOM, start);
+                        CROPS_GEN.generate(RANDOM, pos.x, pos.z, event.world, chunkGenerator, chunkProvider);
                     }
                     BUSH_GEN.generate(RANDOM, pos.x, pos.z, event.world, chunkGenerator, chunkProvider);
 

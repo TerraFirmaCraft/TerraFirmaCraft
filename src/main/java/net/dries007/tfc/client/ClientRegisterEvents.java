@@ -330,7 +330,7 @@ public final class ClientRegisterEvents
             IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (food != null)
             {
-                return food.isRotten() ? ConfigTFC.CLIENT.rottenFoodOverlayColor : 0xFFFFFF;
+                return food.isRotten() ? ConfigTFC.Client.DISPLAY.rottenFoodOverlayColor : 0xFFFFFF;
             }
             return 0xFFFFFF;
         }, ForgeRegistries.ITEMS.getValuesCollection().stream().filter(x -> x instanceof ItemFood).toArray(Item[]::new));

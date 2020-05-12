@@ -109,7 +109,7 @@ public class BlockTorchTFC extends BlockTorch implements IItemSize, ILightableBl
         TETickCounter te = Helpers.getTE(worldIn, pos, TETickCounter.class);
         if (te != null)
         {
-            if (!worldIn.isRemote && te.getTicksSinceUpdate() > ConfigTFC.GENERAL.torchTime && ConfigTFC.GENERAL.torchTime > 0)
+            if (!worldIn.isRemote && te.getTicksSinceUpdate() > ConfigTFC.General.OVERRIDES.torchTime && ConfigTFC.General.OVERRIDES.torchTime > 0)
             {
                 worldIn.setBlockState(pos, state.withProperty(LIT, false));
                 te.resetCounter();

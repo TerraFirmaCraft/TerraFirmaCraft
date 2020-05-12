@@ -55,11 +55,18 @@ public class AnimalProvider implements IWailaEntity
                         {
                             currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.can_mate").getFormattedText());
                         }
-                        if (animal.isFertilized() && animal.getType() == IAnimalTFC.Type.MAMMAL)
+                        if (animal.isFertilized())
                         {
-                            // Pregnancy end time not possible due to how it is handled currently
-                            // in 1.15, refactor animals to hold an object (`AnimalProperties`) with all needed data, serializable and sync to client via NBT
-                            currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.pregnant").getFormattedText());
+                            if (animal.getType() == IAnimalTFC.Type.MAMMAL)
+                            {
+                                // Pregnancy end time not possible due to how it is handled currently
+                                // in 1.15, refactor animals to hold an object (`AnimalProperties`) with all needed data, serializable and sync to client via NBT
+                                currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.pregnant").getFormattedText());
+                            }
+                            else
+                            {
+                                currentTooltip.add(new TextComponentTranslation("tfc.tooltip.fertilized").getFormattedText());
+                            }
                         }
                         if (animal.isReadyForAnimalProduct())
                         {

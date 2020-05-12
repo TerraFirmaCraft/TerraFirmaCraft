@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.compat.waila.interfaces.IWailaBlock;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropDead;
@@ -67,7 +68,7 @@ public class CropProvider implements IWailaBlock
             }
             else
             {
-                float remainingTicksToGrow = Math.max(0, crop.getGrowthTime() - te.getTicksSinceUpdate());
+                float remainingTicksToGrow = Math.max(0, (crop.getGrowthTime() * (float) ConfigTFC.General.FOOD.cropGrowthTimeModifier) - te.getTicksSinceUpdate());
                 float curStagePerc = 1.0F - remainingTicksToGrow / crop.getGrowthTime();
                 // Don't show 100% since it still needs to check on randomTick to grow
                 float totalPerc = Math.min(0.99f, curStagePerc / maxStage + (float) curStage / maxStage) * 100;

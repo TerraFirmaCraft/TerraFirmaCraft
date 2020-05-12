@@ -216,7 +216,7 @@ public class TEBloomery extends TETickableInventory implements ITickable
 
     public long getRemainingTicks()
     {
-        return ConfigTFC.GENERAL.bloomeryTime - (CalendarTFC.PLAYER_TIME.getTicks() - litTick);
+        return ConfigTFC.Devices.BLOOMERY.ticks - (CalendarTFC.PLAYER_TIME.getTicks() - litTick);
     }
 
     public boolean canIgnite()

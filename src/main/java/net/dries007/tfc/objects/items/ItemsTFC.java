@@ -389,7 +389,7 @@ public final class ItemsTFC
             new ItemGlassBottleTFC().setRegistryName(Items.GLASS_BOTTLE.getRegistryName()).setTranslationKey("glassBottle")
         );
 
-        if (!ConfigTFC.GENERAL.disableTorchOverride)
+        if (ConfigTFC.General.OVERRIDES.enableTorchOverride)
         {
             event.getRegistry().register(new ItemBlockTorch(Blocks.TORCH).setRegistryName("minecraft", "torch"));
         }

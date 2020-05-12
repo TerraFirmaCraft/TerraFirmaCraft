@@ -24,7 +24,6 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -35,14 +34,10 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityGoatTFC extends EntityCowTFC implements ILivestock
 {
-    private static final long DEFAULT_TICKS_TO_MILK = ICalendar.TICKS_IN_DAY * 3;
-    private static final float MONTHS_TO_ADULTHOOD = 5.0f;
-    private static final float MONTHS_TO_FULL_GESTATION = 5.0f;
-
     @SuppressWarnings("unused")
     public EntityGoatTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.GOAT.adulthood, ConfigTFC.Animals.GOAT.elder));
     }
 
     public EntityGoatTFC(World worldIn, Gender gender, int birthDay)
@@ -57,7 +52,7 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.GOAT.rarity;
         }
         return 0;
     }
@@ -65,8 +60,8 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 1 + rand.nextInt(3); //1-3
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.GOAT.babies;
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityGoatTFC baby = new EntityGoatTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
@@ -78,7 +73,13 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     @Override
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.GOAT.gestation;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return ConfigTFC.Animals.GOAT.oldDeathChance;
     }
 
     @Override
@@ -90,13 +91,19 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.GOAT.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.GOAT.elder;
     }
 
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, this.lastMilked() + DEFAULT_TICKS_TO_MILK - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, ConfigTFC.Animals.GOAT.milkTicks - getMilkedTick() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -115,7 +122,7 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D); // Less health
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
     }
 
     @Override
@@ -133,6 +140,7 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
+        // Equivalent sound
         this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
     }
 }

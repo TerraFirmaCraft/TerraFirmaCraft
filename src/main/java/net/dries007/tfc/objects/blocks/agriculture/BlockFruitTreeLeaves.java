@@ -57,7 +57,7 @@ public class BlockFruitTreeLeaves extends BlockLeaves
         return MAP.get(tree);
     }
 
-    public final IFruitTree tree;
+    private final IFruitTree tree;
 
     public BlockFruitTreeLeaves(IFruitTree tree)
     {
@@ -105,7 +105,7 @@ public class BlockFruitTreeLeaves extends BlockLeaves
                     float temp = ClimateTFC.getActualTemp(world, pos);
                     float rainfall = ChunkDataTFC.getRainfall(world, pos);
                     long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-                    if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
+                    if (hours > (tree.getGrowthTime() * ConfigTFC.General.FOOD.fruitTreeGrowthTimeModifier) && tree.isValidForGrowth(temp, rainfall))
                     {
                         world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.FRUIT));
                         te.resetCounter();
@@ -177,12 +177,12 @@ public class BlockFruitTreeLeaves extends BlockLeaves
             entityIn.fall((entityIn.fallDistance - 6), 1.0F);
             entityIn.fallDistance = 0;
             // Entity motion is reduced by leaves.
-            entityIn.motionX *= ConfigTFC.GENERAL.leafMovementModifier;
+            entityIn.motionX *= ConfigTFC.General.MISC.leafMovementModifier;
             if (entityIn.motionY < 0)
             {
-                entityIn.motionY *= ConfigTFC.GENERAL.leafMovementModifier;
+                entityIn.motionY *= ConfigTFC.General.MISC.leafMovementModifier;
             }
-            entityIn.motionZ *= ConfigTFC.GENERAL.leafMovementModifier;
+            entityIn.motionZ *= ConfigTFC.General.MISC.leafMovementModifier;
         }
     }
 
@@ -255,6 +255,12 @@ public class BlockFruitTreeLeaves extends BlockLeaves
          */
         leavesFancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
         return true;// super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
+
+    @Nonnull
+    public IFruitTree getTree()
+    {
+        return tree;
     }
 
     @Override

@@ -116,7 +116,7 @@ public class NutritionStats implements INBTSerializable<NBTTagCompound>
         Arrays.fill(this.nutrients, 0);
         int runningHungerTotal = 0;
         // Reload from config
-        hungerWindow = ConfigTFC.GENERAL.nutritionRotationHungerWindow;
+        hungerWindow = ConfigTFC.General.PLAYER.nutritionRotationHungerWindow;
         for (int i = 0; i < records.size(); i++)
         {
             FoodData record = records.get(i);

@@ -101,7 +101,7 @@ public abstract class BlockCropTFC extends BlockBush
         return STAGE_MAP.get(crop.getMaxStage() + 1);
     }
 
-    protected final ICrop crop;
+    private final ICrop crop;
 
     BlockCropTFC(ICrop crop)
     {
@@ -115,12 +115,6 @@ public abstract class BlockCropTFC extends BlockBush
 
         setSoundType(SoundType.PLANT);
         setHardness(0.6f);
-    }
-
-    @Nonnull
-    public ICrop getCrop()
-    {
-        return crop;
     }
 
     @Override
@@ -222,6 +216,12 @@ public abstract class BlockCropTFC extends BlockBush
         return new ItemStack(ItemSeedsTFC.get(crop));
     }
 
+    @Nonnull
+    public ICrop getCrop()
+    {
+        return crop;
+    }
+
     public void checkGrowth(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
         if (!worldIn.isRemote)
@@ -230,9 +230,10 @@ public abstract class BlockCropTFC extends BlockBush
             if (te != null)
             {
                 boolean isAlive = true;
-                while (te.getTicksSinceUpdate() > crop.getGrowthTime() && isAlive)
+                float growthTime = crop.getGrowthTime() * (float) ConfigTFC.General.FOOD.cropGrowthTimeModifier;
+                while (te.getTicksSinceUpdate() > growthTime && isAlive)
                 {
-                    te.reduceCounter((long) crop.getGrowthTime());
+                    te.reduceCounter((long) growthTime);
 
                     // find stats for the time in which the crop would have grown
                     float temp = ClimateTFC.getActualTemp(worldIn, pos, -te.getTicksSinceUpdate());
@@ -260,7 +261,7 @@ public abstract class BlockCropTFC extends BlockBush
 
     public void die(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        if (ConfigTFC.GENERAL.shouldCropsDie)
+        if (ConfigTFC.General.FOOD.enableCropDeath)
         {
             worldIn.setBlockState(pos, BlockCropDead.get(crop).getDefaultState().withProperty(BlockCropDead.MATURE, state.getValue(getStageProperty()) == crop.getMaxStage()));
         }

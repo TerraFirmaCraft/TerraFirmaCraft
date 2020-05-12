@@ -73,7 +73,7 @@ public class LootTablesTFC
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event)
     {
-        if (ConfigTFC.GENERAL.removeVanillaLoots)
+        if (ConfigTFC.General.OVERRIDES.removeVanillaLoots)
         {
             // The pool with carrots, potatoes, and iron ingots
             remove(event, "minecraft:entities/zombie_villager", "pool1");

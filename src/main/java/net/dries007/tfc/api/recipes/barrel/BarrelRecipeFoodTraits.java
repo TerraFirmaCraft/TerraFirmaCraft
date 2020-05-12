@@ -7,6 +7,7 @@ package net.dries007.tfc.api.recipes.barrel;
 
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -43,6 +44,13 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
         super(inputFluid, inputStack, null, ItemStack.EMPTY, duration);
         this.trait = trait;
         this.tooltipName = tooltipName;
+    }
+
+    @Override
+    public boolean isValidInput(@Nullable FluidStack inputFluid, ItemStack inputStack)
+    {
+        IFood food = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
+        return super.isValidInput(inputFluid, inputStack) && food != null && !food.getTraits().contains(trait); // Don't apply again and again.
     }
 
     @Nonnull

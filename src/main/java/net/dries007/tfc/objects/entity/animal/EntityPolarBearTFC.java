@@ -43,7 +43,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, IPredator, EntityAIStandAttack.IEntityStandAttack
 {
-    private static final float MONTHS_TO_ADULTHOOD = 48.0f;
+    private static final int DAYS_TO_ADULTHOOD = 480;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityPolarBearTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityPolarBearTFC.class, DataSerializers.VARINT);
@@ -53,7 +53,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     @SuppressWarnings("unused")
     public EntityPolarBearTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityPolarBearTFC(World world, IAnimalTFC.Gender gender, int birthDay)
@@ -93,16 +93,6 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
-    }
-
-    @Override
-    public void playWarningSound()
-    {
-        if (this.warningSoundTicks <= 0)
-        {
-            this.playSound(SoundEvents.ENTITY_POLAR_BEAR_WARNING, 1.0F, 1.0F);
-            this.warningSoundTicks = 40;
-        }
     }
 
     @Override
@@ -146,9 +136,19 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     }
 
     @Override
-    public void setStanding(boolean standing)
+    public void setStand(boolean standing)
     {
         super.setStanding(standing);
+    }
+
+    @Override
+    public void playWarning()
+    {
+        if (this.warningSoundTicks <= 0)
+        {
+            this.playSound(SoundEvents.ENTITY_POLAR_BEAR_WARNING, 1.0F, 1.0F);
+            this.warningSoundTicks = 40;
+        }
     }
 
     @Override
@@ -203,7 +203,13 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
     }
 
     @Override
@@ -265,7 +271,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TUNDRA || biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            return ConfigTFC.WORLD.predatorSpawnRarity;
+            return ConfigTFC.Animals.POLAR_BEAR.rarity;
         }
         return 0;
     }

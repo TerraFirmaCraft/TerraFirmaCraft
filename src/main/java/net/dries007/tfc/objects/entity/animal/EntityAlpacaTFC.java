@@ -24,7 +24,6 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -35,14 +34,10 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
 {
-    private static final float MONTHS_TO_ADULTHOOD = 36.0f;
-    private static final float MONTHS_TO_GROW_WOOL = 0.13333334f;
-    private static final float MONTHS_TO_FULL_GESTATION = 11.0f;
-
     @SuppressWarnings("unused")
     public EntityAlpacaTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD), EntitySheep.getRandomSheepColor(Constants.RNG));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.ALPACA.adulthood, ConfigTFC.Animals.ALPACA.elder), EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
     public EntityAlpacaTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
@@ -57,7 +52,7 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TUNDRA || biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.ALPACA.rarity;
         }
         return 0;
     }
@@ -65,20 +60,26 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 1; // one always
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.ALPACA.babies;
+        for (int i = 0; i < numberOfChildren; i++)
         {
-            EntityAlpacaTFC baby = new EntityAlpacaTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), this.getDyeColor());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-            this.world.spawnEntity(baby);
+            EntityAlpacaTFC baby = new EntityAlpacaTFC(world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), getDyeColor());
+            baby.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
+            world.spawnEntity(baby);
         }
     }
 
     @Override
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.ALPACA.gestation;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return ConfigTFC.Animals.ALPACA.oldDeathChance;
     }
 
     @Override
@@ -90,20 +91,19 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.ALPACA.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.ALPACA.elder;
     }
 
     @Override
     public long getProductsCooldown()
     {
-        // Just here for the time being, in 1.15 gonna see changes here to match other animals better
-        return (long) Math.max(0, (this.getShearedDay() + Math.ceil(MONTHS_TO_GROW_WOOL * CalendarTFC.CALENDAR_TIME.getDaysInMonth()) - CalendarTFC.PLAYER_TIME.getTotalDays()) * ICalendar.TICKS_IN_DAY);
-    }
-
-    @Override
-    public boolean hasWool()
-    {
-        return this.getShearedDay() == -1 || CalendarTFC.PLAYER_TIME.getTotalDays() >= getShearedDay() + Math.ceil(MONTHS_TO_GROW_WOOL * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return Math.max(0, ConfigTFC.Animals.ALPACA.woolTicks + getShearedTick() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -133,6 +133,6 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
+        playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
     }
 }

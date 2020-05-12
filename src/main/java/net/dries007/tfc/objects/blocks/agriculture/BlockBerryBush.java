@@ -63,7 +63,7 @@ public class BlockBerryBush extends Block
         return MAP.get(bush);
     }
 
-    public final IBerryBush bush;
+    private final IBerryBush bush;
 
     public BlockBerryBush(IBerryBush bush)
     {
@@ -163,7 +163,7 @@ public class BlockBerryBush extends Block
                 float temp = ClimateTFC.getActualTemp(world, pos);
                 float rainfall = ChunkDataTFC.getRainfall(world, pos);
                 long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-                if (hours > bush.getGrowthTime() && bush.isValidForGrowth(temp, rainfall))
+                if (hours > (bush.getGrowthTime() * ConfigTFC.General.FOOD.berryBushGrowthTimeModifier) && bush.isValidForGrowth(temp, rainfall))
                 {
                     if (bush.isHarvestMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
                     {
@@ -241,12 +241,12 @@ public class BlockBerryBush extends Block
         if ((!(entityIn instanceof EntityPlayer) || !((EntityPlayer) entityIn).isCreative()))
         {
             // Entity motion is reduced (like leaves).
-            entityIn.motionX *= ConfigTFC.GENERAL.berryBushMovementModifier;
+            entityIn.motionX *= ConfigTFC.General.MISC.berryBushMovementModifier;
             if (entityIn.motionY < 0)
             {
-                entityIn.motionY *= ConfigTFC.GENERAL.berryBushMovementModifier;
+                entityIn.motionY *= ConfigTFC.General.MISC.berryBushMovementModifier;
             }
-            entityIn.motionZ *= ConfigTFC.GENERAL.berryBushMovementModifier;
+            entityIn.motionZ *= ConfigTFC.General.MISC.berryBushMovementModifier;
             if (bush.isSpiky() && entityIn instanceof EntityLivingBase)
             {
                 entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
@@ -272,6 +272,12 @@ public class BlockBerryBush extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETickCounter();
+    }
+
+    @Nonnull
+    public IBerryBush getBush()
+    {
+        return bush;
     }
 
     private boolean canStay(IBlockAccess world, BlockPos pos)

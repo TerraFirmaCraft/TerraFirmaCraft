@@ -39,7 +39,7 @@ public interface ICollapsableBlock
     {
         if (worldIn.isRemote || !worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
             return false; //First, let's check if this area is loaded and is on server
-        if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.collapseChance) //Then, we check rng if a collapse should trigger
+        if (Constants.RNG.nextDouble() < ConfigTFC.General.FALLABLE.collapseChance) //Then, we check rng if a collapse should trigger
         {
             //Rng the radius
             int radX = (Constants.RNG.nextInt(5) + 4) / 2;
@@ -83,7 +83,7 @@ public interface ICollapsableBlock
                     Math.pow(centerPoint.getX() - cavein.getX(), 2)
                         + Math.pow(centerPoint.getY() - cavein.getY(), 2)
                         + Math.pow(centerPoint.getZ() - cavein.getZ(), 2);
-                double chance = ConfigTFC.GENERAL.propagateCollapseChance - 0.01 * Math.sqrt(distSqrd);
+                double chance = ConfigTFC.General.FALLABLE.propagateCollapseChance - 0.01 * Math.sqrt(distSqrd);
                 if (Constants.RNG.nextDouble() < chance)
                 {
                     BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) st.getBlock()).getFallingVariant();

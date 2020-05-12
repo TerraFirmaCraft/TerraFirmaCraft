@@ -175,7 +175,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        if (state.getValue(LIT) && ConfigTFC.GENERAL.oilLampBurnRate > 0)
+        if (state.getValue(LIT) && ConfigTFC.Devices.LAMP.burnRate > 0)
         {
             TELamp tel = Helpers.getTE(worldIn, pos, TELamp.class);
             if (tel != null)
@@ -416,7 +416,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         if (!worldIn.isRemote && fluidHandler != null)
         {
             long ticks = tel.getTicksSinceUpdate();
-            double usage = ConfigTFC.GENERAL.oilLampBurnRate * ticks / ICalendar.TICKS_IN_HOUR;
+            double usage = ConfigTFC.Devices.LAMP.burnRate * ticks / ICalendar.TICKS_IN_HOUR;
             if (usage >= 1) // minimize rounding issues
             {
                 FluidStack used = fluidHandler.drain((int) usage, true); // use fuel

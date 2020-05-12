@@ -25,6 +25,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.te.TETickCounter;
 import net.dries007.tfc.util.Helpers;
@@ -46,7 +47,7 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
         return MAP.get(tree);
     }
 
-    public final IFruitTree tree;
+    private final IFruitTree tree;
 
     public BlockFruitTreeSapling(IFruitTree tree)
     {
@@ -73,7 +74,7 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
                 float temp = ClimateTFC.getActualTemp(world, pos);
                 float rainfall = ChunkDataTFC.getRainfall(world, pos);
                 long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-                if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
+                if (hours > (tree.getGrowthTime() * ConfigTFC.General.FOOD.fruitTreeGrowthTimeModifier) && tree.isValidForGrowth(temp, rainfall))
                 {
                     te.resetCounter();
                     grow(world, random, pos, state);
@@ -143,5 +144,11 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
                 world.setBlockState(blockPos.up(), BlockFruitTreeLeaves.get(tree).getDefaultState().withProperty(BlockFruitTreeLeaves.HARVESTABLE, false));
             }
         }
+    }
+
+    @Nonnull
+    public IFruitTree getTree()
+    {
+        return tree;
     }
 }

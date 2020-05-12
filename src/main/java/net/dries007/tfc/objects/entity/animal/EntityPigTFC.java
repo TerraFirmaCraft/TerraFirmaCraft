@@ -34,19 +34,22 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
 {
-    private static final float MONTHS_TO_ADULTHOOD = 15.0f;
-    private static final float MONTHS_TO_FULL_GESTATION = 3.7f;
-
     @SuppressWarnings("unused")
     public EntityPigTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.PIG.adulthood, ConfigTFC.Animals.PIG.elder));
     }
 
     public EntityPigTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 0.9F);
+        setSize(0.9F, 0.9F);
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return ConfigTFC.Animals.PIG.oldDeathChance;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA ||
                 biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.PIG.rarity;
         }
         return 0;
     }
@@ -83,20 +86,20 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 8 + rand.nextInt(5); //8-12
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.PIG.babies;
+        for (int i = 0; i < numberOfChildren; i++)
         {
-            EntityPigTFC baby = new EntityPigTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-            this.world.spawnEntity(baby);
+            EntityPigTFC baby = new EntityPigTFC(world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            baby.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
+            world.spawnEntity(baby);
         }
     }
 
     @Override
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.PIG.gestation;
     }
 
     @Override
@@ -108,7 +111,13 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.PIG.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.PIG.elder;
     }
 
     @Override
@@ -129,15 +138,15 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
         EntityAnimalTFC.addCommonLivestockAI(this, 1.3D);
         EntityAnimalTFC.addCommonPreyAI(this, 1.3D);
 
-        this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
+        tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
     }
 
     @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
     }
 
     @Override
@@ -155,6 +164,6 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_PIG_STEP, 0.15F, 1.0F);
+        playSound(SoundEvents.ENTITY_PIG_STEP, 0.15F, 1.0F);
     }
 }

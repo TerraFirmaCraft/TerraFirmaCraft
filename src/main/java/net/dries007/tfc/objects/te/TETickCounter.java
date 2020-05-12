@@ -25,13 +25,13 @@ public class TETickCounter extends TEBase
     public void resetCounter()
     {
         lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
-        markDirty();
+        markForSync();
     }
 
     public void reduceCounter(long amount)
     {
         lastUpdateTick += amount;
-        markDirty();
+        markForSync();
     }
 
     @Override

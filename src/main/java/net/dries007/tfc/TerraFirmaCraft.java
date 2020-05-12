@@ -172,7 +172,7 @@ public final class TerraFirmaCraft
             if (server instanceof DedicatedServer)
             {
                 PropertyManager settings = ((DedicatedServer) server).settings;
-                if (ConfigTFC.GENERAL.forceTFCWorldTypeOnServer)
+                if (ConfigTFC.General.OVERRIDES.forceTFCWorldType)
                 {
                     // This is called before vanilla defaults it, meaning we intercept it's default with ours
                     // However, we can't actually set this due to fears of overriding the existing world

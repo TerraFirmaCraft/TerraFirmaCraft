@@ -60,7 +60,7 @@ public abstract class BlockCropSimple extends BlockCropTFC
     {
         if (!worldIn.isRemote)
         {
-            if (state.getValue(getStageProperty()) < crop.getMaxStage())
+            if (state.getValue(getStageProperty()) < getCrop().getMaxStage())
             {
                 worldIn.setBlockState(pos, state.withProperty(getStageProperty(), state.getValue(getStageProperty()) + 1), 2);
             }
@@ -72,10 +72,10 @@ public abstract class BlockCropSimple extends BlockCropTFC
     {
         if (isPickable)
         {
-            ItemStack foodDrop = crop.getFoodDrop(state.getValue(getStageProperty()));
+            ItemStack foodDrop = getCrop().getFoodDrop(state.getValue(getStageProperty()));
             if (!foodDrop.isEmpty())
             {
-                ItemStack seedDrop = new ItemStack(ItemSeedsTFC.get(crop), 0);
+                ItemStack seedDrop = new ItemStack(ItemSeedsTFC.get(getCrop()), 0);
                 SimpleSkill skill = CapabilityPlayerData.getSkill(playerIn, SkillType.AGRICULTURE);
 
                 if (skill != null)

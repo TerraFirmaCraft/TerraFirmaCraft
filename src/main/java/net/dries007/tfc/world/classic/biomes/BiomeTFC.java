@@ -7,17 +7,17 @@ package net.dries007.tfc.world.classic.biomes;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.api.types.IHuntable;
-import net.dries007.tfc.api.types.ILivestock;
-import net.dries007.tfc.api.types.IPredator;
 import net.dries007.tfc.util.climate.ClimateTFC;
 
 public class BiomeTFC extends Biome
@@ -41,26 +41,38 @@ public class BiomeTFC extends Biome
         this.decorator = createBiomeDecorator();
         this.spawnableCreatureList.clear();
         spawnBiome = false;
-        if (ConfigTFC.WORLD.predatorRespawnWeight > 0)
+
+        // Add creatures to respawn list
+        for (String input : ConfigTFC.General.WORLD.respawnableCreatures)
         {
-            //noinspection unchecked
-            ForgeRegistries.ENTITIES.getValuesCollection().stream()
-                .filter(x -> IPredator.class.isAssignableFrom(x.getEntityClass()))
-                .forEach(x -> spawnableCreatureList.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), ConfigTFC.WORLD.predatorRespawnWeight, 1, 2)));
-        }
-        if (ConfigTFC.WORLD.huntableRespawnWeight > 0)
-        {
-            //noinspection unchecked
-            ForgeRegistries.ENTITIES.getValuesCollection().stream()
-                .filter(x -> IHuntable.class.isAssignableFrom(x.getEntityClass()))
-                .forEach(x -> spawnableCreatureList.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), ConfigTFC.WORLD.huntableRespawnWeight, 1, 2)));
-        }
-        if (ConfigTFC.WORLD.livestockRespawnWeight > 0)
-        {
-            //noinspection unchecked
-            ForgeRegistries.ENTITIES.getValuesCollection().stream()
-                .filter(x -> ILivestock.class.isAssignableFrom(x.getEntityClass()))
-                .forEach(x -> spawnableCreatureList.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) x.getEntityClass(), ConfigTFC.WORLD.livestockRespawnWeight, 1, 2)));
+            String[] split = input.split(" ");
+            if (split.length == 4)
+            {
+                ResourceLocation key = new ResourceLocation(split[0]);
+                int rarity;
+                int min;
+                int max;
+                try
+                {
+                    rarity = Integer.parseInt(split[1]);
+                    min = Integer.parseInt(split[2]);
+                    max = Integer.parseInt(split[3]);
+                }
+                catch (NumberFormatException e)
+                {
+                    continue;
+                }
+                EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
+                if (entityEntry != null)
+                {
+                    Class<? extends Entity> entityClass = entityEntry.getEntityClass();
+                    if (EntityLiving.class.isAssignableFrom(entityClass))
+                    {
+                        //noinspection unchecked
+                        spawnableCreatureList.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) entityClass, rarity, min, max));
+                    }
+                }
+            }
         }
     }
 
@@ -78,7 +90,7 @@ public class BiomeTFC extends Biome
     }
 
     @Override
-    public float getTemperature(BlockPos pos)
+    public float getTemperature(@Nonnull BlockPos pos)
     {
         // Vanilla spec: 0.15 = snow threshold, range = [-1, 1] for overworld temps.
         return MathHelper.clamp(0.15f + ClimateTFC.getActualTemp(pos) / 35, -1, 1);
