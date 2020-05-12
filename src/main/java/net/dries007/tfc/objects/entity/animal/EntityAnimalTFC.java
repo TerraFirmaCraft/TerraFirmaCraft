@@ -32,7 +32,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.IPredator;
@@ -60,14 +59,16 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
      * Gets a random growth for this animal
      * ** Static ** So it can be used by class constructor
      *
-     * @param monthsToAdulthood the number of months (float so you can use less than a month) for this animal to became adult (for randomizing the amount of days)
+     * @param daysToAdult number of days needed for this animal to be an adult
+     * @param daysToElder number of days needed after adult to this animal be an elder. 0 = ignore
      * @return a random long value containing the days of growth for this animal to spawn
      * **Always spawn adults** (so vanilla respawn mechanics only creates adults of this animal)
      */
-    public static int getRandomGrowth(float monthsToAdulthood)
+    public static int getRandomGrowth(int daysToAdult, int daysToElder)
     {
-        int days = Math.round(monthsToAdulthood * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
-        int lifeTimeDays = days + Constants.RNG.nextInt((int) (days * ConfigTFC.GENERAL.factorAnimalAging));
+        int today = (int) CalendarTFC.PLAYER_TIME.getTotalDays();
+        int randomFactor = daysToElder > 0 ? (int) (daysToElder * 1.25f) : daysToAdult * 4;
+        int lifeTimeDays = daysToAdult + Constants.RNG.nextInt(randomFactor);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
     }
 
@@ -345,7 +346,7 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                     this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
                     // Randomly die of old age, tied to entity UUID and calendar time
                     final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    if (random.nextDouble() < getOldDeathChance())
                     {
                         this.setDead();
                     }
@@ -432,6 +433,8 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         EntityAnimalTFC other = (EntityAnimalTFC) otherAnimal;
         return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
     }
+
+    public abstract double getOldDeathChance();
 
     /**
      * Eat food + raises familiarization

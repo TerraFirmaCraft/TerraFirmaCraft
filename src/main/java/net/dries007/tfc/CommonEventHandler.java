@@ -158,10 +158,10 @@ public final class CommonEventHandler
         if (!event.isSilkTouching() && block instanceof BlockLeaves)
         {
             // Done via event so it applies to all leaves.
-            double chance = ConfigTFC.GENERAL.leafStickDropChance;
-            if (!heldItem.isEmpty() && Helpers.containsAnyOfCaseInsensitive(heldItem.getItem().getToolClasses(heldItem), ConfigTFC.GENERAL.leafStickDropChanceBonusClasses))
+            double chance = ConfigTFC.General.TREE.leafStickDropChance;
+            if (!heldItem.isEmpty() && Helpers.containsAnyOfCaseInsensitive(heldItem.getItem().getToolClasses(heldItem), ConfigTFC.General.TREE.leafStickDropChanceBonusClasses))
             {
-                chance = ConfigTFC.GENERAL.leafStickDropChanceBonus;
+                chance = ConfigTFC.General.TREE.leafStickDropChanceBonus;
             }
             if (Constants.RNG.nextFloat() < chance)
             {
@@ -307,13 +307,13 @@ public final class CommonEventHandler
             if (player.getFoodStats() instanceof IFoodStatsTFC)
             {
                 float healthModifier = ((IFoodStatsTFC) player.getFoodStats()).getHealthModifier();
-                if (healthModifier < ConfigTFC.GENERAL.playerMinHealthModifier)
+                if (healthModifier < ConfigTFC.General.PLAYER.minHealthModifier)
                 {
-                    healthModifier = (float) ConfigTFC.GENERAL.playerMinHealthModifier;
+                    healthModifier = (float) ConfigTFC.General.PLAYER.minHealthModifier;
                 }
-                if (healthModifier > ConfigTFC.GENERAL.playerMaxHealthModifier)
+                if (healthModifier > ConfigTFC.General.PLAYER.maxHealthModifier)
                 {
-                    healthModifier = (float) ConfigTFC.GENERAL.playerMaxHealthModifier;
+                    healthModifier = (float) ConfigTFC.General.PLAYER.maxHealthModifier;
                 }
                 actualDamage /= healthModifier;
             }
@@ -579,7 +579,7 @@ public final class CommonEventHandler
         {
             // Prevent predators and mobs from spawning where the player lives.
             ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
-            if (ConfigTFC.GENERAL.spawnProtectionEnable && (ConfigTFC.GENERAL.spawnProtectionMinY <= event.getY()) && data.isSpawnProtected())
+            if (ConfigTFC.General.SPAWN_PROTECTION.enable && (ConfigTFC.General.SPAWN_PROTECTION.minY <= event.getY()) && data.isSpawnProtected())
             {
                 event.setResult(Event.Result.DENY);
             }
@@ -619,7 +619,7 @@ public final class CommonEventHandler
         }
 
         // Stop mob spawning in surface
-        if (ConfigTFC.WORLD.preventMobsOnSurface)
+        if (ConfigTFC.General.DIFFICULTY.preventMobsOnSurface)
         {
             if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
             {
@@ -644,7 +644,7 @@ public final class CommonEventHandler
         }
 
         // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
-        if (ConfigTFC.GENERAL.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
+        if (ConfigTFC.General.OVERRIDES.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
         {
             Entity TFCReplacement = Helpers.getTFCReplacement(entity);
             if (TFCReplacement != null)
@@ -654,15 +654,18 @@ public final class CommonEventHandler
             }
             event.setCanceled(true); // Cancel the vanilla spawn
         }
-        // Set equipment to some mobs
-        MonsterEquipment equipment = MonsterEquipment.get(entity);
-        if (equipment != null)
+        if (ConfigTFC.General.DIFFICULTY.giveVanillaMobsEquipment)
         {
-            entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, equipment.getWeapon(Constants.RNG));
-            entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, equipment.getHelmet(Constants.RNG));
-            entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, equipment.getChestplate(Constants.RNG));
-            entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, equipment.getLeggings(Constants.RNG));
-            entity.setItemStackToSlot(EntityEquipmentSlot.FEET, equipment.getBoots(Constants.RNG));
+            // Set equipment to some mobs
+            MonsterEquipment equipment = MonsterEquipment.get(entity);
+            if (equipment != null)
+            {
+                entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, equipment.getWeapon(Constants.RNG));
+                entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, equipment.getHelmet(Constants.RNG));
+                entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, equipment.getChestplate(Constants.RNG));
+                entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, equipment.getLeggings(Constants.RNG));
+                entity.setItemStackToSlot(EntityEquipmentSlot.FEET, equipment.getBoots(Constants.RNG));
+            }
         }
     }
 
@@ -681,7 +684,7 @@ public final class CommonEventHandler
     public static void onGameRuleChange(GameRuleChangeEvent event)
     {
         GameRules rules = event.getRules();
-        if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
+        if ("naturalRegeneration".equals(event.getRuleName()) && ConfigTFC.General.OVERRIDES.forceNoVanillaNaturalRegeneration)
         {
             // Natural regeneration should be disabled, allows TFC to have custom regeneration
             event.getRules().setOrCreateGameRule("naturalRegeneration", "false");
@@ -702,7 +705,7 @@ public final class CommonEventHandler
             TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.INSTANCE));
         }
 
-        if (ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
+        if (ConfigTFC.General.OVERRIDES.forceNoVanillaNaturalRegeneration)
         {
             // Natural regeneration should be disabled, allows TFC to have custom regeneration
             event.getWorld().getGameRules().setOrCreateGameRule("naturalRegeneration", "false");
@@ -726,7 +729,7 @@ public final class CommonEventHandler
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
         // Since cobble is a gravity block, placing it can lead to world crashes, so we avoid doing that and place rhyolite instead
-        if (!ConfigTFC.GENERAL.disableLavaWaterPlacesTFCBlocks)
+        if (ConfigTFC.General.OVERRIDES.enableLavaWaterPlacesTFCBlocks)
         {
             if (event.getNewState().getBlock() == Blocks.STONE)
             {
@@ -822,10 +825,10 @@ public final class CommonEventHandler
         EntityPlayer player = event.getEntityPlayer();
 
         if (entityType != null && target.hurtResistantTime == 0 && !target.getEntityWorld().isRemote && player.getHeldItemMainhand().isEmpty()
-            && player.isSneaking() && Arrays.asList(ConfigTFC.GENERAL.pluckableEntities).contains(entityType.toString()))
+            && player.isSneaking() && Arrays.asList(ConfigTFC.General.MISC.pluckableEntities).contains(entityType.toString()))
         {
             target.dropItem(Items.FEATHER, 1);
-            target.attackEntityFrom(PLUCKING, (float) ConfigTFC.GENERAL.damagePerFeather);
+            target.attackEntityFrom(PLUCKING, (float) ConfigTFC.General.MISC.damagePerFeather);
             if (target instanceof IAnimalTFC)
             {
                 ((IAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);

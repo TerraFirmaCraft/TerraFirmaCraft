@@ -58,9 +58,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 // Since this don't fit in the predators list, but should be respawned over time, putting it into the huntable list
 public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
 {
-    private static final float MONTHS_TO_ADULTHOOD = 12.0f;
-    private static final float MONTHS_TO_FULL_GESTATION = 2.3333333f;
-
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.VARINT);
@@ -77,7 +74,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     @SuppressWarnings("unused")
     public EntityWolfTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(ConfigTFC.Animals.WOLF.adulthood, ConfigTFC.Animals.WOLF.elder));
     }
 
     public EntityWolfTFC(World worldIn, Gender gender, int birthDay)
@@ -103,7 +100,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome))
         {
             // Spawns everywhere, there's so many species...
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.WOLF.rarity;
         }
         return 0;
     }
@@ -128,8 +125,8 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
 
     public void birthChildren()
     {
-        int numberOfChilds = 1 + rand.nextInt(1); //1-2
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.WOLF.babies;
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityWolfTFC baby = new EntityWolfTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
@@ -207,7 +204,13 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.WOLF.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.WOLF.elder;
     }
 
     @Override
@@ -292,7 +295,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
 
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.WOLF.gestation;
     }
 
     @Override
@@ -396,7 +399,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
                     this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
                     // Randomly die of old age, tied to entity UUID and calendar time
                     final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    if (random.nextDouble() < ConfigTFC.Animals.WOLF.oldDeathChance)
                     {
                         this.setDead();
                     }

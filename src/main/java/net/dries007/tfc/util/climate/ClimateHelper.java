@@ -14,6 +14,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.util.config.TemperatureMode;
 
 import static net.dries007.tfc.world.classic.WorldTypeTFC.SEALEVEL;
 
@@ -117,12 +118,12 @@ public class ClimateHelper
      */
     public static float latitudeFactor(int chunkZ)
     {
-        int tempRange = ConfigTFC.WORLD.latitudeTemperatureModifier;
-        if (!ConfigTFC.WORLD.cyclicTemperatureRegions)
+        int tempRange = ConfigTFC.General.WORLD.latitudeTemperatureModifier;
+        if (ConfigTFC.General.WORLD.temperatureMode != TemperatureMode.CYCLIC)
         {
             chunkZ = MathHelper.clamp(chunkZ, -tempRange / 2, tempRange / 2);
         }
-        return 0.5f + 0.5f * ConfigTFC.WORLD.hemisphereType * (float) Math.sin(Math.PI * chunkZ / tempRange);
+        return 0.5f + 0.5f * ConfigTFC.General.WORLD.hemisphereType.getValue() * (float) Math.sin(Math.PI * chunkZ / tempRange);
     }
 
     private ClimateHelper() {}

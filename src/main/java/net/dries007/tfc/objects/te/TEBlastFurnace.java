@@ -64,7 +64,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
     {
         super(1);
         // Blast furnaces hold the same amount of crucibles, should it matter to be different?
-        this.alloy = new Alloy(ConfigTFC.GENERAL.tankCrucible);
+        this.alloy = new Alloy(ConfigTFC.Devices.CRUCIBLE.tank);
     }
 
     @Override
@@ -251,7 +251,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
                         ItemStack fuelStack = fuelStacks.get(0);
                         fuelStacks.remove(0);
                         Fuel fuel = FuelManager.getFuel(fuelStack);
-                        burnTicksLeft = (int) (Math.ceil(fuel.getAmount() / ConfigTFC.GENERAL.blastFurnaceConsumption));
+                        burnTicksLeft = (int) (Math.ceil(fuel.getAmount() / ConfigTFC.Devices.BLAST_FURNACE.consumption));
                         burnTemperature = fuel.getTemperature();
                     }
                     else
@@ -267,12 +267,12 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
                     if (temperature < targetTemperature)
                     {
                         // Modifier for heating = 2x for bellows
-                        temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                        temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.Devices.TEMPERATURE.heatingModifier;
                     }
                     else if (temperature > targetTemperature)
                     {
                         // Modifier for cooling = 0.5x for bellows
-                        temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.GENERAL.temperatureModifierHeating;
+                        temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.Devices.TEMPERATURE.heatingModifier;
                     }
                     // Provide heat to blocks that are one block bellow AKA crucible
                     Block blockCrucible = world.getBlockState(pos.down()).getBlock();

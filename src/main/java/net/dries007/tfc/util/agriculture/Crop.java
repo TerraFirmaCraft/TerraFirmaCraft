@@ -22,6 +22,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.skills.Skill;
 import net.dries007.tfc.util.skills.SkillTier;
+import net.dries007.tfc.world.classic.worldgen.WorldGenWildCrops;
 
 import static net.dries007.tfc.util.agriculture.Crop.CropType.*;
 
@@ -54,6 +55,14 @@ public enum Crop implements ICrop
     RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
     YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
     JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE);
+
+    static
+    {
+        for (ICrop crop : values())
+        {
+            WorldGenWildCrops.register(crop);
+        }
+    }
 
     /**
      * the count to add to the amount of food dropped when applying the skill bonus

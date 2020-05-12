@@ -45,8 +45,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityLionTFC extends EntityAnimalMammal implements IPredator
 {
-    private static final float MONTHS_TO_ADULTHOOD = 60.0f;
-    private static final float MONTHS_TO_FULL_GESTATION = 7.0f;
+    private static final int DAYS_TO_ADULTHOOD = 480;
 
     //Values that has a visual effect on client
     private static final DataParameter<Integer> MOUTH_TICKS = EntityDataManager.createKey(EntityLionTFC.class, DataSerializers.VARINT);
@@ -54,7 +53,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @SuppressWarnings("unused")
     public EntityLionTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityLionTFC(World worldIn, Gender gender, int birthDay)
@@ -70,7 +69,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.PLAINS))
         {
-            return ConfigTFC.WORLD.predatorSpawnRarity;
+            return ConfigTFC.Animals.LION.rarity;
         }
         return 0;
     }
@@ -96,7 +95,13 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
     }
 
     @Override
@@ -108,8 +113,8 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = 1; //one always
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityLionTFC baby = new EntityLionTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
@@ -120,7 +125,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return 0;
     }
 
     @Override
@@ -128,6 +133,18 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     {
         super.entityInit();
         getDataManager().register(MOUTH_TICKS, 0);
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        return false;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return 0;
     }
 
     public int getMouthTicks()
@@ -138,12 +155,6 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     public void setMouthTicks(int value)
     {
         this.dataManager.set(MOUTH_TICKS, value);
-    }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        return false;
     }
 
     @Override

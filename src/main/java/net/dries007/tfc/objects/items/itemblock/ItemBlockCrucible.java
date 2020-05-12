@@ -38,7 +38,7 @@ public class ItemBlockCrucible extends ItemBlockTFC
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt != null)
         {
-            Alloy alloy = new Alloy(ConfigTFC.GENERAL.tankCrucible);
+            Alloy alloy = new Alloy(ConfigTFC.Devices.CRUCIBLE.tank);
             alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
             String metalName = (new TextComponentTranslation(alloy.getResult().getTranslationKey())).getFormattedText();
             tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.crucible_alloy", alloy.getAmount(), metalName));

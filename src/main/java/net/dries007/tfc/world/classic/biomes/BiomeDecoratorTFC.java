@@ -153,11 +153,6 @@ public class BiomeDecoratorTFC extends BiomeDecorator
         this.chunkPos = chunkPos;
         // todo: settings for all the rarities?
 
-        if (rng.nextInt(20) == 0)
-        {
-            wildCropsGen.generate(world, rng, world.getHeight(chunkPos.add(rng.nextInt(16) + 8, 0, rng.nextInt(16) + 8)));
-        }
-
         if (TerrainGen.decorate(world, rng, forgeChunkPos, DecorateBiomeEvent.Decorate.EventType.SHROOM))
         {
             for (Plant plant : TFCRegistries.PLANTS.getValuesCollection())

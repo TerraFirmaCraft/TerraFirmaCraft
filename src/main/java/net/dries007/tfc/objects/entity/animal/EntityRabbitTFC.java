@@ -51,9 +51,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
 {
-    private static final float MONTHS_TO_ADULTHOOD = 8.0f;
-    private static final float MONTHS_TO_FULL_GESTATION = 1.0f;
-
+    private static final int DAYS_TO_ADULTHOOD = 16;
     private static final DataParameter<Integer> RABBIT_TYPE = EntityDataManager.createKey(EntityRabbitTFC.class, DataSerializers.VARINT);
 
     private int jumpTicks;
@@ -64,7 +62,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     @SuppressWarnings("unused")
     public EntityRabbitTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityRabbitTFC(World worldIn, Gender gender, int birthDay)
@@ -85,7 +83,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
                 || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST ||
                 biomeType == BiomeHelper.BiomeType.DESERT))
         {
-            return ConfigTFC.WORLD.huntableSpawnRarity;
+            return ConfigTFC.Animals.RABBIT.rarity;
         }
         return 0;
     }
@@ -200,8 +198,8 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 5 + rand.nextInt(5); // 5-10
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = 5 + rand.nextInt(5); // 5-10
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityRabbitTFC baby = new EntityRabbitTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
@@ -212,7 +210,7 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return 0;
     }
 
     @Override
@@ -260,7 +258,13 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
     }
 
     @Override
@@ -273,6 +277,12 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         return false;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return 0;
     }
 
     @Override

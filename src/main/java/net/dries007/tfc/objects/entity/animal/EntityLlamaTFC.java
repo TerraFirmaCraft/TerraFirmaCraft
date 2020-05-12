@@ -60,8 +60,6 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     protected static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.VARINT);
     protected static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.FLOAT);
-    private static final float MONTHS_TO_ADULTHOOD = 30.0f;
-    private static final float MONTHS_TO_FULL_GESTATION = 11.0f;
     //Is this female fertilized?
     private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
     // The time(in days) this entity became pregnant
@@ -76,7 +74,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @SuppressWarnings("unused")
     public EntityLlamaTFC(World world)
     {
-        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(ConfigTFC.Animals.LLAMA.adulthood, ConfigTFC.Animals.LLAMA.elder));
     }
 
     public EntityLlamaTFC(World world, IAnimalTFC.Gender gender, int birthDay)
@@ -186,7 +184,13 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.LLAMA.gestation;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.LLAMA.elder;
     }
 
     @Override
@@ -330,7 +334,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TUNDRA))
         {
-            return ConfigTFC.WORLD.livestockSpawnRarity;
+            return ConfigTFC.Animals.LLAMA.rarity;
         }
         return 0;
     }
@@ -411,7 +415,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
                     this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
                     // Randomly die of old age, tied to entity UUID and calendar time
                     final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    if (random.nextDouble() < ConfigTFC.Animals.LLAMA.oldDeathChance)
                     {
                         this.setDead();
                     }
@@ -422,7 +426,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
 
     public long gestationDays()
     {
-        return (long) Math.ceil(MONTHS_TO_FULL_GESTATION * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.LLAMA.gestation;
     }
 
     @Override
@@ -525,8 +529,8 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
 
     public void birthChildren()
     {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
+        int numberOfChildren = ConfigTFC.Animals.LLAMA.babies; //one always
+        for (int i = 0; i < numberOfChildren; i++)
         {
             EntityLlamaTFC baby = new EntityLlamaTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);

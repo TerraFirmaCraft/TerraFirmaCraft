@@ -241,7 +241,7 @@ public class CapabilityFood
      */
     public static long getRoundedCreationDate()
     {
-        return (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.GENERAL.foodDecayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.GENERAL.foodDecayStackTime;
+        return (CalendarTFC.PLAYER_TIME.getTotalHours() / ConfigTFC.General.FOOD.decayStackTime) * ICalendar.TICKS_IN_HOUR * ConfigTFC.General.FOOD.decayStackTime;
     }
 
     /**

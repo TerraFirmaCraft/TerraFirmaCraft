@@ -40,7 +40,7 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
 
     public static Set<Fluid> getValidFluids()
     {
-        String[] fluidNames = ConfigTFC.GENERAL.metalLampFuels;
+        String[] fluidNames = ConfigTFC.Devices.LAMP.fuels;
         Set<Fluid> validFluids = new HashSet<>();
         for (String fluidName : fluidNames)
         {
@@ -57,7 +57,7 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
     public ItemBlockMetalLamp(Metal metal)
     {
         super(BlockMetalLamp.get(metal));
-        CAPACITY = ConfigTFC.GENERAL.metalLampCapacity;
+        CAPACITY = ConfigTFC.Devices.LAMP.tank;
         if (!TABLE.containsKey(metal))
             TABLE.put(metal, this);
     }
@@ -97,7 +97,7 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> items)
     {
         if (isInCreativeTab(tab))
         {

@@ -157,7 +157,7 @@ public class EntityFallingBlockTFC extends Entity
                     failedBreakCheck = true;
                     return;
                 }
-                else if (!ConfigTFC.GENERAL.disableFallableBlocksDestroyOre && world.getBlockState(pos.down()).getBlock() instanceof BlockOreTFC)
+                else if (ConfigTFC.General.FALLABLE.destroyOres && world.getBlockState(pos.down()).getBlock() instanceof BlockOreTFC)
                 {
                     world.destroyBlock(pos.down(), false);
                     failedBreakCheck = true;
@@ -221,11 +221,11 @@ public class EntityFallingBlockTFC extends Entity
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
         for (Entity entity : list)
         {
-            if (!ConfigTFC.GENERAL.disableFallableBlocksHurtEntities && distance > 1.0F && entity instanceof EntityLivingBase)
+            if (ConfigTFC.General.FALLABLE.hurtEntities && distance > 1.0F && entity instanceof EntityLivingBase)
             {
                 entity.attackEntityFrom(DamageSource.FALLING_BLOCK, distance);
             }
-            else if (!ConfigTFC.GENERAL.disableFallableBlocksDestroyLooseItems && entity instanceof EntityItem)
+            else if (ConfigTFC.General.FALLABLE.destroyItems && entity instanceof EntityItem)
             {
                 entity.setDead();
             }

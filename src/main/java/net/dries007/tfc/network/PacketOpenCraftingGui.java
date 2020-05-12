@@ -14,6 +14,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.config.InventoryCraftingMode;
 
 public class PacketOpenCraftingGui implements IMessageEmpty
 {
@@ -26,7 +27,7 @@ public class PacketOpenCraftingGui implements IMessageEmpty
                 EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
                 if (player != null)
                 {
-                    if (ConfigTFC.GENERAL.inventoryCraftingTableMode == 1 || (ConfigTFC.GENERAL.inventoryCraftingTableMode == 2 && Helpers.playerHasItemMatchingOre(player.inventory, "workbench")))
+                    if (ConfigTFC.General.PLAYER.inventoryCraftingMode == InventoryCraftingMode.ALWAYS || (ConfigTFC.General.PLAYER.inventoryCraftingMode == InventoryCraftingMode.ENABLED && Helpers.playerHasItemMatchingOre(player.inventory, "workbench")))
                     {
                         TFCGuiHandler.openGui(player.world, player, TFCGuiHandler.Type.CRAFTING);
                     }

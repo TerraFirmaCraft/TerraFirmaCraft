@@ -46,6 +46,13 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
         this.tooltipName = tooltipName;
     }
 
+    @Override
+    public boolean isValidInput(@Nullable FluidStack inputFluid, ItemStack inputStack)
+    {
+        IFood food = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
+        return super.isValidInput(inputFluid, inputStack) && food != null && !food.getTraits().contains(trait); // Don't apply again and again.
+    }
+
     @Nonnull
     @Override
     public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
@@ -57,13 +64,6 @@ public class BarrelRecipeFoodTraits extends BarrelRecipe
             CapabilityFood.applyTrait(food, trait);
         }
         return Helpers.listOf(stack);
-    }
-
-    @Override
-    public boolean isValidInput(@Nullable FluidStack inputFluid, ItemStack inputStack)
-    {
-        IFood food = inputStack.getCapability(CapabilityFood.CAPABILITY, null);
-        return super.isValidInput(inputFluid, inputStack) && food != null && !food.getTraits().contains(trait); // Don't apply again and again.
     }
 
     @SideOnly(Side.CLIENT)

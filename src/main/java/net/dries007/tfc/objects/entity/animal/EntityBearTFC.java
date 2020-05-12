@@ -43,14 +43,13 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIAttackMeleeTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIStandAttack;
 import net.dries007.tfc.objects.entity.ai.EntityAIWanderHuntArea;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityBearTFC extends EntityAnimalMammal implements IPredator, EntityAIStandAttack.IEntityStandAttack
 {
-    private static final float MONTHS_TO_ADULTHOOD = 60.0f;
+    private static final int DAYS_TO_ADULTHOOD = 480;
     private static final DataParameter<Boolean> IS_STANDING;
 
     static
@@ -65,7 +64,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     @SuppressWarnings("unused")
     public EntityBearTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityBearTFC(World worldIn, Gender gender, int birthDay)
@@ -81,7 +80,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            return ConfigTFC.WORLD.predatorSpawnRarity;
+            return ConfigTFC.Animals.BEAR.rarity;
         }
         return 0;
     }
@@ -107,7 +106,13 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
     }
 
     @Override
@@ -119,13 +124,7 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
-        {
-            EntityBearTFC baby = new EntityBearTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            this.world.spawnEntity(baby);
-        }
+        // Unused
     }
 
     @Override
@@ -141,19 +140,31 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
         this.dataManager.register(IS_STANDING, false);
     }
 
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        return false;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return 0;
+    }
+
     public boolean isStanding()
     {
         return this.dataManager.get(IS_STANDING);
     }
 
     @Override
-    public void setStanding(boolean standing)
+    public void setStand(boolean standing)
     {
         this.dataManager.set(IS_STANDING, standing);
     }
 
     @Override
-    public void playWarningSound()
+    public void playWarning()
     {
         if (this.warningSoundTicks <= 0)
         {
@@ -167,12 +178,6 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     public float getStandingAnimationScale(float partialTicks)
     {
         return (this.clientSideStandAnimation0 + (this.clientSideStandAnimation - this.clientSideStandAnimation0) * partialTicks) / 6.0F;
-    }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        return false;
     }
 
     @Override

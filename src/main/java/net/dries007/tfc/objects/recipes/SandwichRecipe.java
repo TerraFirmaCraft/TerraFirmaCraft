@@ -81,7 +81,7 @@ public class SandwichRecipe extends ShapedDamageRecipe
             IFood ingredientCap = ingredientStack.getCapability(CapabilityFood.CAPABILITY, null);
             if (ingredientCap != null)
             {
-                if(ingredientCap.isRotten())
+                if (ingredientCap.isRotten())
                 {
                     // Found a rotten ingredient, aborting
                     breads.clear();

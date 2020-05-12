@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
 
-import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
@@ -116,7 +115,8 @@ public interface IAnimalTFC extends ICreatureTFC
     {
         long deltaDays = CalendarTFC.PLAYER_TIME.getTotalDays() - this.getBirthDay();
         long adulthoodDay = this.getDaysToAdulthood();
-        if (getCreatureType() == CreatureType.LIVESTOCK && ConfigTFC.GENERAL.enableAnimalAging && deltaDays > adulthoodDay * ConfigTFC.GENERAL.factorAnimalAging)
+        long elderlyDay = this.getDaysToElderly() + this.getDaysToAdulthood();
+        if (getCreatureType() == CreatureType.LIVESTOCK && this.getDaysToElderly() > 0 && deltaDays > elderlyDay)
         {
             return Age.OLD; // if enabled, only for familiarizable animals
         }
@@ -136,6 +136,13 @@ public interface IAnimalTFC extends ICreatureTFC
      * @return number of days
      */
     int getDaysToAdulthood();
+
+    /**
+     * Get the number of days past adulthood needed for this animal to be an elder
+     *
+     * @return number of days, 0 to disable
+     */
+    int getDaysToElderly();
 
     /**
      * Check if this animal is ready to mate

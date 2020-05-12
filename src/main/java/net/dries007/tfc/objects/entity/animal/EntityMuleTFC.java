@@ -55,7 +55,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @MethodsReturnNonnullByDefault
 public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
 {
-    protected static final float MONTHS_TO_ADULTHOOD = 37.333332f;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.VARINT);
@@ -66,7 +65,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
 
     public EntityMuleTFC(World world)
     {
-        this(world, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(world, Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(ConfigTFC.Animals.MULE.adulthood, ConfigTFC.Animals.MULE.elder));
     }
 
     public EntityMuleTFC(World world, Gender gender, int birthDay)
@@ -136,7 +135,13 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return ConfigTFC.Animals.MULE.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.MULE.elder;
     }
 
     @Override
@@ -287,7 +292,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
                     this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
                     // Randomly die of old age, tied to entity UUID and calendar time
                     final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.GENERAL.chanceAnimalDeath)
+                    if (random.nextDouble() < ConfigTFC.Animals.MULE.oldDeathChance)
                     {
                         this.setDead();
                     }

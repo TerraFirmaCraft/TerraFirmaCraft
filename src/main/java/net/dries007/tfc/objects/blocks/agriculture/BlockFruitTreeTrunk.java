@@ -29,6 +29,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TETickCounter;
@@ -177,7 +178,7 @@ public class BlockFruitTreeTrunk extends Block
             if (te != null)
             {
                 long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
-                if (hours > tree.getGrowthTime() && tree.isValidForGrowth(temp, rainfall))
+                if (hours > (tree.getGrowthTime() * ConfigTFC.General.FOOD.fruitTreeGrowthTimeModifier) && tree.isValidForGrowth(temp, rainfall))
                 {
                     te.resetCounter();
                     if (worldIn.getBlockState(pos.up()).getBlock() != this) //If the above block is a trunk, this one don't need to do anything
@@ -424,7 +425,7 @@ public class BlockFruitTreeTrunk extends Block
                 world.setBlockToAir(oldCenter.offset(facing));
             }
         }
-        BlockPos missingLeaf = null;
+        BlockPos missingLeaf;
         //noinspection ConstantConditions
         do
         {

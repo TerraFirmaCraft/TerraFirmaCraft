@@ -64,7 +64,7 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
     {
         super(10);
 
-        this.alloy = new Alloy(ConfigTFC.GENERAL.tankCrucible); // Side effect: Maximum amount only matches config if not loading from disk
+        this.alloy = new Alloy(ConfigTFC.Devices.CRUCIBLE.tank); // Side effect: Maximum amount only matches config if not loading from disk
         this.inventoryWrapperExtract = new ItemHandlerSidedWrapper(this, inventory, EnumFacing.DOWN);
         this.inventoryWrapperInsert = new ItemHandlerSidedWrapper(this, inventory, EnumFacing.UP);
 
@@ -102,11 +102,11 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
         super.update();
         if (!world.isRemote)
         {
-            temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, (float) ConfigTFC.GENERAL.temperatureModifierHeating);
+            temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier);
             if (targetTemperature > 0)
             {
                 // Crucible target temperature decays constantly, since it is set by outside providers
-                targetTemperature -= (float) ConfigTFC.GENERAL.temperatureModifierHeating;
+                targetTemperature -= (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
             }
 
             // Input draining
@@ -146,7 +146,7 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
                             if (fluidStack != null && fluidStack.amount > 0)
                             {
                                 lastFillTimer = 5;
-                                if (!ConfigTFC.GENERAL.enableCruciblePouringAllSlots)
+                                if (!ConfigTFC.Devices.CRUCIBLE.enableAllSlots)
                                 {
                                     canFill = false;
                                 }
@@ -194,7 +194,7 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
                     }
                 }
             }
-            if(needsClientUpdate)
+            if (needsClientUpdate)
             {
                 // Update cached alloy result, since TOP is executed server side.
                 alloyResult = alloy.getResult();
@@ -264,7 +264,7 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
         temperature = nbt.getFloat("temp");
 
         // Voids surplus and set the maximum amount if config was changed
-        alloy.setMaxAmount(ConfigTFC.GENERAL.tankCrucible);
+        alloy.setMaxAmount(ConfigTFC.Devices.CRUCIBLE.tank);
 
         // Also set the cached alloyResult:
         alloyResult = alloy.getResult();
@@ -364,7 +364,7 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
         alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
 
         // Voids surplus and set the maximum amount if config was changed
-        alloy.setMaxAmount(ConfigTFC.GENERAL.tankCrucible);
+        alloy.setMaxAmount(ConfigTFC.Devices.CRUCIBLE.tank);
 
         // Also set the cached alloyResult:
         alloyResult = alloy.getResult();

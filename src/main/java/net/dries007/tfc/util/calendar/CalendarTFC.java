@@ -106,7 +106,7 @@ public final class CalendarTFC implements INBTSerializable<NBTTagCompound>
     public CalendarTFC()
     {
         // Initialize to default values
-        daysInMonth = ConfigTFC.GENERAL.defaultMonthLength;
+        daysInMonth = ConfigTFC.General.MISC.defaultMonthLength;
         playerTime = 0;
         calendarTime = (5 * daysInMonth * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
         doDaylightCycle = true;

@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.compat.waila.interfaces.IWailaBlock;
@@ -42,7 +43,7 @@ public class FruitTreeProvider implements IWailaBlock
             {
                 long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
                 // Don't show 100% since it still needs to check on randomTick to grow
-                float perc = Math.min(0.99F, hours / tree.getGrowthTime()) * 100;
+                float perc = Math.min(0.99F, hours / (tree.getGrowthTime() * (float) ConfigTFC.General.FOOD.fruitTreeGrowthTimeModifier)) * 100;
                 String growth = String.format("%d%%", Math.round(perc));
                 currentTooltip.add(new TextComponentTranslation("waila.tfc.crop.growth", growth).getFormattedText());
             }

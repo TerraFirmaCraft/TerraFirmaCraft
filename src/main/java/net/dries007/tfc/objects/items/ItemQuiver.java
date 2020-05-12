@@ -30,7 +30,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
@@ -123,21 +122,18 @@ public class ItemQuiver extends ItemArmorTFC
     static QuiverCapability findQuiver(InventoryPlayer playerInv)
     {
         int mainToSearch = 0;
-        switch (ConfigTFC.GENERAL.quiverSearch)
+        switch (ConfigTFC.General.PLAYER.quiverSearch)
         {
-            case "none":
+            case DISABLED:
                 return null;
-            case "armor":
+            case ARMOR:
                 break; // search nowhere else
-            case "hotbar":
+            case HOTBAR:
                 mainToSearch = InventoryPlayer.getHotbarSize();
                 break;
-            case "main":
+            case INVENTORY:
                 mainToSearch = playerInv.mainInventory.size();
                 break;
-            default:
-                TerraFirmaCraft.getLog().warn("Invalid quiverSearch configuration string: '" + ConfigTFC.GENERAL.quiverSearch + "' Should be none, armor, hotbar, or main!");
-                return null;
         }
 
         ItemStack cur = null;
@@ -210,7 +206,7 @@ public class ItemQuiver extends ItemArmorTFC
     }
 
     // Extends ItemStackHandler for ease of use.
-    public class QuiverCapability extends ItemStackHandler implements ICapabilityProvider, ISlotCallback
+    public static class QuiverCapability extends ItemStackHandler implements ICapabilityProvider, ISlotCallback
     {
 
         QuiverCapability(@Nullable NBTTagCompound nbt)

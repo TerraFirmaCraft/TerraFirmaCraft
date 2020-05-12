@@ -50,7 +50,7 @@ public interface IFallingBlock
     default boolean shouldFall(World world, BlockPos posToFallAt, BlockPos originalPos)
     {
         // Can the block fall at a particular position; ignore horizontal falling
-        return !ConfigTFC.GENERAL.disableFallableBlocks && canFallThrough(world, posToFallAt.down(), world.getBlockState(originalPos).getMaterial()) && !BlockSupport.isBeingSupported(world, originalPos);
+        return ConfigTFC.General.FALLABLE.enable && canFallThrough(world, posToFallAt.down(), world.getBlockState(originalPos).getMaterial()) && !BlockSupport.isBeingSupported(world, originalPos);
     }
 
     // Get the position that the block will fall from (allows for horizontal falling)

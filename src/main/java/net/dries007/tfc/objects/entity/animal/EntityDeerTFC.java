@@ -35,19 +35,18 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
 {
-    private static final float MONTHS_TO_ADULTHOOD = 720;
+    private static final int DAYS_TO_ADULTHOOD = 192;
 
     @SuppressWarnings("unused")
     public EntityDeerTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(MONTHS_TO_ADULTHOOD));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntityDeerTFC(World worldIn, Gender gender, int birthDay)
@@ -57,13 +56,25 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     }
 
     @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        return false;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return 0;
+    }
+
+    @Override
     public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TUNDRA))
         {
-            return ConfigTFC.WORLD.huntableSpawnRarity;
+            return ConfigTFC.Animals.DEER.rarity;
         }
         return 0;
     }
@@ -89,14 +100,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public void birthChildren()
     {
-        int numberOfChilds = 1; //one always
-        for (int i = 0; i < numberOfChilds; i++)
-        {
-            EntityDeerTFC baby = new EntityDeerTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            this.world.spawnEntity(baby);
-        }
-
+        // Not farmable
     }
 
     @Override
@@ -108,19 +112,19 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public int getDaysToAdulthood()
     {
-        return (int) Math.ceil(MONTHS_TO_ADULTHOOD * CalendarTFC.CALENDAR_TIME.getDaysInMonth());
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
     }
 
     @Override
     public boolean isFood(@Nonnull ItemStack stack)
     {
         return OreDictionaryHelper.doesStackMatchOre(stack, "salt");
-    }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        return false;
     }
 
     @Override

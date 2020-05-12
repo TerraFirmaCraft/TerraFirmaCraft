@@ -178,11 +178,11 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
 
         if (metal.equals(BLUE_STEEL))
         {
-            fluidNames = ConfigTFC.GENERAL.blueSteelBucketWhitelist;
+            fluidNames = ConfigTFC.General.MISC.blueSteelBucketWhitelist;
         }
         else if (metal.equals(RED_STEEL))
         {
-            fluidNames = ConfigTFC.GENERAL.redSteelBucketWhitelist;
+            fluidNames = ConfigTFC.General.MISC.redSteelBucketWhitelist;
         } // No other metal buckets implemented
 
         Set<Fluid> validFluids = new HashSet<>();

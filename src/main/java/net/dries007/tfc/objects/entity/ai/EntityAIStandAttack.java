@@ -31,7 +31,7 @@ public class EntityAIStandAttack<T extends EntityCreature & IAnimalTFC & EntityA
     @Override
     public void resetTask()
     {
-        ((IEntityStandAttack) this.attacker).setStanding(false);
+        ((IEntityStandAttack) this.attacker).setStand(false);
         super.resetTask();
     }
 
@@ -43,34 +43,34 @@ public class EntityAIStandAttack<T extends EntityCreature & IAnimalTFC & EntityA
         {
             this.attackTick = 20;
             this.attacker.attackEntityAsMob(enemy);
-            ((IEntityStandAttack) this.attacker).setStanding(false);
+            ((IEntityStandAttack) this.attacker).setStand(false);
         }
         else if (distToEnemySqr <= d0 * 2.0D)
         {
             if (this.attackTick <= 0)
             {
-                ((IEntityStandAttack) this.attacker).setStanding(false);
+                ((IEntityStandAttack) this.attacker).setStand(false);
                 this.attackTick = 20;
             }
 
             if (this.attackTick <= 10)
             {
-                ((IEntityStandAttack) this.attacker).setStanding(true);
-                ((IEntityStandAttack) this.attacker).playWarningSound();
+                ((IEntityStandAttack) this.attacker).setStand(true);
+                ((IEntityStandAttack) this.attacker).playWarning();
             }
         }
         else
         {
             this.attackTick = 20;
-            ((IEntityStandAttack) this.attacker).setStanding(false);
+            ((IEntityStandAttack) this.attacker).setStand(false);
         }
 
     }
 
     public interface IEntityStandAttack
     {
-        void setStanding(boolean value);
+        void setStand(boolean value);
 
-        void playWarningSound();
+        void playWarning();
     }
 }

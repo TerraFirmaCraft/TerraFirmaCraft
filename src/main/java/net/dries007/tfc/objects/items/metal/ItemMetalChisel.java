@@ -90,7 +90,7 @@ public class ItemMetalChisel extends ItemMetalTool
             return true;
 
         // config alters whether toolbar counts as a hammer slot or not.
-        if (!ConfigTFC.GENERAL.requireHammerInOffHand)
+        if (!ConfigTFC.Devices.CHISEL.requireHammerInOffHand)
         {
             for (int i = 0; i < 9; i++)
             {
@@ -205,10 +205,10 @@ public class ItemMetalChisel extends ItemMetalTool
             {
                 // replace the block with a new block
                 IBlockState oldState = worldIn.getBlockState(pos);
-                if (oldState.getBlock() instanceof ICollapsableBlock && ConfigTFC.GENERAL.doesChiselingCauseCaveIns)
+                if (oldState.getBlock() instanceof ICollapsableBlock && ConfigTFC.General.FALLABLE.chiselCausesCollapse)
                 {
                     worldIn.setBlockToAir(pos); // Set block to air before attempting a collapse mechanic
-                    if(((ICollapsableBlock) oldState.getBlock()).checkCollapsingArea(worldIn, pos))
+                    if (((ICollapsableBlock) oldState.getBlock()).checkCollapsingArea(worldIn, pos))
                     {
                         return EnumActionResult.SUCCESS; // Collapse mechanic triggered, cancel chisel!
                     }
@@ -226,7 +226,7 @@ public class ItemMetalChisel extends ItemMetalTool
                 }
 
                 player.getHeldItem(hand).damageItem(1, player);
-                if (ConfigTFC.GENERAL.chiselDelay)
+                if (ConfigTFC.Devices.CHISEL.hasDelay)
                 {
                     // if setting is on for chisel cooldown, trigger cooldown
                     player.getCooldownTracker().setCooldown(this, COOLDOWN);

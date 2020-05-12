@@ -36,8 +36,8 @@ public class PitKilnProvider implements IWailaBlock
 
             if (isLit)
             {
-                long remainingTicks = ConfigTFC.GENERAL.pitKilnTime - (CalendarTFC.PLAYER_TIME.getTicks() - te.getLitTick());
-                switch (ConfigTFC.CLIENT.timeTooltipMode)
+                long remainingTicks = ConfigTFC.Devices.PIT_KILN.ticks - (CalendarTFC.PLAYER_TIME.getTicks() - te.getLitTick());
+                switch (ConfigTFC.Client.TOOLTIP.timeTooltipMode)
                 {
                     case NONE:
                         break;

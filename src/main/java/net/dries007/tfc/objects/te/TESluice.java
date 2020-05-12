@@ -67,10 +67,10 @@ public class TESluice extends TEBase implements ITickable
             {
                 if (--ticksRemaining <= 0)
                 {
-                    if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceOreChance)
+                    if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.oreChance)
                     {
                         ChunkPos myPos = world.getChunk(pos).getPos();
-                        int radius = ConfigTFC.GENERAL.sluiceRadius;
+                        int radius = ConfigTFC.Devices.SLUICE.radius;
                         //Copy from Helper method, but only look for workable chunks
                         List<Chunk> chunks = new ArrayList<>();
                         for (int x = myPos.x - radius; x <= myPos.x + radius; x++)
@@ -102,10 +102,10 @@ public class TESluice extends TEBase implements ITickable
                             chunkData.addWork();
                         }
                     }
-                    if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceGemChance)
+                    if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.gemChance)
                     {
                         Gem dropGem;
-                        if (Constants.RNG.nextDouble() < ConfigTFC.GENERAL.sluiceDiamondGemChance)
+                        if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.diamondGemChance)
                         {
                             dropGem = Gem.DIAMOND;
                         }
@@ -261,7 +261,7 @@ public class TESluice extends TEBase implements ITickable
         if (soil > 0 && hasFlow())
         {
             soil--;
-            ticksRemaining = ConfigTFC.GENERAL.sluiceTicks;
+            ticksRemaining = ConfigTFC.Devices.SLUICE.ticks;
             markForBlockUpdate();
         }
         else

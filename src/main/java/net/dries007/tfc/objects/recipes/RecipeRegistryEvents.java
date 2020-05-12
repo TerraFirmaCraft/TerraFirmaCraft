@@ -25,7 +25,7 @@ public class RecipeRegistryEvents
         // todo: in 1.13 move to json overrides
         // This causes massive log spawm
         // See https://github.com/MinecraftForge/MinecraftForge/pull/4541#issuecomment-354033516
-        if (ConfigTFC.GENERAL.removeVanillaRecipes)
+        if (ConfigTFC.General.OVERRIDES.removeVanillaRecipes)
         {
             IForgeRegistryModifiable<IRecipe> modRegistry = (IForgeRegistryModifiable<IRecipe>) event.getRegistry();
 

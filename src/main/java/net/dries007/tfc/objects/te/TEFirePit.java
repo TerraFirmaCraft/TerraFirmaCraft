@@ -168,7 +168,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
                 float targetTemperature = burnTemperature + airTicks;
                 if (temperature != targetTemperature)
                 {
-                    float delta = (float) ConfigTFC.GENERAL.temperatureModifierHeating;
+                    float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
                     temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, delta * (airTicks > 0 ? 2 : 1), delta * (airTicks > 0 ? 0.5f : 1));
                 }
             }
@@ -228,7 +228,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
                     else
                     {
                         boilingTicks++;
-                        if (boilingTicks > ConfigTFC.GENERAL.firePitCookingPotBoilingTime)
+                        if (boilingTicks > ConfigTFC.Devices.FIRE_PIT.ticks)
                         {
                             // Convert output
                             float water = 20, saturation = 2; // soups have base 20 water + 2 saturation

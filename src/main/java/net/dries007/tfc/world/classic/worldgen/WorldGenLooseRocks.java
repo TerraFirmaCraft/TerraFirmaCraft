@@ -74,7 +74,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 }
 
                 // Default to 35 below the surface, like classic
-                int lowestYScan = Math.max(10, world.getTopSolidOrLiquidBlock(chunkBlockPos).getY() - ConfigTFC.WORLD.looseRockScan);
+                int lowestYScan = Math.max(10, world.getTopSolidOrLiquidBlock(chunkBlockPos).getY() - ConfigTFC.General.WORLD.looseRockScan);
 
 
                 veins = WorldGenOreVeins.getNearbyVeins(chunkX, chunkZ, world.getSeed(), 1);
@@ -98,7 +98,7 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 }
             }
 
-            for (int i = 0; i < ConfigTFC.WORLD.looseRocksFrequency * factor; i++)
+            for (int i = 0; i < ConfigTFC.General.WORLD.looseRocksFrequency * factor; i++)
             {
                 BlockPos pos = new BlockPos(
                     xoff + random.nextInt(16),

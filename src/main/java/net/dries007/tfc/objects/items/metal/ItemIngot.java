@@ -38,7 +38,7 @@ public class ItemIngot extends ItemMetal
     @Nonnull
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (player.isSneaking() && ConfigTFC.GENERAL.placeIngotPiles)
+        if (player.isSneaking() && ConfigTFC.General.MISC.enableIngotPiles)
         {
             ItemStack stack = player.getHeldItem(hand);
             ItemIngot item = (ItemIngot) stack.getItem();

@@ -59,7 +59,7 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
         {
             //noinspection ConstantConditions
             OreDictionaryHelper.register(this, "ore", ore.getMetal().getRegistryName().getPath(), "small");
-            if (ore.getMetal() == Metal.WROUGHT_IRON && ConfigTFC.GENERAL.oreDictIron)
+            if (ore.getMetal() == Metal.WROUGHT_IRON && ConfigTFC.General.MISC.dictionaryIron)
             {
                 OreDictionaryHelper.register(this, "ore", "iron", "small");
             }
@@ -80,7 +80,7 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
     @Override
     public int getSmeltAmount(ItemStack stack)
     {
-        return ConfigTFC.GENERAL.smallOreMetalAmount;
+        return ConfigTFC.General.MISC.smallOreMetalAmount;
     }
 
     @Override
@@ -117,21 +117,21 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
         if (metal != null)
         {
             int smeltAmount = this.getSmeltAmount(stack);
-            switch (ConfigTFC.CLIENT.oreTooltipMode)
+            switch (ConfigTFC.Client.TOOLTIP.oreTooltipMode)
             {
-                case 0:
+                case HIDE:
                     break;
-                case 1:
+                case UNIT_ONLY:
                     // Like classic, "Metal: xx units"
                     String info = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units", smeltAmount));
                     tooltip.add(info);
                     break;
-                case 2:
+                case TOTAL_ONLY:
                     // not like Classic, "Metal: xx total units" Adds the whole stacks worth up.
                     String stackTotal = String.format("%s: %s", I18n.format(Helpers.getTypeName(metal)), I18n.format("tfc.tooltip.units.total", smeltAmount * stack.getCount()));
                     tooltip.add(stackTotal);
                     break;
-                case 3:
+                case ALL_INFO:
                     // All info: "Metal: xx units / xx total"
                     String infoTotal;
                     if (stack.getCount() > 1)
@@ -149,7 +149,7 @@ public class ItemSmallOre extends ItemTFC implements IMetalItem
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return ore.getMetal() != null ? new ItemHeatHandler(nbt, ore.getMetal().getSpecificHeat(), ore.getMetal().getMeltTemp()) : null;
     }
