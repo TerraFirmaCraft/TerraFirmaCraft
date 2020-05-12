@@ -106,6 +106,7 @@ public class ItemGoldPan extends ItemTFC
                             });
                             chunkDataTFC.addWork(6);
                             stack.setItemDamage(0);
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, stack); //only way to get it to refresh!
                         }
                         else
                         {
