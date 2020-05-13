@@ -1,5 +1,5 @@
 {
-  "type": "tfc:salting_shapeless",
+  "type": "tfc:salting",
   "ingredients": [
     {
       "type": "forge:ore_dict",

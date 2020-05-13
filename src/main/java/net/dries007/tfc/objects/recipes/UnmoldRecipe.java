@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.recipes;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.gson.JsonObject;
@@ -24,7 +25,7 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.IMoldHandler;
@@ -39,16 +40,123 @@ import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_
 
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
-public class UnmoldRecipe extends ShapelessOreRecipe
+public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
+    private final NonNullList<Ingredient> input;
+    private final ResourceLocation group;
     private final Metal.ItemType type;
     private final float chance; // Return chance
 
-    private UnmoldRecipe(ResourceLocation group, NonNullList<Ingredient> input, @Nonnull Metal.ItemType type, float chance)
+    private UnmoldRecipe(@Nullable ResourceLocation group, NonNullList<Ingredient> input, @Nonnull Metal.ItemType type, float chance)
     {
-        super(group, input, ItemStack.EMPTY);
+        this.group = group;
+        this.input = input;
         this.type = type;
         this.chance = chance;
+    }
+
+    @Override
+    public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world)
+    {
+        boolean foundMold = false;
+        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
+        {
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (!stack.isEmpty())
+            {
+                if (stack.getItem() instanceof ItemMold)
+                {
+                    ItemMold moldItem = ((ItemMold) stack.getItem());
+                    IFluidHandler cap = stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
+
+                    if (cap instanceof IMoldHandler)
+                    {
+                        IMoldHandler moldHandler = (IMoldHandler) cap;
+                        if (!moldHandler.isMolten())
+                        {
+                            Metal metal = moldHandler.getMetal();
+                            if (metal != null && moldItem.getType().equals(this.type) && !foundMold)
+                            {
+                                foundMold = true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return foundMold;
+    }
+
+    @Override
+    public boolean isDynamic()
+    {
+        return true;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getRecipeOutput()
+    {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getCraftingResult(InventoryCrafting inv)
+    {
+        ItemStack moldStack = null;
+        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
+        {
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (!stack.isEmpty())
+            {
+                if (stack.getItem() instanceof ItemMold)
+                {
+                    ItemMold tmp = ((ItemMold) stack.getItem());
+                    if (tmp.getType().equals(this.type) && moldStack == null)
+                    {
+                        moldStack = stack;
+                    }
+                    else
+                    {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+        }
+        if (moldStack != null)
+        {
+            IFluidHandler moldCap = moldStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
+            if (moldCap instanceof IMoldHandler)
+            {
+                IMoldHandler moldHandler = (IMoldHandler) moldCap;
+                if (!moldHandler.isMolten() && moldHandler.getAmount() == 100)
+                {
+                    return getOutputItem(moldHandler);
+                }
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -82,111 +190,14 @@ public class UnmoldRecipe extends ShapelessOreRecipe
                 }
             }
         }
-        return super.getRemainingItems(inv);
-    }
-
-    @Override
-    public boolean isDynamic()
-    {
-        return true;
+        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }
 
     @Override
     @Nonnull
-    public ItemStack getRecipeOutput()
+    public NonNullList<Ingredient> getIngredients()
     {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack getCraftingResult(InventoryCrafting inv)
-    {
-        ItemStack moldStack = null;
-        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
-        {
-            ItemStack stack = inv.getStackInSlot(slot);
-            if (!stack.isEmpty())
-            {
-                if (stack.getItem() instanceof ItemMold)
-                {
-                    ItemMold tmp = ((ItemMold) stack.getItem());
-                    if (tmp.type.equals(this.type) && moldStack == null)
-                    {
-                        moldStack = stack;
-                    }
-                    else
-                    {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                else
-                {
-                    return ItemStack.EMPTY;
-                }
-            }
-        }
-        if (moldStack != null)
-        {
-            IFluidHandler moldCap = moldStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-            if (moldCap instanceof IMoldHandler)
-            {
-                IMoldHandler moldHandler = (IMoldHandler) moldCap;
-                if (!moldHandler.isMolten() && moldHandler.getAmount() == 100)
-                {
-                    return getOutputItem(moldHandler, this.type);
-                }
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world)
-    {
-        boolean foundMold = false;
-        for (int slot = 0; slot < inv.getSizeInventory(); slot++)
-        {
-            ItemStack stack = inv.getStackInSlot(slot);
-            if (!stack.isEmpty())
-            {
-                if (stack.getItem() instanceof ItemMold)
-                {
-                    ItemMold moldItem = ((ItemMold) stack.getItem());
-                    IFluidHandler cap = stack.getCapability(FLUID_HANDLER_CAPABILITY, null);
-
-                    if (cap instanceof IMoldHandler)
-                    {
-                        IMoldHandler moldHandler = (IMoldHandler) cap;
-                        if (!moldHandler.isMolten())
-                        {
-                            Metal metal = moldHandler.getMetal();
-                            if (metal != null && moldItem.type.equals(this.type) && !foundMold)
-                            {
-                                foundMold = true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        return foundMold;
+        return input;
     }
 
     @Override
@@ -194,6 +205,16 @@ public class UnmoldRecipe extends ShapelessOreRecipe
     public String getGroup()
     {
         return group == null ? "" : group.toString();
+    }
+
+    public Metal.ItemType getType()
+    {
+        return type;
+    }
+
+    public float getChance()
+    {
+        return chance;
     }
 
     @Override
@@ -220,7 +241,7 @@ public class UnmoldRecipe extends ShapelessOreRecipe
         }
     }
 
-    private ItemStack getOutputItem(final IMoldHandler moldHandler, final Metal.ItemType type)
+    public ItemStack getOutputItem(final IMoldHandler moldHandler)
     {
         Metal m = moldHandler.getMetal();
         if (m != null)
