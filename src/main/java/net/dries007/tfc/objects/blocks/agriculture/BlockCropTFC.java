@@ -35,6 +35,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.blocks.stone.BlockFarmlandTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.objects.te.TECropBase;
 import net.dries007.tfc.util.Helpers;
@@ -229,6 +230,16 @@ public abstract class BlockCropTFC extends BlockBush
             TECropBase te = Helpers.getTE(worldIn, pos, TECropBase.class);
             if (te != null)
             {
+                // If can't see sky, or isn't moisturized, reset growth *evil laughter* >:)
+                IBlockState stateFarmland = worldIn.getBlockState(pos.down());
+                if (!state.getValue(WILD))
+                {
+                    if (!worldIn.canSeeSky(pos) || (stateFarmland.getBlock() instanceof BlockFarmlandTFC && stateFarmland.getValue(BlockFarmlandTFC.MOISTURE) < 3))
+                    {
+                        te.resetCounter();
+                    }
+                }
+
                 boolean isAlive = true;
                 float growthTime = crop.getGrowthTime() * (float) ConfigTFC.General.FOOD.cropGrowthTimeModifier;
                 while (te.getTicksSinceUpdate() > growthTime && isAlive)
