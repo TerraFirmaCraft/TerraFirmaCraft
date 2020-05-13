@@ -43,6 +43,7 @@ import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.items.metal.ItemMetalChisel;
 import net.dries007.tfc.objects.items.metal.ItemMetalTool;
 import net.dries007.tfc.objects.items.rock.ItemRock;
+import net.dries007.tfc.objects.recipes.SaltingRecipe;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinRegistry;
 
 @JEIPlugin
@@ -344,5 +345,7 @@ public final class TFCJEIPlugin implements IModPlugin
         registry.addIngredientInfo(new ItemStack(BlocksTFC.PIT_KILN, 1), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.pit_kiln").getFormattedText());
         registry.addIngredientInfo(new ItemStack(BlocksTFC.PLACED_ITEM, 1), VanillaTypes.ITEM, new TextComponentTranslation("jei.description.tfc.placed_item").getFormattedText());
 
+        //Custom handlers
+        registry.handleRecipes(SaltingRecipe.class, SaltingRecipeWrapper::new, VanillaRecipeCategoryUid.CRAFTING);
     }
 }
