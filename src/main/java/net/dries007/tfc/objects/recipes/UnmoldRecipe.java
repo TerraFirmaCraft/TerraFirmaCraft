@@ -104,19 +104,6 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     }
 
     @Override
-    public boolean isDynamic()
-    {
-        return true;
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack getRecipeOutput()
-    {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
     @Nonnull
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
@@ -156,6 +143,19 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
                 }
             }
         }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean canFit(int width, int height)
+    {
+        return true;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getRecipeOutput()
+    {
         return ItemStack.EMPTY;
     }
 
@@ -201,6 +201,12 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     }
 
     @Override
+    public boolean isDynamic()
+    {
+        return true;
+    }
+
+    @Override
     @Nonnull
     public String getGroup()
     {
@@ -215,12 +221,6 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     public float getChance()
     {
         return chance;
-    }
-
-    @Override
-    public boolean canFit(int width, int height)
-    {
-        return true;
     }
 
     /**

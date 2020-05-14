@@ -88,12 +88,39 @@ public class BlockNestBox extends Block
         return false;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (!canStay(world, pos))
+        {
+            world.destroyBlock(pos, true);
+        }
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TENestBox te = Helpers.getTE(worldIn, pos, TENestBox.class);
+        if (te != null)
+        {
+            te.onBreakBlock(worldIn, pos, state);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     @Nonnull
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World world, BlockPos pos)
+    {
+        return canStay(world, pos);
     }
 
     @Override
@@ -118,5 +145,10 @@ public class BlockNestBox extends Block
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TENestBox();
+    }
+
+    private boolean canStay(IBlockAccess world, BlockPos pos)
+    {
+        return world.getBlockState(pos.down()).getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
     }
 }
