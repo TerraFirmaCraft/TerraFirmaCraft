@@ -61,7 +61,7 @@ public class BlockQuern extends Block implements IItemSize, IHighlightHandler
     {
         // This will compute a line from the camera center (crosshair) starting at the player eye pos and a little after this block
         // so we can grab the exact point regardless from which face player is looking from
-        double length = Math.sqrt(pos.distanceSqToCenter(player.posX, player.posY, player.posZ)) + 0.7D;
+        double length = Math.sqrt(pos.distanceSqToCenter(player.posX, player.posY, player.posZ)) + 1.5D;
         Vec3d eyePos = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3d lookingPos = eyePos.add(new Vec3d(player.getLookVec().x * length, player.getLookVec().y * length, player.getLookVec().z * length));
 
