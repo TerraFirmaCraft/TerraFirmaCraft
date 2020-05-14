@@ -371,7 +371,13 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
             else if (!this.hasChest() && this.isTame() && holdingChest)
             {
                 this.setChested(true);
-                stack.shrink(1);
+                this.playChestEquipSound();
+                this.initHorseChest();
+                if (!player.capabilities.isCreativeMode)
+                {
+                    stack.shrink(1);
+                }
+                return true;
             }
             else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
