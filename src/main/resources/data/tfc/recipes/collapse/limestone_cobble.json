@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
+    "tfc:rock/cobble/limestone",
     "tfc:rock/raw/limestone",
     "tfc:ore/native_copper/limestone",
     "tfc:ore/native_gold/limestone",

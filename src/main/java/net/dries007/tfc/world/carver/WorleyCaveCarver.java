@@ -15,12 +15,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.world.ChunkBlockReplacer;
 import net.dries007.tfc.world.noise.*;
 
+/**
+ * todo: figure out how to make this not leave huge overhanging water - maybe remove water if there is a path to sky light?
+ */
 public class WorleyCaveCarver
 {
     /* The number of vertical samples to take. Noise is sampled every 4 blocks, then interpolated */
-    private static final int SAMPLE_HEIGHT = 28;
+    private static final int SAMPLE_HEIGHT = 40;//28; // todo: this should be based on the height fall off value?
     /* Depth to fill the lower levels with lava */
     private static final int LAVA_DEPTH = 11;
 
@@ -59,7 +63,7 @@ public class WorleyCaveCarver
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    public void carve(IChunk chunkIn, int chunkX, int chunkZ, BitSet carvingMask)
+    public void carve(IChunk chunkIn, ChunkBlockReplacer replacer, int chunkX, int chunkZ, BitSet carvingMask)
     {
         float[] noiseValues = new float[5 * 5 * SAMPLE_HEIGHT];
 
@@ -127,7 +131,7 @@ public class WorleyCaveCarver
 
                                     if (finalNoise > worleyNoiseCutoff)
                                     {
-                                        carveBlock(chunkIn, carvingMask, pos);
+                                        carveBlock(chunkIn, replacer, carvingMask, pos);
                                     }
                                 }
                             }
@@ -149,12 +153,9 @@ public class WorleyCaveCarver
 
     /**
      * Tries to carve a single block
-     *
-     * @return true if the surface was reached, we can stop carving this column
      */
-    private boolean carveBlock(IChunk chunk, BitSet carvingMask, BlockPos.Mutable pos)
+    private void carveBlock(IChunk chunk, ChunkBlockReplacer replacer, BitSet carvingMask, BlockPos.Mutable pos)
     {
-        boolean reachedSurface = false;
         int maskIndex = (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
         if (!carvingMask.get(maskIndex))
         {
@@ -163,11 +164,6 @@ public class WorleyCaveCarver
             pos.move(Direction.UP);
             BlockState stateAbove = chunk.getBlockState(pos);
             pos.move(Direction.DOWN);
-            if (stateAt.getBlock() == Blocks.GRASS_BLOCK || stateAt.getBlock() == Blocks.MYCELIUM)
-            {
-                // todo: use this?
-                reachedSurface = true;
-            }
             if (canCarveBlock(stateAt, stateAbove))
             {
                 if (pos.getY() < LAVA_DEPTH)
@@ -177,15 +173,10 @@ public class WorleyCaveCarver
                 else
                 {
                     chunk.setBlockState(pos, CAVE_AIR, false);
-                    // todo: vanilla updates the bottom material based on the surface material here, should we?
-                    //pos.setPos(pos).move(Direction.DOWN);
-                    //if (chunk.getBlockState(pos).getBlock() == Blocks.DIRT)
-                    //{
-                    //    chunk.setBlockState(pos, biomeGetter.apply(pos).getSurfaceBuilderConfig().getTop(), false);
-                    //}
+                    pos.setPos(pos);
+                    replacer.replaceCarving(chunk, pos, stateAbove);
                 }
             }
         }
-        return reachedSurface;
     }
 }

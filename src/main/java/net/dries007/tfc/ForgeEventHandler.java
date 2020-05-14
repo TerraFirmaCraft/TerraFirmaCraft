@@ -5,12 +5,14 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandSource;
 import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -26,11 +28,15 @@ import net.dries007.tfc.network.ChunkDataRequestPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.TFCTags;
 import net.dries007.tfc.objects.recipes.CollapseRecipe;
+import net.dries007.tfc.objects.recipes.LandslideRecipe;
 import net.dries007.tfc.objects.types.RockManager;
+import net.dries007.tfc.util.TFCReloadListener;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.tracker.WorldTracker;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.vein.VeinTypeManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -66,6 +72,12 @@ public final class ForgeEventHandler
     }
 
     @SubscribeEvent
+    public static void onAttachCapabilitiesWorld(AttachCapabilitiesEvent<World> event)
+    {
+        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker());
+    }
+
+    @SubscribeEvent
     public static void beforeServerStart(FMLServerAboutToStartEvent event)
     {
         LOGGER.debug("Before Server Start");
@@ -75,6 +87,9 @@ public final class ForgeEventHandler
         resourceManager.addReloadListener(RockManager.INSTANCE);
         resourceManager.addReloadListener(VeinTypeManager.INSTANCE);
         resourceManager.addReloadListener(SupportManager.INSTANCE);
+
+        // generic reload listener
+        resourceManager.addReloadListener(TFCReloadListener.INSTANCE);
     }
 
     @SubscribeEvent
@@ -109,6 +124,42 @@ public final class ForgeEventHandler
         if (TFCTags.CAN_TRIGGER_COLLAPSE.contains(state.getBlock()) && world instanceof World)
         {
             CollapseRecipe.tryTriggerCollapse((World) world, pos);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
+    {
+        IWorld world = event.getWorld();
+        for (Direction direction : event.getNotifiedSides())
+        {
+            // Check each notified block for a potential gravity block
+            BlockPos pos = event.getPos().offset(direction);
+            BlockState state = world.getBlockState(pos);
+            if (TFCTags.CAN_LANDSLIDE.contains(state.getBlock()) && world instanceof World)
+            {
+                // Here, we just record the position rather than immediately updating as this is called from `setBlockState` so it's preferred to handle it with just a little latency
+                ((World) world).getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
+    {
+        IWorld world = event.getWorld();
+        if (TFCTags.CAN_LANDSLIDE.contains(event.getState().getBlock()) && world instanceof World)
+        {
+            LandslideRecipe.tryLandslide((World) event.getWorld(), event.getPos(), event.getState());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.WorldTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START)
+        {
+            event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
         }
     }
 }

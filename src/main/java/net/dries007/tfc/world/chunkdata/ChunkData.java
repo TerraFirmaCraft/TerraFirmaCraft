@@ -95,7 +95,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        return cap == ChunkDataCapability.CAPABILITY ? capability.cast() : LazyOptional.empty();
+        return ChunkDataCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
     @Override

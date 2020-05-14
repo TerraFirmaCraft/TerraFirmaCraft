@@ -30,10 +30,12 @@ public class ChunkBlockReplacer
     private static final Logger LOGGER = LogManager.getLogger();
 
     protected final Map<Block, IBlockReplacer> replacements;
+    protected final Map<Block, Block> carvingReplacementRules;
 
     public ChunkBlockReplacer()
     {
         replacements = new HashMap<>();
+        carvingReplacementRules = new HashMap<>();
 
         // Stone -> raw rock
         register(Blocks.STONE, (rockData, x, y, z, rainfall, temperature, random) -> {
@@ -58,6 +60,11 @@ public class ChunkBlockReplacer
                 return TFCBlocks.SAND.get(rockData.getSand(x, z)).get().getDefaultState();
             }
         });
+        // Replace exposed dirt with grass in cave carvers
+        for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
+        {
+            registerCarving(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get(), TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
+        }
 
         // Grass -> top layer surface material (grass in high rainfall, sand in low rainfall)
         register(Blocks.GRASS_BLOCK, new IBlockReplacer()
@@ -125,6 +132,20 @@ public class ChunkBlockReplacer
                 }
             }
         }
+
+        // todo: chunk fixer-upper
+        // tasks:
+        // 1) try and remove floating water by placing suitable blocks beneath it,
+    }
+
+    public void replaceCarving(IChunk chunk, BlockPos pos, BlockState stateAbove)
+    {
+        // Replace exposed surface materials
+        BlockState stateDown = chunk.getBlockState(pos.down());
+        if (carvingReplacementRules.containsKey(stateDown.getBlock()))
+        {
+            chunk.setBlockState(pos.down(), carvingReplacementRules.get(stateDown.getBlock()).getDefaultState(), false);
+        }
     }
 
     protected void register(Block block, IBlockReplacer replacer)
@@ -134,6 +155,15 @@ public class ChunkBlockReplacer
             LOGGER.debug("Replaced entry {} in ChunkBlockReplacer", block);
         }
         replacements.put(block, replacer);
+    }
+
+    protected void registerCarving(Block block, Block replacement)
+    {
+        if (carvingReplacementRules.containsKey(block))
+        {
+            LOGGER.debug("Replaced entry {} in ChunkBlockReplacer#carvingReplacementRules", block);
+        }
+        carvingReplacementRules.put(block, replacement);
     }
 
     @FunctionalInterface

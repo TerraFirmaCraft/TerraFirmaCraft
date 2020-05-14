@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": "minecraft:oak_log[axis=y]",
-  "support_up": 3,
+  "ingredient": "minecraft:glass",
+  "support_up": 1,
   "support_down": 1,
   "support_horizontal": 4
 }

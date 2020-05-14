@@ -45,7 +45,7 @@ public final class Helpers
      */
     @Nonnull
     @SuppressWarnings("ConstantConditions")
-    public static <T> T getNull()
+    public static <T> T notNull()
     {
         return null;
     }

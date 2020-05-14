@@ -1,29 +1,32 @@
 package net.dries007.tfc.objects.recipes;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.objects.TFCTags;
 import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.util.support.SupportManager;
+import net.dries007.tfc.world.tracker.CollapseData;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 /**
- * This handles all logic relating to block collapses:
- * - Triggering collapses via {@link CollapseRecipe#tryTriggerCollapse(World, BlockPos)}
- * - Checking if blocks can start collapses via {@link CollapseRecipe#canStartCollapse(IWorld, BlockPos)}
- * - Checking if blocks can actually collapse via {@link CollapseRecipe#canCollapse(IWorld, BlockPos)}
- * - Directly causing collapses via {@link CollapseRecipe#startCollapse(World, BlockPos)}
- * - Finding what blocks convert to when collapsing (the point of this recipe)
+ * This handles logic relating to block collapses.
+ * The recipe itself only handles *transformations*, not actually if a block can or cannot collapse. Those are handled by tags.
+ *
+ * @see SupportManager
+ * @see TFCFallingBlockEntity
  */
 public class CollapseRecipe extends SimpleBlockRecipe
 {
@@ -31,29 +34,27 @@ public class CollapseRecipe extends SimpleBlockRecipe
 
     /**
      * Called to attempt to trigger a collapse, from when a player mines a block.
+     *
+     * @return true if a collapse occurred.
      */
     public static boolean tryTriggerCollapse(World world, BlockPos pos)
     {
-        if (world.isRemote() || !world.isAreaLoaded(pos, 32))
+        if (!world.isRemote() && world.isAreaLoaded(pos, 32))
         {
-            return false;
-        }
-        if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
-        {
-            // Random radius
-            int radX = (RANDOM.nextInt(5) + 4) / 2;
-            int radY = (RANDOM.nextInt(3) + 2) / 2;
-            int radZ = (RANDOM.nextInt(5) + 4) / 2;
-            for (BlockPos checking : findUnsupportedPositions(world, pos.add(-radX, -radY, -radZ), pos.add(radX, radY, radZ))) // 9x5x9 max
+            if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
             {
-                // Check the area for a block collapse!
-                if (canStartCollapse(world, checking))
+                // Random radius
+                int radX = (RANDOM.nextInt(5) + 4) / 2;
+                int radY = (RANDOM.nextInt(3) + 2) / 2;
+                int radZ = (RANDOM.nextInt(5) + 4) / 2;
+                for (BlockPos checking : SupportManager.findUnsupportedPositions(world, pos.add(-radX, -radY, -radZ), pos.add(radX, radY, radZ))) // 9x5x9 max
                 {
-                    // Trigger collapse!
-                    startCollapse(world, checking);
-                    // todo: sound effect
-                    //worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    return true; // Don't need to check other blocks
+                    if (canStartCollapse(world, checking))
+                    {
+                        startCollapse(world, checking);
+                        world.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundCategory.BLOCKS, 1.0f, 1.0f);
+                        return true; // Don't need to check other blocks
+                    }
                 }
             }
         }
@@ -61,71 +62,73 @@ public class CollapseRecipe extends SimpleBlockRecipe
     }
 
     /**
-     * This is an optimized way to check for blocks that aren't supported during a cave in, instead of checking every single block individually and calling BlockSupper#isBeingSupported
+     * Checks if a single block is possible to be the locus of a collapse
      */
-    public static Set<BlockPos> findUnsupportedPositions(IWorld worldIn, BlockPos from, BlockPos to)
-    {
-        Set<BlockPos> listSupported = new HashSet<>();
-        Set<BlockPos> listUnsupported = new HashSet<>();
-        int minX = Math.min(from.getX(), to.getX());
-        int maxX = Math.max(from.getX(), to.getX());
-        int minY = Math.min(from.getY(), to.getY());
-        int maxY = Math.max(from.getY(), to.getY());
-        int minZ = Math.min(from.getZ(), to.getZ());
-        int maxZ = Math.max(from.getZ(), to.getZ());
-        for (BlockPos searchingPoint : SupportManager.INSTANCE.getMaximumSupportedAreaAround(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ)))
-        {
-            if (!listSupported.contains(searchingPoint))
-            {
-                listUnsupported.add(searchingPoint.toImmutable()); // Adding blocks that wasn't found supported
-            }
-            BlockState supportState = worldIn.getBlockState(searchingPoint);
-            SupportManager.INSTANCE.get(supportState).ifPresent(support -> {
-                for (BlockPos supported : support.getSupportedArea(searchingPoint))
-                {
-                    listSupported.add(supported.toImmutable()); // Adding all supported blocks by this support
-                    listUnsupported.remove(supported); // Remove if this block was added earlier
-                }
-            });
-        }
-        // Searching point wasn't from points between from <-> to but
-        // Time to remove the outsides that were added for convenience
-        listUnsupported.removeIf(content -> content.getX() < minX || content.getX() > maxX || content.getY() < minY || content.getY() > maxY || content.getZ() < minZ || content.getZ() > maxZ);
-        return listUnsupported;
-    }
-
     public static boolean canStartCollapse(IWorld world, BlockPos pos)
     {
-        BlockState state = world.getBlockState(pos);
-        return TFCTags.CAN_START_COLLAPSE.contains(state.getBlock()) && canCollapse(world, pos);
+        return TFCTags.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.down());
     }
 
-    public static boolean canCollapse(IWorld world, BlockPos pos)
-    {
-        return world.getBlockState(pos.down()).getMaterial().isReplaceable();
-    }
-
+    /**
+     * Starts a collapse from a given location
+     * - at this point, any supports are ignored completely.
+     * - many more blocks can collapse, even if they can't trigger or start collapses.
+     * - this is much more in-depth than previous implementations, and searches aggressively for next-tick collapse blocks
+     */
     public static void startCollapse(World world, BlockPos centerPos)
     {
-        // When starting a collapse, support checks are ignored completely
-        int radiusH = TFCConfig.SERVER.collapseMinRadius.get() + RANDOM.nextInt(TFCConfig.SERVER.collapseRadiusVariance.get());
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(centerPos.add(-radiusH, -4, -radiusH), centerPos.add(radiusH, 1, radiusH)))
+        int radius = TFCConfig.SERVER.collapseMinRadius.get() + RANDOM.nextInt(TFCConfig.SERVER.collapseRadiusVariance.get());
+        int radiusSquared = radius * radius;
+        List<BlockPos> secondaryPositions = new ArrayList<>();
+
+        // Initially only scan on the bottom layer, and advance upwards
+        for (BlockPos pos : BlockPos.getAllInBoxMutable(centerPos.add(-radius, -4, -radius), centerPos.add(radius, -4, radius)))
         {
-            if (canCollapse(world, pos))
+            boolean foundEmpty = false; // If we've found a space to collapse into
+            for (int y = 0; y <= 8; y++)
             {
-                double distance = centerPos.distanceSq(pos);
-                double chance = TFCConfig.SERVER.collapsePropagateChance.get() - 0.01 * Math.sqrt(distance);
-                if (RANDOM.nextFloat() < chance)
+                BlockPos posAt = pos.up(y);
+                BlockState stateAt = world.getBlockState(posAt);
+                if (foundEmpty && TFCTags.CAN_COLLAPSE.contains(stateAt.getBlock()))
                 {
-                    BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos);
-                    RecipeCache.INSTANCE.get(TFCRecipeTypes.COLLAPSE, world, wrapper).ifPresent(recipe -> {
-                        BlockState state = recipe.getBlockCraftingResult(wrapper);
-                        world.setBlockState(pos, state); // Required as the falling block entity will replace the block in it's first tick
-                        world.addEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state));
-                    });
+                    // Check for a possible collapse
+                    if (posAt.distanceSq(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                    {
+                        if (collapseBlock(world, posAt, stateAt))
+                        {
+                            // This column has started to collapse. Mark the next block above as unstable for the "follow up"
+                            secondaryPositions.add(posAt.up());
+                            break;
+                        }
+                    }
+                }
+                if (TFCFallingBlockEntity.canFallThrough(world, posAt))
+                {
+                    foundEmpty = true;
                 }
             }
         }
+
+        if (!secondaryPositions.isEmpty())
+        {
+            world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new CollapseData(centerPos, secondaryPositions, radiusSquared)));
+        }
+    }
+
+    /**
+     * Responsible for actually collapsing a singular block. Queries the collapse recipe, replaces the block, and spawns the falling block entity
+     *
+     * @return true if the collapse actually occurred
+     */
+    public static boolean collapseBlock(World world, BlockPos pos, BlockState state)
+    {
+        BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
+        return RecipeCache.INSTANCE.get(TFCRecipeTypes.COLLAPSE, world, wrapper).map(recipe -> {
+            BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
+            world.setBlockState(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
+            world.addEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, collapseState));
+            return true;
+        }).orElse(false);
     }
 
     public CollapseRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState)
@@ -153,4 +156,5 @@ public class CollapseRecipe extends SimpleBlockRecipe
             return new CollapseRecipe(id, ingredient, state);
         }
     }
+
 }

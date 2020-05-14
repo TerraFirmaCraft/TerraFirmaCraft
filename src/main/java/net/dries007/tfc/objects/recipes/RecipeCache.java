@@ -10,8 +10,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.world.World;
 
 /**
- * This is a simple LRU cache of each recipe type
- * Since there's a lot of cases (especially with some recipes) where the same recipe is likely to be queried again and again, we keep a cache of the last recipe and check that first.
+ * This is a simple cache of the most recently accessed recipe for any {@link IRecipeType}
  */
 public enum RecipeCache
 {
@@ -24,7 +23,6 @@ public enum RecipeCache
         recipes = new HashMap<>();
     }
 
-    // todo: figure out when to call this
     public void invalidate()
     {
         recipes.clear();

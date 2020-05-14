@@ -43,35 +43,39 @@ def generate(rm: ResourceManager):
                         'ore': 'tfc:ore/%s/%s' % (vein.ore, rock)
                     } for rock in rocks]
                 })
-        elif vein.rocks == ['soil']:  # clay or peat discs
-            rm.data(('tfc', 'veins', vein_name), {
-                'type': 'tfc:' + vein.type,
-                'rarity': vein.rarity,
-                'min_y': vein.min_y,
-                'max_y': vein.max_y,
-                'size': vein.size,
-                'density': vein.density,
-                'blocks': [{
-                    'stone': ['tfc:dirt/%s' % variant for variant in STANDARD_SOIL_BLOCK_VARIANTS],
-                    'ore': 'tfc:dirt/%s' % vein.ore
+        else:
+            if vein_name == 'clay':
+                blocks = [{
+                    'stone': 'tfc:dirt/%s' % variant,
+                    'ore': 'tfc:clay_dirt/%s' % variant
+                } for variant in SOIL_BLOCK_VARIANTS] + [{
+                    'stone': 'tfc:grass/%s' % variant,
+                    'ore': 'tfc:clay_grass/%s' % variant
+                } for variant in SOIL_BLOCK_VARIANTS]
+            elif vein_name == 'peat':
+                blocks = [{
+                    'stone': ['tfc:dirt/%s' % variant for variant in SOIL_BLOCK_VARIANTS],
+                    'ore': 'tfc:peat'
                 }] + [{
-                    'stone': ['tfc:grass/%s' % variant for variant in STANDARD_SOIL_BLOCK_VARIANTS],
-                    'ore': 'tfc:grass/%s' % vein.ore
+                    'stone': ['tfc:grass/%s' % variant for variant in SOIL_BLOCK_VARIANTS],
+                    'ore': 'tfc:peat_grass'
                 }]
-            })
-        elif vein.ore == 'gravel':  # Not an ore, but still spawns per rock type
-            rocks = expand_rocks(vein.rocks, vein_name)
-            rm.data(('tfc', 'veins', vein_name), {
-                'type': 'tfc:' + vein.type,
-                'rarity': vein.rarity,
-                'min_y': vein.min_y,
-                'max_y': vein.max_y,
-                'size': vein.size,
-                'density': vein.density,
-                'blocks': [{
+            elif vein_name == 'gravel':
+                rocks = expand_rocks(vein.rocks, vein_name)
+                blocks = [{
                     'stone': 'tfc:rock/raw/%s' % rock,
                     'ore': 'tfc:rock/gravel/%s' % rock
                 } for rock in rocks]
+            else:
+                raise RuntimeError('Unknown vein name %s, data gen not know what to do. big sad.' % vein_name)
+            rm.data(('tfc', 'veins', vein_name), {
+                'type': 'tfc:' + vein.type,
+                'rarity': vein.rarity,
+                'min_y': vein.min_y,
+                'max_y': vein.max_y,
+                'size': vein.size,
+                'density': vein.density,
+                'blocks': blocks
             })
 
 

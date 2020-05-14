@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
@@ -26,6 +27,7 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -68,6 +70,7 @@ public final class TerraFirmaCraft
         TFCItems.ITEMS.register(modEventBus);
         TFCEntities.ENTITIES.register(modEventBus);
         TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
+        TFCSounds.SOUNDS.register(modEventBus);
 
         TFCWorldType.BIOME_PROVIDERS.register(modEventBus);
         TFCWorldType.CHUNK_GENERATORS.register(modEventBus);
@@ -89,6 +92,7 @@ public final class TerraFirmaCraft
 
         // Setup methods
         ChunkDataCapability.setup();
+        WorldTrackerCapability.setup();
         TFCBiomes.setup();
     }
 }
