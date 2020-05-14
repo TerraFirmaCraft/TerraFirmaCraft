@@ -198,7 +198,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     {
         if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || this.isHungry())
             return false;
-        return this.matingTime == -1 || this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
+        return this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
@@ -249,7 +249,13 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
             else if (!this.hasChest() && this.isTame() && holdingChest)
             {
                 this.setChested(true);
-                stack.shrink(1);
+                this.playChestEquipSound();
+                this.initHorseChest();
+                if (!player.capabilities.isCreativeMode)
+                {
+                    stack.shrink(1);
+                }
+                return true;
             }
             else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {

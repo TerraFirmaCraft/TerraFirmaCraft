@@ -91,13 +91,6 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    public boolean isFood(@Nonnull ItemStack stack)
-    {
-        // Since there's no way to get fish in default TFC, let's consider meats as also valid food items for cats
-        return (stack.getItem() == Items.FISH) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
-    }
-
-    @Override
     public void birthChildren()
     {
         // Not farmable
@@ -107,6 +100,25 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     public long gestationDays()
     {
         return 0; // not farmable
+    }
+
+    @Override
+    public int getDaysToAdulthood()
+    {
+        return DAYS_TO_ADULTHOOD;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return 0;
+    }
+
+    @Override
+    public boolean isFood(@Nonnull ItemStack stack)
+    {
+        // Since there's no way to get fish in default TFC, let's consider meats as also valid food items for cats
+        return (stack.getItem() == Items.FISH) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
     }
 
     @Override
@@ -146,9 +158,14 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    public int getDaysToAdulthood()
+    protected void applyEntityAttributes()
     {
-        return DAYS_TO_ADULTHOOD;
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.32D);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 
     @Override
@@ -178,22 +195,5 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F); // Close enough
-    }
-
-    @Override
-    public int getDaysToElderly()
-    {
-        return 0;
-    }
-
-    @Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.32D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 }

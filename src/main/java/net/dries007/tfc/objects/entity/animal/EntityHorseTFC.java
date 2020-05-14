@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFollowParent;
+import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIRunAroundLikeCrazy;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -199,7 +200,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     {
         if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || this.isHungry())
             return false;
-        return this.matingTime == -1 || this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
+        return this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
@@ -296,12 +297,14 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     }
 
     @Override
-    protected void initEntityAI()
+    public boolean canMateWith(EntityAnimal otherAnimal)
     {
-        EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
-        EntityAnimalTFC.addCommonPreyAI(this, 1.2);
-        this.tasks.addTask(1, new EntityAIRunAroundLikeCrazy(this, 1.2D));
-        this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
+        if (otherAnimal instanceof EntityHorseTFC || otherAnimal instanceof EntityDonkeyTFC)
+        {
+            IAnimalTFC other = (IAnimalTFC) otherAnimal;
+            return this.getGender() != other.getGender() && this.isInLove() && otherAnimal.isInLove();
+        }
+        return false;
     }
 
     @Override
@@ -490,14 +493,13 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     }
 
     @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
+    protected void initEntityAI()
     {
-        if (otherAnimal instanceof IAnimalTFC && otherAnimal instanceof AbstractHorse)
-        {
-            IAnimalTFC other = (IAnimalTFC) otherAnimal;
-            return this.getGender() != other.getGender() && this.isInLove() && otherAnimal.isInLove();
-        }
-        return false;
+        EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
+        EntityAnimalTFC.addCommonPreyAI(this, 1.2);
+        tasks.addTask(2, new EntityAIMate(this, 1.0D, EntityDonkeyTFC.class)); // Missing donkeys (for mules)
+        this.tasks.addTask(1, new EntityAIRunAroundLikeCrazy(this, 1.2D));
+        this.tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
     }
 
     @Nullable
@@ -533,11 +535,14 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
         List<AbstractHorse> list = this.world.getEntitiesWithinAABB(AbstractHorse.class, this.getEntityBoundingBox().grow(8.0D));
         for (AbstractHorse ent : list)
         {
-            if ((ent instanceof EntityHorseTFC || ent instanceof EntityDonkeyTFC) &&
-                ((IAnimalTFC) ent).getGender() == Gender.FEMALE && !ent.isInLove() && ((IAnimalTFC) ent).isReadyToMate())
+            if (ent instanceof EntityHorseTFC || ent instanceof EntityDonkeyTFC)
             {
-                ent.setInLove(null);
-                return true;
+                IAnimalTFC animal = (IAnimalTFC) ent;
+                if (animal.getGender() == Gender.FEMALE && animal.isReadyToMate() && !ent.isInLove())
+                {
+                    ent.setInLove(null);
+                    return true;
+                }
             }
         }
         return false;
