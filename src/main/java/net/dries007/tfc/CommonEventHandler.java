@@ -634,10 +634,10 @@ public final class CommonEventHandler
             event.setResult(Event.Result.DENY);
         }
 
-        // Stop mob spawning in surface
+        // Stop mob spawning on surface
         if (ConfigTFC.General.DIFFICULTY.preventMobsOnSurface)
         {
-            if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
+            if (Helpers.shouldPreventOnSurface(event.getEntity()))
             {
                 int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2) / 2 + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
                 if (pos.getY() >= maximumY || world.canSeeSky(pos))
