@@ -961,7 +961,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -999,7 +999,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1037,7 +1037,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1075,7 +1075,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1108,7 +1108,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1141,7 +1141,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1174,7 +1174,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1207,7 +1207,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1240,7 +1240,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1273,7 +1273,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1306,7 +1306,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1329,7 +1329,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1362,7 +1362,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1395,7 +1395,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)

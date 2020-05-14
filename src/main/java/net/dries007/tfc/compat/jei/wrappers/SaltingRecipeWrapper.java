@@ -18,7 +18,6 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.objects.recipes.SaltingRecipe;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 
 public class SaltingRecipeWrapper implements IRecipeWrapper
 {
@@ -41,8 +40,7 @@ public class SaltingRecipeWrapper implements IRecipeWrapper
                 IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
                 if (food != null)
                 {
-                    // Reset capability to avoid rotten foods
-                    food.setCreationDate(CalendarTFC.PLAYER_TIME.getTicks());
+                    // Clear food traits, for some reason, #getMatchingStacks grabs ingredients brined
                     food.getTraits().clear();
                     ItemStack outputStack = stack.copy();
                     food = outputStack.getCapability(CapabilityFood.CAPABILITY, null);
