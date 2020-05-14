@@ -18,7 +18,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class ChunkDataCapability
 {
     @CapabilityInject(ChunkData.class)
-    public static final Capability<ChunkData> CAPABILITY = Helpers.getNull();
+    public static final Capability<ChunkData> CAPABILITY = Helpers.notNull();
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "chunk_data");
 
     public static void setup()

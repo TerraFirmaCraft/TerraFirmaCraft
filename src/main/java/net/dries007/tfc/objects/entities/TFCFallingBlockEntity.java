@@ -18,11 +18,19 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.objects.TFCTags;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
+
 /**
  * A falling block entity that has a bit more oomph - it destroys blocks underneath it rather than hovering or popping off.
  */
 public class TFCFallingBlockEntity extends FallingBlockEntity
 {
+    public static boolean canFallThrough(IBlockReader world, BlockPos pos)
+    {
+        return canFallThrough(world, pos, world.getBlockState(pos));
+    }
+
     public static boolean canFallThrough(IBlockReader world, BlockPos pos, BlockState state)
     {
         return !state.isSolidSide(world, pos, Direction.UP);
@@ -137,6 +145,11 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                         ((FallingBlock) block).onEndFalling(this.world, posAt, getBlockState(), blockstate);
                                     }
 
+                                    if (TFCTags.CAN_LANDSLIDE.contains(getBlockState().getBlock()))
+                                    {
+                                        world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
+                                    }
+
                                     // Sets the tile entity if it exists
                                     if (tileEntityData != null && getBlockState().hasTileEntity())
                                     {
@@ -164,7 +177,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                             }
                             else if (shouldDropItem && this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS))
                             {
-                                this.entityDropItem(block);
+                                entityDropItem(block);
                             }
                         }
                         else if (block instanceof FallingBlock)

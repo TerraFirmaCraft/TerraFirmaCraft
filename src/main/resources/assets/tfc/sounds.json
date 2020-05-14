@@ -51,25 +51,25 @@
       "tfc:bellows1"
     ]
   },
-  "dirt.slide.short": {
+  "dirt_slide_short": {
     "category": "block",
     "sounds": [
-      "tfc:fdirts1",
-      "tfc:fdirts2"
+      "tfc:dirt_slide_short_1",
+      "tfc:dirt_slide_short_2"
     ]
   },
-  "rock.slide.long": {
+  "rock_slide_long": {
     "category": "block",
     "sounds": [
-      "tfc:frockl1",
-      "tfc:frockl2"
+      "tfc:rock_slide_long_1",
+      "tfc:rock_slide_long_2"
     ]
   },
-  "rock.slide.short": {
+  "rock_slide_short": {
     "category": "block",
     "sounds": [
-      "tfc:frocks1",
-      "tfc:frocks2"
+      "tfc:rock_slide_short_1",
+      "tfc:rock_slide_short_2"
     ]
   },
   "anvil.metalimpact": {

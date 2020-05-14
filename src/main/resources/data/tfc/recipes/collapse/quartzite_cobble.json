@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
+    "tfc:rock/cobble/quartzite",
     "tfc:rock/raw/quartzite",
     "tfc:ore/native_copper/quartzite",
     "tfc:ore/native_gold/quartzite",

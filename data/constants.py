@@ -140,15 +140,14 @@ ORE_VEINS: Dict[str, Vein] = {
                    ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']),
     'halite': Vein('halite', 'disc', 120, 30, 80, 100, 80, 0, 0, 0, ['sedimentary']),
 
-    'kimberlite': Vein('kimberlite', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
+    # 'kimberlite': Vein('kimberlite', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
 }
 
 ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'spike']
 ROCK_SPIKE_PARTS = ['base', 'middle', 'tip']
 SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'gray']
-SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path']
-SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam', 'clay_loam', 'clay', 'peat']
-STANDARD_SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'clay_loam']
+SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path', 'clay', 'clay_grass']
+SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam']
 
 
 def lang(key: str, *args) -> str:

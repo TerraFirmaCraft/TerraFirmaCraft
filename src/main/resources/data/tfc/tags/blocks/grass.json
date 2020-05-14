@@ -5,9 +5,6 @@
     "tfc:grass/silt",
     "tfc:grass/loam",
     "tfc:grass/sandy_loam",
-    "tfc:grass/silty_loam",
-    "tfc:grass/clay_loam",
-    "tfc:grass/clay",
-    "tfc:grass/peat"
+    "tfc:grass/silty_loam"
   ]
 }

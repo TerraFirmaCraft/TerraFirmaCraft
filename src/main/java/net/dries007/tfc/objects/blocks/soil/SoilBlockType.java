@@ -11,7 +11,9 @@ public enum SoilBlockType
 {
     DIRT,
     GRASS,
-    GRASS_PATH;
+    GRASS_PATH,
+    CLAY,
+    CLAY_GRASS;
 
     public static final SoilBlockType[] VALUES = values();
 
@@ -25,8 +27,10 @@ public enum SoilBlockType
         switch (this)
         {
             case DIRT:
+            case CLAY:
                 return new TFCDirtBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND));
             case GRASS:
+            case CLAY_GRASS:
                 return new TFCGrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT));
             case GRASS_PATH:
                 return new TFCGrassPathBlock(Block.Properties.create(Material.EARTH).hardnessAndResistance(0.65F).sound(SoundType.PLANT));
@@ -39,10 +43,7 @@ public enum SoilBlockType
         SILT,
         LOAM,
         SANDY_LOAM,
-        SILTY_LOAM,
-        CLAY_LOAM,
-        CLAY, // These two are special
-        PEAT;
+        SILTY_LOAM;
 
         public static final int TOTAL = values().length;
 

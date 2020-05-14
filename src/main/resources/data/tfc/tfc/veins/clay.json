@@ -8,22 +8,36 @@
   "density": 100,
   "blocks": [
     {
-      "stone": [
-        "tfc:dirt/silt",
-        "tfc:dirt/loam",
-        "tfc:dirt/sandy_loam",
-        "tfc:dirt/clay_loam"
-      ],
-      "ore": "tfc:dirt/clay"
+      "stone": "tfc:dirt/silt",
+      "ore": "tfc:clay_dirt/silt"
     },
     {
-      "stone": [
-        "tfc:grass/silt",
-        "tfc:grass/loam",
-        "tfc:grass/sandy_loam",
-        "tfc:grass/clay_loam"
-      ],
-      "ore": "tfc:grass/clay"
+      "stone": "tfc:dirt/loam",
+      "ore": "tfc:clay_dirt/loam"
+    },
+    {
+      "stone": "tfc:dirt/sandy_loam",
+      "ore": "tfc:clay_dirt/sandy_loam"
+    },
+    {
+      "stone": "tfc:dirt/silty_loam",
+      "ore": "tfc:clay_dirt/silty_loam"
+    },
+    {
+      "stone": "tfc:grass/silt",
+      "ore": "tfc:clay_grass/silt"
+    },
+    {
+      "stone": "tfc:grass/loam",
+      "ore": "tfc:clay_grass/loam"
+    },
+    {
+      "stone": "tfc:grass/sandy_loam",
+      "ore": "tfc:clay_grass/sandy_loam"
+    },
+    {
+      "stone": "tfc:grass/silty_loam",
+      "ore": "tfc:clay_grass/silty_loam"
     }
   ]
 }

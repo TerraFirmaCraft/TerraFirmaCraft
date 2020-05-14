@@ -17,10 +17,15 @@ public class BlockRecipeWrapper extends ItemStackRecipeWrapper
 
     public BlockRecipeWrapper(IBlockReader world, BlockPos pos)
     {
-        super(new ItemStack(world.getBlockState(pos).getBlock()));
+        this(world, pos, world.getBlockState(pos));
+    }
+
+    public BlockRecipeWrapper(IBlockReader world, BlockPos pos, BlockState state)
+    {
+        super(new ItemStack(state.getBlock()));
         this.world = world;
         this.pos = pos;
-        this.state = world.getBlockState(pos);
+        this.state = state;
     }
 
     public IBlockReader getWorld()

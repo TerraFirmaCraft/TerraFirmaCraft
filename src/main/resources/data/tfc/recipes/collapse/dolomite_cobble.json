@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
+    "tfc:rock/cobble/dolomite",
     "tfc:rock/raw/dolomite",
     "tfc:ore/native_copper/dolomite",
     "tfc:ore/native_gold/dolomite",

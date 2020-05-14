@@ -55,6 +55,12 @@ public class Support
         return ingredient.test(state);
     }
 
+    public boolean canSupport(BlockPos supportPos, BlockPos testPos)
+    {
+        BlockPos diff = supportPos.subtract(testPos);
+        return Math.abs(diff.getX()) <= supportHorizontal && -supportDown <= diff.getY() && diff.getY() <= supportUp && Math.abs(diff.getZ()) <= supportHorizontal;
+    }
+
     public Iterable<BlockPos> getSupportedArea(BlockPos center)
     {
         return BlockPos.getAllInBoxMutable(center.add(-supportHorizontal, -supportDown, -supportHorizontal), center.add(supportHorizontal, supportUp, supportHorizontal));

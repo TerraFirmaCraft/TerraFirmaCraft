@@ -40,7 +40,7 @@ public class Metal extends ForgeRegistryEntry<Metal>
     private final int color;
 
     private final IItemTier toolMetal;
-    private final IArmorMaterialTFC armorMetal;
+    private final IDamageTypeArmor armorMetal;
 
     /**
      * This is a registry object that will create a number of things.
@@ -53,7 +53,7 @@ public class Metal extends ForgeRegistryEntry<Metal>
      * @param color        color of the metal when in fluid form. Used to auto generate a fluid texture. In future this may be used to color items as well
      * @param toolMetal    The tool material. Null if metal is not able to create tools
      */
-    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float specificHeat, float meltTemp, int color, @Nullable IItemTier toolMetal, @Nullable IArmorMaterialTFC armorMetal)
+    public Metal(@Nonnull ResourceLocation name, Tier tier, boolean usable, float specificHeat, float meltTemp, int color, @Nullable IItemTier toolMetal, @Nullable IDamageTypeArmor armorMetal)
     {
         this.usable = usable;
         this.tier = tier;
@@ -73,7 +73,7 @@ public class Metal extends ForgeRegistryEntry<Metal>
     }
 
     @Nullable
-    public IArmorMaterialTFC getArmorMetal()
+    public IDamageTypeArmor getArmorMetal()
     {
         return armorMetal;
     }

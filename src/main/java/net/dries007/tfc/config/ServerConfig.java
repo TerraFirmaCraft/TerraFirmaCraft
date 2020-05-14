@@ -11,6 +11,11 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class ServerConfig
 {
+    /* Features */
+    public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
+    public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
+
+    /* Balance */
     public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
     public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
     public final ForgeConfigSpec.IntValue collapseMinRadius;
@@ -18,7 +23,10 @@ public class ServerConfig
 
     ServerConfig(ForgeConfigSpec.Builder builder)
     {
-        builder.push("balance");
+        builder.push("collapses");
+
+        enableBlockCollapsing = builder.comment("Enable rock collapsing when mining blocks").translation(MOD_ID + ".config.enableBlockCollapsing").define("enableBlockCollapsing", true);
+        enableBlockLandslides = builder.comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").translation(MOD_ID + ".config.enableBlockLandslides").define("enableBlockLandslides", true);
 
         collapseTriggerChance = builder.comment("Chance for a collapse to be triggered by mining a block.").translation(MOD_ID + ".config.collapseTriggerChance").defineInRange("collapseTriggerChance", 0.1, 0, 1);
         collapsePropagateChance = builder.comment("Chance that collapsing blocks propagate the collapse. Influenced by distance from epicenter of collapse.").translation(MOD_ID + ".config.collapsePropagateChance").defineInRange("collapsePropagateChance", 0.55, 0, 1);

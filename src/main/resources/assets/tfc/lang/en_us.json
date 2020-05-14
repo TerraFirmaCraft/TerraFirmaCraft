@@ -630,14 +630,8 @@
   "block.tfc.dirt.loam": "Loam Soil",
   "block.tfc.dirt.sandy_loam": "Sandy Loam Soil",
   "block.tfc.dirt.silty_loam": "Silty Loam Soil",
-  "block.tfc.dirt.clay_loam": "Clay Loam Soil",
-  "block.tfc.dirt.clay": "Clay Soil",
-  "block.tfc.dirt.peat": "Peat Soil",
   "block.tfc.grass.silt": "Silt Grass",
   "block.tfc.grass.loam": "Loam Grass",
   "block.tfc.grass.sandy_loam": "Sandy Loam Grass",
-  "block.tfc.grass.silty_loam": "Silty Loam Grass",
-  "block.tfc.grass.clay_loam": "Clay Loam Grass",
-  "block.tfc.grass.clay": "Clay Grass",
-  "block.tfc.grass.peat": "Peat Grass"
+  "block.tfc.grass.silty_loam": "Silty Loam Grass"
 }

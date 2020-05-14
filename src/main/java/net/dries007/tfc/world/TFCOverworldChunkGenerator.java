@@ -96,7 +96,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         if (stage == GenerationStage.Carving.AIR)
         {
             // First, run worley cave carver
-            worleyCaveCarver.carve(chunkIn, chunkIn.getPos().x << 4, chunkIn.getPos().z << 4, chunkIn.getCarvingMask(stage));
+            worleyCaveCarver.carve(chunkIn, blockReplacer, chunkIn.getPos().x << 4, chunkIn.getPos().z << 4, chunkIn.getCarvingMask(stage));
         }
         // Fire other world carvers
         super.func_225550_a_(biomeManager, chunkIn, stage);
@@ -109,11 +109,9 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     @Override
     public void func_225551_a_(WorldGenRegion worldGenRegion, IChunk chunk)
     {
-
         ChunkPos chunkPos = chunk.getPos();
         SharedSeedRandom random = new SharedSeedRandom();
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
-        BlockPos.Mutable pos = new BlockPos.Mutable();
 
         makeBedrock(chunk, random);
 
