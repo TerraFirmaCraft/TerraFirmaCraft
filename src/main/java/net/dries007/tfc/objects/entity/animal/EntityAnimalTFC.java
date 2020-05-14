@@ -150,9 +150,9 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
         this.setBirthDay(birthDay);
         this.setFamiliarity(0);
         this.setGrowingAge(0); //We don't use this
-        this.lastFed = -1;
-        this.matingTime = -1;
-        this.lastDeath = -1;
+        this.lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+        this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
+        this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.setFertilized(false);
     }
@@ -206,13 +206,12 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     {
         if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || this.isHungry())
             return false;
-        return this.matingTime == -1 || this.matingTime + MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
+        return this.matingTime + MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
     public boolean isHungry()
     {
-        if (lastFed == -1) return true;
         return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
@@ -334,22 +333,14 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
                 this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
                 findFemaleMate(this);
             }
-            if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
+            if (this.getAge() == Age.OLD && lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
-                if (lastDeath == -1)
+                this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                // Randomly die of old age, tied to entity UUID and calendar time
+                final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
+                if (random.nextDouble() < getOldDeathChance())
                 {
-                    // First time check, to avoid dying at the same time this animal spawned, we skip the first day
-                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                }
-                else
-                {
-                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                    // Randomly die of old age, tied to entity UUID and calendar time
-                    final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < getOldDeathChance())
-                    {
-                        this.setDead();
-                    }
+                    this.setDead();
                 }
             }
         }
