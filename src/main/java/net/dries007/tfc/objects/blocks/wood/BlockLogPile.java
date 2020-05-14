@@ -111,6 +111,21 @@ public class BlockLogPile extends Block implements ILightableBlock
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (worldIn.getBlockState(pos.up()).getBlock() == Blocks.FIRE)
+        {
+            worldIn.setBlockState(pos, state.withProperty(LIT, true));
+            TELogPile te = Helpers.getTE(worldIn, pos, TELogPile.class);
+            if (te != null)
+            {
+                te.light();
+            }
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
@@ -180,17 +195,13 @@ public class BlockLogPile extends Block implements ILightableBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        if (worldIn.getBlockState(pos.up()).getBlock() == Blocks.FIRE)
+        if (placer.getHorizontalFacing().getAxis().isHorizontal())
         {
-            worldIn.setBlockState(pos, state.withProperty(LIT, true));
-            TELogPile te = Helpers.getTE(worldIn, pos, TELogPile.class);
-            if (te != null)
-            {
-                te.light();
-            }
+            return getDefaultState().withProperty(AXIS, placer.getHorizontalFacing().getAxis());
         }
+        return getDefaultState();
     }
 
     @Override
@@ -202,17 +213,6 @@ public class BlockLogPile extends Block implements ILightableBlock
             ((TEInventory) te).onBreakBlock(worldIn, pos, state);
         }
         super.breakBlock(worldIn, pos, state);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        if (placer.getHorizontalFacing().getAxis().isHorizontal())
-        {
-            return getDefaultState().withProperty(AXIS, placer.getHorizontalFacing().getAxis());
-        }
-        return getDefaultState();
     }
 
     @Override

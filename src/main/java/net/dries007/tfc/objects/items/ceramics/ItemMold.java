@@ -138,15 +138,15 @@ public class ItemMold extends ItemPottery
         return CapabilityContainerListener.readShareTag(stack);
     }
 
-    public Metal.ItemType getType()
-    {
-        return type;
-    }
-
     @Override
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         CapabilityContainerListener.applyShareTag(stack, nbt);
+    }
+
+    public Metal.ItemType getType()
+    {
+        return type;
     }
 
     @Nullable

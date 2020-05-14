@@ -290,92 +290,6 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     }
 
     @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        if (otherAnimal instanceof EntityHorseTFC || otherAnimal instanceof EntityDonkeyTFC)
-        {
-            IAnimalTFC other = (IAnimalTFC) otherAnimal;
-            return this.getGender() != other.getGender() && this.isInLove() && otherAnimal.isInLove();
-        }
-        return false;
-    }
-
-    @Override
-    public void setScaleForAge(boolean child)
-    {
-        double ageScale = 1 / (2.0D - getPercentToAdulthood());
-        this.setScale((float) ageScale);
-    }
-
-    @Override
-    protected boolean handleEating(EntityPlayer player, ItemStack stack)
-    {
-        return false; // Stop exploits
-    }
-
-    @Override
-    protected void mountTo(EntityPlayer player)
-    {
-        if (this.isTame() || this.getLeashed())
-        {
-            super.mountTo(player);
-        }
-    }
-
-    @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        if (!this.world.isRemote)
-        {
-            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
-            {
-                birthChildren();
-                this.setFertilized(false);
-            }
-
-            // Is it time to decay familiarity?
-            // If this entity was never fed(eg: new born, wild)
-            // or wasn't fed yesterday(this is the starting of the second day)
-            if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
-            {
-                setScaleForAge(this.isChild());
-                float familiarity = getFamiliarity();
-                if (familiarity < 0.3f)
-                {
-                    familiarity -= 0.02 * (CalendarTFC.PLAYER_TIME.getTotalDays() - this.lastFDecay);
-                    this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
-                    this.setFamiliarity(familiarity);
-                }
-            }
-            if (this.getGender() == Gender.MALE && this.isReadyToMate())
-            {
-                this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
-                if (findFemaleMate())
-                {
-                    this.setInLove(null);
-                }
-            }
-            if (this.getAge() == Age.OLD && lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
-            {
-                this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                // Randomly die of old age, tied to entity UUID and calendar time
-                final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                if (random.nextDouble() < ConfigTFC.Animals.DONKEY.oldDeathChance)
-                {
-                    this.setDead();
-                }
-            }
-        }
-    }
-
-    @Override
-    protected ResourceLocation getLootTable()
-    {
-        return LootTablesTFC.ANIMALS_HORSE;
-    }
-
-    @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
@@ -452,6 +366,17 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         return super.processInteract(player, hand);
     }
 
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal instanceof EntityHorseTFC || otherAnimal instanceof EntityDonkeyTFC)
+        {
+            IAnimalTFC other = (IAnimalTFC) otherAnimal;
+            return this.getGender() != other.getGender() && this.isInLove() && otherAnimal.isInLove();
+        }
+        return false;
+    }
+
     @Nullable
     @Override
     public EntityAgeable createChild(@Nonnull EntityAgeable other)
@@ -523,6 +448,13 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     }
 
     @Override
+    public void setScaleForAge(boolean child)
+    {
+        double ageScale = 1 / (2.0D - getPercentToAdulthood());
+        this.setScale((float) ageScale);
+    }
+
+    @Override
     protected void initEntityAI()
     {
         EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
@@ -530,6 +462,74 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         tasks.addTask(2, new EntityAIMate(this, 1.0D, EntityHorseTFC.class)); // Missing horses (for mules)
         tasks.addTask(1, new EntityAIRunAroundLikeCrazy(this, 1.2D));
         tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
+    }
+
+    @Override
+    protected boolean handleEating(EntityPlayer player, ItemStack stack)
+    {
+        return false; // Stop exploits
+    }
+
+    @Override
+    protected void mountTo(EntityPlayer player)
+    {
+        if (this.isTame() || this.getLeashed())
+        {
+            super.mountTo(player);
+        }
+    }
+
+    @Override
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        if (!this.world.isRemote)
+        {
+            if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
+            {
+                birthChildren();
+                this.setFertilized(false);
+            }
+
+            // Is it time to decay familiarity?
+            // If this entity was never fed(eg: new born, wild)
+            // or wasn't fed yesterday(this is the starting of the second day)
+            if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
+            {
+                setScaleForAge(this.isChild());
+                float familiarity = getFamiliarity();
+                if (familiarity < 0.3f)
+                {
+                    familiarity -= 0.02 * (CalendarTFC.PLAYER_TIME.getTotalDays() - this.lastFDecay);
+                    this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
+                    this.setFamiliarity(familiarity);
+                }
+            }
+            if (this.getGender() == Gender.MALE && this.isReadyToMate())
+            {
+                this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
+                if (findFemaleMate())
+                {
+                    this.setInLove(null);
+                }
+            }
+            if (this.getAge() == Age.OLD && lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
+            {
+                this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                // Randomly die of old age, tied to entity UUID and calendar time
+                final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
+                if (random.nextDouble() < ConfigTFC.Animals.DONKEY.oldDeathChance)
+                {
+                    this.setDead();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected ResourceLocation getLootTable()
+    {
+        return LootTablesTFC.ANIMALS_HORSE;
     }
 
     /**
