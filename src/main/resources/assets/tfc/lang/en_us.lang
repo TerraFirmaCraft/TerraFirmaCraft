@@ -557,6 +557,12 @@ config.tfc.general.misc.pluckableEntities.tooltip=Entities that drop a feather w
 config.tfc.general.misc.damagePerFeather=Pluckable Entities Damage Per Feather
 config.tfc.general.misc.damagePerFeather.tooltip=How much damage is done to an entity when a feather is plucked.
 
+config.tfc.general.misc.rockMiningTimeModifier=Rock Mining Time Modifier
+config.tfc.general.misc.rockMiningTimeModifier.tooltip=This controls the time it takes to mine rock blocks. 1.0 = Like vanilla, 10.0 = Classic TFC
+
+config.tfc.general.misc.logMiningTimeModifier=Log Mining Time Modifier
+config.tfc.general.misc.logMiningTimeModifier.tooltip=This controls the time it takes to mine log blocks. 1.0 = Like vanilla, 10.0 = Classic TFC
+
 
 ## Devices Config
 config.tfc.devices=Device Settings
