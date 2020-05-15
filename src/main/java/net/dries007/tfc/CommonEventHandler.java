@@ -87,6 +87,7 @@ import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
+import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
@@ -202,8 +203,17 @@ public final class CommonEventHandler
             if (skillModifier > 0)
             {
                 // Up to 2x modifier for break speed for skill bonuses on tools
-                event.setNewSpeed(event.getOriginalSpeed() + (event.getOriginalSpeed() * skillModifier));
+                // New speed, so it will take into account other mods' modifications
+                event.setNewSpeed(event.getNewSpeed() + (event.getNewSpeed() * skillModifier));
             }
+        }
+        if (event.getState().getBlock() instanceof BlockRockVariant)
+        {
+            event.setNewSpeed((float) (event.getNewSpeed() / ConfigTFC.General.MISC.rockMiningTimeModifier));
+        }
+        if (event.getState().getBlock() instanceof BlockLogTFC)
+        {
+            event.setNewSpeed((float) (event.getNewSpeed() / ConfigTFC.General.MISC.logMiningTimeModifier));
         }
     }
 
