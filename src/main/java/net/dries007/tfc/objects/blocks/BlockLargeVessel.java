@@ -157,6 +157,14 @@ public class BlockLargeVessel extends Block implements IItemSize
         return state.getValue(SEALED) ? BOUNDING_BOX_SEALED : BOUNDING_BOX;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state)
