@@ -19,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -44,6 +43,7 @@ import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -167,8 +167,56 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     @Override
     public boolean isFood(@Nonnull ItemStack stack)
     {
-        // Since there's no way to get fish in default TFC, let's consider meats as also valid food items for cats
-        return (stack.getItem() == Items.FISH) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
+        // Check for rotten
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (!ConfigTFC.Animals.OCELOT.acceptRotten && cap != null && cap.isRotten())
+        {
+            return false;
+        }
+        // Check if item is accepted
+        for (String input : ConfigTFC.Animals.OCELOT.food)
+        {
+            String[] split = input.split(":");
+            if (split.length == 2)
+            {
+                // Check for ore tag first
+                if (split[0].equals("ore"))
+                {
+                    if (OreDictionaryHelper.doesStackMatchOre(stack, split[1]))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        String item = split[1];
+                        int meta = -1;
+                        // Parse meta if specified
+                        if (split[1].contains(" "))
+                        {
+                            String[] split2 = split[1].split(" ");
+                            item = split2[0];
+                            meta = Integer.parseInt(split2[1]);
+                        }
+                        // Check for item registry name
+                        ResourceLocation location = new ResourceLocation(split[0], item);
+                        if (location.equals(stack.getItem().getRegistryName()))
+                        {
+                            if (meta == -1 || meta == stack.getMetadata())
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    catch (NumberFormatException ignored)
+                    {
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override

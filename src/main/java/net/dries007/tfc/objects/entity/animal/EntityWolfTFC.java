@@ -21,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -48,6 +47,7 @@ import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAITamableAvoidPlayer;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -222,12 +222,6 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     }
 
     @Override
-    public boolean isFood(@Nonnull ItemStack stack)
-    {
-        return (stack.getItem() == Items.BONE) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
-    }
-
-    @Override
     public boolean isHungry()
     {
         return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
@@ -367,6 +361,61 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_WOLF;
+    }
+
+    @Override
+    public boolean isFood(@Nonnull ItemStack stack)
+    {
+        // Check for rotten
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (!ConfigTFC.Animals.WOLF.acceptRotten && cap != null && cap.isRotten())
+        {
+            return false;
+        }
+        // Check if item is accepted
+        for (String input : ConfigTFC.Animals.WOLF.food)
+        {
+            String[] split = input.split(":");
+            if (split.length == 2)
+            {
+                // Check for ore tag first
+                if (split[0].equals("ore"))
+                {
+                    if (OreDictionaryHelper.doesStackMatchOre(stack, split[1]))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        String item = split[1];
+                        int meta = -1;
+                        // Parse meta if specified
+                        if (split[1].contains(" "))
+                        {
+                            String[] split2 = split[1].split(" ");
+                            item = split2[0];
+                            meta = Integer.parseInt(split2[1]);
+                        }
+                        // Check for item registry name
+                        ResourceLocation location = new ResourceLocation(split[0], item);
+                        if (location.equals(stack.getItem().getRegistryName()))
+                        {
+                            if (meta == -1 || meta == stack.getMetadata())
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    catch (NumberFormatException ignored)
+                    {
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override

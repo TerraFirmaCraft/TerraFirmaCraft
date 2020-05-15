@@ -791,6 +791,12 @@ config.tfc.animals.rarity.tooltip=How rare this animal should be in 1 / N chunks
 config.tfc.animals.huntCreatures=Hunted Entities
 config.tfc.animals.huntCreatures.tooltip=This controls which registered entities are hunted by this animals (unless tamed), in priority order. You must specify by 'modid:entity'. Invalid entries will be ignored.
 
+config.tfc.animals.food=Food List
+config.tfc.animals.food.tooltip=This controls which items are considered food for this animal. You must specify by 'ore:tag' or 'modid:item [meta]'. Invalid entries will be ignored.
+
+config.tfc.animals.acceptRotten=Accept Rotten Foods
+config.tfc.animals.acceptRotten.tooltip=Does this animal eat rotten foods?
+
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
