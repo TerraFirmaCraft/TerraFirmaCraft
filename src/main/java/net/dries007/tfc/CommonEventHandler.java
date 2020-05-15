@@ -87,6 +87,7 @@ import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
+import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -219,7 +220,10 @@ public final class CommonEventHandler
         final EntityPlayer player = event.getEntityPlayer();
 
         // Fire onBlockActivated for in world crafting devices
-        if (state.getBlock() instanceof BlockAnvilTFC || state.getBlock() instanceof BlockStoneAnvil || state.getBlock() instanceof BlockQuern)
+        if (state.getBlock() instanceof BlockAnvilTFC
+            || state.getBlock() instanceof BlockStoneAnvil
+            || state.getBlock() instanceof BlockQuern
+            || state.getBlock() instanceof BlockSupport)
         {
             event.setUseBlock(Event.Result.ALLOW);
         }
