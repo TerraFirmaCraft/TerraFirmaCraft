@@ -8,7 +8,6 @@ package net.dries007.tfc.api.recipes;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -29,6 +28,12 @@ public class BlastFurnaceRecipe extends IForgeRegistryEntry.Impl<BlastFurnaceRec
         return TFCRegistries.BLAST_FURNACE.getValuesCollection().stream().filter(x -> x.isValidInput(inputItem)).findFirst().orElse(null);
     }
 
+    @Nullable
+    public static BlastFurnaceRecipe get(Metal inputMetal)
+    {
+        return TFCRegistries.BLAST_FURNACE.getValuesCollection().stream().filter(x -> x.input == inputMetal).findFirst().orElse(null);
+    }
+
     protected Metal output;
     protected Metal input;
     protected IIngredient<ItemStack> additive;
@@ -40,13 +45,15 @@ public class BlastFurnaceRecipe extends IForgeRegistryEntry.Impl<BlastFurnaceRec
      * @param input    the metal input of this recipe
      * @param additive additive to make this recipe (for pig iron, this means flux)
      */
-    public BlastFurnaceRecipe(ResourceLocation name, Metal output, Metal input, IIngredient<ItemStack> additive)
+    public BlastFurnaceRecipe(Metal output, Metal input, IIngredient<ItemStack> additive)
     {
         this.output = output;
         this.input = input;
         this.additive = additive;
 
-        setRegistryName(name);
+        //Ensure one blast furnace recipe per input metal
+        //noinspection ConstantConditions
+        setRegistryName(input.getRegistryName());
     }
 
     @Nullable

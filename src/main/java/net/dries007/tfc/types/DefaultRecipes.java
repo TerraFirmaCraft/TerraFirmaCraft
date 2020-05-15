@@ -301,7 +301,7 @@ public final class DefaultRecipes
     public static void onRegisterBlastFurnaceRecipeEvent(RegistryEvent.Register<BlastFurnaceRecipe> event)
     {
         event.getRegistry().registerAll(
-            new BlastFurnaceRecipe(new ResourceLocation(MOD_ID, "pig_iron"), Metal.PIG_IRON, Metal.WROUGHT_IRON, IIngredient.of("dustFlux"))
+            new BlastFurnaceRecipe(Metal.PIG_IRON, Metal.WROUGHT_IRON, IIngredient.of("dustFlux"))
         );
     }
 

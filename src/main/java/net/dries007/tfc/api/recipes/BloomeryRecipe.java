@@ -25,9 +25,15 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 public class BloomeryRecipe extends IForgeRegistryEntry.Impl<BloomeryRecipe>
 {
     @Nullable
-    public static BloomeryRecipe get(ItemStack inputItem)
+    public static BloomeryRecipe get(@Nonnull ItemStack inputItem)
     {
         return TFCRegistries.BLOOMERY.getValuesCollection().stream().filter(x -> x.isValidInput(inputItem)).findFirst().orElse(null);
+    }
+
+    @Nullable
+    public static BloomeryRecipe get(@Nonnull Metal metal)
+    {
+        return TFCRegistries.BLOOMERY.getValuesCollection().stream().filter(x -> metal == x.metal).findFirst().orElse(null);
     }
 
     private final Metal metal; // Melting metal (which will be stored in a bloom)
