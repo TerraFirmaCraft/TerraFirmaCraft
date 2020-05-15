@@ -65,7 +65,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setDefaultState(blockState.getBaseState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(PLACED, true).withProperty(SMALL, false));
         setHarvestLevel("axe", 0);
-        setHardness(1.5F);
+        setHardness(2.0F);
         setResistance(5.0F);
         OreDictionaryHelper.register(this, "log", "wood");
         //noinspection ConstantConditions
