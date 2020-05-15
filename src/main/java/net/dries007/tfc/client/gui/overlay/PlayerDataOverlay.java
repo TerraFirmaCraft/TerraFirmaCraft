@@ -266,7 +266,7 @@ public final class PlayerDataOverlay
         if (player.isSneaking())
         {
             EntityLivingBase entity = event.getEntity();
-            if (entity instanceof IAnimalTFC && entity == mc.pointedEntity)
+            if (entity instanceof IAnimalTFC && ((IAnimalTFC) entity).getAdultFamiliarityCap() > 0 && entity == mc.pointedEntity)
             {
                 double x, y, z;
                 x = event.getX();
