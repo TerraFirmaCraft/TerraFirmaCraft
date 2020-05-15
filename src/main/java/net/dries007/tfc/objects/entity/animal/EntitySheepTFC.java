@@ -86,6 +86,61 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     }
 
     @Override
+    public boolean isFood(@Nonnull ItemStack stack)
+    {
+        // Check for rotten
+        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (!ConfigTFC.Animals.SHEEP.acceptRotten && cap != null && cap.isRotten())
+        {
+            return false;
+        }
+        // Check if item is accepted
+        for (String input : ConfigTFC.Animals.SHEEP.food)
+        {
+            String[] split = input.split(":");
+            if (split.length == 2)
+            {
+                // Check for ore tag first
+                if (split[0].equals("ore"))
+                {
+                    if (OreDictionaryHelper.doesStackMatchOre(stack, split[1]))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        String item = split[1];
+                        int meta = -1;
+                        // Parse meta if specified
+                        if (split[1].contains(" "))
+                        {
+                            String[] split2 = split[1].split(" ");
+                            item = split2[0];
+                            meta = Integer.parseInt(split2[1]);
+                        }
+                        // Check for item registry name
+                        ResourceLocation location = new ResourceLocation(split[0], item);
+                        if (location.equals(stack.getItem().getRegistryName()))
+                        {
+                            if (meta == -1 || meta == stack.getMetadata())
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    catch (NumberFormatException ignored)
+                    {
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
         return AnimalGroupingRules.ELDER_AND_POPULATION;
