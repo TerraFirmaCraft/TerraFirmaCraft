@@ -14,6 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -30,6 +31,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -196,7 +199,23 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(5, wander);
         this.tasks.addTask(7, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+
+        int priority = 2;
+        for (String input : ConfigTFC.Animals.LION.huntCreatures)
+        {
+            ResourceLocation key = new ResourceLocation(input);
+            EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
+            if (entityEntry != null)
+            {
+                Class<? extends Entity> entityClass = entityEntry.getEntityClass();
+                if (EntityLivingBase.class.isAssignableFrom(entityClass))
+                {
+                    //noinspection unchecked
+                    this.targetTasks.addTask(priority++, new EntityAINearestAttackableTarget<>(this, (Class<EntityLivingBase>) entityClass, false));
+                }
+            }
+        }
     }
 
     @Override

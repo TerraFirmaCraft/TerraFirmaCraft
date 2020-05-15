@@ -13,9 +13,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityWolf;
@@ -36,6 +34,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -304,8 +304,21 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
         this.tasks.addTask(10, new EntityAITamableAvoidPlayer<>(this, 7F, 1D, 1.5D));
         super.initEntityAI();
 
-        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, sheep -> true));
-        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntitySheepTFC.class, false, rabbit -> true));
+        int priority = 1;
+        for (String input : ConfigTFC.Animals.WOLF.huntCreatures)
+        {
+            ResourceLocation key = new ResourceLocation(input);
+            EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
+            if (entityEntry != null)
+            {
+                Class<? extends Entity> entityClass = entityEntry.getEntityClass();
+                if (EntityLivingBase.class.isAssignableFrom(entityClass))
+                {
+                    //noinspection unchecked
+                    this.targetTasks.addTask(priority++, new EntityAITargetNonTamed<>(this, (Class<EntityLivingBase>) entityClass, false, ent -> true));
+                }
+            }
+        }
     }
 
     @Override

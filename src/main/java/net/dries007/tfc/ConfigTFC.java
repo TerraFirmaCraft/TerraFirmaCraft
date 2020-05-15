@@ -1368,6 +1368,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:pheasanttfc", "tfc:chickentfc", "tfc:ducktfc", "tfc:rabbittfc"};
         }
 
         public static final class WolfCFG
@@ -1401,6 +1407,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:rabbittfc", "tfc:sheeptfc"};
         }
 
         public static final class BearCFG
@@ -1409,6 +1421,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class PolarBearCFG
@@ -1417,6 +1435,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class LionCFG
@@ -1425,6 +1449,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class PantherCFG
@@ -1433,6 +1463,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class SaberToothCFG
@@ -1449,6 +1485,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class DeerCFG

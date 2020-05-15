@@ -788,6 +788,9 @@ config.tfc.animals.oldDeathChance.tooltip=If this animal is an elder, what is th
 config.tfc.animals.rarity=Chunk Generation Spawn Rarity
 config.tfc.animals.rarity.tooltip=How rare this animal should be in 1 / N chunks, on valid biomes? 0 = Disable.
 
+config.tfc.animals.huntCreatures=Hunted Entities
+config.tfc.animals.huntCreatures.tooltip=This controls which registered entities are hunted by this animals (unless tamed), in priority order. You must specify by 'modid:entity'. Invalid entries will be ignored.
+
 
 # Misc
 itemGroup.tfc.misc=TFC Misc
