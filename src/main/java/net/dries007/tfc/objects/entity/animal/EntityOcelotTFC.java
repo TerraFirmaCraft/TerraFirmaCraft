@@ -248,6 +248,10 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (!this.world.isRemote)
         {
             if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + gestationDays())

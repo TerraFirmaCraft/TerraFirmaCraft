@@ -332,7 +332,6 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
                     }
                     if (!this.world.isRemote)
                     {
-                        setScaleForAge(this.isChild());
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, stack);
@@ -483,6 +482,10 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (!this.world.isRemote)
         {
             if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
@@ -496,7 +499,6 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
-                setScaleForAge(this.isChild());
                 float familiarity = getFamiliarity();
                 if (familiarity < 0.3f)
                 {

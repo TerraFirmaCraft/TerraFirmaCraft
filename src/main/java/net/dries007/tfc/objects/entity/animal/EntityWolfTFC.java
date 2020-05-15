@@ -360,6 +360,10 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (!this.world.isRemote)
         {
             if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())

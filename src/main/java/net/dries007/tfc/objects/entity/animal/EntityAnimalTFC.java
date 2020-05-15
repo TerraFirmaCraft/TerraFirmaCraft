@@ -312,6 +312,10 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (!this.world.isRemote)
         {
             // Is it time to decay familiarity?
@@ -319,7 +323,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
-                setScaleForAge(this.isChild()); // Update hitbox
                 float familiarity = getFamiliarity();
                 if (familiarity < 0.3f)
                 {
@@ -439,7 +442,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
     {
         if (!this.world.isRemote)
         {
-            setScaleForAge(this.isChild()); // Update hitbox
             lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
             lastFDecay = lastFed; //No decay needed
             this.consumeItemFromStack(player, stack);

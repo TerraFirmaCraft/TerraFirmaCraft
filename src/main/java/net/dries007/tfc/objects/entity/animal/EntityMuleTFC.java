@@ -263,6 +263,10 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (!this.world.isRemote)
         {
             // Is it time to decay familiarity?
@@ -270,7 +274,6 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
-                setScaleForAge(this.isChild());
                 float familiarity = getFamiliarity();
                 if (familiarity < 0.3f)
                 {
@@ -394,7 +397,6 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
                     }
                     if (!this.world.isRemote)
                     {
-                        setScaleForAge(this.isChild());
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
                         this.consumeItemFromStack(player, stack);
