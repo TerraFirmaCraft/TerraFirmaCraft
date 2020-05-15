@@ -482,6 +482,10 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (!this.world.isRemote)
         {
             if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= getPregnantTime() + gestationDays())
@@ -494,7 +498,6 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
-                setScaleForAge(this.isChild()); // Update hitbox
                 float familiarity = getFamiliarity();
                 if (familiarity < 0.3f)
                 {

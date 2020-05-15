@@ -113,6 +113,10 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     public void onUpdate()
     {
         super.onUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (this.warningSoundTicks > 0)
         {
             --this.warningSoundTicks;

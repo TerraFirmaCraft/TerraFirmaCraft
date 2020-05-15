@@ -6,6 +6,7 @@
 package net.dries007.tfc.client.render.animal;
 
 import java.util.Map;
+import javax.annotation.Nonnull;
 
 import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.GlStateManager;
@@ -49,7 +50,7 @@ public class RenderAbstractHorseTFC extends RenderLiving<AbstractHorse>
     }
 
     @Override
-    protected void preRenderCallback(AbstractHorse entitylivingbaseIn, float partialTickTime)
+    protected void preRenderCallback(@Nonnull AbstractHorse entitylivingbaseIn, float partialTickTime)
     {
         GlStateManager.scale(this.scale, this.scale, this.scale);
         super.preRenderCallback(entitylivingbaseIn, partialTickTime);

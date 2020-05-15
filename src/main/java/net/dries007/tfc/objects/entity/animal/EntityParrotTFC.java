@@ -90,6 +90,10 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (!this.world.isRemote)
         {
             // Is it time to decay familiarity?
