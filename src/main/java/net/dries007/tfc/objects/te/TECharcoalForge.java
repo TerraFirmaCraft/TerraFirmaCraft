@@ -87,6 +87,15 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
             IBlockState state = world.getBlockState(pos);
             if (state.getValue(LIT))
             {
+                // Have to check the above block, since minecraft think this block is "roof"
+                if (world.isRainingAt(pos.up()))
+                {
+                    // Instantly consume last fuel and turn off
+                    burnTicks = 0;
+                    burnTemperature = 0;
+                    world.setBlockState(pos, state.withProperty(LIT, false));
+                    return;
+                }
                 // Update fuel
                 if (burnTicks > 0)
                 {
