@@ -11,13 +11,17 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.FoodHandler;
 import net.dries007.tfc.api.capability.food.FoodHeatHandler;
+import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -58,6 +62,22 @@ public class ItemFoodTFC extends ItemFood implements IItemSize
             {
                 OreDictionaryHelper.register(this, name);
             }
+        }
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (this.isInCreativeTab(tab))
+        {
+            // Makes creative items not decay (like JEI)
+            ItemStack stack = new ItemStack(this);
+            IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+            if (cap != null)
+            {
+                cap.setNonDecaying();
+            }
+            items.add(stack);
         }
     }
 
