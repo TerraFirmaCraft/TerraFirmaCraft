@@ -51,7 +51,7 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
             if (state.getBlock() instanceof BlockMetalSheet)
             {
                 BlockMetalSheet block = (BlockMetalSheet) state.getBlock();
-                return block.getMetal().getTier().isAtLeast(Metal.Tier.TIER_III);
+                return block.getMetal().getTier().isAtLeast(Metal.Tier.TIER_III) && block.getMetal().isToolMetal();
             }
             return false;
         };

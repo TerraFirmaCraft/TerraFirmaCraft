@@ -46,11 +46,11 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
     /**
      * Creates a barrel recipe
      *
-     * @param inputFluid fluid ingredients used to check if it is valid on barrel seal
-     * @param inputStack item ingredients used to check if it is valid on barrel seal
+     * @param inputFluid  fluid ingredients used to check if it is valid on barrel seal
+     * @param inputStack  item ingredients used to check if it is valid on barrel seal
      * @param outputFluid the output fluid, when this recipe is completed
      * @param outputStack the output stack, when this recipe is completed
-     * @param duration the duration, in ticks, for this recipe to complete. 0 = Instant while negative means this recipe is infinite (for custom recipes that wait for unseal)
+     * @param duration    the duration, in ticks, for this recipe to complete. 0 = Instant while negative means this recipe is infinite (for custom recipes that wait for unseal)
      */
     public BarrelRecipe(@Nonnull IIngredient<FluidStack> inputFluid, @Nonnull IIngredient<ItemStack> inputStack, @Nullable FluidStack outputFluid, @Nonnull ItemStack outputStack, int duration)
     {
