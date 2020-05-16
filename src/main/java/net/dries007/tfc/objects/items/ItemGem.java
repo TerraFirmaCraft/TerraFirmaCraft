@@ -50,6 +50,10 @@ public class ItemGem extends ItemTFC
             {
                 OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", gem);
             }
+            else
+            {
+                OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", grade, gem);
+            }
             OreDictionaryHelper.registerMeta(this, grade.ordinal(), "gem", grade);
         }
     }
