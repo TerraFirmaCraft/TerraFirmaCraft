@@ -128,15 +128,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         return false;
     }
 
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        if (worldIn.isRainingAt(pos))
-        {
-            worldIn.setBlockState(pos, state.withProperty(LIT, false), 2);
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rng)
