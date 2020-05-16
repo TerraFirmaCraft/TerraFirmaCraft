@@ -603,6 +603,10 @@ public final class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".devices.charcoal_pit")
         public static final CharcoalPitCFG CHARCOAL_PIT = new CharcoalPitCFG();
 
+        @Config.Comment("Charcoal Forge")
+        @Config.LangKey("config." + MOD_ID + ".devices.charcoal_forge")
+        public static final CharcoalForgeCFG CHARCOAL_FORGE = new CharcoalForgeCFG();
+
         @Config.Comment("Fire Pit")
         @Config.LangKey("config." + MOD_ID + ".devices.fire_pit")
         public static final FirePitCFG FIRE_PIT = new FirePitCFG();
@@ -685,12 +689,27 @@ public final class ConfigTFC
             public int ticks = 18_000;
         }
 
+        public static final class CharcoalForgeCFG
+        {
+            @Config.Comment({"Number of burning ticks that is removed when the charcoal forge is on rain (random ticks).",
+                "This effectively makes the charcoal forge consumes more fuel when it is raining above it."})
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".devices.charcoal_forge.rainTicks")
+            public int rainTicks = 600;
+        }
+
         public static final class FirePitCFG
         {
             @Config.Comment("Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1 hour.")
             @Config.RangeInt(min = 20)
             @Config.LangKey("config." + MOD_ID + ".devices.fire_pit.ticks")
             public int ticks = 1_000;
+
+            @Config.Comment({"Number of burning ticks that is removed when the fire pit is on rain (random ticks).",
+                "This effectively makes the fire pit consumes more fuel when it is raining above it."})
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".devices.fire_pit.rainTicks")
+            public int rainTicks = 1000;
         }
 
         public static final class PitKilnCFG

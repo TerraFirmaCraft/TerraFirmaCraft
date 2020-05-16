@@ -161,7 +161,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         sealedTick = CalendarTFC.PLAYER_TIME.getTicks();
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
-        if(recipe != null)
+        if (recipe != null)
         {
             recipe.onBarrelSealed(tank.getFluid(), inventory.getStackInSlot(SLOT_ITEM));
         }
@@ -172,7 +172,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
     public void onUnseal()
     {
         sealedTick = sealedCalendarTick = 0;
-        if(recipe != null)
+        if (recipe != null)
         {
             ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
             FluidStack inputFluid = tank.getFluid();

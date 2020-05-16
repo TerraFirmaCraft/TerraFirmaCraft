@@ -46,6 +46,13 @@ public class BarrelRecipeFoodPreservation extends BarrelRecipe
         return inputFluid == null || inputFluid.amount / this.inputFluid.getAmount() >= inputStack.getCount() / this.inputStack.getAmount();
     }
 
+    @Nonnull
+    @Override
+    public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
+    {
+        return Helpers.listOf(inputStack);
+    }
+
     @Override
     public void onBarrelSealed(FluidStack inputFluid, ItemStack inputStack)
     {
@@ -57,13 +64,6 @@ public class BarrelRecipeFoodPreservation extends BarrelRecipe
     public List<ItemStack> getOutputItemOnUnseal(FluidStack inputFluid, ItemStack inputStack)
     {
         CapabilityFood.removeTrait(inputStack, trait);
-        return Helpers.listOf(inputStack);
-    }
-
-    @Nonnull
-    @Override
-    public List<ItemStack> getOutputItem(FluidStack inputFluid, ItemStack inputStack)
-    {
         return Helpers.listOf(inputStack);
     }
 

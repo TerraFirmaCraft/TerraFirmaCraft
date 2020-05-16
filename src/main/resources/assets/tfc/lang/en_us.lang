@@ -619,11 +619,21 @@ config.tfc.devices.charcoal_pit.ticks=Ticks
 config.tfc.devices.charcoal_pit.ticks.tooltip=Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.
 
 
+### Charcoal Forge
+config.tfc.devices.charcoal_forge=Charcoal Forge
+
+config.tfc.devices.charcoal_forge.rainTicks=Rain drop burning ticks removal
+config.tfc.devices.charcoal_forge.ticks.tooltip=Number of burning ticks that is removed when the charcoal forge is on rain (random ticks). This effectively makes the charcoal forge consumes more fuel when it is raining above it.
+
+
 ### Fire Pit
 config.tfc.devices.fire_pit=Fire Pit
 
 config.tfc.devices.fire_pit.ticks=Ticks
 config.tfc.devices.fire_pit.ticks.tooltip=Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1 hour.
+
+config.tfc.devices.fire_pit.rainTicks=Rain drop burning ticks removal
+config.tfc.devices.fire_pit.ticks.tooltip=Number of burning ticks that is removed when the fire pit is on rain (random ticks). This effectively makes the fire pit consumes more fuel when it is raining above it.
 
 
 ### Pit Kiln

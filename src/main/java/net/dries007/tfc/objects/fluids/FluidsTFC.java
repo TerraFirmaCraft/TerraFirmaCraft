@@ -27,15 +27,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
-import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.properties.DrinkableProperty;
 import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
 import net.dries007.tfc.objects.fluids.properties.MetalProperty;
-import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
-import net.dries007.tfc.objects.inventory.ingredient.IngredientItemFood;
-import net.dries007.tfc.objects.inventory.ingredient.IngredientItemFoodTrait;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
