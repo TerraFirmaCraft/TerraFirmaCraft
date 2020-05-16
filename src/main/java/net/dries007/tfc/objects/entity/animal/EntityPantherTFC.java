@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -16,10 +15,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -79,13 +75,6 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     public int getDaysToElderly()
     {
         return 0;
-    }
-
-    @Override
-    public boolean isFood(@Nonnull ItemStack stack)
-    {
-        // Since there's no way to get fish in default TFC, let's consider meats as also valid food items for cats
-        return (stack.getItem() == Items.FISH) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
     }
 
     @Override

@@ -20,9 +20,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -116,12 +114,6 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     public int getDaysToElderly()
     {
         return 0;
-    }
-
-    @Override
-    public boolean isFood(@Nonnull ItemStack it)
-    {
-        return it.getItem() == Items.FISH;
     }
 
     @Override

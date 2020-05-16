@@ -72,7 +72,6 @@ public class EntityParrotTFC extends EntityParrot implements IAnimalTFC, ILivest
         this.setBirthDay(birthDay);
         this.setFamiliarity(0);
         this.setGrowingAge(0); //We don't use this
-        this.lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
         this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();

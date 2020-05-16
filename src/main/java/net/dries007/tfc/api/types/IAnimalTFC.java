@@ -9,10 +9,11 @@ import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
 
-import net.dries007.tfc.util.OreDictionaryHelper;
+import net.dries007.tfc.objects.entity.animal.AnimalFood;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 /**
@@ -162,7 +163,13 @@ public interface IAnimalTFC extends ICreatureTFC
      */
     default boolean isFood(@Nonnull ItemStack stack)
     {
-        return OreDictionaryHelper.doesStackMatchOre(stack, "grain");
+        //noinspection unchecked
+        AnimalFood food = AnimalFood.get((Class<? extends Entity>) this.getClass());
+        if (food != null)
+        {
+            return food.isFood(stack);
+        }
+        return false;
     }
 
     /**

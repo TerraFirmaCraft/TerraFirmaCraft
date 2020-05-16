@@ -996,16 +996,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class SheepCFG
@@ -1044,16 +1034,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class CowCFG
@@ -1092,16 +1072,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class GoatCFG
@@ -1140,16 +1110,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class ChickenCFG
@@ -1183,16 +1143,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = true;
         }
 
         public static final class DuckCFG
@@ -1226,16 +1176,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = true;
         }
 
         public static final class PigCFG
@@ -1269,16 +1209,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = true;
         }
 
         public static final class CamelCFG
@@ -1312,16 +1242,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class LlamaCFG
@@ -1355,16 +1275,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class HorseCFG
@@ -1398,16 +1308,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class DonkeyCFG
@@ -1441,16 +1341,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class MuleCFG
@@ -1474,16 +1364,6 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 0;
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:grain"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class OcelotCFG
@@ -1523,16 +1403,6 @@ public final class ConfigTFC
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
             public String[] huntCreatures = {"tfc:pheasanttfc", "tfc:chickentfc", "tfc:ducktfc", "tfc:rabbittfc"};
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:categoryMeat"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class WolfCFG
@@ -1572,16 +1442,6 @@ public final class ConfigTFC
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
             public String[] huntCreatures = {"tfc:rabbittfc", "tfc:sheeptfc"};
-
-            @Config.Comment({"This controls which items are considered food for this animal.",
-                "You must specify by 'ore:tag' or 'modid:item [meta]'",
-                "Invalid entries will be ignored."})
-            @Config.LangKey("config." + MOD_ID + ".general.animals.food")
-            public String[] food = {"ore:categoryMeat", "minecraft:bone"};
-
-            @Config.Comment("Does this animal eat rotten foods?")
-            @Config.LangKey("config." + MOD_ID + ".animals.acceptRotten")
-            public boolean acceptRotten = false;
         }
 
         public static final class BearCFG
