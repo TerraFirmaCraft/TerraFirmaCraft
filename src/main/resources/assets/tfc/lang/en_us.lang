@@ -188,10 +188,12 @@ tfc.food_traits.brined_active=Brining
 tfc.food_traits.salted=Salted
 tfc.food_traits.pickled=Pickled
 tfc.food_traits.preserved=Preserved
+tfc.food_traits.vinegar=Vinegar preserved
 tfc.food_traits.charcoal_grilled=Charcoal Grilled
 tfc.food_traits.wood_grilled=Wood Grilled
 tfc.tooltip.barrel_recipe_pickling=Pickling
 tfc.tooltip.barrel_recipe_brining=Brining
+tfc.tooltip.barrel_recipe_vinegar=Preserving in vinegar
 
 ## Skills
 tfc.skill.prospecting=Prospecting: %s

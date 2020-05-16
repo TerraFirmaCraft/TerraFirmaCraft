@@ -22,6 +22,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipeFluidMixing;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipeFoodPreservation;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipeFoodTraits;
 import net.dries007.tfc.objects.inventory.ingredient.IngredientFluidItem;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -52,6 +53,18 @@ public class BarrelRecipeWrapper implements IRecipeWrapper
             for (ItemStack ingredient : itemIngredients)
             {
                 outputItems.addAll(recipeFoodTraits.getOutputItem(fluid, ingredient));
+            }
+            inputFluid = null;
+        }
+        else if (recipe instanceof BarrelRecipeFoodPreservation)
+        {
+            // Special cased to show output food with applied trait
+            BarrelRecipeFoodPreservation recipePreservation = (BarrelRecipeFoodPreservation) recipe;
+            FluidStack fluid = fluidIngredients.size() > 0 ? fluidIngredients.get(0) : null;
+            for (ItemStack ingredient : itemIngredients)
+            {
+                recipePreservation.onBarrelSealed(fluid, ingredient);
+                outputItems.add(ingredient);
             }
             inputFluid = null;
         }
