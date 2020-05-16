@@ -136,7 +136,7 @@ public abstract class GenLayerTFC extends GenLayer
 
     public static void drawImage(int size, GenLayerTFC genlayer, String name, IntFunction<Color> gibColor)
     {
-        if (!ConfigTFC.General.DEBUG.debugWorldGen) return;
+        if (!ConfigTFC.General.DEBUG.debugWorldGenSafe) return;
         if (FMLCommonHandler.instance().getEffectiveSide().isClient()) return;
         try
         {
