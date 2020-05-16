@@ -9,7 +9,6 @@ import java.util.Random;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.api.capability.damage.DamageResistance;
@@ -29,7 +28,4 @@ public final class Constants
     public static final String GUI_FACTORY = "net.dries007.tfc.client.TFCModGuiFactory";
 
     public static final Random RNG = new Random();
-
-    public static final DamageSource PLUCKING = new DamageSource("plucking").setDamageBypassesArmor();
-
 }

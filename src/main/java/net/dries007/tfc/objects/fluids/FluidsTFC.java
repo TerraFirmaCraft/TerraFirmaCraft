@@ -25,6 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -32,6 +33,7 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.properties.DrinkableProperty;
 import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
 import net.dries007.tfc.objects.fluids.properties.MetalProperty;
+import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -135,6 +137,10 @@ public final class FluidsTFC
             if (player.getFoodStats() instanceof FoodStatsTFC)
             {
                 ((FoodStatsTFC) player.getFoodStats()).addThirst(-10);
+                if (Constants.RNG.nextDouble() < ConfigTFC.General.PLAYER.chanceThirstOnSaltyDrink)
+                {
+                    player.addPotionEffect(new PotionEffect(PotionEffectsTFC.THIRST, 600, 0));
+                }
             }
         });
 
