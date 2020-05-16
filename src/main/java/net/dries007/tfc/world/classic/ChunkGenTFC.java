@@ -240,23 +240,23 @@ public class ChunkGenTFC implements IChunkGenerator
         ravineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         riverRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
 
-//        if (ConfigTFC.General.DEBUG.debugWorldGen)
-//        {
-//            for (int x = 0; x < 16; ++x)
-//            {
-//                for (int z = 0; z < 16; ++z)
-//                {
-//                    chunkPrimerOut.setBlockState(x, 240, z, Blocks.STAINED_GLASS.getStateFromMeta(Biome.getIdForBiome(getBiomeOffset(x, z)) & 15));
-//
-//                    chunkPrimerOut.setBlockState(x, 230, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer1[z << 4 | x] & 15));
-//                    chunkPrimerOut.setBlockState(x, 220, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer2[z << 4 | x] & 15));
-//                    chunkPrimerOut.setBlockState(x, 210, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer3[z << 4 | x] & 15));
-//
-//                    chunkPrimerOut.setBlockState(x, 252, z, Blocks.STAINED_GLASS.getStateFromMeta(stabilityLayer[x << 4 | z].layerID & 15));
-//                    chunkPrimerOut.setBlockState(x, 250, z, Blocks.STAINED_GLASS.getStateFromMeta(drainageLayer[x << 4 | z].layerID & 15));
-//                }
-//            }
-//        }
+        if (ConfigTFC.General.DEBUG.debugWorldGenDanger)
+        {
+            for (int x = 0; x < 16; ++x)
+            {
+                for (int z = 0; z < 16; ++z)
+                {
+                    chunkPrimerOut.setBlockState(x, 240, z, Blocks.STAINED_GLASS.getStateFromMeta(Biome.getIdForBiome(getBiomeOffset(x, z)) & 15));
+
+                    chunkPrimerOut.setBlockState(x, 230, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer1[z << 4 | x] & 15));
+                    chunkPrimerOut.setBlockState(x, 220, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer2[z << 4 | x] & 15));
+                    chunkPrimerOut.setBlockState(x, 210, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer3[z << 4 | x] & 15));
+
+                    chunkPrimerOut.setBlockState(x, 252, z, Blocks.STAINED_GLASS.getStateFromMeta(stabilityLayer[x << 4 | z].layerID & 15));
+                    chunkPrimerOut.setBlockState(x, 250, z, Blocks.STAINED_GLASS.getStateFromMeta(drainageLayer[x << 4 | z].layerID & 15));
+                }
+            }
+        }
 
         Chunk chunk = new Chunk(world, chunkPrimerOut, chunkX, chunkZ);
 

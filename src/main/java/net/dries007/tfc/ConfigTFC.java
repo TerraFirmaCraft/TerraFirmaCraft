@@ -89,10 +89,15 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.debug.enable")
             public boolean enable = false;
 
-            @Config.Comment("Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!")
-            @Config.LangKey("config." + MOD_ID + ".general.debug.debugWorldGen")
+            @Config.Comment("Debug worldgen (the danger part) This will glass maps at max world height to help debug world gen. THIS WILL MESS UP YOUR WORLD!")
+            @Config.LangKey("config." + MOD_ID + ".general.debug.debugWorldGenDanger")
             @Config.RequiresWorldRestart
-            public boolean debugWorldGen = false;
+            public boolean debugWorldGenDanger = false;
+
+            @Config.Comment("Debug worldgen (safe part) This will output map images of world gen steps and print some debug info. This is safe to use.")
+            @Config.LangKey("config." + MOD_ID + ".general.debug.debugWorldGenSafe")
+            @Config.RequiresWorldRestart
+            public boolean debugWorldGenSafe = false;
         }
 
         public static final class OverridesCFG
