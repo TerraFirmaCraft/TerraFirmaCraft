@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/marble",
     "spike": "tfc:rock/spike/marble"
   },
-  "category": "metamorphic"
+  "category": "metamorphic",
+  "sand_color": "white"
 }

@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -16,15 +17,16 @@ import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.config.LayerType;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
-import net.dries007.tfc.objects.types.RockManager;
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.TFCOverworldChunkGenerator;
@@ -56,10 +58,10 @@ public class ChunkDataProvider
 
     private final Map<ChunkPos, ChunkData> cachedChunkData;
     private final IWorld world;
-    private final LazyArea seedArea;
+    private final RockFactory bottomRockLayer, middleRockLayer, topRockLayer;
 
-    private final INoise2D regionalTempNoise;
-    private final INoise2D rainfallNoise;
+    private final INoise2D temperatureLayer;
+    private final INoise2D rainfallLayer;
     private final INoise2D layerHeightNoise;
 
     public ChunkDataProvider(IWorld world, TFCGenerationSettings settings, Random seedGenerator)
@@ -67,16 +69,18 @@ public class ChunkDataProvider
         this.cachedChunkData = new FiniteLinkedHashMap<>(1024);
         this.world = world;
 
-        this.seedArea = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings).make();
+        List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings);
+        this.bottomRockLayer = new RockFactory(rockLayers.get(0));
+        this.middleRockLayer = new RockFactory(rockLayers.get(1));
+        this.topRockLayer = new RockFactory(rockLayers.get(2));
 
         int baseHeight = TFCConfig.COMMON.rockLayerHeight.get();
         int range = TFCConfig.COMMON.rockLayerSpread.get();
         this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
 
         // Climate
-        // todo: config values
-        this.regionalTempNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).scaled(-5.5f, 5.5f).flattened(-5, 5).spread(0.002f);
-        this.rainfallNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).scaled(-25, 525).flattened(0, 500).spread(0.002f);
+        this.temperatureLayer = createTemperatureLayer(seedGenerator.nextLong());
+        this.rainfallLayer = createRainfallLayer(seedGenerator.nextLong());
     }
 
     public ChunkData get(BlockPos pos)
@@ -134,44 +138,42 @@ public class ChunkDataProvider
         cachedChunkData.put(pos, data);
 
         // Temperature / Rainfall
-        data.setRainfall(rainfallNoise.noise(chunkX, chunkZ));
-        data.setRegionalTemp(regionalTempNoise.noise(chunkX, chunkZ));
+        data.setRainfall(rainfallLayer.noise(chunkX, chunkZ));
+        data.setAverageTemp(temperatureLayer.noise(chunkX, chunkZ));
 
         // Rocks
         Rock[] bottomLayer = new Rock[256];
+        Rock[] middleLayer = new Rock[256];
         Rock[] topLayer = new Rock[256];
         SoilBlockType.Variant[] soilLayer = new SoilBlockType.Variant[256];
         SandBlockType[] sandLayer = new SandBlockType[256];
         int[] rockLayerHeight = new int[256];
 
-        int totalRocks = RockManager.INSTANCE.getValues().size();
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
                 // From the seed, generate a combination of rock, sand, and soil profile
-                int seed = seedArea.getValue(chunkX + x, chunkZ + z);
-                int topRockValue = seed % totalRocks;
-                topLayer[x + 16 * z] = RockManager.INSTANCE.get(topRockValue);
-                seed /= totalRocks;
+                bottomLayer[x + 16 * z] = bottomRockLayer.get(chunkX + x, chunkZ + z);
+                middleLayer[x + 16 * z] = middleRockLayer.get(chunkX + x, chunkZ + z);
+                topLayer[x + 16 * z] = topRockLayer.get(chunkX + x, chunkZ + z);
 
-                int bottomRockValue = seed % totalRocks;
-                bottomLayer[x + 16 * z] = RockManager.INSTANCE.get(bottomRockValue);
-                seed /= totalRocks;
-
-                int soilValue = seed % 3; // Only generate silty, sandy, and loamy
-                soilLayer[x + 16 * z] = SoilBlockType.Variant.valueOf(soilValue);
-                seed /= 3;
-
-                int sandValue = seed % SandBlockType.TOTAL;
-                sandLayer[x + 16 * z] = SandBlockType.valueOf(sandValue);
-
-                rockLayerHeight[x + 16 * z] = (int) layerHeightNoise.noise(x, z);
+                rockLayerHeight[x + 16 * z] = (int) layerHeightNoise.noise(chunkX + x, chunkZ + z);
             }
         }
 
-        data.setRockData(new RockData(bottomLayer, topLayer, soilLayer, sandLayer, rockLayerHeight));
+        data.setRockData(new RockData(bottomLayer, middleLayer, topLayer, soilLayer, sandLayer, rockLayerHeight));
         data.setValid(true);
         return data;
+    }
+
+    private INoise2D createTemperatureLayer(long seed)
+    {
+        return LayerType.SIN_Z.create(seed, TFCConfig.COMMON.temperatureLayerScale.get()).scaled(-10, 30);
+    }
+
+    private INoise2D createRainfallLayer(long seed)
+    {
+        return LayerType.SIN_X.create(seed, TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
     }
 }

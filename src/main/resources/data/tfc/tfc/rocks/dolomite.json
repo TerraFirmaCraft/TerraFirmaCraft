@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/dolomite",
     "spike": "tfc:rock/spike/dolomite"
   },
-  "category": "sedimentary"
+  "category": "sedimentary",
+  "sand_color": "red"
 }

@@ -108,7 +108,7 @@ public class Images<T>
             System.out.println("Problems: " + e);
         }
         nanos = System.nanoTime() - nanos;
-        System.out.printf("Image '%s' took %2.2f \u03BCs / sample = total %2.2f ms\n", name, nanos / 1E9, nanos / 1E6);
+        System.out.printf("Image '%s' took %2.2f us / sample = total %2.2f ms\n", name, nanos / 1E9, nanos / 1E6);
         return this;
     }
 

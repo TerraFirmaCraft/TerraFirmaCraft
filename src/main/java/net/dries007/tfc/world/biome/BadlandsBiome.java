@@ -11,9 +11,9 @@ import net.dries007.tfc.world.noise.SimplexNoise2D;
 
 public class BadlandsBiome extends TFCBiome
 {
-    public BadlandsBiome()
+    public BadlandsBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new TFCBiome.Builder().category(Category.MESA));
+        super(new TFCBiome.Builder().category(Category.MESA), temperature, rainfall);
     }
 
     @Override

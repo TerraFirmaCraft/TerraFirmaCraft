@@ -5,10 +5,8 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
 
 import com.google.gson.JsonObject;
@@ -129,6 +127,18 @@ public final class Helpers
         catch (CommandSyntaxException e)
         {
             throw new JsonParseException("Unable to parse block state", e);
+        }
+    }
+
+    public static <T> Optional<T> ignoreErrors(Callable<T> executor)
+    {
+        try
+        {
+            return Optional.of(executor.call());
+        }
+        catch (Exception e)
+        {
+            return Optional.empty();
         }
     }
 }

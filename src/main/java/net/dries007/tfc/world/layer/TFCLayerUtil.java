@@ -19,11 +19,11 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 
 import imageutil.Images;
+import net.dries007.tfc.objects.types.RockManager;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.biome.TFCBiomes;
 
@@ -179,41 +179,61 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static IAreaFactory<LazyArea> createOverworldRockLayers(long seed, TFCGenerationSettings settings)
+    public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed, TFCGenerationSettings settings)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
 
-        IAreaFactory<LazyArea> seedLayer, biomeLayer;
         List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
+        IAreaFactory<LazyArea> seedLayer;
         int layerCount = 0;
 
         Images.ColorMap moduloDiscrete20 = (v, m, x) -> Images.Colors.DISCRETE_20.apply(v / Integer.MAX_VALUE * 4, 1, 0);
         IMAGES.color(moduloDiscrete20);
 
+        int numRocks = RockManager.INSTANCE.getKeys().size();
+
         // Seed Areas
-        seedLayer = RandomLayer.INSTANCE.apply(contextFactory.apply(1000L));
-        IMAGES.size(32).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
-
-        IMAGES.size(640);
-        for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
         {
-            seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
-            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -320, -320, 320, 320);
+            RandomLayer randomLayer = new RandomLayer(numRocks);
+            RockManager.INSTANCE.addCallback(() -> randomLayer.setLimit(RockManager.INSTANCE.getKeys().size()));
+            seedLayer = randomLayer.apply(contextFactory.apply(1000L));
+            IMAGES.size(32).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
 
-            seedLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1001L), seedLayer);
-            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -320, -320, 320, 320);
+            // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
+            // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
+            // 1x => 98.49%
+            // 2x => 99.42%
+            // 3x => 99.54%
+            // 4x => 99.55%
+            // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
+            RandomizeNeighborsLayer randomNeighborLayer = new RandomizeNeighborsLayer(numRocks);
+            RockManager.INSTANCE.addCallback(() -> randomNeighborLayer.setLimit(RockManager.INSTANCE.getKeys().size()));
+            seedLayer = randomNeighborLayer.apply(contextFactory.apply(1001L), seedLayer);
+            IMAGES.size(32).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
+
+            IMAGES.size(640);
+            for (int i = 0; i < 2; i++)
+            {
+                seedLayer = ExactZoomLayer.INSTANCE.apply(contextFactory.apply(1001L), seedLayer);
+                IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
+
+                seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
+                IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
+
+                seedLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1001L), seedLayer);
+                IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
+            }
+
+            for (int i = 0; i < settings.getRockZoomLevel(j); i++)
+            {
+                seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
+                IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, 0, 0, 10000, 10000);
+            }
+
+            completedLayers.add(seedLayer);
         }
-
-        for (int i = 0; i < 5; i++)
-        {
-            seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
-            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -320, -320, 320, 320);
-        }
-
-        seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1003L), seedLayer);
-        IMAGES.size(1280).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -640, -640, 640, 640);
-
-        return seedLayer;
+        return completedLayers;
     }
 
     public static <A extends IArea, C extends IExtendedNoiseRandom<A>> IAreaFactory<A> repeat(IAreaTransformer1 transformer, int count, IAreaFactory<A> originalLayer, Supplier<C> contextSupplier)
@@ -266,7 +286,7 @@ public class TFCLayerUtil
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
     }
 
-    private static <T extends Biome> int getId(RegistryObject<T> biome)
+    private static <T extends Biome> int getId(Supplier<T> biome)
     {
         return ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(biome.get());
     }

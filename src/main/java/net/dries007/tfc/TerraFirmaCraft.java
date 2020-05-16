@@ -25,6 +25,7 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCWorldCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.feature.TFCFeatures;
+import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 import net.dries007.tfc.world.tracker.WorldTrackerCapability;
@@ -94,5 +95,11 @@ public final class TerraFirmaCraft
         ChunkDataCapability.setup();
         WorldTrackerCapability.setup();
         TFCBiomes.setup();
+
+        // HEY DEV YOU'RE AND IDIOT AND MINECRAFT SUCKS
+        if (TFCLayerUtil.isDebugMode)
+        {
+            throw new IllegalStateException("TFCLayerUtil#isDebugMode is set to true, fix that shit otherwise world gen is borked");
+        }
     }
 }

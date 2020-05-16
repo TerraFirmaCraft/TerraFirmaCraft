@@ -78,6 +78,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator); // Worley cave carver, separate from vanilla ones
         this.chunkDataProvider = new ChunkDataProvider(world, settings, seedGenerator); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(); // Replaces default world gen blocks with TFC variants, after surface generation
+        this.biomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
     }
 
     public ChunkDataProvider getChunkDataProvider()
@@ -107,7 +108,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
      * Since we build surface in {@link TFCOverworldChunkGenerator#makeBase(IWorld, IChunk)}, we just have to make bedrock and replace surface with TFC blocks here
      */
     @Override
-    public void func_225551_a_(WorldGenRegion worldGenRegion, IChunk chunk)
+    public void generateSurface(WorldGenRegion worldGenRegion, IChunk chunk)
     {
         ChunkPos chunkPos = chunk.getPos();
         SharedSeedRandom random = new SharedSeedRandom();
@@ -116,7 +117,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         makeBedrock(chunk, random);
 
         ChunkData chunkData = chunkDataProvider.getOrCreate(chunkPos);
-        float temperature = chunkData.getAvgTemp();
+        float temperature = chunkData.getAverageTemp();
         float rainfall = chunkData.getRainfall();
         blockReplacer.replace(worldGenRegion, chunk, random, chunkData.getRockData(), rainfall, temperature);
     }

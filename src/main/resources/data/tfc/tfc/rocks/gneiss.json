@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/gneiss",
     "spike": "tfc:rock/spike/gneiss"
   },
-  "category": "metamorphic"
+  "category": "metamorphic",
+  "sand_color": "red"
 }

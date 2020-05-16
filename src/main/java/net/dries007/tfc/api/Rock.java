@@ -22,10 +22,12 @@ import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.objects.blocks.rock.RockSpikeBlock;
+import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.util.Helpers;
 
 public class Rock
 {
+    private final SandBlockType sandColor;
     private final RockCategory category;
     private final Map<BlockType, Block> blockVariants;
     private final ResourceLocation id;
@@ -34,14 +36,9 @@ public class Rock
     {
         this.id = id;
         String rockCategoryName = JSONUtils.getString(json, "category");
-        try
-        {
-            this.category = RockCategory.valueOf(rockCategoryName.toUpperCase());
-        }
-        catch (IllegalArgumentException e)
-        {
-            throw new JsonParseException("Unknown rock category " + rockCategoryName);
-        }
+        this.category = Helpers.ignoreErrors(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
+        String sandColorName = JSONUtils.getString(json, "sand_color");
+        this.sandColor = Helpers.ignoreErrors(() -> SandBlockType.valueOf(sandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + sandColorName));
 
         this.blockVariants = Helpers.findRegistryObjects(json, "blocks", ForgeRegistries.BLOCKS, Arrays.asList(Rock.BlockType.values()), type -> type.name().toLowerCase());
     }
@@ -59,6 +56,11 @@ public class Rock
     public RockCategory getCategory()
     {
         return category;
+    }
+
+    public SandBlockType getSandColor()
+    {
+        return sandColor;
     }
 
     /**

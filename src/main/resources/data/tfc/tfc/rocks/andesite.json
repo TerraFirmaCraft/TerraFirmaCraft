@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/andesite",
     "spike": "tfc:rock/spike/andesite"
   },
-  "category": "igneous_extrusive"
+  "category": "igneous_extrusive",
+  "sand_color": "black"
 }

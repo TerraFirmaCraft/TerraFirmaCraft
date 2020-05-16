@@ -1,6 +1,6 @@
 from mcresources import ResourceManager
 
-from data.constants import *
+from constants import *
 
 
 def generate(rm: ResourceManager):

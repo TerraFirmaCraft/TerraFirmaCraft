@@ -28,8 +28,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
 
     public FissureFeature()
     {
-        /* deserialize */
-        super(BlockStateFeatureConfig::func_227271_a_);
+        super(BlockStateFeatureConfig::deserialize);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
             Set<BlockPos> blocks = getCollapseSet(rand, pos, radius, depth);
             for (BlockPos filling : blocks)
             {
-                smartFill(worldIn, filling, blocks, rockState, config.field_227270_a_);
+                smartFill(worldIn, filling, blocks, rockState, config.state);
             }
         });
         return true;

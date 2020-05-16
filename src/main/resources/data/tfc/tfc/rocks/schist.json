@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/schist",
     "spike": "tfc:rock/spike/schist"
   },
-  "category": "metamorphic"
+  "category": "metamorphic",
+  "sand_color": "brown"
 }

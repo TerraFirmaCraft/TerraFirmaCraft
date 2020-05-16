@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/basalt",
     "spike": "tfc:rock/spike/basalt"
   },
-  "category": "igneous_extrusive"
+  "category": "igneous_extrusive",
+  "sand_color": "black"
 }

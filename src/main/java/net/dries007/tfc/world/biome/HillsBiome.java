@@ -13,9 +13,9 @@ public class HillsBiome extends TFCBiome
 {
     private final float height;
 
-    public HillsBiome(float height)
+    public HillsBiome(float height, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.PLAINS));
+        super(new Builder().category(Category.PLAINS), temperature, rainfall);
         this.height = height;
     }
 

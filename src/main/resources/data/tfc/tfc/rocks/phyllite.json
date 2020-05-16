@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/phyllite",
     "spike": "tfc:rock/spike/phyllite"
   },
-  "category": "metamorphic"
+  "category": "metamorphic",
+  "sand_color": "white"
 }

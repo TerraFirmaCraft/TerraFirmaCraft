@@ -17,9 +17,9 @@ public class MountainsBiome extends TFCBiome
     private final float scaleHeight;
     private final boolean isOceanMountains;
 
-    public MountainsBiome(float baseHeight, float scaleHeight, boolean isOceanMountains)
+    public MountainsBiome(float baseHeight, float scaleHeight, boolean isOceanMountains, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.EXTREME_HILLS));
+        super(new Builder().category(Category.EXTREME_HILLS), temperature, rainfall);
 
         this.baseHeight = baseHeight;
         this.scaleHeight = scaleHeight;

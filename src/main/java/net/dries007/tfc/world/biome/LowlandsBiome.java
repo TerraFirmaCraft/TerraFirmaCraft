@@ -11,9 +11,9 @@ import net.dries007.tfc.world.noise.SimplexNoise2D;
 
 public class LowlandsBiome extends TFCBiome
 {
-    public LowlandsBiome()
+    public LowlandsBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.PLAINS));
+        super(new Builder().category(Category.PLAINS), temperature, rainfall);
     }
 
     @Override

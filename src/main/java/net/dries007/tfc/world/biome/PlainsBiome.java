@@ -14,9 +14,9 @@ public class PlainsBiome extends TFCBiome
     private final float minHeight;
     private final float maxHeight;
 
-    public PlainsBiome(float minHeight, float maxHeight)
+    public PlainsBiome(float minHeight, float maxHeight, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.PLAINS));
+        super(new Builder().category(Category.PLAINS), temperature, rainfall);
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
     }

@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/dacite",
     "spike": "tfc:rock/spike/dacite"
   },
-  "category": "igneous_extrusive"
+  "category": "igneous_extrusive",
+  "sand_color": "black"
 }

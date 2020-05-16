@@ -1,6 +1,6 @@
 from mcresources import ResourceManager
 
-from data.constants import *
+from constants import *
 
 
 def generate(rm: ResourceManager):
@@ -38,12 +38,6 @@ def generate(rm: ResourceManager):
             }, parent='tfc:block/ore') \
                 .with_item_model() \
                 .with_lang(lang('%s %s', rock, ore))
-
-    for rock, rock_data in ROCKS.items():
-        rm.data(('tfc', 'rocks', rock), {
-            'blocks': dict((block_type, 'tfc:rock/%s/%s' % (block_type, rock)) for block_type in ROCK_BLOCK_TYPES),
-            'category': rock_data.category
-        })
 
     # Sand
     for sand in SAND_BLOCK_TYPES:

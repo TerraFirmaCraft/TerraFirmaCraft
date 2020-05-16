@@ -37,6 +37,20 @@ public class TFCGenerationSettings extends GenerationSettings implements IBiomeP
         return TFCConfig.COMMON.biomeZoomLevel.get();
     }
 
+    public int getRockZoomLevel(int layer)
+    {
+        switch (layer)
+        {
+            case 0:
+                return TFCConfig.COMMON.rockBottomZoomLevel.get();
+            case 1:
+                return TFCConfig.COMMON.rockMiddleZoomLevel.get();
+            case 2:
+                return TFCConfig.COMMON.rockTopZoomLevel.get();
+        }
+        throw new IllegalArgumentException("Unknown rock layer: " + layer);
+    }
+
     public WorldInfo getWorldInfo()
     {
         return worldInfo;

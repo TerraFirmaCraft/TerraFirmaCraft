@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/gabbro",
     "spike": "tfc:rock/spike/gabbro"
   },
-  "category": "igneous_intrusive"
+  "category": "igneous_intrusive",
+  "sand_color": "black"
 }

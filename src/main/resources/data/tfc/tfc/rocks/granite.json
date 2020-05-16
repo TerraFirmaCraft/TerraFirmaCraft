@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/granite",
     "spike": "tfc:rock/spike/granite"
   },
-  "category": "igneous_intrusive"
+  "category": "igneous_intrusive",
+  "sand_color": "brown"
 }

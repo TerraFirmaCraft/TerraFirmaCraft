@@ -49,17 +49,9 @@ public class ChunkBlockReplacer
             }
         });
 
-        // Dirt -> under surface material (dirt in high rainfall, sandstone (?) in low rainfall)
-        register(Blocks.DIRT, (rockData, x, y, z, rainfall, temperature, noise) -> {
-            if (rainfall > TFCConfig.COMMON.sandGrassRainfallCutoff.get() + TFCConfig.COMMON.sandGrassRainfallSpread.get() * noise)
-            {
-                return TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(rockData.getSoil(x, z)).get().getDefaultState();
-            }
-            else
-            {
-                return TFCBlocks.SAND.get(rockData.getSand(x, z)).get().getDefaultState();
-            }
-        });
+        // Dirt -> under surface material. Replaced with dirt, or inland sand (deco rock layer)
+        register(Blocks.DIRT, (rockData, x, y, z, rainfall, temperature, noise) -> getSoilBlock(SoilBlockType.DIRT, rockData, x, z, rainfall, noise));
+
         // Replace exposed dirt with grass in cave carvers
         for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
         {
@@ -72,14 +64,7 @@ public class ChunkBlockReplacer
             @Override
             public BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature, float noise)
             {
-                if (rainfall > TFCConfig.COMMON.sandGrassRainfallCutoff.get() + TFCConfig.COMMON.sandGrassRainfallSpread.get() * noise)
-                {
-                    return TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(rockData.getSoil(x, z)).get().getDefaultState();
-                }
-                else
-                {
-                    return TFCBlocks.SAND.get(rockData.getSand(x, z)).get().getDefaultState();
-                }
+                return getSoilBlock(SoilBlockType.GRASS, rockData, x, z, rainfall, noise);
             }
 
             @Override
@@ -95,11 +80,11 @@ public class ChunkBlockReplacer
         // Gravel -> accent block used in some mountains
         register(Blocks.GRAVEL, (rockData, x, y, z, rainfall, temperature, random) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
 
-        // Sand -> ocean floor material (gravel in low temperature, sand in high temperature)
+        // Sand -> ocean floor material. Switch based on the biome temp category
         register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature, noise) -> {
-            if (temperature > TFCConfig.COMMON.sandGravelTemperatureCutoff.get() + TFCConfig.COMMON.sandGravelTemperatureSpread.get() * noise)
+            if (temperature > TFCConfig.COMMON.sandGravelTemperatureCutoff.get() + TFCConfig.COMMON.sandGravelTemperatureRange.get() * noise)
             {
-                return TFCBlocks.SAND.get(rockData.getSand(x, z)).get().getDefaultState();
+                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getSandColor()).get().getDefaultState();
             }
             else
             {
@@ -164,6 +149,26 @@ public class ChunkBlockReplacer
             LOGGER.debug("Replaced entry {} in ChunkBlockReplacer#carvingReplacementRules", block);
         }
         carvingReplacementRules.put(block, replacement);
+    }
+
+    private BlockState getSoilBlock(SoilBlockType soil, RockData rockData, int x, int z, float rainfall, float noise)
+    {
+        if (rainfall < TFCConfig.COMMON.sandRainfallCutoff.get() + TFCConfig.COMMON.sandRainfallRange.get() * noise)
+        {
+            return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getSandColor()).get().getDefaultState();
+        }
+        else if (rainfall < TFCConfig.COMMON.sandyLoamRainfallCutoff.get() + TFCConfig.COMMON.sandyLoamRainfallRange.get() * noise)
+        {
+            return TFCBlocks.SOIL.get(soil).get(SoilBlockType.Variant.SANDY_LOAM).get().getDefaultState();
+        }
+        else if (rainfall < TFCConfig.COMMON.siltyLoamRainfallCutoff.get() + TFCConfig.COMMON.siltyLoamRainfallRange.get() * noise)
+        {
+            return TFCBlocks.SOIL.get(soil).get(SoilBlockType.Variant.SILTY_LOAM).get().getDefaultState();
+        }
+        else
+        {
+            return TFCBlocks.SOIL.get(soil).get(SoilBlockType.Variant.SILT).get().getDefaultState();
+        }
     }
 
     @FunctionalInterface

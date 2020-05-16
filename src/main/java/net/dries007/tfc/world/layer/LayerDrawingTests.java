@@ -8,131 +8,55 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
+import imageutil.Images;
+
 import static net.dries007.tfc.world.layer.LayerDrawingUtil.IMAGES;
 
 public class LayerDrawingTests
 {
     public static void main(String[] args)
     {
-        LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, 1243, seedModifier);
+        IMAGES.enable().color(Images.Colors.DISCRETE_20);
 
-        IAreaFactory<LazyArea> mainLayer, riverLayer;
+        long seed = System.currentTimeMillis();
+        LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
+        IAreaFactory<LazyArea> seedLayer;
         int layerCount = 0;
 
-        IMAGES.color(LayerDrawingUtil::landColor).size(20);
 
-        // Ocean / Continents
+        seedLayer = new RandomLayer(20).apply(contextFactory.apply(1000L));
+        IMAGES.size(32).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
 
-        mainLayer = new IslandLayer(8).apply(contextFactory.apply(1000L));
-        IMAGES.draw("layer_land_" + ++layerCount, mainLayer, 0, 0, -10, -10, 10, 10);
+        // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
+        // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
+        // 1x => 98.49%
+        // 2x => 99.42%
+        // 3x => 99.54%
+        // 4x => 99.55%
+        // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
+        seedLayer = new RandomizeNeighborsLayer(20).apply(contextFactory.apply(1001L), seedLayer);
+        IMAGES.size(32).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
 
-        mainLayer = ZoomLayer.FUZZY.apply(contextFactory.apply(1001L), mainLayer);
-        IMAGES.size(40).draw("layer_land_" + ++layerCount, mainLayer, 0, 0, -20, -20, 20, 20);
-
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.apply(1002L), mainLayer);
-        IMAGES.draw("layer_land_" + ++layerCount, mainLayer, 0, 0, -20, -20, 20, 20);
-
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1003L), mainLayer);
-        IMAGES.size(80).draw("layer_land_" + ++layerCount, mainLayer, 0, 0, -40, -40, 40, 40);
-
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.apply(1004L), mainLayer);
-        IMAGES.draw("layer_land_" + ++layerCount, mainLayer, 0, 0, -40, -40, 40, 40);
-
+        IMAGES.size(640);
         for (int i = 0; i < 2; i++)
         {
-            mainLayer = AddIslandLayer.HEAVY.apply(contextFactory.apply(1005L + 2 * i), mainLayer);
-            IMAGES.draw("layer_land_" + ++layerCount, mainLayer, 0, 0, -40, -40, 40, 40);
+            seedLayer = ExactZoomLayer.INSTANCE.apply(contextFactory.apply(1001L), seedLayer);
+            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
 
-            mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1006L + 2 * i), mainLayer);
-            IMAGES.draw("layer_land_" + ++layerCount, mainLayer, 0, 0, -40, -40, 40, 40);
+            seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
+            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
+
+            seedLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1001L), seedLayer);
+            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, -16, -16, 16, 16);
         }
-
-        // Oceans and Continents => Elevation Mapping
-
-        IMAGES.color(LayerDrawingUtil::elevationColor);
-        layerCount = 0;
-
-        mainLayer = ElevationLayer.INSTANCE.apply(contextFactory.apply(1009L), mainLayer);
-        IMAGES.draw("layer_elevation_" + ++layerCount, mainLayer, 0, 0, -40, -40, 40, 40);
-
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1010L), mainLayer);
-        IMAGES.size(160).draw("layer_elevation_" + ++layerCount, mainLayer, -80, -80, -80, -80, 80, 80);
-
-        // Elevation Mapping => Rivers
-        layerCount = 0;
-
-        riverLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1011L), mainLayer);
-        IMAGES.draw("layer_river_" + ++layerCount, riverLayer, 0, 0, -80, -80, 80, 80);
 
         for (int i = 0; i < 6; i++)
         {
-            riverLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1012L + i), riverLayer);
-            IMAGES.draw("layer_river_" + ++layerCount, riverLayer, 0, 0, -80, -80, 80, 80);
+            seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
+            IMAGES.draw("layer_seed" + ++layerCount, seedLayer, 0, 20, 0, 0, 10000, 10000);
         }
 
-        riverLayer = RiverLayer.INSTANCE.apply(contextFactory.apply(1018L), riverLayer);
-        IMAGES.size(640).color(LayerDrawingUtil::riverColor).draw("layer_river_" + ++layerCount, riverLayer, 0, 0, -320, -320, 320, 320);
-
-        riverLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), riverLayer);
-        IMAGES.draw("layer_river_" + ++layerCount, riverLayer, 0, 0, -80, -80, 80, 80);
-
-        // Elevation Mapping => Biomes
-
-        IMAGES.color(LayerDrawingUtil::biomeColor);
-        layerCount = 0;
-
-        mainLayer = BiomeLayer.INSTANCE.apply(contextFactory.apply(1011L), mainLayer);
-        IMAGES.size(160).draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -80, -80, 80, 80);
-
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1012L), mainLayer);
-        IMAGES.size(320).draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -160, -160, 160, 160);
-
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.apply(1013L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -160, -160, 160, 160);
-
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1014L), mainLayer);
-        IMAGES.size(640).draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        mainLayer = RemoveOceanLayer.INSTANCE.apply(contextFactory.apply(1015L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        mainLayer = OceanLayer.INSTANCE.apply(contextFactory.apply(1016L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        mainLayer = EdgeBiomeLayer.INSTANCE.apply(contextFactory.apply(1017L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        mainLayer = AddLakeLayer.INSTANCE.apply(contextFactory.apply(1018L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        for (int i = 0; i < 4; i++)
-        {
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), mainLayer);
-            IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-        }
-
-        mainLayer = ShoreLayer.INSTANCE.apply(contextFactory.apply(1023L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        for (int i = 0; i < 2; i++)
-        {
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1024L), mainLayer);
-            IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-        }
-
-        mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1025L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        mainLayer = MixRiverLayer.INSTANCE.apply(contextFactory.apply(1026L), mainLayer, riverLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        mainLayer = BiomeRiverWidenLayer.MEDIUM.apply(contextFactory.apply(1027L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        mainLayer = BiomeRiverWidenLayer.LOW.apply(contextFactory.apply(1028L), mainLayer);
-        IMAGES.draw("layer_biome_" + ++layerCount, mainLayer, 0, 0, -320, -320, 320, 320);
-
-        mainLayer.make().getValue(0, 0);
-
+        seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1003L), seedLayer);
+        IMAGES.size(1280).draw("layer_seed" + ++layerCount, seedLayer, 0, 20, 0, 0, 10000, 10000);
     }
 }
