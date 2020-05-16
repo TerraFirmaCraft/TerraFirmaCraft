@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/rhyolite",
     "spike": "tfc:rock/spike/rhyolite"
   },
-  "category": "igneous_extrusive"
+  "category": "igneous_extrusive",
+  "sand_color": "brown"
 }

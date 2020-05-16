@@ -14,9 +14,9 @@ public class ShoreBiome extends TFCBiome
 {
     private final boolean isStone;
 
-    public ShoreBiome(boolean isStone)
+    public ShoreBiome(boolean isStone, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Biome.Builder().category(Category.BEACH));
+        super(new Biome.Builder().category(Category.BEACH), temperature, rainfall);
         this.isStone = isStone;
     }
 

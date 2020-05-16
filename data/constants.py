@@ -1,7 +1,7 @@
 from collections import namedtuple
 from typing import Dict, List
 
-Rock = namedtuple('Rock', ('category',))
+Rock = namedtuple('Rock', ('category', 'sand_color'))
 Metal = namedtuple('Metal', ('tier', 'usable'))
 Ore = namedtuple('Ore', ('metal', 'graded'))
 OreGrade = namedtuple('OreGrade', ('weight',))
@@ -12,26 +12,26 @@ HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
 ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
 ROCKS: Dict[str, Rock] = {
-    'chalk': Rock('sedimentary'),
-    'chert': Rock('sedimentary'),
-    'claystone': Rock('sedimentary'),
-    'conglomerate': Rock('sedimentary'),
-    'dolomite': Rock('sedimentary'),
-    'limestone': Rock('sedimentary'),
-    'shale': Rock('sedimentary'),
-    'gneiss': Rock('metamorphic'),
-    'marble': Rock('metamorphic'),
-    'phyllite': Rock('metamorphic'),
-    'quartzite': Rock('metamorphic'),
-    'schist': Rock('metamorphic'),
-    'slate': Rock('metamorphic'),
-    'diorite': Rock('igneous_intrusive'),
-    'gabbro': Rock('igneous_intrusive'),
-    'granite': Rock('igneous_intrusive'),
-    'andesite': Rock('igneous_extrusive'),
-    'basalt': Rock('igneous_extrusive'),
-    'dacite': Rock('igneous_extrusive'),
-    'rhyolite': Rock('igneous_extrusive')
+    'chalk': Rock('sedimentary', 'yellow'),
+    'chert': Rock('sedimentary', 'yellow'),
+    'claystone': Rock('sedimentary', 'red'),
+    'conglomerate': Rock('sedimentary', 'red'),
+    'dolomite': Rock('sedimentary', 'red'),
+    'limestone': Rock('sedimentary', 'white'),
+    'shale': Rock('sedimentary', 'red'),
+    'gneiss': Rock('metamorphic', 'red'),
+    'marble': Rock('metamorphic', 'white'),
+    'phyllite': Rock('metamorphic', 'white'),
+    'quartzite': Rock('metamorphic', 'yellow'),
+    'schist': Rock('metamorphic', 'brown'),
+    'slate': Rock('metamorphic', 'brown'),
+    'diorite': Rock('igneous_intrusive', 'brown'),
+    'gabbro': Rock('igneous_intrusive', 'black'),
+    'granite': Rock('igneous_intrusive', 'brown'),
+    'andesite': Rock('igneous_extrusive', 'black'),
+    'basalt': Rock('igneous_extrusive', 'black'),
+    'dacite': Rock('igneous_extrusive', 'black'),
+    'rhyolite': Rock('igneous_extrusive', 'brown')
 }
 METALS: Dict[str, Metal] = {
     'bismuth': Metal(1, True),

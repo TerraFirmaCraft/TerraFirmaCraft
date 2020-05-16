@@ -2,9 +2,9 @@
 
 from mcresources import ResourceManager, clean_generated_resources
 
-import data.assets as assets
-import data.collapse_recipes as collapse_recipes
-import data.ore_veins as ore_veins
+import assets
+import data
+import recipes
 
 
 def main():
@@ -12,8 +12,8 @@ def main():
     clean_generated_resources('/'.join(rm.resource_dir))
 
     assets.generate(rm)
-    ore_veins.generate(rm)
-    collapse_recipes.generate(rm)
+    data.ore_veins.generate(rm)
+    recipes.collapse.generate(rm)
 
     rm.flush()
 

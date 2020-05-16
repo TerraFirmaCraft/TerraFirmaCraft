@@ -53,5 +53,10 @@ public class RockManager extends DataManager<Rock>
         }
 
         super.postProcess();
+
+        if (getValues().isEmpty())
+        {
+            throw new IllegalStateException("Something went badly wrong... There are no rocks. This cannot be.");
+        }
     }
 }

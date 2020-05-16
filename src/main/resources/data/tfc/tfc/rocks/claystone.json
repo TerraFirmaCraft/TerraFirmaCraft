@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/claystone",
     "spike": "tfc:rock/spike/claystone"
   },
-  "category": "sedimentary"
+  "category": "sedimentary",
+  "sand_color": "red"
 }

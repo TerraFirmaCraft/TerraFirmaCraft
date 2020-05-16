@@ -15,7 +15,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
@@ -45,17 +44,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class ForgeEventHandler
 {
     private static final Logger LOGGER = LogManager.getLogger();
-
-    @SubscribeEvent
-    public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
-    {
-        if (event.getWorld().getWorldInfo().getGenerator() == TerraFirmaCraft.getWorldType())
-        {
-            // todo: handle this better
-            event.getWorld().getWorldInfo().setSpawn(new BlockPos(0, 100, 0));
-            event.setCanceled(true);
-        }
-    }
 
     @SubscribeEvent
     public static void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<Chunk> event)

@@ -14,9 +14,9 @@ public class CanyonsBiome extends TFCBiome
     private final float minHeight;
     private final float maxHeight;
 
-    public CanyonsBiome(float minHeight, float maxHeight)
+    public CanyonsBiome(float minHeight, float maxHeight, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.EXTREME_HILLS));
+        super(new Builder().category(Category.EXTREME_HILLS), temperature, rainfall);
 
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;

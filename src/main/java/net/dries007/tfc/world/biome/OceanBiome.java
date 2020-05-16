@@ -15,9 +15,9 @@ public class OceanBiome extends TFCBiome
 {
     private final float depthMin, depthMax;
 
-    public OceanBiome(boolean isDeep)
+    public OceanBiome(boolean isDeep, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.OCEAN));
+        super(new Builder().category(Category.OCEAN), temperature, rainfall);
 
         if (isDeep)
         {

@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import net.dries007.tfc.util.climate.ClimateTFC;
+import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class ChunkDataUpdatePacket
@@ -23,7 +23,7 @@ public class ChunkDataUpdatePacket
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.rainfall = data.getRainfall();
-        this.regionalTemp = data.getRegionalTemp();
+        this.regionalTemp = data.getAverageTemp();
     }
 
     ChunkDataUpdatePacket(PacketBuffer buffer)
@@ -54,11 +54,11 @@ public class ChunkDataUpdatePacket
                 ChunkData.get(chunk).ifPresent(data -> {
                     // Update client side chunk data
                     data.setValid(true);
-                    data.setRegionalTemp(regionalTemp);
+                    data.setAverageTemp(regionalTemp);
                     data.setRainfall(rainfall);
 
                     // Update climate cache
-                    ClimateTFC.update(chunk.getPos(), data.getAvgTemp(), data.getRainfall());
+                    Climate.update(chunk.getPos(), data.getAverageTemp(), data.getRainfall());
                 });
             }
         });

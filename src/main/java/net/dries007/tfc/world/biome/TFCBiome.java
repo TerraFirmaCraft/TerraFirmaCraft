@@ -15,6 +15,7 @@ import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
+import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.noise.INoise2D;
 
 public abstract class TFCBiome extends Biome
@@ -26,16 +27,32 @@ public abstract class TFCBiome extends Biome
     // Set during setup, after surface builders are available
     protected ConfiguredSurfaceBuilder<? extends ISurfaceBuilderConfig> lazySurfaceBuilder;
 
-    protected TFCBiome(Builder builder)
+    private BiomeVariantHolder variantHolder;
+
+    protected TFCBiome(Builder builder, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
         super(builder
-            // Unused properties - the colors will be set dynamically by temperature / rainfall layers
-            .depth(0).scale(0).waterColor(4159204).waterFogColor(329011).precipitation(RainType.RAIN).temperature(1.0f).downfall(1.0f)
-            // Unused for now, may be used by variant biomes
-            .parent(null)
+            // Unused
+            .depth(0).scale(0).parent(null)
+            // Provide reasonable defaults, TFC doesn't use these
+            .waterColor(temperature.getWaterColor())
+            .waterFogColor(temperature.getWaterFogColor())
+            .precipitation(Climate.getDefaultRainType(temperature, rainfall))
+            .temperature(temperature.getTemperature())
+            .downfall(rainfall.getDownfall())
             // Since this is a registry object, we just do them all later for consistency
             .surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.NOPE, SurfaceBuilder.AIR_CONFIG))
         );
+    }
+
+    public void setVariantHolder(BiomeVariantHolder variantHolder)
+    {
+        this.variantHolder = variantHolder;
+    }
+
+    public BiomeVariantHolder getVariants()
+    {
+        return variantHolder;
     }
 
     public abstract INoise2D createNoiseLayer(long seed);

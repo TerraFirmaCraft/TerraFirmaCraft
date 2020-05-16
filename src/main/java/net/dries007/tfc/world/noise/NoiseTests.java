@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import imageutil.Images;
+import net.dries007.tfc.config.LayerType;
 
 public class NoiseTests
 {
@@ -12,6 +13,20 @@ public class NoiseTests
     public static final Images<BiIntFunction<INoise2D>> TILED_IMAGES = Images.get(target -> (x, y) -> target.get((int) (x / 40), (int) (y / 40)).noise((float) x % 40 - 20, (float) y % 40 - 20));
 
     public static void main(String[] args)
+    {
+        long seed = System.currentTimeMillis();
+
+        INoise2D temp = LayerType.SIN_Z.create(seed, 40_000);
+        INoise2D rainfall = LayerType.NOISE.create(seed, 40_000);
+
+        IMAGES.color(Images.Colors.LINEAR_BLUE_RED).size(1000);
+        IMAGES.draw("avg_temp", temp.terraces(9), -1, 1, -20000, -20000, 20000, 20000);
+
+        IMAGES.color(Images.Colors.LINEAR_BLUE_RED).size(1000);
+        IMAGES.draw("rainfall", rainfall.terraces(9), -1, 1, -20000, -20000, 20000, 20000);
+    }
+
+    public static void testMetaballs()
     {
         Random random = new Random();
         INoise2D noise = new Metaballs2D(20, random);

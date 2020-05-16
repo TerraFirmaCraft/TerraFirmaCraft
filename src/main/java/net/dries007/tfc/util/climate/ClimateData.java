@@ -5,16 +5,19 @@
 
 package net.dries007.tfc.util.climate;
 
+/**
+ * This is a wrapper around climate data which is calculated during world generation
+ */
 public class ClimateData
 {
-    public static final ClimateData DEFAULT = new ClimateData(0, 250);
+    public static final ClimateData DEFAULT = new ClimateData(10, 250);
 
-    private final float regionalTemp;
+    private final float averageTemp;
     private final float rainfall;
 
-    ClimateData(float regionalTemp, float rainfall)
+    ClimateData(float averageTemp, float rainfall)
     {
-        this.regionalTemp = regionalTemp;
+        this.averageTemp = averageTemp;
         this.rainfall = rainfall;
     }
 
@@ -23,8 +26,8 @@ public class ClimateData
         return rainfall;
     }
 
-    public float getRegionalTemp()
+    public float getAverageTemp()
     {
-        return regionalTemp;
+        return averageTemp;
     }
 }

@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/chert",
     "spike": "tfc:rock/spike/chert"
   },
-  "category": "sedimentary"
+  "category": "sedimentary",
+  "sand_color": "yellow"
 }

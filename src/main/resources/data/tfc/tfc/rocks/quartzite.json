@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/quartzite",
     "spike": "tfc:rock/spike/quartzite"
   },
-  "category": "metamorphic"
+  "category": "metamorphic",
+  "sand_color": "yellow"
 }

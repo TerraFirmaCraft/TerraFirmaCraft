@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/shale",
     "spike": "tfc:rock/spike/shale"
   },
-  "category": "sedimentary"
+  "category": "sedimentary",
+  "sand_color": "red"
 }

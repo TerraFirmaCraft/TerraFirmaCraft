@@ -8,5 +8,6 @@
     "smooth": "tfc:rock/smooth/limestone",
     "spike": "tfc:rock/spike/limestone"
   },
-  "category": "sedimentary"
+  "category": "sedimentary",
+  "sand_color": "white"
 }

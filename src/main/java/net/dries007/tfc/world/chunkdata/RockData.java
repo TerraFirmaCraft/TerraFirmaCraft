@@ -27,6 +27,7 @@ import net.dries007.tfc.util.Helpers;
 public class RockData implements INBTSerializable<CompoundNBT>
 {
     private final Rock[] bottomLayer;
+    private final Rock[] middleLayer;
     private final Rock[] topLayer;
     private final SoilBlockType.Variant[] soilLayer;
     private final SandBlockType[] sandLayer;
@@ -34,12 +35,13 @@ public class RockData implements INBTSerializable<CompoundNBT>
 
     public RockData()
     {
-        this(new Rock[256], new Rock[256], new SoilBlockType.Variant[256], new SandBlockType[256], new int[256]);
+        this(new Rock[256], new Rock[256], new Rock[256], new SoilBlockType.Variant[256], new SandBlockType[256], new int[256]);
     }
 
-    public RockData(Rock[] bottomLayer, Rock[] topLayer, SoilBlockType.Variant[] soilLayer, SandBlockType[] sandLayer, int[] rockLayerHeight)
+    public RockData(Rock[] bottomLayer, Rock[] middleLayer, Rock[] topLayer, SoilBlockType.Variant[] soilLayer, SandBlockType[] sandLayer, int[] rockLayerHeight)
     {
         this.bottomLayer = bottomLayer;
+        this.middleLayer = middleLayer;
         this.topLayer = topLayer;
         this.soilLayer = soilLayer;
         this.sandLayer = sandLayer;
@@ -63,24 +65,31 @@ public class RockData implements INBTSerializable<CompoundNBT>
         return rockLayerHeight[(x & 15) + 16 * (z & 15)];
     }
 
+    /**
+     * Used as decoration rock in some biomes
+     * Sand color used as "inland" sand color (deserts)
+     */
     public Rock getTopRock(int x, int z)
     {
         return topLayer[(x & 15) + 16 * (z & 15)];
     }
 
+    /**
+     * Actually functions as the topmost rock in most biomes
+     * Sand color used as the "water" sand color (beaches, oceans, rivers)
+     */
+    public Rock getMidRock(int x, int z)
+    {
+        return middleLayer[(x & 15) + 16 * (z & 15)];
+    }
+
+    /**
+     * Base rock, does what it says on the tin.
+     * Sand color is unused.
+     */
     public Rock getBottomRock(int x, int z)
     {
         return bottomLayer[(x & 15) + 16 * (z & 15)];
-    }
-
-    public SoilBlockType.Variant getSoil(int x, int z)
-    {
-        return soilLayer[(x & 15) + 16 * (z & 15)];
-    }
-
-    public SandBlockType getSand(int x, int z)
-    {
-        return sandLayer[(x & 15) + 16 * (z & 15)];
     }
 
     @Override
@@ -89,7 +98,10 @@ public class RockData implements INBTSerializable<CompoundNBT>
         CompoundNBT nbt = new CompoundNBT();
 
         // Record a map from bytes -> rocks (pallet, similar to vanilla world save format)
-        List<Rock> uniqueRocks = Stream.of(bottomLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
+        // This should really be shorts (but NBT does not have a short array, only ints), since three rock layers *technically* can use up to 3 * 256 unique rocks. However I think it's probably safe to assume there will never be (in chunk data), more than 256 rocks per chunk.
+        // However, at that point it's not actually more efficient to store a pallet, as the int ID of the rock is probably shorter.
+        // But, it does safeguard this chunk against changing rocks in the future, which is important.
+        List<Rock> uniqueRocks = Stream.of(bottomLayer, middleLayer, topLayer).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
         ListNBT pallet = new ListNBT();
         byte index = 0;
         for (Rock rock : uniqueRocks)
@@ -100,11 +112,8 @@ public class RockData implements INBTSerializable<CompoundNBT>
 
         // Record the raw byte values
         nbt.putByteArray("bottomLayer", Helpers.createByteArray(topLayer, r -> (byte) uniqueRocks.indexOf(r)));
+        nbt.putByteArray("middleLayer", Helpers.createByteArray(middleLayer, r -> (byte) uniqueRocks.indexOf(r)));
         nbt.putByteArray("topLayer", Helpers.createByteArray(bottomLayer, r -> (byte) uniqueRocks.indexOf(r)));
-
-        // Record byte values for soil and sand
-        nbt.putByteArray("soilLayer", Helpers.createByteArray(soilLayer, e -> (byte) e.ordinal()));
-        nbt.putByteArray("sandLayer", Helpers.createByteArray(sandLayer, e -> (byte) e.ordinal()));
 
         return nbt;
     }
@@ -119,14 +128,12 @@ public class RockData implements INBTSerializable<CompoundNBT>
             List<Rock> uniqueRocks = new ArrayList<>(pallet.size());
             for (int i = 0; i < pallet.size(); i++)
             {
+                // todo: this should default if it finds a null value (which is possible if rocks have changed
                 uniqueRocks.add(RockManager.INSTANCE.get(new ResourceLocation(pallet.getString(i))));
             }
 
             Helpers.createArrayFromBytes(nbt.getByteArray("bottomLayer"), bottomLayer, uniqueRocks::get);
             Helpers.createArrayFromBytes(nbt.getByteArray("topLayer"), topLayer, uniqueRocks::get);
-
-            Helpers.createArrayFromBytes(nbt.getByteArray("soilLayer"), soilLayer, SoilBlockType.Variant::valueOf);
-            Helpers.createArrayFromBytes(nbt.getByteArray("sandLayer"), sandLayer, SandBlockType::valueOf);
         }
     }
 

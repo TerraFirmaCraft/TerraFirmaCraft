@@ -36,41 +36,48 @@ public class TFCBiomes
     public static final DeferredRegister<Biome> BIOMES = new DeferredRegister<>(ForgeRegistries.BIOMES, MOD_ID);
 
     // Aquatic biomes
-    public static final RegistryObject<TFCBiome> OCEAN = BIOMES.register("ocean", () -> new OceanBiome(false)); // Ocean biome found near continents.
-    public static final RegistryObject<TFCBiome> DEEP_OCEAN = BIOMES.register("deep_ocean", () -> new OceanBiome(true)); // Deep ocean biome covering most all oceans.
-    public static final RegistryObject<TFCBiome> DEEP_OCEAN_RIDGE = BIOMES.register("deep_ocean_ridge", () -> new OceanBiome(true)); // Variant of deep ocean biomes, contains snaking ridge like formations.
+    public static final BiomeVariantHolder OCEAN = new BiomeVariantHolder("ocean", (temp, rain) -> new OceanBiome(false, temp, rain)); // Ocean biome found near continents.
+    public static final BiomeVariantHolder DEEP_OCEAN = new BiomeVariantHolder("deep_ocean", (temp, rain) -> new OceanBiome(true, temp, rain)); // Deep ocean biome covering most all oceans.
+    public static final BiomeVariantHolder DEEP_OCEAN_RIDGE = new BiomeVariantHolder("deep_ocean_ridge", (temp, rain) -> new OceanBiome(true, temp, rain)); // Variant of deep ocean biomes, contains snaking ridge like formations.
 
     // Low biomes
-    public static final RegistryObject<TFCBiome> PLAINS = BIOMES.register("plains", () -> new PlainsBiome(-4, 10)); // Very flat, slightly above sea level.
-    public static final RegistryObject<TFCBiome> HILLS = BIOMES.register("hills", () -> new HillsBiome(16)); // Small hills, slightly above sea level.
-    public static final RegistryObject<TFCBiome> LOWLANDS = BIOMES.register("lowlands", LowlandsBiome::new); // Flat, swamp-like, lots of shallow pools below sea level.
-    public static final RegistryObject<TFCBiome> LOW_CANYONS = BIOMES.register("low_canyons", () -> new CanyonsBiome(-5, 14)); // Sharp, small hills, with lots of water / snaking winding rivers.
+    public static final BiomeVariantHolder PLAINS = new BiomeVariantHolder("plains", (temp, rain) -> new PlainsBiome(-4, 10, temp, rain)); // Very flat, slightly above sea level.
+    public static final BiomeVariantHolder HILLS = new BiomeVariantHolder("hills", (temp, rain) -> new HillsBiome(16, temp, rain)); // Small hills, slightly above sea level.
+    public static final BiomeVariantHolder LOWLANDS = new BiomeVariantHolder("lowlands", LowlandsBiome::new); // Flat, swamp-like, lots of shallow pools below sea level.
+    public static final BiomeVariantHolder LOW_CANYONS = new BiomeVariantHolder("low_canyons", (temp, rain) -> new CanyonsBiome(-5, 14, temp, rain)); // Sharp, small hills, with lots of water / snaking winding rivers.
 
     // Mid biomes
-    public static final RegistryObject<TFCBiome> ROLLING_HILLS = BIOMES.register("rolling_hills", () -> new HillsBiome(28)); // Higher hills, above sea level. Some larger / steeper hills.
-    public static final RegistryObject<TFCBiome> BADLANDS = BIOMES.register("badlands", BadlandsBiome::new); // Very high flat area with steep relief carving, similar to vanilla mesas.
-    public static final RegistryObject<TFCBiome> PLATEAU = BIOMES.register("plateau", () -> new PlainsBiome(20, 30)); // Very high area, very flat top.
-    public static final RegistryObject<TFCBiome> OLD_MOUNTAINS = BIOMES.register("old_mountains", () -> new MountainsBiome(48, 28, false)); // Rounded top mountains, very large hills.
+    public static final BiomeVariantHolder ROLLING_HILLS = new BiomeVariantHolder("rolling_hills", (temp, rain) -> new HillsBiome(28, temp, rain)); // Higher hills, above sea level. Some larger / steeper hills.
+    public static final BiomeVariantHolder BADLANDS = new BiomeVariantHolder("badlands", BadlandsBiome::new); // Very high flat area with steep relief carving, similar to vanilla mesas.
+    public static final BiomeVariantHolder PLATEAU = new BiomeVariantHolder("plateau", (temp, rain) -> new PlainsBiome(20, 30, temp, rain)); // Very high area, very flat top.
+    public static final BiomeVariantHolder OLD_MOUNTAINS = new BiomeVariantHolder("old_mountains", (temp, rain) -> new MountainsBiome(48, 28, false, temp, rain)); // Rounded top mountains, very large hills.
 
     // High biomes
-    public static final RegistryObject<TFCBiome> MOUNTAINS = BIOMES.register("mountains", () -> new MountainsBiome(48, 56, false)); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
-    public static final RegistryObject<TFCBiome> FLOODED_MOUNTAINS = BIOMES.register("flooded_mountains", () -> new MountainsBiome(30, 64, true)); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
-    public static final RegistryObject<TFCBiome> CANYONS = BIOMES.register("canyons", () -> new CanyonsBiome(-7, 26)); // Medium height with snake like ridges, often slightly below sea level
+    public static final BiomeVariantHolder MOUNTAINS = new BiomeVariantHolder("mountains", (temp, rain) -> new MountainsBiome(48, 56, false, temp, rain)); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
+    public static final BiomeVariantHolder FLOODED_MOUNTAINS = new BiomeVariantHolder("flooded_mountains", (temp, rain) -> new MountainsBiome(30, 64, true, temp, rain)); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final BiomeVariantHolder CANYONS = new BiomeVariantHolder("canyons", (temp, rain) -> new CanyonsBiome(-7, 26, temp, rain)); // Medium height with snake like ridges, often slightly below sea level
 
     // Shores
-    public static final RegistryObject<TFCBiome> SHORE = BIOMES.register("shore", () -> new ShoreBiome(false)); // Standard shore biome with a sandy beach
-    public static final RegistryObject<TFCBiome> STONE_SHORE = BIOMES.register("stone_shore", () -> new ShoreBiome(true)); // Shore for mountain biomes
+    public static final BiomeVariantHolder SHORE = new BiomeVariantHolder("shore", (temp, rain) -> new ShoreBiome(false, temp, rain)); // Standard shore biome with a sandy beach
+    public static final BiomeVariantHolder STONE_SHORE = new BiomeVariantHolder("stone_shore", (temp, rain) -> new ShoreBiome(true, temp, rain)); // Shore for mountain biomes
 
     // Technical biomes
-    public static final RegistryObject<TFCBiome> MOUNTAINS_EDGE = BIOMES.register("mountains_edge", () -> new MountainsBiome(36, 34, false)); // Edge biome for mountains
-    public static final RegistryObject<TFCBiome> LAKE = BIOMES.register("lake", LakeBiome::new); // Biome for freshwater ocean areas / landlocked oceans
-    public static final RegistryObject<TFCBiome> RIVER = BIOMES.register("river", RiverBiome::new); // Biome for river channels
+    public static final BiomeVariantHolder MOUNTAINS_EDGE = new BiomeVariantHolder("mountains_edge", (temp, rain) -> new MountainsBiome(36, 34, false, temp, rain)); // Edge biome for mountains
+    public static final BiomeVariantHolder LAKE = new BiomeVariantHolder("lake", LakeBiome::new); // Biome for freshwater ocean areas / landlocked oceans
+    public static final BiomeVariantHolder RIVER = new BiomeVariantHolder("river", RiverBiome::new); // Biome for river channels
 
-    private static final List<RegistryObject<TFCBiome>> ALL_BIOMES = Arrays.asList(OCEAN, DEEP_OCEAN, DEEP_OCEAN_RIDGE, PLAINS, HILLS, LOWLANDS, LOW_CANYONS, ROLLING_HILLS, BADLANDS, PLATEAU, OLD_MOUNTAINS, MOUNTAINS, FLOODED_MOUNTAINS, CANYONS, SHORE, STONE_SHORE, MOUNTAINS_EDGE, LAKE, RIVER);
+    private static final List<BiomeVariantHolder> ALL_BIOMES = Arrays.asList(OCEAN, DEEP_OCEAN, DEEP_OCEAN_RIDGE, PLAINS, HILLS, LOWLANDS, LOW_CANYONS, ROLLING_HILLS, BADLANDS, PLATEAU, OLD_MOUNTAINS, MOUNTAINS, FLOODED_MOUNTAINS, CANYONS, SHORE, STONE_SHORE, MOUNTAINS_EDGE, LAKE, RIVER);
+
+    private static final List<BiomeVariantHolder> SPAWN_BIOMES = Arrays.asList(PLAINS, HILLS, LOWLANDS, LOW_CANYONS, ROLLING_HILLS, BADLANDS, PLATEAU, OLD_MOUNTAINS, MOUNTAINS, FLOODED_MOUNTAINS, CANYONS, SHORE, STONE_SHORE, MOUNTAINS_EDGE);
 
     public static Set<TFCBiome> getBiomes()
     {
-        return ALL_BIOMES.stream().map(RegistryObject::get).collect(Collectors.toSet());
+        return ALL_BIOMES.stream().flatMap(holder -> holder.getAll().stream()).map(RegistryObject::get).collect(Collectors.toSet());
+    }
+
+    public static List<Biome> getSpawnBiomes()
+    {
+        return SPAWN_BIOMES.stream().flatMap(holder -> holder.getAll().stream()).map(RegistryObject::get).collect(Collectors.toList());
     }
 
     /**
@@ -82,90 +89,90 @@ public class TFCBiomes
     public static void setup()
     {
         addOceanCarvers(OCEAN);
-        OCEAN.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG);
+        OCEAN.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG));
 
         addOceanCarvers(DEEP_OCEAN);
-        DEEP_OCEAN.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG);
+        DEEP_OCEAN.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG));
 
         addOceanCarvers(DEEP_OCEAN_RIDGE);
-        DEEP_OCEAN_RIDGE.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG);
+        DEEP_OCEAN_RIDGE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG));
 
         addCarvers(PLAINS);
-        PLAINS.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        PLAINS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(HILLS);
-        HILLS.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        HILLS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(LOWLANDS);
-        LOWLANDS.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        LOWLANDS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(LOW_CANYONS);
-        LOW_CANYONS.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        LOW_CANYONS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(ROLLING_HILLS);
-        ROLLING_HILLS.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        ROLLING_HILLS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(BADLANDS);
-        BADLANDS.get().setSurfaceBuilder(SurfaceBuilder.WOODED_BADLANDS, SurfaceBuilder.RED_SAND_WHITE_TERRACOTTA_GRAVEL_CONFIG);
+        BADLANDS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.WOODED_BADLANDS, SurfaceBuilder.RED_SAND_WHITE_TERRACOTTA_GRAVEL_CONFIG));
 
         addCarvers(PLATEAU);
-        PLATEAU.get().setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        PLATEAU.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(OLD_MOUNTAINS);
-        OLD_MOUNTAINS.get().setSurfaceBuilder(SurfaceBuilder.GRAVELLY_MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        OLD_MOUNTAINS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.GRAVELLY_MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(MOUNTAINS);
-        MOUNTAINS.get().setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        MOUNTAINS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addOceanCarvers(FLOODED_MOUNTAINS);
-        FLOODED_MOUNTAINS.get().setSurfaceBuilder(SurfaceBuilder.GRAVELLY_MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        FLOODED_MOUNTAINS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.GRAVELLY_MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(CANYONS);
-        CANYONS.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        CANYONS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
-        SHORE.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_SAND_GRAVEL_CONFIG);
+        SHORE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_SAND_GRAVEL_CONFIG));
 
-        STONE_SHORE.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_SAND_GRAVEL_CONFIG);
+        STONE_SHORE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_SAND_GRAVEL_CONFIG));
 
         addCarvers(MOUNTAINS_EDGE);
-        MOUNTAINS_EDGE.get().setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        MOUNTAINS_EDGE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
         addCarvers(LAKE);
-        LAKE.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_CONFIG);
+        LAKE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_CONFIG));
 
         addCarvers(RIVER);
-        RIVER.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_CONFIG);
+        RIVER.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_CONFIG));
 
         // Features applied to ALL biomes
-        for (RegistryObject<? extends Biome> biome : ALL_BIOMES)
+        for (Biome biome : getBiomes())
         {
-            biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFCFeatures.VEINS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(NoPlacementConfig.NO_PLACEMENT_CONFIG)));
+            biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFCFeatures.VEINS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(NoPlacementConfig.NO_PLACEMENT_CONFIG)));
 
-            biome.get().addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(20))));
-            biome.get().addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.WATER.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
-            biome.get().addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.LAVA.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(80))));
+            biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(20))));
+            biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.WATER.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+            biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.LAVA.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(80))));
         }
     }
 
-    public static void addCarvers(RegistryObject<? extends Biome> biomeIn)
+    public static void addCarvers(BiomeVariantHolder biomeIn)
     {
-        biomeIn.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CAVE.get(), new ProbabilityConfig(0.10f)));
-        biomeIn.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CANYON.get(), new ProbabilityConfig(0.015f)));
+        biomeIn.getAll().forEach(biome -> biome.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CAVE.get(), new ProbabilityConfig(0.10f))));
+        biomeIn.getAll().forEach(biome -> biome.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CANYON.get(), new ProbabilityConfig(0.015f))));
 
-        biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.02f))));
-        biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.09f))));
+        biomeIn.getAll().forEach(biome -> biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.02f)))));
+        biomeIn.getAll().forEach(biome -> biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.09f)))));
     }
 
-    public static void addOceanCarvers(RegistryObject<? extends Biome> biomeIn)
+    public static void addOceanCarvers(BiomeVariantHolder biomeIn)
     {
-        biomeIn.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CAVE.get(), new ProbabilityConfig(0.06666667f)));
-        biomeIn.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CANYON.get(), new ProbabilityConfig(0.02f)));
+        biomeIn.getAll().forEach(biome -> biome.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CAVE.get(), new ProbabilityConfig(0.06666667f))));
+        biomeIn.getAll().forEach(biome -> biome.get().addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFCWorldCarvers.CANYON.get(), new ProbabilityConfig(0.02f))));
 
         // todo: what with all the caves, these get really ugly when they intersect other cave systems. Is there any way these can be improved?
         //biomeIn.get().addCarver(GenerationStage.Carving.LIQUID, Biome.createCarver(TFCWorldCarvers.UNDERWATER_CANYON.get(), new ProbabilityConfig(0.02f)));
         //biomeIn.get().addCarver(GenerationStage.Carving.LIQUID, Biome.createCarver(TFCWorldCarvers.UNDERWATER_CAVE.get(), new ProbabilityConfig(0.06666667f)));
 
-        biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.015f))));
-        biomeIn.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.08f))));
+        biomeIn.getAll().forEach(biome -> biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.015f)))));
+        biomeIn.getAll().forEach(biome -> biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.08f)))));
     }
 }

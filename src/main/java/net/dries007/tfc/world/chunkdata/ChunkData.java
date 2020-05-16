@@ -33,8 +33,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     private RockData rockData;
     private float rainfall;
-    private float regionalTemp;
-    private float avgTemp;
+    private float averageTemp;
     private boolean isValid;
 
     public ChunkData()
@@ -62,24 +61,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         this.rainfall = rainfall;
     }
 
-    public float getRegionalTemp()
+    public float getAverageTemp()
     {
-        return regionalTemp;
+        return averageTemp;
     }
 
-    public void setRegionalTemp(float regionalTemp)
+    public void setAverageTemp(float regionalTemp)
     {
-        this.regionalTemp = regionalTemp;
-    }
-
-    public float getAvgTemp()
-    {
-        return avgTemp;
-    }
-
-    public void setAvgTemp(float avgTemp)
-    {
-        this.avgTemp = avgTemp;
+        this.averageTemp = regionalTemp;
     }
 
     public boolean isValid()
@@ -108,8 +97,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         {
             nbt.put("rockData", rockData.serializeNBT());
             nbt.putFloat("rainfall", rainfall);
-            nbt.putFloat("regionalTemp", regionalTemp);
-            nbt.putFloat("avgTemp", avgTemp);
+            nbt.putFloat("averageTemp", averageTemp);
         }
         return nbt;
     }
@@ -124,8 +112,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
             {
                 rockData.deserializeNBT(nbt.getCompound("rockData"));
                 rainfall = nbt.getFloat("rainfall");
-                regionalTemp = nbt.getFloat("regionalTemp");
-                avgTemp = nbt.getFloat("avgTemp");
+                averageTemp = nbt.getFloat("averageTemp");
             }
             else
             {
@@ -138,8 +125,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         rockData = new RockData();
         rainfall = 250;
-        regionalTemp = 0;
-        avgTemp = 10;
+        averageTemp = 10;
         isValid = false;
     }
 }

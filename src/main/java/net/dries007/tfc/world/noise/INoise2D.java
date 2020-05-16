@@ -62,6 +62,7 @@ public interface INoise2D
 
     /**
      * Creates "terraces" by taking the nearest level and rounding
+     * Input must be in range [-1, 1]
      *
      * @param levels The number of levels to round to
      * @return a new noise function
@@ -131,6 +132,7 @@ public interface INoise2D
      * @param max the maximum noise value
      * @return a new noise function
      */
+    @SuppressWarnings("ManualMinMaxCalculation")
     default INoise2D flattened(float min, float max)
     {
         return (x, y) -> {

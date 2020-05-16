@@ -1,6 +1,6 @@
 # Loader metadata
 modLoader="javafml" # mandatory
-loaderVersion="[31,)" # mandatory
+loaderVersion="[31.2.0,)" # mandatory
 #issueTrackerURL="http://my.issue.tracker/"
 
 # TFC
@@ -25,6 +25,6 @@ loaderVersion="[31,)" # mandatory
 [[dependencies.tfc]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[31,)" #mandatory
+    versionRange="[31.2.0,)" #mandatory
     ordering="NONE"
     side="BOTH"

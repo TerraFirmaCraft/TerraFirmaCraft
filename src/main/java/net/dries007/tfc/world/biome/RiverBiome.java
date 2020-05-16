@@ -11,9 +11,9 @@ import net.dries007.tfc.world.noise.SimplexNoise2D;
 
 public class RiverBiome extends TFCBiome
 {
-    public RiverBiome()
+    public RiverBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.RIVER));
+        super(new Builder().category(Category.RIVER), temperature, rainfall);
     }
 
     @Override
