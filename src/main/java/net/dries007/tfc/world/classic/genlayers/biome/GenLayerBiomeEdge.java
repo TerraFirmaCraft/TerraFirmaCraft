@@ -5,11 +5,9 @@
 
 package net.dries007.tfc.world.classic.genlayers.biome;
 
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
-import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerBiomeEdge extends GenLayerTFC
@@ -21,59 +19,54 @@ public class GenLayerBiomeEdge extends GenLayerTFC
     }
 
     @Override
-    public int[] getInts(int par1, int par2, int xSize, int zSize)
+    public int[] getInts(int x, int z, int xSize, int zSize)
     {
-        int[] inCache = this.parent.getInts(par1 - 1, par2 - 1, xSize + 2, zSize + 2);
-//        validateIntArray(inCache, xSize + 2, zSize + 2);
+        int[] inCache = this.parent.getInts(x - 1, z - 1, xSize + 2, zSize + 2);
         int[] outCache = IntCache.getIntCache(xSize * zSize);
-        int var10;
-        int var11;
-        int var12;
-        int var13;
 
-        for (int z = 0; z < zSize; ++z)
+        for (int zz = 0; zz < zSize; ++zz)
         {
-            for (int x = 0; x < xSize; ++x)
+            for (int xx = 0; xx < xSize; ++xx)
             {
-                this.initChunkSeed(x + par1, z + par2);
-                int thisID = inCache[x + 1 + (z + 1) * (xSize + 2)];
+                this.initChunkSeed(xx + x, zz + z);
+                int thisID = inCache[xx + 1 + (zz + 1) * (xSize + 2)];
 
-                var10 = inCache[x + 1 + (z + 1 - 1) * (xSize + 2)];
-                var11 = inCache[x + 1 + 1 + (z + 1) * (xSize + 2)];
-                var12 = inCache[x + 1 - 1 + (z + 1) * (xSize + 2)];
-                var13 = inCache[x + 1 + (z + 1 + 1) * (xSize + 2)];
+                int zn = inCache[xx + 1 + (zz + 1 - 1) * (xSize + 2)]; // z - 1
+                int xp = inCache[xx + 1 + 1 + (zz + 1) * (xSize + 2)]; // x + 1
+                int xn = inCache[xx + 1 - 1 + (zz + 1) * (xSize + 2)]; // x - 1
+                int zp = inCache[xx + 1 + (zz + 1 + 1) * (xSize + 2)]; // z + 1
 
-                if (thisID == Biome.getIdForBiome(BiomesTFC.HIGH_HILLS))
+                if (thisID == highHillsID)
                 {
-                    if (var10 == Biome.getIdForBiome(BiomesTFC.HIGH_HILLS) && var11 == Biome.getIdForBiome(BiomesTFC.HIGH_HILLS) && var12 == Biome.getIdForBiome(BiomesTFC.HIGH_HILLS) && var13 == Biome.getIdForBiome(BiomesTFC.HIGH_HILLS))
-                        outCache[x + z * xSize] = thisID;
+                    if (zn == highHillsID && xp == highHillsID && xn == highHillsID && zp == highHillsID)
+                        outCache[xx + zz * xSize] = thisID;
                     else
-                        outCache[x + z * xSize] = Biome.getIdForBiome(BiomesTFC.HIGH_HILLS_EDGE);
+                        outCache[xx + zz * xSize] = highHillsEdgeID;
                 }
-                else if (thisID == Biome.getIdForBiome(BiomesTFC.MOUNTAINS))
+                else if (thisID == mountainsID)
                 {
-                    if (var10 == Biome.getIdForBiome(BiomesTFC.MOUNTAINS) && var11 == Biome.getIdForBiome(BiomesTFC.MOUNTAINS) && var12 == Biome.getIdForBiome(BiomesTFC.MOUNTAINS) && var13 == Biome.getIdForBiome(BiomesTFC.MOUNTAINS))
-                        outCache[x + z * xSize] = thisID;
+                    if (zn == mountainsID && xp == mountainsID && xn == mountainsID && zp == mountainsID)
+                        outCache[xx + zz * xSize] = thisID;
                     else
-                        outCache[x + z * xSize] = Biome.getIdForBiome(BiomesTFC.MOUNTAINS_EDGE);
+                        outCache[xx + zz * xSize] = mountainsEdgeID;
                 }
-                else if (thisID == Biome.getIdForBiome(BiomesTFC.SWAMPLAND))
+                else if (thisID == swamplandID)
                 {
-                    if (var10 == Biome.getIdForBiome(BiomesTFC.SWAMPLAND) && var11 == Biome.getIdForBiome(BiomesTFC.SWAMPLAND) && var12 == Biome.getIdForBiome(BiomesTFC.SWAMPLAND) && var13 == Biome.getIdForBiome(BiomesTFC.SWAMPLAND))
-                        outCache[x + z * xSize] = thisID;
+                    if (zn == swamplandID && xp == swamplandID && xn == swamplandID && zp == swamplandID)
+                        outCache[xx + zz * xSize] = thisID;
                     else
-                        outCache[x + z * xSize] = Biome.getIdForBiome(BiomesTFC.PLAINS);
+                        outCache[xx + zz * xSize] = plainsID;
                 }
-                else if (thisID == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS))
+                else if (thisID == highPlainsID)
                 {
-                    if (var10 == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS) && var11 == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS) && var12 == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS) && var13 == Biome.getIdForBiome(BiomesTFC.HIGH_PLAINS))
-                        outCache[x + z * xSize] = thisID;
+                    if (zn == highPlainsID && xp == highPlainsID && xn == highPlainsID && zp == highPlainsID)
+                        outCache[xx + zz * xSize] = thisID;
                     else
-                        outCache[x + z * xSize] = Biome.getIdForBiome(BiomesTFC.PLAINS);
+                        outCache[xx + zz * xSize] = plainsID;
                 }
                 else
                 {
-                    outCache[x + z * xSize] = thisID;
+                    outCache[xx + zz * xSize] = thisID;
                 }
             }
         }

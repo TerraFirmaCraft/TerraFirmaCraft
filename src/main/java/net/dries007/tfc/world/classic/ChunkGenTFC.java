@@ -49,8 +49,6 @@ import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 import net.dries007.tfc.world.classic.genlayers.datalayers.drainage.GenDrainageLayer;
 import net.dries007.tfc.world.classic.genlayers.datalayers.ph.GenPHLayer;
-import net.dries007.tfc.world.classic.genlayers.datalayers.rock.GenRockLayer;
-import net.dries007.tfc.world.classic.genlayers.datalayers.stability.GenStabilityLayer;
 import net.dries007.tfc.world.classic.mapgen.MapGenCavesTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRavineTFC;
 import net.dries007.tfc.world.classic.mapgen.MapGenRiverRavine;
@@ -170,17 +168,17 @@ public class ChunkGenTFC implements IChunkGenerator
         noiseGen6 = new NoiseGeneratorOctaves(rand, 1);
         mobSpawnerNoise = new NoiseGeneratorOctaves(rand, 8);
 
-        rocksGenLayer1 = GenRockLayer.initialize(seed + 1, RockCategory.Layer.TOP);
-        rocksGenLayer2 = GenRockLayer.initialize(seed + 2, RockCategory.Layer.MIDDLE);
-        rocksGenLayer3 = GenRockLayer.initialize(seed + 3, RockCategory.Layer.BOTTOM);
+        rocksGenLayer1 = GenLayerTFC.initializeRock(seed + 1, RockCategory.Layer.TOP);
+        rocksGenLayer2 = GenLayerTFC.initializeRock(seed + 2, RockCategory.Layer.MIDDLE);
+        rocksGenLayer3 = GenLayerTFC.initializeRock(seed + 3, RockCategory.Layer.BOTTOM);
 
         noiseGen7 = new NoiseGeneratorPerlin(new Random(seed + 4), 4);
         noiseGen8 = new NoiseGeneratorPerlin(new Random(seed + 5), 4);
         noiseGen9 = new NoiseGeneratorPerlin(new Random(seed + 6), 4);
         noiseGen10 = new NoiseGeneratorPerlin(new Random(seed + 7), 4);
 
-        stabilityGenLayer = GenStabilityLayer.initialize(seed + 9);
-        phGenLayer = GenPHLayer.initialize(seed + 10);
+        stabilityGenLayer = GenLayerTFC.initializeStability(seed + 9);
+        phGenLayer = GenPHLayer.initializePH(seed + 10);
         drainageGenLayer = GenDrainageLayer.initialize(seed + 11);
 
         caveGen = TerrainGen.getModdedMapGen(new MapGenCavesTFC(stabilityLayer), InitMapGenEvent.EventType.CAVE);
@@ -242,24 +240,23 @@ public class ChunkGenTFC implements IChunkGenerator
         ravineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
         riverRavineGen.generate(world, chunkX, chunkZ, chunkPrimerOut);
 
-        if (ConfigTFC.General.DEBUG.debugWorldGen)
-        {
-            for (int x = 0; x < 16; ++x)
-            {
-                for (int z = 0; z < 16; ++z)
-                {
-                    chunkPrimerOut.setBlockState(x, 240, z, Blocks.STAINED_GLASS.getStateFromMeta(Biome.getIdForBiome(getBiomeOffset(x, z)) & 15));
-
-                    chunkPrimerOut.setBlockState(x, 242, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer1[z << 4 | x] & 15));
-                    chunkPrimerOut.setBlockState(x, 244, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer2[z << 4 | x] & 15));
-                    chunkPrimerOut.setBlockState(x, 246, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer3[z << 4 | x] & 15));
-
-                    chunkPrimerOut.setBlockState(x, 252, z, Blocks.STAINED_GLASS.getStateFromMeta(stabilityLayer[x << 4 | z].layerID & 15));
-                    chunkPrimerOut.setBlockState(x, 254, z, Blocks.STAINED_GLASS.getStateFromMeta(drainageLayer[x << 4 | z].layerID & 15));
-
-                }
-            }
-        }
+//        if (ConfigTFC.General.DEBUG.debugWorldGen)
+//        {
+//            for (int x = 0; x < 16; ++x)
+//            {
+//                for (int z = 0; z < 16; ++z)
+//                {
+//                    chunkPrimerOut.setBlockState(x, 240, z, Blocks.STAINED_GLASS.getStateFromMeta(Biome.getIdForBiome(getBiomeOffset(x, z)) & 15));
+//
+//                    chunkPrimerOut.setBlockState(x, 230, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer1[z << 4 | x] & 15));
+//                    chunkPrimerOut.setBlockState(x, 220, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer2[z << 4 | x] & 15));
+//                    chunkPrimerOut.setBlockState(x, 210, z, Blocks.STAINED_GLASS.getStateFromMeta(rockLayer3[z << 4 | x] & 15));
+//
+//                    chunkPrimerOut.setBlockState(x, 252, z, Blocks.STAINED_GLASS.getStateFromMeta(stabilityLayer[x << 4 | z].layerID & 15));
+//                    chunkPrimerOut.setBlockState(x, 250, z, Blocks.STAINED_GLASS.getStateFromMeta(drainageLayer[x << 4 | z].layerID & 15));
+//                }
+//            }
+//        }
 
         Chunk chunk = new Chunk(world, chunkPrimerOut, chunkX, chunkZ);
 
