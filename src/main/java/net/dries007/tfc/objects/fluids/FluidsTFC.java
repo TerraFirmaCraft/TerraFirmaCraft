@@ -33,7 +33,6 @@ import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.properties.DrinkableProperty;
 import net.dries007.tfc.objects.fluids.properties.FluidWrapper;
 import net.dries007.tfc.objects.fluids.properties.MetalProperty;
-import net.dries007.tfc.objects.fluids.properties.PreservingProperty;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.objects.inventory.ingredient.IngredientItemFood;
 import net.dries007.tfc.objects.inventory.ingredient.IngredientItemFoodTrait;
@@ -168,7 +167,7 @@ public final class FluidsTFC
 
         allOtherFiniteFluids = ImmutableSet.<FluidWrapper>builder()
             .add(
-                VINEGAR = registerFluid(new Fluid("vinegar", STILL, FLOW, 0xFFC7C2AA)).with(PreservingProperty.PRESERVING, new PreservingProperty(FoodTrait.VINEGAR, new IngredientItemFoodTrait(new IngredientItemFood(IIngredient.any()), FoodTrait.PICKLED))),
+                VINEGAR = registerFluid(new Fluid("vinegar", STILL, FLOW, 0xFFC7C2AA)),
                 BRINE = registerFluid(new Fluid("brine", STILL, FLOW, 0xFFDCD3C9)),
                 MILK = registerFluid(new Fluid("milk", STILL, FLOW, 0xFFFFFFFF)),
                 OLIVE_OIL = registerFluid(new Fluid("olive_oil", STILL, FLOW, 0xFF6A7537).setRarity(EnumRarity.RARE)),

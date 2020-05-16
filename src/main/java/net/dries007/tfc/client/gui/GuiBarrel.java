@@ -133,7 +133,7 @@ public class GuiBarrel extends GuiContainerTE<TEBarrel>
             if (recipe != null)
             {
                 String resultName = recipe.getResultName();
-                fontRenderer.drawString(resultName, xSize / 2 - 20, 61, 0x404040);
+                fontRenderer.drawString(resultName, xSize / 2 - 28, 61, 0x404040);
             }
         }
     }
