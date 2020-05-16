@@ -13,10 +13,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.api.capability.damage.DamageResistance;
-import net.dries007.tfc.util.json.DamageResistanceJson;
-import net.dries007.tfc.util.json.LowercaseEnumTypeAdapterFactory;
-import net.dries007.tfc.util.json.ResourceLocationJson;
-import net.dries007.tfc.util.json.VeinTypeJson;
+import net.dries007.tfc.objects.entity.animal.AnimalFood;
+import net.dries007.tfc.util.json.*;
 import net.dries007.tfc.world.classic.worldgen.vein.VeinType;
 
 public final class Constants
@@ -26,6 +24,7 @@ public final class Constants
         .registerTypeAdapterFactory(new LowercaseEnumTypeAdapterFactory())
         .registerTypeAdapter(VeinType.class, new VeinTypeJson())
         .registerTypeAdapter(DamageResistance.class, new DamageResistanceJson())
+        .registerTypeAdapter(AnimalFood.class, new AnimalFoodJson())
         .create();
     public static final String GUI_FACTORY = "net.dries007.tfc.client.TFCModGuiFactory";
 

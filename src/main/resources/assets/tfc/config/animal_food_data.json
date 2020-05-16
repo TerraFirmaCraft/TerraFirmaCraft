@@ -1,0 +1,133 @@
+{
+  "#loader": "tfc:animal_food",
+  "tfc:alpacatfc": {
+    "eat_rotten": true,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:cameltfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:chickentfc": {
+    "eat_rotten": true,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:cowtfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:donkeytfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:ducktfc": {
+    "eat_rotten": true,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:goattfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:horsetfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:llamatfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:muletfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:ocelottfc": {
+    "eat_rotten": false,
+    "foods": {
+      "meat": {
+        "type": "forge:ore_dict",
+        "ore": "categoryMeat"
+      }
+    }
+  },
+  "tfc:pigtfc": {
+    "eat_rotten": true,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:sheeptfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:wolftfc": {
+    "eat_rotten": false,
+    "foods": {
+      "meat": {
+        "type": "forge:ore_dict",
+        "ore": "categoryMeat"
+      },
+      "bone": {
+        "item": "minecraft:bone",
+        "data": 0
+      }
+    }
+  }
+}

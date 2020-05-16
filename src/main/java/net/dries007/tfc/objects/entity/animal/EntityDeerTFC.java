@@ -8,7 +8,6 @@ package net.dries007.tfc.objects.entity.animal;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -20,7 +19,6 @@ import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -34,7 +32,6 @@ import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
@@ -119,12 +116,6 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     public int getDaysToElderly()
     {
         return 0;
-    }
-
-    @Override
-    public boolean isFood(@Nonnull ItemStack stack)
-    {
-        return OreDictionaryHelper.doesStackMatchOre(stack, "salt");
     }
 
     @Override

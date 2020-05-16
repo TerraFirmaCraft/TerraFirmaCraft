@@ -51,7 +51,6 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -89,7 +88,6 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         this.setBirthDay(birthDay);
         this.setFamiliarity(0);
         this.setGrowingAge(0); //We don't use this
-        this.lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
         this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
@@ -462,61 +460,6 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         tasks.addTask(2, new EntityAIMate(this, 1.0D, EntityHorseTFC.class)); // Missing horses (for mules)
         tasks.addTask(1, new EntityAIRunAroundLikeCrazy(this, 1.2D));
         tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
-    }
-
-    @Override
-    public boolean isFood(@Nonnull ItemStack stack)
-    {
-        // Check for rotten
-        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (!ConfigTFC.Animals.DONKEY.acceptRotten && cap != null && cap.isRotten())
-        {
-            return false;
-        }
-        // Check if item is accepted
-        for (String input : ConfigTFC.Animals.DONKEY.food)
-        {
-            String[] split = input.split(":");
-            if (split.length == 2)
-            {
-                // Check for ore tag first
-                if (split[0].equals("ore"))
-                {
-                    if (OreDictionaryHelper.doesStackMatchOre(stack, split[1]))
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        String item = split[1];
-                        int meta = -1;
-                        // Parse meta if specified
-                        if (split[1].contains(" "))
-                        {
-                            String[] split2 = split[1].split(" ");
-                            item = split2[0];
-                            meta = Integer.parseInt(split2[1]);
-                        }
-                        // Check for item registry name
-                        ResourceLocation location = new ResourceLocation(split[0], item);
-                        if (location.equals(stack.getItem().getRegistryName()))
-                        {
-                            if (meta == -1 || meta == stack.getMetadata())
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    catch (NumberFormatException ignored)
-                    {
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     @Override

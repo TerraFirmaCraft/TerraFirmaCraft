@@ -5,14 +5,12 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -22,12 +20,9 @@ import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -73,61 +68,6 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
             baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);
         }
-    }
-
-    @Override
-    public boolean isFood(@Nonnull ItemStack stack)
-    {
-        // Check for rotten
-        IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (!ConfigTFC.Animals.GOAT.acceptRotten && cap != null && cap.isRotten())
-        {
-            return false;
-        }
-        // Check if item is accepted
-        for (String input : ConfigTFC.Animals.GOAT.food)
-        {
-            String[] split = input.split(":");
-            if (split.length == 2)
-            {
-                // Check for ore tag first
-                if (split[0].equals("ore"))
-                {
-                    if (OreDictionaryHelper.doesStackMatchOre(stack, split[1]))
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        String item = split[1];
-                        int meta = -1;
-                        // Parse meta if specified
-                        if (split[1].contains(" "))
-                        {
-                            String[] split2 = split[1].split(" ");
-                            item = split2[0];
-                            meta = Integer.parseInt(split2[1]);
-                        }
-                        // Check for item registry name
-                        ResourceLocation location = new ResourceLocation(split[0], item);
-                        if (location.equals(stack.getItem().getRegistryName()))
-                        {
-                            if (meta == -1 || meta == stack.getMetadata())
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    catch (NumberFormatException ignored)
-                    {
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     @Override
