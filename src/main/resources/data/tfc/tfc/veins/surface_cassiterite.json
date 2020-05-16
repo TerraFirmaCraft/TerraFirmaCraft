@@ -12,15 +12,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/cassiterite/diorite[grade=poor]"
+          "block": "tfc:ore/poor_cassiterite/diorite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/cassiterite/diorite[grade=normal]"
+          "block": "tfc:ore/normal_cassiterite/diorite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/cassiterite/diorite[grade=rich]"
+          "block": "tfc:ore/rich_cassiterite/diorite"
         }
       ]
     },
@@ -29,15 +29,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/cassiterite/gabbro[grade=poor]"
+          "block": "tfc:ore/poor_cassiterite/gabbro"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/cassiterite/gabbro[grade=normal]"
+          "block": "tfc:ore/normal_cassiterite/gabbro"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/cassiterite/gabbro[grade=rich]"
+          "block": "tfc:ore/rich_cassiterite/gabbro"
         }
       ]
     },
@@ -46,15 +46,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/cassiterite/granite[grade=poor]"
+          "block": "tfc:ore/poor_cassiterite/granite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/cassiterite/granite[grade=normal]"
+          "block": "tfc:ore/normal_cassiterite/granite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/cassiterite/granite[grade=rich]"
+          "block": "tfc:ore/rich_cassiterite/granite"
         }
       ]
     }

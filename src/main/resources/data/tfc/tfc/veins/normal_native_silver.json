@@ -12,15 +12,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/native_silver/granite[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/granite"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/native_silver/granite[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/granite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/granite[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/granite"
         }
       ]
     },
@@ -29,15 +29,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/native_silver/gneiss[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/gneiss"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/native_silver/gneiss[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/gneiss"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/gneiss[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/gneiss"
         }
       ]
     }

@@ -2,11 +2,6 @@ package net.dries007.tfc.api;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.IStringSerializable;
-
-import net.dries007.tfc.objects.blocks.rock.GradedOreBlock;
-import net.dries007.tfc.objects.blocks.rock.TFCOreBlock;
 
 
 public class Ore
@@ -52,13 +47,13 @@ public class Ore
             this.graded = graded;
         }
 
-        public Block create(Rock.Default rock)
+        public boolean isGraded()
         {
-            return graded ? new GradedOreBlock() : new TFCOreBlock();
+            return graded;
         }
     }
 
-    public enum Grade implements IStringSerializable
+    public enum Grade
     {
         NORMAL, POOR, RICH;
 
@@ -68,12 +63,6 @@ public class Ore
         public static Grade valueOf(int i)
         {
             return i < 0 || i >= VALUES.length ? NORMAL : VALUES[i];
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name().toLowerCase();
         }
     }
 }

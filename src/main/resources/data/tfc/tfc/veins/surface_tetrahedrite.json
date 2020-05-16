@@ -12,15 +12,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/tetrahedrite/gneiss[grade=poor]"
+          "block": "tfc:ore/poor_tetrahedrite/gneiss"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/tetrahedrite/gneiss[grade=normal]"
+          "block": "tfc:ore/normal_tetrahedrite/gneiss"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/tetrahedrite/gneiss[grade=rich]"
+          "block": "tfc:ore/rich_tetrahedrite/gneiss"
         }
       ]
     },
@@ -29,15 +29,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/tetrahedrite/marble[grade=poor]"
+          "block": "tfc:ore/poor_tetrahedrite/marble"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/tetrahedrite/marble[grade=normal]"
+          "block": "tfc:ore/normal_tetrahedrite/marble"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/tetrahedrite/marble[grade=rich]"
+          "block": "tfc:ore/rich_tetrahedrite/marble"
         }
       ]
     },
@@ -46,15 +46,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/tetrahedrite/phyllite[grade=poor]"
+          "block": "tfc:ore/poor_tetrahedrite/phyllite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/tetrahedrite/phyllite[grade=normal]"
+          "block": "tfc:ore/normal_tetrahedrite/phyllite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/tetrahedrite/phyllite[grade=rich]"
+          "block": "tfc:ore/rich_tetrahedrite/phyllite"
         }
       ]
     },
@@ -63,15 +63,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/tetrahedrite/quartzite[grade=poor]"
+          "block": "tfc:ore/poor_tetrahedrite/quartzite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/tetrahedrite/quartzite[grade=normal]"
+          "block": "tfc:ore/normal_tetrahedrite/quartzite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/tetrahedrite/quartzite[grade=rich]"
+          "block": "tfc:ore/rich_tetrahedrite/quartzite"
         }
       ]
     },
@@ -80,15 +80,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/tetrahedrite/schist[grade=poor]"
+          "block": "tfc:ore/poor_tetrahedrite/schist"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/tetrahedrite/schist[grade=normal]"
+          "block": "tfc:ore/normal_tetrahedrite/schist"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/tetrahedrite/schist[grade=rich]"
+          "block": "tfc:ore/rich_tetrahedrite/schist"
         }
       ]
     },
@@ -97,15 +97,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/tetrahedrite/slate[grade=poor]"
+          "block": "tfc:ore/poor_tetrahedrite/slate"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/tetrahedrite/slate[grade=normal]"
+          "block": "tfc:ore/normal_tetrahedrite/slate"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/tetrahedrite/slate[grade=rich]"
+          "block": "tfc:ore/rich_tetrahedrite/slate"
         }
       ]
     }

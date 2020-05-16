@@ -21,6 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.api.Ore;
 import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.objects.blocks.rock.TFCOreBlock;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.objects.blocks.soil.TFCSandBlock;
@@ -49,18 +50,36 @@ public final class TFCBlocks
         }
     });
 
+    public static final Map<Rock.Default, Map<Ore.Default, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = new EnumMap<>(Rock.Default.class);
     public static final Map<Rock.Default, Map<Ore.Default, RegistryObject<Block>>> ORES = Util.make(new EnumMap<>(Rock.Default.class), map -> {
         for (Rock.Default rock : Rock.Default.values())
         {
             Map<Ore.Default, RegistryObject<Block>> inner = new EnumMap<>(Ore.Default.class);
+            Map<Ore.Default, Map<Ore.Grade, RegistryObject<Block>>> innerGraded = new EnumMap<>(Ore.Default.class);
             for (Ore.Default type : Ore.Default.values())
             {
-                String name = ("ore/" + type.name() + "/" + rock.name()).toLowerCase();
-                RegistryObject<Block> block = BLOCKS.register(name, () -> type.create(rock));
-                TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
-                inner.put(type, block);
+                if (type.isGraded())
+                {
+                    Map<Ore.Grade, RegistryObject<Block>> innerInnerGraded = new EnumMap<>(Ore.Grade.class);
+                    for (Ore.Grade grade : Ore.Grade.values())
+                    {
+                        String name = ("ore/" + grade.name() + "_" + type.name() + "/" + rock.name()).toLowerCase();
+                        RegistryObject<Block> block = BLOCKS.register(name, TFCOreBlock::new);
+                        TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
+                        innerInnerGraded.put(grade, block);
+                    }
+                    innerGraded.put(type, innerInnerGraded);
+                }
+                else
+                {
+                    String name = ("ore/" + type.name() + "/" + rock.name()).toLowerCase();
+                    RegistryObject<Block> block = BLOCKS.register(name, TFCOreBlock::new);
+                    TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
+                    inner.put(type, block);
+                }
             }
             map.put(rock, inner);
+            GRADED_ORES.put(rock, innerGraded);
         }
     });
 

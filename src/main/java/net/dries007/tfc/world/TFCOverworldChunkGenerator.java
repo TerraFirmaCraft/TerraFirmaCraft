@@ -299,7 +299,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     @Override
     public int getSeaLevel()
     {
-        return TFCConfig.COMMON.seaLevel.get();
+        return TFCConfig.COMMON.seaLevel.get() + 1;
     }
 
     @Override
