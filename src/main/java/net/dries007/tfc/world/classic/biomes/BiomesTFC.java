@@ -67,21 +67,6 @@ public final class BiomesTFC
         register(r, new BiomeTFC(0x5D8C8D, new Biome.BiomeProperties(MOD_NAME + " Lake").setBaseHeight(-2.4f).setHeightVariation(-2.5990001f).setBaseBiome("tfc:ocean"), 4, 5), false, false, BiomeDictionary.Type.RIVER, BiomeDictionary.Type.WET, BiomeDictionary.Type.WATER);
     }
 
-    public static boolean isOceanicBiome(int id)
-    {
-        return Biome.getIdForBiome(OCEAN) == id || Biome.getIdForBiome(DEEP_OCEAN) == id;
-    }
-
-    public static boolean isMountainBiome(int id)
-    {
-        return Biome.getIdForBiome(MOUNTAINS) == id || Biome.getIdForBiome(MOUNTAINS_EDGE) == id;
-    }
-
-    public static boolean isBeachBiome(int id)
-    {
-        return Biome.getIdForBiome(BEACH) == id || Biome.getIdForBiome(GRAVEL_BEACH) == id;
-    }
-
     public static boolean isOceanicBiome(Biome b)
     {
         return OCEAN == b || DEEP_OCEAN == b;
