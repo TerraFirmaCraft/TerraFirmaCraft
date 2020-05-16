@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -44,7 +45,7 @@ public class ClientForgeEventHandler
             if (selectedIndex != null && selectedIndex == WorldType.DEFAULT.getId())
             {
                 LOGGER.debug("Setting Selected World Type to TFC Default");
-                ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TerraFirmaCraft.getWorldType().getId(), "field_146331_K");
+                ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TFCWorldType.INSTANCE.getId(), "field_146331_K");
             }
         }
     }

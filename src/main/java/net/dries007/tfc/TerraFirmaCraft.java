@@ -38,13 +38,6 @@ public final class TerraFirmaCraft
 
     private static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
-    private static TerraFirmaCraft INSTANCE;
-
-    public static TFCWorldType getWorldType()
-    {
-        return INSTANCE.worldType;
-    }
-
     /* Deprecated for now, because individual classes should use their own logger if possible / it makes sense */
     @Deprecated
     public static Logger getLog()
@@ -52,16 +45,10 @@ public final class TerraFirmaCraft
         return LOGGER;
     }
 
-    private final TFCWorldType worldType;
-
     public TerraFirmaCraft()
     {
         LOGGER.info("TFC Constructor");
         LOGGER.debug("Debug Logging Enabled");
-
-        INSTANCE = this;
-
-        worldType = new TFCWorldType();
 
         // Event bus subscribers
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

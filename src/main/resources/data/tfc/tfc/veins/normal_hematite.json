@@ -12,15 +12,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/hematite/andesite[grade=poor]"
+          "block": "tfc:ore/poor_hematite/andesite"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/hematite/andesite[grade=normal]"
+          "block": "tfc:ore/normal_hematite/andesite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/hematite/andesite[grade=rich]"
+          "block": "tfc:ore/rich_hematite/andesite"
         }
       ]
     },
@@ -29,15 +29,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/hematite/basalt[grade=poor]"
+          "block": "tfc:ore/poor_hematite/basalt"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/hematite/basalt[grade=normal]"
+          "block": "tfc:ore/normal_hematite/basalt"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/hematite/basalt[grade=rich]"
+          "block": "tfc:ore/rich_hematite/basalt"
         }
       ]
     },
@@ -46,15 +46,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/hematite/dacite[grade=poor]"
+          "block": "tfc:ore/poor_hematite/dacite"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/hematite/dacite[grade=normal]"
+          "block": "tfc:ore/normal_hematite/dacite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/hematite/dacite[grade=rich]"
+          "block": "tfc:ore/rich_hematite/dacite"
         }
       ]
     },
@@ -63,15 +63,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/hematite/rhyolite[grade=poor]"
+          "block": "tfc:ore/poor_hematite/rhyolite"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/hematite/rhyolite[grade=normal]"
+          "block": "tfc:ore/normal_hematite/rhyolite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/hematite/rhyolite[grade=rich]"
+          "block": "tfc:ore/rich_hematite/rhyolite"
         }
       ]
     }

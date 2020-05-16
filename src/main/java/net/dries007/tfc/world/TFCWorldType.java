@@ -28,7 +28,9 @@ public class TFCWorldType extends WorldType
 
     public static final RegistryObject<BiomeProviderType<TFCGenerationSettings, TFCBiomeProvider>> BIOME_PROVIDER_TYPE = BIOME_PROVIDERS.register("overworld", () -> new BiomeProviderType<>(TFCBiomeProvider::new, TFCGenerationSettings::new));
 
-    public TFCWorldType()
+    public static final TFCWorldType INSTANCE = new TFCWorldType();
+
+    private TFCWorldType()
     {
         super("tfc");
     }

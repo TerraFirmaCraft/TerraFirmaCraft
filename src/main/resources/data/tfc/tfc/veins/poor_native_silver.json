@@ -12,15 +12,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/native_silver/granite[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/granite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/granite[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/granite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/native_silver/granite[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/granite"
         }
       ]
     },
@@ -29,15 +29,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/native_silver/gneiss[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/gneiss"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/gneiss[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/gneiss"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/native_silver/gneiss[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/gneiss"
         }
       ]
     },
@@ -46,15 +46,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/native_silver/marble[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/marble"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/marble[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/marble"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/native_silver/marble[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/marble"
         }
       ]
     },
@@ -63,15 +63,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/native_silver/phyllite[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/phyllite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/phyllite[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/phyllite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/native_silver/phyllite[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/phyllite"
         }
       ]
     },
@@ -80,15 +80,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/native_silver/quartzite[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/quartzite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/quartzite[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/quartzite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/native_silver/quartzite[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/quartzite"
         }
       ]
     },
@@ -97,15 +97,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/native_silver/schist[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/schist"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/schist[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/schist"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/native_silver/schist[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/schist"
         }
       ]
     },
@@ -114,15 +114,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/native_silver/slate[grade=poor]"
+          "block": "tfc:ore/poor_native_silver/slate"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_silver/slate[grade=normal]"
+          "block": "tfc:ore/normal_native_silver/slate"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/native_silver/slate[grade=rich]"
+          "block": "tfc:ore/rich_native_silver/slate"
         }
       ]
     }

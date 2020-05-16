@@ -12,15 +12,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/garnierite/diorite[grade=poor]"
+          "block": "tfc:ore/poor_garnierite/diorite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/garnierite/diorite[grade=normal]"
+          "block": "tfc:ore/normal_garnierite/diorite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/garnierite/diorite[grade=rich]"
+          "block": "tfc:ore/rich_garnierite/diorite"
         }
       ]
     },
@@ -29,15 +29,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/garnierite/gabbro[grade=poor]"
+          "block": "tfc:ore/poor_garnierite/gabbro"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/garnierite/gabbro[grade=normal]"
+          "block": "tfc:ore/normal_garnierite/gabbro"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/garnierite/gabbro[grade=rich]"
+          "block": "tfc:ore/rich_garnierite/gabbro"
         }
       ]
     },
@@ -46,15 +46,15 @@
       "ore": [
         {
           "weight": 60,
-          "block": "tfc:ore/garnierite/granite[grade=poor]"
+          "block": "tfc:ore/poor_garnierite/granite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/garnierite/granite[grade=normal]"
+          "block": "tfc:ore/normal_garnierite/granite"
         },
         {
           "weight": 10,
-          "block": "tfc:ore/garnierite/granite[grade=rich]"
+          "block": "tfc:ore/rich_garnierite/granite"
         }
       ]
     }

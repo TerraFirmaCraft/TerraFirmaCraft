@@ -12,15 +12,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/native_copper/andesite[grade=poor]"
+          "block": "tfc:ore/poor_native_copper/andesite"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/native_copper/andesite[grade=normal]"
+          "block": "tfc:ore/normal_native_copper/andesite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_copper/andesite[grade=rich]"
+          "block": "tfc:ore/rich_native_copper/andesite"
         }
       ]
     },
@@ -29,15 +29,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/native_copper/basalt[grade=poor]"
+          "block": "tfc:ore/poor_native_copper/basalt"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/native_copper/basalt[grade=normal]"
+          "block": "tfc:ore/normal_native_copper/basalt"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_copper/basalt[grade=rich]"
+          "block": "tfc:ore/rich_native_copper/basalt"
         }
       ]
     },
@@ -46,15 +46,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/native_copper/dacite[grade=poor]"
+          "block": "tfc:ore/poor_native_copper/dacite"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/native_copper/dacite[grade=normal]"
+          "block": "tfc:ore/normal_native_copper/dacite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_copper/dacite[grade=rich]"
+          "block": "tfc:ore/rich_native_copper/dacite"
         }
       ]
     },
@@ -63,15 +63,15 @@
       "ore": [
         {
           "weight": 20,
-          "block": "tfc:ore/native_copper/rhyolite[grade=poor]"
+          "block": "tfc:ore/poor_native_copper/rhyolite"
         },
         {
           "weight": 50,
-          "block": "tfc:ore/native_copper/rhyolite[grade=normal]"
+          "block": "tfc:ore/normal_native_copper/rhyolite"
         },
         {
           "weight": 30,
-          "block": "tfc:ore/native_copper/rhyolite[grade=rich]"
+          "block": "tfc:ore/rich_native_copper/rhyolite"
         }
       ]
     }
