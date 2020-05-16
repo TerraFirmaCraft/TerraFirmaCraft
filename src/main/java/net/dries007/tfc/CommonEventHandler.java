@@ -95,6 +95,7 @@ import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemQuiver;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
+import net.dries007.tfc.util.DamageSourcesTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MonsterEquipment;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -104,7 +105,6 @@ import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.Constants.PLUCKING;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("unused")
@@ -858,7 +858,7 @@ public final class CommonEventHandler
             && player.isSneaking() && Arrays.asList(ConfigTFC.General.MISC.pluckableEntities).contains(entityType.toString()))
         {
             target.dropItem(Items.FEATHER, 1);
-            target.attackEntityFrom(PLUCKING, (float) ConfigTFC.General.MISC.damagePerFeather);
+            target.attackEntityFrom(DamageSourcesTFC.PLUCKING, (float) ConfigTFC.General.MISC.damagePerFeather);
             if (target instanceof IAnimalTFC)
             {
                 ((IAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);

@@ -339,6 +339,11 @@ public final class ConfigTFC
             @Config.RangeInt(min = 1)
             public int drinkDelay = 12;
 
+            @Config.Comment("Chance that a salty drink apply a thirst effect")
+            @Config.LangKey("config." + MOD_ID + ".general.player.chanceThirstOnSaltyDrink")
+            @Config.RangeDouble(min = 0, max = 1)
+            public double chanceThirstOnSaltyDrink = 0.25;
+
             @Config.Comment("Which inventory slots will ammo refill/pickup search for quivers?")
             @Config.LangKey("config." + MOD_ID + ".general.player.quiverSearch")
             public QuiverSearch quiverSearch = QuiverSearch.HOTBAR;

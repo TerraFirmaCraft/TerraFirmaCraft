@@ -4435,10 +4435,13 @@ entity.hyenatfc.name=Hyena
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
+death.attack.food_poison=%1$s died of food poisoning
+death.attack.plucking=%1$s died by having it's feathers plucked
 
 #Effects
 effectsTFC.overburdened=Overburdened
 effectsTFC.thirst=Thirst
+effectsTFC.food_poison=Food Poisoning
 
 # Animal names by gender
 tfc.animal.sheeptfc.male=Sheep♂
