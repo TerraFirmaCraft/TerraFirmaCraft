@@ -8,6 +8,7 @@ package net.dries007.tfc.world.biome;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Blocks;
@@ -21,6 +22,7 @@ import net.minecraft.world.gen.placement.ChanceConfig;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,6 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.world.carver.TFCWorldCarvers;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -58,8 +61,8 @@ public class TFCBiomes
     public static final BiomeVariantHolder CANYONS = new BiomeVariantHolder("canyons", (temp, rain) -> new CanyonsBiome(-7, 26, temp, rain)); // Medium height with snake like ridges, often slightly below sea level
 
     // Shores
-    public static final BiomeVariantHolder SHORE = new BiomeVariantHolder("shore", (temp, rain) -> new ShoreBiome(false, temp, rain)); // Standard shore biome with a sandy beach
-    public static final BiomeVariantHolder STONE_SHORE = new BiomeVariantHolder("stone_shore", (temp, rain) -> new ShoreBiome(true, temp, rain)); // Shore for mountain biomes
+    public static final BiomeVariantHolder SHORE = new BiomeVariantHolder("shore", (temp, rain) -> new ShoreBiome(temp, rain)); // Standard shore biome with a sandy beach
+    public static final BiomeVariantHolder STONE_SHORE = new BiomeVariantHolder("stone_shore", (temp, rain) -> new ShoreBiome(temp, rain)); // Shore for mountain biomes
 
     // Technical biomes
     public static final BiomeVariantHolder MOUNTAINS_EDGE = new BiomeVariantHolder("mountains_edge", (temp, rain) -> new MountainsBiome(36, 34, false, temp, rain)); // Edge biome for mountains
@@ -89,13 +92,13 @@ public class TFCBiomes
     public static void setup()
     {
         addOceanCarvers(OCEAN);
-        OCEAN.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG));
+        OCEAN.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, getUnderwaterSurfaceConfig(biome)));
 
         addOceanCarvers(DEEP_OCEAN);
-        DEEP_OCEAN.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG));
+        DEEP_OCEAN.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, getUnderwaterSurfaceConfig(biome)));
 
         addOceanCarvers(DEEP_OCEAN_RIDGE);
-        DEEP_OCEAN_RIDGE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRAVEL_CONFIG));
+        DEEP_OCEAN_RIDGE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, getUnderwaterSurfaceConfig(biome)));
 
         addCarvers(PLAINS);
         PLAINS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
@@ -130,9 +133,9 @@ public class TFCBiomes
         addCarvers(CANYONS);
         CANYONS.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
 
-        SHORE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_SAND_GRAVEL_CONFIG));
+        SHORE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, TFCSurfaceBuilders.SANDSTONE_CONFIG));
 
-        STONE_SHORE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.SAND_SAND_GRAVEL_CONFIG));
+        STONE_SHORE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.DEFAULT, TFCSurfaceBuilders.RED_SANDSTONE_CONFIG));
 
         addCarvers(MOUNTAINS_EDGE);
         MOUNTAINS_EDGE.getAll().forEach(biome -> biome.get().setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG));
@@ -174,5 +177,17 @@ public class TFCBiomes
 
         biomeIn.getAll().forEach(biome -> biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.LARGE_CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.015f)))));
         biomeIn.getAll().forEach(biome -> biome.get().addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFCFeatures.CAVE_SPIKES.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.08f)))));
+    }
+
+    public static SurfaceBuilderConfig getUnderwaterSurfaceConfig(Supplier<TFCBiome> biome)
+    {
+        if (biome.get().getTemperature() == BiomeTemperature.LUKEWARM || biome.get().getTemperature() == BiomeTemperature.WARM)
+        {
+            return TFCSurfaceBuilders.SANDSTONE_CONFIG; // replace with underwater sand
+        }
+        else
+        {
+            return TFCSurfaceBuilders.RED_SANDSTONE_CONFIG; // replace with underwater gravel
+        }
     }
 }

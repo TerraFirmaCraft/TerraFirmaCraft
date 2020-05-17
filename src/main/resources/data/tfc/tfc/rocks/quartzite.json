@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/quartzite",
     "gravel": "tfc:rock/gravel/quartzite",
     "smooth": "tfc:rock/smooth/quartzite",
-    "spike": "tfc:rock/spike/quartzite"
+    "spike": "tfc:rock/spike/quartzite",
+    "mossy_cobble": "tfc:rock/mossy_cobble/quartzite",
+    "mossy_bricks": "tfc:rock/mossy_bricks/quartzite",
+    "cracked_bricks": "tfc:rock/cracked_bricks/quartzite",
+    "chiseled": "tfc:rock/chiseled/quartzite"
   },
   "category": "metamorphic",
   "sand_color": "yellow"

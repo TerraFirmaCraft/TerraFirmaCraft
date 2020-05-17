@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/andesite",
     "gravel": "tfc:rock/gravel/andesite",
     "smooth": "tfc:rock/smooth/andesite",
-    "spike": "tfc:rock/spike/andesite"
+    "spike": "tfc:rock/spike/andesite",
+    "mossy_cobble": "tfc:rock/mossy_cobble/andesite",
+    "mossy_bricks": "tfc:rock/mossy_bricks/andesite",
+    "cracked_bricks": "tfc:rock/cracked_bricks/andesite",
+    "chiseled": "tfc:rock/chiseled/andesite"
   },
   "category": "igneous_extrusive",
   "sand_color": "black"

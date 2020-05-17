@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/diorite",
     "gravel": "tfc:rock/gravel/diorite",
     "smooth": "tfc:rock/smooth/diorite",
-    "spike": "tfc:rock/spike/diorite"
+    "spike": "tfc:rock/spike/diorite",
+    "mossy_cobble": "tfc:rock/mossy_cobble/diorite",
+    "mossy_bricks": "tfc:rock/mossy_bricks/diorite",
+    "cracked_bricks": "tfc:rock/cracked_bricks/diorite",
+    "chiseled": "tfc:rock/chiseled/diorite"
   },
   "category": "igneous_intrusive",
   "sand_color": "brown"

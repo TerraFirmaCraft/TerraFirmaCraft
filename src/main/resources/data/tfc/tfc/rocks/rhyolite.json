@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/rhyolite",
     "gravel": "tfc:rock/gravel/rhyolite",
     "smooth": "tfc:rock/smooth/rhyolite",
-    "spike": "tfc:rock/spike/rhyolite"
+    "spike": "tfc:rock/spike/rhyolite",
+    "mossy_cobble": "tfc:rock/mossy_cobble/rhyolite",
+    "mossy_bricks": "tfc:rock/mossy_bricks/rhyolite",
+    "cracked_bricks": "tfc:rock/cracked_bricks/rhyolite",
+    "chiseled": "tfc:rock/chiseled/rhyolite"
   },
   "category": "igneous_extrusive",
   "sand_color": "brown"

@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/shale",
     "gravel": "tfc:rock/gravel/shale",
     "smooth": "tfc:rock/smooth/shale",
-    "spike": "tfc:rock/spike/shale"
+    "spike": "tfc:rock/spike/shale",
+    "mossy_cobble": "tfc:rock/mossy_cobble/shale",
+    "mossy_bricks": "tfc:rock/mossy_bricks/shale",
+    "cracked_bricks": "tfc:rock/cracked_bricks/shale",
+    "chiseled": "tfc:rock/chiseled/shale"
   },
   "category": "sedimentary",
   "sand_color": "red"

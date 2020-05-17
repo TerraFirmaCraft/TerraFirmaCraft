@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/marble",
     "gravel": "tfc:rock/gravel/marble",
     "smooth": "tfc:rock/smooth/marble",
-    "spike": "tfc:rock/spike/marble"
+    "spike": "tfc:rock/spike/marble",
+    "mossy_cobble": "tfc:rock/mossy_cobble/marble",
+    "mossy_bricks": "tfc:rock/mossy_bricks/marble",
+    "cracked_bricks": "tfc:rock/cracked_bricks/marble",
+    "chiseled": "tfc:rock/chiseled/marble"
   },
   "category": "metamorphic",
   "sand_color": "white"

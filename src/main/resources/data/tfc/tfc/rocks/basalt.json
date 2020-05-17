@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/basalt",
     "gravel": "tfc:rock/gravel/basalt",
     "smooth": "tfc:rock/smooth/basalt",
-    "spike": "tfc:rock/spike/basalt"
+    "spike": "tfc:rock/spike/basalt",
+    "mossy_cobble": "tfc:rock/mossy_cobble/basalt",
+    "mossy_bricks": "tfc:rock/mossy_bricks/basalt",
+    "cracked_bricks": "tfc:rock/cracked_bricks/basalt",
+    "chiseled": "tfc:rock/chiseled/basalt"
   },
   "category": "igneous_extrusive",
   "sand_color": "black"
