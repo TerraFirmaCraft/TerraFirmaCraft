@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/gneiss",
     "gravel": "tfc:rock/gravel/gneiss",
     "smooth": "tfc:rock/smooth/gneiss",
-    "spike": "tfc:rock/spike/gneiss"
+    "spike": "tfc:rock/spike/gneiss",
+    "mossy_cobble": "tfc:rock/mossy_cobble/gneiss",
+    "mossy_bricks": "tfc:rock/mossy_bricks/gneiss",
+    "cracked_bricks": "tfc:rock/cracked_bricks/gneiss",
+    "chiseled": "tfc:rock/chiseled/gneiss"
   },
   "category": "metamorphic",
   "sand_color": "red"

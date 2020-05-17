@@ -71,7 +71,7 @@ public class TFCBiomeProvider extends BiomeProvider
     public Biome getNoiseBiome(int x, int y, int z)
     {
         TFCBiome baseBiome = biomeFactory.getBiome(x, z);
-        ChunkData data = chunkDataProvider.get(new ChunkPos(x << 2, z << 2), ChunkData.Status.CLIMATE, false);
-        return baseBiome.getVariants().get(data.getAverageTemp(), data.getRainfall()).get();
+        ChunkData data = chunkDataProvider.get(new ChunkPos(x >> 2, z >> 2), ChunkData.Status.CLIMATE, false);
+        return baseBiome.getVariantHolder().get(data.getAverageTemp(), data.getRainfall()).get();
     }
 }

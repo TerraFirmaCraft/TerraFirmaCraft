@@ -22,13 +22,14 @@ def generate(rm: ResourceManager):
                 block = rm.blockstate(('rock', block_type, rock)) \
                     .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
                     .with_item_model() \
-                    .with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
+                    .with_block_loot('tfc:rock/%s/%s' % (block_type, rock))  # todo: fix raw -> rocks
                 if block_type in {'smooth', 'raw'}:
                     block.with_lang(lang('%s %s', block_type, rock))
                 else:
                     block.with_lang(lang('%s %s', rock, block_type))
 
         # Ores
+        # todo: fix / add loot tables
         for ore, ore_data in ORES.items():
             if ore_data.graded:
                 for grade in ORE_GRADES:
@@ -68,7 +69,15 @@ def generate(rm: ResourceManager):
             .with_block_model() \
             .with_item_model() \
             .with_block_loot('tfc:dirt/%s' % soil) \
-            .with_lang(lang('%s Soil', soil))
+            .with_lang(lang('%s Dirt', soil))
+        # todo: fix loot table
+        rm.blockstate(('clay', soil),
+                      variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]},
+                      use_default_model=False) \
+            .with_block_model() \
+            .with_item_model() \
+            .with_block_loot('tfc:clay/%s' % soil) \
+            .with_lang(lang('%s Clay Dirt', soil))
 
     # Grass
     north_face = {
@@ -79,32 +88,34 @@ def generate(rm: ResourceManager):
         'faces': {'north': {'texture': '#overlay', 'cullface': 'north', 'tintindex': 0}}
     }
     for var in SOIL_BLOCK_VARIANTS:
-        rm.blockstate_multipart(('grass', var), [
-            {'model': 'tfc:block/grass/%s_top' % var, 'x': 270},
-            {'model': 'tfc:block/grass/%s_bottom' % var, 'x': 90},
-            ({'north': True}, {'model': 'tfc:block/grass/%s_top' % var}),
-            ({'east': True}, {'model': 'tfc:block/grass/%s_top' % var, 'y': 90}),
-            ({'south': True}, {'model': 'tfc:block/grass/%s_top' % var, 'y': 180}),
-            ({'west': True}, {'model': 'tfc:block/grass/%s_top' % var, 'y': 270}),
-            ({'north': False}, {'model': 'tfc:block/grass/%s_side' % var}),
-            ({'east': False}, {'model': 'tfc:block/grass/%s_side' % var, 'y': 90}),
-            ({'south': False}, {'model': 'tfc:block/grass/%s_side' % var, 'y': 180}),
-            ({'west': False}, {'model': 'tfc:block/grass/%s_side' % var, 'y': 270}),
-        ]) \
-            .with_block_loot('tfc:dirt/%s' % var) \
-            .with_tag('grass') \
-            .with_lang(lang('%s Grass', var))
-        # Grass Models, one for the side, top and bottom
-        rm.block_model(('grass', '%s_top' % var), {
-            'overlay': 'tfc:block/grass_top',
-            'particle': 'tfc:block/dirt/%s' % var
-        }, parent='block/block', elements=[north_face_tint0])
-        rm.block_model(('grass', '%s_side' % var), {
-            'overlay': 'tfc:block/grass_side',
-            'texture': 'tfc:block/dirt/%s' % var,
-            'particle': 'tfc:block/dirt/%s' % var
-        }, parent='block/block', elements=[north_face, north_face_tint0])
-        rm.block_model(('grass', '%s_bottom' % var), {
-            'texture': 'tfc:block/dirt/%s' % var,
-            'particle': 'tfc:block/dirt/%s' % var
-        }, parent='block/block', elements=[north_face])
+        for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % var), ('clay_grass', 'tfc:block/clay_dirt/%s' % var)):
+            rm.blockstate_multipart((grass_var, var), [
+                {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'x': 270},
+                {'model': 'tfc:block/%s/%s_bottom' % (grass_var, var), 'x': 90},
+                ({'north': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, var)}),
+                ({'east': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'y': 90}),
+                ({'south': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'y': 180}),
+                ({'west': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'y': 270}),
+                ({'north': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var)}),
+                ({'east': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var), 'y': 90}),
+                ({'south': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var), 'y': 180}),
+                ({'west': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var), 'y': 270}),
+            ]) \
+                .with_item_model() \
+                .with_block_loot('tfc:dirt/%s' % var) \
+                .with_tag('grass') \
+                .with_lang(lang('%s %s', var, grass_var))
+            # Grass Models, one for the side, top and bottom
+            rm.block_model((grass_var, '%s_top' % var), {
+                'overlay': 'tfc:block/grass_top',
+                'particle': dirt
+            }, parent='block/block', elements=[north_face_tint0])
+            rm.block_model((grass_var, '%s_side' % var), {
+                'overlay': 'tfc:block/grass_side',
+                'texture': dirt,
+                'particle': dirt
+            }, parent='block/block', elements=[north_face, north_face_tint0])
+            rm.block_model((grass_var, '%s_bottom' % var), {
+                'texture': dirt,
+                'particle': dirt
+            }, parent='block/block', elements=[north_face])

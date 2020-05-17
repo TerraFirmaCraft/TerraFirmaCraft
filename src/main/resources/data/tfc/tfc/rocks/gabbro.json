@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/gabbro",
     "gravel": "tfc:rock/gravel/gabbro",
     "smooth": "tfc:rock/smooth/gabbro",
-    "spike": "tfc:rock/spike/gabbro"
+    "spike": "tfc:rock/spike/gabbro",
+    "mossy_cobble": "tfc:rock/mossy_cobble/gabbro",
+    "mossy_bricks": "tfc:rock/mossy_bricks/gabbro",
+    "cracked_bricks": "tfc:rock/cracked_bricks/gabbro",
+    "chiseled": "tfc:rock/chiseled/gabbro"
   },
   "category": "igneous_intrusive",
   "sand_color": "black"

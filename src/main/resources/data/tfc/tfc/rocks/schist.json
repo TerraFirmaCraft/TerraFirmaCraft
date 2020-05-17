@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/schist",
     "gravel": "tfc:rock/gravel/schist",
     "smooth": "tfc:rock/smooth/schist",
-    "spike": "tfc:rock/spike/schist"
+    "spike": "tfc:rock/spike/schist",
+    "mossy_cobble": "tfc:rock/mossy_cobble/schist",
+    "mossy_bricks": "tfc:rock/mossy_bricks/schist",
+    "cracked_bricks": "tfc:rock/cracked_bricks/schist",
+    "chiseled": "tfc:rock/chiseled/schist"
   },
   "category": "metamorphic",
   "sand_color": "brown"

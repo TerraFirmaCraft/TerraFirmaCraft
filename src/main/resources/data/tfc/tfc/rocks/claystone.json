@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/claystone",
     "gravel": "tfc:rock/gravel/claystone",
     "smooth": "tfc:rock/smooth/claystone",
-    "spike": "tfc:rock/spike/claystone"
+    "spike": "tfc:rock/spike/claystone",
+    "mossy_cobble": "tfc:rock/mossy_cobble/claystone",
+    "mossy_bricks": "tfc:rock/mossy_bricks/claystone",
+    "cracked_bricks": "tfc:rock/cracked_bricks/claystone",
+    "chiseled": "tfc:rock/chiseled/claystone"
   },
   "category": "sedimentary",
   "sand_color": "red"

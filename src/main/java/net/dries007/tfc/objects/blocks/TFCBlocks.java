@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.blocks;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -14,6 +15,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Util;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -86,25 +88,33 @@ public final class TFCBlocks
     public static final Map<SandBlockType, RegistryObject<Block>> SAND = Util.make(new EnumMap<>(SandBlockType.class), map -> {
         for (SandBlockType type : SandBlockType.values())
         {
-            String name = ("sand/" + type.name()).toLowerCase();
-            RegistryObject<Block> block = BLOCKS.register(name, () -> new TFCSandBlock(type.getDustColor(), Block.Properties.create(Material.SAND, MaterialColor.ADOBE).hardnessAndResistance(0.5F).sound(SoundType.SAND)));
-            TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
-            map.put(type, block);
+            map.put(type, register(("sand/" + type.name()).toLowerCase(), () -> new TFCSandBlock(type.getDustColor(), Block.Properties.create(Material.SAND, MaterialColor.ADOBE).hardnessAndResistance(0.5F).sound(SoundType.SAND)), ROCK_BLOCKS));
         }
     });
 
+    public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Block.Properties.create(Material.EARTH)), ROCK_BLOCKS);
+    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new Block(Block.Properties.create(Material.EARTH)), ROCK_BLOCKS);
     public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Util.make(new EnumMap<>(SoilBlockType.class), map -> {
         for (SoilBlockType type : SoilBlockType.values())
         {
             Map<SoilBlockType.Variant, RegistryObject<Block>> inner = new EnumMap<>(SoilBlockType.Variant.class);
             for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
             {
-                String name = (type.name() + "/" + variant.name()).toLowerCase();
-                RegistryObject<Block> block = BLOCKS.register(name, type::create);
-                TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
-                inner.put(variant, block);
+                inner.put(variant, register((type.name() + "/" + variant.name()).toLowerCase(), type::create, ROCK_BLOCKS));
             }
             map.put(type, inner);
         }
     });
+
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, ItemGroup group)
+    {
+        return register(name, blockSupplier, new Item.Properties().group(group));
+    }
+
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, Item.Properties blockItemProperties)
+    {
+        RegistryObject<T> block = BLOCKS.register(name, blockSupplier);
+        TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), blockItemProperties));
+        return block;
+    }
 }

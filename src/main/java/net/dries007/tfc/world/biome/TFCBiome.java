@@ -23,6 +23,8 @@ public abstract class TFCBiome extends Biome
     // todo: replace with actual blocks
     protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState();
     protected static final BlockState FRESH_WATER = Blocks.WATER.getDefaultState();
+    private final BiomeTemperature temperature;
+    private final BiomeRainfall rainfall;
 
     // Set during setup, after surface builders are available
     protected ConfiguredSurfaceBuilder<? extends ISurfaceBuilderConfig> lazySurfaceBuilder;
@@ -43,6 +45,8 @@ public abstract class TFCBiome extends Biome
             // Since this is a registry object, we just do them all later for consistency
             .surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.NOPE, SurfaceBuilder.AIR_CONFIG))
         );
+        this.temperature = temperature;
+        this.rainfall = rainfall;
     }
 
     public void setVariantHolder(BiomeVariantHolder variantHolder)
@@ -50,9 +54,19 @@ public abstract class TFCBiome extends Biome
         this.variantHolder = variantHolder;
     }
 
-    public BiomeVariantHolder getVariants()
+    public BiomeVariantHolder getVariantHolder()
     {
         return variantHolder;
+    }
+
+    public BiomeTemperature getTemperature()
+    {
+        return temperature;
+    }
+
+    public BiomeRainfall getRainfall()
+    {
+        return rainfall;
     }
 
     public abstract INoise2D createNoiseLayer(long seed);

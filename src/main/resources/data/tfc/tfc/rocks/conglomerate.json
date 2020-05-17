@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/conglomerate",
     "gravel": "tfc:rock/gravel/conglomerate",
     "smooth": "tfc:rock/smooth/conglomerate",
-    "spike": "tfc:rock/spike/conglomerate"
+    "spike": "tfc:rock/spike/conglomerate",
+    "mossy_cobble": "tfc:rock/mossy_cobble/conglomerate",
+    "mossy_bricks": "tfc:rock/mossy_bricks/conglomerate",
+    "cracked_bricks": "tfc:rock/cracked_bricks/conglomerate",
+    "chiseled": "tfc:rock/chiseled/conglomerate"
   },
   "category": "sedimentary",
   "sand_color": "red"

@@ -91,6 +91,10 @@ public class ChunkBlockReplacer
                 return rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState();
             }
         });
+
+        // Sandstone (normal / red) used for shores. Replace with sand / gravel, using mid rock sand color where necessary.
+        register(Blocks.SANDSTONE, (rockData, x, y, z, rainfall, temperature, noise) -> TFCBlocks.SAND.get(rockData.getMidRock(x, z).getSandColor()).get().getDefaultState());
+        register(Blocks.RED_SANDSTONE, (rockData, x, y, z, rainfall, temperature, noise) -> rockData.getMidRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
     }
 
     public void replace(IWorld worldGenRegion, IChunk chunk, Random random, RockData rockData, float rainfall, float temperature)

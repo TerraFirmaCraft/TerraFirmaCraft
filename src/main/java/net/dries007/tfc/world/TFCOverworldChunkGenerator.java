@@ -189,12 +189,12 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                     double weight = entry.getDoubleValue();
                     double height = weight * biomeNoiseMap.get(entry.getKey()).noise(chunkX + x, chunkZ + z);
                     totalHeight += height;
-                    if (entry.getKey() == TFCBiomes.RIVER.get())
+                    if (entry.getKey().getVariantHolder() == TFCBiomes.RIVER)
                     {
                         riverHeight += height;
                         riverWeight += weight;
                     }
-                    else if (entry.getKey() == TFCBiomes.SHORE.get() || entry.getKey() == TFCBiomes.STONE_SHORE.get())
+                    else if (entry.getKey().getVariantHolder() == TFCBiomes.SHORE || entry.getKey().getVariantHolder() == TFCBiomes.STONE_SHORE)
                     {
                         shoreHeight += height;
                         shoreWeight += weight;
@@ -212,7 +212,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                     }
                 }
 
-                // Create river valleys - carve cliffs around river biomes, and smooth out the edges
+                // Create river valleys - carve cliffs around river biomes and shores, and smooth out the edges
                 double actualHeight = totalHeight;
                 if (riverWeight > 0.6)
                 {
@@ -227,25 +227,25 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                         double adjustedAboveWaterDelta = 0.02 * aboveWaterDelta * (40 - aboveWaterDelta) - 0.48;
                         actualHeight = riverHeight / riverWeight + adjustedAboveWaterDelta;
                     }
-                    biomeAt = TFCBiomes.RIVER.get(); // Use river surface for the bottom of the river + small shore beneath cliffs
+                    biomeAt = TFCBiomes.RIVER.get(biomeAt.getTemperature(), biomeAt.getRainfall()).get(); // Use river surface for the bottom of the river + small shore beneath cliffs
                 }
                 else if (riverWeight > 0)
                 {
                     double adjustedRiverWeight = 0.6 * riverWeight;
                     actualHeight = (totalHeight - riverHeight) * ((1 - adjustedRiverWeight) / (1 - riverWeight)) + riverHeight * (adjustedRiverWeight / riverWeight);
 
-                    if (biomeAt == TFCBiomes.RIVER.get())
+                    if (biomeAt.getVariantHolder() == TFCBiomes.RIVER)
                     {
                         biomeAt = standardBiomeAt;
                     }
                 }
 
                 // Flatten shores, and create cliffs on the edges
-                if (shoreWeight > 0.4)
+                if (shoreWeight > 0.6)
                 {
-                    if (actualHeight > getSeaLevel() + 1)
+                    if (actualHeight > getSeaLevel() + 2)
                     {
-                        actualHeight = getSeaLevel() + 1;
+                        actualHeight = getSeaLevel() + 2;
                     }
                     biomeAt = shoreBiomeAt;
                 }

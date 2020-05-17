@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/granite",
     "gravel": "tfc:rock/gravel/granite",
     "smooth": "tfc:rock/smooth/granite",
-    "spike": "tfc:rock/spike/granite"
+    "spike": "tfc:rock/spike/granite",
+    "mossy_cobble": "tfc:rock/mossy_cobble/granite",
+    "mossy_bricks": "tfc:rock/mossy_bricks/granite",
+    "cracked_bricks": "tfc:rock/cracked_bricks/granite",
+    "chiseled": "tfc:rock/chiseled/granite"
   },
   "category": "igneous_intrusive",
   "sand_color": "brown"

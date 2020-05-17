@@ -6,7 +6,11 @@
     "cobble": "tfc:rock/cobble/chalk",
     "gravel": "tfc:rock/gravel/chalk",
     "smooth": "tfc:rock/smooth/chalk",
-    "spike": "tfc:rock/spike/chalk"
+    "spike": "tfc:rock/spike/chalk",
+    "mossy_cobble": "tfc:rock/mossy_cobble/chalk",
+    "mossy_bricks": "tfc:rock/mossy_bricks/chalk",
+    "cracked_bricks": "tfc:rock/cracked_bricks/chalk",
+    "chiseled": "tfc:rock/chiseled/chalk"
   },
   "category": "sedimentary",
   "sand_color": "yellow"
