@@ -1,32 +1,32 @@
 # Contributions
 # 感谢为中文本地化贡献力量的所有人。
 # 初稿：青乌 人间之蟹 zhanj gdufw hidfug HeartyYF
-# 校对：hidfug HeartyYF zhanj xwjcool123 3TUSK wje5 LaursenW Vip_Brooklyn11
+# 校对：hidfug HeartyYF zhanj xwjcool123 3TUSK wje5 LaursenW Vip_Brooklyn11 三月猫
 # 以及其他很多提出过建议和意见的朋友。
 
 # Command
-tfc.command.time.usage=/timetfc <add|query|set> [参数]
-tfc.command.time.usage_expected_first_argument=在 /timetfc 后应有 <add|query|set>
-tfc.command.time.usage_expected_second_argument_query=在 /timetfc query 后应有 [daytime|day|gametime|playerticks|calendarticks]
-tfc.command.time.usage_expected_second_argument_set=在 /timetfc set 后应有 [<刻>|day|night|monthlength <值>]
-tfc.command.time.usage_expected_second_argument_add=在 /timetfc add 后应有 [days|months|years] <值>
-tfc.command.time.set_month_length=将月长度设为 %d 天/月
-tfc.command.time.set_day=已将时间设为下一个白天
-tfc.command.time.set_night=已将时间设为下一个晚上
-tfc.command.time.set_ticks=已将时间设为下一天的 %d
-tfc.command.time.add_days=将时间调快了 %d 天（%d 刻）
-tfc.command.time.add_months=将时间调快了 %d 月（%d 刻）
-tfc.command.time.add_years=将时间调快了 %d 年（%d 刻）
-tfc.command.time.add_ticks=将时间调快了 %d 刻
-tfc.command.time.query_calendarticks=日历刻是 %d
-tfc.command.time.query_playerticks=玩家刻是 %d
-tfc.command.time.query_gametime=游戏时间是 %d 刻
-tfc.command.time.query_day=现在是第 %d 天
-tfc.command.time.query_daytime=现在是一日中的 %d 刻
+tfc.command.timetfc.usage=/timetfc <add|query|set> [参数]
+tfc.command.timetfc.usage_expected_first_argument=在 /timetfc 后应有 <add|query|set>
+tfc.command.timetfc.usage_expected_second_argument_query=在 /timetfc query 后应有 [daytime|day|gametime|playerticks|calendarticks]
+tfc.command.timetfc.usage_expected_second_argument_set=在 /timetfc set 后应有 [<刻>|day|night|monthlength <值>]
+tfc.command.timetfc.usage_expected_second_argument_add=在 /timetfc add 后应有 [days|months|years] <值>
+tfc.command.timetfc.set_month_length=将月长度设为 %d 天/月
+tfc.command.timetfc.set_day=已将时间设为下一个白天
+tfc.command.timetfc.set_night=已将时间设为下一个晚上
+tfc.command.timetfc.set_ticks=已将时间设为下一天的 %d
+tfc.command.timetfc.add_days=将时间调快了 %d 天（%d 刻）
+tfc.command.timetfc.add_months=将时间调快了 %d 月（%d 刻）
+tfc.command.timetfc.add_years=将时间调快了 %d 年（%d 刻）
+tfc.command.timetfc.add_ticks=将时间调快了 %d 刻
+tfc.command.timetfc.query_calendarticks=日历刻是 %d
+tfc.command.timetfc.query_playerticks=玩家刻是 %d
+tfc.command.timetfc.query_gametime=游戏时间是 %d 刻
+tfc.command.timetfc.query_day=现在是第 %d 天
+tfc.command.timetfc.query_daytime=现在是一日中的 %d 刻
 tfc.command.timetfc.set_player_time=将玩家时设为 %d。
 tfc.command.timetfc.set_calendar_time=将日历时设为 %s。
 
-tfc.tooltip.time.disabled=此命令已被群峦传说禁用。作为替代，请使用 /timetfc ！
+tfc.command.time.disabled=此命令已被群峦传说禁用。作为替代，请使用 /timetfc ！
 
 tfc.command.playertfc.usage=/playertfc <get|set|add|reset> [nutrition|food|saturation|water|skill <名称>] [值]
 tfc.command.playertfc.usage_expected_first_argument=在 /playertfc 后应有 <get|set|add|reset>
@@ -89,7 +89,8 @@ tfc.tooltip.oredictionaryentries=§f矿物词典名称：
 tfc.tooltip.metal=§f金属：§7%s
 tfc.tooltip.units=%d 单元
 tfc.tooltip.crucible_units=%d / %d 单元
-tfc.tooltip.units.total=§6总共 %d 单元
+tfc.tooltip.units.total=§6合计 %d 单元
+tfc.tooltip.units.info_total=%d 单元 / §6合计 %d
 tfc.tooltip.smelting=在 %s 中熔炼
 tfc.tooltip.liquid= - 液态
 tfc.tooltip.solid= - 固态
@@ -156,10 +157,10 @@ tfc.tooltip.egg_hatch=将在 %d 天后孵化
 tfc.tooltip.egg_hatch_today=将在今天孵化！
 
 ## Animal Tooltips / Messages
-tfc.tooltip.animal.old=这只%s太老了，不能给它配种。
+tfc.tooltip.animal.mating.old=这只%s太老了，不能给它配种。
 tfc.tooltip.animal.mating.low_familiarity=这只%s和你的亲密度太低，不能给它配种。
-tfc.tooltip.animal.pregnant=这只%s怀孕了！
-tfc.tooltip.animal.resting=这只%s今天交配过了，正在休息。
+tfc.tooltip.animal.mating.pregnant=这只%s怀孕了！
+tfc.tooltip.animal.mating.resting=这只%s今天交配过了，正在休息。
 
 tfc.tooltip.animal.product.old=这只%s太老了。
 tfc.tooltip.animal.product.young=这只%s太年轻了。
@@ -227,405 +228,572 @@ createWorld.customize.custom.surfaceRavineVariability=地表沟壑变异度
 createWorld.customize.custom.riverRavineRarity=溪流沟壑稀有度
 
 # Config
-config.tfc=群峦传说
-config.tfc.tooltip=群峦传说设置
-
 ## General Config
 config.tfc.general=通用设置
-config.tfc.general.tooltip=适用于客户端和服务端。
+config.tfc.general.tooltip=群峦传说的通用模组配置和兼容性
 
+
+### Debug
 config.tfc.general.debug=调试模式
-config.tfc.general.debug.tooltip=各种调试选项。激活一些额外的调试魔杖特性。启用额外的物品提示。
 
-config.tfc.general.disableFallableBlocks=禁用方块下落
-config.tfc.general.disableFallableBlocks.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会下落。
+config.tfc.general.debug.enable=启用
+config.tfc.general.debug.enable.tooltip=激活一些额外的调试魔杖特性。启用额外的物品提示。
 
-config.tfc.general.disableLavaWaterPlacesTFCBlocks=禁用群峦传说熔岩/水混合
-config.tfc.general.disableLavaWaterPlacesTFCBlocks.tooltip=若为 true，熔岩和水将生成原版的石头和圆石，而不是群峦的变种。
+config.tfc.general.debug.debugWorldGen=调试模式（危险）
+config.tfc.general.debug.debugWorldGen.tooltip=调试世界生成 [危险] 你的世界将会受到影响！不要在你正常的世界里使用！
 
-config.tfc.general.disableFallableBlocksDestroyOre=禁用下落方块摧毁矿石
-config.tfc.general.disableFallableBlocksDestroyOre.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会摧毁矿石方块。
 
-config.tfc.general.disableFallableBlocksDestroyLooseItems=禁用下落方块摧毁零散物品
-config.tfc.general.disableFallableBlocksDestroyLooseItems.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会摧毁零散物品（地表的石子与木棍等）。
+### Overrides
+config.tfc.general.overrides=覆盖设置
+config.tfc.general.overrides.tooltip=各种覆盖设置，一些用于兼容性
 
-config.tfc.general.disableFallableBlocksHurtEntities=禁用下落方块伤害实体
-config.tfc.general.disableFallableBlocksHurtEntities.tooltip=若为 true，可下落的方块（例如：泥土，岩石）将永远不会伤害实体。
+config.tfc.general.overrides.enableIngotPiles=启用金属锭堆摆放
+config.tfc.general.overrides.enableIngotPiles.tooltip=启用 Shift + 右键在地上摆放金属锭堆。
 
-config.tfc.general.forceTFCWorldTypeOnServer=默认世界类型覆盖
-config.tfc.general.forceTFCWorldTypeOnServer.tooltip=若为 true，群峦传说将在服务器启动期间尝试把 `level-type` 强制设置为 `tfc_classic` 。
+config.tfc.general.overrides.enableTorchOverride=启用火把覆盖
+config.tfc.general.overrides.enableTorchOverride.tooltip=如果与其他模组有冲突，关掉此选项。
 
-config.tfc.general.removeVanillaRecipes=移除原版合成配方
-config.tfc.general.removeVanillaRecipes.tooltip=启用/禁用原版配方移除。false = 保留所有原版配方。
+config.tfc.general.overrides.torchTime=火把烧尽时间
+config.tfc.general.overrides.torchTime.tooltip=火把燃烧殆尽所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 72 小时。设置为 -1 永不烧尽。
 
-config.tfc.general.removeVanillaLoots=移除原版战利品表
-config.tfc.general.removeVanillaLoots.tooltip=启用/禁用与群峦传说冲突的原版战利品表项（例如马铃薯）。false = 保留这些战利品表。
+config.tfc.general.overrides.enableLavaWaterPlacesTFCBlocks=启用群峦传说熔岩/水混合
+config.tfc.general.overrides.enableLavaWaterPlacesTFCBlocks.tooltip=覆盖原版的熔岩和水混合，转而生成群峦传说的石头变种。
 
-config.tfc.general.leafStickDropChance=树叶掉落木棍几率
-config.tfc.general.leafStickDropChance.tooltip=破坏树叶时正常掉落木棍的几率
+config.tfc.general.overrides.forceTFCWorldType=默认世界类型覆盖
+config.tfc.general.overrides.forceTFCWorldType.tooltip=若为 true，群峦传说将在服务器启动期间尝试把 `level-type` 强制设置为 `tfc_classic` 或在客户端将其定义为默认世界类型。
 
-config.tfc.general.leafStickDropChanceBonus=树叶额外掉落木棍几率
-config.tfc.general.leafStickDropChanceBonus.tooltip=破坏树叶时额外掉落木棍的几率
+config.tfc.general.overrides.forceDefaultOreGenFile=强制默认矿石生成文件
+config.tfc.general.overrides.enableDefaultOreGenFileOverwrite.tooltip=若为 true，群峦传说将强制使用默认的矿石生成文件。整合包作者：禁用此项以防止你的矿石生成文件被重置。
 
-config.tfc.general.leafStickDropChanceBonusClasses=树叶工具类掉落木棍几率
-config.tfc.general.leafStickDropChanceBonusClasses.tooltip=使用对应工具破坏树叶时额外掉落木棍的几率
+config.tfc.general.overrides.removeVanillaRecipes=移除原版配方
+config.tfc.general.overrides.removeVanillaRecipes.tooltip=启用/禁用原版配方移除。false = 保留所有原版配方。
 
-config.tfc.general.stoneGemDropChance=岩石掉落宝石几率
-config.tfc.general.stoneGemDropChance.tooltip=宝石从未加工岩石中掉落的几率
+config.tfc.general.overrides.removeVanillaLoots=移除原版战利品表
+config.tfc.general.overrides.removeVanillaLoots.tooltip=启用/禁用与群峦传说冲突的原版战利品表项（例如马铃薯）。false = 保留这些战利品表。
 
-config.tfc.general.temperatureModifierGlobal=全局温度修正值
-config.tfc.general.temperatureModifierGlobal.tooltip=修改物品获得和失去热量的速度。较小的值 = 较慢的温度变化。
+config.tfc.general.overrides.forceNoVanillaNaturalRegeneration=强制无原版自然恢复
+config.tfc.general.overrides.forceNoVanillaNaturalRegeneration.tooltip=若为 true，将把游戏规则 naturalRegeneration 强制设置为 false 。注意：这不会影响群峦的自然恢复。若将 naturalRegeneration 设置为 true ，将同时有群峦和正常原版（比群峦快多了）的恢复。
 
-config.tfc.general.temperatureModifierHeating=加热温度修正值
-config.tfc.general.temperatureModifierHeating.tooltip=修改设施（如木炭炉，篝火）获得和失去热量的速度。较小的值 = 较慢的温度变化。
+config.tfc.general.overrides.forceReplaceVanillaAnimals=强制替换原版动物
+config.tfc.general.overrides.forceReplaceVanillaAnimals.tooltip=若为 true，在任何情况下生成的原版动物（例如：刷怪箱，刷怪蛋，等等）将被群峦传说的相应动物替换。
 
-config.tfc.general.enableCruciblePouringAllSlots=启用坩埚全槽灌注
-config.tfc.general.enableCruciblePouringAllSlots.tooltip=允许坩埚接受所有 9 个输入槽的金属浇注（来自小缸/模具）。
 
-config.tfc.general.foodDecayModifier=食物腐烂修正值
-config.tfc.general.foodDecayModifier.tooltip=食物腐烂的速度。较大的值 = 较快的腐烂速度。设置为 0 永不腐烂。
+### Fallable
+config.tfc.general.fallable=下落设置
+config.tfc.general.fallable.tooltip=可下落方块的设置
 
-config.tfc.general.firePitCookingPotBoilingTime=烹饪锅沸腾时间
-config.tfc.general.firePitCookingPotBoilingTime.tooltip=在篝火上烧开一锅所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 1 小时。
+config.tfc.general.fallable.enable=启用方块下落
+config.tfc.general.fallable.enable.tooltip=若为 false，可下落的方块（例如：泥土，岩石）将永远不会下落。
 
-config.tfc.general.pitKilnTime=坑窑时间
-config.tfc.general.pitKilnTime.tooltip=坑窑燃烧完毕所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 8 小时。
+config.tfc.general.fallable.destroyOres=下落方块摧毁矿石
+config.tfc.general.fallable.destroyOres.tooltip=若为 false，可下落的方块（例如：泥土，岩石）将永远不会摧毁矿石方块。
 
-config.tfc.general.torchTime=火把烧尽时间
-config.tfc.general.torchTime.tooltip=火把燃烧殆尽所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 72 小时。设置为 -1 永不烧尽。
+config.tfc.general.fallable.destroyItems=下落方块摧毁零散物品
+config.tfc.general.fallable.destroyItems.tooltip=若为 false，可下落的方块（例如：泥土，岩石）将永远不会摧毁零散物品（地表的石子与木棍等）。
 
-config.tfc.general.bloomeryTime=炼铁炉时间
-config.tfc.general.bloomeryTime.tooltip=炼铁炉完成所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 15 小时。
+config.tfc.general.fallable.hurtEntities=下落方块伤害实体
+config.tfc.general.fallable.hurtEntities.tooltip=若为 false，可下落的方块（例如：泥土，岩石）将永远不会伤害实体。
 
-config.tfc.general.blastFurnaceConsumption=高炉消耗速度
-config.tfc.general.blastFurnaceConsumption.tooltip=高炉消耗燃料的速度（与木炭炉相比）。
+config.tfc.general.fallable.collapseChance=岩石塌方几率
+config.tfc.general.fallable.collapseChance.tooltip=挖掘未加工岩石引发塌方的几率。
 
-config.tfc.general.plantGrowthRate=植物生长速度
-config.tfc.general.plantGrowthRate.tooltip=每次更新植物的百分比生长机会。较小的值 = 较慢。
+config.tfc.general.fallable.propagateCollapseChance=塌方扩散几率
+config.tfc.general.fallable.propagateCollapseChance.tooltip=塌方的方块扩散塌方的几率。受与塌方中心的距离影响。
 
-config.tfc.general.fireStarterChance=起火器成功几率
-config.tfc.general.fireStarterChance.tooltip=起火器成功生火的几率
+config.tfc.general.fallable.chiselCausesCollapse=凿石引起塌方
+config.tfc.general.fallable.chiselCausesCollapse.tooltip=凿未加工的石头时可能引起塌方吗？
 
-config.tfc.general.playerNutritionDecayModifier=玩家营养衰退修正值
-config.tfc.general.playerNutritionDecayModifier.tooltip=修改玩家营养值衰退的速度
+### Difficulty
+config.tfc.general.difficulty=难度设置
 
-config.tfc.general.playerMinHealthModifier=玩家最低生命修正值
-config.tfc.general.playerMinHealthModifier.tooltip=在低营养下玩家能保持的最低生命值。
+config.tfc.general.difficulty.animalSpawnCount=动物生成计数
+config.tfc.general.difficulty.animalSpawnCount.tooltip=控制平均每名玩家的动物上限，加载（生成）的所有种类动物 / 玩家。更大的值意味着玩家周围有更多的动物，增加了难度和肉类丰度（注意，过高的值可能对性能有负面影响）。
 
-config.tfc.general.playerMaxHealthModifier=玩家最高生命修正值
-config.tfc.general.playerMaxHealthModifier.tooltip=在高营养下玩家能获得的最高生命值。
+config.tfc.general.difficulty.mobSpawnCount=怪物生成计数
+config.tfc.general.difficulty.mobSpawnCount.tooltip=控制平均每名玩家的怪物上限，加载（生成）的怪物 / 玩家。更大的值意味着玩家周围有更多的怪物，增加了难度（注意，过高的值可能对性能有负面影响）。
 
-config.tfc.general.playerThirstModifier=玩家口渴衰退修正值
-config.tfc.general.playerThirstModifier.tooltip=修改玩家口渴的速度。
+config.tfc.general.difficulty.preventMobsOnSurface=禁止怪物地表生成
+config.tfc.general.difficulty.preventMobsOnSurface.tooltip=禁止在地表生成怪物吗？
 
-config.tfc.general.playerNaturalRegenerationModifier=玩家自然恢复速度
-config.tfc.general.playerNaturalRegenerationModifier.tooltip=修改玩家自然恢复生命值的速度。
+config.tfc.general.difficulty.giveVanillaMobsEquipment=原版怪物装备
+config.tfc.general.difficulty.giveVanillaMobsEquipment.tooltip=给原版的怪物装备锻铁武器和护甲吗？
 
-config.tfc.general.collapseChance=岩石塌方几率
-config.tfc.general.collapseChance.tooltip=挖掘未加工岩石引发塌方的几率。
+### Trees
+config.tfc.general.tree=树木设置
+config.tfc.general.tree.tooltip=启用 / 禁用群峦传说的树木机制
 
-config.tfc.general.propagateCollapseChance=塌方扩散几率
-config.tfc.general.propagateCollapseChance.tooltip=塌方的方块扩散塌方的几率。受与塌方中心的距离影响。
+config.tfc.general.tree.enableFelling=启用树木砍伐
+config.tfc.general.tree.enableFelling.tooltip=允许斧砍倒整棵树。如果你想使用其他模组处理树木砍伐，禁用此选项。
 
-config.tfc.general.quiverSearch=箭袋搜索位置
-config.tfc.general.quiverSearch.tooltip=箭袋会从哪些地方填充弹药？可选值有 none, armor, hotbar, main
+config.tfc.general.tree.requiresAxe=斧的需要
+config.tfc.general.tree.enableFelling.tooltip=原木需要相对应的工具（斧和锯，或对木棍来说锤）才能开采吗？若为 false，空手破坏原木时什么都不会掉落。
 
-config.tfc.general.slashingDamageSources=砍击伤害来源
-config.tfc.general.slashingDamageSources.tooltip=伤害来源类型将默认为砍击伤害。
+config.tfc.general.tree.enableSaplings=树苗掉落
+config.tfc.general.tree.enableFelling.tooltip=若为 false，树叶将不会掉落树苗。
 
-config.tfc.general.piercingDamageSources=刺击伤害来源
-config.tfc.general.piercingDamageSources.tooltip=伤害来源类型将默认为刺击伤害。
+config.tfc.general.tree.stoneAxeReturnRate=石斧原木返还率
+config.tfc.general.tree.stoneAxeReturnRate.tooltip=当使用石斧时，原木掉落物品的几率。
 
-config.tfc.general.crushingDamageSources=锤击伤害来源
-config.tfc.general.crushingDamageSources.tooltip=伤害来源类型将默认为锤击伤害。
+config.tfc.general.tree.leafStickDropChance=树叶掉落木棍几率
+config.tfc.general.tree.leafStickDropChance.tooltip=采掘树叶时正常掉落木棍的几率。
 
-config.tfc.general.slashingDamageEntities=砍击伤害实体
-config.tfc.general.slashingDamageEntities.tooltip=伤害来源实体将默认造成砍击伤害。
+config.tfc.general.tree.leafStickDropChanceBonus=树叶额外掉落木棍几率
+config.tfc.general.tree.leafStickDropChanceBonus.tooltip=当使用配置的工具类别采掘时，树叶掉落更多木棍的几率。
 
-config.tfc.general.piercingDamageEntities=刺击伤害实体
-config.tfc.general.piercingDamageEntities.tooltip=伤害来源实体将默认造成刺击伤害。
+config.tfc.general.tree.leafStickDropChanceBonusClasses=树叶掉落木棍加成工具类别
+config.tfc.general.tree.leafStickDropChanceBonusClasses.tooltip=采掘树叶可能掉落更多木棍的工具类别。
 
-config.tfc.general.crushingDamageEntities=锤击伤害实体
-config.tfc.general.crushingDamageEntities.tooltip=伤害来源实体将默认造成锤击伤害。
 
-config.tfc.general.smallOreMetalAmount=粒金属含量
-config.tfc.general.smallOreMetalAmount.tooltip=小矿石/粒中含有的金属量。
+### Spawn Protection
+config.tfc.general.spawn_protection=生成保护设置
 
-config.tfc.general.poorOreMetalAmount=贫瘠矿金属含量
-config.tfc.general.poorOreMetalAmount.tooltip=贫瘠矿中含有的金属量。
+config.tfc.general.spawn_protection.preventMobs=阻止敌对生物生成
+config.tfc.general.spawn_protection.preventMobs.tooltip=玩家在某区块内度过一段时间后，是否阻止敌对生物生成？
 
-config.tfc.general.normalOreMetalAmount=正常矿金属含量
-config.tfc.general.normalOreMetalAmount.tooltip=正常矿中含有的金属量。
+config.tfc.general.spawn_protection.preventPredators=阻止捕食者生成
+config.tfc.general.spawn_protection.preventPredators.tooltip=玩家在某区块内度过一段时间后，是否阻止捕食者生成？
 
-config.tfc.general.richOreMetalAmount=富集矿金属含量
-config.tfc.general.richOreMetalAmount.tooltip=富集矿中含有的金属量。
+config.tfc.general.spawn_protection.minYMobs=敌对生物生成保护最低 Y 值
+config.tfc.general.spawn_protection.minYMobs.tooltip=敌对生物生成保护的最低 Y 值。在此之下的区域不受生成保护的限制。
 
-config.tfc.general.maxWorkChunk=区块最大开采量
-config.tfc.general.maxWorkChunk.tooltip=在一个区块内开采的最大次数。注意：洗矿槽增加 1 而淘金盘增加 6 。
+config.tfc.general.spawn_protection.maxYMobs=敌对生物生成保护最高 Y 值
+config.tfc.general.spawn_protection.maxYMobs.tooltip=敌对生物生成保护的最高 Y 值。在此之上的区域不受生成保护的限制。
 
-config.tfc.general.sluiceRadius=洗矿槽半径
-config.tfc.general.sluiceRadius.tooltip=以区块为单位的洗矿槽工作半径。
+config.tfc.general.spawn_protection.minYPredators=捕食者生成保护最低 Y 值
+config.tfc.general.spawn_protection.minYPredators.tooltip=捕食者生成保护的最低 Y 值。在此之下的区域不受生成保护的限制。
 
-config.tfc.general.sluiceTicks=洗矿槽刻
-config.tfc.general.sluiceTicks.tooltip=洗矿槽工作一次所用的刻。
+config.tfc.general.spawn_protection.maxYPredators=敌对生物生成保护最高 Y 值
+config.tfc.general.spawn_protection.maxYPredators.tooltip=敌对生物生成保护的最高 Y 值。在此之上的区域不受生成保护的限制。
 
-config.tfc.general.sluiceOreChance=洗矿槽矿石几率
-config.tfc.general.sluiceOreChance.tooltip=洗矿槽作业产生小矿石的几率。
 
-config.tfc.general.sluiceGemChance=洗矿槽宝石几率
-config.tfc.general.sluiceGemChance.tooltip=洗矿槽作业产生宝石的几率。
+### Damage
+config.tfc.general.damage=伤害类型设置
 
-config.tfc.general.sluiceDiamondGemChance=洗矿槽钻石几率
-config.tfc.general.sluiceDiamondGemChance.tooltip=当洗矿槽作业产生宝石时，掉落钻石的几率。
+config.tfc.general.damage.slashingSources=砍击伤害来源
+config.tfc.general.damage.slashingSources.tooltip=伤害来源类型将默认为砍击伤害。
 
-config.tfc.general.overworkChunk=区块可过度开采
-config.tfc.general.overworkChunk.tooltip=若为 true，忽略对淘金盘和洗矿槽的限制。
+config.tfc.general.damage.piercingSources=刺击伤害来源
+config.tfc.general.damage.piercingSources.tooltip=伤害来源类型将默认为刺击伤害。
 
-config.tfc.general.forceNoVanillaNaturalRegeneration=强制无原版自然恢复
-config.tfc.general.forceNoVanillaNaturalRegeneration.tooltip=若为 true，将把游戏规则 naturalRegeneration 强制设置为 false 。注意：这不会影响群峦的自然恢复。若将 naturalRegeneration 设置为 true ，将同时有群峦和正常原版（比群峦快多了）的恢复。
+config.tfc.general.damage.crushingSources=锤击伤害来源
+config.tfc.general.damage.crushingSources.tooltip=伤害来源类型将默认为锤击伤害。
 
-config.tfc.general.forceReplaceVanillaAnimals=强制替换原版动物
-config.tfc.general.forceReplaceVanillaAnimals.tooltip=若为 true，在任何情况下生成的原版动物（例如：刷怪箱，刷怪蛋，等等）将被群峦传说的相应动物替换。
+config.tfc.general.damage.slashingEntities=砍击伤害实体
+config.tfc.general.damage.slashingEntities.tooltip=伤害来源实体将默认造成砍击伤害。
 
-config.tfc.general.peacefulDifficultyPassiveRegeneration=和平难度被动恢复
-config.tfc.general.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饥饿值，口渴值？
+config.tfc.general.damage.piercingEntities=刺击伤害实体
+config.tfc.general.damage.piercingEntities.tooltip=伤害来源实体将默认造成刺击伤害。
 
-config.tfc.general.requireHammerInOffHand=凿要求副手锤
-config.tfc.general.requireHammerInOffHand.tooltip=若为 true，使用凿时锤必须在副手。若为 false，锤可以在副手或物品栏中。
+config.tfc.general.damage.crushingEntities=锤击伤害实体
+config.tfc.general.damage.crushingEntities.tooltip=伤害来源实体将默认造成锤击伤害。
 
-config.tfc.general.chiselDelay=凿的延迟
-config.tfc.general.chiselDelay.tooltip=使用凿时应有延迟吗？
 
-config.tfc.general.worldRegenerationMinimumTime=世界再生最小时间
-config.tfc.general.worldRegenerationMinimumTime.tooltip=区块空闲以开始自然再生资源所需的最短时间（以天为单位）。在此之后，资源再生将根据自此时间以来持续的时间加速，最高可达 4 倍.
+### Player
+config.tfc.general.player=玩家设置
 
-config.tfc.general.worldRegenerationSticksRocksModifier=地表资源再生修正值
-config.tfc.general.worldRegenerationSticksRocksModifier.tooltip=地表上零散石子和木棍再生的数目。
+config.tfc.general.player.inventoryCraftingMode=背包工作台
+config.tfc.general.player.inventoryCraftingMode.tooltip=允许玩家通过绑定的按键直接打开工作台界面。
 
-config.tfc.general.foodDecayStackTime=食物腐烂叠加时间
-config.tfc.general.foodDecayStackTime.tooltip=食物初始保质期的同步值。当食物首次成为物品时，其初始保质期将四舍五入至该值最接近的倍数（以小时为单位）。
+config.tfc.general.player.minHealthModifier=玩家最低生命修正值
+config.tfc.general.player.minHealthModifier.tooltip=在低营养下玩家能保持的最低生命值。示例 1（原版）：20 * 0.2（修正值） = 4 （或 2 心）。示例 2（群峦传说）：1000 * 0.2（修正值） = 200。
 
-config.tfc.general.foodPassiveExhaustionMultiplier=饥饿值被动消耗速度
-config.tfc.general.foodPassiveExhaustionMultiplier.tooltip=饥饿值被动消耗的速度。0 = 无被动消耗，更大的值 = 更快的消耗。
+config.tfc.general.player.maxHealthModifier=玩家最高生命修正值
+config.tfc.general.player.maxHealthModifier.tooltip=在高营养下玩家能获得的最高生命值。示例 1（原版）：20 * 3（修正值） = 60 （或 30 心）。示例 2（群峦传说）：1000 * 3（修正值） = 3000。
 
-config.tfc.general.oreDictIron=矿物词典 锻铁 - iron
-config.tfc.general.oreDictIron.tooltip=向锻铁物品添加 iron 的矿物词典吗？
+config.tfc.general.player.thirstModifier=玩家口渴值衰退
+config.tfc.general.player.thirstModifier.tooltip=当玩家的饥饿值被行动/疾跑消耗时，口渴值消耗的速度。 100 = 完整的口渴值条
 
-config.tfc.general.oreDictPlate=矿物词典 薄板 - plate
-config.tfc.general.oreDictPlate.tooltip=向薄板物品添加 plate 的矿物词典吗？
+config.tfc.general.player.naturalRegenerationModifier=玩家自然恢复速度
+config.tfc.general.player.naturalRegenerationModifier.tooltip=修改玩家自然恢复生命值的速度。当饥饿值条和口渴值条满时，1.0 = 3HP / 5 秒。
 
-config.tfc.general.spawnProtectionEnable=启用生成保护
-config.tfc.general.spawnProtectionEnable.tooltip=在玩家附近区块内的敌对生物是否应当一直生成？
+config.tfc.general.player.peacefulDifficultyPassiveRegeneration=和平难度被动恢复
+config.tfc.general.player.peacefulDifficultyPassiveRegeneration.tooltip=玩家是否应在和平难度下与原版相似地被动恢复生命值，饥饿值，口渴值？
 
-config.tfc.general.spawnProtectionMinY=区块生成保护最低 Y 值
-config.tfc.general.spawnProtectionMinY.tooltip=区块生成保护的最低 Y 值。（在该高度以下的区域不受区块生成保护的限制）
+config.tfc.general.player.passiveExhaustionMultiplier=饥饿值被动消耗修正值
+config.tfc.general.player.passiveExhaustionMultiplier.tooltip=修改饥饿值的被动消耗。1.0 = 在 2.5 游戏日内耗尽整个饥饿值条。
 
-config.tfc.general.charcoalPitTime=木炭坑时间
-config.tfc.general.charcoalPitTime.tooltip=木炭坑完成所需要的刻数。
+config.tfc.general.player.nutritionRotationHungerWindow=营养刷新的饥饿值窗口期
+config.tfc.general.player.nutritionRotationHungerWindow.tooltip=The amount of replenished hunger before the player's nutrition will lose the first food consumed. Most TFC foods have 4 hunger. Example: Multiply Vanilla hunger(20) by 4 to get one food bar worth of food before the first food is lost from the cycle. #TOFIX
 
-config.tfc.general.defaultMonthLength=默认月长度
-config.tfc.general.defaultMonthLength.tooltip=当新建世界时默认的月长度（以天为单位）。通过使用 /timetfc 命令可以修改已存在的世界的月长度。
+config.tfc.general.player.drinkDelay=饮水用时
+config.tfc.general.player.drinkDelay.tooltip=通过手中物品饮水所需的时间（以刻为单位）。
 
-config.tfc.general.enableAnimalAging=启用动物老去
-config.tfc.general.enableAnimalAging.tooltip=动物应当老去直至老死吗？
+config.tfc.general.player.quiverSearch=箭袋搜索位置
+config.tfc.general.player.quiverSearch.tooltip=箭袋会从哪些地方填充弹药？
 
-config.tfc.general.factorAnimalAging=动物老去因子
-config.tfc.general.factorAnimalAging.tooltip=动物变老需要多久（同样影响成年时间）？
 
-config.tfc.general.chanceAnimalDeath=动物死亡几率
-config.tfc.general.chanceAnimalDeath.tooltip=在动物老去后它死亡的几率（每游戏日检查）。
+### World
+config.tfc.general.world=世界生成设置
+config.tfc.general.world.tooltip=世界生成的各个方面
 
-config.tfc.general.stoneAxeLogReturnRate=石斧原木返还率
-config.tfc.general.stoneAxeLogReturnRate.tooltip=石斧的原木返还率。（例如，效率如何？）
+config.tfc.general.world.hemisphereType=半球类型
+config.tfc.general.world.hemisphereType.tooltip=设置温度变化与赤道的关系。North = Cold, South = Hot 或 North = Hot, South = Cold。"
 
-config.tfc.general.inventoryCraftingTableMode=背包工作台
-config.tfc.general.inventoryCraftingTableMode.tooltip=允许玩家通过绑定的按键直接打开工作台界面。0 = 禁用，1 = 总是启用，2 = 仅当玩家背包中有工作台时启用。（矿物词典名称：'workbench'）
+config.tfc.general.world.temperatureMode=温度模式
+config.tfc.general.world.temperatureMode.tooltip=控制温度如何受当地到赤道的距离的影响。
 
-config.tfc.general.tankSmallVessel=小缸容量
-config.tfc.general.tankSmallVessel.tooltip=小缸能容纳多少金属？（单位/mB）
+config.tfc.general.world.latitudeTemperatureModifier=纬度温度修正值
+config.tfc.general.world.latitudeTemperatureModifier.tooltip=若温度模式为 Cyclic，此选项控制温度区域的长度（以方块为单位）。温度值以类似于正弦波的模式变化。当你直行走过这么多方块后，温度开始反向变化。
 
-config.tfc.general.tankBarrel=大桶容量
-config.tfc.general.tankBarrel.tooltip=大桶能容纳多少液体？（mB）
+config.tfc.general.world.clayRarity=粘土矿床稀有度
+config.tfc.general.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1/N 区块（若可产生粘土）将含有粘土矿床。
 
-config.tfc.general.tankCrucible=坩埚容量
-config.tfc.general.tankCrucible.tooltip=坩埚能容纳多少金属？（单位/mB）
+config.tfc.general.world.clayRainfallThreshold=粘土降雨阈值
+config.tfc.general.world.clayRainfallThreshold.tooltip=区域生成粘土所需要的最低降水量。此设置默认与生成干燥草方块的阈值相同。
 
-config.tfc.general.disableCobbleGenOverride=禁用群峦圆石生成修改
-config.tfc.general.disableCobbleGenOverride.tooltip=如果你希望用其他模组修改圆石生成或有某种获取原版圆石的方法，将该选项启用。
+config.tfc.general.world.looseRocksFrequency=零散石子频率
+config.tfc.general.world.looseRocksFrequency.tooltip=每个区块生成地表零散石子的尝试次数。包括地表矿石样本。
 
-config.tfc.general.leafMovementModifier=树叶减速系数 
-config.tfc.general.leafMovementModifier.tooltip=树叶应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此系数 = 实际速度）
+config.tfc.general.world.looseRockScan=零散石子矿脉扫描
+config.tfc.general.world.looseRockScan.tooltip=控制生成零散石子时扫描矿脉的深度（以方块为单位）。更大的值 = 扫描到更多的矿脉，带来更多的矿石样本。
 
-config.tfc.general.berryBushMovementModifier=灌木减速系数
-config.tfc.general.berryBushMovementModifier.tooltip=浆果灌木应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此系数 = 实际速度）
+config.tfc.general.world.rainfallSpreadFactor=降雨量分布因子
+config.tfc.general.world.rainfallSpreadFactor.tooltip=控制降雨量如何分布。更大的值使分布更极端，产生更多的沙漠和雨林。警告：可能导致世界生成非常怪异。
 
-config.tfc.general.snowMovementModifier=雪减速系数
-config.tfc.general.snowMovementModifier.tooltip=雪应当减速玩家到何种程度。较小的值 = 较慢，较大的值 = 较快。1 = 不减速。（原速度 * 此系数 = 实际速度）
+config.tfc.general.world.floraDiversitySpreadFactor=植物群多样性分布因子
+config.tfc.general.world.floraDiversitySpreadFactor.tooltip=控制植物群多样性如何分布。更大的值使分布更极端，使森林中有更多种类的树。警告：可能导致世界生成非常怪异。
 
-config.tfc.general.minimumPlantMovementModifier=植物最大减速系数
-config.tfc.general.minimumPlantMovementModifier.tooltip=植物减速玩家的最大程度，较小的值 = 较慢，较大的值 = 较快。1 = 不减速。注意：实际减速程度与植物种类与其生长阶段有关。（原速度 * 此系数 = 最小速度）
+config.tfc.general.world.floraDensitySpreadFactor=植物群密度分布因子
+config.tfc.general.world.floraDensitySpreadFactor.tooltip=控制植物群密度如何分布。更大的值使分布更极端，产生更多的密林。警告：可能导致世界生成非常怪异。
 
-config.tfc.general.disableTorchOverride=禁用火把覆盖
-config.tfc.general.disableTorchOverride.tooltip=如果你希望用其他模组覆盖原版火把，将该选项启用。
+config.tfc.general.world.respawnableCreatures=可重生生物
+config.tfc.general.world.respawnableCreatures.tooltip=控制哪些注册的实体可以在群峦传说的区块中重生。必须使用如 '模组ID:实体 <稀有度> <最小生成组> <最大生成组>' 这样的模式指定。无效的项将被忽略。
 
-config.tfc.general.disableTreeFelling=禁用树木倒塌
-config.tfc.general.disableTreeFelling.tooltip=如果你希望用其他模组实现树木倒塌，将该选项启用。
 
-config.tfc.general.woodenBucketWhitelist=木桶液体白名单
-config.tfc.general.woodenBucketWhitelist.tooltip=允许木桶盛装的液体列表。
+### World Regen
+config.tfc.general.world_regen=世界物资重生成设定
 
-config.tfc.general.drinkDelay=饮水用时
-config.tfc.general.drinkDelay.tooltip=通过手中物品饮水所需的时间（以刻为单位）。
+config.tfc.general.world_regen.minimumTime=最小时间
+config.tfc.general.world_regen.minimumTime.tooltip=区块空闲以开始自然再生其资源（浆果灌木，地表杂物和谷物）所需的最短时间（以天为单位）。在此之后，资源再生将根据自此时间以来持续的时间加速，最高可达 4 倍。
 
-config.tfc.general.blueSteelBucketWhitelist=蓝钢桶白名单
-config.tfc.general.blueSteelBucketWhitelist.tooltip=允许蓝钢桶盛装的液体列表。
+config.tfc.general.world_regen.sticksRocksModifier=地表杂物修正值
+config.tfc.general.world_regen.sticksRocksModifier.tooltip=地表上零散石子和木棍再生的数目。
 
-config.tfc.general.redSteelBucketWhitelist=红钢桶白名单
-config.tfc.general.redSteelBucketWhitelist.tooltip=允许红钢桶盛装的液体列表。
 
-config.tfc.general.nutritionRotationHungerWindow=营养刷新的饥饿值窗口期
-config.tfc.general.nutritionRotationHungerWindow.tooltip=玩家完全刷新其营养状态所需要消耗的饥饿值。在群峦传说中，几乎所有食物都提供 4 饥饿值，因此该选项的值大概是你所需要食用食物数量的四倍。修改该值将在下次进食时更新。
+### Food
+config.tfc.general.food=食物设置
+config.tfc.general.food.tooltip=食物各个方面的设置，从腐烂到丰裕。
 
-config.tfc.general.oreTooltipMode=矿石信息模式
-config.tfc.general.oreTooltipMode.tooltip=矿石提示信息的模式。0：无信息。1：仅矿物单元。2：仅堆叠后的总矿物单元。3：所有。
+config.tfc.general.food.decayModifier=腐烂修正值
+config.tfc.general.food.decayModifier.tooltip=修改食物腐烂的速度。较大的值 = 较快的腐烂速度。设置为 0 永不腐烂。
 
-config.tfc.general.disableIngotPile=金属锭堆摆放
-config.tfc.general.disableIngotPile.tooltip=允许 Shift + 右键在地上摆放金属锭堆吗？
+config.tfc.general.food.decayStackTime=腐烂堆叠时间
+config.tfc.general.food.decayStackTime.tooltip=食物初始保质期的同步值。当食物首次成为物品时，其初始保质期将四舍五入至该值最接近的倍数（以小时为单位）。
 
-config.tfc.general.pluckableEntities=羽毛采集实体
-config.tfc.general.pluckableEntities.tooltip=Shift + 右键点击时掉落羽毛的实体。
+config.tfc.general.food.enableCropDeath=启用谷物死亡
+config.tfc.general.food.enableCropDeath.tooltip=若为 false，谷物无论如何都不会死亡。
 
-config.tfc.general.damagePerFeather=羽毛采集伤害
-config.tfc.general.damagePerFeather.tooltip=当采集实体的羽毛时，对其造成的伤害。
+config.tfc.general.food.cropRarity=野生作物稀有度
+config.tfc.general.food.cropRarity.tooltip=定义野生作物生成的稀有度，平均 1 / N 区块。0 = 禁用
 
-config.tfc.general.shouldCropsDie=谷物死亡
-config.tfc.general.shouldCropsDie.tooltip=若为 false，谷物无论如何都不会死亡。这不意味着谷物会一直生长！
+config.tfc.general.food.berryBushRarity=浆果灌木稀有度
+config.tfc.general.food.berryBushRarity.tooltip=定义浆果灌木生成的稀有度，平均 1 / N 区块。0 = 禁用
 
-config.tfc.general.doLogsRequireAxe=原木需要斧
-config.tfc.general.doLogsRequireAxe.tooltip=原木需要相对应的工具（斧和锯，或对木棍来说锤）才能开采吗？若为 false，空手破坏原木时什么都不会掉落。
+config.tfc.general.food.fruitTreeRarity=果树稀有度
+config.tfc.general.food.fruitTreeRarity.tooltip=定义果树生成的稀有度，平均 1 / N 区块。0 = 禁用
 
-config.tfc.general.doLeavesDropSaplings=树叶掉落树苗
-config.tfc.general.doLeavesDropSaplings.tooltip=若为 false，树叶将不会掉落树苗。
+config.tfc.general.food.cropGrowthTimeModifier=谷物生长时间修正值
+config.tfc.general.food.cropGrowthTimeModifier.tooltip=修改谷物生长所需的时间。
 
-config.tfc.general.decayTooltipMode=腐烂信息模式
-config.tfc.general.decayTooltipMode.tooltip=食物腐烂提示信息的模式。0：无信息。1：仅腐烂日期。2：仅腐烂前剩余的天数。3：所有。
+config.tfc.general.food.berryBushGrowthTimeModifier=浆果灌木生长时间修正值
+config.tfc.general.food.berryBushGrowthTimeModifier.tooltip=修改浆果灌木结果所需的时间。
 
-config.tfc.general.doesChiselingCauseCaveIns=凿石引起塌方
-config.tfc.general.doesChiselingCauseCaveIns.tooltip=凿未加工的石头时可能引起塌方吗？
+config.tfc.general.food.fruitTreeGrowthTimeModifier=果树生长时间修正值
+config.tfc.general.food.fruitTreeGrowthTimeModifier.tooltip=修改果树结果所需的时间。
 
-config.tfc.general.metalLampFuels=灯燃料液体
-config.tfc.general.metalLampFuels.tooltip=可以充当灯燃料的液体。
 
-config.tfc.general.oilLampBurnRate=灯燃料燃烧速度
-config.tfc.general.oilLampBurnRate.tooltip=灯燃料燃烧的速度，以 mb/小时 为单位。
+### Misc
+config.tfc.general.misc=杂项设置
+config.tfc.general.misc.tooltip=各种杂项的设置
 
-config.tfc.general.metalLampCapacity=灯容量
-config.tfc.general.metalLampCapacity.tooltip=灯能容纳多少燃料，以 mb 为单位。一桶 = 1000 mb。
+config.tfc.general.misc.defaultMonthLength=默认月长度
+config.tfc.general.misc.defaultMonthLength.tooltip=当新建世界时默认的月长度（以天为单位）。通过使用 /timetfc 命令可以修改已存在的世界的月长度。
 
-## Client Config
+config.tfc.general.misc.plantGrowthRate=植物生长速度
+config.tfc.general.misc.plantGrowthRate.tooltip=植物每刻随机生长的概率，不包括作物。较小的值 = 较慢的生长速度。
 
+config.tfc.general.misc.leafMovementModifier=树叶减速系数
+config.tfc.general.misc.leafMovementModifier.tooltip=在树叶方块中的移动速度修正。数值越低 = 速度更慢，数值越高 = 速度更快。 1 = 没有影响。（正常速度 * 该数值 = 修正后速度）
+
+config.tfc.general.misc.berryBushMovementModifier=灌木减速系数
+config.tfc.general.misc.berryBushMovementModifier.tooltip=在灌木中的移动速度修正。数值越低 = 速度更慢，数值越高 = 速度更快。 1 = 没有影响。（正常速度 * 该数值 = 修正后速度）
+
+config.tfc.general.misc.snowMovementModifier=雪减速系数
+config.tfc.general.misc.snowMovementModifier.tooltip=雪类方块中的移动速度修正。数值越低 = 速度更慢，数值越高 = 速度更快。 1 = 没有影响。（正常速度 * 该数值 = 修正后速度）
+
+config.tfc.general.misc.minimumPlantMovementModifier=植物最大减速系数
+config.tfc.general.misc.minimumPlantMovementModifier.tooltip=植物减速玩家的最大程度，较小的值 = 较慢，较大的值 = 较快。1 = 不减速。注意：实际减速程度与植物种类与其生长阶段有关。（原速度 * 此系数 = 最小速度）
+
+config.tfc.general.misc.stoneGemDropChance=岩石掉落宝石几率
+config.tfc.general.misc.stoneGemDropChance.tooltip=开采岩石掉落宝石的几率。宝石品质按以下概率随机出现：16/31 破碎，8/31 微瑕，4/31 普通，2/31 无瑕以及 1/31 精致。
+
+config.tfc.general.misc.fireStarterChance=起火器成功几率
+config.tfc.general.misc.fireStarterChance.tooltip=起火器成功生火的几率
+
+config.tfc.general.misc.smallOreMetalAmount=粒金属含量
+config.tfc.general.misc.smallOreMetalAmount.tooltip=小矿石/粒中含有的金属量。
+
+config.tfc.general.misc.poorOreMetalAmount=贫瘠矿金属含量
+config.tfc.general.misc.poorOreMetalAmount.tooltip=贫瘠矿中含有的金属量。
+
+config.tfc.general.misc.normalOreMetalAmount=正常矿金属含量
+config.tfc.general.misc.normalOreMetalAmount.tooltip=正常矿中含有的金属量。
+
+config.tfc.general.misc.richOreMetalAmount=富集矿金属含量
+config.tfc.general.misc.richOreMetalAmount.tooltip=富集矿中含有的金属量。
+
+config.tfc.general.misc.dictionaryIron=矿物词典 锻铁 - iron
+config.tfc.general.misc.dictionaryIron.tooltip=是否为锻铁物品添加 iron 矿物词典（例如：ingotIron, oreIron）？"
+
+config.tfc.general.misc.dictionaryPlates=矿物词典 薄板 - plate
+config.tfc.general.misc.dictionaryPlates.tooltip=是否为薄板添加 plate 矿物词典（plateIron，plateBronze）？
+
+config.tfc.general.misc.woodenBucketWhitelist=木桶液体白名单
+config.tfc.general.misc.woodenBucketWhitelist.tooltip=允许木桶盛装的液体列表。
+
+config.tfc.general.misc.blueSteelBucketWhitelist=蓝钢桶白名单
+config.tfc.general.misc.blueSteelBucketWhitelist.tooltip=允许蓝钢桶盛装的液体列表。
+
+config.tfc.general.misc.redSteelBucketWhitelist=红钢桶白名单
+config.tfc.general.misc.redSteelBucketWhitelist.tooltip=允许红钢桶盛装的液体列表。
+
+config.tfc.general.misc.pluckableEntities=羽毛采集实体
+config.tfc.general.misc.pluckableEntities.tooltip=Shift + 右键点击时掉落羽毛的实体。
+
+config.tfc.general.misc.damagePerFeather=羽毛采集伤害
+config.tfc.general.misc.damagePerFeather.tooltip=当采集实体的羽毛时，对其造成的伤害。
+
+
+## Devices Config
+config.tfc.devices=设施设置
+config.tfc.general.tooltip=各种关于设施（例如：锻铁炉，小缸，大桶）的设置
+
+
+### Temperature
+config.tfc.devices.temperature=温度设置
+
+config.tfc.devices.temperature.globalModifier=全局温度修正值
+config.tfc.devices.temperature.globalModifier.tooltip=物品热量交换的速度修正值。较小的值 = 较慢的温度变化。
+
+config.tfc.devices.temperature.heatingModifier=加热温度修正值
+config.tfc.devices.temperature.heatingModifier.tooltip=设施（例如：木炭炉，篝火）热量交换的速度修正值。较小的值 = 较慢的温度变化。
+
+
+### Barrel
+config.tfc.devices.barrel=大桶
+
+config.tfc.devices.barrel.tank=大桶容量
+config.tfc.devices.barrel.tank.tooltip=大桶能容纳多少液体？（mB）
+
+
+### Blast Furnace
+config.tfc.devices.blast_furnace=高炉
+
+config.tfc.devices.blast_furnace.consumption=高炉消耗速度
+config.tfc.devices.blast_furnace.consumption.tooltip=高炉消耗燃料的速度（与木炭炉相比）。例如：木炭（无风箱情况下）在木炭炉中可燃烧 1800 刻，而在高炉中可燃烧 1800 / 4 = 450 刻。
+
+
+### Bloomery
+config.tfc.devices.bloomery=锻铁炉
+
+config.tfc.devices.bloomery.ticks=锻铁炉时间
+config.tfc.devices.bloomery.ticks.tooltip=锻铁炉完成所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 15 小时。
+
+
+### Crucible
+config.tfc.devices.crucible=坩埚
+
+config.tfc.devices.crucible.tank=坩埚容量
+config.tfc.devices.crucible.tank.tooltip=坩埚能容纳多少金属？（单位/mB）。
+
+config.tfc.devices.crucible.enableAllSlots=启用坩埚全槽灌注
+config.tfc.devices.crucible.enableAllSlots.tooltip=允许坩埚接受所有 9 个输入槽的金属浇注（来自小缸/模具）。
+
+
+### Charcoal Pit
+config.tfc.devices.charcoal_pit=木炭坑
+
+config.tfc.devices.charcoal_pit.ticks=刻
+config.tfc.devices.charcoal_pit.ticks.tooltip=木炭坑燃烧完毕所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 18 小时。
+
+
+### Fire Pit
+config.tfc.devices.fire_pit=篝火
+
+config.tfc.devices.fire_pit.ticks=烹饪锅沸腾时间
+config.tfc.devices.fire_pit.ticks.tooltip=在篝火上烧开一锅所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 1 小时。
+
+
+### Pit Kiln
+config.tfc.devices.pit_kiln=坑窑
+
+config.tfc.devices.pit_kiln.ticks=坑窑时间
+config.tfc.devices.pit_kiln.ticks.tooltip=坑窑燃烧完毕所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 8 小时。
+
+
+### Lamp
+config.tfc.devices.lamp=灯
+
+config.tfc.devices.lamp.tank=灯容量
+config.tfc.devices.lamp.tank.tooltip=灯能容纳多少燃料，以 mb 为单位。一桶 = 1000 mb。
+
+config.tfc.devices.lamp.burnRate=燃料燃烧速度
+config.tfc.devices.lamp.burnRate.tooltip=灯燃料燃烧的速度，以 mb/小时 为单位。1 = 每 mb 燃料可以让灯燃烧 1 小时，0 = 无限燃烧。
+
+config.tfc.devices.lamp.fuels=灯燃料液体
+config.tfc.devices.lamp.fuels.tooltip=可以充当灯燃料的液体。
+
+
+### Chisel
+config.tfc.devices.chisel=凿
+
+config.tfc.devices.chisel.hasDelay=延迟
+config.tfc.devices.chisel.hasDelay.tooltip=使用凿时应有延迟吗？
+
+config.tfc.devices.chisel.requireHammerInOffHand=副手锤
+config.tfc.devices.chisel.requireHammerInOffHand.tooltip=若为 true，使用凿时锤必须在副手。若为 false，锤可以在副手或物品栏中。
+
+
+### Small Vessel
+config.tfc.devices.small_vessel=小缸
+
+config.tfc.devices.small_vessel.tank=容量
+config.tfc.devices.small_vessel.tank.tooltip=小缸能容纳多少金属？（单位/mB）
+
+
+### Sluice
+config.tfc.devices.sluice=洗矿槽
+
+config.tfc.devices.sluice.maxWorkChunk=区块最大开采量
+config.tfc.devices.sluice.maxWorkChunk.tooltip=在一个区块内开采的最大次数（默认为 300，设为 0 以禁用）。注意：洗矿槽增加 1 而淘金盘增加 6（次数）。
+
+config.tfc.devices.sluice.radius=洗矿槽半径
+config.tfc.devices.sluice.radius.tooltip=以区块为单位的洗矿槽工作半径。
+
+config.tfc.devices.sluice.ticks=洗矿槽刻
+config.tfc.devices.sluice.ticks.tooltip=洗矿槽工作一次所用的刻。
+
+config.tfc.devices.sluice.oreChance=洗矿槽矿石几率
+config.tfc.devices.sluice.oreChance.tooltip=洗矿槽作业产生小矿石的几率。
+
+config.tfc.devices.sluice.gemChance=洗矿槽宝石几率
+config.tfc.devices.sluice.gemChance.tooltip=洗矿槽作业产生宝石的几率。
+
+config.tfc.devices.sluice.diamondGemChance=洗矿槽钻石几率
+config.tfc.devices.sluice.diamondGemChance.tooltip=当洗矿槽作业产生宝石时，掉落钻石的几率。
+
+
+## Clients
 config.tfc.client=客户端设置
-config.tfc.client.tooltip=仅作用于客户端。
+config.tfc.client.tooltip=仅适用于客户端。
 
-config.tfc.client.makeWorldTypeClassicDefault=将群峦传说经典生成设为默认
-config.tfc.client.makeWorldTypeClassicDefault.tooltip=仅在客户端有效！服务器需要将世界类型设置为 tfc_classic。
+### Tooltips
+config.tfc.client.tooltip=工具提示设置
 
-config.tfc.client.showToolClassTooltip=显示物品工具类别提示
-config.tfc.client.showToolClassTooltip.tooltip=启用高级提示时显示 ItemStack 工具类。（F3+H）
+config.tfc.client.tooltip.showToolClassTooltip=显示物品工具类别提示
+config.tfc.client.tooltip.showToolClassTooltip.tooltip=启用高级提示时显示 ItemStack 工具类。（F3+H）
 
-config.tfc.client.showOreDictionaryTooltip=显示物品矿物词典提示
-config.tfc.client.showOreDictionaryTooltip.tooltip=启用高级提示时显示 ItemStack 矿物词典匹配。（F3+H）
+config.tfc.client.tooltip.showOreDictionaryTooltip=显示物品矿物词典提示
+config.tfc.client.tooltip.showOreDictionaryTooltip.tooltip=启用高级提示时显示 ItemStack 矿物词典匹配。（F3+H）
 
-config.tfc.client.showNBTTooltip=显示物品 NBT 提示
-config.tfc.client.showNBTTooltip.tooltip=启用高级提示时在提示中显示。（F3+H）
+config.tfc.client.tooltip.showNBTTooltip=显示物品 NBT 提示
+config.tfc.client.tooltip.showNBTTooltip.tooltip=启用高级提示时在提示中显示。（F3+H）
 
-config.tfc.client.propickOutputToActionBar=探矿输出到动作栏
-config.tfc.client.propickOutputToActionBar.tooltip=探矿应该输出到动作栏吗？（快捷栏上方的空间）
+config.tfc.client.tooltip.propickOutputToActionBar=探矿输出到动作栏
+config.tfc.client.tooltip.propickOutputToActionBar.tooltip=探矿应该输出到动作栏吗？（快捷栏上方的空间）
 
-config.tfc.client.rottenFoodOverlayColor=腐烂食物覆盖层颜色
-config.tfc.client.rottenFoodOverlayColor.tooltip=在腐烂食物上额外渲染的颜色。以 256 位颜色值表示：0xFFFFFF = 白色，0x000000 = 黑色
+config.tfc.client.tooltip.oreTooltipMode=矿石信息模式
+config.tfc.client.tooltip.oreTooltipMode.tooltip=矿石提示信息的模式。
 
-config.tfc.client.useVanillaHealth=使用原版生命条
-config.tfc.client.useVanillaHealth.tooltip=禁用群峦传说的生命条，使用原版的？
+config.tfc.client.tooltip.decayTooltipMode=腐烂信息模式
+config.tfc.client.tooltip.decayTooltipMode.tooltip=食物腐烂提示信息的模式。
 
-config.tfc.client.healthDisplayModifier=生命显示修正值
-config.tfc.client.healthDisplayModifier.tooltip=若启用了群峦传说的生命条，使用此生命显示修正值（例如：20（原版） * 50（修正值） = 1000 生命值）。这只是显示上的修正值，内部生命值不会受到影响！
+config.tfc.client.tooltip.timeTooltipMode=时间信息模式
+config.tfc.client.tooltip.timeTooltipMode.tooltip=时间提示信息的模式。
 
-config.tfc.client.healthDisplayFormat=生命值显示格式
-config.tfc.client.healthDisplayFormat.tooltip=若启用了群峦传说的生命条，使用此格式显示生命值（例如：%.0f / %.0f = 500 / 1000, %.1f / %.0f = 15.5 / 20）。请使用浮点数格式，否则群峦传说将忽略此选项，使用默认格式。
 
-config.tfc.client.useVanillaHunger=使用原版饥饿条
-config.tfc.client.useVanillaHunger.tooltip=禁用群峦传说的饥饿条，使用原版的？
+### Display
+config.tfc.client.display=显示设置
 
-config.tfc.client.hideThirstBar=隐藏口渴条
-config.tfc.client.hideThirstBar.tooltip=隐藏口渴条吗？口渴机制不受影响。
+config.tfc.client.display.healthDisplayFormat=生命值显示格式
+config.tfc.client.display.healthDisplayFormat.tooltip=如果启用了群峦传说的生命值条，将改变生命值的显示格式。（默认：TFC = 1000/1000）
 
-## World Config
-config.tfc.world=世界生成设置
-config.tfc.world.tooltip=世界生成的各个方面
+config.tfc.client.display.useVanillaHealth=使用原版生命条
+config.tfc.client.display.useVanillaHealth.tooltip=禁用群峦传说的生命条，使用原版的？
 
-config.tfc.world.hemisphereType=半球类型
-config.tfc.world.hemisphereType.tooltip=控制赤道附近的温度梯度。1：赤道以南热，赤道以北冷。-1：赤道以南冷，赤道以北热。
+config.tfc.client.display.useVanillaHunger=使用原版饥饿条
+config.tfc.client.display.useVanillaHunger.tooltip=禁用群峦传说的饥饿条，使用原版的？
 
-config.tfc.world.cyclicTemperatureRegions=启用温度区域循环
-config.tfc.world.cyclicTemperatureRegions.tooltip=控制循环温度区域的出现。如果想要带有温带赤道的无尽北/南，将此设置为 false。
+config.tfc.client.display.hideThirstBar=隐藏口渴条
+config.tfc.client.display.hideThirstBar.tooltip=隐藏口渴条吗？口渴机制不受影响。
 
-config.tfc.world.debugWorldGen=调试模式（危险）
-config.tfc.world.debugWorldGen.tooltip=调试世界生成 [危险] 你的世界将会受到影响！不要在你正常的世界里使用！
+config.tfc.client.display.rottenFoodOverlayColor=腐烂食物覆盖层颜色
+config.tfc.client.display.rottenFoodOverlayColor.tooltip=在腐烂食物上额外渲染的颜色。以 256 位颜色值表示：0xFFFFFF = 白色，0x000000 = 黑色
 
-config.tfc.world.latitudeTemperatureModifier=纬度温度修正值
-config.tfc.world.latitudeTemperatureModifier.tooltip=控制温度区域的大小。每个温度区域的大小由正弦波确定。此设置代表波的周期。
 
-config.tfc.world.clayRarity=粘土矿床稀有度
-config.tfc.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1/N 区块（若可产生粘土）将含有粘土矿床。
+## Animals
+config.tfc.animals=动物设置
+config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数量，生成稀有度。
 
-config.tfc.world.clayRainfallThreshold=粘土降雨阈值
-config.tfc.world.clayRainfallThreshold.tooltip=区域生成粘土所需要的最低降水量。此设置默认与生成干燥草方块的阈值相同。
 
-config.tfc.world.looseRocksFrequency=零散石子频率
-config.tfc.world.looseRocksFrequency.tooltip=每个区块生成地表零散石子的尝试次数。包括地表矿石样本。
+### Config Names
+config.tfc.animals.alpaca=羊驼
+config.tfc.animals.sheep=绵羊
+config.tfc.animals.cow=母牛
+config.tfc.animals.goat=山羊
+config.tfc.animals.chicken=母鸡
+config.tfc.animals.duck=母鸭
+config.tfc.animals.pig=猪
+config.tfc.animals.camel=骆驼
+config.tfc.animals.llama=驼马
+config.tfc.animals.horse=马
+config.tfc.animals.donkey=驴
+config.tfc.animals.mule=骡
+config.tfc.animals.ocelot=豹猫
+config.tfc.animals.wolf=狼
+config.tfc.animals.bear=熊
+config.tfc.animals.polar_bear=北极熊
+config.tfc.animals.lion=狮
+config.tfc.animals.panther=黑豹
+config.tfc.animals.saber_tooth=剑齿虎
+config.tfc.animals.hyena=鬣狗
+config.tfc.animals.deer=鹿
+config.tfc.animals.parrot=鹦鹉
+config.tfc.animals.pheasant=雉鸡
+config.tfc.animals.rabbit=兔
 
-config.tfc.world.looseRockScan=零散石子矿脉扫描
-config.tfc.world.looseRockScan.tooltip=控制生成零散石子时扫描矿脉的深度。更大的值 = 更多的矿石样本。
 
-config.tfc.world.rainfallSpreadFactor=降雨量分布因子
-config.tfc.world.rainfallSpreadFactor.tooltip=控制降雨量如何分布。更大的值使分布更极端。警告：可能导致世界生成非常怪异。
+### Common
+config.tfc.animals.adulthood=成年
+config.tfc.animals.adulthood.tooltip=该动物需要多少天成年？
 
-config.tfc.world.floraDiversitySpreadFactor=植物群多样性分布因子
-config.tfc.world.floraDiversitySpreadFactor.tooltip=控制植物群多样性如何分布。更大的值使分布更极端。警告：可能导致世界生成非常怪异。
+config.tfc.animals.elder=衰老
+config.tfc.animals.elder.tooltip=该动物在成年后多少天进入老年？ 0 = 禁用衰老
 
-config.tfc.world.floraDensitySpreadFactor=植物群密度分布因子
-config.tfc.world.floraDensitySpreadFactor.tooltip=控制植物群密度如何分布。更大的值使分布更极端。警告：可能导致世界生成非常怪异。
+config.tfc.animals.gestation=妊娠
+config.tfc.animals.gestation.tooltip=该动物需要多少天才可以分娩？
 
-config.tfc.world.enableDefaultOreGenFileOverwrite=禁用默认矿石生成文件
-config.tfc.world.enableDefaultOreGenFileOverwrite.tooltip=禁用默认的矿石生成文件盖写已经存在的矿石修改。整合包作者：禁用此项以修改矿物生成，否则你的修改将被盖写
+config.tfc.animals.hatch=孵化
+config.tfc.animals.hatch.tooltip=该动物需要多少天完成孵化？
 
-config.tfc.world.livestockSpawnRarity=牲畜生成稀有度
-config.tfc.world.livestockSpawnRarity.tooltip=控制可驯服的动物生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
+config.tfc.animals.babies=每次妊娠幼崽数量
+config.tfc.animals.babies.tooltip=该动物分娩时会生出多少幼崽？
 
-config.tfc.world.livestockRespawnWeight=牲畜重生成权重
-config.tfc.world.livestockRespawnWeight.tooltip=控制重生成时生成可驯服的动物而不是其他动物的可能性。设为 0 以禁用牲畜重生成。
+config.tfc.animals.woolTicks=羊毛生长时间
+config.tfc.animals.woolTicks.tooltip=该动物重新长出毛需要多少刻？
 
-config.tfc.world.huntableSpawnRarity=猎物生成稀有度
-config.tfc.world.huntableSpawnRarity.tooltip=控制可狩猎的动物生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
+config.tfc.animals.milkTicks=产奶冷却时间
+config.tfc.animals.milkTicks.tooltip=该动物重新产奶需要多少刻？
 
-config.tfc.world.huntableRespawnWeight=猎物重生成权重
-config.tfc.world.huntableRespawnWeight.tooltip=控制重生成时生成可狩猎的动物而不是其他动物的可能性。设为 0 以禁用猎物重生成。
+config.tfc.animals.eggTicks=产蛋冷却时间
+config.tfc.animals.eggTicks.tooltip=该动物重新产蛋需要多少刻？
 
-config.tfc.world.predatorSpawnRarity=捕食者生成稀有度
-config.tfc.world.predatorSpawnRarity.tooltip=控制捕食者生成时的分散程度，以区块为单位（仅控制区块生成）。较大的值意味着生成非常稀疏，也使它们更加稀有。
+config.tfc.animals.oldDeathChance=衰老死亡率
+config.tfc.animals.oldDeathChance.tooltip=如果这个动物已经进入老年，它老年期间每一天死亡的几率有多大？ 0 = 禁用衰老死亡
 
-config.tfc.world.predatorRespawnWeight=捕食者生成权重
-config.tfc.world.predatorRespawnWeight.tooltip=控制重生成时生成捕食者而不是其他动物的可能性。设为 0 以禁用捕食者重生成。
+config.tfc.animals.rarity=在区块中生成稀有度
+config.tfc.animals.rarity.tooltip=该动物生成的稀有度。平均 1 / N 区块（若为有效生物群系）将生成该动物。0 = 禁用该动物的生成
 
-config.tfc.world.animalSpawnCount=动物生成计数
-config.tfc.world.animalSpawnCount.tooltip=控制平均每名玩家的动物上限，加载（生成）的所有种类动物 / 玩家。更大的值意味着玩家周围有更多的动物，增加了难度和肉类丰度（注意，过高的值可能对性能有负面影响）。
-
-config.tfc.world.mobSpawnCount=怪物生成计数
-config.tfc.world.mobSpawnCount.tooltip=控制平均每名玩家的怪物上限，加载（生成）的怪物 / 玩家。更大的值意味着玩家周围有更多的怪物，增加了难度（注意，过高的值可能对性能有负面影响）。
-
-config.tfc.world.preventMobsOnSurface=禁止怪物地表生成
-config.tfc.world.preventMobsOnSurface.tooltip=禁止在地表生成怪物吗？
 
 # Misc
 itemGroup.tfc.misc=群峦传说 | 杂项
@@ -3213,19 +3381,19 @@ item.tfc.gem.sapphire.flawed.name=微瑕的蓝宝石
 item.tfc.gem.topaz.flawed.name=微瑕的黄玉
 item.tfc.gem.tourmaline.flawed.name=微瑕的电气石
 
-item.tfc.gem.agate.flawless.name=完美无瑕的玛瑙
-item.tfc.gem.amethyst.flawless.name=完美无瑕的紫水晶
-item.tfc.gem.beryl.flawless.name=完美无瑕的绿柱石
-item.tfc.gem.diamond.flawless.name=完美无瑕的钻石
-item.tfc.gem.emerald.flawless.name=完美无瑕的祖母绿
-item.tfc.gem.garnet.flawless.name=完美无瑕的石榴石
-item.tfc.gem.jade.flawless.name=完美无瑕的玉石
-item.tfc.gem.jasper.flawless.name=完美无瑕的碧玉
-item.tfc.gem.opal.flawless.name=完美无瑕的蛋白石
-item.tfc.gem.ruby.flawless.name=完美无瑕的红宝石
-item.tfc.gem.sapphire.flawless.name=完美无瑕的蓝宝石
-item.tfc.gem.topaz.flawless.name=完美无瑕的黄玉
-item.tfc.gem.tourmaline.flawless.name=完美无瑕的电气石
+item.tfc.gem.agate.flawless.name=无瑕的玛瑙
+item.tfc.gem.amethyst.flawless.name=无瑕的紫水晶
+item.tfc.gem.beryl.flawless.name=无瑕的绿柱石
+item.tfc.gem.diamond.flawless.name=无瑕的钻石
+item.tfc.gem.emerald.flawless.name=无瑕的祖母绿
+item.tfc.gem.garnet.flawless.name=无瑕的石榴石
+item.tfc.gem.jade.flawless.name=无瑕的玉石
+item.tfc.gem.jasper.flawless.name=无瑕的碧玉
+item.tfc.gem.opal.flawless.name=无瑕的蛋白石
+item.tfc.gem.ruby.flawless.name=无瑕的红宝石
+item.tfc.gem.sapphire.flawless.name=无瑕的蓝宝石
+item.tfc.gem.topaz.flawless.name=无瑕的黄玉
+item.tfc.gem.tourmaline.flawless.name=无瑕的电气石
 
 item.tfc.gem.agate.chipped.name=破裂的玛瑙
 item.tfc.gem.amethyst.chipped.name=破裂的紫水晶
@@ -4512,10 +4680,12 @@ advancements.tfc.world.find_nickel.description=在辉长岩岩层中找到镍矿
 waila.tfc.ore_drop=含 %s
 waila.tfc.flux_stone=助焊石
 waila.tfc.temperature=空气温度：%dºC
-waila.tfc.metal.output=Contains %d units of %s
+waila.tfc.metal.output=含 %d 单元的 %s
 
 ## Devices
-waila.tfc.devices.remaining=剩余 %d 分钟
+waila.tfc.devices.minutes_remaining=剩余 %d 分钟
+waila.tfc.devices.hours_remaining=剩余 %d 小时
+waila.tfc.devices.ticks_remaining=剩余 %d 刻
 waila.tfc.pitkiln.unlit=未点燃
 waila.tfc.pitkiln.straw=需要 %d 干草
 waila.tfc.pitkiln.logs=需要 %d 原木
@@ -4523,10 +4693,10 @@ waila.tfc.barrel.recipe=制作中：%s
 waila.tfc.barrel.no_recipe=无配方
 waila.tfc.barrel.contents=含 %dmB %s
 waila.tfc.barrel.sealed=密封：%s
-waila.tfc.bloomery.output=Making: %d units of %s
-waila.tfc.bloomery.ores=Ores: %d/%d
-waila.tfc.bloomery.fuel=Fuel: %d/%d
-waila.tfc.blast_furnace.not_formed=Not Formed
+waila.tfc.bloomery.output=制作中：%d 单元的 %s
+waila.tfc.bloomery.ores=矿石：%d/%d
+waila.tfc.bloomery.fuel=燃料：%d/%d
+waila.tfc.blast_furnace.not_formed=未成形
 
 ## Agriculture
 waila.tfc.agriculture.harvesting_months=收获季节：
@@ -4545,8 +4715,8 @@ waila.tfc.animal.has_eggs=有蛋
 waila.tfc.animal.childhood_end=%s 天后成年
 waila.tfc.animal.familiarized=已驯服
 waila.tfc.animal.not_familiarized=未驯服
-waila.tfc.animal.old=已老
-waila.tfc.animal.pregnancy_end=%s 天后生产
+waila.tfc.animal.old=衰老
+waila.tfc.animal.pregnant=怀孕
 waila.tfc.animal.can_shear=可剪毛
 
 # Overwrite Vanilla
