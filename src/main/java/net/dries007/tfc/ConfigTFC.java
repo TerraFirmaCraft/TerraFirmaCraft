@@ -188,6 +188,10 @@ public final class ConfigTFC
             @Config.Comment("Should chiseling raw stone blocks cause collapses?")
             @Config.LangKey("config." + MOD_ID + ".general.fallable.chiselCausesCollapse")
             public boolean chiselCausesCollapse = true;
+
+            @Config.Comment("Should exploding raw stone blocks cause collapses?")
+            @Config.LangKey("config." + MOD_ID + ".general.fallable.explosionCausesCollapse")
+            public boolean explosionCausesCollapse = true;
         }
 
         public static final class DifficultyCFG
