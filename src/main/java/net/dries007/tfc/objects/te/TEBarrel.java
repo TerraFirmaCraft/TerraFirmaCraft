@@ -5,9 +5,8 @@
 
 package net.dries007.tfc.objects.te;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -50,7 +49,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
     public static final int SLOT_ITEM = 2;
     public static final int BARREL_MAX_FLUID_TEMPERATURE = 500;
 
-    private final FluidTank tank = new FluidTankCallback(this, 0, ConfigTFC.Devices.BARREL.tank);
+    private final FluidTank tank = new BarrelFluidTank(this, 0);
     private final Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
@@ -449,5 +448,22 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         }
 
         return nbt;
+    }
+
+    protected static class BarrelFluidTank extends FluidTankCallback
+    {
+        private final Set<Fluid> whitelist;
+
+        public BarrelFluidTank(IFluidTankCallback callback, int fluidTankID)
+        {
+            super(callback, fluidTankID, ConfigTFC.Devices.BARREL.tank);
+            whitelist = Arrays.stream(ConfigTFC.Devices.BARREL.fluidWhitelist).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toSet());
+        }
+
+        @Override
+        public boolean canFillFluidType(FluidStack fluid)
+        {
+            return whitelist.contains(fluid.getFluid()) || BarrelRecipe.isBarrelFluid(fluid);
+        }
     }
 }
