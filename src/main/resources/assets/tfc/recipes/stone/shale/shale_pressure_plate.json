@@ -1,0 +1,19 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:brick/shale"
+    },
+    {
+      "item": "tfc:brick/shale"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "chisel"
+    }
+  ],
+  "result": {
+    "item": "tfc:stone/pressure_plate/shale",
+    "count": 1
+  }
+}

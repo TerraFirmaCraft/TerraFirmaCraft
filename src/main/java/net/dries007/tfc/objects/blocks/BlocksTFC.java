@@ -502,7 +502,11 @@ public final class BlocksTFC
                 slab.add(register(r, "slab/wood/" + wood.getRegistryName().getPath(), new BlockSlabTFC.Half(wood), CT_DECORATIONS));
 
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
+            {
+                // Redstone things
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "stone/button/" + rock.getRegistryName().getPath().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS)));
+                inventoryItemBlocks.add(new ItemBlockTFC(register(r, "stone/pressure_plate/" + rock.getRegistryName().getPath().toLowerCase(), new BlockPressurePlateTFC(rock), CT_DECORATIONS)));
+            }
 
             // Anvils are special because they don't have an ItemBlock + they only exist for certian types
             for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())

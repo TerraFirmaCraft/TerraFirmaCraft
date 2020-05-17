@@ -1,0 +1,19 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:brick/andesite"
+    },
+    {
+      "item": "tfc:brick/andesite"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "chisel"
+    }
+  ],
+  "result": {
+    "item": "tfc:stone/pressure_plate/andesite",
+    "count": 1
+  }
+}
