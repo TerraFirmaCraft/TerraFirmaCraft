@@ -126,7 +126,7 @@ public final class ForgeEventHandler
         {
             // Add the rock data to the chunk capability, for long term storage
             ChunkData data = ChunkDataProvider.get(world)
-                .map(provider -> provider.get(event.getObject()))
+                .map(provider -> provider.remove(event.getObject().getPos()))
                 .orElseGet(ChunkData::new);
             event.addCapability(ChunkDataCapability.KEY, data);
         }

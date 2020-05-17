@@ -25,8 +25,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.config.LayerType;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.blocks.soil.SandBlockType;
-import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.TFCOverworldChunkGenerator;
@@ -66,7 +64,7 @@ public class ChunkDataProvider
 
     public ChunkDataProvider(IWorld world, TFCGenerationSettings settings, Random seedGenerator)
     {
-        this.cachedChunkData = new FiniteLinkedHashMap<>(1024);
+        this.cachedChunkData = new FiniteLinkedHashMap<>(256 * 256);
         this.world = world;
 
         List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings);
@@ -79,101 +77,95 @@ public class ChunkDataProvider
         this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
 
         // Climate
-        this.temperatureLayer = createTemperatureLayer(seedGenerator.nextLong());
-        this.rainfallLayer = createRainfallLayer(seedGenerator.nextLong());
+        this.temperatureLayer = LayerType.SIN_Z.create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(-10, 30);
+        this.rainfallLayer = LayerType.SIN_X.create(seedGenerator.nextLong(), TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
     }
 
-    public ChunkData get(BlockPos pos)
+    /**
+     * Gets the chunk data for a given chunk from the cache, and then removes it.
+     * Used when assigning previously generated chunk data to the capability.
+     */
+    public ChunkData remove(ChunkPos pos)
     {
-        return get(new ChunkPos(pos));
+        ChunkData data = get(pos, ChunkData.Status.FULL, false);
+        cachedChunkData.remove(pos);
+        return data;
     }
 
-    public ChunkData get(ChunkPos pos)
+    public ChunkData get(BlockPos pos, ChunkData.Status requiredStatus, boolean loadChunk)
     {
-        if (world.chunkExists(pos.x, pos.z))
+        return get(new ChunkPos(pos), requiredStatus, loadChunk);
+    }
+
+    public ChunkData get(ChunkPos pos, ChunkData.Status requiredStatus, boolean loadChunk)
+    {
+        if (loadChunk && world.chunkExists(pos.x, pos.z))
         {
-            return get(world.getChunk(pos.x, pos.z));
+            return get(world.getChunk(pos.x, pos.z), requiredStatus);
         }
-        return getOrCreate(pos);
+        return getOrCreate(pos, requiredStatus);
     }
 
-    public ChunkData get(IChunk chunkIn)
+    public ChunkData get(IChunk chunkIn, ChunkData.Status requiredStatus)
     {
         if (chunkIn instanceof Chunk)
         {
             LazyOptional<ChunkData> capability = ((Chunk) chunkIn).getCapability(ChunkDataCapability.CAPABILITY);
-            return capability.orElseGet(() -> getOrCreate(chunkIn.getPos()));
+            return capability.orElseGet(() -> getOrCreate(chunkIn.getPos(), requiredStatus));
         }
-        return getOrCreate(chunkIn.getPos());
+        return getOrCreate(chunkIn.getPos(), requiredStatus);
     }
 
-    /**
-     * Gets the chunk data from the local cache, or creates new chunk data
-     * Does NOT query the chunk capability for chunk data
-     * Used during world gen to avoid deadlocks where the chunk is in the process of being loaded
-     */
-    public ChunkData getOrCreate(BlockPos pos)
+    private ChunkData getOrCreate(ChunkPos pos, ChunkData.Status requiredStatus)
     {
-        return getOrCreate(new ChunkPos(pos));
-    }
-
-    /**
-     * Gets the chunk data from the local cache, or creates new chunk data
-     * Does NOT query the chunk capability for chunk data
-     * Used during world gen to avoid deadlocks where the chunk is in the process of being loaded
-     */
-    public ChunkData getOrCreate(ChunkPos pos)
-    {
+        ChunkData data;
         if (cachedChunkData.containsKey(pos))
         {
-            return cachedChunkData.get(pos);
+            data = cachedChunkData.get(pos);
         }
-        return createData(pos);
-    }
-
-    private ChunkData createData(ChunkPos pos)
-    {
-        ChunkData data = new ChunkData();
-        int chunkX = pos.getXStart(), chunkZ = pos.getZStart();
-        cachedChunkData.put(pos, data);
-
-        // Temperature / Rainfall
-        data.setRainfall(rainfallLayer.noise(chunkX, chunkZ));
-        data.setAverageTemp(temperatureLayer.noise(chunkX, chunkZ));
-
-        // Rocks
-        Rock[] bottomLayer = new Rock[256];
-        Rock[] middleLayer = new Rock[256];
-        Rock[] topLayer = new Rock[256];
-        SoilBlockType.Variant[] soilLayer = new SoilBlockType.Variant[256];
-        SandBlockType[] sandLayer = new SandBlockType[256];
-        int[] rockLayerHeight = new int[256];
-
-        for (int x = 0; x < 16; x++)
+        else
         {
-            for (int z = 0; z < 16; z++)
-            {
-                // From the seed, generate a combination of rock, sand, and soil profile
-                bottomLayer[x + 16 * z] = bottomRockLayer.get(chunkX + x, chunkZ + z);
-                middleLayer[x + 16 * z] = middleRockLayer.get(chunkX + x, chunkZ + z);
-                topLayer[x + 16 * z] = topRockLayer.get(chunkX + x, chunkZ + z);
-
-                rockLayerHeight[x + 16 * z] = (int) layerHeightNoise.noise(chunkX + x, chunkZ + z);
-            }
+            data = new ChunkData();
+            cachedChunkData.put(pos, data);
         }
+        return generateToStatus(pos, data, requiredStatus);
+    }
 
-        data.setRockData(new RockData(bottomLayer, middleLayer, topLayer, soilLayer, sandLayer, rockLayerHeight));
-        data.setValid(true);
+    private ChunkData generateToStatus(ChunkPos pos, ChunkData data, ChunkData.Status status)
+    {
+        if (data.getStatus().isAtLeast(status))
+        {
+            return data;
+        }
+        int chunkX = pos.getXStart(), chunkZ = pos.getZStart();
+        if (status.isAtLeast(ChunkData.Status.CLIMATE))
+        {
+            // Temperature / Rainfall
+            data.setRainfall(rainfallLayer.noise(chunkX, chunkZ));
+            data.setAverageTemp(temperatureLayer.noise(chunkX, chunkZ));
+        }
+        if (status.isAtLeast(ChunkData.Status.ROCKS))
+        {
+            // Rocks
+            Rock[] bottomLayer = new Rock[256];
+            Rock[] middleLayer = new Rock[256];
+            Rock[] topLayer = new Rock[256];
+            int[] rockLayerHeight = new int[256];
+
+            for (int x = 0; x < 16; x++)
+            {
+                for (int z = 0; z < 16; z++)
+                {
+                    bottomLayer[x + 16 * z] = bottomRockLayer.get(chunkX + x, chunkZ + z);
+                    middleLayer[x + 16 * z] = middleRockLayer.get(chunkX + x, chunkZ + z);
+                    topLayer[x + 16 * z] = topRockLayer.get(chunkX + x, chunkZ + z);
+
+                    rockLayerHeight[x + 16 * z] = (int) layerHeightNoise.noise(chunkX + x, chunkZ + z);
+                }
+            }
+
+            data.setRockData(new RockData(bottomLayer, middleLayer, topLayer, rockLayerHeight));
+        }
         return data;
-    }
-
-    private INoise2D createTemperatureLayer(long seed)
-    {
-        return LayerType.SIN_Z.create(seed, TFCConfig.COMMON.temperatureLayerScale.get()).scaled(-10, 30);
-    }
-
-    private INoise2D createRainfallLayer(long seed)
-    {
-        return LayerType.SIN_X.create(seed, TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
     }
 }

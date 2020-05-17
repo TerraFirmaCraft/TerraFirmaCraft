@@ -34,7 +34,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     private RockData rockData;
     private float rainfall;
     private float averageTemp;
-    private boolean isValid;
+    private Status status;
 
     public ChunkData()
     {
@@ -71,14 +71,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         this.averageTemp = regionalTemp;
     }
 
-    public boolean isValid()
+    public Status getStatus()
     {
-        return isValid;
+        return status;
     }
 
-    public void setValid(boolean valid)
+    public void setStatus(Status status)
     {
-        isValid = valid;
+        this.status = status;
     }
 
     @Override
@@ -92,12 +92,15 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         CompoundNBT nbt = new CompoundNBT();
 
-        nbt.putBoolean("isValid", isValid);
-        if (isValid)
+        nbt.putInt("status", status.ordinal());
+        if (status.isAtLeast(Status.CLIMATE))
         {
-            nbt.put("rockData", rockData.serializeNBT());
             nbt.putFloat("rainfall", rainfall);
             nbt.putFloat("averageTemp", averageTemp);
+        }
+        if (status.isAtLeast(Status.ROCKS))
+        {
+            nbt.put("rockData", rockData.serializeNBT());
         }
         return nbt;
     }
@@ -107,16 +110,16 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         if (nbt != null)
         {
-            isValid = nbt.getBoolean("isValid");
-            if (isValid)
+            status = Status.valueOf(nbt.getInt("status"));
+            initWithDefaultValues();
+            if (status.isAtLeast(Status.CLIMATE))
             {
-                rockData.deserializeNBT(nbt.getCompound("rockData"));
                 rainfall = nbt.getFloat("rainfall");
                 averageTemp = nbt.getFloat("averageTemp");
             }
-            else
+            if (status.isAtLeast(Status.ROCKS))
             {
-                initWithDefaultValues();
+                rockData.deserializeNBT(nbt.getCompound("rockData"));
             }
         }
     }
@@ -126,6 +129,26 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         rockData = new RockData();
         rainfall = 250;
         averageTemp = 10;
-        isValid = false;
+        status = Status.DEFAULT;
+    }
+
+    public enum Status
+    {
+        DEFAULT,
+        CLIMATE,
+        ROCKS,
+        FULL;
+
+        private static final Status[] VALUES = values();
+
+        public static Status valueOf(int i)
+        {
+            return i >= 0 && i < VALUES.length ? VALUES[i] : DEFAULT;
+        }
+
+        public boolean isAtLeast(Status otherStatus)
+        {
+            return this.ordinal() >= otherStatus.ordinal();
+        }
     }
 }

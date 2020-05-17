@@ -83,10 +83,10 @@ public class CommonConfig
         seaLevel = builder.apply("seaLevel").defineInRange("seaLevel", 96, 0, 256);
 
         temperatureLayerType = builder.apply("temperatureLayerType").comment("This controls how temperature is generated.").defineEnum("temperatureLayerType", LayerType.SIN_Z, LayerType.values());
-        temperatureLayerScale = builder.apply("temperatureLayerScale").comment("This is how spread out the temperature layer is, in blocks.").defineInRange("temperatureLayerScale", 40_000, 1000, 1_000_000);
+        temperatureLayerScale = builder.apply("temperatureLayerScale").comment("This is how spread out the temperature layer is, in blocks.").defineInRange("temperatureLayerScale", 20_000, 1000, 1_000_000);
 
         rainfallLayerType = builder.apply("rainfallLayerType").comment("This controls how rainfall is generated.").defineEnum("rainfallLayerType", LayerType.SIN_X, LayerType.values());
-        rainfallLayerScale = builder.apply("rainfallLayerScale").comment("This is how spread out the temperature layer is, in blocks.").defineInRange("rainfallLayerScale", 40_000, 1000, 1_000_000);
+        rainfallLayerScale = builder.apply("rainfallLayerScale").comment("This is how spread out the temperature layer is, in blocks.").defineInRange("rainfallLayerScale", 20_000, 1000, 1_000_000);
 
         innerBuilder.pop().push("caves");
 

@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 import imageutil.Images;
 import net.dries007.tfc.config.LayerType;
 
+@SuppressWarnings("unused")
 public class NoiseTests
 {
     public static final Images<INoise2D> IMAGES = Images.get(target -> (x, y) -> target.noise((float) x, (float) y));
@@ -16,14 +17,14 @@ public class NoiseTests
     {
         long seed = System.currentTimeMillis();
 
-        INoise2D temp = LayerType.SIN_Z.create(seed, 40_000);
-        INoise2D rainfall = LayerType.NOISE.create(seed, 40_000);
+        INoise2D temp = LayerType.SIN_Z.create(seed, 20_000).terraces(5).scaled(-10, 30);
+        INoise2D rainfall = LayerType.SIN_X.create(seed, 20_000).terraces(4).scaled(-50, 500).flattened(0, 500);
 
         IMAGES.color(Images.Colors.LINEAR_BLUE_RED).size(1000);
-        IMAGES.draw("avg_temp", temp.terraces(9), -1, 1, -20000, -20000, 20000, 20000);
+        IMAGES.draw("avg_temp", temp, -10, 30, -20000, -20000, 20000, 20000);
 
         IMAGES.color(Images.Colors.LINEAR_BLUE_RED).size(1000);
-        IMAGES.draw("rainfall", rainfall.terraces(9), -1, 1, -20000, -20000, 20000, 20000);
+        IMAGES.draw("rainfall", rainfall, 0, 500, -20000, -20000, 20000, 20000);
     }
 
     public static void testMetaballs()

@@ -13,6 +13,7 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class BouldersFeature extends Feature<NoFeatureConfig>
@@ -32,7 +33,7 @@ public class BouldersFeature extends Feature<NoFeatureConfig>
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         ChunkDataProvider.get(worldIn)
-            .map(provider -> provider.getOrCreate(pos).getRockData().getRock(pos.getX(), pos.getY(), pos.getZ()))
+            .map(provider -> provider.get(pos, ChunkData.Status.ROCKS, false).getRockData().getRock(pos.getX(), pos.getY(), pos.getZ()))
             .ifPresent(rock -> {
                 BlockState state = rock.getBlock(Rock.BlockType.RAW).getDefaultState();
                 int size = 2 + rand.nextInt(4);

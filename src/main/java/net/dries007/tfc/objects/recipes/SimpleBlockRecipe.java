@@ -53,7 +53,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         public R read(ResourceLocation recipeId, JsonObject json)
         {
             IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
-            BlockState state = Helpers.readBlockState(JSONUtils.getString(json, "result"), true);
+            BlockState state = Helpers.readBlockState(JSONUtils.getString(json, "result"));
             return create(recipeId, ingredient, state);
         }
 

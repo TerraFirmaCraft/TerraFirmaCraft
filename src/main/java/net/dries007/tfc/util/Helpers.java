@@ -107,14 +107,14 @@ public final class Helpers
         return Collections.emptyMap();
     }
 
-    public static BlockState readBlockState(String block, boolean allowTags) throws JsonParseException
+    public static BlockState readBlockState(String block) throws JsonParseException
     {
-        BlockStateParser parser = parseBlockState(block, allowTags);
+        BlockStateParser parser = parseBlockState(block, false);
         if (parser.getState() != null)
         {
             return parser.getState();
         }
-        throw new JsonParseException("Not a block state");
+        throw new JsonParseException("Weird result, valid parse but not a block state: " + block);
     }
 
     public static BlockStateParser parseBlockState(String block, boolean allowTags) throws JsonParseException
@@ -126,7 +126,7 @@ public final class Helpers
         }
         catch (CommandSyntaxException e)
         {
-            throw new JsonParseException("Unable to parse block state", e);
+            throw new JsonParseException(e.getMessage());
         }
     }
 

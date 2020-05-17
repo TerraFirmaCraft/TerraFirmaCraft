@@ -1,7 +1,7 @@
 package net.dries007.tfc.world.biome;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -17,12 +17,12 @@ public class BiomeVariantHolder implements Supplier<TFCBiome>
 
     public BiomeVariantHolder(String baseName, IFactory<TFCBiome> factory)
     {
-        this.biomeVariants = new HashMap<>();
+        this.biomeVariants = new EnumMap<>(BiomeTemperature.class);
         this.allVariants = new ArrayList<>();
 
         for (BiomeTemperature temp : BiomeTemperature.values())
         {
-            Map<BiomeRainfall, RegistryObject<TFCBiome>> innerBiomes = new HashMap<>();
+            Map<BiomeRainfall, RegistryObject<TFCBiome>> innerBiomes = new EnumMap<>(BiomeRainfall.class);
             for (BiomeRainfall rain : BiomeRainfall.values())
             {
                 String name = baseName + "_" + temp.name().toLowerCase() + "_" + rain.name().toLowerCase();
