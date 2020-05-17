@@ -1,4 +1,9 @@
 /*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
+/*
  * !!README!!
  *
  * Willing contributors: Do not change anything in this file that is not marked with a comment saying you can edit it!
@@ -120,8 +125,8 @@ dependencies {
     // Do not add dependencies without prior approval from the dev team. You can update existing ones.
     deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
-    deobfProvided "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
-    deobfProvided "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
+    compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
+    compileOnly "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
 }
 
 processResources {
