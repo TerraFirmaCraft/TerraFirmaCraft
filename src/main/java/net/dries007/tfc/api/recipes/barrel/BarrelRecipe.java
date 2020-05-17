@@ -37,6 +37,15 @@ public class BarrelRecipe extends IForgeRegistryEntry.Impl<BarrelRecipe>
         return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.isValidInput(fluidStack, stack) && x.getDuration() == 0).findFirst().orElse(null);
     }
 
+    /**
+     * Checks if a fluidstack is an ingredient for any recipe
+     * Used as a complement to barrel's whitelist
+     */
+    public static boolean isBarrelFluid(FluidStack fluidStack)
+    {
+        return TFCRegistries.BARREL.getValuesCollection().stream().filter(x -> x.inputFluid.testIgnoreCount(fluidStack)).findFirst().orElse(null) != null;
+    }
+
     protected final IIngredient<ItemStack> inputStack;
     protected final IIngredient<FluidStack> inputFluid;
     private final FluidStack outputFluid;

@@ -414,6 +414,9 @@ config.tfc.general.player.nutritionRotationHungerWindow.tooltip=The amount of re
 config.tfc.general.player.drinkDelay=Drink Delay
 config.tfc.general.player.drinkDelay.tooltip=Delay (in ticks) for drinking water by hand
 
+config.tfc.general.player.chanceThirstOnSaltyDrink=Thirst debuff chance on salty drink
+config.tfc.general.player.chanceThirstOnSaltyDrink.tooltip=Chance that a salty drink apply a thirst effect.
+
 config.tfc.general.player.quiverSearch=Quiver Search Locations
 config.tfc.general.player.quiverSearch.tooltip=Which inventory slots will ammo refill/pickup search for quivers?
 
@@ -586,6 +589,9 @@ config.tfc.devices.barrel=Barrel
 
 config.tfc.devices.barrel.tank=Tank Storage
 config.tfc.devices.barrel.tank.tooltip=How much fluid (mB) can a barrel hold?
+
+config.tfc.devices.barrel.fluidWhitelist=Fluid Whitelist
+config.tfc.devices.barrel.fluidWhitelist.tooltip=List of fluids allowed to be inserted into a barrel.
 
 
 ### Blast Furnace
