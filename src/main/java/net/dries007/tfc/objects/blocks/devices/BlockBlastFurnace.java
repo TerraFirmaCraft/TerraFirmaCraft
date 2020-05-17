@@ -47,29 +47,35 @@ public class BlockBlastFurnace extends Block implements IBellowsConsumerBlock, I
     static
     {
         Predicate<IBlockState> stoneMatcher = state -> state.getBlock() instanceof BlockFireBrick;
-        Predicate<IBlockState> ironSheetMatcher = state -> (state.getBlock() instanceof BlockMetalSheet)
-            && ((BlockMetalSheet) state.getBlock()).getMetal() == Metal.WROUGHT_IRON;
+        Predicate<IBlockState> sheetMatcher = state -> {
+            if (state.getBlock() instanceof BlockMetalSheet)
+            {
+                BlockMetalSheet block = (BlockMetalSheet) state.getBlock();
+                return block.getMetal().getTier().isAtLeast(Metal.Tier.TIER_III) && block.getMetal().isToolMetal();
+            }
+            return false;
+        };
         BLAST_FURNACE_CHIMNEY = new Multiblock()
             .match(new BlockPos(0, 0, 0), state -> state.getBlock() == BlocksTFC.MOLTEN || state.getMaterial().isReplaceable())
             .match(new BlockPos(0, 0, 1), stoneMatcher)
             .match(new BlockPos(0, 0, -1), stoneMatcher)
             .match(new BlockPos(1, 0, 0), stoneMatcher)
             .match(new BlockPos(-1, 0, 0), stoneMatcher)
-            .match(new BlockPos(0, 0, -2), ironSheetMatcher)
+            .match(new BlockPos(0, 0, -2), sheetMatcher)
             .match(new BlockPos(0, 0, -2), tile -> tile.getFace(EnumFacing.NORTH), TEMetalSheet.class)
-            .match(new BlockPos(0, 0, 2), ironSheetMatcher)
+            .match(new BlockPos(0, 0, 2), sheetMatcher)
             .match(new BlockPos(0, 0, 2), tile -> tile.getFace(EnumFacing.SOUTH), TEMetalSheet.class)
-            .match(new BlockPos(2, 0, 0), ironSheetMatcher)
+            .match(new BlockPos(2, 0, 0), sheetMatcher)
             .match(new BlockPos(2, 0, 0), tile -> tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
-            .match(new BlockPos(-2, 0, 0), ironSheetMatcher)
+            .match(new BlockPos(-2, 0, 0), sheetMatcher)
             .match(new BlockPos(-2, 0, 0), tile -> tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
-            .match(new BlockPos(-1, 0, -1), ironSheetMatcher)
+            .match(new BlockPos(-1, 0, -1), sheetMatcher)
             .match(new BlockPos(-1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
-            .match(new BlockPos(1, 0, -1), ironSheetMatcher)
+            .match(new BlockPos(1, 0, -1), sheetMatcher)
             .match(new BlockPos(1, 0, -1), tile -> tile.getFace(EnumFacing.NORTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class)
-            .match(new BlockPos(-1, 0, 1), ironSheetMatcher)
+            .match(new BlockPos(-1, 0, 1), sheetMatcher)
             .match(new BlockPos(-1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.WEST), TEMetalSheet.class)
-            .match(new BlockPos(1, 0, 1), ironSheetMatcher)
+            .match(new BlockPos(1, 0, 1), sheetMatcher)
             .match(new BlockPos(1, 0, 1), tile -> tile.getFace(EnumFacing.SOUTH) && tile.getFace(EnumFacing.EAST), TEMetalSheet.class);
     }
 

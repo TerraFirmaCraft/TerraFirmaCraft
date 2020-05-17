@@ -283,6 +283,14 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
         return super.writeToNBT(nbt);
     }
 
+    @Override
+    protected void updateBlock()
+    {
+        IBlockState state = world.getBlockState(pos);
+        world.setBlockState(pos, state.withProperty(FULL, getStrawCount() == STRAW_NEEDED && getLogCount() == WOOD_NEEDED));
+        markForBlockUpdate();
+    }
+
     public int getLogCount()
     {
         return (int) logItems.stream().filter(i -> !i.isEmpty()).count();
@@ -363,14 +371,6 @@ public class TEPitKiln extends TEPlacedItem implements ITickable
             // Reset item in inventory
             inventory.setStackInSlot(i, outputStack);
         }
-    }
-
-    @Override
-    protected void updateBlock()
-    {
-        IBlockState state = world.getBlockState(pos);
-        world.setBlockState(pos, state.withProperty(FULL, getStrawCount() == STRAW_NEEDED && getLogCount() == WOOD_NEEDED));
-        markForBlockUpdate();
     }
 
     private void addStrawBlock()

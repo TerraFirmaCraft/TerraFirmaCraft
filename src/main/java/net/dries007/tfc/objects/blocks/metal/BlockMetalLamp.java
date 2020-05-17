@@ -207,6 +207,10 @@ public class BlockMetalLamp extends Block implements ILightableBlock
                 }
             }
         }
+        if (!canPlaceAt(worldIn, pos, state.getValue(FACING)))
+        {
+            worldIn.destroyBlock(pos, true);
+        }
     }
 
     @SideOnly(Side.CLIENT)

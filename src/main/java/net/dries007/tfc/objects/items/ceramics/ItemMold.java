@@ -59,7 +59,7 @@ public class ItemMold extends ItemPottery
         return MAP.get(category);
     }
 
-    public final Metal.ItemType type;
+    private final Metal.ItemType type;
 
     public ItemMold(Metal.ItemType type)
     {
@@ -142,6 +142,11 @@ public class ItemMold extends ItemPottery
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         CapabilityContainerListener.applyShareTag(stack, nbt);
+    }
+
+    public Metal.ItemType getType()
+    {
+        return type;
     }
 
     @Nullable

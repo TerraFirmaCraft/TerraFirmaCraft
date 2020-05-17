@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -96,7 +97,7 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = playerIn.getHeldItemMainhand();
-        if (OreDictionaryHelper.doesStackMatchOre(stack, "hammer") && worldIn.isAirBlock(pos.up()))
+        if (ConfigTFC.General.OVERRIDES.enableStoneAnvil && OreDictionaryHelper.doesStackMatchOre(stack, "hammer") && worldIn.isAirBlock(pos.up()))
         {
             if (!worldIn.isRemote)
             {
@@ -133,5 +134,15 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     public int damageDropped(IBlockState state)
     {
         return 0;
+    }
+
+    @Override
+    public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
+    {
+        if (ConfigTFC.General.FALLABLE.explosionCausesCollapse)
+        {
+            // Trigger the collapsing mechanic!
+            checkCollapsingArea(worldIn, pos);
+        }
     }
 }

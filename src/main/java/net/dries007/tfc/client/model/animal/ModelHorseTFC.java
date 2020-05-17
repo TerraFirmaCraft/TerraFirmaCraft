@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.model.ModelHorse;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -210,15 +212,11 @@ public class ModelHorseTFC extends ModelHorse
     }
 
     @Override
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void render(@Nonnull Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        AbstractHorse abstracthorse = (AbstractHorse) entityIn;
-        boolean isChild = abstracthorse.isChild();
-        boolean flag1 = !isChild && abstracthorse.isHorseSaddled();
-        boolean flag2 = abstracthorse instanceof AbstractChestHorse;
-        boolean flag3 = !isChild && flag2 && ((AbstractChestHorse) abstracthorse).hasChest();
-        boolean flag4 = abstracthorse.isBeingRidden();
-        if (flag1)
+        AbstractHorse horse = (AbstractHorse) entityIn;
+        IAnimalTFC animal = (IAnimalTFC) horse;
+        if (horse.isHorseSaddled() && animal.getAge() != IAnimalTFC.Age.CHILD)
         {
             this.horseFaceRopes.render(scale);
             this.horseSaddleBottom.render(scale);
@@ -230,28 +228,19 @@ public class ModelHorseTFC extends ModelHorse
             this.horseRightSaddleMetal.render(scale);
             this.horseLeftFaceMetal.render(scale);
             this.horseRightFaceMetal.render(scale);
-            if (flag4)
+            if (horse.isBeingRidden())
             {
                 this.horseLeftRein.render(scale);
                 this.horseRightRein.render(scale);
             }
         }
 
-        if (isChild)
-        {
-            GlStateManager.pushMatrix();
-            double ageScale = 1;
-            double percent = 1;
-            if (entityIn instanceof IAnimalTFC)
-            {
-                percent = ((IAnimalTFC) entityIn).getPercentToAdulthood();
-                ageScale = 1 / (2.0D - percent);
-            }
-            GlStateManager.scale(ageScale, ageScale, ageScale);
-            GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
-            /*GlStateManager.scale(f1, ageScale + f1 * ageScale, f1);
-            GlStateManager.translate(0.0F, 0.95F * (1.0F - f1), 0.0F);*/
-        }
+        float percent = (float) animal.getPercentToAdulthood();
+        float ageScale = 2.0F - percent;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
+        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
         this.backLeftLeg.render(scale);
         this.backLeftShin.render(scale);
@@ -265,12 +254,6 @@ public class ModelHorseTFC extends ModelHorse
         this.frontRightLeg.render(scale);
         this.frontRightShin.render(scale);
         this.frontRightHoof.render(scale);
-        /*if (isChild) {
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(f1, f1, f1);
-            GlStateManager.translate(0.0F, 1.35F * (1.0F - f1), 0.0F);
-        }*/
 
         this.body.render(scale);
         this.tailBase.render(scale);
@@ -278,19 +261,8 @@ public class ModelHorseTFC extends ModelHorse
         this.tailTip.render(scale);
         this.neck.render(scale);
         this.mane.render(scale);
-        /*if (isChild) {
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            float f2 = 0.5F + f1 * f1 * 0.5F;
-            GlStateManager.scale(f2, f2, f2);
-            if (f <= 0.0F) {
-                GlStateManager.translate(0.0F, 1.35F * (1.0F - f1), 0.0F);
-            } else {
-                GlStateManager.translate(0.0F, 0.9F * (1.0F - f1) * f + 1.35F * (1.0F - f1) * (1.0F - f), 0.15F * (1.0F - f1) * f);
-            }
-        }*/
 
-        if (flag2)
+        if (horse instanceof AbstractChestHorse)
         {
             this.muleLeftEar.render(scale);
             this.muleRightEar.render(scale);
@@ -302,21 +274,11 @@ public class ModelHorseTFC extends ModelHorse
         }
 
         this.head.render(scale);
-        if (isChild)
-        {
-            GlStateManager.popMatrix();
-        }
-
-        if (flag3)
-        {
-            this.muleLeftChest.render(scale);
-            this.muleRightChest.render(scale);
-        }
-
+        GlStateManager.popMatrix();
     }
 
     @Override
-    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime)
+    public void setLivingAnimations(@Nonnull EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime)
     {
         super.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTickTime);
         float f = this.updateHorseRotation(entitylivingbaseIn.prevRenderYawOffset, entitylivingbaseIn.renderYawOffset, partialTickTime);

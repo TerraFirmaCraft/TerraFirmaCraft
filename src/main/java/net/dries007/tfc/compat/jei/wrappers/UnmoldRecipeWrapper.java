@@ -21,6 +21,8 @@ import net.dries007.tfc.objects.items.metal.ItemMetal;
 
 public class UnmoldRecipeWrapper implements IRecipeWrapper
 {
+    // todo in 1.15, refactor UnmoldRecipe and split the json recipe file to the metal and mold permutation.
+    // Can't do like SaltingRecipeWrapper because that makes the ingredient and output rotation weird (ie: copper ingot output in brass filled mold)
     private final ItemStack mold;
     private final ItemStack output;
 

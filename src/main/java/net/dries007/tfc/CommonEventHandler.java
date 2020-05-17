@@ -87,12 +87,15 @@ import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
 import net.dries007.tfc.objects.blocks.stone.BlockRockRaw;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.stone.BlockStoneAnvil;
+import net.dries007.tfc.objects.blocks.wood.BlockLogTFC;
+import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemQuiver;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
+import net.dries007.tfc.util.DamageSourcesTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MonsterEquipment;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -102,7 +105,6 @@ import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
 import net.dries007.tfc.world.classic.chunkdata.ChunkDataTFC;
 
-import static net.dries007.tfc.Constants.PLUCKING;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("unused")
@@ -201,8 +203,17 @@ public final class CommonEventHandler
             if (skillModifier > 0)
             {
                 // Up to 2x modifier for break speed for skill bonuses on tools
-                event.setNewSpeed(event.getOriginalSpeed() + (event.getOriginalSpeed() * skillModifier));
+                // New speed, so it will take into account other mods' modifications
+                event.setNewSpeed(event.getNewSpeed() + (event.getNewSpeed() * skillModifier));
             }
+        }
+        if (event.getState().getBlock() instanceof BlockRockVariant)
+        {
+            event.setNewSpeed((float) (event.getNewSpeed() / ConfigTFC.General.MISC.rockMiningTimeModifier));
+        }
+        if (event.getState().getBlock() instanceof BlockLogTFC)
+        {
+            event.setNewSpeed((float) (event.getNewSpeed() / ConfigTFC.General.MISC.logMiningTimeModifier));
         }
     }
 
@@ -219,7 +230,10 @@ public final class CommonEventHandler
         final EntityPlayer player = event.getEntityPlayer();
 
         // Fire onBlockActivated for in world crafting devices
-        if (state.getBlock() instanceof BlockAnvilTFC || state.getBlock() instanceof BlockStoneAnvil || state.getBlock() instanceof BlockQuern)
+        if (state.getBlock() instanceof BlockAnvilTFC
+            || state.getBlock() instanceof BlockStoneAnvil
+            || state.getBlock() instanceof BlockQuern
+            || state.getBlock() instanceof BlockSupport)
         {
             event.setUseBlock(Event.Result.ALLOW);
         }
@@ -634,10 +648,10 @@ public final class CommonEventHandler
             event.setResult(Event.Result.DENY);
         }
 
-        // Stop mob spawning in surface
+        // Stop mob spawning on surface
         if (ConfigTFC.General.DIFFICULTY.preventMobsOnSurface)
         {
-            if (event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
+            if (Helpers.shouldPreventOnSurface(event.getEntity()))
             {
                 int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2) / 2 + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
                 if (pos.getY() >= maximumY || world.canSeeSky(pos))
@@ -844,7 +858,7 @@ public final class CommonEventHandler
             && player.isSneaking() && Arrays.asList(ConfigTFC.General.MISC.pluckableEntities).contains(entityType.toString()))
         {
             target.dropItem(Items.FEATHER, 1);
-            target.attackEntityFrom(PLUCKING, (float) ConfigTFC.General.MISC.damagePerFeather);
+            target.attackEntityFrom(DamageSourcesTFC.PLUCKING, (float) ConfigTFC.General.MISC.damagePerFeather);
             if (target instanceof IAnimalTFC)
             {
                 ((IAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);

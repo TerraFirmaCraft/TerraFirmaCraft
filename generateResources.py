@@ -843,6 +843,19 @@ for rock_type in ROCK_TYPES:
             'model': 'button_inventory'
         }]
     })
+    
+    # (STONE) PRESSURE PLATE
+    blockstate(('stone', 'pressure_plate', rock_type), 'pressure_plate', textures={
+        ('texture', 'particle'): 'tfc:blocks/stonetypes/raw/%s' % rock_type,
+    }, variants={
+        'powered': {
+            'false': {'model': 'stone_pressure_plate_up'},
+            'true': {'model': 'stone_pressure_plate_down'}
+        },
+        'inventory': [{
+            'model': 'stone_pressure_plate_up'
+        }]
+    })
 
 # STONE ANVILS - only igneous types
 for rock_type in ['granite', 'rhyolite', 'basalt', 'gabbro', 'diorite', 'andesite', 'dacite']:

@@ -65,7 +65,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
         if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
         setDefaultState(blockState.getBaseState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(PLACED, true).withProperty(SMALL, false));
         setHarvestLevel("axe", 0);
-        setHardness(15.0F);
+        setHardness(2.0F);
         setResistance(5.0F);
         OreDictionaryHelper.register(this, "log", "wood");
         //noinspection ConstantConditions
@@ -163,7 +163,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
             // Harvest the block normally, saws and axes are valid tools regardless
             super.harvestBlock(worldIn, player, pos, state, te, stack);
         }
-        else if (toolClasses.contains("hammer"))
+        else if (toolClasses.contains("hammer") && ConfigTFC.General.TREE.enableHammerSticks)
         {
             // Hammers drop sticks here - we duplicate the original method
             //noinspection ConstantConditions
@@ -217,7 +217,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
                 return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
             }
         }
-        else if (toolClasses.contains("hammer"))
+        else if (toolClasses.contains("hammer") && ConfigTFC.General.TREE.enableHammerSticks)
         {
             // Hammers drop sticks instead
             return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
@@ -233,7 +233,7 @@ public class BlockLogTFC extends BlockLog implements IItemSize
     @Override
     public boolean isToolEffective(String type, IBlockState state)
     {
-        return "hammer".equals(type) || super.isToolEffective(type, state);
+        return ("hammer".equals(type) && ConfigTFC.General.TREE.enableHammerSticks) || super.isToolEffective(type, state);
     }
 
     @Override

@@ -19,6 +19,7 @@ import net.minecraft.block.BlockStructure;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityPolarBear;
 import net.minecraft.entity.passive.*;
@@ -75,10 +76,20 @@ public final class Helpers
     };
     private static final Joiner JOINER_DOT = Joiner.on('.');
     private static final boolean JEI = Loader.isModLoaded("jei");
+    /**
+     * Vanilla entities that are replaced to TFC counterparts on spawn
+     */
     private static final Map<Class<? extends Entity>, Class<? extends Entity>> VANILLA_REPLACEMENTS;
+
+    /**
+     * Extra entities that are prevented to spawn on surface and aren't considered monsters (like Skeleton Horses)
+     */
+    private static final Set<Class<? extends Entity>> PREVENT_ON_SURFACE;
 
     static
     {
+        PREVENT_ON_SURFACE = new HashSet<>();
+        PREVENT_ON_SURFACE.add(EntityZombieHorse.class);
         VANILLA_REPLACEMENTS = new HashMap<>();
         VANILLA_REPLACEMENTS.put(EntityCow.class, EntityCowTFC.class);
         VANILLA_REPLACEMENTS.put(EntitySheep.class, EntitySheepTFC.class);
@@ -127,6 +138,11 @@ public final class Helpers
             }
         }
         return null;
+    }
+
+    public static boolean shouldPreventOnSurface(Entity entity)
+    {
+        return PREVENT_ON_SURFACE.contains(entity.getClass()) || entity.isCreatureType(EnumCreatureType.MONSTER, false);
     }
 
     /**

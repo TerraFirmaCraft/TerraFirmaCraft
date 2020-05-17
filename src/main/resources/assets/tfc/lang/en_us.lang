@@ -188,10 +188,12 @@ tfc.food_traits.brined_active=Brining
 tfc.food_traits.salted=Salted
 tfc.food_traits.pickled=Pickled
 tfc.food_traits.preserved=Preserved
+tfc.food_traits.vinegar=Vinegar preserved
 tfc.food_traits.charcoal_grilled=Charcoal Grilled
 tfc.food_traits.wood_grilled=Wood Grilled
 tfc.tooltip.barrel_recipe_pickling=Pickling
 tfc.tooltip.barrel_recipe_brining=Brining
+tfc.tooltip.barrel_recipe_vinegar=Preserving in vinegar
 
 ## Skills
 tfc.skill.prospecting=Prospecting: %s
@@ -247,6 +249,18 @@ config.tfc.general.overrides.tooltip=Various override settings, some for compati
 config.tfc.general.overrides.enableIngotPiles=Enable Ingot Piles
 config.tfc.general.overrides.enableIngotPiles.tooltip=Enable ingot pile placement in world.
 
+config.tfc.general.overrides.enableLogPiles=Enable Log Piles
+config.tfc.general.overrides.enableLogPiles.tooltip=Enable log pile placement in world.
+
+config.tfc.general.overrides.enableThatchBed=Enable Thatch Bed
+config.tfc.general.overrides.enableThatchBed.tooltip=Enable the creation of thatch beds.
+
+config.tfc.general.overrides.enableGrassPath=Enable Grass Path
+config.tfc.general.overrides.enableGrassPath.tooltip=Enable the creation of grass paths.
+
+config.tfc.general.overrides.enableStoneAnvil=Enable Stone Anvil
+config.tfc.general.overrides.enableStoneAnvil.tooltip=Enable the creation of stone anvils.
+
 config.tfc.general.overrides.enableTorchOverride=Enable Torch Override
 config.tfc.general.overrides.enableTorchOverride.tooltip=Turn this off if you have conflicts with other mods.
 
@@ -300,6 +314,9 @@ config.tfc.general.fallable.propagateCollapseChance.tooltip=Chance that collapsi
 config.tfc.general.fallable.chiselCausesCollapse=Chiseling Causes Collapses
 config.tfc.general.fallable.chiselCausesCollapse.tooltip=Should chiseling raw stone blocks cause collapses?
 
+config.tfc.general.fallable.explosionCausesCollapse=Explosion Causes Collapses
+config.tfc.general.fallable.explosionCausesCollapse.tooltip=Should exploding raw stone blocks cause collapses?
+
 ### Difficulty
 config.tfc.general.difficulty=Difficulty Settings
 
@@ -321,6 +338,9 @@ config.tfc.general.tree.tooltip=Enable / Disable TerraFirmaCraft Tree Mechanics
 
 config.tfc.general.tree.enableFelling=Enable Felling
 config.tfc.general.tree.enableFelling.tooltip=Enable trees being fully cut by axes. Disable it if you want other mods to handle tree felling.
+
+config.tfc.general.tree.enableHammerSticks=Enable Hammering for Sticks
+config.tfc.general.tree.enableHammerSticks.tooltip=Enable smacking logs with a hammer giving sticks.
 
 config.tfc.general.tree.requiresAxe=Requires Axe
 config.tfc.general.tree.enableFelling.tooltip=Should logs require tools (axes and saws, or hammers for sticks) to be cut? If false, breaking logs with an empty hand will not drop logs.
@@ -415,6 +435,9 @@ config.tfc.general.player.nutritionRotationHungerWindow.tooltip=The amount of re
 config.tfc.general.player.drinkDelay=Drink Delay
 config.tfc.general.player.drinkDelay.tooltip=Delay (in ticks) for drinking water by hand
 
+config.tfc.general.player.chanceThirstOnSaltyDrink=Thirst debuff chance on salty drink
+config.tfc.general.player.chanceThirstOnSaltyDrink.tooltip=Chance that a salty drink apply a thirst effect.
+
 config.tfc.general.player.quiverSearch=Quiver Search Locations
 config.tfc.general.player.quiverSearch.tooltip=Which inventory slots will ammo refill/pickup search for quivers?
 
@@ -440,6 +463,9 @@ config.tfc.general.world.clayRainfallThreshold.tooltip=The minimum rainfall in a
 
 config.tfc.general.world.looseRocksFrequency=Loose Rocks Frequency
 config.tfc.general.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
+
+config.tfc.general.world.sticksDensityModifier=Stick Density Modifier
+config.tfc.general.world.sticksDensityModifier.tooltip=This controls the number of sticks generated on chunk generation. The number of trees in the area and flora density is also a factor in this.
 
 config.tfc.general.world.looseRockScan=Loose Rocks Vein Scan
 config.tfc.general.world.looseRockScan.tooltip=This is how deep (in blocks) from the surface a loose rock will scan for a vein when generating, Higher values = More veins spawn samples thus adding more samples.
@@ -560,6 +586,12 @@ config.tfc.general.misc.pluckableEntities.tooltip=Entities that drop a feather w
 config.tfc.general.misc.damagePerFeather=Pluckable Entities Damage Per Feather
 config.tfc.general.misc.damagePerFeather.tooltip=How much damage is done to an entity when a feather is plucked.
 
+config.tfc.general.misc.rockMiningTimeModifier=Rock Mining Time Modifier
+config.tfc.general.misc.rockMiningTimeModifier.tooltip=This controls the time it takes to mine rock blocks. 1.0 = Like vanilla, 10.0 = Classic TFC
+
+config.tfc.general.misc.logMiningTimeModifier=Log Mining Time Modifier
+config.tfc.general.misc.logMiningTimeModifier.tooltip=This controls the time it takes to mine log blocks. 1.0 = Like vanilla, 10.0 = Classic TFC
+
 
 ## Devices Config
 config.tfc.devices=Device Settings
@@ -581,6 +613,9 @@ config.tfc.devices.barrel=Barrel
 
 config.tfc.devices.barrel.tank=Tank Storage
 config.tfc.devices.barrel.tank.tooltip=How much fluid (mB) can a barrel hold?
+
+config.tfc.devices.barrel.fluidWhitelist=Fluid Whitelist
+config.tfc.devices.barrel.fluidWhitelist.tooltip=List of fluids allowed to be inserted into a barrel.
 
 
 ### Blast Furnace
@@ -614,11 +649,21 @@ config.tfc.devices.charcoal_pit.ticks=Ticks
 config.tfc.devices.charcoal_pit.ticks.tooltip=Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.
 
 
+### Charcoal Forge
+config.tfc.devices.charcoal_forge=Charcoal Forge
+
+config.tfc.devices.charcoal_forge.rainTicks=Rain drop burning ticks removal
+config.tfc.devices.charcoal_forge.ticks.tooltip=Number of burning ticks that is removed when the charcoal forge is on rain (random ticks). This effectively makes the charcoal forge consumes more fuel when it is raining above it.
+
+
 ### Fire Pit
 config.tfc.devices.fire_pit=Fire Pit
 
 config.tfc.devices.fire_pit.ticks=Ticks
 config.tfc.devices.fire_pit.ticks.tooltip=Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1 hour.
+
+config.tfc.devices.fire_pit.rainTicks=Rain drop burning ticks removal
+config.tfc.devices.fire_pit.ticks.tooltip=Number of burning ticks that is removed when the fire pit is on rain (random ticks). This effectively makes the fire pit consumes more fuel when it is raining above it.
 
 
 ### Pit Kiln
@@ -790,6 +835,15 @@ config.tfc.animals.oldDeathChance.tooltip=If this animal is an elder, what is th
 
 config.tfc.animals.rarity=Chunk Generation Spawn Rarity
 config.tfc.animals.rarity.tooltip=How rare this animal should be in 1 / N chunks, on valid biomes? 0 = Disable.
+
+config.tfc.animals.huntCreatures=Hunted Entities
+config.tfc.animals.huntCreatures.tooltip=This controls which registered entities are hunted by this animals (unless tamed), in priority order. You must specify by 'modid:entity'. Invalid entries will be ignored.
+
+config.tfc.animals.food=Food List
+config.tfc.animals.food.tooltip=This controls which items are considered food for this animal. You must specify by 'ore:tag' or 'modid:item [meta]'. Invalid entries will be ignored.
+
+config.tfc.animals.acceptRotten=Accept Rotten Foods
+config.tfc.animals.acceptRotten.tooltip=Does this animal eat rotten foods?
 
 
 # Misc
@@ -2994,6 +3048,8 @@ tile.tfc.berry_bush.snow_berry.name=Snowberry Bush
 tile.tfc.berry_bush.strawberry.name=Strawberry Bush
 tile.tfc.berry_bush.wintergreen_berry.name=Wintergreen Berry Bush
 
+# Redstone "manipulators"
+## Buttons
 tile.tfc.stone.button.granite.name=Granite Button
 tile.tfc.stone.button.diorite.name=Diorite Button
 tile.tfc.stone.button.gabbro.name=Gabbro Button
@@ -3016,6 +3072,32 @@ tile.tfc.stone.button.schist.name=Schist Button
 tile.tfc.stone.button.gneiss.name=Gneiss Button
 tile.tfc.stone.button.marble.name=Marble Button
 tile.tfc.stone.button.ranite.name=Granite Button
+
+## Plates
+tile.tfc.stone.pressure_plate.granite.name=Granite Pressure Plate
+tile.tfc.stone.pressure_plate.diorite.name=Diorite Pressure Plate
+tile.tfc.stone.pressure_plate.gabbro.name=Gabbro Pressure Plate
+tile.tfc.stone.pressure_plate.shale.name=Shale Pressure Plate
+tile.tfc.stone.pressure_plate.claystone.name=Claystone Pressure Plate
+tile.tfc.stone.pressure_plate.rocksalt.name=Rocksalt Pressure Plate
+tile.tfc.stone.pressure_plate.limestone.name=Limestone Pressure Plate
+tile.tfc.stone.pressure_plate.conglomerate.name=Conglomerate Pressure Plate
+tile.tfc.stone.pressure_plate.dolomite.name=Dolomite Pressure Plate
+tile.tfc.stone.pressure_plate.chert.name=Chert Pressure Plate
+tile.tfc.stone.pressure_plate.chalk.name=Chalk Pressure Plate
+tile.tfc.stone.pressure_plate.rhyolite.name=Rhyolite Pressure Plate
+tile.tfc.stone.pressure_plate.basalt.name=Basalt Pressure Plate
+tile.tfc.stone.pressure_plate.andesite.name=Andesite Pressure Plate
+tile.tfc.stone.pressure_plate.dacite.name=Dacite Pressure Plate
+tile.tfc.stone.pressure_plate.quartzite.name=Quartzite Pressure Plate
+tile.tfc.stone.pressure_plate.slate.name=Slate Pressure Plate
+tile.tfc.stone.pressure_plate.phyllite.name=Phyllite Pressure Plate
+tile.tfc.stone.pressure_plate.schist.name=Schist Pressure Plate
+tile.tfc.stone.pressure_plate.gneiss.name=Gneiss Pressure Plate
+tile.tfc.stone.pressure_plate.marble.name=Marble Pressure Plate
+tile.tfc.stone.pressure_plate.ranite.name=Granite Pressure Plate
+
+# Crops
 tile.tfc.crop.barley.name=Barley
 tile.tfc.crop.beet.name=Beets
 tile.tfc.crop.cabbage.name=Cabbage
@@ -4411,10 +4493,13 @@ entity.hyenatfc.name=Hyena
 
 #TFC death messages
 death.attack.dehydration=%1$s died of dehydration
+death.attack.food_poison=%1$s died of food poisoning
+death.attack.plucking=%1$s died by having it's feathers plucked
 
 #Effects
 effectsTFC.overburdened=Overburdened
 effectsTFC.thirst=Thirst
+effectsTFC.food_poison=Food Poisoning
 
 # Animal names by gender
 tfc.animal.sheeptfc.male=Sheep♂

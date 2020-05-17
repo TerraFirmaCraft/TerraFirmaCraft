@@ -129,11 +129,13 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-        if (worldIn.isRainingAt(pos))
+        TEFirePit te = Helpers.getTE(worldIn, pos, TEFirePit.class);
+        // Have to check the above block, since minecraft think this block is "roof"
+        if (te != null && state.getValue(LIT) && worldIn.isRainingAt(pos.up()))
         {
-            worldIn.setBlockState(pos, state.withProperty(LIT, false), 2);
+            te.onRainDrop();
         }
     }
 

@@ -14,12 +14,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -115,6 +117,16 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
         inventoryWrappers = Arrays.stream(EnumFacing.values()).map(e -> new ItemHandlerSidedWrapper(this, inventory, e)).toArray(IItemHandler[]::new);
     }
 
+    /**
+     * Consume more fuel on rain
+     */
+    public void onRainDrop()
+    {
+        burnTicks -= ConfigTFC.Devices.FIRE_PIT.rainTicks;
+        // Play the "tsssss" sound
+        world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.8f, 0.8f + net.dries007.tfc.Constants.RNG.nextFloat() * 0.4f);
+    }
+
     @Override
     public void update()
     {
@@ -130,7 +142,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
                 {
                     burnTicks -= airTicks > 0 ? 2 : 1;
                 }
-                if (burnTicks == 0)
+                if (burnTicks <= 0)
                 {
                     // Consume fuel
                     ItemStack stack = inventory.getStackInSlot(SLOT_FUEL_CONSUME);

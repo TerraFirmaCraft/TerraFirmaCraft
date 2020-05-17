@@ -152,7 +152,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
                 player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
                 setProductsCooldown();
                 player.setHeldItem(hand, FluidUtil.tryFillContainerAndStow(itemstack, FluidUtil.getFluidHandler(new ItemStack(Items.MILK_BUCKET)),
-                    new PlayerInvWrapper(player.inventory), Fluid.BUCKET_VOLUME, player, true).getResult());
+                    new PlayerInvWrapper(player.inventory), Fluid.BUCKET_VOLUME, null, true).getResult()); // passing null player here ignores creative
             }
             else if (!world.isRemote)
             {

@@ -21,13 +21,16 @@ import static net.dries007.tfc.util.Helpers.getNull;
 public final class PotionEffectsTFC
 {
     public static final Potion OVERBURDENED = getNull();
+    public static final Potion THIRST = getNull();
+    public static final Potion FOOD_POISON = getNull();
 
     @SubscribeEvent
     public static void registerPotionEffects(RegistryEvent.Register<Potion> event)
     {
         event.getRegistry().registerAll(
             new PotionOverburdened().setRegistryName(MOD_ID, "overburdened"),
-            new PotionThirst().setRegistryName(MOD_ID, "thirst")
+            new PotionThirst().setRegistryName(MOD_ID, "thirst"),
+            new PotionFoodPoison().setRegistryName(MOD_ID, "food_poison")
         );
     }
 }
