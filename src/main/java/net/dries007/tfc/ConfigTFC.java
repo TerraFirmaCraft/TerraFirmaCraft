@@ -101,6 +101,22 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableIngotPiles")
             public boolean enableIngotPiles = true;
 
+            @Config.Comment("Enable log pile placement in world.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableLogPiles")
+            public boolean enableLogPiles = true;
+
+            @Config.Comment("Enable the creation of thatch beds.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableThatchBed")
+            public boolean enableThatchBed = true;
+
+            @Config.Comment("Enable the creation of grass paths using TFC's shovels.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableGrassPath")
+            public boolean enableGrassPath = true;
+
+            @Config.Comment("Enable the creation of stone anvils.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableStoneAnvil")
+            public boolean enableStoneAnvil = true;
+
             @Config.Comment("Turn this off if you have conflicts with other mods")
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableTorchOverride")
             public boolean enableTorchOverride = true;
@@ -201,6 +217,10 @@ public final class ConfigTFC
                 "Disable it if you want other mods to handle tree felling."})
             @Config.LangKey("config." + MOD_ID + ".general.tree.enableFelling")
             public boolean enableFelling = true;
+
+            @Config.Comment("Enable smacking logs with a hammer giving sticks.")
+            @Config.LangKey("config." + MOD_ID + ".general.tree.enableHammerSticks")
+            public boolean enableHammerSticks = true;
 
             @Config.Comment("Should logs require tools (axes and saws, or hammers for sticks) to be cut? If false, breaking logs with an empty hand will not drop logs.")
             @Config.LangKey("config." + MOD_ID + ".general.tree.requiresAxe")
@@ -381,6 +401,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".general.world.looseRocksFrequency")
             public int looseRocksFrequency = 18;
+
+            @Config.Comment({"This controls the number of sticks generated on chunk generation.",
+                "The number of trees in the area and flora density is also a factor in this."})
+            @Config.RangeDouble(min = 0, max = 10)
+            @Config.LangKey("config." + MOD_ID + ".general.world.sticksDensityModifier")
+            public double sticksDensityModifier = 1;
 
             @Config.Comment("This is how deep (in blocks) from the surface a loose rock will scan for a vein when generating, Higher values = More veins spawn samples thus adding more samples.")
             @Config.RangeInt(min = 1, max = 255)

@@ -19,6 +19,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -57,7 +58,7 @@ public class ItemAnimalHide extends ItemTFC
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = player.getHeldItem(hand);
-        if (type == HideType.RAW && size == HideSize.LARGE && facing == EnumFacing.UP && worldIn.getBlockState(pos).getBlock() == BlocksTFC.THATCH && worldIn.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock() == BlocksTFC.THATCH)
+        if (ConfigTFC.General.OVERRIDES.enableThatchBed && type == HideType.RAW && size == HideSize.LARGE && facing == EnumFacing.UP && worldIn.getBlockState(pos).getBlock() == BlocksTFC.THATCH && worldIn.getBlockState(pos.offset(player.getHorizontalFacing())).getBlock() == BlocksTFC.THATCH)
         {
             // Try and create a thatch bed
             BlockPos headPos = pos.offset(player.getHorizontalFacing());
@@ -101,6 +102,7 @@ public class ItemAnimalHide extends ItemTFC
     }
 
     @Override
+    @Nonnull
     public ItemStack getContainerItem(ItemStack itemStack)
     {
         switch (size)
