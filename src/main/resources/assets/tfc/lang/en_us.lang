@@ -246,6 +246,18 @@ config.tfc.general.overrides.tooltip=Various override settings, some for compati
 config.tfc.general.overrides.enableIngotPiles=Enable Ingot Piles
 config.tfc.general.overrides.enableIngotPiles.tooltip=Enable ingot pile placement in world.
 
+config.tfc.general.overrides.enableLogPiles=Enable Log Piles
+config.tfc.general.overrides.enableLogPiles.tooltip=Enable log pile placement in world.
+
+config.tfc.general.overrides.enableThatchBed=Enable Thatch Bed
+config.tfc.general.overrides.enableThatchBed.tooltip=Enable the creation of thatch beds.
+
+config.tfc.general.overrides.enableGrassPath=Enable Grass Path
+config.tfc.general.overrides.enableGrassPath.tooltip=Enable the creation of grass paths.
+
+config.tfc.general.overrides.enableStoneAnvil=Enable Stone Anvil
+config.tfc.general.overrides.enableStoneAnvil.tooltip=Enable the creation of stone anvils.
+
 config.tfc.general.overrides.enableTorchOverride=Enable Torch Override
 config.tfc.general.overrides.enableTorchOverride.tooltip=Turn this off if you have conflicts with other mods.
 
@@ -320,6 +332,9 @@ config.tfc.general.tree.tooltip=Enable / Disable TerraFirmaCraft Tree Mechanics
 
 config.tfc.general.tree.enableFelling=Enable Felling
 config.tfc.general.tree.enableFelling.tooltip=Enable trees being fully cut by axes. Disable it if you want other mods to handle tree felling.
+
+config.tfc.general.tree.enableHammerSticks=Enable Hammering for Sticks
+config.tfc.general.tree.enableHammerSticks.tooltip=Enable smacking logs with a hammer giving sticks.
 
 config.tfc.general.tree.requiresAxe=Requires Axe
 config.tfc.general.tree.enableFelling.tooltip=Should logs require tools (axes and saws, or hammers for sticks) to be cut? If false, breaking logs with an empty hand will not drop logs.
@@ -442,6 +457,9 @@ config.tfc.general.world.clayRainfallThreshold.tooltip=The minimum rainfall in a
 
 config.tfc.general.world.looseRocksFrequency=Loose Rocks Frequency
 config.tfc.general.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
+
+config.tfc.general.world.sticksDensityModifier=Stick Density Modifier
+config.tfc.general.world.sticksDensityModifier.tooltip=This controls the number of sticks generated on chunk generation. The number of trees in the area and flora density is also a factor in this.
 
 config.tfc.general.world.looseRockScan=Loose Rocks Vein Scan
 config.tfc.general.world.looseRockScan.tooltip=This is how deep (in blocks) from the surface a loose rock will scan for a vein when generating, Higher values = More veins spawn samples thus adding more samples.
