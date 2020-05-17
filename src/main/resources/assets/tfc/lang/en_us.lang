@@ -311,6 +311,9 @@ config.tfc.general.fallable.propagateCollapseChance.tooltip=Chance that collapsi
 config.tfc.general.fallable.chiselCausesCollapse=Chiseling Causes Collapses
 config.tfc.general.fallable.chiselCausesCollapse.tooltip=Should chiseling raw stone blocks cause collapses?
 
+config.tfc.general.fallable.explosionCausesCollapse=Explosion Causes Collapses
+config.tfc.general.fallable.explosionCausesCollapse.tooltip=Should exploding raw stone blocks cause collapses?
+
 ### Difficulty
 config.tfc.general.difficulty=Difficulty Settings
 
