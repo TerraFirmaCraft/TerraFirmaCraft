@@ -8,11 +8,11 @@
   "key": {
     "X": {
       "type": "forge:ore_dict",
-      "ore": "plank"
+      "ore": "plankWood"
     },
     "S": {
       "type": "forge:ore_dict",
-      "ore": "slabStone"
+      "ore": "slabStonePolished"
     }
   },
   "result": {

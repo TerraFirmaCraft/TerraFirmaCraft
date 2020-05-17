@@ -3045,6 +3045,8 @@ tile.tfc.berry_bush.snow_berry.name=Snowberry Bush
 tile.tfc.berry_bush.strawberry.name=Strawberry Bush
 tile.tfc.berry_bush.wintergreen_berry.name=Wintergreen Berry Bush
 
+# Redstone "manipulators"
+## Buttons
 tile.tfc.stone.button.granite.name=Granite Button
 tile.tfc.stone.button.diorite.name=Diorite Button
 tile.tfc.stone.button.gabbro.name=Gabbro Button
@@ -3067,6 +3069,32 @@ tile.tfc.stone.button.schist.name=Schist Button
 tile.tfc.stone.button.gneiss.name=Gneiss Button
 tile.tfc.stone.button.marble.name=Marble Button
 tile.tfc.stone.button.ranite.name=Granite Button
+
+## Plates
+tile.tfc.stone.pressure_plate.granite.name=Granite Pressure Plate
+tile.tfc.stone.pressure_plate.diorite.name=Diorite Pressure Plate
+tile.tfc.stone.pressure_plate.gabbro.name=Gabbro Pressure Plate
+tile.tfc.stone.pressure_plate.shale.name=Shale Pressure Plate
+tile.tfc.stone.pressure_plate.claystone.name=Claystone Pressure Plate
+tile.tfc.stone.pressure_plate.rocksalt.name=Rocksalt Pressure Plate
+tile.tfc.stone.pressure_plate.limestone.name=Limestone Pressure Plate
+tile.tfc.stone.pressure_plate.conglomerate.name=Conglomerate Pressure Plate
+tile.tfc.stone.pressure_plate.dolomite.name=Dolomite Pressure Plate
+tile.tfc.stone.pressure_plate.chert.name=Chert Pressure Plate
+tile.tfc.stone.pressure_plate.chalk.name=Chalk Pressure Plate
+tile.tfc.stone.pressure_plate.rhyolite.name=Rhyolite Pressure Plate
+tile.tfc.stone.pressure_plate.basalt.name=Basalt Pressure Plate
+tile.tfc.stone.pressure_plate.andesite.name=Andesite Pressure Plate
+tile.tfc.stone.pressure_plate.dacite.name=Dacite Pressure Plate
+tile.tfc.stone.pressure_plate.quartzite.name=Quartzite Pressure Plate
+tile.tfc.stone.pressure_plate.slate.name=Slate Pressure Plate
+tile.tfc.stone.pressure_plate.phyllite.name=Phyllite Pressure Plate
+tile.tfc.stone.pressure_plate.schist.name=Schist Pressure Plate
+tile.tfc.stone.pressure_plate.gneiss.name=Gneiss Pressure Plate
+tile.tfc.stone.pressure_plate.marble.name=Marble Pressure Plate
+tile.tfc.stone.pressure_plate.ranite.name=Granite Pressure Plate
+
+# Crops
 tile.tfc.crop.barley.name=Barley
 tile.tfc.crop.beet.name=Beets
 tile.tfc.crop.cabbage.name=Cabbage
