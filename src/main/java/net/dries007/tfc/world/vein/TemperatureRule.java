@@ -5,6 +5,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class TemperatureRule implements IVeinRule
@@ -21,7 +22,7 @@ public class TemperatureRule implements IVeinRule
     public boolean test(IWorld world, ChunkPos pos)
     {
         return ChunkDataProvider.get(world).map(provider -> {
-            float temperature = provider.get(pos).getAverageTemp();
+            float temperature = provider.get(pos, ChunkData.Status.CLIMATE, false).getAverageTemp();
             return temperature >= minimum && temperature <= maximum;
         }).orElse(true);
     }

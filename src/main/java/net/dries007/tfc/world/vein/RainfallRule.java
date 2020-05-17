@@ -5,6 +5,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class RainfallRule implements IVeinRule
@@ -21,7 +22,7 @@ public class RainfallRule implements IVeinRule
     public boolean test(IWorld world, ChunkPos pos)
     {
         return ChunkDataProvider.get(world).map(provider -> {
-            float rainfall = provider.get(pos).getRainfall();
+            float rainfall = provider.get(pos, ChunkData.Status.CLIMATE, false).getRainfall();
             return rainfall >= minimum && rainfall <= maximum;
         }).orElse(true);
     }

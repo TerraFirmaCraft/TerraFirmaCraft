@@ -53,7 +53,7 @@ public class ChunkDataUpdatePacket
                 IChunk chunk = world.getChunk(chunkX, chunkZ);
                 ChunkData.get(chunk).ifPresent(data -> {
                     // Update client side chunk data
-                    data.setValid(true);
+                    data.setStatus(ChunkData.Status.CLIMATE);
                     data.setAverageTemp(regionalTemp);
                     data.setRainfall(rainfall);
 

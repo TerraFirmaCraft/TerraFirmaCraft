@@ -66,7 +66,7 @@ public class ClientForgeEventHandler
                     list.add("");
                     list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
-                    if (data.isValid())
+                    if (data.getStatus().isAtLeast(ChunkData.Status.CLIMATE))
                     {
                         list.add(String.format("%sAvg. Temp: %s%.1f\u00b0C", GRAY, WHITE, data.getAverageTemp()));
                         list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall()));

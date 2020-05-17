@@ -52,8 +52,6 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     private final Map<TFCBiome, INoise2D> biomeNoiseMap;
     private final INoiseGenerator surfaceDepthNoise;
 
-    // Generators / Providers
-    private final TFCBiomeProvider biomeProvider;
     private final WorleyCaveCarver worleyCaveCarver;
     private final ChunkDataProvider chunkDataProvider;
     private final ChunkBlockReplacer blockReplacer;
@@ -74,11 +72,12 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         {
             throw new IllegalArgumentException("biome provider must extend TFCBiomeProvider");
         }
-        this.biomeProvider = (TFCBiomeProvider) biomeProvider; // Custom biome provider class
+        // Generators / Providers
+        TFCBiomeProvider tfcBiomeProvider = (TFCBiomeProvider) biomeProvider; // Custom biome provider class
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator); // Worley cave carver, separate from vanilla ones
         this.chunkDataProvider = new ChunkDataProvider(world, settings, seedGenerator); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(); // Replaces default world gen blocks with TFC variants, after surface generation
-        this.biomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
+        tfcBiomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
     }
 
     public ChunkDataProvider getChunkDataProvider()
@@ -103,9 +102,14 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         super.func_225550_a_(biomeManager, chunkIn, stage);
     }
 
+    @Override
+    public void generateBiomes(IChunk chunkIn)
+    {
+        super.generateBiomes(chunkIn);
+    }
+
     /**
-     * See {@link net.minecraft.world.chunk.ChunkStatus#SURFACE}
-     * Since we build surface in {@link TFCOverworldChunkGenerator#makeBase(IWorld, IChunk)}, we just have to make bedrock and replace surface with TFC blocks here
+     * Since we build surface in {@link TFCOverworldChunkGenerator#makeBase(IWorld, IChunk)}, we just have to make bedrock and replace surface with TFC blocks here.
      */
     @Override
     public void generateSurface(WorldGenRegion worldGenRegion, IChunk chunk)
@@ -116,7 +120,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         makeBedrock(chunk, random);
 
-        ChunkData chunkData = chunkDataProvider.getOrCreate(chunkPos);
+        ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS, false);
         float temperature = chunkData.getAverageTemp();
         float rainfall = chunkData.getRainfall();
         blockReplacer.replace(worldGenRegion, chunk, random, chunkData.getRockData(), rainfall, temperature);
@@ -125,7 +129,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     @Override
     public int getGroundHeight()
     {
-        return getSeaLevel();
+        return getSeaLevel() + 1;
     }
 
     /**
@@ -308,7 +312,6 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         return 0;
     }
 
-    /* func_222555_a in NoiseChunkGenerator */
     private void makeBedrock(IChunk chunk, Random random)
     {
         boolean flatBedrock = getSettings().isFlatBedrock();

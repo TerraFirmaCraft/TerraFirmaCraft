@@ -26,11 +26,11 @@ public class TFCJSONUtils
     {
         if (json.isJsonObject())
         {
-            return Helpers.readBlockState(JSONUtils.getString(json.getAsJsonObject(), "block"), true);
+            return Helpers.readBlockState(JSONUtils.getString(json.getAsJsonObject(), "block"));
         }
         else
         {
-            return Helpers.readBlockState(json.getAsString(), true);
+            return Helpers.readBlockState(json.getAsString());
         }
     }
 
