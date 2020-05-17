@@ -15,7 +15,6 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,6 +25,8 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.PacketFoodStatsReplace;
 import net.dries007.tfc.network.PacketFoodStatsUpdate;
+import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
+import net.dries007.tfc.util.DamageSourcesTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
@@ -34,7 +35,6 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     public static final float PASSIVE_HEAL_AMOUNT = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
     public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for vanilla sources of exhaustion (we use passive exhaustion to keep hunger decaying even when not sprinting everywhere. That said, vanilla exhaustion should be reduced to compensate
     public static final float PASSIVE_EXHAUSTION = 20f * 4f / (2.5f * ICalendar.TICKS_IN_DAY); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
-    public static final DamageSource DEHYDRATION = (new DamageSource("dehydration")).setDamageBypassesArmor().setDamageIsAbsolute(); // Same as starvation, but another message on death
 
     public static void replaceFoodStats(EntityPlayer player)
     {
@@ -96,7 +96,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                     sourcePlayer.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 1800, 1));
                     if (Constants.RNG.nextFloat() < 0.15)
                     {
-                        sourcePlayer.addPotionEffect(new PotionEffect(MobEffects.POISON, 1800, 0));
+                        sourcePlayer.addPotionEffect(new PotionEffect(PotionEffectsTFC.FOOD_POISON, 1800, 0));
                     }
                 }
             }
@@ -192,7 +192,7 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                     if (thirst <= 0f)
                     {
                         // Hurt the player, same as starvation
-                        player.attackEntityFrom(DEHYDRATION, 1);
+                        player.attackEntityFrom(DamageSourcesTFC.DEHYDRATION, 1);
                     }
                 }
                 else if (thirst < 20f)
@@ -328,6 +328,11 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
                 // One drink every so often
                 resetCooldown();
                 addThirst(value);
+                // Salty drink effect
+                if (value < 0 && Constants.RNG.nextDouble() < ConfigTFC.General.PLAYER.chanceThirstOnSaltyDrink)
+                {
+                    sourcePlayer.addPotionEffect(new PotionEffect(PotionEffectsTFC.THIRST, 600, 0));
+                }
             }
             return true;
         }

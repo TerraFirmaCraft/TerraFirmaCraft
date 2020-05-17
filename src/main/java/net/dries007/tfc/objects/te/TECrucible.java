@@ -128,6 +128,9 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
                         {
                             alloy.add(inputStack, cachedRecipes[i]);
                             inventory.setStackInSlot(i, cachedRecipes[i].getOutputStack(inputStack));
+                            // Update reference since it may have changed from recipe output
+                            inputStack = inventory.getStackInSlot(i);
+                            cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
                             markForSync();
                         }
                     }

@@ -49,7 +49,6 @@ public class HwylaEntityInterface implements IWailaEntityProvider, IWailaPlugin
     @Override
     public List<String> getWailaHead(Entity entity, List<String> currentTooltip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
-        currentTooltip.clear();
         currentTooltip.add(TextFormatting.WHITE.toString() + internal.getTitle(accessor.getEntity(), accessor.getNBTData()));
         return currentTooltip;
     }
@@ -58,7 +57,6 @@ public class HwylaEntityInterface implements IWailaEntityProvider, IWailaPlugin
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currentTooltip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
-        currentTooltip.clear();
         currentTooltip.addAll(internal.getTooltip(entity, accessor.getNBTData()));
         return currentTooltip;
     }

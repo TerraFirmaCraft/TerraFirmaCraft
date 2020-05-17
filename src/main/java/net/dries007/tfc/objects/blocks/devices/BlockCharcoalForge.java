@@ -177,6 +177,17 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     }
 
     @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
+    {
+        TECharcoalForge te = Helpers.getTE(worldIn, pos, TECharcoalForge.class);
+        // Have to check the above block, since minecraft think this block is "roof"
+        if (te != null && state.getValue(LIT) && worldIn.isRainingAt(pos.up()))
+        {
+            te.onRainDrop();
+        }
+    }
+
+    @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (!isValid(worldIn, pos))

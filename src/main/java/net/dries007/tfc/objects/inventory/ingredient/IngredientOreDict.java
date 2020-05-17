@@ -35,8 +35,9 @@ public class IngredientOreDict implements IIngredient<ItemStack>
         NonNullList<ItemStack> output = NonNullList.create();
         for (ItemStack out : OreDictionary.getOres(oreName))
         {
-            out.setCount(amount);
-            output.add(out);
+            ItemStack addToList = out.copy(); // Don't tamper with forge's ore dictionary list
+            addToList.setCount(amount);
+            output.add(addToList);
         }
         return output;
     }

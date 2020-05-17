@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -156,11 +157,29 @@ public class BlockLargeVessel extends Block implements IItemSize
         return state.getValue(SEALED) ? BOUNDING_BOX_SEALED : BOUNDING_BOX;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    @Nonnull
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (!canStay(world, pos))
+        {
+            world.destroyBlock(pos, true);
+        }
     }
 
     @Override
@@ -180,6 +199,12 @@ public class BlockLargeVessel extends Block implements IItemSize
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World world, BlockPos pos)
+    {
+        return canStay(world, pos);
     }
 
     @Override
@@ -273,5 +298,10 @@ public class BlockLargeVessel extends Block implements IItemSize
         // Unseal the barrel if an explosion destroys it, so it drops it's contents
         world.setBlockState(pos, world.getBlockState(pos).withProperty(SEALED, false));
         super.onBlockExploded(world, pos, explosion);
+    }
+
+    private boolean canStay(IBlockAccess world, BlockPos pos)
+    {
+        return world.getBlockState(pos.down()).getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
     }
 }

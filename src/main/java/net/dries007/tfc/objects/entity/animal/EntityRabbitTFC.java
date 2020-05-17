@@ -43,7 +43,6 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -265,12 +264,6 @@ public class EntityRabbitTFC extends EntityAnimalMammal implements IHuntable
     public int getDaysToElderly()
     {
         return 0;
-    }
-
-    @Override
-    public boolean isFood(@Nonnull ItemStack stack)
-    {
-        return OreDictionaryHelper.doesStackMatchOre(stack, "carrot");
     }
 
     @Override

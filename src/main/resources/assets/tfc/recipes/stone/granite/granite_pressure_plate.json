@@ -1,0 +1,19 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:brick/granite"
+    },
+    {
+      "item": "tfc:brick/granite"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "chisel"
+    }
+  ],
+  "result": {
+    "item": "tfc:stone/pressure_plate/granite",
+    "count": 1
+  }
+}

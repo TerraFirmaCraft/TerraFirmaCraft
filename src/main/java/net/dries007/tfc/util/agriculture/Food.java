@@ -82,7 +82,7 @@ public enum Food
     TOMATO(VEGETABLE, 4, 0.5f, 5f, 0f, 1.5f, 0f, 0f, 0f, 3.5f),
     YELLOW_BELL_PEPPER(VEGETABLE, 4, 1f, 0f, 0f, 1f, 0f, 0f, 0f, 2.5f),
     CHEESE(DAIRY, 4, 2f, 0f, 0f, 0f, 0f, 0f, 4f, 0.3f),
-    COOKED_EGG(DAIRY, 4, 0.5f, 0f, 0f, 0f, 0f, 0f, 1f, 1.6f),
+    COOKED_EGG(DAIRY, 4, 0.5f, 0f, 0f, 0f, 0f, 0f, 1f, 3f),
     SUGARCANE(GRAIN, 4, 0f, 0f, 0.5f, 0f, 0f, 0f, 0f, 4f),
     BEEF(MEAT, 4, 2f, 0f, 0f, 0f, 0f, 2f, 0f, 2f, 1f, 200f),
     PORK(MEAT, 4, 2f, 0f, 0f, 0f, 0f, 2f, 0f, 2f, 1f, 200f),

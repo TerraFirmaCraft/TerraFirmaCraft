@@ -47,7 +47,7 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
         return MAP.get(wood);
     }
 
-    public final Tree wood;
+    private final Tree wood;
 
     public BlockSaplingTFC(Tree wood)
     {
@@ -112,6 +112,11 @@ public class BlockSaplingTFC extends BlockBush implements IGrowable
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TETickCounter();
+    }
+
+    public Tree getWood()
+    {
+        return wood;
     }
 
     @Override

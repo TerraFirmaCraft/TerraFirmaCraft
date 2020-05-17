@@ -11,9 +11,7 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -21,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -34,6 +31,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -78,9 +77,8 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
         this.setBirthDay(birthDay);
         this.setFamiliarity(0);
         this.setGrowingAge(0); //We don't use this
-        this.lastFed = -1;
-        this.matingTime = -1;
-        this.lastDeath = -1;
+        this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
+        this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.lastFDecay = CalendarTFC.PLAYER_TIME.getTotalDays();
         this.fertilized = false;
     }
@@ -161,20 +159,12 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     {
         if (this.getAge() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || this.isHungry())
             return false;
-        return this.matingTime == -1 || this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
-    }
-
-    @Override
-    public boolean isFood(@Nonnull ItemStack stack)
-    {
-        // Since there's no way to get fish in default TFC, let's consider meats as also valid food items for cats
-        return (stack.getItem() == Items.FISH) || (stack.getItem() instanceof ItemFood && ((ItemFood) stack.getItem()).isWolfsFavoriteMeat());
+        return this.matingTime + EntityAnimalTFC.MATING_COOLDOWN_DEFAULT_TICKS <= CalendarTFC.PLAYER_TIME.getTicks();
     }
 
     @Override
     public boolean isHungry()
     {
-        if (lastFed == -1) return true;
         return lastFed < CalendarTFC.PLAYER_TIME.getTotalDays();
     }
 
@@ -249,6 +239,10 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (!this.world.isRemote)
         {
             if (this.isFertilized() && CalendarTFC.PLAYER_TIME.getTotalDays() >= pregnantTime + gestationDays())
@@ -274,22 +268,14 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
                 this.matingTime = CalendarTFC.PLAYER_TIME.getTicks();
                 EntityAnimalTFC.findFemaleMate(this);
             }
-            if (this.getAge() == Age.OLD || lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
+            if (this.getAge() == Age.OLD && lastDeath < CalendarTFC.PLAYER_TIME.getTotalDays())
             {
-                if (lastDeath == -1)
+                this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
+                // Randomly die of old age, tied to entity UUID and calendar time
+                final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
+                if (random.nextDouble() < ConfigTFC.Animals.OCELOT.oldDeathChance)
                 {
-                    // First time check, to avoid dying at the same time this animal spawned, we skip the first day
-                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                }
-                else
-                {
-                    this.lastDeath = CalendarTFC.PLAYER_TIME.getTotalDays();
-                    // Randomly die of old age, tied to entity UUID and calendar time
-                    final Random random = new Random(this.entityUniqueID.getMostSignificantBits() * CalendarTFC.PLAYER_TIME.getTotalDays());
-                    if (random.nextDouble() < ConfigTFC.Animals.OCELOT.oldDeathChance)
-                    {
-                        this.setDead();
-                    }
+                    this.setDead();
                 }
             }
         }
@@ -316,10 +302,22 @@ public class EntityOcelotTFC extends EntityOcelot implements IAnimalTFC, IHuntab
     protected void initEntityAI()
     {
         super.initEntityAI();
-        this.targetTasks.addTask(1, new EntityAITargetNonTamed<>(this, EntityPheasantTFC.class, false, pheasant -> true));
-        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityChickenTFC.class, false, chicken -> true));
-        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityDuckTFC.class, false, duck -> true));
-        this.targetTasks.addTask(3, new EntityAITargetNonTamed<>(this, EntityRabbitTFC.class, false, rabbit -> true));
+
+        int priority = 1;
+        for (String input : ConfigTFC.Animals.OCELOT.huntCreatures)
+        {
+            ResourceLocation key = new ResourceLocation(input);
+            EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
+            if (entityEntry != null)
+            {
+                Class<? extends Entity> entityClass = entityEntry.getEntityClass();
+                if (EntityLivingBase.class.isAssignableFrom(entityClass))
+                {
+                    //noinspection unchecked
+                    this.targetTasks.addTask(priority++, new EntityAITargetNonTamed<>(this, (Class<EntityLivingBase>) entityClass, false, ent -> true));
+                }
+            }
+        }
     }
 
     @Override

@@ -23,6 +23,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.capability.egg.CapabilityEgg;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -30,7 +31,7 @@ import net.dries007.tfc.network.PacketCapabilityContainerUpdate;
 
 /**
  * This is a central synchronization manager for item stack capability data that needs to be synced in containers (inventories) of all kinds
- * Since capability data is noy synced by default, but a lot of our applications require it to be client visible, we do two things:
+ * Since capability data is not synced by default, but a lot of our applications require it to be client visible, we do two things:
  * - On player tick, we perform a second pass of {@link Container#detectAndSendChanges()}, in order to detect and send updates for cases where ONLY capabilities have changed. These are not detected by vanilla's implementation of this method and as a result no packets are sent
  * - This listener itself is used to sync capability data WITHOUT overwriting the client side item stack. It uses {@link INBTSerializable} capabilities and calls deserialization on the client to accomplish this. This avoids issues with packets arriving out of order resulting in perceived "flickering" on the client.
  *
@@ -55,6 +56,7 @@ public class CapabilityContainerListener implements IContainerListener
         SYNC_CAPS.put(CapabilityItemHeat.KEY.toString(), CapabilityItemHeat.ITEM_HEAT_CAPABILITY);
         SYNC_CAPS.put(CapabilityForgeable.KEY.toString(), CapabilityForgeable.FORGEABLE_CAPABILITY);
         SYNC_CAPS.put(CapabilityFood.KEY.toString(), CapabilityFood.CAPABILITY);
+        SYNC_CAPS.put(CapabilityEgg.KEY.toString(), CapabilityEgg.CAPABILITY);
     }
 
     /**

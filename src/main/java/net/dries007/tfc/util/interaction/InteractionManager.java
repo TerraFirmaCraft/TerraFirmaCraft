@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCSounds;
@@ -129,7 +130,7 @@ public final class InteractionManager
                     }
                 }
                 // Try and place a log pile - if you were sneaking
-                if (player.isSneaking())
+                if (ConfigTFC.General.OVERRIDES.enableLogPiles && player.isSneaking())
                 {
                     BlockPos posAt = pos;
                     if (!stateAt.getBlock().isReplaceable(worldIn, pos))

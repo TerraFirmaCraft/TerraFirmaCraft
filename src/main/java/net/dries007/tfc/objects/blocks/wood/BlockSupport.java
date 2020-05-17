@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.blocks.wood;
 import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -19,9 +20,12 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -30,6 +34,7 @@ import net.minecraft.world.World;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@ParametersAreNonnullByDefault
 public class BlockSupport extends Block
 {
     /* Axis of the support, Y for vertical placed, Z/X for horizontal */
@@ -296,6 +301,39 @@ public class BlockSupport extends Block
             int distance = getHorizontalDistance(side, world, pos);
             return distance > 0;
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        ItemStack heldStack = player.getHeldItem(hand);
+        if (player.isSneaking() && heldStack.getItem() instanceof ItemBlock && ((ItemBlock) heldStack.getItem()).getBlock() == this)
+        {
+            // Try placing a support block
+            int maxSearch = 5;
+            BlockPos above = pos.up();
+            while (world.getBlockState(above).getBlock() instanceof BlockSupport)
+            {
+                above = above.up();
+                if (--maxSearch <= 0)
+                {
+                    return false;
+                }
+            }
+            if (world.getBlockState(above).getMaterial().isReplaceable())
+            {
+                if (!world.isRemote)
+                {
+                    world.setBlockState(above, this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
+                    if (!player.isCreative())
+                    {
+                        heldStack.shrink(1);
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

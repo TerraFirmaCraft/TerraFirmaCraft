@@ -32,7 +32,7 @@ public class IngredientItemFood implements IIngredient<ItemStack>
             IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
             if (food != null)
             {
-                food.setCreationDate(CapabilityFood.getRoundedCreationDate());
+                food.setNonDecaying();
             }
         }
         return ingredients;

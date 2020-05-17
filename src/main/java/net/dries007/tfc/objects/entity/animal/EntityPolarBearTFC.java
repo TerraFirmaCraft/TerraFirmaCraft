@@ -25,6 +25,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -81,7 +83,23 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
         this.tasks.addTask(5, wander);
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+
+        int priority = 2;
+        for (String input : ConfigTFC.Animals.POLAR_BEAR.huntCreatures)
+        {
+            ResourceLocation key = new ResourceLocation(input);
+            EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
+            if (entityEntry != null)
+            {
+                Class<? extends Entity> entityClass = entityEntry.getEntityClass();
+                if (EntityLivingBase.class.isAssignableFrom(entityClass))
+                {
+                    //noinspection unchecked
+                    this.targetTasks.addTask(priority++, new EntityAINearestAttackableTarget<>(this, (Class<EntityLivingBase>) entityClass, false));
+                }
+            }
+        }
     }
 
     @Override
@@ -113,6 +131,10 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     public void onUpdate()
     {
         super.onUpdate();
+        if (this.ticksExisted % 100 == 0)
+        {
+            setScaleForAge(false);
+        }
         if (this.warningSoundTicks > 0)
         {
             --this.warningSoundTicks;

@@ -106,6 +106,22 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableIngotPiles")
             public boolean enableIngotPiles = true;
 
+            @Config.Comment("Enable log pile placement in world.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableLogPiles")
+            public boolean enableLogPiles = true;
+
+            @Config.Comment("Enable the creation of thatch beds.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableThatchBed")
+            public boolean enableThatchBed = true;
+
+            @Config.Comment("Enable the creation of grass paths using TFC's shovels.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableGrassPath")
+            public boolean enableGrassPath = true;
+
+            @Config.Comment("Enable the creation of stone anvils.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableStoneAnvil")
+            public boolean enableStoneAnvil = true;
+
             @Config.Comment("Turn this off if you have conflicts with other mods")
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableTorchOverride")
             public boolean enableTorchOverride = true;
@@ -177,6 +193,10 @@ public final class ConfigTFC
             @Config.Comment("Should chiseling raw stone blocks cause collapses?")
             @Config.LangKey("config." + MOD_ID + ".general.fallable.chiselCausesCollapse")
             public boolean chiselCausesCollapse = true;
+
+            @Config.Comment("Should exploding raw stone blocks cause collapses?")
+            @Config.LangKey("config." + MOD_ID + ".general.fallable.explosionCausesCollapse")
+            public boolean explosionCausesCollapse = true;
         }
 
         public static final class DifficultyCFG
@@ -206,6 +226,10 @@ public final class ConfigTFC
                 "Disable it if you want other mods to handle tree felling."})
             @Config.LangKey("config." + MOD_ID + ".general.tree.enableFelling")
             public boolean enableFelling = true;
+
+            @Config.Comment("Enable smacking logs with a hammer giving sticks.")
+            @Config.LangKey("config." + MOD_ID + ".general.tree.enableHammerSticks")
+            public boolean enableHammerSticks = true;
 
             @Config.Comment("Should logs require tools (axes and saws, or hammers for sticks) to be cut? If false, breaking logs with an empty hand will not drop logs.")
             @Config.LangKey("config." + MOD_ID + ".general.tree.requiresAxe")
@@ -344,6 +368,11 @@ public final class ConfigTFC
             @Config.RangeInt(min = 1)
             public int drinkDelay = 12;
 
+            @Config.Comment("Chance that a salty drink apply a thirst effect")
+            @Config.LangKey("config." + MOD_ID + ".general.player.chanceThirstOnSaltyDrink")
+            @Config.RangeDouble(min = 0, max = 1)
+            public double chanceThirstOnSaltyDrink = 0.25;
+
             @Config.Comment("Which inventory slots will ammo refill/pickup search for quivers?")
             @Config.LangKey("config." + MOD_ID + ".general.player.quiverSearch")
             public QuiverSearch quiverSearch = QuiverSearch.HOTBAR;
@@ -381,6 +410,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".general.world.looseRocksFrequency")
             public int looseRocksFrequency = 18;
+
+            @Config.Comment({"This controls the number of sticks generated on chunk generation.",
+                "The number of trees in the area and flora density is also a factor in this."})
+            @Config.RangeDouble(min = 0, max = 10)
+            @Config.LangKey("config." + MOD_ID + ".general.world.sticksDensityModifier")
+            public double sticksDensityModifier = 1;
 
             @Config.Comment("This is how deep (in blocks) from the surface a loose rock will scan for a vein when generating, Higher values = More veins spawn samples thus adding more samples.")
             @Config.RangeInt(min = 1, max = 255)
@@ -566,6 +601,16 @@ public final class ConfigTFC
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".general.misc.damagePerFeather")
             public double damagePerFeather = 0.6;
+
+            @Config.Comment("This controls the time it takes to mine rock blocks. 1.0 = Like vanilla, 10.0 = Classic TFC")
+            @Config.RangeDouble(min = 1, max = 1000)
+            @Config.LangKey("config." + MOD_ID + ".general.misc.rockMiningTimeModifier")
+            public double rockMiningTimeModifier = 10.0;
+
+            @Config.Comment("This controls the time it takes to mine log blocks. 1.0 = Like vanilla, 7.5 = Classic TFC")
+            @Config.RangeDouble(min = 1, max = 1000)
+            @Config.LangKey("config." + MOD_ID + ".general.misc.logMiningTimeModifier")
+            public double logMiningTimeModifier = 7.5;
         }
     }
 
@@ -597,6 +642,10 @@ public final class ConfigTFC
         @Config.Comment("Charcoal Pit")
         @Config.LangKey("config." + MOD_ID + ".devices.charcoal_pit")
         public static final CharcoalPitCFG CHARCOAL_PIT = new CharcoalPitCFG();
+
+        @Config.Comment("Charcoal Forge")
+        @Config.LangKey("config." + MOD_ID + ".devices.charcoal_forge")
+        public static final CharcoalForgeCFG CHARCOAL_FORGE = new CharcoalForgeCFG();
 
         @Config.Comment("Fire Pit")
         @Config.LangKey("config." + MOD_ID + ".devices.fire_pit")
@@ -642,6 +691,10 @@ public final class ConfigTFC
             @Config.RangeInt(min = 100)
             @Config.LangKey("config." + MOD_ID + ".devices.barrel.tank")
             public int tank = 10_000;
+
+            @Config.Comment("List of fluids allowed to be inserted into a barrel.")
+            @Config.LangKey("config." + MOD_ID + ".devices.barrel.fluidWhitelist")
+            public String[] fluidWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar", "white_dye", "orange_dye", "magenta_dye", "light_blue_dye", "yellow_dye", "lime_dye", "pink_dye", "gray_dye", "light_gray_dye", "cyan_dye", "purple_dye", "blue_dye", "brown_dye", "green_dye", "red_dye", "black_dye"};
         }
 
         public static final class BlastFurnaceCFG
@@ -680,12 +733,27 @@ public final class ConfigTFC
             public int ticks = 18_000;
         }
 
+        public static final class CharcoalForgeCFG
+        {
+            @Config.Comment({"Number of burning ticks that is removed when the charcoal forge is on rain (random ticks).",
+                "This effectively makes the charcoal forge consumes more fuel when it is raining above it."})
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".devices.charcoal_forge.rainTicks")
+            public int rainTicks = 600;
+        }
+
         public static final class FirePitCFG
         {
             @Config.Comment("Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1 hour.")
             @Config.RangeInt(min = 20)
             @Config.LangKey("config." + MOD_ID + ".devices.fire_pit.ticks")
             public int ticks = 1_000;
+
+            @Config.Comment({"Number of burning ticks that is removed when the fire pit is on rain (random ticks).",
+                "This effectively makes the fire pit consumes more fuel when it is raining above it."})
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".devices.fire_pit.rainTicks")
+            public int rainTicks = 1000;
         }
 
         public static final class PitKilnCFG
@@ -966,7 +1034,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1004,7 +1072,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1042,7 +1110,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1080,7 +1148,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1113,7 +1181,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1146,7 +1214,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1179,7 +1247,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1212,7 +1280,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1245,7 +1313,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1278,7 +1346,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1311,7 +1379,7 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1334,12 +1402,12 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 0;
         }
 
         public static final class OcelotCFG
@@ -1367,12 +1435,18 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:pheasanttfc", "tfc:chickentfc", "tfc:ducktfc", "tfc:rabbittfc"};
         }
 
         public static final class WolfCFG
@@ -1400,12 +1474,18 @@ public final class ConfigTFC
             @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
             @Config.RangeDouble(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
-            public double oldDeathChance = 0.1;
+            public double oldDeathChance = 0;
 
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 50;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:rabbittfc", "tfc:sheeptfc"};
         }
 
         public static final class BearCFG
@@ -1414,6 +1494,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class PolarBearCFG
@@ -1422,6 +1508,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class LionCFG
@@ -1430,6 +1522,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class PantherCFG
@@ -1438,6 +1536,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class SaberToothCFG
@@ -1454,6 +1558,12 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {};
         }
 
         public static final class DeerCFG
