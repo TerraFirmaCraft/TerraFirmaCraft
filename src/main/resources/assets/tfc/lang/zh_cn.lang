@@ -194,10 +194,12 @@ tfc.food_traits.brined_active=盐渍中
 tfc.food_traits.salted=抹盐
 tfc.food_traits.pickled=腌制
 tfc.food_traits.preserved=储存
+tfc.food_traits.vinegar=酸渍
 tfc.food_traits.charcoal_grilled=木炭烤制
 tfc.food_traits.wood_grilled=原木烤制
 tfc.tooltip.barrel_recipe_pickling=腌制中
 tfc.tooltip.barrel_recipe_brining=盐渍中
+tfc.tooltip.barrel_recipe_vinegar=酸渍中
 
 ## Skills
 tfc.skill.prospecting=探矿：%s
@@ -250,6 +252,18 @@ config.tfc.general.overrides.tooltip=各种覆盖设置，一些用于兼容性
 config.tfc.general.overrides.enableIngotPiles=启用金属锭堆摆放
 config.tfc.general.overrides.enableIngotPiles.tooltip=启用 Shift + 右键在地上摆放金属锭堆。
 
+config.tfc.general.overrides.enableLogPiles=启用原木堆摆放
+config.tfc.general.overrides.enableLogPiles.tooltip=启用 Shift + 右键在地上摆放原木堆。
+
+config.tfc.general.overrides.enableThatchBed=启用干草床
+config.tfc.general.overrides.enableThatchBed.tooltip=启用用干草做床。
+
+config.tfc.general.overrides.enableGrassPath=启用草径
+config.tfc.general.overrides.enableGrassPath.tooltip=启用使用铲创造草径。
+
+config.tfc.general.overrides.enableStoneAnvil=启用石砧
+config.tfc.general.overrides.enableStoneAnvil.tooltip=启用用岩石造砧。
+
 config.tfc.general.overrides.enableTorchOverride=启用火把覆盖
 config.tfc.general.overrides.enableTorchOverride.tooltip=如果与其他模组有冲突，关掉此选项。
 
@@ -301,7 +315,10 @@ config.tfc.general.fallable.propagateCollapseChance=塌方扩散几率
 config.tfc.general.fallable.propagateCollapseChance.tooltip=塌方的方块扩散塌方的几率。受与塌方中心的距离影响。
 
 config.tfc.general.fallable.chiselCausesCollapse=凿石引起塌方
-config.tfc.general.fallable.chiselCausesCollapse.tooltip=凿未加工的石头时可能引起塌方吗？
+config.tfc.general.fallable.chiselCausesCollapse.tooltip=凿未加工的石头可能引起塌方吗？
+
+config.tfc.general.fallable.explosionCausesCollapse=爆炸引起塌方
+config.tfc.general.fallable.explosionCausesCollapse.tooltip=爆破未加工的石头可能引起塌方吗？
 
 ### Difficulty
 config.tfc.general.difficulty=难度设置
@@ -324,6 +341,9 @@ config.tfc.general.tree.tooltip=启用 / 禁用群峦传说的树木机制
 
 config.tfc.general.tree.enableFelling=启用树木砍伐
 config.tfc.general.tree.enableFelling.tooltip=允许斧砍倒整棵树。如果你想使用其他模组处理树木砍伐，禁用此选项。
+
+config.tfc.general.tree.enableHammerSticks=启用锤木棍
+config.tfc.general.tree.enableHammerSticks.tooltip=启用用锤子锤原木时掉落木棍。
 
 config.tfc.general.tree.requiresAxe=斧的需要
 config.tfc.general.tree.enableFelling.tooltip=原木需要相对应的工具（斧和锯，或对木棍来说锤）才能开采吗？若为 false，空手破坏原木时什么都不会掉落。
@@ -413,10 +433,13 @@ config.tfc.general.player.passiveExhaustionMultiplier=饥饿值被动消耗修�
 config.tfc.general.player.passiveExhaustionMultiplier.tooltip=修改饥饿值的被动消耗。1.0 = 在 2.5 游戏日内耗尽整个饥饿值条。
 
 config.tfc.general.player.nutritionRotationHungerWindow=营养刷新的饥饿值窗口期
-config.tfc.general.player.nutritionRotationHungerWindow.tooltip=The amount of replenished hunger before the player's nutrition will lose the first food consumed. Most TFC foods have 4 hunger. Example: Multiply Vanilla hunger(20) by 4 to get one food bar worth of food before the first food is lost from the cycle. #TOFIX
+config.tfc.general.player.nutritionRotationHungerWindow.tooltip=玩家当前的营养值由最近食用的总饥饿值为该值的若干食物计算得到。绝大多数群峦传说的食物有 4 饥饿值。例如：将原版的饥饿值（20）乘 4，这样玩家的营养信息由最近食用的 20 个食物决定。
 
 config.tfc.general.player.drinkDelay=饮水用时
 config.tfc.general.player.drinkDelay.tooltip=通过手中物品饮水所需的时间（以刻为单位）。
+
+config.tfc.general.player.chanceThirstOnSaltyDrink=饮用咸水干渴几率
+config.tfc.general.player.chanceThirstOnSaltyDrink.tooltip=当饮用咸水时获得干渴状态效果的几率。
 
 config.tfc.general.player.quiverSearch=箭袋搜索位置
 config.tfc.general.player.quiverSearch.tooltip=箭袋会从哪些地方填充弹药？
@@ -443,6 +466,9 @@ config.tfc.general.world.clayRainfallThreshold.tooltip=区域生成粘土所需�
 
 config.tfc.general.world.looseRocksFrequency=零散石子频率
 config.tfc.general.world.looseRocksFrequency.tooltip=每个区块生成地表零散石子的尝试次数。包括地表矿石样本。
+
+config.tfc.general.world.sticksDensityModifier=木棍密度修正值
+config.tfc.general.world.sticksDensityModifier.tooltip=控制区块生成时生成木棍的数目。该区域树木的数目和植物群密度同样影响最终结果。
 
 config.tfc.general.world.looseRockScan=零散石子矿脉扫描
 config.tfc.general.world.looseRockScan.tooltip=控制生成零散石子时扫描矿脉的深度（以方块为单位）。更大的值 = 扫描到更多的矿脉，带来更多的矿石样本。
@@ -563,6 +589,12 @@ config.tfc.general.misc.pluckableEntities.tooltip=Shift + 右键点击时掉落�
 config.tfc.general.misc.damagePerFeather=羽毛采集伤害
 config.tfc.general.misc.damagePerFeather.tooltip=当采集实体的羽毛时，对其造成的伤害。
 
+config.tfc.general.misc.rockMiningTimeModifier=岩石采掘时间修正值
+config.tfc.general.misc.rockMiningTimeModifier.tooltip=控制采掘岩石时所需的时间。1.0 = 类似于原版，10.0 = 经典群峦
+
+config.tfc.general.misc.logMiningTimeModifier=原木采掘时间修正值
+config.tfc.general.misc.logMiningTimeModifier.tooltip=控制采掘原木时所需的时间。1.0 = 类似于原版，10.0 = 经典群峦
+
 
 ## Devices Config
 config.tfc.devices=设施设置
@@ -584,6 +616,9 @@ config.tfc.devices.barrel=大桶
 
 config.tfc.devices.barrel.tank=大桶容量
 config.tfc.devices.barrel.tank.tooltip=大桶能容纳多少液体？（mB）
+
+config.tfc.devices.barrel.fluidWhitelist=液体白名单
+config.tfc.devices.barrel.fluidWhitelist.tooltip=允许倒入大桶的液体列表。
 
 
 ### Blast Furnace
@@ -617,11 +652,21 @@ config.tfc.devices.charcoal_pit.ticks=刻
 config.tfc.devices.charcoal_pit.ticks.tooltip=木炭坑燃烧完毕所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 18 小时。
 
 
+### Charcoal Forge
+config.tfc.devices.charcoal_forge=木炭炉
+
+config.tfc.devices.charcoal_forge.rainTicks=雨中燃料损耗
+config.tfc.devices.charcoal_forge.ticks.tooltip=当木炭炉在雨中时燃料的损耗，以刻为单位（基于随机刻）。这使得当木炭炉在雨中时，显著地消耗更多的燃料。
+
+
 ### Fire Pit
 config.tfc.devices.fire_pit=篝火
 
 config.tfc.devices.fire_pit.ticks=烹饪锅沸腾时间
 config.tfc.devices.fire_pit.ticks.tooltip=在篝火上烧开一锅所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 1 小时。
+
+config.tfc.devices.fire_pit.rainTicks=雨中燃料损耗
+config.tfc.devices.fire_pit.ticks.tooltip=当篝火在雨中时燃料的损耗，以刻为单位（基于随机刻）。这使得当篝火在雨中时，显著地消耗更多的燃料。
 
 
 ### Pit Kiln
@@ -733,7 +778,7 @@ config.tfc.client.display.rottenFoodOverlayColor.tooltip=在腐烂食物上额�
 
 ## Animals
 config.tfc.animals=动物设置
-config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数量，生成稀有度。
+config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数目，生成稀有度。
 
 
 ### Config Names
@@ -776,7 +821,7 @@ config.tfc.animals.gestation.tooltip=该动物需要多少天才可以分娩？
 config.tfc.animals.hatch=孵化
 config.tfc.animals.hatch.tooltip=该动物需要多少天完成孵化？
 
-config.tfc.animals.babies=每次妊娠幼崽数量
+config.tfc.animals.babies=每次妊娠幼崽数目
 config.tfc.animals.babies.tooltip=该动物分娩时会生出多少幼崽？
 
 config.tfc.animals.woolTicks=羊毛生长时间
@@ -793,6 +838,15 @@ config.tfc.animals.oldDeathChance.tooltip=如果这个动物已经进入老年�
 
 config.tfc.animals.rarity=在区块中生成稀有度
 config.tfc.animals.rarity.tooltip=该动物生成的稀有度。平均 1 / N 区块（若为有效生物群系）将生成该动物。0 = 禁用该动物的生成
+
+config.tfc.animals.huntCreatures=猎物实体
+config.tfc.animals.huntCreatures.tooltip=控制哪些注册的实体可被该生物狩猎（除非被拴绳拴住），以优先级顺序。必须使用如 '模组ID:实体' 这样的模式指定。无效的项将被忽略。
+
+config.tfc.animals.food=食物列表
+config.tfc.animals.food.tooltip=控制哪些物品被认为是该动物的食物。必须使用如 'ore:tag' 或 '模组ID:物品 [meta]' 这样的模式指定。无效的项将被忽略。
+
+config.tfc.animals.acceptRotten=接受腐烂的食物
+config.tfc.animals.acceptRotten.tooltip=该生物吃腐烂的食物吗？
 
 
 # Misc
@@ -2997,6 +3051,8 @@ tile.tfc.berry_bush.snow_berry.name=雪莓灌木
 tile.tfc.berry_bush.strawberry.name=草莓灌木
 tile.tfc.berry_bush.wintergreen_berry.name=冬青莓灌木
 
+# Redstone "manipulators"
+## Buttons
 tile.tfc.stone.button.granite.name=花岗岩按钮
 tile.tfc.stone.button.diorite.name=闪长岩按钮
 tile.tfc.stone.button.gabbro.name=辉长岩按钮
@@ -3019,6 +3075,32 @@ tile.tfc.stone.button.schist.name=片岩按钮
 tile.tfc.stone.button.gneiss.name=片麻岩按钮
 tile.tfc.stone.button.marble.name=大理岩按钮
 tile.tfc.stone.button.ranite.name=花岗岩按钮
+
+## Plates
+tile.tfc.stone.pressure_plate.granite.name=花岗岩压力板
+tile.tfc.stone.pressure_plate.diorite.name=闪长岩压力板
+tile.tfc.stone.pressure_plate.gabbro.name=辉长岩压力板
+tile.tfc.stone.pressure_plate.shale.name=页岩压力板
+tile.tfc.stone.pressure_plate.claystone.name=粘土岩压力板
+tile.tfc.stone.pressure_plate.rocksalt.name=盐岩压力板
+tile.tfc.stone.pressure_plate.limestone.name=石灰岩压力板
+tile.tfc.stone.pressure_plate.conglomerate.name=砾岩压力板
+tile.tfc.stone.pressure_plate.dolomite.name=白云岩压力板
+tile.tfc.stone.pressure_plate.chert.name=硅质岩压力板
+tile.tfc.stone.pressure_plate.chalk.name=白垩岩压力板
+tile.tfc.stone.pressure_plate.rhyolite.name=流纹岩压力板
+tile.tfc.stone.pressure_plate.basalt.name=玄武岩压力板
+tile.tfc.stone.pressure_plate.andesite.name=安山岩压力板
+tile.tfc.stone.pressure_plate.dacite.name=英安岩压力板
+tile.tfc.stone.pressure_plate.quartzite.name=石英岩压力板
+tile.tfc.stone.pressure_plate.slate.name=板岩压力板
+tile.tfc.stone.pressure_plate.phyllite.name=千枚岩压力板
+tile.tfc.stone.pressure_plate.schist.name=片岩压力板
+tile.tfc.stone.pressure_plate.gneiss.name=片麻岩压力板
+tile.tfc.stone.pressure_plate.marble.name=大理岩压力板
+tile.tfc.stone.pressure_plate.ranite.name=花岗岩压力板
+
+# Crops
 tile.tfc.crop.barley.name=大麦
 tile.tfc.crop.beet.name=甜菜
 tile.tfc.crop.cabbage.name=卷心菜
@@ -4414,10 +4496,13 @@ entity.hyenatfc.name=鬣狗
 
 #TFC death messages
 death.attack.dehydration=%1$s 死于脱水
+death.attack.food_poison=%1$s 死于食物中毒
+death.attack.plucking=%1$s 被拔光了毛
 
 #Effects
 effectsTFC.overburdened=负担过重
 effectsTFC.thirst=干渴
+effectsTFC.food_poison=食物中毒
 
 # Animal names by gender
 tfc.animal.sheeptfc.male=公羊
