@@ -88,7 +88,7 @@ def generate(rm: ResourceManager):
         'faces': {'north': {'texture': '#overlay', 'cullface': 'north', 'tintindex': 0}}
     }
     for var in SOIL_BLOCK_VARIANTS:
-        for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % var), ('clay_grass', 'tfc:block/clay_dirt/%s' % var)):
+        for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % var), ('clay_grass', 'tfc:block/clay/%s' % var)):
             rm.blockstate_multipart((grass_var, var), [
                 {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'x': 270},
                 {'model': 'tfc:block/%s/%s_bottom' % (grass_var, var), 'x': 90},
