@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "block/block",
   "textures": {
-    "texture": "tfc:block/clay_dirt/loam",
-    "particle": "tfc:block/clay_dirt/loam"
+    "texture": "tfc:block/clay/loam",
+    "particle": "tfc:block/clay/loam"
   },
   "elements": [
     {
