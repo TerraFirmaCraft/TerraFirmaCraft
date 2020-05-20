@@ -1,18 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "SSS",
-    "RRW",
-    "SSS"
+    "CCC",
+    "RRB",
+    "CCC"
   ],
   "key": {
-    "S": {
+    "C": {
       "type": "forge:ore_dict",
-      "ore": "gem"
+      "ore": "cobblestone"
     },
-    "W": {
-      "type": "forge:ore_dict",
-      "ore": "planksWood"
+    "B": {
+      "item": "tfc:brass_mechanisms"
     },
     "R": {
       "type": "forge:ore_dict",

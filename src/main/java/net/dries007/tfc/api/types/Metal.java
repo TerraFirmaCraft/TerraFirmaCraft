@@ -27,12 +27,16 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
     public static final Metal UNKNOWN = Helpers.getNull();
     @GameRegistry.ObjectHolder("tfc:wrought_iron")
     public static final Metal WROUGHT_IRON = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:gold")
+    public static final Metal GOLD = Helpers.getNull();
     @GameRegistry.ObjectHolder("tfc:pig_iron")
     public static final Metal PIG_IRON = Helpers.getNull();
     @GameRegistry.ObjectHolder("tfc:bronze")
     public static final Metal BRONZE = Helpers.getNull();
     @GameRegistry.ObjectHolder("tfc:bismuth_bronze")
     public static final Metal BISMUTH_BRONZE = Helpers.getNull();
+    @GameRegistry.ObjectHolder("tfc:steel")
+    public static final Metal STEEL = Helpers.getNull();
     @GameRegistry.ObjectHolder("tfc:black_bronze")
     public static final Metal BLACK_BRONZE = Helpers.getNull();
     @GameRegistry.ObjectHolder("tfc:blue_steel")
@@ -183,10 +187,11 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         NUGGET(false, 10),
         SHEET(false, 200, ItemMetalSheet::new),
         DOUBLE_SHEET(false, 400),
-        LAMP(false, 100, (metal, itemType) -> new ItemBlockMetalLamp(metal)),
+        ROD(false, 50),
 
         ANVIL(true, 1400, ItemAnvil::new),
         TUYERE(true, 400),
+        LAMP(false, 100, (metal, itemType) -> new ItemBlockMetalLamp(metal)),
 
         PICK(true, 100, ItemMetalTool::new),
         PICK_HEAD(true, 100, true, "XXXXX", "X   X", " XXX ", "XXXXX"),
@@ -226,7 +231,6 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         BOOTS(true, 3, 400, ItemMetalArmor::new),
 
         SHIELD(true, 400, ItemMetalShield::new),
-
         BUCKET(false, 200, ItemMetalBucket::new);
 
         public static Item create(Metal metal, ItemType type)
@@ -280,6 +284,10 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             else if (this == ItemType.BUCKET) //only these two metals for buckets
             {
                 return metal == BLUE_STEEL || metal == RED_STEEL;
+            }
+            else if (this == ItemType.ROD) // only make these for nessecary metals
+            {
+                return metal == WROUGHT_IRON || metal == STEEL || metal == GOLD;
             }
             return !this.isToolItem() || metal.getToolMetal() != null;
         }
