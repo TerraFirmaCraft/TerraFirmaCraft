@@ -43,7 +43,7 @@ public class BarrelRecipeFoodPreservation extends BarrelRecipe
     public boolean isValidInput(@Nullable FluidStack inputFluid, ItemStack inputStack)
     {
         // Only preserve food it there's enough fluid (the amount needed for 1 item * the number of items)
-        return inputFluid == null || inputFluid.amount / this.inputFluid.getAmount() >= inputStack.getCount() / this.inputStack.getAmount();
+        return super.isValidInput(inputFluid, inputStack) && (inputFluid == null || inputFluid.amount / this.inputFluid.getAmount() >= inputStack.getCount() / this.inputStack.getAmount());
     }
 
     @Nonnull

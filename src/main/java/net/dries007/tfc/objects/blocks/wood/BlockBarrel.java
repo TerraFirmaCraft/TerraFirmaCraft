@@ -209,20 +209,17 @@ public class BlockBarrel extends Block implements IItemSize
                 toggleBarrelSeal(worldIn, pos);
                 return true;
             }
-            else if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+            else if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null) && !state.getValue(SEALED))
             {
-                if (!state.getValue(SEALED))
+                IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+                if (fluidHandler != null)
                 {
-                    IFluidHandler fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                    if (fluidHandler != null)
+                    if (!worldIn.isRemote)
                     {
-                        if (!worldIn.isRemote)
-                        {
-                            FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
-                            te.markDirty();
-                        }
-                        return true;
+                        FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
+                        te.markDirty();
                     }
+                    return true;
                 }
             }
             else
