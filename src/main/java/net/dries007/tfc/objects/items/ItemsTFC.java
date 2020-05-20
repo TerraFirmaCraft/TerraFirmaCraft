@@ -66,6 +66,8 @@ public final class ItemsTFC
     public static final ItemMisc STRAW = getNull();
     public static final Item HANDSTONE = getNull();
     public static final Item WROUGHT_IRON_GRILL = getNull();
+    public static final Item GLUE = getNull();
+    public static final Item BRASS_MECHANISMS = getNull();
 
     @GameRegistry.ObjectHolder("crop/product/jute")
     public static final ItemMisc JUTE = getNull();
@@ -369,6 +371,8 @@ public final class ItemsTFC
         simpleItems.add(register(r, "dye/white", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_white"), CT_MISC));
         simpleItems.add(register(r, "dye/brown", new ItemMisc(Size.TINY, Weight.LIGHT, "dye_brown"), CT_MISC));
         simpleItems.add(register(r, "alabaster_brick", new ItemMisc(Size.VERY_SMALL, Weight.LIGHT), CT_MISC));
+        simpleItems.add(register(r, "glue", new ItemMisc(Size.TINY, Weight.LIGHT, "slimeball", "glue"), CT_MISC));
+        simpleItems.add(register(r, "brass_mechanisms", new ItemMisc(Size.NORMAL, Weight.LIGHT), CT_MISC));
 
         register(r, "goldpan", new ItemGoldPan(), CT_MISC);
         simpleItems.add(register(r, "wrought_iron_grill", new ItemMisc(Size.LARGE, Weight.HEAVY, "grill"), CT_MISC));

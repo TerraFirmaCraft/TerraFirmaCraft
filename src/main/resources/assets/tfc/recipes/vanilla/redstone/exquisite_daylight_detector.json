@@ -12,7 +12,7 @@
     },
     "W": {
       "type": "forge:ore_dict",
-      "ore": "gemNormal"
+      "ore": "gemExquisite"
     },
     "D": {
       "type": "forge:ore_dict",
@@ -25,6 +25,6 @@
   },
   "result": {
     "item": "minecraft:daylight_detector",
-    "count": 1
+    "count": 3
   }
 }

@@ -48,6 +48,20 @@ public class BlockLogPile extends Block implements ILightableBlock
 {
     private static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class, EnumFacing.Axis.X, EnumFacing.Axis.Z);
 
+    public static boolean isValidCoverBlock(World world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.CHARCOAL_PILE)
+        {
+            return true;
+        }
+        if (state.getMaterial().getCanBurn())
+        {
+            return false;
+        }
+        return state.isNormalCube();
+    }
+
     public BlockLogPile()
     {
         super(Material.WOOD);
@@ -261,20 +275,6 @@ public class BlockLogPile extends Block implements ILightableBlock
             return te.getLog().copy();
         }
         return ItemStack.EMPTY;
-    }
-
-    private boolean isValidCoverBlock(World world, BlockPos pos)
-    {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.CHARCOAL_PILE)
-        {
-            return true;
-        }
-        if (state.getMaterial().getCanBurn())
-        {
-            return false;
-        }
-        return state.isNormalCube();
     }
 
 }

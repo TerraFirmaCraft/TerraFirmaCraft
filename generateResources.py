@@ -10,9 +10,8 @@ For IntelliJ instructions, see README.md.
 
 import json
 import os
-import zipfile
-
 import time
+import zipfile
 
 
 def zipfolder(zip_name, target_dir):
@@ -1205,6 +1204,11 @@ item(('ceramics', 'fired', 'fire_brick'), 'tfc:items/ceramics/fired/fire_brick')
 item(('ceramics', 'unfired', 'jug'), 'tfc:items/ceramics/unfired/jug')
 
 item(('ceramics', 'fire_clay'), 'tfc:items/ceramics/fire_clay')
+
+item(('brass_mechanisms',), 'tfc:items/brass_mechanisms')
+item(('glue',), 'tfc:items/glue')
+for metal in ('wrought_iron', 'gold', 'steel'):
+    item(('metal', 'rod', metal), 'tfc:items/metal/rod/%s' % metal)
 
 # FLAT
 for rock_cat in ROCK_TYPES:
