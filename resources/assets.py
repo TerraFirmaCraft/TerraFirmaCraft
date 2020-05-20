@@ -15,7 +15,8 @@ def generate(rm: ResourceManager):
                     .with_lang(lang('%s Spike', rock))
                 for part in ROCK_SPIKE_PARTS:
                     rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
-                        'texture': 'tfc:block/rock/raw/%s' % rock
+                        'texture': 'tfc:block/rock/raw/%s' % rock,
+                        'particle': 'tfc:block/rock/raw/%s' % rock
                     }, parent='tfc:block/rock/spike_%s' % part) \
                         .with_item_model()
             else:
@@ -41,7 +42,7 @@ def generate(rm: ResourceManager):
                             'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
                         }, parent='tfc:block/ore') \
                         .with_item_model() \
-                        .with_lang(lang('%s %s %s', rock, grade, ore))
+                        .with_lang(lang('%s %s %s', grade, rock, ore))
             else:
                 rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock)) \
                     .with_block_model(

@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was not automatically created by mcresources",
+  "variants": {
+    "": [
+      {
+        "model": "tfc:block/dirt/peat",
+        "y": 0
+      },
+      {
+        "model": "tfc:block/dirt/peat",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/dirt/peat",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/dirt/peat",
+        "y": 270
+      }
+    ]
+  }
+}
