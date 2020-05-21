@@ -346,10 +346,10 @@ config.tfc.general.tree.enableHammerSticks=启用锤木棍
 config.tfc.general.tree.enableHammerSticks.tooltip=启用用锤子锤原木时掉落木棍。
 
 config.tfc.general.tree.requiresAxe=斧的需要
-config.tfc.general.tree.enableFelling.tooltip=原木需要相对应的工具（斧和锯，或对木棍来说锤）才能开采吗？若为 false，空手破坏原木时什么都不会掉落。
+config.tfc.general.tree.requiresAxe.tooltip=原木需要相对应的工具（斧和锯，或对木棍来说锤）才能开采吗？若为 false，空手破坏原木时什么都不会掉落。
 
 config.tfc.general.tree.enableSaplings=树苗掉落
-config.tfc.general.tree.enableFelling.tooltip=若为 false，树叶将不会掉落树苗。
+config.tfc.general.tree.enableSaplings.tooltip=若为 false，树叶将不会掉落树苗。
 
 config.tfc.general.tree.stoneAxeReturnRate=石斧原木返还率
 config.tfc.general.tree.stoneAxeReturnRate.tooltip=当使用石斧时，原木掉落物品的几率。
@@ -598,7 +598,7 @@ config.tfc.general.misc.logMiningTimeModifier.tooltip=控制采掘原木时所�
 
 ## Devices Config
 config.tfc.devices=设施设置
-config.tfc.general.tooltip=各种关于设施（例如：锻铁炉，小缸，大桶）的设置
+config.tfc.devices.tooltip=各种关于设施（例如：锻铁炉，小缸，大桶）的设置
 
 
 ### Temperature
@@ -666,7 +666,7 @@ config.tfc.devices.fire_pit.ticks=烹饪锅沸腾时间
 config.tfc.devices.fire_pit.ticks.tooltip=在篝火上烧开一锅所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 1 小时。
 
 config.tfc.devices.fire_pit.rainTicks=雨中燃料损耗
-config.tfc.devices.fire_pit.ticks.tooltip=当篝火在雨中时燃料的损耗，以刻为单位（基于随机刻）。这使得当篝火在雨中时，显著地消耗更多的燃料。
+config.tfc.devices.fire_pit.rainTicks.tooltip=当篝火在雨中时燃料的损耗，以刻为单位（基于随机刻）。这使得当篝火在雨中时，显著地消耗更多的燃料。
 
 
 ### Pit Kiln
@@ -730,7 +730,6 @@ config.tfc.devices.sluice.diamondGemChance.tooltip=当洗矿槽作业产生宝�
 
 ## Clients
 config.tfc.client=客户端设置
-config.tfc.client.tooltip=仅适用于客户端。
 
 ### Tooltips
 config.tfc.client.tooltip=工具提示设置
@@ -3184,6 +3183,11 @@ item.tfc.ceramics.unfired.clay_flower_pot.name=未烧制的粘土花盆
 item.tfc.mortar.name=砂浆
 item.tfc.wrought_iron_grill.name=锻铁烤架
 item.tfc.alabaster_brick.name=雪花石砖
+item.tfc.metal.rod.gold=金棒
+item.tfc.metal.rod.wrought_iron=锻铁棒
+item.tfc.metal.rod.steel=钢棒
+item.tfc.brass_mechanisms.name=黄铜机件
+item.tfc.glue.name=胶水
 
 item.tfc.ore.native_copper.name=原生铜
 item.tfc.ore.native_gold.name=原生金
@@ -4505,8 +4509,8 @@ effectsTFC.thirst=干渴
 effectsTFC.food_poison=食物中毒
 
 # Animal names by gender
-tfc.animal.sheeptfc.male=公羊
-tfc.animal.sheeptfc.female=母羊
+tfc.animal.sheeptfc.male=公绵羊
+tfc.animal.sheeptfc.female=母绵羊
 tfc.animal.cowtfc.male=公牛
 tfc.animal.cowtfc.female=母牛
 tfc.animal.beartfc.male=公熊
