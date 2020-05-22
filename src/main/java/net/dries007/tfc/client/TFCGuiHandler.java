@@ -100,6 +100,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new ContainerCrucible(player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             case LARGE_VESSEL:
                 return new ContainerLargeVessel(player.inventory, Helpers.getTE(world, pos, TELargeVessel.class));
+            case POWDERKEG:
+                return new ContainerPowderKeg(player.inventory, Helpers.getTE(world, pos, TEPowderKeg.class));
             case CALENDAR:
             case SKILLS:
             case NUTRITION:
@@ -168,6 +170,8 @@ public class TFCGuiHandler implements IGuiHandler
                 return new GuiCrucible(container, player.inventory, Helpers.getTE(world, pos, TECrucible.class));
             case LARGE_VESSEL:
                 return new GuiLargeVessel(container, player.inventory, Helpers.getTE(world, pos, TELargeVessel.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
+            case POWDERKEG:
+                return new GuiPowderkeg(container, player.inventory, Helpers.getTE(world, pos, TEPowderKeg.class), world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
             case CALENDAR:
                 return new GuiCalendar(container, player.inventory);
             case NUTRITION:
@@ -212,6 +216,7 @@ public class TFCGuiHandler implements IGuiHandler
         CRUCIBLE,
         BLAST_FURNACE,
         LARGE_VESSEL,
+        POWDERKEG,
         CALENDAR,
         NUTRITION,
         SKILLS,
