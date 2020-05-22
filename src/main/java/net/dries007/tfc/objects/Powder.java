@@ -18,5 +18,6 @@ public enum Powder
     LIMONITE,
     MALACHITE,
     SALT,
-    FERTILIZER
+    FERTILIZER,
+    CHARCOAL
 }

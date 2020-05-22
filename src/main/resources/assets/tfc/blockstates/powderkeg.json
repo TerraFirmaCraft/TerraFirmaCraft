@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:barrel",
+    "textures": {
+      "particle": "tfc:blocks/powderkeg_side",
+      "planks": "tfc:blocks/powderkeg_side",
+      "sheet": "tfc:blocks/powderkeg_top",
+      "hoop": "tfc:blocks/powderkeg_hoop"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "sealed": {
+      "true": {
+        "model": "tfc:barrel_sealed"
+      },
+      "false": {}
+    },
+    "inventory": [
+      {}
+    ],
+    "explode": {
+      "true": {},
+      "false": {}
+    }
+  }
+}
