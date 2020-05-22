@@ -1,7 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:item/metal/anvil/transformations",
-  "textures": {
-    "all": "tfc:item/metal/anvil/wrought_iron"
-  }
+  "parent": "tfc:block/metal/anvil/wrought_iron"
 }

@@ -1,5 +1,6 @@
 {
   "credit": "Made with Blockbench",
+  "parent": "block/block",
   "textures": {
     "1": "#all",
     "2": "tfc:blocks/lamp_unlit"
