@@ -2,7 +2,8 @@ from collections import namedtuple
 from typing import Dict, List
 
 Rock = namedtuple('Rock', ('category', 'sand_color'))
-Metal = namedtuple('Metal', ('tier', 'usable'))
+Metal = namedtuple('Metal', ('tier', 'has_parts', 'has_tools', 'has_armor', 'has_utilities'))
+MetalItem = namedtuple('MetalItem', ('type', 'smelt_amount', 'parent_model'))
 Ore = namedtuple('Ore', ('metal', 'graded'))
 OreGrade = namedtuple('OreGrade', ('weight',))
 Vein = namedtuple('Vein',
@@ -34,29 +35,89 @@ ROCKS: Dict[str, Rock] = {
     'rhyolite': Rock('igneous_extrusive', 'brown')
 }
 METALS: Dict[str, Metal] = {
-    'bismuth': Metal(1, True),
-    'bismuth_bronze': Metal(2, True),
-    'black_bronze': Metal(2, True),
-    'bronze': Metal(2, True),
-    'copper': Metal(1, True),
-    'gold': Metal(1, True),
-    'nickel': Metal(1, True),
-    'rose_gold': Metal(1, True),
-    'silver': Metal(1, True),
-    'tin': Metal(1, True),
-    'zinc': Metal(1, True),
-    'sterling_silver': Metal(1, True),
-    'wrought_iron': Metal(3, True),
-    'cast_iron': Metal(1, True),
-    'pig_iron': Metal(3, True),
-    'steel': Metal(4, True),
-    'black_steel': Metal(5, True),
-    'blue_steel': Metal(6, True),
-    'red_steel': Metal(7, True),
-    'weak_steel': Metal(5, False),
-    'weak_blue_steel': Metal(5, False),
-    'weak_red_steel': Metal(5, False),
-    'unknown': Metal(1, False)
+    'bismuth': Metal(1, True, False, False, False),
+    'bismuth_bronze': Metal(2, True, True, True, True),
+    'black_bronze': Metal(2, True, True, True, True),
+    'bronze': Metal(2, True, True, True, True),
+    'brass': Metal(2, True, False, False, False),
+    'copper': Metal(1, True, True, True, True),
+    'gold': Metal(1, True, False, False, False),
+    'nickel': Metal(1, True, False, False, False),
+    'rose_gold': Metal(1, True, False, False, False),
+    'silver': Metal(1, True, False, False, False),
+    'tin': Metal(1, True, False, False, False),
+    'zinc': Metal(1, True, False, False, False),
+    'sterling_silver': Metal(1, True, False, False, False),
+    'wrought_iron': Metal(3, True, True, True, True),
+    'cast_iron': Metal(1, False, False, False, False),
+    'pig_iron': Metal(3, False, False, False, False),
+    'steel': Metal(4, True, True, True, True),
+    'black_steel': Metal(5, True, True, True, True),
+    'blue_steel': Metal(6, True, True, True, True),
+    'red_steel': Metal(6, True, True, True, True),
+    'weak_steel': Metal(4, False, False, False, False),
+    'weak_blue_steel': Metal(5, False, False, False, False),
+    'weak_red_steel': Metal(5, False, False, False, False),
+    'high_carbon_steel': Metal(3, False, False, False, False),
+    'high_carbon_black_steel': Metal(4, False, False, False, False),
+    'high_carbon_blue_steel': Metal(5, False, False, False, False),
+    'high_carbon_red_steel': Metal(5, False, False, False, False),
+    'unknown': Metal(0, False, False, False, False)
+}
+METAL_BLOCKS: Dict[str, MetalItem] = {
+    'anvil': MetalItem('utility', 1400, 'tfc:block/anvil'),
+    'lamp': MetalItem('utility', 100, 'tfc:block/lamp')
+}
+METAL_ITEMS: Dict[str, MetalItem] = {
+    'ingot': MetalItem('default', 100, 'item/generated'),
+    'nugget': MetalItem('default', 10, 'item/generated'),
+    'dust': MetalItem('default', 100, 'item/generated'),
+    
+    'scrap': MetalItem('part', 100, 'item/generated'),
+    'double_ingot': MetalItem('part', 200, 'item/generated'),
+    'sheet': MetalItem('part', 200, 'item/generated'),
+    'double_sheet': MetalItem('part', 400, 'item/generated'),
+    'rod': MetalItem('part', 50, 'item/generated'),
+    
+    'tuyere': MetalItem('tool', 100, 'item/generated'),
+    'pick': MetalItem('tool', 100, 'item/handheld'),
+    'pick_head': MetalItem('tool', 100, 'item/generated'),
+    'shovel': MetalItem('tool', 100, 'item/handheld'),
+    'shovel_head': MetalItem('tool', 100, 'item/generated'),
+    'axe': MetalItem('tool', 100, 'item/handheld'),
+    'axe_head': MetalItem('tool', 100, 'item/generated'),
+    'hoe': MetalItem('tool', 100, 'item/handheld'),
+    'hoe_head': MetalItem('tool', 100, 'item/generated'),
+    'chisel': MetalItem('tool', 100, 'item/handheld'),
+    'chisel_head': MetalItem('tool', 100, 'item/generated'),
+    'sword': MetalItem('tool', 100, 'item/handheld'),
+    'sword_blade': MetalItem('tool', 100, 'item/generated'),
+    'mace': MetalItem('tool', 100, 'item/handheld'),
+    'mace_head': MetalItem('tool', 100, 'item/generated'),
+    'saw': MetalItem('tool', 100, 'item/handheld'),
+    'saw_blade': MetalItem('tool', 100, 'item/generated'),
+    'javelin': MetalItem('tool', 100, 'item/handheld'),
+    'javelin_head': MetalItem('tool', 100, 'item/generated'),
+    'hammer': MetalItem('tool', 100, 'item/handheld'),
+    'hammer_head': MetalItem('tool', 100, 'item/generated'),
+    'propick': MetalItem('tool', 100, 'item/handheld'),
+    'propick_head': MetalItem('tool', 100, 'item/generated'),
+    'knife': MetalItem('tool', 100, 'tfc:item/handheld_flipped'),
+    'knife_blade': MetalItem('tool', 100, 'item/generated'),
+    'scythe': MetalItem('tool', 100, 'item/handheld'),
+    'scythe_blade': MetalItem('tool', 100, 'item/generated'),
+    'shears': MetalItem('tool', 200, 'item/handheld'),
+    
+    'unfinished_helmet': MetalItem('armor', 400, 'item/generated'),
+    'helmet': MetalItem('armor', 600, 'item/generated'),
+    'unfinished_chestplate': MetalItem('armor', 400, 'item/generated'),
+    'chestplate': MetalItem('armor', 800, 'item/generated'),
+    'unfinished_greaves': MetalItem('armor', 400, 'item/generated'),
+    'greaves': MetalItem('armor', 600, 'item/generated'),
+    'unfinished_boots': MetalItem('armor', 200, 'item/generated'),
+    'boots': MetalItem('armor', 400, 'item/generated'),
+    
+    'shield': MetalItem('tool', 400, 'item/handheld')
 }
 ORES: Dict[str, Ore] = {
     'native_copper': Ore('copper', True),

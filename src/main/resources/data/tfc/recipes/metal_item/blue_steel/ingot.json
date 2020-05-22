@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:metal_item",
+  "ingredient": {
+    "item": "tfc:metal/ingot/blue_steel"
+  },
+  "metal": "tfc:blue_steel",
+  "amount": 100
+}

@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:metal_item",
+  "ingredient": {
+    "item": "tfc:metal/saw_blade/bismuth_bronze"
+  },
+  "metal": "tfc:bismuth_bronze",
+  "amount": 100
+}

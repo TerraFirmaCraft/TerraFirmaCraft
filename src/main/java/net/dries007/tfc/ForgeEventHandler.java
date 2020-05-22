@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc;
 
 import java.util.Random;
@@ -36,6 +41,7 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.TFCTags;
 import net.dries007.tfc.objects.recipes.CollapseRecipe;
 import net.dries007.tfc.objects.recipes.LandslideRecipe;
+import net.dries007.tfc.objects.types.MetalManager;
 import net.dries007.tfc.objects.types.RockManager;
 import net.dries007.tfc.util.TFCReloadListener;
 import net.dries007.tfc.util.support.SupportManager;
@@ -146,6 +152,7 @@ public final class ForgeEventHandler
         // Initializes json data listeners
         IReloadableResourceManager resourceManager = event.getServer().getResourceManager();
         resourceManager.addReloadListener(RockManager.INSTANCE);
+        resourceManager.addReloadListener(MetalManager.INSTANCE);
         resourceManager.addReloadListener(VeinTypeManager.INSTANCE);
         resourceManager.addReloadListener(SupportManager.INSTANCE);
 
