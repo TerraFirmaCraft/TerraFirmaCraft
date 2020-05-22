@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:metal_item",
+  "ingredient": {
+    "item": "tfc:metal/propick_head/bronze"
+  },
+  "metal": "tfc:bronze",
+  "amount": 100
+}

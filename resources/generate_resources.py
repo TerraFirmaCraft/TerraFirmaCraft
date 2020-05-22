@@ -2,10 +2,15 @@
 
 from mcresources import ResourceManager, clean_generated_resources
 
-import assets
+import assets.stones
+import assets.metals
 import data.ore_veins
 import data.rocks
+import data.metals
 import recipes.collapse
+import recipes.metal_item
+import lang.metals
+import lang.misc
 
 
 def main():
@@ -14,10 +19,15 @@ def main():
 
     data.ore_veins.generate(rm)
     data.rocks.generate(rm)
+    data.metals.generate(rm)
 
     recipes.collapse.generate(rm)
+    recipes.metal_item.generate(rm)
 
-    assets.generate(rm)
+    assets.stones.generate(rm)
+    assets.metals.generate(rm)
+    lang.metals.generate(rm)
+    lang.misc.generate(rm)
 
     rm.flush()
 
