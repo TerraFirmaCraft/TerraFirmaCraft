@@ -24,16 +24,12 @@ def generate(rm: ResourceManager):
             if metal_block_data.type == 'armor' and not metal_data.has_armor: continue
             if metal_block_data.type == 'utility' and not metal_data.has_utilities: continue
             # todo: facings
-            block = rm.blockstate(('metal', '%s' % metal_block, metal)) \
+            rm.blockstate(('metal', '%s' % metal_block, metal)) \
                 .with_block_model(
                 {
                     'all': 'tfc:block/metal/%s' % metal,
                     'particle': 'tfc:block/metal/%s' % metal
                 }, parent=metal_block_data.parent_model) \
                 .with_block_loot('tfc:metal/%s/%s' % (metal_block, metal)) \
-                .with_lang(lang('%s %s' % (metal, metal_block)))
-            if metal_block == 'anvil':
-                # todo layer0 -> all and/or transformations model is buggy in 1.15
-                rm.item_model(('metal', '%s' % metal_block, metal), parent='tfc:item/metal/anvil/transformations')
-            else:
-                block.with_item_model()
+                .with_lang(lang('%s %s' % (metal, metal_block))) \
+                .with_item_model()

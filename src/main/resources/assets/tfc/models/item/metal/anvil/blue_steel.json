@@ -1,7 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:item/metal/anvil/transformations",
-  "textures": {
-    "all": "tfc:item/metal/anvil/blue_steel"
-  }
+  "parent": "tfc:block/metal/anvil/blue_steel"
 }
