@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/sheet/black_bronze"
+    "tag": "forge:sheets/black_bronze"
   },
   "metal": "tfc:black_bronze",
   "amount": 200

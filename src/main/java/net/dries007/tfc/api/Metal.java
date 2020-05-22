@@ -7,6 +7,7 @@ package net.dries007.tfc.api;
 
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
@@ -190,11 +191,18 @@ public class Metal
 
         private final NonNullFunction<Metal.Default, Block> blockFactory;
         private final Type type;
+        private final String tag;
 
-        BlockType(Type type, NonNullFunction<Metal.Default, Block> blockFactory)
+        BlockType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Block> blockFactory)
         {
             this.type = type;
             this.blockFactory = blockFactory;
+            this.tag = tag;
+        }
+
+        BlockType(Type type, NonNullFunction<Metal.Default, Block> blockFactory)
+        {
+            this(null, type, blockFactory);
         }
 
         public Block create(Metal.Default metal)
@@ -206,19 +214,29 @@ public class Metal
         {
             return type.hasType(metal);
         }
+
+        public String getTag()
+        {
+            return hasTag() ? tag : "";
+        }
+
+        public boolean hasTag()
+        {
+            return tag != null;
+        }
     }
 
     public enum ItemType
     {
-        INGOT(Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        NUGGET(Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        DUST(Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        INGOT("ingots", Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        NUGGET("nuggets", Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        DUST("dusts", Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
 
-        SCRAP(Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        DOUBLE_INGOT(Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        SHEET(Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        DOUBLE_SHEET(Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        ROD(Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        SCRAP("scraps", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        DOUBLE_INGOT("double_ingots", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        SHEET("sheets", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        DOUBLE_SHEET("double_sheets", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        ROD("rods", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
 
         TUYERE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         PICK(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
@@ -270,11 +288,18 @@ public class Metal
 
         private final NonNullFunction<Metal.Default, Item> itemFactory;
         private final Type type;
+        private final String tag;
+
+        ItemType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Item> itemFactory)
+        {
+            this.type = type;
+            this.tag = tag;
+            this.itemFactory = itemFactory;
+        }
 
         ItemType(Type type, NonNullFunction<Metal.Default, Item> itemFactory)
         {
-            this.type = type;
-            this.itemFactory = itemFactory;
+            this(null, type, itemFactory);
         }
 
         public Item create(Metal.Default metal)
@@ -285,6 +310,16 @@ public class Metal
         public boolean hasType(Default metal)
         {
             return type.hasType(metal);
+        }
+
+        public String getTag()
+        {
+            return hasTag() ? tag : "";
+        }
+
+        public boolean hasTag()
+        {
+            return tag != null;
         }
 
         /*

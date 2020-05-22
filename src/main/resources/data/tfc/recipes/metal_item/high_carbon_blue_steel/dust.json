@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/dust/high_carbon_blue_steel"
+    "tag": "forge:dusts/high_carbon_blue_steel"
   },
   "metal": "tfc:high_carbon_blue_steel",
   "amount": 100

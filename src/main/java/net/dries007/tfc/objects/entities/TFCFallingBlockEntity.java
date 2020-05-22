@@ -1,8 +1,12 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.entities;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -125,7 +129,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                     BlockState blockstate = world.getBlockState(posAt);
                     setMotion(getMotion().mul(0.7D, -0.5D, 0.7D));
 
-                    if (blockstate.getBlock() != Blocks.MOVING_PISTON)
+                    if (blockstate.getBlock() != net.minecraft.block.Blocks.MOVING_PISTON)
                     {
                         remove();
                         if (!dontSetBlock)
@@ -145,7 +149,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                         ((FallingBlock) block).onEndFalling(this.world, posAt, getBlockState(), blockstate);
                                     }
 
-                                    if (TFCTags.CAN_LANDSLIDE.contains(getBlockState().getBlock()))
+                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(getBlockState().getBlock()))
                                     {
                                         world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
                                     }

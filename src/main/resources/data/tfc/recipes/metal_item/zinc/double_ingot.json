@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/double_ingot/zinc"
+    "tag": "forge:double_ingots/zinc"
   },
   "metal": "tfc:zinc",
   "amount": 200

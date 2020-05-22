@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/nugget/brass"
+    "tag": "forge:nuggets/brass"
   },
   "metal": "tfc:brass",
   "amount": 10

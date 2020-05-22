@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.recipes;
 
 import java.util.ArrayList;
@@ -117,7 +122,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     {
         BlockPos sidePos = pos.offset(side);
         BlockState sideState = world.getBlockState(sidePos);
-        return sideState.isSolidSide(world, sidePos, side.getOpposite()) || TFCTags.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
+        return sideState.isSolidSide(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
     }
 
     private LandslideRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState)

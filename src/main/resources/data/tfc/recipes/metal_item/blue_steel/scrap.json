@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/scrap/blue_steel"
+    "tag": "forge:scraps/blue_steel"
   },
   "metal": "tfc:blue_steel",
   "amount": 100

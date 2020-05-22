@@ -11,6 +11,7 @@ import recipes.collapse
 import recipes.metal_item
 import lang.metals
 import lang.misc
+import vanilla.tags
 
 
 def main():
@@ -28,6 +29,8 @@ def main():
     assets.metals.generate(rm)
     lang.metals.generate(rm)
     lang.misc.generate(rm)
+    
+    vanilla.tags.generate(rm)
 
     rm.flush()
 

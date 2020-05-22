@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/double_ingot/silver"
+    "tag": "forge:double_ingots/silver"
   },
   "metal": "tfc:silver",
   "amount": 200

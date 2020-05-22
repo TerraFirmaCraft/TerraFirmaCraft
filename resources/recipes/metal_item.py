@@ -11,13 +11,24 @@ def generate(rm: ResourceManager):
             if metal_item_data.type == 'tool' and not metal_data.has_tools: continue
             if metal_item_data.type == 'armor' and not metal_data.has_armor: continue
             if metal_item_data.type == 'utility' and not metal_data.has_utilities: continue
-            rm.recipe(('metal_item', '%s' % metal, '%s' % metal_item), 'tfc:metal_item', {
-                'ingredient': {
-                    'item': 'tfc:metal/%s/%s' % (metal_item, metal)
-                },
-                'metal': 'tfc:%s' % metal,
-                'amount': metal_item_data.smelt_amount
-            })
+            if metal_item_data.tag != '':
+                rm.item_tag(metal_item_data.tag + '/' + metal, 'tfc:metal/%s/%s' % (metal_item, metal))
+                rm.recipe(('metal_item', '%s' % metal, '%s' % metal_item), 'tfc:metal_item', {
+                    'ingredient': {
+                        'tag': metal_item_data.tag + '/' + metal
+                    },
+                    'metal': 'tfc:%s' % metal,
+                    'amount': metal_item_data.smelt_amount
+                })
+            else:
+                rm.recipe(('metal_item', '%s' % metal, '%s' % metal_item), 'tfc:metal_item', {
+                    'ingredient': {
+                        'item': 'tfc:metal/%s/%s' % (metal_item, metal)
+                    },
+                    'metal': 'tfc:%s' % metal,
+                    'amount': metal_item_data.smelt_amount
+                })
+            
             
         # Metal Blocks
         for metal_block, metal_block_data in METAL_BLOCKS.items():

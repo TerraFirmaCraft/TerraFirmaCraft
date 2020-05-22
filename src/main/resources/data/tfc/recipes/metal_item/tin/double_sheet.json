@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/double_sheet/tin"
+    "tag": "forge:double_sheets/tin"
   },
   "metal": "tfc:tin",
   "amount": 400
