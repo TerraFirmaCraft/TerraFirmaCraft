@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.recipes;
 
 import java.util.ArrayList;
@@ -66,7 +71,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean canStartCollapse(IWorld world, BlockPos pos)
     {
-        return TFCTags.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.down());
+        return TFCTags.Blocks.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.down());
     }
 
     /**
@@ -89,7 +94,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
             {
                 BlockPos posAt = pos.up(y);
                 BlockState stateAt = world.getBlockState(posAt);
-                if (foundEmpty && TFCTags.CAN_COLLAPSE.contains(stateAt.getBlock()))
+                if (foundEmpty && TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()))
                 {
                     // Check for a possible collapse
                     if (posAt.distanceSq(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/double_sheet/rose_gold"
+    "tag": "forge:double_sheets/rose_gold"
   },
   "metal": "tfc:rose_gold",
   "amount": 400

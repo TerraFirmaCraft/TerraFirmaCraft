@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/scrap/rose_gold"
+    "tag": "forge:scraps/rose_gold"
   },
   "metal": "tfc:rose_gold",
   "amount": 100

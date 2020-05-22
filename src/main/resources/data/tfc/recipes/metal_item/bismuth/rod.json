@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/rod/bismuth"
+    "tag": "forge:rods/bismuth"
   },
   "metal": "tfc:bismuth",
   "amount": 50

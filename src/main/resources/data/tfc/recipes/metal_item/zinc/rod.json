@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/rod/zinc"
+    "tag": "forge:rods/zinc"
   },
   "metal": "tfc:zinc",
   "amount": 50

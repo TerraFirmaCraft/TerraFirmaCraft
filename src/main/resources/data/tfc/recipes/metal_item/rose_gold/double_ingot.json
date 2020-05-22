@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/double_ingot/rose_gold"
+    "tag": "forge:double_ingots/rose_gold"
   },
   "metal": "tfc:rose_gold",
   "amount": 200

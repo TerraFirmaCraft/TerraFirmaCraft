@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.blocks.soil;
 
 import java.util.Random;
@@ -132,7 +137,7 @@ public class TFCGrassBlock extends Block
         BooleanProperty property = getPropertyForFace(direction);
         if (property != null)
         {
-            return stateIn.with(property, TFCTags.GRASS.contains(worldIn.getBlockState(pos.offset(direction).down()).getBlock()));
+            return stateIn.with(property, TFCTags.Blocks.GRASS.contains(worldIn.getBlockState(pos.offset(direction).down()).getBlock()));
         }
         return stateIn;
     }

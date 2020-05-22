@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/dust/pig_iron"
+    "tag": "forge:dusts/pig_iron"
   },
   "metal": "tfc:pig_iron",
   "amount": 100

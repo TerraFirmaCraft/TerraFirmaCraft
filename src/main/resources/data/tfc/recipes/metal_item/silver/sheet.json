@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/sheet/silver"
+    "tag": "forge:sheets/silver"
   },
   "metal": "tfc:silver",
   "amount": 200

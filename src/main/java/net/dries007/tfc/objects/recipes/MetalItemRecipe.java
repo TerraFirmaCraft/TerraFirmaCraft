@@ -13,13 +13,14 @@ import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.ShapedRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.crafting.CraftingHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.Metal;
@@ -50,14 +51,14 @@ public class MetalItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
     }
 
     protected final ResourceLocation id;
-    protected final ItemStack item;
+    protected final Ingredient ingredient;
     protected final ResourceLocation metal; // Have to store the resource location because at load time metals are not accessible yet
     protected final int amount;
 
-    public MetalItemRecipe(ResourceLocation id, ItemStack item, ResourceLocation metal, int amount)
+    public MetalItemRecipe(ResourceLocation id, Ingredient ingredient, ResourceLocation metal, int amount)
     {
         this.id = id;
-        this.item = item;
+        this.ingredient = ingredient;
         this.metal = metal;
         this.amount = amount;
     }
@@ -75,13 +76,25 @@ public class MetalItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
     @Override
     public boolean matches(ItemStackRecipeWrapper recipeWrapper, World world)
     {
-        return item.isItemEqual(recipeWrapper.getStack());
+        return ingredient.test(recipeWrapper.getStack());
     }
 
     @Override
     public ItemStack getRecipeOutput()
     {
-        return item;
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean isDynamic()
+    {
+        return true;
+    }
+
+    @Override
+    public ItemStack getCraftingResult(ItemStackRecipeWrapper inv)
+    {
+        return inv.getStack().copy();
     }
 
     @Override
@@ -132,23 +145,23 @@ public class MetalItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
         @Override
         public MetalItemRecipe read(ResourceLocation recipeId, JsonObject json)
         {
-            ItemStack item = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "ingredient"));
+            Ingredient ingredient = CraftingHelper.getIngredient(JSONUtils.getJsonObject(json, "ingredient"));
             ResourceLocation metal = new ResourceLocation(JSONUtils.getString(json, "metal"));
             int amount = JSONUtils.getInt(json, "amount");
-            return new MetalItemRecipe(recipeId, item, metal, amount);
+            return new MetalItemRecipe(recipeId, ingredient, metal, amount);
         }
 
         @Nullable
         @Override
         public MetalItemRecipe read(ResourceLocation recipeId, PacketBuffer buffer)
         {
-            return new MetalItemRecipe(recipeId, buffer.readItemStack(), buffer.readResourceLocation(), buffer.readInt());
+            return new MetalItemRecipe(recipeId, Ingredient.read(buffer), buffer.readResourceLocation(), buffer.readInt());
         }
 
         @Override
         public void write(PacketBuffer buffer, MetalItemRecipe recipe)
         {
-            buffer.writeItemStack(recipe.item);
+            recipe.ingredient.write(buffer);
             buffer.writeResourceLocation(recipe.metal);
             buffer.writeInt(recipe.amount);
         }

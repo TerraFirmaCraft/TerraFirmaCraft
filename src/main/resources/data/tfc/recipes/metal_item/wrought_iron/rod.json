@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/rod/wrought_iron"
+    "tag": "forge:rods/wrought_iron"
   },
   "metal": "tfc:wrought_iron",
   "amount": 50

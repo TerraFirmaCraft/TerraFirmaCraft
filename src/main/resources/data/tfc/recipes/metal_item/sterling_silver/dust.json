@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/dust/sterling_silver"
+    "tag": "forge:dusts/sterling_silver"
   },
   "metal": "tfc:sterling_silver",
   "amount": 100

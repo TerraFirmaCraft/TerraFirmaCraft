@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/double_sheet/copper"
+    "tag": "forge:double_sheets/copper"
   },
   "metal": "tfc:copper",
   "amount": 400

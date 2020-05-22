@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:metal_item",
   "ingredient": {
-    "item": "tfc:metal/nugget/black_steel"
+    "tag": "forge:nuggets/black_steel"
   },
   "metal": "tfc:black_steel",
   "amount": 10
