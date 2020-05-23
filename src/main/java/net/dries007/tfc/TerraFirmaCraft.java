@@ -13,6 +13,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import net.dries007.tfc.api.capabilities.forge.CapabilityForging;
+import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
@@ -79,6 +81,8 @@ public final class TerraFirmaCraft
         LOGGER.info("TFC Common Setup");
 
         // Setup methods
+        CapabilityHeat.setup();
+        CapabilityForging.setup();
         ChunkDataCapability.setup();
         WorldTrackerCapability.setup();
         TFCBiomes.setup();

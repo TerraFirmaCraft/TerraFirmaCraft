@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:dusts/high_carbon_blue_steel"
+  },
+  "heat_capacity": 0.35,
+  "melt_temperature": 1540
+}

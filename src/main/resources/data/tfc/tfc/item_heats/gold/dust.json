@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:dusts/gold"
+  },
+  "heat_capacity": 0.6,
+  "melt_temperature": 1060
+}

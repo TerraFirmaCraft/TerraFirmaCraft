@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:scraps/bismuth"
+  },
+  "heat_capacity": 0.14,
+  "melt_temperature": 270
+}

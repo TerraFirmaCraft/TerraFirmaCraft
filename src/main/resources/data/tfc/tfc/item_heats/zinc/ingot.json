@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:ingots/zinc"
+  },
+  "heat_capacity": 0.21,
+  "melt_temperature": 420
+}
