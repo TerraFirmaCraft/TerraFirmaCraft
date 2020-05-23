@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:double_sheets/bismuth_bronze"
+  },
+  "heat_capacity": 0.35,
+  "melt_temperature": 985
+}

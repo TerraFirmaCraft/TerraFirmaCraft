@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandSource;
+import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
@@ -22,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -35,7 +37,13 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.brigadier.CommandDispatcher;
+import net.dries007.tfc.api.calendar.CalendarTFC;
+import net.dries007.tfc.api.calendar.CalendarWorldData;
+import net.dries007.tfc.api.capabilities.forge.CapabilityForging;
+import net.dries007.tfc.api.capabilities.forge.ForgingHandler;
+import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
 import net.dries007.tfc.command.ClearWorldCommand;
+import net.dries007.tfc.command.HeatCommand;
 import net.dries007.tfc.network.ChunkDataRequestPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.TFCTags;
@@ -156,6 +164,9 @@ public final class ForgeEventHandler
         resourceManager.addReloadListener(VeinTypeManager.INSTANCE);
         resourceManager.addReloadListener(SupportManager.INSTANCE);
 
+        // Capability json data loader
+        resourceManager.addReloadListener(CapabilityHeat.HeatManager.INSTANCE);
+
         // generic reload listener
         resourceManager.addReloadListener(TFCReloadListener.INSTANCE);
     }
@@ -167,6 +178,10 @@ public final class ForgeEventHandler
 
         CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
         ClearWorldCommand.register(dispatcher);
+        HeatCommand.register(dispatcher);
+
+        // Initialize calendar for the current server
+        CalendarTFC.INSTANCE.init(event.getServer());
     }
 
     @SubscribeEvent
@@ -229,5 +244,43 @@ public final class ForgeEventHandler
         {
             event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
         }
+    }
+
+    @SubscribeEvent
+    public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
+    {
+        ItemStack stack = event.getObject();
+        if (!stack.isEmpty())
+        {
+            // Every item has a forging capability
+            event.addCapability(CapabilityForging.KEY, new ForgingHandler(stack));
+            // Attach heat capability to the ones defined by datapacks
+            CapabilityHeat.getCapability(stack).ifPresent(heat ->
+                event.addCapability(CapabilityHeat.KEY, heat));
+
+        }
+    }
+
+    @SubscribeEvent
+    public static void onWorldLoad(WorldEvent.Load event)
+    {
+        final IWorld world = event.getWorld();
+
+        if (world instanceof ServerWorld && world.getDimension().getType() == DimensionType.OVERWORLD)
+        {
+            // Calendar Sync / Initialization
+            CalendarWorldData data = CalendarWorldData.get((ServerWorld) world);
+            CalendarTFC.INSTANCE.resetTo(data.getCalendar());
+            // todo TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.INSTANCE));
+        }
+
+        /* todo
+        if (ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
+        {
+            // Natural regeneration should be disabled, allows TFC to have custom regeneration
+            event.getWorld().getGameRules().setOrCreateGameRule("naturalRegeneration", "false");
+            TerraFirmaCraft.getLog().warn("Updating gamerule naturalRegeneration to false!");
+        }
+        */
     }
 }

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.CreateWorldScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -26,6 +27,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.calendar.CalendarTFC;
+import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
 import net.dries007.tfc.objects.recipes.MetalItemRecipe;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -66,6 +69,10 @@ public class ClientForgeEventHandler
             BlockPos pos = new BlockPos(mc.getRenderViewEntity().getPosX(), mc.getRenderViewEntity().getBoundingBox().minY, mc.getRenderViewEntity().getPosZ());
             if (mc.world.chunkExists(pos.getX() >> 4, pos.getZ() >> 4))
             {
+                // Always add calendar info
+                //list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
+                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
+
                 IChunk chunk = mc.world.getChunk(pos);
                 ChunkData.get(chunk).ifPresent(data -> {
                     list.add("");
@@ -94,6 +101,7 @@ public class ClientForgeEventHandler
         {
             World world = event.getPlayer().getEntityWorld();
             MetalItemRecipe.addTooltipInfo(world, stack, text);
+            stack.getCapability(CapabilityHeat.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
         }
     }
 }

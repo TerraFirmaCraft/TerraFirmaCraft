@@ -2,7 +2,8 @@ from collections import namedtuple
 from typing import Dict, List
 
 Rock = namedtuple('Rock', ('category', 'sand_color'))
-Metal = namedtuple('Metal', ('tier', 'has_parts', 'has_tools', 'has_armor', 'has_utilities'))
+Metal = namedtuple('Metal', (
+    'tier', 'has_parts', 'has_tools', 'has_armor', 'has_utilities', 'heat_capacity', 'melt_temperature'))
 MetalItem = namedtuple('MetalItem', ('type', 'smelt_amount', 'parent_model', 'tag'))
 Ore = namedtuple('Ore', ('metal', 'graded'))
 OreGrade = namedtuple('OreGrade', ('weight',))
@@ -37,34 +38,34 @@ ROCKS: Dict[str, Rock] = {
     'rhyolite': Rock('igneous_extrusive', 'brown')
 }
 METALS: Dict[str, Metal] = {
-    'bismuth': Metal(1, True, False, False, False),
-    'bismuth_bronze': Metal(2, True, True, True, True),
-    'black_bronze': Metal(2, True, True, True, True),
-    'bronze': Metal(2, True, True, True, True),
-    'brass': Metal(2, True, False, False, False),
-    'copper': Metal(1, True, True, True, True),
-    'gold': Metal(1, True, False, False, False),
-    'nickel': Metal(1, True, False, False, False),
-    'rose_gold': Metal(1, True, False, False, False),
-    'silver': Metal(1, True, False, False, False),
-    'tin': Metal(1, True, False, False, False),
-    'zinc': Metal(1, True, False, False, False),
-    'sterling_silver': Metal(1, True, False, False, False),
-    'wrought_iron': Metal(3, True, True, True, True),
-    'cast_iron': Metal(1, False, False, False, False),
-    'pig_iron': Metal(3, False, False, False, False),
-    'steel': Metal(4, True, True, True, True),
-    'black_steel': Metal(5, True, True, True, True),
-    'blue_steel': Metal(6, True, True, True, True),
-    'red_steel': Metal(6, True, True, True, True),
-    'weak_steel': Metal(4, False, False, False, False),
-    'weak_blue_steel': Metal(5, False, False, False, False),
-    'weak_red_steel': Metal(5, False, False, False, False),
-    'high_carbon_steel': Metal(3, False, False, False, False),
-    'high_carbon_black_steel': Metal(4, False, False, False, False),
-    'high_carbon_blue_steel': Metal(5, False, False, False, False),
-    'high_carbon_red_steel': Metal(5, False, False, False, False),
-    'unknown': Metal(0, False, False, False, False)
+    'bismuth': Metal(1, True, False, False, False, 0.14, 270),
+    'bismuth_bronze': Metal(2, True, True, True, True, 0.35, 985),
+    'black_bronze': Metal(2, True, True, True, True, 0.35, 1070),
+    'bronze': Metal(2, True, True, True, True, 0.35, 950),
+    'brass': Metal(2, True, False, False, False, 0.35, 930),
+    'copper': Metal(1, True, True, True, True, 0.35, 1080),
+    'gold': Metal(1, True, False, False, False, 0.6, 1060),
+    'nickel': Metal(1, True, False, False, False, 0.48, 1453),
+    'rose_gold': Metal(1, True, False, False, False, 0.35, 960),
+    'silver': Metal(1, True, False, False, False, 0.48, 961),
+    'tin': Metal(1, True, False, False, False, 0.14, 230),
+    'zinc': Metal(1, True, False, False, False, 0.21, 420),
+    'sterling_silver': Metal(1, True, False, False, False, 0.35, 950),
+    'wrought_iron': Metal(3, True, True, True, True, 0.35, 1535),
+    'cast_iron': Metal(1, False, False, False, False, 0.35, 1535),
+    'pig_iron': Metal(3, False, False, False, False, 0.35, 1535),
+    'steel': Metal(4, True, True, True, True, 0.35, 1540),
+    'black_steel': Metal(5, True, True, True, True, 0.35, 1485),
+    'blue_steel': Metal(6, True, True, True, True, 0.35, 1540),
+    'red_steel': Metal(6, True, True, True, True, 0.35, 1540),
+    'weak_steel': Metal(4, False, False, False, False, 0.35, 1540),
+    'weak_blue_steel': Metal(5, False, False, False, False, 0.35, 1540),
+    'weak_red_steel': Metal(5, False, False, False, False, 0.35, 1540),
+    'high_carbon_steel': Metal(3, False, False, False, False, 0.35, 1540),
+    'high_carbon_black_steel': Metal(4, False, False, False, False, 0.35, 1540),
+    'high_carbon_blue_steel': Metal(5, False, False, False, False, 0.35, 1540),
+    'high_carbon_red_steel': Metal(5, False, False, False, False, 0.35, 1540),
+    'unknown': Metal(0, False, False, False, False, 0.5, 1250)
 }
 METAL_BLOCKS: Dict[str, MetalItem] = {
     'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', ''),

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/javelin_head/bronze"
+  },
+  "heat_capacity": 0.35,
+  "melt_temperature": 950
+}

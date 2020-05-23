@@ -1,17 +1,17 @@
 # Script to run all resource generation
 
-from mcresources import ResourceManager, clean_generated_resources
-
-import assets.stones
 import assets.metals
+import assets.stones
+import data.item_heats
+import data.metals
 import data.ore_veins
 import data.rocks
-import data.metals
-import recipes.collapse
-import recipes.metal_item
 import lang.metals
 import lang.misc
+import recipes.collapse
+import recipes.metal_item
 import vanilla.tags
+from mcresources import ResourceManager, clean_generated_resources
 
 
 def main():
@@ -21,6 +21,7 @@ def main():
     data.ore_veins.generate(rm)
     data.rocks.generate(rm)
     data.metals.generate(rm)
+    data.item_heats.generate(rm)
 
     recipes.collapse.generate(rm)
     recipes.metal_item.generate(rm)

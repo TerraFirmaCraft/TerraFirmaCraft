@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/hammer/copper"
+  },
+  "heat_capacity": 0.35,
+  "melt_temperature": 1080
+}
