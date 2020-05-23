@@ -53,10 +53,11 @@ public abstract class DataManager<T> extends JsonReloadListener
 
     public T getOrDefault(ResourceLocation id)
     {
-        if (types.containsKey(id))
-        {
-            return types.get(id);
-        }
+        return types.getOrDefault(id, getDefault());
+    }
+
+    public T getDefault()
+    {
         if (!orderedTypes.isEmpty())
         {
             return orderedTypes.get(0);

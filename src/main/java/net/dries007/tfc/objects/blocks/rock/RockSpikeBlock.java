@@ -73,7 +73,7 @@ public class RockSpikeBlock extends Block
             if (TFCFallingBlockEntity.canFallThrough(world, downPos))
             {
                 // Potential to collapse from the top
-                if (!world.isRemote && isUnattached(world, pos))
+                if (!world.isRemote && isUnsupported(world, pos))
                 {
                     // Spike is unsupported
                     boolean collapsed = false;
@@ -93,11 +93,16 @@ public class RockSpikeBlock extends Block
         }
     }
 
-    private boolean isUnattached(World world, BlockPos pos)
+    private boolean isUnsupported(World world, BlockPos pos)
     {
-        BlockPos posUp = pos.up();
-        BlockState state = world.getBlockState(posUp);
-        return state.getBlock() != this && !state.isSolidSide(world, posUp, Direction.DOWN);
+        BlockState state = world.getBlockState(pos);
+        BlockState stateDown = world.getBlockState(pos.down());
+        if (stateDown.isSolidSide(world, pos.down(), Direction.UP) || (stateDown.getBlock() == this && stateDown.get(PART).ordinal() > state.get(PART).ordinal() && !isUnsupported(world, pos.down())))
+        {
+            return false;
+        }
+        BlockState stateUp = world.getBlockState(pos.up());
+        return !stateUp.isSolidSide(world, pos.up(), Direction.DOWN) && (stateUp.getBlock() != this || stateUp.get(PART).ordinal() > state.get(PART).ordinal() || isUnsupported(world, pos.up()));
     }
 
     public enum Part implements IStringSerializable
