@@ -28,7 +28,7 @@ import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
-import net.dries007.tfc.world.tracker.WorldTrackerCapability;
+import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -80,7 +80,7 @@ public final class TerraFirmaCraft
 
         // Setup methods
         ChunkDataCapability.setup();
-        WorldTrackerCapability.setup();
+        CapabilityWorldTracker.setup();
         TFCBiomes.setup();
 
         // HEY DEV YOU'RE AND IDIOT AND MINECRAFT SUCKS

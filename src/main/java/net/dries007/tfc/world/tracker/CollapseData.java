@@ -14,7 +14,7 @@ public class CollapseData implements INBTSerializable<CompoundNBT>
     List<BlockPos> nextPositions;
     double radiusSquared;
 
-    public CollapseData(BlockPos centerPos, List<BlockPos> nextPositions, int radiusSquared)
+    public CollapseData(BlockPos centerPos, List<BlockPos> nextPositions, double radiusSquared)
     {
         this.centerPos = centerPos;
         this.nextPositions = nextPositions;
