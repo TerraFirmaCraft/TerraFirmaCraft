@@ -5,25 +5,17 @@
 
 package net.dries007.tfc.world.biome;
 
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
-public class PlainsBiome extends TFCBiome
+public class PlainsBiome extends FlatBiome
 {
-    private final float minHeight;
-    private final float maxHeight;
-
-    public PlainsBiome(float minHeight, float maxHeight, BiomeTemperature temperature, BiomeRainfall rainfall)
+    public PlainsBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.PLAINS), temperature, rainfall);
-        this.minHeight = minHeight;
-        this.maxHeight = maxHeight;
-    }
+        super(new Builder().category(Category.PLAINS), 4, 10, temperature, rainfall);
 
-    @Override
-    public INoise2D createNoiseLayer(long seed)
-    {
-        return new SimplexNoise2D(seed).octaves(6).spread(0.17f).scaled(TFCConfig.COMMON.seaLevel.get() + minHeight, TFCConfig.COMMON.seaLevel.get() + maxHeight);
+        biomeFeatures.enqueue(() -> {
+            TFCDefaultBiomeFeatures.addCarvers(this);
+            setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        });
     }
 }

@@ -35,6 +35,12 @@ def generate(rm: ResourceManager):
             'result': cobble
         })
 
+        rm.block_tag('can_collapse', 'tfc:rock/spike/%s' % rock)
+        rm.recipe(('collapse', '%s_spike' % rock), 'tfc:collapse', {
+            'ingredient': 'tfc:rock/spike/%s' % rock,
+            'copy_input': True
+        })
+
         rm.block_tag('can_collapse', gravel)
         rm.block_tag('can_landslide', gravel)
         rm.recipe(('collapse', 'gravel_%s' % rock), 'tfc:collapse', {

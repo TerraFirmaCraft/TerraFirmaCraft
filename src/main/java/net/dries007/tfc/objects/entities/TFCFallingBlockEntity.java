@@ -19,7 +19,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.objects.TFCTags;
-import net.dries007.tfc.world.tracker.WorldTrackerCapability;
+import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
 
 /**
  * A falling block entity that has a bit more oomph - it destroys blocks underneath it rather than hovering or popping off.
@@ -147,7 +147,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
                                     if (TFCTags.CAN_LANDSLIDE.contains(getBlockState().getBlock()))
                                     {
-                                        world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
+                                        world.getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
                                     }
 
                                     // Sets the tile entity if it exists

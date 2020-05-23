@@ -1,5 +1,7 @@
 package net.dries007.tfc.config;
 
+import java.util.function.Function;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -11,28 +13,32 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class ServerConfig
 {
-    /* Features */
+    /* Collapses */
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
+    public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
     public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
-
-    /* Balance */
     public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
     public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
+    public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
     public final ForgeConfigSpec.IntValue collapseMinRadius;
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
 
-    ServerConfig(ForgeConfigSpec.Builder builder)
+    ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
-        builder.push("collapses");
+        Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.server." + name);
 
-        enableBlockCollapsing = builder.comment("Enable rock collapsing when mining blocks").translation(MOD_ID + ".config.enableBlockCollapsing").define("enableBlockCollapsing", true);
-        enableBlockLandslides = builder.comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").translation(MOD_ID + ".config.enableBlockLandslides").define("enableBlockLandslides", true);
+        innerBuilder.push("collapses");
 
-        collapseTriggerChance = builder.comment("Chance for a collapse to be triggered by mining a block.").translation(MOD_ID + ".config.collapseTriggerChance").defineInRange("collapseTriggerChance", 0.1, 0, 1);
-        collapsePropagateChance = builder.comment("Chance that collapsing blocks propagate the collapse. Influenced by distance from epicenter of collapse.").translation(MOD_ID + ".config.collapsePropagateChance").defineInRange("collapsePropagateChance", 0.55, 0, 1);
-        collapseMinRadius = builder.comment("Minimum radius for a collapse").translation(MOD_ID + ".config.collapseMinRadius").defineInRange("collapseMinRadius", 3, 1, 32);
-        collapseRadiusVariance = builder.comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").translation(MOD_ID + ".config.collapseRadiusVariance").defineInRange("collapseRadiusVariance", 16, 1, 32);
+        enableBlockCollapsing = builder.apply("enableBlockCollapsing").comment("Enable rock collapsing when mining raw stone blocks").define("enableBlockCollapsing", true);
+        enableExplosionCollapsing = builder.apply("enableExplosionCollapsing").comment("Enable explosions causing immediate collapses.").define("enableExplosionCollapsing", true);
+        enableBlockLandslides = builder.apply("enableBlockLandslides").comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").define("enableBlockLandslides", true);
 
-        builder.pop();
+        collapseTriggerChance = builder.apply("collapseTriggerChance").comment("Chance for a collapse to be triggered by mining a block.").defineInRange("collapseTriggerChance", 0.1, 0, 1);
+        collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
+        collapseExplosionPropagateChance = builder.apply("collapseExplosionPropagateChance").comment("Chance for a block to fall from an explosion triggered collapse. Higher = mor likely.").defineInRange("collapseExplosionPropagateChance", 0.3, 0, 1);
+        collapseMinRadius = builder.apply("collapseMinRadius").comment("Minimum radius for a collapse").defineInRange("collapseMinRadius", 3, 1, 32);
+        collapseRadiusVariance = builder.apply("collapseRadiusVariance").comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").defineInRange("collapseRadiusVariance", 16, 1, 32);
+
+        innerBuilder.pop();
     }
 }

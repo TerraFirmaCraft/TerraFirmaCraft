@@ -22,6 +22,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -43,8 +44,8 @@ import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
 import net.dries007.tfc.world.tracker.WorldTracker;
-import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.vein.VeinTypeManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -135,7 +136,7 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onAttachCapabilitiesWorld(AttachCapabilitiesEvent<World> event)
     {
-        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker());
+        event.addCapability(CapabilityWorldTracker.KEY, new WorldTracker());
     }
 
     @SubscribeEvent
@@ -200,7 +201,7 @@ public final class ForgeEventHandler
             if (TFCTags.CAN_LANDSLIDE.contains(state.getBlock()) && world instanceof World)
             {
                 // Here, we just record the position rather than immediately updating as this is called from `setBlockState` so it's preferred to handle it with just a little latency
-                ((World) world).getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                ((World) world).getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
             }
         }
     }
@@ -220,7 +221,16 @@ public final class ForgeEventHandler
     {
         if (event.phase == TickEvent.Phase.START)
         {
-            event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
+            event.world.getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onExplosionDetonate(ExplosionEvent.Detonate event)
+    {
+        if (!event.getWorld().isRemote)
+        {
+            event.getWorld().getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
         }
     }
 }

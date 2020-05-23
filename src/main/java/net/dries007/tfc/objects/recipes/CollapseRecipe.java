@@ -18,8 +18,8 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.objects.TFCTags;
 import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.util.support.SupportManager;
+import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
 import net.dries007.tfc.world.tracker.CollapseData;
-import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 /**
  * This handles logic relating to block collapses.
@@ -111,7 +111,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
 
         if (!secondaryPositions.isEmpty())
         {
-            world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new CollapseData(centerPos, secondaryPositions, radiusSquared)));
+            world.getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new CollapseData(centerPos, secondaryPositions, radiusSquared)));
         }
     }
 
@@ -131,9 +131,9 @@ public class CollapseRecipe extends SimpleBlockRecipe
         }).orElse(false);
     }
 
-    public CollapseRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState)
+    public CollapseRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
     {
-        super(id, ingredient, outputState);
+        super(id, ingredient, outputState, copyInputState);
     }
 
     @Override
@@ -151,10 +151,9 @@ public class CollapseRecipe extends SimpleBlockRecipe
     public static class Serializer extends SimpleBlockRecipe.Serializer<CollapseRecipe>
     {
         @Override
-        protected CollapseRecipe create(ResourceLocation id, IBlockIngredient ingredient, BlockState state)
+        protected CollapseRecipe create(ResourceLocation id, IBlockIngredient ingredient, BlockState state, boolean copyInputState)
         {
-            return new CollapseRecipe(id, ingredient, state);
+            return new CollapseRecipe(id, ingredient, state, copyInputState);
         }
     }
-
 }
