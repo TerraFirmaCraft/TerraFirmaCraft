@@ -3,8 +3,8 @@
   "parent": "block/block",
   "textures": {
     "overlay": "tfc:block/grass_side",
-    "texture": "tfc:block/clay_dirt/silt",
-    "particle": "tfc:block/clay_dirt/silt"
+    "texture": "tfc:block/clay/silt",
+    "particle": "tfc:block/clay/silt"
   },
   "elements": [
     {
