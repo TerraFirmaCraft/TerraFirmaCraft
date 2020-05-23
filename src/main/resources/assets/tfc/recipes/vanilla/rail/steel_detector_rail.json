@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
+    "S S",
     "SWS",
-    "SRS",
-    "SWS"
+    "SRS"
   ],
   "key": {
     "S": {
       "type": "forge:ore_dict",
-      "ore": "ingotWroughtIron"
+      "ore": "rodSteel"
     },
     "W": {
       "type": "forge:ore_dict",
-      "ore": "stickWood"
+      "ore": "pressurePlateStone"
     },
     "R": {
       "type": "forge:ore_dict",
@@ -20,7 +20,7 @@
     }
   },
   "result": {
-    "item": "minecraft:golden_rail",
-    "count": 16
+    "item": "minecraft:detector_rail",
+    "count": 8
   }
 }

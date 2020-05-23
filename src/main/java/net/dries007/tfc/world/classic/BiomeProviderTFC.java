@@ -38,12 +38,6 @@ public class BiomeProviderTFC extends BiomeProvider
         return BiomesTFC.getSpawnBiomes();
     }
 
-    @Override
-    public float getTemperatureAtHeight(float p_76939_1_, int p_76939_2_)
-    {
-        return super.getTemperatureAtHeight(p_76939_1_, p_76939_2_);
-    }
-
     /**
      * This is where we do the actual override of the generation, we discard the original and insert our own.
      */

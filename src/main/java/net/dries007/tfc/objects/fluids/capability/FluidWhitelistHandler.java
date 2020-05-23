@@ -37,4 +37,14 @@ public class FluidWhitelistHandler extends FluidHandlerItemStackSimple
     {
         return whitelist.contains(fluid.getFluid());
     }
+
+    @Override
+    protected void setContainerToEmpty()
+    {
+        super.setContainerToEmpty();
+        if (container.getTagCompound() != null && container.getTagCompound().isEmpty())
+        {
+            container.setTagCompound(null);
+        }
+    }
 }

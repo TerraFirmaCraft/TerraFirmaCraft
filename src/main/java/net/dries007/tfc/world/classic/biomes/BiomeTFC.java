@@ -93,7 +93,7 @@ public class BiomeTFC extends Biome
     public float getTemperature(@Nonnull BlockPos pos)
     {
         // Vanilla spec: 0.15 = snow threshold, range = [-1, 1] for overworld temps.
-        return MathHelper.clamp(0.15f + ClimateTFC.getActualTemp(pos) / 35, -1, 1);
+        return MathHelper.clamp(0.15f + ClimateTFC.getDailyTemp(pos) / 35, -1, 1);
     }
 
     @Override

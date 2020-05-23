@@ -124,10 +124,6 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
                             }
                         }
                         worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                        if (stack.hasTagCompound() && stack.getTagCompound().isEmpty())
-                        {
-                            stack.setTagCompound(null);
-                        }
                         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                 }

@@ -54,6 +54,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:cookie"));
             modRegistry.remove(new ResourceLocation("minecraft:compass"));
             modRegistry.remove(new ResourceLocation("minecraft:comparator"));
+            modRegistry.remove(new ResourceLocation("minecraft:repeater"));
             modRegistry.remove(new ResourceLocation("minecraft:coarse_dirt"));
             modRegistry.remove(new ResourceLocation("minecraft:chest"));
             modRegistry.remove(new ResourceLocation("minecraft:cauldron"));
@@ -99,7 +100,6 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:emerald"));
             modRegistry.remove(new ResourceLocation("minecraft:coal_block"));
             modRegistry.remove(new ResourceLocation("minecraft:coal"));
-            modRegistry.remove(new ResourceLocation("minecraft:bone_block"));
             modRegistry.remove(new ResourceLocation("minecraft:bone_meal_from_bone"));
             modRegistry.remove(new ResourceLocation("minecraft:bone_meal_from_block"));
 
@@ -195,9 +195,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:spruce_boat"));
 
             //redstone
-            modRegistry.remove(new ResourceLocation("minecraft:tripwire_hook"));
             modRegistry.remove(new ResourceLocation("minecraft:trapped_chest"));
-            modRegistry.remove(new ResourceLocation("minecraft:sticky_piston"));
             modRegistry.remove(new ResourceLocation("minecraft:redstone_lamp"));
             modRegistry.remove(new ResourceLocation("minecraft:piston"));
             modRegistry.remove(new ResourceLocation("minecraft:observer"));
@@ -206,11 +204,11 @@ public class RecipeRegistryEvents
             //rail
             modRegistry.remove(new ResourceLocation("minecraft:rail"));
             modRegistry.remove(new ResourceLocation("minecraft:minecart"));
-            modRegistry.remove(new ResourceLocation("minecraft:hopper_minecart"));
             modRegistry.remove(new ResourceLocation("minecraft:furnace_minecart"));
             modRegistry.remove(new ResourceLocation("minecraft:detector_rail"));
             modRegistry.remove(new ResourceLocation("minecraft:chest_minecart"));
             modRegistry.remove(new ResourceLocation("minecraft:activator_rail"));
+            modRegistry.remove(new ResourceLocation("minecraft:golden_rail"));
 
             //Stone
             modRegistry.remove(new ResourceLocation("minecraft:stone_hoe"));
@@ -298,7 +296,6 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:string_to_wool"));
             modRegistry.remove(new ResourceLocation("minecraft:white_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:white_bed"));
-            modRegistry.remove(new ResourceLocation("minecraft:white_carpet"));
 
             //Yellow
             modRegistry.remove(new ResourceLocation("minecraft:yellow_dye_from_sunflower"));
@@ -354,7 +351,6 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:light_blue_dye_from_blue_orchid"));
             modRegistry.remove(new ResourceLocation("minecraft:light_blue_concrete_powder"));
             modRegistry.remove(new ResourceLocation("minecraft:light_blue_bed"));
-            modRegistry.remove(new ResourceLocation("minecraft:blue_wool"));
             modRegistry.remove(new ResourceLocation("minecraft:blue_stained_hardened_clay"));
             modRegistry.remove(new ResourceLocation("minecraft:blue_stained_glass"));
             modRegistry.remove(new ResourceLocation("minecraft:blue_concrete_powder"));
