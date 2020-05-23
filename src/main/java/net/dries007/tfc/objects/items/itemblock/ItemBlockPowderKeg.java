@@ -53,7 +53,8 @@ public class ItemBlockPowderKeg extends ItemBlockTFC implements IItemSize
             int firstSlot = -1;
             for (int i = 0; i < stackHandler.getSlots(); i++)
             {
-                if (firstSlot < 0 && !stackHandler.getStackInSlot(i).isEmpty()) {
+                if (firstSlot < 0 && !stackHandler.getStackInSlot(i).isEmpty())
+                {
                     firstSlot = i;
                 }
                 count += stackHandler.getStackInSlot(i).getCount();

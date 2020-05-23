@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.objects.blocks;
 
-import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -19,10 +18,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -31,6 +28,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -87,7 +85,7 @@ public class BlockPowderKeg extends Block implements IItemSize
         setHardness(2F);
         setLightLevel(0.9375F);
 
-        setDefaultState(blockState.getBaseState().withProperty(EXPLODE,false).withProperty(SEALED, false));
+        setDefaultState(blockState.getBaseState().withProperty(EXPLODE, false).withProperty(SEALED, false));
     }
 
     /**
@@ -96,12 +94,20 @@ public class BlockPowderKeg extends Block implements IItemSize
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         super.onBlockAdded(worldIn, pos, state);
-
         if (worldIn.isBlockPowered(pos))
         {
             this.onPlayerDestroy(worldIn, pos, state.withProperty(EXPLODE, true));
-            worldIn.setBlockToAir(pos);
         }
+    }
+
+    /**
+     * Return whether this block can drop from an explosion. STATELESS! :(
+     * Would drop from explosion if unsealed, but can't tell.
+     */
+    @Override
+    public boolean canDropFromExplosion(Explosion explosionIn)
+    {
+        return false;
     }
 
     /**
@@ -111,7 +117,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     public void onBlockExploded(World worldIn, BlockPos pos, Explosion explosionIn)
     {
         TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
-        if (te != null && te.getStrength() > 0 && worldIn.getBlockState(pos).getValue(SEALED))
+        if (!worldIn.isRemote && te != null && te.getStrength() > 0)
         {
             worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(EXPLODE, true));
             te.setLit(true);
@@ -119,15 +125,11 @@ public class BlockPowderKeg extends Block implements IItemSize
         }
         else
         {
-            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+            super.onBlockExploded(worldIn, pos, explosionIn);
         }
     }
 
-    @Override
-    public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
-    {
-        super.onExplosionDestroy(worldIn, pos, explosionIn);
-    }
+    // Cannot use onExplosionDestroy like TNT because all state has already been lost at that point.
 
     /**
      * Called after a player destroys this Block - the position pos may no longer hold the state indicated.
@@ -202,11 +204,11 @@ public class BlockPowderKeg extends Block implements IItemSize
     {
         if (!worldIn.isRemote && entityIn instanceof EntityArrow)
         {
-            EntityArrow entityarrow = (EntityArrow)entityIn;
+            EntityArrow entityarrow = (EntityArrow) entityIn;
 
             if (entityarrow.isBurning())
             {
-                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, true), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase)entityarrow.shootingEntity : null);
+                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, true), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
             }
         }
     }
@@ -315,23 +317,18 @@ public class BlockPowderKeg extends Block implements IItemSize
         if (world.isBlockPowered(pos))
         {
             this.onPlayerDestroy(world, pos, state.withProperty(EXPLODE, true));
-            return;
-        }
-        if (!canStay(world, pos))
-        {
-            world.destroyBlock(pos, true);
-        }
+        }// do not care otherwise, as canStay may be violated by an explosion, which we want to trigger off of
     }
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TEPowderKeg tile = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
-        if (tile != null)
+        if (tile != null && !tile.isLit())
         {
             tile.onBreakBlock(worldIn, pos, state);
+            super.breakBlock(worldIn, pos, state);
         }
-        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -410,8 +407,22 @@ public class BlockPowderKeg extends Block implements IItemSize
         }
     }
 
+    @Override
+    @Nonnull
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world,
+                                  BlockPos pos, EntityPlayer player)
+    {
+        TEPowderKeg tile = Helpers.getTE(world, pos, TEPowderKeg.class);
+        if (tile != null)
+        {
+            return tile.getItemStack(state);
+        }
+        return new ItemStack(state.getBlock());
+    }
+
     private boolean canStay(IBlockAccess world, BlockPos pos)
     {
-        return world.getBlockState(pos.down()).getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
+        boolean solid = world.getBlockState(pos.down()).getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
+        return solid || world.getBlockState(pos.down()).getBlock() instanceof BlockPowderKeg;
     }
 }
