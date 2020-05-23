@@ -11,8 +11,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -25,6 +23,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -44,7 +43,7 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
 {
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
-    private int fuse;
+    private int fuse = -1;
 
     private boolean isLit = false;
     private EntityLivingBase igniter;
@@ -168,8 +167,7 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         else
         {
             // Need to create the full barrel and drop it now
-            ItemStack stack = new ItemStack(state.getBlock());
-            stack.setTagCompound(getItemTag());
+            ItemStack stack = getItemStack(state);
             InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
         }
     }
@@ -246,8 +244,15 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         super.update();
     }
 
+    public ItemStack getItemStack(IBlockState state)
+    {
+        ItemStack stack = new ItemStack(state.getBlock());
+        stack.setTagCompound(getItemTag());
+        return stack;
+    }
+
     private void explode()
     {
-        world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), getStrength(), true);
+        world.createExplosion(igniter, pos.getX(), pos.getY(), pos.getZ(), getStrength(), true);
     }
 }

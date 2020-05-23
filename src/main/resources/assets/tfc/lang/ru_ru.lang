@@ -33,6 +33,8 @@ tfc.tooltip.barrel_fluid=Содержит %1$d mB %2$s
 tfc.tooltip.barrel_fluid_amount=%d mB
 tfc.tooltip.barrel_item=Contains %1$dx %2$s
 tfc.tooltip.barrel_item_in_fluid= и %1$dx %2$s
+tfc.tooltip.powderkeg_amount=Contains %sx of %s
+tfc.tooltip.powderkeg_empty=Пусто
 tfc.tooltip.small_vessel_empty=Пусто
 tfc.tooltip.small_vessel_item=%1$dx %2$s
 tfc.tooltip.weldable=Можно сварить
@@ -3398,6 +3400,7 @@ item.tfc.powder.limonite.name=Лимонитовый порошок
 item.tfc.powder.malachite.name=Малахитовый порошок
 item.tfc.powder.salt.name=Соль
 item.tfc.powder.fertilizer.name=Удобрение
+item.tfc.powder.charcoal.name=
 
 item.tfc.ceramics.fired.mold.ingot.bismuth.name=Неформованный слиток висмута
 item.tfc.ceramics.fired.mold.ingot.bismuth_bronze.name=Неформованный слиток висмутовой бронзы
