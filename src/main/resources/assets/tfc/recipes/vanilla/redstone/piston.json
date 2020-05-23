@@ -3,12 +3,12 @@
   "pattern": [
     "WWW",
     "SXS",
-    "SRS"
+    "SBS"
   ],
   "key": {
     "X": {
       "type": "forge:ore_dict",
-      "ore": "ingotWroughtIron"
+      "ore": "rodWroughtIron"
     },
     "S": {
       "type": "forge:ore_dict",
@@ -16,11 +16,10 @@
     },
     "W": {
       "type": "forge:ore_dict",
-      "ore": "planksWood"
+      "ore": "lumber"
     },
-    "R": {
-      "type": "forge:ore_dict",
-      "ore": "dustRedstone"
+    "B": {
+      "item": "tfc:brass_mechanisms"
     }
   },
   "result": {

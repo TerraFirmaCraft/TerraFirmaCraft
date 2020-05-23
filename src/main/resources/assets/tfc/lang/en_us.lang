@@ -342,10 +342,10 @@ config.tfc.general.tree.enableHammerSticks=Enable Hammering for Sticks
 config.tfc.general.tree.enableHammerSticks.tooltip=Enable smacking logs with a hammer giving sticks.
 
 config.tfc.general.tree.requiresAxe=Requires Axe
-config.tfc.general.tree.enableFelling.tooltip=Should logs require tools (axes and saws, or hammers for sticks) to be cut? If false, breaking logs with an empty hand will not drop logs.
+config.tfc.general.tree.requiresAxe.tooltip=Should logs require tools (axes and saws, or hammers for sticks) to be cut? If false, breaking logs with an empty hand will not drop logs.
 
 config.tfc.general.tree.enableSaplings=Enable Saplings
-config.tfc.general.tree.enableFelling.tooltip=If false, leaves will not drop saplings.
+config.tfc.general.tree.enableSaplings.tooltip=If false, leaves will not drop saplings.
 
 config.tfc.general.tree.stoneAxeReturnRate=Stone Axe Log Return Rate
 config.tfc.general.tree.stoneAxeReturnRate.tooltip=Chance per log for an item to drop when using a stone axe.
@@ -594,7 +594,7 @@ config.tfc.general.misc.logMiningTimeModifier.tooltip=This controls the time it 
 
 ## Devices Config
 config.tfc.devices=Device Settings
-config.tfc.general.tooltip=Various configuration settings for devices (ie: Bloomery, Small Vessel, Barrel)
+config.tfc.devices.tooltip=Various configuration settings for devices (ie: Bloomery, Small Vessel, Barrel)
 
 
 ### Temperature
@@ -662,7 +662,7 @@ config.tfc.devices.fire_pit.ticks=Ticks
 config.tfc.devices.fire_pit.ticks.tooltip=Number of ticks required for a cooking pot on a fire pit to boil before turning into soup, per serving. (1000 = 1 in game hour = 50 seconds). Default is 1 hour.
 
 config.tfc.devices.fire_pit.rainTicks=Rain drop burning ticks removal
-config.tfc.devices.fire_pit.ticks.tooltip=Number of burning ticks that is removed when the fire pit is on rain (random ticks). This effectively makes the fire pit consumes more fuel when it is raining above it.
+config.tfc.devices.fire_pit.rainTicks.tooltip=Number of burning ticks that is removed when the fire pit is on rain (random ticks). This effectively makes the fire pit consumes more fuel when it is raining above it.
 
 
 ### Pit Kiln
@@ -726,7 +726,6 @@ config.tfc.devices.sluice.diamondGemChance.tooltip=Chance that a diamond is drop
 
 ## Clients
 config.tfc.client=Client Settings
-config.tfc.client.tooltip=Client side only settings.
 
 ### Tooltips
 config.tfc.client.tooltip=Tooltip Settings
@@ -3181,6 +3180,11 @@ item.tfc.ceramics.unfired.clay_flower_pot.name=Unfired Clay Flower Pot
 item.tfc.mortar.name=Mortar
 item.tfc.wrought_iron_grill.name=Wrought Iron Grill
 item.tfc.alabaster_brick.name=Alabaster Brick
+item.tfc.metal.rod.gold=Gold Rod
+item.tfc.metal.rod.wrought_iron=Wrought Iron Rod
+item.tfc.metal.rod.steel=Steel Rod
+item.tfc.brass_mechanisms.name=Brass Mechanisms
+item.tfc.glue.name=Glue
 
 item.tfc.ore.native_copper.name=Native Copper
 item.tfc.ore.native_gold.name=Native Gold

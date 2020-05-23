@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "SS"
+    "X X",
+    "XXX"
   ],
   "key": {
-    "S": {
+    "X": {
       "type": "forge:ore_dict",
-      "ore": "clothHighQuality"
+      "ore": "sheetSteel"
     }
   },
   "result": {
-    "item": "minecraft:carpet",
-    "data": 0,
+    "item": "minecraft:minecart",
     "count": 2
   }
 }

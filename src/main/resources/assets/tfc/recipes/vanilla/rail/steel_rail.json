@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "X X",
-    "XCX",
-    " X "
+    "S S",
+    "SWS",
+    "S S"
   ],
   "key": {
-    "X": {
+    "S": {
       "type": "forge:ore_dict",
-      "ore": "ingotWroughtIron"
+      "ore": "rodSteel"
     },
-    "C": {
+    "W": {
       "type": "forge:ore_dict",
-      "ore": "chest"
+      "ore": "stickWood"
     }
   },
   "result": {
-    "item": "minecraft:hopper",
-    "count": 1
+    "item": "minecraft:rail",
+    "count": 16
   }
 }

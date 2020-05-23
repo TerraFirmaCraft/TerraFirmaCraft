@@ -1,26 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " X ",
-    " S ",
-    "WWW"
+    "SWS",
+    "SRS",
+    "SWS"
   ],
   "key": {
-    "X": {
-      "type": "forge:ore_dict",
-      "ore": "ingotWroughtIron"
-    },
     "S": {
       "type": "forge:ore_dict",
-      "ore": "stickWood"
+      "ore": "rodGold"
     },
     "W": {
       "type": "forge:ore_dict",
-      "ore": "lumber"
+      "ore": "stickWood"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     }
   },
   "result": {
-    "item": "minecraft:tripwire_hook",
-    "count": 2
+    "item": "minecraft:golden_rail",
+    "count": 8
   }
 }

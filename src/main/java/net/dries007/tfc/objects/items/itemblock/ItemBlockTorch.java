@@ -18,6 +18,8 @@ import net.dries007.tfc.objects.te.TELogPile;
 import net.dries007.tfc.objects.te.TEPitKiln;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.objects.blocks.property.ILightableBlock.LIT;
+
 public class ItemBlockTorch extends ItemBlockTFC
 {
     public ItemBlockTorch(Block block)
@@ -39,13 +41,13 @@ public class ItemBlockTorch extends ItemBlockTFC
             {
                 if (state.getBlock() == BlocksTFC.LOG_PILE)
                 {
+                    world.setBlockState(pos, state.withProperty(LIT, true));
                     TELogPile te = Helpers.getTE(world, pos, TELogPile.class);
                     if (te != null)
                     {
                         te.light();
                     }
-                    // This happens automatically for Pit Kiln
-                    if (!Blocks.FIRE.canPlaceBlockAt(world, pos))
+                    if (Blocks.FIRE.canPlaceBlockAt(world, pos.up()))
                     {
                         world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
                     }
