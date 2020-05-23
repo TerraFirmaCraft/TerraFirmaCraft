@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 import imageutil.Images;
 import net.dries007.tfc.config.LayerType;
+import net.dries007.tfc.world.biome.BiomeTemperature;
 
 @SuppressWarnings("unused")
 public class NoiseTests
@@ -13,14 +14,22 @@ public class NoiseTests
     public static final Images<INoise2D> IMAGES = Images.get(target -> (x, y) -> target.noise((float) x, (float) y));
     public static final Images<BiIntFunction<INoise2D>> TILED_IMAGES = Images.get(target -> (x, y) -> target.get((int) (x / 40), (int) (y / 40)).noise((float) x % 40 - 20, (float) y % 40 - 20));
 
+    public static final Color[] TEMPERATURE_COLORS = new Color[] {
+        new Color(0, 0, 100),
+        new Color(0, 40, 200),
+        new Color(20, 100, 255),
+        new Color(50, 160, 255),
+        new Color(80, 255, 255)
+    };
+
     public static void main(String[] args)
     {
         long seed = System.currentTimeMillis();
 
-        INoise2D temp = LayerType.SIN_Z.create(seed, 20_000).terraces(5).scaled(-10, 30);
+        INoise2D temp = LayerType.SIN_Z.create(seed, 20_000).scaled(-10, 30);
         INoise2D rainfall = LayerType.SIN_X.create(seed, 20_000).terraces(4).scaled(-50, 500).flattened(0, 500);
 
-        IMAGES.color(Images.Colors.LINEAR_BLUE_RED).size(1000);
+        IMAGES.color((value, min, max) -> TEMPERATURE_COLORS[BiomeTemperature.get((float) value).ordinal()]);
         IMAGES.draw("avg_temp", temp, -10, 30, -20000, -20000, 20000, 20000);
 
         IMAGES.color(Images.Colors.LINEAR_BLUE_RED).size(1000);
