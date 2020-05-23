@@ -119,3 +119,11 @@ def generate(rm: ResourceManager):
                 'texture': dirt,
                 'particle': dirt
             }, parent='block/block', elements=[north_face])
+
+    # Rock Tools
+    for rock in ROCK_CATEGORIES:
+        for rock_item in ROCK_ITEMS:
+            rm.item_model(('stone', '%s' % rock_item, '%s' % rock), \
+                'tfc:item/stone/%s' % rock_item, \
+                parent='item/handheld') \
+                .with_lang(lang('Stone %s' % rock_item))

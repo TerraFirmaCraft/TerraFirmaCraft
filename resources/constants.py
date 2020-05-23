@@ -12,6 +12,8 @@ Vein = namedtuple('Vein',
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
 ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
+ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe_head', 'javelin', 'javelin_head', 'knife', 'knife_head', 'shovel', 'shovel_head']
+
 ROCKS: Dict[str, Rock] = {
     'chalk': Rock('sedimentary', 'yellow'),
     'chert': Rock('sedimentary', 'yellow'),
@@ -80,8 +82,8 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'rod': MetalItem('part', 50, 'item/generated', 'forge:rods'),
     
     'tuyere': MetalItem('tool', 100, 'item/generated', ''),
-    'pick': MetalItem('tool', 100, 'item/handheld', ''),
-    'pick_head': MetalItem('tool', 100, 'item/generated', ''),
+    'pickaxe': MetalItem('tool', 100, 'item/handheld', ''),
+    'pickaxe_head': MetalItem('tool', 100, 'item/generated', ''),
     'shovel': MetalItem('tool', 100, 'item/handheld', ''),
     'shovel_head': MetalItem('tool', 100, 'item/generated', ''),
     'axe': MetalItem('tool', 100, 'item/handheld', ''),
