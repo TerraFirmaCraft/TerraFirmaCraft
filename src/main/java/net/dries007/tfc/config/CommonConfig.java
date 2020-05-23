@@ -51,7 +51,7 @@ public class CommonConfig
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         // Standardization for translation keys
-        Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config." + name);
+        Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.general." + name);
 
         innerBuilder.push("worldGeneration").push("surface");
 
