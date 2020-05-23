@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -23,6 +23,8 @@ import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.TFCItemGroup;
+import net.dries007.tfc.objects.TFCItemTier;
+import net.dries007.tfc.objects.items.tools.*;
 
 public class Metal
 {
@@ -60,41 +62,42 @@ public class Metal
      */
     public enum Default
     {
-        BISMUTH(true, false, false, false),
-        BISMUTH_BRONZE(true, true, true, true),
-        BLACK_BRONZE(true, true, true, true),
-        BRONZE(true, true, true, true),
-        BRASS(true, false, false, false),
-        COPPER(true, true, true, true),
-        GOLD(true, false, false, false),
-        NICKEL(true, false, false, false),
-        ROSE_GOLD(true, false, false, false),
-        SILVER(true, false, false, false),
-        TIN(true, false, false, false),
-        ZINC(true, false, false, false),
-        STERLING_SILVER(true, false, false, false),
-        WROUGHT_IRON(true, true, true, true),
-        CAST_IRON(false, false, false, false),
-        PIG_IRON(false, false, false, false),
-        STEEL(true, true, true, true),
-        BLACK_STEEL(true, true, true, true),
-        BLUE_STEEL(true, true, true, true),
-        RED_STEEL(true, true, true, true),
-        WEAK_STEEL(false, false, false, false),
-        WEAK_BLUE_STEEL(false, false, false, false),
-        WEAK_RED_STEEL(false, false, false, false),
-        HIGH_CARBON_STEEL(false, false, false, false),
-        HIGH_CARBON_BLACK_STEEL(false, false, false, false),
-        HIGH_CARBON_BLUE_STEEL(false, false, false, false),
-        HIGH_CARBON_RED_STEEL(false, false, false, false),
-        UNKNOWN(false, false, false, false);
+        BISMUTH(true, null, false, false),
+        BISMUTH_BRONZE(true, TFCItemTier.BISMUTH_BRONZE, true, true),
+        BLACK_BRONZE(true, TFCItemTier.BLACK_BRONZE, true, true),
+        BRONZE(true, TFCItemTier.BRONZE, true, true),
+        BRASS(true, null, false, false),
+        COPPER(true, TFCItemTier.COPPER, true, true),
+        GOLD(true, null, false, false),
+        NICKEL(true, null, false, false),
+        ROSE_GOLD(true, null, false, false),
+        SILVER(true, null, false, false),
+        TIN(true, null, false, false),
+        ZINC(true, null, false, false),
+        STERLING_SILVER(true, null, false, false),
+        WROUGHT_IRON(true, TFCItemTier.WROUGHT_IRON, true, true),
+        CAST_IRON(false, null, false, false),
+        PIG_IRON(false, null, false, false),
+        STEEL(true, TFCItemTier.STEEL, true, true),
+        BLACK_STEEL(true, TFCItemTier.BLACK_STEEL, true, true),
+        BLUE_STEEL(true, TFCItemTier.BLUE_STEEL, true, true),
+        RED_STEEL(true, TFCItemTier.RED_STEEL, true, true),
+        WEAK_STEEL(false, null, false, false),
+        WEAK_BLUE_STEEL(false, null, false, false),
+        WEAK_RED_STEEL(false, null, false, false),
+        HIGH_CARBON_STEEL(false, null, false, false),
+        HIGH_CARBON_BLACK_STEEL(false, null, false, false),
+        HIGH_CARBON_BLUE_STEEL(false, null, false, false),
+        HIGH_CARBON_RED_STEEL(false, null, false, false),
+        UNKNOWN(false, null, false, false);
 
-        private final boolean parts, tools, armor, utility;
+        private final boolean parts, armor, utility;
+        private final IItemTier itemTier;
 
-        Default(boolean parts, boolean tools, boolean armor, boolean utility)
+        Default(boolean parts, @Nullable IItemTier itemTier, boolean armor, boolean utility)
         {
             this.parts = parts;
-            this.tools = tools;
+            this.itemTier = itemTier;
             this.armor = armor;
             this.utility = utility;
         }
@@ -111,12 +114,18 @@ public class Metal
 
         public boolean hasTools()
         {
-            return tools;
+            return itemTier != null;
         }
 
         public boolean hasUtilities()
         {
             return utility;
+        }
+
+        public IItemTier getItemTier()
+        {
+            //noinspection ConstantConditions - Should never be called without first checking hasTools()
+            return itemTier;
         }
     }
 
@@ -238,34 +247,34 @@ public class Metal
         DOUBLE_SHEET("double_sheets", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         ROD("rods", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
 
-        TUYERE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        PICK(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        PICK_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        PROPICK(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        TUYERE(Type.TOOL, metal -> new TieredItem(metal.getItemTier(), new Item.Properties().group(TFCItemGroup.METAL))),
+        PICKAXE(Type.TOOL, metal -> new TFCPickaxeItem(metal.getItemTier(), 0.75F, -2.8F, (new Item.Properties()).group(ItemGroup.TOOLS))),
+        PICKAXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        PROPICK(Type.TOOL, metal -> new PropickItem(metal.getItemTier(), 0.5F, -2.8F, (new Item.Properties()).group(ItemGroup.TOOLS))),
         PROPICK_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        AXE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        AXE(Type.TOOL, metal -> new TFCAxeItem(metal.getItemTier(), 1.5F, -3.2F, (new Item.Properties()).group(ItemGroup.TOOLS))),
         AXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        SHOVEL(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        SHOVEL(Type.TOOL, metal -> new TFCShovelItem(metal.getItemTier(), 0.875F, -3.0F, (new Item.Properties()).group(ItemGroup.TOOLS))),
         SHOVEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        HOE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        HOE(Type.TOOL, metal -> new HoeItem(metal.getItemTier(), -1, (new Item.Properties()).group(ItemGroup.TOOLS))),
         HOE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        CHISEL(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        CHISEL(Type.TOOL, metal -> new ChiselItem(metal.getItemTier(), 0.27F, -1.5F, (new Item.Properties()).group(ItemGroup.TOOLS))),
         CHISEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        HAMMER(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        HAMMER(Type.TOOL, metal -> new TFCToolItem(metal.getItemTier(), 1.0F, -3, (new Item.Properties()).group(ItemGroup.TOOLS))),
         HAMMER_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        SAW(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        SAW(Type.TOOL, metal -> new TFCToolItem(metal.getItemTier(), 0.5F, -3, (new Item.Properties()).group(ItemGroup.TOOLS))),
         SAW_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        JAVELIN(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.getItemTier(), 0.7F, -1.8F, (new Item.Properties()).group(ItemGroup.COMBAT))),
         JAVELIN_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        SWORD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        SWORD(Type.TOOL, metal -> new TFCSwordItem(metal.getItemTier(), 1.0F, -2.4F, (new Item.Properties()).group(ItemGroup.COMBAT))),
         SWORD_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        MACE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        MACE(Type.TOOL, metal -> new WeaponItem(metal.getItemTier(), 1.3F, -3, (new Item.Properties()).group(ItemGroup.COMBAT))),
         MACE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        KNIFE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        KNIFE(Type.TOOL, metal -> new TFCToolItem(metal.getItemTier(), 0.54F, -1.5F, (new Item.Properties()).group(ItemGroup.TOOLS))),
         KNIFE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        SCYTHE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        SCYTHE(Type.TOOL, metal -> new TFCToolItem(metal.getItemTier(), 2, -3.2F, (new Item.Properties()).group(ItemGroup.TOOLS))),
         SCYTHE_BLADE(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        SHEARS(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
+        SHEARS(Type.TOOL, metal -> new TFCShearsItem(metal.getItemTier(), (new Item.Properties()).group(ItemGroup.TOOLS))),
 
         UNFINISHED_HELMET(Type.ARMOR, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         HELMET(Type.ARMOR, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
@@ -276,7 +285,7 @@ public class Metal
         UNFINISHED_BOOTS(Type.ARMOR, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         BOOTS(Type.ARMOR, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
 
-        SHIELD(Type.TOOL, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL)));
+        SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.getItemTier(), new Item.Properties().group(TFCItemGroup.COMBAT)));
 
 
         public static final Metal.ItemType[] VALUES = values();

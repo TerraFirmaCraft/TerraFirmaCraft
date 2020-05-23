@@ -23,7 +23,7 @@ public final class TFCItemGroup extends ItemGroup
     //public static final ItemGroup ROCK_ITEMS = new TFCItemGroup("rock.items", "tfc:ore/tetrahedrite");
     //public static final ItemGroup WOOD = new TFCItemGroup("wood", "tfc:wood/log/pine");
     //public static final ItemGroup DECORATIONS = new TFCItemGroup("decorations", "tfc:wall/cobble/granite");
-    public static final ItemGroup METAL = new TFCItemGroup(TerraFirmaCraft.MOD_ID + ".metals", () -> new ItemStack(TFCItems.METALS.get(Metal.Default.BRONZE).get(Metal.ItemType.INGOT).get()));
+    public static final ItemGroup METAL = new TFCItemGroup(TerraFirmaCraft.MOD_ID + ".metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.INGOT).get()));
     //public static final ItemGroup GEMS = new TFCItemGroup("gems", "tfc:gem/diamond");
     //public static final ItemGroup POTTERY = new TFCItemGroup("pottery", "tfc:ceramics/fired/mold/ingot");
     //public static final ItemGroup FOOD = new TFCItemGroup("food", "tfc:food/green_apple");
