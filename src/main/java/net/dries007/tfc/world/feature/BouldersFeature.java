@@ -35,7 +35,20 @@ public class BouldersFeature extends Feature<NoFeatureConfig>
         ChunkDataProvider.get(worldIn)
             .map(provider -> provider.get(pos, ChunkData.Status.ROCKS, false).getRockData().getRock(pos.getX(), pos.getY(), pos.getZ()))
             .ifPresent(rock -> {
-                BlockState state = rock.getBlock(Rock.BlockType.RAW).getDefaultState();
+                int blockPicker = rand.nextInt(2);
+                Rock.BlockType boulderType = null;
+                switch(blockPicker) {
+                    case 0:
+                        boulderType = Rock.BlockType.MOSSY_COBBLE;
+                        break;
+                    case 1:
+                        boulderType = Rock.BlockType.RAW;
+                        break;
+                    case 2:
+                        boulderType = Rock.BlockType.COBBLE;
+                        break;
+                }
+                BlockState state = rock.getBlock(boulderType).getDefaultState();
                 int size = 2 + rand.nextInt(4);
                 for (BlockPos posAt : BlockPos.getAllInBoxMutable(pos.getX() - size, pos.getY() - size, pos.getZ() - size, pos.getX() + size, pos.getY() + size, pos.getZ() + size))
                 {
