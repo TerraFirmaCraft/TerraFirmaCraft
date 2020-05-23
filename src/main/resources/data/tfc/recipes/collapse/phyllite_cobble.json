@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/phyllite",
     "tfc:rock/raw/phyllite",
+    "tfc:rock/mossy_cobble/phyllite",
     "tfc:ore/bituminous_coal/phyllite",
     "tfc:ore/lignite/phyllite",
     "tfc:ore/kaolinite/phyllite",

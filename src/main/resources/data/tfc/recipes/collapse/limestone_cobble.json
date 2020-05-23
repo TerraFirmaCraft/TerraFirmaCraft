@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/limestone",
     "tfc:rock/raw/limestone",
+    "tfc:rock/mossy_cobble/limestone",
     "tfc:ore/bituminous_coal/limestone",
     "tfc:ore/lignite/limestone",
     "tfc:ore/kaolinite/limestone",

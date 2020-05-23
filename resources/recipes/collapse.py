@@ -18,7 +18,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('can_collapse', raw)
         rm.recipe(('collapse', '%s_cobble' % rock), 'tfc:collapse', {
             'ingredient': [
-                cobble, raw,
+                cobble, raw, 'tfc:rock/mossy_cobble/%s' % rock,
                 *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if not ore_data.graded],
                 *['tfc:ore/poor_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
                 *['tfc:ore/normal_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
@@ -26,6 +26,15 @@ def generate(rm: ResourceManager):
             ],
             'result': cobble
         })
+
+        for ore, ore_data in ORES.items():
+            if ore_data.graded:
+                for grade in ORE_GRADES.keys():
+                    rm.block_tag('can_start_collapse', 'tfc:ore/%s_%s/%s' % (grade, ore, rock))
+                    rm.block_tag('can_collapse', 'tfc:ore/%s_%s/%s' % (grade, ore, rock))
+            else:
+                rm.block_tag('can_start_collapse', 'tfc:ore/%s/%s' % (ore, rock))
+                rm.block_tag('can_collapse', 'tfc:ore/%s/%s' % (ore, rock))
 
         # Gravel and cobblestone both have collapse, and landslide recipes
         rm.block_tag('can_collapse', cobble)

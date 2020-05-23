@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/claystone",
     "tfc:rock/raw/claystone",
+    "tfc:rock/mossy_cobble/claystone",
     "tfc:ore/bituminous_coal/claystone",
     "tfc:ore/lignite/claystone",
     "tfc:ore/kaolinite/claystone",

@@ -146,7 +146,7 @@ ORE_VEINS: Dict[str, Vein] = {
 ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'spike', 'mossy_cobble', 'mossy_bricks',
                     'cracked_bricks', 'chiseled']
 ROCK_SPIKE_PARTS = ['base', 'middle', 'tip']
-SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'green','pink']
+SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'green', 'pink']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path', 'clay', 'clay_grass']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam']
 

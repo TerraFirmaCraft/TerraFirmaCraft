@@ -73,11 +73,12 @@ public class RockSpikeBlock extends Block
             if (TFCFallingBlockEntity.canFallThrough(world, downPos))
             {
                 // Potential to collapse from the top
-                if (!world.isRemote && isUnsupported(world, pos))
+                if (!world.isRemote && !isSupported(world, pos))
                 {
                     // Spike is unsupported
                     boolean collapsed = false;
                     BlockState stateAt = state;
+                    // Mark all blocks below for also collapsing
                     while (stateAt.getBlock() == this)
                     {
                         collapsed |= CollapseRecipe.collapseBlock(world, pos, stateAt);
@@ -93,16 +94,22 @@ public class RockSpikeBlock extends Block
         }
     }
 
-    private boolean isUnsupported(World world, BlockPos pos)
+    private boolean isSupported(World world, BlockPos pos)
     {
         BlockState state = world.getBlockState(pos);
         BlockState stateDown = world.getBlockState(pos.down());
-        if (stateDown.isSolidSide(world, pos.down(), Direction.UP) || (stateDown.getBlock() == this && stateDown.get(PART).ordinal() > state.get(PART).ordinal() && !isUnsupported(world, pos.down())))
+        // It can be directly supported below, by either a flat surface, *or* a spike that's larger than this one
+        if (stateDown.isSolidSide(world, pos.down(), Direction.UP) || (stateDown.getBlock() == this && stateDown.get(PART).ordinal() > state.get(PART).ordinal()))
         {
-            return false;
+            return true;
         }
-        BlockState stateUp = world.getBlockState(pos.up());
-        return !stateUp.isSolidSide(world, pos.up(), Direction.DOWN) && (stateUp.getBlock() != this || stateUp.get(PART).ordinal() > state.get(PART).ordinal() || isUnsupported(world, pos.up()));
+        // Otherwise, we need to walk upwards and find the roof
+        while (state.getBlock() == this)
+        {
+            pos = pos.up();
+            state = world.getBlockState(pos);
+        }
+        return state.isSolidSide(world, pos.up(), Direction.DOWN);
     }
 
     public enum Part implements IStringSerializable

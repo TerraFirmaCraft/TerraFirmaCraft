@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/dacite",
     "tfc:rock/raw/dacite",
+    "tfc:rock/mossy_cobble/dacite",
     "tfc:ore/bituminous_coal/dacite",
     "tfc:ore/lignite/dacite",
     "tfc:ore/kaolinite/dacite",
