@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.blocks;
 
+import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -382,6 +383,23 @@ public class BlockPowderKeg extends Block implements IItemSize
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rng)
+    {
+        if (!state.getValue(EXPLODE)) return;
+
+        TEPowderKeg te = Helpers.getTE(world, pos, TEPowderKeg.class);
+        if (te != null)
+        {
+            if (rng.nextInt(24) == 0)
+            {
+                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F + rng.nextFloat(), rng.nextFloat() * 0.7F + 0.3F / te.getFuse() , false);
+            }
+            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.up().getY(), pos.getZ() + 0.5, 0.0D, 1.0D + 1.0D / te.getFuse(), 0.0D);
+        }
     }
 
     @Override
