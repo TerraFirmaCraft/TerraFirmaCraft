@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:metal_item",
-  "ingredient": {
-    "tag": "forge:ingots/nickel"
-  },
-  "metal": "tfc:nickel",
-  "amount": 100
-}

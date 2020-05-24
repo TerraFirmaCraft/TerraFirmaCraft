@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:metal_item",
-  "ingredient": {
-    "tag": "forge:nuggets/rose_gold"
-  },
-  "metal": "tfc:rose_gold",
-  "amount": 10
-}

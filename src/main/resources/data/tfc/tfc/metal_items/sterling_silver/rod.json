@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:rods/sterling_silver"
+  },
+  "metal": "tfc:sterling_silver",
+  "amount": 50
+}

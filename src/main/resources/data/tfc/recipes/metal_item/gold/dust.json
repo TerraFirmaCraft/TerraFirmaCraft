@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:metal_item",
-  "ingredient": {
-    "tag": "forge:dusts/gold"
-  },
-  "metal": "tfc:gold",
-  "amount": 100
-}

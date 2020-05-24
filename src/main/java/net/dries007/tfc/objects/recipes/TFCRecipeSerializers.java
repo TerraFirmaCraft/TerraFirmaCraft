@@ -18,5 +18,4 @@ public class TFCRecipeSerializers
 
     public static final RegistryObject<CollapseRecipe.Serializer> COLLAPSE = SERIALIZERS.register("collapse", CollapseRecipe.Serializer::new);
     public static final RegistryObject<LandslideRecipe.Serializer> LANDSLIDE = SERIALIZERS.register("landslide", LandslideRecipe.Serializer::new);
-    public static final RegistryObject<MetalItemRecipe.Serializer> METAL_ITEM = SERIALIZERS.register("metal_item", MetalItemRecipe.Serializer::new);
 }

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:dusts/weak_red_steel"
+  },
+  "metal": "tfc:weak_red_steel",
+  "amount": 100
+}

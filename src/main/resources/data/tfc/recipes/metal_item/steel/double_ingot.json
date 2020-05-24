@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:metal_item",
-  "ingredient": {
-    "tag": "forge:double_ingots/steel"
-  },
-  "metal": "tfc:steel",
-  "amount": 200
-}

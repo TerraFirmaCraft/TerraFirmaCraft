@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:nuggets/high_carbon_black_steel"
+  },
+  "metal": "tfc:high_carbon_black_steel",
+  "amount": 10
+}
