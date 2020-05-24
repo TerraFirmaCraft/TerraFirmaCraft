@@ -1,7 +1,6 @@
 {
   "forge_marker": 1,
   "defaults": {
-<<<<<<< HEAD
     "model": "tfc:powderkeg",
     "textures": {
 		"outside": "tfc:blocks/powderkeg_outside",
@@ -9,14 +8,6 @@
 		"sheet": "tfc:blocks/powderkeg_sheet",
 		"particle": "tfc:blocks/powderkeg_outside",
 		"fuse": "tfc:blocks/powderkeg_fuse"
-=======
-    "model": "tfc:barrel",
-    "textures": {
-      "particle": "tfc:blocks/powderkeg_side",
-      "planks": "tfc:blocks/powderkeg_side",
-      "sheet": "tfc:blocks/powderkeg_top",
-      "hoop": "tfc:blocks/powderkeg_hoop"
->>>>>>> 78ec4379c485520ca7d58c878d9a3cd13a55e60d
     }
   },
   "variants": {
@@ -25,11 +16,7 @@
     ],
     "sealed": {
       "true": {
-<<<<<<< HEAD
         "model": "tfc:powderkeg_sealed"
-=======
-        "model": "tfc:barrel_sealed"
->>>>>>> 78ec4379c485520ca7d58c878d9a3cd13a55e60d
       },
       "false": {}
     },
@@ -37,7 +24,6 @@
       {}
     ],
     "lit": {
-<<<<<<< HEAD
       "true": {
         "textures": {
           "fuse": "tfc:blocks/powderkeg_fuse_lit"
@@ -48,10 +34,6 @@
           "fuse": "tfc:blocks/powderkeg_fuse"
         }
       }
-=======
-      "true": {},
-      "false": {}
->>>>>>> 78ec4379c485520ca7d58c878d9a3cd13a55e60d
     }
   }
 }
