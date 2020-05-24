@@ -671,13 +671,18 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
     @Override
     public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
     {
-        return !(cookingPotStage == CookingPotStage.BOILING || cookingPotStage == CookingPotStage.FINISHED);
+        return slot == SLOT_FUEL_INPUT || !isCookingPotBoilingOrFinished();
     }
 
     @Override
     public boolean canExtract(int slot, EnumFacing side)
     {
-        return !(cookingPotStage == CookingPotStage.BOILING || cookingPotStage == CookingPotStage.FINISHED);
+        return !isCookingPotBoilingOrFinished();
+    }
+
+    private boolean isCookingPotBoilingOrFinished()
+    {
+        return this.cookingPotStage == CookingPotStage.BOILING || this.cookingPotStage == CookingPotStage.FINISHED;
     }
 
     private void updateCachedGrillRecipes()
