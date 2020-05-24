@@ -21,59 +21,57 @@ public class GenLayerAddIslandTFC extends GenLayerTFC
     @Override
     public int[] getInts(int x, int y, int w, int h)
     {
-        int var5 = x - 1;
-        int var6 = y - 1;
-        int var7 = w + 2;
-        int var8 = h + 2;
-        int[] var9 = this.parent.getInts(var5, var6, var7, var8);
-        int[] var10 = IntCache.getIntCache(w * h);
+        int w2 = w + 2;
+        int h2 = h + 2;
+        int[] ints = this.parent.getInts(x - 1, y - 1, w2, h2);
+        int[] out = IntCache.getIntCache(w * h);
 
-        for (int var11 = 0; var11 < h; ++var11)
+        for (int yy = 0; yy < h; ++yy)
         {
-            for (int var12 = 0; var12 < w; ++var12)
+            for (int xx = 0; xx < w; ++xx)
             {
-                int var13 = var9[var12 + 0 + (var11 + 0) * var7];
-                int var14 = var9[var12 + 2 + (var11 + 0) * var7];
-                int var15 = var9[var12 + 0 + (var11 + 2) * var7];
-                int var16 = var9[var12 + 2 + (var11 + 2) * var7];
-                int var17 = var9[var12 + 1 + (var11 + 1) * var7];
-                this.initChunkSeed(var12 + x, var11 + y);
+                int dl = ints[xx + yy * w2]; // down left
+                int dr = ints[xx + 2 + yy * w2];  // down right
+                int ul = ints[xx + (yy + 2) * w2];  // up left
+                int ur = ints[xx + 2 + (yy + 2) * w2];  // up right
+                int us = ints[xx + 1 + (yy + 1) * w2];  // center (us)
+                this.initChunkSeed(xx + x, yy + y);
 
-                if (var17 == 0 && (var13 != 0 || var14 != 0 || var15 != 0 || var16 != 0))
+                if (us == oceanID && (dl != oceanID || dr != oceanID || ul != oceanID || ur != oceanID))
                 {
-                    int var18 = 1;
-                    int var19 = 1;
+                    int countNonOcean = 1;
+                    int lastNonOcean = plainsID;
 
-                    if (var13 != 0 && this.nextInt(var18++) == 0)
-                        var19 = var13;
+                    if (dl != oceanID && this.nextInt(countNonOcean++) == 0)
+                        lastNonOcean = dl;
 
-                    if (var14 != 0 && this.nextInt(var18++) == 0)
-                        var19 = var14;
+                    if (dr != oceanID && this.nextInt(countNonOcean++) == 0)
+                        lastNonOcean = dr;
 
-                    if (var15 != 0 && this.nextInt(var18++) == 0)
-                        var19 = var15;
+                    if (ul != oceanID && this.nextInt(countNonOcean++) == 0)
+                        lastNonOcean = ul;
 
-                    if (var16 != 0 && this.nextInt(var18++) == 0)
-                        var19 = var16;
+                    if (ur != oceanID && this.nextInt(countNonOcean/*++*/) == 0)
+                        lastNonOcean = ur;
 
                     if (this.nextInt(3) == 0)
-                        var10[var12 + var11 * w] = var19;
+                        out[xx + yy * w] = lastNonOcean;
                     else
-                        var10[var12 + var11 * w] = 0;
+                        out[xx + yy * w] = oceanID;
                 }
-                else if (var17 > 0 && (var13 == 0 || var14 == 0 || var15 == 0 || var16 == 0))
+                else if (us != oceanID && (dl == oceanID || dr == oceanID || ul == oceanID || ur == oceanID))
                 {
                     if (this.nextInt(5) == 0)
-                        var10[var12 + var11 * w] = 0;
+                        out[xx + yy * w] = oceanID;
                     else
-                        var10[var12 + var11 * w] = var17;
+                        out[xx + yy * w] = us;
                 }
                 else
                 {
-                    var10[var12 + var11 * w] = var17;
+                    out[xx + yy * w] = us;
                 }
             }
         }
-        return var10;
+        return out;
     }
 }

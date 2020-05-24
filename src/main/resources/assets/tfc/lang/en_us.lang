@@ -235,8 +235,11 @@ config.tfc.general.debug=Debug Settings
 config.tfc.general.debug.enable=Enable
 config.tfc.general.debug.enable.tooltip=Activates some extra wand features. Enables extra item tooltips.
 
-config.tfc.general.debug.debugWorldGen=Debug Worldgen (DANGER)
-config.tfc.general.debug.debugWorldGen.tooltip=Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!
+config.tfc.general.debug.debugWorldGenDanger=Debug Worldgen (DANGER)
+config.tfc.general.debug.debugWorldGenDanger.tooltip=Debug worldgen [DANGER] Your world will be affected! Do not use on your proper world files!
+
+config.tfc.general.debug.debugWorldGenSafe=Debug Worldgen (safe)
+config.tfc.general.debug.debugWorldGenSafe.tooltip=Debug worldgen [safe] This will print out debug into duing world gen and create some image mapsp, does not affect the world.
 
 
 ### Overrides
