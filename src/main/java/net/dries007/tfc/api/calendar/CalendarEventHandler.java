@@ -7,6 +7,8 @@ package net.dries007.tfc.api.calendar;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
@@ -19,13 +21,12 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import net.dries007.tfc.TerraFirmaCraft;
-
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class CalendarEventHandler
 {
+    public static final Logger LOGGER = LogManager.getLogger();
     /**
      * Called from LOGICAL SERVER
      * Responsible for primary time tracking for player time
@@ -107,7 +108,7 @@ public class CalendarEventHandler
             MinecraftServer server = player.getServer();
             if (server != null)
             {
-                TerraFirmaCraft.getLog().info("Player Logged Out - Checking for Calendar Updates.");
+                LOGGER.info("Player Logged Out - Checking for Calendar Updates.");
                 List<ServerPlayerEntity> players = server.getPlayerList().getPlayers();
                 int playerCount = players.size();
                 // The player logging out doesn't count
@@ -135,7 +136,7 @@ public class CalendarEventHandler
             MinecraftServer server = player.getServer();
             if (server != null)
             {
-                TerraFirmaCraft.getLog().info("Player Logged In - Checking for Calendar Updates.");
+                LOGGER.info("Player Logged In - Checking for Calendar Updates.");
                 int players = server.getPlayerList().getPlayers().size();
                 CalendarTFC.INSTANCE.setPlayersLoggedOn(players > 0);
             }
