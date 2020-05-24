@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:nuggets/bronze"
+  },
+  "metal": "tfc:bronze",
+  "amount": 10
+}

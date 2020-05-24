@@ -14,7 +14,6 @@ public class TFCRecipeTypes
 {
     public static final IRecipeType<CollapseRecipe> COLLAPSE = register("collapse");
     public static final IRecipeType<LandslideRecipe> LANDSLIDE = register("landslide");
-    public static final IRecipeType<MetalItemRecipe> METAL_ITEM = register("metal_item");
 
     private static <R extends IRecipe<?>> IRecipeType<R> register(String name)
     {

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/shovel/black_bronze"
+  },
+  "metal": "tfc:black_bronze",
+  "amount": 100
+}

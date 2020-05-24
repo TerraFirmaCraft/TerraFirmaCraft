@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:metal_item",
-  "ingredient": {
-    "item": "tfc:metal/lamp/steel"
-  },
-  "metal": "tfc:steel",
-  "amount": 100
-}

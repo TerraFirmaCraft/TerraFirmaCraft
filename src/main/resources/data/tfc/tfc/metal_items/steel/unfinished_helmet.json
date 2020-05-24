@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/unfinished_helmet/steel"
+  },
+  "metal": "tfc:steel",
+  "amount": 400
+}

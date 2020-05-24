@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:ingots/brass"
+  },
+  "metal": "tfc:brass",
+  "amount": 100
+}

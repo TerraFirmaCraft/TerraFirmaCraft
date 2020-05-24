@@ -12,10 +12,10 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.CreateWorldScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -27,9 +27,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.MetalItem;
 import net.dries007.tfc.api.calendar.CalendarTFC;
 import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
-import net.dries007.tfc.objects.recipes.MetalItemRecipe;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -96,11 +96,11 @@ public class ClientForgeEventHandler
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         ItemStack stack = event.getItemStack();
+        PlayerEntity player = event.getPlayer();
         List<ITextComponent> text = event.getToolTip();
-        if (!stack.isEmpty() && event.getPlayer() != null)
+        if (!stack.isEmpty() && player != null)
         {
-            World world = event.getPlayer().getEntityWorld();
-            MetalItemRecipe.addTooltipInfo(world, stack, text);
+            MetalItem.addTooltipInfo(stack, text);
             stack.getCapability(CapabilityHeat.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
         }
     }

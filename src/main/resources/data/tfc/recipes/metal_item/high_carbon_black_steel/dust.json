@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:metal_item",
-  "ingredient": {
-    "tag": "forge:dusts/high_carbon_black_steel"
-  },
-  "metal": "tfc:high_carbon_black_steel",
-  "amount": 100
-}

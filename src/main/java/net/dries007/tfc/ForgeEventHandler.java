@@ -49,6 +49,7 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.TFCTags;
 import net.dries007.tfc.objects.recipes.CollapseRecipe;
 import net.dries007.tfc.objects.recipes.LandslideRecipe;
+import net.dries007.tfc.objects.types.MetalItemManager;
 import net.dries007.tfc.objects.types.MetalManager;
 import net.dries007.tfc.objects.types.RockManager;
 import net.dries007.tfc.util.TFCReloadListener;
@@ -161,6 +162,7 @@ public final class ForgeEventHandler
         IReloadableResourceManager resourceManager = event.getServer().getResourceManager();
         resourceManager.addReloadListener(RockManager.INSTANCE);
         resourceManager.addReloadListener(MetalManager.INSTANCE);
+        resourceManager.addReloadListener(MetalItemManager.INSTANCE);
         resourceManager.addReloadListener(VeinTypeManager.INSTANCE);
         resourceManager.addReloadListener(SupportManager.INSTANCE);
 
