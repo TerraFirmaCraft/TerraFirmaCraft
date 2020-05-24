@@ -8,7 +8,6 @@ package net.dries007.tfc.world.classic.genlayers.river;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
-import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerRiverInitTFC extends GenLayerTFC
@@ -31,12 +30,8 @@ public class GenLayerRiverInitTFC extends GenLayerTFC
             {
                 this.initChunkSeed(x + xCoord, z + zCoord);
                 int index = x + z * xSize;
-                //int xn = index-1;
-                //int xp = index+1;
-                //int zn = index-zSize;
-                //int zp = index+zSize;
                 int id = parentCache[index];
-                outCache[index] = !BiomesTFC.isOceanicBiome(id) && !BiomesTFC.isMountainBiome(id) ? 1 : 0;
+                outCache[index] = !isOceanicBiome(id) && !isMountainBiome(id) ? 1 : 0;
             }
         }
         return outCache;

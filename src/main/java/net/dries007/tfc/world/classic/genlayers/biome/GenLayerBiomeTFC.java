@@ -5,42 +5,49 @@
 
 package net.dries007.tfc.world.classic.genlayers.biome;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
+import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import net.dries007.tfc.world.classic.genlayers.GenLayerTFC;
 
 public class GenLayerBiomeTFC extends GenLayerTFC
 {
-    private final Biome[] biomes;
+    private final int[] biomes = BiomesTFC.getWorldGenBiomes().stream().mapToInt(Biome::getIdForBiome).toArray();
 
     public GenLayerBiomeTFC(long seed, GenLayer parent)
     {
         super(seed);
         this.parent = parent;
-
-        biomes = BiomesTFC.getWorldGenBiomes().toArray(new Biome[0]);
+        if (ConfigTFC.General.DEBUG.debugWorldGenSafe)
+        {
+            TerraFirmaCraft.getLog().info("Worldgen biome list (ints): {}", biomes);
+            TerraFirmaCraft.getLog().info("Worldgen biome list (names): {}", (Object) Arrays.stream(biomes).mapToObj(Biome::getBiomeForId).map(Objects::toString).toArray());
+        }
     }
 
     @Override
-    public int[] getInts(int par1, int par2, int par3, int par4)
+    public int[] getInts(int x, int y, int sizeX, int sizeY)
     {
-        int[] var5 = parent.getInts(par1, par2, par3, par4);
-//        validateIntArray(var5, par3, par4);
-        int[] var6 = IntCache.getIntCache(par3 * par4);
+        int[] ints = parent.getInts(x, y, sizeX, sizeY);
+        int[] out = IntCache.getIntCache(sizeX * sizeY);
 
-        for (int var7 = 0; var7 < par4; ++var7)
+        for (int yy = 0; yy < sizeY; ++yy)
         {
-            for (int var8 = 0; var8 < par3; ++var8)
+            for (int xx = 0; xx < sizeX; ++xx)
             {
-                initChunkSeed(var8 + par1, var7 + par2);
-                int id = var5[var8 + var7 * par3];
-                if (BiomesTFC.isOceanicBiome(id)) var6[var8 + var7 * par3] = id;
-                else var6[var8 + var7 * par3] = Biome.getIdForBiome(biomes[nextInt(biomes.length)]);
+                initChunkSeed(xx + x, yy + y);
+                int id = ints[xx + yy * sizeX];
+                if (isOceanicBiome(id)) out[xx + yy * sizeX] = id;
+                else out[xx + yy * sizeX] = biomes[nextInt(biomes.length)];
             }
         }
-        return var6;
+        return out;
     }
 }
