@@ -22,7 +22,7 @@
     "inventory": [
       {}
     ],
-    "explode": {
+    "lit": {
       "true": {},
       "false": {}
     }
