@@ -18,7 +18,6 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -208,6 +207,10 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         return count / 12;
     }
 
+    public int getFuse() {
+        return fuse;
+    }
+
     public boolean isLit()
     {
         return isLit;
@@ -235,10 +238,6 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
                 {
                     explode();
                 }
-            }
-            else
-            {
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX(), pos.up().getY(), pos.getZ(), 0.0D, 1.0D + 1.0D / fuse, 0.0D);
             }
         }
         super.update();
