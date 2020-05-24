@@ -83,9 +83,6 @@ public class GuiPowderkeg extends GuiContainerTE<TEPowderKeg>
                 }
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
-
-            // Draw the text displaying the seal date
-            fontRenderer.drawString(tile.getSealedDate(), xSize / 2 - fontRenderer.getStringWidth(tile.getSealedDate()) / 2, 74, 0x404040);
         }
     }
 
