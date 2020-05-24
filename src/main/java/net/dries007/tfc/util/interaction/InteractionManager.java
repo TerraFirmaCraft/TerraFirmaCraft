@@ -41,6 +41,7 @@ public final class InteractionManager
 {
     private static final Map<Predicate<ItemStack>, IRightClickBlockAction> USE_ACTIONS = new HashMap<>();
     private static final Map<Predicate<ItemStack>, IRightClickItemAction> RIGHT_CLICK_ACTIONS = new HashMap<>();
+    private static final ThreadLocal<Boolean> PROCESSING_INTERACTION = ThreadLocal.withInitial(() -> false); // avoids stack overflows where some mods post interaction events during onBlockActivated (see #1321)
 
     static
     {
@@ -214,21 +215,26 @@ public final class InteractionManager
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
-        IRightClickBlockAction action = InteractionManager.findItemUseAction(event.getItemStack());
-        if (action != null)
+        if (!PROCESSING_INTERACTION.get())
         {
-            // Use alternative handling
-            EnumActionResult result;
-            if (event.getSide() == Side.CLIENT)
+            PROCESSING_INTERACTION.set(true);
+            IRightClickBlockAction action = InteractionManager.findItemUseAction(event.getItemStack());
+            if (action != null)
             {
-                result = ClientInteractionManager.processRightClickBlock(event, action);
+                // Use alternative handling
+                EnumActionResult result;
+                if (event.getSide() == Side.CLIENT)
+                {
+                    result = ClientInteractionManager.processRightClickBlock(event, action);
+                }
+                else
+                {
+                    result = ServerInteractionManager.processRightClickBlock(event, action);
+                }
+                event.setCancellationResult(result);
+                event.setCanceled(true);
             }
-            else
-            {
-                result = ServerInteractionManager.processRightClickBlock(event, action);
-            }
-            event.setCancellationResult(result);
-            event.setCanceled(true);
+            PROCESSING_INTERACTION.set(false);
         }
     }
 
