@@ -29,8 +29,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.objects.blocks.BlockPowderKeg;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
-import net.dries007.tfc.util.calendar.CalendarTFC;
-import net.dries007.tfc.util.calendar.ICalendarFormatted;
+
 
 import static net.dries007.tfc.objects.blocks.BlockPowderKeg.SEALED;
 
@@ -41,7 +40,6 @@ import static net.dries007.tfc.objects.blocks.BlockPowderKeg.SEALED;
 public class TEPowderKeg extends TETickableInventory implements IItemHandlerSidedCallback
 {
     private boolean sealed;
-    private long sealedCalendarTick;
     private int fuse = -1;
 
     private boolean isLit = false;
@@ -61,8 +59,7 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     public void readFromItemTag(NBTTagCompound nbt)
     {
         inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
-        sealedCalendarTick = nbt.getLong("sealedCalendarTick");
-        sealed = true;
+        sealed = nbt.getBoolean("sealed");
         markForSync();
     }
 
@@ -77,12 +74,6 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         {
             sealed = world.getBlockState(pos).getValue(SEALED);
         }
-    }
-
-    @Nonnull
-    public String getSealedDate()
-    {
-        return ICalendarFormatted.getTimeAndDate(sealedCalendarTick, CalendarTFC.CALENDAR_TIME.getDaysInMonth());
     }
 
     @Override
@@ -100,15 +91,13 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     public void onSealed()
     {
         // Update sealed tick info and sync to client
-        sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         sealed = true;
         markForSync();
     }
 
     public void onUnseal()
     {
-        // Update sealed tick info and sync to client
-        sealedCalendarTick = 0;
+        // Update sealed info and sync to client
         sealed = false;
         markForSync();
     }
@@ -122,15 +111,14 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        sealedCalendarTick = nbt.getLong("sealedCalendarTick");
-        sealed = sealedCalendarTick > 0;
+        sealed = nbt.getBoolean("sealed");
     }
 
     @Override
     @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+        nbt.setBoolean("sealed", sealed);
         return super.writeToNBT(nbt);
     }
 
@@ -188,7 +176,7 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("inventory", inventory.serializeNBT());
-        nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+        nbt.setBoolean("sealed", sealed);
         return nbt;
     }
 
