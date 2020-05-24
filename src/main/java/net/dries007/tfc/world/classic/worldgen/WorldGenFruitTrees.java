@@ -43,7 +43,7 @@ public class WorldGenFruitTrees implements IWorldGenerator
 
                 float temperature = ClimateTFC.getAvgTemp(world, chunkBlockPos);
                 float rainfall = ChunkDataTFC.getRainfall(world, chunkBlockPos);
-                IFruitTree tree = TREES.stream().filter(x -> x.isValidConditions(temperature, rainfall)).findFirst().orElse(null);
+                IFruitTree tree = TREES.stream().filter(x -> x.isValidConditions(temperature, rainfall)).findAny().orElse(null);
 
                 if (tree != null)
                 {
