@@ -8,6 +8,7 @@ package net.dries007.tfc.world.classic.worldgen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -43,7 +44,8 @@ public class WorldGenFruitTrees implements IWorldGenerator
 
                 float temperature = ClimateTFC.getAvgTemp(world, chunkBlockPos);
                 float rainfall = ChunkDataTFC.getRainfall(world, chunkBlockPos);
-                IFruitTree tree = TREES.stream().filter(x -> x.isValidConditions(temperature, rainfall)).findAny().orElse(null);
+                List<IFruitTree> trees = TREES.stream().filter(x -> x.isValidConditions(temperature, rainfall)).collect(Collectors.toList());
+                IFruitTree tree = trees.get(random.nextInt(trees.size()));
 
                 if (tree != null)
                 {
