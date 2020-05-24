@@ -26,22 +26,22 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import net.dries007.tfc.objects.blocks.BlockLargeVessel;
+import net.dries007.tfc.objects.blocks.BlockPowderKeg;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 
-import static net.dries007.tfc.objects.blocks.BlockLargeVessel.SEALED;
+import static net.dries007.tfc.objects.blocks.BlockPowderKeg.SEALED;
 
 /**
- * @see BlockLargeVessel
+ * @see BlockPowderKeg
  */
 @ParametersAreNonnullByDefault
 public class TEPowderKeg extends TETickableInventory implements IItemHandlerSidedCallback
 {
     private boolean sealed;
-    private long sealedTick, sealedCalendarTick;
+    private long sealedCalendarTick;
     private int fuse = -1;
 
     private boolean isLit = false;
@@ -53,7 +53,7 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     }
 
     /**
-     * Called when this TileEntity was created by placing a sealed Barrel Item.
+     * Called when this TileEntity was created by placing a sealed keg Item.
      * Loads its data from the Item's NBTTagCompound without loading xyz coordinates.
      *
      * @param nbt The NBTTagCompound to load from.
@@ -61,7 +61,6 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     public void readFromItemTag(NBTTagCompound nbt)
     {
         inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
-        sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
         sealed = true;
         markForSync();
@@ -101,7 +100,6 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     public void onSealed()
     {
         // Update sealed tick info and sync to client
-        sealedTick = CalendarTFC.PLAYER_TIME.getTicks();
         sealedCalendarTick = CalendarTFC.CALENDAR_TIME.getTicks();
         sealed = true;
         markForSync();
@@ -110,7 +108,7 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     public void onUnseal()
     {
         // Update sealed tick info and sync to client
-        sealedTick = sealedCalendarTick = 0;
+        sealedCalendarTick = 0;
         sealed = false;
         markForSync();
     }
@@ -124,16 +122,14 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
-        sealed = sealedTick > 0;
+        sealed = sealedCalendarTick > 0;
     }
 
     @Override
     @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setLong("sealedTick", sealedTick);
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
         return super.writeToNBT(nbt);
     }
@@ -165,7 +161,7 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         }
         else
         {
-            // Need to create the full barrel and drop it now
+            // Need to create the full keg and drop it now
             ItemStack stack = getItemStack(state);
             InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
         }
@@ -183,8 +179,8 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     }
 
     /**
-     * Called to get the NBTTagCompound that is put on Barrel Items.
-     * This happens when a sealed Barrel was broken.
+     * Called to get the NBTTagCompound that is put on keg Items.
+     * This happens when a sealed keg was broken.
      *
      * @return An NBTTagCompound containing inventory and tank data.
      */
@@ -192,7 +188,6 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("inventory", inventory.serializeNBT());
-        nbt.setLong("sealedTick", sealedTick);
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
         return nbt;
     }
@@ -207,7 +202,8 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         return count / 12;
     }
 
-    public int getFuse() {
+    public int getFuse()
+    {
         return fuse;
     }
 

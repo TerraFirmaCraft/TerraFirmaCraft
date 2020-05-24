@@ -39,6 +39,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.objects.te.TEBarrel.BARREL_MAX_FLUID_TEMPERATURE;
@@ -53,6 +54,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
     public ItemBlockBarrel(Block block)
     {
         super(block);
+        OreDictionaryHelper.register(this, "barrel");
     }
 
     @Nonnull

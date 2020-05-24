@@ -44,7 +44,7 @@ import net.dries007.tfc.objects.te.TEPowderKeg;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * Large vessel is an inventory that preserves the contents when sealed
+ * Powderkeg is an inventory that preserves the contents when sealed
  * It can be picked up and keeps it's inventory
  * Sealed state is stored in a block state property, and cached in the TE (for gui purposes)
  */
@@ -57,7 +57,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
     /**
-     * Used to update the vessel seal state and the TE, in the correct order
+     * Used to update the keg seal state and the TE, in the correct order
      */
     public static void togglePowderKegSeal(World world, BlockPos pos)
     {
@@ -349,7 +349,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        // If the barrel was sealed, then copy the contents from the item
+        // If the keg was sealed, then copy the contents from the item
         if (!worldIn.isRemote)
         {
             NBTTagCompound nbt = stack.getTagCompound();
@@ -418,7 +418,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        // Only drop the barrel if it's not sealed, since the barrel with contents will be already dropped by the TE
+        // Only drop the keg if it's not sealed, since the keg with contents will be already dropped by the TE
         if (!state.getValue(SEALED))
         {
             super.getDrops(drops, world, pos, state, fortune);
