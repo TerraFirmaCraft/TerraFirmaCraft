@@ -31,7 +31,7 @@ public class TEToolRack extends TEBase
      */
     public static boolean isItemEligible(Item item)
     {
-        return item instanceof ItemMetalTool || item instanceof ItemTool || item instanceof ItemBow || item instanceof ItemHoe || item instanceof ItemSword || item instanceof ItemFireStarter;
+        return item instanceof ItemMetalTool || item instanceof ItemTool || item instanceof ItemBow || item instanceof ItemHoe || item instanceof ItemSword || item instanceof ItemFireStarter || item instanceof ItemFlintAndSteel;
     }
 
     public static boolean isItemEligible(@Nullable ItemStack item)
