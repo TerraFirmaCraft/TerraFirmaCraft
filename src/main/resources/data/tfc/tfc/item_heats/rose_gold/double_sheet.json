@@ -4,5 +4,6 @@
     "tag": "forge:double_sheets/rose_gold"
   },
   "heat_capacity": 0.35,
-  "melt_temperature": 960
+  "forging_temperature": 576.0,
+  "welding_temperature": 768.0
 }

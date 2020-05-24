@@ -21,7 +21,8 @@ def generate(rm: ResourceManager):
                     tag: value
                 },
                 "heat_capacity": metal_data.heat_capacity,
-                "melt_temperature": metal_data.melt_temperature
+                "forging_temperature": metal_data.melt_temperature * 0.6,
+                "welding_temperature": metal_data.melt_temperature * 0.8
             })
 
         # Metal Blocks
@@ -41,5 +42,6 @@ def generate(rm: ResourceManager):
                     tag: value
                 },
                 "heat_capacity": metal_data.heat_capacity,
-                "melt_temperature": metal_data.melt_temperature
+                "forging_temperature": metal_data.melt_temperature * 0.6,
+                "welding_temperature": metal_data.melt_temperature * 0.8
             })

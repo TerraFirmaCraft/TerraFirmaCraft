@@ -10,6 +10,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -34,11 +35,10 @@ import net.dries007.tfc.objects.types.MetalManager;
  */
 public class MetalItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
 {
-    public static Optional<MetalItem> getMetalItem(World world, ItemStack stack)
+    public static Optional<MetalItemRecipe> getMetalItem(World world, ItemStack stack)
     {
         ItemStackRecipeWrapper wrapper = new ItemStackRecipeWrapper(stack);
-        return RecipeCache.INSTANCE.get(TFCRecipeTypes.METAL_ITEM, world, wrapper)
-            .map(recipe -> new MetalItem(recipe.getMetal(), recipe.getAmount()));
+        return RecipeCache.INSTANCE.get(TFCRecipeTypes.METAL_ITEM, world, wrapper);
     }
 
     public static void addTooltipInfo(World world, ItemStack stack, List<ITextComponent> text)
@@ -52,10 +52,10 @@ public class MetalItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
 
     protected final ResourceLocation id;
     protected final Ingredient ingredient;
-    protected final ResourceLocation metal; // Have to store the resource location because at load time metals are not accessible yet
+    protected final Metal metal;
     protected final int amount;
 
-    public MetalItemRecipe(ResourceLocation id, Ingredient ingredient, ResourceLocation metal, int amount)
+    public MetalItemRecipe(ResourceLocation id, Ingredient ingredient, Metal metal, int amount)
     {
         this.id = id;
         this.ingredient = ingredient;
@@ -65,7 +65,7 @@ public class MetalItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
 
     public Metal getMetal()
     {
-        return MetalManager.INSTANCE.getOrDefault(metal);
+        return metal;
     }
 
     public int getAmount()
@@ -115,38 +115,18 @@ public class MetalItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
         return TFCRecipeTypes.METAL_ITEM;
     }
 
-    /**
-     * Wraps Metal and smelt amount for convenience
-     */
-    public static class MetalItem
-    {
-        private final Metal metal;
-        private final int amount;
-
-        public MetalItem(Metal metal, int amount)
-        {
-            this.metal = metal;
-            this.amount = amount;
-        }
-
-        public Metal getMetal()
-        {
-            return metal;
-        }
-
-        public int getAmount()
-        {
-            return amount;
-        }
-    }
-
     public static class Serializer extends RecipeSerializer<MetalItemRecipe>
     {
         @Override
         public MetalItemRecipe read(ResourceLocation recipeId, JsonObject json)
         {
             Ingredient ingredient = CraftingHelper.getIngredient(JSONUtils.getJsonObject(json, "ingredient"));
-            ResourceLocation metal = new ResourceLocation(JSONUtils.getString(json, "metal"));
+            ResourceLocation metalId = new ResourceLocation(JSONUtils.getString(json, "metal"));
+            Metal metal = MetalManager.INSTANCE.get(metalId);
+            if (metal == null)
+            {
+                throw new JsonSyntaxException("Invalid metal specified: " + metalId.toString());
+            }
             int amount = JSONUtils.getInt(json, "amount");
             return new MetalItemRecipe(recipeId, ingredient, metal, amount);
         }
@@ -155,14 +135,22 @@ public class MetalItemRecipe implements ISimpleRecipe<ItemStackRecipeWrapper>
         @Override
         public MetalItemRecipe read(ResourceLocation recipeId, PacketBuffer buffer)
         {
-            return new MetalItemRecipe(recipeId, Ingredient.read(buffer), buffer.readResourceLocation(), buffer.readInt());
+            Ingredient ingredient = Ingredient.read(buffer);
+            ResourceLocation metalId = buffer.readResourceLocation();
+            Metal metal = MetalManager.INSTANCE.get(metalId);
+            if (metal == null)
+            {
+                throw new IllegalStateException("Error deserializing recipe: Metal " + metalId.toString() + " not found");
+            }
+            int amount = buffer.readInt();
+            return new MetalItemRecipe(recipeId, ingredient, metal, amount);
         }
 
         @Override
         public void write(PacketBuffer buffer, MetalItemRecipe recipe)
         {
             recipe.ingredient.write(buffer);
-            buffer.writeResourceLocation(recipe.metal);
+            buffer.writeResourceLocation(recipe.metal.getId());
             buffer.writeInt(recipe.amount);
         }
     }

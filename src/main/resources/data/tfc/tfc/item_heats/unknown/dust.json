@@ -4,5 +4,6 @@
     "tag": "forge:dusts/unknown"
   },
   "heat_capacity": 0.5,
-  "melt_temperature": 1250
+  "forging_temperature": 750.0,
+  "welding_temperature": 1000.0
 }

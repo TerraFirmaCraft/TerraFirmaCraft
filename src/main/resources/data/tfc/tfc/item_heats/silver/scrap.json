@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:scraps/silver"
-  },
-  "heat_capacity": 0.48,
-  "melt_temperature": 961
-}

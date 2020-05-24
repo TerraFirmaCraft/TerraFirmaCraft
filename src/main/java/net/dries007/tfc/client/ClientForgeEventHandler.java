@@ -69,15 +69,15 @@ public class ClientForgeEventHandler
             BlockPos pos = new BlockPos(mc.getRenderViewEntity().getPosX(), mc.getRenderViewEntity().getBoundingBox().minY, mc.getRenderViewEntity().getPosZ());
             if (mc.world.chunkExists(pos.getX() >> 4, pos.getZ() >> 4))
             {
+                list.add("");
+                list.add(AQUA + TerraFirmaCraft.MOD_NAME);
+
                 // Always add calendar info
                 //list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
                 list.add(I18n.format(MOD_ID + ".tooltip.debug_times", CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
 
                 IChunk chunk = mc.world.getChunk(pos);
                 ChunkData.get(chunk).ifPresent(data -> {
-                    list.add("");
-                    list.add(AQUA + TerraFirmaCraft.MOD_NAME);
-
                     if (data.getStatus().isAtLeast(ChunkData.Status.CLIMATE))
                     {
                         list.add(String.format("%sAvg. Temp: %s%.1f\u00b0C", GRAY, WHITE, data.getAverageTemp()));

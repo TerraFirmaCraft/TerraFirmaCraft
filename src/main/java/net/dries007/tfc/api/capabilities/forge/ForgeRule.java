@@ -7,9 +7,6 @@ package net.dries007.tfc.api.capabilities.forge;
 
 import javax.annotation.Nullable;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
 import static net.dries007.tfc.api.capabilities.forge.ForgeStep.*;
 
 public enum ForgeRule
@@ -70,19 +67,16 @@ public enum ForgeRule
             this.type = type;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getU()
     {
         return this.type == HIT_LIGHT ? 218 : this.type.getU();
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getV()
     {
         return this.type == HIT_LIGHT ? 18 : this.type.getV();
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getW()
     {
         return order.v;

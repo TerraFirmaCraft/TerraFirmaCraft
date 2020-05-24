@@ -4,5 +4,6 @@
     "item": "tfc:metal/knife_blade/bismuth_bronze"
   },
   "heat_capacity": 0.35,
-  "melt_temperature": 985
+  "forging_temperature": 591.0,
+  "welding_temperature": 788.0
 }

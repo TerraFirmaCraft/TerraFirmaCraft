@@ -51,6 +51,7 @@ public class ForgingHandler implements IForging
     public void setWork(int work)
     {
         getTag().putInt("work", work);
+        checkEmpty();
     }
 
     @Nullable
@@ -71,6 +72,7 @@ public class ForgingHandler implements IForging
         if (recipeName == null)
         {
             getTag().remove("recipe");
+            checkEmpty();
         }
         else
         {
@@ -93,7 +95,8 @@ public class ForgingHandler implements IForging
     @Override
     public void addStep(@Nullable ForgeStep step)
     {
-        getTag().put("steps", ForgeSteps.get(getTag().getCompound("steps")).serialize());
+        getTag().put("steps", ForgeSteps.get(getTag().getCompound("steps")).addStep(step).serialize());
+        checkEmpty();
     }
 
     @Override
@@ -103,6 +106,11 @@ public class ForgingHandler implements IForging
         if (tag != null)
         {
             tag.remove("forging");
+            // Also, removes nbt data from container item if there's nothing there
+            if (container.getTag().isEmpty())
+            {
+                container.setTag(null);
+            }
         }
     }
 
@@ -128,5 +136,18 @@ public class ForgingHandler implements IForging
         tag.put("forging", new CompoundNBT());
         tag.getCompound("forging").put("steps", new CompoundNBT());
         return tag.getCompound("forging");
+    }
+
+    private void checkEmpty()
+    {
+        // Checks if the capability is empty and resets the container tag
+        CompoundNBT tag = container.getTag();
+        if (tag != null && tag.contains("forging"))
+        {
+            if (getWork() == 0 && !getSteps().hasWork() && getRecipeName() == null)
+            {
+                reset();
+            }
+        }
     }
 }

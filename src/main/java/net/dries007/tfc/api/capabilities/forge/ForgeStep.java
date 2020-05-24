@@ -7,9 +7,6 @@ package net.dries007.tfc.api.capabilities.forge;
 
 import javax.annotation.Nullable;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
 public enum ForgeStep
 {
     HIT_LIGHT(-3, 53, 50, 128, 192),
@@ -46,25 +43,21 @@ public enum ForgeStep
         return stepAmount;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getX()
     {
         return x;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getY()
     {
         return y;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getU()
     {
         return u;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getV()
     {
         return v;

@@ -4,5 +4,6 @@
     "item": "tfc:metal/hoe_head/bronze"
   },
   "heat_capacity": 0.35,
-  "melt_temperature": 950
+  "forging_temperature": 570.0,
+  "welding_temperature": 760.0
 }

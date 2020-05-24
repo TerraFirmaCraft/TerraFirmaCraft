@@ -76,7 +76,6 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'nugget': MetalItem('default', 10, 'item/generated', 'forge:nuggets'),
     'dust': MetalItem('default', 100, 'item/generated', 'forge:dusts'),
     
-    'scrap': MetalItem('part', 100, 'item/generated', 'forge:scraps'),
     'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots'),
     'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets'),
     'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets'),

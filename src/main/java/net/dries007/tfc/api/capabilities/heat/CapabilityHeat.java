@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.api.capabilities.heat;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.google.gson.GsonBuilder;
@@ -88,18 +87,6 @@ public class CapabilityHeat
     }
 
     /**
-     * Gets a capability (if any) for the stack
-     *
-     * @param stack the stack to search for a capability, if defined by a datapack
-     */
-    public static Optional<IHeat> getCapability(ItemStack stack)
-    {
-        return HeatManager.INSTANCE.getValues().stream()
-            .filter(heatWrapper -> heatWrapper.isValid(stack))
-            .findFirst().map(HeatWrapper::getCapability);
-    }
-
-    /**
      * Datapack manager for loading heat capability
      */
     public static class HeatManager extends DataManager<HeatWrapper>
@@ -127,8 +114,11 @@ public class CapabilityHeat
         public HeatWrapper(ResourceLocation id, JsonObject obj)
         {
             this.id = id;
-            this.capability = () -> new HeatHandler(JSONUtils.getFloat(obj, "heat_capacity"), JSONUtils.getFloat(obj, "melt_temperature"));
+            float heatCapacity = JSONUtils.getFloat(obj, "heat_capacity");
+            float forgingTemp = JSONUtils.getFloat(obj, "forging_temperature", 0);
+            float weldingTemp = JSONUtils.getFloat(obj, "welding_temperature", 0);
             this.ingredient = CraftingHelper.getIngredient(JSONUtils.getJsonObject(obj, "ingredient"));
+            this.capability = () -> new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
             // Warning: This line is needed to make the Ingredient instance load and cache matching stacks before this wrapper is done
             // If this line is removed, the cached stacks will only be created on #isValid
             // The new itemstacks will try to attach capabilities themselves, making a giant loop mess which will break the game

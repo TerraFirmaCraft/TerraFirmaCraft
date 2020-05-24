@@ -4,5 +4,6 @@
     "tag": "forge:nuggets/copper"
   },
   "heat_capacity": 0.35,
-  "melt_temperature": 1080
+  "forging_temperature": 648.0,
+  "welding_temperature": 864.0
 }
