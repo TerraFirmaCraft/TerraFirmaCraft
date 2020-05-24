@@ -29,7 +29,7 @@ public class GuiButtonPowderkegSeal extends GuiButtonTFC implements IButtonToolt
     @Override
     public String getTooltip()
     {
-        return MOD_ID + ".tooltip." + (tile.isSealed() ? "large_vessel_unseal" : "large_vessel_seal");
+        return MOD_ID + ".tooltip." + (tile.isSealed() ? "powderkeg_unseal" : "powderkeg_seal");
     }
 
     @Override

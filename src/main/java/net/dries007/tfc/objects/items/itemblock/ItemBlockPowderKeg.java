@@ -32,14 +32,6 @@ public class ItemBlockPowderKeg extends ItemBlockTFC implements IItemSize
         super(block);
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        // Since this is technically still a pottery item, despite being a block
-        return new ItemHeatHandler(nbt, 1.0f, 1599f);
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)

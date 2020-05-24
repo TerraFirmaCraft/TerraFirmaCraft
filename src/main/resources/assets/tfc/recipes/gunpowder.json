@@ -2,16 +2,20 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:powder/saltpeter"
+      "type": "forge:ore_dict",
+      "ore": "dustSaltpeter"
     },
     {
-      "item": "tfc:powder/saltpeter"
+      "type": "forge:ore_dict",
+      "ore": "dustSaltpeter"
     },
     {
-      "item": "tfc:powder/sulfur"
+      "type": "forge:ore_dict",
+      "ore": "dustSulfur"
     },
     {
-      "item": "tfc:powder/charcoal"
+      "type": "forge:ore_dict",
+      "ore": "dustCharcoal"
     }
   ],
   "result": {

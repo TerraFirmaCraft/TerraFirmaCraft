@@ -19,11 +19,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.client.button.GuiButtonLargeVesselSeal;
 import net.dries007.tfc.client.button.GuiButtonPowderkegSeal;
 import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.network.PacketGuiButton;
-import net.dries007.tfc.objects.te.TELargeVessel;
 import net.dries007.tfc.objects.te.TEPowderKeg;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -86,7 +84,7 @@ public class GuiPowderkeg extends GuiContainerTE<TEPowderKeg>
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
 
-            // Draw the text displaying both the seal date, and the recipe name
+            // Draw the text displaying the seal date
             fontRenderer.drawString(tile.getSealedDate(), xSize / 2 - fontRenderer.getStringWidth(tile.getSealedDate()) / 2, 74, 0x404040);
         }
     }

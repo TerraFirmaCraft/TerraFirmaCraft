@@ -121,9 +121,6 @@ public class OreDictionaryHelper
         OreDictionary.registerOre("alabasterRaw", new ItemStack(BlocksTFC.ALABASTER_RAW_PLAIN));
         OreDictionary.registerOre("alabasterPolished", new ItemStack(BlocksTFC.ALABASTER_POLISHED_PLAIN));
 
-        //barrel oredict for use in powderkeg recipe
-        BlocksTFC.getAllBarrelItemBlocks().forEach(barrel -> OreDictionary.registerOre("barrel", new ItemStack(barrel)));
-
         // Register a name without any items
         OreDictionary.getOres("infiniteFire", true);
     }

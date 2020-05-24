@@ -6,6 +6,10 @@
       "ore": "barrel"
     },
     {
+      "type": "forge:ore_dict",
+      "ore": "dyeRed"
+    },
+    {
       "item": "minecraft:gunpowder"
     }
   ],
