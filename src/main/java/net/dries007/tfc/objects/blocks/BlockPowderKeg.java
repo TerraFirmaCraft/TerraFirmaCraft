@@ -394,14 +394,12 @@ public class BlockPowderKeg extends Block implements IItemSize
         TEPowderKeg te = Helpers.getTE(world, pos, TEPowderKeg.class);
         if (te != null)
         {
-            if (rng.nextInt(6) == 0 && te.getFuse() > 20)
+            int fuse = te.getFuse();
+            if (rng.nextInt(6) == 0 && fuse > 20)
             {
-                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, rng.nextFloat() * 1.3F + 0.3F / te.getFuse() , false);
+                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, rng.nextFloat() * 1.3F + 0.3F / fuse , false);
             }
-            if (te.getFuse() < 10) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.up().getY(), pos.getZ() + 0.5, 0.0D, 2.5D, 0.0D);
-            }
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.625, pos.up().getY() + 0.125, pos.getZ() + 0.375, 0.0D, 1.0D + 1.0D / te.getFuse(), 0.0D);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.625, pos.up().getY() + 0.125, pos.getZ() + 0.375, 0.0D, 1.0D + 1.0D / fuse, 0.0D);
         }
     }
 

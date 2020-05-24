@@ -30,7 +30,6 @@ import net.dries007.tfc.objects.blocks.BlockPowderKeg;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 
-
 import static net.dries007.tfc.objects.blocks.BlockPowderKeg.SEALED;
 
 /**
