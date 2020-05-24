@@ -99,6 +99,8 @@ tfc.tooltip.barrel_fluid=含 %1$d mB 的 %2$s
 tfc.tooltip.barrel_fluid_amount=%d mB
 tfc.tooltip.barrel_item=含 %1$dx% 2$s
 tfc.tooltip.barrel_item_in_fluid= 和 %1$dx %2$s
+tfc.tooltip.powderkeg_amount=含 %1$dx% 2$s
+tfc.tooltip.powderkeg_empty=空
 tfc.tooltip.small_vessel_empty=空
 tfc.tooltip.small_vessel_item=%1$dx %2$s
 tfc.tooltip.weldable=可焊接
@@ -4037,6 +4039,7 @@ item.tfc.powder.limonite.name=褐铁矿粉
 item.tfc.powder.malachite.name=孔雀石粉
 item.tfc.powder.salt.name=盐
 item.tfc.powder.fertilizer.name=肥料
+item.tfc.powder.charcoal.name=
 
 item.tfc.ceramics.fired.mold.ingot.bismuth.name=未成形铋
 item.tfc.ceramics.fired.mold.ingot.bismuth_bronze.name=未成形铋铜
