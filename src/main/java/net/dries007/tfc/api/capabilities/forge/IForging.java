@@ -73,7 +73,7 @@ public interface IForging extends ICapabilityProvider
      */
     default boolean canWork(ItemStack stack)
     {
-        return stack.getCapability(CapabilityHeat.CAPABILITY).map(heat -> heat.getTemperature() > heat.getMeltTemp() * 0.6).orElse(true);
+        return stack.getCapability(CapabilityHeat.CAPABILITY).map(heat -> heat.getTemperature() > heat.getForgingTemperature()).orElse(true);
     }
 
     /**
@@ -81,6 +81,6 @@ public interface IForging extends ICapabilityProvider
      */
     default boolean canWeld(ItemStack stack)
     {
-        return stack.getCapability(CapabilityHeat.CAPABILITY).map(heat -> heat.getTemperature() > heat.getMeltTemp() * 0.8).orElse(true);
+        return stack.getCapability(CapabilityHeat.CAPABILITY).map(heat -> heat.getTemperature() > heat.getWeldingTemperature()).orElse(true);
     }
 }

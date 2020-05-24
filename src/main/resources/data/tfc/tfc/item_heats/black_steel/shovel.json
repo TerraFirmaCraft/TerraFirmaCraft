@@ -4,5 +4,6 @@
     "item": "tfc:metal/shovel/black_steel"
   },
   "heat_capacity": 0.35,
-  "melt_temperature": 1485
+  "forging_temperature": 891.0,
+  "welding_temperature": 1188.0
 }

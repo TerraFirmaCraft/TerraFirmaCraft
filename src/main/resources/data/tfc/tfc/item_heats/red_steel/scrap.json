@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:scraps/red_steel"
-  },
-  "heat_capacity": 0.35,
-  "melt_temperature": 1540
-}

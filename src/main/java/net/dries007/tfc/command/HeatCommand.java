@@ -38,7 +38,6 @@ public final class HeatCommand
             {
                 heat.setTemperature(value);
                 source.sendFeedback(new TranslationTextComponent(MOD_ID + ".command.heat", value), true);
-                stack.setCount(2);
             });
         }
         return 1;

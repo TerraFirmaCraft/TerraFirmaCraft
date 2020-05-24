@@ -4,5 +4,6 @@
     "tag": "forge:dusts/bismuth"
   },
   "heat_capacity": 0.14,
-  "melt_temperature": 270
+  "forging_temperature": 162.0,
+  "welding_temperature": 216.0
 }

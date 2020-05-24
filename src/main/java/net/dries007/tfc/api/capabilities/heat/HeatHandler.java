@@ -17,9 +17,14 @@ import net.dries007.tfc.api.calendar.CalendarTFC;
 public class HeatHandler implements IHeat
 {
     private final LazyOptional<IHeat> capability = LazyOptional.of(() -> this);
-    // These are "constants". Some implementations will want to change these based on other factors. (See ItemMold)
+
+    private final float forgingTemp; // Temperature at which this item can be worked in forging
+    private final float weldingTemp; // Temperature at which this item can be welded
+
+
+    // This is almost "constant". Some implementations will want to change these based on other factors. (See ItemMold)
     protected float heatCapacity; // How fast temperature rises and drops
-    protected float meltTemp; // Which temperature this item is considered "molten". Some devices (ie: Charcoal Forge) destroys the item when this is reached
+
     // These are the values from last point of update. They are updated when read from NBT, or when the temperature is set manually.
     // Note that if temperature is == 0, lastUpdateTick should set itself to -1 to keep their capabilities compatible - i.e. stackable
     protected float temperature;
@@ -30,15 +35,16 @@ public class HeatHandler implements IHeat
      *
      * @param heatCapacity The heat capacity
      */
-    public HeatHandler(float heatCapacity, float meltTemp)
+    public HeatHandler(float heatCapacity, float forgingTemp, float weldingTemp)
     {
         this.heatCapacity = heatCapacity;
-        this.meltTemp = meltTemp;
+        this.forgingTemp = forgingTemp;
+        this.weldingTemp = weldingTemp;
     }
 
     public HeatHandler()
     {
-        this(1, Float.MAX_VALUE);
+        this(1, 0, 0);
     }
 
     /**
@@ -72,15 +78,15 @@ public class HeatHandler implements IHeat
     }
 
     @Override
-    public float getMeltTemp()
+    public float getForgingTemperature()
     {
-        return meltTemp;
+        return forgingTemp;
     }
 
     @Override
-    public boolean isMolten()
+    public float getWeldingTemperature()
     {
-        return getTemperature() >= meltTemp;
+        return weldingTemp;
     }
 
     @Override

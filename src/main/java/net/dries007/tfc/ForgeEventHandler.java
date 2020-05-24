@@ -254,10 +254,12 @@ public final class ForgeEventHandler
         {
             // Every item has a forging capability
             event.addCapability(CapabilityForging.KEY, new ForgingHandler(stack));
-            // Attach heat capability to the ones defined by datapacks
-            CapabilityHeat.getCapability(stack).ifPresent(heat ->
-                event.addCapability(CapabilityHeat.KEY, heat));
 
+            // Attach heat capability to the ones defined by datapacks
+            CapabilityHeat.HeatManager.INSTANCE.getValues().stream()
+                .filter(heatWrapper -> heatWrapper.isValid(stack))
+                .findFirst().map(CapabilityHeat.HeatWrapper::getCapability)
+                .ifPresent(heat -> event.addCapability(CapabilityHeat.KEY, heat));
         }
     }
 

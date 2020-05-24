@@ -10,9 +10,12 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public interface IHeat extends ICapabilitySerializable<CompoundNBT>
 {
@@ -39,22 +42,23 @@ public interface IHeat extends ICapabilitySerializable<CompoundNBT>
     float getHeatCapacity();
 
     /**
-     * Gets the melting point of the item.
-     * Depending on the item, this may not mean anything.
+     * Gets the temperature at which this item can be worked in forging
      *
-     * @return a temperature at which this item should melt at
+     * @return temperature at which this item is able to be worked
      */
-    float getMeltTemp();
+    default float getForgingTemperature()
+    {
+        return 0;
+    }
 
     /**
-     * If the object can melt / transform, return if it is transformed
-     * This can mean many different things depending on the object
+     * Gets the temperature at which this item can be welded in forging
      *
-     * @return is the object transformed.
+     * @return temperature at which this item is able to be welded
      */
-    default boolean isMolten()
+    default float getWeldingTemperature()
     {
-        return getTemperature() > getMeltTemp();
+        return 0;
     }
 
     /**
@@ -67,12 +71,20 @@ public interface IHeat extends ICapabilitySerializable<CompoundNBT>
     @OnlyIn(Dist.CLIENT)
     default void addHeatInfo(ItemStack stack, List<ITextComponent> text)
     {
-        ITextComponent tooltip = Heat.getTooltip(getTemperature());
+        float temperature = getTemperature();
+        ITextComponent tooltip = Heat.getTooltip(temperature);
         if (tooltip != null)
         {
+            // Only add " - can work" and " - can weld" if both temperatures are set
+            if (getWeldingTemperature() > 0 && getWeldingTemperature() <= temperature)
+            {
+                tooltip.appendSibling(new TranslationTextComponent(MOD_ID + ".tooltip.welding"));
+            }
+            else if (getForgingTemperature() > 0 && getForgingTemperature() <= temperature)
+            {
+                tooltip.appendSibling(new TranslationTextComponent(MOD_ID + ".tooltip.forging"));
+            }
             text.add(tooltip);
         }
-        // todo handle forging tooltips, eg: (" - can work", " - can weld", " - danger")
-        // idea: since forging capability is now applied to all items, consider checking if there is a welding/anvil recipe to do this)
     }
 }

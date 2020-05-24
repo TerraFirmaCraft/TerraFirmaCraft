@@ -4,5 +4,6 @@
     "tag": "forge:double_ingots/brass"
   },
   "heat_capacity": 0.35,
-  "melt_temperature": 930
+  "forging_temperature": 558.0,
+  "welding_temperature": 744.0
 }

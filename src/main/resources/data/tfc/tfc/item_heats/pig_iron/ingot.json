@@ -4,5 +4,6 @@
     "tag": "forge:ingots/pig_iron"
   },
   "heat_capacity": 0.35,
-  "melt_temperature": 1535
+  "forging_temperature": 921.0,
+  "welding_temperature": 1228.0
 }

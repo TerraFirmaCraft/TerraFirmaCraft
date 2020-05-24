@@ -241,7 +241,6 @@ public class Metal
         NUGGET("nuggets", Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         DUST("dusts", Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
 
-        SCRAP("scraps", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         DOUBLE_INGOT("double_ingots", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         SHEET("sheets", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         DOUBLE_SHEET("double_sheets", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
