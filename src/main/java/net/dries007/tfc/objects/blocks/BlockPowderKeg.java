@@ -52,7 +52,7 @@ import net.dries007.tfc.util.Helpers;
 public class BlockPowderKeg extends Block implements IItemSize
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
-    public static final PropertyBool EXPLODE = PropertyBool.create("explode");
+    public static final PropertyBool LIT = PropertyBool.create("lit");
 
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
@@ -85,8 +85,9 @@ public class BlockPowderKeg extends Block implements IItemSize
         setSoundType(SoundType.WOOD);
         setHardness(2F);
         setLightLevel(0.9375F);
+        setTickRandomly(true);
 
-        setDefaultState(blockState.getBaseState().withProperty(EXPLODE, false).withProperty(SEALED, false));
+        setDefaultState(blockState.getBaseState().withProperty(LIT, false).withProperty(SEALED, false));
     }
 
     /**
@@ -97,7 +98,7 @@ public class BlockPowderKeg extends Block implements IItemSize
         super.onBlockAdded(worldIn, pos, state);
         if (worldIn.isBlockPowered(pos))
         {
-            this.onPlayerDestroy(worldIn, pos, state.withProperty(EXPLODE, true));
+            this.onPlayerDestroy(worldIn, pos, state.withProperty(LIT, true));
         }
     }
 
@@ -118,11 +119,9 @@ public class BlockPowderKeg extends Block implements IItemSize
     public void onBlockExploded(World worldIn, BlockPos pos, Explosion explosionIn)
     {
         TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
-        if (!worldIn.isRemote && te != null && te.getStrength() > 0)
+        if (!worldIn.isRemote && te != null && te.getStrength() > 0) // explode even if not sealed cause gunpowder
         {
-            worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(EXPLODE, true));
-            te.setLit(true);
-            te.setIgniter(null);
+            this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(SEALED, true).withProperty(LIT, true), null);
         }
         else
         {
@@ -145,8 +144,9 @@ public class BlockPowderKeg extends Block implements IItemSize
         if (!worldIn.isRemote)
         {
             TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
-            if (te != null && state.getValue(SEALED) && state.getValue(EXPLODE) && te.getStrength() > 0)
+            if (te != null && state.getValue(SEALED) && state.getValue(LIT) && te.getStrength() > 0) //lit state set before called
             {
+                worldIn.setBlockState(pos, state);
                 te.setLit(true);
                 te.setIgniter(igniter);
             }
@@ -156,7 +156,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return state.getValue(EXPLODE) ? super.getLightValue(state, world, pos) : 0;
+        return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
     }
 
     /**
@@ -178,7 +178,7 @@ public class BlockPowderKeg extends Block implements IItemSize
                 }
                 else if (state.getValue(SEALED) && BlockTorchTFC.canLight(heldItem))
                 {
-                    this.explode(worldIn, pos, state.withProperty(EXPLODE, true), playerIn);
+                    this.explode(worldIn, pos, state.withProperty(LIT, true), playerIn);
 
                     if (heldItem.getItem() == Items.FLINT_AND_STEEL)
                     {
@@ -209,7 +209,7 @@ public class BlockPowderKeg extends Block implements IItemSize
 
             if (entityarrow.isBurning())
             {
-                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, true), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
+                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(LIT, true), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
             }
         }
     }
@@ -317,7 +317,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     {
         if (world.isBlockPowered(pos))
         {
-            this.onPlayerDestroy(world, pos, state.withProperty(EXPLODE, true));
+            this.onPlayerDestroy(world, pos, state.withProperty(LIT, true));
         }// do not care otherwise, as canStay may be violated by an explosion, which we want to trigger off of
     }
 
@@ -369,7 +369,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     @Nonnull
     public BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, SEALED, EXPLODE);
+        return new BlockStateContainer(this, SEALED, LIT);
     }
 
     @Override
@@ -389,7 +389,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rng)
     {
-        if (!state.getValue(EXPLODE)) return;
+        if (!state.getValue(LIT)) return;
 
         TEPowderKeg te = Helpers.getTE(world, pos, TEPowderKeg.class);
         if (te != null)
