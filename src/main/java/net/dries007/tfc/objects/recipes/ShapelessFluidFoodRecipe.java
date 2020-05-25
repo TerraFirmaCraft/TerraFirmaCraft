@@ -6,10 +6,15 @@
 package net.dries007.tfc.objects.recipes;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.gson.JsonObject;
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.objects.items.wood.ItemWoodenBucket;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -22,6 +27,7 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -78,6 +84,7 @@ public class ShapelessFluidFoodRecipe extends ShapelessOreRecipe
 
         long smallestRottenDate = -1;
         ItemStack foodStack = null;
+        Item retainedBucket = null;
         for (int slot = 0; slot < inv.getSizeInventory(); slot++)
         {
             ItemStack stack = inv.getStackInSlot(slot);
@@ -89,7 +96,15 @@ public class ShapelessFluidFoodRecipe extends ShapelessOreRecipe
                     smallestRottenDate = foodCap.getRottenDate();
                     foodStack = stack;
                 }
+                if (retainedBucket == null)
+                {
+                    retainedBucket = checkForRetainedBucket(stack);
+                }
             }
+        }
+        if (foodStack != null && retainedBucket != null)
+        {
+            foodStack.getItem().setContainerItem(retainedBucket);
         }
         return foodStack != null ? CapabilityFood.updateFoodFromPrevious(foodStack, out) : ItemStack.EMPTY;
     }
@@ -104,6 +119,24 @@ public class ShapelessFluidFoodRecipe extends ShapelessOreRecipe
             final ItemStack result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
             //noinspection ConstantConditions
             return new ShapelessFluidFoodRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result);
+        }
+
+    }
+
+    @Nullable
+    private static Item checkForRetainedBucket(ItemStack stack)
+    {
+        if (stack.getItem() instanceof ItemWoodenBucket)
+        {
+            return ItemsTFC.WOODEN_BUCKET;
+        }
+        else if (stack.getItem() instanceof UniversalBucket)
+        {
+            return Items.BUCKET;
+        }
+        else
+        {
+            return null;
         }
     }
 }
