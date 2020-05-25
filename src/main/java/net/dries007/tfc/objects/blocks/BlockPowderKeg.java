@@ -171,7 +171,12 @@ public class BlockPowderKeg extends Block implements IItemSize
             TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
             if (te != null)
             {
-                if (heldItem.isEmpty() && playerIn.isSneaking())
+                if (heldItem.isEmpty() && state.getValue(LIT))
+                {
+                    worldIn.setBlockState(pos, state.withProperty(LIT, false));
+                    te.setLit(false);
+                }
+                else if (heldItem.isEmpty() && playerIn.isSneaking())
                 {
                     worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
                     togglePowderKegSeal(worldIn, pos);

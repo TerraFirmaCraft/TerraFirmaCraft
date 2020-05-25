@@ -26,6 +26,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.blocks.BlockPowderKeg;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
@@ -201,9 +202,16 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
 
     public void setLit(boolean lit)
     {
-        world.playSound(null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.33F);
         isLit = lit;
-        fuse = 80;
+        if (lit) {
+            world.playSound(null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.33F);
+            fuse = 80;
+        }
+        else
+        {
+            world.playSound(null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.8f, 0.6f + Constants.RNG.nextFloat() * 0.4f);
+            fuse = -1;
+        }
         markForSync();
     }
 
