@@ -83,7 +83,20 @@ ORES: Dict[str, Ore] = {
     'sylvite': Ore(None, False),
     'borax': Ore(None, False),
     'lapis_lazuli': Ore(None, False),
-    'halite': Ore(None, False)
+    'halite': Ore(None, False),
+    'agate': Ore(None, False),
+    'amethyst': Ore(None, False),
+    'beryl': Ore(None, False),
+    'diamond': Ore(None, False),
+    'emerald': Ore(None, False),
+    'garnet': Ore(None, False),
+    'jade': Ore(None, False),
+    'jasper': Ore(None, False),
+    'opal': Ore(None, False),
+    'ruby': Ore(None, False),
+    'sapphire': Ore(None, False),
+    'topaz': Ore(None, False),
+    'tourmaline': Ore(None, False)
 }
 ORE_GRADES: Dict[str, OreGrade] = {
     'normal': OreGrade(50),
@@ -150,6 +163,8 @@ SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'green','pink']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path', 'clay', 'clay_grass']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam']
 
+GEMS = ['agate','amethyst','beryl','diamond','emerald','garnet','jade','jasper','opal','ruby','sapphire','topaz','tourmaline']
+GEM_GRADES = ['uncut','chipped','shiny','flawless']
 
 def lang(key: str, *args) -> str:
     return ((key % args) if len(args) > 0 else key).replace('_', ' ').replace('/', ' ').title()
