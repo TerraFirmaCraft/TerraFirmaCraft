@@ -180,7 +180,7 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
                         if (saladCap instanceof ItemDynamicBowlFood.DynamicFoodHandler)
                         {
                             saladCap.setCreationDate(CapabilityFood.getRoundedCreationDate());
-                            ((ItemDynamicBowlFood.DynamicFoodHandler) saladCap).initCreationDataAndBowl(bowlStack.copy(), new FoodData(4, water, saturation, nutrition, Food.SALAD_VEGETABLE.getData().getDecayModifier()));
+                            ((ItemDynamicBowlFood.DynamicFoodHandler) saladCap).initCreationDataAndBowl(bowlStack.copy().splitStack(1), new FoodData(4, water, saturation, nutrition, Food.SALAD_VEGETABLE.getData().getDecayModifier()));
                         }
                         inventory.setStackInSlot(SLOT_OUTPUT, salad);
                         return;
