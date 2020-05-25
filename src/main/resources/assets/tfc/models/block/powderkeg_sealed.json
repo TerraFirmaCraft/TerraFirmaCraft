@@ -1,13 +1,13 @@
 {
 	"credit": "Made with Blockbench",
-	  "parent": "block/block",
-	  "elements": [
+	"parent": "block/block",
+	"elements": [
 		{
 			"name": "exterior",
 			"from": [1, 0, 1],
 			"to": [15, 16, 15],
 			"faces": {
-				"north": {"uv": [0, 15, 16, 1], "rotation": 90, "texture": "#outside"},
+				"north": {"uv": [0, 1, 16, 15], "rotation": 90, "texture": "#outside"},
 				"east": {"uv": [0, 1, 16, 15], "rotation": 90, "texture": "#outside"},
 				"south": {"uv": [0, 1, 16, 15], "rotation": 90, "texture": "#outside"},
 				"west": {"uv": [0, 1, 16, 15], "rotation": 90, "texture": "#outside"}
@@ -20,10 +20,8 @@
 			"faces": {
 				"north": {"uv": [16, 14, 0, 2], "rotation": 90, "texture": "#inside"},
 				"east": {"uv": [16, 2, 0, 14], "rotation": 90, "texture": "#inside"},
-				"south": {"uv": [16, 14, 0, 2], "rotation": 90, "texture": "#inside"},
-				"west": {"uv": [16, 2, 0, 14], "rotation": 90, "texture": "#inside"},
-				"up": {"uv": [0, 0, 0, 0], "texture": "#inside"},
-				"down": {"uv": [0, 0, 0, 0], "texture": "#inside"}
+				"south": {"uv": [16, 13, 0, 1], "rotation": 90, "texture": "#inside"},
+				"west": {"uv": [16, 2, 0, 14], "rotation": 90, "texture": "#inside"}
 			}
 		},
 		{
