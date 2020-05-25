@@ -320,7 +320,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (world.isBlockPowered(pos))
+        if (world.isBlockPowered(pos) || world.getBlockState(fromPos).getMaterial() == Material.FIRE)
         {
             this.onPlayerDestroy(world, pos, state.withProperty(LIT, true));
         }// do not care otherwise, as canStay may be violated by an explosion, which we want to trigger off of
