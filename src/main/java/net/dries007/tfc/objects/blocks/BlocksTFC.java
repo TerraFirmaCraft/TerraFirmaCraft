@@ -60,6 +60,9 @@ public final class BlocksTFC
     @GameRegistry.ObjectHolder("ceramics/fired/large_vessel")
     public static final BlockLargeVessel FIRED_LARGE_VESSEL = getNull();
 
+    @GameRegistry.ObjectHolder("powderkeg")
+    public static final BlockPowderKeg POWDERKEG = getNull();
+
     @GameRegistry.ObjectHolder("aggregate")
     public static final BlockGravel AGGREGATE = getNull();
 
@@ -319,6 +322,7 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER.get()), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
+        normalItemBlocks.add(new ItemBlockPowderKeg(register(r, "powderkeg", new BlockPowderKeg(), CT_WOOD)));
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/raw/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/polished/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
@@ -518,7 +522,6 @@ public final class BlocksTFC
             allSlabBlocks = slab.build();
             allWallBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
             allStairsBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
-            // slabs are special. (ItemSlabTFC)
         }
 
         {
@@ -651,13 +654,9 @@ public final class BlocksTFC
 
         // Note: if you add blocks you don't need to put them in this list of todos. Feel free to add them where they make sense :)
 
-        // todo: metal lamps (on/off with states)
-        // todo: sluice
-        // todo: grill
         // todo: metal trap doors
         // todo: smoke rack (placed with any string, so event based?) + smoke blocks or will we use particles?
         // todo: custom flower pot (TE based probably, unless we want to not care about the dirt in it)
-        // todo: custom hopper or just a separate press block? I prefer the separate block, this will simplify things a lot.
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();
@@ -691,6 +690,7 @@ public final class BlocksTFC
         register(TEMetalSheet.class, "metal_sheet");
         register(TEQuern.class, "quern");
         register(TELargeVessel.class, "large_vessel");
+        register(TEPowderKeg.class, "powderkeg");
         register(TESluice.class, "sluice");
     }
 
