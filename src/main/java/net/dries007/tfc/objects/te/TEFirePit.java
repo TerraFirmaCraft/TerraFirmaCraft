@@ -657,9 +657,8 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
             if (soupFood instanceof ItemDynamicBowlFood.DynamicFoodHandler)
             {
                 soupFood.setCreationDate(soupCreationDate);
-                ((ItemDynamicBowlFood.DynamicFoodHandler) soupFood).initCreationDataAndBowl(stack, soupContents);
+                ((ItemDynamicBowlFood.DynamicFoodHandler) soupFood).initCreationDataAndBowl(stack.splitStack(1), soupContents);
             }
-            stack.shrink(1); // consume bowl
             ItemHandlerHelper.giveItemToPlayer(player, soupStack);
             if (soupServings == 0)
             {
@@ -671,13 +670,13 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
     @Override
     public boolean canInsert(int slot, ItemStack stack, EnumFacing side)
     {
-        return !(cookingPotStage == CookingPotStage.BOILING || cookingPotStage == CookingPotStage.FINISHED);
+        return slot == SLOT_FUEL_INPUT || (cookingPotStage != CookingPotStage.BOILING && cookingPotStage != CookingPotStage.FINISHED);
     }
 
     @Override
     public boolean canExtract(int slot, EnumFacing side)
     {
-        return !(cookingPotStage == CookingPotStage.BOILING || cookingPotStage == CookingPotStage.FINISHED);
+        return slot == SLOT_FUEL_INPUT || (cookingPotStage != CookingPotStage.BOILING && cookingPotStage != CookingPotStage.FINISHED);
     }
 
     private void updateCachedGrillRecipes()

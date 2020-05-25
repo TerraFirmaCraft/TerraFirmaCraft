@@ -17,21 +17,21 @@ public class GenLayerIslandTFC extends GenLayerTFC
     }
 
     @Override
-    public int[] getInts(int par1, int par2, int maxX, int maxZ)
+    public int[] getInts(int x, int z, int sizeX, int sizeZ)
     {
-        int[] var5 = IntCache.getIntCache(maxX * maxZ);
+        int[] var5 = IntCache.getIntCache(sizeX * sizeZ);
 
-        for (int z = 0; z < maxZ; ++z)
+        for (int zz = 0; zz < sizeZ; ++zz)
         {
-            for (int x = 0; x < maxX; ++x)
+            for (int xx = 0; xx < sizeX; ++xx)
             {
-                this.initChunkSeed(par1 + x, par2 + z);
-                var5[x + z * maxX] = this.nextInt(4) == 0 ? 1 : 0;
+                this.initChunkSeed(x + xx, z + zz);
+                var5[xx + zz * sizeX] = this.nextInt(4) == 0 ? plainsID : oceanID;
             }
         }
 
-        if (par1 > -maxX && par1 <= 0 && par2 > -maxZ && par2 <= 0)
-            var5[-par1 + -par2 * maxX] = 1;
+        if (x > -sizeX && x <= 0 && z > -sizeZ && z <= 0)
+            var5[-x + -z * sizeX] = plainsID;
 
         return var5;
     }

@@ -45,8 +45,7 @@ public class ItemDynamicBowlFood extends ItemFoodTFC
         IFood food = stack.getCapability(CapabilityFood.CAPABILITY, null);
         if (food instanceof DynamicFoodHandler)
         {
-            ItemStack bowlStack = ((DynamicFoodHandler) food).getBowlStack().copy();
-            bowlStack.setCount(1);
+            ItemStack bowlStack = ((DynamicFoodHandler) food).getBowlStack();
             if (entityLiving instanceof EntityPlayer)
             {
                 ItemHandlerHelper.giveItemToPlayer((EntityPlayer) entityLiving, bowlStack);
@@ -67,7 +66,7 @@ public class ItemDynamicBowlFood extends ItemFoodTFC
 
         public void initCreationDataAndBowl(ItemStack bowlStack, FoodData data)
         {
-            this.bowlStack = bowlStack.copy();
+            this.bowlStack = bowlStack;
             this.data = data;
         }
 
@@ -98,7 +97,7 @@ public class ItemDynamicBowlFood extends ItemFoodTFC
         @Nonnull
         ItemStack getBowlStack()
         {
-            return bowlStack;
+            return bowlStack.copy();
         }
     }
 }

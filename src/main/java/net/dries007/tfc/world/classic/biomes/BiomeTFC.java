@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.world.classic.biomes;
 
+import java.awt.*;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.Entity;
@@ -25,15 +26,17 @@ public class BiomeTFC extends Biome
     private final int waterPlantsPerChunk;
     private final int lilyPadPerChunk;
     private boolean spawnBiome;
+    public final Color debugColor;
 
-    public BiomeTFC(BiomeProperties properties)
+    public BiomeTFC(int debugColor, BiomeProperties properties)
     {
-        this(properties, 0, 0);
+        this(debugColor, properties, 0, 0);
     }
 
-    public BiomeTFC(BiomeProperties properties, int lilyPadPerChunk, int waterPlantsPerChunk)
+    public BiomeTFC(int debugColor, BiomeProperties properties, int lilyPadPerChunk, int waterPlantsPerChunk)
     {
         super(properties);
+        this.debugColor = new Color(debugColor);
         this.lilyPadPerChunk = lilyPadPerChunk;
         this.waterPlantsPerChunk = waterPlantsPerChunk;
 
@@ -79,7 +82,7 @@ public class BiomeTFC extends Biome
     @Override
     public String toString()
     {
-        return getBiomeName();
+        return this.biomeName;
     }
 
     @Override
