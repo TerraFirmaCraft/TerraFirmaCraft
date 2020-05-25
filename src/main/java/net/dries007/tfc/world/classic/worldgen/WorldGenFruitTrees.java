@@ -45,10 +45,9 @@ public class WorldGenFruitTrees implements IWorldGenerator
                 float temperature = ClimateTFC.getAvgTemp(world, chunkBlockPos);
                 float rainfall = ChunkDataTFC.getRainfall(world, chunkBlockPos);
                 List<IFruitTree> trees = TREES.stream().filter(x -> x.isValidConditions(temperature, rainfall)).collect(Collectors.toList());
-                IFruitTree tree = trees.get(random.nextInt(trees.size()));
-
-                if (tree != null)
+                if (!trees.isEmpty())
                 {
+                    IFruitTree tree = trees.get(random.nextInt(trees.size()));
                     TemplateManager manager = ((WorldServer) world).getStructureTemplateManager();
 
                     final int x = (chunkX << 4) + random.nextInt(16) + 8;
