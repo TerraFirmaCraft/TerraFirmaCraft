@@ -4,6 +4,13 @@ from constants import *
 
 
 def generate(rm: ResourceManager):
+    # Gems
+    for gems in GEMS:
+        for gem_grades in GEM_GRADES:
+            rm.item_model(('gem', '%s' % gem_grades, '%s' % gems), \
+                'tfc:item/gem/%s/%s' % (gem_grades, gems), \
+                parent='item/handheld') \
+                .with_lang(lang('%s %s' % (gem_grades, gems)))
     # Rock block variants
     for rock in ROCKS.keys():
         for block_type in ROCK_BLOCK_TYPES:
