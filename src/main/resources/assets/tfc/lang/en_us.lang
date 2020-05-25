@@ -93,6 +93,8 @@ tfc.tooltip.barrel_fluid=Contains %1$d mB of %2$s
 tfc.tooltip.barrel_fluid_amount=%d mB
 tfc.tooltip.barrel_item=Contains %1$dx %2$s
 tfc.tooltip.barrel_item_in_fluid= and %1$dx %2$s
+tfc.tooltip.powderkeg_amount=Contains %1$dx %2$s
+tfc.tooltip.powderkeg_empty=Empty
 tfc.tooltip.small_vessel_empty=Empty
 tfc.tooltip.small_vessel_item=%1$dx %2$s
 tfc.tooltip.weldable=Can Weld
@@ -136,6 +138,8 @@ tfc.tooltip.blast_furnace_melt_amount=Melt
 tfc.tooltip.blast_furnace_invalid_structure=Invalid Structure!
 tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
+tfc.tooltip.powderkeg_seal=Seal Powderkeg
+tfc.tooltip.powderkeg_unseal=Unseal Powderkeg
 tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
 tfc.tooltip.smithing_skill=Skill Bonus: %0.1f%%
 tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
@@ -1195,6 +1199,7 @@ tile.tfc.sluice.name=Sluice
 tile.tfc.ice.name=Ice
 tile.tfc.sea_ice.name=Sea Ice
 tile.tfc.nest_box.name=Nest Box
+tile.tfc.powderkeg.name=Powderkeg
 
 ## Decoration blocks
 tile.tfc.alabaster.bricks.cyan.name=Cyan Alabaster Bricks
@@ -4117,6 +4122,8 @@ item.tfc.powder.limonite.name=Limonite Powder
 item.tfc.powder.malachite.name=Malachite Powder
 item.tfc.powder.salt.name=Salt
 item.tfc.powder.fertilizer.name=Fertilizer
+item.tfc.powder.charcoal.name=Charcoal Powder
+
 
 item.tfc.ceramics.fired.mold.ingot.bismuth.name=Unshaped Bismuth
 item.tfc.ceramics.fired.mold.ingot.bismuth_bronze.name=Unshaped Bismuth Bronze
