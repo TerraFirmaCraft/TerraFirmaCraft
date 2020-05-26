@@ -25,7 +25,8 @@ bin/
 
 # Python
 venv/
-__pycache__
+__pycache__/
+*.pyc
 
 # Test Outputs
 /*.png

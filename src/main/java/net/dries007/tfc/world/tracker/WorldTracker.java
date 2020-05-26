@@ -58,6 +58,26 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         collapsesInProgress.add(collapse);
     }
 
+    @Override
+    public void addCollapsePositions(BlockPos centerPos, Collection<BlockPos> positions)
+    {
+        List<BlockPos> collapsePositions = new ArrayList<>();
+        double maxRadiusSquared = 0;
+        for (BlockPos pos : positions)
+        {
+            double distSquared = pos.distanceSq(centerPos);
+            if (distSquared > maxRadiusSquared)
+            {
+                maxRadiusSquared = distSquared;
+            }
+            if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseExplosionPropagateChance.get())
+            {
+                collapsePositions.add(pos.up()); // Check the above position
+            }
+        }
+        addCollapseData(new CollapseData(centerPos, collapsePositions, maxRadiusSquared));
+    }
+
     public void tick(World world)
     {
         if (!world.isRemote())
@@ -137,7 +157,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
     {
-        return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
+        return CapabilityWorldTracker.CAPABILITY.orEmpty(cap, capability);
     }
 
     private void updateLandslidePositions()

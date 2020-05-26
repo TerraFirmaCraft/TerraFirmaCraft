@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.vein;
 
 import java.util.Random;
@@ -34,7 +39,7 @@ public class ClusterVeinType extends VeinType<ClusterVeinType.ClusterVein>
     @Override
     public float getChanceToGenerate(ClusterVein vein, int x, int y, int z)
     {
-        return vein.metaballs.noise(x, y, z);
+        return vein.metaballs.noise(x, y, z) * density;
     }
 
     static class ClusterVein extends Vein<ClusterVeinType>

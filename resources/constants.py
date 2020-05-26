@@ -1,3 +1,6 @@
+#  Work under Copyright. Licensed under the EUPL.
+#  See the project README.md and LICENSE.txt for more information.
+
 from collections import namedtuple
 from typing import Dict, List
 
@@ -20,22 +23,22 @@ ROCKS: Dict[str, Rock] = {
     'chert': Rock('sedimentary', 'yellow'),
     'claystone': Rock('sedimentary', 'red'),
     'conglomerate': Rock('sedimentary', 'red'),
-    'dolomite': Rock('sedimentary', 'red'),
+    'dolomite': Rock('sedimentary', 'green'),
     'limestone': Rock('sedimentary', 'white'),
     'shale': Rock('sedimentary', 'red'),
     'gneiss': Rock('metamorphic', 'red'),
     'marble': Rock('metamorphic', 'white'),
     'phyllite': Rock('metamorphic', 'white'),
-    'quartzite': Rock('metamorphic', 'yellow'),
-    'schist': Rock('metamorphic', 'brown'),
-    'slate': Rock('metamorphic', 'brown'),
+    'quartzite': Rock('metamorphic', 'pink'),
+    'schist': Rock('metamorphic', 'green'),
+    'slate': Rock('metamorphic', 'yellow'),
     'diorite': Rock('igneous_intrusive', 'brown'),
     'gabbro': Rock('igneous_intrusive', 'black'),
     'granite': Rock('igneous_intrusive', 'brown'),
     'andesite': Rock('igneous_extrusive', 'black'),
     'basalt': Rock('igneous_extrusive', 'black'),
     'dacite': Rock('igneous_extrusive', 'black'),
-    'rhyolite': Rock('igneous_extrusive', 'brown')
+    'rhyolite': Rock('igneous_extrusive', 'pink')
 }
 METALS: Dict[str, Metal] = {
     'bismuth': Metal(1, True, False, False, False, 0.14, 270),
@@ -209,7 +212,7 @@ ORE_VEINS: Dict[str, Vein] = {
 ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'spike', 'mossy_cobble', 'mossy_bricks',
                     'cracked_bricks', 'chiseled']
 ROCK_SPIKE_PARTS = ['base', 'middle', 'tip']
-SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'gray']
+SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'green', 'pink']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path', 'clay', 'clay_grass']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam']
 

@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/gneiss",
     "tfc:rock/raw/gneiss",
+    "tfc:rock/mossy_cobble/gneiss",
     "tfc:ore/bituminous_coal/gneiss",
     "tfc:ore/lignite/gneiss",
     "tfc:ore/kaolinite/gneiss",

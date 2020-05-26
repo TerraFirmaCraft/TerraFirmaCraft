@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.tracker;
 
 import java.util.Arrays;
@@ -14,7 +19,7 @@ public class CollapseData implements INBTSerializable<CompoundNBT>
     List<BlockPos> nextPositions;
     double radiusSquared;
 
-    public CollapseData(BlockPos centerPos, List<BlockPos> nextPositions, int radiusSquared)
+    public CollapseData(BlockPos centerPos, List<BlockPos> nextPositions, double radiusSquared)
     {
         this.centerPos = centerPos;
         this.nextPositions = nextPositions;

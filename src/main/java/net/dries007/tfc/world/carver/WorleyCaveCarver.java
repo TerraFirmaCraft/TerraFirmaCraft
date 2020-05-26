@@ -34,6 +34,7 @@ public class WorleyCaveCarver
     private final INoise3D caveNoise;
     private final Set<Block> carvableBlocks;
     private final double heightFadeThreshold;
+    private final int heightSampleRange;
     private final double baseNoiseCutoff;
     private final double worleyNoiseCutoff;
 
@@ -46,7 +47,11 @@ public class WorleyCaveCarver
             new SimplexNoise3D(seedGenerator.nextLong()).octaves(4).spread(0.08f).scaled(-18, 18)
         ).scaled(0, 1);
 
+        // The y level to start slowly fading out worley caves, to not rip up the surface too much
         this.heightFadeThreshold = TFCConfig.COMMON.worleyCaveHeightFade.get();
+        // The number of vertical samples to take. Noise is sampled every 4 blocks, then interpolated
+        // +8 is to sample above the height fade, so it's actually a fade and not a cutoff
+        this.heightSampleRange = (int) (heightFadeThreshold / 4) + 8;
         this.baseNoiseCutoff = TFCConfig.COMMON.worleyCaveBaseNoiseCutoff.get();
         this.worleyNoiseCutoff = TFCConfig.COMMON.worleyCaveWorleyNoiseCutoff.get();
 
