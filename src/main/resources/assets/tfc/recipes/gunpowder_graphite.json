@@ -11,7 +11,23 @@
     },
     {
       "type": "forge:ore_dict",
+      "ore": "dustSaltpeter"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustSaltpeter"
+    },
+    {
+      "type": "forge:ore_dict",
       "ore": "dustSulfur"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustSulfur"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustCharcoal"
     },
     {
       "type": "forge:ore_dict",
@@ -24,6 +40,6 @@
   ],
   "result": {
     "item": "minecraft:gunpowder",
-    "count": 8
+    "count": 12
   }
 }
