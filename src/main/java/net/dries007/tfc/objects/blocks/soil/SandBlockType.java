@@ -11,7 +11,7 @@ public enum SandBlockType
     RED(new Color(30, 30, 30).getRGB()),
     YELLOW(new Color(30, 30, 30).getRGB()),
     GREEN(new Color(30, 30, 30).getRGB()),
-    PINK(new Color(30,30,30).getRGB());
+    PINK(new Color(30, 30, 30).getRGB());
 
     public static final int TOTAL = values().length;
 

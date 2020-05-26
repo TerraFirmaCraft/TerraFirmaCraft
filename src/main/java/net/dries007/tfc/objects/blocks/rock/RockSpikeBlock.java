@@ -57,12 +57,6 @@ public class RockSpikeBlock extends Block
         }
     }
 
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(PART);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
@@ -92,6 +86,12 @@ public class RockSpikeBlock extends Block
                 }
             }
         }
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(PART);
     }
 
     private boolean isSupported(World world, BlockPos pos)

@@ -15,18 +15,21 @@ public class BlockRecipeWrapper extends ItemStackRecipeWrapper
     private final BlockPos pos;
     private final BlockState state;
 
-    public BlockRecipeWrapper(World world, BlockPos pos) {
+    public BlockRecipeWrapper(World world, BlockPos pos)
+    {
         this(world, pos, world.getBlockState(pos));
     }
 
-    public BlockRecipeWrapper(World world, BlockPos pos, BlockState state) {
+    public BlockRecipeWrapper(World world, BlockPos pos, BlockState state)
+    {
         super(new ItemStack(state.getBlock()));
         this.world = world;
         this.pos = pos;
         this.state = state;
     }
 
-    public World getWorld() {
+    public World getWorld()
+    {
         return world;
     }
 
