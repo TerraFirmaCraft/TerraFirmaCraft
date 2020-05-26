@@ -1031,7 +1031,7 @@ tfc.enum.day.saturday=Saturday
 tfc.enum.nutrient.grain=Grain
 tfc.enum.nutrient.vegetables=Vegetables
 tfc.enum.nutrient.fruit=Fruit
-tfc.enum.nutrient.meat=Meat
+tfc.enum.nutrient.protein=Protein
 tfc.enum.nutrient.dairy=Dairy
 
 #JEI

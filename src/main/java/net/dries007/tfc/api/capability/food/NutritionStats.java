@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import net.dries007.tfc.ConfigTFC;
@@ -78,8 +79,23 @@ public class NutritionStats implements INBTSerializable<NBTTagCompound>
 
     public void addNutrients(@Nonnull FoodData data)
     {
-        records.addFirst(data);
+        records.addFirst(data.copy());
         calculateNutrition();
+    }
+
+    /**
+     * This adds a small amount of nutrition directly to the last food data consumed.
+     * It marks said food data as "buffed", and each food data can only be buffed once.
+     * This is used for non-food related nutrition bonuses, for instance drinking milk (which is not a food as it dosen't expire, which is unbalanced)
+     */
+    public void addBuff(@Nonnull FoodData data)
+    {
+        FoodData recentFood = getMostRecentRecord();
+        if (recentFood != null)
+        {
+            recentFood.applyBuff(data);
+            calculateNutrition();
+        }
     }
 
     @Override
@@ -101,7 +117,7 @@ public class NutritionStats implements INBTSerializable<NBTTagCompound>
         if (nbt != null)
         {
             records.clear();
-            NBTTagList recordsNbt = nbt.getTagList("records", 10 /* Compound */);
+            NBTTagList recordsNbt = nbt.getTagList("records", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < recordsNbt.tagCount(); i++)
             {
                 records.add(new FoodData(recordsNbt.getCompoundTagAt(i)));

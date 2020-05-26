@@ -275,7 +275,7 @@ public class ContainerSalad extends ContainerSimple implements ISlotCallback
                 return ItemFoodTFC.get(Food.SALAD_VEGETABLE);
             case FRUIT:
                 return ItemFoodTFC.get(Food.SALAD_FRUIT);
-            case MEAT:
+            case PROTEIN:
                 return ItemFoodTFC.get(Food.SALAD_MEAT);
             default:
                 return ItemFoodTFC.get(Food.SALAD_DAIRY);

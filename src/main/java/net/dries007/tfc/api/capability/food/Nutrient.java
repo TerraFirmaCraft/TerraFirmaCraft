@@ -14,7 +14,7 @@ public enum Nutrient
     GRAIN(TextFormatting.GOLD),
     FRUIT(TextFormatting.GREEN),
     VEGETABLES(TextFormatting.DARK_GREEN),
-    MEAT(TextFormatting.RED),
+    PROTEIN(TextFormatting.RED), // This may still be referred to as "meat" in various places. They are the same thing.
     DAIRY(TextFormatting.DARK_PURPLE);
 
     public static final int TOTAL = values().length;

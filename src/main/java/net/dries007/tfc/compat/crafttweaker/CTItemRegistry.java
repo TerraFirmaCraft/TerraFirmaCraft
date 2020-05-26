@@ -189,7 +189,7 @@ public class CTItemRegistry
 
     @ZenMethod
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void registerFood(crafttweaker.api.item.IIngredient input, int hunger, float water, float saturation, float decay, float grain, float veg, float fruit, float meat, float dairy)
+    public static void registerFood(crafttweaker.api.item.IIngredient input, int hunger, float water, float saturation, float decay, float grain, float veg, float fruit, float protein, float dairy)
     {
         if (input == null)
         {
@@ -205,7 +205,7 @@ public class CTItemRegistry
             @Override
             public void apply()
             {
-                CapabilityFood.CUSTOM_FOODS.put(inputIngredient, () -> new FoodHandler(null, new FoodData(hunger, water, saturation, grain, fruit, veg, meat, dairy, decay)));
+                CapabilityFood.CUSTOM_FOODS.put(inputIngredient, () -> new FoodHandler(null, new FoodData(hunger, water, saturation, grain, fruit, veg, protein, dairy, decay)));
             }
 
             @Override
