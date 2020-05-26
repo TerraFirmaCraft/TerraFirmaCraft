@@ -336,12 +336,12 @@
   "sulfur": {
     "ore": "tfc:sulfur",
     "width": 22,
-    "height": 22,
-    "shape": "sphere",
-    "rarity": 100,
+    "height": 42,
+    "shape": "cluster",
+    "rarity": 110,
     "minimum_height": 5,
     "maximum_height": 144,
-    "density": 70,
+    "density": 80,
     "base_rocks": [
       "tfc:igneous_extrusive"
     ]
