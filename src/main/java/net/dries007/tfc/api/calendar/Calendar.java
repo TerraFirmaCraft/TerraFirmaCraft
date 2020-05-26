@@ -23,10 +23,10 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 
-public final class CalendarTFC implements INBTSerializable<CompoundNBT>
+public final class Calendar implements INBTSerializable<CompoundNBT>
 {
     public static final int SYNC_INTERVAL = 10; // Number of ticks between sync attempts
-    public static final CalendarTFC INSTANCE = new CalendarTFC();
+    public static final Calendar INSTANCE = new Calendar();
     public static final Logger LOGGER = LogManager.getLogger();
 
     /**
@@ -34,7 +34,7 @@ public final class CalendarTFC implements INBTSerializable<CompoundNBT>
      * NOT synced with the daylight cycle.
      * Used for almost everything that tracks time.
      */
-    public static final ICalendar PLAYER_TIME = () -> CalendarTFC.INSTANCE.playerTime;
+    public static final ICalendar PLAYER_TIME = () -> Calendar.INSTANCE.playerTime;
 
     /**
      * Calendar time. Advances when player sleeps, stops when doDaylightCycle is false
@@ -47,13 +47,13 @@ public final class CalendarTFC implements INBTSerializable<CompoundNBT>
         @Override
         public long getTicks()
         {
-            return CalendarTFC.INSTANCE.calendarTime;
+            return Calendar.INSTANCE.calendarTime;
         }
 
         @Override
         public long getDaysInMonth()
         {
-            return CalendarTFC.INSTANCE.daysInMonth;
+            return Calendar.INSTANCE.daysInMonth;
         }
     };
 
@@ -108,7 +108,7 @@ public final class CalendarTFC implements INBTSerializable<CompoundNBT>
     private boolean doDaylightCycle, arePlayersLoggedOn;
     private MinecraftServer server;
 
-    public CalendarTFC()
+    public Calendar()
     {
         // Initialize to default values
         daysInMonth = 8; // todo ConfigTFC.General.MISC.defaultMonthLength;
@@ -145,7 +145,7 @@ public final class CalendarTFC implements INBTSerializable<CompoundNBT>
     public long setTimeFromWorldTime(long worldTimeToSetTo)
     {
         // Calculate the offset to jump to
-        long worldTimeJump = (worldTimeToSetTo % ICalendar.TICKS_IN_DAY) - CalendarTFC.CALENDAR_TIME.getWorldTime();
+        long worldTimeJump = (worldTimeToSetTo % ICalendar.TICKS_IN_DAY) - Calendar.CALENDAR_TIME.getWorldTime();
         if (worldTimeJump < 0)
         {
             worldTimeJump += ICalendar.TICKS_IN_DAY;
@@ -217,7 +217,7 @@ public final class CalendarTFC implements INBTSerializable<CompoundNBT>
         arePlayersLoggedOn = buffer.readBoolean();
     }
 
-    public void resetTo(CalendarTFC resetTo)
+    public void resetTo(Calendar resetTo)
     {
         this.daysInMonth = resetTo.daysInMonth;
 
@@ -302,10 +302,10 @@ public final class CalendarTFC implements INBTSerializable<CompoundNBT>
     {
         // Recalculate the new calendar time
         // Preserve the current month, time of day, and position within the month
-        long baseMonths = CalendarTFC.CALENDAR_TIME.getTotalMonths();
-        long baseDayTime = calendarTime - (CalendarTFC.CALENDAR_TIME.getTotalDays() * ICalendar.TICKS_IN_DAY);
+        long baseMonths = Calendar.CALENDAR_TIME.getTotalMonths();
+        long baseDayTime = calendarTime - (Calendar.CALENDAR_TIME.getTotalDays() * ICalendar.TICKS_IN_DAY);
         // Minus one here because `getDayOfMonth` returns the player visible one (which adds one)
-        float monthPercent = (float) (CalendarTFC.CALENDAR_TIME.getDayOfMonth() - 1) / daysInMonth;
+        float monthPercent = (float) (Calendar.CALENDAR_TIME.getDayOfMonth() - 1) / daysInMonth;
         int newDayOfMonth = (int) (monthPercent * newMonthLength);
 
         this.daysInMonth = newMonthLength;

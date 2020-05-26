@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.MetalItem;
-import net.dries007.tfc.api.calendar.CalendarTFC;
+import net.dries007.tfc.api.calendar.Calendar;
 import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -74,7 +74,7 @@ public class ClientForgeEventHandler
 
                 // Always add calendar info
                 //list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
-                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", CalendarTFC.PLAYER_TIME.getTicks(), CalendarTFC.CALENDAR_TIME.getTicks()));
+                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendar.PLAYER_TIME.getTicks(), Calendar.CALENDAR_TIME.getTicks()));
 
                 IChunk chunk = mc.world.getChunk(pos);
                 ChunkData.get(chunk).ifPresent(data -> {

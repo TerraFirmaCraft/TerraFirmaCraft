@@ -5,11 +5,15 @@
 
 package net.dries007.tfc.api;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JSONUtils;
@@ -26,7 +30,7 @@ public class MetalItem
 {
     public static Optional<MetalItem> get(ItemStack stack)
     {
-        return MetalItemManager.INSTANCE.getValues().stream()
+        return MetalItemManager.CACHE.getAll(stack.getItem()).stream()
             .filter(metalItem -> metalItem.isValid(stack))
             .findFirst();
     }
@@ -76,5 +80,10 @@ public class MetalItem
     private boolean isValid(ItemStack stack)
     {
         return this.ingredient.test(stack);
+    }
+
+    public Collection<Item> getValidItems()
+    {
+        return Arrays.stream(this.ingredient.getMatchingStacks()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 }

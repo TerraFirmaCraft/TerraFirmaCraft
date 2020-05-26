@@ -5,10 +5,14 @@
 
 package net.dries007.tfc.api.capabilities.heat;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JSONUtils;
@@ -20,6 +24,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.NoopStorage;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -91,6 +96,7 @@ public class CapabilityHeat
      */
     public static class HeatManager extends DataManager<HeatWrapper>
     {
+        public static final IndirectHashCollection<Item, HeatWrapper> CACHE = new IndirectHashCollection<>(HeatWrapper::getValidItems);
         public static final HeatManager INSTANCE = new HeatManager();
 
         private HeatManager()
@@ -119,11 +125,6 @@ public class CapabilityHeat
             float weldingTemp = JSONUtils.getFloat(obj, "welding_temperature", 0);
             this.ingredient = CraftingHelper.getIngredient(JSONUtils.getJsonObject(obj, "ingredient"));
             this.capability = () -> new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
-            // Warning: This line is needed to make the Ingredient instance load and cache matching stacks before this wrapper is done
-            // If this line is removed, the cached stacks will only be created on #isValid
-            // The new itemstacks will try to attach capabilities themselves, making a giant loop mess which will break the game
-            // #BlameForge, since this have to be done anyway, why not do it as soon as the instance is created?
-            this.ingredient.getMatchingStacks();
         }
 
         public ResourceLocation getId()
@@ -139,6 +140,11 @@ public class CapabilityHeat
         public boolean isValid(ItemStack stack)
         {
             return ingredient.test(stack);
+        }
+
+        public Collection<Item> getValidItems()
+        {
+            return Arrays.stream(this.ingredient.getMatchingStacks()).map(ItemStack::getItem).collect(Collectors.toSet());
         }
     }
 }

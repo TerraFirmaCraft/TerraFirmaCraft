@@ -224,14 +224,10 @@ public class Metal
             return type.hasType(metal);
         }
 
+        @Nullable
         public String getTag()
         {
-            return hasTag() ? tag : "";
-        }
-
-        public boolean hasTag()
-        {
-            return tag != null;
+            return tag;
         }
     }
 

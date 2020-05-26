@@ -12,7 +12,7 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
-import net.dries007.tfc.api.calendar.CalendarTFC;
+import net.dries007.tfc.api.calendar.Calendar;
 
 public class HeatHandler implements IHeat
 {
@@ -56,7 +56,7 @@ public class HeatHandler implements IHeat
     @Override
     public float getTemperature()
     {
-        return CapabilityHeat.adjustTemp(temperature, heatCapacity, CalendarTFC.PLAYER_TIME.getTicks() - lastUpdateTick);
+        return CapabilityHeat.adjustTemp(temperature, heatCapacity, Calendar.PLAYER_TIME.getTicks() - lastUpdateTick);
     }
 
     /**
@@ -68,7 +68,7 @@ public class HeatHandler implements IHeat
     public void setTemperature(float temperature)
     {
         this.temperature = temperature;
-        this.lastUpdateTick = CalendarTFC.PLAYER_TIME.getTicks();
+        this.lastUpdateTick = Calendar.PLAYER_TIME.getTicks();
     }
 
     @Override
