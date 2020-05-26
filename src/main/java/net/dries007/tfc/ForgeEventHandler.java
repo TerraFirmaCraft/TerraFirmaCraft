@@ -1,22 +1,9 @@
 package net.dries007.tfc;
 
-import com.mojang.brigadier.CommandDispatcher;
-import net.dries007.tfc.command.ClearWorldCommand;
-import net.dries007.tfc.network.ChunkDataRequestPacket;
-import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.objects.TFCTags;
-import net.dries007.tfc.objects.recipes.CollapseRecipe;
-import net.dries007.tfc.objects.recipes.LandslideRecipe;
-import net.dries007.tfc.objects.types.RockManager;
-import net.dries007.tfc.util.TFCServerTracker;
-import net.dries007.tfc.util.support.SupportManager;
-import net.dries007.tfc.world.TFCWorldType;
-import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
-import net.dries007.tfc.world.tracker.WorldTracker;
-import net.dries007.tfc.world.vein.VeinTypeManager;
+import java.util.Random;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandSource;
@@ -42,10 +29,24 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.Random;
+import com.mojang.brigadier.CommandDispatcher;
+import net.dries007.tfc.command.ClearWorldCommand;
+import net.dries007.tfc.network.ChunkDataRequestPacket;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.objects.TFCTags;
+import net.dries007.tfc.objects.recipes.CollapseRecipe;
+import net.dries007.tfc.objects.recipes.LandslideRecipe;
+import net.dries007.tfc.objects.types.RockManager;
+import net.dries007.tfc.util.TFCServerTracker;
+import net.dries007.tfc.util.support.SupportManager;
+import net.dries007.tfc.world.TFCWorldType;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
+import net.dries007.tfc.world.tracker.WorldTracker;
+import net.dries007.tfc.world.vein.VeinTypeManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -139,7 +140,8 @@ public final class ForgeEventHandler
     }
 
     @SubscribeEvent
-    public static void beforeServerStart(FMLServerAboutToStartEvent event) {
+    public static void beforeServerStart(FMLServerAboutToStartEvent event)
+    {
         LOGGER.debug("Before Server Start");
 
         // Initializes json data listeners

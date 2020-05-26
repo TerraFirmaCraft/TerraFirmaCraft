@@ -3,7 +3,6 @@ package net.dries007.tfc.api;
 import javax.annotation.Nonnull;
 
 
-
 public class Ore
 {
     /**

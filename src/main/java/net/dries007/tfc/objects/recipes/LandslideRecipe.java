@@ -1,11 +1,11 @@
 package net.dries007.tfc.objects.recipes;
 
-import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.TFCTags;
-import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
-import net.dries007.tfc.util.collections.IndirectHashCollection;
-import net.dries007.tfc.util.support.SupportManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -17,11 +17,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.objects.TFCTags;
+import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.support.SupportManager;
 
 /**
  * This handles all logic for land slides (sideways gravity affected blocks)
@@ -30,11 +31,13 @@ import java.util.Random;
  * @see SupportManager
  * @see TFCFallingBlockEntity
  */
-public class LandslideRecipe extends SimpleBlockRecipe {
+public class LandslideRecipe extends SimpleBlockRecipe
+{
     public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = new IndirectHashCollection<>(recipe -> recipe.getBlockIngredient().getValidBlocks());
     private static final Random RANDOM = new Random();
 
-    public static Optional<LandslideRecipe> getRecipe(World world, BlockRecipeWrapper wrapper) {
+    public static Optional<LandslideRecipe> getRecipe(World world, BlockRecipeWrapper wrapper)
+    {
         return CACHE.getAll(wrapper.getState().getBlock()).stream().filter(recipe -> recipe.matches(wrapper, world)).findFirst();
     }
 
@@ -44,7 +47,8 @@ public class LandslideRecipe extends SimpleBlockRecipe {
      * @return true if a land slide actually occurred
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static boolean tryLandslide(World world, BlockPos pos, BlockState state) {
+    public static boolean tryLandslide(World world, BlockPos pos, BlockState state)
+    {
         if (!world.isRemote())
         {
             if (TFCConfig.SERVER.enableBlockLandslides.get())
@@ -55,7 +59,8 @@ public class LandslideRecipe extends SimpleBlockRecipe {
                     BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
                     getRecipe(world, wrapper).ifPresent(recipe -> {
                         BlockState fallingState = recipe.getBlockCraftingResult(wrapper);
-                        if (!fallPos.equals(pos)) {
+                        if (!fallPos.equals(pos))
+                        {
                             world.removeBlock(pos, false);
                         }
                         world.setBlockState(fallPos, fallingState);
