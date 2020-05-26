@@ -1,0 +1,23 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:block/plant/duckweed"
+        },
+        {
+          "model": "tfc:block/plant/duckweed",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/duckweed",
+          "y": 180
+        },
+        {
+          "model": "tfc:block/plant/duckweed",
+          "y": 270
+        }
+      ]
+    }
+  ]
+}
