@@ -821,7 +821,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
                 return ItemFoodTFC.get(Food.SOUP_VEGETABLE);
             case FRUIT:
                 return ItemFoodTFC.get(Food.SOUP_FRUIT);
-            case MEAT:
+            case PROTEIN:
                 return ItemFoodTFC.get(Food.SOUP_MEAT);
             default:
                 return ItemFoodTFC.get(Food.SOUP_DAIRY);
