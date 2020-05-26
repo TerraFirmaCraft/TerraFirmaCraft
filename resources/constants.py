@@ -1,3 +1,6 @@
+#  Work under Copyright. Licensed under the EUPL.
+#  See the project README.md and LICENSE.txt for more information.
+
 from collections import namedtuple
 from typing import Dict, List
 
