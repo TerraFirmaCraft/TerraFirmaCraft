@@ -27,7 +27,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.food.FoodData;
 import net.dries007.tfc.api.capability.food.FoodStatsTFC;
+import net.dries007.tfc.api.capability.food.IFoodStatsTFC;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.fluids.properties.DrinkableProperty;
@@ -171,7 +173,14 @@ public final class FluidsTFC
             .add(
                 VINEGAR = registerFluid(new Fluid("vinegar", STILL, FLOW, 0xFFC7C2AA)),
                 BRINE = registerFluid(new Fluid("brine", STILL, FLOW, 0xFFDCD3C9)),
-                MILK = registerFluid(new Fluid("milk", STILL, FLOW, 0xFFFFFFFF)),
+                MILK = registerFluid(new Fluid("milk", STILL, FLOW, 0xFFFFFFFF)).with(DrinkableProperty.DRINKABLE, player -> {
+                    if (player.getFoodStats() instanceof IFoodStatsTFC)
+                    {
+                        IFoodStatsTFC foodStats = (IFoodStatsTFC) player.getFoodStats();
+                        foodStats.addThirst(10);
+                        foodStats.getNutrition().addBuff(FoodData.MILK);
+                    }
+                }),
                 OLIVE_OIL = registerFluid(new Fluid("olive_oil", STILL, FLOW, 0xFF6A7537).setRarity(EnumRarity.RARE)),
                 OLIVE_OIL_WATER = registerFluid(new Fluid("olive_oil_water", STILL, FLOW, 0xFF4A4702)),
                 TANNIN = registerFluid(new Fluid("tannin", STILL, FLOW, 0xFF63594E)),
