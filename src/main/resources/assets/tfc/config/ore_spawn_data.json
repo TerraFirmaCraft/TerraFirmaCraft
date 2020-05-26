@@ -338,10 +338,10 @@
     "width": 22,
     "height": 42,
     "shape": "cluster",
-    "rarity": 110,
+    "rarity": 80,
     "minimum_height": 5,
     "maximum_height": 144,
-    "density": 80,
+    "density": 70,
     "base_rocks": [
       "tfc:igneous_extrusive"
     ]
