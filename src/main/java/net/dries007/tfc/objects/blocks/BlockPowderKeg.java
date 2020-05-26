@@ -21,7 +21,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -98,7 +97,7 @@ public class BlockPowderKeg extends Block implements IItemSize
         super.onBlockAdded(worldIn, pos, state);
         if (worldIn.isBlockPowered(pos))
         {
-            this.onPlayerDestroy(worldIn, pos, state.withProperty(LIT, true));
+            onPlayerDestroy(worldIn, pos, state.withProperty(LIT, true));
         }
     }
 
@@ -121,7 +120,7 @@ public class BlockPowderKeg extends Block implements IItemSize
         TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
         if (!worldIn.isRemote && te != null && te.getStrength() > 0) // explode even if not sealed cause gunpowder
         {
-            this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(SEALED, true).withProperty(LIT, true), null);
+            trigger(worldIn, pos, worldIn.getBlockState(pos).withProperty(SEALED, true).withProperty(LIT, true), null);
         }
         else
         {
@@ -136,10 +135,10 @@ public class BlockPowderKeg extends Block implements IItemSize
      */
     public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
     {
-        this.explode(worldIn, pos, state, null);
+        trigger(worldIn, pos, state, null);
     }
 
-    public void explode(World worldIn, BlockPos pos, IBlockState state, @Nullable EntityLivingBase igniter)
+    public void trigger(World worldIn, BlockPos pos, IBlockState state, @Nullable EntityLivingBase igniter)
     {
         if (!worldIn.isRemote)
         {
@@ -183,9 +182,9 @@ public class BlockPowderKeg extends Block implements IItemSize
                 }
                 else if (state.getValue(SEALED) && BlockTorchTFC.canLight(heldItem))
                 {
-                    this.explode(worldIn, pos, state.withProperty(LIT, true), playerIn);
+                    trigger(worldIn, pos, state.withProperty(LIT, true), playerIn);
 
-                    if (heldItem.getItem() == Items.FLINT_AND_STEEL)
+                    if (heldItem.getItem().isDamageable())
                     {
                         heldItem.damageItem(1, playerIn);
                     }
@@ -214,7 +213,7 @@ public class BlockPowderKeg extends Block implements IItemSize
 
             if (entityarrow.isBurning())
             {
-                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(LIT, true), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
+                trigger(worldIn, pos, worldIn.getBlockState(pos).withProperty(LIT, true), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
             }
         }
     }
@@ -259,7 +258,7 @@ public class BlockPowderKeg extends Block implements IItemSize
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(SEALED, meta == 1);
+        return getDefaultState().withProperty(SEALED, meta == 1);
     }
 
     @Override
@@ -322,8 +321,17 @@ public class BlockPowderKeg extends Block implements IItemSize
     {
         if (world.isBlockPowered(pos) || world.getBlockState(fromPos).getMaterial() == Material.FIRE)
         {
-            this.onPlayerDestroy(world, pos, state.withProperty(LIT, true));
-        }// do not care otherwise, as canStay may be violated by an explosion, which we want to trigger off of
+            onPlayerDestroy(world, pos, state.withProperty(LIT, true));
+        }
+        else if (state.getValue(LIT) && pos.up().equals(fromPos) && world.getBlockState(fromPos).getMaterial() == Material.WATER)
+        {
+            TEPowderKeg tile = Helpers.getTE(world, pos, TEPowderKeg.class);
+            if (tile != null)
+            {
+                world.setBlockState(pos, state.withProperty(LIT, false));
+                tile.setLit(false);
+            }
+        } // do not care otherwise, as canStay may be violated by an explosion, which we want to trigger off of
     }
 
     @Override
