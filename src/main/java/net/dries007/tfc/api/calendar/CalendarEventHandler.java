@@ -14,7 +14,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -23,7 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@Mod.EventBusSubscriber(modid = MOD_ID)
+@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CalendarEventHandler
 {
     public static final Logger LOGGER = LogManager.getLogger();
@@ -39,7 +38,7 @@ public class CalendarEventHandler
     {
         if (event.phase == TickEvent.Phase.END)
         {
-            CalendarTFC.INSTANCE.onServerTick();
+            Calendar.INSTANCE.onServerTick();
         }
     }
 
@@ -49,26 +48,9 @@ public class CalendarEventHandler
         World world = event.world;
         if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && event.world.getDimension().getType() == DimensionType.OVERWORLD)
         {
-            CalendarTFC.INSTANCE.onOverworldTick((ServerWorld) world);
+            Calendar.INSTANCE.onOverworldTick((ServerWorld) world);
         }
     }
-
-    /** todo
-     * Disables the vanilla /time command as we replace it with one that takes into account the calendar
-     *
-     * @param event {@link CommandEvent}
-     */
-    /*
-    @SubscribeEvent
-    public static void onCommandFire(CommandEvent event)
-    {
-        if ("time".equals(event.getCommand().getName()))
-        {
-            event.setCanceled(true);
-            event.getSender().sendMessage(new TextComponentTranslation(MOD_ID + ".command.time.disabled"));
-        }
-    }
-    */
 
     /**
      * This allows beds to function correctly with TFCs calendar
@@ -81,9 +63,9 @@ public class CalendarEventHandler
         if (!event.getEntity().getEntityWorld().isRemote() && !event.updateWorld())
         {
             long currentWorldTime = event.getEntity().getEntityWorld().getGameTime();
-            if (CalendarTFC.CALENDAR_TIME.getWorldTime() != currentWorldTime)
+            if (Calendar.CALENDAR_TIME.getWorldTime() != currentWorldTime)
             {
-                long jump = CalendarTFC.INSTANCE.setTimeFromWorldTime(currentWorldTime);
+                long jump = Calendar.INSTANCE.setTimeFromWorldTime(currentWorldTime);
                 /* todo
                 // Consume food/water on all online players accordingly (EXHAUSTION_MULTIPLIER is here to de-compensate)
                 event.getEntity().getEntityWorld().getPlayers()
@@ -116,7 +98,7 @@ public class CalendarEventHandler
                 {
                     playerCount--;
                 }
-                CalendarTFC.INSTANCE.setPlayersLoggedOn(playerCount > 0);
+                Calendar.INSTANCE.setPlayersLoggedOn(playerCount > 0);
             }
         }
     }
@@ -138,7 +120,7 @@ public class CalendarEventHandler
             {
                 LOGGER.info("Player Logged In - Checking for Calendar Updates.");
                 int players = server.getPlayerList().getPlayers().size();
-                CalendarTFC.INSTANCE.setPlayersLoggedOn(players > 0);
+                Calendar.INSTANCE.setPlayersLoggedOn(players > 0);
             }
         }
     }

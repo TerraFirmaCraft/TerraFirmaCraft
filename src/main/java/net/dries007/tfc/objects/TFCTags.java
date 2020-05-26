@@ -60,7 +60,7 @@ public class TFCTags
         {
             for (Metal.BlockType type : Metal.BlockType.values())
             {
-                if (type.hasTag())
+                if (type.getTag() != null)
                 {
                     map.put(type, forgeItemTag(type.getTag()));
                 }
@@ -85,7 +85,7 @@ public class TFCTags
                 Map<Metal.BlockType, Tag<Item>> inner = new EnumMap<>(Metal.BlockType.class);
                 for (Metal.BlockType type : Metal.BlockType.values())
                 {
-                    if (type.hasTag() && type.hasType(metal))
+                    if (type.getTag() != null && type.hasType(metal))
                     {
                         inner.put(type, forgeItemTag(type.getTag().concat("/" + metal.name().toLowerCase())));
                     }

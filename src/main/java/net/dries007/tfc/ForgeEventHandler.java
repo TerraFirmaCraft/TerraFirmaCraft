@@ -38,13 +38,14 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.dries007.tfc.api.calendar.CalendarTFC;
+import net.dries007.tfc.api.calendar.Calendar;
 import net.dries007.tfc.api.calendar.CalendarWorldData;
 import net.dries007.tfc.api.capabilities.forge.CapabilityForging;
 import net.dries007.tfc.api.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
 import net.dries007.tfc.command.ClearWorldCommand;
 import net.dries007.tfc.command.HeatCommand;
+import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.ChunkDataRequestPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.TFCTags;
@@ -184,7 +185,7 @@ public final class ForgeEventHandler
         HeatCommand.register(dispatcher);
 
         // Initialize calendar for the current server
-        CalendarTFC.INSTANCE.init(event.getServer());
+        Calendar.INSTANCE.init(event.getServer());
     }
 
     @SubscribeEvent
@@ -268,7 +269,7 @@ public final class ForgeEventHandler
             event.addCapability(CapabilityForging.KEY, new ForgingHandler(stack));
 
             // Attach heat capability to the ones defined by datapacks
-            CapabilityHeat.HeatManager.INSTANCE.getValues().stream()
+            CapabilityHeat.HeatManager.CACHE.getAll(stack.getItem()).stream()
                 .filter(heatWrapper -> heatWrapper.isValid(stack))
                 .findFirst().map(CapabilityHeat.HeatWrapper::getCapability)
                 .ifPresent(heat -> event.addCapability(CapabilityHeat.KEY, heat));
@@ -284,8 +285,8 @@ public final class ForgeEventHandler
         {
             // Calendar Sync / Initialization
             CalendarWorldData data = CalendarWorldData.get((ServerWorld) world);
-            CalendarTFC.INSTANCE.resetTo(data.getCalendar());
-            // todo TerraFirmaCraft.getNetwork().sendToAll(new PacketCalendarUpdate(CalendarTFC.INSTANCE));
+            Calendar.INSTANCE.resetTo(data.getCalendar());
+            PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(Calendar.INSTANCE));
         }
 
         /* todo

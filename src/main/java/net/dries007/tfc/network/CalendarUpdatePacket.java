@@ -10,20 +10,20 @@ import java.util.function.Supplier;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import net.dries007.tfc.api.calendar.CalendarTFC;
+import net.dries007.tfc.api.calendar.Calendar;
 
 public class CalendarUpdatePacket
 {
-    private final CalendarTFC instance;
+    private final Calendar instance;
 
-    public CalendarUpdatePacket(CalendarTFC instance)
+    public CalendarUpdatePacket(Calendar instance)
     {
         this.instance = instance;
     }
 
     CalendarUpdatePacket(PacketBuffer buffer)
     {
-        instance = new CalendarTFC();
+        instance = new Calendar();
         instance.read(buffer);
     }
 
@@ -34,7 +34,7 @@ public class CalendarUpdatePacket
 
     void handle(Supplier<NetworkEvent.Context> context)
     {
-        context.get().enqueueWork(() -> CalendarTFC.INSTANCE.resetTo(instance));
+        context.get().enqueueWork(() -> Calendar.INSTANCE.resetTo(instance));
         context.get().setPacketHandled(true);
     }
 }

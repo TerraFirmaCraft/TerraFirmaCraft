@@ -7,13 +7,16 @@ package net.dries007.tfc.objects.types;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 import net.dries007.tfc.api.MetalItem;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
 public class MetalItemManager extends DataManager<MetalItem>
 {
+    public static final IndirectHashCollection<Item, MetalItem> CACHE = new IndirectHashCollection<>(MetalItem::getValidItems);
     public static final MetalItemManager INSTANCE = new MetalItemManager();
 
     private MetalItemManager()

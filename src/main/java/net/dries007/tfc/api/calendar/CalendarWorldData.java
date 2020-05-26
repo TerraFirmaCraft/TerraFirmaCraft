@@ -20,18 +20,18 @@ public class CalendarWorldData extends WorldSavedData
         return world.getSavedData().getOrCreate(CalendarWorldData::new, NAME);
     }
 
-    private final CalendarTFC calendar;
+    private final Calendar calendar;
 
     public CalendarWorldData()
     {
         super(NAME);
-        this.calendar = new CalendarTFC();
+        this.calendar = new Calendar();
     }
 
     public CalendarWorldData(String name)
     {
         super(name);
-        this.calendar = new CalendarTFC();
+        this.calendar = new Calendar();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CalendarWorldData extends WorldSavedData
     @Override
     public CompoundNBT write(CompoundNBT nbt)
     {
-        nbt.put("calendar", CalendarTFC.INSTANCE.serializeNBT());
+        nbt.put("calendar", Calendar.INSTANCE.serializeNBT());
         return nbt;
     }
 
@@ -56,7 +56,7 @@ public class CalendarWorldData extends WorldSavedData
         return true;
     }
 
-    public CalendarTFC getCalendar()
+    public Calendar getCalendar()
     {
         return calendar;
     }

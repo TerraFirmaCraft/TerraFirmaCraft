@@ -66,7 +66,7 @@ public class RockSpikeBlock extends Block
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (TFCTags.CAN_COLLAPSE.contains(this))
+        if (TFCTags.Blocks.CAN_COLLAPSE.contains(this))
         {
             BlockPos downPos = pos.down();
             if (TFCFallingBlockEntity.canFallThrough(world, downPos))
