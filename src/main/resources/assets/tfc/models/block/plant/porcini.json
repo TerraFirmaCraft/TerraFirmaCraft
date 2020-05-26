@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/porcini/porcini",
+    "particle": "tfc:block/plant/porcini/porcini"
+  }
+}

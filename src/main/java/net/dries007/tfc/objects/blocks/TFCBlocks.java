@@ -23,6 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.api.Ore;
 import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.objects.blocks.plant.Plant;
 import net.dries007.tfc.objects.blocks.rock.TFCOreBlock;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
@@ -30,6 +31,7 @@ import net.dries007.tfc.objects.blocks.soil.TFCSandBlock;
 import net.dries007.tfc.objects.items.TFCItems;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.objects.TFCItemGroup.FLORA;
 import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
 
 
@@ -103,6 +105,13 @@ public final class TFCBlocks
                 inner.put(variant, register((type.name() + "/" + variant.name()).toLowerCase(), type::create, ROCK_BLOCKS));
             }
             map.put(type, inner);
+        }
+    });
+
+    public static final Map<Plant, RegistryObject<Block>> PLANT = Util.make(new EnumMap<>(Plant.class), map -> {
+        for (Plant plant : Plant.values())
+        {
+            map.put(plant, register(("plant/" + plant.name()).toLowerCase(), plant::create, FLORA));
         }
     });
 

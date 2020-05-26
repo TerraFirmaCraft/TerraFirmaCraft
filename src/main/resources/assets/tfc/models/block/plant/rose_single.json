@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/rose/rose_single",
+    "particle": "tfc:block/plant/rose/rose_single"
+  }
+}
