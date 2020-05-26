@@ -1,3 +1,6 @@
+#  Work under Copyright. Licensed under the EUPL.
+#  See the project README.md and LICENSE.txt for more information.
+
 # Script to run all resource generation
 
 from mcresources import ResourceManager, clean_generated_resources

@@ -1,3 +1,6 @@
+#  Work under Copyright. Licensed under the EUPL.
+#  See the project README.md and LICENSE.txt for more information.
+
 from mcresources import ResourceManager
 
 from constants import *
