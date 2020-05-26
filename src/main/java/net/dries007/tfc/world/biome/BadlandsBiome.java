@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.biome;
 
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
@@ -14,6 +16,11 @@ public class BadlandsBiome extends TFCBiome
     public BadlandsBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
         super(new TFCBiome.Builder().category(Category.MESA), temperature, rainfall);
+
+        biomeFeatures.enqueue(() -> {
+            TFCDefaultBiomeFeatures.addCarvers(this);
+            setSurfaceBuilder(SurfaceBuilder.WOODED_BADLANDS, SurfaceBuilder.RED_SAND_WHITE_TERRACOTTA_GRAVEL_CONFIG);
+        });
     }
 
     @Override

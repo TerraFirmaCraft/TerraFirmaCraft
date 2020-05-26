@@ -7,9 +7,11 @@ package net.dries007.tfc.objects.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -24,6 +26,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.objects.TFCTags;
 import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.support.SupportManager;
 
 /**
@@ -35,13 +38,20 @@ import net.dries007.tfc.util.support.SupportManager;
  */
 public class LandslideRecipe extends SimpleBlockRecipe
 {
+    public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = new IndirectHashCollection<>(recipe -> recipe.getBlockIngredient().getValidBlocks());
     private static final Random RANDOM = new Random();
+
+    public static Optional<LandslideRecipe> getRecipe(World world, BlockRecipeWrapper wrapper)
+    {
+        return CACHE.getAll(wrapper.getState().getBlock()).stream().filter(recipe -> recipe.matches(wrapper, world)).findFirst();
+    }
 
     /**
      * Tries to cause a land slide from a given block
      *
      * @return true if a land slide actually occurred
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static boolean tryLandslide(World world, BlockPos pos, BlockState state)
     {
         if (!world.isRemote())
@@ -52,7 +62,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
                 if (fallPos != null)
                 {
                     BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
-                    RecipeCache.INSTANCE.get(TFCRecipeTypes.LANDSLIDE, world, wrapper).ifPresent(recipe -> {
+                    getRecipe(world, wrapper).ifPresent(recipe -> {
                         BlockState fallingState = recipe.getBlockCraftingResult(wrapper);
                         if (!fallPos.equals(pos))
                         {
@@ -125,9 +135,9 @@ public class LandslideRecipe extends SimpleBlockRecipe
         return sideState.isSolidSide(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
     }
 
-    private LandslideRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState)
+    private LandslideRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
     {
-        super(id, ingredient, outputState);
+        super(id, ingredient, outputState, copyInputState);
     }
 
     @Override
@@ -145,9 +155,9 @@ public class LandslideRecipe extends SimpleBlockRecipe
     public static class Serializer extends SimpleBlockRecipe.Serializer<LandslideRecipe>
     {
         @Override
-        protected LandslideRecipe create(ResourceLocation id, IBlockIngredient ingredient, BlockState state)
+        protected LandslideRecipe create(ResourceLocation id, IBlockIngredient ingredient, BlockState state, boolean copyInputState)
         {
-            return new LandslideRecipe(id, ingredient, state);
+            return new LandslideRecipe(id, ingredient, state, copyInputState);
         }
     }
 }

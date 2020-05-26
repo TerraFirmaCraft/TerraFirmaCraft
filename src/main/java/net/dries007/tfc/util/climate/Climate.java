@@ -31,7 +31,6 @@ public final class Climate
 
     /**
      * Used for initial biome assignments. TFC overrides this to use out temperature models
-     * todo: what I just said
      */
     public static Biome.RainType getDefaultRainType(BiomeTemperature temperature, BiomeRainfall rainfall)
     {

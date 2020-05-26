@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/granite",
     "tfc:rock/raw/granite",
+    "tfc:rock/mossy_cobble/granite",
     "tfc:ore/bituminous_coal/granite",
     "tfc:ore/lignite/granite",
     "tfc:ore/kaolinite/granite",

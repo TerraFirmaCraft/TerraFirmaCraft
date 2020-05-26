@@ -1,3 +1,6 @@
+#  Work under Copyright. Licensed under the EUPL.
+#  See the project README.md and LICENSE.txt for more information.
+
 from mcresources import ResourceManager
 
 from constants import *
@@ -15,7 +18,8 @@ def generate(rm: ResourceManager):
                     .with_lang(lang('%s Spike', rock))
                 for part in ROCK_SPIKE_PARTS:
                     rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
-                        'texture': 'tfc:block/rock/raw/%s' % rock
+                        'texture': 'tfc:block/rock/raw/%s' % rock,
+                        'particle': 'tfc:block/rock/raw/%s' % rock
                     }, parent='tfc:block/rock/spike_%s' % part) \
                         .with_item_model()
             else:
@@ -41,7 +45,7 @@ def generate(rm: ResourceManager):
                             'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
                         }, parent='tfc:block/ore') \
                         .with_item_model() \
-                        .with_lang(lang('%s %s %s', rock, grade, ore))
+                        .with_lang(lang('%s %s %s', grade, rock, ore))
             else:
                 rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock)) \
                     .with_block_model(
@@ -88,7 +92,7 @@ def generate(rm: ResourceManager):
         'faces': {'north': {'texture': '#overlay', 'cullface': 'north', 'tintindex': 0}}
     }
     for var in SOIL_BLOCK_VARIANTS:
-        for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % var), ('clay_grass', 'tfc:block/clay_dirt/%s' % var)):
+        for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % var), ('clay_grass', 'tfc:block/clay/%s' % var)):
             rm.blockstate_multipart((grass_var, var), [
                 {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'x': 270},
                 {'model': 'tfc:block/%s/%s_bottom' % (grass_var, var), 'x': 90},

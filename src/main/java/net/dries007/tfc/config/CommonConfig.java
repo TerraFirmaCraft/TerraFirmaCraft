@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.config;
 
 import java.util.function.Function;
@@ -51,7 +56,7 @@ public class CommonConfig
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         // Standardization for translation keys
-        Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config." + name);
+        Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.general." + name);
 
         innerBuilder.push("worldGeneration").push("surface");
 
@@ -90,7 +95,7 @@ public class CommonConfig
 
         innerBuilder.pop().push("caves");
 
-        worleyCaveHeightFade = builder.apply("worleyCaveHeightFade").defineInRange("worleyCaveHeightFade", 80, 0, 256);
+        worleyCaveHeightFade = builder.apply("worleyCaveHeightFade").defineInRange("worleyCaveHeightFade", 110, 0, 256);
         worleyCaveBaseNoiseCutoff = builder.apply("worleyCaveBaseNoiseCutoff").defineInRange("worleyCaveBaseNoiseCutoff", 0.3, 0, 1);
         worleyCaveWorleyNoiseCutoff = builder.apply("worleyCaveWorleyNoiseCutoff").defineInRange("worleyCaveWorleyNoiseCutoff", 0.38, 0, 1);
 

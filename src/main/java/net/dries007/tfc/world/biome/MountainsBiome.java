@@ -6,6 +6,7 @@
 package net.dries007.tfc.world.biome;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -24,6 +25,19 @@ public class MountainsBiome extends TFCBiome
         this.baseHeight = baseHeight;
         this.scaleHeight = scaleHeight;
         this.isOceanMountains = isOceanMountains;
+
+        biomeFeatures.enqueue(() -> {
+            if (isOceanMountains)
+            {
+                TFCDefaultBiomeFeatures.addOceanCarvers(this);
+            }
+            else
+            {
+                TFCDefaultBiomeFeatures.addCarvers(this);
+            }
+
+            setSurfaceBuilder(SurfaceBuilder.GRAVELLY_MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+        });
     }
 
     @Override

@@ -11,24 +11,37 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.placement.ChanceConfig;
+import net.minecraft.world.gen.placement.NoPlacementConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
+import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.collections.DelayedRunnable;
+import net.dries007.tfc.world.feature.BoulderConfig;
+import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.placement.TFCPlacements;
 
 public abstract class TFCBiome extends Biome
 {
     // todo: replace with actual blocks
     protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState();
     protected static final BlockState FRESH_WATER = Blocks.WATER.getDefaultState();
+
+    protected final DelayedRunnable biomeFeatures;
+
     private final BiomeTemperature temperature;
     private final BiomeRainfall rainfall;
 
-    // Set during setup, after surface builders are available
+    // These are assigned later as they are dependent on registry objects
     protected ConfiguredSurfaceBuilder<? extends ISurfaceBuilderConfig> lazySurfaceBuilder;
-
     private BiomeVariantHolder variantHolder;
 
     protected TFCBiome(Builder builder, BiomeTemperature temperature, BiomeRainfall rainfall)
@@ -47,16 +60,28 @@ public abstract class TFCBiome extends Biome
         );
         this.temperature = temperature;
         this.rainfall = rainfall;
-    }
 
-    public void setVariantHolder(BiomeVariantHolder variantHolder)
-    {
-        this.variantHolder = variantHolder;
+        this.biomeFeatures = new DelayedRunnable();
+        this.biomeFeatures.enqueue(() -> {
+            addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFCFeatures.VEINS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(NoPlacementConfig.NO_PLACEMENT_CONFIG)));
+
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.WATER.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.LAVA.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(80))));
+
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.RAW)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.COBBLE)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.COBBLE, Rock.BlockType.MOSSY_COBBLE)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+        });
     }
 
     public BiomeVariantHolder getVariantHolder()
     {
         return variantHolder;
+    }
+
+    public void setVariantHolder(BiomeVariantHolder variantHolder)
+    {
+        this.variantHolder = variantHolder;
     }
 
     public BiomeTemperature getTemperature()
@@ -79,6 +104,14 @@ public abstract class TFCBiome extends Biome
     public <C extends ISurfaceBuilderConfig> void setSurfaceBuilder(SurfaceBuilder<C> surfaceBuilder, C config)
     {
         setSurfaceBuilder(new ConfiguredSurfaceBuilder<>(surfaceBuilder, config));
+    }
+
+    /**
+     * Called after registry events have been fired, runs biome-specific feature registration.
+     */
+    public void registerFeatures()
+    {
+        biomeFeatures.run();
     }
 
     @Override
