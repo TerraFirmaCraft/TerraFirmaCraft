@@ -1,4 +1,4 @@
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.collections;
 
 import java.util.ArrayList;
 import java.util.List;

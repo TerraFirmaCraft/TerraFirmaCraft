@@ -1,9 +1,14 @@
 package net.dries007.tfc.objects.recipes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.objects.TFCTags;
+import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.support.SupportManager;
+import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
+import net.dries007.tfc.world.tracker.CollapseData;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -13,13 +18,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.TFCTags;
-import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
-import net.dries007.tfc.util.support.SupportManager;
-import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
-import net.dries007.tfc.world.tracker.CollapseData;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 /**
  * This handles logic relating to block collapses.
@@ -28,19 +30,21 @@ import net.dries007.tfc.world.tracker.CollapseData;
  * @see SupportManager
  * @see TFCFallingBlockEntity
  */
-public class CollapseRecipe extends SimpleBlockRecipe
-{
+public class CollapseRecipe extends SimpleBlockRecipe {
+    public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = new IndirectHashCollection<>(recipe -> recipe.getBlockIngredient().getValidBlocks());
     private static final Random RANDOM = new Random();
+
+    public static Optional<CollapseRecipe> getRecipe(World world, BlockRecipeWrapper wrapper) {
+        return CACHE.getAll(wrapper.getState().getBlock()).stream().filter(recipe -> recipe.matches(wrapper, world)).findFirst();
+    }
 
     /**
      * Called to attempt to trigger a collapse, from when a player mines a block.
      *
      * @return true if a collapse occurred.
      */
-    public static boolean tryTriggerCollapse(World world, BlockPos pos)
-    {
-        if (!world.isRemote() && world.isAreaLoaded(pos, 32))
-        {
+    public static boolean tryTriggerCollapse(World world, BlockPos pos) {
+        if (!world.isRemote() && world.isAreaLoaded(pos, 32)) {
             if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
             {
                 // Random radius
@@ -123,7 +127,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
     public static boolean collapseBlock(World world, BlockPos pos, BlockState state)
     {
         BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
-        return RecipeCache.INSTANCE.get(TFCRecipeTypes.COLLAPSE, world, wrapper).map(recipe -> {
+        return getRecipe(world, wrapper).map(recipe -> {
             BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
             world.setBlockState(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
             world.addEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, collapseState));
