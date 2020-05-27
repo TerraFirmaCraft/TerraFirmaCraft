@@ -11,6 +11,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.config.*;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -717,7 +718,7 @@ public final class ConfigTFC
         public static final class CrucibleCFG
         {
             @Config.Comment("How much metal (units / mB) can a crucible hold?")
-            @Config.RangeInt(min = 100)
+            @Config.RangeInt(min = 100, max = Alloy.SAFE_MAX_ALLOY)
             @Config.LangKey("config." + MOD_ID + ".devices.crucible.tank")
             public int tank = 3_000;
 
@@ -795,7 +796,7 @@ public final class ConfigTFC
         public static final class SmallVesselCFG
         {
             @Config.Comment("How much metal (units / mB) can a small vessel hold?")
-            @Config.RangeInt(min = 100)
+            @Config.RangeInt(min = 100, max = Alloy.SAFE_MAX_ALLOY)
             @Config.LangKey("config." + MOD_ID + ".devices.small_vessel.tank")
             public int tank = 4_000;
         }
