@@ -22,8 +22,8 @@ import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
 import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.util.DelayedRunnable;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.collections.DelayedRunnable;
 import net.dries007.tfc.world.feature.BoulderConfig;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -74,14 +74,14 @@ public abstract class TFCBiome extends Biome
         });
     }
 
-    public void setVariantHolder(BiomeVariantHolder variantHolder)
-    {
-        this.variantHolder = variantHolder;
-    }
-
     public BiomeVariantHolder getVariantHolder()
     {
         return variantHolder;
+    }
+
+    public void setVariantHolder(BiomeVariantHolder variantHolder)
+    {
+        this.variantHolder = variantHolder;
     }
 
     public BiomeTemperature getTemperature()

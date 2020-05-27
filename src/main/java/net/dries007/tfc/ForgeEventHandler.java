@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc;
 
 import java.util.Random;
@@ -38,7 +43,7 @@ import net.dries007.tfc.objects.TFCTags;
 import net.dries007.tfc.objects.recipes.CollapseRecipe;
 import net.dries007.tfc.objects.recipes.LandslideRecipe;
 import net.dries007.tfc.objects.types.RockManager;
-import net.dries007.tfc.util.TFCReloadListener;
+import net.dries007.tfc.util.TFCServerTracker;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -150,8 +155,8 @@ public final class ForgeEventHandler
         resourceManager.addReloadListener(VeinTypeManager.INSTANCE);
         resourceManager.addReloadListener(SupportManager.INSTANCE);
 
-        // generic reload listener
-        resourceManager.addReloadListener(TFCReloadListener.INSTANCE);
+        // Server tracker
+        TFCServerTracker.INSTANCE.onServerStart(event.getServer());
     }
 
     @SubscribeEvent
