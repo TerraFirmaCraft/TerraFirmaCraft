@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.blocks.soil;
 
 import java.awt.*;
@@ -11,7 +16,7 @@ public enum SandBlockType
     RED(new Color(30, 30, 30).getRGB()),
     YELLOW(new Color(30, 30, 30).getRGB()),
     GREEN(new Color(30, 30, 30).getRGB()),
-    PINK(new Color(30,30,30).getRGB());
+    PINK(new Color(30, 30, 30).getRGB());
 
     public static final int TOTAL = values().length;
 
