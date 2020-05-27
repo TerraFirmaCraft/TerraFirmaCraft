@@ -75,5 +75,6 @@ public final class ClientEventHandler
 
         blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
         blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
+        blockColors.register(grassColor, TFCBlocks.PLANT.values().stream().map(RegistryObject::get).toArray(Block[]::new));
     }
 }
