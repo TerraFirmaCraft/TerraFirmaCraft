@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:plant",
+  "biomes": [
+    "tfc:ocean",
+    "tfc:deep_ocean",
+    "tfc:deep_ocean_ridge",
+    "tfc:shore",
+    "tfc:lake",
+    "tfc:river"
+  ],
+  "rarity": 10,
+  "size": 8,
+  "density": 100,
+  "blocks": [
+    {
+      "weight": 20,
+      "block": "tfc:plant/water_canna"
+    },
+    {
+      "weight": 50,
+      "block": "tfc:plant/water_lily"
+    },
+    {
+      "weight": 30,
+      "block": "tfc:plant/duckweed"
+    }
+  ]
+}

@@ -16,9 +16,9 @@ public interface ITallPlant
     VoxelShape PLANT_SHAPE = Block.makeCuboidShape(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
     VoxelShape SHORTER_PLANT_SHAPE = Block.makeCuboidShape(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
 
-    default VoxelShape getTallShape(int age, IBlockReader source, BlockPos pos)
+    default VoxelShape getTallShape(int age, IBlockReader world, BlockPos pos)
     {
-        EnumBlockPart part = getPlantPart(source, pos);
+        EnumBlockPart part = getPlantPart(world, pos);
         if (part == EnumBlockPart.LOWER || part == EnumBlockPart.MIDDLE)
             return PLANT_SHAPE;
         switch (age)

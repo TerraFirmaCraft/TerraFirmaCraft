@@ -61,6 +61,11 @@ public class TFCBiomes
         return ALL_BIOMES.stream().flatMap(holder -> holder.getAll().stream()).map(RegistryObject::get).collect(Collectors.toSet());
     }
 
+    public static Set<TFCBiome> getBiomeVariants(String baseName)
+    {
+        return ALL_BIOMES.stream().filter(holder -> holder.getBaseName().equals(baseName)).flatMap(holder -> holder.getAll().stream()).map(RegistryObject::get).collect(Collectors.toSet());
+    }
+
     public static List<Biome> getSpawnBiomes()
     {
         return SPAWN_BIOMES.stream().flatMap(holder -> holder.getAll().stream()).map(RegistryObject::get).collect(Collectors.toList());

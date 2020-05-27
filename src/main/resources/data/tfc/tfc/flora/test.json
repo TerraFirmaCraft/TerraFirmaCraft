@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:plant",
+  "biomes": [
+    "tfc:plains",
+    "tfc:hills",
+    "tfc:lowlands",
+    "tfc:low_canyons"
+  ],
+  "rarity": 5,
+  "size": 8,
+  "density": 100,
+  "blocks": [
+    {
+      "weight": 20,
+      "block": "tfc:plant/allium"
+    },
+    {
+      "weight": 50,
+      "block": "tfc:plant/yucca"
+    },
+    {
+      "weight": 30,
+      "block": "tfc:plant/rose"
+    }
+  ]
+}

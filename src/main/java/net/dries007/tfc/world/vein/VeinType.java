@@ -55,7 +55,7 @@ public abstract class VeinType<V extends Vein<?>>
             throw new JsonParseException("Vertical Size must be > 0.");
         }
         density = JSONUtils.getInt(json, "density", 20) / 100f;
-        if (density <= 0 || density > 100)
+        if (density <= 0 || density > 1)
         {
             throw new JsonParseException("Density must be in [1, 100]");
         }

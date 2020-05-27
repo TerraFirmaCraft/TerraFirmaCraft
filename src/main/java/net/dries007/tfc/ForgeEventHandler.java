@@ -49,6 +49,7 @@ import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.flora.FloraTypeManager;
 import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
 import net.dries007.tfc.world.tracker.WorldTracker;
 import net.dries007.tfc.world.vein.VeinTypeManager;
@@ -153,6 +154,7 @@ public final class ForgeEventHandler
         IReloadableResourceManager resourceManager = event.getServer().getResourceManager();
         resourceManager.addReloadListener(RockManager.INSTANCE);
         resourceManager.addReloadListener(VeinTypeManager.INSTANCE);
+        resourceManager.addReloadListener(FloraTypeManager.INSTANCE);
         resourceManager.addReloadListener(SupportManager.INSTANCE);
 
         // Server tracker

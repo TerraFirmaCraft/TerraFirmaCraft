@@ -25,9 +25,11 @@ public class BiomeVariantHolder implements Supplier<TFCBiome>
 {
     private final Map<BiomeTemperature, Map<BiomeRainfall, RegistryObject<TFCBiome>>> biomeVariants;
     private final List<RegistryObject<TFCBiome>> allVariants;
+    private final String baseName;
 
     public BiomeVariantHolder(String baseName, IFactory<TFCBiome> factory)
     {
+        this.baseName = baseName;
         this.biomeVariants = new EnumMap<>(BiomeTemperature.class);
         this.allVariants = new ArrayList<>();
 
@@ -90,5 +92,10 @@ public class BiomeVariantHolder implements Supplier<TFCBiome>
     public interface IFactory<T>
     {
         T create(BiomeTemperature temperature, BiomeRainfall rainfall);
+    }
+
+    public String getBaseName()
+    {
+        return baseName;
     }
 }
