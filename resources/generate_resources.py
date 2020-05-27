@@ -5,6 +5,7 @@ from mcresources import ResourceManager, clean_generated_resources
 import assets
 import data.ore_veins
 import data.rocks
+import lang.plants
 import recipes.collapse
 
 
@@ -18,6 +19,7 @@ def main():
     recipes.collapse.generate(rm)
 
     assets.generate(rm)
+    lang.plants.generate(rm)
 
     rm.flush()
 

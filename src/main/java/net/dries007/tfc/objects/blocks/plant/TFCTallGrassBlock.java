@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
 {
-    public static final EnumProperty<ITallPlant.EnumBlockPart> PART = EnumProperty.create("part", ITallPlant.EnumBlockPart.class);
+    protected static final EnumProperty<ITallPlant.EnumBlockPart> PART = EnumProperty.create("part", ITallPlant.EnumBlockPart.class);
 
     public TFCTallGrassBlock(Properties properties)
     {

@@ -10,6 +10,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public abstract class TFCCactusBlock extends TFCTallGrassBlock
@@ -24,5 +28,17 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
         entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
+    {
+        return VoxelShapes.fullCube();
+    }
+
+    @Override
+    public OffsetType getOffsetType()
+    {
+        return OffsetType.NONE;
     }
 }

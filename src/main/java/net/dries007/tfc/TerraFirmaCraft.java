@@ -17,6 +17,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
+import net.dries007.tfc.objects.blocks.plant.Plant;
 import net.dries007.tfc.objects.entities.TFCEntities;
 import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.objects.recipes.TFCRecipeSerializers;
@@ -49,6 +50,13 @@ public final class TerraFirmaCraft
     {
         LOGGER.info("TFC Constructor");
         LOGGER.debug("Debug Logging Enabled");
+
+        StringBuilder output = new StringBuilder();
+        for (Plant plant : Plant.values())
+        {
+            output.append("'").append(plant.name().toLowerCase()).append("',");
+        }
+        LOGGER.error(output.toString());
 
         // Event bus subscribers
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
