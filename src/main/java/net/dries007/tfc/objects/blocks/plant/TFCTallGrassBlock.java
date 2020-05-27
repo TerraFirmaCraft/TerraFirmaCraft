@@ -33,7 +33,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public TFCTallGrassBlock(Properties properties)
     {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(PART, EnumBlockPart.LOWER));
+        this.setDefaultState(this.stateContainer.getBaseState().with(PART, EnumBlockPart.SINGLE));
     }
 
     @Override
