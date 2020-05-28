@@ -1,4 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "tier": 0
+  "tier": 0,
+  "fluid": "tfc:metal/unknown"
 }

@@ -1,4 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "tier": 6
+  "tier": 6,
+  "fluid": "tfc:metal/red_steel"
 }

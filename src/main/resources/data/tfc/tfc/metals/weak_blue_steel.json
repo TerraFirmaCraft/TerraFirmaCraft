@@ -1,4 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "tier": 5
+  "tier": 5,
+  "fluid": "tfc:metal/weak_blue_steel"
 }

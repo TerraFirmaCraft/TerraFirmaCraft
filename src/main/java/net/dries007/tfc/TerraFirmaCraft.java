@@ -20,6 +20,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.objects.entities.TFCEntities;
+import net.dries007.tfc.objects.fluids.TFCFluids;
 import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.objects.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.world.TFCWorldType;
@@ -58,6 +59,7 @@ public final class TerraFirmaCraft
 
         TFCBlocks.BLOCKS.register(modEventBus);
         TFCItems.ITEMS.register(modEventBus);
+        TFCFluids.FLUIDS.register(modEventBus);
         TFCEntities.ENTITIES.register(modEventBus);
         TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
         TFCSounds.SOUNDS.register(modEventBus);

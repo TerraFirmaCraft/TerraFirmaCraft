@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.*;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +21,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.NonNullFunction;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.objects.TFCItemGroup;
@@ -29,7 +31,7 @@ import net.dries007.tfc.objects.items.tools.*;
 public class Metal
 {
     private final Tier tier;
-    //todo private final Fluid fluid;
+    private final Fluid fluid;
 
     private final ResourceLocation id;
 
@@ -37,6 +39,7 @@ public class Metal
     {
         this.id = id;
         this.tier = Tier.valueOf(JSONUtils.getInt(json, "tier"));
+        this.fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(JSONUtils.getString(json, "fluid")));
     }
 
     public ResourceLocation getId()
@@ -62,44 +65,51 @@ public class Metal
      */
     public enum Default
     {
-        BISMUTH(true, null, false, false),
-        BISMUTH_BRONZE(true, TFCItemTier.BISMUTH_BRONZE, true, true),
-        BLACK_BRONZE(true, TFCItemTier.BLACK_BRONZE, true, true),
-        BRONZE(true, TFCItemTier.BRONZE, true, true),
-        BRASS(true, null, false, false),
-        COPPER(true, TFCItemTier.COPPER, true, true),
-        GOLD(true, null, false, false),
-        NICKEL(true, null, false, false),
-        ROSE_GOLD(true, null, false, false),
-        SILVER(true, null, false, false),
-        TIN(true, null, false, false),
-        ZINC(true, null, false, false),
-        STERLING_SILVER(true, null, false, false),
-        WROUGHT_IRON(true, TFCItemTier.WROUGHT_IRON, true, true),
-        CAST_IRON(false, null, false, false),
-        PIG_IRON(false, null, false, false),
-        STEEL(true, TFCItemTier.STEEL, true, true),
-        BLACK_STEEL(true, TFCItemTier.BLACK_STEEL, true, true),
-        BLUE_STEEL(true, TFCItemTier.BLUE_STEEL, true, true),
-        RED_STEEL(true, TFCItemTier.RED_STEEL, true, true),
-        WEAK_STEEL(false, null, false, false),
-        WEAK_BLUE_STEEL(false, null, false, false),
-        WEAK_RED_STEEL(false, null, false, false),
-        HIGH_CARBON_STEEL(false, null, false, false),
-        HIGH_CARBON_BLACK_STEEL(false, null, false, false),
-        HIGH_CARBON_BLUE_STEEL(false, null, false, false),
-        HIGH_CARBON_RED_STEEL(false, null, false, false),
-        UNKNOWN(false, null, false, false);
+        BISMUTH(0xFF486B72, true, null, false, false),
+        BISMUTH_BRONZE(0xFF418E4F, true, TFCItemTier.BISMUTH_BRONZE, true, true),
+        BLACK_BRONZE(0xFF3B2636, true, TFCItemTier.BLACK_BRONZE, true, true),
+        BRONZE(0xFF96892E, true, TFCItemTier.BRONZE, true, true),
+        BRASS(0xFF7C5E33, true, null, false, false),
+        COPPER(0xFFB64027, true, TFCItemTier.COPPER, true, true),
+        GOLD(0xFFDCBF1B, true, null, false, false),
+        NICKEL(0xFF4E4E3C, true, null, false, false),
+        ROSE_GOLD(0xFFEB7137, true, null, false, false),
+        SILVER(0xFF949495, true, null, false, false),
+        TIN(0xFF90A4BB, true, null, false, false),
+        ZINC(0xFFBBB9C4, true, null, false, false),
+        STERLING_SILVER(0xFFAC927B, true, null, false, false),
+        WROUGHT_IRON(0xFF989897, true, TFCItemTier.WROUGHT_IRON, true, true),
+        CAST_IRON(0xFF989897, false, null, false, false), // todo color
+        PIG_IRON(0xFF6A595C, false, null, false, false),
+        STEEL(0xFF5F5F5F, true, TFCItemTier.STEEL, true, true),
+        BLACK_STEEL(0xFF111111, true, TFCItemTier.BLACK_STEEL, true, true),
+        BLUE_STEEL(0xFF2D5596, true, TFCItemTier.BLUE_STEEL, true, true),
+        RED_STEEL(0xFF700503, true, TFCItemTier.RED_STEEL, true, true),
+        WEAK_STEEL(0xFF111111, false, null, false, false),
+        WEAK_BLUE_STEEL(0xFF2D5596, false, null, false, false),
+        WEAK_RED_STEEL(0xFF700503, false, null, false, false),
+        HIGH_CARBON_STEEL(0xFF5F5F5F, false, null, false, false),
+        HIGH_CARBON_BLACK_STEEL(0xFF111111, false, null, false, false),
+        HIGH_CARBON_BLUE_STEEL(0xFF2D5596, false, null, false, false),
+        HIGH_CARBON_RED_STEEL(0xFF700503, false, null, false, false),
+        UNKNOWN(0xFF2F2B27, false, null, false, false);
 
         private final boolean parts, armor, utility;
         private final IItemTier itemTier;
+        private final int color;
 
-        Default(boolean parts, @Nullable IItemTier itemTier, boolean armor, boolean utility)
+        Default(int color, boolean parts, @Nullable IItemTier itemTier, boolean armor, boolean utility)
         {
             this.parts = parts;
             this.itemTier = itemTier;
             this.armor = armor;
             this.utility = utility;
+            this.color = color;
+        }
+
+        public int getColor()
+        {
+            return color;
         }
 
         public boolean hasParts()
