@@ -45,6 +45,7 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue worleyCaveHeightFade;
     public final ForgeConfigSpec.DoubleValue worleyCaveBaseNoiseCutoff;
     public final ForgeConfigSpec.DoubleValue worleyCaveWorleyNoiseCutoff;
+    public final ForgeConfigSpec.IntValue caveSpikeMaxY;
     // World Generation - Biomes
     public final ForgeConfigSpec.IntValue frozenTemperatureCutoff;
     public final ForgeConfigSpec.IntValue coldTemperatureCutoff;
@@ -95,9 +96,10 @@ public class CommonConfig
 
         innerBuilder.pop().push("caves");
 
-        worleyCaveHeightFade = builder.apply("worleyCaveHeightFade").defineInRange("worleyCaveHeightFade", 110, 0, 256);
+        worleyCaveHeightFade = builder.apply("worleyCaveHeightFade").defineInRange("worleyCaveHeightFade", 94, 0, 256);
         worleyCaveBaseNoiseCutoff = builder.apply("worleyCaveBaseNoiseCutoff").defineInRange("worleyCaveBaseNoiseCutoff", 0.3, 0, 1);
         worleyCaveWorleyNoiseCutoff = builder.apply("worleyCaveWorleyNoiseCutoff").defineInRange("worleyCaveWorleyNoiseCutoff", 0.38, 0, 1);
+        caveSpikeMaxY = builder.apply("caveSpikeMaxY").defineInRange("caveSpikeMaxY", 60, 0, 255);
 
         innerBuilder.pop().push("biomes");
 
