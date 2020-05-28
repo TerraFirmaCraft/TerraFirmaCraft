@@ -1,11 +1,11 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
+  "__comment__": "This file should fail on line 9 because that is not a biome id",
   "type": "tfc:plant",
   "rules": [
     {
       "type": "tfc:biomes",
       "list": [
-        "tfc:ocean",
+        "minecraft:plains",
         "tfc:deep_ocean",
         "tfc:deep_ocean_ridge",
         "tfc:shore",

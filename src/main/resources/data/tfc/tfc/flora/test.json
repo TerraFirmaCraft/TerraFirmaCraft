@@ -1,21 +1,21 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
+  "__comment__": "This file should work",
   "type": "tfc:plant",
   "rules": [
     {
       "type": "tfc:biomes",
       "list": [
         {
-          "biome": "tfc:plains"
+          "terrain": "tfc:plains"
         },
         {
-          "biome": "tfc:hills"
+          "tag": "wet"
         },
         {
-          "biome": "tfc:lowlands"
+          "biome": "minecraft:plains"
         },
         {
-          "biome": "tfc:low_canyons"
+          "terrain": "tfc:low_canyons"
         }
       ]
     },

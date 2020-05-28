@@ -20,10 +20,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.world.biome.TFCBiome;
 import net.dries007.tfc.world.biome.TFCBiomes;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class BiomeRule implements IChunkRule
 {
@@ -49,6 +46,12 @@ public class BiomeRule implements IChunkRule
                     ResourceLocation id = new ResourceLocation(obj.get("biome").getAsString());
                     addBiome(id);
                 }
+                else if (obj.has("terrain"))
+                {
+                    ResourceLocation id = new ResourceLocation(obj.get("terrain").getAsString());
+                    // Search for TFC variants
+                    biomes.addAll(TFCBiomes.getBiomeVariants(id.getPath()));
+                }
             }
             else if (element.isJsonPrimitive())
             {
@@ -67,24 +70,10 @@ public class BiomeRule implements IChunkRule
 
     private void addBiome(ResourceLocation id)
     {
-
         Biome biome = ForgeRegistries.BIOMES.getValue(id);
         if (biome == null)
         {
-            boolean error = true;
-            if (id.getNamespace().equals(MOD_ID))
-            {
-                // Search for TFC variants
-                for (TFCBiome biomeVariant : TFCBiomes.getBiomeVariants(id.getPath()))
-                {
-                    error = false;
-                    biomes.add(biomeVariant);
-                }
-            }
-            if (error)
-            {
-                throw new JsonParseException("Invalid biome specified: " + id);
-            }
+            throw new JsonParseException("Invalid biome specified: " + id);
         }
         else
         {
