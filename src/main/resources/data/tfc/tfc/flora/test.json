@@ -1,11 +1,34 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:plant",
-  "biomes": [
-    "tfc:plains",
-    "tfc:hills",
-    "tfc:lowlands",
-    "tfc:low_canyons"
+  "rules": [
+    {
+      "type": "tfc:biomes",
+      "list": [
+        {
+          "biome": "tfc:plains"
+        },
+        {
+          "biome": "tfc:hills"
+        },
+        {
+          "biome": "tfc:lowlands"
+        },
+        {
+          "biome": "tfc:low_canyons"
+        }
+      ]
+    },
+    {
+      "type": "tfc:rainfall",
+      "minimum": 100,
+      "maximum": 300
+    },
+    {
+      "type": "tfc:temperature",
+      "minimum": -10,
+      "maximum": 30
+    }
   ],
   "rarity": 5,
   "size": 8,
