@@ -18,8 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityPolarBearTFC;
 
-//import net.minecraft.client.model.ModelPolarBear;
-
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
 public class ModelPolarBearTFC extends ModelBase
