@@ -283,12 +283,12 @@ public final class ItemsTFC
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(false), new ItemSmallVessel(false));
             registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(true), new ItemSmallVessel(true));
 
-            ItemPottery firedPot = new ItemPottery();
-            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot", new ItemPottery(), firedPot);
+            ItemPottery firedPot = new ItemPottery(Size.LARGE, Weight.LIGHT);
+            registerPottery(simpleItems, r, "ceramics/unfired/pot", "ceramics/fired/pot", new ItemPottery(Size.LARGE, Weight.LIGHT), firedPot);
             OreDictionaryHelper.register(firedPot, "cooking_pot");
 
-            ItemPottery firedBowl = new ItemPottery();
-            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl", new ItemPottery(), firedBowl);
+            ItemPottery firedBowl = new ItemPottery(Size.VERY_SMALL, Weight.VERY_LIGHT);
+            registerPottery(simpleItems, r, "ceramics/unfired/bowl", "ceramics/fired/bowl", new ItemPottery(Size.VERY_SMALL, Weight.VERY_LIGHT), firedBowl);
             OreDictionaryHelper.register(firedBowl, "bowl");
 
             registerPottery(simpleItems, r, "ceramics/unfired/spindle", "ceramics/fired/spindle");
