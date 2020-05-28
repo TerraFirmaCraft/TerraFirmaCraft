@@ -19,6 +19,7 @@ public class LowlandsBiome extends TFCBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
+
             setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
         });
     }

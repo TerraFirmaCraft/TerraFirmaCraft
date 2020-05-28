@@ -8,13 +8,13 @@ package net.dries007.tfc.objects.blocks.soil;
 import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -24,14 +24,13 @@ import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.objects.TFCTags;
 
-@ParametersAreNonnullByDefault
 public class TFCGrassBlock extends Block
 {
     // Used for connected textures only.
-    public static final BooleanProperty NORTH = BooleanProperty.create("north");
-    public static final BooleanProperty EAST = BooleanProperty.create("east");
-    public static final BooleanProperty SOUTH = BooleanProperty.create("south");
-    public static final BooleanProperty WEST = BooleanProperty.create("west");
+    public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
+    public static final BooleanProperty EAST = BlockStateProperties.EAST;
+    public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
+    public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
     @Nullable
     private static BooleanProperty getPropertyForFace(Direction direction)

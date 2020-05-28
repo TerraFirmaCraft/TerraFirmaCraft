@@ -21,6 +21,7 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.objects.blocks.rock.RawRockBlock;
 import net.dries007.tfc.objects.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.util.Helpers;
@@ -95,7 +96,7 @@ public class Rock
 
     public enum BlockType
     {
-        RAW(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        RAW(rock -> new RawRockBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
         SMOOTH(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
         COBBLE(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
         BRICKS(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
