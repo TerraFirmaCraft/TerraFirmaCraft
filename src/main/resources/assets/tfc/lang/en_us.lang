@@ -527,7 +527,7 @@ config.tfc.general.food.fruitTreeGrowthTimeModifier.tooltip=Modifier for how lon
 
 ### Misc
 config.tfc.general.misc=Misc Settings
-config.tfc.general.misc.tooltip=Settings for various miscelaneous things.
+config.tfc.general.misc.tooltip=Settings for various miscellaneous things.
 
 config.tfc.general.misc.defaultMonthLength=Default Month Length
 config.tfc.general.misc.defaultMonthLength.tooltip=The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.
@@ -3180,9 +3180,9 @@ item.tfc.ceramics.unfired.clay_flower_pot.name=Unfired Clay Flower Pot
 item.tfc.mortar.name=Mortar
 item.tfc.wrought_iron_grill.name=Wrought Iron Grill
 item.tfc.alabaster_brick.name=Alabaster Brick
-item.tfc.metal.rod.gold=Gold Rod
-item.tfc.metal.rod.wrought_iron=Wrought Iron Rod
-item.tfc.metal.rod.steel=Steel Rod
+item.tfc.metal.rod.gold.name=Gold Rod
+item.tfc.metal.rod.wrought_iron.name=Wrought Iron Rod
+item.tfc.metal.rod.steel.name=Steel Rod
 item.tfc.brass_mechanisms.name=Brass Mechanisms
 item.tfc.glue.name=Glue
 

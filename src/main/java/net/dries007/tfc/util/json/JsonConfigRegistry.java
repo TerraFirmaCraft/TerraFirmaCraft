@@ -104,7 +104,7 @@ public enum JsonConfigRegistry
         Path[] recursivePathList;
         try
         {
-            recursivePathList = Files.walk(tfcConfigDir.toPath()).filter(Files::isRegularFile).toArray(Path[]::new);
+            recursivePathList = Files.walk(tfcConfigDir.toPath()).filter(f -> Files.isRegularFile(f) && f.toString().endsWith(".json")).toArray(Path[]::new);
         }
         catch (IOException e)
         {
