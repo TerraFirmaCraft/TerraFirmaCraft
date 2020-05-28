@@ -1,5 +1,5 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
+  "__comment__": "This file should work",
   "type": "tfc:plant",
   "rules": [
     {
@@ -10,14 +10,6 @@
         }
       ]
     }
-  ],
-  "biomes": [
-    "tfc:ocean",
-    "tfc:deep_ocean",
-    "tfc:deep_ocean_ridge",
-    "tfc:shore",
-    "tfc:lake",
-    "tfc:river"
   ],
   "rarity": 10,
   "size": 8,
