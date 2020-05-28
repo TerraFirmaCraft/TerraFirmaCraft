@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.vein;
+package net.dries007.tfc.util.json;
 
 import com.google.gson.JsonObject;
 import net.minecraft.util.JSONUtils;
@@ -13,7 +13,7 @@ import net.minecraft.world.IWorld;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
-public class TemperatureRule implements IVeinRule
+public class TemperatureRule implements IChunkRule
 {
     private final float minimum, maximum;
 

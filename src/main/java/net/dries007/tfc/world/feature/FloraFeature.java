@@ -29,7 +29,7 @@ public class FloraFeature extends Feature<NoFeatureConfig>
         List<FloraType> list = new ArrayList<>();
         for (FloraType type : FloraTypeManager.INSTANCE.getOrderedValues())
         {
-            if (type.isValidBiome(world.getBiome(pos.asBlockPos())) && random.nextInt(type.getRarity()) == 0)
+            if (type.canGenerate(world, pos) && random.nextInt(type.getRarity()) == 0)
             {
                 list.add(type);
             }

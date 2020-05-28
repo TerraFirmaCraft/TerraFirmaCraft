@@ -5,12 +5,9 @@
     {
       "type": "tfc:biomes",
       "list": [
-        "tfc:ocean",
-        "tfc:deep_ocean",
-        "tfc:deep_ocean_ridge",
-        "tfc:shore",
-        "tfc:lake",
-        "tfc:river"
+        {
+          "tag": "wet"
+        }
       ]
     }
   ],

@@ -21,6 +21,7 @@ import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.objects.recipes.IBlockIngredient;
 import net.dries007.tfc.util.collections.IWeighted;
+import net.dries007.tfc.util.json.IChunkRule;
 import net.dries007.tfc.util.json.TFCJSONUtils;
 
 public abstract class VeinType<V extends Vein<?>>
@@ -32,7 +33,7 @@ public abstract class VeinType<V extends Vein<?>>
     protected final int minY;
     protected final int maxY;
     protected final Map<IBlockIngredient, IWeighted<BlockState>> blocks;
-    protected final List<IVeinRule> rules;
+    protected final List<IChunkRule> rules;
     private final ResourceLocation id;
 
     public VeinType(ResourceLocation id, JsonObject json)
@@ -76,7 +77,7 @@ public abstract class VeinType<V extends Vein<?>>
             blocks.put(stoneStates, oreStates);
         }
         indicator = json.has("indicator") ? TFCJSONUtils.getWeighted(json.get("indicator"), Indicator.Serializer.INSTANCE::read) : IWeighted.empty();
-        rules = json.has("rules") ? TFCJSONUtils.getListLenient(json.get("rules"), IVeinRule.Serializer.INSTANCE::read) : Collections.emptyList();
+        rules = json.has("rules") ? TFCJSONUtils.getListLenient(json.get("rules"), IChunkRule.Serializer.INSTANCE::read) : Collections.emptyList();
     }
 
     public ResourceLocation getId()
@@ -128,7 +129,7 @@ public abstract class VeinType<V extends Vein<?>>
 
     public boolean canGenerateVein(IWorld world, ChunkPos pos)
     {
-        for (IVeinRule rule : rules)
+        for (IChunkRule rule : rules)
         {
             if (!rule.test(world, pos))
             {

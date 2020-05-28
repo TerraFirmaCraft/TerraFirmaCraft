@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.vein;
+package net.dries007.tfc.util.json;
 
 import java.util.function.BiPredicate;
 
@@ -11,25 +11,25 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.json.TypeBasedDeserializer;
 
 /**
- * Rule used for vein placement. Called once before vein generation.
+ * Rules used for generation. Common usages are rainfall and temperature
  *
  * To add and register new rules, see {@link Serializer}
  */
-public interface IVeinRule extends BiPredicate<IWorld, ChunkPos>
+public interface IChunkRule extends BiPredicate<IWorld, ChunkPos>
 {
-    class Serializer extends TypeBasedDeserializer<IVeinRule>
+    class Serializer extends TypeBasedDeserializer<IChunkRule>
     {
         public static final Serializer INSTANCE = new Serializer();
 
         private Serializer()
         {
-            super("vein rule");
+            super("chunk rule");
 
             register(Helpers.identifier("rainfall"), RainfallRule::new);
             register(Helpers.identifier("temperature"), TemperatureRule::new);
+            register(Helpers.identifier("biomes"), BiomeRule::new);
         }
     }
 }
