@@ -8,7 +8,6 @@ package net.dries007.tfc.client.render.animal;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -16,11 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelHogTFC;
-import net.dries007.tfc.client.model.animal.ModelPantherTFC;
-import net.dries007.tfc.client.model.animal.ModelPigTFC;
 import net.dries007.tfc.objects.entity.animal.EntityHogTFC;
-import net.dries007.tfc.objects.entity.animal.EntityPantherTFC;
-import net.dries007.tfc.objects.entity.animal.EntityPigTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
