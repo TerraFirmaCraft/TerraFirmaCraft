@@ -97,6 +97,12 @@ public class BlockMolten extends Block implements ILightableBlock
         return false;
     }
 
+    @Override
+    public boolean isBurning(IBlockAccess world, BlockPos pos)
+    {
+        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     @Nonnull

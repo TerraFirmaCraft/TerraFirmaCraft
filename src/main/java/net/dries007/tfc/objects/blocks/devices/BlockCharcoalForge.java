@@ -146,6 +146,12 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     }
 
     @Override
+    public boolean isBurning(IBlockAccess world, BlockPos pos)
+    {
+        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
+    }
+
+    @Override
     @Nonnull
     @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
