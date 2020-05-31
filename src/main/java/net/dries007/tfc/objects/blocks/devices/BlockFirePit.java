@@ -90,6 +90,12 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         return false;
     }
 
+    @Override
+    public boolean isBurning(IBlockAccess world, BlockPos pos)
+    {
+        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
+    }
+
     @SuppressWarnings("deprecation")
     @Nonnull
     @Override
