@@ -21,8 +21,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderCamelTFC extends RenderAnimalTFC<EntityCamelTFC>
 {
-    private static final ResourceLocation OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/camel_old.png");
-    private static final ResourceLocation YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/camel_young.png");
+    private static final ResourceLocation OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/camel_old.png");
+    private static final ResourceLocation YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/camel_young.png");
 
     public RenderCamelTFC(RenderManager p_i47203_1_)
     {

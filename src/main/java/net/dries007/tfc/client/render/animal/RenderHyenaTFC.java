@@ -19,7 +19,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderHyenaTFC extends RenderLiving<EntityHyenaTFC>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/hyena.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/predators/hyena.png");
 
     public RenderHyenaTFC(RenderManager renderManager)
     {

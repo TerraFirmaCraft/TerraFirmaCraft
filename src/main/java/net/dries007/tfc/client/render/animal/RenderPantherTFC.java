@@ -24,7 +24,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderPantherTFC extends RenderLiving<EntityPantherTFC>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/panther.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/predators/panther.png");
 
     public RenderPantherTFC(RenderManager renderManager)
     {

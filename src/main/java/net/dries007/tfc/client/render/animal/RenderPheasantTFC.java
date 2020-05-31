@@ -25,9 +25,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
 {
-    private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_chick.png");
-    private static final ResourceLocation MALE_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_male.png");
-    private static final ResourceLocation FEMALE_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/pheasant_female.png");
+    private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/pheasant_chick.png");
+    private static final ResourceLocation MALE_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/pheasant_male.png");
+    private static final ResourceLocation FEMALE_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/pheasant_female.png");
 
 
     public RenderPheasantTFC(RenderManager manager)

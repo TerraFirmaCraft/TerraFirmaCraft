@@ -21,8 +21,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderZebuTFC extends RenderAnimalTFC<EntityZebuTFC>
 {
-    private static final ResourceLocation ZEBU_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/zebu_young.png");
-    private static final ResourceLocation ZEBU_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/zebu_old.png");
+    private static final ResourceLocation ZEBU_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/zebu_young.png");
+    private static final ResourceLocation ZEBU_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/zebu_old.png");
 
     public RenderZebuTFC(RenderManager renderManager)
     {

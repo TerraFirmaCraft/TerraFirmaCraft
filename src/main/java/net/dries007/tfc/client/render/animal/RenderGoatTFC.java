@@ -21,8 +21,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderGoatTFC extends RenderAnimalTFC<EntityGoatTFC>
 {
-    private static final ResourceLocation GOAT_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/goat_old.png");
-    private static final ResourceLocation GOAT_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/goat_young.png");
+    private static final ResourceLocation GOAT_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/goat_old.png");
+    private static final ResourceLocation GOAT_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/goat_young.png");
 
     public RenderGoatTFC(RenderManager renderManager)
     {

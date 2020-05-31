@@ -23,7 +23,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderSeaLionTFC extends RenderLiving<EntitySeaLionTFC>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/panther.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/sealion.png");
 
     public RenderSeaLionTFC(RenderManager renderManager) { super(renderManager, new ModelSeaLionTFC(), 0.7F); }
 

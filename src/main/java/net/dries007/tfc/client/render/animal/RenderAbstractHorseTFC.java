@@ -32,8 +32,8 @@ public class RenderAbstractHorseTFC extends RenderLiving<AbstractHorse>
 
     static
     {
-        MAP.put(EntityDonkeyTFC.class, new ResourceLocation("textures/entity/horse/donkey.png"));
-        MAP.put(EntityMuleTFC.class, new ResourceLocation("textures/entity/horse/mule.png"));
+        MAP.put(EntityDonkeyTFC.class, new ResourceLocation("textures/entity/horse/livestock/donkey.png"));
+        MAP.put(EntityMuleTFC.class, new ResourceLocation("textures/entity/horse/livestock/mule.png"));
     }
 
     private final float scale;

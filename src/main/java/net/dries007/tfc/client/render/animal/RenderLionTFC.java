@@ -23,8 +23,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderLionTFC extends RenderLiving<EntityLionTFC>
 {
-    private static final ResourceLocation LION_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/lion.png");
-    private static final ResourceLocation LIONESS_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/lioness.png");
+    private static final ResourceLocation LION_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/predators/lion.png");
+    private static final ResourceLocation LIONESS_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/predators/lioness.png");
 
     public RenderLionTFC(RenderManager manager)
     {

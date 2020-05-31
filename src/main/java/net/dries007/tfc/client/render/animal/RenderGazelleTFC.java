@@ -22,7 +22,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderGazelleTFC extends RenderLiving<EntityGazelleTFC>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/gazelle.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/gazelle.png");
 
     public RenderGazelleTFC(RenderManager manager)
     {

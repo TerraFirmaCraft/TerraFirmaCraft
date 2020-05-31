@@ -26,13 +26,13 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderDuckTFC extends RenderLiving<EntityDuckTFC>
 {
-    private static final ResourceLocation DUCK_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/duck_old.png");
-    private static final ResourceLocation DUCK_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/duck_young.png");
+    private static final ResourceLocation DUCK_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/duck_old.png");
+    private static final ResourceLocation DUCK_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/duck_young.png");
 
-    private static final ResourceLocation DRAKE_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/drake_old.png");
-    private static final ResourceLocation DRAKE_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/drake_young.png");
+    private static final ResourceLocation DRAKE_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/drake_old.png");
+    private static final ResourceLocation DRAKE_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/drake_young.png");
 
-    private static final ResourceLocation DUCKLING_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/duckling.png");
+    private static final ResourceLocation DUCKLING_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/duckling.png");
 
     public RenderDuckTFC(RenderManager manager)
     {
