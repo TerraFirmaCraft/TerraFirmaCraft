@@ -97,11 +97,7 @@ public class BlockMolten extends Block implements ILightableBlock
         return false;
     }
 
-    @Override
-    public boolean isBurning(IBlockAccess world, BlockPos pos)
-    {
-        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
-    }
+    // do not implement isBurning per #1327, as doing so results in burning up any charcoal, ore, or flux added after lighting
 
     @SuppressWarnings("deprecation")
     @Override
