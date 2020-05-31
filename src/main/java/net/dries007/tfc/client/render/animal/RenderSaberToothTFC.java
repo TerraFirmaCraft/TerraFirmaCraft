@@ -19,7 +19,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderSaberToothTFC extends RenderLiving<EntitySaberToothTFC>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/sabertooth.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/predators/sabertooth.png");
 
     public RenderSaberToothTFC(RenderManager renderManager)
     {

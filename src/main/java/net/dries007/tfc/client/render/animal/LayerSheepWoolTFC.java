@@ -23,7 +23,7 @@ import net.dries007.tfc.objects.entity.animal.EntitySheepTFC;
 public class LayerSheepWoolTFC implements LayerRenderer<EntitySheepTFC>
 {
     private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft:textures/entity/sheep/sheep_fur.png");
-    private static final ResourceLocation OLD_TEXTURE = new ResourceLocation("tfc:textures/entity/animal/sheep_fur_old.png");
+    private static final ResourceLocation OLD_TEXTURE = new ResourceLocation("tfc:textures/entity/animal/livestock/sheep_fur_old.png");
     private final RenderSheepTFC sheepRenderer;
     private final ModelSheepWoolTFC sheepModel = new ModelSheepWoolTFC();
 

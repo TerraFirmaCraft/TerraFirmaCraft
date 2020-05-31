@@ -22,9 +22,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
 {
-    private static final ResourceLocation DEER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer.png");
+    private static final ResourceLocation DEER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/deer.png");
 
-    private static final ResourceLocation FAWN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer_fawn.png");
+    private static final ResourceLocation FAWN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/deer_fawn.png");
 
     public RenderDeerTFC(RenderManager manager)
     {
