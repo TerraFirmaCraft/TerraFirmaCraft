@@ -103,6 +103,7 @@ public class ClientEvents
         RenderingRegistry.registerEntityRenderingHandler(EntityHareTFC.class, RenderHareTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityHogTFC.class, RenderHogTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityZebuTFC.class, RenderZebuTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySeaLionTFC.class, RenderSeaLionTFC::new);
     }
 
     @SideOnly(Side.CLIENT)
