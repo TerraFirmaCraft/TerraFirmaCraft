@@ -54,6 +54,7 @@ public class EntitiesTFC
         registerLiving("hogtfc", EntityHogTFC.class, 0x666600, 0x331900);
         registerLiving("zebutfc", EntityZebuTFC.class, 0x666600, 0x331900);
         registerLiving("sealiontfc", EntitySeaLionTFC.class, 0x666600, 0x331900);
+        registerLiving("gazellefc", EntityGazelleTFC.class, 0x666600, 0x331900);
     }
 
     private static void register(String name, Class<? extends Entity> cls)
