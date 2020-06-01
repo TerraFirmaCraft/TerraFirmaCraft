@@ -39,6 +39,7 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.te.TEPowderKeg;
 import net.dries007.tfc.util.Helpers;
 
@@ -48,10 +49,9 @@ import net.dries007.tfc.util.Helpers;
  * Sealed state is stored in a block state property, and cached in the TE (for gui purposes)
  */
 @ParametersAreNonnullByDefault
-public class BlockPowderKeg extends Block implements IItemSize
+public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
 {
     public static final PropertyBool SEALED = PropertyBool.create("sealed");
-    public static final PropertyBool LIT = PropertyBool.create("lit");
 
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
@@ -410,7 +410,7 @@ public class BlockPowderKeg extends Block implements IItemSize
             int fuse = te.getFuse();
             if (rng.nextInt(6) == 0 && fuse > 20)
             {
-                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, rng.nextFloat() * 1.3F + 0.3F / fuse , false);
+                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, rng.nextFloat() * 1.3F + 0.3F / fuse, false);
             }
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.625, pos.up().getY() + 0.125, pos.getZ() + 0.375, 0.0D, 1.0D + 1.0D / fuse, 0.0D);
         }
