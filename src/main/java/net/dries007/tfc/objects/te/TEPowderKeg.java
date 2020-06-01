@@ -88,17 +88,9 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         return !sealed;
     }
 
-    public void onSealed()
+    public void setSealed(boolean sealed)
     {
-        // Update sealed tick info and sync to client
-        sealed = true;
-        markForSync();
-    }
-
-    public void onUnseal()
-    {
-        // Update sealed info and sync to client
-        sealed = false;
+        this.sealed = sealed;
         markForSync();
     }
 
