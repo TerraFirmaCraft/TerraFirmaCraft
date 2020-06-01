@@ -66,14 +66,7 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
             IBlockState state = world.getBlockState(pos);
             boolean previousSealed = state.getValue(SEALED);
             world.setBlockState(pos, state.withProperty(SEALED, !previousSealed));
-            if (previousSealed)
-            {
-                tile.onUnseal();
-            }
-            else
-            {
-                tile.onSealed();
-            }
+            tile.setSealed(!previousSealed);
         }
     }
 
