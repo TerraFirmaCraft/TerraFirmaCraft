@@ -145,20 +145,6 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
         return false;
     }
 
-    /**
-     * Determines if this block should set fire and deal fire damage
-     * to entities coming into contact with it. See #1327
-     *
-     * @param world The current world
-     * @param pos   Block position in world
-     * @return True if the block should deal damage
-     */
-    @Override
-    public boolean isBurning(IBlockAccess world, BlockPos pos)
-    {
-        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
-    }
-
     @Override
     @Nonnull
     @SuppressWarnings("deprecation")
@@ -275,6 +261,17 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
             }
         }
         return true;
+    }
+
+    @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && state.getValue(LIT))
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 2.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
     }
 
     @Override

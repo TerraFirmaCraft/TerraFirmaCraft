@@ -18,6 +18,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -87,20 +88,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public boolean isFullCube(IBlockState state)
     {
         return false;
-    }
-
-    /**
-     * Determines if this block should set fire and deal fire damage
-     * to entities coming into contact with it. See #1327
-     *
-     * @param world The current world
-     * @param pos   Block position in world
-     * @return True if the block should deal damage
-     */
-    @Override
-    public boolean isBurning(IBlockAccess world, BlockPos pos)
-    {
-        return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
     }
 
     @SuppressWarnings("deprecation")
@@ -290,8 +277,23 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     }
 
     @Override
+    public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase)
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
+        }
+        super.onEntityWalk(worldIn, pos, entityIn);
+    }
+
+    @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
+        if (state.getValue(LIT) && !entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase)
+        {
+            entityIn.attackEntityFrom(DamageSource.IN_FIRE, 1.0F);
+        }
         //todo: handle fuel and item inputs from thrown entities
         super.onEntityCollision(worldIn, pos, state, entityIn);
     }
