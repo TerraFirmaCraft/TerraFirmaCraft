@@ -97,8 +97,6 @@ public class BlockMolten extends Block implements ILightableBlock
         return false;
     }
 
-    // do not implement isBurning per #1327, as doing so results in burning up any charcoal, ore, or flux added after lighting
-
     @SuppressWarnings("deprecation")
     @Override
     @Nonnull
