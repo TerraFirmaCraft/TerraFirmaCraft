@@ -203,7 +203,8 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     public void setLit(boolean lit)
     {
         isLit = lit;
-        if (lit) {
+        if (lit)
+        {
             world.playSound(null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.33F);
             fuse = 80;
         }

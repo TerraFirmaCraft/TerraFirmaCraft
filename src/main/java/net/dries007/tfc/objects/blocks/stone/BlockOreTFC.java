@@ -95,8 +95,8 @@ public class BlockOreTFC extends Block
         return getMetaFromState(state);
     }
 
-    /** Handle drops separately, so will always drop
-     *
+    /**
+     * Handle drops separately, so will always drop
      */
     @Override
     public boolean canDropFromExplosion(Explosion explosionIn)
@@ -104,13 +104,13 @@ public class BlockOreTFC extends Block
         return false;
     }
 
-    /** Ore blocks should always drop from explosions, see #1325
-     *
+    /**
+     * Ore blocks should always drop from explosions, see #1325
      */
     @Override
     public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
     {
-        if(!world.isRemote)
+        if (!world.isRemote)
         {
             dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
         }
