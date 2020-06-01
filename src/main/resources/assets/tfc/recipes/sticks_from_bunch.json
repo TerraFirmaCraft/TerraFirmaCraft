@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:wood/stick_bunch"
+      "item": "tfc:stick_bunch"
     }
   ],
   "result": {
