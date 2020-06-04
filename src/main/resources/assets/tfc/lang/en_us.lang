@@ -320,11 +320,11 @@ config.tfc.general.fallable.explosionCausesCollapse.tooltip=Should exploding raw
 ### Difficulty
 config.tfc.general.difficulty=Difficulty Settings
 
-config.tfc.general.difficulty.animalSpawnCount=Animal Spawn Count
-config.tfc.general.difficulty.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
+config.tfc.general.difficulty.animalSpawnCount=Animal Respawn Count
+config.tfc.general.difficulty.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded (by respawn) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
 
-config.tfc.general.difficulty.mobSpawnCount=Mob Spawn Count
-config.tfc.general.difficulty.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
+config.tfc.general.difficulty.mobSpawnCount=Mob Respawn Count
+config.tfc.general.difficulty.mobSpawnCount.tooltip=This controls how many mobs are loaded(by respawn) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
 
 config.tfc.general.difficulty.preventMobsOnSurface=Prevent Mobs On Surface
 config.tfc.general.difficulty.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
