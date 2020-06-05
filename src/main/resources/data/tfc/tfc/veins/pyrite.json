@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 100,
+  "min_y": 30,
+  "max_y": 100,
+  "size": 20,
+  "density": 60,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/andesite",
+      "ore": "tfc:ore/pyrite/andesite"
+    },
+    {
+      "stone": "tfc:rock/raw/basalt",
+      "ore": "tfc:ore/pyrite/basalt"
+    },
+    {
+      "stone": "tfc:rock/raw/dacite",
+      "ore": "tfc:ore/pyrite/dacite"
+    },
+    {
+      "stone": "tfc:rock/raw/rhyolite",
+      "ore": "tfc:ore/pyrite/rhyolite"
+    },
+    {
+      "stone": "tfc:rock/raw/diorite",
+      "ore": "tfc:ore/pyrite/diorite"
+    },
+    {
+      "stone": "tfc:rock/raw/gabbro",
+      "ore": "tfc:ore/pyrite/gabbro"
+    },
+    {
+      "stone": "tfc:rock/raw/granite",
+      "ore": "tfc:ore/pyrite/granite"
+    }
+  ]
+}

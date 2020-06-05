@@ -37,22 +37,17 @@ public class Ore
         SALTPETER(false),
         SYLVITE(false),
         BORAX(false),
-        LAPIS_LAZULI(false),
         HALITE(false),
         // gem ores
-        AGATE(false),
         AMETHYST(false),
-        BERYL(false),
         DIAMOND(false),
         EMERALD(false),
-        GARNET(false),
-        JADE(false),
-        JASPER(false),
+        LAPIS_LAZULI(false),
         OPAL(false),
+        PYRITE(false),
         RUBY(false),
         SAPPHIRE(false),
-        TOPAZ(false),
-        TOURMALINE(false);
+        TOPAZ(false);
 
         private final boolean graded;
 
