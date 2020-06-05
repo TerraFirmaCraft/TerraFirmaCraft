@@ -49,13 +49,28 @@ public interface IFallingBlock
 
     default boolean shouldFall(World world, BlockPos posToFallAt, BlockPos originalPos)
     {
+        return shouldFall(world, posToFallAt, originalPos, false);
+    }
+
+    default boolean shouldFall(World world, BlockPos posToFallAt, BlockPos originalPos, boolean ignoreSupportChecks)
+    {
         // Can the block fall at a particular position; ignore horizontal falling
-        return ConfigTFC.General.FALLABLE.enable && canFallThrough(world, posToFallAt.down(), world.getBlockState(originalPos).getMaterial()) && !BlockSupport.isBeingSupported(world, originalPos);
+        return ConfigTFC.General.FALLABLE.enable && canFallThrough(world, posToFallAt.down(), world.getBlockState(originalPos).getMaterial()) && (ignoreSupportChecks || !BlockSupport.isBeingSupported(world, originalPos));
     }
 
     // Get the position that the block will fall from (allows for horizontal falling)
     @Nullable
-    BlockPos getFallablePos(World world, BlockPos pos);
+    BlockPos getFallablePos(World world, BlockPos pos, boolean ignoreSupportChecks);
+
+    default BlockPos getFallablePos(World world, BlockPos pos)
+    {
+        return getFallablePos(world, pos, false);
+    }
+
+    default boolean checkFalling(World worldIn, BlockPos pos, IBlockState state)
+    {
+        return checkFalling(worldIn, pos, state, false);
+    }
 
     /**
      * Check if this block gonna fall.
@@ -65,12 +80,12 @@ public interface IFallingBlock
      * @param state   the state of the original block
      * @return true if this block has fallen, false otherwise
      */
-    default boolean checkFalling(World worldIn, BlockPos pos, IBlockState state)
+    default boolean checkFalling(World worldIn, BlockPos pos, IBlockState state, boolean ignoreSupportChecks)
     {
         // Initial check for loaded area to fix stack overflow crash from endless falling / liquid block updates
         if (worldIn.isAreaLoaded(pos.add(-2, -2, -2), pos.add(2, 2, 2)))
         {
-            BlockPos pos1 = getFallablePos(worldIn, pos);
+            BlockPos pos1 = getFallablePos(worldIn, pos, ignoreSupportChecks);
             if (pos1 != null)
             {
                 if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))

@@ -75,9 +75,9 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
     // What is the position that the block will fall at?
     @Nullable
     @Override
-    public BlockPos getFallablePos(World world, BlockPos pos)
+    public BlockPos getFallablePos(World world, BlockPos pos, boolean ignoreSupportChecks)
     {
-        if (type.canFall() && shouldFall(world, pos, pos))
+        if (type.canFall() && shouldFall(world, pos, pos, ignoreSupportChecks))
         {
             return checkAreaClear(world, pos);
         }
@@ -101,7 +101,7 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
             // Check if it can fall
             IBlockState originalState = world.getBlockState(pos);
             faces = Arrays.stream(EnumFacing.HORIZONTALS)
-                .filter(x -> shouldFall(world, pos.offset(x), pos) && IFallingBlock.canFallThrough(world, pos.offset(x), originalState.getMaterial()))
+                .filter(x -> shouldFall(world, pos.offset(x), pos, ignoreSupportChecks) && IFallingBlock.canFallThrough(world, pos.offset(x), originalState.getMaterial()))
                 .toArray(EnumFacing[]::new);
 
             if (faces.length >= 1)
