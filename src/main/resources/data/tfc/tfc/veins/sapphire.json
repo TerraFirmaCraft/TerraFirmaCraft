@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 80,
+  "min_y": 5,
+  "max_y": 59,
+  "size": 6,
+  "density": 70,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/gneiss",
+      "ore": "tfc:ore/sapphire/gneiss"
+    },
+    {
+      "stone": "tfc:rock/raw/marble",
+      "ore": "tfc:ore/sapphire/marble"
+    },
+    {
+      "stone": "tfc:rock/raw/phyllite",
+      "ore": "tfc:ore/sapphire/phyllite"
+    },
+    {
+      "stone": "tfc:rock/raw/quartzite",
+      "ore": "tfc:ore/sapphire/quartzite"
+    },
+    {
+      "stone": "tfc:rock/raw/schist",
+      "ore": "tfc:ore/sapphire/schist"
+    },
+    {
+      "stone": "tfc:rock/raw/slate",
+      "ore": "tfc:ore/sapphire/slate"
+    }
+  ]
+}

@@ -3,25 +3,20 @@ package net.dries007.tfc.api;
 public class Gem {
     public enum Default
     {
-        AGATE,
         AMETHYST,
-        BERYL,
         DIAMOND,
         EMERALD,
-        GARNET,
-        JADE,
-        JASPER,
+        LAPIS_LAZULI,
         OPAL,
+        PYRITE,
         RUBY,
         SAPPHIRE,
-        TOPAZ,
-        TOURMALINE
+        TOPAZ
     }
     public enum Grade
     {
         UNCUT,
-        CHIPPED,
-        SHINY,
-        FLAWLESS
+        CUT,
+        POWDER
     }
 }
