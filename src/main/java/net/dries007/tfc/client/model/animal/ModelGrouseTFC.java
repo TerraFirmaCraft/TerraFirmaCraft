@@ -51,17 +51,10 @@ public class ModelGrouseTFC extends ModelBase
         textureWidth = 64;
         textureHeight = 32;
 
-        tails9 = new ModelRenderer(this, 54, 22);
-        tails9.setRotationPoint(0.4F, 15.0F, 6.1F);
-        tails9.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
-        setRotateAngle(tails9, -0.3490658503988659F, 0.13962634015954636F, 1.3962634015954636F);
+
         wingRChild = new ModelRenderer(this, 18, 20);
         wingRChild.setRotationPoint(0.0F, 0.0F, 2.0F);
         wingRChild.addBox(0.0F, 0.0F, 0.0F, 1, 2, 1, 0.0F);
-        tails7 = new ModelRenderer(this, 54, 22);
-        tails7.setRotationPoint(0.2F, 15.0F, 5.9F);
-        tails7.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
-        setRotateAngle(tails7, -0.3490658503988659F, 0.06981317007977318F, 0.6981317007977318F);
         legR = new ModelRenderer(this, 0, 25);
         legR.setRotationPoint(-2.0F, 20.0F, 2.0F);
         legR.addBox(-1.0F, 0.0F, -3.0F, 3, 4, 3, 0.0F);
@@ -69,10 +62,6 @@ public class ModelGrouseTFC extends ModelBase
         body.setRotationPoint(0.0F, 17.0F, 1.0F);
         body.addBox(-3.0F, -4.0F, -3.0F, 6, 8, 6, 0.0F);
         setRotateAngle(body, 1.3962634015954636F, 0.0F, 0.0F);
-        tails1 = new ModelRenderer(this, 54, 22);
-        tails1.setRotationPoint(-0.4F, 15.0F, 6.1F);
-        tails1.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
-        setRotateAngle(tails1, -0.3490658503988659F, -0.13962634015954636F, -1.3962634015954636F);
         legL = new ModelRenderer(this, 0, 25);
         legL.setRotationPoint(1.0F, 20.0F, 2.0F);
         legL.addBox(-1.0F, 0.0F, -3.0F, 3, 4, 3, 0.0F);
@@ -82,10 +71,6 @@ public class ModelGrouseTFC extends ModelBase
         wingLChild = new ModelRenderer(this, 18, 20);
         wingLChild.setRotationPoint(-1.0F, 0.0F, 2.0F);
         wingLChild.addBox(0.0F, 0.0F, 0.0F, 1, 2, 1, 0.0F);
-        tails3 = new ModelRenderer(this, 54, 22);
-        tails3.setRotationPoint(-0.2F, 15.0F, 5.9F);
-        tails3.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
-        setRotateAngle(tails3, -0.3490658503988659F, -0.06981317007977318F, -0.6981317007977318F);
         wingR = new ModelRenderer(this, 14, 23);
         wingR.setRotationPoint(-4.0F, 14.5F, 1.0F);
         wingR.addBox(0.0F, 0.0F, -3.0F, 1, 4, 5, 0.0F);
@@ -102,21 +87,9 @@ public class ModelGrouseTFC extends ModelBase
         bodyTop.setRotationPoint(0.0F, 16.0F, -3.1F);
         bodyTop.addBox(-2.5F, -2.0F, -1.5F, 5, 4, 4, 0.0F);
         setRotateAngle(bodyTop, 0.6108652381980153F, 0.0F, 0.0F);
-        tails5 = new ModelRenderer(this, 54, 22);
-        tails5.setRotationPoint(0.0F, 15.0F, 5.7F);
-        tails5.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
-        setRotateAngle(tails5, -0.3490658503988659F, 0.0F, 0.0F);
-        tails6 = new ModelRenderer(this, 54, 22);
-        tails6.setRotationPoint(0.1F, 15.0F, 5.8F);
-        tails6.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
-        setRotateAngle(tails6, -0.3490658503988659F, 0.03490658503988659F, 0.3490658503988659F);
         maleR = new ModelRenderer(this, 52, 12);
         maleR.setRotationPoint(-2.1F, -2.0F, 0.5F);
         maleR.addBox(0.0F, -2.0F, 0.0F, 0, 4, 5, 0.0F);
-        tails4 = new ModelRenderer(this, 54, 22);
-        tails4.setRotationPoint(-0.1F, 15.0F, 5.8F);
-        tails4.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
-        setRotateAngle(tails4, -0.3490658503988659F, -0.03490658503988659F, -0.3490658503988659F);
         tailBase = new ModelRenderer(this, 32, 4);
         tailBase.setRotationPoint(-0.5F, 5.6F, 0.6F);
         tailBase.addBox(-1.5F, -2.0F, -2.0F, 4, 2, 4, 0.0F);
@@ -124,6 +97,7 @@ public class ModelGrouseTFC extends ModelBase
         head = new ModelRenderer(this, 0, 6);
         head.setRotationPoint(0.0F, 15.0F, -3.2F);
         head.addBox(-2.0F, -6.0F, -2.0F, 4, 6, 3, 0.0F);
+
         tails2 = new ModelRenderer(this, 54, 22);
         tails2.setRotationPoint(-0.3F, 15.0F, 6.0F);
         tails2.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
@@ -132,6 +106,34 @@ public class ModelGrouseTFC extends ModelBase
         tails8.setRotationPoint(0.3F, 15.0F, 6.0F);
         tails8.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
         setRotateAngle(tails8, -0.3490658503988659F, 0.10471975511965977F, 1.0471975511965976F);
+        tails4 = new ModelRenderer(this, 54, 22);
+        tails4.setRotationPoint(-0.1F, 15.0F, 5.8F);
+        tails4.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
+        setRotateAngle(tails4, -0.3490658503988659F, -0.03490658503988659F, -0.3490658503988659F);
+        tails5 = new ModelRenderer(this, 54, 22);
+        tails5.setRotationPoint(0.0F, 15.0F, 5.7F);
+        tails5.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
+        setRotateAngle(tails5, -0.3490658503988659F, 0.0F, 0.0F);
+        tails6 = new ModelRenderer(this, 54, 22);
+        tails6.setRotationPoint(0.1F, 15.0F, 5.8F);
+        tails6.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
+        setRotateAngle(tails6, -0.3490658503988659F, 0.03490658503988659F, 0.3490658503988659F);
+        tails3 = new ModelRenderer(this, 54, 22);
+        tails3.setRotationPoint(-0.2F, 15.0F, 5.9F);
+        tails3.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
+        setRotateAngle(tails3, -0.3490658503988659F, -0.06981317007977318F, -0.6981317007977318F);
+        tails1 = new ModelRenderer(this, 54, 22);
+        tails1.setRotationPoint(-0.4F, 15.0F, 6.1F);
+        tails1.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
+        setRotateAngle(tails1, -0.3490658503988659F, -0.13962634015954636F, -1.3962634015954636F);
+        tails9 = new ModelRenderer(this, 54, 22);
+        tails9.setRotationPoint(0.4F, 15.0F, 6.1F);
+        tails9.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
+        setRotateAngle(tails9, -0.3490658503988659F, 0.13962634015954636F, 1.3962634015954636F);
+        tails7 = new ModelRenderer(this, 54, 22);
+        tails7.setRotationPoint(0.2F, 15.0F, 5.9F);
+        tails7.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
+        setRotateAngle(tails7, -0.3490658503988659F, 0.06981317007977318F, 0.6981317007977318F);
 
         wingR.addChild(wingRChild);
         wingL.addChild(wingLChild);
