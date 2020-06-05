@@ -77,6 +77,8 @@ import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
+import net.dries007.tfc.api.capability.worldtracker.WorldTracker;
 import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketPlayerDataUpdate;
@@ -862,6 +864,25 @@ public final class CommonEventHandler
             if (target instanceof IAnimalTFC)
             {
                 ((IAnimalTFC) target).setFamiliarity(((EntityAnimalTFC) target).getFamiliarity() - 0.04f);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void attachWorldCapabilities(AttachCapabilitiesEvent<World> event)
+    {
+        event.addCapability(CapabilityWorldTracker.KEY, new WorldTracker());
+    }
+
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.WorldTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START)
+        {
+            WorldTracker tracker = event.world.getCapability(CapabilityWorldTracker.CAPABILITY, null);
+            if (tracker != null)
+            {
+                tracker.tick(event.world);
             }
         }
     }

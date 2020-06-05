@@ -29,6 +29,7 @@ import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.metal.CapabilityMetalItem;
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
 import net.dries007.tfc.client.ClientEvents;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCKeybindings;
@@ -139,6 +140,7 @@ public final class TerraFirmaCraft
         CapabilityPlayerData.preInit();
         CapabilityDamageResistance.preInit();
         CapabilityMetalItem.preInit();
+        CapabilityWorldTracker.preInit();
 
         if (event.getSide().isClient())
         {

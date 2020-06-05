@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +15,9 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
+import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
+import net.dries007.tfc.api.capability.worldtracker.CollapseData;
+import net.dries007.tfc.api.capability.worldtracker.WorldTracker;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.blocks.stone.BlockRockVariantFallable;
 import net.dries007.tfc.objects.blocks.wood.BlockSupport;
@@ -72,24 +78,44 @@ public interface ICollapsableBlock
      */
     default void collapseArea(World world, BlockPos centerPoint)
     {
-        int radiusH = (world.rand.nextInt(31) + 5) / 2; //5-36
-        for (BlockPos cavein : BlockSupport.getAllUnsupportedBlocksIn(world, centerPoint.add(-radiusH, -4, -radiusH), centerPoint.add(radiusH, 1, radiusH)))
+        int radius = (world.rand.nextInt(31) + 5) / 2;
+        int radiusSquared = radius * radius;
+        List<BlockPos> secondaryPositions = new ArrayList<>();
+
+        // Initially only scan on the bottom layer, and advance upwards
+        for (BlockPos pos : BlockPos.getAllInBoxMutable(centerPoint.add(-radius, -4, -radius), centerPoint.add(radius, -4, radius)))
         {
-            IBlockState st = world.getBlockState(cavein);
-            if (st.getBlock() instanceof ICollapsableBlock
-                && ((ICollapsableBlock) st.getBlock()).canCollapse(world, cavein))
+            boolean foundEmpty = false; // If we've found a space to collapse into
+            for (int y = 0; y <= 8; y++)
             {
-                double distSqrd =
-                    Math.pow(centerPoint.getX() - cavein.getX(), 2)
-                        + Math.pow(centerPoint.getY() - cavein.getY(), 2)
-                        + Math.pow(centerPoint.getZ() - cavein.getZ(), 2);
-                double chance = ConfigTFC.General.FALLABLE.propagateCollapseChance - 0.01 * Math.sqrt(distSqrd);
-                if (Constants.RNG.nextDouble() < chance)
+                BlockPos posAt = pos.up(y);
+                IBlockState stateAt = world.getBlockState(posAt);
+                if (foundEmpty && stateAt.getBlock() instanceof ICollapsableBlock && ((ICollapsableBlock) stateAt.getBlock()).canCollapse(world, posAt))
                 {
-                    BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) st.getBlock()).getFallingVariant();
-                    world.setBlockState(cavein, fallingBlock.getDefaultState());
-                    fallingBlock.checkFalling(world, cavein, world.getBlockState(cavein));
+                    // Check for a possible collapse
+                    if (posAt.distanceSq(centerPoint) < radiusSquared && world.rand.nextFloat() < ConfigTFC.General.FALLABLE.propagateCollapseChance)
+                    {
+                        // This column has started to collapse. Mark the next block above as unstable for the "follow up"
+                        BlockRockVariantFallable fallingBlock = ((ICollapsableBlock) stateAt.getBlock()).getFallingVariant();
+                        world.setBlockState(posAt, fallingBlock.getDefaultState());
+                        fallingBlock.checkFalling(world, posAt, world.getBlockState(posAt), true);
+                        secondaryPositions.add(posAt.up());
+                        break;
+                    }
                 }
+                if (IFallingBlock.canFallThrough(world, posAt, stateAt.getMaterial()))
+                {
+                    foundEmpty = true;
+                }
+            }
+        }
+
+        if (!secondaryPositions.isEmpty())
+        {
+            WorldTracker tracker = world.getCapability(CapabilityWorldTracker.CAPABILITY, null);
+            if (tracker != null)
+            {
+                tracker.addCollapseData(new CollapseData(centerPoint, secondaryPositions, radiusSquared));
             }
         }
     }
