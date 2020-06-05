@@ -5,16 +5,11 @@
 
 package net.dries007.tfc.objects.blocks.stone;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -35,54 +30,23 @@ import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.api.types.RockCategory;
-import net.dries007.tfc.api.util.IRockObject;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.items.rock.ItemRock;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.ICollapsableBlock;
 
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 
 @ParametersAreNonnullByDefault
-public class BlockStoneAnvil extends Block implements IRockObject
+public class BlockStoneAnvil extends BlockRockVariant implements ICollapsableBlock
 {
-    private static final Map<Rock, BlockStoneAnvil> MAP = new HashMap<>();
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.875, 1);
 
-    public static BlockStoneAnvil get(Rock rock)
+    public BlockStoneAnvil(Rock.Type type, Rock rock)
     {
-        return MAP.get(rock);
-    }
-
-    private final Rock rock;
-
-    public BlockStoneAnvil(Rock rock)
-    {
-        super(Material.ROCK);
-
-        setSoundType(SoundType.STONE);
-        setHardness(rock.getRockCategory().getHardness());
-        setResistance(rock.getRockCategory().getResistance());
-        setHarvestLevel("pickaxe", 0);
-
-        this.rock = rock;
-        MAP.put(rock, this);
-    }
-
-    @Nonnull
-    @Override
-    public Rock getRock(ItemStack stack)
-    {
-        return rock;
-    }
-
-    @Nonnull
-    @Override
-    public RockCategory getRockCategory(ItemStack stack)
-    {
-        return rock.getRockCategory();
+        super(type, rock);
     }
 
     @Override
@@ -285,5 +249,11 @@ public class BlockStoneAnvil extends Block implements IRockObject
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(BlockRockRaw.get(rock, Rock.Type.RAW));
+    }
+
+    @Override
+    public BlockRockVariantFallable getFallingVariant()
+    {
+        return (BlockRockVariantFallable) BlockRockVariant.get(rock, Rock.Type.COBBLE);
     }
 }

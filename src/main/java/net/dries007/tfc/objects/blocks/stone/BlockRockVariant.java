@@ -66,6 +66,8 @@ public class BlockRockVariant extends Block implements IItemSize
         {
             case RAW:
                 return new BlockRockRaw(type, rock);
+            case ANVIL:
+                return new BlockStoneAnvil(type, rock);
             case SPIKE:
                 return new BlockRockSpike(type, rock);
             case FARMLAND:
@@ -107,6 +109,7 @@ public class BlockRockVariant extends Block implements IItemSize
         {
             case BRICKS:
             case RAW:
+            case ANVIL:
             case SPIKE:
             case SMOOTH:
                 setSoundType(SoundType.STONE);
