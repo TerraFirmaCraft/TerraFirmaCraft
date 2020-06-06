@@ -150,7 +150,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                         ((FallingBlock) block).onEndFalling(this.world, posAt, getBlockState(), blockstate);
                                     }
 
-                                    if (TFCTags.CAN_LANDSLIDE.contains(getBlockState().getBlock()))
+                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(getBlockState().getBlock()))
                                     {
                                         world.getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
                                     }

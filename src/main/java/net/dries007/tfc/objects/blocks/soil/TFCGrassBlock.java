@@ -136,7 +136,7 @@ public class TFCGrassBlock extends Block
         BooleanProperty property = getPropertyForFace(direction);
         if (property != null)
         {
-            return stateIn.with(property, TFCTags.GRASS.contains(worldIn.getBlockState(pos.offset(direction).down()).getBlock()));
+            return stateIn.with(property, TFCTags.Blocks.GRASS.contains(worldIn.getBlockState(pos.offset(direction).down()).getBlock()));
         }
         return stateIn;
     }

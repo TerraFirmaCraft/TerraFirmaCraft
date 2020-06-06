@@ -19,6 +19,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.api.Metal;
 import net.dries007.tfc.api.Ore;
 import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.objects.blocks.rock.TFCOreBlock;
@@ -29,6 +30,7 @@ import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.objects.TFCItemGroup.METAL;
 import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
 
 
@@ -66,6 +68,24 @@ public final class TFCBlocks
             register((type.name() + "/" + variant.name()).toLowerCase(), type::create, ROCK_BLOCKS)
         )
     );
+
+    public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Util.make(new EnumMap<>(Metal.Default.class), map -> {
+        for (Metal.Default metal : Metal.Default.values())
+        {
+            Map<Metal.BlockType, RegistryObject<Block>> inner = new EnumMap<>(Metal.BlockType.class);
+            for (Metal.BlockType type : Metal.BlockType.values())
+            {
+                if (type.hasType(metal))
+                {
+                    String name = ("metal/" + type.name() + "/" + metal.name()).toLowerCase();
+                    RegistryObject<Block> block = BLOCKS.register(name, () -> type.create(metal));
+                    TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(METAL)));
+                    inner.put(type, block);
+                }
+            }
+            map.put(metal, inner);
+        }
+    });
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, ItemGroup group)
     {

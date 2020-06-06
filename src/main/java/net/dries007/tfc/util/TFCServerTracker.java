@@ -20,9 +20,11 @@ import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.server.MinecraftServer;
 
+import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
 import net.dries007.tfc.objects.recipes.CollapseRecipe;
 import net.dries007.tfc.objects.recipes.LandslideRecipe;
 import net.dries007.tfc.objects.recipes.TFCRecipeTypes;
+import net.dries007.tfc.objects.types.MetalItemManager;
 
 /**
  * This is a simple reload listener that just notifies anything in need of being notified when resources reload (cache invalidations, etc.)
@@ -58,6 +60,8 @@ public enum TFCServerTracker implements IFutureReloadListener
             // Reload all recipe cache / ingredient maps.
             CollapseRecipe.CACHE.reload(getRecipes(TFCRecipeTypes.COLLAPSE));
             LandslideRecipe.CACHE.reload(getRecipes(TFCRecipeTypes.LANDSLIDE));
+            CapabilityHeat.HeatManager.CACHE.reload(CapabilityHeat.HeatManager.INSTANCE.getValues());
+            MetalItemManager.CACHE.reload(MetalItemManager.INSTANCE.getValues());
         }, gameExecutor);
     }
 
