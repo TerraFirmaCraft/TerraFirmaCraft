@@ -41,7 +41,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.IAnimalTFC;
-import net.dries007.tfc.api.types.IHuntable;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
@@ -53,9 +53,8 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-// This one is special, since it's familiarizable and is also a predator since it will attack you if provoked plus will hunt other livestock for food.
-// Since this don't fit in the predators list, but should be respawned over time, putting it into the huntable list
-public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
+// Changes in config allow placing this animal in livestock and still respawn
+public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, ILivestock
 {
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);

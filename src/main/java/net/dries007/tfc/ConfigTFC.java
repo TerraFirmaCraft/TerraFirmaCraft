@@ -725,6 +725,11 @@ public final class ConfigTFC
             @Config.Comment("Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots at the same time.")
             @Config.LangKey("config." + MOD_ID + ".devices.crucible.enableAllSlots")
             public boolean enableAllSlots = false;
+
+            @Config.Comment("How fast should crucibles accept fluids from molds / small vessel?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".devices.crucible.pouringSpeed")
+            public int pouringSpeed = 1;
         }
 
         public static final class CharcoalPitCFG
