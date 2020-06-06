@@ -18,11 +18,13 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -214,6 +216,13 @@ public class BlockPitKiln extends Block implements ILightableBlock
     public boolean isBurning(IBlockAccess world, BlockPos pos)
     {
         return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
+    }
+
+    @Nullable
+    @Override
+    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
+    {
+        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
     }
 
     @Override

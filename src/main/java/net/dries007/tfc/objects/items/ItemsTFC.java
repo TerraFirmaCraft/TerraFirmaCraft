@@ -254,6 +254,8 @@ public final class ItemsTFC
             simpleItems.add(register(r, "wood/boat/" + wood.getRegistryName().getPath(), new ItemBoatTFC(wood), CT_WOOD));
         }
 
+        simpleItems.add(register(r, "stick_bunch", new ItemMisc(Size.NORMAL, Weight.LIGHT), CT_WOOD));
+
         for (RockCategory cat : TFCRegistries.ROCK_CATEGORIES.getValuesCollection())
         {
             for (Rock.ToolType type : Rock.ToolType.values())
