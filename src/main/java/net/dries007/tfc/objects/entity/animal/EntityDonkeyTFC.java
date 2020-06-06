@@ -13,7 +13,10 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.BlockChest;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIRunAroundLikeCrazy;
@@ -31,6 +34,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -291,6 +295,65 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     }
 
     @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(GENDER, true);
+        getDataManager().register(BIRTHDAY, 0);
+        getDataManager().register(FAMILIARITY, 0f);
+        getDataManager().register(FERTILIZED, false);
+        getDataManager().register(PREGNANT_TIME, -1L);
+    }
+
+    @Override
+    public void onDeath(DamageSource cause)
+    {
+        if (!world.isRemote)
+        {
+            setChested(false); // Don't drop chest
+        }
+        super.onDeath(cause);
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setBoolean("gender", getGender().toBool());
+        nbt.setInteger("birth", getBirthDay());
+        nbt.setLong("fed", lastFed);
+        nbt.setLong("decay", lastFDecay);
+        nbt.setBoolean("fertilized", this.isFertilized());
+        nbt.setLong("mating", matingTime);
+        nbt.setFloat("familiarity", getFamiliarity());
+        nbt.setLong("lastDeath", lastDeath);
+        nbt.setLong("pregnant", getPregnantTime());
+        nbt.setBoolean("birthMule", birthMule);
+        nbt.setFloat("geneSpeed", geneSpeed);
+        nbt.setFloat("geneJump", geneJump);
+        nbt.setFloat("geneHealth", geneHealth);
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
+        this.setBirthDay(nbt.getInteger("birth"));
+        this.lastFed = nbt.getLong("fed");
+        this.lastFDecay = nbt.getLong("decay");
+        this.matingTime = nbt.getLong("mating");
+        this.setFertilized(nbt.getBoolean("fertilized"));
+        this.setFamiliarity(nbt.getFloat("familiarity"));
+        this.lastDeath = nbt.getLong("lastDeath");
+        this.setPregnantTime(nbt.getLong("pregnant"));
+        this.birthMule = nbt.getBoolean("birthMule");
+        this.geneSpeed = nbt.getFloat("geneSpeed");
+        this.geneJump = nbt.getFloat("geneSpeed");
+        this.geneHealth = nbt.getFloat("geneSpeed");
+    }
+
+    @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
@@ -367,94 +430,6 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     }
 
     @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        if (otherAnimal instanceof EntityHorseTFC || otherAnimal instanceof EntityDonkeyTFC)
-        {
-            IAnimalTFC other = (IAnimalTFC) otherAnimal;
-            return this.getGender() != other.getGender() && this.isInLove() && otherAnimal.isInLove();
-        }
-        return false;
-    }
-
-    @Nullable
-    @Override
-    public EntityAgeable createChild(@Nonnull EntityAgeable other)
-    {
-        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
-        {
-            this.setFertilized(true);
-            this.resetInLove();
-            this.onFertilized((IAnimalTFC) other);
-        }
-        else if (other == this)
-        {
-            // Only called if this animal is interacted with a spawn egg
-            EntityDonkeyTFC baby = new EntityDonkeyTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            this.setOffspringAttributes(this, baby);
-            return baby;
-        }
-        return null;
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        getDataManager().register(GENDER, true);
-        getDataManager().register(BIRTHDAY, 0);
-        getDataManager().register(FAMILIARITY, 0f);
-        getDataManager().register(FERTILIZED, false);
-        getDataManager().register(PREGNANT_TIME, -1L);
-    }
-
-    @Override
-    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.writeEntityToNBT(nbt);
-        nbt.setBoolean("gender", getGender().toBool());
-        nbt.setInteger("birth", getBirthDay());
-        nbt.setLong("fed", lastFed);
-        nbt.setLong("decay", lastFDecay);
-        nbt.setBoolean("fertilized", this.isFertilized());
-        nbt.setLong("mating", matingTime);
-        nbt.setFloat("familiarity", getFamiliarity());
-        nbt.setLong("lastDeath", lastDeath);
-        nbt.setLong("pregnant", getPregnantTime());
-        nbt.setBoolean("birthMule", birthMule);
-        nbt.setFloat("geneSpeed", geneSpeed);
-        nbt.setFloat("geneJump", geneJump);
-        nbt.setFloat("geneHealth", geneHealth);
-    }
-
-    @Override
-    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.readEntityFromNBT(nbt);
-        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
-        this.setBirthDay(nbt.getInteger("birth"));
-        this.lastFed = nbt.getLong("fed");
-        this.lastFDecay = nbt.getLong("decay");
-        this.matingTime = nbt.getLong("mating");
-        this.setFertilized(nbt.getBoolean("fertilized"));
-        this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.lastDeath = nbt.getLong("lastDeath");
-        this.setPregnantTime(nbt.getLong("pregnant"));
-        this.birthMule = nbt.getBoolean("birthMule");
-        this.geneSpeed = nbt.getFloat("geneSpeed");
-        this.geneJump = nbt.getFloat("geneSpeed");
-        this.geneHealth = nbt.getFloat("geneSpeed");
-    }
-
-    @Override
-    public void setScaleForAge(boolean child)
-    {
-        double ageScale = 1 / (2.0D - getPercentToAdulthood());
-        this.setScale((float) ageScale);
-    }
-
-    @Override
     protected void initEntityAI()
     {
         EntityAnimalTFC.addCommonLivestockAI(this, 1.2D);
@@ -462,6 +437,13 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
         tasks.addTask(2, new EntityAIMate(this, 1.0D, EntityHorseTFC.class)); // Missing horses (for mules)
         tasks.addTask(1, new EntityAIRunAroundLikeCrazy(this, 1.2D));
         tasks.addTask(5, new EntityAIFollowParent(this, 1.1D));
+    }
+
+    @Override
+    public void setScaleForAge(boolean child)
+    {
+        double ageScale = 1 / (2.0D - getPercentToAdulthood());
+        this.setScale((float) ageScale);
     }
 
     @Override
@@ -499,13 +481,13 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
                     if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
                     {
                         hugeHeavyCount++;
-                        if(hugeHeavyCount >= 2)
+                        if (hugeHeavyCount >= 2)
                         {
                             break;
                         }
                     }
                 }
-                if(hugeHeavyCount >= 2)
+                if (hugeHeavyCount >= 2)
                 {
                     // Does not work when ridden, mojang bug: https://bugs.mojang.com/browse/MC-121788
                     this.addPotionEffect(new PotionEffect(PotionEffectsTFC.OVERBURDENED, 25, 125, false, false));
@@ -555,6 +537,38 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_HORSE;
+    }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal instanceof EntityHorseTFC || otherAnimal instanceof EntityDonkeyTFC)
+        {
+            IAnimalTFC other = (IAnimalTFC) otherAnimal;
+            return this.getGender() != other.getGender() && this.isInLove() && otherAnimal.isInLove();
+        }
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public EntityAgeable createChild(@Nonnull EntityAgeable other)
+    {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
+        {
+            this.setFertilized(true);
+            this.resetInLove();
+            this.onFertilized((IAnimalTFC) other);
+        }
+        else if (other == this)
+        {
+            // Only called if this animal is interacted with a spawn egg
+            EntityDonkeyTFC baby = new EntityDonkeyTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            this.setOffspringAttributes(this, baby);
+            return baby;
+        }
+        return null;
     }
 
     /**

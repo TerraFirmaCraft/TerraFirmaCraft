@@ -16,7 +16,6 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.ai.EntityAIRunAroundLikeCrazy;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -32,6 +31,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -284,13 +284,13 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
                     if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
                     {
                         hugeHeavyCount++;
-                        if(hugeHeavyCount >= 2)
+                        if (hugeHeavyCount >= 2)
                         {
                             break;
                         }
                     }
                 }
-                if(hugeHeavyCount >= 2)
+                if (hugeHeavyCount >= 2)
                 {
                     // Does not work when ridden, mojang bug: https://bugs.mojang.com/browse/MC-121788
                     this.addPotionEffect(new PotionEffect(PotionEffectsTFC.OVERBURDENED, 25, 125, false, false));
@@ -355,6 +355,16 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
         getDataManager().register(FAMILIARITY, 0f);
+    }
+
+    @Override
+    public void onDeath(DamageSource cause)
+    {
+        if (!world.isRemote)
+        {
+            setChested(false); // Don't drop chest
+        }
+        super.onDeath(cause);
     }
 
     @Override
