@@ -39,14 +39,7 @@ public final class TerraFirmaCraft
     public static final String MOD_ID = "tfc";
     public static final String MOD_NAME = "TerraFirmaCraft";
 
-    private static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-
-    /* Deprecated for now, because individual classes should use their own logger if possible / it makes sense */
-    @Deprecated
-    public static Logger getLog()
-    {
-        return LOGGER;
-    }
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public TerraFirmaCraft()
     {

@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 
@@ -111,7 +112,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
     public Calendar()
     {
         // Initialize to default values
-        daysInMonth = 8; // todo ConfigTFC.General.MISC.defaultMonthLength;
+        daysInMonth = TFCConfig.COMMON.defaultMonthLength.get();
         playerTime = 0;
         calendarTime = (5 * daysInMonth * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
         doDaylightCycle = true;
@@ -142,10 +143,10 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
      *
      * @param worldTimeToSetTo a world time, obtained from {@link ServerWorld#getGameTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
      */
-    public long setTimeFromWorldTime(long worldTimeToSetTo)
+    public long setTimeFromDayTime(long worldTimeToSetTo)
     {
         // Calculate the offset to jump to
-        long worldTimeJump = (worldTimeToSetTo % ICalendar.TICKS_IN_DAY) - Calendar.CALENDAR_TIME.getWorldTime();
+        long worldTimeJump = (worldTimeToSetTo % ICalendar.TICKS_IN_DAY) - Calendar.CALENDAR_TIME.getDayTime();
         if (worldTimeJump < 0)
         {
             worldTimeJump += ICalendar.TICKS_IN_DAY;
@@ -268,11 +269,11 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         {
             calendarTime++;
         }
-        long deltaWorldTime = (world.getGameTime() % ICalendar.TICKS_IN_DAY) - CALENDAR_TIME.getWorldTime();
+        long deltaWorldTime = (world.getGameTime() % ICalendar.TICKS_IN_DAY) - CALENDAR_TIME.getDayTime();
         if (deltaWorldTime > 1 || deltaWorldTime < -1)
         {
             LOGGER.warn("World time and Calendar Time are out of sync! Trying to fix...");
-            LOGGER.warn("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTime, CALENDAR_TIME.getWorldTime(), playerTime, world.getGameTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
+            LOGGER.warn("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTime, CALENDAR_TIME.getDayTime(), playerTime, world.getGameTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
 
             // Check if tracking values are wrong
             boolean checkArePlayersLoggedOn = server.getPlayerList().getPlayers().size() > 0;

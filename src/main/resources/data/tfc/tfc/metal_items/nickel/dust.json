@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:dusts/nickel"
-  },
-  "metal": "tfc:nickel",
-  "amount": 100
-}

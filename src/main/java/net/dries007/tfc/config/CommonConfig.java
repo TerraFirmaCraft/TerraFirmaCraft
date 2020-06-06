@@ -53,6 +53,8 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue lukewarmTemperatureCutoff;
     public final ForgeConfigSpec.IntValue aridRainfallCutoff;
     public final ForgeConfigSpec.IntValue normalRainfallCutoff;
+    // World Generation - Misc
+    public final ForgeConfigSpec.IntValue defaultMonthLength;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -110,6 +112,10 @@ public class CommonConfig
 
         aridRainfallCutoff = builder.apply("aridRainfallCutoff").defineInRange("aridRainfallCutoff", 160, 0, 500);
         normalRainfallCutoff = builder.apply("normalRainfallCutoff").defineInRange("normalRainfallCutoff", 340, 0, 500);
+
+        innerBuilder.pop().push("misc");
+
+        defaultMonthLength = builder.apply("defaultMonthLength").defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().pop();
     }

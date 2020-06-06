@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:nuggets/cast_iron"
-  },
-  "metal": "tfc:cast_iron",
-  "amount": 10
-}

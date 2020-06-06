@@ -32,7 +32,7 @@ public interface IForging extends ICapabilityProvider
     @Nullable
     ResourceLocation getRecipeName();
 
-    /** todo
+    /** todo: requires anvil recipes
      * Sets the recipe name from an {@link AnvilRecipe}. If null, sets the recipe name to null
      */
     /*

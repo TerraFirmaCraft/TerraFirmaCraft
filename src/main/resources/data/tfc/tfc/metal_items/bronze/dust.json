@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:dusts/bronze"
-  },
-  "metal": "tfc:bronze",
-  "amount": 100
-}

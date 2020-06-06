@@ -79,7 +79,7 @@ public class Metal
         ZINC(0xFFBBB9C4, true, null, false, false),
         STERLING_SILVER(0xFFAC927B, true, null, false, false),
         WROUGHT_IRON(0xFF989897, true, TFCItemTier.WROUGHT_IRON, true, true),
-        CAST_IRON(0xFF989897, false, null, false, false), // todo color
+        CAST_IRON(0xFF989897, false, TFCItemTier.CAST_IRON, false, false), // todo color
         PIG_IRON(0xFF6A595C, false, null, false, false),
         STEEL(0xFF5F5F5F, true, TFCItemTier.STEEL, true, true),
         BLACK_STEEL(0xFF111111, true, TFCItemTier.BLACK_STEEL, true, true),
@@ -229,7 +229,7 @@ public class Metal
             return blockFactory.apply(metal);
         }
 
-        public boolean hasType(Default metal)
+        public boolean hasMetal(Default metal)
         {
             return type.hasType(metal);
         }
@@ -244,9 +244,6 @@ public class Metal
     public enum ItemType
     {
         INGOT("ingots", Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        NUGGET("nuggets", Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-        DUST("dusts", Type.DEFAULT, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
-
         DOUBLE_INGOT("double_ingots", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         SHEET("sheets", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
         DOUBLE_SHEET("double_sheets", Type.PART, metal -> new Item(new Item.Properties().group(TFCItemGroup.METAL))),
@@ -292,7 +289,6 @@ public class Metal
 
         SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.getItemTier(), new Item.Properties().group(TFCItemGroup.COMBAT)));
 
-
         public static final Metal.ItemType[] VALUES = values();
 
         public static Metal.ItemType valueOf(int i)
@@ -321,7 +317,7 @@ public class Metal
             return itemFactory.apply(metal);
         }
 
-        public boolean hasType(Default metal)
+        public boolean hasMetal(Default metal)
         {
             return type.hasType(metal);
         }
@@ -335,88 +331,6 @@ public class Metal
         {
             return tag != null;
         }
-
-        /*
-        public boolean hasType(Metal metal)
-        {
-            if (!metal.usable)
-            {
-                return this == ItemType.INGOT;
-            }
-            return !this.isToolItem() || metal.getToolMetal() != null;
-        }
-        /**
-         * Used to find out if the type has a mold
-         *
-         * @param metal Null, if checking across all types. If present, checks if the metal is compatible with the mold type
-         * @return if the type + metal combo have a valid mold
-         */
-        /*
-        public boolean hasMold(@Nullable Metal metal)
-        {
-            if (metal == null)
-            {
-                // Query for should the mold exist during registration
-                return hasMold;
-            }
-            if (this == ItemType.INGOT)
-            {
-                // All ingots are able to be cast in molds
-                return true;
-            }
-            if (hasMold)
-            {
-                // All tool metals can be used in tool molds with tier at most II
-                return metal.isToolMetal() && metal.getTier().isAtMost(Tier.TIER_II);
-            }
-            return false;
-        }
-        /**
-         * Does this item type require a tool metal to be made
-         *
-         * @return true if this must be made from a tool item type
-         */
-        /*
-        public boolean isToolItem()
-        {
-            return toolItem;
-        }
-        public int getArmorSlot()
-        {
-            return armorSlot;
-        }
-        public boolean isArmor() { return armorSlot != -1; }
-        /**
-         * What armor slot this ItemArmor should use? If this is not armor, return the MainHand slot
-         *
-         * @return which slot this item should be equipped.
-         */
-        /*
-        public EntityEquipmentSlot getEquipmentSlot()
-        {
-            switch (armorSlot)
-            {
-                case 0:
-                    return EntityEquipmentSlot.HEAD;
-                case 1:
-                    return EntityEquipmentSlot.CHEST;
-                case 2:
-                    return EntityEquipmentSlot.LEGS;
-                case 3:
-                    return EntityEquipmentSlot.FEET;
-                default:
-                    return EntityEquipmentSlot.MAINHAND;
-            }
-        }
-        public int getSmeltAmount()
-        {
-            return smeltAmount;
-        }
-        public String[] getPattern()
-        {
-            return pattern;
-        }
-        */
     }
 
     private enum Type
