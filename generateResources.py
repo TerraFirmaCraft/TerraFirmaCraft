@@ -1073,7 +1073,11 @@ for cropName, data in CROPS.items():
             )
         }
     )
-    blockstate(('dead_crop', cropName), data['model'], {texture: "tfc:blocks/crop/%s_dead" % cropName})
+    blockstate(
+        ('dead_crop', cropName), data['model'], {texture: "tfc:blocks/crop/%s_dead" % cropName},
+        {
+            'mature': {'false': {'textures': { texture: "tfc:blocks/crop/%s_dead_young" % cropName}}, 'true': {}}
+        })
 
 #   _____ _
 #  |_   _| |

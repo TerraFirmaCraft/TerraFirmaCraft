@@ -147,7 +147,7 @@ public class BlockRockVariant extends Block implements IItemSize
                 setHarvestLevel("shovel", 0);
                 break;
         }
-        if (type != Rock.Type.SPIKE) //since spikes don't generate ItemBlocks
+        if (type != Rock.Type.SPIKE && type != Rock.Type.ANVIL) //since spikes and anvils don't generate ItemBlocks
         {
             OreDictionaryHelper.registerRockType(this, type);
         }

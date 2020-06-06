@@ -10,6 +10,14 @@
   "variants": {
     "normal": [
       {}
-    ]
+    ],
+    "mature": {
+      "false": {
+        "textures": {
+          "crop": "tfc:blocks/crop/wheat_dead_young"
+        }
+      },
+      "true": {}
+    }
   }
 }
