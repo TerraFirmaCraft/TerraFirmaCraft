@@ -37,9 +37,9 @@ public class Rock
     {
         this.id = id;
         String rockCategoryName = JSONUtils.getString(json, "category");
-        this.category = Helpers.ignoreErrors(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
+        this.category = Helpers.mapExceptionToOptional(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).get().orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
         String sandColorName = JSONUtils.getString(json, "sand_color");
-        this.sandColor = Helpers.ignoreErrors(() -> SandBlockType.valueOf(sandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + sandColorName));
+        this.sandColor = Helpers.mapExceptionToOptional(() -> SandBlockType.valueOf(sandColorName.toUpperCase())).get().orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + sandColorName));
 
         this.blockVariants = Helpers.findRegistryObjects(json, "blocks", ForgeRegistries.BLOCKS, Arrays.asList(Rock.BlockType.values()), type -> type.name().toLowerCase());
     }
