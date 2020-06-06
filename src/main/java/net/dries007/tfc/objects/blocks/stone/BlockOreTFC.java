@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -92,6 +93,28 @@ public class BlockOreTFC extends Block
     public int damageDropped(IBlockState state)
     {
         return getMetaFromState(state);
+    }
+
+    /**
+     * Handle drops separately, so will always drop
+     */
+    @Override
+    public boolean canDropFromExplosion(Explosion explosionIn)
+    {
+        return false;
+    }
+
+    /**
+     * Ore blocks should always drop from explosions, see #1325
+     */
+    @Override
+    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
+    {
+        if (!world.isRemote)
+        {
+            dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
+        }
+        super.onBlockExploded(world, pos, explosion);
     }
 
     @Override

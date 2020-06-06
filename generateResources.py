@@ -128,6 +128,7 @@ POWDERS = [
     'malachite',
     'salt',
     'fertilizer',
+    'charcoal'
 ]
 WOOD_TYPES = [
     'ash',
