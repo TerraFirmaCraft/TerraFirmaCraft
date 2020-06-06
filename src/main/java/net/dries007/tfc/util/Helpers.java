@@ -6,7 +6,10 @@
 package net.dries007.tfc.util;
 
 import java.util.*;
-import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import com.google.gson.JsonObject;
@@ -130,15 +133,30 @@ public final class Helpers
         }
     }
 
-    public static <T> Optional<T> ignoreErrors(Callable<T> executor)
+    /**
+     * Maps a {@link Supplier} to a supplier of {@link Optional} by swallowing any runtime exceptions.
+     */
+    public static <T> Supplier<Optional<T>> mapExceptionToOptional(Supplier<T> unsafeSupplier)
     {
-        try
-        {
-            return Optional.of(executor.call());
-        }
-        catch (Exception e)
-        {
-            return Optional.empty();
-        }
+        return () -> {
+            try
+            {
+                return Optional.of(unsafeSupplier.get());
+            }
+            catch (RuntimeException e)
+            {
+                return Optional.empty();
+            }
+        };
+    }
+
+    public static <E extends Enum<E>, V> EnumMap<E, V> mapOfKeys(Class<E> enumClass, Function<E, V> valueMapper)
+    {
+        return mapOfKeys(enumClass, key -> true, valueMapper);
+    }
+
+    public static <E extends Enum<E>, V> EnumMap<E, V> mapOfKeys(Class<E> enumClass, Predicate<E> keyPredicate, Function<E, V> valueMapper)
+    {
+        return Arrays.stream(enumClass.getEnumConstants()).filter(keyPredicate).collect(Collectors.toMap(Function.identity(), valueMapper, (v, v2) -> v, () -> new EnumMap<>(enumClass)));
     }
 }
