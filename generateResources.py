@@ -1106,6 +1106,8 @@ for wood_type in WOOD_TYPES:
     model(('item', 'wood', 'fence_gate', wood_type), 'block/fence_gate_closed',
           {'texture': 'tfc:blocks/wood/planks/%s' % wood_type})
 
+model(('item','stick_bunch'), 'item/generated', {'layer0': 'tfc:items/stick_bunch'})
+
 # GEMS
 for gem in GEM_TYPES:
     for grade in GEM_GRADES:
