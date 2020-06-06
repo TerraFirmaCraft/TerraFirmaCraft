@@ -633,13 +633,16 @@ config.tfc.devices.bloomery.ticks.tooltip=Number of ticks required for a bloomer
 
 
 ### Crucible
-config.tfc.devices.crucible=Bloomery
+config.tfc.devices.crucible=Crucible
 
 config.tfc.devices.crucible.tank=Tank Storage
 config.tfc.devices.crucible.tank.tooltip=How much metal (units / mB) can a crucible hold?
 
 config.tfc.devices.crucible.enableAllSlots=Accept Pouring from All Slots
 config.tfc.devices.crucible.enableAllSlots.tooltip=Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots at the same time.
+
+config.tfc.devices.crucible.pouringSpeed=Pouring Speed
+config.tfc.devices.crucible.pouringSpeed.tooltip=How fast should crucibles accept fluids from molds / small vessel?
 
 
 ### Charcoal Pit
