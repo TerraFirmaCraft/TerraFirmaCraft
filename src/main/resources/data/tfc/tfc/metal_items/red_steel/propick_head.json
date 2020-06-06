@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/propick_head/red_steel"
+  },
+  "metal": "tfc:red_steel",
+  "amount": 100
+}

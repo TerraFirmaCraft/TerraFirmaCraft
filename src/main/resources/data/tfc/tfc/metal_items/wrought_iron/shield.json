@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/shield/wrought_iron"
+  },
+  "metal": "tfc:wrought_iron",
+  "amount": 400
+}

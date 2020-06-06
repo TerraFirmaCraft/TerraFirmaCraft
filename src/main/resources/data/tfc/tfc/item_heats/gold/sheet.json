@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:sheets/gold"
+  },
+  "heat_capacity": 0.6,
+  "forging_temperature": 636.0,
+  "welding_temperature": 848.0
+}
