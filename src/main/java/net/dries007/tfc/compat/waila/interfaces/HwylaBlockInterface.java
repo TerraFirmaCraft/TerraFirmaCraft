@@ -65,7 +65,12 @@ public class HwylaBlockInterface implements IWailaDataProvider, IWailaPlugin
     @Override
     public List<String> getWailaHead(ItemStack itemStack, List<String> currentTooltip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
-        currentTooltip.add(TextFormatting.WHITE.toString() + internal.getTitle(accessor.getWorld(), accessor.getPosition(), accessor.getNBTData()));
+        String title = internal.getTitle(accessor.getWorld(), accessor.getPosition(), accessor.getNBTData());
+        if (!title.isEmpty())
+        {
+            currentTooltip.clear();
+            currentTooltip.add(TextFormatting.WHITE.toString() + title);
+        }
         return currentTooltip;
     }
 

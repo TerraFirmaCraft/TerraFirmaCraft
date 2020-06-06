@@ -370,8 +370,20 @@ public final class BlocksTFC
         {
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Rock.Type type : Rock.Type.values())
+            {
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                    b.add(register(r, type.name().toLowerCase() + "/" + rock.getRegistryName().getPath(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
+                {
+                    if (type != Rock.Type.ANVIL)
+                    {
+                        b.add(register(r, type.name().toLowerCase() + "/" + rock.getRegistryName().getPath(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
+                    }
+                    else if (rock.getRockCategory().hasAnvil())
+                    {
+                        // Anvil registration is special, is has it's own folder
+                        register(r, "anvil/" + rock.getRegistryName().getPath(), BlockRockVariant.create(rock, type));
+                    }
+                }
+            }
             allBlockRockVariants = b.build();
             allBlockRockVariants.forEach(x ->
             {
@@ -379,7 +391,7 @@ public final class BlocksTFC
                 {
                     normalItemBlocks.add(new ItemBlockHeat(x, 1, 600));
                 }
-                else if (x.getType() != Rock.Type.SPIKE)
+                else if (x.getType() != Rock.Type.SPIKE && x.getType() != Rock.Type.ANVIL)
                 {
                     normalItemBlocks.add(new ItemBlockTFC(x));
                 }
@@ -507,11 +519,6 @@ public final class BlocksTFC
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "stone/button/" + rock.getRegistryName().getPath().toLowerCase(), new BlockButtonStoneTFC(rock), CT_DECORATIONS)));
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "stone/pressure_plate/" + rock.getRegistryName().getPath().toLowerCase(), new BlockPressurePlateTFC(rock), CT_DECORATIONS)));
             }
-
-            // Anvils are special because they don't have an ItemBlock + they only exist for certian types
-            for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                if (rock.getRockCategory().hasAnvil())
-                    register(r, "anvil/" + rock.getRegistryName().getPath(), new BlockStoneAnvil(rock));
 
             allWallBlocks = b.build();
             allStairsBlocks = stairs.build();

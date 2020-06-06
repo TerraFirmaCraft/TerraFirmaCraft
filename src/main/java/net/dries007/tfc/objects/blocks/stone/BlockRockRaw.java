@@ -102,10 +102,10 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
             if (!worldIn.isRemote)
             {
                 // Create a stone anvil
-                BlockStoneAnvil block = BlockStoneAnvil.get(this.rock);
-                if (block != null)
+                BlockRockVariant anvil = BlockRockVariant.get(this.rock, Rock.Type.ANVIL);
+                if (anvil instanceof BlockStoneAnvil)
                 {
-                    worldIn.setBlockState(pos, block.getDefaultState());
+                    worldIn.setBlockState(pos, anvil.getDefaultState());
                 }
             }
             return true;
