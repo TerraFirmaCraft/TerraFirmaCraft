@@ -45,6 +45,7 @@ import net.dries007.tfc.api.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
 import net.dries007.tfc.command.ClearWorldCommand;
 import net.dries007.tfc.command.HeatCommand;
+import net.dries007.tfc.command.TFCTimeCommand;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.ChunkDataRequestPacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -183,6 +184,7 @@ public final class ForgeEventHandler
         CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
         ClearWorldCommand.register(dispatcher);
         HeatCommand.register(dispatcher);
+        TFCTimeCommand.register(dispatcher);
 
         // Initialize calendar for the current server
         Calendar.INSTANCE.init(event.getServer());

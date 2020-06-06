@@ -34,6 +34,12 @@ import static net.dries007.tfc.objects.TFCItemGroup.METAL;
 import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
 
 
+/**
+ * Collection of all TFC blocks.
+ * Unused is as the registry object fields themselves may be unused but they are required to register each item.
+ * Whenever possible, avoid using hardcoded references to these, prefer tags or recipes.
+ */
+@SuppressWarnings("unused")
 public final class TFCBlocks
 {
     public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MOD_ID);
@@ -69,23 +75,11 @@ public final class TFCBlocks
         )
     );
 
-    public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Util.make(new EnumMap<>(Metal.Default.class), map -> {
-        for (Metal.Default metal : Metal.Default.values())
-        {
-            Map<Metal.BlockType, RegistryObject<Block>> inner = new EnumMap<>(Metal.BlockType.class);
-            for (Metal.BlockType type : Metal.BlockType.values())
-            {
-                if (type.hasType(metal))
-                {
-                    String name = ("metal/" + type.name() + "/" + metal.name()).toLowerCase();
-                    RegistryObject<Block> block = BLOCKS.register(name, () -> type.create(metal));
-                    TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(METAL)));
-                    inner.put(type, block);
-                }
-            }
-            map.put(metal, inner);
-        }
-    });
+    public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
+        Helpers.mapOfKeys(Metal.BlockType.class, type -> type.hasMetal(metal), type ->
+            register(("metal/" + type.name() + "/" + metal.name()).toLowerCase(), () -> type.create(metal), METAL)
+        )
+    );
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, ItemGroup group)
     {

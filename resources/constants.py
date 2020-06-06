@@ -54,7 +54,7 @@ METALS: Dict[str, Metal] = {
     'zinc': Metal(1, True, False, False, False, 0.21, 420),
     'sterling_silver': Metal(1, True, False, False, False, 0.35, 950),
     'wrought_iron': Metal(3, True, True, True, True, 0.35, 1535),
-    'cast_iron': Metal(1, False, False, False, False, 0.35, 1535),
+    'cast_iron': Metal(1, False, True, False, False, 0.35, 1535),
     'pig_iron': Metal(3, False, False, False, False, 0.35, 1535),
     'steel': Metal(4, True, True, True, True, 0.35, 1540),
     'black_steel': Metal(5, True, True, True, True, 0.35, 1485),
@@ -75,14 +75,11 @@ METAL_BLOCKS: Dict[str, MetalItem] = {
 }
 METAL_ITEMS: Dict[str, MetalItem] = {
     'ingot': MetalItem('default', 100, 'item/generated', 'forge:ingots'),
-    'nugget': MetalItem('default', 10, 'item/generated', 'forge:nuggets'),
-    'dust': MetalItem('default', 100, 'item/generated', 'forge:dusts'),
-    
     'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots'),
     'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets'),
     'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets'),
-    'rod': MetalItem('part', 50, 'item/generated', 'forge:rods'),
-    
+    'rod': MetalItem('part', 100, 'item/generated', 'forge:rods'),
+
     'tuyere': MetalItem('tool', 100, 'item/generated', ''),
     'pickaxe': MetalItem('tool', 100, 'item/handheld', ''),
     'pickaxe_head': MetalItem('tool', 100, 'item/generated', ''),

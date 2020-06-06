@@ -5,7 +5,11 @@
 
 package net.dries007.tfc.api.calendar;
 
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
+
+import net.dries007.tfc.util.Helpers;
 
 public interface ICalendarFormatted extends ICalendar
 {
@@ -18,7 +22,7 @@ public interface ICalendarFormatted extends ICalendar
 
     static long getTotalYears(long time, long daysInMonth)
     {
-        return 1000 + (time / (12 * daysInMonth * TICKS_IN_DAY));
+        return 1000 + (time / (MONTHS_IN_YEAR * daysInMonth * TICKS_IN_DAY));
     }
 
     /* Fraction Calculation Methods */
@@ -38,25 +42,21 @@ public interface ICalendarFormatted extends ICalendar
         return 1 + (int) ((time / TICKS_IN_DAY) % daysInMonth);
     }
 
+    static Month getMonthOfYear(long time, long daysInMonth)
+    {
+        return Month.valueOf((int) ((time / (TICKS_IN_DAY * daysInMonth)) % MONTHS_IN_YEAR));
+    }
+
     /* Format Methods */
 
-    /* todo
     static ITextComponent getTimeAndDate(long time, long daysInMonth)
     {
         return getTimeAndDate(getHourOfDay(time), getMinuteOfHour(time), getMonthOfYear(time, daysInMonth), getDayOfMonth(time, daysInMonth), getTotalYears(time, daysInMonth));
     }
-    */
 
-    /* todo
     static ITextComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
-        String monthName = TerraFirmaCraft.getProxy().getMonthName(month, false);
-        return TerraFirmaCraft.getProxy().getDate(hour, minute, monthName, day, years);
-    }*/
-
-    static Month getMonthOfYear(long time, long daysInMonth)
-    {
-        return Month.valueOf((int) ((time / (TICKS_IN_DAY * daysInMonth)) % 12));
+        return new TranslationTextComponent("tfc.tooltip.full_date", hour, minute, new TranslationTextComponent(Helpers.getEnumTranslationKey(month)), day, years);
     }
 
     /**
@@ -74,26 +74,10 @@ public interface ICalendarFormatted extends ICalendar
      */
     long getDaysInMonth();
 
-    /* todo
     default ITextComponent getTimeAndDate()
     {
         return getTimeAndDate(getTicks(), getDaysInMonth());
     }
-    */
-
-    /* todo
-    default ITextComponent getSeasonDisplayName()
-    {
-        return TerraFirmaCraft.getProxy().getMonthName(getMonthOfYear(), true);
-    }
-    */
-
-    /* todo
-    default ITextComponent getDisplayDayName()
-    {
-        return TerraFirmaCraft.getProxy().getDayName(getDayOfMonth(), getTotalDays());
-    }
-    */
 
     /**
      * Get the total number of years for display (i.e 1000, 1001, etc.)
@@ -109,7 +93,7 @@ public interface ICalendarFormatted extends ICalendar
      *
      * @return a value in [0, 24000) which should match the result of {@link ServerWorld#getDayTime()}
      */
-    default long getWorldTime()
+    default long getDayTime()
     {
         return (getTicks() - (6 * ICalendar.TICKS_IN_HOUR)) % ICalendar.TICKS_IN_DAY;
     }
@@ -154,5 +138,21 @@ public interface ICalendarFormatted extends ICalendar
     default int getMinuteOfHour()
     {
         return getMinuteOfHour(getTicks());
+    }
+
+    /**
+     * Gets the total number of ticks in a month.
+     */
+    default long getTicksInMonth()
+    {
+        return getTotalMonths() * TICKS_IN_DAY;
+    }
+
+    /**
+     * Gets the total number of ticks in a year.
+     */
+    default long getTicksInYear()
+    {
+        return getTotalMonths() * MONTHS_IN_YEAR * TICKS_IN_DAY;
     }
 }

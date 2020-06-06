@@ -11,6 +11,7 @@ public interface ICalendar
     int TICKS_IN_HOUR = 1000;
     int HOURS_IN_DAY = 24;
     int TICKS_IN_DAY = TICKS_IN_HOUR * HOURS_IN_DAY;
+    int MONTHS_IN_YEAR = 12;
     /* This needs to be a float, otherwise there are ~62 minutes per hour */
     float TICKS_IN_MINUTE = TICKS_IN_HOUR / 60f;
 

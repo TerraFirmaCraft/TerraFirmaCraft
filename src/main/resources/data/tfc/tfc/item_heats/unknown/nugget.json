@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:nuggets/unknown"
-  },
-  "heat_capacity": 0.5,
-  "forging_temperature": 750.0,
-  "welding_temperature": 1000.0
-}
