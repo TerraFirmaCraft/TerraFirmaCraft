@@ -95,11 +95,11 @@ tfc.tooltip.smelting=在 %s 中熔炼
 tfc.tooltip.liquid= - 液态
 tfc.tooltip.solid= - 固态
 tfc.tooltip.barrel_empty=空
-tfc.tooltip.barrel_fluid=含 %1$d mB 的 %2$s
+tfc.tooltip.barrel_fluid=含 %1$d mB %2$s
 tfc.tooltip.barrel_fluid_amount=%d mB
-tfc.tooltip.barrel_item=含 %1$dx% 2$s
+tfc.tooltip.barrel_item=含 %1$dx %2$s
 tfc.tooltip.barrel_item_in_fluid= 和 %1$dx %2$s
-tfc.tooltip.powderkeg_amount=含 %1$dx% 2$s
+tfc.tooltip.powderkeg_amount=含 %1$dx %2$s
 tfc.tooltip.powderkeg_empty=空
 tfc.tooltip.small_vessel_empty=空
 tfc.tooltip.small_vessel_item=%1$dx %2$s
@@ -144,8 +144,8 @@ tfc.tooltip.blast_furnace_melt_amount=熔化
 tfc.tooltip.blast_furnace_invalid_structure=无效的结构！
 tfc.tooltip.large_vessel_seal=密封大缸
 tfc.tooltip.large_vessel_unseal=启封大缸
-tfc.tooltip.powderkeg_seal=
-tfc.tooltip.powderkeg_unseal=
+tfc.tooltip.powderkeg_seal=密封火药桶
+tfc.tooltip.powderkeg_unseal=启封火药桶
 tfc.tooltip.goldpan.chunkworked=这片地区似乎已被过度开采。你或许发现不了什么。
 tfc.tooltip.smithing_skill=技能加成：%0.1f%%
 tfc.tooltip.crucible_alloy=含 %1$d mB 的 %2$s
@@ -245,8 +245,11 @@ config.tfc.general.debug=调试模式
 config.tfc.general.debug.enable=启用
 config.tfc.general.debug.enable.tooltip=激活一些额外的调试魔杖特性。启用额外的物品提示。
 
-config.tfc.general.debug.debugWorldGen=调试模式（危险）
-config.tfc.general.debug.debugWorldGen.tooltip=调试世界生成 [危险] 你的世界将会受到影响！不要在你正常的世界里使用！
+config.tfc.general.debug.debugWorldGenDanger=调试世界生成（危险）
+config.tfc.general.debug.debugWorldGenDanger.tooltip=调试世界生成 [危险] 你的世界将会受到影响！不要在你正常的世界里使用！
+
+config.tfc.general.debug.debugWorldGenSafe=调试世界生成（安全）
+config.tfc.general.debug.debugWorldGenSafe.tooltip=调试世界生成 [安全] 会在世界生成阶段输出一些调试信息、创建一些地图图像。不影响世界。
 
 
 ### Overrides
@@ -327,11 +330,11 @@ config.tfc.general.fallable.explosionCausesCollapse.tooltip=爆破未加工的�
 ### Difficulty
 config.tfc.general.difficulty=难度设置
 
-config.tfc.general.difficulty.animalSpawnCount=动物生成计数
-config.tfc.general.difficulty.animalSpawnCount.tooltip=控制平均每名玩家的动物上限，加载（生成）的所有种类动物 / 玩家。更大的值意味着玩家周围有更多的动物，增加了难度和肉类丰度（注意，过高的值可能对性能有负面影响）。
+config.tfc.general.difficulty.animalSpawnCount=动物重生成计数
+config.tfc.general.difficulty.animalSpawnCount.tooltip=控制平均每名玩家的动物上限，加载（重生成）的所有种类动物 / 玩家。更大的值意味着玩家周围有更多的动物，增加了难度和肉类丰度（注意，过高的值可能对性能有负面影响）。
 
-config.tfc.general.difficulty.mobSpawnCount=怪物生成计数
-config.tfc.general.difficulty.mobSpawnCount.tooltip=控制平均每名玩家的怪物上限，加载（生成）的怪物 / 玩家。更大的值意味着玩家周围有更多的怪物，增加了难度（注意，过高的值可能对性能有负面影响）。
+config.tfc.general.difficulty.mobSpawnCount=怪物重生成计数
+config.tfc.general.difficulty.mobSpawnCount.tooltip=控制平均每名玩家的怪物上限，加载（重生成）的怪物 / 玩家。更大的值意味着玩家周围有更多的怪物，增加了难度（注意，过高的值可能对性能有负面影响）。
 
 config.tfc.general.difficulty.preventMobsOnSurface=禁止怪物地表生成
 config.tfc.general.difficulty.preventMobsOnSurface.tooltip=禁止在地表生成怪物吗？
@@ -534,7 +537,7 @@ config.tfc.general.food.fruitTreeGrowthTimeModifier.tooltip=修改果树结果�
 
 ### Misc
 config.tfc.general.misc=杂项设置
-config.tfc.general.misc.tooltip=各种杂项的设置
+config.tfc.general.misc.tooltip=各种杂项的设置。
 
 config.tfc.general.misc.defaultMonthLength=默认月长度
 config.tfc.general.misc.defaultMonthLength.tooltip=当新建世界时默认的月长度（以天为单位）。通过使用 /timetfc 命令可以修改已存在的世界的月长度。
@@ -647,6 +650,9 @@ config.tfc.devices.crucible.tank.tooltip=坩埚能容纳多少金属？（单位
 
 config.tfc.devices.crucible.enableAllSlots=启用坩埚全槽灌注
 config.tfc.devices.crucible.enableAllSlots.tooltip=允许坩埚接受所有 9 个输入槽的金属浇注（来自小缸/模具）。
+
+config.tfc.devices.crucible.pouringSpeed=灌注速度
+config.tfc.devices.crucible.pouringSpeed.tooltip=坩埚从模具 / 小缸中接受液体的速度如何？
 
 
 ### Charcoal Pit
@@ -1034,7 +1040,7 @@ tfc.enum.day.saturday=周六
 tfc.enum.nutrient.grain=谷物
 tfc.enum.nutrient.vegetables=蔬菜
 tfc.enum.nutrient.fruit=水果
-tfc.enum.nutrient.meat=肉类
+tfc.enum.nutrient.protein=蛋白质
 tfc.enum.nutrient.dairy=乳制品
 
 #JEI
@@ -1205,6 +1211,7 @@ tile.tfc.sluice.name=洗矿槽
 tile.tfc.ice.name=冰
 tile.tfc.sea_ice.name=海冰
 tile.tfc.nest_box.name=巢箱
+tile.tfc.powderkeg.name=火药桶
 
 ## Decoration blocks
 tile.tfc.alabaster.bricks.cyan.name=青色雪花石膏砖块
@@ -3187,9 +3194,9 @@ item.tfc.ceramics.unfired.clay_flower_pot.name=未烧制的粘土花盆
 item.tfc.mortar.name=砂浆
 item.tfc.wrought_iron_grill.name=锻铁烤架
 item.tfc.alabaster_brick.name=雪花石砖
-item.tfc.metal.rod.gold=金棒
-item.tfc.metal.rod.wrought_iron=锻铁棒
-item.tfc.metal.rod.steel=钢棒
+item.tfc.metal.rod.gold.name=金棒
+item.tfc.metal.rod.wrought_iron.name=锻铁棒
+item.tfc.metal.rod.steel.name=钢棒
 item.tfc.brass_mechanisms.name=黄铜机件
 item.tfc.glue.name=胶水
 
@@ -3383,6 +3390,7 @@ item.tfc.brick.gneiss.name=片麻岩砖
 item.tfc.brick.marble.name=大理岩砖
 item.tfc.brick.ranite.name=花岗岩砖
 
+item.tfc.stick_bunch.name=木棍捆
 item.tfc.wood.lumber.ash.name=黑梣木材
 item.tfc.wood.lumber.aspen.name=山杨木材
 item.tfc.wood.lumber.birch.name=白桦木材
@@ -4127,7 +4135,8 @@ item.tfc.powder.limonite.name=褐铁矿粉
 item.tfc.powder.malachite.name=孔雀石粉
 item.tfc.powder.salt.name=盐
 item.tfc.powder.fertilizer.name=肥料
-item.tfc.powder.charcoal.name=
+item.tfc.powder.charcoal.name=煤粉
+
 
 item.tfc.ceramics.fired.mold.ingot.bismuth.name=未成形铋
 item.tfc.ceramics.fired.mold.ingot.bismuth_bronze.name=未成形铋铜
