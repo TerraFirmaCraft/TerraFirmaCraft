@@ -5,6 +5,7 @@
 
 import assets.metals
 import assets.stones
+import assets.gems
 import data.item_heats
 import data.metal_items
 import data.metals
@@ -31,6 +32,7 @@ def main():
 
     assets.stones.generate(rm)
     assets.metals.generate(rm)
+    assets.gems.generate(rm)
     lang.metals.generate(rm)
     lang.misc.generate(rm)
     

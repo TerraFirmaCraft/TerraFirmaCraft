@@ -6,6 +6,7 @@ def generate(rm: ResourceManager):
     # Item Groups
     rm.lang('itemGroup.tfc.rock.blocks', 'TFC Rock Blocks')
     rm.lang('itemGroup.tfc.metals', 'TFC Metals')
+    rm.lang('itemGroup.tfc.gems', 'TFC Gems')
     # Enums
     ## Metal Tiers
     rm.lang(dict((
