@@ -58,7 +58,7 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.PLAINS))
         {
             return ConfigTFC.Animals.PANTHER.rarity;
         }

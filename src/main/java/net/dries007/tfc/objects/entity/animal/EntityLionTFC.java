@@ -68,7 +68,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.PLAINS))
+            (biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
             return ConfigTFC.Animals.LION.rarity;
         }
