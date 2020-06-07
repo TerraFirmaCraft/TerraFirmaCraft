@@ -52,8 +52,7 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA
-                || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.DESERT))
         {
             return ConfigTFC.Animals.PIG.rarity;
         }

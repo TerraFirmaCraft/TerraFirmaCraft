@@ -72,7 +72,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
+            (biomeType == BiomeHelper.BiomeType.TAIGA))
         {
             return ConfigTFC.Animals.COW.rarity;
         }
