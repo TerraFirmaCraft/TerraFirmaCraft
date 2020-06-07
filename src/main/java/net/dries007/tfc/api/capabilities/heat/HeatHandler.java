@@ -56,7 +56,7 @@ public class HeatHandler implements IHeat
     @Override
     public float getTemperature()
     {
-        return CapabilityHeat.adjustTemp(temperature, heatCapacity, Calendar.PLAYER_TIME.getTicks() - lastUpdateTick);
+        return HeatCapability.adjustTemp(temperature, heatCapacity, Calendar.PLAYER_TIME.getTicks() - lastUpdateTick);
     }
 
     /**
@@ -92,7 +92,7 @@ public class HeatHandler implements IHeat
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        return CapabilityHeat.CAPABILITY.orEmpty(cap, capability);
+        return HeatCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
     @Override

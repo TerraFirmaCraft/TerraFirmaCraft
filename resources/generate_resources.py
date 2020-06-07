@@ -3,38 +3,32 @@
 
 # Script to run all resource generation
 
-import assets.metals
-import assets.stones
-import data.item_heats
-import data.metal_items
-import data.metals
-import data.ore_veins
-import data.rocks
-import lang.metals
-import lang.misc
-import recipes.collapse
-import vanilla.tags
 from mcresources import ResourceManager, clean_generated_resources
+
+import assets
+import collapse_recipes
+import data
+import ore_veins
+from constants import *
 
 
 def main():
     rm = ResourceManager('tfc', resource_dir='../src/main/resources')
     clean_generated_resources('/'.join(rm.resource_dir))
 
-    data.ore_veins.generate(rm)
-    data.rocks.generate(rm)
-    data.metals.generate(rm)
-    data.item_heats.generate(rm)
-    data.metal_items.generate(rm)
+    # do simple lang keys first, because it's ordered intentionally
+    rm.lang(DEFAULT_LANG)
 
-    recipes.collapse.generate(rm)
+    # generic assets / data
+    assets.generate(rm)
+    data.generate(rm)
 
-    assets.stones.generate(rm)
-    assets.metals.generate(rm)
-    lang.metals.generate(rm)
-    lang.misc.generate(rm)
-    
-    vanilla.tags.generate(rm)
+    # more complex stuff n things
+    ore_veins.generate(rm)
+    collapse_recipes.generate(rm)
+
+    # Random things
+    rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
 
     rm.flush()
 

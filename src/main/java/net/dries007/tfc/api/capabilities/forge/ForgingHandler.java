@@ -118,7 +118,7 @@ public class ForgingHandler implements IForging
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
     {
-        return CapabilityForging.CAPABILITY.orEmpty(cap, capability);
+        return ForgingCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
     /**

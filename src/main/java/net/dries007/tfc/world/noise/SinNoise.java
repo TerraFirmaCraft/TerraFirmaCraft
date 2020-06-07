@@ -13,6 +13,8 @@ import net.minecraft.util.math.MathHelper;
  */
 public class SinNoise
 {
+    private static final float PI = (float) Math.PI;
+
     private final float amplitude;
     private final float midpoint;
     private final float frequency;
@@ -38,6 +40,6 @@ public class SinNoise
 
     private float sin(float q)
     {
-        return midpoint + amplitude * MathHelper.sin(phaseShift + frequency * q);
+        return midpoint + amplitude * MathHelper.sin(PI * (phaseShift + frequency * q));
     }
 }

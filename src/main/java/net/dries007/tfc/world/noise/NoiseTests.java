@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import imageutil.Images;
-import net.dries007.tfc.config.LayerType;
+import net.dries007.tfc.config.NoiseLayerType;
 import net.dries007.tfc.world.biome.BiomeTemperature;
 
 @SuppressWarnings("unused")
@@ -31,8 +31,8 @@ public class NoiseTests
     {
         long seed = System.currentTimeMillis();
 
-        INoise2D temp = LayerType.SIN_Z.create(seed, 20_000).scaled(-10, 30);
-        INoise2D rainfall = LayerType.SIN_X.create(seed, 20_000).terraces(4).scaled(-50, 500).flattened(0, 500);
+        INoise2D temp = NoiseLayerType.PERIODIC_Z.create(seed, 20_000).scaled(-10, 30);
+        INoise2D rainfall = NoiseLayerType.PERIODIC_X.create(seed, 20_000).terraces(4).scaled(-50, 500).flattened(0, 500);
 
         IMAGES.color((value, min, max) -> TEMPERATURE_COLORS[BiomeTemperature.get((float) value).ordinal()]);
         IMAGES.draw("avg_temp", temp, -10, 30, -20000, -20000, 20000, 20000);

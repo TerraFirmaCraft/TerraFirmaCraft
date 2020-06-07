@@ -21,7 +21,6 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 // todo: need to reduce the frequency with which fissures are able to spawn next to eachother.
 public class FissureFeature extends Feature<BlockStateFeatureConfig>
@@ -41,28 +40,27 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
     {
         BlockPos pos = startPos.down(); // start slightly below the surface
-        ChunkDataProvider.get(worldIn).ifPresent(provider -> {
-            Rock bottomRock = provider.get(pos, ChunkData.Status.ROCKS, false).getRockData().getBottomRock(pos.getX(), pos.getZ());
-            BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).getDefaultState();
+        ChunkData data = ChunkData.get(worldIn, pos, ChunkData.Status.ROCKS, false);
+        Rock bottomRock = data.getRockData().getBottomRock(pos.getX(), pos.getZ());
+        BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).getDefaultState();
 
-            int depth = 2 + rand.nextInt(3);
-            int radius = 1 + rand.nextInt(2);
-            List<BlockPos> clearPositions = getCircle(pos, radius + 2);
+        int depth = 2 + rand.nextInt(3);
+        int radius = 1 + rand.nextInt(2);
+        List<BlockPos> clearPositions = getCircle(pos, radius + 2);
 
-            for (int y = 1; y < 4; y++)
+        for (int y = 1; y < 4; y++)
+        {
+            for (BlockPos clear : clearPositions)
             {
-                for (BlockPos clear : clearPositions)
-                {
-                    setBlockState(worldIn, clear.up(y), Blocks.AIR.getDefaultState());
-                }
+                setBlockState(worldIn, clear.up(y), Blocks.AIR.getDefaultState());
             }
+        }
 
-            Set<BlockPos> blocks = getCollapseSet(rand, pos, radius, depth);
-            for (BlockPos filling : blocks)
-            {
-                smartFill(worldIn, filling, blocks, rockState, config.state);
-            }
-        });
+        Set<BlockPos> blocks = getCollapseSet(rand, pos, radius, depth);
+        for (BlockPos filling : blocks)
+        {
+            smartFill(worldIn, filling, blocks, rockState, config.state);
+        }
         return true;
     }
 

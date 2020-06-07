@@ -18,6 +18,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
@@ -40,12 +41,13 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import com.mojang.brigadier.CommandDispatcher;
 import net.dries007.tfc.api.calendar.Calendar;
 import net.dries007.tfc.api.calendar.CalendarWorldData;
-import net.dries007.tfc.api.capabilities.forge.CapabilityForging;
+import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.api.capabilities.forge.ForgingHandler;
-import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
+import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.command.ClearWorldCommand;
 import net.dries007.tfc.command.HeatCommand;
 import net.dries007.tfc.command.TFCTimeCommand;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.ChunkDataRequestPacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -59,10 +61,10 @@ import net.dries007.tfc.util.TFCServerTracker;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
 import net.dries007.tfc.world.tracker.WorldTracker;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.vein.VeinTypeManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -143,17 +145,33 @@ public final class ForgeEventHandler
         if (world.getWorldType() == TFCWorldType.INSTANCE)
         {
             // Add the rock data to the chunk capability, for long term storage
-            ChunkData data = ChunkDataProvider.get(world)
-                .map(provider -> provider.remove(event.getObject().getPos()))
-                .orElseGet(ChunkData::new);
+            ChunkPos chunkPos = event.getObject().getPos();
+            ChunkData data = ChunkDataCache.get(chunkPos);
             event.addCapability(ChunkDataCapability.KEY, data);
         }
     }
 
     @SubscribeEvent
+    public static void onChunkLoad(ChunkEvent.Load event)
+    {
+        // Chunk has been loaded so ask the server to update the client cache
+        ChunkPos pos = event.getChunk().getPos();
+        if (event.getWorld().isRemote() && ChunkDataCache.get(pos).getStatus() == ChunkData.Status.DEFAULT)
+        {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ChunkDataRequestPacket(pos.x, pos.z));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onChunkUnload(ChunkEvent.Unload event)
+    {
+        ChunkDataCache.remove(event.getChunk().getPos());
+    }
+
+    @SubscribeEvent
     public static void onAttachCapabilitiesWorld(AttachCapabilitiesEvent<World> event)
     {
-        event.addCapability(CapabilityWorldTracker.KEY, new WorldTracker());
+        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker());
     }
 
     @SubscribeEvent
@@ -170,7 +188,7 @@ public final class ForgeEventHandler
         resourceManager.addReloadListener(SupportManager.INSTANCE);
 
         // Capability json data loader
-        resourceManager.addReloadListener(CapabilityHeat.HeatManager.INSTANCE);
+        resourceManager.addReloadListener(HeatCapability.HeatManager.INSTANCE);
 
         // Server tracker
         TFCServerTracker.INSTANCE.onServerStart(event.getServer());
@@ -188,18 +206,6 @@ public final class ForgeEventHandler
 
         // Initialize calendar for the current server
         Calendar.INSTANCE.init(event.getServer());
-    }
-
-    @SubscribeEvent
-    public static void onChunkLoad(ChunkEvent.Load event)
-    {
-        if (event.getWorld() != null && event.getWorld().isRemote())
-        {
-            // Client
-            // Ask the server for the chunk data and climate information
-            ChunkPos pos = event.getChunk().getPos();
-            PacketHandler.get().send(PacketDistributor.SERVER.noArg(), new ChunkDataRequestPacket(pos.x, pos.z));
-        }
     }
 
     @SubscribeEvent
@@ -228,7 +234,7 @@ public final class ForgeEventHandler
             if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()) && world instanceof World)
             {
                 // Here, we just record the position rather than immediately updating as this is called from `setBlockState` so it's preferred to handle it with just a little latency
-                ((World) world).getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                ((World) world).getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
             }
         }
     }
@@ -248,7 +254,7 @@ public final class ForgeEventHandler
     {
         if (event.phase == TickEvent.Phase.START)
         {
-            event.world.getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
+            event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
         }
     }
 
@@ -257,7 +263,7 @@ public final class ForgeEventHandler
     {
         if (!event.getWorld().isRemote)
         {
-            event.getWorld().getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
+            event.getWorld().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
         }
     }
 
@@ -268,36 +274,36 @@ public final class ForgeEventHandler
         if (!stack.isEmpty())
         {
             // Every item has a forging capability
-            event.addCapability(CapabilityForging.KEY, new ForgingHandler(stack));
+            event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
 
-            // Attach heat capability to the ones defined by datapacks
-            CapabilityHeat.HeatManager.CACHE.getAll(stack.getItem()).stream()
+            // Attach heat capability to the ones defined by data packs
+            HeatCapability.HeatManager.CACHE.getAll(stack.getItem())
+                .stream()
                 .filter(heatWrapper -> heatWrapper.isValid(stack))
-                .findFirst().map(CapabilityHeat.HeatWrapper::getCapability)
-                .ifPresent(heat -> event.addCapability(CapabilityHeat.KEY, heat));
+                .findFirst()
+                .map(HeatCapability.HeatWrapper::getCapability)
+                .ifPresent(heat -> event.addCapability(HeatCapability.KEY, heat));
         }
     }
 
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        final IWorld world = event.getWorld();
-
-        if (world instanceof ServerWorld && world.getDimension().getType() == DimensionType.OVERWORLD)
+        if (event.getWorld() instanceof ServerWorld && event.getWorld().getDimension().getType() == DimensionType.OVERWORLD)
         {
+            ServerWorld world = (ServerWorld) event.getWorld();
+
             // Calendar Sync / Initialization
-            CalendarWorldData data = CalendarWorldData.get((ServerWorld) world);
+            CalendarWorldData data = CalendarWorldData.get(world);
             Calendar.INSTANCE.resetTo(data.getCalendar());
-            PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(Calendar.INSTANCE));
-        }
+            PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(Calendar.INSTANCE));
 
-        /* todo
-        if (ConfigTFC.GENERAL.forceNoVanillaNaturalRegeneration)
-        {
-            // Natural regeneration should be disabled, allows TFC to have custom regeneration
-            event.getWorld().getGameRules().setOrCreateGameRule("naturalRegeneration", "false");
-            TerraFirmaCraft.getLog().warn("Updating gamerule naturalRegeneration to false!");
+            if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
+            {
+                // Natural regeneration should be disabled, allows TFC to have custom regeneration
+                world.getGameRules().get(GameRules.NATURAL_REGENERATION).set(false, world.getServer());
+                LOGGER.info("Updating gamerule naturalRegeneration to false!");
+            }
         }
-        */
     }
 }

@@ -15,7 +15,7 @@ import net.dries007.tfc.util.NoopStorage;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class CapabilityForging
+public class ForgingCapability
 {
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_forge");
     @CapabilityInject(IForging.class)

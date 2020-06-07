@@ -23,10 +23,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.api.calendar.Climate;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.objects.entities.TFCEntities;
-import net.dries007.tfc.util.climate.Climate;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -65,8 +65,8 @@ public final class ClientEventHandler
         IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> {
             if (pos != null && tintIndex == 0)
             {
-                // todo: change this to use monthly temp
-                double temp = MathHelper.clamp((Climate.getAvgTemp(pos) + 30) / 60, 0, 1);
+                // Bias both temperature + rainfall towards the edges
+                double temp = MathHelper.clamp((Climate.getTemperature(pos) + 30) / 60, 0, 1);
                 double rain = MathHelper.clamp((Climate.getRainfall(pos) - 50) / 400, 0, 1);
                 return GrassColors.get(temp, rain);
             }

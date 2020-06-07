@@ -14,7 +14,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
+import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -34,7 +34,7 @@ public final class HeatCommand
         final ItemStack stack = player.getHeldItemMainhand();
         if (!stack.isEmpty())
         {
-            stack.getCapability(CapabilityHeat.CAPABILITY).ifPresent(heat ->
+            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
             {
                 heat.setTemperature(value);
                 source.sendFeedback(new TranslationTextComponent(MOD_ID + ".command.heat", value), true);

@@ -23,8 +23,7 @@ public class CalendarUpdatePacket
 
     CalendarUpdatePacket(PacketBuffer buffer)
     {
-        instance = new Calendar();
-        instance.read(buffer);
+        instance = new Calendar(buffer);
     }
 
     void encode(PacketBuffer buffer)

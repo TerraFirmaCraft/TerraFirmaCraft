@@ -104,10 +104,26 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static void setup()
+    {
+        GameRules.RuleType<GameRules.BooleanValue> type = (GameRules.RuleType<GameRules.BooleanValue>) GameRules.GAME_RULES.get(GameRules.DO_DAYLIGHT_CYCLE);
+        type.changeListener = type.changeListener.andThen((server, t) -> {
+            // Avoid infinite game rule update recursion
+            if (!INSTANCE.processingGameRuleUpdates)
+            {
+                INSTANCE.processingGameRuleUpdates = true;
+                Calendar.INSTANCE.setDoDaylightCycle();
+                INSTANCE.processingGameRuleUpdates = false;
+            }
+        });
+    }
+
     private long playerTime, calendarTime;
     private int daysInMonth;
     private boolean doDaylightCycle, arePlayersLoggedOn;
     private MinecraftServer server;
+    private boolean processingGameRuleUpdates;
 
     public Calendar()
     {
@@ -117,6 +133,11 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         calendarTime = (5 * daysInMonth * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
         doDaylightCycle = true;
         arePlayersLoggedOn = false;
+    }
+
+    public Calendar(PacketBuffer buffer)
+    {
+        read(buffer);
     }
 
     public void setTimeFromCalendarTime(long calendarTimeToSetTo)
@@ -134,7 +155,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
             world.setGameTime(currentWorldTime + timeJump);
         }
 
-        PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+        PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
     }
 
     /**
@@ -155,7 +176,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         calendarTime += worldTimeJump;
         playerTime += worldTimeJump;
 
-        PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+        PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
         return worldTimeJump;
     }
 
@@ -242,7 +263,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server);
 
         resetTo(CalendarWorldData.get(server.getWorld(DimensionType.OVERWORLD)).getCalendar());
-        PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+        PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
     }
 
     /**
@@ -256,7 +277,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         }
         if (server.getTickCounter() % SYNC_INTERVAL == 0)
         {
-            PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+            PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
         }
     }
 
@@ -273,7 +294,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         if (deltaWorldTime > 1 || deltaWorldTime < -1)
         {
             LOGGER.warn("World time and Calendar Time are out of sync! Trying to fix...");
-            LOGGER.warn("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTime, CALENDAR_TIME.getDayTime(), playerTime, world.getGameTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
+            LOGGER.debug("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTime, CALENDAR_TIME.getDayTime(), playerTime, world.getGameTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
 
             // Check if tracking values are wrong
             boolean checkArePlayersLoggedOn = server.getPlayerList().getPlayers().size() > 0;
@@ -295,7 +316,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
                 calendarTime += deltaWorldTime;
                 LOGGER.info("Calendar is behind by {} ticks, jumping calendar time to catch up", deltaWorldTime);
             }
-            PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+            PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
         }
     }
 
@@ -312,7 +333,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         this.daysInMonth = newMonthLength;
         this.calendarTime = (baseMonths * daysInMonth + newDayOfMonth) * ICalendar.TICKS_IN_DAY + baseDayTime;
 
-        PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+        PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
     }
 
     public void setPlayersLoggedOn(boolean arePlayersLoggedOn)
@@ -330,7 +351,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
             LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
         }
 
-        PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+        PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
     }
 
     public void setDoDaylightCycle()
@@ -343,6 +364,6 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
             LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
         }
 
-        PacketHandler.get().send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+        PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
     }
 }
