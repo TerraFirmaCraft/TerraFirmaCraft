@@ -26,13 +26,13 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderGrouseTFC extends RenderLiving<EntityGrouseTFC>
 {
-    private static final ResourceLocation CHICKEN_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/chicken_young.png");
-    private static final ResourceLocation CHICKEN_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/chicken_old.png");
+    private static final ResourceLocation FEMALE_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/grouseF_young.png");
+    private static final ResourceLocation FEMALE_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/grouseF_old.png");
 
-    private static final ResourceLocation ROOSTER_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/rooster_young.png");
-    private static final ResourceLocation ROOSTER_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/rooster_old.png");
+    private static final ResourceLocation MALE_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/grouseM_young.png");
+    private static final ResourceLocation MALE_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/grouseM_old.png");
 
-    private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/chick.png");
+    private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/grouse_chick.png");
 
     public RenderGrouseTFC(RenderManager manager)
     {
@@ -57,11 +57,11 @@ public class RenderGrouseTFC extends RenderLiving<EntityGrouseTFC>
         }
         else if (grouse.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            return grouse.getAge() == IAnimalTFC.Age.OLD ? ROOSTER_OLD : ROOSTER_YOUNG;
+            return grouse.getAge() == IAnimalTFC.Age.OLD ? MALE_YOUNG : MALE_OLD;
         }
         else
         {
-            return grouse.getAge() == IAnimalTFC.Age.OLD ? CHICKEN_OLD : CHICKEN_YOUNG;
+            return grouse.getAge() == IAnimalTFC.Age.OLD ? FEMALE_YOUNG : FEMALE_OLD;
         }
     }
 

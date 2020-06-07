@@ -51,7 +51,7 @@ public class EntitiesTFC
         registerLiving("hyenatfc", EntityHyenaTFC.class, 0x666600, 0x331900);
         registerLiving("direwolftfc", EntityDireWolfTFC.class, 0x666600, 0x331900);
         registerLiving("haretfc", EntityHareTFC.class, 0x666600, 0x331900);
-        registerLiving("hogtfc", EntityHogTFC.class, 0x666600, 0x331900);
+        registerLiving("boartfc", EntityBoarTFC.class, 0x666600, 0x331900);
         registerLiving("zebutfc", EntityZebuTFC.class, 0x666600, 0x331900);
         registerLiving("sealiontfc", EntitySeaLionTFC.class, 0x666600, 0x331900);
         registerLiving("gazellefc", EntityGazelleTFC.class, 0x666600, 0x331900);

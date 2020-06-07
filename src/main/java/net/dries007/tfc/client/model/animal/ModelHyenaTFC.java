@@ -13,6 +13,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
 
+/**
+ * ModelHyenaTFC
+ * Created using Tabula 7.1.0
+ */
+
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
 public class ModelHyenaTFC extends ModelBase

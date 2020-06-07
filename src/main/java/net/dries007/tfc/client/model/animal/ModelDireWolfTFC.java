@@ -18,12 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityDireWolfTFC;
 
-@SideOnly(Side.CLIENT)
-@ParametersAreNonnullByDefault
 /**
  * ModelDireWolfTFC
  * Created using Tabula 7.1.0
  */
+
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelDireWolfTFC extends ModelBase
 {
     public ModelRenderer neckMane;

@@ -30,7 +30,7 @@ public class RenderWildebeestTFC extends RenderLiving<EntityWildebeestTFC>
     }
 
     @Override
-    protected float handleRotationFloat(EntityWildebeestTFC gazelle, float par2)
+    protected float handleRotationFloat(EntityWildebeestTFC wildebeest, float par2)
     {
         return 1.0f;
     }

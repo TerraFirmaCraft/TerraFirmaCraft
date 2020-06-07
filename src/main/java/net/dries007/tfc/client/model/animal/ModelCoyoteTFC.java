@@ -18,12 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityCoyoteTFC;
 
-@SideOnly(Side.CLIENT)
-@ParametersAreNonnullByDefault
 /**
- * ModelCoyoteTFC - Either Mojang or a mod author
+ * ModelCoyoteTFC
  * Created using Tabula 7.1.0
  */
+
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelCoyoteTFC extends ModelBase
 {
     public ModelRenderer backBody;

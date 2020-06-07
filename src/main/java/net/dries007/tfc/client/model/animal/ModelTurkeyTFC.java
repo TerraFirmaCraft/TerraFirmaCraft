@@ -18,12 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityTurkeyTFC;
 
-@SideOnly(Side.CLIENT)
-@ParametersAreNonnullByDefault
 /**
- * ModelTurkeyTFC - Either Mojang or a mod author
+ * ModelTurkeyTFC
  * Created using Tabula 7.1.0
  */
+
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelTurkeyTFC extends ModelBase
 {
     public ModelRenderer wingRMain;

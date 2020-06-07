@@ -36,22 +36,22 @@ public class RenderPheasantTFC extends RenderLiving<EntityPheasantTFC>
     }
 
     @Override
-    public void doRender(EntityPheasantTFC chicken, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityPheasantTFC pheasent, double par2, double par4, double par6, float par8, float par9)
     {
-        this.shadowSize = (float) (0.15f + chicken.getPercentToAdulthood() * 0.15f);
-        super.doRender(chicken, par2, par4, par6, par8, par9);
+        this.shadowSize = (float) (0.15f + pheasent.getPercentToAdulthood() * 0.15f);
+        super.doRender(pheasent, par2, par4, par6, par8, par9);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityPheasantTFC chicken)
+    protected ResourceLocation getEntityTexture(EntityPheasantTFC pheasent)
     {
-        float percent = (float) chicken.getPercentToAdulthood();
+        float percent = (float) pheasent.getPercentToAdulthood();
 
         if (percent < 0.65f)
         {
             return CHICK_TEXTURE;
         }
-        else if (chicken.getGender() == EntityAnimalTFC.Gender.MALE)
+        else if (pheasent.getGender() == EntityAnimalTFC.Gender.MALE)
         {
             return MALE_TEXTURE;
         }

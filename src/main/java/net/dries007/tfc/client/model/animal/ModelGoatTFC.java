@@ -19,6 +19,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityGoatTFC;
 
+/**
+ * ModelGoatTFC
+ * Created using Tabula 7.1.0
+ */
+
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
 public class ModelGoatTFC extends ModelBase

@@ -18,6 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityGrouseTFC;
 
+/**
+ * ModelGrouseTFC
+ * Created using Tabula 7.1.0
+ */
+
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
 public class ModelGrouseTFC extends ModelBase
