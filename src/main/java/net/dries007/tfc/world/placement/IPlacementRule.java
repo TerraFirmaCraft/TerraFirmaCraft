@@ -3,24 +3,24 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.vein;
+package net.dries007.tfc.world.placement;
 
 import java.util.function.BiPredicate;
 
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.json.TypeBasedDeserializer;
 
 /**
- * Rule used for vein placement. Called once before vein generation.
+ * Generic JSON based rule class for world generation
  *
  * To add and register new rules, see {@link Serializer}
  */
-public interface IVeinRule extends BiPredicate<IWorld, ChunkPos>
+public interface IPlacementRule extends BiPredicate<IWorld, BlockPos>
 {
-    class Serializer extends TypeBasedDeserializer<IVeinRule>
+    class Serializer extends TypeBasedDeserializer<IPlacementRule>
     {
         public static final Serializer INSTANCE = new Serializer();
 

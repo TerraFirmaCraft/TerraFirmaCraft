@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -46,9 +47,8 @@ public class ChunkDataRequestPacket
             if (player != null)
             {
                 World world = player.getServerWorld();
-                ChunkData.get(world.getChunk(chunkX, chunkZ)).ifPresent(data -> {
-                    PacketHandler.get().send(PacketDistributor.PLAYER.with(context.get()::getSender), new ChunkDataUpdatePacket(chunkX, chunkZ, data));
-                });
+                ChunkData data = ChunkData.get(world, new ChunkPos(chunkX, chunkZ), ChunkData.Status.CLIMATE, true);
+                PacketHandler.send(PacketDistributor.PLAYER.with(context.get()::getSender), data.getUpdatePacket(chunkX, chunkZ));
             }
         });
         context.get().setPacketHandled(true);

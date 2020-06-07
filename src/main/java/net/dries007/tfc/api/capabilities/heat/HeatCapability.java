@@ -29,7 +29,7 @@ import net.dries007.tfc.util.data.DataManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class CapabilityHeat
+public class HeatCapability
 {
     @CapabilityInject(IHeat.class)
     public static final Capability<IHeat> CAPABILITY = Helpers.notNull();

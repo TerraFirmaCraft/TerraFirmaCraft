@@ -24,6 +24,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.objects.blocks.soil.TFCGrassBlock;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 /**
@@ -94,15 +95,18 @@ public class ChunkBlockReplacer
         register(Blocks.RED_SANDSTONE, (rockData, x, y, z, rainfall, temperature, noise) -> rockData.getMidRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
     }
 
-    public void replace(IWorld worldGenRegion, IChunk chunk, Random random, RockData rockData, float rainfall, float temperature)
+    public void replace(IWorld worldGenRegion, IChunk chunk, Random random, ChunkData data)
     {
         BlockPos.Mutable pos = new BlockPos.Mutable();
         int xStart = chunk.getPos().getXStart();
         int zStart = chunk.getPos().getZStart();
+        RockData rockData = data.getRockData();
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
+                float temperature = data.getAverageTemp(x, z);
+                float rainfall = data.getRainfall(x, z);
                 float noise = random.nextFloat() - random.nextFloat(); // One simple "gaussian" noise value per column
 
                 for (int y = 0; y <= chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z); y++)

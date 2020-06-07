@@ -9,6 +9,9 @@ import java.util.Random;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.GenerationStage;
@@ -20,9 +23,11 @@ import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.api.calendar.Climate;
 import net.dries007.tfc.util.collections.DelayedRunnable;
 import net.dries007.tfc.world.feature.BoulderConfig;
 import net.dries007.tfc.world.feature.TFCFeatures;
@@ -141,5 +146,22 @@ public abstract class TFCBiome extends Biome
     public ISurfaceBuilderConfig getSurfaceBuilderConfig()
     {
         return getSurfaceBuilder().getConfig();
+    }
+
+    @Override
+    public float getTemperatureRaw(BlockPos pos)
+    {
+        // Vanilla expects < 0.15 = snowy, and generally returns values between -1 and 2.
+        return MathHelper.clamp(0.15f + Climate.getTemperature(pos) / 30f, -1, 2);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public int getGrassColor(double posX, double posZ)
+    {
+        BlockPos pos = new BlockPos(posX, 0, posZ);
+        double temp = MathHelper.clamp((Climate.getTemperature(pos) + 30) / 60, 0, 1);
+        double rain = MathHelper.clamp((Climate.getRainfall(pos) - 50) / 400, 0, 1);
+        return GrassColors.get(temp, rain);
     }
 }

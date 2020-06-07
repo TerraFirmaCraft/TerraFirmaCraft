@@ -12,10 +12,12 @@ import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.DirectionalPlaceContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +26,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.objects.TFCTags;
-import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 /**
  * A falling block entity that has a bit more oomph - it destroys blocks underneath it rather than hovering or popping off.
@@ -64,13 +66,13 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     @Override
     public void tick()
     {
-        if (getBlockState().isAir())
+        if (fallTile.isAir())
         {
             remove();
         }
         else
         {
-            Block block = getBlockState().getBlock();
+            Block block = fallTile.getBlock();
             if (fallTime++ == 0)
             {
                 // First tick, replace the existing block
@@ -135,28 +137,27 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                         remove();
                         if (!dontSetBlock)
                         {
-                            if (blockstate.isReplaceable(new DirectionalPlaceContext(this.world, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && getBlockState().isValidPosition(this.world, posAt) && !FallingBlock.canFallThrough(this.world.getBlockState(posAt.down())))
+                            if (blockstate.isReplaceable(new DirectionalPlaceContext(this.world, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallTile.isValidPosition(this.world, posAt) && !FallingBlock.canFallThrough(this.world.getBlockState(posAt.down())))
                             {
-                                // todo: if we want this to work, we need an AT on fallTile
-                                //if (getBlockState().has(BlockStateProperties.WATERLOGGED) && this.world.getFluidState(posAt).getFluid() == Fluids.WATER)
-                                //{
-                                //    this.fallTile = this.fallTile.with(BlockStateProperties.WATERLOGGED, Boolean.TRUE);
-                                //}
+                                if (fallTile.has(BlockStateProperties.WATERLOGGED) && this.world.getFluidState(posAt).getFluid() == Fluids.WATER)
+                                {
+                                    fallTile = fallTile.with(BlockStateProperties.WATERLOGGED, Boolean.TRUE);
+                                }
 
-                                if (world.setBlockState(posAt, getBlockState()))
+                                if (world.setBlockState(posAt, fallTile))
                                 {
                                     if (block instanceof FallingBlock)
                                     {
-                                        ((FallingBlock) block).onEndFalling(this.world, posAt, getBlockState(), blockstate);
+                                        ((FallingBlock) block).onEndFalling(this.world, posAt, fallTile, blockstate);
                                     }
 
-                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(getBlockState().getBlock()))
+                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(fallTile.getBlock()))
                                     {
-                                        world.getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
+                                        world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
                                     }
 
                                     // Sets the tile entity if it exists
-                                    if (tileEntityData != null && getBlockState().hasTileEntity())
+                                    if (tileEntityData != null && fallTile.hasTileEntity())
                                     {
                                         TileEntity tileEntity = world.getTileEntity(posAt);
                                         if (tileEntity != null)
