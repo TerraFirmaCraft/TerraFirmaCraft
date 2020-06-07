@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.carver;
 
 import java.util.Set;
@@ -20,6 +25,6 @@ public class TFCUnderwaterCaveWorldCarver extends UnderwaterCaveWorldCarver
         originalCarvableBlocks = carvableBlocks;
 
         // Need to run this every time the rock registry is reloaded
-        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCWorldCarvers.fixCarvableBlocksList(carvableBlocks));
+        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCWorldCarvers.fixCarvableBlocksList(originalCarvableBlocks));
     }
 }

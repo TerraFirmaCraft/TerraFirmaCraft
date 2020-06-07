@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/tuyere/copper"
+  },
+  "metal": "tfc:copper",
+  "amount": 100
+}

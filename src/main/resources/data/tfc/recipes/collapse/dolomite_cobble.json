@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/dolomite",
     "tfc:rock/raw/dolomite",
+    "tfc:rock/mossy_cobble/dolomite",
     "tfc:ore/bituminous_coal/dolomite",
     "tfc:ore/lignite/dolomite",
     "tfc:ore/kaolinite/dolomite",

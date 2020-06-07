@@ -1,9 +1,14 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.recipes;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 
 /**
  * This is a version of {@link net.minecraftforge.items.wrapper.RecipeWrapper} that is intended to be used for {@link IBlockRecipe}.
@@ -11,16 +16,16 @@ import net.minecraft.world.IBlockReader;
  */
 public class BlockRecipeWrapper extends ItemStackRecipeWrapper
 {
-    private final IBlockReader world;
+    private final World world;
     private final BlockPos pos;
     private final BlockState state;
 
-    public BlockRecipeWrapper(IBlockReader world, BlockPos pos)
+    public BlockRecipeWrapper(World world, BlockPos pos)
     {
         this(world, pos, world.getBlockState(pos));
     }
 
-    public BlockRecipeWrapper(IBlockReader world, BlockPos pos, BlockState state)
+    public BlockRecipeWrapper(World world, BlockPos pos, BlockState state)
     {
         super(new ItemStack(state.getBlock()));
         this.world = world;
@@ -28,7 +33,7 @@ public class BlockRecipeWrapper extends ItemStackRecipeWrapper
         this.state = state;
     }
 
-    public IBlockReader getWorld()
+    public World getWorld()
     {
         return world;
     }

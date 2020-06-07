@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/conglomerate",
     "tfc:rock/raw/conglomerate",
+    "tfc:rock/mossy_cobble/conglomerate",
     "tfc:ore/bituminous_coal/conglomerate",
     "tfc:ore/lignite/conglomerate",
     "tfc:ore/kaolinite/conglomerate",

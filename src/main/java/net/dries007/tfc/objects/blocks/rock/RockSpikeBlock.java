@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.blocks.rock;
 
 import net.minecraft.block.Block;
@@ -57,27 +62,22 @@ public class RockSpikeBlock extends Block
         }
     }
 
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(PART);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (TFCTags.CAN_COLLAPSE.contains(this))
+        if (TFCTags.Blocks.CAN_COLLAPSE.contains(this))
         {
             BlockPos downPos = pos.down();
             if (TFCFallingBlockEntity.canFallThrough(world, downPos))
             {
                 // Potential to collapse from the top
-                if (!world.isRemote && isUnattached(world, pos))
+                if (!world.isRemote && !isSupported(world, pos))
                 {
                     // Spike is unsupported
                     boolean collapsed = false;
                     BlockState stateAt = state;
+                    // Mark all blocks below for also collapsing
                     while (stateAt.getBlock() == this)
                     {
                         collapsed |= CollapseRecipe.collapseBlock(world, pos, stateAt);
@@ -93,11 +93,28 @@ public class RockSpikeBlock extends Block
         }
     }
 
-    private boolean isUnattached(World world, BlockPos pos)
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        BlockPos posUp = pos.up();
-        BlockState state = world.getBlockState(posUp);
-        return state.getBlock() != this && !state.isSolidSide(world, posUp, Direction.DOWN);
+        builder.add(PART);
+    }
+
+    private boolean isSupported(World world, BlockPos pos)
+    {
+        BlockState state = world.getBlockState(pos);
+        BlockState stateDown = world.getBlockState(pos.down());
+        // It can be directly supported below, by either a flat surface, *or* a spike that's larger than this one
+        if (stateDown.isSolidSide(world, pos.down(), Direction.UP) || (stateDown.getBlock() == this && stateDown.get(PART).ordinal() > state.get(PART).ordinal()))
+        {
+            return true;
+        }
+        // Otherwise, we need to walk upwards and find the roof
+        while (state.getBlock() == this)
+        {
+            pos = pos.up();
+            state = world.getBlockState(pos);
+        }
+        return state.isSolidSide(world, pos.up(), Direction.DOWN);
     }
 
     public enum Part implements IStringSerializable

@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/slate",
     "tfc:rock/raw/slate",
+    "tfc:rock/mossy_cobble/slate",
     "tfc:ore/bituminous_coal/slate",
     "tfc:ore/lignite/slate",
     "tfc:ore/kaolinite/slate",

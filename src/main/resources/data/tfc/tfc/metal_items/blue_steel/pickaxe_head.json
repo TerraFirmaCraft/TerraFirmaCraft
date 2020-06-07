@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/pickaxe_head/blue_steel"
+  },
+  "metal": "tfc:blue_steel",
+  "amount": 100
+}

@@ -22,9 +22,12 @@ public final class NoopStorage<T> implements Capability.IStorage<T>
     @Override
     public INBT writeNBT(Capability<T> capability, T instance, Direction side)
     {
-        return null;
+        throw new UnsupportedOperationException("This storage is non functional. Do not use it.");
     }
 
     @Override
-    public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt) {}
+    public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt)
+    {
+        throw new UnsupportedOperationException("This storage is non functional. Do not use it.");
+    }
 }

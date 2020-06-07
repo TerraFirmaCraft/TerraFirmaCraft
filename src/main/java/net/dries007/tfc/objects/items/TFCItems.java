@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.items;
 
+<<<<<<< HEAD
 import net.dries007.tfc.api.Gem;
 import net.dries007.tfc.api.Metal;
 import net.dries007.tfc.api.Rock;
@@ -13,19 +14,39 @@ import net.dries007.tfc.objects.TFCItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.Util;
+=======
+import java.util.Map;
+import java.util.function.Supplier;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+>>>>>>> cbeff1512e78942d033272a9b494e96e3b587f2b
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+<<<<<<< HEAD
 import java.util.EnumMap;
 import java.util.Map;
+=======
+import net.dries007.tfc.api.Metal;
+import net.dries007.tfc.api.RockCategory;
+import net.dries007.tfc.util.Helpers;
+>>>>>>> cbeff1512e78942d033272a9b494e96e3b587f2b
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+/**
+ * Collection of all TFC items.
+ * Unused is as the registry object fields themselves may be unused but they are required to register each item.
+ * Whenever possible, avoid using hardcoded references to these, prefer tags or recipes.
+ */
+@SuppressWarnings("unused")
 public final class TFCItems
 {
     public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MOD_ID);
 
+<<<<<<< HEAD
     public static final Map<Gem.Default, Map<Gem.Grade, RegistryObject<Item>>> GEMS = Util.make(new EnumMap<>(Gem.Default.class), map -> {
         for (Gem.Default gem : Gem.Default.values())
         {
@@ -38,4 +59,27 @@ public final class TFCItems
             map.put(gem, inner);
         }
     });
+=======
+    public static final Map<Metal.Default, Map<Metal.ItemType, RegistryObject<Item>>> METAL_ITEMS = Helpers.mapOfKeys(Metal.Default.class, metal ->
+        Helpers.mapOfKeys(Metal.ItemType.class, type -> type.hasMetal(metal), type ->
+            register(("metal/" + type.name() + "/" + metal.name()).toLowerCase(), () -> type.create(metal))
+        )
+    );
+
+    public static final Map<RockCategory, Map<RockCategory.ItemType, RegistryObject<Item>>> ROCK_TOOLS = Helpers.mapOfKeys(RockCategory.class, category ->
+        Helpers.mapOfKeys(RockCategory.ItemType.class, type ->
+            register(("stone/" + type.name() + "/" + category.name()).toLowerCase(), () -> type.create(category))
+        )
+    );
+
+    private static RegistryObject<Item> register(String name, ItemGroup group)
+    {
+        return register(name, () -> new Item(new Item.Properties().group(group)));
+    }
+
+    private static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item)
+    {
+        return ITEMS.register(name, item);
+    }
+>>>>>>> cbeff1512e78942d033272a9b494e96e3b587f2b
 }
