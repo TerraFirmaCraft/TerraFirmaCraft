@@ -198,7 +198,7 @@ public class TEAnvilTFC extends TEInventory
         {
             case SLOT_INPUT_1:
             case SLOT_INPUT_2:
-                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
             case SLOT_FLUX:
                 return OreDictionaryHelper.doesStackMatchOre(stack, "dustFlux");
             case SLOT_HAMMER:
