@@ -24,7 +24,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderBearTFC extends RenderLiving<EntityBearTFC>
 {
-    private static final ResourceLocation BEAR_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/predators/bear.png");
+    private static final ResourceLocation BEAR_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/predators/grizzlybear.png");
 
     public RenderBearTFC(RenderManager renderManager)
     {
