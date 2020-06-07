@@ -16,6 +16,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityHareTFC;
 
+/**
+ * ModelHareTFC
+ * Created using Tabula 7.1.0
+ */
+
 @SideOnly(Side.CLIENT)
 public class ModelHareTFC extends ModelBase
 {

@@ -31,17 +31,17 @@ import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityHogTFC extends EntityAnimalMammal implements IHuntable
+public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
 {
     private static final int DAYS_TO_ADULTHOOD = 16;
 
     @SuppressWarnings("unused")
-    public EntityHogTFC(World worldIn)
+    public EntityBoarTFC(World worldIn)
     {
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
-    public EntityHogTFC(World worldIn, Gender gender, int birthDay)
+    public EntityBoarTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
         this.setSize(1.0F, 1.0F);

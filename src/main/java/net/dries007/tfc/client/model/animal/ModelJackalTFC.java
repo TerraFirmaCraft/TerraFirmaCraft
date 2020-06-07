@@ -18,12 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityJackalTFC;
 
-@SideOnly(Side.CLIENT)
-@ParametersAreNonnullByDefault
 /**
- * ModelJackalTFC - Either Mojang or a mod author
+ * ModelJackalTFC
  * Created using Tabula 7.1.0
  */
+
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelJackalTFC extends ModelBase
 {
     public ModelRenderer backBody;

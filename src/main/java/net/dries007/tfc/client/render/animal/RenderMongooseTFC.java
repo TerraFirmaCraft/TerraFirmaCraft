@@ -14,9 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.dries007.tfc.client.model.animal.ModelHogTFC;
 import net.dries007.tfc.client.model.animal.ModelMongooseTFC;
-import net.dries007.tfc.objects.entity.animal.EntityHogTFC;
 import net.dries007.tfc.objects.entity.animal.EntityMongooseTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;

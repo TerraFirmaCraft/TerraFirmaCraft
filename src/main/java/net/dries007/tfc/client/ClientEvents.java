@@ -101,7 +101,7 @@ public class ClientEvents
         RenderingRegistry.registerEntityRenderingHandler(EntityHyenaTFC.class, RenderHyenaTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityDireWolfTFC.class, RenderDireWolfTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityHareTFC.class, RenderHareTFC::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityHogTFC.class, RenderHogTFC::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBoarTFC.class, RenderBoarTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityZebuTFC.class, RenderZebuTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntitySeaLionTFC.class, RenderSeaLionTFC::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityGazelleTFC.class, RenderGazelleTFC::new);

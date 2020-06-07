@@ -18,12 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntitySeaLionTFC;
 
-@SideOnly(Side.CLIENT)
-@ParametersAreNonnullByDefault
 /**
- * ModelSeaLionTFC - Either Mojang or a mod author
+ * ModelSeaLionTFC
  * Created using Tabula 7.1.0
  */
+
+@SideOnly(Side.CLIENT)
+@ParametersAreNonnullByDefault
 public class ModelSeaLionTFC extends ModelBase {
     public ModelRenderer backLFin1;
     public ModelRenderer frontLArm;

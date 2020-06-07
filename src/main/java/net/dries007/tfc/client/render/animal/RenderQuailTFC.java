@@ -16,10 +16,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
-import net.dries007.tfc.client.model.animal.ModelChickenTFC;
 import net.dries007.tfc.client.model.animal.ModelQuailTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
-import net.dries007.tfc.objects.entity.animal.EntityChickenTFC;
 import net.dries007.tfc.objects.entity.animal.EntityQuailTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
