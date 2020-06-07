@@ -4,6 +4,7 @@
   "ingredient": [
     "tfc:rock/cobble/diorite",
     "tfc:rock/raw/diorite",
+    "tfc:rock/mossy_cobble/diorite",
     "tfc:ore/bituminous_coal/diorite",
     "tfc:ore/lignite/diorite",
     "tfc:ore/kaolinite/diorite",

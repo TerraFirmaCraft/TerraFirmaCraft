@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.world.feature;
 
 import java.util.Random;
@@ -74,8 +79,12 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
 
     protected void placeSmallSpike(IWorld worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
+        placeSmallSpike(worldIn, pos, spike, raw, direction, rand, rand.nextFloat());
+    }
+
+    protected void placeSmallSpike(IWorld worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
+    {
         // Build a spike starting downwards from the target block
-        float sizeWeight = rand.nextFloat();
         if (sizeWeight < 0.2f)
         {
             replaceBlock(worldIn, pos, spike.with(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));

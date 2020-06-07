@@ -7,8 +7,8 @@ package net.dries007.tfc.util.climate;
 
 import java.util.Random;
 
+import net.dries007.tfc.api.calendar.Month;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.calendar.Month;
 
 public class ClimateHelper
 {

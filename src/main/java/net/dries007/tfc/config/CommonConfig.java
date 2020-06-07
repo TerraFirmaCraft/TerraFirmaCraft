@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.config;
 
 import java.util.function.Function;
@@ -40,6 +45,7 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue worleyCaveHeightFade;
     public final ForgeConfigSpec.DoubleValue worleyCaveBaseNoiseCutoff;
     public final ForgeConfigSpec.DoubleValue worleyCaveWorleyNoiseCutoff;
+    public final ForgeConfigSpec.IntValue caveSpikeMaxY;
     // World Generation - Biomes
     public final ForgeConfigSpec.IntValue frozenTemperatureCutoff;
     public final ForgeConfigSpec.IntValue coldTemperatureCutoff;
@@ -47,6 +53,8 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue lukewarmTemperatureCutoff;
     public final ForgeConfigSpec.IntValue aridRainfallCutoff;
     public final ForgeConfigSpec.IntValue normalRainfallCutoff;
+    // World Generation - Misc
+    public final ForgeConfigSpec.IntValue defaultMonthLength;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -90,9 +98,10 @@ public class CommonConfig
 
         innerBuilder.pop().push("caves");
 
-        worleyCaveHeightFade = builder.apply("worleyCaveHeightFade").defineInRange("worleyCaveHeightFade", 80, 0, 256);
+        worleyCaveHeightFade = builder.apply("worleyCaveHeightFade").defineInRange("worleyCaveHeightFade", 94, 0, 256);
         worleyCaveBaseNoiseCutoff = builder.apply("worleyCaveBaseNoiseCutoff").defineInRange("worleyCaveBaseNoiseCutoff", 0.3, 0, 1);
         worleyCaveWorleyNoiseCutoff = builder.apply("worleyCaveWorleyNoiseCutoff").defineInRange("worleyCaveWorleyNoiseCutoff", 0.38, 0, 1);
+        caveSpikeMaxY = builder.apply("caveSpikeMaxY").defineInRange("caveSpikeMaxY", 60, 0, 255);
 
         innerBuilder.pop().push("biomes");
 
@@ -103,6 +112,10 @@ public class CommonConfig
 
         aridRainfallCutoff = builder.apply("aridRainfallCutoff").defineInRange("aridRainfallCutoff", 160, 0, 500);
         normalRainfallCutoff = builder.apply("normalRainfallCutoff").defineInRange("normalRainfallCutoff", 340, 0, 500);
+
+        innerBuilder.pop().push("misc");
+
+        defaultMonthLength = builder.apply("defaultMonthLength").defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().pop();
     }

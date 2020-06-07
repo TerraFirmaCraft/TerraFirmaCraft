@@ -93,19 +93,15 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     @Override
     public void func_225550_a_(BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
     {
+        ChunkPos chunkPos = chunkIn.getPos();
         if (stage == GenerationStage.Carving.AIR)
         {
             // First, run worley cave carver
-            worleyCaveCarver.carve(chunkIn, blockReplacer, chunkIn.getPos().x << 4, chunkIn.getPos().z << 4, chunkIn.getCarvingMask(stage));
+            worleyCaveCarver.carve(chunkIn, chunkIn.getPos().x << 4, chunkIn.getPos().z << 4, chunkIn.getCarvingMask(stage));
         }
+
         // Fire other world carvers
         super.func_225550_a_(biomeManager, chunkIn, stage);
-    }
-
-    @Override
-    public void generateBiomes(IChunk chunkIn)
-    {
-        super.generateBiomes(chunkIn);
     }
 
     /**

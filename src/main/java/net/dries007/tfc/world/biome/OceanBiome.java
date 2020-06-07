@@ -45,8 +45,6 @@ public class OceanBiome extends TFCBiome
             TFCDefaultBiomeFeatures.addOceanCarvers(this);
             setSurfaceBuilder(TFCDefaultBiomeFeatures.getOceanSurfaceBuilder(this), TFCDefaultBiomeFeatures.getUnderwaterSurfaceConfig(this));
 
-            DefaultBiomeFeatures.addFreezeTopLayer(this);
-
             if (temperature == BiomeTemperature.FROZEN)
             {
                 DefaultBiomeFeatures.addIcebergs(this);

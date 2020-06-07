@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.objects.recipes;
 
 import javax.annotation.Nullable;
@@ -54,6 +59,11 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
     public ResourceLocation getId()
     {
         return id;
+    }
+
+    public IBlockIngredient getBlockIngredient()
+    {
+        return ingredient;
     }
 
     public static abstract class Serializer<R extends SimpleBlockRecipe> extends RecipeSerializer<R>

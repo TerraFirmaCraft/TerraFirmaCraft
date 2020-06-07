@@ -21,6 +21,7 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.objects.blocks.rock.RawRockBlock;
 import net.dries007.tfc.objects.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.util.Helpers;
@@ -36,9 +37,9 @@ public class Rock
     {
         this.id = id;
         String rockCategoryName = JSONUtils.getString(json, "category");
-        this.category = Helpers.ignoreErrors(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
+        this.category = Helpers.mapSafeOptional(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).get().orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
         String sandColorName = JSONUtils.getString(json, "sand_color");
-        this.sandColor = Helpers.ignoreErrors(() -> SandBlockType.valueOf(sandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + sandColorName));
+        this.sandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(sandColorName.toUpperCase())).get().orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + sandColorName));
 
         this.blockVariants = Helpers.findRegistryObjects(json, "blocks", ForgeRegistries.BLOCKS, Arrays.asList(Rock.BlockType.values()), type -> type.name().toLowerCase());
     }
@@ -95,7 +96,7 @@ public class Rock
 
     public enum BlockType
     {
-        RAW(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
+        RAW(rock -> new RawRockBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
         SMOOTH(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
         COBBLE(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
         BRICKS(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE))),
