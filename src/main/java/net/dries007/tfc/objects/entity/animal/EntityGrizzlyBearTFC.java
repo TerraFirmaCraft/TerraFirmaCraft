@@ -48,14 +48,14 @@ import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityBearTFC extends EntityAnimalMammal implements IPredator, EntityAIStandAttack.IEntityStandAttack
+public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredator, EntityAIStandAttack.IEntityStandAttack
 {
     private static final int DAYS_TO_ADULTHOOD = 480;
     private static final DataParameter<Boolean> IS_STANDING;
 
     static
     {
-        IS_STANDING = EntityDataManager.createKey(EntityBearTFC.class, DataSerializers.BOOLEAN);
+        IS_STANDING = EntityDataManager.createKey(EntityGrizzlyBearTFC.class, DataSerializers.BOOLEAN);
     }
 
     private float clientSideStandAnimation0;
@@ -63,12 +63,12 @@ public class EntityBearTFC extends EntityAnimalMammal implements IPredator, Enti
     private int warningSoundTicks;
 
     @SuppressWarnings("unused")
-    public EntityBearTFC(World worldIn)
+    public EntityGrizzlyBearTFC(World worldIn)
     {
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
-    public EntityBearTFC(World worldIn, Gender gender, int birthDay)
+    public EntityGrizzlyBearTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
         this.setSize(1.3F, 1.4F);
