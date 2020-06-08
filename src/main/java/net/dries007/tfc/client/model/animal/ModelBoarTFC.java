@@ -18,6 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityBoarTFC;
+import net.minecraft.client.model.ModelChicken;
+
 
 /**
  * ModelBoarTFC
@@ -150,7 +152,7 @@ public class ModelBoarTFC extends ModelBase
         legRFront.render(par7);
         legLFront.render(par7);
         legRBack.render(par7);
-        legRBack.render(par7);
+        legLBack.render(par7);
         GlStateManager.popMatrix();
     }
 

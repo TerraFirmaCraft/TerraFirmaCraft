@@ -395,6 +395,9 @@ public class ModelCamelTFC extends ModelBase
             GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
 
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.0D, 1.0D, 1.0D);
+
         neckBase.render(scale);
         frontLegLeftTop.render(scale);
         frontLegRightTop.render(scale);
@@ -404,6 +407,7 @@ public class ModelCamelTFC extends ModelBase
         bodyFront.render(scale);
         humpBottom.render(scale);
         humpTop.render(scale);
+        GlStateManager.popMatrix();
 
         bridleFront1.isHidden = true;
         bridleFront2.isHidden = true;

@@ -53,7 +53,7 @@ public class ModelHareTFC extends ModelBase
         setRotateAngle(hareRightThigh, -0.3665191429188092F, 0.0F, 0.0F);
         hareLeftEar = new ModelRenderer(this, 27, 2);
         hareLeftEar.mirror = true;
-        hareLeftEar.setRotationPoint(-0.5F, 15.0F, -1.0F);
+        hareLeftEar.setRotationPoint(-0.5F, -0.5F, -0.5F);
         hareLeftEar.addBox(0.0F, -9.5F, -2.0F, 3, 6, 1, 0.0F);
         setRotateAngle(hareLeftEar, 0.0F, 0.2617993877991494F, 0.2617993877991494F);
         hareRightFoot = new ModelRenderer(this, 48, 13);
@@ -63,7 +63,7 @@ public class ModelHareTFC extends ModelBase
         hareHead.setRotationPoint(0.0F, 15.5F, -1.0F);
         hareHead.addBox(-2.5F, -4.0F, -6.0F, 5, 4, 5, 0.2F);
         hareRightEar = new ModelRenderer(this, 27, 2);
-        hareRightEar.setRotationPoint(0.5F, 15.0F, -1.0F);
+        hareRightEar.setRotationPoint(0.5F, -0.5F, -0.5F);
         hareRightEar.addBox(-3.0F, -9.5F, -2.0F, 3, 6, 1, 0.0F);
         setRotateAngle(hareRightEar, 0.0F, -0.2617993877991494F, -0.2617993877991494F);
         hareNose = new ModelRenderer(this, 3, 1);
@@ -91,6 +91,9 @@ public class ModelHareTFC extends ModelBase
         hareLeftFoot.mirror = true;
         hareLeftFoot.setRotationPoint(3.0F, 17.5F, 3.7F);
         hareLeftFoot.addBox(-1.0F, 4.5F, -3.2F, 2, 2, 6, 0.0F);
+
+        hareHead.addChild(this.hareLeftEar);
+        hareHead.addChild(this.hareRightEar);
     }
 
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
@@ -102,22 +105,20 @@ public class ModelHareTFC extends ModelBase
             GlStateManager.pushMatrix();
             GlStateManager.scale(0.56666666F, 0.56666666F, 0.56666666F);
             GlStateManager.translate(0.0F, 22.0F * scale, 2.0F * scale);
-            this.hareHead.render(scale);
-            this.hareLeftEar.render(scale);
-            this.hareRightEar.render(scale);
-            this.hareNose.render(scale);
+            hareHead.render(scale);
+            hareNose.render(scale);
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             GlStateManager.scale(0.4F, 0.4F, 0.4F);
             GlStateManager.translate(0.0F, 36.0F * scale, 0.0F);
-            this.hareLeftFoot.render(scale);
-            this.hareRightFoot.render(scale);
-            this.hareLeftThigh.render(scale);
-            this.hareRightThigh.render(scale);
-            this.hareBody.render(scale);
-            this.hareLeftArm.render(scale);
-            this.hareRightArm.render(scale);
-            this.hareTail.render(scale);
+            hareLeftFoot.render(scale);
+            hareRightFoot.render(scale);
+            hareLeftThigh.render(scale);
+            hareRightThigh.render(scale);
+            hareBody.render(scale);
+            hareLeftArm.render(scale);
+            hareRightArm.render(scale);
+            hareTail.render(scale);
             GlStateManager.popMatrix();
         }
         else
@@ -125,18 +126,16 @@ public class ModelHareTFC extends ModelBase
             GlStateManager.pushMatrix();
             GlStateManager.scale(0.6F, 0.6F, 0.6F);
             GlStateManager.translate(0.0F, 16.0F * scale, 0.0F);
-            this.hareLeftFoot.render(scale);
-            this.hareRightFoot.render(scale);
-            this.hareLeftThigh.render(scale);
-            this.hareRightThigh.render(scale);
-            this.hareBody.render(scale);
-            this.hareLeftArm.render(scale);
-            this.hareRightArm.render(scale);
-            this.hareHead.render(scale);
-            this.hareRightEar.render(scale);
-            this.hareLeftEar.render(scale);
-            this.hareTail.render(scale);
-            this.hareNose.render(scale);
+            hareLeftFoot.render(scale);
+            hareRightFoot.render(scale);
+            hareLeftThigh.render(scale);
+            hareRightThigh.render(scale);
+            hareBody.render(scale);
+            hareLeftArm.render(scale);
+            hareRightArm.render(scale);
+            hareHead.render(scale);
+            hareTail.render(scale);
+            hareNose.render(scale);
             GlStateManager.popMatrix();
         }
     }
@@ -147,12 +146,12 @@ public class ModelHareTFC extends ModelBase
         EntityHareTFC EntityHareTFC = (EntityHareTFC) entityIn;
         this.hareNose.rotateAngleX = headPitch * 0.017453292F;
         this.hareHead.rotateAngleX = headPitch * 0.017453292F;
-        this.hareRightEar.rotateAngleX = headPitch * 0.017453292F;
-        this.hareLeftEar.rotateAngleX = headPitch * 0.017453292F;
+        //this.hareRightEar.rotateAngleX = headPitch * 0.017453292F;
+        //this.hareLeftEar.rotateAngleX = headPitch * 0.017453292F;
         this.hareNose.rotateAngleY = netHeadYaw * 0.017453292F;
         this.hareHead.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.hareRightEar.rotateAngleY = this.hareNose.rotateAngleY - 0.2617994F;
-        this.hareLeftEar.rotateAngleY = this.hareNose.rotateAngleY + 0.2617994F;
+        //this.hareRightEar.rotateAngleY = this.hareNose.rotateAngleY - 0.2617994F;
+        //this.hareLeftEar.rotateAngleY = this.hareNose.rotateAngleY + 0.2617994F;
         this.jumpRotation = MathHelper.sin(EntityHareTFC.getJumpCompletion(f) * (float) Math.PI);
         this.hareLeftThigh.rotateAngleX = (this.jumpRotation * 50.0F - 21.0F) * 0.017453292F;
         this.hareRightThigh.rotateAngleX = (this.jumpRotation * 50.0F - 21.0F) * 0.017453292F;

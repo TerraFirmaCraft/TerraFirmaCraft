@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -64,21 +66,27 @@ public class ModelOcelotTFC extends ModelBase
         this.ocelotFrontRightLeg.setRotationPoint(-1.2F, 13.8F, -5.0F);
     }
 
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    @Override
+    public void render(@Nonnull Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
-        if (((EntityAnimal) entityIn).isChild())
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+
+        if (((EntityAnimal) entity).isChild())
         {
             double ageScale = 1;
             double percent = 1;
-            if (entityIn instanceof IAnimalTFC)
+            if (entity instanceof IAnimalTFC)
             {
-                percent = ((IAnimalTFC) entityIn).getPercentToAdulthood();
+                percent = ((IAnimalTFC) entity).getPercentToAdulthood();
                 ageScale = 1 / (2.0D - percent);
             }
             GlStateManager.scale(ageScale, ageScale, ageScale);
             GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.0D, 1.0D, 1.0D);
+
         this.ocelotHead.render(scale);
         this.ocelotBody.render(scale);
         this.ocelotTail.render(scale);
@@ -87,6 +95,7 @@ public class ModelOcelotTFC extends ModelBase
         this.ocelotBackRightLeg.render(scale);
         this.ocelotFrontLeftLeg.render(scale);
         this.ocelotFrontRightLeg.render(scale);
+        GlStateManager.popMatrix();
     }
 
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)

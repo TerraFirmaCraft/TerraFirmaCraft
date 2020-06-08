@@ -67,7 +67,7 @@ public class ModelLionTFC extends ModelBase
     public ModelRenderer backLeftPaw;
     public ModelRenderer frontBodyF;
     public ModelRenderer backBodyF;
-    public ModelRenderer neckF;
+    public ModelRenderer neck;
 
 
     public ModelLionTFC()
@@ -125,7 +125,7 @@ public class ModelLionTFC extends ModelBase
         setRotation(earFL, 0.0F, 0.17453292519943295F, 0.17453292519943295F);
         frontBodyM = new ModelRenderer(this, 41, 0);
         frontBodyM.setRotationPoint(0.0F, 21.0F, 0.0F);
-        frontBodyM.addBox(-4.0F, -14.9F, -9.0F, 8, 11, 13, 0.0F);
+        frontBodyM.addBox(-4.0F, -14.9F, -9.0F, 8, 10, 13, 0.0F);
         nose = new ModelRenderer(this, 56, 60);
         nose.setRotationPoint(0.0F, -0.8F, -5.8F);
         nose.addBox(-1.0F, -2.0F, -4.7F, 2, 2, 5, 0.0F);
@@ -140,10 +140,10 @@ public class ModelLionTFC extends ModelBase
         backBodyF = new ModelRenderer(this, 49, 27);
         backBodyF.setRotationPoint(0.0F, 21.0F, 0.0F);
         backBodyF.addBox(-3.0F, -14.9F, 4.0F, 6, 7, 7, 0.0F);
-        neckF = new ModelRenderer(this, 52, 27);
-        neckF.setRotationPoint(0.0F, -12.0F, -6.4F);
-        neckF.addBox(-2.5F, -2.5F, -5.0F, 5, 6, 5, 0.0F);
-        setRotation(neckF, -0.6108652381980153F, 0.0F, 0.0F);
+        neck = new ModelRenderer(this, 52, 27);
+        neck.setRotationPoint(0.0F, -12.0F, -6.4F);
+        neck.addBox(-2.5F, -2.5F, -5.0F, 5, 6, 5, 0.0F);
+        setRotation(neck, -0.6108652381980153F, 0.0F, 0.0F);
 
         frontRightLegTop = new ModelRenderer(this, 0, 75);
         frontRightLegTop.setRotationPoint(-4.0F, 8.0F, -6.5F);
@@ -222,7 +222,8 @@ public class ModelLionTFC extends ModelBase
         head.addChild(earFL);
         head.addChild(earML);
         head.addChild(nose);
-        frontBodyF.addChild(neckF);
+        frontBodyF.addChild(neck);
+        frontBodyM.addChild(neck);
 
         frontRightLegTop.addChild(frontRightLegMiddle);
         frontRightLegMiddle.addChild(frontRightLegBottom);
@@ -248,13 +249,6 @@ public class ModelLionTFC extends ModelBase
 
         float percent = (float) lion.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
-        float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
-        GlStateManager.pushMatrix();
-
-        GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
-        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
-        GlStateManager.translate(0.0F, 0, 0.1875f - (0.1875f * percent));
-
 
         if (lion.getGender() == EntityAnimalTFC.Gender.MALE)
         {
@@ -269,6 +263,18 @@ public class ModelLionTFC extends ModelBase
             mane2.isHidden = false;
             mane3.isHidden = false;
 
+            if (percent < 0.6)
+            {
+                mane1.isHidden = true;
+                mane2.isHidden = true;
+                mane3.isHidden = true;
+            }
+            else if (percent < 0.8)
+            {
+                mane1.isHidden = false;
+                mane2.isHidden = true;
+                mane3.isHidden = true;
+            }
         }
         else
         {
@@ -280,18 +286,16 @@ public class ModelLionTFC extends ModelBase
             backBodyM.isHidden = true;
             frontBodyF.isHidden = false;
             backBodyF.isHidden = false;
-            //neckF.isHidden = false;
+            mane1.isHidden = true;
             mane2.isHidden = true;
             mane3.isHidden = true;
         }
 
-        head.render(par7);
-
-        GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
         GlStateManager.translate(0.0F, 0.75f - (0.75f * percent), 0f);
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
 
+        head.render(par7);
         frontBodyM.render(par7);
         frontBodyF.render(par7);
         backBodyM.render(par7);
@@ -299,13 +303,10 @@ public class ModelLionTFC extends ModelBase
         tail.render(par7);
         mane2.render(par7);
         mane3.render(par7);
-
         frontLeftLegTop.render(par7);
         frontRightLegTop.render(par7);
         backLeftLegTop.render(par7);
         backRightLegTop.render(par7);
-
-
         GlStateManager.popMatrix();
     }
 
@@ -330,7 +331,6 @@ public class ModelLionTFC extends ModelBase
             mouthAngle = 0;
         }
 
-
         this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
         this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
         this.frontRightLegTop.rotateAngleX = MathHelper.cos(par1 * 0.4662F) * 0.8F * par2;
@@ -338,6 +338,10 @@ public class ModelLionTFC extends ModelBase
         this.backRightLegTop.rotateAngleX = MathHelper.cos(par1 * 0.4662F + (float) Math.PI) * 0.8F * par2;
         this.backLeftLegTop.rotateAngleX = MathHelper.cos(par1 * 0.4662F) * 0.8F * par2;
         this.mouthBottom.rotateAngleX = 0.0873F + mouthAngle;
+
+        mane1.isHidden = false;
+        mane2.isHidden = false;
+        mane3.isHidden = false;
     }
 
     public void setRotation(ModelRenderer modelRenderer, float x, float y, float z)

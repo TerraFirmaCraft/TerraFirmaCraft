@@ -164,6 +164,7 @@ public class ModelMongooseTFC extends ModelBase
         legLBack.render(par7);
         legRBack.render(par7);
         rump.render(par7);
+        GlStateManager.popMatrix();
     }
 
     @Override

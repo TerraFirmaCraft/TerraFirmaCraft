@@ -218,11 +218,10 @@ public class ModelPantherTFC extends ModelBase
             GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
 
-        head.render(f5);
-
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0D, 1.0D, 1.0D);
 
+        head.render(f5);
         neck.render(f5);
         neckBase.render(f5);
         frontBody.render(f5);

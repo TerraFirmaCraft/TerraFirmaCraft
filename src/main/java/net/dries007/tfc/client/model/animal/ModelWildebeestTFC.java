@@ -12,10 +12,12 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityWildebeestTFC;
 
 /**
@@ -242,34 +244,37 @@ public class ModelWildebeestTFC extends ModelBase
     }
 
     @Override
-    public void render(@Nonnull Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(@Nonnull Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
-        EntityWildebeestTFC wildebeest = ((EntityWildebeestTFC) entity);
+        if (((EntityAnimal) entity).isChild())
+        {
+            double ageScale = 1;
+            double percent = 1;
+            if (entity instanceof IAnimalTFC)
+            {
+                percent = ((IAnimalTFC) entity).getPercentToAdulthood();
+                ageScale = 1 / (2.0D - percent);
+            }
+            GlStateManager.scale(ageScale, ageScale, ageScale);
+            GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
+        }
 
-        running = false;
-        float age = (float) (1f - wildebeest.getPercentToAdulthood());
-
-        float aa = 2F - (1.0F - age);
-        GlStateManager.translate(0.0F, -6F * f5 * age / (float) Math.pow(aa, 0.4), 0);
         GlStateManager.pushMatrix();
-        float ab = (float) Math.sqrt(1.0F / aa);
-        GlStateManager.scale(ab, ab, ab);
-        GlStateManager.translate(0.0F, 22F * f5 * age / (float) Math.pow(aa, 0.4), 2F * f5 * age / ab);
+        GlStateManager.scale(1.0D, 1.0D, 1.0D);
 
-        headBase.render(f5);
-        legRFront.render(f5);
-        legLFront.render(f5);
-        thighRBack.render(f5);
-        thighLBack.render(f5);
-        tail.render(f5);
-        collar.render(f5);
-        neck.render(f5);
-        rump.render(f5);
-        body.render(f5);
-        rump.render(f5);
+        headBase.render(scale);
+        legRFront.render(scale);
+        legLFront.render(scale);
+        thighRBack.render(scale);
+        thighLBack.render(scale);
+        tail.render(scale);
+        collar.render(scale);
+        neck.render(scale);
+        rump.render(scale);
+        body.render(scale);
+        rump.render(scale);
         GlStateManager.popMatrix();
     }
 
