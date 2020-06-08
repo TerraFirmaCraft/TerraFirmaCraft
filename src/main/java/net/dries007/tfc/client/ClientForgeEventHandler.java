@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.MetalItem;
 import net.dries007.tfc.api.calendar.Calendar;
-import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
+import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -73,15 +73,15 @@ public class ClientForgeEventHandler
                 list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
                 // Always add calendar info
-                //list.add(I18n.format("tfc.tooltip.date", CalendarTFC.CALENDAR_TIME.getTimeAndDate()));
+                list.add(I18n.format("tfc.tooltip.date", Calendar.CALENDAR_TIME.getTimeAndDate()));
                 list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendar.PLAYER_TIME.getTicks(), Calendar.CALENDAR_TIME.getTicks()));
 
                 IChunk chunk = mc.world.getChunk(pos);
                 ChunkData.get(chunk).ifPresent(data -> {
                     if (data.getStatus().isAtLeast(ChunkData.Status.CLIMATE))
                     {
-                        list.add(String.format("%sAvg. Temp: %s%.1f\u00b0C", GRAY, WHITE, data.getAverageTemp()));
-                        list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall()));
+                        list.add(String.format("%sAvg. Temp: %s%.1f\u00b0C", GRAY, WHITE, data.getAverageTemp(pos)));
+                        list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall(pos)));
                     }
                     else
                     {
@@ -101,7 +101,7 @@ public class ClientForgeEventHandler
         if (!stack.isEmpty() && player != null)
         {
             MetalItem.addTooltipInfo(stack, text);
-            stack.getCapability(CapabilityHeat.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
+            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
         }
     }
 }

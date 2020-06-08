@@ -157,7 +157,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
     {
-        return CapabilityWorldTracker.CAPABILITY.orEmpty(cap, capability);
+        return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
     private void updateLandslidePositions()

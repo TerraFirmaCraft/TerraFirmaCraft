@@ -9,42 +9,44 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.LerpFloatLayer;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
 public class ChunkDataUpdatePacket
 {
     private final int chunkX;
     private final int chunkZ;
-    private final float rainfall;
-    private final float regionalTemp;
+    private final LerpFloatLayer rainfallLayer;
+    private final LerpFloatLayer temperatureLayer;
 
-    public ChunkDataUpdatePacket(int chunkX, int chunkZ, ChunkData data)
+    public ChunkDataUpdatePacket(int chunkX, int chunkZ, LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer)
     {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
-        this.rainfall = data.getRainfall();
-        this.regionalTemp = data.getAverageTemp();
+        this.rainfallLayer = rainfallLayer;
+        this.temperatureLayer = temperatureLayer;
     }
 
     ChunkDataUpdatePacket(PacketBuffer buffer)
     {
         chunkX = buffer.readInt();
         chunkZ = buffer.readInt();
-        rainfall = buffer.readFloat();
-        regionalTemp = buffer.readFloat();
+        rainfallLayer = new LerpFloatLayer(buffer);
+        temperatureLayer = new LerpFloatLayer(buffer);
     }
 
     void encode(PacketBuffer buffer)
     {
         buffer.writeInt(chunkX);
         buffer.writeInt(chunkZ);
-        buffer.writeFloat(rainfall);
-        buffer.writeFloat(regionalTemp);
+        rainfallLayer.serialize(buffer);
+        temperatureLayer.serialize(buffer);
     }
 
     void handle(Supplier<NetworkEvent.Context> context)
@@ -54,16 +56,11 @@ public class ChunkDataUpdatePacket
             World world = Minecraft.getInstance().world;
             if (world != null)
             {
-                // Update climate cache
-                IChunk chunk = world.getChunk(chunkX, chunkZ);
+                ChunkPos pos = new ChunkPos(chunkX, chunkZ);
+                IChunk chunk = world.chunkExists(chunkX, chunkZ) ? world.getChunk(chunkX, chunkZ) : null;
                 ChunkData.get(chunk).ifPresent(data -> {
-                    // Update client side chunk data
-                    data.setStatus(ChunkData.Status.CLIMATE);
-                    data.setAverageTemp(regionalTemp);
-                    data.setRainfall(rainfall);
-
-                    // Update climate cache
-                    Climate.update(chunk.getPos(), data.getAverageTemp(), data.getRainfall());
+                    data.onUpdatePacket(rainfallLayer, temperatureLayer);
+                    ChunkDataCache.update(pos, data);
                 });
             }
         });

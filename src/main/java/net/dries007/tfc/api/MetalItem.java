@@ -30,7 +30,8 @@ public class MetalItem
 {
     public static Optional<MetalItem> get(ItemStack stack)
     {
-        return MetalItemManager.CACHE.getAll(stack.getItem()).stream()
+        return MetalItemManager.CACHE.getAll(stack.getItem())
+            .stream()
             .filter(metalItem -> metalItem.isValid(stack))
             .findFirst();
     }
