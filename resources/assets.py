@@ -167,7 +167,6 @@ def generate(rm: ResourceManager):
     # Rock Tools
     for rock in ROCK_CATEGORIES:
         for rock_item in ROCK_ITEMS:
-<<<<<<< HEAD:resources/assets/stones.py
             rm.item_model(('stone', '%s' % rock_item, '%s' % rock), \
                 'tfc:item/stone/%s' % rock_item, \
                 parent='item/handheld') \
@@ -176,13 +175,8 @@ def generate(rm: ResourceManager):
     # Rock Items
     for rock in ROCKS.keys():
         for misc_rock_item in MISC_ROCK_ITEMS:
-            rm.item_model(('rock', '%s' % misc_rock_item, '%s' % rock), \
-                'tfc:item/rock/%s/%s' % (misc_rock_item,rock), \
-                parent='item/handheld') \
+            rm.item_model(('rock', '%s' % misc_rock_item, '%s' % rock), 'tfc:item/rock/%s/%s' % (misc_rock_item,rock), parent='item/handheld') \
                 .with_lang(lang('%s %s' % (rock, misc_rock_item)))
-=======
-            rm.item_model(('stone', '%s' % rock_item, '%s' % rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld') \
-                .with_lang(lang('Stone %s' % rock_item))
 
     for metal, metal_data in METALS.items():
         # Metal Items
@@ -202,4 +196,9 @@ def generate(rm: ResourceManager):
                     .with_block_loot('tfc:metal/%s/%s' % (metal_block, metal)) \
                     .with_lang(lang('%s %s' % (metal, metal_block))) \
                     .with_item_model()
->>>>>>> 39c047c5f45d35107306a69a78b44701108986d6:resources/assets.py
+
+    # Gems
+    for gem in GEMS:
+        for grade in GEM_GRADES:
+            rm.item_model(('gem', grade, gem), 'tfc:item/gem/%s/%s' % (grade, gem)) \
+                .with_lang(lang('%s %s' % (grade, gem)))

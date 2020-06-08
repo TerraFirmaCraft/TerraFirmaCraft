@@ -3,21 +3,6 @@
 
 # Script to run all resource generation
 
-<<<<<<< HEAD
-import assets.metals
-import assets.stones
-import assets.gems
-import data.item_heats
-import data.metal_items
-import data.metals
-import data.ore_veins
-import data.rocks
-import lang.metals
-import lang.misc
-import recipes.collapse
-import vanilla.tags
-=======
->>>>>>> 39c047c5f45d35107306a69a78b44701108986d6
 from mcresources import ResourceManager, clean_generated_resources
 
 import assets
@@ -42,18 +27,8 @@ def main():
     ore_veins.generate(rm)
     collapse_recipes.generate(rm)
 
-<<<<<<< HEAD
-    assets.stones.generate(rm)
-    assets.metals.generate(rm)
-    assets.gems.generate(rm)
-    lang.metals.generate(rm)
-    lang.misc.generate(rm)
-    
-    vanilla.tags.generate(rm)
-=======
     # Random things
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
->>>>>>> 39c047c5f45d35107306a69a78b44701108986d6
 
     rm.flush()
 
