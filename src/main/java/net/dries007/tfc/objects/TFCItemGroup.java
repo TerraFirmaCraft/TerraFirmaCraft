@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.Gem;
+import net.dries007.tfc.api.RockCategory;
 import net.dries007.tfc.objects.items.TFCItems;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -32,7 +33,7 @@ public final class TFCItemGroup extends ItemGroup
     //public static final ItemGroup GEMS = new TFCItemGroup("gems", "tfc:gem/diamond");
     //public static final ItemGroup POTTERY = new TFCItemGroup("pottery", "tfc:ceramics/fired/mold/ingot");
     //public static final ItemGroup FOOD = new TFCItemGroup("food", "tfc:food/green_apple");
-    //public static final ItemGroup MISC = new TFCItemGroup("misc", "tfc:wand");
+    public static final ItemGroup MISC = new TFCItemGroup(TerraFirmaCraft.MOD_ID + ".misc", () -> new ItemStack(TFCItems.ROCK_ITEMS.get(Rock.Default.ANDESITE).get(RockCategory.RockItems.BRICK).get()));
     //public static final ItemGroup FLORA = new TFCItemGroup("flora", "tfc:plants/goldenrod");
 
     private final Lazy<ItemStack> iconStack;

@@ -1,8 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "variants": {
-    "": {
-      "model": "tfc:block/peat"
-    }
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "tfc:block/peat"
   }
 }

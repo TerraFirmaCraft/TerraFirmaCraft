@@ -118,4 +118,9 @@ public enum RockCategory implements Predicate<Rock>
             return filter.test(rock.getCategory());
         }
     }
+    public enum RockItems
+    {
+        ROCK,
+        BRICK
+    }
 }

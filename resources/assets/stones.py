@@ -56,7 +56,6 @@ def generate(rm: ResourceManager):
                     }, parent='tfc:block/ore') \
                     .with_item_model() \
                     .with_lang(lang('%s %s', rock, ore))
-
     # Sand
     for sand in SAND_BLOCK_TYPES:
         rm.blockstate(('sand', sand)) \
@@ -64,6 +63,13 @@ def generate(rm: ResourceManager):
             .with_item_model() \
             .with_block_loot('tfc:sand/%s' % sand) \
             .with_lang(lang('%s Sand', sand))
+
+    # Peat
+    rm.blockstate('peat') \
+        .with_block_model('tfc:block/peat') \
+        .with_item_model() \
+        .with_block_loot('tfc:peat') \
+        .with_lang(lang('Peat'))
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
@@ -91,6 +97,40 @@ def generate(rm: ResourceManager):
         'from': [0, 0, 0], 'to': [16, 16, 0],
         'faces': {'north': {'texture': '#overlay', 'cullface': 'north', 'tintindex': 0}}
     }
+
+    # Peat Grass
+    rm.blockstate_multipart(('peat_grass'), [
+        {'model': 'tfc:block/peat_grass/peat_grass_top', 'x': 270},
+        {'model': 'tfc:block/peat_grass/peat_grass_bottom', 'x': 90},
+        ({'north': True}, {'model': 'tfc:block/peat_grass/peat_grass_top'}),
+        ({'east': True}, {'model': 'tfc:block/peat_grass/peat_grass_top', 'y': 90}),
+        ({'south': True}, {'model': 'tfc:block/peat_grass/peat_grass_top', 'y': 180}),
+        ({'west': True}, {'model': 'tfc:block/peat_grass/peat_grass_top', 'y': 270}),
+        ({'north': False}, {'model': 'tfc:block/peat_grass/peat_grass_side'}),
+        ({'east': False}, {'model': 'tfc:block/peat_grass/peat_grass_side', 'y': 90}),
+        ({'south': False}, {'model': 'tfc:block/peat_grass/peat_grass_side', 'y': 180}),
+        ({'west': False}, {'model': 'tfc:block/peat_grass/peat_grass_side', 'y': 270}),
+    ]) \
+        .with_item_model() \
+        .with_block_loot('tfc:peat') \
+        .with_tag('grass') \
+        .with_lang(lang('Peat Grass'))
+    # Peat Grass Models, one for the side, top and bottom
+    rm.block_model(('peat_grass', 'peat_grass_top'), {
+        'overlay': 'tfc:block/grass_top',
+        'particle': 'tfc:block/peat'
+    }, parent='block/block', elements=[north_face_tint0])
+    rm.block_model(('peat_grass','peat_grass_side'), {
+        'overlay': 'tfc:block/grass_side',
+        'texture': 'tfc:block/peat',
+        'particle': 'tfc:block/peat'
+    }, parent='block/block', elements=[north_face, north_face_tint0])
+    rm.block_model(('peat_grass','peat_grass_bottom'), {
+        'texture': 'tfc:block/peat',
+        'particle': 'tfc:block/peat'
+    }, parent='block/block', elements=[north_face])
+
+    #Grass Blocks
     for var in SOIL_BLOCK_VARIANTS:
         for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % var), ('clay_grass', 'tfc:block/clay/%s' % var)):
             rm.blockstate_multipart((grass_var, var), [
@@ -131,3 +171,11 @@ def generate(rm: ResourceManager):
                 'tfc:item/stone/%s' % rock_item, \
                 parent='item/handheld') \
                 .with_lang(lang('Stone %s' % rock_item))
+
+    # Rock Items
+    for rock in ROCKS.keys():
+        for misc_rock_item in MISC_ROCK_ITEMS:
+            rm.item_model(('rock', '%s' % misc_rock_item, '%s' % rock), \
+                'tfc:item/rock/%s/%s' % (misc_rock_item,rock), \
+                parent='item/handheld') \
+                .with_lang(lang('%s %s' % (rock, misc_rock_item)))
