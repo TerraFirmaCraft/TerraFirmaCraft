@@ -16,6 +16,7 @@ HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
 ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
 ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe_head', 'javelin', 'javelin_head', 'knife', 'knife_head', 'shovel', 'shovel_head']
+MISC_ROCK_ITEMS: List[str] = ['brick','rock']
 
 ROCKS: Dict[str, Rock] = {
     'chalk': Rock('sedimentary', 'yellow'),

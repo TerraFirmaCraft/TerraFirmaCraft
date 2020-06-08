@@ -29,6 +29,7 @@ import net.dries007.tfc.api.RockCategory;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
 
 /**
  * Collection of all TFC items.
@@ -63,6 +64,19 @@ public final class TFCItems
             register(("stone/" + type.name() + "/" + category.name()).toLowerCase(), () -> type.create(category))
         )
     );
+// this is probably overkill
+    public static final Map<Rock.Default, Map<RockCategory.RockItems, RegistryObject<Item>>> ROCK_ITEMS = Util.make(new EnumMap<>(Rock.Default.class), map -> {
+        for (Rock.Default rock : Rock.Default.values())
+        {
+            Map<RockCategory.RockItems, RegistryObject<Item>> inner = new EnumMap<>(RockCategory.RockItems.class);
+            for(RockCategory.RockItems rockItems : RockCategory.RockItems.values()) {
+                String name = ("rock/" + rockItems.name().toLowerCase() +"/"+ rock.name()).toLowerCase();
+                RegistryObject<Item> item = ITEMS.register(name, () -> new Item(new Item.Properties().group(TFCItemGroup.MISC)));
+                inner.put(rockItems, item);
+            }
+            map.put(rock, inner);
+        }
+    });
 
     private static RegistryObject<Item> register(String name, ItemGroup group)
     {
