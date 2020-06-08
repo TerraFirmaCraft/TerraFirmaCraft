@@ -234,6 +234,8 @@ DEFAULT_LANG = {
     # Item groups
     'itemGroup.tfc.rock.blocks': 'TFC Rock Blocks',
     'itemGroup.tfc.metals': 'TFC Metals',
+    'itemGroup.tfc.gems': 'TFC Gems',
+    'itemGroup.tfc.misc': 'TFC Misc',
     # Metal Tiers
     **dict(
         ('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % lang(tier))
