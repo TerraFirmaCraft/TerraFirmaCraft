@@ -64,7 +64,7 @@ public final class TFCItems
             register(("stone/" + type.name() + "/" + category.name()).toLowerCase(), () -> type.create(category))
         )
     );
-// this is probably overkill
+
     public static final Map<Rock.Default, Map<RockCategory.RockItems, RegistryObject<Item>>> ROCK_ITEMS = Util.make(new EnumMap<>(Rock.Default.class), map -> {
         for (Rock.Default rock : Rock.Default.values())
         {
