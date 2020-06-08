@@ -53,7 +53,7 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
         RANDOM.setSeed(FastRandom.mix(FastRandom.mix(world.getSeed(), pos.x), pos.z));
         for (VeinType<?> type : VeinTypeManager.INSTANCE.getOrderedValues())
         {
-            if (RANDOM.nextInt(type.getRarity()) == 0 && type.canGenerateVein(world, pos))
+            if (RANDOM.nextInt(type.getRarity()) == 0 && type.canGenerateVein(world, pos.asBlockPos()))
             {
                 veins.add(type.createVein(pos.getXStart(), pos.getZStart(), RANDOM));
             }

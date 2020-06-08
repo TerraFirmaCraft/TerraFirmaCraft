@@ -23,13 +23,13 @@ public class DelayedRunnable implements Runnable
 
     public void enqueue(Runnable runnable)
     {
-        this.tasks.add(runnable);
+        tasks.add(runnable);
     }
 
     @Override
     public void run()
     {
-        this.tasks.forEach(Runnable::run);
-        this.tasks.clear();
+        tasks.forEach(Runnable::run);
+        tasks.clear();
     }
 }

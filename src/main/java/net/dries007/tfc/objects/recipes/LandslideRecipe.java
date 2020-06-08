@@ -54,26 +54,23 @@ public class LandslideRecipe extends SimpleBlockRecipe
     @SuppressWarnings("UnusedReturnValue")
     public static boolean tryLandslide(World world, BlockPos pos, BlockState state)
     {
-        if (!world.isRemote())
+        if (!world.isRemote() && TFCConfig.SERVER.enableBlockLandslides.get())
         {
-            if (TFCConfig.SERVER.enableBlockLandslides.get())
+            BlockPos fallPos = getLandSlidePos(world, pos);
+            if (fallPos != null)
             {
-                BlockPos fallPos = getLandSlidePos(world, pos);
-                if (fallPos != null)
-                {
-                    BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
-                    getRecipe(world, wrapper).ifPresent(recipe -> {
-                        BlockState fallingState = recipe.getBlockCraftingResult(wrapper);
-                        if (!fallPos.equals(pos))
-                        {
-                            world.removeBlock(pos, false);
-                        }
-                        world.setBlockState(fallPos, fallingState);
-                        world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.4f, 1.0f);
-                        world.addEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY() + 0.5, fallPos.getZ() + 0.5, fallingState));
-                    });
-                    return true;
-                }
+                BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
+                getRecipe(world, wrapper).ifPresent(recipe -> {
+                    BlockState fallingState = recipe.getBlockCraftingResult(wrapper);
+                    if (!fallPos.equals(pos))
+                    {
+                        world.removeBlock(pos, false);
+                    }
+                    world.setBlockState(fallPos, fallingState);
+                    world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.4f, 1.0f);
+                    world.addEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY() + 0.5, fallPos.getZ() + 0.5, fallingState));
+                });
+                return true;
             }
         }
         return false;

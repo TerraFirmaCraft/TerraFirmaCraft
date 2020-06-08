@@ -6,26 +6,20 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.chunk.AbstractChunkProvider;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.config.LayerType;
+import net.dries007.tfc.config.NoiseLayerType;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.TFCOverworldChunkGenerator;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
@@ -54,8 +48,6 @@ public class ChunkDataProvider
         return Optional.empty();
     }
 
-    private final Map<ChunkPos, ChunkData> cachedChunkData;
-    private final IWorld world;
     private final RockFactory bottomRockLayer, middleRockLayer, topRockLayer;
 
     private final INoise2D temperatureLayer;
@@ -64,9 +56,6 @@ public class ChunkDataProvider
 
     public ChunkDataProvider(IWorld world, TFCGenerationSettings settings, Random seedGenerator)
     {
-        this.cachedChunkData = new FiniteLinkedHashMap<>(256 * 256);
-        this.world = world;
-
         List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings);
         this.bottomRockLayer = new RockFactory(rockLayers.get(0));
         this.middleRockLayer = new RockFactory(rockLayers.get(1));
@@ -77,57 +66,20 @@ public class ChunkDataProvider
         this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
 
         // Climate
-        this.temperatureLayer = LayerType.SIN_Z.create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(-10, 30);
-        this.rainfallLayer = LayerType.SIN_X.create(seedGenerator.nextLong(), TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
+        this.temperatureLayer = NoiseLayerType.PERIODIC_Z.create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(-10, 30);
+        this.rainfallLayer = NoiseLayerType.PERIODIC_X.create(seedGenerator.nextLong(), TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
     }
 
     /**
-     * Gets the chunk data for a given chunk from the cache, and then removes it.
-     * Used when assigning previously generated chunk data to the capability.
+     * Gets the chunk data from the cache, and generates it to the required status
+     * Called during world generation when either a world context is unavailable (and we can't go world -> chunk generator -> chunk provider), or we need to avoid querying the capability as that would cause chunk loading deadlock.
+     *
+     * @see ChunkData#get(IWorld, ChunkPos, ChunkData.Status, boolean) for more generic uses
+     * @see ChunkDataCache#get(ChunkPos) for directly querying the cache
      */
-    public ChunkData remove(ChunkPos pos)
+    public ChunkData get(ChunkPos pos, ChunkData.Status requiredStatus)
     {
-        ChunkData data = get(pos, ChunkData.Status.FULL, false);
-        cachedChunkData.remove(pos);
-        return data;
-    }
-
-    public ChunkData get(BlockPos pos, ChunkData.Status requiredStatus, boolean loadChunk)
-    {
-        return get(new ChunkPos(pos), requiredStatus, loadChunk);
-    }
-
-    public ChunkData get(ChunkPos pos, ChunkData.Status requiredStatus, boolean loadChunk)
-    {
-        if (loadChunk && world.chunkExists(pos.x, pos.z))
-        {
-            return get(world.getChunk(pos.x, pos.z), requiredStatus);
-        }
-        return getOrCreate(pos, requiredStatus);
-    }
-
-    public ChunkData get(IChunk chunkIn, ChunkData.Status requiredStatus)
-    {
-        if (chunkIn instanceof Chunk)
-        {
-            LazyOptional<ChunkData> capability = ((Chunk) chunkIn).getCapability(ChunkDataCapability.CAPABILITY);
-            return capability.orElseGet(() -> getOrCreate(chunkIn.getPos(), requiredStatus));
-        }
-        return getOrCreate(chunkIn.getPos(), requiredStatus);
-    }
-
-    private ChunkData getOrCreate(ChunkPos pos, ChunkData.Status requiredStatus)
-    {
-        ChunkData data;
-        if (cachedChunkData.containsKey(pos))
-        {
-            data = cachedChunkData.get(pos);
-        }
-        else
-        {
-            data = new ChunkData();
-            cachedChunkData.put(pos, data);
-        }
+        ChunkData data = ChunkDataCache.get(pos);
         return generateToStatus(pos, data, requiredStatus);
     }
 
@@ -141,8 +93,17 @@ public class ChunkDataProvider
         if (status.isAtLeast(ChunkData.Status.CLIMATE))
         {
             // Temperature / Rainfall
-            data.setRainfall(rainfallLayer.noise(chunkX, chunkZ));
-            data.setAverageTemp(temperatureLayer.noise(chunkX, chunkZ));
+            float rainNW = rainfallLayer.noise(chunkX, chunkZ);
+            float rainNE = rainfallLayer.noise(chunkX + 16, chunkZ);
+            float rainSW = rainfallLayer.noise(chunkX, chunkZ + 16);
+            float rainSE = rainfallLayer.noise(chunkX + 16, chunkZ + 16);
+            data.setRainfall(rainNW, rainNE, rainSW, rainSE);
+
+            float tempNW = temperatureLayer.noise(chunkX, chunkZ);
+            float tempNE = temperatureLayer.noise(chunkX + 16, chunkZ);
+            float tempSW = temperatureLayer.noise(chunkX, chunkZ + 16);
+            float tempSE = temperatureLayer.noise(chunkX + 16, chunkZ + 16);
+            data.setAverageTemp(tempNW, tempNE, tempSW, tempSE);
         }
         if (status.isAtLeast(ChunkData.Status.ROCKS))
         {

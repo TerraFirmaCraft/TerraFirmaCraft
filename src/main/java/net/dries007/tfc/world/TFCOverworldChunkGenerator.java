@@ -116,10 +116,8 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         makeBedrock(chunk, random);
 
-        ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS, false);
-        float temperature = chunkData.getAverageTemp();
-        float rainfall = chunkData.getRainfall();
-        blockReplacer.replace(worldGenRegion, chunk, random, chunkData.getRockData(), rainfall, temperature);
+        ChunkData chunkData = ChunkData.get(worldGenRegion, chunkPos, ChunkData.Status.ROCKS, false);
+        blockReplacer.replace(worldGenRegion, chunk, random, chunkData);
     }
 
     @Override

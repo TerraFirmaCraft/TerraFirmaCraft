@@ -9,18 +9,18 @@ import java.util.Arrays;
 
 public enum Month
 {
-    JANUARY(66.5f),
-    FEBRUARY(65.5f),
-    MARCH(56f),
-    APRIL(47.5f),
-    MAY(38f),
-    JUNE(29.5f),
-    JULY(27f),
-    AUGUST(29.5f),
-    SEPTEMBER(38f),
-    OCTOBER(47.5f),
-    NOVEMBER(56f),
-    DECEMBER(65.5f);
+    JANUARY(-1f),
+    FEBRUARY(-0.866f),
+    MARCH(-0.5f),
+    APRIL(0f),
+    MAY(0.5f),
+    JUNE(0.866f),
+    JULY(1f),
+    AUGUST(0.866f),
+    SEPTEMBER(0.5f),
+    OCTOBER(0f),
+    NOVEMBER(-0.5f),
+    DECEMBER(-0.866f);
 
     private static final Month[] VALUES = values();
     public static final float AVERAGE_TEMPERATURE_MODIFIER = (float) Arrays.stream(VALUES).mapToDouble(Month::getTemperatureModifier).average().orElse(0);

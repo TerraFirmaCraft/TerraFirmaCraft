@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
+import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 
 public interface IForging extends ICapabilityProvider
 {
@@ -73,7 +73,7 @@ public interface IForging extends ICapabilityProvider
      */
     default boolean canWork(ItemStack stack)
     {
-        return stack.getCapability(CapabilityHeat.CAPABILITY).map(heat -> heat.getTemperature() > heat.getForgingTemperature()).orElse(true);
+        return stack.getCapability(HeatCapability.CAPABILITY).map(heat -> heat.getTemperature() > heat.getForgingTemperature()).orElse(true);
     }
 
     /**
@@ -81,6 +81,6 @@ public interface IForging extends ICapabilityProvider
      */
     default boolean canWeld(ItemStack stack)
     {
-        return stack.getCapability(CapabilityHeat.CAPABILITY).map(heat -> heat.getTemperature() > heat.getWeldingTemperature()).orElse(true);
+        return stack.getCapability(HeatCapability.CAPABILITY).map(heat -> heat.getTemperature() > heat.getWeldingTemperature()).orElse(true);
     }
 }

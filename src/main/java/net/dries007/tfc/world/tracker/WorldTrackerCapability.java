@@ -13,7 +13,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.NoopStorage;
 
-public class CapabilityWorldTracker
+public class WorldTrackerCapability
 {
     @CapabilityInject(IWorldTracker.class)
     public static final Capability<IWorldTracker> CAPABILITY = Helpers.notNull();

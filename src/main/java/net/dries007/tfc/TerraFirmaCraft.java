@@ -13,8 +13,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import net.dries007.tfc.api.capabilities.forge.CapabilityForging;
-import net.dries007.tfc.api.capabilities.heat.CapabilityHeat;
+import net.dries007.tfc.api.calendar.Calendar;
+import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
+import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
@@ -31,7 +32,7 @@ import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
-import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -76,11 +77,14 @@ public final class TerraFirmaCraft
         LOGGER.info("TFC Common Setup");
 
         // Setup methods
-        CapabilityHeat.setup();
-        CapabilityForging.setup();
+        HeatCapability.setup();
+        ForgingCapability.setup();
         ChunkDataCapability.setup();
-        CapabilityWorldTracker.setup();
+        WorldTrackerCapability.setup();
+
         TFCBiomes.setup();
+
+        Calendar.setup();
 
         // HEY DEV YOU'RE AND IDIOT AND MINECRAFT SUCKS
         if (TFCLayerUtil.isDebugMode)

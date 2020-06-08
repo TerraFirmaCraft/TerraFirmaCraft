@@ -16,12 +16,13 @@ import com.google.gson.JsonParseException;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.objects.recipes.IBlockIngredient;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.json.TFCJSONUtils;
+import net.dries007.tfc.world.placement.IPlacementRule;
 
 public abstract class VeinType<V extends Vein<?>>
 {
@@ -32,7 +33,7 @@ public abstract class VeinType<V extends Vein<?>>
     protected final int minY;
     protected final int maxY;
     protected final Map<IBlockIngredient, IWeighted<BlockState>> blocks;
-    protected final List<IVeinRule> rules;
+    protected final List<IPlacementRule> rules;
     private final ResourceLocation id;
 
     public VeinType(ResourceLocation id, JsonObject json)
@@ -76,7 +77,7 @@ public abstract class VeinType<V extends Vein<?>>
             blocks.put(stoneStates, oreStates);
         }
         indicator = json.has("indicator") ? TFCJSONUtils.getWeighted(json.get("indicator"), Indicator.Serializer.INSTANCE::read) : IWeighted.empty();
-        rules = json.has("rules") ? TFCJSONUtils.getListLenient(json.get("rules"), IVeinRule.Serializer.INSTANCE::read) : Collections.emptyList();
+        rules = json.has("rules") ? TFCJSONUtils.getListLenient(json.get("rules"), IPlacementRule.Serializer.INSTANCE::read) : Collections.emptyList();
     }
 
     public ResourceLocation getId()
@@ -126,9 +127,9 @@ public abstract class VeinType<V extends Vein<?>>
         return blocks.values().stream().flatMap(weighted -> weighted.values().stream()).collect(Collectors.toList());
     }
 
-    public boolean canGenerateVein(IWorld world, ChunkPos pos)
+    public boolean canGenerateVein(IWorld world, BlockPos pos)
     {
-        for (IVeinRule rule : rules)
+        for (IPlacementRule rule : rules)
         {
             if (!rule.test(world, pos))
             {
