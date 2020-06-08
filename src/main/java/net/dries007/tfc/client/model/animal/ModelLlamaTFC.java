@@ -97,12 +97,16 @@ public class ModelLlamaTFC extends ModelQuadruped
             GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
 
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.0D, 1.0D, 1.0D);
+
         this.head.render(scale);
         this.body.render(scale);
         this.leg1.render(scale);
         this.leg2.render(scale);
         this.leg3.render(scale);
         this.leg4.render(scale);
+        GlStateManager.popMatrix();
 
         if (flag)
         {

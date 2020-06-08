@@ -179,6 +179,7 @@ public class ModelGrouseTFC extends ModelBase
         tails7.render(par7);
         tails8.render(par7);
         tails9.render(par7);
+        GlStateManager.popMatrix();
     }
 
     @Override

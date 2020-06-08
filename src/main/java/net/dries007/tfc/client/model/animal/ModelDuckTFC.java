@@ -16,6 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.objects.entity.animal.EntityCoyoteTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDuckTFC;
 
 /**
@@ -147,28 +148,17 @@ public class ModelDuckTFC extends ModelBase
     public void render(@Nonnull Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
+
         EntityDuckTFC duck = ((EntityDuckTFC) entity);
 
         float percent = (float) duck.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
-        float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
-        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
-        GlStateManager.translate(0.0F, (ageScale - 1) * -0.125f, 0.1875f - (0.1875f * percent));
-
-        neck.render(par7);
-
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(0.75f, 0.75f, 0.75f);
-        GlStateManager.popMatrix();
-
-        GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
+        neck.render(par7);
         body.render(par7);
         bodyFront1.render(par7);
         bodyFront2.render(par7);
@@ -180,10 +170,6 @@ public class ModelDuckTFC extends ModelBase
         leftLeg.render(par7);
         rightWing1.render(par7);
         leftWing1.render(par7);
-
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(0.25F / percent, 0.5F / percent, 0.25F / percent);
         GlStateManager.popMatrix();
     }
 

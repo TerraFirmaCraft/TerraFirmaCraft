@@ -145,11 +145,10 @@ public class ModelBlackBearTFC extends ModelBase
             GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
 
-        bearHead.render(scale);
-
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0D, 1.0D, 1.0D);
 
+        bearHead.render(scale);
         frontBody.render(scale);
         rearBody.render(scale);
         leg1.render(scale);

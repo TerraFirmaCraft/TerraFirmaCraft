@@ -250,6 +250,7 @@ public class ModelTurkeyTFC extends ModelBase
         neck2.render(par7);
         tails9.render(par7);
         legRTop.render(par7);
+        GlStateManager.popMatrix();
     }
 
     @Override
