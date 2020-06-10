@@ -43,6 +43,9 @@ public class FluidWrapper
         return isDefault;
     }
 
+    /**
+     * Used to add properties to TFC fluids, such as making them drinkable, or giving them a metal.
+     */
     @SuppressWarnings("unchecked")
     public <T> T get(FluidProperty<T> propertyType)
     {
@@ -53,5 +56,14 @@ public class FluidWrapper
     {
         properties.put(propertyType, propertyValue);
         return this;
+    }
+
+    /**
+     * Used externally to remove a specific property from a fluid.
+     */
+    @SuppressWarnings({"unchecked", "unused"})
+    public <T> T remove(FluidProperty<T> propertyType)
+    {
+        return (T) properties.remove(propertyType);
     }
 }
