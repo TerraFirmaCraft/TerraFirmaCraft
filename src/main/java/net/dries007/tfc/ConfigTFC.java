@@ -516,6 +516,7 @@ public final class ConfigTFC
         {
             @Config.Comment("The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.")
             @Config.LangKey("config." + MOD_ID + ".general.misc.defaultMonthLength")
+            @Config.RangeInt(min = 1)
             public int defaultMonthLength = 8;
 
             @Config.Comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth.")
