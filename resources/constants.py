@@ -223,6 +223,7 @@ SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam']
 GEMS = ['amethyst','diamond','emerald','lapis_lazuli','opal','pyrite','ruby','sapphire','topaz']
 GEM_GRADES = ['cut','uncut','powder']
 
+COLORS = ['white','orange','magenta','light_blue','yellow','lime','pink','gray','light_gray','cyan','purple','blue','brown','green','red','black']
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -260,6 +261,11 @@ DEFAULT_LANG = {
     # Commands
     'tfc.command.heat': 'Held item heat set to %s',
     'tfc.command.clear_world_done': 'Cleared.',
+    # Paths
+    'block.tfc.grass_path.loam': 'Loam Grass Path',
+    'block.tfc.grass_path.silt': 'Silt Grass Path',
+    'block.tfc.grass_path.sandy_loam': 'Sandy Loam Grass Path',
+    'block.tfc.grass_path.silty_loam': 'Silty Loam Grass Path',
     # Metals
     **dict(
         ('metal.tfc.%s' % metal, lang('%s' % metal))

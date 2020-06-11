@@ -15,7 +15,8 @@ def generate(rm: ResourceManager):
                 rm.blockstate(('rock', block_type, rock), variants=dict(
                     ('part=%s' % part, {'model': 'tfc:block/rock/%s/%s_%s' % (block_type, rock, part)}) for part in
                     ROCK_SPIKE_PARTS)) \
-                    .with_lang(lang('%s Spike', rock))
+                    .with_lang(lang('%s Spike', rock)) \
+                    .with_block_loot("tfc:rock/rock/%s" % rock)
                 for part in ROCK_SPIKE_PARTS:
                     rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
                         'texture': 'tfc:block/rock/raw/%s' % rock,
@@ -23,14 +24,18 @@ def generate(rm: ResourceManager):
                     }, parent='tfc:block/rock/spike_%s' % part) \
                         .with_item_model()
             else:
-                block = rm.blockstate(('rock', block_type, rock)) \
+                 block = rm.blockstate(('rock', block_type, rock)) \
                     .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
-                    .with_item_model() \
-                    .with_block_loot('tfc:rock/%s/%s' % (block_type, rock))  # todo: fix raw -> rocks
-                if block_type in {'smooth', 'raw'}:
+                    .with_item_model()
+                 if block_type == 'raw':
+                    block.with_block_loot({"entries": "tfc:rock/rock/%s" % rock, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 3, "type": "minecraft:uniform"}}]})
+                 else:
+                    block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
+                 if block_type in {'smooth', 'raw'}:
                     block.with_lang(lang('%s %s', block_type, rock))
-                else:
+                 else:
                     block.with_lang(lang('%s %s', rock, block_type))
+
 
         # Ores
         # todo: fix / add loot tables
@@ -85,7 +90,6 @@ def generate(rm: ResourceManager):
                       variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]},
                       use_default_model=False) \
             .with_block_model() \
-            .with_item_model() \
             .with_block_loot('tfc:clay/%s' % soil) \
             .with_lang(lang('%s Clay Dirt', soil))
 
@@ -111,7 +115,6 @@ def generate(rm: ResourceManager):
         ({'south': False}, {'model': 'tfc:block/peat_grass/peat_grass_side', 'y': 180}),
         ({'west': False}, {'model': 'tfc:block/peat_grass/peat_grass_side', 'y': 270}),
     ]) \
-        .with_item_model() \
         .with_block_loot('tfc:peat') \
         .with_tag('grass') \
         .with_lang(lang('Peat Grass'))
@@ -145,7 +148,6 @@ def generate(rm: ResourceManager):
                 ({'south': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var), 'y': 180}),
                 ({'west': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var), 'y': 270}),
             ]) \
-                .with_item_model() \
                 .with_block_loot('tfc:dirt/%s' % var) \
                 .with_tag('grass') \
                 .with_lang(lang('%s %s', var, grass_var))

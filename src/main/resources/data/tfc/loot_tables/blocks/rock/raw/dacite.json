@@ -8,12 +8,22 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/raw/dacite"
+          "name": "tfc:rock/rock/dacite"
         }
       ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "min": 1,
+            "max": 3,
+            "type": "minecraft:uniform"
+          }
         }
       ]
     }

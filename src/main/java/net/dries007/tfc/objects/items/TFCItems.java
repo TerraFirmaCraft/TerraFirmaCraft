@@ -5,10 +5,7 @@
 
 package net.dries007.tfc.objects.items;
 
-import net.dries007.tfc.api.Gem;
-import net.dries007.tfc.api.Metal;
-import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.api.RockCategory;
+import net.dries007.tfc.api.*;
 import net.dries007.tfc.objects.TFCItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
