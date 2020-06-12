@@ -1,0 +1,25 @@
+{
+    "name": "The Forge",
+    "icon": "minecraft:textures/items/charcoal.png",
+    "category": "basic_smithing",
+	"advancement": "tfc:main/charcoal",
+	"sortnum": 4,
+    "pages": [
+		{
+			"type": "text",
+			"text": "The $(item)forge$() is the main way of heating items in TFC. In order to construct a forge, dig a 1 deep hole, like you did with a pit kiln. However, unlike the pit kiln, the sides must be made out of some kind of stone. This could be raw stone, cobblestone, smooth stone, or stone bricks. The blocks don't have to match. Right click to place 7 $(item)charcoal$() in the hole, then light it with your firestarter."
+		},
+		{
+			"type": "text",
+			"text": "Forge multiblock goes here"
+		},
+		{
+			"type": "text",
+			"text": "The bottom slots in the forge are for holding $(item)fuel$(). They can hold charcoal or natural fuels like lignite and bituminous coal, but not logs. The top slots are for heating items, typically ingots or vessels. The right side is for molds or vessels to catch melting things, but this is typically only used in emergencies."
+		},
+		{
+			"type": "text",
+			"text": "The forge can carry out any heating recipe that the pit kiln can, as long as it gets to the $(item)Brilliant White$() temperature, which is only possible using a bellows. The forge can be used to cook food or make torches, however if food is left in too long, it will burn."
+		}
+    ]
+}

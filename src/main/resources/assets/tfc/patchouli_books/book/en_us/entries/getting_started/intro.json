@@ -1,0 +1,25 @@
+{
+    "name": "Getting off the Ground",
+    "icon": "tfc:textures/items/stonetypes/rock/granite.png",
+    "category": "getting_started",
+	"sortnum": 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "In Vanilla, you might expect to start by punching a tree. Not in TFC! Scattered all over the ground are rocks and sticks. You will need both. Pick them up by $(4)right-clicking $(). $(br2)Once you have at least two rocks, hold them in your hand. $(4)Right-clicking$() will open the $(thing)knapping interface. $(4)Left-click$() in the shape of the recipes on the opposite page to make an axe and two knives."
+        },
+		{
+			"type": "text",
+			"text": "Knapping Recipes:$(br2)Axe head:$(br)$(6)█$()█$(6)███$()$(br)████$(6)█$()$(br)█████$(br)████$(6)█$()$(br)$(6)█$()█$(6)███$()$(br)Knife Blades:$(br)█$(6)███$()█$(br)██$(6)█$()██$(br)██$(6)█$()██$(br)██$(6)█$()██$(br)██$(6)█$()██"
+		},
+		{
+			"type": "text",
+			"text": "The next step is to craft your tool heads with sticks to make stone tools."
+		},
+		{
+			"type": "crafting",
+			"recipe": "tfc:stonetools/sedimentary/sedimentary_rock_axe",
+			"recipe2": "tfc:stonetools/sedimentary/sedimentary_rock_knife"
+		}
+    ]
+}

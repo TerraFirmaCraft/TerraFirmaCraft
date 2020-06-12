@@ -1,0 +1,45 @@
+{
+    "name": "Water and Fire",
+    "icon": "tfc:textures/items/food/cooked_venison.png",
+    "category": "getting_started",
+	"advancement": "tfc:main/logging",
+	"sortnum": 3,
+    "pages": [
+        {
+            "type": "text",
+            "text": "In order to prepare food and light up your starting hut at night, you will want to build a $(thing)firepit$().$(br2)To build a firepit you'll first want a firestarter, which you can make from two sticks."
+		},
+		{
+			"type": "crafting",
+			"recipe": "tfc:firestarter",
+			"text": "The firestarter has small durability, but works just like a $(l:advanced_metalworking/steel)flint and steel$()."
+		},
+		{
+			"type": "text",
+			"text": "To build a campfire, throw at least $(item)one log, three sticks, and up to three$() $(l:getting_started/basic_materials)straw$() on the ground. The straw are optional, but increase your chances of lighting. Hold $(4)right-click$() with your firestarter to start the fire. It may take several tries. The firepit will cook food, and make torches from sticks, but you must feed it logs or it will go out."
+		},
+		{
+			"type": "multiblock",
+			"enable_visualize": false,
+			"text": "The firepit will let you cook foods, but it'll burn you if you step on it.",
+			"name": "Firepit",
+			"multiblock": {
+				"mapping": {
+					"P": "tfc:firepit"
+					},
+				"pattern": [
+				["P"],["0"]
+				],
+				"symmetrical": true
+				}
+		},
+		{
+			"type": "text",
+			"text": "Heating recipe (torch?) goes here."
+		},
+		{
+			"type": "text",
+			"text": "You're probably pretty thirsty by now. That's no problem. Just $(4)right-click$() on a fresh water source block to drink."
+		}
+    ]
+}

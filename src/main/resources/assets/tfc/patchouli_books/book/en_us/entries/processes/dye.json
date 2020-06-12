@@ -1,0 +1,33 @@
+{
+    "name": "Dyes",
+    "icon": "tfc:textures/items/blue_dye.png",
+    "category": "processes",
+	"advancement": "tfc:main/make_quern",
+    "pages": [
+		
+		{
+			"type": "text",
+			"text": "Dyes are mostly craftable through the $(thing)quern$(). What follows is a list of what plants can be crushed to make that dye.$(br2)$(4)Red$()$(br)Scarlet Star Bromeliad, Poppy, Porcini Mushroom, Rose, Red Snapdragon, Tropical Milkweed, Red Tulip, Flaming Sword Bromeliad"
+		},
+		{
+			"type": "text",
+			"text": "$(6)Orange$()$(br)Butterfly Milkweed, Canna Lily, Nasturtium, Bird of Paradise Flower, Orange Tulip, Water Canna$(br2)$(e)Yellow$()$(br)Marigold, Dandelion, Mead's Milkweed, Goldenrod, Yellow Snapdragon$(br2)$(a)Lime$()$(br)Moss$(br2)$(2)Green Dye$()$(br)Barrel Cactus, Reindeer Lichen$(br2)"
+		},
+		{
+			"type": "text",
+			"text": "$(b)Light Blue$()$(br)Labrador Tea, Sapphire Tower$(br2)$(1)Blue$()$(br)Blue Orchid, Grape Hyacinth$(br2)$(9)Purple$()$(br)Allium, Black Orchid, Russian Sage$(br2)$(5)Magenta$()$(br)Athyrium Fern, Morning Glory, Pasque Flower$(br2)$(8)Light Gray$()$(br)Yucca$(br2)"
+		},
+		{
+			"type": "text",
+			"text": "White$(br)Azure Bluet, Oxeye Daisy, Primrose, White Snapdragon, Trillium, Spanish Moss, White Tulip$(br2)$(6)Brown$()$(br)Scouringrush Horsetail, Sargassum"
+		},
+		{
+			"type": "text",
+			"text": "The following is a list of other compounds that can be crushed into dyes:$(br2)Bones, Bone Block (White)$(br)Limonite (Yellow)$(br)Hematite (Red)$(br)Kaolinite (Pink)$(br)Malachite (Green)$(br)Lapis Lazuli (Blue)$(br)Graphite (Gray)$(br)Ink Sac (Black) (acts as dye)$(br)Sylvite (Brown)$(br)"
+		},
+		{
+			"type": "text",
+			"text": "Dyes follow the regular color mixing recipes in the crafting menu like in Vanilla, however TFC provides another feature--dye liquids. In a Barrel, sealing a dye in 1,000mB of Hot Spring Water will create a liquid of that dye, in which you can seal dyeable items (like wool) to dye them. This is less expensive than traditional dyeing. You can also mix colors in barrels like this."
+		}
+    ]
+}

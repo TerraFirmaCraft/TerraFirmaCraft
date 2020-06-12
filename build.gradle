@@ -127,6 +127,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
     compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
     compileOnly "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
+    compile "vazkii.patchouli:Patchouli:${config.patchouli.version}"
 }
 
 processResources {
