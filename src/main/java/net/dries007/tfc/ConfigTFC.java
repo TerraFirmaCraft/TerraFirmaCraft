@@ -514,6 +514,11 @@ public final class ConfigTFC
 
         public static final class MiscCFG
         {
+
+            @Config.Comment("If true, the player will spawn with the TFC guidebook")
+            @Config.LangKey("config." + MOD_ID + ".general.misc.guidebook")
+            public boolean giveBook = true;
+
             @Config.Comment("The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.")
             @Config.LangKey("config." + MOD_ID + ".general.misc.defaultMonthLength")
             public int defaultMonthLength = 8;

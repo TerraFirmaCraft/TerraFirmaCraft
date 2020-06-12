@@ -1,0 +1,33 @@
+{
+    "name": "Smithing",
+    "icon": "tfc:textures/items/metal/ingot/copper.png",
+    "category": "basic_smithing",
+	"advancement": "tfc:main/get_flux",
+	"sortnum": 8,
+    "pages": [
+		{
+			"type": "text",
+			"text": "There are a number of metal items you can make from your anvil. We've seen double ingots already, so let's look at some other stuff that we can do."
+		},
+		{
+			"type": "text",
+			"text": "The smithing GUI has a small scroll containing $(thing)plans$(). Once you put a heated metal item in the input slot, you'll be able to click on it and select a plan for what you want to make. Then, a series of three instructions will appear at the top of the screen. These represent the last three $(thing)techniques$() that you must use, in order."
+		},
+		{
+			"type": "text",
+			"text": "Using a technique is relatively simple. Green techniques, such as bending, move the arrow to the right, where red techniques move it left. Different techniques move the arrow different amounts. The goal is to make the top arrow and the bottom arrow align, with the final three techniques you use being the ones specified. If the hammer breaks or the metal cools off, you'll have to start over. If the arrow goes off screen, you'll lose the metal."
+		},
+		{
+			"type": "text",
+			"text": "sheet recipe"
+		},
+		{
+			"type": "text",
+			"text": "double sheet recipe"
+		},
+		{
+			"type": "text",
+			"text": "Armor often requires multiple welding and smithing processes. Typically, double sheets are worked into 'unfinished' armor pieces, and then welded with another sheet or double sheet to finish the armor. See the reference section or JEI for information."
+		}
+    ]
+}

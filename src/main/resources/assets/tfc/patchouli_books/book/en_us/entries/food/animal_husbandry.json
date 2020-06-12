@@ -1,0 +1,50 @@
+{
+    "name": "Animal Husbandry",
+    "icon": "minecraft:textures/items/egg.png",
+    "category": "food",
+	"advancement": "tfc:main/make_quern",
+	"sortnum": 0,
+    "pages": [
+		
+		{
+			"type": "text",
+			"text": "TFC has $(thing)livestock$(), animals that you can raise for the purpose of getting animal products from them. The following animals count as livestock: $(item)Chickens, Cows, Horses, Sheep, Llamas, Alpacas, Camels, Goats, and Pigs.$()$(br2)In order for an animal to trust you, you need to $(thing)familiarize$() it. Do this by holding shift and $(4)right-clicking$() on the animal with grain."
+		},
+		{
+			"type": "text",
+			"text": "Feed the animal once every 24 hours, and the heart displayed above the animal while you hold shift will begin to fill up."
+		},
+		{
+			"type": "text",
+			"text": "Familiarity will decrease slightly each day if it hasn't reached at least 30% and the animal hasn't been interacted with in the past 24 hours. Adult animals have a limit of how tame they can become through familiarization, with only baby animals having the ability to become fully domesticated, gaining familiarity much faster than adults. Baby animals retain 50% of their mother’s familiarity when born, unless she is close to maximum familiarity, in which case they will retain 90%. "
+		},
+		{
+			"type": "text",
+			"text": "Most livestock in TFC experience $(thing)sexual dimorphism$(). For example, male cows have long horns, whereas female cows have none.$(br2)Feeding two familiarized animals of opposite genders will cause them to breed. A pregnancy can last months to a year, and will often produce multiple children. Animals take a while to grow into adults, and will also eventually grow $(thing)old$(). Old animals appear greyer and cannot become pregnant or produce food."
+		},
+		{
+			"type": "text",
+			"text": "Some livestock are able to produce different products when they are familiarized and an adult. Cows and goats produce milk (right-click with a bucket to retrieve), while sheep and alpacas will allow you to shear them."
+		},
+		{
+			"type": "crafting",
+			"recipe": "tfc:nest_box",
+			"title": "Nest Box",
+			"text": "Chickens lay eggs daily if you give them a $(item)nest box$() to use. As long as a rooster is near the nest box when the egg is laid, the egg will become fertilized and will hatch eventually. Eggs can also be cooked for food."
+		},
+		{
+			"type": "text",
+			"text": "Wolves and Ocelots are also found in TFC, and can be hunted for food. However, it is also possible to tame them with meat in the vanilla manner."
+		},
+		{
+			"type": "crafting",
+			"recipe": "tfc:lead",
+			"title": "Lead",
+			"text": "In order to tame a horse, you need a $(item)lead$(). Leads are made from $(l:processes/barrels)Jute Fiber, which is made by sealing Jute in a Fresh Water Barrel.$()"
+		},
+		{
+			"type": "text",
+			"text": "Horses, mules, and donkeys also exist in TFC. To tame one, first familiarize it, and then tie it with a lead to a fence. Then, follow the vanilla process of attempting to ride the animal until hearts appear. You then can place a saddle on the animal to control it. Mules and Donkeys can also carry chests for you to store stuff in."
+		}
+    ]
+}
