@@ -91,7 +91,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                     {
                         // Check the current position for collapsing
                         BlockState stateAt = world.getBlockState(posAt);
-                        if (TFCTags.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(world, posAt.down()) && posAt.distanceSq(collapse.centerPos) < collapse.radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                        if (TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(world, posAt.down()) && posAt.distanceSq(collapse.centerPos) < collapse.radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                         {
                             if (CollapseRecipe.collapseBlock(world, posAt, stateAt))
                             {
@@ -157,7 +157,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
     {
-        return CapabilityWorldTracker.CAPABILITY.orEmpty(cap, capability);
+        return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
     private void updateLandslidePositions()

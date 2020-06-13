@@ -16,11 +16,14 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeHooks;
+
+import net.dries007.tfc.api.calendar.Calendar;
+import net.dries007.tfc.api.calendar.ICalendar;
+import net.dries007.tfc.config.TFCConfig;
 
 public abstract class PlantBlock extends TFCBushBlock
 {
-    // How many random ticks (on average, this is random after all) is needed for plants to grow one age
-    protected static final int GROWTH_PERIOD = 1000; // todo config?
     protected static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
     /*
      * Time of day, used for rendering plants that bloom at different times
@@ -50,12 +53,16 @@ public abstract class PlantBlock extends TFCBushBlock
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
     {
         // Update state
-        if (RANDOM.nextInt(GROWTH_PERIOD) == 0)
+        double growthChance = TFCConfig.SERVER.plantGrowthRate.get();
+        if (world.isRainingAt(pos))
+        {
+            growthChance *= 5;
+        }
+        if (RANDOM.nextDouble() < growthChance && ForgeHooks.onCropsGrowPre(world, pos.up(), state, true))
         {
             state = state.with(AGE, Math.min(state.get(AGE) + 1, 3));
         }
-        int dayTime = (int) (world.getDayTime() / 6000);
-        world.setBlockState(pos, state.with(stage, getMonthStage()).with(DAYPERIOD, dayTime));
+        world.setBlockState(pos, state.with(stage, getMonthStage()).with(DAYPERIOD, getDayTime()));
     }
 
     @Override
@@ -73,13 +80,11 @@ public abstract class PlantBlock extends TFCBushBlock
 
     protected int getMonthStage()
     {
-        // todo return the stage this plant should be in the current month, using calendar
-        return 0;
+        return getPlant().getStage(Calendar.CALENDAR_TIME.getMonthOfYear());
     }
 
     protected int getDayTime()
     {
-        // todo return the day time period using calendar
-        return 0;
+        return Calendar.CALENDAR_TIME.getHourOfDay() / (ICalendar.HOURS_IN_DAY / 4);
     }
 }

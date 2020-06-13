@@ -26,8 +26,8 @@ import net.dries007.tfc.objects.TFCTags;
 import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.support.SupportManager;
-import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
 import net.dries007.tfc.world.tracker.CollapseData;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 /**
  * This handles logic relating to block collapses.
@@ -80,7 +80,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean canStartCollapse(IWorld world, BlockPos pos)
     {
-        return TFCTags.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.down());
+        return TFCTags.Blocks.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.down());
     }
 
     /**
@@ -103,7 +103,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
             {
                 BlockPos posAt = pos.up(y);
                 BlockState stateAt = world.getBlockState(posAt);
-                if (foundEmpty && TFCTags.CAN_COLLAPSE.contains(stateAt.getBlock()))
+                if (foundEmpty && TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()))
                 {
                     // Check for a possible collapse
                     if (posAt.distanceSq(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
@@ -125,7 +125,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
 
         if (!secondaryPositions.isEmpty())
         {
-            world.getCapability(CapabilityWorldTracker.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new CollapseData(centerPos, secondaryPositions, radiusSquared)));
+            world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new CollapseData(centerPos, secondaryPositions, radiusSquared)));
         }
     }
 

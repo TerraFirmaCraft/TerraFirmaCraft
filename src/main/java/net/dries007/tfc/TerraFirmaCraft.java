@@ -13,11 +13,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import net.dries007.tfc.api.calendar.Calendar;
+import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
+import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.objects.entities.TFCEntities;
+import net.dries007.tfc.objects.fluids.TFCFluids;
 import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.objects.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.world.TFCWorldType;
@@ -28,7 +32,7 @@ import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
-import net.dries007.tfc.world.tracker.CapabilityWorldTracker;
+import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -36,14 +40,7 @@ public final class TerraFirmaCraft
     public static final String MOD_ID = "tfc";
     public static final String MOD_NAME = "TerraFirmaCraft";
 
-    private static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-
-    /* Deprecated for now, because individual classes should use their own logger if possible / it makes sense */
-    @Deprecated
-    public static Logger getLog()
-    {
-        return LOGGER;
-    }
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public TerraFirmaCraft()
     {
@@ -56,6 +53,7 @@ public final class TerraFirmaCraft
 
         TFCBlocks.BLOCKS.register(modEventBus);
         TFCItems.ITEMS.register(modEventBus);
+        TFCFluids.FLUIDS.register(modEventBus);
         TFCEntities.ENTITIES.register(modEventBus);
         TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
         TFCSounds.SOUNDS.register(modEventBus);
@@ -79,9 +77,14 @@ public final class TerraFirmaCraft
         LOGGER.info("TFC Common Setup");
 
         // Setup methods
+        HeatCapability.setup();
+        ForgingCapability.setup();
         ChunkDataCapability.setup();
-        CapabilityWorldTracker.setup();
+        WorldTrackerCapability.setup();
+
         TFCBiomes.setup();
+
+        Calendar.setup();
 
         // HEY DEV YOU'RE AND IDIOT AND MINECRAFT SUCKS
         if (TFCLayerUtil.isDebugMode)

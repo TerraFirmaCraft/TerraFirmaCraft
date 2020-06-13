@@ -1,5 +1,5 @@
 {
-  "parent": "tfc:block/plants/sargassum",
+  "parent": "tfc:block/plant/sargassum",
   "display": {
     "thirdperson_righthand": {
       "rotation": [

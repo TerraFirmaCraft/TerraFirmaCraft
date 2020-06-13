@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:metal/chisel_head/wrought_iron"
+  },
+  "metal": "tfc:wrought_iron",
+  "amount": 100
+}

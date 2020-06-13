@@ -11,7 +11,6 @@ import java.util.Random;
 import java.util.function.Function;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
@@ -24,7 +23,7 @@ import net.dries007.tfc.world.flora.FloraTypeManager;
 
 public class FloraFeature extends Feature<NoFeatureConfig>
 {
-    private static List<FloraType> getFloraAtChunk(IWorld world, ChunkPos pos, Random random)
+    private static List<FloraType> getFloraAtChunk(IWorld world, BlockPos pos, Random random)
     {
         List<FloraType> list = new ArrayList<>();
         for (FloraType type : FloraTypeManager.INSTANCE.getOrderedValues())
@@ -51,7 +50,7 @@ public class FloraFeature extends Feature<NoFeatureConfig>
     @Override
     public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config)
     {
-        List<FloraType> list = getFloraAtChunk(world, new ChunkPos(pos), random);
+        List<FloraType> list = getFloraAtChunk(world, pos, random);
         for (FloraType floraType : list)
         {
             floraType.generate(world, pos, random);

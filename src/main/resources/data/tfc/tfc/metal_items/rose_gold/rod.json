@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:rods/rose_gold"
+  },
+  "metal": "tfc:rose_gold",
+  "amount": 100
+}

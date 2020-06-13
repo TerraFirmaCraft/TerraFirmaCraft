@@ -1,7 +1,10 @@
+<!--
+  ~ Work under Copyright. Licensed under the EUPL.
+  ~ See the project README.md and LICENSE.txt for more information.
+  -->
+
 <code_scheme name="Project" version="173">
     <option name="AUTODETECT_INDENTS" value="false"/>
-    <option name="FORMATTER_TAGS_ENABLED" value="true"/>
-    <option name="SOFT_MARGINS" value="80,120"/>
     <JSON>
         <option name="OBJECT_WRAPPING" value="0"/>
         <option name="ARRAY_WRAPPING" value="0"/>
@@ -32,6 +35,9 @@
         <option name="DICT_NEW_LINE_AFTER_LEFT_BRACE" value="true"/>
         <option name="DICT_NEW_LINE_BEFORE_RIGHT_BRACE" value="true"/>
     </Python>
+    <editorconfig>
+        <option name="ENABLED" value="false"/>
+    </editorconfig>
     <codeStyleSettings language="JAVA">
         <option name="BRACE_STYLE" value="2"/>
         <option name="CLASS_BRACE_STYLE" value="2"/>
@@ -44,6 +50,9 @@
         <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true"/>
         <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true"/>
         <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true"/>
+        <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4"/>
+        </indentOptions>
         <arrangement>
             <groups>
                 <group>
@@ -392,6 +401,10 @@
         <option name="WRAP_ON_TYPING" value="0"/>
     </codeStyleSettings>
     <codeStyleSettings language="Python">
+        <option name="RIGHT_MARGIN" value="999"/>
         <option name="WRAP_ON_TYPING" value="0"/>
+        <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4"/>
+        </indentOptions>
     </codeStyleSettings>
 </code_scheme>

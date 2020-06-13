@@ -9,7 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
-import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.api.calendar.Month;
 
 public enum Plant
 {
@@ -134,7 +134,7 @@ public enum Plant
         public Block create(Plant plant)
         {
             // Common plant properties
-            Block.Properties properties = Block.Properties.create(Material.TALL_PLANTS).notSolid().speedFactor(plant.speedFactor).hardnessAndResistance(0).sound(SoundType.PLANT);
+            Block.Properties properties = Block.Properties.create(Material.TALL_PLANTS).notSolid().speedFactor(plant.getSpeedFactor()).hardnessAndResistance(0).sound(SoundType.PLANT);
             switch (this)
             {
                 case STANDARD:
