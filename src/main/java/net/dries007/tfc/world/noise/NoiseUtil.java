@@ -12,6 +12,13 @@ public final class NoiseUtil
         return start * (1 - t) + end * t;
     }
 
+    public static float lerpGrid(float valueNW, float valueNE, float valueSW, float valueSE, float tNS, float tEW)
+    {
+        float valueN = lerp(valueNW, valueNE, tEW);
+        float valueS = lerp(valueSW, valueSE, tEW);
+        return lerp(valueN, valueS, tNS);
+    }
+
     public static int fastFloor(float f)
     {
         return f < 0 ? (int) f - 1 : (int) f;

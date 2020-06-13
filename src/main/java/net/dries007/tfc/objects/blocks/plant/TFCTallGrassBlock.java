@@ -33,7 +33,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public TFCTallGrassBlock(Properties properties)
     {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(PART, EnumBlockPart.SINGLE));
+        this.setDefaultState(this.stateContainer.getBaseState().with(PART, EnumBlockPart.LOWER));
     }
 
     @Override
@@ -72,8 +72,8 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockPos blockpos = context.getPos();
-        return blockpos.getY() < context.getWorld().getDimension().getHeight() - 1 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context) ? super.getStateForPlacement(context) : null;
+        BlockPos pos = context.getPos();
+        return pos.getY() < context.getWorld().getDimension().getHeight() - 1 && context.getWorld().getBlockState(pos.up()).isReplaceable(context) ? super.getStateForPlacement(context) : null;
     }
 
     @Override

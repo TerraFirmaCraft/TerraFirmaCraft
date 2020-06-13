@@ -18,7 +18,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class ServerConfig
 {
-    /* Collapses */
+    // Collapses
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
     public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
@@ -27,6 +27,10 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
     public final ForgeConfigSpec.IntValue collapseMinRadius;
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
+    // Player
+    public final ForgeConfigSpec.BooleanValue enableVanillaNaturalRegeneration;
+    // Misc
+    public final ForgeConfigSpec.DoubleValue plantGrowthRate;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -43,6 +47,14 @@ public class ServerConfig
         collapseExplosionPropagateChance = builder.apply("collapseExplosionPropagateChance").comment("Chance for a block to fall from an explosion triggered collapse. Higher = mor likely.").defineInRange("collapseExplosionPropagateChance", 0.3, 0, 1);
         collapseMinRadius = builder.apply("collapseMinRadius").comment("Minimum radius for a collapse").defineInRange("collapseMinRadius", 3, 1, 32);
         collapseRadiusVariance = builder.apply("collapseRadiusVariance").comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").defineInRange("collapseRadiusVariance", 16, 1, 32);
+
+        innerBuilder.pop().push("player");
+
+        enableVanillaNaturalRegeneration = builder.apply("enableVanillaNaturalRegeneration").comment("Enables the vanilla `naturalRegeneration` gamerule, which regenerates your health much quicker than TFC does.").define("enableVanillaNaturalRegeneration", false);
+
+        innerBuilder.pop().push("misc");
+
+        plantGrowthRate = builder.apply("plantGrowthRate").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth.").defineInRange("plantGrowthRate", 0.01, 0, 1);
 
         innerBuilder.pop();
     }

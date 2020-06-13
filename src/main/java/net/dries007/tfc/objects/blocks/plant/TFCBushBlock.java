@@ -23,6 +23,6 @@ public class TFCBushBlock extends BushBlock
     @Override
     protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
-        return super.isValidGround(state, worldIn, pos) || TFCTags.GRASS.contains(state.getBlock()) || Tags.Blocks.DIRT.contains(state.getBlock());
+        return super.isValidGround(state, worldIn, pos) || TFCTags.Blocks.GRASS.contains(state.getBlock()) || Tags.Blocks.DIRT.contains(state.getBlock());
     }
 }

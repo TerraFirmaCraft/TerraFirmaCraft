@@ -16,8 +16,8 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.datafixers.Dynamic;
+import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class BouldersFeature extends Feature<BoulderConfig>
 {
@@ -35,27 +35,25 @@ public class BouldersFeature extends Feature<BoulderConfig>
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, BoulderConfig config)
     {
-        ChunkDataProvider.get(worldIn)
-            .map(provider -> provider.get(pos, ChunkData.Status.ROCKS, false).getRockData().getRock(pos.getX(), pos.getY(), pos.getZ()))
-            .ifPresent(rock -> {
-                BlockState baseState = rock.getBlock(config.getBaseType()).getDefaultState();
-                BlockState decorationState = rock.getBlock(config.getDecorationType()).getDefaultState();
-                int size = 2 + rand.nextInt(4);
-                for (BlockPos posAt : BlockPos.getAllInBoxMutable(pos.getX() - size, pos.getY() - size, pos.getZ() - size, pos.getX() + size, pos.getY() + size, pos.getZ() + size))
+        ChunkData data = ChunkData.get(worldIn, pos, ChunkData.Status.ROCKS, false);
+        Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
+        BlockState baseState = rock.getBlock(config.getBaseType()).getDefaultState();
+        BlockState decorationState = rock.getBlock(config.getDecorationType()).getDefaultState();
+        int size = 2 + rand.nextInt(4);
+        for (BlockPos posAt : BlockPos.getAllInBoxMutable(pos.getX() - size, pos.getY() - size, pos.getZ() - size, pos.getX() + size, pos.getY() + size, pos.getZ() + size))
+        {
+            if (posAt.distanceSq(pos) <= size * size)
+            {
+                if (rand.nextFloat() < 0.4f)
                 {
-                    if (posAt.distanceSq(pos) <= size * size)
-                    {
-                        if (rand.nextFloat() < 0.4f)
-                        {
-                            setBlockState(worldIn, posAt, decorationState);
-                        }
-                        else
-                        {
-                            setBlockState(worldIn, posAt, baseState);
-                        }
-                    }
+                    setBlockState(worldIn, posAt, decorationState);
                 }
-            });
+                else
+                {
+                    setBlockState(worldIn, posAt, baseState);
+                }
+            }
+        }
         return true;
     }
 }

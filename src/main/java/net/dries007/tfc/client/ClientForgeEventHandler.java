@@ -11,17 +11,25 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.CreateWorldScreen;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.MetalItem;
+import net.dries007.tfc.api.calendar.Calendar;
+import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -61,15 +69,19 @@ public class ClientForgeEventHandler
             BlockPos pos = new BlockPos(mc.getRenderViewEntity().getPosX(), mc.getRenderViewEntity().getBoundingBox().minY, mc.getRenderViewEntity().getPosZ());
             if (mc.world.chunkExists(pos.getX() >> 4, pos.getZ() >> 4))
             {
+                list.add("");
+                list.add(AQUA + TerraFirmaCraft.MOD_NAME);
+
+                // Always add calendar info
+                list.add(I18n.format("tfc.tooltip.date", Calendar.CALENDAR_TIME.getTimeAndDate()));
+                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendar.PLAYER_TIME.getTicks(), Calendar.CALENDAR_TIME.getTicks()));
+
                 IChunk chunk = mc.world.getChunk(pos);
                 ChunkData.get(chunk).ifPresent(data -> {
-                    list.add("");
-                    list.add(AQUA + TerraFirmaCraft.MOD_NAME);
-
                     if (data.getStatus().isAtLeast(ChunkData.Status.CLIMATE))
                     {
-                        list.add(String.format("%sAvg. Temp: %s%.1f\u00b0C", GRAY, WHITE, data.getAverageTemp()));
-                        list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall()));
+                        list.add(String.format("%sAvg. Temp: %s%.1f\u00b0C", GRAY, WHITE, data.getAverageTemp(pos)));
+                        list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall(pos)));
                     }
                     else
                     {
@@ -77,6 +89,19 @@ public class ClientForgeEventHandler
                     }
                 });
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemTooltip(ItemTooltipEvent event)
+    {
+        ItemStack stack = event.getItemStack();
+        PlayerEntity player = event.getPlayer();
+        List<ITextComponent> text = event.getToolTip();
+        if (!stack.isEmpty() && player != null)
+        {
+            MetalItem.addTooltipInfo(stack, text);
+            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
         }
     }
 }

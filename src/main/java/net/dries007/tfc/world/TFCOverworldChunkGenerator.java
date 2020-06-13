@@ -91,19 +91,15 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     }
 
     @Override
-    public void generateBiomes(IChunk chunkIn)
-    {
-        super.generateBiomes(chunkIn);
-    }
-
-    @Override
     public void func_225550_a_(BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
     {
+        ChunkPos chunkPos = chunkIn.getPos();
         if (stage == GenerationStage.Carving.AIR)
         {
             // First, run worley cave carver
-            worleyCaveCarver.carve(chunkIn, blockReplacer, chunkIn.getPos().x << 4, chunkIn.getPos().z << 4, chunkIn.getCarvingMask(stage));
+            worleyCaveCarver.carve(chunkIn, chunkIn.getPos().x << 4, chunkIn.getPos().z << 4, chunkIn.getCarvingMask(stage));
         }
+
         // Fire other world carvers
         super.func_225550_a_(biomeManager, chunkIn, stage);
     }
@@ -120,10 +116,8 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         makeBedrock(chunk, random);
 
-        ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS, false);
-        float temperature = chunkData.getAverageTemp();
-        float rainfall = chunkData.getRainfall();
-        blockReplacer.replace(worldGenRegion, chunk, random, chunkData.getRockData(), rainfall, temperature);
+        ChunkData chunkData = ChunkData.get(worldGenRegion, chunkPos, ChunkData.Status.ROCKS, false);
+        blockReplacer.replace(worldGenRegion, chunk, random, chunkData);
     }
 
     @Override

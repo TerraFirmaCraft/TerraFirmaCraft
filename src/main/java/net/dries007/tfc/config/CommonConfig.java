@@ -37,14 +37,16 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue rockLayerHeight;
     public final ForgeConfigSpec.IntValue rockLayerSpread;
     public final ForgeConfigSpec.IntValue seaLevel;
-    public final ForgeConfigSpec.EnumValue<LayerType> temperatureLayerType;
+    public final ForgeConfigSpec.EnumValue<NoiseLayerType> temperatureLayerType;
     public final ForgeConfigSpec.IntValue temperatureLayerScale;
-    public final ForgeConfigSpec.EnumValue<LayerType> rainfallLayerType;
+    public final ForgeConfigSpec.EnumValue<NoiseLayerType> rainfallLayerType;
     public final ForgeConfigSpec.IntValue rainfallLayerScale;
+    public final ForgeConfigSpec.IntValue defaultMonthLength;
     // World Generation - Caves
     public final ForgeConfigSpec.IntValue worleyCaveHeightFade;
     public final ForgeConfigSpec.DoubleValue worleyCaveBaseNoiseCutoff;
     public final ForgeConfigSpec.DoubleValue worleyCaveWorleyNoiseCutoff;
+    public final ForgeConfigSpec.IntValue caveSpikeMaxY;
     // World Generation - Biomes
     public final ForgeConfigSpec.IntValue frozenTemperatureCutoff;
     public final ForgeConfigSpec.IntValue coldTemperatureCutoff;
@@ -87,17 +89,20 @@ public class CommonConfig
 
         seaLevel = builder.apply("seaLevel").defineInRange("seaLevel", 96, 0, 256);
 
-        temperatureLayerType = builder.apply("temperatureLayerType").comment("This controls how temperature is generated.").defineEnum("temperatureLayerType", LayerType.SIN_Z, LayerType.values());
+        temperatureLayerType = builder.apply("temperatureLayerType").comment("This controls how temperature is generated.").defineEnum("temperatureLayerType", NoiseLayerType.PERIODIC_Z, NoiseLayerType.values());
         temperatureLayerScale = builder.apply("temperatureLayerScale").comment("This is how spread out the temperature layer is, in blocks.").defineInRange("temperatureLayerScale", 20_000, 1000, 1_000_000);
 
-        rainfallLayerType = builder.apply("rainfallLayerType").comment("This controls how rainfall is generated.").defineEnum("rainfallLayerType", LayerType.SIN_X, LayerType.values());
+        rainfallLayerType = builder.apply("rainfallLayerType").comment("This controls how rainfall is generated.").defineEnum("rainfallLayerType", NoiseLayerType.PERIODIC_X, NoiseLayerType.values());
         rainfallLayerScale = builder.apply("rainfallLayerScale").comment("This is how spread out the temperature layer is, in blocks.").defineInRange("rainfallLayerScale", 20_000, 1000, 1_000_000);
+
+        defaultMonthLength = builder.apply("defaultMonthLength").defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("caves");
 
-        worleyCaveHeightFade = builder.apply("worleyCaveHeightFade").defineInRange("worleyCaveHeightFade", 110, 0, 256);
+        worleyCaveHeightFade = builder.apply("worleyCaveHeightFade").defineInRange("worleyCaveHeightFade", 94, 0, 256);
         worleyCaveBaseNoiseCutoff = builder.apply("worleyCaveBaseNoiseCutoff").defineInRange("worleyCaveBaseNoiseCutoff", 0.3, 0, 1);
         worleyCaveWorleyNoiseCutoff = builder.apply("worleyCaveWorleyNoiseCutoff").defineInRange("worleyCaveWorleyNoiseCutoff", 0.38, 0, 1);
+        caveSpikeMaxY = builder.apply("caveSpikeMaxY").defineInRange("caveSpikeMaxY", 60, 0, 255);
 
         innerBuilder.pop().push("biomes");
 

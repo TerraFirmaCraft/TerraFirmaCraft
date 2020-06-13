@@ -1,5 +1,5 @@
 {
-  "parent": "tfc:block/plants/spanish_moss_0",
+  "parent": "tfc:block/plant/spanish_moss_0",
   "display": {
     "thirdperson_righthand": {
       "rotation": [

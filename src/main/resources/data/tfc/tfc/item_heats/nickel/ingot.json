@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:ingots/nickel"
+  },
+  "heat_capacity": 0.48,
+  "forging_temperature": 871.8,
+  "welding_temperature": 1162.4
+}

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "tag": "forge:rods/copper"
+  },
+  "metal": "tfc:copper",
+  "amount": 100
+}

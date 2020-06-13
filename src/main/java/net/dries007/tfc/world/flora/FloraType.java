@@ -14,16 +14,15 @@ import com.google.gson.JsonParseException;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 
-import net.dries007.tfc.util.json.IChunkRule;
 import net.dries007.tfc.util.json.TFCJSONUtils;
+import net.dries007.tfc.world.placement.IPlacementRule;
 
 public abstract class FloraType
 {
     protected final ResourceLocation id;
-    protected final List<IChunkRule> rules;
+    protected final List<IPlacementRule> rules;
     protected final int rarity;
 
     public FloraType(ResourceLocation id, JsonObject json)
@@ -34,7 +33,7 @@ public abstract class FloraType
         {
             throw new JsonParseException("Rarity must be higher than 0.");
         }
-        rules = json.has("rules") ? TFCJSONUtils.getListLenient(json.get("rules"), IChunkRule.Serializer.INSTANCE::read) : Collections.emptyList();
+        rules = json.has("rules") ? TFCJSONUtils.getListLenient(json.get("rules"), IPlacementRule.Serializer.INSTANCE::read) : Collections.emptyList();
     }
 
     public ResourceLocation getId()
@@ -42,9 +41,9 @@ public abstract class FloraType
         return id;
     }
 
-    public boolean canGenerate(IWorld world, ChunkPos pos)
+    public boolean canGenerate(IWorld world, BlockPos pos)
     {
-        for (IChunkRule rule : rules)
+        for (IPlacementRule rule : rules)
         {
             if (!rule.test(world, pos))
             {

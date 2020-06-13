@@ -8,6 +8,7 @@ package net.dries007.tfc.world.biome;
 import java.util.HashSet;
 import java.util.List;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
@@ -71,7 +72,9 @@ public class TFCBiomeProvider extends BiomeProvider
     public Biome getNoiseBiome(int x, int y, int z)
     {
         TFCBiome baseBiome = biomeFactory.getBiome(x, z);
-        ChunkData data = chunkDataProvider.get(new ChunkPos(x >> 2, z >> 2), ChunkData.Status.CLIMATE, false);
-        return baseBiome.getVariantHolder().get(data.getAverageTemp(), data.getRainfall()).get();
+        ChunkPos chunkPos = new ChunkPos(x >> 2, z >> 2);
+        BlockPos pos = chunkPos.asBlockPos();
+        ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
+        return baseBiome.getVariantHolder().get(data.getAverageTemp(pos), data.getRainfall(pos)).get();
     }
 }

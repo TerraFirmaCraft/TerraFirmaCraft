@@ -1,5 +1,5 @@
 {
-  "parent": "tfc:block/plants/barrel_cactus_single",
+  "parent": "tfc:block/plant/barrel_cactus_single",
   "display": {
     "thirdperson_righthand": {
       "rotation": [
