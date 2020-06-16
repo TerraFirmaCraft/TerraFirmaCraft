@@ -472,8 +472,8 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
         this.lastDeath = nbt.getLong("lastDeath");
         this.setPregnantTime(nbt.getLong("pregnant"));
         this.geneSpeed = nbt.getFloat("geneSpeed");
-        this.geneJump = nbt.getFloat("geneSpeed");
-        this.geneHealth = nbt.getFloat("geneSpeed");
+        this.geneJump = nbt.getFloat("geneJump");
+        this.geneHealth = nbt.getFloat("geneHealth");
         this.geneStrength = nbt.getFloat("geneStrength");
         this.geneVariant = nbt.getInteger("geneVariant");
     }
