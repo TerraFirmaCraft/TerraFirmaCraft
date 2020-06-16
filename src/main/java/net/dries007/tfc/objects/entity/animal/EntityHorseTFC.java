@@ -341,8 +341,8 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
         this.setPregnantTime(nbt.getLong("pregnant"));
         this.birthMule = nbt.getBoolean("birthMule");
         this.geneSpeed = nbt.getFloat("geneSpeed");
-        this.geneJump = nbt.getFloat("geneSpeed");
-        this.geneHealth = nbt.getFloat("geneSpeed");
+        this.geneJump = nbt.getFloat("geneJump");
+        this.geneHealth = nbt.getFloat("geneHealth");
         this.geneHorseVariant = nbt.getInteger("geneHorseVariant");
     }
 
