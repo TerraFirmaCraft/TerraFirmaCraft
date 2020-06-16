@@ -188,6 +188,7 @@ public final class TerraFirmaCraft
 
         CapabilityItemSize.init();
         CapabilityItemHeat.init();
+        CapabilityMetalItem.init();
         FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.dries007.tfc.compat.waila.TOPPlugin");
     }
 
