@@ -27,10 +27,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.metal.BlockMetalLamp;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
+import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 import net.dries007.tfc.util.Helpers;
 
 public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
@@ -60,6 +63,9 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
         CAPACITY = ConfigTFC.Devices.LAMP.tank;
         if (!TABLE.containsKey(metal))
             TABLE.put(metal, this);
+
+        // In the interest of not writing a joint heat / fluid capability that extends ICapabilityProvider, I think this is justified
+        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(this), () -> new ItemHeatHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
     }
 
     @Override

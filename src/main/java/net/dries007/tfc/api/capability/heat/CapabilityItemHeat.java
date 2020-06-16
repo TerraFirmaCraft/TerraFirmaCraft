@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +22,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.DumbStorage;
+import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -44,6 +46,7 @@ public final class CapabilityItemHeat
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Items.EGG), () -> new ItemHeatHandler(null, 1, 480));
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of("blockClay"), () -> new ItemHeatHandler(null, 1, 600));
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of("terracotta"), () -> new ItemHeatHandler(null, 1, 1200));
+        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Blocks.IRON_BARS), () -> new ItemHeatHandler(null, Metal.WROUGHT_IRON.getSpecificHeat(), Metal.WROUGHT_IRON.getMeltTemp()));
     }
 
     /**
