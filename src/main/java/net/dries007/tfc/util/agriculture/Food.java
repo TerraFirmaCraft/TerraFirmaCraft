@@ -72,7 +72,7 @@ public enum Food
     CARROT(VEGETABLE, 4, 2f, 0f, 0f, 1f, 0f, 0f, 0f, 0.7f, "carrot"),
     GARLIC(VEGETABLE, 4, 0.5f, 0f, 0f, 2f, 0f, 0f, 0f, 0.4f),
     GREEN_BEAN(VEGETABLE, 4, 0.5f, 0f, 0f, 1f, 0f, 0f, 0f, 3.5f),
-    GREEN_BELL_PEPPER(VEGETABLE, 4, 1f, 0f, 0f, 1f, 0f, 0f, 0f, 2.5f),
+    GREEN_BELL_PEPPER(VEGETABLE, 4, 0.5f, 0f, 0f, 1f, 0f, 0f, 0f, 2.7f),
     ONION(VEGETABLE, 4, 0.5f, 0f, 0f, 1f, 0f, 0f, 0f, 0.5f),
     POTATO(VEGETABLE, 4, 2f, 0f, 0f, 1.5f, 0f, 0f, 0f, 0.666f),
     RED_BELL_PEPPER(VEGETABLE, 4, 1f, 0f, 0f, 1f, 0f, 0f, 0f, 2.5f),
