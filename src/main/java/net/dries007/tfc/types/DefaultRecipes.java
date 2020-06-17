@@ -151,6 +151,11 @@ public final class DefaultRecipes
             new BarrelRecipeTemperature(IIngredient.of(SALT_WATER.get(), 1), 50).setRegistryName("salt_water_cooling")
         );
 
+        for (Food food : new Food[] {Food.SALAD_DAIRY, Food.SALAD_FRUIT, Food.SALAD_GRAIN, Food.SALAD_MEAT, Food.SALAD_VEGETABLE, Food.SOUP_DAIRY, Food.SOUP_FRUIT, Food.SOUP_GRAIN, Food.SOUP_MEAT, Food.SOUP_VEGETABLE})
+        {
+            event.getRegistry().register(new BarrelRecipeDynamicBowlFood(IIngredient.of(FRESH_WATER.get(), 200), IIngredient.of(ItemFoodTFC.get(food)), 0).setRegistryName(food.name().toLowerCase() + "_cleaning"));
+        }
+
         //The many many many recipes that is dye. This assumes that the standard meta values for colored objects are followed.
         for (EnumDyeColor dyeColor : EnumDyeColor.values())
         {
