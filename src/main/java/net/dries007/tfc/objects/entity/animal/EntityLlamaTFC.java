@@ -381,7 +381,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (this.isTame() || this.getLeashed())
+        if (this.getFamiliarity() > 0.15f)
         {
             super.mountTo(player);
         }

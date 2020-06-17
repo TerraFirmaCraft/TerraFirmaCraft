@@ -19,6 +19,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
+import net.dries007.tfc.objects.entity.animal.EntityDonkeyTFC;
+import net.dries007.tfc.objects.entity.animal.EntityHorseTFC;
+import net.dries007.tfc.objects.entity.animal.EntityMuleTFC;
 
 /**
  * Need this for not insta-growing
@@ -216,22 +219,37 @@ public class ModelHorseTFC extends ModelHorse
     {
         AbstractHorse horse = (AbstractHorse) entityIn;
         IAnimalTFC animal = (IAnimalTFC) horse;
-        if (horse.isHorseSaddled() && animal.getAge() != IAnimalTFC.Age.CHILD)
+        if (animal.getAge() != IAnimalTFC.Age.CHILD)
         {
-            this.horseFaceRopes.render(scale);
-            this.horseSaddleBottom.render(scale);
-            this.horseSaddleFront.render(scale);
-            this.horseSaddleBack.render(scale);
-            this.horseLeftSaddleRope.render(scale);
-            this.horseLeftSaddleMetal.render(scale);
-            this.horseRightSaddleRope.render(scale);
-            this.horseRightSaddleMetal.render(scale);
-            this.horseLeftFaceMetal.render(scale);
-            this.horseRightFaceMetal.render(scale);
-            if (horse.isBeingRidden())
+            if (horse.isHorseSaddled())
             {
-                this.horseLeftRein.render(scale);
-                this.horseRightRein.render(scale);
+                this.horseFaceRopes.render(scale);
+                this.horseSaddleBottom.render(scale);
+                this.horseSaddleFront.render(scale);
+                this.horseSaddleBack.render(scale);
+                this.horseLeftSaddleRope.render(scale);
+                this.horseLeftSaddleMetal.render(scale);
+                this.horseRightSaddleRope.render(scale);
+                this.horseRightSaddleMetal.render(scale);
+                this.horseLeftFaceMetal.render(scale);
+                this.horseRightFaceMetal.render(scale);
+                if (horse.isBeingRidden())
+                {
+                    this.horseLeftRein.render(scale);
+                    this.horseRightRein.render(scale);
+                }
+            }
+            else
+            {
+                // Checks for halter
+                if ((horse instanceof EntityHorseTFC && ((EntityHorseTFC) horse).isHalter()) ||
+                    (horse instanceof EntityMuleTFC && ((EntityMuleTFC) horse).isHalter()) ||
+                    (horse instanceof EntityDonkeyTFC && ((EntityDonkeyTFC) horse).isHalter()))
+                {
+                    this.horseFaceRopes.render(scale);
+                    this.horseLeftFaceMetal.render(scale);
+                    this.horseRightFaceMetal.render(scale);
+                }
             }
         }
 
@@ -469,6 +487,23 @@ public class ModelHorseTFC extends ModelHorse
                 this.horseRightSaddleRope.rotateAngleZ = -f11 / 5.0F;
                 this.horseRightSaddleMetal.rotateAngleZ = -f11 / 5.0F;
             }
+        }
+        else if ((abstracthorse instanceof EntityHorseTFC && ((EntityHorseTFC) abstracthorse).isHalter()) ||
+            (abstracthorse instanceof EntityMuleTFC && ((EntityMuleTFC) abstracthorse).isHalter()) ||
+            (abstracthorse instanceof EntityDonkeyTFC && ((EntityDonkeyTFC) abstracthorse).isHalter()))
+        {
+            this.horseFaceRopes.rotationPointY = this.head.rotationPointY;
+            this.horseFaceRopes.rotationPointZ = this.head.rotationPointZ;
+            this.horseFaceRopes.rotateAngleX = this.head.rotateAngleX;
+            this.horseFaceRopes.rotateAngleY = this.head.rotateAngleY;
+            this.horseLeftFaceMetal.rotationPointY = this.head.rotationPointY;
+            this.horseLeftFaceMetal.rotationPointZ = this.head.rotationPointZ;
+            this.horseLeftFaceMetal.rotateAngleX = this.head.rotateAngleX;
+            this.horseLeftFaceMetal.rotateAngleY = this.head.rotateAngleY;
+            this.horseRightFaceMetal.rotationPointY = this.head.rotationPointY;
+            this.horseRightFaceMetal.rotationPointZ = this.head.rotationPointZ;
+            this.horseRightFaceMetal.rotateAngleX = this.head.rotateAngleX;
+            this.horseRightFaceMetal.rotateAngleY = this.head.rotateAngleY;
         }
 
         f12 = -1.3089969F + limbSwingAmount * 1.5F;
