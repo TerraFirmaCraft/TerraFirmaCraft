@@ -131,7 +131,7 @@ dependencies {
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", config.version
+    inputs.property "version", version
     inputs.property "mcversion", config.minecraft.version
 
     // copy mcmod.info from resources
