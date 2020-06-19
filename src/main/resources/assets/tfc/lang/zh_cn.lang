@@ -3192,6 +3192,7 @@ item.tfc.ceramics.fired.jug.name=罐
 item.tfc.ceramics.fired.jug.filled=%s罐
 item.tfc.ceramics.unfired.clay_flower_pot.name=未烧制的粘土花盆
 item.tfc.mortar.name=砂浆
+item.tfc.halter.name=笼头
 item.tfc.wrought_iron_grill.name=锻铁烤架
 item.tfc.alabaster_brick.name=雪花石砖
 item.tfc.metal.rod.gold.name=金棒
