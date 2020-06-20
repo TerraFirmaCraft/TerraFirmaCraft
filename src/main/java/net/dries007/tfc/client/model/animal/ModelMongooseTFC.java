@@ -93,7 +93,7 @@ public class ModelMongooseTFC extends ModelBase
         legLFrontPaw.setRotationPoint(0.0F, 3.0F, -0.5F);
         legLFrontPaw.addBox(0.0F, 0.0F, 0.0F, 2, 1, 1, 0.0F);
         body = new ModelRenderer(this, 36, 18);
-        body.setRotationPoint(0.0F, 16.65F, -7.0F);
+        body.setRotationPoint(0.0F, 16.65F, -7.2F);
         body.addBox(-3.0F, -3.0F, 0.0F, 6, 6, 8, 0.0F);
         setRotateAngle(body, -0.04363323129985824F, 0.0F, 0.0F);
         legLFrontLower = new ModelRenderer(this, 15, 19);
@@ -126,7 +126,7 @@ public class ModelMongooseTFC extends ModelBase
         legLBackLower.setRotationPoint(-1.0F, 5.0F, 1.5F);
         legLBackLower.addBox(0.0F, 0.0F, 0.0F, 2, 3, 2, 0.0F);
         rump = new ModelRenderer(this, 37, 5);
-        rump.setRotationPoint(0.0F, 17.0F, 4.0F);
+        rump.setRotationPoint(0.0F, 17.0F, 4.2F);
         rump.addBox(-3.0F, -3.0F, -3.5F, 6, 6, 7, 0.1F);
 
         legRFront.addChild(legRFrontLower);
