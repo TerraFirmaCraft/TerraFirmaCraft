@@ -32,11 +32,17 @@ buildscript {
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+        classpath "com.wynprice.cursemaven:CurseMaven:2.1.0"
     }
+}
+plugins {
+    id 'java'
+    id 'idea'
 }
 // Go Forge go!
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: 'com.wynprice.cursemaven'
 
 // Load properties file, easier to manage versions of required dependencies
 file "build.properties" withReader {
@@ -102,10 +108,10 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven {
-        name = "Hwyla maven"
-        url "http://tehnut.info/maven"
-    }
+    //maven {
+    //    name = "Hwyla maven"
+    //    url "http://tehnut.info/maven"
+    //}
     maven { // TOP
         name 'tterrag maven'
         url "https://maven.tterrag.com/"
@@ -113,6 +119,10 @@ repositories {
     maven {
         name = "CoFH Maven"
         url = "https://maven.covers1624.net/"
+    }
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
     }
 }
 
@@ -125,7 +135,10 @@ dependencies {
     // Do not add dependencies without prior approval from the dev team. You can update existing ones.
     deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
-    compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
+
+    // For now, since maven is no show, use the curse maven plugin to resolve the exact file name
+    compile "curse.maven:hwyla:2568751"
+    //compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
     compileOnly "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
 }
 
