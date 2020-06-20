@@ -93,7 +93,7 @@ public class ModelBoarTFC extends ModelBase {
         tailBased.addBox(-0.8F, 0.0F, -0.8F, 1, 2, 1, 0.0F);
         tuskL1 = new ModelRenderer(this, 1, 31);
         tuskL1.setRotationPoint(1.3F, -0.8F, -2.8F);
-        tuskL1.addBox(-0.5F, -0.8F, -0.5F, 1, 1, 1, 0.0F);
+        tuskL1.addBox(-0.4F, -0.8F, -0.5F, 1, 1, 1, 0.0F);
         setRotateAngle(tuskL1, 0.24434609527920614F, 0.0F, 0.6981317007977318F);
         nose = new ModelRenderer(this, 7, 26);
         nose.setRotationPoint(0.0F, -0.4F, -4.3F);
@@ -103,7 +103,7 @@ public class ModelBoarTFC extends ModelBase {
         tuskR3.mirror = true;
         tuskR3.setRotationPoint(-0.23F, 0.28F, -0.06F);
         tuskR3.addBox(-0.6F, -1.7F, -0.5F, 1, 1, 1, 0.0F);
-        setRotateAngle(tuskR3, -0.08726646259971647F, 0.0F, 0.4363323129985824F);
+        setRotateAngle(tuskR3, -0.03490658503988659F, 0.0F, 0.4363323129985824F);
         neck = new ModelRenderer(this, 3, 54);
         neck.setRotationPoint(0.0F, 11.7F, -8.5F);
         neck.addBox(-2.0F, -3.2F, -3.0F, 4, 6, 4, 0.0F);
@@ -157,9 +157,9 @@ public class ModelBoarTFC extends ModelBase {
         tuskR1.addBox(-0.5F, -0.8F, -0.5F, 1, 1, 1, 0.0F);
         setRotateAngle(tuskR1, 0.24434609527920614F, 0.0F, -0.6981317007977318F);
         tuskL3 = new ModelRenderer(this, 1, 27);
-        tuskL3.setRotationPoint(0.5F, 0.18F, -0.08F);
+        tuskL3.setRotationPoint(0.5F, 0.18F, -0.02F);
         tuskL3.addBox(-0.6F, -1.7F, -0.5F, 1, 1, 1, 0.0F);
-        setRotateAngle(tuskL3, -0.08726646259971647F, 0.0F, -0.4363323129985824F);
+        setRotateAngle(tuskL3, -0.03490658503988659F, 0.0F, -0.4363323129985824F);
         hairTop1 = new ModelRenderer(this, 3, 0);
         hairTop1.setRotationPoint(0.0F, -5.4F, -0.7F);
         hairTop1.addBox(-2.5F, 0.0F, 0.0F, 5, 0, 2, 0.0F);
