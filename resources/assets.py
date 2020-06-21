@@ -5,6 +5,8 @@ from mcresources import ResourceManager
 
 from constants import *
 
+import mcresources.loot_tables as loot_tables
+
 
 def generate(rm: ResourceManager):
     # Rock block variants
@@ -125,9 +127,23 @@ def generate(rm: ResourceManager):
             }, parent='block/block', elements=[north_face])
             
     # Plants
-    # todo: loot table (thatch on knife harvest, block stack on shears)
+    # This is special cased since it is too much overdatailed in 1.12
+    # Block and item models are hand made
     for plant in PLANTS:
         rm.lang('block.tfc.plant.%s' % plant, lang('%s' % plant))
+        # rm.block_loot(('plant', '%s' % plant), 'tfc:plant/%s' % plant) # todo: thatch on knife harvest, block stack on shears
+        rm.block_loot(('plant', '%s' % plant), [{'entries': {
+                'type': 'minecraft:alternatives',
+                'children': ([{
+                    'type': 'minecraft:item',
+                    'conditions': [loot_tables.match_tool('minecraft:shears')],
+                    'name': 'tfc:plant/%s' % plant
+                }, {
+                    'type': 'minecraft:item',
+                    'conditions': [loot_tables.match_tool('minecraft:stone_axe')], # todo: change to knife
+                    'name': 'minecraft:grass'  # todo: change to thatch
+                }])
+            }, 'conditions': None}])
 
     # Rock Tools
     for rock in ROCK_CATEGORIES:
