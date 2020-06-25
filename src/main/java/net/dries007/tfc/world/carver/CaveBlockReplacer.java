@@ -36,24 +36,9 @@ public class CaveBlockReplacer
         exposedBlockReplacements = new HashMap<>();
 
         // This needs to run post rock reload
-        RockManager.INSTANCE.addCallback(() -> {
-            carvableBlocks.clear();
-            carvableBlocksAboveSeaLevel.clear();
-            exposedBlockReplacements.clear();
+        RockManager.INSTANCE.addCallback(this::reload);
 
-            for (Rock rock : RockManager.INSTANCE.getValues())
-            {
-                carvableBlocks.add(rock.getBlock(Rock.BlockType.RAW));
-                carvableBlocksAboveSeaLevel.add(rock.getBlock(Rock.BlockType.RAW));
-                carvableBlocksAboveSeaLevel.add(rock.getBlock(Rock.BlockType.GRAVEL));
-            }
-            for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
-            {
-                carvableBlocksAboveSeaLevel.add(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get());
-                carvableBlocksAboveSeaLevel.add(TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
-                exposedBlockReplacements.put(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get(), TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
-            }
-        });
+        reload();
     }
 
     public boolean carveBlock(IChunk chunk, BlockPos pos, BitSet carvingMask)
@@ -95,5 +80,25 @@ public class CaveBlockReplacer
             }
         }
         return false;
+    }
+
+    private void reload()
+    {
+        carvableBlocks.clear();
+        carvableBlocksAboveSeaLevel.clear();
+        exposedBlockReplacements.clear();
+
+        for (Rock rock : RockManager.INSTANCE.getValues())
+        {
+            carvableBlocks.add(rock.getBlock(Rock.BlockType.RAW));
+            carvableBlocksAboveSeaLevel.add(rock.getBlock(Rock.BlockType.RAW));
+            carvableBlocksAboveSeaLevel.add(rock.getBlock(Rock.BlockType.GRAVEL));
+        }
+        for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
+        {
+            carvableBlocksAboveSeaLevel.add(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get());
+            carvableBlocksAboveSeaLevel.add(TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
+            exposedBlockReplacements.put(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get(), TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
+        }
     }
 }

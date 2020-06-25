@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GrassColors;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -30,7 +31,7 @@ import net.dries007.tfc.objects.entities.TFCEntities;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientEventHandler
 {
     private static final Logger LOGGER = LogManager.getLogger();
