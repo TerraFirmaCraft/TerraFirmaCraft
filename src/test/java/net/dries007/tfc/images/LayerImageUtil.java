@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.layer;
+package net.dries007.tfc.images;
 
 import java.awt.*;
 
@@ -11,24 +11,16 @@ import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 
-import imageutil.Images;
-import net.dries007.tfc.api.Rock;
-
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
-public class LayerDrawingUtil
+public class LayerImageUtil
 {
-    public static final Images<IAreaFactory<LazyArea>> IMAGES = Images.get(af -> {
-        IArea area = af.make();
+    public static final ImageUtil<IAreaFactory<LazyArea>> LAYERS = ImageUtil.get((NoiseTransformer<IAreaFactory<LazyArea>>) target -> {
+        IArea area = target.make();
         return (x, y) -> area.getValue((int) x, (int) y);
-    });
+    }).color(Colors.LINEAR_BLUE_RED);
 
-    static
-    {
-        IMAGES.size(1000).color(Images.Colors.LINEAR_GRAY).disable();
-    }
-
-    public static Color biomeColor(double val, double min, double max)
+    public static Color biomeColor(double val)
     {
         int biome = (int) Math.round(val);
         if (biome == OCEAN) return new Color(0, 0, 255);
@@ -58,7 +50,7 @@ public class LayerDrawingUtil
         return Color.BLACK;
     }
 
-    public static Color landColor(double val, double min, double max)
+    public static Color landColor(double val)
     {
         int i = (int) Math.round(val);
         if (i == PLAINS) return Color.GREEN;
@@ -66,14 +58,14 @@ public class LayerDrawingUtil
         return Color.BLACK;
     }
 
-    public static Color riverColor(double val, double min, double max)
+    public static Color riverColor(double val)
     {
         int i = (int) Math.round(val);
         if (i == RIVER) return Color.CYAN;
         return Color.BLACK;
     }
 
-    public static Color elevationColor(double val, double min, double max)
+    public static Color elevationColor(double val)
     {
         int i = (int) Math.round(val);
         if (i == PLAINS) return new Color(100, 200, 100);
@@ -83,7 +75,7 @@ public class LayerDrawingUtil
         return Color.BLACK;
     }
 
-    public static Color rockCategoryColor(double val, double min, double max)
+    public static Color rockCategoryColor(double val)
     {
         int i = (int) Math.round(val);
         if (i == 0) return Color.BLUE;
@@ -93,9 +85,9 @@ public class LayerDrawingUtil
         return Color.BLACK;
     }
 
-    public static Color rockColor(double val, double min, double max)
+    public static Color rockColor(double val)
     {
-        return Images.Colors.DISCRETE_20.apply(val, 0, Rock.Default.values().length);
+        return Colors.DISCRETE_20.apply(val);
     }
 
     public static String biomeName(int biome)
