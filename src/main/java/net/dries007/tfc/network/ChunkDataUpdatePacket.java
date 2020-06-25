@@ -12,6 +12,8 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import net.dries007.tfc.util.LerpFloatLayer;
@@ -53,7 +55,7 @@ public class ChunkDataUpdatePacket
     {
         context.get().enqueueWork(() -> {
             // Update client-side chunk data capability
-            World world = Minecraft.getInstance().world;
+            World world = DistExecutor.callWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().world);
             if (world != null)
             {
                 ChunkPos pos = new ChunkPos(chunkX, chunkZ);

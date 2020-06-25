@@ -23,10 +23,12 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.util.Transaction;
 
 public final class Calendar implements INBTSerializable<CompoundNBT>
 {
-    public static final int SYNC_INTERVAL = 10; // Number of ticks between sync attempts
+    public static final int SYNC_INTERVAL = 20; // Number of ticks between sync attempts
+    public static final int TIME_DESYNC_THRESHOLD = 5;
     public static final Calendar INSTANCE = new Calendar();
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -60,6 +62,8 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
 
     public static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
     public static final Map<String, String> BIRTHDAYS = new HashMap<>();
+
+    private static final Transaction DO_DAYLIGHT_CYCLE = new Transaction(Calendar.INSTANCE::setDoDaylightCycle);
 
     static
     {
@@ -108,22 +112,13 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
     public static void setup()
     {
         GameRules.RuleType<GameRules.BooleanValue> type = (GameRules.RuleType<GameRules.BooleanValue>) GameRules.GAME_RULES.get(GameRules.DO_DAYLIGHT_CYCLE);
-        type.changeListener = type.changeListener.andThen((server, t) -> {
-            // Avoid infinite game rule update recursion
-            if (!INSTANCE.processingGameRuleUpdates)
-            {
-                INSTANCE.processingGameRuleUpdates = true;
-                Calendar.INSTANCE.setDoDaylightCycle();
-                INSTANCE.processingGameRuleUpdates = false;
-            }
-        });
+        type.changeListener = type.changeListener.andThen((server, t) -> DO_DAYLIGHT_CYCLE.run());
     }
 
     private long playerTime, calendarTime;
     private int daysInMonth;
     private boolean doDaylightCycle, arePlayersLoggedOn;
     private MinecraftServer server;
-    private boolean processingGameRuleUpdates;
 
     public Calendar()
     {
@@ -151,8 +146,8 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         // Update the actual world times
         for (ServerWorld world : server.getWorlds())
         {
-            long currentWorldTime = world.getGameTime();
-            world.setGameTime(currentWorldTime + timeJump);
+            long currentDayTime = world.getDayTime();
+            world.setDayTime(currentDayTime + timeJump);
         }
 
         PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
@@ -162,7 +157,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
      * Jumps the calendar ahead to a world time.
      * This does not automatically fix sync errors
      *
-     * @param worldTimeToSetTo a world time, obtained from {@link ServerWorld#getGameTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
+     * @param worldTimeToSetTo a world time, obtained from {@link ServerWorld#getDayTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
      */
     public long setTimeFromDayTime(long worldTimeToSetTo)
     {
@@ -260,7 +255,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
 
         // Initialize doDaylightCycle to false as the server is just starting
         GameRules rules = server.getWorld(DimensionType.OVERWORLD).getGameRules();
-        rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server);
+        DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
 
         resetTo(CalendarWorldData.get(server.getWorld(DimensionType.OVERWORLD)).getCalendar());
         PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
@@ -290,24 +285,30 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         {
             calendarTime++;
         }
-        long deltaWorldTime = (world.getGameTime() % ICalendar.TICKS_IN_DAY) - CALENDAR_TIME.getDayTime();
-        if (deltaWorldTime > 1 || deltaWorldTime < -1)
+        long deltaWorldTime = (world.getDayTime() % ICalendar.TICKS_IN_DAY) - CALENDAR_TIME.getDayTime();
+        if (deltaWorldTime > TIME_DESYNC_THRESHOLD || deltaWorldTime < -TIME_DESYNC_THRESHOLD)
         {
             LOGGER.warn("World time and Calendar Time are out of sync! Trying to fix...");
-            LOGGER.debug("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTime, CALENDAR_TIME.getDayTime(), playerTime, world.getGameTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
+            LOGGER.debug("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTime, CALENDAR_TIME.getDayTime(), playerTime, world.getDayTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
 
             // Check if tracking values are wrong
-            boolean checkArePlayersLoggedOn = server.getPlayerList().getPlayers().size() > 0;
+            boolean checkArePlayersLoggedOn = server.getPlayerList().getCurrentPlayerCount() > 0;
             if (arePlayersLoggedOn != checkArePlayersLoggedOn)
             {
                 // Whoops, somehow we missed this.
                 LOGGER.info("Setting ArePlayersLoggedOn = {}", checkArePlayersLoggedOn);
                 setPlayersLoggedOn(checkArePlayersLoggedOn);
             }
+            if (arePlayersLoggedOn && doDaylightCycle != server.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE))
+            {
+                // Do daylight cycle should match
+                LOGGER.info("Setting DoDaylightCycle = {}", server.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE));
+                setDoDaylightCycle();
+            }
             if (deltaWorldTime < 0)
             {
                 // Calendar is ahead, so jump world time
-                world.setGameTime(world.getGameTime() - deltaWorldTime);
+                world.setDayTime(world.getDayTime() - deltaWorldTime);
                 LOGGER.info("Calendar is ahead by {} ticks, jumping world time to catch up", -deltaWorldTime);
             }
             else
@@ -342,12 +343,12 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         this.arePlayersLoggedOn = arePlayersLoggedOn;
         if (arePlayersLoggedOn)
         {
-            rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(doDaylightCycle, server);
+            DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(doDaylightCycle, server));
             LOGGER.info("Reverted doDaylightCycle to {} as players are logged in.", doDaylightCycle);
         }
         else
         {
-            rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server);
+            DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
             LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
         }
 
@@ -356,11 +357,11 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
 
     public void setDoDaylightCycle()
     {
-        GameRules rules = server.getWorld(DimensionType.OVERWORLD).getGameRules();
-        this.doDaylightCycle = rules.getBoolean(GameRules.DO_DAYLIGHT_CYCLE);
+        GameRules rules = server.getGameRules();
+        doDaylightCycle = rules.getBoolean(GameRules.DO_DAYLIGHT_CYCLE);
         if (!arePlayersLoggedOn)
         {
-            rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server);
+            DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
             LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
         }
 

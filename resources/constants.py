@@ -234,7 +234,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.season': 'Season : %s',
     'tfc.tooltip.day': 'Day : %s',
     'tfc.tooltip.date': 'Date : %s',
-    'tfc.tooltip.calendar_full_date': '%s %s %02d: %04d',
+    'tfc.tooltip.full_date': '%s %s %02d: %04d',
     'tfc.tooltip.debug_times': 'PT: %d | CT: %d',
     # Commands
     'tfc.command.heat': 'Held item heat set to %s',
