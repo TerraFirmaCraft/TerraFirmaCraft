@@ -22,14 +22,16 @@ import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.feature.trees.ForestConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class ForestNoiseTests
 {
-    static final Artist.Noise<INoise2D> NOISE = Artist.<INoise2D>mapNoise(target -> (x, y) -> target.noise((float) x, (float) y)).scale(Artist.Scales.DYNAMIC_RANGE).color(Artist.Colors.LINEAR_BLUE_RED).center(20_000);
-    static final Artist.Raw COLOR = Artist.empty().center(20_000);
+    static final Artist.Noise<INoise2D> NOISE = Artist.<INoise2D>forNoise(target -> (x, y) -> target.noise((float) x, (float) y)).scale(Artist.Scales.DYNAMIC_RANGE).color(Artist.Colors.LINEAR_BLUE_RED).center(20_000);
+    static final Artist.Raw COLOR = Artist.raw().center(20_000);
 
     @Test
     void testTreeDistributions()

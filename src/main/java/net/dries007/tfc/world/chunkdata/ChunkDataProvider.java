@@ -22,6 +22,7 @@ import net.minecraft.world.server.ServerChunkProvider;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -58,9 +59,9 @@ public class ChunkDataProvider
     private final INoise2D forestWeirdnessNoise;
     private final INoise2D forestDensityNoise;
 
-    public ChunkDataProvider(Random seedGenerator)
+    public ChunkDataProvider(Random seedGenerator, TFCBiomeProvider.LayerSettings layerSettings)
     {
-        List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(seedGenerator.nextLong());
+        List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(seedGenerator.nextLong(), layerSettings);
         this.bottomRockLayer = new RockFactory(rockLayers.get(0));
         this.middleRockLayer = new RockFactory(rockLayers.get(1));
         this.topRockLayer = new RockFactory(rockLayers.get(2));

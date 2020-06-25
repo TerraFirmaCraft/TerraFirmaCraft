@@ -19,7 +19,6 @@ import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.Blockreader;
 import net.minecraft.world.EmptyBlockReader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -30,13 +29,11 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.world.gen.HeightmapAccessor;
 import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.world.biome.*;
@@ -85,7 +82,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
         this.flatBedrock = flatBedrock;
         this.seed = seed;
 
-        // Noise
         this.biomeNoiseMap = new HashMap<>();
 
         final SharedSeedRandom seedGenerator = new SharedSeedRandom(seed);
@@ -100,7 +96,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
         }
         // Generators / Providers
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator); // Worley cave carver, separate from vanilla ones
-        this.chunkDataProvider = new ChunkDataProvider(seedGenerator); // Chunk data
+        this.chunkDataProvider = new ChunkDataProvider(seedGenerator, ((TFCBiomeProvider) biomeProvider).getLayerSettings()); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(seedGenerator.nextLong()); // Replaces default world gen blocks with TFC variants, after surface generation
 
         ((TFCBiomeProvider) biomeProvider).setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation

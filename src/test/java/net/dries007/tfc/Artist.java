@@ -9,8 +9,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -22,31 +24,33 @@ import net.minecraft.util.math.MathHelper;
  * Artist for drawing images of specific types.
  * Explicitly handles noise, types, and direct color per pixel.
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "unused"})
 public abstract class Artist<T, A extends Artist<T, A>>
 {
-    public static Artist.Raw empty()
+    public static Artist.Raw raw()
     {
         return new Raw(); // An empty artist, for drawing direct pixel -> color objects
     }
 
-    public static <K, V> Artist.Typed<K, V> map(Function<V, Pixel<K>> transformer)
+    public static <K, V> Artist.Typed<K, V> forMap(Function<K, Pixel<V>> transformer)
     {
         return new Artist.Typed<>(transformer); // An artist that handles pixel -> K objects
     }
 
-    public static <V> Artist.Noise<V> mapNoise(Function<V, DPixel> transformer)
+    public static <V> Artist.Noise<V> forNoise(Function<V, NoisePixel> transformer)
     {
         return new Artist.Noise<>(transformer); // An artist that handles pixel -> double objects
     }
 
-    public static <V> Artist.Colored<V> mapColor(Function<V, Pixel<Color>> transformer)
+    public static <V> Artist.Colored<V> forColor(Function<V, Pixel<Color>> transformer)
     {
         return new Artist.Colored<>(transformer); // An artist that handler pixel -> color objects with predefined colors
     }
 
     protected int size = 1000;
     protected int minX = 0, minY = 0, maxX = size, maxY = size;
+
+    protected Artist() {}
 
     public A size(int size)
     {
@@ -56,7 +60,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
 
     public A center(int radius)
     {
-        return center(0, 0, radius, radius);
+        return center(0, 0, 2 * radius, 2 * radius);
     }
 
     public A center(int x, int y)
@@ -66,12 +70,12 @@ public abstract class Artist<T, A extends Artist<T, A>>
 
     public A center(int x, int y, int radius)
     {
-        return center(x, y, radius, radius);
+        return center(x, y, 2 * radius, 2 * radius);
     }
 
     public A center(int x, int y, int width, int height)
     {
-        return dimensions(x - width / 2, x + width / 2, y - height / 2, y + height / 2);
+        return dimensions(x - width / 2, y - height / 2, x + width / 2, y + height / 2);
     }
 
     public A dimensions(int side)
@@ -111,6 +115,12 @@ public abstract class Artist<T, A extends Artist<T, A>>
 
     protected abstract void drawInternal(String name, T instance, Graphics graphics);
 
+    protected A copy(Artist<?, ?> other)
+    {
+        dimensions(other.minX, other.minY, other.maxX, other.maxY).size(other.size);
+        return (A) this;
+    }
+
     protected final <S> Stream<Local<S>> stream(Pixel<S> step)
     {
         return IntStream.range(0, size * size)
@@ -124,11 +134,6 @@ public abstract class Artist<T, A extends Artist<T, A>>
             });
     }
 
-    protected final <S> Stream<S> blocking(Stream<S> stream)
-    {
-        return stream.collect(Collectors.toList()).stream();
-    }
-
     protected final void drawStream(Graphics graphics, Stream<Local<Color>> stream)
     {
         stream.forEach(loc -> {
@@ -137,16 +142,62 @@ public abstract class Artist<T, A extends Artist<T, A>>
         });
     }
 
+    /**
+     * A mapping from (x, y) -> T. Includes variants for int and float coordinates
+     */
     @FunctionalInterface
     public interface Pixel<T>
     {
+        static <T> Pixel<T> coerceInt(IntPixel<T> pixel)
+        {
+            return (x, y) -> pixel.apply((int) x, (int) y);
+        }
+
+        static <T> Pixel<T> coerceFloat(FloatPixel<T> pixel)
+        {
+            return (x, y) -> pixel.apply((float) x, (float) y);
+        }
+
         T apply(double x, double y);
     }
 
-    @FunctionalInterface
-    public interface DPixel
+    public interface IntPixel<T>
     {
+        T apply(int x, int y);
+    }
+
+    public interface FloatPixel<T>
+    {
+        T apply(float x, float y);
+    }
+
+    /**
+     * A mapping from (x, y) -> value.
+     */
+    @FunctionalInterface
+    public interface NoisePixel
+    {
+        static NoisePixel coerceInt(IntNoisePixel pixel)
+        {
+            return (x, y) -> pixel.apply((int) x, (int) y);
+        }
+
+        static NoisePixel coerceFloat(FloatNoisePixel pixel)
+        {
+            return (x, y) -> pixel.apply((float) x, (float) y);
+        }
+
         double apply(double x, double y);
+    }
+
+    public interface IntNoisePixel
+    {
+        double apply(int x, int y);
+    }
+
+    public interface FloatNoisePixel
+    {
+        double apply(float x, float y);
     }
 
     @FunctionalInterface
@@ -192,6 +243,13 @@ public abstract class Artist<T, A extends Artist<T, A>>
             new Color(0xF13A13),
             new Color(0x232C16),
         };
+
+        private static final Random RNG = new Random();
+
+        public static Color random()
+        {
+            return new Color(RNG.nextInt(255), RNG.nextInt(255), RNG.nextInt(255));
+        }
     }
 
     public static final class Scales
@@ -216,11 +274,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
 
     public static final class Noise<T> extends Artist<T, Noise<T>>
     {
-        private final Function<T, DPixel> noiseTransformer;
+        private final Function<T, NoisePixel> noiseTransformer;
         private DoubleFunction<Color> color = Colors.LINEAR_GRAY;
         private ScaleTransformer scaleTransformer = Scales.DYNAMIC_RANGE;
 
-        private Noise(Function<T, DPixel> noiseTransformer)
+        private Noise(Function<T, NoisePixel> noiseTransformer)
         {
             this.noiseTransformer = noiseTransformer;
         }
@@ -241,13 +299,16 @@ public abstract class Artist<T, A extends Artist<T, A>>
         protected void drawInternal(String name, T instance, Graphics graphics)
         {
             final double[] sourceMinMax = new double[] {Double.MAX_VALUE, Double.MIN_VALUE};
-            DPixel source = noiseTransformer.apply(instance);
-            drawStream(graphics, blocking(stream((x, y) -> {
-                double value = source.apply(x, y);
-                sourceMinMax[0] = Math.min(sourceMinMax[0], value);
-                sourceMinMax[1] = Math.max(sourceMinMax[1], value);
-                return value;
-            })).map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1])))));
+            NoisePixel source = noiseTransformer.apply(instance);
+            drawStream(graphics, stream((x, y) -> {
+                    double value = source.apply(x, y);
+                    sourceMinMax[0] = Math.min(sourceMinMax[0], value);
+                    sourceMinMax[1] = Math.max(sourceMinMax[1], value);
+                    return value;
+                })
+                    .collect(Collectors.toList()).stream() // Block after min/max calculations
+                    .map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]))))
+            );
         }
     }
 
@@ -276,26 +337,36 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
     }
 
-    public static final class Typed<K, V> extends Artist<V, Typed<K, V>>
+    public static final class Typed<K, V> extends Artist<K, Typed<K, V>>
     {
-        private final Function<V, Pixel<K>> transformer;
-        private Function<K, Color> colorTransformer;
+        private final Function<K, Pixel<V>> transformer;
+        private Function<V, Color> colorTransformer = k -> Colors.random();
 
-        public Typed(Function<V, Pixel<K>> transformer)
+        public Typed(Function<K, Pixel<V>> transformer)
         {
             this.transformer = transformer;
         }
 
-        public Typed<K, V> color(Function<K, Color> colorTransformer)
+        public Typed<K, V> color(Function<V, Color> colorTransformer)
         {
             this.colorTransformer = colorTransformer;
             return this;
         }
 
-        @Override
-        protected void drawInternal(String name, V instance, Graphics graphics)
+        public Noise<K> mapNoise(ToDoubleFunction<V> noiseTransformer)
         {
-            final Pixel<K> pixel = transformer.apply(instance);
+            return Artist.<K>forNoise(v -> (x, y) -> noiseTransformer.applyAsDouble(transformer.apply(v).apply(x, y))).copy(this);
+        }
+
+        public <R> Typed<K, R> mapTo(Function<V, R> transformer)
+        {
+            return Artist.<K, R>forMap(k -> (x, y) -> transformer.apply(this.transformer.apply(k).apply(x, y))).copy(this);
+        }
+
+        @Override
+        protected void drawInternal(String name, K instance, Graphics graphics)
+        {
+            final Pixel<V> pixel = transformer.apply(instance);
             drawStream(graphics, stream((x, y) -> colorTransformer.apply(pixel.apply(x, y))));
         }
     }
