@@ -30,7 +30,7 @@ public class DimensionGeneratorSettingsMixin
         if (levelType != null && "tfc".equalsIgnoreCase(levelType.toString()))
         {
             DimensionGeneratorSettings old = cir.getReturnValue();
-            TFCBiomeProvider biomeProvider = new TFCBiomeProvider(old.seed(), registries.registryOrThrow(Registry.BIOME_REGISTRY));
+            TFCBiomeProvider biomeProvider = new TFCBiomeProvider(old.seed(), new TFCBiomeProvider.LayerSettings(), registries.registryOrThrow(Registry.BIOME_REGISTRY));
             ChunkGenerator chunkGenerator = new TFCChunkGenerator(biomeProvider, () -> registries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).get(DimensionSettings.OVERWORLD), false, old.seed());
             cir.setReturnValue(new DimensionGeneratorSettings(old.seed(), old.generateFeatures(), false, DimensionGeneratorSettings.withOverworld(registries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), old.dimensions(), chunkGenerator)));
         }

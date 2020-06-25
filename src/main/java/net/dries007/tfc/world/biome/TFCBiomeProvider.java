@@ -16,6 +16,7 @@ import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.area.LazyArea;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -25,35 +26,32 @@ public class TFCBiomeProvider extends BiomeProvider
 {
     public static final Codec<TFCBiomeProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),
-        Codec.INT.optionalFieldOf("land_frequency", 6).forGetter(c -> c.landFrequency),
-        Codec.INT.optionalFieldOf("biome_size", 4).forGetter(c -> c.biomeSize),
+        LayerSettings.CODEC.forGetter(TFCBiomeProvider::getLayerSettings),
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeProvider::new));
 
     // Set from codec
     private final long seed;
-    private final int biomeSize;
-    private final int landFrequency;
+    private final LayerSettings layerSettings;
     private final Registry<Biome> biomeRegistry;
 
     private final LazyArea biomeArea;
     private ChunkDataProvider chunkDataProvider;
 
-    public TFCBiomeProvider(long seed, Registry<Biome> biomeRegistry)
-    {
-        this(seed, 6, 4, biomeRegistry);
-    }
-
-    public TFCBiomeProvider(long seed, int landFrequency, int biomeSize, Registry<Biome> biomeRegistry)
+    public TFCBiomeProvider(long seed, LayerSettings layerSettings, Registry<Biome> biomeRegistry)
     {
         super(TFCBiomes.getAllKeys().stream().map(biomeRegistry::getOrThrow).collect(Collectors.toList()));
 
         this.seed = seed;
-        this.landFrequency = landFrequency;
-        this.biomeSize = biomeSize;
+        this.layerSettings = layerSettings;
         this.biomeRegistry = biomeRegistry;
 
-        this.biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, landFrequency, biomeSize).make();
+        this.biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, layerSettings).make();
+    }
+
+    public LayerSettings getLayerSettings()
+    {
+        return layerSettings;
     }
 
     public void setChunkDataProvider(ChunkDataProvider chunkDataProvider)
@@ -70,7 +68,7 @@ public class TFCBiomeProvider extends BiomeProvider
     @Override
     public TFCBiomeProvider withSeed(long seedIn)
     {
-        return new TFCBiomeProvider(seedIn, landFrequency, biomeSize, biomeRegistry);
+        return new TFCBiomeProvider(seedIn, layerSettings, biomeRegistry);
     }
 
     /**
@@ -87,5 +85,37 @@ public class TFCBiomeProvider extends BiomeProvider
         final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
         final BiomeExtension extension = variants.get(data.getAverageTemp(pos), data.getRainfall(pos));
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
+    }
+
+    public static final class LayerSettings
+    {
+        private static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.intRange(0, 100).fieldOf("ocean_percent").forGetter(LayerSettings::getOceanPercent),
+            Codec.intRange(1, 10).fieldOf("rock_layer_scale").forGetter(LayerSettings::getRockLayerScale)
+        ).apply(instance, LayerSettings::new));
+
+        private final int oceanPercent;
+        private final int rockLayerScale;
+
+        public LayerSettings()
+        {
+            this(45, 7);
+        }
+
+        public LayerSettings(int oceanPercent, int rockLayerScale)
+        {
+            this.oceanPercent = oceanPercent;
+            this.rockLayerScale = rockLayerScale;
+        }
+
+        public int getOceanPercent()
+        {
+            return oceanPercent;
+        }
+
+        public int getRockLayerScale()
+        {
+            return rockLayerScale;
+        }
     }
 }
