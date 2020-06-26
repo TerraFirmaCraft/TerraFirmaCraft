@@ -32,6 +32,6 @@ public class ShoreBiome extends TFCBiome
     public INoise2D createNoiseLayer(long seed)
     {
         int seaLevel = TFCConfig.COMMON.seaLevel.get();
-        return new SimplexNoise2D(seed).octaves(2).spread(0.17f).scaled(seaLevel, seaLevel + 1.8f);
+        return new SimplexNoise2D(seed).octaves(4).spread(0.17f).scaled(seaLevel, seaLevel + 1.8f);
     }
 }

@@ -28,7 +28,7 @@ repositories {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200516-1.15.1'
+    mappings channel: 'snapshot', version: '20200626-1.15.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
