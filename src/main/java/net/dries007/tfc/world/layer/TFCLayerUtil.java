@@ -91,12 +91,13 @@ public class TFCLayerUtil
         mainLayer = EdgeBiomeLayer.INSTANCE.apply(contextFactory.apply(1017L), mainLayer);
         mainLayer = AddLakeLayer.INSTANCE.apply(contextFactory.apply(1018L), mainLayer);
 
-        for (int i = 0; i < settings.getBiomeZoomLevel(); i++)
+        for (int i = 0; i < settings.getBiomeZoomLevel() - 1; i++)
         {
             mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), mainLayer);
         }
 
-        mainLayer = ShoreLayer.INSTANCE.apply(contextFactory.apply(1023L), mainLayer);
+        mainLayer = ShoreLayer.CASTLE.apply(contextFactory.apply(1023L), mainLayer);
+        mainLayer = ShoreLayer.BISHOP.apply(contextFactory.apply(1023L), mainLayer);
 
         for (int i = 0; i < 2; i++)
         {

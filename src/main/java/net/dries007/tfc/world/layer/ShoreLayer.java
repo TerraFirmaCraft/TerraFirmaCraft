@@ -8,12 +8,16 @@ package net.dries007.tfc.world.layer;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
+import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.INoiseRandom;
+import net.minecraft.world.gen.area.IArea;
+import net.minecraft.world.gen.layer.traits.IBishopTransformer;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
-public enum ShoreLayer implements ICastleTransformer
+public enum ShoreLayer implements ICastleTransformer, IBishopTransformer
 {
-    INSTANCE;
+    CASTLE,
+    BISHOP;
 
     @Override
     public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
@@ -45,5 +49,11 @@ public enum ShoreLayer implements ICastleTransformer
             }
         }
         return center;
+    }
+
+    @Override
+    public int apply(IExtendedNoiseRandom<?> context, IArea area, int x, int z)
+    {
+        return this == CASTLE ? ICastleTransformer.super.apply(context, area, x, z) : IBishopTransformer.super.apply(context, area, x, z);
     }
 }
