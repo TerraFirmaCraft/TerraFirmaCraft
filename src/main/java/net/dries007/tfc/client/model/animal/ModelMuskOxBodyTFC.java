@@ -25,19 +25,16 @@ import net.dries007.tfc.objects.entity.animal.EntityMuskOxTFC;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
-public class ModelMuskOxTFC extends ModelBase {
+public class ModelMuskOxBodyTFC extends ModelBase {
     public ModelRenderer bodyMain;
     public ModelRenderer legBackLeft;
     public ModelRenderer legBackRight;
     public ModelRenderer legFrontLeft;
-    public ModelRenderer bodyShoulderQiviut;
     public ModelRenderer legFrontRight;
     public ModelRenderer headBase;
     public ModelRenderer bodyShoulder;
     public ModelRenderer neck;
-    public ModelRenderer bodyHairQiviut;
     public ModelRenderer bodyHair;
-    public ModelRenderer bodyMainQiviut;
     public ModelRenderer head;
     public ModelRenderer hornRightBase;
     public ModelRenderer beard;
@@ -49,11 +46,14 @@ public class ModelMuskOxTFC extends ModelBase {
     public ModelRenderer hornLeft1;
     public ModelRenderer hornLeft2;
     public ModelRenderer hornLeft3;
+    public ModelRenderer hornCenter;
 
-    public ModelMuskOxTFC() {
+    public ModelMuskOxBodyTFC()
+    {
         textureWidth = 128;
         textureHeight = 128;
-        hornRight3 = new ModelRenderer(this, 94, 15);
+
+        hornRight3 = new ModelRenderer(this, 94, 14);
         hornRight3.setRotationPoint(3.0F, 0.0F, 0.0F);
         hornRight3.addBox(-0.2F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
         setRotateAngle(hornRight3, 0.0F, 1.1676252695842066F, 0.32812189937493397F);
@@ -64,29 +64,23 @@ public class ModelMuskOxTFC extends ModelBase {
         hornLeft3.setRotationPoint(3.0F, 0.0F, 0.0F);
         hornLeft3.addBox(-0.2F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
         setRotateAngle(hornLeft3, 0.0F, -1.1676252695842066F, 0.32812189937493397F);
-        legBackRight = new ModelRenderer(this, 75, 0);
-        legBackRight.setRotationPoint(-4.0F, 14.5F, 8.0F);
+        legBackRight = new ModelRenderer(this, 78, 0);
+        legBackRight.setRotationPoint(-4.5F, 14.5F, 8.0F);
         legBackRight.addBox(-1.5F, -1.5F, -1.5F, 4, 11, 4, 0.0F);
         hornRightBase = new ModelRenderer(this, 94, 0);
         hornRightBase.setRotationPoint(-1.5F, -5.2F, 0.0F);
         hornRightBase.addBox(-2.0F, 0.0F, 0.0F, 3, 1, 3, 0.0F);
         setRotateAngle(hornRightBase, 0.0F, 0.0F, -0.2617993877991494F);
-        bodyMainQiviut = new ModelRenderer(this, 61, 46);
-        bodyMainQiviut.setRotationPoint(0.0F, 10.0F, 0.0F);
-        bodyMainQiviut.addBox(-4.5F, -8.5F, -8.5F, 9, 16, 23, 0.0F);
-        head = new ModelRenderer(this, 102, 51);
+        head = new ModelRenderer(this, 102, 40);
         head.setRotationPoint(0.0F, 5.5F, -1.5F);
         head.addBox(-3.0F, -4.5F, -1.0F, 6, 7, 6, 0.0F);
         setRotateAngle(head, 0.8726646259971648F, 0.0F, 0.0F);
-        bodyMain = new ModelRenderer(this, 0, 68);
+        bodyMain = new ModelRenderer(this, 2, 70);
         bodyMain.setRotationPoint(0.0F, 10.0F, 0.0F);
         bodyMain.addBox(-4.0F, -8.0F, -8.0F, 8, 15, 22, 0.0F);
-        legFrontRight = new ModelRenderer(this, 75, 18);
-        legFrontRight.setRotationPoint(-4.0F, 14.5F, -5.5F);
+        legFrontRight = new ModelRenderer(this, 78, 18);
+        legFrontRight.setRotationPoint(-4.5F, 14.5F, -5.5F);
         legFrontRight.addBox(-1.5F, -1.5F, -1.5F, 4, 11, 4, 0.0F);
-        bodyHairQiviut = new ModelRenderer(this, 55, 88);
-        bodyHairQiviut.setRotationPoint(0.0F, 11.0F, -1.5F);
-        bodyHairQiviut.addBox(-7.0F, -8.0F, -8.0F, 14, 16, 22, 0.0F);
         hornRight1 = new ModelRenderer(this, 94, 5);
         hornRight1.setRotationPoint(-1.0F, 1.0F, 1.5F);
         hornRight1.addBox(0.0F, 0.0F, -1.0F, 3, 1, 2, 0.0F);
@@ -94,14 +88,14 @@ public class ModelMuskOxTFC extends ModelBase {
         beard = new ModelRenderer(this, 106, 23);
         beard.setRotationPoint(0.0F, 0.0F, -1.0F);
         beard.addBox(0.0F, -2.5F, -1.0F, 0, 9, 6, 0.0F);
-        setRotateAngle(beard, -1.2217304763960306F, 0.0F, 0.0F);
+        setRotateAngle(beard, -0.3490658503988659F, 0.0F, 0.0F);
         hornLeft2 = new ModelRenderer(this, 94, 10);
         hornLeft2.setRotationPoint(2.5F, 0.7F, 0.0F);
         hornLeft2.addBox(-0.5F, -0.5F, -0.5F, 4, 1, 1, 0.0F);
         setRotateAngle(hornLeft2, 0.0F, -1.1676252695842066F, 0.3490658503988659F);
-        legBackLeft = new ModelRenderer(this, 75, 0);
+        legBackLeft = new ModelRenderer(this, 78, 0);
         legBackLeft.mirror = true;
-        legBackLeft.setRotationPoint(4.0F, 14.5F, 8.0F);
+        legBackLeft.setRotationPoint(3.5F, 14.5F, 8.0F);
         legBackLeft.addBox(-1.5F, -1.5F, -1.5F, 4, 11, 4, 0.0F);
         hornLeftBase = new ModelRenderer(this, 94, 0);
         hornLeftBase.setRotationPoint(1.5F, -5.2F, 0.0F);
@@ -111,7 +105,7 @@ public class ModelMuskOxTFC extends ModelBase {
         hornLeft1.setRotationPoint(1.0F, 1.0F, 1.5F);
         hornLeft1.addBox(0.0F, 0.0F, -1.0F, 3, 1, 2, 0.0F);
         setRotateAngle(hornLeft1, 0.0F, 3.141592653589793F, -2.6179938779914944F);
-        bodyHair = new ModelRenderer(this, 0, 0);
+        bodyHair = new ModelRenderer(this, 1, 1);
         bodyHair.setRotationPoint(0.0F, 12.0F, -1.0F);
         bodyHair.addBox(-6.5F, -8.0F, -8.0F, 13, 15, 21, 0.0F);
         bodyShoulder = new ModelRenderer(this, 0, 40);
@@ -121,20 +115,21 @@ public class ModelMuskOxTFC extends ModelBase {
         hornRight2.setRotationPoint(2.5F, 0.7F, 0.0F);
         hornRight2.addBox(-0.5F, -0.5F, -0.5F, 4, 1, 1, 0.0F);
         setRotateAngle(hornRight2, 0.0F, 1.1676252695842066F, 0.3490658503988659F);
-        legFrontLeft = new ModelRenderer(this, 75, 18);
+        legFrontLeft = new ModelRenderer(this, 78, 18);
         legFrontLeft.mirror = true;
-        legFrontLeft.setRotationPoint(4.0F, 14.5F, -5.5F);
+        legFrontLeft.setRotationPoint(3.5F, 14.5F, -5.5F);
         legFrontLeft.addBox(-1.5F, -1.5F, -1.5F, 4, 11, 4, 0.0F);
-        bodyShoulderQiviut = new ModelRenderer(this, 41, 38);
-        bodyShoulderQiviut.setRotationPoint(0.0F, 9.0F, -7.0F);
-        bodyShoulderQiviut.addBox(-5.5F, -8.5F, -5.5F, 11, 15, 11, 0.0F);
         neck = new ModelRenderer(this, 0, 110);
         neck.setRotationPoint(0.0F, 0.0F, -13.0F);
-        neck.addBox(-2.0F, -1.2F, -2.2F, 4, 9, 9, 0.0F);
-        snout = new ModelRenderer(this, 102, 40);
+        neck.addBox(-2.0F, -1.2F, -2.2F, 4, 8, 9, 0.0F);
+        snout = new ModelRenderer(this, 106, 15);
         snout.setRotationPoint(0.0F, 2.0F, -2.5F);
         snout.addBox(-2.0F, -4.5F, -1.0F, 4, 5, 6, 0.0F);
         setRotateAngle(snout, 0.3490658503988659F, 0.0F, 0.0F);
+        hornCenter = new ModelRenderer(this, 94, 0);
+        hornCenter.setRotationPoint(0.0F, -4.7F, 0.0F);
+        hornCenter.addBox(-1.0F, -0.5F, 0.1F, 2, 1, 3, 0.0F);
+
         hornRight2.addChild(hornRight3);
         hornLeft2.addChild(hornLeft3);
         head.addChild(hornRightBase);
@@ -146,6 +141,7 @@ public class ModelMuskOxTFC extends ModelBase {
         hornLeftBase.addChild(hornLeft1);
         hornRight1.addChild(hornRight2);
         head.addChild(snout);
+        head.addChild(hornCenter);
     }
 
     @Override
@@ -177,12 +173,9 @@ public class ModelMuskOxTFC extends ModelBase {
         legFrontLeft.render(par7);
         bodyHair.render(par7);
         legBackLeft.render(par7);
-        bodyHairQiviut.render(par7);
-        bodyMainQiviut.render(par7);
         neck.render(par7);
         headBase.render(par7);
         legBackRight.render(par7);
-        bodyShoulderQiviut.render(par7);
         GlStateManager.popMatrix();
     }
 

@@ -27,7 +27,6 @@ import net.dries007.tfc.objects.entity.animal.EntityDireWolfTFC;
 @ParametersAreNonnullByDefault
 public class ModelDireWolfTFC extends ModelBase
 {
-    public ModelRenderer neckMane;
     public ModelRenderer frontRLegTop;
     public ModelRenderer backBody;
     public ModelRenderer head;
@@ -56,6 +55,12 @@ public class ModelDireWolfTFC extends ModelBase
     public ModelRenderer frontLLegPaw;
     public ModelRenderer tailBody;
     public ModelRenderer tailTip;
+    public ModelRenderer neckMane1;
+    public ModelRenderer neckMane2;
+    public ModelRenderer neckManeLower1;
+    public ModelRenderer neckManeLower2;
+    public ModelRenderer mouthMid1;
+    public ModelRenderer mouthMid2;
 
     public ModelDireWolfTFC()
     {
@@ -82,28 +87,28 @@ public class ModelDireWolfTFC extends ModelBase
         frontLLegAnkle.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
         setRotateAngle(frontLLegAnkle, -0.2617993877991494F, 0.0F, 0.0F);
         earR = new ModelRenderer(this, 29, 40);
-        earR.setRotationPoint(-1.3F, -3.0F, -2.0F);
-        earR.addBox(-2.0F, -3.0F, -2.0F, 2, 3, 1, 0.0F);
+        earR.setRotationPoint(-1.3F, -3.2F, -1.5F);
+        earR.addBox(-2.0F, -2.0F, -2.0F, 2, 3, 1, 0.0F);
         setRotateAngle(earR, 0.0F, -0.17453292519943295F, -0.17453292519943295F);
         frontRLegPaw = new ModelRenderer(this, 2, 48);
         frontRLegPaw.setRotationPoint(-0.01F, 3.0F, 1.0F);
         frontRLegPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
         setRotateAngle(frontRLegPaw, 0.17453292519943295F, 0.0F, 0.0F);
-        tailTip = new ModelRenderer(this, 36, 1);
-        tailTip.setRotationPoint(0.0F, 0.0F, 6.0F);
-        tailTip.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 2, 0.0F);
+        tailTip = new ModelRenderer(this, 34, 0);
+        tailTip.setRotationPoint(0.0F, 0.3F, 6.0F);
+        tailTip.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 4, 0.0F);
         setRotateAngle(tailTip, -0.08726646259971647F, 0.0F, 0.0F);
         backLLegAnkle = new ModelRenderer(this, 21, 55);
         backLLegAnkle.setRotationPoint(-0.99F, 6.0F, 0.1F);
         backLLegAnkle.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
         setRotateAngle(backLLegAnkle, -0.3490658503988659F, 0.0F, 0.0F);
-        tailMain = new ModelRenderer(this, 35, 17);
+        tailMain = new ModelRenderer(this, 35, 18);
         tailMain.setRotationPoint(0.0F, 8.0F, 9.5F);
         tailMain.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 3, 0.0F);
         setRotateAngle(tailMain, -1.0471975511965976F, 0.0F, 0.0F);
         mouthTop = new ModelRenderer(this, 11, 26);
-        mouthTop.setRotationPoint(0.5F, -1.3F, -0.1F);
-        mouthTop.addBox(-2.0F, -1.0F, -10.0F, 3, 2, 4, 0.0F);
+        mouthTop.setRotationPoint(0.5F, -1.3F, 0.4F);
+        mouthTop.addBox(-2.0F, 0.0F, -9.0F, 3, 2, 4, 0.0F);
         frontLLegTop = new ModelRenderer(this, 0, 75);
         frontLLegTop.setRotationPoint(3.0F, 8.0F, -6.5F);
         frontLLegTop.addBox(-1.5F, -1.0F, -1.0F, 4, 7, 5, 0.0F);
@@ -112,8 +117,8 @@ public class ModelDireWolfTFC extends ModelBase
         frontLLegPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
         setRotateAngle(frontLLegPaw, 0.17453292519943295F, 0.0F, 0.0F);
         earL = new ModelRenderer(this, 29, 40);
-        earL.setRotationPoint(2.2F, -3.0F, -2.0F);
-        earL.addBox(-1.0F, -3.0F, -2.0F, 2, 3, 1, 0.0F);
+        earL.setRotationPoint(2.2F, -3.0F, -1.5F);
+        earL.addBox(-1.0F, -2.0F, -2.0F, 2, 3, 1, 0.0F);
         setRotateAngle(earL, 0.0F, 0.17453292519943295F, 0.17453292519943295F);
         frontLLegCalf = new ModelRenderer(this, 2, 63);
         frontLLegCalf.setRotationPoint(1.0F, 6.0F, 1.6F);
@@ -130,15 +135,15 @@ public class ModelDireWolfTFC extends ModelBase
         frontRLegCalf.setRotationPoint(1.0F, 6.0F, 1.6F);
         frontRLegCalf.addBox(-2.0F, -1.0F, -2.0F, 3, 7, 4, 0.0F);
         setRotateAngle(frontRLegCalf, 0.08726646259971647F, 0.0F, 0.0F);
-        headMane = new ModelRenderer(this, 56, 21);
-        headMane.setRotationPoint(0.0F, -1.5F, -2.9F);
-        headMane.addBox(-3.0F, -3.0F, -2.0F, 6, 6, 4, 0.0F);
+        headMane = new ModelRenderer(this, 56, 0);
+        headMane.setRotationPoint(0.0F, -1.5F, -3.0F);
+        headMane.addBox(-3.0F, -2.0F, -1.0F, 6, 6, 4, 0.0F);
         mouthBottom = new ModelRenderer(this, 11, 20);
-        mouthBottom.setRotationPoint(0.5F, -0.3F, -6.1F);
-        mouthBottom.addBox(-2.0F, 0.0F, -4.0F, 3, 1, 4, 0.0F);
-        nose = new ModelRenderer(this, 14, 16);
-        nose.setRotationPoint(0.0F, 0.0F, -5.8F);
-        nose.addBox(-1.0F, -2.0F, -4.7F, 2, 1, 2, 0.0F);
+        mouthBottom.setRotationPoint(0.5F, -0.3F, -5.5F);
+        mouthBottom.addBox(-2.0F, 1.0F, -3.0F, 3, 1, 4, 0.0F);
+        nose = new ModelRenderer(this, 15, 18);
+        nose.setRotationPoint(0.0F, 0.0F, -5.3F);
+        nose.addBox(-1.0F, -1.0F, -3.7F, 2, 1, 1, 0.0F);
         backRLegAnkle = new ModelRenderer(this, 21, 55);
         backRLegAnkle.setRotationPoint(-0.99F, 6.0F, 0.1F);
         backRLegAnkle.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
@@ -154,20 +159,38 @@ public class ModelDireWolfTFC extends ModelBase
         backLLegCalf.setRotationPoint(1.0F, 5.8F, 1.4F);
         backLLegCalf.addBox(-2.0F, -1.0F, -2.0F, 3, 7, 4, 0.0F);
         setRotateAngle(backLLegCalf, 0.2617993877991494F, 0.0F, 0.0F);
-        neckMane = new ModelRenderer(this, 51, 32);
-        neckMane.setRotationPoint(0.0F, 7.0F, -8.3F);
-        neckMane.addBox(-3.5F, -3.5F, -3.0F, 7, 8, 8, -0.1F);
-        setRotateAngle(neckMane, -0.4379031093253773F, 0.0F, 0.0F);
         head = new ModelRenderer(this, 8, 34);
-        head.setRotationPoint(0.0F, 7.5F, -8.5F);
-        head.addBox(-2.5F, -4.0F, -7.0F, 5, 5, 5, 0.0F);
-        tailBody = new ModelRenderer(this, 30, 6);
+        head.setRotationPoint(0.0F, 6.6F, -9.5F);
+        head.addBox(-2.5F, -3.0F, -6.0F, 5, 5, 5, 0.0F);
+        tailBody = new ModelRenderer(this, 30, 7);
         tailBody.setRotationPoint(0.0F, 0.0F, 1.5F);
         tailBody.addBox(-1.5F, -1.5F, 0.0F, 3, 3, 7, 0.0F);
         setRotateAngle(tailBody, -0.2617993877991494F, 0.0F, 0.0F);
         frontRLegTop = new ModelRenderer(this, 0, 75);
         frontRLegTop.setRotationPoint(-4.0F, 8.0F, -6.5F);
         frontRLegTop.addBox(-1.5F, -1.0F, -1.0F, 4, 7, 5, 0.0F);
+        neckMane1 = new ModelRenderer(this, 54, 37);
+        neckMane1.setRotationPoint(0.0F, 7.3F, -8.5F);
+        neckMane1.addBox(-4.0F, -3.5F, -3.0F, 8, 7, 4, 0.0F);
+        setRotateAngle(neckMane1, -0.47123889803846897F, 0.0F, 0.0F);
+        neckMane2 = new ModelRenderer(this, 54, 27);
+        neckMane2.setRotationPoint(0.0F, 7.0F, -6.5F);
+        neckMane2.addBox(-3.5F, -2.0F, -2.0F, 7, 4, 5, 0.2F);
+        setRotateAngle(neckMane2, -0.2617993877991494F, 0.0F, 0.0F);
+        neckManeLower1 = new ModelRenderer(this, 55, 20);
+        neckManeLower1.setRotationPoint(0.0F, 10.5F, -10.5F);
+        neckManeLower1.addBox(-3.5F, -2.0F, -1.5F, 7, 2, 4, 0.0F);
+        setRotateAngle(neckManeLower1, 0.3141592653589793F, 0.0F, 0.0F);
+        neckManeLower2 = new ModelRenderer(this, 57, 11);
+        neckManeLower2.setRotationPoint(0.0F, 11.0F, -9.5F);
+        neckManeLower2.addBox(-3.0F, -2.5F, -1.5F, 6, 5, 3, -0.1F);
+        setRotateAngle(neckManeLower2, 0.4363323129985824F, 0.0F, 0.0F);
+        mouthMid1 = new ModelRenderer(this, 0, 0);
+        mouthMid1.setRotationPoint(-0.4F, 0.5F, -7.55F);
+        mouthMid1.addBox(-1.0F, -0.5F, -1.0F, 2, 1, 2, 0.0F);
+        mouthMid2 = new ModelRenderer(this, 0, 0);
+        mouthMid2.setRotationPoint(0.4F, 0.5F, -7.55F);
+        mouthMid2.addBox(-1.0F, -0.5F, -1.0F, 2, 1, 2, 0.0F);
 
         backRLegAnkle.addChild(backRLegPaw);
         frontRLegCalf.addChild(frontRLegAnkle);
@@ -189,6 +212,8 @@ public class ModelDireWolfTFC extends ModelBase
         backLLegAnkle.addChild(backLLegPaw);
         backLLegTop.addChild(backLLegCalf);
         tailMain.addChild(tailBody);
+        head.addChild(mouthMid1);
+        head.addChild(mouthMid2);
     }
 
     @Override
@@ -206,7 +231,10 @@ public class ModelDireWolfTFC extends ModelBase
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
         head.render(par7);
-        neckMane.render(par7);
+        neckMane1.render(par7);
+        neckMane2.render(par7);
+        neckManeLower1.render(par7);
+        neckManeLower2.render(par7);
         frontBody.render(par7);
         backBody.render(par7);
         tailMain.render(par7);
@@ -222,9 +250,9 @@ public class ModelDireWolfTFC extends ModelBase
     {
         head.rotateAngleX = f4 / (180F / (float) Math.PI);
         head.rotateAngleY = f3 / (180F / (float) Math.PI);
-        neckMane.rotateAngleX = f4 / (90F / (float) Math.PI);
-        neckMane.rotateAngleY = f3 / (90F / (float) Math.PI);
-        setRotateAngle(neckMane, -0.4379031093253773F, 0.0F, 0.0F);
+        neckMane1.rotateAngleX = f4 / (90F / (float) Math.PI);
+        neckMane1.rotateAngleY = f3 / (90F / (float) Math.PI);
+        setRotateAngle(neckMane1, -0.4379031093253773F, 0.0F, 0.0F);
 
         frontRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
         frontLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;
@@ -232,9 +260,6 @@ public class ModelDireWolfTFC extends ModelBase
         backLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
     }
 
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
