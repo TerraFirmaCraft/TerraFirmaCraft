@@ -50,6 +50,7 @@ public class ItemMetalBucket extends ItemMetal // quite a bit copied out of Item
     {
         super(metal, type);
         setHasSubtypes(true);
+        setContainerItem(this);
 
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, DispenseFluidContainer.getInstance());
     }
