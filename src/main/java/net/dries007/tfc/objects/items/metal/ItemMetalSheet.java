@@ -39,14 +39,17 @@ public class ItemMetalSheet extends ItemMetal
     @Nonnull
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+
         ItemStack stack = player.getHeldItem(hand);
+        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+        if (heat.getTemperature() > Heat.WARMING.getMax()) { return EnumActionResult.FAIL;};
         if (worldIn.getBlockState(pos).isNormalCube() && stack.getItem() instanceof ItemMetalSheet)
         {
             ItemMetalSheet sheet = (ItemMetalSheet) stack.getItem();
             BlockPos posAt = pos.offset(facing);
             IBlockState stateAt = worldIn.getBlockState(posAt);
-            IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-            if (heat.getTemperature() > Heat.WARMING.getMax()) { return EnumActionResult.FAIL;};
+
+
             if (stateAt.getBlock() instanceof BlockMetalSheet)
             {
                 // Existing sheet block
