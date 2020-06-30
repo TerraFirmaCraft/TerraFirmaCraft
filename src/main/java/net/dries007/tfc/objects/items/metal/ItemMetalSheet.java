@@ -19,6 +19,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
 import net.dries007.tfc.objects.te.TEMetalSheet;
@@ -42,7 +45,8 @@ public class ItemMetalSheet extends ItemMetal
             ItemMetalSheet sheet = (ItemMetalSheet) stack.getItem();
             BlockPos posAt = pos.offset(facing);
             IBlockState stateAt = worldIn.getBlockState(posAt);
-
+            IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (heat.getTemperature() > Heat.WARMING.getMax()) { return EnumActionResult.FAIL;};
             if (stateAt.getBlock() instanceof BlockMetalSheet)
             {
                 // Existing sheet block

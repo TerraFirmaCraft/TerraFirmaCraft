@@ -21,10 +21,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.ConfigTFC;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.te.TEIngotPile;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.config.TemperatureMode;
 
 @ParametersAreNonnullByDefault
 public class ItemIngot extends ItemMetal
@@ -42,6 +46,8 @@ public class ItemIngot extends ItemMetal
         {
             ItemStack stack = player.getHeldItem(hand);
             ItemIngot item = (ItemIngot) stack.getItem();
+            IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (heat.getTemperature() > Heat.WARMING.getMax()) { return EnumActionResult.FAIL;};
             if (worldIn.getBlockState(pos).getBlock() != BlocksTFC.INGOT_PILE)
             {
                 if (facing == EnumFacing.UP && worldIn.getBlockState(pos).isSideSolid(worldIn, pos, EnumFacing.UP))
