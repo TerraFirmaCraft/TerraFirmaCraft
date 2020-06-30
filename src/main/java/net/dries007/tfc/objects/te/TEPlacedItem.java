@@ -94,13 +94,21 @@ public class TEPlacedItem extends TEInventory
         return onRightClick(player, stack, Math.round(rayTrace.hitVec.x) < rayTrace.hitVec.x, Math.round(rayTrace.hitVec.z) < rayTrace.hitVec.z);
     }
 
+    public boolean insertItem(EntityPlayer player, ItemStack stack, RayTraceResult rayTrace)
+    {
+        boolean x = Math.round(rayTrace.hitVec.x) < rayTrace.hitVec.x;
+        boolean z = Math.round(rayTrace.hitVec.z) < rayTrace.hitVec.z;
+        final int slot = (x ? 1 : 0) + (z ? 2 : 0);
+        return insertItem(player, stack, slot);
+    }
+
     /**
      * @return true if an action was taken (passed back through onItemRightClick)
      */
     public boolean onRightClick(EntityPlayer player, ItemStack stack, boolean x, boolean z)
     {
         final int slot = (x ? 1 : 0) + (z ? 2 : 0);
-        if ((player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) || player.isSneaking())
+        if (player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() || player.isSneaking())
         {
             ItemStack current;
             if (isHoldingLargeItem)
@@ -127,55 +135,61 @@ public class TEPlacedItem extends TEInventory
         }
         else if (!stack.isEmpty())
         {
-            // Try and insert an item
-            // Check the size of item to determine if insertion is possible, or if it requires the large slot
-            IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
-            Size size = Size.NORMAL;
-            if (sizeCap != null)
-            {
-                size = sizeCap.getSize(stack);
-            }
+            return insertItem(player, stack, slot);
+        }
+        return false;
+    }
 
-            if (size.isSmallerThan(Size.VERY_LARGE) && !isHoldingLargeItem)
+    public boolean insertItem(EntityPlayer player, ItemStack stack, int slot)
+    {
+        // Try and insert an item
+        // Check the size of item to determine if insertion is possible, or if it requires the large slot
+        IItemSize sizeCap = CapabilityItemSize.getIItemSize(stack);
+        Size size = Size.NORMAL;
+        if (sizeCap != null)
+        {
+            size = sizeCap.getSize(stack);
+        }
+
+        if (size.isSmallerThan(Size.VERY_LARGE) && !isHoldingLargeItem)
+        {
+            // Normal and smaller can be placed normally
+            if (inventory.getStackInSlot(slot).isEmpty())
             {
-                // Normal and smaller can be placed normally
-                if (inventory.getStackInSlot(slot).isEmpty())
+                ItemStack input;
+                if (player.isCreative())
                 {
-                    ItemStack input;
-                    if (player.isCreative())
-                    {
-                        input = stack.copy();
-                        input.setCount(1);
-                    }
-                    else
-                    {
-                        input = stack.splitStack(1);
-                    }
-                    inventory.setStackInSlot(slot, input);
-                    updateBlock();
-                    return true;
+                    input = stack.copy();
+                    input.setCount(1);
                 }
+                else
+                {
+                    input = stack.splitStack(1);
+                }
+                inventory.setStackInSlot(slot, input);
+                updateBlock();
+                return true;
             }
-            else if (!size.isSmallerThan(Size.VERY_LARGE)) // Very Large or Huge
+        }
+        else if (!size.isSmallerThan(Size.VERY_LARGE)) // Very Large or Huge
+        {
+            // Large items are placed in the single center slot
+            if (isEmpty())
             {
-                // Large items are placed in the single center slot
-                if (isEmpty())
+                ItemStack input;
+                if (player.isCreative())
                 {
-                    ItemStack input;
-                    if (player.isCreative())
-                    {
-                        input = stack.copy();
-                        input.setCount(1);
-                    }
-                    else
-                    {
-                        input = stack.splitStack(1);
-                    }
-                    inventory.setStackInSlot(SLOT_LARGE_ITEM, input);
-                    isHoldingLargeItem = true;
-                    updateBlock();
-                    return true;
+                    input = stack.copy();
+                    input.setCount(1);
                 }
+                else
+                {
+                    input = stack.splitStack(1);
+                }
+                inventory.setStackInSlot(SLOT_LARGE_ITEM, input);
+                isHoldingLargeItem = true;
+                updateBlock();
+                return true;
             }
         }
         return false;

@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -48,6 +49,11 @@ public final class CapabilityMetalItem
         ORE_DICT_METAL_ITEMS.put("scrap", Metal.ItemType.SCRAP);
         ORE_DICT_METAL_ITEMS.put("dust", Metal.ItemType.DUST);
         ORE_DICT_METAL_ITEMS.put("nugget", Metal.ItemType.NUGGET);
+    }
+
+    public static void init()
+    {
+        CUSTOM_METAL_ITEMS.put(IIngredient.of(Blocks.IRON_BARS), () -> new MetalItemHandler(Metal.WROUGHT_IRON, 25, true));
     }
 
     /**

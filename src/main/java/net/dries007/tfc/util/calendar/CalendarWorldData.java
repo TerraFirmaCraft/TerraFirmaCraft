@@ -8,6 +8,8 @@ package net.dries007.tfc.util.calendar;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
@@ -18,7 +20,10 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class CalendarWorldData extends WorldSavedData
 {
-    private static final String NAME = MOD_ID + ":calendar";
+    private static final String NAME = MOD_ID + "_calendar";
+    private static final String NAME_PRE_V1_5_0_X = MOD_ID + ":calendar";
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Nonnull
     public static CalendarWorldData get(@Nonnull World world)
@@ -30,9 +35,20 @@ public class CalendarWorldData extends WorldSavedData
             if (data == null)
             {
                 // Unable to load data, so assign default values
-                data = new CalendarWorldData();
+                LOGGER.info("Creating default calendar world data.");
+                data = new CalendarWorldData(NAME);
                 data.markDirty();
                 mapStorage.setData(NAME, data);
+
+                // If present, try and load old data
+                CalendarWorldData oldData = (CalendarWorldData) mapStorage.getOrLoadData(CalendarWorldData.class, NAME_PRE_V1_5_0_X);
+                if (oldData != null)
+                {
+                    // Old data found. Copy it to the new location.
+                    // We don't use WorldSavedData write / read methods as it will just write the current state of the calendar (which is not yet loaded)
+                    LOGGER.info("Found v1.5.x save data, migrating it to new location.");
+                    data.calendar.deserializeNBT(oldData.calendar.serializeNBT());
+                }
             }
             return data;
         }
@@ -40,13 +56,6 @@ public class CalendarWorldData extends WorldSavedData
     }
 
     private final CalendarTFC calendar;
-
-    @SuppressWarnings("WeakerAccess")
-    public CalendarWorldData()
-    {
-        super(NAME);
-        this.calendar = new CalendarTFC();
-    }
 
     @SuppressWarnings("unused")
     public CalendarWorldData(String name)

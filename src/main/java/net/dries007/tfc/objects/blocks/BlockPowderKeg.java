@@ -76,7 +76,6 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
         super(Material.WOOD);
         setSoundType(SoundType.WOOD);
         setHardness(2F);
-        setLightLevel(0.9375F);
         setTickRandomly(true);
 
         setDefaultState(blockState.getBaseState().withProperty(LIT, false).withProperty(SEALED, false));
@@ -148,7 +147,7 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
+        return state.getValue(LIT) ? 14 : 0;
     }
 
     /**

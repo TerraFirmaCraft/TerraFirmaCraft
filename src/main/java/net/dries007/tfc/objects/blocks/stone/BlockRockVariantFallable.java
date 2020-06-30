@@ -31,6 +31,11 @@ import net.dries007.tfc.util.IFallingBlock;
 @ParametersAreNonnullByDefault
 public class BlockRockVariantFallable extends BlockRockVariant implements IFallingBlock
 {
+    public static boolean isSupportingSideBlock(IBlockState state)
+    {
+        return state.isNormalCube() || (state.getBlock() instanceof BlockRockVariant && (((BlockRockVariant) state.getBlock()).getType() == Rock.Type.FARMLAND || ((BlockRockVariant) state.getBlock()).getType() == Rock.Type.PATH));
+    }
+
     public BlockRockVariantFallable(Rock.Type type, Rock rock)
     {
         super(type, rock);
@@ -84,13 +89,13 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
         if (type.canFallHorizontal())
         {
             // Check if supported by at least two horizontals, or one on top
-            if (world.getBlockState(pos.up()).isNormalCube())
+            if (isSupportingSideBlock(world.getBlockState(pos.up())))
             {
                 return null;
             }
 
             EnumFacing[] faces = Arrays.stream(EnumFacing.HORIZONTALS)
-                .filter(x -> world.getBlockState(pos.offset(x)).isNormalCube())
+                .filter(x -> isSupportingSideBlock(world.getBlockState(pos.offset(x))))
                 .toArray(EnumFacing[]::new);
 
             if (faces.length >= 2)

@@ -53,6 +53,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -65,6 +66,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> HALTER = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.BOOLEAN);
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long lastDeath; //Last time(in days) this entity checked for dying of old age
@@ -135,6 +137,16 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     @Override
     public void setFertilized(boolean value)
     {
+    }
+
+    public boolean isHalter()
+    {
+        return dataManager.get(HALTER);
+    }
+
+    public void setHalter(boolean value)
+    {
+        dataManager.set(HALTER, value);
     }
 
     @Override
@@ -258,7 +270,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (this.isTame() || this.getLeashed())
+        if (isHalter())
         {
             super.mountTo(player);
         }
@@ -355,6 +367,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
         getDataManager().register(FAMILIARITY, 0f);
+        getDataManager().register(HALTER, false);
     }
 
     @Override
@@ -377,6 +390,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         nbt.setLong("decay", lastFDecay);
         nbt.setFloat("familiarity", getFamiliarity());
         nbt.setLong("lastDeath", lastDeath);
+        nbt.setBoolean("halter", isHalter());
     }
 
     @Override
@@ -389,6 +403,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         this.lastFDecay = nbt.getLong("decay");
         this.setFamiliarity(nbt.getFloat("familiarity"));
         this.lastDeath = nbt.getLong("lastDeath");
+        this.setHalter(nbt.getBoolean("halter"));
     }
 
     @Override
@@ -418,6 +433,35 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
                     stack.shrink(1);
                 }
                 return true;
+            }
+            else if (!isHalter() && OreDictionaryHelper.doesStackMatchOre(stack, "halter"))
+            {
+                if (this.getAge() != Age.CHILD && getFamiliarity() > 0.15f)
+                {
+                    if (!this.world.isRemote)
+                    {
+                        this.consumeItemFromStack(player, stack);
+                        this.setHalter(true);
+                    }
+                    return true;
+                }
+                else
+                {
+                    // Show tooltips
+                    if (!this.world.isRemote)
+                    {
+                        if (this.getAge() == Age.CHILD)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getName()));
+                        }
+                        else
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getName()));
+                        }
+
+                    }
+                    return false;
+                }
             }
             else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
