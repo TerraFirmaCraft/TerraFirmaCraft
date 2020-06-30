@@ -39,6 +39,14 @@ public class ItemMetalSheet extends ItemMetal
         ItemStack stack = player.getHeldItem(hand);
         if (worldIn.getBlockState(pos).isNormalCube() && stack.getItem() instanceof ItemMetalSheet)
         {
+            // Placing a sheet erases data, and since I really don't want to rewrite all of this, let's be sufficient with this for now
+            // todo: decide what approach to take (likely in 1.15)
+            // Option 1: make this a single block with block states (flattening actual state), per metal.
+            // Option 2: make this a single TE that stores inventory. Multiple sheets per block with TE, placed on event handler.
+            if (!ItemStack.areItemStacksEqual(new ItemStack(stack.getItem(), stack.getCount()), stack))
+            {
+                return EnumActionResult.FAIL;
+            }
             ItemMetalSheet sheet = (ItemMetalSheet) stack.getItem();
             BlockPos posAt = pos.offset(facing);
             IBlockState stateAt = worldIn.getBlockState(posAt);
