@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.*;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
@@ -26,8 +27,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
@@ -36,14 +39,18 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
+
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
 public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILivestock
 {
     private static final DataParameter<Integer> DATA_COLOR_ID = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> HALTER = EntityDataManager.createKey(EntityCamelTFC.class, DataSerializers.BOOLEAN);
 
     public EntityCamelTFC(World world)
     {
@@ -146,6 +153,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         {
             nbt.setTag("DecorItem", this.horseChest.getStackInSlot(1).writeToNBT(new NBTTagCompound()));
         }
+        nbt.setBoolean("halter", isHalter());
     }
 
     @Override
@@ -159,6 +167,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
             this.horseChest.setInventorySlotContents(1, new ItemStack(nbt.getCompoundTag("DecorItem")));
         }
         this.updateHorseSlots();
+        this.setHalter(nbt.getBoolean("halter"));
     }
 
     @Override
@@ -166,6 +175,16 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     {
         super.entityInit();
         getDataManager().register(DATA_COLOR_ID, -1);
+        getDataManager().register(HALTER, false);
+    }
+
+    @Override
+    protected void mountTo(EntityPlayer player)
+    {
+        if(isHalter())
+        {
+            super.mountTo(player);
+        }
     }
 
     @Override
@@ -343,5 +362,51 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         {
             this.setColor(null);
         }
+    }
+
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+        if (!isHalter() && OreDictionaryHelper.doesStackMatchOre(stack, "halter"))
+        {
+            if (this.getAge() != Age.CHILD && getFamiliarity() > 0.15f)
+            {
+                if (!this.world.isRemote)
+                {
+                    this.consumeItemFromStack(player, stack);
+                    this.setHalter(true);
+                }
+                return true;
+            }
+            else
+            {
+                // Show tooltips
+                if (!this.world.isRemote)
+                {
+                    if (this.getAge() == Age.CHILD)
+                    {
+                        player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getName()));
+                    }
+                    else
+                    {
+                        player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getName()));
+                    }
+
+                }
+                return false;
+            }
+        }
+        return super.processInteract(player, hand);
+    }
+
+    public boolean isHalter()
+    {
+        return dataManager.get(HALTER);
+    }
+
+    public void setHalter(boolean value)
+    {
+        dataManager.set(HALTER, value);
     }
 }

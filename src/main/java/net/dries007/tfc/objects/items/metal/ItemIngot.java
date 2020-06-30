@@ -42,6 +42,12 @@ public class ItemIngot extends ItemMetal
         {
             ItemStack stack = player.getHeldItem(hand);
             ItemIngot item = (ItemIngot) stack.getItem();
+            // Placing an ingot pile erases data, and since I really don't want to rewrite all of this, let's be sufficient with this for now
+            // todo: rewrite ingot piles. They should store inventory, allow multiple ingots per pile, and be placed on event handler.
+            if (!ItemStack.areItemStacksEqual(new ItemStack(item, stack.getCount()), stack))
+            {
+                return EnumActionResult.FAIL;
+            }
             if (worldIn.getBlockState(pos).getBlock() != BlocksTFC.INGOT_PILE)
             {
                 if (facing == EnumFacing.UP && worldIn.getBlockState(pos).isSideSolid(worldIn, pos, EnumFacing.UP))

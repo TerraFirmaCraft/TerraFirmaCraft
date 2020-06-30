@@ -143,13 +143,17 @@ public final class DefaultRecipes
             new BarrelRecipe(IIngredient.of(HOT_WATER.get(), 125), IIngredient.of(ItemsTFC.OLIVE_PASTE), new FluidStack(OLIVE_OIL_WATER.get(), 125), ItemStack.EMPTY, 2 * ICalendar.TICKS_IN_HOUR).setRegistryName("olive_water"),
             // Balance note: Classic gave 250mb for 160oz of olives ~= 32 items. We give 800 mb for that, so 3.2x more. Hopefully will help with lamp usage
             new BarrelRecipe(IIngredient.of(OLIVE_OIL_WATER.get(), 125), IIngredient.of(ItemsTFC.JUTE_NET), new FluidStack(OLIVE_OIL.get(), 25), new ItemStack(ItemsTFC.DIRTY_JUTE_NET), 0).setRegistryName("olive_oil"),
-            // Balance: hot water is mining, so don't use up any to wash with, since we use up 8 buckets to get 1600mb of oil.
-            new BarrelRecipe(IIngredient.of(HOT_WATER.get(), 125), IIngredient.of(ItemsTFC.DIRTY_JUTE_NET), new FluidStack(HOT_WATER.get(), 125), new ItemStack(ItemsTFC.JUTE_NET), ICalendar.TICKS_IN_HOUR).setRegistryName("clean_net"),
-
+            // Balance: switch to fresh water. Hot water use that way is broken
+            new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 125), IIngredient.of(ItemsTFC.DIRTY_JUTE_NET),null , new ItemStack(ItemsTFC.JUTE_NET), ICalendar.TICKS_IN_HOUR).setRegistryName("clean_net"),
             // Temperature recipes
             new BarrelRecipeTemperature(IIngredient.of(FRESH_WATER.get(), 1), 50).setRegistryName("fresh_water_cooling"),
             new BarrelRecipeTemperature(IIngredient.of(SALT_WATER.get(), 1), 50).setRegistryName("salt_water_cooling")
         );
+
+        for (Food food : new Food[] {Food.SALAD_DAIRY, Food.SALAD_FRUIT, Food.SALAD_GRAIN, Food.SALAD_MEAT, Food.SALAD_VEGETABLE, Food.SOUP_DAIRY, Food.SOUP_FRUIT, Food.SOUP_GRAIN, Food.SOUP_MEAT, Food.SOUP_VEGETABLE})
+        {
+            event.getRegistry().register(new BarrelRecipeDynamicBowlFood(IIngredient.of(FRESH_WATER.get(), 200), IIngredient.of(ItemFoodTFC.get(food)), 0).setRegistryName(food.name().toLowerCase() + "_cleaning"));
+        }
 
         //The many many many recipes that is dye. This assumes that the standard meta values for colored objects are followed.
         for (EnumDyeColor dyeColor : EnumDyeColor.values())
@@ -462,11 +466,11 @@ public final class DefaultRecipes
         addAnvil(r, INGOT, HAMMER_HEAD, true, TOOLS, PUNCH_LAST, SHRINK_NOT_LAST);
         addAnvil(r, INGOT, PROPICK_HEAD, true, TOOLS, PUNCH_LAST, DRAW_NOT_LAST, BEND_NOT_LAST);
         addAnvil(r, INGOT, SAW_BLADE, true, TOOLS, HIT_LAST, HIT_SECOND_LAST);
-        addAnvil(r, DOUBLE_INGOT, SWORD_BLADE, true, TOOLS, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
-        addAnvil(r, DOUBLE_INGOT, MACE_HEAD, true, TOOLS, HIT_LAST, SHRINK_NOT_LAST, BEND_NOT_LAST);
-        addAnvil(r, INGOT, SCYTHE_BLADE, true, TOOLS, HIT_LAST, DRAW_SECOND_LAST, BEND_THIRD_LAST);
-        addAnvil(r, INGOT, KNIFE_BLADE, true, TOOLS, HIT_LAST, DRAW_SECOND_LAST, DRAW_THIRD_LAST);
-        addAnvil(r, INGOT, JAVELIN_HEAD, true, TOOLS, HIT_LAST, HIT_SECOND_LAST, DRAW_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, SWORD_BLADE, true, WEAPONS, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, MACE_HEAD, true, WEAPONS, HIT_LAST, SHRINK_NOT_LAST, BEND_NOT_LAST);
+        addAnvil(r, INGOT, SCYTHE_BLADE, true, WEAPONS, HIT_LAST, DRAW_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, INGOT, KNIFE_BLADE, true, WEAPONS, HIT_LAST, DRAW_SECOND_LAST, DRAW_THIRD_LAST);
+        addAnvil(r, INGOT, JAVELIN_HEAD, true, WEAPONS, HIT_LAST, HIT_SECOND_LAST, DRAW_THIRD_LAST);
         addAnvil(r, INGOT, CHISEL_HEAD, true, TOOLS, HIT_LAST, HIT_NOT_LAST, DRAW_NOT_LAST);
 
         // Armor
@@ -552,7 +556,7 @@ public final class DefaultRecipes
             new LoomRecipe(new ResourceLocation(MOD_ID, "wool_cloth"), IIngredient.of(ItemsTFC.WOOL_YARN, 16), new ItemStack(ItemsTFC.WOOL_CLOTH), 16, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")),
             new LoomRecipe(new ResourceLocation(MOD_ID, "silk_cloth"), IIngredient.of(Items.STRING, 24), new ItemStack(ItemsTFC.SILK_CLOTH), 24, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")),
 
-            new LoomRecipe(new ResourceLocation(MOD_ID, "wool_block"), IIngredient.of(ItemsTFC.WOOL_CLOTH, 4), new ItemStack(Blocks.WOOL), 4, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png"))
+            new LoomRecipe(new ResourceLocation(MOD_ID, "wool_block"), IIngredient.of(ItemsTFC.WOOL_CLOTH, 4), new ItemStack(Blocks.WOOL, 8), 4, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png"))
         );
     }
 
@@ -574,7 +578,7 @@ public final class DefaultRecipes
             new QuernRecipe(new IngredientItemFood(IIngredient.of(ItemFoodTFC.get(Food.OLIVE))), new ItemStack(ItemsTFC.OLIVE_PASTE, 1)).setRegistryName("olive"),
 
             //Flux
-            new QuernRecipe(IIngredient.of("gemBorax"), new ItemStack(ItemPowder.get(Powder.FLUX), 6)).setRegistryName("boarx"),
+            new QuernRecipe(IIngredient.of("gemBorax"), new ItemStack(ItemPowder.get(Powder.FLUX), 6)).setRegistryName("borax"),
             new QuernRecipe(IIngredient.of("rockFlux"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)).setRegistryName("flux"),
 
             //Redstone

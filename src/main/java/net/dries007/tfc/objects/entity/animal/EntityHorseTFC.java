@@ -49,6 +49,7 @@ import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -65,6 +66,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.FLOAT);
     //Is this female fertilized?
     private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HALTER = EntityDataManager.createKey(EntityHorseTFC.class, DataSerializers.BOOLEAN);
     // The time(in days) this entity became pregnant
     private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityHorseTFC.class, Helpers.LONG_DATA_SERIALIZER);
     private long lastFed; //Last time(in days) this entity was fed
@@ -147,6 +149,16 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
 
     @Override
     public void setFertilized(boolean value) { dataManager.set(FERTILIZED, value); }
+
+    public boolean isHalter()
+    {
+        return dataManager.get(HALTER);
+    }
+
+    public void setHalter(boolean value)
+    {
+        dataManager.set(HALTER, value);
+    }
 
     @Override
     public void onFertilized(@Nonnull IAnimalTFC male)
@@ -304,6 +316,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
         getDataManager().register(FAMILIARITY, 0f);
         getDataManager().register(FERTILIZED, false);
         getDataManager().register(PREGNANT_TIME, -1L);
+        getDataManager().register(HALTER, false);
     }
 
     @Override
@@ -324,6 +337,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
         nbt.setFloat("geneJump", geneJump);
         nbt.setFloat("geneHealth", geneHealth);
         nbt.setInteger("geneHorseVariant", geneHorseVariant);
+        nbt.setBoolean("halter", isHalter());
     }
 
     @Override
@@ -341,9 +355,10 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
         this.setPregnantTime(nbt.getLong("pregnant"));
         this.birthMule = nbt.getBoolean("birthMule");
         this.geneSpeed = nbt.getFloat("geneSpeed");
-        this.geneJump = nbt.getFloat("geneSpeed");
-        this.geneHealth = nbt.getFloat("geneSpeed");
+        this.geneJump = nbt.getFloat("geneJump");
+        this.geneHealth = nbt.getFloat("geneHealth");
         this.geneHorseVariant = nbt.getInteger("geneHorseVariant");
+        this.setHalter(nbt.getBoolean("halter"));
     }
 
     @Override
@@ -355,20 +370,49 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
-        ItemStack itemstack = player.getHeldItem(hand);
+        ItemStack stack = player.getHeldItem(hand);
 
-        if (!itemstack.isEmpty())
+        if (!stack.isEmpty())
         {
-            if (itemstack.getItem() == Items.SPAWN_EGG)
+            if (stack.getItem() == Items.SPAWN_EGG)
             {
                 return super.processInteract(player, hand); // Let vanilla spawn a baby
             }
-            else if (this.isFood(itemstack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            else if (!isHalter() && OreDictionaryHelper.doesStackMatchOre(stack, "halter"))
+            {
+                if (this.getAge() != Age.CHILD && getFamiliarity() > 0.15f)
+                {
+                    if (!this.world.isRemote)
+                    {
+                        this.consumeItemFromStack(player, stack);
+                        this.setHalter(true);
+                    }
+                    return true;
+                }
+                else
+                {
+                    // Show tooltips
+                    if (!this.world.isRemote)
+                    {
+                        if (this.getAge() == Age.CHILD)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getName()));
+                        }
+                        else
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getName()));
+                        }
+
+                    }
+                    return false;
+                }
+            }
+            else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
                 if (this.isHungry())
                 {
                     // Refuses to eat rotten stuff
-                    IFood cap = itemstack.getCapability(CapabilityFood.CAPABILITY, null);
+                    IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
                     if (cap != null)
                     {
                         if (cap.isRotten())
@@ -381,7 +425,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
                         setScaleForAge(this.isChild());
                         lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
                         lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, itemstack);
+                        this.consumeItemFromStack(player, stack);
                         if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
                         {
                             float familiarity = this.getFamiliarity() + 0.06f;
@@ -471,7 +515,7 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (this.isTame() || this.getLeashed())
+        if (this.isHalter())
         {
             super.mountTo(player);
         }

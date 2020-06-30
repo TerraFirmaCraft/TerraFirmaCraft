@@ -80,12 +80,7 @@ public class EntityThrownWeapon extends EntityArrow implements IThrowableEntity,
         if (getThrower() instanceof EntityLivingBase)
         {
             EntityLivingBase thrower = (EntityLivingBase) getThrower();
-            int damageAmount = 1;
-            if (entity != null)
-            {
-                damageAmount += 1 + thrower.getRNG().nextInt(4);
-            }
-            weapon.damageItem(damageAmount, thrower);
+            weapon.damageItem(1, thrower);
         }
 
         if (entity != null)

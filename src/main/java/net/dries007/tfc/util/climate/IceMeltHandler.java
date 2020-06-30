@@ -63,6 +63,14 @@ public class IceMeltHandler
                             {
                                 ((ITemperatureBlock) state.getBlock()).onTemperatureUpdateTick(world, pos, state);
                             }
+
+                            // Also check the above block - snow layers are missed by the before check
+                            pos = pos.up();
+                            state = world.getBlockState(pos);
+                            if (state.getBlock() instanceof ITemperatureBlock)
+                            {
+                                ((ITemperatureBlock) state.getBlock()).onTemperatureUpdateTick(world, pos, state);
+                            }
                         }
                     }
                 }

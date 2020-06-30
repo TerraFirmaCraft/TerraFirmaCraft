@@ -93,7 +93,7 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                                     TEPlacedItem tile = Helpers.getTE(world, pos.offset(hitFace), TEPlacedItem.class);
                                     if (tile != null)
                                     {
-                                        tile.onRightClick(player, stack, rayTrace);
+                                        tile.insertItem(player, stack, rayTrace);
                                     }
                                 }
                             }
@@ -102,16 +102,6 @@ public class PacketPlaceBlockSpecial implements IMessageEmpty
                 });
             }
             return null;
-        }
-
-        private void placeItem()
-        {
-
-        }
-
-        private void placeItemFlat()
-        {
-
         }
     }
 }

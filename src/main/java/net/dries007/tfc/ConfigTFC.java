@@ -521,6 +521,7 @@ public final class ConfigTFC
 
             @Config.Comment("The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.")
             @Config.LangKey("config." + MOD_ID + ".general.misc.defaultMonthLength")
+            @Config.RangeInt(min = 1)
             public int defaultMonthLength = 8;
 
             @Config.Comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth.")
@@ -1050,7 +1051,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class SheepCFG
@@ -1088,7 +1089,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class CowCFG
@@ -1126,7 +1127,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class GoatCFG
@@ -1164,7 +1165,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class ChickenCFG
@@ -1197,7 +1198,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class DuckCFG
@@ -1230,7 +1231,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 200;
         }
 
         public static final class PigCFG
@@ -1263,7 +1264,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class CamelCFG
@@ -1296,7 +1297,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class LlamaCFG
@@ -1329,7 +1330,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class HorseCFG
@@ -1362,7 +1363,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class DonkeyCFG
@@ -1395,7 +1396,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class MuleCFG
@@ -1451,7 +1452,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1490,7 +1491,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 200;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1504,7 +1505,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1518,7 +1519,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1532,7 +1533,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1546,7 +1547,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1560,7 +1561,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
         }
 
         public static final class HyenaCFG
@@ -1568,7 +1569,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1582,7 +1583,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 150;
         }
 
         public static final class ParrotCFG
@@ -1590,7 +1591,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class PheasantCFG
@@ -1598,7 +1599,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 150;
         }
 
         public static final class RabbitCFG
@@ -1606,7 +1607,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 150;
         }
     }
 }
