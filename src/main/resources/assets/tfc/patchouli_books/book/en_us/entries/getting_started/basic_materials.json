@@ -19,9 +19,9 @@
 			"text": "By making an axe out of loose rocks and sticks, we've removed the need to punch a tree. Go ahead and chop down a tree, starting at the base. It might take a bit longer than you're used to, but in the end the whole tree will fall down!$(br2) The next thing we'll want to create is a $(item)shovel$()."
 		},
 		{
-			"type": "text",
-			"text": "shovel knapping recipe goes here."
-		},
+          "type": "tfc:knapping_recipe_page",
+          "text": "This is a leather helmet recipe I guess"
+        },
 		{
 			"type": "text",
 			"text": "You'll also want to look for $(item)clay dirt$(). $(l:getting_started/pottery)Clay$() spawns in areas with moderate to heavy rainfall, and you'll want your shovel to dig it up.$(br2)Since the world is covered in grass, it's easiest to look for $(thing)clay indicator plants$(). At the temperature of where you spawn, the clay indicator is the $(item)Athyrium Fern$()."
