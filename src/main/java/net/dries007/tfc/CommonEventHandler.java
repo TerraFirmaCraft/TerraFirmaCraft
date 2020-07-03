@@ -366,8 +366,12 @@ public final class CommonEventHandler
             // This problem goes away in 1.15 as all of these definitions (including ours) become tags)
             // We allow custom defined capabilities to attach to non-food items, that should have rot (such as eggs).
             ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
-            if ((foodHandler != null || stack.getItem() instanceof ItemFood) && !(stack.getItem() instanceof ItemFoodTFC))
+            if (foodHandler != null || stack.getItem() instanceof ItemFood)
             {
+                if (stack.getItem() instanceof ItemFoodTFC)
+                {
+                    foodHandler = ((ItemFoodTFC) stack.getItem()).getCustomFoodHandler();
+                }
                 if (foodHandler == null)
                 {
                     foodHandler = new FoodHandler(stack.getTagCompound(), new FoodData());
