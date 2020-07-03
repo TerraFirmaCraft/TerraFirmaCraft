@@ -58,6 +58,16 @@ public interface IPlayerData extends INBTSerializable<NBTTagCompound>
      */
     void setChiselMode(@Nonnull ChiselRecipe.Mode chiselMode);
 
+    /**
+     * If the player has been given the guide book
+     */
+    boolean hasBook();
+
+    /**
+     * Sets if the player has been given the guide book
+     */
+    void setHasBook(boolean value);
+
     default void updateAndSync()
     {
         EntityPlayer player = getPlayer();
