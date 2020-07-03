@@ -8,13 +8,11 @@ package net.dries007.tfc.objects.items.food;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -101,10 +99,8 @@ public class ItemFoodTFC extends ItemFood implements IItemSize
         return getStackSize(stack);
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    public ICapabilityProvider getCustomFoodHandler()
     {
-        return food.isHeatable() ? new FoodHeatHandler(nbt, food) : new FoodHandler(nbt, food);
+        return food.isHeatable() ? new FoodHeatHandler(null, food) : new FoodHandler(null, food);
     }
 }
