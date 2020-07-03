@@ -171,7 +171,7 @@ public class TEQuern extends TEInventory implements ITickable
             QuernRecipe recipe = QuernRecipe.get(inputStack);
             if (recipe != null && !world.isRemote)
             {
-                inputStack.shrink(1);
+                inputStack.shrink(recipe.getIngredients().get(0).getAmount());
                 ItemStack outputStack = recipe.getOutputItem(inputStack);
                 outputStack = inventory.insertItem(SLOT_OUTPUT, outputStack, false);
                 inventory.setStackInSlot(SLOT_OUTPUT, CapabilityFood.mergeItemStacksIgnoreCreationDate(inventory.getStackInSlot(SLOT_OUTPUT), outputStack));
