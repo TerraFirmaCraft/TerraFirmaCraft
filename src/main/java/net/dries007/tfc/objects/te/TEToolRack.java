@@ -22,6 +22,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.objects.items.ItemFireStarter;
 import net.dries007.tfc.objects.items.metal.ItemMetalTool;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 @ParametersAreNonnullByDefault
 public class TEToolRack extends TEBase
@@ -29,18 +30,14 @@ public class TEToolRack extends TEBase
     /**
      * @return true if this item can be put on a tool rack, false otherwise
      */
-    public static boolean isItemEligible(Item item)
+    public static boolean isItemEligible(@Nullable ItemStack stack)
     {
-        return item instanceof ItemMetalTool || item instanceof ItemTool || item instanceof ItemBow || item instanceof ItemHoe || item instanceof ItemSword || item instanceof ItemFireStarter || item instanceof ItemFlintAndSteel;
-    }
-
-    public static boolean isItemEligible(@Nullable ItemStack item)
-    {
-        if (item == null || item.isEmpty())
+        if (stack == null || stack.isEmpty())
         {
             return false;
         }
-        return isItemEligible(item.getItem());
+        Item item = stack.getItem();
+        return item instanceof ItemMetalTool || item instanceof ItemTool || item instanceof ItemBow || item instanceof ItemHoe || item instanceof ItemSword || item instanceof ItemFireStarter || item instanceof ItemFlintAndSteel || OreDictionaryHelper.doesStackMatchOre(stack, "tool");
     }
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
