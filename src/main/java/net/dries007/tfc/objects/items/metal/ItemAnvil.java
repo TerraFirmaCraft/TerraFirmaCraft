@@ -62,7 +62,9 @@ public class ItemAnvil extends ItemMetal
         {
             ItemStack stack = player.getHeldItem(hand);
             IBlockState state = worldIn.getBlockState(pos.offset(facing));
-            if (state.getBlock().isReplaceable(worldIn, pos.offset(facing)))
+            IBlockState stateDown = worldIn.getBlockState(pos.offset(facing).down());
+            if (state.getBlock().isReplaceable(worldIn, pos.offset(facing)) &&
+                stateDown.isSideSolid(worldIn, pos.offset(facing).down(), EnumFacing.UP)) //forge says to do it this way, IBlockProperties#isTopSolid
             {
                 if (!worldIn.isRemote)
                 {
