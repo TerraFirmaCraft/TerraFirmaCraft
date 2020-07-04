@@ -285,7 +285,16 @@ public class TEAnvilTFC extends TEInventory
 
                     // Reset forge stuff
                     resetFields();
-                    setRecipe(null);
+                    // if we have a valid single item recipe for our output, use it!
+                    ItemStack output1 = inventory.getStackInSlot(SLOT_INPUT_1);
+                    if (AnvilRecipe.getAllFor(output1).size() == 1 && inventory.getStackInSlot(SLOT_INPUT_2).isEmpty())
+                    {
+                        setRecipe(AnvilRecipe.getAllFor(output1).get(0));
+                    }
+                    else
+                    {
+                        setRecipe(null);
+                    }
                 }
                 else if (workingProgress < 0 || workingProgress > WORK_MAX)
                 {

@@ -285,9 +285,13 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
             {
                 return metal == BLUE_STEEL || metal == RED_STEEL;
             }
-            else if (this == ItemType.ROD) // only make these for nessecary metals
+            else if (this == ItemType.ROD) // only make these for necessary metals
             {
                 return metal == WROUGHT_IRON || metal == STEEL || metal == GOLD;
+            }
+            else if (this == ItemType.LAMP) // Avoid interfering with iron/steel production
+            {
+                return metal != PIG_IRON;
             }
             return !this.isToolItem() || metal.getToolMetal() != null;
         }
