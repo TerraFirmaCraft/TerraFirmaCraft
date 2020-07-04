@@ -83,6 +83,7 @@ public class BlockRockVariant extends Block implements IItemSize
             case CLAY:
             case GRAVEL:
             case COBBLE:
+            case MOSSY_COBBLE:
                 return new BlockRockVariantFallable(type, rock);
             default:
                 return new BlockRockVariant(type, rock);
@@ -117,6 +118,7 @@ public class BlockRockVariant extends Block implements IItemSize
                 setHarvestLevel("pickaxe", 0);
                 break;
             case COBBLE:
+            case MOSSY_COBBLE:
                 setSoundType(SoundType.STONE);
                 setHardness(rock.getRockCategory().getHardness() * 0.75F).setResistance(rock.getRockCategory().getResistance());
                 setHarvestLevel("pickaxe", 0);
@@ -396,6 +398,7 @@ public class BlockRockVariant extends Block implements IItemSize
                 world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 break;
             case COBBLE:
+            case MOSSY_COBBLE:
                 world.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }

@@ -120,6 +120,7 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         SPIKE(Material.ROCK, NO_FALL, false, BlockRockSpike::new),
         SMOOTH(Material.ROCK, NO_FALL, false),
         COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
+        MOSSY_COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
         BRICKS(Material.ROCK, NO_FALL, false),
         SAND(Material.SAND, FALL_HORIZONTAL, false),
         GRAVEL(Material.SAND, FALL_HORIZONTAL, false),

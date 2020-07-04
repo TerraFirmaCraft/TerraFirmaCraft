@@ -68,6 +68,7 @@ FULLBLOCK_TYPES = [
     'raw',
     'smooth',
     'cobble',
+	'mossy_cobble',
     'bricks',
     'sand',
     'gravel',
