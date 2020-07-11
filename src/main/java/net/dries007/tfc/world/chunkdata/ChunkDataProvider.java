@@ -18,7 +18,6 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.server.ServerChunkProvider;
 
 import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.config.NoiseLayerType;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.TFCOverworldChunkGenerator;
@@ -66,8 +65,8 @@ public class ChunkDataProvider
         this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
 
         // Climate
-        this.temperatureLayer = NoiseLayerType.PERIODIC_Z.create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(-10, 30);
-        this.rainfallLayer = NoiseLayerType.PERIODIC_X.create(seedGenerator.nextLong(), TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
+        this.temperatureLayer = TFCConfig.COMMON.temperatureLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(-10, 30);
+        this.rainfallLayer = TFCConfig.COMMON.rainfallLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
     }
 
     /**

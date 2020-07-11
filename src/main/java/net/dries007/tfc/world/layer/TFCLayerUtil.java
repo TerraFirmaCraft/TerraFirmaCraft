@@ -11,14 +11,11 @@ import java.util.function.LongFunction;
 import java.util.function.Supplier;
 
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.LazyAreaLayerContext;
-import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 
@@ -28,30 +25,26 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 
 public class TFCLayerUtil
 {
-    public static boolean DEBUG = false;
-    public static int ID = 0;
-
-
     /* Biomes */
-    public static final int OCEAN = DEBUG ? ID++ : getId(TFCBiomes.OCEAN);
-    public static final int DEEP_OCEAN = DEBUG ? ID++ : getId(TFCBiomes.DEEP_OCEAN);
-    public static final int DEEP_OCEAN_RIDGE = DEBUG ? ID++ : getId(TFCBiomes.DEEP_OCEAN_RIDGE);
-    public static final int PLAINS = DEBUG ? ID++ : getId(TFCBiomes.PLAINS);
-    public static final int HILLS = DEBUG ? ID++ : getId(TFCBiomes.HILLS);
-    public static final int LOWLANDS = DEBUG ? ID++ : getId(TFCBiomes.LOWLANDS);
-    public static final int LOW_CANYONS = DEBUG ? ID++ : getId(TFCBiomes.LOW_CANYONS);
-    public static final int ROLLING_HILLS = DEBUG ? ID++ : getId(TFCBiomes.ROLLING_HILLS);
-    public static final int BADLANDS = DEBUG ? ID++ : getId(TFCBiomes.BADLANDS);
-    public static final int PLATEAU = DEBUG ? ID++ : getId(TFCBiomes.PLATEAU);
-    public static final int OLD_MOUNTAINS = DEBUG ? ID++ : getId(TFCBiomes.OLD_MOUNTAINS);
-    public static final int MOUNTAINS = DEBUG ? ID++ : getId(TFCBiomes.MOUNTAINS);
-    public static final int FLOODED_MOUNTAINS = DEBUG ? ID++ : getId(TFCBiomes.FLOODED_MOUNTAINS);
-    public static final int CANYONS = DEBUG ? ID++ : getId(TFCBiomes.CANYONS);
-    public static final int SHORE = DEBUG ? ID++ : getId(TFCBiomes.SHORE);
-    public static final int STONE_SHORE = DEBUG ? ID++ : getId(TFCBiomes.STONE_SHORE);
-    public static final int MOUNTAINS_EDGE = DEBUG ? ID++ : getId(TFCBiomes.MOUNTAINS_EDGE);
-    public static final int LAKE = DEBUG ? ID++ : getId(TFCBiomes.LAKE);
-    public static final int RIVER = DEBUG ? ID++ : getId(TFCBiomes.RIVER);
+    public static final int OCEAN = getId(TFCBiomes.OCEAN);
+    public static final int DEEP_OCEAN = getId(TFCBiomes.DEEP_OCEAN);
+    public static final int DEEP_OCEAN_RIDGE = getId(TFCBiomes.DEEP_OCEAN_RIDGE);
+    public static final int PLAINS = getId(TFCBiomes.PLAINS);
+    public static final int HILLS = getId(TFCBiomes.HILLS);
+    public static final int LOWLANDS = getId(TFCBiomes.LOWLANDS);
+    public static final int LOW_CANYONS = getId(TFCBiomes.LOW_CANYONS);
+    public static final int ROLLING_HILLS = getId(TFCBiomes.ROLLING_HILLS);
+    public static final int BADLANDS = getId(TFCBiomes.BADLANDS);
+    public static final int PLATEAU = getId(TFCBiomes.PLATEAU);
+    public static final int OLD_MOUNTAINS = getId(TFCBiomes.OLD_MOUNTAINS);
+    public static final int MOUNTAINS = getId(TFCBiomes.MOUNTAINS);
+    public static final int FLOODED_MOUNTAINS = getId(TFCBiomes.FLOODED_MOUNTAINS);
+    public static final int CANYONS = getId(TFCBiomes.CANYONS);
+    public static final int SHORE = getId(TFCBiomes.SHORE);
+    public static final int STONE_SHORE = getId(TFCBiomes.STONE_SHORE);
+    public static final int MOUNTAINS_EDGE = getId(TFCBiomes.MOUNTAINS_EDGE);
+    public static final int LAKE = getId(TFCBiomes.LAKE);
+    public static final int RIVER = getId(TFCBiomes.RIVER);
 
     public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, TFCGenerationSettings settings)
     {
@@ -123,7 +116,6 @@ public class TFCLayerUtil
 
         List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
         IAreaFactory<LazyArea> seedLayer;
-        int layerCount = 0;
 
         int numRocks = RockManager.INSTANCE.getKeys().size();
 
@@ -162,26 +154,6 @@ public class TFCLayerUtil
         return completedLayers;
     }
 
-    public static <A extends IArea, C extends IExtendedNoiseRandom<A>> IAreaFactory<A> repeat(IAreaTransformer1 transformer, int count, IAreaFactory<A> originalLayer, Supplier<C> contextSupplier)
-    {
-        IAreaFactory<A> newFactory = originalLayer;
-        for (int i = 0; i < count; ++i)
-        {
-            newFactory = transformer.apply(contextSupplier.get(), newFactory);
-        }
-        return newFactory;
-    }
-
-    public static <A extends IArea, C extends IExtendedNoiseRandom<A>> IAreaFactory<A> repeat(IAreaTransformer1 transformer, int count, IAreaFactory<A> originalLayer, LongFunction<C> contextFactory, long seed)
-    {
-        IAreaFactory<A> newFactory = originalLayer;
-        for (int i = 0; i < count; ++i)
-        {
-            newFactory = transformer.apply(contextFactory.apply(seed + i), newFactory);
-        }
-        return newFactory;
-    }
-
     static boolean isShoreCompatible(int value)
     {
         return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS;
@@ -195,11 +167,6 @@ public class TFCLayerUtil
     static boolean isOcean(int value)
     {
         return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_RIDGE;
-    }
-
-    static boolean isShallowOcean(int value)
-    {
-        return value == OCEAN;
     }
 
     static boolean isMountains(int value)
