@@ -208,17 +208,16 @@ public class ModelWildebeestTFC extends ModelBase {
         earL.addBox(-2.0F, -1.0F, -0.5F, 3, 2, 1, 0.0F);
         setRotateAngle(earL, 0.0F, 0.4363323129985824F, -0.3490658503988659F);
 
-
         legLFront = new ModelRenderer(this, 0, 70);
         legLFront.mirror = true;
-        legLFront.setRotationPoint(4.0F, 5.0F, -6.0F);
-        legLFront.addBox(-1.0F, -1.0F, -1.5F, 2, 6, 4, 0.0F);
-        setRotateAngle(legLFront, 0.3490658503988659F, 0.0F, -0.03490658503988659F);
+        legLFront.setRotationPoint(3.5F, 5.0F, -6.0F);
+        legLFront.addBox(-1.0F, -0.5F, -1.5F, 2, 5, 4, 0.0F);
+        setRotateAngle(legLFront, 0.3490658503988659F, 0.0F, -0.08726646259971647F);
         legLFrontMid = new ModelRenderer(this, 1, 60);
         legLFrontMid.mirror = true;
         legLFrontMid.setRotationPoint(0.4F, 3.0F, -0.6F);
         legLFrontMid.addBox(-1.5F, 0.0F, 0.0F, 2, 7, 3, 0.0F);
-        setRotateAngle(legLFrontMid, -0.3490658503988659F, 0.0F, 0.03490658503988659F);
+        setRotateAngle(legLFrontMid, -0.3490658503988659F, 0.0F, 0.08726646259971647F);
         legLFrontBottom = new ModelRenderer(this, 2, 51);
         legLFrontBottom.mirror = true;
         legLFrontBottom.setRotationPoint(0.0F, 7.0F, 0.3F);
@@ -260,13 +259,13 @@ public class ModelWildebeestTFC extends ModelBase {
         setRotateAngle(thighLBackHoof, -1.1344640137963142F, 0.0F, 0.0F);
 
         legRFront = new ModelRenderer(this, 0, 70);
-        legRFront.setRotationPoint(-4.0F, 5.0F, -6.0F);
-        legRFront.addBox(-1.0F, -1.0F, -1.5F, 2, 6, 4, 0.0F);
-        setRotateAngle(legRFront, 0.3490658503988659F, 0.0F, 0.03490658503988659F);
+        legRFront.setRotationPoint(-3.5F, 5.0F, -6.0F);
+        legRFront.addBox(-1.0F, -0.5F, -1.5F, 2, 5, 4, 0.0F);
+        setRotateAngle(legRFront, 0.3490658503988659F, 0.0F, 0.08726646259971647F);
         legRFrontMid = new ModelRenderer(this, 1, 60);
         legRFrontMid.setRotationPoint(0.6F, 3.0F, -0.6F);
         legRFrontMid.addBox(-1.5F, 0.0F, 0.0F, 2, 7, 3, 0.0F);
-        setRotateAngle(legRFrontMid, -0.3490658503988659F, 0.0F, -0.03490658503988659F);
+        setRotateAngle(legRFrontMid, -0.3490658503988659F, 0.0F, -0.08726646259971647F);
         legRFrontBottom = new ModelRenderer(this, 2, 51);
         legRFrontBottom.setRotationPoint(0.0F, 7.0F, 0.3F);
         legRFrontBottom.addBox(-1.5F, 0.0F, 0.0F, 2, 7, 2, 0.0F);
@@ -389,10 +388,10 @@ public class ModelWildebeestTFC extends ModelBase {
 
 
         setRotateAngle(headBase, f4 / (180F / (float) Math.PI) + 0.0F, f3 / (180F / (float) Math.PI), 0F);
-        //setRotateAngle(collar, f4 / (3 * (180F / (float) Math.PI)) + 1.151917F, f3 / (3 * (180F / (float) Math.PI)), 0F);
-        //setRotateAngle(neck, f4 / (1.5F * (90F / (float) Math.PI)) + 1.815142F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
+        setRotateAngle(collar, f4 / (3 * (180F / (float) Math.PI)) + 1.151917F, f3 / (3 * (180F / (float) Math.PI)), 0F);
+        setRotateAngle(neck, f4 / (1.5F * (90F / (float) Math.PI)) + 1.815142F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
 
-        //setRotateAngle(neck, 2.530727415391778F, 0.0F, 0.0F);
+        setRotateAngle(neck, 2.530727415391778F, 0.0F, 0.0F);
         //setRotateAngle(legRFront, 0.3490658503988659F, 0.0F, 0.03490658503988659F);
         //setRotateAngle(legLFront, 0.3490658503988659F, 0.0F, -0.03490658503988659F);
         //setRotateAngle(thighRBack, -0.17453292519943295F, 0.0F, 0.08726646259971647F);
