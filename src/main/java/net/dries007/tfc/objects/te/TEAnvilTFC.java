@@ -39,6 +39,8 @@ import net.dries007.tfc.util.forge.ForgeSteps;
 import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.util.skills.SmithingSkill;
 
+import java.util.List;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
@@ -286,15 +288,16 @@ public class TEAnvilTFC extends TEInventory
                     // Reset forge stuff
                     resetFields();
                     // if we have a valid single item recipe for our output, use it!
-                    ItemStack output1 = inventory.getStackInSlot(SLOT_INPUT_1);
-                    if (AnvilRecipe.getAllFor(output1).size() == 1 && inventory.getStackInSlot(SLOT_INPUT_2).isEmpty())
+                    AnvilRecipe newRecipe = null;
+                    if (inventory.getStackInSlot(SLOT_INPUT_2).isEmpty())
                     {
-                        setRecipe(AnvilRecipe.getAllFor(output1).get(0));
+                        List<AnvilRecipe> recipes = AnvilRecipe.getAllFor(inventory.getStackInSlot(SLOT_INPUT_1));
+                        if (recipes.size() == 1)
+                        {
+                            newRecipe = recipes.get(0);
+                        }
                     }
-                    else
-                    {
-                        setRecipe(null);
-                    }
+                    setRecipe(newRecipe);
                 }
                 else if (workingProgress < 0 || workingProgress > WORK_MAX)
                 {
