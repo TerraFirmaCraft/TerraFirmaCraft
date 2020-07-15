@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -150,7 +151,7 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return stack.getItem() == Items.GUNPOWDER;
+        return OreDictionaryHelper.doesStackMatchOre(stack,"gunpowder");
     }
 
     public void setIgniter(@Nullable EntityLivingBase igniterIn)

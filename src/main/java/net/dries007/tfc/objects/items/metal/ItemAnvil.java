@@ -61,15 +61,18 @@ public class ItemAnvil extends ItemMetal
         if (facing != null)
         {
             ItemStack stack = player.getHeldItem(hand);
-            IBlockState state = worldIn.getBlockState(pos.offset(facing));
-            if (state.getBlock().isReplaceable(worldIn, pos.offset(facing)))
+            BlockPos placedPos = pos.offset(facing);
+            BlockPos supportPos = placedPos.down();
+            IBlockState state = worldIn.getBlockState(placedPos);
+            IBlockState stateSupport = worldIn.getBlockState(supportPos);
+            if (state.getBlock().isReplaceable(worldIn, placedPos) &&
+                stateSupport.isSideSolid(worldIn, supportPos, EnumFacing.UP)) //forge says to do it this way, IBlockProperties#isTopSolid
             {
                 if (!worldIn.isRemote)
                 {
                     ItemAnvil anvil = (ItemAnvil) stack.getItem();
-                    worldIn.setBlockState(pos.offset(facing), BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing()));
-
-                    worldIn.playSound(null, pos.offset(facing), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.setBlockState(placedPos, BlockAnvilTFC.get(anvil.metal).getDefaultState().withProperty(AXIS, player.getHorizontalFacing()));
+                    worldIn.playSound(null, placedPos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     stack.shrink(1);
                     player.setHeldItem(hand, stack);
                 }
