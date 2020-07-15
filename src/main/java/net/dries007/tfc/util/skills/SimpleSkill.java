@@ -52,7 +52,7 @@ public class SimpleSkill extends Skill
 
     public void add(float amount)
     {
-        this.amount += amount/Math.pow(2,(float)getTier().ordinal());
+        this.amount += amount / Math.pow(2, (float) getTier().ordinal());
         if (this.amount > 4f)
         {
             this.amount = 4f;
