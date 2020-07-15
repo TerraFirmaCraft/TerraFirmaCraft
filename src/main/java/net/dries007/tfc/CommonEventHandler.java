@@ -602,75 +602,78 @@ public final class CommonEventHandler
     {
         World world = event.getWorld();
         BlockPos pos = new BlockPos(event.getX(), event.getY(), event.getZ());
-
-        if (ConfigTFC.General.SPAWN_PROTECTION.preventMobs && event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
+        if (world.getWorldType() == TerraFirmaCraft.getWorldType())
         {
-            // Prevent Mobs
-            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
-            int minY = ConfigTFC.General.SPAWN_PROTECTION.minYMobs;
-            int maxY = ConfigTFC.General.SPAWN_PROTECTION.maxYMobs;
-            if (data.isSpawnProtected() && minY <= maxY && event.getY() >= minY && event.getY() <= maxY)
+            if (ConfigTFC.General.SPAWN_PROTECTION.preventMobs && event.getEntity().isCreatureType(EnumCreatureType.MONSTER, false))
             {
-                event.setResult(Event.Result.DENY);
-            }
-        }
-
-        if (ConfigTFC.General.SPAWN_PROTECTION.preventPredators && event.getEntity() instanceof IPredator)
-        {
-            // Prevent Predators
-            ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
-            int minY = ConfigTFC.General.SPAWN_PROTECTION.minYPredators;
-            int maxY = ConfigTFC.General.SPAWN_PROTECTION.maxYPredators;
-            if (data.isSpawnProtected() && minY <= maxY && event.getY() >= minY && event.getY() <= maxY)
-            {
-                event.setResult(Event.Result.DENY);
-            }
-        }
-
-        if (event.getEntity() instanceof EntitySquid && world.getBlockState(pos).getBlock() instanceof BlockFluidTFC)
-        {
-            // Prevents squids spawning outside of salt water (eg: oceans)
-            Fluid fluid = ((BlockFluidTFC) world.getBlockState(pos).getBlock()).getFluid();
-            if (FluidsTFC.SALT_WATER.get() != fluid)
-            {
-                event.setResult(Event.Result.DENY);
-            }
-        }
-
-        // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
-        if (event.getEntity() instanceof ICreatureTFC)
-        {
-            ICreatureTFC creature = (ICreatureTFC) event.getEntity();
-            float rainfall = ChunkDataTFC.getRainfall(world, pos);
-            float temperature = ClimateTFC.getAvgTemp(world, pos);
-            float floraDensity = ChunkDataTFC.getFloraDensity(world, pos);
-            float floraDiversity = ChunkDataTFC.getFloraDiversity(world, pos);
-            Biome biome = world.getBiome(pos);
-
-            // We don't roll spawning again since vanilla is handling it
-            if (creature.getSpawnWeight(biome, temperature, rainfall, floraDensity, floraDiversity) <= 0)
-            {
-                event.setResult(Event.Result.DENY);
-            }
-        }
-
-        // Stop mob spawning in thatch - the list of non-spawnable light-blocking, non-collidable blocks is hardcoded in WorldEntitySpawner#canEntitySpawnBody
-        if (event.getWorld().getBlockState(pos).getBlock() == BlocksTFC.THATCH || event.getWorld().getBlockState(pos.up()).getBlock() == BlocksTFC.THATCH)
-        {
-            event.setResult(Event.Result.DENY);
-        }
-
-        // Stop mob spawning on surface
-        if (ConfigTFC.General.DIFFICULTY.preventMobsOnSurface)
-        {
-            if (Helpers.shouldPreventOnSurface(event.getEntity()))
-            {
-                int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2) / 2 + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
-                if (pos.getY() >= maximumY || world.canSeeSky(pos))
+                // Prevent Mobs
+                ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
+                int minY = ConfigTFC.General.SPAWN_PROTECTION.minYMobs;
+                int maxY = ConfigTFC.General.SPAWN_PROTECTION.maxYMobs;
+                if (data.isSpawnProtected() && minY <= maxY && event.getY() >= minY && event.getY() <= maxY)
                 {
                     event.setResult(Event.Result.DENY);
                 }
             }
+
+            if (ConfigTFC.General.SPAWN_PROTECTION.preventPredators && event.getEntity() instanceof IPredator)
+            {
+                // Prevent Predators
+                ChunkDataTFC data = ChunkDataTFC.get(event.getWorld(), pos);
+                int minY = ConfigTFC.General.SPAWN_PROTECTION.minYPredators;
+                int maxY = ConfigTFC.General.SPAWN_PROTECTION.maxYPredators;
+                if (data.isSpawnProtected() && minY <= maxY && event.getY() >= minY && event.getY() <= maxY)
+                {
+                    event.setResult(Event.Result.DENY);
+                }
+            }
+
+            if (event.getEntity() instanceof EntitySquid && world.getBlockState(pos).getBlock() instanceof BlockFluidTFC)
+            {
+                // Prevents squids spawning outside of salt water (eg: oceans)
+                Fluid fluid = ((BlockFluidTFC) world.getBlockState(pos).getBlock()).getFluid();
+                if (FluidsTFC.SALT_WATER.get() != fluid)
+                {
+                    event.setResult(Event.Result.DENY);
+                }
+            }
+
+            // Check creature spawning - Prevents vanilla's respawning mechanic to spawn creatures outside their allowed conditions
+            if (event.getEntity() instanceof ICreatureTFC)
+            {
+                ICreatureTFC creature = (ICreatureTFC) event.getEntity();
+                float rainfall = ChunkDataTFC.getRainfall(world, pos);
+                float temperature = ClimateTFC.getAvgTemp(world, pos);
+                float floraDensity = ChunkDataTFC.getFloraDensity(world, pos);
+                float floraDiversity = ChunkDataTFC.getFloraDiversity(world, pos);
+                Biome biome = world.getBiome(pos);
+
+                // We don't roll spawning again since vanilla is handling it
+                if (creature.getSpawnWeight(biome, temperature, rainfall, floraDensity, floraDiversity) <= 0)
+                {
+                    event.setResult(Event.Result.DENY);
+                }
+            }
+
+            // Stop mob spawning on surface
+            if (ConfigTFC.General.DIFFICULTY.preventMobsOnSurface)
+            {
+                if (Helpers.shouldPreventOnSurface(event.getEntity()))
+                {
+                    int maximumY = (WorldTypeTFC.SEALEVEL - WorldTypeTFC.ROCKLAYER2) / 2 + WorldTypeTFC.ROCKLAYER2; // Half through rock layer 1
+                    if (pos.getY() >= maximumY || world.canSeeSky(pos))
+                    {
+                        event.setResult(Event.Result.DENY);
+                    }
+                }
+            }
+        }
+
+        // Stop mob spawning in thatch - the list of non-spawnable light-blocking, non-collidable blocks is hardcoded in WorldEntitySpawner#canEntitySpawnBody
+        // This is intentionally outside the previous world type check as this is a fix for the thatch block, not a generic spawning check.
+        if (event.getWorld().getBlockState(pos).getBlock() == BlocksTFC.THATCH || event.getWorld().getBlockState(pos.up()).getBlock() == BlocksTFC.THATCH)
+        {
+            event.setResult(Event.Result.DENY);
         }
     }
 
@@ -678,35 +681,36 @@ public final class CommonEventHandler
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
     {
         Entity entity = event.getEntity();
-
-        // Fix chickens spawning in caves (which is caused by zombie jockeys)
-        if (entity instanceof EntityChicken && ((EntityChicken) entity).isChickenJockey())
+        if (event.getWorld().getWorldType() == TerraFirmaCraft.getWorldType())
         {
-            event.setResult(Event.Result.DENY);
-        }
-
-        // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
-        if (ConfigTFC.General.OVERRIDES.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
-        {
-            Entity TFCReplacement = Helpers.getTFCReplacement(entity);
-            if (TFCReplacement != null)
+            // Fix chickens spawning in caves (which is caused by zombie jockeys)
+            if (entity instanceof EntityChicken && ((EntityChicken) entity).isChickenJockey())
             {
-                TFCReplacement.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
-                event.getWorld().spawnEntity(TFCReplacement); // Fires another spawning event for the TFC replacement
+                event.setCanceled(true); // NO!
             }
-            event.setCanceled(true); // Cancel the vanilla spawn
-        }
-        if (ConfigTFC.General.DIFFICULTY.giveVanillaMobsEquipment)
-        {
-            // Set equipment to some mobs
-            MonsterEquipment equipment = MonsterEquipment.get(entity);
-            if (equipment != null)
+
+            // Prevent vanilla animals (that have a TFC counterpart) from mob spawners / egg throws / other mod mechanics
+            if (ConfigTFC.General.OVERRIDES.forceReplaceVanillaAnimals && Helpers.isVanillaAnimal(entity))
             {
-                entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, equipment.getWeapon(Constants.RNG));
-                entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, equipment.getHelmet(Constants.RNG));
-                entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, equipment.getChestplate(Constants.RNG));
-                entity.setItemStackToSlot(EntityEquipmentSlot.LEGS, equipment.getLeggings(Constants.RNG));
-                entity.setItemStackToSlot(EntityEquipmentSlot.FEET, equipment.getBoots(Constants.RNG));
+                Entity TFCReplacement = Helpers.getTFCReplacement(entity);
+                if (TFCReplacement != null)
+                {
+                    TFCReplacement.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
+                    event.getWorld().spawnEntity(TFCReplacement); // Fires another spawning event for the TFC replacement
+                }
+                event.setCanceled(true); // Cancel the vanilla spawn
+            }
+            if (ConfigTFC.General.DIFFICULTY.giveVanillaMobsEquipment)
+            {
+                // Set equipment to some mobs
+                MonsterEquipment equipment = MonsterEquipment.get(entity);
+                if (equipment != null)
+                {
+                    for (EntityEquipmentSlot slot : EntityEquipmentSlot.values())
+                    {
+                        equipment.getEquipment(slot, Constants.RNG).ifPresent(stack -> entity.setItemStackToSlot(slot, stack));
+                    }
+                }
             }
         }
     }

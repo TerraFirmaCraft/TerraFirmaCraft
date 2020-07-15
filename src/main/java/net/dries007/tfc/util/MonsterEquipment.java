@@ -7,12 +7,15 @@ package net.dries007.tfc.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -29,38 +32,48 @@ import net.dries007.tfc.util.collections.WeightedCollection;
  */
 public class MonsterEquipment
 {
-    public static final Map<String, MonsterEquipment> MONSTER_EQUIPMENT_MAP;
+    private static final Map<String, MonsterEquipment> ENTRIES = new HashMap<>();
 
     static
     {
-        // Add defaults (if this class functionality is extended via json, please move all this data to json too)
-        MONSTER_EQUIPMENT_MAP = new HashMap<>();
-        Map<ItemStack, Double> weapons = new HashMap<>();
-        weapons.put(ItemStack.EMPTY, 0.4);
-        weapons.put(new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, Metal.ItemType.MACE)), 0.2);
-        //noinspection ConstantConditions
-        weapons.put(new ItemStack(ItemMetalSword.get(Metal.WROUGHT_IRON)), 0.2);
-        weapons.put(new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, Metal.ItemType.KNIFE)), 0.2);
-        Map<ItemStack, Double> helmets = new HashMap<>();
-        helmets.put(ItemStack.EMPTY, 0.8);
-        helmets.put(new ItemStack(ItemMetalArmor.get(Metal.WROUGHT_IRON, Metal.ItemType.HELMET)), 0.2);
-        Map<ItemStack, Double> chestplates = new HashMap<>();
-        chestplates.put(ItemStack.EMPTY, 0.8);
-        chestplates.put(new ItemStack(ItemMetalArmor.get(Metal.WROUGHT_IRON, Metal.ItemType.CHESTPLATE)), 0.2);
-        Map<ItemStack, Double> leggings = new HashMap<>();
-        leggings.put(ItemStack.EMPTY, 0.8);
-        leggings.put(new ItemStack(ItemMetalArmor.get(Metal.WROUGHT_IRON, Metal.ItemType.GREAVES)), 0.2);
-        Map<ItemStack, Double> boots = new HashMap<>();
-        boots.put(ItemStack.EMPTY, 0.8);
-        boots.put(new ItemStack(ItemMetalArmor.get(Metal.WROUGHT_IRON, Metal.ItemType.BOOTS)), 0.2);
+        WeightedCollection<ItemStack> weapons = new WeightedCollection<>();
+        weapons.add(0.4, ItemStack.EMPTY);
+        weapons.add(0.2, new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, Metal.ItemType.MACE)));
+        weapons.add(0.2, new ItemStack(ItemMetalSword.get(Metal.WROUGHT_IRON)));
+        weapons.add(0.2, new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, Metal.ItemType.KNIFE)));
+
+        WeightedCollection<ItemStack> rangedWeapons = new WeightedCollection<>();
+        rangedWeapons.add(0.7, new ItemStack(Items.BOW));
+        rangedWeapons.add(0.1, new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, Metal.ItemType.MACE)));
+        rangedWeapons.add(0.1, new ItemStack(ItemMetalSword.get(Metal.WROUGHT_IRON)));
+        rangedWeapons.add(0.2, new ItemStack(ItemMetal.get(Metal.WROUGHT_IRON, Metal.ItemType.KNIFE)));
+
+        WeightedCollection<ItemStack> helmets = new WeightedCollection<>();
+        helmets.add(0.8, ItemStack.EMPTY);
+        helmets.add(0.2, new ItemStack(ItemMetalArmor.get(Metal.WROUGHT_IRON, Metal.ItemType.HELMET)));
+
+        WeightedCollection<ItemStack> chestplates = new WeightedCollection<>();
+        chestplates.add(0.8, ItemStack.EMPTY);
+        chestplates.add(0.2, new ItemStack(ItemMetalArmor.get(Metal.WROUGHT_IRON, Metal.ItemType.CHESTPLATE)));
+
+        WeightedCollection<ItemStack> leggings = new WeightedCollection<>();
+        leggings.add(0.8, ItemStack.EMPTY);
+        leggings.add(0.2, new ItemStack(ItemMetalArmor.get(Metal.WROUGHT_IRON, Metal.ItemType.GREAVES)));
+
+        WeightedCollection<ItemStack> boots = new WeightedCollection<>();
+        boots.add(0.8, ItemStack.EMPTY);
+        boots.add(0.2, new ItemStack(ItemMetalArmor.get(Metal.WROUGHT_IRON, Metal.ItemType.BOOTS)));
+
         MonsterEquipment equipment = new MonsterEquipment(weapons, helmets, chestplates, leggings, boots);
+        MonsterEquipment rangedEquipment = new MonsterEquipment(rangedWeapons, helmets, chestplates, leggings, boots);
+
         // Register to some vanilla mobs
-        MONSTER_EQUIPMENT_MAP.put("minecraft:skeleton", equipment);
-        MONSTER_EQUIPMENT_MAP.put("minecraft:wither_skeleton", equipment);
-        MONSTER_EQUIPMENT_MAP.put("minecraft:stray", equipment);
-        MONSTER_EQUIPMENT_MAP.put("minecraft:zombie", equipment);
-        MONSTER_EQUIPMENT_MAP.put("minecraft:husk", equipment);
-        MONSTER_EQUIPMENT_MAP.put("minecraft:zombie_villager", equipment);
+        // Do some of these even spawn? I think not...
+        ENTRIES.put("minecraft:skeleton", rangedEquipment);
+        ENTRIES.put("minecraft:stray", rangedEquipment);
+        ENTRIES.put("minecraft:zombie", equipment);
+        ENTRIES.put("minecraft:husk", equipment);
+        ENTRIES.put("minecraft:zombie_villager", equipment);
     }
 
     @Nullable
@@ -70,82 +83,41 @@ public class MonsterEquipment
         if (entityType != null)
         {
             String entityTypeName = entityType.toString();
-            return MONSTER_EQUIPMENT_MAP.get(entityTypeName);
+            return ENTRIES.get(entityTypeName);
         }
         return null;
     }
 
-    private final WeightedCollection<ItemStack> WEAPONS;
-    private final WeightedCollection<ItemStack> HELMETS;
-    private final WeightedCollection<ItemStack> CHESTPLATES;
-    private final WeightedCollection<ItemStack> LEGGINGS;
-    private final WeightedCollection<ItemStack> BOOTS;
-
-    public MonsterEquipment(@Nonnull Map<ItemStack, Double> possibleWeapons, @Nonnull Map<ItemStack, Double> possibleHelmets, @Nonnull Map<ItemStack, Double> possibleChestplates, @Nonnull Map<ItemStack, Double> possibleLeggings, @Nonnull Map<ItemStack, Double> possibleBoots)
+    @Nullable
+    public static MonsterEquipment get(String entityId)
     {
-        WEAPONS = new WeightedCollection<>(possibleWeapons);
-        HELMETS = new WeightedCollection<>(possibleHelmets);
-        CHESTPLATES = new WeightedCollection<>(possibleChestplates);
-        LEGGINGS = new WeightedCollection<>(possibleLeggings);
-        BOOTS = new WeightedCollection<>(possibleBoots);
+        return ENTRIES.get(entityId);
     }
 
-    public MonsterEquipment()
+    public static void put(String entityId, MonsterEquipment equipment)
     {
-        WEAPONS = new WeightedCollection<>();
-        HELMETS = new WeightedCollection<>();
-        CHESTPLATES = new WeightedCollection<>();
-        LEGGINGS = new WeightedCollection<>();
-        BOOTS = new WeightedCollection<>();
+        ENTRIES.put(entityId, equipment);
     }
 
-    public ItemStack getWeapon(Random random)
+    private final Map<EntityEquipmentSlot, WeightedCollection<ItemStack>> equipment;
+
+    public MonsterEquipment(WeightedCollection<ItemStack> weapons, WeightedCollection<ItemStack> helmets, WeightedCollection<ItemStack> chestplates, WeightedCollection<ItemStack> leggings, WeightedCollection<ItemStack> boots)
     {
-        return WEAPONS.getRandomEntry(random);
+        equipment = new ImmutableMap.Builder<EntityEquipmentSlot, WeightedCollection<ItemStack>>()
+            .put(EntityEquipmentSlot.MAINHAND, weapons)
+            .put(EntityEquipmentSlot.HEAD, helmets)
+            .put(EntityEquipmentSlot.CHEST, chestplates)
+            .put(EntityEquipmentSlot.LEGS, leggings)
+            .put(EntityEquipmentSlot.FEET, boots)
+            .build();
     }
 
-    public ItemStack getHelmet(Random random)
+    public Optional<ItemStack> getEquipment(EntityEquipmentSlot slot, Random random)
     {
-        return HELMETS.getRandomEntry(random);
-    }
-
-    public ItemStack getChestplate(Random random)
-    {
-        return CHESTPLATES.getRandomEntry(random);
-    }
-
-    public ItemStack getLeggings(Random random)
-    {
-        return LEGGINGS.getRandomEntry(random);
-    }
-
-    public ItemStack getBoots(Random random)
-    {
-        return BOOTS.getRandomEntry(random);
-    }
-
-    public void addWeapon(@Nonnull ItemStack stack, double weight)
-    {
-        WEAPONS.add(weight, stack);
-    }
-
-    public void addHelmet(@Nonnull ItemStack stack, double weight)
-    {
-        HELMETS.add(weight, stack);
-    }
-
-    public void addChestplate(@Nonnull ItemStack stack, double weight)
-    {
-        CHESTPLATES.add(weight, stack);
-    }
-
-    public void addLeggings(@Nonnull ItemStack stack, double weight)
-    {
-        LEGGINGS.add(weight, stack);
-    }
-
-    public void addBoots(@Nonnull ItemStack stack, double weight)
-    {
-        BOOTS.add(weight, stack);
+        if (equipment.containsKey(slot))
+        {
+            return Optional.of(equipment.get(slot).getRandomEntry(random));
+        }
+        return Optional.empty();
     }
 }

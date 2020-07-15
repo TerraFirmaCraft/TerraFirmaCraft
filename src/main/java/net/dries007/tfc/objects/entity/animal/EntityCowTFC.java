@@ -42,7 +42,7 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -52,7 +52,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
 {
-    private static final DataParameter<Long> MILKED = EntityDataManager.createKey(EntityCowTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    private static final DataParameter<Long> MILKED = EntityDataManager.createKey(EntityCowTFC.class, EntitiesTFC.getLongDataSerializer());
 
     @SuppressWarnings("unused")
     public EntityCowTFC(World worldIn)

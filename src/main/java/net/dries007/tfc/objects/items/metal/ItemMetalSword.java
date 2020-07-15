@@ -45,7 +45,6 @@ public class ItemMetalSword extends ItemSword implements IMetalItem, IItemSize
 {
     private static final Map<Metal, ItemMetalSword> TABLE = new HashMap<>();
 
-    @Nullable
     public static ItemMetalSword get(Metal metal)
     {
         return TABLE.get(metal);
