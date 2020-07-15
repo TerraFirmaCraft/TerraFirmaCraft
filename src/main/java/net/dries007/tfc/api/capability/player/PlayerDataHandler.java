@@ -19,15 +19,20 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import net.dries007.tfc.api.recipes.ChiselRecipe;
+import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.skills.Skill;
 import net.dries007.tfc.util.skills.SkillType;
 
 @ParametersAreNonnullByDefault
 public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound>, IPlayerData
 {
+    public static final int MAX_INTOXICATED_TICKS = 36 * ICalendar.TICKS_IN_HOUR; // A day and a half. Each drink gives you 4 hours of time
+
     private final Map<String, Skill> skills;
     private final EntityPlayer player;
     private ItemStack harvestingTool;
+    private long intoxicatedTime;
 
     private ChiselRecipe.Mode chiselMode = ChiselRecipe.Mode.SMOOTH;
 
@@ -36,6 +41,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
         this.skills = SkillType.createSkillMap(this);
         this.player = player;
         harvestingTool = ItemStack.EMPTY;
+        intoxicatedTime = 0;
     }
 
     @Override
@@ -45,6 +51,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
         skills.forEach((k, v) -> nbt.setTag(k, v.serializeNBT()));
         nbt.setTag("chiselMode", new NBTTagByte((byte) chiselMode.ordinal()));
         nbt.setTag("harvestingTool", harvestingTool.serializeNBT());
+        nbt.setLong("intoxicatedTime", intoxicatedTime);
         return nbt;
     }
 
@@ -56,6 +63,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
             skills.forEach((k, v) -> v.deserializeNBT(nbt.getCompoundTag(k)));
             chiselMode = ChiselRecipe.Mode.valueOf(nbt.getByte("chiselMode"));
             harvestingTool = new ItemStack(nbt.getCompoundTag("harvestingTool"));
+            intoxicatedTime = nbt.getLong("intoxicatedTime");
         }
     }
 
@@ -98,6 +106,27 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     public void setChiselMode(ChiselRecipe.Mode chiselMode)
     {
         this.chiselMode = chiselMode;
+    }
+
+    @Override
+    public void addIntoxicatedTime(long ticks)
+    {
+        long currentTicks = CalendarTFC.PLAYER_TIME.getTicks();
+        if (this.intoxicatedTime < currentTicks)
+        {
+            this.intoxicatedTime = currentTicks;
+        }
+        this.intoxicatedTime += ticks;
+        if (this.intoxicatedTime > currentTicks + MAX_INTOXICATED_TICKS)
+        {
+            this.intoxicatedTime = currentTicks + MAX_INTOXICATED_TICKS;
+        }
+    }
+
+    @Override
+    public long getIntoxicatedTime()
+    {
+        return Math.max(0, intoxicatedTime - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override

@@ -58,6 +58,18 @@ public interface IPlayerData extends INBTSerializable<NBTTagCompound>
      */
     void setChiselMode(@Nonnull ChiselRecipe.Mode chiselMode);
 
+    /**
+     * Makes the player intoxicated
+     *
+     * @param ticks Ticks for the player to be intoxicated
+     */
+    void addIntoxicatedTime(long ticks);
+
+    /**
+     * Gets the number of ticks the player is intoxicated for
+     */
+    long getIntoxicatedTime();
+
     default void updateAndSync()
     {
         EntityPlayer player = getPlayer();

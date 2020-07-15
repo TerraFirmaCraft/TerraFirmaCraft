@@ -35,13 +35,16 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.GameRuleChangeEvent;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -102,6 +105,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MonsterEquipment;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.dries007.tfc.util.skills.SmithingSkill;
 import net.dries007.tfc.world.classic.WorldTypeTFC;
@@ -113,6 +117,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public final class CommonEventHandler
 {
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+
     /**
      * Fill thirst after drinking vanilla water bottles or milk
      */
@@ -887,6 +893,61 @@ public final class CommonEventHandler
             if (tracker != null)
             {
                 tracker.tick(event.world);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onServerChatEvent(ServerChatEvent event)
+    {
+        IPlayerData cap = event.getPlayer().getCapability(CapabilityPlayerData.CAPABILITY, null);
+        if (cap != null)
+        {
+            long intoxicatedTicks = cap.getIntoxicatedTime() - 6 * ICalendar.TICKS_IN_HOUR; // Only apply intoxication after 6 hr
+            if (intoxicatedTicks > 0)
+            {
+                float drunkChance = MathHelper.clamp((float) intoxicatedTicks / PlayerDataHandler.MAX_INTOXICATED_TICKS, 0, 0.7f);
+                String originalMessage = event.getMessage();
+                String[] words = originalMessage.split(" ");
+                for (int i = 0; i < words.length; i++)
+                {
+                    String word = words[i];
+                    if (word.length() == 0)
+                    {
+                        continue;
+                    }
+
+                    // Swap two letters
+                    if (Constants.RNG.nextFloat() < drunkChance && word.length() >= 2)
+                    {
+                        int pos = Constants.RNG.nextInt(word.length() - 1);
+                        word = word.substring(0, pos) + word.charAt(pos + 1) + word.charAt(pos) + word.substring(pos + 2);
+                    }
+
+                    // Repeat / slur letters
+                    if (Constants.RNG.nextFloat() < drunkChance)
+                    {
+                        int pos = Constants.RNG.nextInt(word.length());
+                        char repeat = word.charAt(pos);
+                        int amount = 1 + Constants.RNG.nextInt(3);
+                        word = word.substring(0, pos) + new String(new char[amount]).replace('\0', repeat) + (pos + 1 < word.length() ? word.substring(pos + 1) : "");
+                    }
+
+                    // Add additional letters
+                    if (Constants.RNG.nextFloat() < drunkChance)
+                    {
+                        int pos = Constants.RNG.nextInt(word.length());
+                        char replacement = ALPHABET.charAt(Constants.RNG.nextInt(ALPHABET.length()));
+                        if (Character.isUpperCase(word.charAt(Constants.RNG.nextInt(word.length()))))
+                        {
+                            replacement = Character.toUpperCase(replacement);
+                        }
+                        word = word.substring(0, pos) + replacement + (pos + 1 < word.length() ? word.substring(pos + 1) : "");
+                    }
+
+                    words[i] = word;
+                }
+                event.setComponent(new TextComponentTranslation("<" + event.getUsername() + "> " + String.join(" ", words)));
             }
         }
     }
