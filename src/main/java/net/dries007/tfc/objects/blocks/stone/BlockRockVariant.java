@@ -66,6 +66,8 @@ public class BlockRockVariant extends Block implements IItemSize
         {
             case RAW:
                 return new BlockRockRaw(type, rock);
+            case SMOOTH:
+                return new BlockRockSmooth(type, rock);
             case ANVIL:
                 return new BlockStoneAnvil(type, rock);
             case SPIKE:

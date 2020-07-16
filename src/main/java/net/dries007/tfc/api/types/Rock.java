@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.api.types;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 
@@ -16,7 +15,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.objects.blocks.stone.*;
 import net.dries007.tfc.objects.items.rock.*;
 import net.dries007.tfc.util.Helpers;
 
@@ -115,10 +113,10 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
 
     public enum Type
     {
-        RAW(Material.ROCK, FALL_VERTICAL, false, BlockRockRaw::new),
-        ANVIL(Material.ROCK, FALL_VERTICAL, false, BlockStoneAnvil::new),
-        SPIKE(Material.ROCK, NO_FALL, false, BlockRockSpike::new),
-        SMOOTH(Material.ROCK, NO_FALL, false),
+        RAW(Material.ROCK, FALL_VERTICAL, false),
+        ANVIL(Material.ROCK, FALL_VERTICAL, false),
+        SPIKE(Material.ROCK, NO_FALL, false),
+        SMOOTH(Material.ROCK, FALL_VERTICAL, false),
         COBBLE(Material.ROCK, FALL_HORIZONTAL, false),
         BRICKS(Material.ROCK, NO_FALL, false),
         SAND(Material.SAND, FALL_HORIZONTAL, false),
@@ -128,28 +126,19 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         DRY_GRASS(Material.GRASS, FALL_HORIZONTAL, true),
         CLAY(Material.CLAY, FALL_VERTICAL, false),
         CLAY_GRASS(Material.GRASS, FALL_VERTICAL, true),
-        FARMLAND(Material.GROUND, FALL_VERTICAL, false, BlockFarmlandTFC::new),
-        PATH(Material.GROUND, FALL_VERTICAL, false, BlockPathTFC::new);
+        FARMLAND(Material.GROUND, FALL_VERTICAL, false),
+        PATH(Material.GROUND, FALL_VERTICAL, false);
 
         public final Material material;
         public final boolean isGrass;
 
         private final FallingBlockType gravType;
-        private final BiFunction<Type, Rock, BlockRockVariant> supplier;
 
         Type(Material material, FallingBlockType gravType, boolean isGrass)
-        {
-            // If no fall + no grass, then normal. If it can fall, then either fallable or fallable + connected (since grass always falls)
-            this(material, gravType, isGrass, (gravType == NO_FALL && !isGrass) ? BlockRockVariant::new :
-                (isGrass ? BlockRockVariantConnected::new : BlockRockVariantFallable::new));
-        }
-
-        Type(Material material, FallingBlockType gravType, boolean isGrass, BiFunction<Type, Rock, BlockRockVariant> supplier)
         {
             this.material = material;
             this.gravType = gravType;
             this.isGrass = isGrass;
-            this.supplier = supplier;
         }
 
         public boolean canFall()
@@ -160,11 +149,6 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         public boolean canFallHorizontal()
         {
             return gravType == FALL_HORIZONTAL;
-        }
-
-        public BlockRockVariant create(Rock rock)
-        {
-            return supplier.apply(this, rock);
         }
 
         public Type getNonGrassVersion()

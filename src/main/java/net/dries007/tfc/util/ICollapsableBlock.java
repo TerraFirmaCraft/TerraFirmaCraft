@@ -81,7 +81,6 @@ public interface ICollapsableBlock
         int radius = (world.rand.nextInt(31) + 5) / 2;
         int radiusSquared = radius * radius;
         List<BlockPos> secondaryPositions = new ArrayList<>();
-
         // Initially only scan on the bottom layer, and advance upwards
         for (BlockPos pos : BlockPos.getAllInBoxMutable(centerPoint.add(-radius, -4, -radius), centerPoint.add(radius, -4, radius)))
         {
@@ -90,7 +89,7 @@ public interface ICollapsableBlock
             {
                 BlockPos posAt = pos.up(y);
                 IBlockState stateAt = world.getBlockState(posAt);
-                if (foundEmpty && stateAt.getBlock() instanceof ICollapsableBlock && ((ICollapsableBlock) stateAt.getBlock()).canCollapse(world, posAt))
+                if (foundEmpty && stateAt.getBlock() instanceof ICollapsableBlock && ((ICollapsableBlock) stateAt.getBlock()).canCollapse(world, posAt) && !BlockSupport.isBeingSupported(world, posAt))
                 {
                     // Check for a possible collapse
                     if (posAt.distanceSq(centerPoint) < radiusSquared && world.rand.nextFloat() < ConfigTFC.General.FALLABLE.propagateCollapseChance)

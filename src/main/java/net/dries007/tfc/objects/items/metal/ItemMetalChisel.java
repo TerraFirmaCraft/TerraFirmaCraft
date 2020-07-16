@@ -35,6 +35,8 @@ import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.recipes.ChiselRecipe;
 import net.dries007.tfc.api.recipes.ChiselRecipe.Mode;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.blocks.stone.BlockRockSmooth;
+import net.dries007.tfc.objects.blocks.wood.BlockSupport;
 import net.dries007.tfc.objects.container.ContainerEmpty;
 import net.dries007.tfc.util.ICollapsableBlock;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -205,13 +207,17 @@ public class ItemMetalChisel extends ItemMetalTool
             {
                 // replace the block with a new block
                 IBlockState oldState = worldIn.getBlockState(pos);
-                if (oldState.getBlock() instanceof ICollapsableBlock && ConfigTFC.General.FALLABLE.chiselCausesCollapse)
+                if (oldState.getBlock() instanceof ICollapsableBlock && !BlockSupport.isBeingSupported(worldIn, pos) && ConfigTFC.General.FALLABLE.chiselCausesCollapse)
                 {
                     worldIn.setBlockToAir(pos); // Set block to air before attempting a collapse mechanic
                     if (((ICollapsableBlock) oldState.getBlock()).checkCollapsingArea(worldIn, pos))
                     {
                         return EnumActionResult.SUCCESS; // Collapse mechanic triggered, cancel chisel!
                     }
+                }
+                if (newState.getProperties().containsKey(BlockRockSmooth.CAN_FALL))
+                {
+                    newState = newState.withProperty(BlockRockSmooth.CAN_FALL, true);
                 }
                 worldIn.setBlockState(pos, newState);
 
