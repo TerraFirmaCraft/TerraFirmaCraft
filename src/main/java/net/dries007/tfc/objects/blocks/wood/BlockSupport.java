@@ -31,6 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
@@ -53,6 +54,11 @@ public class BlockSupport extends Block
     private static final AxisAlignedBB CONNECTION_E_AABB = new AxisAlignedBB(0.6875D, 0.625D, 0.3125D, 1.0D, 1.0D, 0.6875D);
     private static final AxisAlignedBB CONNECTION_W_AABB = new AxisAlignedBB(0.0D, 0.625D, 0.3125D, 0.3125D, 1.0D, 0.6875D);
 
+    private static final int sRangeHor = ConfigTFC.General.FALLABLE.supportBeamRangeHor;
+    private static final int sRangeVert = ConfigTFC.General.FALLABLE.supportBeamRangeVert;
+    private static final int sRangeHorNeg = sRangeHor * -1;
+    private static final int sRangeVertNeg = sRangeVert * -1;
+
     private static final Map<Tree, BlockSupport> MAP = new HashMap<>();
 
     public static BlockSupport get(Tree wood)
@@ -74,18 +80,15 @@ public class BlockSupport extends Block
      */
     public static boolean isBeingSupported(World worldIn, BlockPos pos)
     {
-        if (!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
-        {
-            return true; //If world isn't loaded...
+        if (!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
+            return true; // If world isn't loaded...
         }
-        for (BlockPos.MutableBlockPos searchSupport : BlockPos.getAllInBoxMutable(pos.add(-4, -1, -4), pos.add(4, 1, 4)))
-        {
+        for (BlockPos.MutableBlockPos searchSupport : BlockPos.getAllInBoxMutable(
+                pos.add(sRangeHorNeg, sRangeVertNeg, sRangeHorNeg), pos.add(sRangeHor, sRangeVert, sRangeHor))) {
             IBlockState st = worldIn.getBlockState(searchSupport);
-            if (st.getBlock() instanceof BlockSupport)
-            {
-                if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchSupport))
-                {
-                    return true; //Found support block that can support this position
+            if (st.getBlock() instanceof BlockSupport) {
+                if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchSupport)) {
+                    return true; // Found support block that can support this position
                 }
             }
         }
@@ -93,10 +96,11 @@ public class BlockSupport extends Block
     }
 
     /**
-     * This is an optimized way to check for blocks that aren't supported during a cave in, instead of checking every single block individually and calling BlockSupper#isBeingSupported
+     * This is an optimized way to check for blocks that aren't supported during a
+     * cave in, instead of checking every single block individually and calling
+     * BlockSupper#isBeingSupported
      */
-    public static Set<BlockPos> getAllUnsupportedBlocksIn(World worldIn, BlockPos from, BlockPos to)
-    {
+    public static Set<BlockPos> getAllUnsupportedBlocksIn(World worldIn, BlockPos from, BlockPos to) {
         Set<BlockPos> listSupported = new HashSet<>();
         Set<BlockPos> listUnsupported = new HashSet<>();
         int minX = Math.min(from.getX(), to.getX());
@@ -107,7 +111,8 @@ public class BlockSupport extends Block
         int maxZ = Math.max(from.getZ(), to.getZ());
         BlockPos minPoint = new BlockPos(minX, minY, minZ);
         BlockPos maxPoint = new BlockPos(maxX, maxY, maxZ);
-        for (BlockPos.MutableBlockPos searchingPoint : BlockPos.getAllInBoxMutable(minPoint.add(-4, -1, -4), maxPoint.add(4, 1, 4)))
+        for (BlockPos.MutableBlockPos searchingPoint : BlockPos.getAllInBoxMutable(minPoint.add(sRangeHorNeg, sRangeVertNeg, sRangeHorNeg),
+                maxPoint.add(sRangeHor, sRangeVert, sRangeHor)))
         {
             if (!listSupported.contains(searchingPoint))
             {
@@ -118,7 +123,7 @@ public class BlockSupport extends Block
             {
                 if (((BlockSupport) st.getBlock()).canSupportBlocks(worldIn, searchingPoint))
                 {
-                    for (BlockPos.MutableBlockPos supported : BlockPos.getAllInBoxMutable(searchingPoint.add(-4, -1, -4), searchingPoint.add(4, 1, 4)))
+                    for (BlockPos.MutableBlockPos supported : BlockPos.getAllInBoxMutable(searchingPoint.add(sRangeHorNeg, sRangeVertNeg, sRangeHorNeg), searchingPoint.add(sRangeHor, sRangeVert, sRangeHor)))
                     {
                         listSupported.add(supported.toImmutable()); //Adding all supported blocks by this support
                         listUnsupported.remove(supported); //Remove if this block was added earlier
