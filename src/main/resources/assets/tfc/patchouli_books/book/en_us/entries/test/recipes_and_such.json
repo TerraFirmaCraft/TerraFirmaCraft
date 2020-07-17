@@ -1,0 +1,36 @@
+{
+  "name": "Test of ALL THE THINGS",
+  "icon": "tfc:textures/items/brown_dye.png",
+  "category": "test",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Example knapping recipe"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_helmet",
+      "text": "Well this is some interesting stuff right here"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_jug",
+      "text": "Well this is some interesting stuff right here"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_crucible",
+      "text": "Well this is some interesting stuff right here"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:hoe_head_1",
+      "text": "Well this is some interesting stuff right here"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:flux",
+      "text": "Well this is some interesting stuff right here"
+    }
+  ]
+}
