@@ -21,6 +21,7 @@ import net.dries007.tfc.api.recipes.WeldingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.util.skills.SmithingSkill;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -30,7 +31,7 @@ public class CTWelding
 {
     @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input1, crafttweaker.api.item.IIngredient input2, IItemStack output, int minTier)
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input1, crafttweaker.api.item.IIngredient input2, IItemStack output, int minTier, String skillTypeName)
     {
         if (output == null || input1 == null || input2 == null)
             throw new IllegalArgumentException("Both inputs and output are not allowed to be empty");
@@ -40,7 +41,8 @@ public class CTWelding
         IIngredient ingredient2 = CTHelper.getInternalIngredient(input2);
         Metal.Tier tier = Metal.Tier.valueOf(minTier);
         ItemStack outputStack = (ItemStack) output.getInternal();
-        WeldingRecipe recipe = new WeldingRecipe(new ResourceLocation(registryName), ingredient1, ingredient2, outputStack, tier);
+        SmithingSkill.Type skillType = skillTypeName == null ? null : SmithingSkill.Type.valueOf(skillTypeName.toUpperCase());
+        WeldingRecipe recipe = new WeldingRecipe(new ResourceLocation(registryName), ingredient1, ingredient2, outputStack, tier, skillType);
         CraftTweakerAPI.apply(new IAction()
         {
             @Override
