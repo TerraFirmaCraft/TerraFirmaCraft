@@ -134,13 +134,6 @@ public class BlockStoneAnvil extends BlockRockVariant implements ICollapsableBlo
     }
 
     @Override
-    @Nonnull
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return ItemRock.get(rock);
-    }
-
-    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if (hand == EnumHand.OFF_HAND) //Avoid issues with insertion/extraction
@@ -249,6 +242,13 @@ public class BlockStoneAnvil extends BlockRockVariant implements ICollapsableBlo
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(BlockRockRaw.get(rock, Rock.Type.RAW));
+    }
+
+    @Override
+    @Nonnull
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return ItemRock.get(rock);
     }
 
     @Override

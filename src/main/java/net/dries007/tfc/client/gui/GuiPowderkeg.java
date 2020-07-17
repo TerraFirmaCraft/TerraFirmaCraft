@@ -6,7 +6,6 @@
 package net.dries007.tfc.client.gui;
 
 import java.io.IOException;
-
 import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;

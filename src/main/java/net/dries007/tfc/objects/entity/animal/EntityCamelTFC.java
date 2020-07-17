@@ -63,195 +63,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         super(world, gender, birthDay);
     }
 
-    @Override
-    public void onFertilized(@Nonnull IAnimalTFC male)
-    {
-        this.setPregnantTime(CalendarTFC.PLAYER_TIME.getTotalDays());
-        int selection = this.rand.nextInt(9);
-        int i;
-        if (selection < 4)
-        {
-            i = this.getVariant();
-        }
-        else if (selection < 8)
-        {
-            i = ((EntityCamelTFC) male).getVariant();
-        }
-        else
-        {
-            // Mutation
-            i = this.rand.nextInt(4);
-        }
-        this.geneVariant = i;
-        EntityCamelTFC father = (EntityCamelTFC) male;
-        this.geneHealth = (float) ((father.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue() + this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue() + this.getModifiedMaxHealth()) / 3.0D);
-        this.geneSpeed = (float) ((father.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue() + this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue() + this.getModifiedMovementSpeed()) / 3.0D);
-        this.geneJump = (float) ((father.getEntityAttribute(JUMP_STRENGTH).getBaseValue() + this.getEntityAttribute(JUMP_STRENGTH).getBaseValue() + this.getModifiedJumpStrength()) / 3.0D);
-
-        this.geneStrength = this.rand.nextInt(Math.max(this.getStrength(), father.getStrength())) + 1;
-        if (this.rand.nextFloat() < 0.03F)
-        {
-            this.geneStrength++;
-        }
-    }
-
-    @Override
-    public int getDaysToAdulthood()
-    {
-        return ConfigTFC.Animals.CAMEL.adulthood;
-    }
-
-    @Override
-    public int getDaysToElderly()
-    {
-        return ConfigTFC.Animals.CAMEL.elder;
-    }
-
-    @Override
-    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
-    {
-        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
-        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.DESERT || biomeType == BiomeHelper.BiomeType.SAVANNA))
-        {
-            return ConfigTFC.Animals.CAMEL.rarity;
-        }
-        return 0;
-    }
-
-    @Override
-    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
-    {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
-    }
-
-    @Override
-    public int getMinGroupSize()
-    {
-        return 1;
-    }
-
-    @Override
-    public int getMaxGroupSize()
-    {
-        return 2;
-    }
-
-    @Override
-    public long gestationDays()
-    {
-        return ConfigTFC.Animals.CAMEL.gestation;
-    }
-
-    @Override
-    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.writeEntityToNBT(nbt);
-        nbt.setInteger("Variant", this.getVariant());
-        nbt.setInteger("Strength", this.getStrength());
-        if (!this.horseChest.getStackInSlot(1).isEmpty())
-        {
-            nbt.setTag("DecorItem", this.horseChest.getStackInSlot(1).writeToNBT(new NBTTagCompound()));
-        }
-        nbt.setBoolean("halter", isHalter());
-    }
-
-    @Override
-    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
-    {
-        super.readEntityFromNBT(nbt);
-        this.setStrength(nbt.getInteger("Strength"));
-        this.setVariant(nbt.getInteger("Variant"));
-        if (nbt.hasKey("DecorItem", 10))
-        {
-            this.horseChest.setInventorySlotContents(1, new ItemStack(nbt.getCompoundTag("DecorItem")));
-        }
-        this.updateHorseSlots();
-        this.setHalter(nbt.getBoolean("halter"));
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        getDataManager().register(DATA_COLOR_ID, -1);
-        getDataManager().register(HALTER, false);
-    }
-
-    @Override
-    protected void mountTo(EntityPlayer player)
-    {
-        if(isHalter())
-        {
-            super.mountTo(player);
-        }
-    }
-
-    @Override
-    protected ResourceLocation getLootTable() { return LootTablesTFC.ANIMALS_CAMEL; }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        EntityCamelTFC other = (EntityCamelTFC) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
-    }
-
-    @Nullable
-    @Override
-    public EntityCamelTFC createChild(@Nonnull EntityAgeable other)
-    {
-        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
-        {
-            super.setFertilized(true);
-            this.resetInLove();
-            this.onFertilized((IAnimalTFC) other);
-        }
-        else if (other == this)
-        {
-            // Only called if this animal is interacted with a spawn egg
-            // Try to return to vanilla's default method a baby of this animal, as if bred normally
-            return new EntityCamelTFC(this.world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
-        }
-        return null;
-    }
-
-    @Override
-    public void birthChildren()
-    {
-        int numberOfChildren = ConfigTFC.Animals.CAMEL.babies; //one always
-        for (int i = 0; i < numberOfChildren; i++)
-        {
-            EntityCamelTFC baby = new EntityCamelTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
-            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-            if (this.geneHealth > 0)
-            {
-                baby.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.geneHealth);
-            }
-            if (this.geneSpeed > 0)
-            {
-                baby.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.geneSpeed);
-            }
-            if (this.geneJump > 0)
-            {
-                baby.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.geneJump);
-            }
-            if (this.geneStrength > 0)
-            {
-                this.setStrength((int) this.geneStrength);
-            }
-            baby.setVariant(geneVariant);
-            this.world.spawnEntity(baby);
-        }
-        geneJump = 0;
-        geneSpeed = 0;
-        geneJump = 0;
-        geneStrength = 0;
-        geneVariant = 0;
-    }
-
     public boolean canBeSteered()
     {
         return this.getControllingPassenger() instanceof EntityLivingBase;
@@ -341,29 +152,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         this.dataManager.set(DATA_COLOR_ID, color == null ? -1 : color.getMetadata());
     }
 
-    protected void playGallopSound(SoundType p_190680_1_)
-    {
-        this.playSound(SoundEvents.ENTITY_HORSE_GALLOP, p_190680_1_.getVolume() * 0.15F, p_190680_1_.getPitch());
-    }
-
-    @Nullable
-    public Entity getControllingPassenger()
-    {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
-    }
-
-    private void setColorByItem(ItemStack stack)
-    {
-        if (this.isArmor(stack))
-        {
-            this.setColor(EnumDyeColor.byMetadata(stack.getMetadata()));
-        }
-        else
-        {
-            this.setColor(null);
-        }
-    }
-
     @Override
     public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
     {
@@ -400,6 +188,195 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         return super.processInteract(player, hand);
     }
 
+    @Override
+    public void onFertilized(@Nonnull IAnimalTFC male)
+    {
+        this.setPregnantTime(CalendarTFC.PLAYER_TIME.getTotalDays());
+        int selection = this.rand.nextInt(9);
+        int i;
+        if (selection < 4)
+        {
+            i = this.getVariant();
+        }
+        else if (selection < 8)
+        {
+            i = ((EntityCamelTFC) male).getVariant();
+        }
+        else
+        {
+            // Mutation
+            i = this.rand.nextInt(4);
+        }
+        this.geneVariant = i;
+        EntityCamelTFC father = (EntityCamelTFC) male;
+        this.geneHealth = (float) ((father.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue() + this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue() + this.getModifiedMaxHealth()) / 3.0D);
+        this.geneSpeed = (float) ((father.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue() + this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue() + this.getModifiedMovementSpeed()) / 3.0D);
+        this.geneJump = (float) ((father.getEntityAttribute(JUMP_STRENGTH).getBaseValue() + this.getEntityAttribute(JUMP_STRENGTH).getBaseValue() + this.getModifiedJumpStrength()) / 3.0D);
+
+        this.geneStrength = this.rand.nextInt(Math.max(this.getStrength(), father.getStrength())) + 1;
+        if (this.rand.nextFloat() < 0.03F)
+        {
+            this.geneStrength++;
+        }
+    }
+
+    @Override
+    public int getDaysToAdulthood()
+    {
+        return ConfigTFC.Animals.CAMEL.adulthood;
+    }
+
+    @Override
+    public int getDaysToElderly()
+    {
+        return ConfigTFC.Animals.CAMEL.elder;
+    }
+
+    @Override
+    public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
+    {
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.DESERT || biomeType == BiomeHelper.BiomeType.SAVANNA))
+        {
+            return ConfigTFC.Animals.CAMEL.rarity;
+        }
+        return 0;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 1;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 2;
+    }
+
+    @Override
+    protected void mountTo(EntityPlayer player)
+    {
+        if (isHalter())
+        {
+            super.mountTo(player);
+        }
+    }
+
+    @Override
+    public long gestationDays()
+    {
+        return ConfigTFC.Animals.CAMEL.gestation;
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setInteger("Variant", this.getVariant());
+        nbt.setInteger("Strength", this.getStrength());
+        if (!this.horseChest.getStackInSlot(1).isEmpty())
+        {
+            nbt.setTag("DecorItem", this.horseChest.getStackInSlot(1).writeToNBT(new NBTTagCompound()));
+        }
+        nbt.setBoolean("halter", isHalter());
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.setStrength(nbt.getInteger("Strength"));
+        this.setVariant(nbt.getInteger("Variant"));
+        if (nbt.hasKey("DecorItem", 10))
+        {
+            this.horseChest.setInventorySlotContents(1, new ItemStack(nbt.getCompoundTag("DecorItem")));
+        }
+        this.updateHorseSlots();
+        this.setHalter(nbt.getBoolean("halter"));
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(DATA_COLOR_ID, -1);
+        getDataManager().register(HALTER, false);
+    }
+
+    @Override
+    protected ResourceLocation getLootTable() { return LootTablesTFC.ANIMALS_CAMEL; }
+
+    @Override
+    public boolean canMateWith(EntityAnimal otherAnimal)
+    {
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        EntityCamelTFC other = (EntityCamelTFC) otherAnimal;
+        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+    }
+
+    @Nullable
+    @Override
+    public EntityCamelTFC createChild(@Nonnull EntityAgeable other)
+    {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof IAnimalTFC)
+        {
+            super.setFertilized(true);
+            this.resetInLove();
+            this.onFertilized((IAnimalTFC) other);
+        }
+        else if (other == this)
+        {
+            // Only called if this animal is interacted with a spawn egg
+            // Try to return to vanilla's default method a baby of this animal, as if bred normally
+            return new EntityCamelTFC(this.world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+        }
+        return null;
+    }
+
+    @Override
+    public void birthChildren()
+    {
+        int numberOfChildren = ConfigTFC.Animals.CAMEL.babies; //one always
+        for (int i = 0; i < numberOfChildren; i++)
+        {
+            EntityCamelTFC baby = new EntityCamelTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
+            baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            if (this.geneHealth > 0)
+            {
+                baby.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.geneHealth);
+            }
+            if (this.geneSpeed > 0)
+            {
+                baby.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.geneSpeed);
+            }
+            if (this.geneJump > 0)
+            {
+                baby.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.geneJump);
+            }
+            if (this.geneStrength > 0)
+            {
+                this.setStrength((int) this.geneStrength);
+            }
+            baby.setVariant(geneVariant);
+            this.world.spawnEntity(baby);
+        }
+        geneJump = 0;
+        geneSpeed = 0;
+        geneJump = 0;
+        geneStrength = 0;
+        geneVariant = 0;
+    }
+
     public boolean isHalter()
     {
         return dataManager.get(HALTER);
@@ -408,5 +385,28 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     public void setHalter(boolean value)
     {
         dataManager.set(HALTER, value);
+    }
+
+    protected void playGallopSound(SoundType p_190680_1_)
+    {
+        this.playSound(SoundEvents.ENTITY_HORSE_GALLOP, p_190680_1_.getVolume() * 0.15F, p_190680_1_.getPitch());
+    }
+
+    @Nullable
+    public Entity getControllingPassenger()
+    {
+        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+    }
+
+    private void setColorByItem(ItemStack stack)
+    {
+        if (this.isArmor(stack))
+        {
+            this.setColor(EnumDyeColor.byMetadata(stack.getMetadata()));
+        }
+        else
+        {
+            this.setColor(null);
+        }
     }
 }

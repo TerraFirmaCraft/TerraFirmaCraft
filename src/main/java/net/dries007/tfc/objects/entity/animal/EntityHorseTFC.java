@@ -150,16 +150,6 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     @Override
     public void setFertilized(boolean value) { dataManager.set(FERTILIZED, value); }
 
-    public boolean isHalter()
-    {
-        return dataManager.get(HALTER);
-    }
-
-    public void setHalter(boolean value)
-    {
-        dataManager.set(HALTER, value);
-    }
-
     @Override
     public void onFertilized(@Nonnull IAnimalTFC male)
     {
@@ -231,6 +221,16 @@ public class EntityHorseTFC extends EntityHorse implements IAnimalTFC, ILivestoc
     {
         String entityString = EntityList.getEntityString(this);
         return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
+    }
+
+    public boolean isHalter()
+    {
+        return dataManager.get(HALTER);
+    }
+
+    public void setHalter(boolean value)
+    {
+        dataManager.set(HALTER, value);
     }
 
     @Override

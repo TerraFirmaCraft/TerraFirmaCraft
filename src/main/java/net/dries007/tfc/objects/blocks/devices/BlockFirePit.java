@@ -300,13 +300,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         super.onEntityCollision(worldIn, pos, state, entityIn);
     }
 
-    @Nullable
-    @Override
-    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
-    {
-        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
-    }
-
     @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
@@ -331,6 +324,13 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TEFirePit();
+    }
+
+    @Nullable
+    @Override
+    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
+    {
+        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
     }
 
     @Override

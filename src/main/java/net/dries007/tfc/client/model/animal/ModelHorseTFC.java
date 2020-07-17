@@ -294,7 +294,7 @@ public class ModelHorseTFC extends ModelHorse
         this.head.render(scale);
         GlStateManager.popMatrix();
 
-        if (!this.isChild && horse instanceof AbstractChestHorse && ((AbstractChestHorse)horse).hasChest())
+        if (!this.isChild && horse instanceof AbstractChestHorse && ((AbstractChestHorse) horse).hasChest())
         {
             this.muleLeftChest.render(scale);
             this.muleRightChest.render(scale);

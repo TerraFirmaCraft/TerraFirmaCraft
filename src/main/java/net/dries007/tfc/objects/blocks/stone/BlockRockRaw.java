@@ -94,6 +94,16 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     }
 
     @Override
+    public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
+    {
+        if (ConfigTFC.General.FALLABLE.explosionCausesCollapse)
+        {
+            // Trigger the collapsing mechanic!
+            checkCollapsingArea(worldIn, pos);
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = playerIn.getHeldItemMainhand();
@@ -134,15 +144,5 @@ public class BlockRockRaw extends BlockRockVariant implements ICollapsableBlock
     public int damageDropped(IBlockState state)
     {
         return 0;
-    }
-
-    @Override
-    public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
-    {
-        if (ConfigTFC.General.FALLABLE.explosionCausesCollapse)
-        {
-            // Trigger the collapsing mechanic!
-            checkCollapsingArea(worldIn, pos);
-        }
     }
 }

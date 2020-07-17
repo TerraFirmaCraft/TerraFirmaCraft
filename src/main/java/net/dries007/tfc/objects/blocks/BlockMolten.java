@@ -142,13 +142,6 @@ public class BlockMolten extends Block implements ILightableBlock
         super.onEntityWalk(worldIn, pos, entityIn);
     }
 
-    @Nullable
-    @Override
-    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
-    {
-        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
-    }
-
     @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
@@ -179,5 +172,12 @@ public class BlockMolten extends Block implements ILightableBlock
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         // Drops are handled by the relevant TE (blast furnace or bloomery)
+    }
+
+    @Nullable
+    @Override
+    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
+    {
+        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
     }
 }

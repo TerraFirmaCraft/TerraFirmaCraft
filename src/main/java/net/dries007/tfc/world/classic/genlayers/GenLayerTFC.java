@@ -30,6 +30,30 @@ import net.dries007.tfc.world.classic.genlayers.river.GenLayerRiverTFC;
 
 public abstract class GenLayerTFC extends GenLayer
 {
+    // Distinct colors for debug map gen
+    private static final Color[] COLORS = new Color[] {
+        new Color(0xFFB300),    // Vivid Yellow
+        new Color(0x803E75),    // Strong Purple
+        new Color(0xFF6800),    // Vivid Orange
+        new Color(0xA6BDD7),    // Very Light Blue
+        new Color(0xC10020),    // Vivid Red
+        new Color(0xCEA262),    // Grayish Yellow
+        new Color(0x817066),    // Medium Gray
+        new Color(0x007D34),    // Vivid Green
+        new Color(0xF6768E),    // Strong Purplish Pink
+        new Color(0x00538A),    // Strong Blue
+        new Color(0xFF7A5C),    // Strong Yellowish Pink
+        new Color(0x53377A),    // Strong Violet
+        new Color(0xFF8E00),    // Vivid Orange Yellow
+        new Color(0xB32851),    // Strong Purplish Red
+        new Color(0xF4C800),    // Vivid Greenish Yellow
+        new Color(0x7F180D),    // Strong Reddish Brown
+        new Color(0x93AA00),    // Vivid Yellowish Green
+        new Color(0x593315),    // Deep Yellowish Brown
+        new Color(0xF13A13),    // Vivid Reddish Orange
+        new Color(0x232C16),    // Dark Olive Green
+    };
+
     public static GenLayerTFC[] initializeBiomes(long seed)
     {
         // Continent generator
@@ -170,7 +194,6 @@ public abstract class GenLayerTFC extends GenLayer
             TerraFirmaCraft.getLog().catching(e);
         }
     }
-
     // Doing this lookup only once is quite a bit faster.
     protected final int oceanID = Biome.getIdForBiome(BiomesTFC.OCEAN);
     protected final int plainsID = Biome.getIdForBiome(BiomesTFC.PLAINS);
@@ -182,30 +205,6 @@ public abstract class GenLayerTFC extends GenLayer
     protected final int highHillsID = Biome.getIdForBiome(BiomesTFC.HIGH_HILLS);
     protected final int highHillsEdgeID = Biome.getIdForBiome(BiomesTFC.HIGH_HILLS_EDGE);
     protected final int beachID = Biome.getIdForBiome(BiomesTFC.BEACH);
-
-    // Distinct colors for debug map gen
-    private static final Color[] COLORS = new Color[] {
-        new Color(0xFFB300),    // Vivid Yellow
-        new Color(0x803E75),    // Strong Purple
-        new Color(0xFF6800),    // Vivid Orange
-        new Color(0xA6BDD7),    // Very Light Blue
-        new Color(0xC10020),    // Vivid Red
-        new Color(0xCEA262),    // Grayish Yellow
-        new Color(0x817066),    // Medium Gray
-        new Color(0x007D34),    // Vivid Green
-        new Color(0xF6768E),    // Strong Purplish Pink
-        new Color(0x00538A),    // Strong Blue
-        new Color(0xFF7A5C),    // Strong Yellowish Pink
-        new Color(0x53377A),    // Strong Violet
-        new Color(0xFF8E00),    // Vivid Orange Yellow
-        new Color(0xB32851),    // Strong Purplish Red
-        new Color(0xF4C800),    // Vivid Greenish Yellow
-        new Color(0x7F180D),    // Strong Reddish Brown
-        new Color(0x93AA00),    // Vivid Yellowish Green
-        new Color(0x593315),    // Deep Yellowish Brown
-        new Color(0xF13A13),    // Vivid Reddish Orange
-        new Color(0x232C16),    // Dark Olive Green
-    };
     protected final int gravelBeachID = Biome.getIdForBiome(BiomesTFC.GRAVEL_BEACH);
     protected final int mountainsID = Biome.getIdForBiome(BiomesTFC.MOUNTAINS);
     protected final int mountainsEdgeID = Biome.getIdForBiome(BiomesTFC.MOUNTAINS_EDGE);

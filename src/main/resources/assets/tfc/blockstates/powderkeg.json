@@ -3,11 +3,11 @@
   "defaults": {
     "model": "tfc:powderkeg",
     "textures": {
-		"outside": "tfc:blocks/powderkeg_outside",
-		"inside": "tfc:blocks/powderkeg_inside",
-		"sheet": "tfc:blocks/powderkeg_sheet",
-		"particle": "tfc:blocks/powderkeg_outside",
-		"fuse": "tfc:blocks/powderkeg_fuse"
+      "outside": "tfc:blocks/powderkeg_outside",
+      "inside": "tfc:blocks/powderkeg_inside",
+      "sheet": "tfc:blocks/powderkeg_sheet",
+      "particle": "tfc:blocks/powderkeg_outside",
+      "fuse": "tfc:blocks/powderkeg_fuse"
     }
   },
   "variants": {

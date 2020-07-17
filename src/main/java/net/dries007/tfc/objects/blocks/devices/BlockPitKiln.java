@@ -218,13 +218,6 @@ public class BlockPitKiln extends Block implements ILightableBlock
         return world.getBlockState(pos).getActualState(world, pos).getValue(LIT);
     }
 
-    @Nullable
-    @Override
-    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
-    {
-        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
-    }
-
     @Override
     public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
     {
@@ -280,5 +273,12 @@ public class BlockPitKiln extends Block implements ILightableBlock
     public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
     {
         return true;
+    }
+
+    @Nullable
+    @Override
+    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
+    {
+        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
     }
 }
