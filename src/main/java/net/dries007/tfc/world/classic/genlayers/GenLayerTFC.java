@@ -194,6 +194,7 @@ public abstract class GenLayerTFC extends GenLayer
             TerraFirmaCraft.getLog().catching(e);
         }
     }
+
     // Doing this lookup only once is quite a bit faster.
     protected final int oceanID = Biome.getIdForBiome(BiomesTFC.OCEAN);
     protected final int plainsID = Biome.getIdForBiome(BiomesTFC.PLAINS);

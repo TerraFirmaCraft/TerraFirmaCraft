@@ -55,25 +55,6 @@ public class BlockSupport extends Block
     private static final AxisAlignedBB CONNECTION_W_AABB = new AxisAlignedBB(0.0D, 0.625D, 0.3125D, 0.3125D, 1.0D, 0.6875D);
 
     private static final Map<Tree, BlockSupport> MAP = new HashMap<>();
-    private final Tree wood;
-
-    public BlockSupport(Tree wood)
-    {
-        super(Material.WOOD, Material.WOOD.getMaterialMapColor());
-        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
-        setHardness(2.0F);
-        setHarvestLevel("axe", 0);
-        setSoundType(SoundType.WOOD);
-        this.wood = wood;
-        OreDictionaryHelper.register(this, "support");
-        Blocks.FIRE.setFireInfo(this, 5, 20);
-        setDefaultState(blockState.getBaseState()
-            .withProperty(AXIS, EnumFacing.Axis.Y)
-            .withProperty(NORTH, false)
-            .withProperty(SOUTH, false)
-            .withProperty(EAST, false)
-            .withProperty(WEST, false));
-    }
 
     public static BlockSupport get(Tree wood)
     {
@@ -165,6 +146,21 @@ public class BlockSupport extends Block
             || content.getZ() < minZ || content.getZ() > maxZ);
 
         return listUnsupported;
+    }
+
+    private final Tree wood;
+
+    public BlockSupport(Tree wood)
+    {
+        super(Material.WOOD, Material.WOOD.getMaterialMapColor());
+        if (MAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
+        setHardness(2.0F);
+        setHarvestLevel("axe", 0);
+        setSoundType(SoundType.WOOD);
+        this.wood = wood;
+        OreDictionaryHelper.register(this, "support");
+        Blocks.FIRE.setFireInfo(this, 5, 20);
+        setDefaultState(blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Y).withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(EAST, false).withProperty(WEST, false));
     }
 
     public Tree getWood() { return this.wood; }
