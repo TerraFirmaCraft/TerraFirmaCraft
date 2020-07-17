@@ -5,39 +5,59 @@
 
 package net.dries007.tfc.compat.patchouli;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.google.gson.annotations.SerializedName;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
-import net.dries007.tfc.api.recipes.knapping.KnappingType;
 import net.dries007.tfc.api.registries.TFCRegistries;
-import net.dries007.tfc.client.TFCGuiHandler;
 import vazkii.patchouli.api.IComponentRenderContext;
-import vazkii.patchouli.api.ICustomComponent;
+import vazkii.patchouli.api.VariableHolder;
+import vazkii.patchouli.client.book.gui.GuiBook;
 
 @SuppressWarnings("unused")
-public class KnappingComponent implements ICustomComponent
+public abstract class KnappingComponent extends CustomComponent
 {
-    private final KnappingRecipe recipe = TFCRegistries.KNAPPING.getValuesCollection().stream().filter(r -> r.getType() == KnappingType.LEATHER).findFirst().orElse(null);
-    private final ResourceLocation squareLow = null;
-    private final ResourceLocation squareHigh = TFCGuiHandler.LEATHER_TEXTURE;
-    private int posX, posY;
+    @VariableHolder
+    @SerializedName("recipe")
+    public String recipeName;
+
+    private transient KnappingRecipe recipe;
 
     @Override
     public void build(int componentX, int componentY, int pageNum)
     {
         this.posX = componentX;
         this.posY = componentY;
+        this.recipe = TFCRegistries.KNAPPING.getValue(new ResourceLocation(recipeName));
+        if (this.recipe == null)
+        {
+            TerraFirmaCraft.getLog().warn("Unknown recipe in KnappingComponent: " + recipeName);
+        }
     }
 
     @Override
     public void render(IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
+        if (recipe == null) return;
         GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
         GlStateManager.translate(posX, posY, 0);
         GlStateManager.color(1f, 1f, 1f, 1f);
+
+        context.getGui().mc.getTextureManager().bindTexture(TFCPatchouliPlugin.BOOK_UTIL_TEXTURES);
+        Gui.drawModalRectWithCustomSizedTexture(posX, posY, 0, 0, 116, 90, 256, 256);
+
+        int ticks = context.getGui() instanceof GuiBook ? ((GuiBook) context.getGui()).ticksInBook : 0;
+
+        ResourceLocation squareHigh = getSquareHigh(ticks);
+        ResourceLocation squareLow = getSquareLow(ticks);
 
         for (int y = 0; y < recipe.getMatrix().getHeight(); y++)
         {
@@ -46,18 +66,28 @@ public class KnappingComponent implements ICustomComponent
                 if (recipe.getMatrix().get(x, y) && squareHigh != null)
                 {
                     context.getGui().mc.getTextureManager().bindTexture(squareHigh);
-                    Gui.drawModalRectWithCustomSizedTexture(1 + x * 16, 1 + y * 16, 0, 0, 16, 16, 16, 16);
+                    Gui.drawModalRectWithCustomSizedTexture(5 + x * 16, 5 + y * 16, 0, 0, 16, 16, 16, 16);
                 }
                 else if (squareLow != null)
                 {
                     context.getGui().mc.getTextureManager().bindTexture(squareLow);
-                    Gui.drawModalRectWithCustomSizedTexture(1 + x * 16, 1 + y * 16, 0, 0, 16, 16, 16, 16);
+                    Gui.drawModalRectWithCustomSizedTexture(5 + x * 16, 5 + y * 16, 0, 0, 16, 16, 16, 16);
                 }
             }
         }
-
-        context.renderItemStack(80, 31, mouseX, mouseY, recipe.getOutput(ItemStack.EMPTY));
-
+        context.renderItemStack(95, 37, mouseX, mouseY, recipe.getOutput(getInputItem(ticks)));
         GlStateManager.popMatrix();
+    }
+
+    @Nullable
+    protected abstract ResourceLocation getSquareLow(int ticks);
+
+    @Nullable
+    protected abstract ResourceLocation getSquareHigh(int ticks);
+
+    @Nonnull
+    protected ItemStack getInputItem(int ticks)
+    {
+        return ItemStack.EMPTY;
     }
 }

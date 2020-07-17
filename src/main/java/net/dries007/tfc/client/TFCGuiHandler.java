@@ -41,6 +41,8 @@ public class TFCGuiHandler implements IGuiHandler
     public static final ResourceLocation FIRE_CLAY_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire.png");
     public static final ResourceLocation LEATHER_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/leather_button.png");
     public static final ResourceLocation QUIVER_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/quiver_inventory.png");
+    public static final ResourceLocation CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_disabled.png");
+    public static final ResourceLocation FIRE_CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire_disabled.png");
 
     // use this instead of player.openGui() -> avoids magic numbers
     public static void openGui(World world, BlockPos pos, EntityPlayer player, Type type)
