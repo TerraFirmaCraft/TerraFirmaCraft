@@ -351,7 +351,7 @@ public class TEAnvilTFC extends TEInventory
                 }
                 return false;
             }
-            ItemStack result = recipe.getOutput();
+            ItemStack result = recipe.getOutput(player);
             IItemHeat heatResult = result.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             float resultTemperature = 0;
             if (cap1 instanceof IItemHeat)

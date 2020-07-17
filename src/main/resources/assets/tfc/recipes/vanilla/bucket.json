@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "tfc:no_container_item_shaped",
   "pattern": [
     "XRX",
     "XBX",

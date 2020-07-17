@@ -6,17 +6,23 @@
 package net.dries007.tfc.api.recipes;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
+import net.dries007.tfc.api.capability.player.IPlayerData;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.compat.jei.IJEISimpleRecipe;
 import net.dries007.tfc.objects.inventory.ingredient.IIngredient;
+import net.dries007.tfc.util.skills.SkillType;
+import net.dries007.tfc.util.skills.SmithingSkill;
 
 /**
  * Welding Recipe
@@ -35,13 +41,15 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> imple
     private final IIngredient<ItemStack> input1;
     private final IIngredient<ItemStack> input2;
     private final ItemStack output;
+    private final SmithingSkill.Type skillType;
 
-    public WeldingRecipe(ResourceLocation name, IIngredient<ItemStack> input1, IIngredient<ItemStack> input2, ItemStack output, Metal.Tier minTier)
+    public WeldingRecipe(ResourceLocation name, IIngredient<ItemStack> input1, IIngredient<ItemStack> input2, ItemStack output, Metal.Tier minTier, @Nullable SmithingSkill.Type skillType)
     {
         this.input1 = input1;
         this.input2 = input2;
         this.output = output;
         this.minTier = minTier;
+        this.skillType = skillType;
 
         setRegistryName(name);
     }
@@ -53,9 +61,20 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> imple
     }
 
     @Nonnull
-    public ItemStack getOutput()
+    public ItemStack getOutput(EntityPlayer player)
     {
-        return output.copy();
+        ItemStack stack = output.copy();
+        IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+        if (cap != null)
+        {
+            SmithingSkill skill = cap.getSkill(SkillType.SMITHING);
+            if (skill != null && skillType != null)
+            {
+                skill.addSkill(skillType, 1);
+                SmithingSkill.applySkillBonus(skill, stack, skillType);
+            }
+        }
+        return stack;
     }
 
     public boolean matches(ItemStack input1, ItemStack input2, Metal.Tier tier)

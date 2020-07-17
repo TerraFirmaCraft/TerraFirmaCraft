@@ -528,14 +528,14 @@ public final class DefaultRecipes
         IForgeRegistry<WeldingRecipe> r = event.getRegistry();
 
         // Basic Parts
-        addWelding(r, INGOT, DOUBLE_INGOT);
-        addWelding(r, SHEET, DOUBLE_SHEET);
+        addWelding(r, INGOT, DOUBLE_INGOT, null);
+        addWelding(r, SHEET, DOUBLE_SHEET, null);
 
         // Armor
-        addWelding(r, UNFINISHED_HELMET, SHEET, HELMET, true);
-        addWelding(r, UNFINISHED_CHESTPLATE, DOUBLE_SHEET, CHESTPLATE, true);
-        addWelding(r, UNFINISHED_GREAVES, SHEET, GREAVES, true);
-        addWelding(r, UNFINISHED_BOOTS, SHEET, BOOTS, true);
+        addWelding(r, UNFINISHED_HELMET, SHEET, HELMET, true, ARMOR);
+        addWelding(r, UNFINISHED_CHESTPLATE, DOUBLE_SHEET, CHESTPLATE, true, ARMOR);
+        addWelding(r, UNFINISHED_GREAVES, SHEET, GREAVES, true, ARMOR);
+        addWelding(r, UNFINISHED_BOOTS, SHEET, BOOTS, true, ARMOR);
 
         // Steel Welding
         addWelding(r, WEAK_STEEL, PIG_IRON, HIGH_CARBON_BLACK_STEEL);
@@ -543,7 +543,7 @@ public final class DefaultRecipes
         addWelding(r, WEAK_RED_STEEL, BLACK_STEEL, HIGH_CARBON_RED_STEEL);
 
         // Special Recipes
-        addWelding(r, KNIFE_BLADE, KNIFE_BLADE, SHEARS, true);
+        addWelding(r, KNIFE_BLADE, KNIFE_BLADE, SHEARS, true, TOOLS);
     }
 
     @SubscribeEvent
@@ -786,13 +786,13 @@ public final class DefaultRecipes
         }
     }
 
-    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType)
+    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, SmithingSkill.Type skillType)
     {
-        addWelding(registry, inputType, inputType, outputType, false);
+        addWelding(registry, inputType, inputType, outputType, false, skillType);
     }
 
     @SuppressWarnings("ConstantConditions")
-    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType1, Metal.ItemType inputType2, Metal.ItemType outputType, boolean onlyToolMetals)
+    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType1, Metal.ItemType inputType2, Metal.ItemType outputType, boolean onlyToolMetals, SmithingSkill.Type skillType)
     {
         // Helper method for adding all recipes that take ItemType -> ItemType
         for (Metal metal : TFCRegistries.METALS.getValuesCollection())
@@ -850,7 +850,7 @@ public final class DefaultRecipes
             if (!output.isEmpty())
             {
                 // Note: Welding recipes require one less than the tier of the metal
-                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient1, ingredient2, output, metal.getTier().previous()));
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient1, ingredient2, output, metal.getTier().previous(), skillType));
             }
         }
     }
@@ -870,7 +870,7 @@ public final class DefaultRecipes
             {
                 // Note: Welding recipes require one less than the tier of the metal
                 //noinspection ConstantConditions
-                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input1), IIngredient.of(input2), output, outputMetal.getTier().previous()));
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input1), IIngredient.of(input2), output, outputMetal.getTier().previous(), null));
             }
         }
     }
