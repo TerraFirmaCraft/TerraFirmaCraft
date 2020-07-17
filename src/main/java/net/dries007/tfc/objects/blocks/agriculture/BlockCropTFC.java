@@ -263,6 +263,17 @@ public abstract class BlockCropTFC extends BlockBush
                         // once the crop has died, stop iterating
                         isAlive = false;
                     }
+
+                    // if crop is mature, check how long
+                    if (state.getValue(getStageProperty()) == crop.getMaxStage()){
+                        //if crop has been mature for 2? growth stages without harvest, it dies.
+                        if (te.getTicksSinceUpdate() >= 2 * crop.getGrowthTime()){
+                            die(worldIn, pos, worldIn.getBlockState(pos), random);
+                            // once the crop has died, stop iterating
+                            isAlive = false;
+                        }
+
+                    }
                 }
             }
         }
