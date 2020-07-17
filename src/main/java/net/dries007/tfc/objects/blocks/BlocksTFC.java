@@ -60,12 +60,6 @@ public final class BlocksTFC
     @GameRegistry.ObjectHolder("ceramics/fired/large_vessel")
     public static final BlockLargeVessel FIRED_LARGE_VESSEL = getNull();
 
-    @GameRegistry.ObjectHolder("powderkeg")
-    public static final BlockPowderKeg POWDERKEG = getNull();
-
-    @GameRegistry.ObjectHolder("aggregate")
-    public static final BlockGravel AGGREGATE = getNull();
-
     @GameRegistry.ObjectHolder("alabaster/bricks/plain")
     public static final BlockDecorativeStone ALABASTER_BRICKS_PLAIN = getNull();
     @GameRegistry.ObjectHolder("alabaster/polished/plain")
@@ -95,6 +89,9 @@ public final class BlocksTFC
     public static final BlockBloomery BLOOMERY = getNull();
     public static final BlockQuern QUERN = getNull();
     public static final BlockIceTFC SEA_ICE = getNull();
+    public static final BlockPowderKeg POWDERKEG = getNull();
+    public static final BlockGravel AGGREGATE = getNull();
+    public static final Block FIRE_BRICKS = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
