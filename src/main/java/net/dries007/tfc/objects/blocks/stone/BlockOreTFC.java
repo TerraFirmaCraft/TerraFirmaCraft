@@ -95,6 +95,14 @@ public class BlockOreTFC extends Block
         return getMetaFromState(state);
     }
 
+    @Override
+    @Nonnull
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
     /**
      * Handle drops separately, so will always drop
      */
@@ -102,6 +110,13 @@ public class BlockOreTFC extends Block
     public boolean canDropFromExplosion(Explosion explosionIn)
     {
         return false;
+    }
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, GRADE);
     }
 
     /**
@@ -115,21 +130,6 @@ public class BlockOreTFC extends Block
             dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
         }
         super.onBlockExploded(world, pos, explosion);
-    }
-
-    @Override
-    @Nonnull
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, GRADE);
     }
 
     @Override

@@ -79,6 +79,12 @@ public class ItemFoodTFC extends ItemFood implements IItemSize
         }
     }
 
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        return getStackSize(stack);
+    }
+
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack stack)
@@ -91,12 +97,6 @@ public class ItemFoodTFC extends ItemFood implements IItemSize
     public Weight getWeight(@Nonnull ItemStack stack)
     {
         return Weight.VERY_LIGHT;
-    }
-
-    @Override
-    public int getItemStackLimit(ItemStack stack)
-    {
-        return getStackSize(stack);
     }
 
     public ICapabilityProvider getCustomFoodHandler()

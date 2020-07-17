@@ -6,7 +6,8 @@
 package net.dries007.tfc.util;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -28,10 +29,9 @@ public interface IFallingBlock
 {
     /**
      * In general, falling blocks will destroy all non solid blocks, EXCEPT, soft falling blocks won't destroy hard materials
-     * No point using a set here because Material doesn't override hashCode / equals, so the O(1) benefit is lost
      */
-    List<Material> SOFT_MATERIALS = Arrays.asList(Material.GROUND, Material.SAND, Material.GRASS, Material.CLAY);
-    List<Material> HARD_MATERIALS = Arrays.asList(Material.IRON, BlockCharcoalPile.CHARCOAL_MATERIAL);
+    Set<Material> SOFT_MATERIALS = new HashSet<>(Arrays.asList(Material.GROUND, Material.SAND, Material.GRASS, Material.CLAY));
+    Set<Material> HARD_MATERIALS = new HashSet<>(Arrays.asList(Material.IRON, BlockCharcoalPile.CHARCOAL_MATERIAL));
 
     static boolean canFallThrough(World world, BlockPos pos, Material fallingBlockMaterial)
     {

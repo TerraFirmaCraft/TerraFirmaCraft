@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -38,8 +39,6 @@ import net.dries007.tfc.util.forge.ForgeStep;
 import net.dries007.tfc.util.forge.ForgeSteps;
 import net.dries007.tfc.util.skills.SkillType;
 import net.dries007.tfc.util.skills.SmithingSkill;
-
-import java.util.List;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

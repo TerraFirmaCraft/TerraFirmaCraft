@@ -139,16 +139,6 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     {
     }
 
-    public boolean isHalter()
-    {
-        return dataManager.get(HALTER);
-    }
-
-    public void setHalter(boolean value)
-    {
-        dataManager.set(HALTER, value);
-    }
-
     @Override
     public int getDaysToAdulthood()
     {
@@ -184,6 +174,16 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     {
         String entityString = EntityList.getEntityString(this);
         return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
+    }
+
+    public boolean isHalter()
+    {
+        return dataManager.get(HALTER);
+    }
+
+    public void setHalter(boolean value)
+    {
+        dataManager.set(HALTER, value);
     }
 
     @Override

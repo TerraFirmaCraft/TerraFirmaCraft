@@ -9,11 +9,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -23,7 +21,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -31,6 +28,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.objects.blocks.BlockPowderKeg;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 import static net.dries007.tfc.objects.blocks.BlockPowderKeg.SEALED;
 
@@ -89,15 +87,15 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         return !sealed;
     }
 
+    public boolean isSealed()
+    {
+        return sealed;
+    }
+
     public void setSealed(boolean sealed)
     {
         this.sealed = sealed;
         markForSync();
-    }
-
-    public boolean isSealed()
-    {
-        return sealed;
     }
 
     @Override
@@ -151,26 +149,12 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return OreDictionaryHelper.doesStackMatchOre(stack,"gunpowder");
+        return OreDictionaryHelper.doesStackMatchOre(stack, "gunpowder");
     }
 
     public void setIgniter(@Nullable EntityLivingBase igniterIn)
     {
         igniter = igniterIn;
-    }
-
-    /**
-     * Called to get the NBTTagCompound that is put on keg Items.
-     * This happens when a sealed keg was broken.
-     *
-     * @return An NBTTagCompound containing inventory and tank data.
-     */
-    private NBTTagCompound getItemTag()
-    {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("inventory", inventory.serializeNBT());
-        nbt.setBoolean("sealed", sealed);
-        return nbt;
     }
 
     public int getStrength()
@@ -233,6 +217,20 @@ public class TEPowderKeg extends TETickableInventory implements IItemHandlerSide
         ItemStack stack = new ItemStack(state.getBlock());
         stack.setTagCompound(getItemTag());
         return stack;
+    }
+
+    /**
+     * Called to get the NBTTagCompound that is put on keg Items.
+     * This happens when a sealed keg was broken.
+     *
+     * @return An NBTTagCompound containing inventory and tank data.
+     */
+    private NBTTagCompound getItemTag()
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setTag("inventory", inventory.serializeNBT());
+        nbt.setBoolean("sealed", sealed);
+        return nbt;
     }
 
     private void explode()

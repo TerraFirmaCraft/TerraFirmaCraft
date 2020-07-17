@@ -81,55 +81,6 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
         setDefaultState(blockState.getBaseState().withProperty(LIT, false).withProperty(SEALED, false));
     }
 
-    /**
-     * Called after the block is set in the Chunk data, but before the Tile Entity is set
-     */
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        super.onBlockAdded(worldIn, pos, state);
-        if (worldIn.isBlockPowered(pos))
-        {
-            onPlayerDestroy(worldIn, pos, state.withProperty(LIT, true));
-        }
-    }
-
-    /**
-     * Return whether this block can drop from an explosion. STATELESS! :(
-     * Would drop from explosion if unsealed, but can't tell.
-     */
-    @Override
-    public boolean canDropFromExplosion(Explosion explosionIn)
-    {
-        return false;
-    }
-
-    /**
-     * Called when this Block is destroyed by an Explosion
-     */
-    @Override
-    public void onBlockExploded(World worldIn, BlockPos pos, Explosion explosionIn)
-    {
-        TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
-        if (!worldIn.isRemote && te != null && te.getStrength() > 0) // explode even if not sealed cause gunpowder
-        {
-            trigger(worldIn, pos, worldIn.getBlockState(pos).withProperty(SEALED, true).withProperty(LIT, true), null);
-        }
-        else
-        {
-            super.onBlockExploded(worldIn, pos, explosionIn);
-        }
-    }
-
-    // Cannot use onExplosionDestroy like TNT because all state has already been lost at that point.
-
-    /**
-     * Called after a player destroys this Block - the position pos may no longer hold the state indicated.
-     */
-    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
-    {
-        trigger(worldIn, pos, state, null);
-    }
-
     public void trigger(World worldIn, BlockPos pos, IBlockState state, @Nullable EntityLivingBase igniter)
     {
         if (!worldIn.isRemote)
@@ -145,73 +96,6 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
     }
 
     @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return state.getValue(LIT) ? 14 : 0;
-    }
-
-    /**
-     * Called when the block is right clicked by a player.
-     */
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (!worldIn.isRemote)
-        {
-            ItemStack heldItem = playerIn.getHeldItem(hand);
-            TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
-            if (te != null)
-            {
-                if (heldItem.isEmpty() && state.getValue(LIT))
-                {
-                    worldIn.setBlockState(pos, state.withProperty(LIT, false));
-                    te.setLit(false);
-                }
-                else if (heldItem.isEmpty() && playerIn.isSneaking())
-                {
-                    worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
-                    togglePowderKegSeal(worldIn, pos);
-                }
-                else if (state.getValue(SEALED) && BlockTorchTFC.canLight(heldItem))
-                {
-                    trigger(worldIn, pos, state.withProperty(LIT, true), playerIn);
-
-                    if (heldItem.getItem().isDamageable())
-                    {
-                        heldItem.damageItem(1, playerIn);
-                    }
-                    else if (!playerIn.capabilities.isCreativeMode)
-                    {
-                        heldItem.shrink(1);
-                    }
-                }
-                else
-                {
-                    TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.POWDERKEG);
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Called When an Entity Collided with the Block
-     */
-    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
-    {
-        if (!worldIn.isRemote && entityIn instanceof EntityArrow)
-        {
-            EntityArrow entityarrow = (EntityArrow) entityIn;
-
-            if (entityarrow.isBurning())
-            {
-                trigger(worldIn, pos, worldIn.getBlockState(pos).withProperty(LIT, true), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
-            }
-        }
-    }
-
-
-    @Override
     @Nonnull
     public Size getSize(ItemStack stack)
     {
@@ -224,6 +108,8 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
     {
         return Weight.VERY_HEAVY; // Stacksize = 1
     }
+
+    // Cannot use onExplosionDestroy like TNT because all state has already been lost at that point.
 
     @Override
     public boolean canStack(@Nonnull ItemStack stack)
@@ -302,6 +188,33 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rng)
+    {
+        if (!state.getValue(LIT))
+            return;
+
+        TEPowderKeg te = Helpers.getTE(world, pos, TEPowderKeg.class);
+        if (te != null)
+        {
+            int fuse = te.getFuse();
+            if (rng.nextInt(6) == 0 && fuse > 20)
+            {
+                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, rng.nextFloat() * 1.3F + 0.3F / fuse, false);
+            }
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.625, pos.up().getY() + 0.125, pos.getZ() + 0.375, 0.0D, 1.0D + 1.0D / fuse, 0.0D);
+        }
+    }
+
+    /**
+     * Called after a player destroys this Block - the position pos may no longer hold the state indicated.
+     */
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
+    {
+        trigger(worldIn, pos, state, null);
+    }
+
     /**
      * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
      * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
@@ -324,6 +237,18 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
                 tile.setLit(false);
             }
         } // do not care otherwise, as canStay may be violated by an explosion, which we want to trigger off of
+    }
+
+    /**
+     * Called after the block is set in the Chunk data, but before the Tile Entity is set
+     */
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        super.onBlockAdded(worldIn, pos, state);
+        if (worldIn.isBlockPowered(pos))
+        {
+            onPlayerDestroy(worldIn, pos, state.withProperty(LIT, true));
+        }
     }
 
     @Override
@@ -351,6 +276,66 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
         return canStay(world, pos);
     }
 
+    /**
+     * Called when the block is right clicked by a player.
+     */
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (!worldIn.isRemote)
+        {
+            ItemStack heldItem = playerIn.getHeldItem(hand);
+            TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
+            if (te != null)
+            {
+                if (heldItem.isEmpty() && state.getValue(LIT))
+                {
+                    worldIn.setBlockState(pos, state.withProperty(LIT, false));
+                    te.setLit(false);
+                }
+                else if (heldItem.isEmpty() && playerIn.isSneaking())
+                {
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.85F);
+                    togglePowderKegSeal(worldIn, pos);
+                }
+                else if (state.getValue(SEALED) && BlockTorchTFC.canLight(heldItem))
+                {
+                    trigger(worldIn, pos, state.withProperty(LIT, true), playerIn);
+
+                    if (heldItem.getItem().isDamageable())
+                    {
+                        heldItem.damageItem(1, playerIn);
+                    }
+                    else if (!playerIn.capabilities.isCreativeMode)
+                    {
+                        heldItem.shrink(1);
+                    }
+                }
+                else
+                {
+                    TFCGuiHandler.openGui(worldIn, pos, playerIn, TFCGuiHandler.Type.POWDERKEG);
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Called When an Entity Collided with the Block
+     */
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        if (!worldIn.isRemote && entityIn instanceof EntityArrow)
+        {
+            EntityArrow entityarrow = (EntityArrow) entityIn;
+
+            if (entityarrow.isBurning())
+            {
+                trigger(worldIn, pos, worldIn.getBlockState(pos).withProperty(LIT, true), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
+            }
+        }
+    }
+
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
@@ -370,11 +355,27 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
         }
     }
 
+    /**
+     * Return whether this block can drop from an explosion. STATELESS! :(
+     * Would drop from explosion if unsealed, but can't tell.
+     */
+    @Override
+    public boolean canDropFromExplosion(Explosion explosionIn)
+    {
+        return false;
+    }
+
     @Override
     @Nonnull
     public BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, SEALED, LIT);
+    }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return state.getValue(LIT) ? 14 : 0;
     }
 
     @Override
@@ -388,24 +389,6 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rng)
-    {
-        if (!state.getValue(LIT)) return;
-
-        TEPowderKeg te = Helpers.getTE(world, pos, TEPowderKeg.class);
-        if (te != null)
-        {
-            int fuse = te.getFuse();
-            if (rng.nextInt(6) == 0 && fuse > 20)
-            {
-                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, rng.nextFloat() * 1.3F + 0.3F / fuse, false);
-            }
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.625, pos.up().getY() + 0.125, pos.getZ() + 0.375, 0.0D, 1.0D + 1.0D / fuse, 0.0D);
-        }
     }
 
     @Override
@@ -428,6 +411,23 @@ public class BlockPowderKeg extends Block implements IItemSize, ILightableBlock
         if (!state.getValue(SEALED))
         {
             super.getDrops(drops, world, pos, state, fortune);
+        }
+    }
+
+    /**
+     * Called when this Block is destroyed by an Explosion
+     */
+    @Override
+    public void onBlockExploded(World worldIn, BlockPos pos, Explosion explosionIn)
+    {
+        TEPowderKeg te = Helpers.getTE(worldIn, pos, TEPowderKeg.class);
+        if (!worldIn.isRemote && te != null && te.getStrength() > 0) // explode even if not sealed cause gunpowder
+        {
+            trigger(worldIn, pos, worldIn.getBlockState(pos).withProperty(SEALED, true).withProperty(LIT, true), null);
+        }
+        else
+        {
+            super.onBlockExploded(worldIn, pos, explosionIn);
         }
     }
 

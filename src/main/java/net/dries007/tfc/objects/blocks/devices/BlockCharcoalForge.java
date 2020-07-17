@@ -276,13 +276,6 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
         super.onEntityWalk(worldIn, pos, entityIn);
     }
 
-    @Nullable
-    @Override
-    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
-    {
-        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
-    }
-
     @Override
     @Nonnull
     protected BlockStateContainer createBlockState()
@@ -314,6 +307,13 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(Items.COAL, 1, 1);
+    }
+
+    @Nullable
+    @Override
+    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
+    {
+        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
     }
 
 }
