@@ -31,6 +31,46 @@
       "type": "tfc:quern_recipe",
       "recipe": "tfc:flux",
       "text": "Well this is some interesting stuff right here"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:double_ingot_black_steel",
+      "text": "Copy pasta text cause formatting"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:pick_head_bronze",
+      "text": "Copy pasta text cause formatting"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:forge",
+      "text": "Stuff n things"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:charcoal_pit_3x3",
+      "text": "Stuff n things"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:charcoal_pit_1x1",
+      "text": "Stuff n things"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:pit_kiln",
+      "text": "Stuff n things"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:bloomery",
+      "text": "Stuff n things"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:blast_furnace",
+      "text": "Stuff n things"
     }
   ]
 }

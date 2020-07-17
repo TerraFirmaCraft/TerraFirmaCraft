@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.patchouli;
 
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -14,7 +15,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.knapping.KnappingRecipe;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import vazkii.patchouli.api.IComponentRenderContext;
@@ -35,17 +35,14 @@ public abstract class KnappingComponent extends CustomComponent
     {
         this.posX = componentX;
         this.posY = componentY;
+        Objects.requireNonNull(recipeName, "Missing recipe name?");
         this.recipe = TFCRegistries.KNAPPING.getValue(new ResourceLocation(recipeName));
-        if (this.recipe == null)
-        {
-            TerraFirmaCraft.getLog().warn("Unknown recipe in KnappingComponent: " + recipeName);
-        }
+        Objects.requireNonNull(recipe, "Unknown knapping recipe: " + recipeName);
     }
 
     @Override
     public void render(IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
-        if (recipe == null) return;
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.translate(posX, posY, 0);
