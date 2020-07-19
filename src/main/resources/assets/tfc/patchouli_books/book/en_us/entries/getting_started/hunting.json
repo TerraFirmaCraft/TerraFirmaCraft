@@ -7,11 +7,12 @@
     "pages": [
         {
             "type": "text",
-            "text": "The first way you'll be getting food is by hunting animals. Your knife will work fine, but for bigger things, you may want to knap a $(item)javelin$(), so you can hunt at a range."
+            "text": "The first way you'll be getting food is by hunting animals. Your knife will work fine, but for bigger things, you may want to knap a $(item)javelin$(), your basic ranged weapon."
         },
 		{
-			"type": "text",
-			"text": "javelin recipe goes here"
+		  "type": "tfc:rock_knapping_recipe",
+		  "recipe": "tfc:javelin_head",
+		  "text": "Fire it the same way you would a trident or bow."
 		},
 		{
 			"type": "text",
@@ -29,6 +30,12 @@
 			"name": "Pheasant",
 			"text": "The pheasant doesn't drop much meat, but it'll give you feathers to make arrows.",
 			"entity": "tfc:pheasanttfc"
+		},
+		{
+			"type": "entity",
+			"name": "Rabbit",
+			"text": "I'm hunting wabbits.",
+			"entity": "tfc:rabbittfc"
 		}
     ]
 }

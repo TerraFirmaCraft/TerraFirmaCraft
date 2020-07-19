@@ -12,13 +12,13 @@
 		},
 		{
 			"type": "text",
-			"text": "We extend the life of food in TFC through preservation. The most basic way to preserve food is by making a small or large vessel, and sealing food inside. Food stored in a vessel gets a Preserved tag (if using a large vessel, it has to be sealed first), and you can see that reflected in the decay date."
+			"text": "We extend the life of food in TFC through preservation. The most basic way to preserve food is by making a small or large vessel, and storing food inside. Food stored in a vessel gets a Preserved tag (if using a large vessel, it has to be sealed first), and you can see that reflected in the decay date."
 		},
 		{
-			"type": "crafting",
-			"recipe": "tfc:salting_meat",
+			"type": "tfc:quern_recipe",
+			"recipe": "tfc:rocksalt",
 			"title": "Salting Meat",
-			"text": "Rocksalt is a stone type in TFC whose rock items can be crushed into Salt. Crafting salt with raw meat will make it last longer. Afterwards, you'll want to cook it, as raw meat expires faster than cooked meat."
+			"text": "Rocksalt is a stone type in TFC whose rock items can be crushed in a $(l:processes/quern)quern$() into Salt. Crafting salt with raw meat will make it last longer. Afterwards, you'll want to cook it, as raw meat expires faster than cooked meat."
 		},
 		{
 			"type": "text",

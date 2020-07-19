@@ -14,11 +14,18 @@
 			"text": "Alloy reference:$(br2)$(item)Brass:$()$(br2)$(thing)Copper:$() 88-92%$(br)$(thing)Zinc:$() 8-12%$(br)$(item)Note: Sphalerite is Zinc.$()$(br2)$(item)Rose Gold:$()$(br2)$(thing)Copper:$() 15-30%$(br)$(thing)Gold:$() 70-85%"
 		},
 		{
-			"type": "text",
-			"text": "Weld a $(item)Weak Red Steel Ingot$() and $(item) Black Steel$() to produce a $(thing)High Carbon Red Steel Ingot$() . Work that ingot to produce a $(thing)Red Steel Ingot."
+			"type": "tfc:welding_recipe",
+			"recipe": "tfc:ingot_high_carbon_red_steel",
+			"text": "Weld a $(item)Weak Red Steel Ingot$() and $(item) Black Steel$() to produce a $(thing)High Carbon Red Steel Ingot$()"
 		},
 		{
-			"type": "text",
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:ingot_red_steel",
+			"text": "Work that ingot to make a Red Steel ingot."
+		},
+		{
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:red_steel_bucket",
 			"text": "You can work a red steel sheet into a red steel bucket. The red steel bucket is able to pick up and move water sources, but not lava. To move lava, you need Blue Steel."
 		}
     ]

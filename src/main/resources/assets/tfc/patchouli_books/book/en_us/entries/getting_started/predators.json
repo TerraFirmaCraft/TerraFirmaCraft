@@ -18,6 +18,13 @@
 		},
 		{
 			"type": "entity",
+			"name": "Polar Bear",
+			"text": "The Polar Bear",
+			"entity": "tfc:polarbeartfc",
+			"scale": 0.7
+		},
+		{
+			"type": "entity",
 			"name": "Lion",
 			"text": "The Lion",
 			"entity": "tfc:liontfc",

@@ -25,7 +25,8 @@
 			"text": "$(item)Salad Preparation$()$(br2)This is the easiest meal to make. Place a $(thing)knife$() in your offhand and a bowl in your main hand. $(thing)right-click$() to open the Salad GUI. Put your ingredients in, and retrieve your salad."
 		},
 		{
-			"type": "text",
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:wrought_iron_grill",
 			"text": "The $(item)wrought iron grill$() can be smithed from wrought iron and placed on a firepit like a ceramic pot. It allows you to cook up to 5 foods at once."
 		}
 	]

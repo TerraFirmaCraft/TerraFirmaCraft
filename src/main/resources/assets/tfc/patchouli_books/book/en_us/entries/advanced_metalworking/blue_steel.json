@@ -14,11 +14,18 @@
 			"text": "Alloy reference:$(br2)$(item)Sterling Silver:$()$(br2)$(thing)Copper:$() 20-40%$(br)$(thing)Silver:$() 60-80%$(br)$(item)$(item)Bismuth Bronze:$()$(2br)$(thing)Copper:$() 50-65%$(br)$(thing)Zinc:$() 20-30%$(br)$(thing)Bismuth:$() 10-20%$(br)$(item)Note: Sphalerite is Zinc.$()$(br2)"
 		},
 		{
-			"type": "text",
-			"text": "Weld a $(item)Weak Blue Steel Ingot$() and $(item) Black Steel$() to produce a $(thing)High Carbon Blue Steel Ingot$() . Work that ingot to produce a $(thing)Blue Steel Ingot."
+			"type": "tfc:welding_recipe",
+			"recipe": "tfc:ingot_high_carbon_blue_steel",
+			"text": "Weld a $(item)Weak Blue Steel Ingot$() and $(item) Black Steel$() to produce a $(thing)High Carbon Blue Steel Ingot$()"
 		},
 		{
-			"type": "text",
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:ingot_blue_steel",
+			"text": "Work that ingot to make a Blue Steel ingot."
+		},
+		{
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:blue_steel_bucket",
 			"text": "You can work a blue steel sheet into a blue steel bucket. The blue steel bucket is able to pick up and move lava sources, but not water. To move water, you need Red Steel."
 		}
     ]

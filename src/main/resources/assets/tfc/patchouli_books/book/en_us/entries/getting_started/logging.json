@@ -5,6 +5,10 @@
 	"advancement": "tfc:main/logging",
 	"sortnum": 3,
     "pages": [
+		{
+			"type": "text",
+			"text": "You're probably pretty thirsty by now. That's no problem. Just $(4)right-click$() on a fresh water source block to drink."
+		},
         {
             "type": "text",
             "text": "In order to prepare food and light up your starting hut at night, you will want to build a $(thing)firepit$().$(br2)To build a firepit you'll first want a firestarter, which you can make from two sticks."
@@ -25,7 +29,7 @@
 			"name": "Firepit",
 			"multiblock": {
 				"mapping": {
-					"P": "tfc:firepit"
+					"P": "tfc:firepit[lit=true]"
 					},
 				"pattern": [
 				["P"],["0"]
@@ -36,10 +40,6 @@
 		{
 			"type": "text",
 			"text": "Heating recipe (torch?) goes here."
-		},
-		{
-			"type": "text",
-			"text": "You're probably pretty thirsty by now. That's no problem. Just $(4)right-click$() on a fresh water source block to drink."
 		}
     ]
 }

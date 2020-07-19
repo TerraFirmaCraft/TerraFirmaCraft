@@ -5,12 +5,9 @@
 	"advancement": "tfc:main/copper_age",
     "pages": [
 		{
-			"type": "text",
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:saw_blade_bronze",
 			"text": "Now that you've gotten metal, you'll be able to fashion logs into more useful things, like planks! First, you need to $(l:basic_smithing/casting)cast$() or $(l:basic_smithing/anvil)work$() a saw. It's mostly used in crafting, but it'll cut trees down if you want it to."
-		},
-		{
-			"type": "text",
-			"text": "insert saw recipe"
 		},
 		{
 			"type": "crafting",
@@ -80,7 +77,7 @@
 		},
 		{
 			"type": "text",
-			"text": "Other things like slabs, stairs, and buttons are as you'd expect! There's also a few other new TFC things, like barrels, that we'll cover soon."
+			"text": "Other things like slabs, stairs, and buttons are as you'd expect! There's also a few other new TFC things, like $(l:processes/barrels)barrels$(), that we'll cover soon."
 		}
     ]
 }
