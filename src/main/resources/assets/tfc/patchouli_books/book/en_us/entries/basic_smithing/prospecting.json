@@ -7,7 +7,7 @@
     "pages": [
 		{
 			"type": "text",
-			"text": "Ground nuggets are good at indicating veins, but you'll want something more accurate. Work or cast a prospector's pickaxe in order to start prospecting. It only takes 100 units of any tool metal, and they're all equally useful.$(br2)"
+			"text": "Ground nuggets are good at indicating veins, but you'll want something more accurate. Work or cast a prospector's pickaxe in order to start prospecting. It only takes 100 units of any tool metal, and they're all equally useful.$(br2) While ground nuggets are only 10 units of metal, ores can be $(thing)Poor, Normal, or Rich$() (15, 25, or 35 units)"
 		},
 		{
 			"type": "text",
@@ -43,7 +43,7 @@
 		},
 		{
 			"type": "text",
-			"text": "$(thing)Note: Only horizontal support beam blocks can support weight$().$(br2)To construct a support structure, first right click with a support beam on the ground. A 3 high pillar should form. Make a second pillar, then right click on the side of one to connect them.$(br2)$(thing)Note: If a block falls onto a support beam, the entire structure may collapse.$()"
+			"text": "$(thing)Note: Only horizontal support beam blocks can support blocks$().$(br2)To construct a support structure, first right click with a support beam on the ground. A 3 high pillar should form. Make a second pillar, then right click on the side of one to connect them.$(br2)$(thing)Note: If a block falls onto a support beam, the entire structure may collapse.$()"
 		},
 		{
 			"type": "multiblock",
@@ -66,11 +66,7 @@
 		},
 		{
 			"type": "text",
-			"text": "With a single horizontal support, 3 blocks vertically and 4 blocks in each direction are supported, as shown by the diagram."
-		},
-		{
-			"type": "text",
-			"text": "Ores can have $(thing)poor, normal, and rich$() variants once you dig them up. Poor ores have 15 units of metal, Normal 25, and Rich 35."
+			"text": "With a single horizontal support, 3 blocks vertically and 4 blocks in each direction are supported, as shown by the diagram. Be careful mining into unsupported areas, as this can cause a widespread collapse that will easily kill you!"
 		}
-    ]
+	]
 }

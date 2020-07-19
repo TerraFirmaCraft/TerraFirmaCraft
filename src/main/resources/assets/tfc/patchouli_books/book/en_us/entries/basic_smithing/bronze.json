@@ -7,7 +7,7 @@
     "pages": [
 		{
 			"type": "text",
-			"text": "Bronze is the next metal tier up from copper. Luckily, it's not that hard to get. Bronze is an  $(item)alloy$() , meaning that it's made up of different metals. To make an alloy, you need to put metals in that follow an  $(thing)alloy recipe $()."
+			"text": "Bronze is the next metal tier up from copper. Luckily, it's not that hard to get. Bronze is an  $(item)alloy$(), meaning that it's made up of different metals. To make an alloy, you need to put the metals in in such a way that their units follow the percentages in the $(thing)alloy recipe$() you want."
 		},
 		{
 			"type": "text",

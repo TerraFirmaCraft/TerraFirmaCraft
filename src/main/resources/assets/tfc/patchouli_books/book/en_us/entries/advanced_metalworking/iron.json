@@ -46,8 +46,9 @@
 			"text": "The block immediately above that should also be empty and surrounded on all four sides by stone. Basically it's a two-block high stone chimney connected to the back of the Bloomery Block. To let the bloomery store more ore, add blocks to grow the chimney higher.$(br2)$(thing)Flip page to see diagram$()"
 		},
 		{
-			"type": "text",
-			"text": "insert bloomery multiblock here"
+		  "type": "multiblock",
+		  "multiblock_id": "tfc:bloomery",
+		  "text": "Stuff n things"
 		},
 		{
 			"type": "text",

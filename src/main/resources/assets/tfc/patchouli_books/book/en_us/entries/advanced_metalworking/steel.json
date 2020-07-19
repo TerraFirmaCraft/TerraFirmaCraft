@@ -29,21 +29,9 @@
 			"text": "$(thing)Construction:$()$(br2)1. Place crucible on the ground$(br)2. Place blast furnace on top of crucible$(br)3. Form chimney out of fire clay starting the block above the blast furnace block.$(br)4. Right click to place 12 wrought iron sheets on each layer of the fire clay, covering it completely"
 		},
 		{
-			"type": "multiblock",
-			"enable_visualize": false,
-			"text": "The blast furnace before the placement of wrought iron sheets on the fire clay blocks.",
-			"name": "Incomplete Blast Furnace",
-			"multiblock": {
-				"mapping": {
-					"C": "tfc:crucible",
-					"B": "tfc:blast_furnace[lit=false]",
-					"F": "tfc:fire_bricks"
-					},
-				"pattern": [
-					[" F ","F0F"," F "],["   "," B ","   "],["   "," C ","   "]
-				],
-				"symmetrical": false
-				}
+		    "type": "multiblock",
+		    "multiblock_id": "tfc:blast_furnace",
+		    "text": "The sheets don't show up on the blast furnace in the image, but if you hit 'visualize' on the multiblock it will count them. They place just like item frames."
 		},
 		{
 			"type": "text",
@@ -58,7 +46,9 @@
 			"text": "5. When the ore is smelted, pig iron should drop into the crucible. You can remove it with an ingot mold."
 		},
 		{
-			"type": "text",
+			"type": "tfc:anvil_recipe2",
+			"recipe": "tfc:ingot_high_carbon_steel",
+			"recipe2": "tfc:ingot_steel",
 			"text": "Place the $(item)pig iron $() ingot into the anvil. Choose the $(thing)High Carbon Steel$() plan and work it. When that's done, choose $(thing)Steel$() and work it once again. Congrats, you now have a steel ingot!"
 		},
 		{

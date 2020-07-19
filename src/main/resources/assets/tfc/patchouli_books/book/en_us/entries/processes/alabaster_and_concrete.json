@@ -9,7 +9,12 @@
 			"type": "crafting",
 			"recipe": "tfc:alabaster_brick",
 			"title": "Alabaster Brick",
-			"text": "TFC has a number of uses of dye, mainly it's own dyeable blocks, alabaster. To make it, you need alabaster bricks, which are crafted from the mineral gypsum. Gypsum can also be obtained by crushing Raw Limestone in a quern."
+			"text": "TFC has a number of uses of dye, mainly it's own dyeable blocks, alabaster. To make it, you need alabaster bricks, which are crafted from the mineral gypsum."
+		},
+		{
+			"type": "tfc:quern_recipe",
+			"recipe": "tfc:gypsum",
+			"text": "Gypsum can be obtained by crushing Raw Limestone in a $(l:processes/quern)quern$()."
 		},
 		{
 			"type": "crafting",
@@ -18,7 +23,7 @@
 		},
 		{
 			"type": "text",
-			"text": "Alabaster's main attraction is in the fact that it's dyeable. Sealing it in a barrel of dye water will dye it to any of the 16 vanilla colors. This can be done to any form of the alabaster, plain, smooth, or bricks."
+			"text": "Alabaster's main attraction is in the fact that it's dyeable. Sealing it in a barrel of $(l:processes/dye)dye water$() will dye it to any of the 16 vanilla colors. This can be done to any form of the alabaster, plain, smooth, or bricks."
 		},
 		{
 			"type": "crafting",

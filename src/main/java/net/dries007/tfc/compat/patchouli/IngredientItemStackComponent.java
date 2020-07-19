@@ -31,6 +31,7 @@ public abstract class IngredientItemStackComponent extends CustomComponent
     public void render(IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
         GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
         GlStateManager.translate(posX, posY, 0);
         GlStateManager.color(1f, 1f, 1f, 1f);
 

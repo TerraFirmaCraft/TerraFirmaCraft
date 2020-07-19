@@ -1,0 +1,43 @@
+{
+	"name": "Fuel",
+	"icon": "tfc:textures/items/ceramics/fire_clay.png",
+	"category": "reference",
+	"advancement": "tfc:main/get_flux",
+	"sortnum": 3,
+	"pages": [
+    {
+      "type": "spotlight",
+	  "item": "tfc:ore/lignite",
+	  "title": "Lignite",
+	  "text": "Lignite is a form of natural Coal. A forge heated by Lignite can reach the White temperature without a Bellows to help."
+	},
+	{
+      "type": "spotlight",
+	  "item": "tfc:ore/bituminous_coal",
+	  "title": "Bituminous Coal",
+	  "text": "Bituminous Coal is a form of natural Coal. A forge heated by Bituminous Coal can reach the White temperature without a Bellows to help."
+	},
+	{
+      "type": "spotlight",
+	  "item": "minecraft:coal",
+	  "title": "Charcoal",
+	  "text": "Charcoal is the main fuel source in TFC, created with the $(l:basic_smithing/charcoal_pit)charcoal pit$(). Without the aid of a Bellows, it can heat a forge to Yellow White**."
+	},
+	{
+      "type": "spotlight",
+	  "item": "tfc:peat",
+	  "title": "Peat",
+	  "text": "Peat is used to fuel campfires. It spawns in regions of high rainfall, and is immune to gravity."
+	},
+	{
+      "type": "spotlight",
+	  "item": "tfc:wood/log/chestnut",
+	  "title": "Logs",
+	  "text": "Logs are used to fuel campfires. They have different burn temperatures.$(br2)Dark Red: Spruce, Willow$(br)Dark Red*: Aspen, Pine, Sequoia, Sycamore, White Cedar"
+	},
+	{
+		"type": "text",
+		"text": "Dark Red**: Acacia, Birch, Chestnut, Kapok, White Elm$(br)Dark Red***: Ash$(br)Dark Red****: Douglas Fir, Oak$(br)Bright Red: Hickory, Maple"
+	}
+  ]
+}

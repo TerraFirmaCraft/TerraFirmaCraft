@@ -11,7 +11,7 @@
 		},
 		{
 			"type": "multiblock",
-			"enable_visualize": false,
+			"enable_visualize": true,
 			"text": "The thatch bed can save your spawn, but you won't be able to skip the night..",
 			"name": "Thatch Bed",
 			"multiblock": {

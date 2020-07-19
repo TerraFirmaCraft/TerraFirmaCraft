@@ -30,15 +30,7 @@
 		},
 		{
 			"type": "text",
-			"text": "insert armor recipe"
-		},
-		{
-			"type": "text",
-			"text": "insert saddle recipe"
-		},
-		{
-			"type": "text",
-			"text": "insert quiver recipe"
+			"text": "For leather knapping recipes, see the $(l:reference/leather_knapping)reference section$()."
 		}
     ]
 }

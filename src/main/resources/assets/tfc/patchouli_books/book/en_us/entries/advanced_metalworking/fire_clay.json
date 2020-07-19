@@ -31,21 +31,18 @@
 			"text": "Now that you've got some fire clay, $(4)right-click$() with at least 5 in your hand to open the $(thing)knapping interface.$()"
 		},
 		{
-			"type": "text",
-			"text": "insert crucible recipe"
-		}
-		,
+			"type": "tfc:fire_clay_knapping_recipe",
+			"recipe": "tfc:fire_clay_crucible",
+			"text": "Now that you've got some fire clay, $(4)right-click$() with at least 5 in your hand to open the $(thing)knapping interface$() and knap a crucible."
+		},
 		{
 			"type": "text",
 			"text": "The crucible is very useful for melting down ore. It's got 9 slots that will let you melt stuff, and once they're melted, you can see what metals are in there, and if you've made a proper alloy. When you want to take some metal out, just plop an ingot mold (or other mold) into the output slot and it'll put however much you need in for you! How convenient."
 		},
 		{
-			"type": "text",
-			"text": "insert unfired fire brick recipe"
-		},
-		{
-			"type": "text",
-			"text": "insert fired fire brick recipe"
+			"type": "tfc:fire_clay_knapping_recipe",
+			"recipe": "tfc:fire_clay_brick",
+			"text": "Fire bricks need to be cooked afterwards to craft them."
 		},
 		{
 			"type": "crafting",

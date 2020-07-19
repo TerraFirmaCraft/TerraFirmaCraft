@@ -1,0 +1,25 @@
+{
+	"name": "Smithing Reference",
+	"icon": "tfc:textures/items/metal/sheet/rose_gold.png",
+	"category": "reference",
+	"advancement": "tfc:main/metal_casting",
+	"sortnum": 5,
+	"pages": [
+    {
+      "type": "text",
+	  "text": "$(thing)Metal items and their ingredients:$()$(br2)$(item)Ingot:$() Lamp, Pick, Shovel, Axe, Hoe, Hammer, Propick, Saw, Scythe, Knife, Javelin, Chisel, Brass Mechanisms, Rod"
+	},
+	{
+      "type": "text",
+	  "text": "$(item)Double Ingot:$() Sheet, Sword, Mace$(br2)$(item)Sheet:$() Unfinished Boots, Iron Bars, Iron Door, Bucket$(br2)$(item)Double Sheet:$() Unfinished Helmet, Chestplate, and Greaves, Shield, Iron Bars (double output), Iron Trap Door, Wrought Iron Grill"
+	},
+	{
+      "type": "text",
+	  "text": "$(item)Misc Recipes:$()$(br)Splitting, refining, working $(l:advanced_metalworking/iron)bloom$().$(br2)Pig Iron to High Carbon Steel, High Carbon Steel (any) to Steel (any)"
+	},
+	{
+      "type": "text",
+	  "text": "$(thing)Metalworking Tiers:$()$(br2)$(item)0:$() Stone$(br)$(item)1:$() Copper$(br)$(item)2:$() Bronzes$(br)$(item)3:$() Wrought Iron$(br)$(item)4:$() Steel$(br)$(item)5:$() Black Steel$(br)$(item)6:$() Colored Steels"
+	}
+  ]
+}

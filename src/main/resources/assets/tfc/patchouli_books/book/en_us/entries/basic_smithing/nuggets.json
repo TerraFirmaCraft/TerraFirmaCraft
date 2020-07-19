@@ -7,7 +7,7 @@
     "pages": [
 		{
 			"type": "text",
-			"text": "Scattered among the rocks and sticks on the ground are $(item)ore nuggets$(). While useless on their own, these can be melted down and casted into tools."
+			"text": "Scattered among the rocks and sticks on the ground are $(item)ore nuggets$(). While useless on their own, these can be melted down and casted into tools. To see where ore nuggets spawn, visit the $(l:reference/ore)reference section$()."
 		},
 		{
 			"type": "text",
@@ -39,7 +39,7 @@
 			"type": "spotlight",
 			"item": "tfc:ore/small/bismuthinite",
 			"title": "Bismuth Nugget",
-			"text": "Bismuth is mainly used for alloys, but you can make basic tools out of it too. 10 pieces of bismuth will make you a bismuth tool, which is just about as good as a copper one."
+			"text": "Bismuth is, well, Bismuth! It's used to make alloys."
 		},
 		{
 			"type": "spotlight",
@@ -57,7 +57,7 @@
 			"type": "spotlight",
 			"item": "tfc:ore/small/native_gold",
 			"title": "Native Gold Nugget",
-			"text": "You can't make gold tools in TFC, but it's not completely useless!"
+			"text": "You can't make gold tools in TFC, but it's not $(l:basic_smithing/lamp)completely useless$()!"
 		},
 		{
 			"type": "spotlight",

@@ -1,0 +1,24 @@
+{
+  "components": [
+    {
+      "type": "custom",
+      "class": "net.dries007.tfc.compat.patchouli.AnvilComponent",
+      "recipe": "#recipe",
+      "x": 0,
+      "y": 0
+    },
+	{
+      "type": "custom",
+      "class": "net.dries007.tfc.compat.patchouli.AnvilComponent",
+      "recipe": "#recipe2",
+      "x": 0,
+      "y": 35
+    },
+    {
+      "type": "text",
+      "text": "#text",
+      "x": 0,
+      "y": 70
+    }
+  ]
+}

@@ -37,11 +37,11 @@
 		},
 		{
 			"type": "text",
-			"text": "To use the quern, right click with the item you want to crush on top. Then, right click the little handle to turn the wheel. Then, right click the base to retrieve your crushed item."
+			"text": "To use the quern, $(4)right-click$() with the item you want to crush on top. Then, right click the little handle to turn the wheel. Then, right click the base to retrieve your crushed item."
 		},
 		{
 			"type": "text",
-			"text": "Some examples of useful quern recipes:$(br2)Rocksalt -> Salt$(br)Kaolinite -> Kaolinite Powder$(br)Graphite -> Graphite Powder$(br)Flowers -> Dye$(br)Grain -> Flour$(br)Olive -> Olive Paste$(br)Cinnabar -> Redstone$(br)Cryolite -> Redstone$(br)Kimberlite -> Diamond$(br)Ore -> Powder$(br)Bone -> Bonemeal$(br)Limestone -> Gypsum$(thing)$(br)This list is incomplete.$()"
+			"text": "See the $(l:reference/quern)reference section$() for all the quern recipes except dyes, which are located in the $(l:processes/dye)dye chapter$()."
 		}
     ]
 }

@@ -1,6 +1,9 @@
 {
 	"name": "TerraFirmaCraft",
-	"landing_text": "A guide for TFC-TNG, a total conversion mod for 1.12$(br2)$(thing)Version 0.1$(br)Valid for TFC Version 149$(br)",
+	"landing_text": "A guide for TFC-TNG, a total conversion mod for 1.12$(br2)$(thing)Version 0.2$(br)Valid for TFC Version 149$(br)",
 	"version": 1,
-	"advancement_namespaces": ["tfc"]
+	"advancement_namespaces": ["tfc"],
+	"macros": {
+			"$(2br)": "$(br2)"
+	}
 }
