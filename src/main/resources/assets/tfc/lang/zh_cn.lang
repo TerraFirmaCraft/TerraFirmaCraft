@@ -321,6 +321,12 @@ config.tfc.general.fallable.collapseChance.tooltip=挖掘未加工岩石引发�
 config.tfc.general.fallable.propagateCollapseChance=塌方扩散几率
 config.tfc.general.fallable.propagateCollapseChance.tooltip=塌方的方块扩散塌方的几率。受与塌方中心的距离影响。
 
+config.tfc.general.fallable.supportBeamRangeHor=水平支撑范围
+config.tfc.general.fallable.supportBeamRangeHor.tooltip=支承梁水平支承范围的半径。
+
+config.tfc.general.fallable.supportBeamRangeVert=垂直支撑范围
+config.tfc.general.fallable.supportBeamRangeVert.tooltip=支承梁垂直支承范围的半径。
+
 config.tfc.general.fallable.chiselCausesCollapse=凿石引起塌方
 config.tfc.general.fallable.chiselCausesCollapse.tooltip=凿未加工的石头可能引起塌方吗？
 
@@ -4430,16 +4436,16 @@ item.tfc.food.rye_bread_sandwich.name=黑麦面包三明治
 item.tfc.food.oat_bread_sandwich.name=燕麦面包三明治
 item.tfc.food.wheat_bread_sandwich.name=小麦面包三明治
 item.tfc.food.rice_bread_sandwich.name=稻米面包三明治
-item.tfc.food.soup_grain.name=谷物汤
-item.tfc.food.soup_fruit.name=美味汤
-item.tfc.food.soup_vegetable.name=果腹汤
-item.tfc.food.soup_meat.name=暖心汤
+item.tfc.food.soup_grain.name=谷味汤
+item.tfc.food.soup_fruit.name=水果汤
+item.tfc.food.soup_vegetable.name=蔬菜汤
+item.tfc.food.soup_meat.name=熟肉汤
 item.tfc.food.soup_dairy.name=奶油汤
-item.tfc.food.salad_grain.name=香脆沙拉
-item.tfc.food.salad_fruit.name=甜味沙拉
-item.tfc.food.salad_vegetable.name=健康沙拉
-item.tfc.food.salad_meat.name=可口沙拉
-item.tfc.food.salad_dairy.name=恶心沙拉
+item.tfc.food.salad_grain.name=谷香沙拉
+item.tfc.food.salad_fruit.name=水果沙拉
+item.tfc.food.salad_vegetable.name=蔬菜沙拉
+item.tfc.food.salad_meat.name=熟肉沙拉
+item.tfc.food.salad_dairy.name=乳酪沙拉
 
 item.tfc.crop.seeds.barley.name=大麦种子
 item.tfc.crop.seeds.beet.name=甜菜种子
@@ -4659,7 +4665,7 @@ advancements.tfc.main.find_clay.title=发现粘土
 advancements.tfc.main.find_clay.description=找到并挖掘一些粘土。
 advancements.tfc.main.pottery.title=陶瓷工匠
 advancements.tfc.main.pottery.description=用粘土捏出一件陶器并在窑中烧制。
-advancements.tfc.main.get_unknown.title=D'OH！
+advancements.tfc.main.get_unknown.title=淦！
 advancements.tfc.main.get_unknown.description=由于错误的合金配比，你得到了一些未知金属。
 #advancements.tfc.main.stone_anvil.title=玩个锤子
 #advancements.tfc.main.stone_anvil.description=用锤敲击岩浆岩，制作石砧。
