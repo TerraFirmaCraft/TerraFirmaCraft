@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.api.capability.worldtracker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +17,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 public class CollapseData implements INBTSerializable<NBTTagCompound>
 {
     BlockPos centerPos;
-    List<BlockPos> nextPositions;
+    final List<BlockPos> nextPositions;
     double radiusSquared;
 
     public CollapseData(BlockPos centerPos, List<BlockPos> nextPositions, double radiusSquared)
@@ -28,6 +29,7 @@ public class CollapseData implements INBTSerializable<NBTTagCompound>
 
     public CollapseData(NBTTagCompound nbt)
     {
+        this.nextPositions = new ArrayList<>();
         deserializeNBT(nbt);
     }
 
