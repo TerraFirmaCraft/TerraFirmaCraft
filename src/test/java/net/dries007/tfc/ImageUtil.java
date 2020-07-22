@@ -148,7 +148,7 @@ public abstract class ImageUtil<T>
             return new Color(x, 255, 0);
         };
 
-        private static final Color[] COLORS_20 = new Color[] {
+        public static final Color[] COLORS = new Color[] {
             new Color(0xFFB300),
             new Color(0x803E75),
             new Color(0xFF6800),
@@ -170,8 +170,6 @@ public abstract class ImageUtil<T>
             new Color(0xF13A13),
             new Color(0x232C16),
         };
-
-        public static final Double2ObjectFunction<Color> DISCRETE_20 = value -> COLORS_20[MathHelper.clamp((int) value * COLORS_20.length, 0, COLORS_20.length - 1)];
     }
 
     public static final class Scales

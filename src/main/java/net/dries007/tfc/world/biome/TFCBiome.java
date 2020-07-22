@@ -47,7 +47,7 @@ public abstract class TFCBiome extends Biome
 
     // These are assigned later as they are dependent on registry objects
     protected ConfiguredSurfaceBuilder<? extends ISurfaceBuilderConfig> lazySurfaceBuilder;
-    private BiomeVariantHolder variantHolder;
+    private BiomeVariants variantHolder;
 
     protected TFCBiome(Builder builder, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
@@ -79,12 +79,12 @@ public abstract class TFCBiome extends Biome
         });
     }
 
-    public BiomeVariantHolder getVariantHolder()
+    public BiomeVariants getVariants()
     {
         return variantHolder;
     }
 
-    public void setVariantHolder(BiomeVariantHolder variantHolder)
+    public void setVariantHolder(BiomeVariants variantHolder)
     {
         this.variantHolder = variantHolder;
     }

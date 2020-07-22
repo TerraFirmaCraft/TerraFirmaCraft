@@ -8,22 +8,18 @@ package net.dries007.tfc.world.biome;
 import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.world.TFCGenerationSettings;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.layer.TFCLayerUtil;
 
 public class TFCBiomeProvider extends BiomeProvider
 {
-    private final BiomeFactory biomeFactory;
+    private final IBiomeFactory accurateBiomeFactory;
+    private final IBiomeFactory biomeFactory;
     private final Lazy<List<Biome>> spawnBiomes;
 
     private ChunkDataProvider chunkDataProvider;
@@ -31,9 +27,14 @@ public class TFCBiomeProvider extends BiomeProvider
     public TFCBiomeProvider(TFCGenerationSettings settings)
     {
         super(new HashSet<>(TFCBiomes.getBiomes()));
-        WorldInfo worldInfo = settings.getWorldInfo();
 
-        this.biomeFactory = new BiomeFactory(TFCLayerUtil.createOverworldBiomeLayer(worldInfo.getSeed(), settings));
+        //WorldInfo worldInfo = settings.getWorldInfo();
+        //List<IAreaFactory<LazyArea>> layers = TFCLayerUtil.createOverworldBiomeLayer(worldInfo.getSeed(), settings);
+        //this.chunkBiomeFactory = new BiomeFactory(layers.get(0));
+        //this.biomeFactory = new BiomeFactory(layers.get(1));
+        this.biomeFactory = new TestBiomeFactory(0);
+        this.accurateBiomeFactory = new TestBiomeFactory(2);
+
         this.spawnBiomes = Lazy.of(TFCBiomes::getSpawnBiomes);
     }
 
@@ -69,12 +70,13 @@ public class TFCBiomeProvider extends BiomeProvider
      * So, we need to make them accurate.
      */
     @Override
-    public Biome getNoiseBiome(int x, int y, int z)
+    public TFCBiome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
     {
-        TFCBiome baseBiome = biomeFactory.getBiome(x, z);
-        ChunkPos chunkPos = new ChunkPos(x >> 2, z >> 2);
-        BlockPos pos = chunkPos.asBlockPos();
-        ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
-        return baseBiome.getVariantHolder().get(data.getAverageTemp(pos), data.getRainfall(pos)).get();
+        return biomeFactory.getBiome(biomeCoordX, biomeCoordZ);
+    }
+
+    public TFCBiome getAccurateBiome(int x, int z)
+    {
+        return accurateBiomeFactory.getBiome(x, z);
     }
 }
