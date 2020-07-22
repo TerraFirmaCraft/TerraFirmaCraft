@@ -1,3 +1,6 @@
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -81,5 +84,15 @@ dependencies {
 
     testImplementation fg.deobf('com.github.alcatrazEscapee:mcjunitlib:1.0.1-1.15.2') {
         transitive = false
+    }
+}
+
+processResources {
+    // Minify the json files in the output jar, reduces overall jar size.
+    doLast {
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
+            file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            file.text = file.text.replace('"__comment__":"This file was automatically created by mcresources",', '')
+        }
     }
 }
