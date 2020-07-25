@@ -16,7 +16,7 @@
 		{
 			"type": "tfc:welding_recipe",
 			"recipe": "tfc:ingot_high_carbon_black_steel",
-			"text": "Weld a $(item)weak steel ingot$() and $(item)pig iron$() to produce a $(thing)High Carbon Black Steel Ingot$() ."
+			"text": "Weld a $(item)weak steel ingot$() and $(item)pig iron$() to produce a $(thing)High Carbon Black Steel Ingot$()."
 		},
 		{
 			"type": "tfc:anvil_recipe",

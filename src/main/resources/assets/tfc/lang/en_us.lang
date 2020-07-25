@@ -4780,6 +4780,9 @@ waila.tfc.flux_stone=Flux
 waila.tfc.temperature=Air Temperature: %dºC
 waila.tfc.metal.output=Contains %d units of %s
 
+# Patchouli
+tfc.patchouli.landing_text=A guide for TFC-TNG, a total conversion mod for 1.12.2
+
 ## Devices
 waila.tfc.devices.minutes_remaining=%d Minutes Remaining
 waila.tfc.devices.hours_remaining=%d Hours Remaining

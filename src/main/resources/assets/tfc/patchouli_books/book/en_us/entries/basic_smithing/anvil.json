@@ -70,7 +70,7 @@
 		},
 		{
 			"type": "text",
-			"text": "Welding can only be done on anvils of one Tier lower than the metal being welded. So, you can only work Copper tools on a Copper or better anvil. This means it's important to constantly upgrade your anvil in order to progress. Luckily, you can melt down your anvil when you're done using it to get the ingots back. See the $(l:reference/smithing)reference section$()for metal tiers."
+			"text": "Welding can only be done on anvils of one Tier lower than the metal being welded. So, you can only work Copper tools on a Copper or better anvil. This means it's important to constantly upgrade your anvil in order to progress. Luckily, you can melt down your anvil when you're done using it to get the ingots back. See the $(l:reference/smithing)reference section$() for metal tiers."
 		}
 	]
 }
