@@ -12,49 +12,42 @@
 		{
 			"type": "entity",
 			"name": "Bear",
-			"text": "The Bear",
+			"text": "The Bear attacks during the day.",
 			"entity": "tfc:beartfc",
 			"scale": 0.7
 		},
 		{
 			"type": "entity",
-			"name": "Polar Bear",
-			"text": "The Polar Bear",
-			"entity": "tfc:polarbeartfc",
-			"scale": 0.7
-		},
-		{
-			"type": "entity",
 			"name": "Lion",
-			"text": "The Lion",
+			"text": "The Lion hunts during the day.",
 			"entity": "tfc:liontfc",
 			"scale": 0.7
 		},
 		{
 			"type": "entity",
 			"name": "Sabertooth",
-			"text": "The Sabertooth",
+			"text": "The Sabertooth attacks during the night.",
 			"entity": "tfc:sabertoothtfc",
 			"scale": 0.7
 		},
 		{
 			"type": "entity",
 			"name": "Polar Bear",
-			"text": "The Polar Bear",
+			"text": "The Polar Bear attacks during the day.",
 			"entity": "tfc:polarbeartfc",
 			"scale": 0.7
 		},
 		{
 			"type": "entity",
 			"name": "Hyena",
-			"text": "The Hyena",
+			"text": "The Hyena attacks during the night.",
 			"entity": "tfc:hyenatfc",
 			"scale": 0.7
 		},
 		{
 			"type": "entity",
 			"name": "Panther",
-			"text": "The Panther",
+			"text": "The Panther hunts during the night.",
 			"entity": "tfc:panthertfc",
 			"scale": 0.7
 		}

@@ -38,8 +38,24 @@
 				}
 		},
 		{
-			"type": "text",
-			"text": "The firepit operates with $(thing)heating recipes$(), which are essentially TFC's version of smelting recipes. As a device such as a firepit heats up using fuel, it can turn its ingredient into a product at a certain temperature. For the firepit, you'll just want to use it for two things: cooking $(item)meat$(), and turning sticks into $(item)torches$()."
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:torch",
+			"text": "The firepit operates with $(l:reference/heating_recipes)heating recipes$(), which are essentially TFC's version of smelting recipes. As a device such as a firepit heats up using fuel, it can turn its ingredient into a product at a certain temperature. Firepits don't get very hot, but you can use them to make torches, as well as cook meat."
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:glass",
+			"text": "You can make glass at a higher temperature, but it's easier to do that in a forge."
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:terracotta",
+			"text": "Firing terracotta works just like vanilla!"
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:cooked_beef",
+			"text": "Eating raw meat is bad, so you should cook it."
 		}
     ]
 }

@@ -19,9 +19,14 @@
 		},
 		{
 			"type": "crafting",
-			"text": "Craft the flour with a water bucket to make dough. Cook it in a forge or firepit to make $(item)bread$().",
+			"text": "Craft the flour with a water bucket to make dough.",
 			"recipe": "tfc:food/wheat/wheat_dough",
 			"title": "Dough"
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:cornbread",
+			"text": "Cook it in a forge or firepit to make $(item)bread$()."
 		}
     ]
 }

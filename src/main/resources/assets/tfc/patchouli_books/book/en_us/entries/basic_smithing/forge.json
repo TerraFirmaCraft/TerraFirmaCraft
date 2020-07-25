@@ -23,8 +23,24 @@
 			"text": "The bottom slots in the forge are for holding $(item)fuel$(). They can hold charcoal or natural fuels like lignite and bituminous coal, but not logs. The top slots are for heating items, typically ingots or vessels. The right side is for molds or vessels to catch melting things, but this is typically only used in emergencies."
 		},
 		{
-			"type": "text",
-			"text": "The forge can carry out any $(thing)heating recipe$() that the $(l:getting_started/pottery)pit kiln$() or $(l:getting_started/logging)firepit$() can, as long as it gets to the $(item)Brilliant White$() temperature, which is only possible using a bellows. The forge can be used to cook food or make torches, however if food is left in too long, it will burn."
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:unfired_vessel",
+			"text": "The forge can carry out any $(thing)heating recipe$() that the $(l:getting_started/pottery)pit kiln$() or $(l:getting_started/logging)firepit$() can, as long as it gets to the $(item)Brilliant White$() temperature, which is only possible using a $(l:processes/leatherworking)bellows$(). The forge can be used to cook food or make torches, however if food is left in too long, it will burn."
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:unfired_brick",
+			"text": "Use a forge to cook bricks."
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:unfired_flower_pot",
+			"text": "The same goes for flowerpots."
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:lime_glazed_terracotta",
+			"text": "The forge can turn clay to terracotta, and also glaze it."
 		}
     ]
 }
