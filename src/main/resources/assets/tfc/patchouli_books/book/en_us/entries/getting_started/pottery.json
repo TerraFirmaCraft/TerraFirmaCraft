@@ -7,12 +7,12 @@
     "pages": [
         {
             "type": "text",
-            "text": "In order to survive and progress in the world of TFC, you need things that can't just be made out of sticks, rocks, and grass. This is where $(thing)pottery$() comes in. Just hold at least 5 clay in your hand and $(4)right-click$(), and a knapping interface will show up, just like it did for stone. Follow the recipe on the right to shape an unfired jug. Be careful, if you screw up you could lose the clay!$(br2)See the $(l:reference/clay_knapping)reference section$() for more."
+            "text": "In order to survive and progress in the world of TFC, you need things that can't just be made out of sticks, rocks, and grass. This is where $(thing)pottery$() comes in. Just hold at least 5 clay in your hand and $(4)right-click$(), and a knapping interface will show up, just like it did for stone. Follow the recipe on the right to shape an unfired jug. Be careful, if you screw up you could lose the clay!"
 		},
 		{
 		  "type": "tfc:clay_knapping_recipe",
 		  "recipe": "tfc:clay_jug",
-		  "text": "The jug is used to hold drinking water."
+		  "text": "The jug is used to hold drinking water.$(br2)See the $(l:reference/clay_knapping)reference section$() for more."
 		},
 		{
 		  "type": "tfc:clay_knapping_recipe",

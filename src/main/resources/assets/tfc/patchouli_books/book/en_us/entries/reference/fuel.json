@@ -1,6 +1,6 @@
 {
 	"name": "Fuel",
-	"icon": "tfc:textures/items/ceramics/fire_clay.png",
+	"icon": "tfc:textures/items/firestarter.png",
 	"category": "reference",
 	"advancement": "tfc:main/get_flux",
 	"sortnum": 3,

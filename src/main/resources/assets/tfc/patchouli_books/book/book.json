@@ -1,8 +1,9 @@
 {
-	"name": "TerraFirmaCraft",
-	"landing_text": "A guide for TFC-TNG, a total conversion mod for 1.12$(br2)$(thing)Version 0.2$(br)Valid for TFC Version 149$(br)",
+	"name": "advancements.tfc.main.root.title",
+	"landing_text": "tfc.patchouli.landing_text",
 	"version": 1,
 	"advancement_namespaces": ["tfc"],
+	"filler_texture": "tfc:textures/gui/page_filler.png",
 	"macros": {
 			"$(2br)": "$(br2)"
 	}

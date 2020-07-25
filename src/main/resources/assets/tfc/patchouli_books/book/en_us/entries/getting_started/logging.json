@@ -39,7 +39,7 @@
 		},
 		{
 			"type": "text",
-			"text": "Heating recipe (torch?) goes here."
+			"text": "The firepit operates with $(thing)heating recipes$(), which are essentially TFC's version of smelting recipes. As a device such as a firepit heats up using fuel, it can turn its ingredient into a product at a certain temperature. For the firepit, you'll just want to use it for two things: cooking $(item)meat$(), and turning sticks into $(item)torches$()."
 		}
     ]
 }
