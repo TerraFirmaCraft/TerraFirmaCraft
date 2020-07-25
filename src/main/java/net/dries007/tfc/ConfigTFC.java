@@ -196,10 +196,15 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.fallable.supportBeamRangeHor")
             public int supportBeamRangeHor = 4;
 
-            @Config.Comment("Vertical radius of the support range of support beams.")
+            @Config.Comment("Upwards support range of support beams.")
             @Config.RangeInt(min = 0, max = 3)
-            @Config.LangKey("config." + MOD_ID + ".general.fallable.supportBeamRangeVert")
-            public int supportBeamRangeVert = 1;
+            @Config.LangKey("config." + MOD_ID + ".general.fallable.supportBeamRangeUp")
+            public int supportBeamRangeUp = 1;
+
+            @Config.Comment("Downwards support range of support beams.")
+            @Config.RangeInt(min = 0, max = 3)
+            @Config.LangKey("config." + MOD_ID + ".general.fallable.supportBeamRangeDown")
+            public int supportBeamRangeDown = 1;
 
             @Config.Comment("Should chiseling raw stone blocks cause collapses?")
             @Config.LangKey("config." + MOD_ID + ".general.fallable.chiselCausesCollapse")
