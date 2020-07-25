@@ -41,8 +41,11 @@
 		},
 		{
 			"type": "tfc:fire_clay_knapping_recipe",
-			"recipe": "tfc:fire_clay_brick",
-			"text": "Fire bricks need to be cooked afterwards to craft them."
+			"recipe": "tfc:fire_clay_brick"
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:unfired_fire_brick"
 		},
 		{
 			"type": "crafting",

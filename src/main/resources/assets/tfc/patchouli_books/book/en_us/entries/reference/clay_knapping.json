@@ -39,6 +39,16 @@
       "type": "tfc:clay_knapping_recipe",
 	  "recipe": "tfc:clay_flower_pot",
 	  "text": "Clay Flower Pot"
+	},
+	{
+      "type": "tfc:fire_clay_knapping_recipe",
+	  "recipe": "tfc:fire_clay_crucible",
+	  "text": "Crucible"
+	},
+	{
+      "type": "tfc:fire_clay_knapping_recipe",
+	  "recipe": "tfc:fire_clay_brick",
+	  "text": "Fire Brick"
 	}
   ]
 }

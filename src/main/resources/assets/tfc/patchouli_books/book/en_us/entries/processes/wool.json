@@ -15,14 +15,19 @@
 			"text": "String is obtained from Vanilla spiders, which you'll find underground. Jute is obtained from the Jute plant. Wool yarn requires a slightly more involved process (see next page)"
 		},
 		{
-			"type": "text",
-			"text": "The spindle is needed to process wool from a sheep. First, craft an unfired spindle with a clay and a stick, then fire it in a pit kiln.$(br2)$(thing)Note: To get wool to use with the spindle, craft a Sheepskin with a knife$()"
+			"type": "crafting",
+			"recipe": "tfc:hide/large_sheepskin",
+			"text": "To get wool to use with the spindle, craft a Sheepskin with a knife."
 		},
 		{
 			"type": "crafting",
 			"recipe": "tfc:unfired_spindel_head",
-			"recipe2": "tfc:spindle",
-			"title": "Spindle Recipes"
+			"text": "The spindle is needed to process wool from a sheep. First, craft an unfired spindle with a clay and a stick."
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:unfired_spindle",
+			"text": "Then, fire it in a pit kiln"
 		},
 		{
 			"type": "crafting",

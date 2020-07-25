@@ -39,7 +39,8 @@
 		  "text": "Only the top block of the pit kiln may be exposed to air."
 		},
 		{
-		  "type": "text",
+		  "type": "tfc:heat_recipe",
+		  "recipe": "tfc:unfired_jug",
 		  "text": "After 8 hours, your clay items will be fired! Now, you can store your items, carry water, and begin to enter the copper age!"
 		}
 	]
