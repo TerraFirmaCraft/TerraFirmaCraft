@@ -4709,7 +4709,7 @@ advancements.tfc.main.iron_armor.title=铠甲勇士
 advancements.tfc.main.iron_armor.description=装备全套铁甲。
 advancements.tfc.main.make_blast_furnace.title=拔地而起！
 advancements.tfc.main.make_blast_furnace.description=制作一个高炉。
-advancements.tfc.main.make_fire_clay.title=粘土，石墨，高岭石！
+advancements.tfc.main.make_fire_clay.title=绝对耐火
 advancements.tfc.main.make_fire_clay.description=做一些耐火粘土。
 advancements.tfc.main.make_fire_bricks.title=烟囱
 advancements.tfc.main.make_fire_bricks.description=制作四块耐火砖以搭建高炉的烟囱。
@@ -4719,7 +4719,7 @@ advancements.tfc.main.get_steel.title=工业之骨
 advancements.tfc.main.get_steel.description=获得钢锭。
 advancements.tfc.main.flint_and_steel.title=火石
 advancements.tfc.main.flint_and_steel.description=制作打火石。
-advancements.tfc.main.get_black_steel.title=黑钢
+advancements.tfc.main.get_black_steel.title=黑上加黑
 advancements.tfc.main.get_black_steel.description=获得黑钢锭。
 advancements.tfc.main.get_blue_steel.title=蓝钢
 advancements.tfc.main.get_blue_steel.description=获得蓝钢锭。
@@ -4729,7 +4729,7 @@ advancements.tfc.main.blue_steel_bucket.title=小心烫口
 advancements.tfc.main.blue_steel_bucket.description=制作蓝钢桶。
 advancements.tfc.main.red_steel_bucket.title=水源
 advancements.tfc.main.red_steel_bucket.description=制作红钢桶。
-advancements.tfc.main.ultimate_goal.title=就这？！
+advancements.tfc.main.ultimate_goal.title=天下一桶
 advancements.tfc.main.ultimate_goal.description=用红钢桶和蓝钢桶合成原版桶。
 
 # World
@@ -4752,7 +4752,7 @@ advancements.tfc.world.wolf_familiarity.title=最好的朋友
 advancements.tfc.world.wolf_familiarity.description=和一只狼的亲密度达到最大值。
 advancements.tfc.world.make_spindle.title=理顺毛线
 advancements.tfc.world.make_spindle.description=制作一个纺锤以把羊毛变成羊毛纱。
-advancements.tfc.world.make_loom.title=扎扎弄机抒
+advancements.tfc.world.make_loom.title=扎扎弄机杼
 advancements.tfc.world.make_loom.description=制作一台织布机，并用它把线织成布。
 advancements.tfc.world.make_bed.title=祝你好梦
 advancements.tfc.world.make_bed.description=用羊毛布或丝绸制作床。
@@ -4791,6 +4791,9 @@ waila.tfc.ore_drop=含 %s
 waila.tfc.flux_stone=助焊石
 waila.tfc.temperature=空气温度：%dºC
 waila.tfc.metal.output=含 %d 单元的 %s
+
+# Patchouli
+tfc.patchouli.landing_text=群峦传说入门指南，你从未玩过的全新版本
 
 ## Devices
 waila.tfc.devices.minutes_remaining=剩余 %d 分钟
