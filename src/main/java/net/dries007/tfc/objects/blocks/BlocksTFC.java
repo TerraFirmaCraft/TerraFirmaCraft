@@ -19,6 +19,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -720,6 +723,28 @@ public final class BlocksTFC
     public static boolean isWater(IBlockState current)
     {
         return current.getMaterial() == Material.WATER;
+    }
+
+    public static boolean isFluidFreshWater(IBlockState current)
+    {
+        if (current.getBlock() instanceof BlockFluidClassic)
+        {
+            return ((BlockFluidClassic)current.getBlock()).getFluid() == FluidsTFC.FRESH_WATER.get();
+        }
+
+        Fluid currentFluid = FluidRegistry.lookupFluidForBlock(current.getBlock());
+        return currentFluid != null && currentFluid == FluidsTFC.FRESH_WATER.get();
+    }
+
+    public static boolean isFluidSaltWater(IBlockState current)
+    {
+        if (current.getBlock() instanceof BlockFluidClassic)
+        {
+            return ((BlockFluidClassic)current.getBlock()).getFluid() == FluidsTFC.SALT_WATER.get();
+        }
+
+        Fluid currentFluid = FluidRegistry.lookupFluidForBlock(current.getBlock());
+        return currentFluid != null && currentFluid == FluidsTFC.SALT_WATER.get();
     }
 
     public static boolean isFreshWater(IBlockState current)
