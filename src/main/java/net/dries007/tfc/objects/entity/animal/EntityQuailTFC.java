@@ -236,7 +236,7 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_CHICKEN;
+        return LootTablesTFC.ANIMALS_DUCK;
     }
 
     @Override
