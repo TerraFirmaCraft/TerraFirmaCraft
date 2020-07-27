@@ -174,7 +174,7 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_GRAN_FELINE;
+        return LootTablesTFC.ANIMALS_WOLF;
     }
 
     @Override
