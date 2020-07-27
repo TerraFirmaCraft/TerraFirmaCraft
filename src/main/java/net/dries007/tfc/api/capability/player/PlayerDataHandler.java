@@ -33,6 +33,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     private final EntityPlayer player;
     private ItemStack harvestingTool;
     private long intoxicatedTime;
+    private boolean hasBook;
 
     private ChiselRecipe.Mode chiselMode = ChiselRecipe.Mode.SMOOTH;
 
@@ -40,8 +41,9 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     {
         this.skills = SkillType.createSkillMap(this);
         this.player = player;
-        harvestingTool = ItemStack.EMPTY;
-        intoxicatedTime = 0;
+        this.harvestingTool = ItemStack.EMPTY;
+        this.hasBook = false;
+        this.intoxicatedTime = 0;
     }
 
     @Override
@@ -51,6 +53,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
         skills.forEach((k, v) -> nbt.setTag(k, v.serializeNBT()));
         nbt.setTag("chiselMode", new NBTTagByte((byte) chiselMode.ordinal()));
         nbt.setTag("harvestingTool", harvestingTool.serializeNBT());
+        nbt.setBoolean("hasBook", hasBook);
         nbt.setLong("intoxicatedTime", intoxicatedTime);
         return nbt;
     }
@@ -63,6 +66,7 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
             skills.forEach((k, v) -> v.deserializeNBT(nbt.getCompoundTag(k)));
             chiselMode = ChiselRecipe.Mode.valueOf(nbt.getByte("chiselMode"));
             harvestingTool = new ItemStack(nbt.getCompoundTag("harvestingTool"));
+            hasBook = nbt.getBoolean("hasBook");
             intoxicatedTime = nbt.getLong("intoxicatedTime");
         }
     }
@@ -106,6 +110,18 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     public void setChiselMode(ChiselRecipe.Mode chiselMode)
     {
         this.chiselMode = chiselMode;
+    }
+
+    @Override
+    public boolean hasBook()
+    {
+        return this.hasBook;
+    }
+
+    @Override
+    public void setHasBook(boolean value)
+    {
+        this.hasBook = value;
     }
 
     @Override

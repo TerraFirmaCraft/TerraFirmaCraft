@@ -1,0 +1,41 @@
+{
+    "name": "The Thrill of the Hunt",
+    "icon": "tfc:textures/items/stone/javelin.png",
+    "category": "getting_started",
+	"advancement": "tfc:main/stone_age",
+	"sortnum": 7,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The first way you'll be getting food is by hunting animals. Your knife will work fine, but for bigger things, you may want to knap a $(item)javelin$(), your basic ranged weapon."
+        },
+		{
+		  "type": "tfc:rock_knapping_recipe",
+		  "recipe": "tfc:javelin_head",
+		  "text": "Fire it the same way you would a trident or bow."
+		},
+		{
+			"type": "text",
+			"text": "$(thing)Hunting animals$() aren't available to breed, and are only useful for what they drop on death. They also respawn, meaning they're considered the best to hunt."
+		},
+		{
+			"type": "entity",
+			"name": "Deer",
+			"scale": 0.8,
+			"text": "The deer will drop a good amount of meat, and it's a peaceful creature that won't fight back.",
+			"entity": "tfc:deertfc"
+		},
+		{
+			"type": "entity",
+			"name": "Pheasant",
+			"text": "The pheasant doesn't drop much meat, but it'll give you feathers to make arrows.",
+			"entity": "tfc:pheasanttfc"
+		},
+		{
+			"type": "entity",
+			"name": "Rabbit",
+			"text": "I'm hunting wabbits.",
+			"entity": "tfc:rabbittfc"
+		}
+    ]
+}

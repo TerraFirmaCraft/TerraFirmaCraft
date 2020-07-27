@@ -56,6 +56,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -84,6 +85,7 @@ import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.capability.worldtracker.CapabilityWorldTracker;
 import net.dries007.tfc.api.capability.worldtracker.WorldTracker;
 import net.dries007.tfc.api.types.*;
+import net.dries007.tfc.compat.patchouli.TFCPatchouliPlugin;
 import net.dries007.tfc.network.PacketCalendarUpdate;
 import net.dries007.tfc.network.PacketPlayerDataUpdate;
 import net.dries007.tfc.objects.blocks.BlockFluidTFC;
@@ -487,11 +489,19 @@ public final class CommonEventHandler
                 }
             }
 
-            // Skills / Player Data
-            IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
-            if (skills != null)
+            // layer Data
+            IPlayerData playerData = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (playerData != null)
             {
-                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
+                // Give book if possible
+                if (Loader.isModLoaded("patchouli") && !playerData.hasBook() && ConfigTFC.General.MISC.giveBook)
+                {
+                    TFCPatchouliPlugin.giveBookToPlayer(player);
+                    playerData.setHasBook(true);
+                }
+
+                // Sync
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(playerData.serializeNBT()), player);
             }
         }
     }

@@ -1,0 +1,17 @@
+{
+  "components": [
+    {
+      "type": "custom",
+      "class": "net.dries007.tfc.compat.patchouli.QuernComponent",
+      "recipe": "#recipe",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "type": "text",
+      "text": "#text",
+      "x": 0,
+      "y": 35
+    }
+  ]
+}
