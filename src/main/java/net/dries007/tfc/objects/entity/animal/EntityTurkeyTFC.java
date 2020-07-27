@@ -61,7 +61,7 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
 
     public EntityTurkeyTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.CHICKEN.adulthood, ConfigTFC.Animals.CHICKEN.elder));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.TURKEY.adulthood, ConfigTFC.Animals.TURKEY.elder));
     }
 
     public EntityTurkeyTFC(World worldIn, Gender gender, int birthDay)
@@ -77,7 +77,7 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.Animals.CHICKEN.rarity;
+            return ConfigTFC.Animals.TURKEY.rarity;
         }
         return 0;
     }
@@ -109,13 +109,13 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return ConfigTFC.Animals.CHICKEN.adulthood;
+        return ConfigTFC.Animals.TURKEY.adulthood;
     }
 
     @Override
     public int getDaysToElderly()
     {
-        return ConfigTFC.Animals.CHICKEN.elder;
+        return ConfigTFC.Animals.TURKEY.elder;
     }
 
     @Override
@@ -143,7 +143,7 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
             {
                 EntityTurkeyTFC chick = new EntityTurkeyTFC(this.world);
                 chick.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-                cap.setFertilized(chick, ConfigTFC.Animals.CHICKEN.hatch + CalendarTFC.PLAYER_TIME.getTotalDays());
+                cap.setFertilized(chick, ConfigTFC.Animals.TURKEY.hatch + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
         eggs.add(egg);
@@ -159,7 +159,7 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, ConfigTFC.Animals.CHICKEN.eggTicks + getLaidTicks() - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, ConfigTFC.Animals.TURKEY.eggTicks + getLaidTicks() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -302,6 +302,6 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public double getOldDeathChance()
     {
-        return ConfigTFC.Animals.CHICKEN.oldDeathChance;
+        return ConfigTFC.Animals.TURKEY.oldDeathChance;
     }
 }

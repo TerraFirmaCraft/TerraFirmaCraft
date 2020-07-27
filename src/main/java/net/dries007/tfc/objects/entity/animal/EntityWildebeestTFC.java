@@ -71,7 +71,7 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
-            return ConfigTFC.Animals.DEER.rarity;
+            return ConfigTFC.Animals.WILDEBEEST.rarity;
         }
         return 0;
     }
