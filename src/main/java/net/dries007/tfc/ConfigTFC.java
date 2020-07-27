@@ -1004,6 +1004,70 @@ public final class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".animals.rabbit")
         public static final RabbitCFG RABBIT = new RabbitCFG();
 
+        @Config.Comment("DireWolf")
+        @Config.LangKey("config." + MOD_ID + ".animals.direwolf")
+        public static final DireWolfCFG DIREWOLF = new DireWolfCFG();
+
+        @Config.Comment("Hare")
+        @Config.LangKey("config." + MOD_ID + ".animals.hare")
+        public static final HareCFG HARE = new HareCFG();
+
+        @Config.Comment("Boar")
+        @Config.LangKey("config." + MOD_ID + ".animals.boar")
+        public static final BoarCFG BOAR = new BoarCFG();
+
+        @Config.Comment("Zebu")
+        @Config.LangKey("config." + MOD_ID + ".animals.zebu")
+        public static final ZebuCFG ZEBU = new ZebuCFG();
+
+        @Config.Comment("Gazelle")
+        @Config.LangKey("config." + MOD_ID + ".animals.gazelle")
+        public static final GazelleCFG GAZELLE = new GazelleCFG();
+
+        @Config.Comment("Wildebeest")
+        @Config.LangKey("config." + MOD_ID + ".animals.wildebeest")
+        public static final WildebeestCFG WILDEBEEST = new WildebeestCFG();
+
+        @Config.Comment("Quail")
+        @Config.LangKey("config." + MOD_ID + ".animals.quail")
+        public static final QuailCFG QUAIL = new QuailCFG();
+
+        @Config.Comment("Grouse")
+        @Config.LangKey("config." + MOD_ID + ".animals.grouse")
+        public static final GrouseCFG GROUSE = new GrouseCFG();
+
+        @Config.Comment("Mongoose")
+        @Config.LangKey("config." + MOD_ID + ".animals.mongoose")
+        public static final MongooseCFG MONGOOSE = new MongooseCFG();
+
+        @Config.Comment("Turkey")
+        @Config.LangKey("config." + MOD_ID + ".animals.turkey")
+        public static final TurkeyCFG TURKEY = new TurkeyCFG();
+
+        @Config.Comment("Jackal")
+        @Config.LangKey("config." + MOD_ID + ".animals.jackal")
+        public static final JackalCFG JACKAL = new JackalCFG();
+
+        @Config.Comment("MuskOx")
+        @Config.LangKey("config." + MOD_ID + ".animals.muskox")
+        public static final MuskOxCFG MUSKOX = new MuskOxCFG();
+
+        @Config.Comment("Yak")
+        @Config.LangKey("config." + MOD_ID + ".animals.yak")
+        public static final YakCFG YAK = new YakCFG();
+
+        @Config.Comment("Black Bear")
+        @Config.LangKey("config." + MOD_ID + ".animals.black_bear")
+        public static final BlackBearCFG BLACK_BEAR = new BlackBearCFG();
+
+        @Config.Comment("Cougar")
+        @Config.LangKey("config." + MOD_ID + ".animals.cougar")
+        public static final CougarCFG COUGAR = new CougarCFG();
+
+        @Config.Comment("Coyote")
+        @Config.LangKey("config." + MOD_ID + ".animals.coyote")
+        public static final CoyoteCFG COYOTE = new CoyoteCFG();
+
         public static final class AlpacaCFG
         {
             @Config.Comment("How many days until this animal is a full grown adult?")
@@ -1080,7 +1144,83 @@ public final class ConfigTFC
             public int rarity = 50;
         }
 
+        public static final class MuskOxCFG
+        {
+            @Config.Comment("How many days until this animal is a full grown adult?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
+            public int adulthood = 64;
+
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.elder")
+            public int elder = 256;
+
+            @Config.Comment("How many days until this animal gives birth?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.gestation")
+            public int gestation = 27;
+
+            @Config.Comment("How many babies are born when this animal gives birth?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.babies")
+            public int babies = 2;
+
+            @Config.Comment("How many ticks are needed for this animal grow back wool?")
+            @Config.RangeInt(min = 1_000)
+            @Config.LangKey("config." + MOD_ID + ".animals.woolTicks")
+            public int woolTicks = 168_000;
+
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
+            @Config.RangeDouble(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
+            public double oldDeathChance = 0;
+
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 50;
+        }
+
         public static final class CowCFG
+        {
+            @Config.Comment("How many days until this animal is a full grown adult?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
+            public int adulthood = 192;
+
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.elder")
+            public int elder = 768;
+
+            @Config.Comment("How many days until this animal gives birth?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.gestation")
+            public int gestation = 55;
+
+            @Config.Comment("How many babies are born when this animal gives birth?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.babies")
+            public int babies = 1;
+
+            @Config.Comment("How many ticks it is needed for this animal give milk?")
+            @Config.RangeInt(min = 1_000)
+            @Config.LangKey("config." + MOD_ID + ".animals.milkTicks")
+            public int milkTicks = 24_000;
+
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
+            @Config.RangeDouble(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
+            public double oldDeathChance = 0;
+
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 50;
+        }
+
+        public static final class YakCFG
         {
             @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
@@ -1157,6 +1297,105 @@ public final class ConfigTFC
         }
 
         public static final class ChickenCFG
+        {
+            @Config.Comment("How many days until this animal is a full grown adult?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
+            public int adulthood = 22;
+
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.elder")
+            public int elder = 88;
+
+            @Config.Comment("How many days it is needed for this animal finish hatching?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.hatch")
+            public int hatch = 4;
+
+            @Config.Comment("How many ticks it is needed for this animal to lay eggs?")
+            @Config.RangeInt(min = 1_000)
+            @Config.LangKey("config." + MOD_ID + ".animals.eggTicks")
+            public int eggTicks = 24_000;
+
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
+            @Config.RangeDouble(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
+            public double oldDeathChance = 0;
+
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 50;
+        }
+
+        public static final class TurkeyCFG
+        {
+            @Config.Comment("How many days until this animal is a full grown adult?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
+            public int adulthood = 22;
+
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.elder")
+            public int elder = 88;
+
+            @Config.Comment("How many days it is needed for this animal finish hatching?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.hatch")
+            public int hatch = 4;
+
+            @Config.Comment("How many ticks it is needed for this animal to lay eggs?")
+            @Config.RangeInt(min = 1_000)
+            @Config.LangKey("config." + MOD_ID + ".animals.eggTicks")
+            public int eggTicks = 24_000;
+
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
+            @Config.RangeDouble(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
+            public double oldDeathChance = 0;
+
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 50;
+        }
+
+        public static final class GrouseCFG
+        {
+            @Config.Comment("How many days until this animal is a full grown adult?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
+            public int adulthood = 22;
+
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.elder")
+            public int elder = 88;
+
+            @Config.Comment("How many days it is needed for this animal finish hatching?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.hatch")
+            public int hatch = 4;
+
+            @Config.Comment("How many ticks it is needed for this animal to lay eggs?")
+            @Config.RangeInt(min = 1_000)
+            @Config.LangKey("config." + MOD_ID + ".animals.eggTicks")
+            public int eggTicks = 24_000;
+
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
+            @Config.RangeDouble(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
+            public double oldDeathChance = 0;
+
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 50;
+        }
+
+        public static final class QuailCFG
         {
             @Config.Comment("How many days until this animal is a full grown adult?")
             @Config.RangeInt(min = 1)
@@ -1485,7 +1724,7 @@ public final class ConfigTFC
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
-            public String[] huntCreatures = {"tfc:rabbittfc", "tfc:sheeptfc"};
+            public String[] huntCreatures = {"tfc:rabbittfc", "tfc:sheeptfc","tfc:haretfc","tfc:gazelletfc"};
         }
 
         public static final class BearCFG
@@ -1499,10 +1738,38 @@ public final class ConfigTFC
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
-            public String[] huntCreatures = {};
+            public String[] huntCreatures = {"tfc:deertfc","tfc:haretfc"};
+        }
+
+        public static final class BlackBearCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 80;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:deertfc","tfc:haretfc"};
         }
 
         public static final class PolarBearCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 110;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:deertfc","tfc:haretfc","tfc:rabbittfc"};
+        }
+
+        public static final class CougarCFG
         {
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
@@ -1513,7 +1780,21 @@ public final class ConfigTFC
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
-            public String[] huntCreatures = {};
+            public String[] huntCreatures = {"tfc:chickentfc","tfc:grousetfc","tfc:quailtfc","tfc:rabbittfc","tfc:haretfc"};
+        }
+
+        public static final class CoyoteCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 75;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:chickentfc","tfc:grousetfc","tfc:quailtfc","tfc:rabbittfc","tfc:haretfc"};
         }
 
         public static final class LionCFG
@@ -1527,7 +1808,7 @@ public final class ConfigTFC
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
-            public String[] huntCreatures = {};
+            public String[] huntCreatures = {"tfc:haretfc","tfc:gazelletfc","tfc:wildebeesttfc","tfc:grousetfc"};
         }
 
         public static final class PantherCFG
@@ -1541,7 +1822,7 @@ public final class ConfigTFC
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
-            public String[] huntCreatures = {};
+            public String[] huntCreatures = {"tfc:chickentfc","tfc:grousetfc","tfc:quailtfc","tfc:rabbittfc","tfc:haretfc","tfc:boartfc"};
         }
 
         public static final class SaberToothCFG
@@ -1550,6 +1831,42 @@ public final class ConfigTFC
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
             public int rarity = 70;
+        }
+
+        public static final class MongooseCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 80;
+        }
+
+        public static final class DireWolfCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 120;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:horsetfc","tfc:donkeytfc","tfc:muletfc","tfc:rabbittfc","tfc:gazelletfc","tfc:turkeytfc","tfc:chickentfc","tfc:grousetfc","tfc:quailtfc","tfc:mongoosetfc","tfc:wolftfc","tfc:goattfc","tfc:ducktfc"};
+        }
+
+        public static final class JackalCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 120;
+
+            @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
+                "You must specify by 'modid:entity'",
+                "Invalid entries will be ignored."})
+            @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
+            public String[] huntCreatures = {"tfc:chickentfc","tfc:grousetfc","tfc:quailtfc","tfc:rabbittfc","tfc:haretfc"};
         }
 
         public static final class HyenaCFG
@@ -1563,7 +1880,7 @@ public final class ConfigTFC
                 "You must specify by 'modid:entity'",
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.animals.huntCreatures")
-            public String[] huntCreatures = {};
+            public String[] huntCreatures = {"tfc:chickentfc","tfc:grousetfc","tfc:quailtfc","tfc:rabbittfc","tfc:haretfc","tfc:mongoosetfc","tfc:gazelletfc"};
         }
 
         public static final class DeerCFG
@@ -1592,6 +1909,76 @@ public final class ConfigTFC
 
         public static final class RabbitCFG
         {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 50;
+        }
+
+        public static final class HareCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 70;
+        }
+
+        public static final class BoarCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 80;
+        }
+
+        public static final class GazelleCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 50;
+        }
+
+        public static final class WildebeestCFG
+        {
+            @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.rarity")
+            public int rarity = 70;
+        }
+
+        public static final class ZebuCFG
+        {
+            @Config.Comment("How many days until this animal is a full grown adult?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.adulthood")
+            public int adulthood = 27;
+
+            @Config.Comment("How many days after becoming an adult until this animal is old? 0 = Disable")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.elder")
+            public int elder = 107;
+
+            @Config.Comment("How many days until this animal gives birth?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.gestation")
+            public int gestation = 27;
+
+            @Config.Comment("How many babies are born when this animal gives birth?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".animals.babies")
+            public int babies = 2;
+
+            @Config.Comment("How many ticks it is needed for this animal give milk?.")
+            @Config.RangeInt(min = 1_000)
+            @Config.LangKey("config." + MOD_ID + ".animals.milkTicks")
+            public int milkTicks = 72_000;
+
+            @Config.Comment("Chance that old animals will die at the start of a new day. 0 = Disable")
+            @Config.RangeDouble(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".animals.oldDeathChance")
+            public double oldDeathChance = 0;
+
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")

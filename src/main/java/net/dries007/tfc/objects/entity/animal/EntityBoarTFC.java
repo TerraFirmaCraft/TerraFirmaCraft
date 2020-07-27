@@ -56,7 +56,7 @@ public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA
                 || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
-            return ConfigTFC.Animals.PIG.rarity;
+            return ConfigTFC.Animals.BOAR.rarity;
         }
         return 0;
     }

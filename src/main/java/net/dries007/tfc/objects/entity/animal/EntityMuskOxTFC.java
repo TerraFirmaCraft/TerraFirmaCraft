@@ -63,7 +63,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @SuppressWarnings("unused")
     public EntityMuskOxTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.SHEEP.adulthood, ConfigTFC.Animals.SHEEP.elder), EntitySheep.getRandomSheepColor(Constants.RNG));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.MUSKOX.adulthood, ConfigTFC.Animals.MUSKOX.elder), EntitySheep.getRandomSheepColor(Constants.RNG));
     }
 
     public EntityMuskOxTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
@@ -81,7 +81,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TUNDRA))
         {
-            return ConfigTFC.Animals.SHEEP.rarity;
+            return ConfigTFC.Animals.MUSKOX.rarity;
         }
         return 0;
     }
@@ -107,7 +107,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     public void birthChildren()
     {
-        int numberOfChildren = ConfigTFC.Animals.SHEEP.babies;
+        int numberOfChildren = ConfigTFC.Animals.MUSKOX.babies;
         for (int i = 0; i < numberOfChildren; i++)
         {
             EntityMuskOxTFC baby = new EntityMuskOxTFC(world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), getDyeColor());
@@ -120,7 +120,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     public long gestationDays()
     {
-        return ConfigTFC.Animals.SHEEP.gestation;
+        return ConfigTFC.Animals.MUSKOX.gestation;
     }
 
     @Override
@@ -198,7 +198,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     public double getOldDeathChance()
     {
-        return ConfigTFC.Animals.SHEEP.oldDeathChance;
+        return ConfigTFC.Animals.MUSKOX.oldDeathChance;
     }
 
     @Override
@@ -225,13 +225,13 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     public int getDaysToAdulthood()
     {
-        return ConfigTFC.Animals.SHEEP.adulthood;
+        return ConfigTFC.Animals.MUSKOX.adulthood;
     }
 
     @Override
     public int getDaysToElderly()
     {
-        return ConfigTFC.Animals.SHEEP.elder;
+        return ConfigTFC.Animals.MUSKOX.elder;
     }
 
     @Override

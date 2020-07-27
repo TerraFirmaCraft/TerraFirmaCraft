@@ -56,7 +56,7 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     @SuppressWarnings("unused")
     public EntityZebuTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.GOAT.adulthood, ConfigTFC.Animals.GOAT.elder));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.ZEBU.adulthood, ConfigTFC.Animals.ZEBU.elder));
     }
 
     public EntityZebuTFC(World worldIn, Gender gender, int birthDay)
@@ -71,7 +71,7 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
-            return ConfigTFC.Animals.GOAT.rarity;
+            return ConfigTFC.Animals.ZEBU.rarity;
         }
         return 0;
     }
@@ -79,7 +79,7 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     @Override
     public void birthChildren()
     {
-        int numberOfChildren = ConfigTFC.Animals.GOAT.babies;
+        int numberOfChildren = ConfigTFC.Animals.ZEBU.babies;
         for (int i = 0; i < numberOfChildren; i++)
         {
             EntityZebuTFC baby = new EntityZebuTFC(this.world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
@@ -92,13 +92,13 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     @Override
     public long gestationDays()
     {
-        return ConfigTFC.Animals.GOAT.gestation;
+        return ConfigTFC.Animals.ZEBU.gestation;
     }
 
     @Override
     public double getOldDeathChance()
     {
-        return ConfigTFC.Animals.GOAT.oldDeathChance;
+        return ConfigTFC.Animals.ZEBU.oldDeathChance;
     }
 
     @Override
@@ -110,19 +110,19 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return ConfigTFC.Animals.GOAT.adulthood;
+        return ConfigTFC.Animals.ZEBU.adulthood;
     }
 
     @Override
     public int getDaysToElderly()
     {
-        return ConfigTFC.Animals.GOAT.elder;
+        return ConfigTFC.Animals.ZEBU.elder;
     }
 
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, ConfigTFC.Animals.GOAT.milkTicks + getMilkedTick() - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, ConfigTFC.Animals.ZEBU.milkTicks + getMilkedTick() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
