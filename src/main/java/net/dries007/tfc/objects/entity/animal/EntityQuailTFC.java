@@ -61,7 +61,7 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
 
     public EntityQuailTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.CHICKEN.adulthood, ConfigTFC.Animals.CHICKEN.elder));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.QUAIL.adulthood, ConfigTFC.Animals.QUAIL.elder));
     }
 
     public EntityQuailTFC(World worldIn, Gender gender, int birthDay)
@@ -77,7 +77,7 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.Animals.CHICKEN.rarity;
+            return ConfigTFC.Animals.QUAIL.rarity;
         }
         return 0;
     }
@@ -109,13 +109,13 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return ConfigTFC.Animals.CHICKEN.adulthood;
+        return ConfigTFC.Animals.QUAIL.adulthood;
     }
 
     @Override
     public int getDaysToElderly()
     {
-        return ConfigTFC.Animals.CHICKEN.elder;
+        return ConfigTFC.Animals.QUAIL.elder;
     }
 
     @Override
@@ -143,7 +143,7 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
             {
                 EntityQuailTFC chick = new EntityQuailTFC(this.world);
                 chick.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-                cap.setFertilized(chick, ConfigTFC.Animals.CHICKEN.hatch + CalendarTFC.PLAYER_TIME.getTotalDays());
+                cap.setFertilized(chick, ConfigTFC.Animals.QUAIL.hatch + CalendarTFC.PLAYER_TIME.getTotalDays());
             }
         }
         eggs.add(egg);
@@ -159,7 +159,7 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, ConfigTFC.Animals.CHICKEN.eggTicks + getLaidTicks() - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, ConfigTFC.Animals.QUAIL.eggTicks + getLaidTicks() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -201,7 +201,7 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_CHICKEN_HURT;
+        return TFCSounds.ANIMAL_QUAIL_SAY;
     }
 
     @Override
@@ -230,7 +230,7 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_CHICKEN_AMBIENT;
+        return TFCSounds.ANIMAL_QUAIL_SAY;
     }
 
     @Nullable
@@ -302,6 +302,6 @@ public class EntityQuailTFC extends EntityAnimalTFC implements ILivestock
     @Override
     public double getOldDeathChance()
     {
-        return ConfigTFC.Animals.CHICKEN.oldDeathChance;
+        return ConfigTFC.Animals.QUAIL.oldDeathChance;
     }
 }

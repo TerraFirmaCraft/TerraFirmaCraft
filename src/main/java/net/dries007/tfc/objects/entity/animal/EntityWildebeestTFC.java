@@ -71,7 +71,7 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
-            return ConfigTFC.Animals.DEER.rarity;
+            return ConfigTFC.Animals.WILDEBEEST.rarity;
         }
         return 0;
     }
@@ -121,7 +121,7 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSounds.ANIMAL_DEER_HURT;
+        return TFCSounds.ANIMAL_WILDEBEEST_SAY;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DEER_CRY : TFCSounds.ANIMAL_DEER_SAY;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DEER_CRY : TFCSounds.ANIMAL_WILDEBEEST_SAY;
     }
 
     @Nullable

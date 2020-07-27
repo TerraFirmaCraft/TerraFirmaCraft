@@ -57,7 +57,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     @SuppressWarnings("unused")
     public EntityYakTFC(World worldIn)
     {
-        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.COW.adulthood, ConfigTFC.Animals.COW.elder));
+        this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.YAK.adulthood, ConfigTFC.Animals.YAK.elder));
     }
 
     public EntityYakTFC(World worldIn, Gender gender, int birthDay)
@@ -74,7 +74,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            return ConfigTFC.Animals.COW.rarity;
+            return ConfigTFC.Animals.YAK.rarity;
         }
         return 0;
     }
@@ -100,7 +100,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public void birthChildren()
     {
-        int numberOfChildren = ConfigTFC.Animals.COW.babies; //one always
+        int numberOfChildren = ConfigTFC.Animals.YAK.babies; //one always
         for (int i = 0; i < numberOfChildren; i++)
         {
             EntityYakTFC baby = new EntityYakTFC(world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays());
@@ -113,7 +113,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public long gestationDays()
     {
-        return ConfigTFC.Animals.COW.gestation;
+        return ConfigTFC.Animals.YAK.gestation;
     }
 
     @Override
@@ -174,7 +174,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public double getOldDeathChance()
     {
-        return ConfigTFC.Animals.COW.oldDeathChance;
+        return ConfigTFC.Animals.YAK.oldDeathChance;
     }
 
     @Override
@@ -201,7 +201,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public int getDaysToAdulthood()
     {
-        return ConfigTFC.Animals.COW.adulthood;
+        return ConfigTFC.Animals.YAK.adulthood;
     }
 
     @Override
@@ -225,7 +225,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, ConfigTFC.Animals.COW.milkTicks + getMilkedTick() - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, ConfigTFC.Animals.YAK.milkTicks + getMilkedTick() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override

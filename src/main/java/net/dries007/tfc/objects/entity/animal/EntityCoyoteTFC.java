@@ -60,7 +60,7 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS))
         {
-            return ConfigTFC.Animals.PANTHER.rarity;
+            return ConfigTFC.Animals.COYOTE.rarity;
         }
         return 0;
     }
@@ -102,10 +102,10 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_PANTHER_HURT; }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_COYOTE_HURT; }
 
     @Override
-    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_PANTHER_DEATH; }
+    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_COYOTE_DEATH; }
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn)
@@ -137,7 +137,7 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
 
         int priority = 2;
-        for (String input : ConfigTFC.Animals.BEAR.huntCreatures)
+        for (String input : ConfigTFC.Animals.COYOTE.huntCreatures)
         {
             ResourceLocation key = new ResourceLocation(input);
             EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
@@ -167,7 +167,7 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_PANTHER_CRY : TFCSounds.ANIMAL_PANTHER_SAY;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_COYOTE_CRY : TFCSounds.ANIMAL_COYOTE_SAY;
     }
 
     @Nullable
