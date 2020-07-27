@@ -21,26 +21,27 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class LootTablesTFC
 {
-    public static ResourceLocation ANIMALS_BEAR;
+    public static ResourceLocation ANIMALS_BEAR; // Bear, Grizzly, Black, Polar
     public static ResourceLocation ANIMALS_CHICKEN;
-    public static ResourceLocation ANIMALS_COW;
-    public static ResourceLocation ANIMALS_DEER;
-    public static ResourceLocation ANIMALS_PHEASANT;
+    public static ResourceLocation ANIMALS_COW; // Cow, Yak, Zebu
+    public static ResourceLocation ANIMALS_DEER; // Deer, Gazelle, Wildebeest
+    public static ResourceLocation ANIMALS_PHEASANT; //Turkey, Pheasant
     public static ResourceLocation ANIMALS_PIG;
     public static ResourceLocation ANIMALS_SHEEP;
-    public static ResourceLocation ANIMALS_RABBIT;
-    public static ResourceLocation ANIMALS_WOLF;
-    public static ResourceLocation ANIMALS_HORSE;
+    public static ResourceLocation ANIMALS_RABBIT; //Hare, Rabbit
+    public static ResourceLocation ANIMALS_WOLF; // Wolf, Dire Wolf, Jackal, Coyote
+    public static ResourceLocation ANIMALS_HORSE; //Horse, Donkey
     public static ResourceLocation ANIMALS_ALPACA;
-    public static ResourceLocation ANIMALS_DUCK;
+    public static ResourceLocation ANIMALS_DUCK; // Grouse, Duck, Quail
     public static ResourceLocation ANIMALS_GOAT;
     public static ResourceLocation ANIMALS_CAMEL;
-    public static ResourceLocation ANIMALS_GRAN_FELINE;
+    public static ResourceLocation ANIMALS_GRAN_FELINE; // Lion, Panther, Cougar, Sabertooth
     public static ResourceLocation ANIMALS_LLAMA;
     public static ResourceLocation ANIMALS_OCELOT;
     public static ResourceLocation ANIMALS_SQUID;
     public static ResourceLocation ANIMALS_PARROT;
     public static ResourceLocation ANIMALS_HYENA;
+    public static ResourceLocation ANIMALS_MUSKOX;
 
     public static void init()
     {
@@ -64,6 +65,7 @@ public class LootTablesTFC
         ANIMALS_SQUID = register("animals/squid");
         ANIMALS_PARROT = register("animals/parrot");
         ANIMALS_HYENA = register("animals/hyena");
+        ANIMALS_MUSKOX = register("animals/muskox");
 
 
         // Loot function for skill drop multiplier

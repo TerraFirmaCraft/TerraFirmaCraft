@@ -364,7 +364,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_SHEEP;
+        return LootTablesTFC.ANIMALS_MUSKOX;
     }
 
     @Override

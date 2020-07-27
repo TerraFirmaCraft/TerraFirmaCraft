@@ -234,10 +234,7 @@ public class EntityGrouseTFC extends EntityAnimalTFC implements ILivestock
     }
 
     @Nullable
-    protected ResourceLocation getLootTable()
-    {
-        return LootTablesTFC.ANIMALS_CHICKEN;
-    }
+    protected ResourceLocation getLootTable() { return LootTablesTFC.ANIMALS_DUCK; }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
