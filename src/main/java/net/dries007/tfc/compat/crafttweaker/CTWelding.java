@@ -29,6 +29,12 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenRegister
 public class CTWelding
 {
+    @ZenMethod
+    public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input1, crafttweaker.api.item.IIngredient input2, IItemStack output, int minTier)
+    {
+        addRecipe(registryName, input1, input2, output, minTier, null);
+    }
+
     @SuppressWarnings("unchecked")
     @ZenMethod
     public static void addRecipe(String registryName, crafttweaker.api.item.IIngredient input1, crafttweaker.api.item.IIngredient input2, IItemStack output, int minTier, String skillTypeName)
