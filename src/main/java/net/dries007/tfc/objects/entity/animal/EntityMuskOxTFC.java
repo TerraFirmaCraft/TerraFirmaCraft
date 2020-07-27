@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -329,13 +330,13 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_SHEEP_HURT;
+        return TFCSounds.ANIMAL_MUSKOX_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_SHEEP_DEATH;
+        return TFCSounds.ANIMAL_MUSKOX_DEATH;
     }
 
     @Override
@@ -358,7 +359,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_SHEEP_AMBIENT;
+        return TFCSounds.ANIMAL_MUSKOX_SAY;
     }
 
     @Nullable

@@ -121,7 +121,7 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSounds.ANIMAL_DEER_HURT;
+        return TFCSounds.ANIMAL_WILDEBEEST_SAY;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DEER_CRY : TFCSounds.ANIMAL_DEER_SAY;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DEER_CRY : TFCSounds.ANIMAL_WILDEBEEST_SAY;
     }
 
     @Nullable
