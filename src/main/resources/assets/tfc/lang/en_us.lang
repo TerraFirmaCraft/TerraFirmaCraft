@@ -318,8 +318,11 @@ config.tfc.general.fallable.propagateCollapseChance.tooltip=Chance that collapsi
 config.tfc.general.fallable.supportBeamRangeHor=Horizontal Support Range
 config.tfc.general.fallable.supportBeamRangeHor.tooltip=The horizontal radius of the support range of support beams.
 
-config.tfc.general.fallable.supportBeamRangeVert=Vertical Support Range
-config.tfc.general.fallable.supportBeamRangeVert.tooltip=The vertical radius of the support range of support beams.
+config.tfc.general.fallable.supportBeamRangeUp=Upwards Support Range
+config.tfc.general.fallable.supportBeamRangeUp.tooltip=The upwards range support range of support beams.
+
+config.tfc.general.fallable.supportBeamRangeDown=Downwards Support Range
+config.tfc.general.fallable.supportBeamRangeDown.tooltip=The downwards support range of support beams.
 
 config.tfc.general.fallable.chiselCausesCollapse=Chiseling Causes Collapses
 config.tfc.general.fallable.chiselCausesCollapse.tooltip=Should chiseling raw stone blocks cause collapses?
