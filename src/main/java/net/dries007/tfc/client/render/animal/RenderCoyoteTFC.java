@@ -47,7 +47,7 @@ public class RenderCoyoteTFC extends RenderLiving<EntityCoyoteTFC>
     @Override
     protected void preRenderCallback(EntityCoyoteTFC coyoteTFC, float par2)
     {
-        GlStateManager.scale(1.2f, 1.2f, 1.2f);
+        GlStateManager.scale(1.0f, 1.0f, 1.0f);
     }
 
     @Override

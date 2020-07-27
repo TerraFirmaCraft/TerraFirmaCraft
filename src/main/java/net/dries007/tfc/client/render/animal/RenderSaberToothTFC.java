@@ -42,7 +42,7 @@ public class RenderSaberToothTFC extends RenderLiving<EntitySaberToothTFC>
     @Override
     protected void preRenderCallback(EntitySaberToothTFC sabertooth, float par2)
     {
-        GlStateManager.scale(1.2f, 1.2f, 1.2f);
+        GlStateManager.scale(1.3f, 1.3f, 1.3f);
     }
 
     @Override

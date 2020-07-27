@@ -47,7 +47,7 @@ public class RenderGrizzlyBearTFC extends RenderLiving<EntityGrizzlyBearTFC>
     @Override
     protected void preRenderCallback(EntityGrizzlyBearTFC bearTFC, float par2)
     {
-        GlStateManager.scale(1.3f, 1.3f, 1.3f);
+        GlStateManager.scale(1.4f, 1.4f, 1.4f);
     }
 
     @Override

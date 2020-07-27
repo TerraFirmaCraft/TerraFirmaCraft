@@ -47,7 +47,7 @@ public class RenderDireWolfTFC extends RenderLiving<EntityDireWolfTFC>
     @Override
     protected void preRenderCallback(EntityDireWolfTFC direwolfTFC, float par2)
     {
-        GlStateManager.scale(1.2f, 1.2f, 1.2f);
+        GlStateManager.scale(1.1f, 1.1f, 1.1f);
     }
 
     @Override

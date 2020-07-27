@@ -47,7 +47,7 @@ public class RenderJackalTFC extends RenderLiving<EntityJackalTFC>
     @Override
     protected void preRenderCallback(EntityJackalTFC jackalTFC, float par2)
     {
-        GlStateManager.scale(1.2f, 1.2f, 1.2f);
+        GlStateManager.scale(0.8f, 0.8f, 0.8f);
     }
 
     @Override
