@@ -80,7 +80,7 @@ public class EntityHareTFC extends EntityAnimalMammal implements IHuntable
             (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.SAVANNA ||
                 biomeType == BiomeHelper.BiomeType.DESERT))
         {
-            return ConfigTFC.Animals.RABBIT.rarity;
+            return ConfigTFC.Animals.HARE.rarity;
         }
         return 0;
     }

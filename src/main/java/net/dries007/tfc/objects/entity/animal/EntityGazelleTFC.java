@@ -71,7 +71,7 @@ public class EntityGazelleTFC extends EntityAnimalMammal implements IHuntable
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
-            return ConfigTFC.Animals.DEER.rarity;
+            return ConfigTFC.Animals.GAZELLE.rarity;
         }
         return 0;
     }

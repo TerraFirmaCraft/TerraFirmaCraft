@@ -54,7 +54,7 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.DESERT))
         {
-            return ConfigTFC.Animals.PIG.rarity;
+            return ConfigTFC.Animals.MONGOOSE.rarity;
         }
         return 0;
     }

@@ -142,6 +142,69 @@ public class TFCSounds
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.hyena.death")
     public static final SoundEvent ANIMAL_HYENA_DEATH = getNull();
 
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.zebu.say")
+    public static final SoundEvent ANIMAL_ZEBU_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.zebu.cry")
+    public static final SoundEvent ANIMAL_ZEBU_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.zebu.hurt")
+    public static final SoundEvent ANIMAL_ZEBU_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.zebu.death")
+    public static final SoundEvent ANIMAL_ZEBU_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.muskox.say")
+    public static final SoundEvent ANIMAL_MUSKOX_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.muskox.cry")
+    public static final SoundEvent ANIMAL_MUSKOX_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.muskox.hurt")
+    public static final SoundEvent ANIMAL_MUSKOX_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.muskox.death")
+    public static final SoundEvent ANIMAL_MUSKOX_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.turkey.say")
+    public static final SoundEvent ANIMAL_TURKEY_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.turkey.cry")
+    public static final SoundEvent ANIMAL_TURKEY_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.turkey.hurt")
+    public static final SoundEvent ANIMAL_TURKEY_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.turkey.death")
+    public static final SoundEvent ANIMAL_TURKEY_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.boar.say")
+    public static final SoundEvent ANIMAL_BOAR_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.boar.cry")
+    public static final SoundEvent ANIMAL_BOAR_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.boar.hurt")
+    public static final SoundEvent ANIMAL_BOAR_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.boar.death")
+    public static final SoundEvent ANIMAL_BOAR_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.wildebeest.say")
+    public static final SoundEvent ANIMAL_WILDEBEEST_SAY = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.grouse.say")
+    public static final SoundEvent ANIMAL_GROUSE_SAY = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.quail.say")
+    public static final SoundEvent ANIMAL_QUAIL_SAY = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.say")
+    public static final SoundEvent ANIMAL_COUGAR_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.cry")
+    public static final SoundEvent ANIMAL_COUGAR_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.hurt")
+    public static final SoundEvent ANIMAL_COUGAR_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.death")
+    public static final SoundEvent ANIMAL_COUGAR_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.say")
+    public static final SoundEvent ANIMAL_COYOTE_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.cry")
+    public static final SoundEvent ANIMAL_COYOTE_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.hurt")
+    public static final SoundEvent ANIMAL_COYOTE_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.death")
+    public static final SoundEvent ANIMAL_COYOTE_DEATH = getNull();
+
     // These are static initialized because we need a custom sound type which uses the sounds before initialization
     private static final SoundEvent CHARCOAL_PILE_BREAK = createSoundEvent("block.charcoal.break");
     private static final SoundEvent CHARCOAL_PILE_FALL = createSoundEvent("block.charcoal.fall");
@@ -217,7 +280,15 @@ public class TFCSounds
             createSoundEvent("animal.hyena.cry"),
             createSoundEvent("animal.hyena.say"),
             createSoundEvent("animal.hyena.hurt"),
-            createSoundEvent("animal.hyena.death")
+            createSoundEvent("animal.hyena.death"),
+            createSoundEvent("animal.zebu.cry"),
+            createSoundEvent("animal.zebu.say"),
+            createSoundEvent("animal.zebu.hurt"),
+            createSoundEvent("animal.zebu.death"),
+            createSoundEvent("animal.muskox.cry"),
+            createSoundEvent("animal.muskox.say"),
+            createSoundEvent("animal.muskox.hurt"),
+            createSoundEvent("animal.muskox.death")
         );
     }
 
