@@ -47,7 +47,7 @@ public class RenderBlackBearTFC extends RenderLiving<EntityBlackBearTFC>
     @Override
     protected void preRenderCallback(EntityBlackBearTFC blackbearTFC, float par2)
     {
-        GlStateManager.scale(1.3f, 1.3f, 1.3f);
+        GlStateManager.scale(1.4f, 1.4f, 1.4f);
     }
 
     @Override
