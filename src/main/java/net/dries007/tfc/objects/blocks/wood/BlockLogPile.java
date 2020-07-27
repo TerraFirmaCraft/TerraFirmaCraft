@@ -50,7 +50,11 @@ public class BlockLogPile extends Block implements ILightableBlock
 
     public static boolean isValidCoverBlock(World world, BlockPos pos)
     {
-        IBlockState state = world.getBlockState(pos);
+        return isValidCoverBlock(world.getBlockState(pos));
+    }
+
+    public static boolean isValidCoverBlock(IBlockState state)
+    {
         if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.CHARCOAL_PILE)
         {
             return true;

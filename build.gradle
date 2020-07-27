@@ -137,9 +137,10 @@ dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
 
     // For now, since maven is no show, use the curse maven plugin to resolve the exact file name
-    compile "curse.maven:hwyla:2568751"
+    deobfProvided "curse.maven:hwyla:2568751"
     //compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
-    compileOnly "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
+    deobfProvided "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
+    deobfCompile "vazkii.patchouli:Patchouli:${config.patchouli.version}"
 }
 
 processResources {

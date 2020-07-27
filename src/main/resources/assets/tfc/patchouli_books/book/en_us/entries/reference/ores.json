@@ -1,0 +1,171 @@
+{
+	"name": "Ores & Minerals",
+	"icon": "tfc:textures/items/ore/limonite.png",
+	"category": "reference",
+	"advancement": "tfc:world/pick_nugget",
+	"sortnum": 7,
+	"pages": [
+    {
+      "type": "text",
+	  "text": "TFC has 21 stone types, broken up into 4 categories: $(thing)Igneous Extrusive, Igneous Intrusive, Metamorphic, and Sedimentary$().$(2br)$(item)Igneous Extrusive$(): Andesite, Basalt, Dacite, Rhyolite$(2br)$(item)Igneous Intrusive$(): Diorite, Gabbro, Granite"
+	},
+	{
+      "type": "text",
+	  "text": "$(item)Metamorphic$(): Gneiss, Marble, Phyllite, Quartzite, Schist, Slate$(br2)$(item)Sedimentary$(): Chalk, Chert, Claystone, Conglomerate, Dolomite, Limestone, Rock Salt, Shale$(br2)$(thing)Note: Igneous rocks generate on all three layers, Metamorphic in the top and middle, and Sedimentary on the top only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Bismuthinite",
+	  "item": "tfc:ore/bismuthinite",
+	  "text": "Bismuth.$(br2)Igneous Extrusive, Sedimentary (surface vein)"
+	},
+	{
+      "type": "spotlight",
+	  "title": "Cassiterite",
+	  "item": "tfc:ore/cassiterite",
+	  "text": "Tin.$(br2)Igneous Intrusive (surface in Granite only)"
+	},
+	{
+      "type": "spotlight",
+	  "title": "Garnierite",
+	  "item": "tfc:ore/garnierite",
+	  "text": "Nickel.$(br2)Gabbro only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Hematite",
+	  "item": "tfc:ore/hematite",
+	  "text": "Iron.$(br2)Igneous Extrusive"
+	},
+	{
+      "type": "spotlight",
+	  "title": "Limonite",
+	  "item": "tfc:ore/limonite",
+	  "text": "Iron.$(br2)Sedimentary"
+	},
+	{
+      "type": "spotlight",
+	  "title": "Magnetite",
+	  "item": "tfc:ore/magnetite",
+	  "text": "Iron.$(br2)Sedimentary"
+	},
+	{
+      "type": "spotlight",
+	  "title": "Malachite",
+	  "item": "tfc:ore/malachite",
+	  "text": "Copper.$(br2)marble and Limestone only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Native Copper",
+	  "item": "tfc:ore/native_copper",
+	  "text": "Copper.$(br2)Igneous Extrusive"
+	},
+	{
+      "type": "spotlight",
+	  "title": "Gold",
+	  "item": "tfc:ore/gold",
+	  "text": "Gold.$(br2)Igneous Extrusive and Intrusive."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Native Silver",
+	  "item": "tfc:ore/native_silver",
+	  "text": "Silver.$(br2)Granite and Gneiss only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Sphalerite",
+	  "item": "tfc:ore/sphalerite",
+	  "text": "Zinc.$(br2)Metamorphic (surface)"
+	},
+	{
+      "type": "spotlight",
+	  "title": "Tetrahedrite",
+	  "item": "tfc:ore/tetrahedrite",
+	  "text": "Copper.$(br2)Metamorphic (surface)"
+	},
+	{
+      "type": "spotlight",
+	  "title": "Bituminous Coal",
+	  "item": "tfc:ore/bituminous_coal",
+	  "text": "Coal.$(br2)Sedimentary."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Borax",
+	  "item": "tfc:ore/borax",
+	  "text": "Flux.$(br2)Rock Salt only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Cinnabar",
+	  "item": "tfc:ore/cinnabar",
+	  "text": "Redstone.$(br2)igneous Extrusive, Quartzite, and Shale."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Cryolite",
+	  "item": "tfc:ore/cryolite",
+	  "text": "Redstone.$(br2)Granite only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Graphite",
+	  "item": "tfc:ore/graphite",
+	  "text": "Graphite Powder.$(br2)Gneiss, Marble, Quatzite, and Schist only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Gypsum",
+	  "item": "tfc:ore/gypsum",
+	  "text": "Alabaster.$(br2)Sedimentary."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Kaolinite",
+	  "item": "tfc:ore/kaolinite",
+	  "text": "Kaolinite Powder.$(br2)Sedimentary."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Kimberlite",
+	  "item": "tfc:ore/kimberlite",
+	  "text": "Diamonds.$(br2)Gabbro only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Lapis Lazuli",
+	  "item": "tfc:ore/lapis_lazuli",
+	  "text": "Lapis Lazuli Powder.$(br2)Marble only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Lignite",
+	  "item": "tfc:ore/lignite",
+	  "text": "Coal.$(br2)Sedimentary."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Saltpeter",
+	  "item": "tfc:ore/saltpeter",
+	  "text": "Saltpeter powder.$(br2)All Sedimentary except Rock Salt."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Sylvite (useless)",
+	  "item": "tfc:ore/sylvite",
+	  "text": "Fertilizer powder (useless).$(br2)Rock Salt only."
+	},
+	{
+      "type": "spotlight",
+	  "title": "Native Platinum (useless)",
+	  "item": "tfc:ore/native_platinum",
+	  "text": "Melts into Platinum metal, which is only possible at extremely high temperatures. Theoretically possible to make into a lamp.$(br2)Sedimentary.$(br2)$(br2)"
+	},
+	{
+	  "type": "text",
+	  "text": "In addition, these ores and minerals still exist, but do not currently spawn in the world: Galena (Lead), Jet, Microcline, Olivine, Petrified Wood, Pitchblende, Satinspar, Selenite, Serpentine"
+	}
+  ]
+}

@@ -59,11 +59,7 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     static
     {
         BiPredicate<World, BlockPos> skyMatcher = World::canBlockSeeSky;
-        BiPredicate<World, BlockPos> stoneMatcher = (world, pos) ->
-        {
-            IBlockState state = world.getBlockState(pos);
-            return state.getMaterial() == Material.ROCK && state.isOpaqueCube() && state.isNormalCube();
-        };
+        BiPredicate<World, BlockPos> isValidSide = (world, pos) -> BlockCharcoalForge.isValidSide(world.getBlockState(pos));
         CHARCOAL_FORGE_MULTIBLOCK = new Multiblock()
             // Top block
             .match(new BlockPos(0, 1, 0), state -> state.getBlock() == BlocksTFC.CRUCIBLE || state.getBlock() == Blocks.AIR)
@@ -80,16 +76,21 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
                 .match(new BlockPos(-2, 0, 0), skyMatcher)
             )
             // Underneath
-            .match(new BlockPos(1, 0, 0), stoneMatcher)
-            .match(new BlockPos(-1, 0, 0), stoneMatcher)
-            .match(new BlockPos(0, 0, 1), stoneMatcher)
-            .match(new BlockPos(0, 0, -1), stoneMatcher)
-            .match(new BlockPos(0, -1, 0), stoneMatcher);
+            .match(new BlockPos(1, 0, 0), isValidSide)
+            .match(new BlockPos(-1, 0, 0), isValidSide)
+            .match(new BlockPos(0, 0, 1), isValidSide)
+            .match(new BlockPos(0, 0, -1), isValidSide)
+            .match(new BlockPos(0, -1, 0), isValidSide);
     }
 
     public static boolean isValid(World world, BlockPos pos)
     {
         return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
+    }
+
+    public static boolean isValidSide(IBlockState state)
+    {
+        return state.getMaterial() == Material.ROCK && state.isOpaqueCube() && state.isNormalCube();
     }
 
     public BlockCharcoalForge()

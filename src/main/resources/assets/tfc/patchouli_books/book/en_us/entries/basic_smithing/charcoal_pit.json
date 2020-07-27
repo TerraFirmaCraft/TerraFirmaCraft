@@ -1,0 +1,27 @@
+{
+    "name": "The Charcoal Pit",
+    "icon": "tfc:textures/items/wood/log/oak.png",
+    "category": "basic_smithing",
+	"advancement": "tfc:main/pottery",
+	"sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The $(thing)Charcoal Pit$() is the main method of obtaining $(item)Charcoal$(), which is the main source of $(l:basic_smithing/forge)fuel$() in TFC. To build a charcoal pit, we must first create a $(item)log pile$() by $(4)shift+right-clicking$() with some logs."
+		},
+		{
+			"type": "text",
+			"text": "Put most simply, the charcoal pit is a structure of log piles covered by non-flammable solid blocks. You will want to dig a small hole in the ground, and fill it with log piles (each with 16 logs, to maximize output). Then, cover the piles with a solid block (dirt works best). Then, remove one covering block to expose a log pile, and drop a $(item)torch$() on it. Wait a few seconds until it lights, then cover the exposed log pile and wait. After, you can dig the charcoal that's left with a shovel."
+		},
+		{
+		  "type": "multiblock",
+		  "multiblock_id": "tfc:charcoal_pit_1x1",
+		  "text": "This is a simple 1x1 charcoal pit. For the amount of time it takes to burn, it's pretty inefficient. But hey, it works!"
+		},
+		{
+		  "type": "multiblock",
+		  "multiblock_id": "tfc:charcoal_pit_3x3",
+		  "text": "This is an example of a larger charcoal pit you can try. However, almost any shape will work!"
+		}
+    ]
+}
