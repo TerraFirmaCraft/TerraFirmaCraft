@@ -198,11 +198,11 @@ public class TFCSounds
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.say")
     public static final SoundEvent ANIMAL_COYOTE_SAY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.cry")
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.cry")
     public static final SoundEvent ANIMAL_COYOTE_CRY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.hurt")
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.hurt")
     public static final SoundEvent ANIMAL_COYOTE_HURT = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.death")
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.death")
     public static final SoundEvent ANIMAL_COYOTE_DEATH = getNull();
 
     // These are static initialized because we need a custom sound type which uses the sounds before initialization
