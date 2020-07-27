@@ -81,7 +81,7 @@ public class EntityBlackBearTFC extends EntityAnimalMammal implements IPredator,
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
-            return ConfigTFC.Animals.BEAR.rarity;
+            return ConfigTFC.Animals.BLACK_BEAR.rarity;
         }
         return 0;
     }
@@ -232,7 +232,7 @@ public class EntityBlackBearTFC extends EntityAnimalMammal implements IPredator,
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 
         int priority = 2;
-        for (String input : ConfigTFC.Animals.BEAR.huntCreatures)
+        for (String input : ConfigTFC.Animals.BLACK_BEAR.huntCreatures)
         {
             ResourceLocation key = new ResourceLocation(input);
             EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
