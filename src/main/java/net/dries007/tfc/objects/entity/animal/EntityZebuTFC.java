@@ -128,13 +128,13 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_COW_HURT;
+        return TFCSounds.ANIMAL_ZEBU_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_COW_DEATH;
+        return TFCSounds.ANIMAL_ZEBU_DEATH;
     }
 
     @Override
@@ -145,10 +145,7 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     }
 
     @Override
-    protected SoundEvent getAmbientSound()
-    {
-        return SoundEvents.ENTITY_COW_AMBIENT;
-    }
+    protected SoundEvent getAmbientSound() { return TFCSounds.ANIMAL_ZEBU_SAY; }
 
     @Nullable
     protected ResourceLocation getLootTable()

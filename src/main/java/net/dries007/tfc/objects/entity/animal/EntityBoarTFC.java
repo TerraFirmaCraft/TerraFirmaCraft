@@ -11,6 +11,7 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -117,13 +118,13 @@ public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_PIG_HURT;
+        return TFCSounds.ANIMAL_BOAR_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_PIG_DEATH;
+        return TFCSounds.ANIMAL_BOAR_DEATH;
     }
 
     @Override
@@ -145,7 +146,7 @@ public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_PIG_AMBIENT;
+        return TFCSounds.ANIMAL_BOAR_SAY;
     }
 
     @Nullable

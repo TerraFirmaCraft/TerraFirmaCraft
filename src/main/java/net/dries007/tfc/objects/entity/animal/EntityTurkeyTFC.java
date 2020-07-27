@@ -201,13 +201,13 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_CHICKEN_HURT;
+        return TFCSounds.ANIMAL_TURKEY_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_CHICKEN_DEATH;
+        return TFCSounds.ANIMAL_TURKEY_DEATH;
     }
 
     @Override
@@ -230,7 +230,7 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_CHICKEN_AMBIENT;
+        return TFCSounds.ANIMAL_TURKEY_SAY;
     }
 
     @Nullable
