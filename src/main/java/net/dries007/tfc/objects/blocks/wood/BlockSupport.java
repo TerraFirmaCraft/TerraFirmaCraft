@@ -76,9 +76,9 @@ public class BlockSupport extends Block
     public static boolean isBeingSupported(World worldIn, BlockPos pos)
     {
         int sRangeHor = ConfigTFC.General.FALLABLE.supportBeamRangeHor;
-        int sRangeVert = ConfigTFC.General.FALLABLE.supportBeamRangeVert;
-        int sRangeHorNeg = sRangeHor * -1;
-        int sRangeVertNeg = sRangeVert * -1;
+        int sRangeVert = ConfigTFC.General.FALLABLE.supportBeamRangeUp;
+        int sRangeHorNeg = ConfigTFC.General.FALLABLE.supportBeamRangeHor * -1;
+        int sRangeVertNeg = ConfigTFC.General.FALLABLE.supportBeamRangeDown * -1;
         if (!worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
         {
             return true; // If world isn't loaded...
@@ -114,9 +114,9 @@ public class BlockSupport extends Block
         int minZ = Math.min(from.getZ(), to.getZ());
         int maxZ = Math.max(from.getZ(), to.getZ());
         int sRangeHor = ConfigTFC.General.FALLABLE.supportBeamRangeHor;
-        int sRangeVert = ConfigTFC.General.FALLABLE.supportBeamRangeVert;
-        int sRangeHorNeg = sRangeHor * -1;
-        int sRangeVertNeg = sRangeVert * -1;
+        int sRangeVert = ConfigTFC.General.FALLABLE.supportBeamRangeUp;
+        int sRangeHorNeg = ConfigTFC.General.FALLABLE.supportBeamRangeHor * -1;
+        int sRangeVertNeg = ConfigTFC.General.FALLABLE.supportBeamRangeDown * -1;
         BlockPos minPoint = new BlockPos(minX, minY, minZ);
         BlockPos maxPoint = new BlockPos(maxX, maxY, maxZ);
         for (BlockPos.MutableBlockPos searchingPoint : BlockPos.getAllInBoxMutable(minPoint.add(sRangeHorNeg, sRangeVertNeg, sRangeHorNeg),
