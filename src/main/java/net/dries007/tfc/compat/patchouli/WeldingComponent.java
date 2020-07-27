@@ -38,7 +38,7 @@ public class WeldingComponent extends CustomComponent
         }
         ingredient1 = TFCPatchouliPlugin.getIngredient(recipe.getIngredients().get(0));
         ingredient2 = TFCPatchouliPlugin.getIngredient(recipe.getIngredients().get(1));
-        outputStack = recipe.getOutput();
+        outputStack = recipe.getOutput(null);
     }
 
     @Override

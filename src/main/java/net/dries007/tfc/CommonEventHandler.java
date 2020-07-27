@@ -539,10 +539,17 @@ public final class CommonEventHandler
             FoodStatsTFC.replaceFoodStats(player);
 
             // Skills / Player data
-            IPlayerData skills = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
-            if (skills != null)
+            IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (cap != null)
             {
-                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(skills.serializeNBT()), player);
+                // Give book if possible
+                if (Loader.isModLoaded("patchouli") && !(event.isEndConquered() || player.world.getGameRules().getBoolean("keepInventory")) && ConfigTFC.General.MISC.giveBook)
+                {
+                    TFCPatchouliPlugin.giveBookToPlayer(player);
+                    cap.setHasBook(true);
+                }
+
+                TerraFirmaCraft.getNetwork().sendTo(new PacketPlayerDataUpdate(cap.serializeNBT()), player);
             }
         }
     }

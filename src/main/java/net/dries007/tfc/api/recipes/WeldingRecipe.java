@@ -66,17 +66,20 @@ public class WeldingRecipe extends IForgeRegistryEntry.Impl<WeldingRecipe> imple
     }
 
     @Nonnull
-    public ItemStack getOutput(EntityPlayer player)
+    public ItemStack getOutput(@Nullable EntityPlayer player)
     {
         ItemStack stack = output.copy();
-        IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
-        if (cap != null)
+        if (player != null)
         {
-            SmithingSkill skill = cap.getSkill(SkillType.SMITHING);
-            if (skill != null && skillType != null)
+            IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
+            if (cap != null)
             {
-                skill.addSkill(skillType, 1);
-                SmithingSkill.applySkillBonus(skill, stack, skillType);
+                SmithingSkill skill = cap.getSkill(SkillType.SMITHING);
+                if (skill != null && skillType != null)
+                {
+                    skill.addSkill(skillType, 1);
+                    SmithingSkill.applySkillBonus(skill, stack, skillType);
+                }
             }
         }
         return stack;
