@@ -312,6 +312,141 @@
       "tfc:cameldeath1"
     ]
   },
+  "animal.zebu.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.zebu.cry",
+    "sounds": [
+      "tfc:zebu_call"
+    ]
+  },
+  "animal.zebu.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.zebu.say",
+    "sounds": [
+      "tfc:zebu_call"
+    ]
+  },
+  "animal.zebu.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.zebu.hurt",
+    "sounds": [
+      "tfc:zebu_hurt"
+    ]
+  },
+  "animal.zebu.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.zebu.death",
+    "sounds": [
+      "tfc:zebu_death"
+    ]
+  },
+  "animal.muskox.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.muskox.cry",
+    "sounds": [
+      "tfc:muskox_call"
+    ]
+  },
+  "animal.muskox.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.muskox.say",
+    "sounds": [
+      "tfc:muskox_call"
+    ]
+  },
+  "animal.muskox.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.muskox.hurt",
+    "sounds": [
+      "tfc:muskox_hurt"
+    ]
+  },
+  "animal.muskox.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.muskox.death",
+    "sounds": [
+      "tfc:muskox_death"
+    ]
+  },
+  "animal.turkey.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.turkey.cry",
+    "sounds": [
+      "tfc:turkey_gobble",
+      "tfc:turkey_gobble2"
+    ]
+  },
+  "animal.turkey.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.turkey.say",
+    "sounds": [
+      "tfc:turkey_gobble",
+      "tfc:turkey_gobble2"
+    ]
+  },
+  "animal.turkey.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.turkey.hurt",
+    "sounds": [
+      "tfc:turkey_hurt"
+    ]
+  },
+  "animal.turkey.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.turkey.death",
+    "sounds": [
+      "tfc:turkey_death"
+    ]
+  },
+  "animal.boar.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.boar.cry",
+    "sounds": [
+      "tfc:boar_growl"
+    ]
+  },
+  "animal.boar.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.boar.say",
+    "sounds": [
+      "tfc:boar_growl"
+    ]
+  },
+  "animal.boar.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.boar.hurt",
+    "sounds": [
+      "tfc:boar_hurt"
+    ]
+  },
+  "animal.boar.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.boar.death",
+    "sounds": [
+      "tfc:boar_death"
+    ]
+  },
+  "animal.wildebeest.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.wildebeest.say",
+    "sounds": [
+      "tfc:wildebeest_moo"
+    ]
+  },
+  "animal.grouse.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.grouse.say",
+    "sounds": [
+      "tfc:grouse_call"
+    ]
+  },
+  "animal.quail.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.quail.say",
+    "sounds": [
+      "tfc:quail_call"
+    ]
+  },
   "animal.panther.say": {
     "category": "ambient",
     "subtitle": "tfc.animal.panther.say",
@@ -341,6 +476,62 @@
     "subtitle": "tfc.animal.panther.death",
     "sounds": [
       "tfc:pantherdeath1"
+    ]
+  },
+  "animal.coyote.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.coyote.say",
+    "sounds": [
+      "tfc:coyote_howl"
+    ]
+  },
+  "animal.coyote.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.coyote.cry",
+    "sounds": [
+      "tfc:coyote_attack"
+    ]
+  },
+  "animal.coyote.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.coyote.hurt",
+    "sounds": [
+      "tfc:coyote_hurt"
+    ]
+  },
+  "animal.coyote.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.coyote.death",
+    "sounds": [
+      "tfc:coyote_death"
+    ]
+  },
+  "animal.cougar.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.cougar.say",
+    "sounds": [
+      "tfc:cougar_growl"
+    ]
+  },
+  "animal.cougar.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.cougar.cry",
+    "sounds": [
+      "tfc:cougar_attack"
+    ]
+  },
+  "animal.cougar.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.cougar.hurt",
+    "sounds": [
+      "tfc:cougar_hurt"
+    ]
+  },
+  "animal.cougar.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.cougar.death",
+    "sounds": [
+      "tfc:cougar_death"
     ]
   },
   "animal.sabertooth.say": {

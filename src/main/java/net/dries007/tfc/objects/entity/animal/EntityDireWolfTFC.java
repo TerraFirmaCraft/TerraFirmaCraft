@@ -60,7 +60,7 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.PLAINS))
         {
-            return ConfigTFC.Animals.PANTHER.rarity;
+            return ConfigTFC.Animals.DIREWOLF.rarity;
         }
         return 0;
     }
@@ -137,7 +137,7 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
 
         int priority = 2;
-        for (String input : ConfigTFC.Animals.BEAR.huntCreatures)
+        for (String input : ConfigTFC.Animals.DIREWOLF.huntCreatures)
         {
             ResourceLocation key = new ResourceLocation(input);
             EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
@@ -174,7 +174,7 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_GRAN_FELINE;
+        return LootTablesTFC.ANIMALS_WOLF;
     }
 
     @Override
