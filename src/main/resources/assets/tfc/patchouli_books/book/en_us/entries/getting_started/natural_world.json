@@ -19,7 +19,7 @@
     },
     {
       "type": "text",
-      "text": "TFC does not have strict biomes as you might expect. Instead, each chunk has a different value of $(thing)temperature$() and $(thing)rainfall$(). As you head North, it will get warmer, and as you head South, it will get cooler. Different places also have different levels of rainfall and local variations in temperature, causing different flora and fauna to spawn."
+      "text": "TFC does not have strict biomes as you might expect. Instead, each chunk has a different value of $(thing)temperature$() and $(thing)rainfall$(). As you head north, it will get colder, and as you head south, it will get warmer. Different places also have different levels of rainfall and local variations in temperature, causing different flora and fauna to spawn."
     },
     {
       "type": "text",
