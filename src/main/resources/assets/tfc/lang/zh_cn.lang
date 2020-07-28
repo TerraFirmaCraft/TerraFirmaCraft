@@ -263,13 +263,13 @@ config.tfc.general.overrides.enableLogPiles=启用原木堆摆放
 config.tfc.general.overrides.enableLogPiles.tooltip=启用 Shift + 右键在地上摆放原木堆。
 
 config.tfc.general.overrides.enableThatchBed=启用干草床
-config.tfc.general.overrides.enableThatchBed.tooltip=启用用干草做床。
+config.tfc.general.overrides.enableThatchBed.tooltip=允许用干草做床。
 
 config.tfc.general.overrides.enableGrassPath=启用草径
-config.tfc.general.overrides.enableGrassPath.tooltip=启用使用铲创造草径。
+config.tfc.general.overrides.enableGrassPath.tooltip=允许使用铲制造草径。
 
 config.tfc.general.overrides.enableStoneAnvil=启用石砧
-config.tfc.general.overrides.enableStoneAnvil.tooltip=启用用岩石造砧。
+config.tfc.general.overrides.enableStoneAnvil.tooltip=允许用岩石造砧。
 
 config.tfc.general.overrides.enableTorchOverride=启用火把覆盖
 config.tfc.general.overrides.enableTorchOverride.tooltip=如果与其他模组有冲突，关掉此选项。
@@ -466,7 +466,7 @@ config.tfc.general.world=世界生成设置
 config.tfc.general.world.tooltip=世界生成的各个方面
 
 config.tfc.general.world.hemisphereType=半球类型
-config.tfc.general.world.hemisphereType.tooltip=设置温度变化与赤道的关系。North = Cold, South = Hot 或 North = Hot, South = Cold。"
+config.tfc.general.world.hemisphereType.tooltip=设置温度变化与赤道的关系。North = Cold, South = Hot 或 North = Hot, South = Cold。
 
 config.tfc.general.world.temperatureMode=温度模式
 config.tfc.general.world.temperatureMode.tooltip=控制温度如何受当地到赤道的距离的影响。
@@ -477,7 +477,7 @@ config.tfc.general.world.latitudeTemperatureModifier.tooltip=若温度模式为 
 config.tfc.general.world.clayRarity=粘土矿床稀有度
 config.tfc.general.world.clayRarity.tooltip=粘土坑产生的稀有度。平均 1/N 区块（若可产生粘土）将含有粘土矿床。
 
-config.tfc.general.world.clayRainfallThreshold=粘土降雨阈值
+config.tfc.general.world.clayRainfallThreshold=粘土降水量阈值
 config.tfc.general.world.clayRainfallThreshold.tooltip=区域生成粘土所需要的最低降水量。此设置默认与生成干燥草方块的阈值相同。
 
 config.tfc.general.world.looseRocksFrequency=零散石子频率
@@ -489,8 +489,8 @@ config.tfc.general.world.sticksDensityModifier.tooltip=控制区块生成时生�
 config.tfc.general.world.looseRockScan=零散石子矿脉扫描
 config.tfc.general.world.looseRockScan.tooltip=控制生成零散石子时扫描矿脉的深度（以方块为单位）。更大的值 = 扫描到更多的矿脉，带来更多的矿石样本。
 
-config.tfc.general.world.rainfallSpreadFactor=降雨量分布因子
-config.tfc.general.world.rainfallSpreadFactor.tooltip=控制降雨量如何分布。更大的值使分布更极端，产生更多的沙漠和雨林。警告：可能导致世界生成非常怪异。
+config.tfc.general.world.rainfallSpreadFactor=降水量分布因子
+config.tfc.general.world.rainfallSpreadFactor.tooltip=控制降水量如何分布。更大的值使分布更极端，产生更多的沙漠和雨林。警告：可能导致世界生成非常怪异。
 
 config.tfc.general.world.floraDiversitySpreadFactor=植物群多样性分布因子
 config.tfc.general.world.floraDiversitySpreadFactor.tooltip=控制植物群多样性如何分布。更大的值使分布更极端，使森林中有更多种类的树。警告：可能导致世界生成非常怪异。
@@ -4796,7 +4796,7 @@ waila.tfc.temperature=空气温度：%dºC
 waila.tfc.metal.output=含 %d 单元的 %s
 
 # Patchouli
-tfc.patchouli.landing_text=群峦传说入门指南，你从未玩过的全新版本！
+tfc.patchouli.landing_text=群峦传说入门指南，你从未玩过的全新版本！群峦传说简中本地化组倾情奉献。
 
 ## Devices
 waila.tfc.devices.minutes_remaining=剩余 %d 分钟
