@@ -324,8 +324,11 @@ config.tfc.general.fallable.propagateCollapseChance.tooltip=塌方的方块扩�
 config.tfc.general.fallable.supportBeamRangeHor=水平支撑范围
 config.tfc.general.fallable.supportBeamRangeHor.tooltip=支承梁水平支承范围的半径。
 
-config.tfc.general.fallable.supportBeamRangeVert=垂直支撑范围
-config.tfc.general.fallable.supportBeamRangeVert.tooltip=支承梁垂直支承范围的半径。
+config.tfc.general.fallable.supportBeamRangeUp=向上支撑范围
+config.tfc.general.fallable.supportBeamRangeUp.tooltip=支撑梁向上支撑范围的半径。
+
+config.tfc.general.fallable.supportBeamRangeDown=向下支撑范围
+config.tfc.general.fallable.supportBeamRangeDown.tooltip=支撑梁向下支撑范围的半径。
 
 config.tfc.general.fallable.chiselCausesCollapse=凿石引起塌方
 config.tfc.general.fallable.chiselCausesCollapse.tooltip=凿未加工的石头可能引起塌方吗？
