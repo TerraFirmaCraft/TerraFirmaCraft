@@ -248,11 +248,15 @@ public class ModelDireWolfTFC extends ModelBase
     @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
-        head.rotateAngleX = f4 / (180F / (float) Math.PI);
-        head.rotateAngleY = f3 / (180F / (float) Math.PI);
-        neckMane1.rotateAngleX = f4 / (90F / (float) Math.PI);
-        neckMane1.rotateAngleY = f3 / (90F / (float) Math.PI);
-        setRotateAngle(neckMane1, -0.4379031093253773F, 0.0F, 0.0F);
+        setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
+        setRotateAngle(neckMane1, f4 / (1.5F * (180F / (float) Math.PI)) + -0.47123889803846897F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
+        setRotateAngle(neckManeLower1, f4 / (1.5F * (180F / (float) Math.PI)) + 0.3141592653589793F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
+
+        //head.rotateAngleX = f4 / (180F / (float) Math.PI);
+        //head.rotateAngleY = f3 / (180F / (float) Math.PI);
+        //neckMane1.rotateAngleX = f4 / (90F / (float) Math.PI);
+        //neckMane1.rotateAngleY = f3 / (90F / (float) Math.PI);
+        //setRotateAngle(neckMane1, -0.4379031093253773F, 0.0F, 0.0F);
 
         frontRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
         frontLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;

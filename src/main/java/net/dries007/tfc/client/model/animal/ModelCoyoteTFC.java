@@ -42,7 +42,8 @@ public class ModelCoyoteTFC extends ModelBase
     public ModelRenderer frontRLegBottom;
     public ModelRenderer frontRLegPaw;
     public ModelRenderer leftEar;
-    public ModelRenderer mouthTop;
+    public ModelRenderer mouthTop1;
+    public ModelRenderer mouthTop2;
     public ModelRenderer rightEar;
     public ModelRenderer mouthBottom;
     public ModelRenderer nose;
@@ -73,9 +74,6 @@ public class ModelCoyoteTFC extends ModelBase
         rightEar.setRotationPoint(-0.4F, -0.8F, -0.5F);
         rightEar.addBox(-2.0F, -3.0F, -2.0F, 2, 2, 1, 0.0F);
         setRotateAngle(rightEar, 0.0F, -0.17453292519943295F, -0.3490658503988659F);
-        mouthTop = new ModelRenderer(this, 5, 7);
-        mouthTop.setRotationPoint(0.0F, 0.2F, -6.0F);
-        mouthTop.addBox(-1.0F, -1.0F, -1.5F, 2, 2, 3, 0.0F);
         frontRLegTop = new ModelRenderer(this, 1, 57);
         frontRLegTop.setRotationPoint(-2.8F, 11.0F, -5.0F);
         frontRLegTop.addBox(-1.0F, 0.0F, -1.0F, 2, 5, 2, 0.3F);
@@ -131,11 +129,11 @@ public class ModelCoyoteTFC extends ModelBase
         neckMane1.setRotationPoint(0.0F, 11.5F, -7.0F);
         neckMane1.addBox(-2.5F, -2.0F, -2.0F, 5, 5, 2, 0.0F);
         setRotateAngle(neckMane1, 0.17453292519943295F, 0.0F, 0.0F);
-        tailBody = new ModelRenderer(this, 19, 4);
+        tailBody = new ModelRenderer(this, 21, 4);
         tailBody.setRotationPoint(0.0F, 0.0F, 1.5F);
         tailBody.addBox(-1.5F, -1.5F, 0.0F, 3, 3, 7, 0.0F);
         setRotateAngle(tailBody, -0.2617993877991494F, 0.0F, 0.0F);
-        tailTip = new ModelRenderer(this, 25, 0);
+        tailTip = new ModelRenderer(this, 27, 0);
         tailTip.setRotationPoint(0.0F, 0.0F, 6.0F);
         tailTip.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 2, 0.0F);
         setRotateAngle(tailTip, -0.08726646259971647F, 0.0F, 0.0F);
@@ -182,7 +180,7 @@ public class ModelCoyoteTFC extends ModelBase
         head = new ModelRenderer(this, 0, 12);
         head.setRotationPoint(0.0F, 7.3F, -7.0F);
         head.addBox(-2.5F, -2.5F, -5.0F, 5, 5, 5, -0.2F);
-        tailMain = new ModelRenderer(this, 24, 14);
+        tailMain = new ModelRenderer(this, 26, 14);
         tailMain.setRotationPoint(0.0F, 10.5F, 7.5F);
         tailMain.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 3, 0.0F);
         setRotateAngle(tailMain, -1.0471975511965976F, 0.0F, 0.0F);
@@ -194,9 +192,16 @@ public class ModelCoyoteTFC extends ModelBase
         neckMane2.setRotationPoint(0.0F, 8.5F, -5.6F);
         neckMane2.addBox(-2.5F, -1.5F, -1.5F, 5, 3, 5, -0.4F);
         setRotateAngle(neckMane2, -0.31869712141416456F, 0.0F, 0.0F);
+        mouthTop1 = new ModelRenderer(this, 0, 7);
+        mouthTop1.setRotationPoint(-0.2F, 0.2F, -6.0F);
+        mouthTop1.addBox(-1.0F, -1.0F, -1.5F, 2, 2, 3, 0.0F);
+        mouthTop2 = new ModelRenderer(this, 10, 7);
+        mouthTop2.setRotationPoint(0.2F, 0.2F, -6.0F);
+        mouthTop2.addBox(-1.0F, -1.0F, -1.5F, 2, 2, 3, 0.0F);
 
         head.addChild(rightEar);
-        head.addChild(mouthTop);
+        head.addChild(mouthTop1);
+        head.addChild(mouthTop2);
         frontLLegTop.addChild(frontLLegMiddle);
         frontRLegBottom.addChild(frontRLegPaw);
         head.addChild(leftEar);
@@ -250,17 +255,17 @@ public class ModelCoyoteTFC extends ModelBase
     @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
-        head.rotateAngleX = f4 / (180F / (float) Math.PI);
-        head.rotateAngleY = f3 / (180F / (float) Math.PI);
-        //neckMane.rotateAngleX = f4 / (90F / (float) Math.PI);
-        //neckMane.rotateAngleY = f3 / (90F / (float) Math.PI);
-        setRotateAngle(frontRLegTop, 0.13962634015954636F, 0.0F, 0.04363323129985824F);
-        setRotateAngle(frontLLegTop, 0.13962634015954636F, 0.0F, -0.04363323129985824F);
+        setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
+        setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.7853981633974483F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
 
-        frontRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
-        frontLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;
+        //setRotateAngle(frontRLegTop, 0.13962634015954636F, 0.0F, 0.04363323129985824F);
+        //setRotateAngle(frontLLegTop, 0.13962634015954636F, 0.0F, -0.04363323129985824F);
+
+        frontRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1 + 0.13962634015954636F;
+        frontLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1 + 0.13962634015954636F;
         backRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;
         backLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
+
     }
 
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {

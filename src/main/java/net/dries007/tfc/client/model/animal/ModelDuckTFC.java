@@ -44,19 +44,23 @@ public class ModelDuckTFC extends ModelBase
     public ModelRenderer leftWing1;
     public ModelRenderer leftWing2;
     public ModelRenderer leftWing3;
-    public ModelRenderer rightLeg;
-    public ModelRenderer leftLeg;
+    public ModelRenderer legR1;
+    public ModelRenderer legR2;
+    public ModelRenderer legL1;
+    public ModelRenderer legL2;
+    public ModelRenderer feetR;
+    public ModelRenderer feetL;
 
     public ModelDuckTFC()
     {
         textureWidth = 64;
         textureHeight = 32;
 
-        bill = new ModelRenderer(this, 36, 4);
+        bill = new ModelRenderer(this, 17, 21);
         bill.addBox(-1.5F, -1.0F, -1.5F, 3, 2, 3, 0F);
         bill.setRotationPoint(0F, -5.1F, -6F);
 
-        head = new ModelRenderer(this, 36, 9);
+        head = new ModelRenderer(this, 17, 26);
         head.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3, 0F);
         head.setRotationPoint(0F, -5.6F, -3F);
 
@@ -64,45 +68,45 @@ public class ModelDuckTFC extends ModelBase
         neck.addBox(-2.0F, -8F, -2F, 4, 10, 4, 0F);
         neck.setRotationPoint(0.5F, 12.5F, -2.2F);
 
-        body = new ModelRenderer(this, 30, 15);
-        body.addBox(-3.0F, -3.0F, -4.0F, 7, 7, 10, 0F);
+        body = new ModelRenderer(this, 30, 14);
+        body.addBox(-3.0F, -3.0F, -4.0F, 7, 8, 10, 0F);
         body.setRotationPoint(0F, 15.5F, 0F);
-        setRotation(body, -0.091106F, 0F, 0F);
+        setRotateAngle(body, -0.091106F, 0F, 0F);
 
-        bodyFront1 = new ModelRenderer(this, 28, 18);
+        bodyFront1 = new ModelRenderer(this, 28, 17);
         bodyFront1.addBox(-2.5F, -2.5F, -0.5F, 5, 6, 1, 0F);
         bodyFront1.setRotationPoint(0.5F, 15.4F, -4.5F);
-        setRotation(bodyFront1, -0.091106F, 0F, 0F);
+        setRotateAngle(bodyFront1, -0.091106F, 0F, 0F);
 
-        bodyFront2 = new ModelRenderer(this, 54, 20);
+        bodyFront2 = new ModelRenderer(this, 54, 19);
         bodyFront2.addBox(-2.0F, -2.0F, 0F, 4, 4, 1, 0F);
         bodyFront2.setRotationPoint(0.5F, 15.3F, -5.7F);
-        setRotation(bodyFront2, -0.091106F, 0F, 0F);
+        setRotateAngle(bodyFront2, -0.091106F, 0F, 0F);
 
         bodyBack1 = new ModelRenderer(this, 0, 24);
         bodyBack1.addBox(-2.5F, -2.5F, -1.0F, 6, 6, 2, 0F);
         bodyBack1.setRotationPoint(0F, 15.27F, 6.0F);
-        setRotation(bodyBack1, 0.136659F, 0F, 0F);
+        setRotateAngle(bodyBack1, 0.136659F, 0F, 0F);
 
         bodyBack2 = new ModelRenderer(this, 0, 17);
         bodyBack2.addBox(-2.0F, -2.0F, -1.0F, 5, 5, 2, 0F);
         bodyBack2.setRotationPoint(0F, 14.6F, 7.0F);
-        setRotation(bodyBack2, 0.182037F, 0F, 0F);
+        setRotateAngle(bodyBack2, 0.182037F, 0F, 0F);
 
         bodyBack3 = new ModelRenderer(this, 0, 12);
         bodyBack3.addBox(-1.5F, -1.5F, -1.0F, 3, 3, 2, 0F);
         bodyBack3.setRotationPoint(0.5F, 13.9F, 8.0F);
-        setRotation(bodyBack3, 0.227590F, 0F, 0F);
+        setRotateAngle(bodyBack3, 0.227590F, 0F, 0F);
 
         bodyBack4 = new ModelRenderer(this, 0, 8);
         bodyBack4.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 2, 0F);
         bodyBack4.setRotationPoint(0.5F, 13.1F, 8.9F);
-        setRotation(bodyBack4, 0.318697F, 0F, 0F);
+        setRotateAngle(bodyBack4, 0.318697F, 0F, 0F);
 
         rightWing1 = new ModelRenderer(this, 17, 1);
         rightWing1.addBox(-1F, 0F, -3.0F, 1, 2, 9, 0F);
         rightWing1.setRotationPoint(-3F, 13F, 0F);
-        setRotation(rightWing1, -0.045553F, 0F, 0F);
+        setRotateAngle(rightWing1, -0.045553F, 0F, 0F);
 
         rightWing2 = new ModelRenderer(this, 8, 0);
         rightWing2.addBox(-1F, 0F, -3.0F, 1, 2, 8, 0F);
@@ -115,7 +119,7 @@ public class ModelDuckTFC extends ModelBase
         leftWing1 = new ModelRenderer(this, 17, 1);
         leftWing1.addBox(0F, 0F, -3.0F, 1, 2, 9, 0F);
         leftWing1.setRotationPoint(4.0F, 13F, 0F);
-        setRotation(leftWing1, -0.045553F, 0F, 0F);
+        setRotateAngle(leftWing1, -0.045553F, 0F, 0F);
         leftWing1.mirror = true;
 
         leftWing2 = new ModelRenderer(this, 8, 0);
@@ -128,13 +132,38 @@ public class ModelDuckTFC extends ModelBase
         leftWing3.setRotationPoint(0F, 4.0F, 0F);
         leftWing3.mirror = true;
 
-        rightLeg = new ModelRenderer(this, 15, 14);
-        rightLeg.addBox(-2.0F, 0F, -3.0F, 3, 5, 3, 0F);
-        rightLeg.setRotationPoint(-0.8F, 19.0F, 2.0F);
+        legR1 = new ModelRenderer(this, 39, 8);
+        legR1.setRotationPoint(-1.5F, 20.5F, 0.0F);
+        legR1.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 1, 0.4F);
+        setRotateAngle(legR1, 0.08726646259971647F, 0.0F, 0.0F);
 
-        leftLeg = new ModelRenderer(this, 15, 14);
-        leftLeg.addBox(-1.0F, 0F, -3.0F, 3, 5, 3, 0F);
-        leftLeg.setRotationPoint(1.8F, 19.0F, 2.0F);
+        legR2 = new ModelRenderer(this, 39, 4);
+        legR2.setRotationPoint(0.0F, 0.2F, 0.0F);
+        legR2.addBox(-0.5F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
+        setRotateAngle(legR2, -0.17453292519943295F, 0.0F, 0.0F);
+
+        feetR = new ModelRenderer(this, 36, 0);
+        feetR.setRotationPoint(1.0F, 2.6F, 1.8F);
+        feetR.addBox(-2.5F, 0.0F, -3.0F, 3, 1, 3, 0.0F);
+        setRotateAngle(feetR, 0.04363323129985824F, 0.0F, 0.0F);
+
+        legL1 = new ModelRenderer(this, 39, 8);
+        legL1.mirror = true;
+        legL1.setRotationPoint(1.5F, 20.5F, 0.0F);
+        legL1.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 1, 0.4F);
+        setRotateAngle(legL1, 0.08726646259971647F, 0.0F, 0.0F);
+
+        legL2 = new ModelRenderer(this, 39, 4);
+        legL2.mirror = true;
+        legL2.setRotationPoint(0.0F, 0.2F, 0.0F);
+        legL2.addBox(-0.5F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
+        setRotateAngle(legL2, -0.17453292519943295F, 0.0F, 0.0F);
+
+        feetL = new ModelRenderer(this, 36, 0);
+        feetL.mirror = true;
+        feetL.setRotationPoint(1.0F, 2.6F, 1.8F);
+        feetL.addBox(-2.5F, 0.0F, -3.0F, 3, 1, 3, 0.0F);
+        setRotateAngle(feetL, 0.04363323129985824F, 0.0F, 0.0F);
 
         neck.addChild(bill);
         neck.addChild(head);
@@ -142,6 +171,10 @@ public class ModelDuckTFC extends ModelBase
         rightWing1.addChild(rightWing3);
         leftWing1.addChild(leftWing2);
         leftWing1.addChild(leftWing3);
+        legR1.addChild(legR2);
+        legR2.addChild(feetR);
+        legL1.addChild(legL2);
+        legL2.addChild(feetL);
     }
 
     @Override
@@ -166,8 +199,8 @@ public class ModelDuckTFC extends ModelBase
         bodyBack2.render(par7);
         bodyBack3.render(par7);
         bodyBack4.render(par7);
-        rightLeg.render(par7);
-        leftLeg.render(par7);
+        legR1.render(par7);
+        legL1.render(par7);
         rightWing1.render(par7);
         leftWing1.render(par7);
         GlStateManager.popMatrix();
@@ -178,8 +211,8 @@ public class ModelDuckTFC extends ModelBase
     {
         this.neck.rotateAngleX = -(par5 / (180F / (float) Math.PI));
         this.neck.rotateAngleY = par4 / (180F / (float) Math.PI);
-        this.rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+        this.legR1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        this.legL1.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
         this.rightWing1.rotateAngleZ = par3;
         this.leftWing1.rotateAngleZ = -par3;
         this.rightWing1.rotateAngleX = 0;
@@ -188,13 +221,13 @@ public class ModelDuckTFC extends ModelBase
         this.leftWing1.setRotationPoint(4.0F, 13, 0.0F);
 
 
-        setRotation(bodyBack2, 0.182037F, 0.0F, 0.0F);
-        setRotation(bodyBack3, 0.227590F, 0.0F, 0.0F);
-        setRotation(bodyBack4, 0.318697F, 0.0F, 0.0F);
+        //setRotateAngle(bodyBack2, 0.182037F, 0.0F, 0.0F);
+        //setRotateAngle(bodyBack3, 0.227590F, 0.0F, 0.0F);
+        //setRotateAngle(bodyBack4, 0.318697F, 0.0F, 0.0F);
 
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z)
+    private void setRotateAngle(ModelRenderer model, float x, float y, float z)
     {
         model.rotateAngleX = x;
         model.rotateAngleY = y;

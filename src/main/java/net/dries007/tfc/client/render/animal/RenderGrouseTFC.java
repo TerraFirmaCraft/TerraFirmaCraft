@@ -76,6 +76,6 @@ public class RenderGrouseTFC extends RenderLiving<EntityGrouseTFC>
     @Override
     protected void preRenderCallback(EntityGrouseTFC grouse, float par2)
     {
-        GlStateManager.scale(0.7f, 0.7f, 0.7f);
+        GlStateManager.scale(0.85f, 0.85f, 0.85f);
     }
 }

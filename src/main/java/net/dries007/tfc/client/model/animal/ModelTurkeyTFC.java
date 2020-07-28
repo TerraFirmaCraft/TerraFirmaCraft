@@ -122,7 +122,7 @@ public class ModelTurkeyTFC extends ModelBase
         wingLMain.mirror = true;
         wingLMain.setRotationPoint(4.0F, 11.5F, -0.5F);
         wingLMain.addBox(-0.5F, 0.0F, -2.5F, 1, 5, 5, 0.0F);
-        setRotateAngle(wingLMain, -0.08726646259971647F, 0.0F, -0.0F);
+        setRotateAngle(wingLMain, -0.08726646259971647F, 0.0F, 0.0F);
         wingLFront = new ModelRenderer(this, 23, 21);
         wingLFront.mirror = true;
         wingLFront.setRotationPoint(0.0F, 0.0F, -4.5F);
@@ -342,9 +342,7 @@ public class ModelTurkeyTFC extends ModelBase
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
         body.render(par7);
-
         neck.render(par7);
-
         legLTop.render(par7);
         head.render(par7);
         chest.render(par7);
@@ -375,7 +373,6 @@ public class ModelTurkeyTFC extends ModelBase
         tailsf9.render(par7);
         tailsf10.render(par7);
         tailsf11.render(par7);
-
         GlStateManager.popMatrix();
     }
 
@@ -385,14 +382,13 @@ public class ModelTurkeyTFC extends ModelBase
         this.head.rotateAngleX = -(par5 / (180F / (float) Math.PI));
         this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
 
+        //setRotateAngle(wingRMain, -0.08726646259971647F, 0.0F, 0.0F);
+        //setRotateAngle(wingLMain, -0.08726646259971647F, 0.0F, 0.0F);
+
         legRTop.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
         legLTop.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-        wingRMain.rotateAngleZ = par3;
-        wingLMain.rotateAngleZ = -par3;
-        wingRMain.rotateAngleX = 0;
-        wingLMain.rotateAngleX = 0;
-        //wingRMain.setRotationPoint(-4.0F, 11.5, -0.5F);
-        //wingLMain.setRotationPoint(4.0F, 11.5, -0.5F);
+        //wingRMain.rotateAngleZ = par3;
+        //wingLMain.rotateAngleZ = -par3;
 
         tailFMain.isHidden = false;
         tailsf1.isHidden = false;

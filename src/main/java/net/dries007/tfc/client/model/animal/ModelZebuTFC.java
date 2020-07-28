@@ -416,11 +416,9 @@ public class ModelZebuTFC extends ModelBase
     @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        //setRotateAngle(neck, 0.3490659F, 0F, 0.0349066F);
-        setRotateAngle(head, f4 / (180F / (float) Math.PI) + -0.2617993877991494F, f3 / (180F / (float) Math.PI), 0F);
-        setRotateAngle(neckBase, f4 / (3 * (180F / (float) Math.PI)) + -0.3490658503988659F, f3 / (3 * (180F / (float) Math.PI)), 0F);
-        setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.6981317007977318F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
+        this.head.rotateAngleX = f4 / (180F / (float) Math.PI);
+        this.head.rotateAngleY = f4 / (180F / (float) Math.PI);
+
         this.legRFrontTop.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
         this.legLFrontTop.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
         this.legRBackTop.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
