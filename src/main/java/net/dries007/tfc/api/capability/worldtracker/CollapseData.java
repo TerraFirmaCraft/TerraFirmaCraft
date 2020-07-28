@@ -16,8 +16,8 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class CollapseData implements INBTSerializable<NBTTagCompound>
 {
-    BlockPos centerPos;
     final List<BlockPos> nextPositions;
+    BlockPos centerPos;
     double radiusSquared;
 
     public CollapseData(BlockPos centerPos, List<BlockPos> nextPositions, double radiusSquared)
