@@ -30,6 +30,8 @@ public class ModelMuskOxWoolTFC extends ModelBase
     public ModelRenderer bodyShoulderQiviut;
     public ModelRenderer bodyHairQiviut;
     public ModelRenderer bodyMainQiviut;
+    public ModelRenderer humpQiviut;
+
 
     public ModelMuskOxWoolTFC()
     {
@@ -45,6 +47,9 @@ public class ModelMuskOxWoolTFC extends ModelBase
         bodyShoulderQiviut = new ModelRenderer(this, 40, 38);
         bodyShoulderQiviut.setRotationPoint(0.0F, 9.0F, -7.0F);
         bodyShoulderQiviut.addBox(-5.5F, -8.5F, -5.5F, 11, 15, 11, 0.0F);
+        humpQiviut = new ModelRenderer(this, 28, 110);
+        humpQiviut.setRotationPoint(0.0F, 0.4F, -9.5F);
+        humpQiviut.addBox(-2.0F, -1.2F, -2.2F, 4, 4, 9, 0.2F);
     }
 
     @Override
@@ -63,6 +68,7 @@ public class ModelMuskOxWoolTFC extends ModelBase
         bodyHairQiviut.render(par7);
         bodyMainQiviut.render(par7);
         bodyShoulderQiviut.render(par7);
+        humpQiviut.render(par7);
         GlStateManager.popMatrix();
     }
 }

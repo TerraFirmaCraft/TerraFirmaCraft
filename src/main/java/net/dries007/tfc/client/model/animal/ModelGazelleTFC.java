@@ -297,53 +297,19 @@ public class ModelGazelleTFC extends ModelBase
     }
 
     @Override
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 
-        f1 = Math.min(f1 * 7.5f, 0.75f);
-        f *= 0.95f;
+        setRotateAngle(head, headPitch / (180F / (float) Math.PI) + 0.1570796F, netHeadYaw / (180F / (float) Math.PI), 0F);
+        setRotateAngle(neck, headPitch / (1.5F * (180F / (float) Math.PI)) + 1.815142F, netHeadYaw / (1.5F * (180F / (float) Math.PI)), 0F);
 
-        setRotateAngle(head, f4 / (180F / (float) Math.PI) + 0.1570796F, f3 / (180F / (float) Math.PI), 0F);
-        setRotateAngle(collar, f4 / (3 * (180F / (float) Math.PI)) + 1.151917F, f3 / (3 * (180F / (float) Math.PI)), 0F);
-        setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + 1.815142F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
-        //setRotateAngle(rump, -0.0872665F, 0F, 0F);
-        //setRotateAngle(body, 1.43117F, 0F, 0F);
+        //head.rotateAngleX = headPitch / (180F / (float) Math.PI);
+        //head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
-        //setRotateAngle(legLFront, 0.3490659F, 0F, 0.0349066F);
-        //setRotateAngle(legRFront, 0.3490659F, 0F, -0.0349066F);
-        //setRotateAngle(thighRBack, -0.38397243F, 0.0F, -0.034906585F);
-        //setRotateAngle(thighLBack, -0.174532925F, 0.0F, -0.087266462F);
-
-
-            setRotateAngle(legLFront, MathHelper.cos(f / 1.5F + 3F * (float) Math.PI / 2F) * 0.7F * f1 + 0.3490659F, 0F, 0.0349066F);
-            setRotateAngle(legRFront, MathHelper.cos(f / 1.5F + (float) Math.PI / 2F) * 0.7F * f1 + 0.3490659F, 0F, -0.0349066F);
-            setRotateAngle(thighRBack, MathHelper.cos(f / 1.5F + (float) Math.PI * 7F / 4F) * 0.7F * f1 - 0.38397243F, 0.0F, -0.034906585F);
-            setRotateAngle(thighLBack, MathHelper.cos(f / 1.5F + 3f * (float) Math.PI / 4F) * 0.7F * f1 - 0.174532925F, 0.0F, -0.087266462F);
-            if (MathHelper.sin(f / 1.5F + (float) Math.PI / 2F) * 0.7F * f1 > 0)
-            {
-                setRotateAngle(legRFrontLower, MathHelper.sin(f / 1.5F + (float) Math.PI / 2F) * 1.4F * f1, 0F, 0F);
-                setRotateAngle(legRFrontMiddle, -MathHelper.sin(f / 1.5F + (float) Math.PI / 2F) * 0.7F * f1 - 0.3490659F, 0F, 0.0349066F);
-                setRotateAngle(legRFrontHoof, MathHelper.sin(f / 1.5F + (float) Math.PI / 2F) * 2.1F * f1 + 1.134464F, 0, 0);
-            }
-            if (MathHelper.sin(f / 1.5F + 1F * (float) Math.PI / 2F) * 0.7F * f1 < 0)
-            {
-                setRotateAngle(legLFrontLower, MathHelper.sin(f / 1.5F + 3F * (float) Math.PI / 2F) * 1.4F * f1, 0F, 0F);
-                setRotateAngle(legLFrontMiddle, -MathHelper.sin(f / 1.5F + 3F * (float) Math.PI / 2F) * 0.7F * f1 - 0.3490659F, 0F, -0.0349066F);
-                setRotateAngle(legLFrontHoof, MathHelper.sin(f / 1.5F + 3F * (float) Math.PI / 2F) * 2.1F * f1 + 1.134464F, 0, 0);
-            }
-            if (MathHelper.sin(f / 1.5F + (float) Math.PI * 7F / 4F) * 0.7F * f1 > 0)
-            {
-                setRotateAngle(thighRBackLower, MathHelper.sin(f / 1.5F + (float) Math.PI * 7F / 4F) * 1.4F * f1 + 0.5585054F, 0F, -0.1745329F);
-                setRotateAngle(thighRBackMiddle, -MathHelper.sin(f / 1.5F + (float) Math.PI * 7F / 4F) * 1.4F * f1 - 22F / 180F * (float) Math.PI, 0F, 0F);
-                setRotateAngle(thighRBackHoof, MathHelper.sin(f / 1.5F + (float) Math.PI * 7F / 4F) * 2.1F * f1 + 1.134464F, 0F, 0F);
-            }
-            if (MathHelper.sin(f / 1.5F + 3f * (float) Math.PI / 4F) * 0.7F * f1 > 0)
-            {
-                setRotateAngle(thighLBackLower, MathHelper.sin(f / 1.5F + 3f * (float) Math.PI / 4F) * 1.4F * f1 + 0.5585054F, 0F, 0.1745329F);
-                setRotateAngle(thighLBackMiddle, -MathHelper.sin(f / 1.5F + 3f * (float) Math.PI / 4F) * 1.4F * f1 - 22F / 180F * (float) Math.PI, 0F, 0F);
-                setRotateAngle(thighLBackHoof, MathHelper.sin(f / 1.5F + 3f * (float) Math.PI / 4F) * 2.1F * f1 + 1.134464F, 0F, 0F);
-            }
+        legRFront.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F) * 0.8F* limbSwingAmount + 0.3490658503988659F;
+        legLFront.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F + (float) Math.PI) * 0.8F * limbSwingAmount + 0.3490658503988659F;
+        thighRBack.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F + (float) Math.PI) * 0.8F * limbSwingAmount + -0.17453292519943295F;
+        thighLBack.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F) * 0.8F * limbSwingAmount + -0.17453292519943295F;
     }
 
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {

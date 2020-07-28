@@ -12,6 +12,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,7 +34,7 @@ public class ModelMuskOxBodyTFC extends ModelBase {
     public ModelRenderer legFrontRight;
     public ModelRenderer headBase;
     public ModelRenderer bodyShoulder;
-    public ModelRenderer neck;
+    public ModelRenderer hump;
     public ModelRenderer bodyHair;
     public ModelRenderer head;
     public ModelRenderer hornRightBase;
@@ -119,9 +120,9 @@ public class ModelMuskOxBodyTFC extends ModelBase {
         legFrontLeft.mirror = true;
         legFrontLeft.setRotationPoint(3.5F, 14.5F, -5.5F);
         legFrontLeft.addBox(-1.5F, -1.5F, -1.5F, 4, 11, 4, 0.0F);
-        neck = new ModelRenderer(this, 0, 110);
-        neck.setRotationPoint(0.0F, 0.0F, -13.0F);
-        neck.addBox(-2.0F, -1.2F, -2.2F, 4, 8, 9, 0.0F);
+        hump = new ModelRenderer(this, 0, 110);
+        hump.setRotationPoint(0.0F, 0.4F, -9.5F);
+        hump.addBox(-2.0F, -1.2F, -2.2F, 4, 4, 9, 0.0F);
         snout = new ModelRenderer(this, 106, 15);
         snout.setRotationPoint(0.0F, 2.0F, -2.5F);
         snout.addBox(-2.0F, -4.5F, -1.0F, 4, 5, 6, 0.0F);
@@ -155,12 +156,20 @@ public class ModelMuskOxBodyTFC extends ModelBase {
 
         if (muskox.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            //udders.isHidden = true;
+            //hornF1.isHidden = true;
+            //hornF2.isHidden = true;
         }
         else
         {
-            //horn.isHidden = true;
-            //horn2b.isHidden = true;
+            hornCenter.isHidden = true;
+            hornLeft1.isHidden = true;
+            hornLeft2.isHidden = true;
+            hornLeft3.isHidden = true;
+            hornLeftBase.isHidden = true;
+            hornRightBase.isHidden = true;
+            hornRight1.isHidden = true;
+            hornRight2.isHidden = true;
+            hornRight3.isHidden = true;
         }
 
         GlStateManager.pushMatrix();
@@ -173,7 +182,7 @@ public class ModelMuskOxBodyTFC extends ModelBase {
         legFrontLeft.render(par7);
         bodyHair.render(par7);
         legBackLeft.render(par7);
-        neck.render(par7);
+        hump.render(par7);
         headBase.render(par7);
         legBackRight.render(par7);
         GlStateManager.popMatrix();
@@ -182,23 +191,22 @@ public class ModelMuskOxBodyTFC extends ModelBase {
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity ent)
     {
-        /*this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
+        this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
         this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
-        this.body.rotateAngleX = (float) Math.PI / 2F;
-        this.udders.rotateAngleX = (float) Math.PI / 2F;
-        this.leg1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-        this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-        this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        horn1.rotateAngleX = 0F;
-        horn2.rotateAngleX = 0F;
-        horn1.isHidden = false;
-        horn1b.isHidden = false;
-        horn2.isHidden = false;
-        horn2b.isHidden = false;
-        udders.isHidden = false;
+        this.legFrontRight.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        this.legFrontLeft.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+        this.legBackRight.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+        this.legBackLeft.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
 
-         */
+        hornCenter.isHidden = false;
+        hornLeft1.isHidden = false;
+        hornLeft2.isHidden = false;
+        hornLeft3.isHidden = false;
+        hornLeftBase.isHidden = false;
+        hornRightBase.isHidden = false;
+        hornRight1.isHidden = false;
+        hornRight2.isHidden = false;
+        hornRight3.isHidden = false;
     }
 
     private void setRotateAngle(ModelRenderer model, float x, float y, float z)

@@ -76,6 +76,6 @@ public class RenderQuailTFC extends RenderLiving<EntityQuailTFC>
     @Override
     protected void preRenderCallback(EntityQuailTFC quail, float par2)
     {
-        GlStateManager.scale(0.9f, 0.9f, 0.9f);
+        GlStateManager.scale(0.8f, 0.8f, 0.8f);
     }
 }

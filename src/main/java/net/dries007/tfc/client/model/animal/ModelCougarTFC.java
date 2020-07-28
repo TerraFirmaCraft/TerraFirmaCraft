@@ -79,10 +79,10 @@ public class ModelCougarTFC extends ModelBase
         backLeftLegBottom.addBox(-1.01F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
         setRotateAngle(backLeftLegBottom, -0.3490658503988659F, 0.0F, 0.0F);
         mouthBottom = new ModelRenderer(this, 24, 5);
-        mouthBottom.setRotationPoint(-2.0F, 1.0F, -7.8F);
+        mouthBottom.setRotationPoint(-2.0F, 1.0F, -8.8F);
         mouthBottom.addBox(0.0F, 0.0F, 1.0F, 3, 1, 3, 0.0F);
         earRight = new ModelRenderer(this, 17, 4);
-        earRight.setRotationPoint(-3.9F, -4.6F, 0.4F);
+        earRight.setRotationPoint(-3.9F, -4.6F, -1.2F);
         earRight.addBox(0.0F, 0.0F, 0.0F, 1, 3, 2, 0.0F);
         setRotateAngle(earRight, -0.7285004297824331F, 0.0F, -0.40980330836826856F);
         tailMiddle = new ModelRenderer(this, 13, 23);
@@ -94,10 +94,11 @@ public class ModelCougarTFC extends ModelBase
         frontLeftLegTop.setRotationPoint(4.0F, 9.5F, -6.0F);
         frontLeftLegTop.addBox(-1.5F, -1.0F, -1.0F, 2, 7, 4, 0.0F);
         head = new ModelRenderer(this, 0, 6);
-        head.setRotationPoint(0.5F, 11.3F, -11.4F);
-        head.addBox(-3.0F, -3.0F, -4.0F, 5, 5, 5, 0.1F);
+        head.setRotationPoint(0.5F, 11.2F, -9.8F);
+        head.addBox(-3.0F, -3.0F, -5.0F, 5, 5, 5, 0.1F);
+        //setRotateAngle(head, 0.17453292519943295F, 0.0F, 0.0F);
         mouthTop = new ModelRenderer(this, 23, 9);
-        mouthTop.setRotationPoint(-2.5F, -0.6F, -8.0F);
+        mouthTop.setRotationPoint(-2.5F, -0.6F, -9.0F);
         mouthTop.addBox(0.0F, 0.0F, 1.0F, 4, 2, 3, 0.0F);
         frontRightLegTop = new ModelRenderer(this, 0, 53);
         frontRightLegTop.setRotationPoint(-3.0F, 9.5F, -6.0F);
@@ -108,7 +109,7 @@ public class ModelCougarTFC extends ModelBase
         frontLeftLegBottom.addBox(-1.01F, -1.0F, -1.0F, 2, 3, 2, 0.0F);
         setRotateAngle(frontLeftLegBottom, -0.2617993877991494F, 0.0F, 0.0F);
         nose = new ModelRenderer(this, 4, 0);
-        nose.setRotationPoint(-1.5F, -1.2F, -8.3F);
+        nose.setRotationPoint(-1.5F, -1.2F, -9.3F);
         nose.addBox(0.0F, 0.0F, 1.0F, 2, 2, 4, 0.0F);
         setRotateAngle(nose, 0.18203784098300857F, 0.0F, 0.0F);
         backRightLegPaw = new ModelRenderer(this, 16, 33);
@@ -121,12 +122,12 @@ public class ModelCougarTFC extends ModelBase
         frontLeftLegMiddle.addBox(-2.0F, -1.0F, -1.5F, 2, 7, 3, 0.0F);
         setRotateAngle(frontLeftLegMiddle, 0.08726646259971647F, 0.0F, 0.0F);
         neck = new ModelRenderer(this, 40, 12);
-        neck.setRotationPoint(0.0F, 11.3F, -8.2F);
-        neck.addBox(-2.0F, -2.5F, -3.5F, 4, 5, 4, -0.2F);
+        neck.setRotationPoint(0.0F, 11.3F, -9.0F);
+        neck.addBox(-2.0F, -2.5F, -2.5F, 4, 5, 4, -0.2F);
         setRotateAngle(neck, -0.18203784098300857F, 0.0F, 0.0F);
         earLeft = new ModelRenderer(this, 17, 4);
         earLeft.mirror = true;
-        earLeft.setRotationPoint(2.0F, -5.0F, 0.4F);
+        earLeft.setRotationPoint(2.0F, -5.0F, 1.2F);
         earLeft.addBox(0.0F, 0.0F, 0.0F, 1, 3, 2, 0.0F);
         setRotateAngle(earLeft, -0.7285004297824331F, 0.0F, 0.40980330836826856F);
         tailTip = new ModelRenderer(this, 13, 17);
@@ -197,6 +198,7 @@ public class ModelCougarTFC extends ModelBase
         backLeftLegBottom.addChild(backLeftLegPaw);
         backRightLegTop.addChild(backRightLegMiddle);
         frontRightLegTop.addChild(frontRightLegMiddle);
+        //neck.addChild(head);
     }
 
     @Override
@@ -238,8 +240,11 @@ public class ModelCougarTFC extends ModelBase
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        head.rotateAngleX = f4 / (180F / (float) Math.PI);
-        head.rotateAngleY = f3 / (180F / (float) Math.PI);
+        setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
+        setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.18203784098300857F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
+
+        //setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
+        //setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.7853981633974483F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
 
         frontRightLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
         frontLeftLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;

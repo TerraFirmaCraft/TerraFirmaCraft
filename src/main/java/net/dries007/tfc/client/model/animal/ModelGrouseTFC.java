@@ -31,7 +31,12 @@ public class ModelGrouseTFC extends ModelBase
     public ModelRenderer tails6;
     public ModelRenderer tails3;
     public ModelRenderer tails4;
-    public ModelRenderer legL;
+    public ModelRenderer legR1;
+    public ModelRenderer legR2;
+    public ModelRenderer legL1;
+    public ModelRenderer legL2;
+    public ModelRenderer feetR;
+    public ModelRenderer feetL;
     public ModelRenderer body;
     public ModelRenderer tails7;
     public ModelRenderer tails8;
@@ -39,7 +44,6 @@ public class ModelGrouseTFC extends ModelBase
     public ModelRenderer tails1;
     public ModelRenderer bodyTop;
     public ModelRenderer tails2;
-    public ModelRenderer legR;
     public ModelRenderer wingR;
     public ModelRenderer wingL;
     public ModelRenderer tails9;
@@ -60,16 +64,10 @@ public class ModelGrouseTFC extends ModelBase
         wingRChild = new ModelRenderer(this, 18, 20);
         wingRChild.setRotationPoint(0.0F, 0.0F, 2.0F);
         wingRChild.addBox(0.0F, 0.0F, 0.0F, 1, 2, 1, 0.0F);
-        legR = new ModelRenderer(this, 0, 25);
-        legR.setRotationPoint(-2.0F, 20.0F, 2.0F);
-        legR.addBox(-1.0F, 0.0F, -3.0F, 3, 4, 3, 0.0F);
         body = new ModelRenderer(this, 28, 18);
         body.setRotationPoint(0.0F, 17.0F, 1.0F);
         body.addBox(-3.0F, -4.0F, -3.0F, 6, 8, 6, 0.0F);
         setRotateAngle(body, 1.3962634015954636F, 0.0F, 0.0F);
-        legL = new ModelRenderer(this, 0, 25);
-        legL.setRotationPoint(1.0F, 20.0F, 2.0F);
-        legL.addBox(-1.0F, 0.0F, -3.0F, 3, 4, 3, 0.0F);
         wingL = new ModelRenderer(this, 14, 23);
         wingL.setRotationPoint(4.0F, 14.5F, 1.0F);
         wingL.addBox(-1.0F, 0.0F, -3.0F, 1, 4, 5, 0.0F);
@@ -140,6 +138,34 @@ public class ModelGrouseTFC extends ModelBase
         tails7.addBox(-1.5F, -10.0F, 0.0F, 3, 10, 0, 0.0F);
         setRotateAngle(tails7, -0.3490658503988659F, 0.06981317007977318F, 0.6981317007977318F);
 
+        legR1 = new ModelRenderer(this, 5, 29);
+        legR1.setRotationPoint(-1.5F, 21.0F, 0.0F);
+        legR1.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 1, 0.2F);
+        setRotateAngle(legR1, 0.08726646259971647F, 0.0F, 0.0F);
+        legR2 = new ModelRenderer(this, 5, 26);
+        legR2.setRotationPoint(0.0F, 0.8F, 0.0F);
+        legR2.addBox(-0.5F, 0.0F, 0.0F, 1, 2, 1, 0.0F);
+        setRotateAngle(legR2, -0.17453292519943295F, 0.0F, 0.0F);
+        feetR = new ModelRenderer(this, 3, 22);
+        feetR.setRotationPoint(1.0F, 1.8F, 1.8F);
+        feetR.addBox(-2.5F, 0.0F, -3.0F, 3, 1, 3, 0.0F);
+        setRotateAngle(feetR, 0.04363323129985824F, 0.0F, 0.0F);
+        legL1 = new ModelRenderer(this, 5, 29);
+        legL1.mirror = true;
+        legL1.setRotationPoint(1.5F, 21.0F, 0.0F);
+        legL1.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 1, 0.2F);
+        setRotateAngle(legL1, 0.08726646259971647F, 0.0F, 0.0F);
+        legL2 = new ModelRenderer(this, 5, 26);
+        legL2.mirror = true;
+        legL2.setRotationPoint(0.0F, 0.8F, 0.0F);
+        legL2.addBox(-0.5F, 0.0F, 0.0F, 1, 2, 1, 0.0F);
+        setRotateAngle(legL2, -0.17453292519943295F, 0.0F, 0.0F);
+        feetL = new ModelRenderer(this, 3, 22);
+        feetL.mirror = true;
+        feetL.setRotationPoint(1.0F, 1.8F, 1.8F);
+        feetL.addBox(-2.5F, 0.0F, -3.0F, 3, 1, 3, 0.0F);
+        setRotateAngle(feetL, 0.04363323129985824F, 0.0F, 0.0F);
+
         wingR.addChild(wingRChild);
         wingL.addChild(wingLChild);
         head.addChild(bill);
@@ -147,6 +173,10 @@ public class ModelGrouseTFC extends ModelBase
         bodyTop.addChild(maleL);
         bodyTop.addChild(maleR);
         body.addChild(tailBase);
+        legR1.addChild(legR2);
+        legR2.addChild(feetR);
+        legL1.addChild(legL2);
+        legL2.addChild(feetL);
     }
 
     @Override
@@ -166,8 +196,8 @@ public class ModelGrouseTFC extends ModelBase
         head.render(par7);
         body.render(par7);
         bodyTop.render(par7);
-        legL.render(par7);
-        legR.render(par7);
+        legL1.render(par7);
+        legR1.render(par7);
         wingR.render(par7);
         wingL.render(par7);
         tails1.render(par7);
@@ -188,8 +218,8 @@ public class ModelGrouseTFC extends ModelBase
         this.head.rotateAngleX = -(par5 / (180F / (float) Math.PI));
         this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
 
-        legL.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        legR.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+        legL1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        legR1.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
         wingR.rotateAngleZ = par3;
         wingL.rotateAngleZ = -par3;
         wingR.rotateAngleX = 0;

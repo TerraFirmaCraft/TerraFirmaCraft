@@ -174,10 +174,6 @@ public class ModelQuailTFC extends ModelBase
         this.legL1.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
         this.wingR.rotateAngleZ = par3;
         this.wingL.rotateAngleZ = -par3;
-        //this.wingR.rotateAngleX = 0;
-        //this.wingL.rotateAngleX = 0;
-        //this.wingR.setRotationPoint(-4.0F, 13, -10.0F);
-        //this.wingL.setRotationPoint(4.0F, 13, -10.0F);
     }
 
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {

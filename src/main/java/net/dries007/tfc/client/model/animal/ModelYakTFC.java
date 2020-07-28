@@ -12,6 +12,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -234,12 +235,12 @@ public class ModelYakTFC extends ModelBase
 
         if (yak.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            //udders.isHidden = true;
+            udder.isHidden = true;
         }
         else
         {
-            //horn.isHidden = true;
-            //horn2b.isHidden = true;
+            hornR3.isHidden = true;
+            hornL3.isHidden = true;
         }
 
         GlStateManager.pushMatrix();
@@ -267,23 +268,26 @@ public class ModelYakTFC extends ModelBase
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity ent)
     {
-        /*this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
+        this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
         this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
-        this.body.rotateAngleX = (float) Math.PI / 2F;
-        this.udders.rotateAngleX = (float) Math.PI / 2F;
-        this.leg1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-        this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-        this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        horn1.rotateAngleX = 0F;
-        horn2.rotateAngleX = 0F;
-        horn1.isHidden = false;
-        horn1b.isHidden = false;
-        horn2.isHidden = false;
-        horn2b.isHidden = false;
-        udders.isHidden = false;
 
-         */
+        this.legFrontRight.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        this.legFrontLeft.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+        this.legBackRight.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+        this.legBackLeft.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+
+        hornR1a.isHidden = false;
+        hornR1b.isHidden = false;
+        hornR1c.isHidden = false;
+        hornR1d.isHidden = false;
+        hornR2.isHidden = false;
+        hornR3.isHidden = false;
+        hornL1a.isHidden = false;
+        hornL1b.isHidden = false;
+        hornL1c.isHidden = false;
+        hornL1d.isHidden = false;
+        hornL2.isHidden = false;
+        hornL3.isHidden = false;
     }
 
     private void setRotateAngle(ModelRenderer model, float x, float y, float z)
