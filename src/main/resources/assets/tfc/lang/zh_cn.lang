@@ -858,7 +858,7 @@ config.tfc.animals.rarity=在区块中生成稀有度
 config.tfc.animals.rarity.tooltip=该动物生成的稀有度。平均 1 / N 区块（若为有效生物群系）将生成该动物。0 = 禁用该动物的生成
 
 config.tfc.animals.huntCreatures=猎物实体
-config.tfc.animals.huntCreatures.tooltip=控制哪些注册的实体可被该生物狩猎（除非被拴绳拴住），以优先级顺序。必须使用如 '模组ID:实体' 这样的模式指定。无效的项将被忽略。
+config.tfc.animals.huntCreatures.tooltip=控制哪些注册的实体是该生物的猎物（除非被拴绳拴住），以优先级顺序。必须使用如 '模组ID:实体' 这样的模式指定。无效的项将被忽略。
 
 config.tfc.animals.food=食物列表
 config.tfc.animals.food.tooltip=控制哪些物品被认为是该动物的食物。必须使用如 'ore:tag' 或 '模组ID:物品 [meta]' 这样的模式指定。无效的项将被忽略。
@@ -4312,7 +4312,7 @@ item.tfc.ceramics.fired.bowl.name=陶碗
 item.tfc.ceramics.unfired.bowl.name=未烧制的碗
 item.tfc.ceramics.fired.fire_brick.name=耐火砖
 item.tfc.ceramics.unfired.fire_brick.name=未烧制的耐火砖
-item.tfc.ceramics.fire_clay.name=耐火粘土
+item.tfc.ceramics.fire_clay.name=耐火粘土球
 item.tfc.ceramics.unfired.clay_brick.name=未烧制的粘土砖
 
 item.tfc.hide.raw.small.name=小块兽皮
@@ -4706,8 +4706,8 @@ advancements.tfc.main.make_bloomery.title=钢铁厂
 advancements.tfc.main.make_bloomery.description=制作一个锻铁炉。
 advancements.tfc.main.iron_bloom.title=炉心融解
 advancements.tfc.main.iron_bloom.description=用锻铁炉熔炼出一块生铁方坯。
-advancements.tfc.main.iron_age.title=铁器时代
-advancements.tfc.main.iron_age.description=制作铁砧，进入铁器时代。
+advancements.tfc.main.iron_age.title=钢铁时代
+advancements.tfc.main.iron_age.description=制作铁砧，进入钢铁时代。
 advancements.tfc.main.iron_armor.title=铠甲勇士
 advancements.tfc.main.iron_armor.description=装备全套铁甲。
 advancements.tfc.main.make_blast_furnace.title=拔地而起！
@@ -4720,7 +4720,7 @@ advancements.tfc.main.make_crucible.title=冶金！
 advancements.tfc.main.make_crucible.description=用耐火粘土捏出一台坩埚。
 advancements.tfc.main.get_steel.title=工业之骨
 advancements.tfc.main.get_steel.description=获得钢锭。
-advancements.tfc.main.flint_and_steel.title=火石
+advancements.tfc.main.flint_and_steel.title=星星之火
 advancements.tfc.main.flint_and_steel.description=制作打火石。
 advancements.tfc.main.get_black_steel.title=黑上加黑
 advancements.tfc.main.get_black_steel.description=获得黑钢锭。
@@ -4745,7 +4745,7 @@ advancements.tfc.world.farming.title=收获作物
 advancements.tfc.world.farming.description=收获成熟的作物。
 advancements.tfc.world.baker.title=烘焙师
 advancements.tfc.world.baker.description=烤出一条面包。
-advancements.tfc.world.botanist.title=神农氏
+advancements.tfc.world.botanist.title=植物学家
 advancements.tfc.world.botanist.description=获得所有作物的种子。
 #advancements.tfc.world.rutabaga.title=Stupid Onions...
 #advancements.tfc.world.rutabaga.description=Find a Rutabaga.
@@ -4796,7 +4796,7 @@ waila.tfc.temperature=空气温度：%dºC
 waila.tfc.metal.output=含 %d 单元的 %s
 
 # Patchouli
-tfc.patchouli.landing_text=群峦传说入门指南，你从未玩过的全新版本
+tfc.patchouli.landing_text=群峦传说入门指南，你从未玩过的全新版本！
 
 ## Devices
 waila.tfc.devices.minutes_remaining=剩余 %d 分钟
@@ -4858,3 +4858,5 @@ subtitles.entity.llama.hurt=驼马：受伤
 subtitles.entity.llama.spit=驼马：喷射唾沫
 subtitles.entity.llama.step=驼马：踏步
 subtitles.entity.llama.swag=驼马：被装饰
+
+item.clay.name=粘土球
