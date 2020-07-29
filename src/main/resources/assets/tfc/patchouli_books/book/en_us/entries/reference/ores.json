@@ -64,7 +64,7 @@
 	{
       "type": "spotlight",
 	  "title": "Gold",
-	  "item": "tfc:ore/gold",
+	  "item": "tfc:ore/native_gold",
 	  "text": "Gold.$(br2)Igneous Extrusive and Intrusive."
 	},
 	{
