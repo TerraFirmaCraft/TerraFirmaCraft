@@ -49,7 +49,7 @@ public class EntityGazelleTFC extends EntityAnimalMammal implements IHuntable
     public EntityGazelleTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.3F, 1.9F);
+        this.setSize(1.0F, 1.5F);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class EntityGazelleTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public int getMinGroupSize()
     {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class EntityGazelleTFC extends EntityAnimalMammal implements IHuntable
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_DEER;
+        return LootTablesTFC.ANIMALS_GAZELLE;
     }
 
     @Override

@@ -49,7 +49,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     public EntityDeerTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.3F, 1.9F);
+        this.setSize(1.0F, 1.4F);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public int getMinGroupSize()
     {
-        return 4;
+        return 3;
     }
 
     @Override

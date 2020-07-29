@@ -44,7 +44,7 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     public EntityMongooseTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.0F, 1.0F);
+        this.setSize(0.8F, 0.8F);
     }
 
     @Override
@@ -60,12 +60,6 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     }
 
     @Override
-    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
-    {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
-    }
-
-    @Override
     public int getMinGroupSize()
     {
         return 1;
@@ -74,7 +68,7 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public int getMaxGroupSize()
     {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -150,7 +144,7 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_PIG;
+        return LootTablesTFC.ANIMALS_MONGOOSE;
     }
 
     @Override

@@ -5,10 +5,14 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -68,6 +72,24 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
             baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);
         }
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.MALE_AND_FEMALES;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     @Override

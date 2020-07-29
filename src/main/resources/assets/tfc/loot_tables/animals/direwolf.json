@@ -14,8 +14,8 @@
               "skill": "butchering",
               "add": 0.08,
               "count": {
-                "min": 6,
-                "max": 14
+                "min": 8,
+                "max": 16
               }
             },
             {
@@ -36,7 +36,7 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:hide/raw/medium",
+          "name": "tfc:hide/raw/large",
           "functions": [
             {
               "function": "set_count",

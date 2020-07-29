@@ -530,7 +530,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_HORSE;
+        return LootTablesTFC.ANIMALS_DONKEY;
     }
 
     /**

@@ -71,7 +71,7 @@ public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredato
     public EntityGrizzlyBearTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.3F, 1.4F);
+        this.setSize(1.2F, 1.7F);
     }
 
     @Override
@@ -292,6 +292,6 @@ public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredato
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_BEAR;
+        return LootTablesTFC.ANIMALS_GRIZZLY_BEAR;
     }
 }

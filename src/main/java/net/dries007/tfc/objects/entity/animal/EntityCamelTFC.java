@@ -48,7 +48,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     public EntityCamelTFC(World world)
     {
         this(world, IAnimalTFC.Gender.valueOf(Constants.RNG.nextBoolean()), EntityAnimalTFC.getRandomGrowth(ConfigTFC.Animals.CAMEL.adulthood, ConfigTFC.Animals.CAMEL.elder));
-        this.setSize(0.9F, 2.6F);
+        this.setSize(0.9F, 2.0F);
     }
 
     public EntityCamelTFC(World world, IAnimalTFC.Gender gender, int birthDay)

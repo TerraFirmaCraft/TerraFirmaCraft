@@ -50,7 +50,7 @@ public class EntityCougarTFC extends EntityAnimalMammal implements IPredator
     public EntityCougarTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.2F);
+        this.setSize(1.0F, 1.1F);
     }
 
     @Override
@@ -174,7 +174,7 @@ public class EntityCougarTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_GRAN_FELINE;
+        return LootTablesTFC.ANIMALS_COUGAR;
     }
 
     @Override

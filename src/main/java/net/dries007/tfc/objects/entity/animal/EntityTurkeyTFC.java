@@ -67,7 +67,7 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
     public EntityTurkeyTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 0.9F);
+        this.setSize(0.9F, 1.0F);
     }
 
     @Override
@@ -236,7 +236,7 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements ILivestock
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_PHEASANT;
+        return LootTablesTFC.ANIMALS_TURKEY;
     }
 
     @Override

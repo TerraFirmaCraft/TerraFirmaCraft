@@ -47,7 +47,7 @@ public class RenderCougarTFC extends RenderLiving<EntityCougarTFC>
     @Override
     protected void preRenderCallback(EntityCougarTFC cougarTFC, float par2)
     {
-        GlStateManager.scale(1.2f, 1.2f, 1.2f);
+        GlStateManager.scale(1.1f, 1.1f, 1.1f);
     }
 
     @Override

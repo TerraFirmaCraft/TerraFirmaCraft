@@ -482,28 +482,28 @@
     "category": "ambient",
     "subtitle": "tfc.animal.coyote.say",
     "sounds": [
-      "tfc:coyote_howl"
+      "tfc:coyotehowl"
     ]
   },
   "animal.coyote.cry": {
     "category": "ambient",
     "subtitle": "tfc.animal.coyote.cry",
     "sounds": [
-      "tfc:coyote_attack"
+      "tfc:coyoteattack"
     ]
   },
   "animal.coyote.hurt": {
     "category": "ambient",
     "subtitle": "tfc.animal.coyote.hurt",
     "sounds": [
-      "tfc:coyote_hurt"
+      "tfc:coyotehurt"
     ]
   },
   "animal.coyote.death": {
     "category": "ambient",
     "subtitle": "tfc.animal.coyote.death",
     "sounds": [
-      "tfc:coyote_death"
+      "tfc:coyotedeath"
     ]
   },
   "animal.cougar.say": {

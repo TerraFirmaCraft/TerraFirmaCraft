@@ -7,10 +7,13 @@ package net.dries007.tfc.objects.entity.animal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -60,6 +63,24 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
             return ConfigTFC.Animals.DUCK.rarity;
         }
         return 0;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.MALE_AND_FEMALES;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     @Override

@@ -67,7 +67,7 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     public EntityChickenTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 0.9F);
+        this.setSize(0.6F, 0.8F);
     }
 
     @Override
