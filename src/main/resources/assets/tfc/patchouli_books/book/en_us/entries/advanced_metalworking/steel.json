@@ -21,8 +21,9 @@
 			"text": "The blast furnace block is the heart of the blast furnace."
 		},
 		{
-			"type": "text",
-			"text": "The tuyere is worked from a double sheet of any tool metal, though it is typical to make it from wrought iron. It is needed for the blast furnace to reach the higher temperatures it needs to smelt ore."
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:wrought_iron_tuyere",
+			"text": "The tuyere is worked from a $(thing)double sheet$() of any tool metal, though it is typical to make it from wrought iron. It is needed for the blast furnace to reach the higher temperatures it needs to smelt ore."
 		},
 		{
 			"type": "text",
