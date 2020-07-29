@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
@@ -23,6 +24,7 @@ import net.dries007.tfc.objects.blocks.stone.BlockRockVariant;
 import net.dries007.tfc.objects.blocks.wood.BlockPlanksTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 
+@ParametersAreNonnullByDefault
 public class BlockStairsTFC extends BlockStairs
 {
     private static final Map<Rock, EnumMap<Rock.Type, BlockStairsTFC>> ROCK_TABLE = new HashMap<>();
@@ -85,5 +87,11 @@ public class BlockStairsTFC extends BlockStairs
     public void onBlockAdded(@Nonnull World worldIn, @Nonnull BlockPos pos, IBlockState state)
     {
         // Prevents cobble stairs from falling
+    }
+
+    @Override
+    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
+    {
+        // Prevents chiseled smooth stone stairs from collapsing
     }
 }
