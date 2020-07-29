@@ -237,14 +237,15 @@ public abstract class BlockCropTFC extends BlockBush
                     if (!worldIn.canSeeSky(pos) || (stateFarmland.getBlock() instanceof BlockFarmlandTFC && stateFarmland.getValue(BlockFarmlandTFC.MOISTURE) < 3))
                     {
                         te.resetCounter();
+                        return;
                     }
                 }
 
-                boolean isAlive = true;
-                float growthTime = crop.getGrowthTime() * (float) ConfigTFC.General.FOOD.cropGrowthTimeModifier;
-                while (te.getTicksSinceUpdate() > growthTime && isAlive)
+                long growthTicks = (long) (crop.getGrowthTicks() * ConfigTFC.General.FOOD.cropGrowthTimeModifier);
+                int fullGrownStages = 0;
+                while (te.getTicksSinceUpdate() > growthTicks)
                 {
-                    te.reduceCounter((long) growthTime);
+                    te.reduceCounter(growthTicks);
 
                     // find stats for the time in which the crop would have grown
                     float temp = ClimateTFC.getActualTemp(worldIn, pos, -te.getTicksSinceUpdate());
@@ -253,28 +254,22 @@ public abstract class BlockCropTFC extends BlockBush
                     // check if the crop could grow, if so, grow
                     if (crop.isValidForGrowth(temp, rainfall))
                     {
-                        grow(worldIn, pos, worldIn.getBlockState(pos), random);
-                    }
-
-                    // If not valid conditions, die
-                    if (!crop.isValidConditions(temp, rainfall))
-                    {
-                        die(worldIn, pos, worldIn.getBlockState(pos), random);
-                        // once the crop has died, stop iterating
-                        isAlive = false;
-                    }
-
-                    // if crop is mature, check how long
-                    if (state.getValue(getStageProperty()) == crop.getMaxStage())
-                    {
-                        //if crop has been mature for 2? growth stages without harvest, it dies.
-                        if (te.getTicksSinceUpdate() >= 2 * crop.getGrowthTime())
+                        grow(worldIn, pos, state, random);
+                        state = worldIn.getBlockState(pos);
+                        if (state.getBlock() instanceof BlockCropTFC && !state.getValue(WILD) && state.getValue(getStageProperty()) == crop.getMaxStage())
                         {
-                            die(worldIn, pos, worldIn.getBlockState(pos), random);
-                            // once the crop has died, stop iterating
-                            isAlive = false;
+                            fullGrownStages++;
+                            if (fullGrownStages > 2)
+                            {
+                                die(worldIn, pos, state, random);
+                                return;
+                            }
                         }
-
+                    }
+                    else if (!crop.isValidConditions(temp, rainfall))
+                    {
+                        die(worldIn, pos, state, random);
+                        return;
                     }
                 }
             }
