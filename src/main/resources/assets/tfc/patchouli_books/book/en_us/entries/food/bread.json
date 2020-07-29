@@ -10,7 +10,7 @@
 			"type": "crafting",
 			"recipe": "tfc:food/wheat/wheat_grain",
 			"title": "Grain",
-			"text": "TFC has 5 grains, $(item)Wheat, Rye, Rice, Oat, and Maize (corn)$(). To start processing them, craft them with a knife."
+			"text": "TFC has 6 grains, $(item)Wheat, Barley, Rye, Rice, Oat, and Maize (corn)$(). To start processing them, craft them with a knife."
 		},
 		{
 			"type": "tfc:quern_recipe",
