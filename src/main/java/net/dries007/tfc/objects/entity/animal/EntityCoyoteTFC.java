@@ -50,7 +50,7 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
     public EntityCoyoteTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.0F, 1.0F);
+        this.setSize(0.9F, 1.0F);
     }
 
     @Override
@@ -63,6 +63,18 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
             return ConfigTFC.Animals.COYOTE.rarity;
         }
         return 0;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 2;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 3;
     }
 
     @Override
@@ -174,7 +186,7 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_WOLF;
+        return LootTablesTFC.ANIMALS_COYOTE;
     }
 
     @Override
@@ -190,6 +202,6 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // Close enough
+        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F); // Close enough
     }
 }

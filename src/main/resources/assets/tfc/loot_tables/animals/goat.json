@@ -7,7 +7,7 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:food/chevon",
+          "name": "tfc:food/mutton",
           "functions": [
             {
               "function": "tfc:apply_skill",

@@ -82,7 +82,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
+        return AnimalGroupingRules.MALE_AND_FEMALES;
     }
 
     @Override

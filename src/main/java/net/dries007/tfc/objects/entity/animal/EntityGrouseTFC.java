@@ -67,7 +67,7 @@ public class EntityGrouseTFC extends EntityAnimalTFC implements ILivestock
     public EntityGrouseTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 0.9F);
+        this.setSize(0.6F, 0.8F);
     }
 
     @Override
@@ -234,7 +234,7 @@ public class EntityGrouseTFC extends EntityAnimalTFC implements ILivestock
     }
 
     @Nullable
-    protected ResourceLocation getLootTable() { return LootTablesTFC.ANIMALS_DUCK; }
+    protected ResourceLocation getLootTable() { return LootTablesTFC.ANIMALS_GROUSE; }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)

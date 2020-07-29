@@ -62,6 +62,8 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     public EntityZebuTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
+        setSize(1.1F, 1.5F);
+        setMilkedTick(0);
     }
 
     @Override
@@ -87,6 +89,24 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
             baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);
         }
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.MALE_AND_FEMALES;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 5;
     }
 
     @Override
@@ -150,7 +170,7 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_COW;
+        return LootTablesTFC.ANIMALS_ZEBU;
     }
 
     @Override

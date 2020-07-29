@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.entity.monster.EntitySpider;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
@@ -50,7 +51,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     public EntityPantherTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.2F);
+        this.setSize(1.0F, 1.1F);
     }
 
     @Override
@@ -174,7 +175,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_GRAN_FELINE;
+        return LootTablesTFC.ANIMALS_PANTHER;
     }
 
     @Override

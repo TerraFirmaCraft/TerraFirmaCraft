@@ -50,7 +50,7 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     public EntitySaberToothTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.4F, 1.3F);
+        this.setSize(1.2F, 1.5F);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_GRAN_FELINE;
+        return LootTablesTFC.ANIMALS_SABERTOOTH;
     }
 
     @Override

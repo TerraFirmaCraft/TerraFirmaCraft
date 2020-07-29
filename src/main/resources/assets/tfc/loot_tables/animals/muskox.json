@@ -36,7 +36,7 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:hide/sheepskin/medium",
+          "name": "tfc:hide/sheepskin/large",
           "functions": [
             {
               "function": "set_count",

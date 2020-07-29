@@ -7,15 +7,15 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:food/wolf",
+          "name": "tfc:food/horse_meat",
           "functions": [
             {
               "function": "tfc:apply_skill",
               "skill": "butchering",
-              "add": 0.08,
+              "add": 0.12,
               "count": {
-                "min": 6,
-                "max": 14
+                "min": 10,
+                "max": 18
               }
             },
             {

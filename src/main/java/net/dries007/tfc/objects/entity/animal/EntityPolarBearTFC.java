@@ -61,6 +61,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     public EntityPolarBearTFC(World world, IAnimalTFC.Gender gender, int birthDay)
     {
         super(world);
+        this.setSize(1.2F, 1.7F);
         this.setGender(gender);
         this.setBirthDay(birthDay);
         this.setFamiliarity(0);
@@ -116,7 +117,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_BEAR;
+        return LootTablesTFC.ANIMALS_POLAR_BEAR;
     }
 
     @Override

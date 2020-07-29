@@ -63,7 +63,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     public EntityYakTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        setSize(0.9F, 1.3F);
+        setSize(1.1F, 1.5F);
         setMilkedTick(0);
     }
 
@@ -82,7 +82,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
+        return AnimalGroupingRules.MALE_AND_FEMALES;
     }
 
     @Override
@@ -292,7 +292,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_COW;
+        return LootTablesTFC.ANIMALS_YAK;
     }
 
     @Override

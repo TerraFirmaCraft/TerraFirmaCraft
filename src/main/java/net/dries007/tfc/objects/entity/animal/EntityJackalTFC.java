@@ -5,11 +5,15 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -50,7 +54,7 @@ public class EntityJackalTFC extends EntityAnimalMammal implements IPredator
     public EntityJackalTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.0F, 1.0F);
+        this.setSize(0.8F, 0.9F);
     }
 
     @Override
@@ -63,6 +67,18 @@ public class EntityJackalTFC extends EntityAnimalMammal implements IPredator
             return ConfigTFC.Animals.JACKAL.rarity;
         }
         return 0;
+    }
+
+    @Override
+    public int getMinGroupSize()
+    {
+        return 2;
+    }
+
+    @Override
+    public int getMaxGroupSize()
+    {
+        return 3;
     }
 
     @Override
@@ -174,7 +190,7 @@ public class EntityJackalTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_WOLF;
+        return LootTablesTFC.ANIMALS_JACKAL;
     }
 
     @Override

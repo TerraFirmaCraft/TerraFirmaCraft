@@ -7,6 +7,7 @@ package net.dries007.tfc.client.render.animal;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelDeerTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDeerTFC;
+import net.dries007.tfc.objects.entity.animal.EntityDireWolfTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -42,6 +44,11 @@ public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
         {
             return DEER_TEXTURE;
         }
+    }
+
+    protected void preRenderCallback(EntityDeerTFC deerTFC, float par2)
+    {
+        GlStateManager.scale(0.8f, 0.8f, 0.8f);
     }
 
     @Override

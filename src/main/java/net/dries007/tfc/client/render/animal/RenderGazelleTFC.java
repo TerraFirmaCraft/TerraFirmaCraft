@@ -40,7 +40,7 @@ public class RenderGazelleTFC extends RenderLiving<EntityGazelleTFC>
     @Override
     protected void preRenderCallback(EntityGazelleTFC gazelleTFC, float par2)
     {
-        GlStateManager.scale(0.85f, 0.85f, 0.85f);
+        GlStateManager.scale(0.9f, 0.9f, 0.9f);
     }
 
     @Override

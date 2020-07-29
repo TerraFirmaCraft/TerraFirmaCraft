@@ -45,7 +45,7 @@ public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
     public EntityBoarTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.0F, 1.0F);
+        this.setSize(0.9F, 1.0F);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public int getMinGroupSize()
     {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -152,7 +152,7 @@ public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_PIG;
+        return LootTablesTFC.ANIMALS_BOAR;
     }
 
     @Override

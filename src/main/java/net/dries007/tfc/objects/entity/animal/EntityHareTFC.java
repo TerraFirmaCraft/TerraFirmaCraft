@@ -66,7 +66,7 @@ public class EntityHareTFC extends EntityAnimalMammal implements IHuntable
     public EntityHareTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.4F, 0.5F);
+        this.setSize(0.4F, 0.6F);
         this.jumpHelper = new RabbitJumpHelper(this);
         this.moveHelper = new EntityHareTFC.RabbitMoveHelper(this);
         this.setMovementSpeed(0.0D);
@@ -311,7 +311,7 @@ public class EntityHareTFC extends EntityAnimalMammal implements IHuntable
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_RABBIT;
+        return LootTablesTFC.ANIMALS_HARE;
     }
 
     @Nullable

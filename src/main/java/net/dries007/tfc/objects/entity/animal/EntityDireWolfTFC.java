@@ -50,7 +50,7 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
     public EntityDireWolfTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.2F);
+        this.setSize(1.1F, 1.4F);
     }
 
     @Override
@@ -174,7 +174,7 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_WOLF;
+        return LootTablesTFC.ANIMALS_DIREWOLF;
     }
 
     @Override

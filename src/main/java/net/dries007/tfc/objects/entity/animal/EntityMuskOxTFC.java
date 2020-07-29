@@ -69,7 +69,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     public EntityMuskOxTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
     {
         super(worldIn, gender, birthDay);
-        setSize(0.9F, 1.3F);
+        setSize(1.1F, 1.5F);
         setDyeColor(dye);
         setShearedTick(0);
     }
@@ -89,19 +89,19 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
+        return AnimalGroupingRules.MALE_AND_FEMALES;
     }
 
     @Override
     public int getMinGroupSize()
     {
-        return 3;
+        return 2;
     }
 
     @Override
     public int getMaxGroupSize()
     {
-        return 5;
+        return 4;
     }
 
     @Override
