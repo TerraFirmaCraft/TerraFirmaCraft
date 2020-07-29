@@ -8,11 +8,11 @@
 		
 		{
 			"type": "text",
-			"text": "$(thing)Meals$() are important for managing nutrition in TFC. They allow you to combine multiple foods into one eating session, letting you have more nutrients at once, thus increasing your nutrition. There are three types of meals: $(thing)Soups, Salads, and Sandwiches$(). Liquid foods cannot go in a meal."
+			"text": "$(thing)Meals$() are important for managing nutrition in TFC. They allow you to combine multiple foods into one eating session, letting you have more nutrients at once, thus increasing your nutrition. There are three types of meals: $(thing)Soups, Salads, and Sandwiches$(). Liquid foods cannot go in a meal. For knapping recipes, see the $(l:reference/clay_knapping)reference section$()."
 		},
 		{
 			"type": "text",
-			"text": "$(item)Soup Preparation$()$(br2)1. Light a firepit$(br)2. Knap and fire a $(item)ceramic pot$(). $(4)Right-click$() to place it on the firepit.$(br)3. Get some ceramic bowls$(br)4. Place ingredients in soup GUI ( $(4)right-click$() to open)$(br)5. Allow soup to boil$(br)6. Retrieve soup with bowl.$(br2)$(thing)Note: grains and dairy cannot go in a soup."
+			"text": "$(item)Soup Preparation$()$(br2)1. Light a firepit$(br)2. Knap and fire a $(item)ceramic pot$(). $(4)Right-click$() to place it on the firepit.$(br)3. Get some ceramic or wooden bowls$(br)4. Place ingredients in soup GUI ( $(4)right-click$() to open)$(br)5. Allow soup to boil$(br)6. Retrieve soup with bowl.$(br2)$(thing)Note: grains and dairy cannot go in a soup."
 		},
 		{
 			"type": "crafting",
