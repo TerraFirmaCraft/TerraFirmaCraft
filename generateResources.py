@@ -976,6 +976,19 @@ for wood_type in WOOD_TYPES:
         }]
     })
 
+    # (WOOD) PRESSURE PLATE
+    blockstate(('wood', 'pressure_plate', wood_type), 'pressure_plate', textures={
+        ('texture', 'particle'): 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants={
+        'powered': {
+            'false': {'model': 'stone_pressure_plate_up'},
+            'true': {'model': 'stone_pressure_plate_down'}
+        },
+        'inventory': [{
+            'model': 'stone_pressure_plate_up'
+        }]
+    })
+
     # BOOKSHELF
     blockstate(('wood', 'bookshelf', wood_type), 'tfc:bookshelf', textures={
         ('all', 'particle'): 'tfc:blocks/wood/planks/%s' % wood_type,
