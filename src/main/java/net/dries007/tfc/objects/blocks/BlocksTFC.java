@@ -436,6 +436,10 @@ public final class BlocksTFC
             // All buttons + item blocks
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "wood/button/" + wood.getRegistryName().getPath(), new BlockButtonWoodTFC(wood), CT_DECORATIONS)));
+            // All pressure plates + item blocks
+            for (Tree wood : TFCRegistries.TREES.getValuesCollection())
+                inventoryItemBlocks.add(new ItemBlockTFC(register(r, "wood/pressure_plate/" + wood.getRegistryName().getPath().toLowerCase(), new BlockWoodPressurePlateTFC(wood), CT_DECORATIONS)));
+
             // Other blocks that don't have specific order requirements
             for (Tree wood : TFCRegistries.TREES.getValuesCollection())
             {
