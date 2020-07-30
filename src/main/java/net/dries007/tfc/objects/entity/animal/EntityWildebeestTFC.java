@@ -166,6 +166,6 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.14F, 0.9F);
     }
 }

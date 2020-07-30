@@ -138,7 +138,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
 
         int priority = 2;
-        for (String input : ConfigTFC.Animals.BEAR.huntCreatures)
+        for (String input : ConfigTFC.Animals.PANTHER.huntCreatures)
         {
             ResourceLocation key = new ResourceLocation(input);
             EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
@@ -191,6 +191,6 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // Close enough
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F); // Close enough
     }
 }

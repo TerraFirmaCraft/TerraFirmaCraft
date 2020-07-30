@@ -144,7 +144,7 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
         int priority = 2;
-        for (String input : ConfigTFC.Animals.POLAR_BEAR.huntCreatures)
+        for (String input : ConfigTFC.Animals.SABER_TOOTH.huntCreatures)
         {
             ResourceLocation key = new ResourceLocation(input);
             EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
@@ -164,11 +164,11 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
     }
 
     @Override

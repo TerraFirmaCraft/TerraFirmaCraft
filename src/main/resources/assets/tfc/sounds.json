@@ -402,28 +402,28 @@
     "category": "ambient",
     "subtitle": "tfc.animal.boar.cry",
     "sounds": [
-      "tfc:boar_growl"
+      "tfc:boar_growl1"
     ]
   },
   "animal.boar.say": {
     "category": "ambient",
     "subtitle": "tfc.animal.boar.say",
     "sounds": [
-      "tfc:boar_growl"
+      "tfc:boar_growl1"
     ]
   },
   "animal.boar.hurt": {
     "category": "ambient",
     "subtitle": "tfc.animal.boar.hurt",
     "sounds": [
-      "tfc:boar_hurt"
+      "tfc:boar_hurt1"
     ]
   },
   "animal.boar.death": {
     "category": "ambient",
     "subtitle": "tfc.animal.boar.death",
     "sounds": [
-      "tfc:boar_death"
+      "tfc:boar_death1"
     ]
   },
   "animal.wildebeest.say": {
@@ -482,28 +482,28 @@
     "category": "ambient",
     "subtitle": "tfc.animal.coyote.say",
     "sounds": [
-      "tfc:coyotehowl"
+      "tfc:coyotehowl1"
     ]
   },
   "animal.coyote.cry": {
     "category": "ambient",
     "subtitle": "tfc.animal.coyote.cry",
     "sounds": [
-      "tfc:coyoteattack"
+      "tfc:coyoteattack1"
     ]
   },
   "animal.coyote.hurt": {
     "category": "ambient",
     "subtitle": "tfc.animal.coyote.hurt",
     "sounds": [
-      "tfc:coyotehurt"
+      "tfc:coyotehurt1"
     ]
   },
   "animal.coyote.death": {
     "category": "ambient",
     "subtitle": "tfc.animal.coyote.death",
     "sounds": [
-      "tfc:coyotedeath"
+      "tfc:coyotedeath1"
     ]
   },
   "animal.cougar.say": {
