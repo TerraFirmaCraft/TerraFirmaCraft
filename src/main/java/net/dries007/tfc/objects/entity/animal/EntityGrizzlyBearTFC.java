@@ -81,7 +81,7 @@ public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredato
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
             (biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            return ConfigTFC.Animals.BEAR.rarity;
+            return ConfigTFC.Animals.GRIZZLY_BEAR.rarity;
         }
         return 0;
     }
@@ -206,7 +206,7 @@ public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredato
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.16F, 1.1F);
     }
 
     @Override
@@ -232,7 +232,7 @@ public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredato
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 
         int priority = 2;
-        for (String input : ConfigTFC.Animals.BEAR.huntCreatures)
+        for (String input : ConfigTFC.Animals.GRIZZLY_BEAR.huntCreatures)
         {
             ResourceLocation key = new ResourceLocation(input);
             EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);

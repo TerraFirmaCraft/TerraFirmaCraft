@@ -371,6 +371,6 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
+        playSound(SoundEvents.ENTITY_COW_STEP, 0.16F, 1.1F);
     }
 }

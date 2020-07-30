@@ -206,7 +206,7 @@ public class EntityBlackBearTFC extends EntityAnimalMammal implements IPredator,
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.16F, 1.1F);
     }
 
     @Override
@@ -230,6 +230,7 @@ public class EntityBlackBearTFC extends EntityAnimalMammal implements IPredator,
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+
 
         int priority = 2;
         for (String input : ConfigTFC.Animals.BLACK_BEAR.huntCreatures)
