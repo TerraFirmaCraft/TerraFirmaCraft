@@ -31,6 +31,7 @@ import net.minecraftforge.common.EnumPlantType;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.skills.SimpleSkill;
@@ -140,6 +141,12 @@ public class BlockCropDead extends BlockBush
         return count;
     }
 
+    @Override
+    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+        IBlockState below = world.getBlockState(pos.down());
+        return BlocksTFC.isGrowableSoil(below);
+    }
+    
     @Override
     @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
