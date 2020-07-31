@@ -22,12 +22,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
@@ -143,8 +145,8 @@ public class BlockCropDead extends BlockBush
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        IBlockState below = world.getBlockState(pos.down());
-        return BlocksTFC.isGrowableSoil(below);
+        IBlockState soil = world.getBlockState(pos.down());
+        return soil.getBlock().canSustainPlant(soil, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
     }
     
     @Override
