@@ -6,14 +6,14 @@
 package net.dries007.tfc.util;
 
 /**
- * This is a blocking transaction wrapper for a provided {@link Runnable}. It is designed where the runnable is set as a change listener for a value, but both direct access (through {@link Transaction#runBlocking(Runnable)} and non-recursive updating is desired
+ * This is a reentrant wrapper for a provided {@link Runnable}. It is designed where the runnable is set as a change listener for a value, but both direct access (through {@link ReentrantRunnable#runBlocking(Runnable)} and non-recursive updating is desired
  */
-public class Transaction implements Runnable
+public class ReentrantRunnable implements Runnable
 {
     private final Runnable mainRunner;
     private boolean working = false;
 
-    public Transaction(Runnable mainRunner)
+    public ReentrantRunnable(Runnable mainRunner)
     {
         this.mainRunner = mainRunner;
     }
