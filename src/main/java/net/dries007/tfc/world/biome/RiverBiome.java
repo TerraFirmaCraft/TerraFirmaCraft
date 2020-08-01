@@ -28,4 +28,16 @@ public class RiverBiome extends TFCBiome
     {
         return new SimplexNoise2D(seed).octaves(6).spread(0.17f).scaled(TFCConfig.COMMON.seaLevel.get() - 6, TFCConfig.COMMON.seaLevel.get() - 1);
     }
+
+    @Override
+    public LargeGroup getLargeGroup()
+    {
+        return LargeGroup.RIVER;
+    }
+
+    @Override
+    public SmallGroup getMediumGroup()
+    {
+        return SmallGroup.RIVER;
+    }
 }

@@ -25,7 +25,6 @@ public class TFCBiomes
     // Aquatic biomes
     public static final BiomeVariants OCEAN = register("ocean", (temp, rain) -> new OceanBiome(false, temp, rain)).setLandType(BiomeLandType.OCEAN).setWeightType(BiomeWeightType.LAND_IS_SHORE); // Ocean biome found near continents.
     public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", (temp, rain) -> new OceanBiome(true, temp, rain)); // Deep ocean biome covering most all oceans.
-    public static final BiomeVariants DEEP_OCEAN_RIDGE = register("deep_ocean_ridge", (temp, rain) -> new OceanBiome(true, temp, rain)); // Variant of deep ocean biomes, contains snaking ridge like formations.
 
     // Low biomes
     public static final BiomeVariants PLAINS = register("plains", PlainsBiome::new).setSpawnBiome(); // Very flat, slightly above sea level.

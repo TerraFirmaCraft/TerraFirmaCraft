@@ -7,6 +7,7 @@ package net.dries007.tfc.world;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
@@ -24,6 +25,7 @@ import net.minecraft.world.gen.*;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.carver.WorleyCaveCarver;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -140,40 +142,85 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         TFCBiome[] localBiomes = new TFCBiome[16 * 16];
         double[] baseHeight = new double[16 * 16];
-        Object2DoubleMap<TFCBiome> biomeWeights = new Object2DoubleOpenHashMap<>(4);
+        Object2DoubleMap<TFCBiome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>();
+
+        ChunkArraySampler.CoordinateAccessor<TFCBiome> biomeAccessor = (x, z) -> (TFCBiome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(world.getSeed(), chunkX + x, 0, chunkZ + z, world);
+
+        TFCBiome[] sampledBiomes16 = ChunkArraySampler.fillSampledArray(new TFCBiome[10 * 10], biomeAccessor, 4);
+        TFCBiome[] sampledBiomes4 = ChunkArraySampler.fillSampledArray(new TFCBiome[13 * 13], biomeAccessor, 2);
+        TFCBiome[] sampledBiomes1 = ChunkArraySampler.fillSampledArray(new TFCBiome[24 * 24], biomeAccessor);
 
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
                 pos.setPos(chunkX + x, 0, chunkZ + z);
-                TFCBiome biomeAt = (TFCBiome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(world.getSeed(), chunkX + x, 0, chunkZ + z, world);
 
-                // Edge type - sample an area around the target location dependent on the edge type
-                BiomeEdgeType edgeType = biomeAt.getVariants().getEdgeType();
-                biomeWeights.clear();
-                edgeType.apply(biomeWeights, biomeProvider, biomeAt, world.getSeed(), chunkX + x, chunkZ + z);
+                ChunkArraySampler.fillSampledWeightMap(sampledBiomes16, weightMap16, 4, x, z);
+                ChunkArraySampler.fillSampledWeightMap(sampledBiomes4, weightMap4, 2, x, z);
+                ChunkArraySampler.fillSampledWeightMap(sampledBiomes1, weightMap1, x, z);
 
-                // Weight type - apply weight transformations here
-                biomeAt.getVariants().getWeightType().apply(biomeWeights);
+                ChunkArraySampler.reduceGroupedWeightMap(weightMap4, weightMap16, ITFCBiome::getLargeGroup, ITFCBiome.LargeGroup.SIZE);
+                ChunkArraySampler.reduceGroupedWeightMap(weightMap1, weightMap4, ITFCBiome::getMediumGroup, ITFCBiome.SmallGroup.SIZE);
 
                 // Simple average across the final weights
-                double totalHeight = 0;
-                double maxWeight = 0;
-                TFCBiome maxWeightBiome = biomeAt;
-                for (Object2DoubleMap.Entry<TFCBiome> entry : biomeWeights.object2DoubleEntrySet())
+                double totalHeight = 0, riverHeight = 0;
+                double riverWeight = 0;
+                TFCBiome biomeAt = null, normalBiomeAt = null, riverBiomeAt = null;
+                double maxNormalWeight = 0, maxRiverWeight = 0;
+                for (Object2DoubleMap.Entry<TFCBiome> entry : weightMap1.object2DoubleEntrySet())
                 {
-                    double height = biomeNoiseMap.get(entry.getKey()).noise(chunkX + x, chunkZ + z);
                     double weight = entry.getDoubleValue();
-                    totalHeight += weight * height;
-                    if (weight > maxWeight)
+                    double height = weight * biomeNoiseMap.get(entry.getKey()).noise(chunkX + x, chunkZ + z);
+                    totalHeight += height;
+                    if (entry.getKey().getVariants() == TFCBiomes.RIVER)
                     {
-                        maxWeight = weight;
-                        maxWeightBiome = entry.getKey();
+                        riverHeight += height;
+                        riverWeight += weight;
+                        if (maxRiverWeight < weight)
+                        {
+                            riverBiomeAt = entry.getKey();
+                            maxRiverWeight = weight;
+                        }
+                    }
+                    else if (maxNormalWeight < weight)
+                    {
+                        normalBiomeAt = entry.getKey();
+                        maxNormalWeight = weight;
                     }
                 }
-                baseHeight[x + 16 * z] = totalHeight;
-                localBiomes[x + 16 * z] = maxWeightBiome;
+
+                double actualHeight = totalHeight;
+                if (riverWeight > 0.6 && riverBiomeAt != null)
+                {
+                    // River bottom / shore
+                    double aboveWaterDelta = actualHeight - riverHeight / riverWeight;
+                    if (aboveWaterDelta > 0)
+                    {
+                        if (aboveWaterDelta > 20)
+                        {
+                            aboveWaterDelta = 20;
+                        }
+                        double adjustedAboveWaterDelta = 0.02 * aboveWaterDelta * (40 - aboveWaterDelta) - 0.48;
+                        actualHeight = riverHeight / riverWeight + adjustedAboveWaterDelta;
+                    }
+                    biomeAt = riverBiomeAt; // Use river surface for the bottom of the river + small shore beneath cliffs
+                }
+                else if (riverWeight > 0 && normalBiomeAt != null)
+                {
+                    double adjustedRiverWeight = 0.6 * riverWeight;
+                    actualHeight = (totalHeight - riverHeight) * ((1 - adjustedRiverWeight) / (1 - riverWeight)) + riverHeight * (adjustedRiverWeight / riverWeight);
+
+                    biomeAt = normalBiomeAt;
+                }
+                else if (normalBiomeAt != null)
+                {
+                    biomeAt = normalBiomeAt;
+                }
+
+                Objects.requireNonNull(biomeAt, "Biome should not be null!");
+                baseHeight[x + 16 * z] = actualHeight;
+                localBiomes[x + 16 * z] = biomeAt;
             }
         }
 

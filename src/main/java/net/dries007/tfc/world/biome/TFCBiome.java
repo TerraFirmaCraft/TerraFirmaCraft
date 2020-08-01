@@ -34,7 +34,7 @@ import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.placement.TFCPlacements;
 
-public abstract class TFCBiome extends Biome
+public abstract class TFCBiome extends Biome implements ITFCBiome
 {
     // todo: replace with actual blocks
     protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState();

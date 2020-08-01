@@ -26,6 +26,12 @@ public class LakeBiome extends TFCBiome
     @Override
     public INoise2D createNoiseLayer(long seed)
     {
-        return new SimplexNoise2D(seed).octaves(4).spread(0.2f).scaled(TFCConfig.COMMON.seaLevel.get() - 8, TFCConfig.COMMON.seaLevel.get() - 3);
+        return new SimplexNoise2D(seed).octaves(4).spread(0.15f).scaled(TFCConfig.COMMON.seaLevel.get() - 12, TFCConfig.COMMON.seaLevel.get() - 2);
+    }
+
+    @Override
+    public LargeGroup getLargeGroup()
+    {
+        return LargeGroup.LAKE;
     }
 }

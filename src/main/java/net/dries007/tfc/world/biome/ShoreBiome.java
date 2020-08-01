@@ -34,4 +34,10 @@ public class ShoreBiome extends TFCBiome
         int seaLevel = TFCConfig.COMMON.seaLevel.get();
         return new SimplexNoise2D(seed).octaves(4).spread(0.17f).scaled(seaLevel, seaLevel + 1.8f);
     }
+
+    @Override
+    public LargeGroup getLargeGroup()
+    {
+        return LargeGroup.OCEAN;
+    }
 }
