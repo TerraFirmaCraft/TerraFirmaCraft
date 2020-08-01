@@ -63,7 +63,7 @@ public class EntityCowTFC extends EntityAnimalMammal implements ILivestock
     public EntityCowTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        setSize(0.9F, 1.3F);
+        setSize(1.2F, 1.3F);
         setMilkedTick(0);
     }
 

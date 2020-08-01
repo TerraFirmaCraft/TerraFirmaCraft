@@ -38,7 +38,7 @@ public class RenderYakTFC extends RenderAnimalTFC<EntityYakTFC>
             GlStateManager.scale(1.2f, 1.2f, 1.2f);
         else
         {
-            GlStateManager.scale(1.0f, 1.0f, 1.0f);
+            GlStateManager.scale(1.15f, 1.15f, 1.15f);
         }
     }
 }

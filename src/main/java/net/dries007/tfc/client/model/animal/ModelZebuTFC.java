@@ -28,6 +28,8 @@ import net.dries007.tfc.objects.entity.animal.EntityZebuTFC;
 @ParametersAreNonnullByDefault
 public class ModelZebuTFC extends ModelBase
 {
+    public ModelRenderer maleNeck;
+    public ModelRenderer headNode;
     public ModelRenderer legRFrontTop;
     public ModelRenderer humpMain;
     public ModelRenderer legLBackTop;
@@ -68,8 +70,6 @@ public class ModelZebuTFC extends ModelBase
     public ModelRenderer mouthBottom;
     public ModelRenderer hornML1;
     public ModelRenderer hornMR1;
-    public ModelRenderer hornFL1;
-    public ModelRenderer hornFR1;
     public ModelRenderer hornML2;
     public ModelRenderer hornML3a;
     public ModelRenderer hornML3b;
@@ -82,14 +82,29 @@ public class ModelZebuTFC extends ModelBase
     public ModelRenderer hornMR3c;
     public ModelRenderer hornMR3d;
     public ModelRenderer hornMR4;
-    public ModelRenderer hornFL2;
-    public ModelRenderer hornFR2;
+    public ModelRenderer hornRightF1A;
+    public ModelRenderer hornRightF1B;
+    public ModelRenderer hornRightF1C;
+    public ModelRenderer hornRightF1D;
+    public ModelRenderer hornRightF2;
+    public ModelRenderer hornLeftF1A;
+    public ModelRenderer hornLeftF1B;
+    public ModelRenderer hornLeftF1C;
+    public ModelRenderer hornLeftF1D;
+    public ModelRenderer hornLeftF2;
 
     public ModelZebuTFC()
     {
         textureWidth = 128;
         textureHeight = 128;
 
+        headNode = new ModelRenderer(this, 0, 0);
+        headNode.setRotationPoint(0.0F, -0.5F, -10.5F);
+        headNode.addBox(-0.5F, -0.5F, -1.0F, 1, 1, 1, 0.0F);
+        maleNeck = new ModelRenderer(this, 100, 5);
+        maleNeck.setRotationPoint(0.0F, 2.2F, -0.8F);
+        maleNeck.addBox(-1.0F, -3.0F, -1.5F, 2, 10, 3, 0.0F);
+        setRotateAngle(maleNeck, 1.186823891356144F, 0.0F, 0.0F);
         legLFrontTop = new ModelRenderer(this, 10, 114);
         legLFrontTop.setRotationPoint(4.8F, 4.0F, -4.0F);
         legLFrontTop.addBox(-0.5F, -1.0F, -3.0F, 3, 8, 5, 0.0F);
@@ -102,10 +117,6 @@ public class ModelZebuTFC extends ModelBase
         hornMR1.setRotationPoint(-5.0F, -2.5F, -4.5F);
         hornMR1.addBox(-0.5F, -1.0F, -1.0F, 3, 2, 2, 0.0F);
         setRotateAngle(hornMR1, 0.0F, -0.5235987755982988F, 0.0F);
-        hornFL2 = new ModelRenderer(this, 15, 58);
-        hornFL2.setRotationPoint(2.3F, 0.0F, -0.1F);
-        hornFL2.addBox(-0.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
-        setRotateAngle(hornFL2, 0.0F, 0.6981317007977318F, -0.6981317007977318F);
         legLBackTop = new ModelRenderer(this, 30, 114);
         legLBackTop.setRotationPoint(5.0F, 3.5F, 8.6F);
         legLBackTop.addBox(-0.7F, -1.5F, -3.0F, 3, 9, 5, 0.0F);
@@ -189,10 +200,6 @@ public class ModelZebuTFC extends ModelBase
         teat3 = new ModelRenderer(this, 25, 66);
         teat3.setRotationPoint(2.0F, 2.0F, 1.4F);
         teat3.addBox(-0.5F, -1.0F, -0.5F, 1, 2, 1, 0.0F);
-        hornFR2 = new ModelRenderer(this, 15, 58);
-        hornFR2.setRotationPoint(-2.8F, 0.0F, -0.1F);
-        hornFR2.addBox(-2.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
-        setRotateAngle(hornFR2, 0.0F, -0.6981317007977318F, 0.6981317007977318F);
         legRBackTop = new ModelRenderer(this, 30, 114);
         legRBackTop.mirror = true;
         legRBackTop.setRotationPoint(-3.9F, 3.5F, 8.0F);
@@ -202,10 +209,6 @@ public class ModelZebuTFC extends ModelBase
         teat4.mirror = true;
         teat4.setRotationPoint(-2.0F, 2.0F, 1.4F);
         teat4.addBox(-0.5F, -1.0F, -0.5F, 1, 2, 1, 0.0F);
-        hornFL1 = new ModelRenderer(this, 15, 62);
-        hornFL1.setRotationPoint(3.5F, -2.5F, -4.0F);
-        hornFL1.addBox(-0.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
-        setRotateAngle(hornFL1, 0.0F, 0.5235987755982988F, -0.3141592653589793F);
         tailBody = new ModelRenderer(this, 62, 78);
         tailBody.setRotationPoint(0.0F, 3.7F, 0.0F);
         tailBody.addBox(-0.5F, 0.0F, -0.5F, 1, 8, 1, 0.0F);
@@ -292,13 +295,9 @@ public class ModelZebuTFC extends ModelBase
         legLFrontHoof.setRotationPoint(0.0F, 5.9F, -0.1F);
         legLFrontHoof.addBox(-2.0F, 0.0F, -2.5F, 4, 3, 4, 0.0F);
         head = new ModelRenderer(this, 0, 25);
-        head.setRotationPoint(0.0F, 0.8F, -5.0F);
+        head.setRotationPoint(0.0F, 1.0F, -2.0F);
         head.addBox(-3.5F, -4.5F, -4.5F, 7, 7, 6, 0.0F);
-        setRotateAngle(head, 0.0F, 0.0F, 0.0F);
-        hornFR1 = new ModelRenderer(this, 15, 62);
-        hornFR1.setRotationPoint(-3.5F, -2.5F, -4.0F);
-        hornFR1.addBox(-3.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
-        setRotateAngle(hornFR1, 0.0F, -0.5235987755982988F, 0.3141592653589793F);
+        setRotateAngle(head, -1.1344640137963142F, 0.0F, 0.0F);
         legLFrontMiddle = new ModelRenderer(this, 11, 105);
         legLFrontMiddle.setRotationPoint(1.3F, 6.7F, 0.1F);
         legLFrontMiddle.addBox(-2.1F, 0.0F, -2.5F, 3, 5, 4, 0.0F);
@@ -326,9 +325,52 @@ public class ModelZebuTFC extends ModelBase
         hornMR3a.setRotationPoint(-1.21F, -0.2F, -0.4F);
         hornMR3a.addBox(-0.5F, -0.5F, -0.5F, 2, 1, 1, 0.0F);
         setRotateAngle(hornMR3a, 0.0F, -0.3490658503988659F, 0.0F);
+
+        hornRightF1A = new ModelRenderer(this, 1, 45);
+        hornRightF1A.setRotationPoint(-3.5F, -2.2F, -2.8F);
+        hornRightF1A.addBox(-1.5F, -0.8F, -0.8F, 3, 1, 1, 0.0F);
+        setRotateAngle(hornRightF1A, 1.5707963267948966F, -0.3490658503988659F, 0.17453292519943295F);
+        hornRightF1B = new ModelRenderer(this, 1, 45);
+        hornRightF1B.setRotationPoint(0.0F, -0.3F, 0.3F);
+        hornRightF1B.addBox(-1.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornRightF1C = new ModelRenderer(this, 1, 45);
+        hornRightF1C.setRotationPoint(0.0F, 0.3F, -0.3F);
+        hornRightF1C.addBox(-1.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornRightF1D = new ModelRenderer(this, 1, 45);
+        hornRightF1D.setRotationPoint(0.0F, 0.3F, 0.3F);
+        hornRightF1D.addBox(-1.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornRightF2 = new ModelRenderer(this, 1, 42);
+        hornRightF2.setRotationPoint(-2.0F, -0.4F, 0.0F);
+        hornRightF2.addBox(-2.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        setRotateAngle(hornRightF2, 0.2617993877991494F, 0.0F, 0.6108652381980153F);
+
+        hornLeftF1A = new ModelRenderer(this, 1, 45);
+        hornLeftF1A.mirror = true;
+        hornLeftF1A.setRotationPoint(3.5F, -2.2F, -2.8F);
+        hornLeftF1A.addBox(-1.5F, -0.8F, -0.8F, 3, 1, 1, 0.0F);
+        setRotateAngle(hornLeftF1A, 1.5707963267948966F, 0.3490658503988659F, -0.17453292519943295F);
+        hornLeftF1B = new ModelRenderer(this, 1, 45);
+        hornLeftF1B.mirror = true;
+        hornLeftF1B.setRotationPoint(-1.5F, -0.3F, 0.3F);
+        hornLeftF1B.addBox(0.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornLeftF1C = new ModelRenderer(this, 1, 45);
+        hornLeftF1C.mirror = true;
+        hornLeftF1C.setRotationPoint(-1.5F, 0.3F, -0.3F);
+        hornLeftF1C.addBox(0.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornLeftF1D = new ModelRenderer(this, 1, 45);
+        hornLeftF1D.mirror = true;
+        hornLeftF1D.setRotationPoint(-1.5F, 0.3F, 0.3F);
+        hornLeftF1D.addBox(0.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornLeftF2 = new ModelRenderer(this, 1, 42);
+        hornLeftF2.mirror = true;
+        hornLeftF2.setRotationPoint(2.0F, -0.4F, 0.0F);
+        hornLeftF2.addBox(-1.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        setRotateAngle(hornLeftF2, 0.2617993877991494F, 0.0F, -0.6108652381980153F);
+
+        headNode.addChild(head);
+        neck.addChild(maleNeck);
         rump.addChild(udders);
         head.addChild(hornMR1);
-        hornFL1.addChild(hornFL2);
         legRFrontTop.addChild(legRFrontMiddle);
         rump.addChild(tailBase);
         head.addChild(mouthBottom);
@@ -347,9 +389,7 @@ public class ModelZebuTFC extends ModelBase
         hornMR1.addChild(hornMR2);
         legLBackBottom.addChild(legLBackHoof);
         udders.addChild(teat3);
-        hornFR1.addChild(hornFR2);
         udders.addChild(teat4);
-        head.addChild(hornFL1);
         tailBase.addChild(tailBody);
         udders.addChild(teat1);
         chestHump.addChild(neck);
@@ -365,14 +405,24 @@ public class ModelZebuTFC extends ModelBase
         head.addChild(earR);
         humpMain.addChild(humpBack);
         legLFrontBottom.addChild(legLFrontHoof);
-        neck.addChild(head);
-        head.addChild(hornFR1);
+        //neck.addChild(head);
         legLFrontTop.addChild(legLFrontMiddle);
         legRBackBottom.addChild(legRBackHoof);
         legRBackMiddle.addChild(legRBackBottom);
         hornML2.addChild(hornML3c);
         legLBackMiddle.addChild(legLBackBottom);
         hornMR2.addChild(hornMR3a);
+
+        head.addChild(hornRightF1A);
+        hornRightF1A.addChild(hornRightF1B);
+        hornRightF1A.addChild(hornRightF1C);
+        hornRightF1A.addChild(hornRightF1D);
+        hornRightF1A.addChild(hornRightF2);
+        head.addChild(hornLeftF1A);
+        hornLeftF1A.addChild(hornLeftF1B);
+        hornLeftF1A.addChild(hornLeftF1C);
+        hornLeftF1A.addChild(hornLeftF1D);
+        hornLeftF1A.addChild(hornLeftF2);
     }
 
     @Override
@@ -387,20 +437,22 @@ public class ModelZebuTFC extends ModelBase
         if (zebu.getGender() == EntityAnimalTFC.Gender.MALE)
         {
            udders.isHidden = true;
-           hornFR1.isHidden = true;
-           hornFL1.isHidden = true;
-
+           hornRightF1A.isHidden = true;
+           hornLeftF1A.isHidden = true;
         }
         else
         {
            hornMR1.isHidden = true;
            hornML1.isHidden = true;
+           maleNeck.isHidden = true;
         }
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
+        headNode.render(par7);
+        maleNeck.render(par7);
         legLFrontTop.render(par7);
         legLBackTop.render(par7);
         body.render(par7);
@@ -416,8 +468,9 @@ public class ModelZebuTFC extends ModelBase
     @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
-        this.head.rotateAngleX = f4 / (180F / (float) Math.PI);
-        this.head.rotateAngleY = f4 / (180F / (float) Math.PI);
+        setRotateAngle(headNode, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
+        setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.7475245186291712F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
+
 
         this.legRFrontTop.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
         this.legLFrontTop.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
@@ -426,9 +479,12 @@ public class ModelZebuTFC extends ModelBase
 
         hornMR1.isHidden = false;
         hornML1.isHidden = false;
-        hornFR1.isHidden = false;
-        hornFL1.isHidden = false;
+
+        hornRightF1A.isHidden = false;
+        hornLeftF1A.isHidden = false;
+
         udders.isHidden = false;
+        maleNeck.isHidden = false;
     }
 
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {

@@ -50,7 +50,7 @@ public class EntityCougarTFC extends EntityAnimalMammal implements IPredator
     public EntityCougarTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.0F, 1.1F);
+        this.setSize(1.1F, 1.1F);
     }
 
     @Override

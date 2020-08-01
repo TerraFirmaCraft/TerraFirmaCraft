@@ -48,7 +48,7 @@ public class ModelMuskOxWoolTFC extends ModelBase
         bodyShoulderQiviut.setRotationPoint(0.0F, 9.0F, -7.0F);
         bodyShoulderQiviut.addBox(-5.5F, -8.5F, -5.5F, 11, 15, 11, 0.0F);
         humpQiviut = new ModelRenderer(this, 28, 110);
-        humpQiviut.setRotationPoint(0.0F, 0.4F, -9.5F);
+        humpQiviut.setRotationPoint(0.0F, 0.4F, -9.0F);
         humpQiviut.addBox(-2.0F, -1.2F, -2.2F, 4, 4, 9, 0.2F);
     }
 

@@ -50,7 +50,7 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     public EntitySaberToothTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.5F);
+        this.setSize(1.3F, 1.5F);
     }
 
     @Override
@@ -143,6 +143,9 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(5, wander);
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        // Avoid players at daytime
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
+
         int priority = 2;
         for (String input : ConfigTFC.Animals.SABER_TOOTH.huntCreatures)
         {

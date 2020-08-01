@@ -60,7 +60,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     public EntityLionTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.0F, 1.2F);
+        this.setSize(1.3F, 1.2F);
     }
 
     @Override
@@ -190,6 +190,8 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, wander);
         this.tasks.addTask(7, new EntityAILookIdle(this));
+        // Avoid players at daytime
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
 
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 

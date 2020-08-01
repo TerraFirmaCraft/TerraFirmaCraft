@@ -186,6 +186,7 @@ public class ModelJackalTFC extends ModelBase
         mouthTop1.setRotationPoint(-0.2F, 0.2F, -6.0F);
         mouthTop1.addBox(-1.0F, -1.0F, -1.5F, 2, 2, 3, 0.0F);
         mouthTop2 = new ModelRenderer(this, 10, 7);
+        mouthTop2.mirror = true;
         mouthTop2.setRotationPoint(0.2F, 0.2F, -6.0F);
         mouthTop2.addBox(-1.0F, -1.0F, -1.5F, 2, 2, 3, 0.0F);
 

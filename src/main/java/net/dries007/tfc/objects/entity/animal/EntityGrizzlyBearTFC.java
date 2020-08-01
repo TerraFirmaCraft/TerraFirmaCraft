@@ -71,7 +71,7 @@ public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredato
     public EntityGrizzlyBearTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.7F);
+        this.setSize(1.4F, 1.7F);
     }
 
     @Override
@@ -230,6 +230,8 @@ public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredato
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        // Avoid players at daytime
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
 
         int priority = 2;
         for (String input : ConfigTFC.Animals.GRIZZLY_BEAR.huntCreatures)

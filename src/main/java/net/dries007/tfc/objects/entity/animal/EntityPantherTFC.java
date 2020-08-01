@@ -51,7 +51,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     public EntityPantherTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.0F, 1.1F);
+        this.setSize(1.1F, 1.1F);
     }
 
     @Override

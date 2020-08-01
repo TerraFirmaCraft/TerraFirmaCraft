@@ -147,6 +147,10 @@ public class ModelQuailTFC extends ModelBase
         float percent = (float) quail.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
 
+        if (percent < 0.5)
+            tail.isHidden = true;
+
+
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
@@ -174,6 +178,8 @@ public class ModelQuailTFC extends ModelBase
         this.legL1.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
         this.wingR.rotateAngleZ = par3;
         this.wingL.rotateAngleZ = -par3;
+
+        tail.isHidden=false;
     }
 
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
