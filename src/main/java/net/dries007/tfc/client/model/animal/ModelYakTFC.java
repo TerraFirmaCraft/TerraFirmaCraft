@@ -64,6 +64,17 @@ public class ModelYakTFC extends ModelBase
     public ModelRenderer teat4;
     public ModelRenderer teat5;
     public ModelRenderer teat6;
+    public ModelRenderer hornRightF1A;
+    public ModelRenderer hornRightF1B;
+    public ModelRenderer hornRightF1C;
+    public ModelRenderer hornRightF1D;
+    public ModelRenderer hornRightF2;
+    public ModelRenderer hornLeftF1A;
+    public ModelRenderer hornLeftF1B;
+    public ModelRenderer hornLeftF1C;
+    public ModelRenderer hornLeftF1D;
+    public ModelRenderer hornLeftF2;
+
 
     public ModelYakTFC() {
 
@@ -201,6 +212,48 @@ public class ModelYakTFC extends ModelBase
         teat6.setRotationPoint(-1.0F, 1.4F, 2.5F);
         teat6.addBox(0.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);
 
+        hornRightF1A = new ModelRenderer(this, 41, 18);
+        hornRightF1A.setRotationPoint(-3.5F, -2.2F, -2.8F);
+        hornRightF1A.addBox(-1.5F, -0.8F, -0.8F, 3, 1, 1, 0.0F);
+        setRotateAngle(hornRightF1A, -0.2617993877991494F, 0.2617993877991494F, 0.5235987755982988F);
+        hornRightF1B = new ModelRenderer(this, 41, 18);
+        hornRightF1B.setRotationPoint(0.0F, -0.3F, 0.3F);
+        hornRightF1B.addBox(-1.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornRightF1C = new ModelRenderer(this, 41, 18);
+        hornRightF1C.setRotationPoint(0.0F, 0.3F, -0.3F);
+        hornRightF1C.addBox(-1.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornRightF1D = new ModelRenderer(this, 41, 18);
+        hornRightF1D.setRotationPoint(0.0F, 0.3F, 0.3F);
+        hornRightF1D.addBox(-1.5F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornRightF2 = new ModelRenderer(this, 41, 21);
+        hornRightF2.setRotationPoint(-2.0F, -0.4F, 0.0F);
+        hornRightF2.addBox(-2.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        setRotateAngle(hornRightF2, 0.2617993877991494F, 0.0F, 0.6108652381980153F);
+
+
+        hornLeftF1A = new ModelRenderer(this, 41, 18);
+        hornLeftF1A.mirror = true;
+        hornLeftF1A.setRotationPoint(3.5F, -2.2F, -2.8F);
+        hornLeftF1A.addBox(-1.5F, -0.8F, -0.8F, 3, 1, 1, 0.0F);
+        setRotateAngle(hornLeftF1A, -0.2617993877991494F, -0.2617993877991494F, -0.5235987755982988F);
+        hornLeftF1B = new ModelRenderer(this, 41, 18);
+        hornLeftF1B.mirror = true;
+        hornLeftF1B.setRotationPoint(-1.5F, -0.3F, 0.3F);
+        hornLeftF1B.addBox(0.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornLeftF1C = new ModelRenderer(this, 41, 18);
+        hornLeftF1C.mirror = true;
+        hornLeftF1C.setRotationPoint(-1.5F, 0.3F, -0.3F);
+        hornLeftF1C.addBox(0.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornLeftF1D = new ModelRenderer(this, 41, 18);
+        hornLeftF1D.mirror = true;
+        hornLeftF1D.setRotationPoint(-1.5F, 0.3F, 0.3F);
+        hornLeftF1D.addBox(0.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        hornLeftF2 = new ModelRenderer(this, 41, 21);
+        hornLeftF2.mirror = true;
+        hornLeftF2.setRotationPoint(2.0F, -0.4F, 0.0F);
+        hornLeftF2.addBox(-1.0F, -0.5F, -0.5F, 3, 1, 1, 0.0F);
+        setRotateAngle(hornLeftF2, 0.2617993877991494F, 0.0F, -0.6108652381980153F);
+
         hornL1a.addChild(hornL1c);
         head.addChild(hornL1a);
         hornL1a.addChild(hornL1d);
@@ -222,6 +275,17 @@ public class ModelYakTFC extends ModelBase
         udder.addChild(teat4);
         udder.addChild(teat5);
         udder.addChild(teat6);
+
+        head.addChild(hornRightF1A);
+        hornRightF1A.addChild(hornRightF1B);
+        hornRightF1A.addChild(hornRightF1C);
+        hornRightF1A.addChild(hornRightF1D);
+        hornRightF1A.addChild(hornRightF2);
+        head.addChild(hornLeftF1A);
+        hornLeftF1A.addChild(hornLeftF1B);
+        hornLeftF1A.addChild(hornLeftF1C);
+        hornLeftF1A.addChild(hornLeftF1D);
+        hornLeftF1A.addChild(hornLeftF2);
     }
 
     @Override
@@ -236,10 +300,30 @@ public class ModelYakTFC extends ModelBase
         if (yak.getGender() == EntityAnimalTFC.Gender.MALE)
         {
             udder.isHidden = true;
+            hornRightF1A.isHidden = true;
+            hornRightF1B.isHidden = true;
+            hornRightF1C.isHidden = true;
+            hornRightF1D.isHidden = true;
+            hornRightF2.isHidden = true;
+            hornLeftF1A.isHidden = true;
+            hornLeftF1B.isHidden = true;
+            hornLeftF1C.isHidden = true;
+            hornLeftF1D.isHidden = true;
+            hornLeftF2.isHidden = true;
         }
         else
         {
+            hornR1a.isHidden = true;
+            hornR1b.isHidden = true;
+            hornR1c.isHidden = true;
+            hornR1d.isHidden = true;
+            hornR2.isHidden = true;
             hornR3.isHidden = true;
+            hornL1a.isHidden = true;
+            hornL1b.isHidden = true;
+            hornL1c.isHidden = true;
+            hornL1d.isHidden = true;
+            hornL2.isHidden = true;
             hornL3.isHidden = true;
         }
 
@@ -288,6 +372,19 @@ public class ModelYakTFC extends ModelBase
         hornL1d.isHidden = false;
         hornL2.isHidden = false;
         hornL3.isHidden = false;
+
+        hornRightF1A.isHidden = false;
+        hornRightF1B.isHidden = false;
+        hornRightF1C.isHidden = false;
+        hornRightF1D.isHidden = false;
+        hornRightF2.isHidden = false;
+        hornLeftF1A.isHidden = false;
+        hornLeftF1B.isHidden = false;
+        hornLeftF1C.isHidden = false;
+        hornLeftF1D.isHidden = false;
+        hornLeftF2.isHidden = false;
+
+
     }
 
     private void setRotateAngle(ModelRenderer model, float x, float y, float z)

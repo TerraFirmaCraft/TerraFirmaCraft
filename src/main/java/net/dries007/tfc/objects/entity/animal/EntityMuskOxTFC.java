@@ -69,7 +69,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     public EntityMuskOxTFC(World worldIn, Gender gender, int birthDay, EnumDyeColor dye)
     {
         super(worldIn, gender, birthDay);
-        setSize(1.1F, 1.5F);
+        setSize(1.4F, 1.5F);
         setDyeColor(dye);
         setShearedTick(0);
     }
@@ -256,7 +256,7 @@ public class EntityMuskOxTFC extends EntityAnimalMammal implements IShearable, I
     @Override
     public long getProductsCooldown()
     {
-        return Math.max(0, ConfigTFC.Animals.SHEEP.woolTicks + getShearedTick() - CalendarTFC.PLAYER_TIME.getTicks());
+        return Math.max(0, ConfigTFC.Animals.MUSKOX.woolTicks + getShearedTick() - CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override

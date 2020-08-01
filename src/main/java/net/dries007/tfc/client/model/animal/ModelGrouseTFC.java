@@ -16,6 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityGrouseTFC;
 
 /**
@@ -189,6 +190,53 @@ public class ModelGrouseTFC extends ModelBase
         float percent = (float) grouse.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
 
+        if (grouse.getGender() == EntityAnimalTFC.Gender.MALE)
+        {
+            if (percent >= 0.5)
+            {
+                maleR.isHidden = true;
+                maleL.isHidden = true;
+                tails1.isHidden = true;
+                tails2.isHidden = true;
+                tails3.isHidden = true;
+                tails4.isHidden = true;
+                tails5.isHidden = true;
+                tails6.isHidden = true;
+                tails7.isHidden = true;
+                tails8.isHidden = true;
+                tails9.isHidden = true;
+            }
+            else
+            {
+                maleR.isHidden = false;
+                maleL.isHidden = false;
+                tails1.isHidden = false;
+                tails2.isHidden = false;
+                tails3.isHidden = false;
+                tails4.isHidden = false;
+                tails5.isHidden = false;
+                tails6.isHidden = false;
+                tails7.isHidden = false;
+                tails8.isHidden = false;
+                tails9.isHidden = false;
+            }
+        }
+
+        else
+        {
+            maleR.isHidden = true;
+            maleL.isHidden = true;
+            tails1.isHidden = true;
+            tails2.isHidden = true;
+            tails3.isHidden = true;
+            tails4.isHidden = true;
+            tails5.isHidden = true;
+            tails6.isHidden = true;
+            tails7.isHidden = true;
+            tails8.isHidden = true;
+            tails9.isHidden = true;
+        }
+
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
@@ -226,6 +274,18 @@ public class ModelGrouseTFC extends ModelBase
         wingL.rotateAngleX = 0;
         //rightWing.setRotationPoint(-4.0F, 13, 0.0F);
         //leftWing.setRotationPoint(4.0F, 13, 0.0F);
+
+        maleR.isHidden = false;
+        maleL.isHidden = false;
+        tails1.isHidden = false;
+        tails2.isHidden = false;
+        tails3.isHidden = false;
+        tails4.isHidden = false;
+        tails5.isHidden = false;
+        tails6.isHidden = false;
+        tails7.isHidden = false;
+        tails8.isHidden = false;
+        tails9.isHidden = false;
     }
 
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {

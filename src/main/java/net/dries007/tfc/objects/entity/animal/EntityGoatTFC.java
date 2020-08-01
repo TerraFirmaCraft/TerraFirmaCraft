@@ -15,6 +15,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -27,6 +29,7 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -38,6 +41,8 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityGoatTFC extends EntityCowTFC implements ILivestock
 {
+    private static final DataParameter<Long> MILKED = EntityDataManager.createKey(EntityGoatTFC.class, Helpers.LONG_DATA_SERIALIZER);
+
     @SuppressWarnings("unused")
     public EntityGoatTFC(World worldIn)
     {
@@ -123,6 +128,18 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     }
 
     @Override
+    public boolean isReadyForAnimalProduct()
+    {
+        return getFamiliarity() > 0.15f && hasMilk();
+    }
+
+    @Override
+    public void setProductsCooldown()
+    {
+        setMilkedTick(CalendarTFC.PLAYER_TIME.getTicks());
+    }
+
+    @Override
     public long getProductsCooldown()
     {
         return Math.max(0, ConfigTFC.Animals.GOAT.milkTicks + getMilkedTick() - CalendarTFC.PLAYER_TIME.getTicks());
@@ -164,5 +181,20 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     {
         // Equivalent sound
         this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
+    }
+
+    protected boolean hasMilk()
+    {
+        return getGender() == Gender.FEMALE && getAge() == Age.ADULT && getProductsCooldown() == 0;
+    }
+
+    protected long getMilkedTick()
+    {
+        return dataManager.get(MILKED);
+    }
+
+    protected void setMilkedTick(long tick)
+    {
+        dataManager.set(MILKED, tick);
     }
 }

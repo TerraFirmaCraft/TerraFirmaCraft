@@ -124,7 +124,7 @@ public class ModelGazelleTFC extends ModelBase
         neck.addBox(-2.0F, -4.0F, -2.0F, 4, 5, 9, -0.2F);
         setRotateAngle(neck, 1.8151424220741026F, 0.0F, 0.0F);
         rump = new ModelRenderer(this, 32, 24);
-        rump.setRotationPoint(0.0F, 4.5F, 0.0F);
+        rump.setRotationPoint(0.0F, 4.0F, 0.0F);
         rump.addBox(-3.0F, -4.0F, 3.0F, 6, 9, 9, 0.0F);
         setRotateAngle(rump, -0.08726646259971647F, 0.0F, 0.0F);
         tail = new ModelRenderer(this, 24, 48);

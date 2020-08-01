@@ -71,7 +71,7 @@ public class EntityBlackBearTFC extends EntityAnimalMammal implements IPredator,
     public EntityBlackBearTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.7F);
+        this.setSize(1.4F, 1.7F);
     }
 
     @Override

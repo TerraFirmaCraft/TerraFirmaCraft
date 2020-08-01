@@ -30,15 +30,10 @@ import net.dries007.tfc.objects.entity.animal.EntityTurkeyTFC;
 public class ModelTurkeyTFC extends ModelBase
 {
     public ModelRenderer wingRMain;
-
     public ModelRenderer body;
-
     public ModelRenderer head;
-
     public ModelRenderer wingLMain;
-
     public ModelRenderer neck;
-
     public ModelRenderer legRTop;
     public ModelRenderer legLTop;
     public ModelRenderer chest;
@@ -47,7 +42,6 @@ public class ModelTurkeyTFC extends ModelBase
     public ModelRenderer wingRFront;
     public ModelRenderer wingRBack;
     public ModelRenderer wingRTip;
-
     public ModelRenderer nose;
     public ModelRenderer beak;
     public ModelRenderer wingLBack;
@@ -100,7 +94,7 @@ public class ModelTurkeyTFC extends ModelBase
         neck.addBox(-2.0F, -5.0F, -2.0F, 4, 5, 4, -0.2F);
         setRotateAngle(neck, 0.08726646259971647F, 0.0F, 0.0F);
         legLTop = new ModelRenderer(this, 0, 47);
-        legLTop.setRotationPoint(2.4F, 19.0F, 0.5F);
+        legLTop.setRotationPoint(2.4F, 18.8F, 0.5F);
         legLTop.addBox(-1.0F, 0.0F, -2.0F, 2, 3, 2, 0.2F);
         head = new ModelRenderer(this, 0, 20);
         head.setRotationPoint(0.0F, 5.8F, -7.2F);
@@ -120,7 +114,7 @@ public class ModelTurkeyTFC extends ModelBase
         setRotateAngle(wingRBack, -0.17453292519943295F, 0.0F, 0.0F);
         wingLMain = new ModelRenderer(this, 20, 27);
         wingLMain.mirror = true;
-        wingLMain.setRotationPoint(4.0F, 11.5F, -0.5F);
+        wingLMain.setRotationPoint(4.5F, 11.5F, -0.5F);
         wingLMain.addBox(-0.5F, 0.0F, -2.5F, 1, 5, 5, 0.0F);
         setRotateAngle(wingLMain, -0.08726646259971647F, 0.0F, 0.0F);
         wingLFront = new ModelRenderer(this, 23, 21);
@@ -128,7 +122,7 @@ public class ModelTurkeyTFC extends ModelBase
         wingLFront.setRotationPoint(0.0F, 0.0F, -4.5F);
         wingLFront.addBox(-0.5F, 0.0F, 0.0F, 1, 4, 2, 0.0F);
         wingRMain = new ModelRenderer(this, 20, 27);
-        wingRMain.setRotationPoint(-4.0F, 11.5F, -0.5F);
+        wingRMain.setRotationPoint(-4.5F, 11.5F, -0.5F);
         wingRMain.addBox(-0.5F, 0.0F, -2.5F, 1, 5, 5, 0.0F);
         setRotateAngle(wingRMain, -0.08726646259971647F, 0.0F, 0.0F);
         nose = new ModelRenderer(this, 5, 17);
@@ -151,17 +145,19 @@ public class ModelTurkeyTFC extends ModelBase
         neck2.setRotationPoint(0.0F, 10.72F, -8.1F);
         neck2.addBox(-2.0F, -2.0F, -1.5F, 4, 4, 4, -0.21F);
         setRotateAngle(neck2, -0.4363323129985824F, 0.0F, 0.0F);
-        legRFeet = new ModelRenderer(this, -1, 40);
+        legRFeet = new ModelRenderer(this, -1, 39);
         legRFeet.setRotationPoint(0.0F, 2.0F, 0.5F);
-        legRFeet.addBox(-1.5F, 0.0F, -2.5F, 3, 0, 4, 0.0F);
+        legRFeet.addBox(-1.5F, 0.0F, -2.5F, 3, 1, 4, 0.0F);
+        setRotateAngle(legRFeet, -0.10471975511965977F, 0.0F, 0.0F);
         wingRFront = new ModelRenderer(this, 23, 21);
         wingRFront.setRotationPoint(0.0F, 0.0F, -4.5F);
         wingRFront.addBox(-0.5F, 0.0F, 0.0F, 1, 4, 2, 0.0F);
-        legLFeet = new ModelRenderer(this, -1, 40);
+        legLFeet = new ModelRenderer(this, -1, 39);
         legLFeet.setRotationPoint(0.0F, 2.0F, 0.5F);
-        legLFeet.addBox(-1.5F, 0.0F, -2.5F, 3, 0, 4, 0.0F);
+        legLFeet.addBox(-1.5F, 0.0F, -2.5F, 3, 1, 4, 0.0F);
+        setRotateAngle(legLFeet, -0.10471975511965977F, 0.0F, 0.0F);
         legRTop = new ModelRenderer(this, 0, 47);
-        legRTop.setRotationPoint(-2.4F, 19.0F, 0.5F);
+        legRTop.setRotationPoint(-2.4F, 18.8F, 0.5F);
         legRTop.addBox(-1.0F, 0.0F, -2.0F, 2, 3, 2, 0.2F);
         wingRTip = new ModelRenderer(this, 24, 14);
         wingRTip.setRotationPoint(0.0F, 0.0F, 2.0F);
@@ -265,9 +261,9 @@ public class ModelTurkeyTFC extends ModelBase
         tailsf10.addBox(-1.5F, -13.0F, 0.0F, 3, 13, 0, 0.0F);
         setRotateAngle(tailsf10, -1.7756979809790308F, 0.13962634015954636F, 1.0471975511965976F);
         tailsf11 = new ModelRenderer(this, 0, 0);
-        tails11.setRotationPoint(3.0F, 14.0F, 5.0F);
-        tails11.addBox(-1.5F, -13.0F, 0.0F, 3, 13, 0, 0.0F);
-        setRotateAngle(tails11, -1.730144887501979F, 0.17453292519943295F, 1.3089969389957472F);
+        tailsf11.setRotationPoint(3.0F, 14.0F, 5.0F);
+        tailsf11.addBox(-1.5F, -13.0F, 0.0F, 3, 13, 0, 0.0F);
+        setRotateAngle(tailsf11, -1.730144887501979F, 0.17453292519943295F, 1.3089969389957472F);
 
         legLTop.addChild(legLBottom);
         body.addChild(tailFMain);
@@ -298,18 +294,47 @@ public class ModelTurkeyTFC extends ModelBase
 
         if (turkey.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            tailFMain.isHidden = true;
-            tailsf1.isHidden = true;
-            tailsf2.isHidden = true;
-            tailsf3.isHidden = true;
-            tailsf4.isHidden = true;
-            tailsf5.isHidden = true;
-            tailsf6.isHidden = true;
-            tailsf7.isHidden = true;
-            tailsf8.isHidden = true;
-            tailsf9.isHidden = true;
-            tailsf10.isHidden = true;
-            tailsf11.isHidden = true;
+            if (percent < 0.5)
+            {
+                tails1.isHidden = true;
+                tails2.isHidden = true;
+                tails3.isHidden = true;
+                tails4.isHidden = true;
+                tails5.isHidden = true;
+                tails6.isHidden = true;
+                tails7.isHidden = true;
+                tails8.isHidden = true;
+                tails9.isHidden = true;
+                tails10.isHidden = true;
+                tails11.isHidden = true;
+                tailsf1.isHidden = false;
+                tailsf2.isHidden = false;
+                tailsf3.isHidden = false;
+                tailsf4.isHidden = false;
+                tailsf5.isHidden = false;
+                tailsf6.isHidden = false;
+                tailsf7.isHidden = false;
+                tailsf8.isHidden = false;
+                tailsf9.isHidden = false;
+                tailsf10.isHidden = false;
+                tailsf11.isHidden = false;
+            }
+
+                else
+            {
+                tailFMain.isHidden = true;
+                tailsf1.isHidden = true;
+                tailsf2.isHidden = true;
+                tailsf3.isHidden = true;
+                tailsf4.isHidden = true;
+                tailsf5.isHidden = true;
+                tailsf6.isHidden = true;
+                tailsf7.isHidden = true;
+                tailsf8.isHidden = true;
+                tailsf9.isHidden = true;
+                tailsf10.isHidden = true;
+                tailsf11.isHidden = true;
+            }
         }
         else
         {

@@ -50,7 +50,7 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
     public EntityDireWolfTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.1F, 1.4F);
+        this.setSize(1.3F, 1.4F);
     }
 
     @Override

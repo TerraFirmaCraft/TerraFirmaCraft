@@ -63,7 +63,7 @@ public class EntityYakTFC extends EntityAnimalMammal implements ILivestock
     public EntityYakTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        setSize(1.1F, 1.5F);
+        setSize(1.3F, 1.5F);
         setMilkedTick(0);
     }
 

@@ -61,7 +61,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     public EntityPolarBearTFC(World world, IAnimalTFC.Gender gender, int birthDay)
     {
         super(world);
-        this.setSize(1.2F, 1.7F);
+        this.setSize(1.4F, 1.7F);
         this.setGender(gender);
         this.setBirthDay(birthDay);
         this.setFamiliarity(0);

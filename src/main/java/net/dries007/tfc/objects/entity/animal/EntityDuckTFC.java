@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -17,6 +18,9 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -31,6 +35,7 @@ import net.dries007.tfc.api.capability.egg.IEgg;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -42,6 +47,15 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
 {
+    //The last time(in ticks) this chicken has laid eggs
+    private static final DataParameter<Long> LAID = EntityDataManager.createKey(EntityChickenTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
+    public float wingRotation;
+    public float destPos;
+    public float oFlapSpeed;
+    public float oFlap;
+    public float wingRotDelta = 1.0F;
+
     public EntityDuckTFC(World worldIn)
     {
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()), getRandomGrowth(ConfigTFC.Animals.DUCK.adulthood, ConfigTFC.Animals.DUCK.elder));
@@ -96,6 +110,19 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     }
 
     @Override
+    public Type getType()
+    {
+        return Type.OVIPAROUS;
+    }
+
+    @Override
+    public boolean isReadyForAnimalProduct()
+    {
+        // Is ready for laying eggs?
+        return this.getFamiliarity() > 0.15f && hasEggs();
+    }
+
+    @Override
     public List<ItemStack> getProducts()
     {
         List<ItemStack> eggs = new ArrayList<>();
@@ -112,6 +139,12 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
         }
         eggs.add(egg);
         return eggs;
+    }
+
+    @Override
+    public void setProductsCooldown()
+    {
+        this.setLaidTicks(CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -155,5 +188,36 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     public double getOldDeathChance()
     {
         return ConfigTFC.Animals.DUCK.oldDeathChance;
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setLong("laidTicks", getLaidTicks());
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.setLaidTicks(nbt.getLong("laidTicks"));
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        getDataManager().register(LAID, 0L);
+    }
+
+    public long getLaidTicks()
+    {
+        return dataManager.get(LAID);
+    }
+
+    protected void setLaidTicks(long ticks)
+    {
+        dataManager.set(LAID, ticks);
     }
 }
