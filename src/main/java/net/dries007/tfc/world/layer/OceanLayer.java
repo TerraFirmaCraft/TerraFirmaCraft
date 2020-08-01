@@ -8,6 +8,9 @@ package net.dries007.tfc.world.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
+/**
+ * Creates oceans on borders between land and deep ocean
+ */
 public enum OceanLayer implements ICastleTransformer
 {
     INSTANCE;
@@ -20,13 +23,6 @@ public enum OceanLayer implements ICastleTransformer
             if (!TFCLayerUtil.isOcean(north) || !TFCLayerUtil.isOcean(west) || !TFCLayerUtil.isOcean(south) || !TFCLayerUtil.isOcean(east))
             {
                 return TFCLayerUtil.OCEAN;
-            }
-            else if (north == TFCLayerUtil.DEEP_OCEAN_RIDGE || west == TFCLayerUtil.DEEP_OCEAN_RIDGE || south == TFCLayerUtil.DEEP_OCEAN_RIDGE || east == TFCLayerUtil.DEEP_OCEAN_RIDGE)
-            {
-                if (context.random(3) == 0)
-                {
-                    return TFCLayerUtil.DEEP_OCEAN_RIDGE;
-                }
             }
         }
         return center;

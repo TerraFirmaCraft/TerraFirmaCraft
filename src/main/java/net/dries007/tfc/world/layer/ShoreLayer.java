@@ -23,25 +23,14 @@ public enum ShoreLayer implements ICastleTransformer, IBishopTransformer
     public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
     {
         Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(west) || p.test(south) || p.test(east);
-        if (TFCLayerUtil.isMountains(center))
-        {
-            if (matcher.test(TFCLayerUtil::isOcean) && center != TFCLayerUtil.FLOODED_MOUNTAINS)
-            {
-                return TFCLayerUtil.STONE_SHORE;
-            }
-            else if (matcher.test(i -> !TFCLayerUtil.isMountains(i)))
-            {
-                return TFCLayerUtil.MOUNTAINS_EDGE;
-            }
-        }
-        else if (!TFCLayerUtil.isOcean(center) && TFCLayerUtil.isShoreCompatible(center))
+        if (!TFCLayerUtil.isOcean(center) && TFCLayerUtil.isShoreCompatible(center))
         {
             if (matcher.test(TFCLayerUtil::isOcean))
             {
                 return TFCLayerUtil.SHORE;
             }
         }
-        else if (center == TFCLayerUtil.DEEP_OCEAN || center == TFCLayerUtil.DEEP_OCEAN_RIDGE)
+        else if (center == TFCLayerUtil.DEEP_OCEAN)
         {
             if (matcher.test(i -> i == TFCLayerUtil.OCEAN))
             {

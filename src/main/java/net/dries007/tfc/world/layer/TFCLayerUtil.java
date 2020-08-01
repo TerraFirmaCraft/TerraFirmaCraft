@@ -28,7 +28,6 @@ public class TFCLayerUtil
     /* Biomes */
     public static final int OCEAN = getId(TFCBiomes.OCEAN);
     public static final int DEEP_OCEAN = getId(TFCBiomes.DEEP_OCEAN);
-    public static final int DEEP_OCEAN_RIDGE = getId(TFCBiomes.DEEP_OCEAN_RIDGE);
     public static final int PLAINS = getId(TFCBiomes.PLAINS);
     public static final int HILLS = getId(TFCBiomes.HILLS);
     public static final int LOWLANDS = getId(TFCBiomes.LOWLANDS);
@@ -41,16 +40,13 @@ public class TFCLayerUtil
     public static final int FLOODED_MOUNTAINS = getId(TFCBiomes.FLOODED_MOUNTAINS);
     public static final int CANYONS = getId(TFCBiomes.CANYONS);
     public static final int SHORE = getId(TFCBiomes.SHORE);
-    public static final int STONE_SHORE = getId(TFCBiomes.STONE_SHORE);
-    public static final int MOUNTAINS_EDGE = getId(TFCBiomes.MOUNTAINS_EDGE);
     public static final int LAKE = getId(TFCBiomes.LAKE);
     public static final int RIVER = getId(TFCBiomes.RIVER);
 
-    public static List<IAreaFactory<LazyArea>> createOverworldBiomeLayer(long seed, TFCGenerationSettings settings)
+    public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, TFCGenerationSettings settings)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
         IAreaFactory<LazyArea> mainLayer, riverLayer;
-        List<IAreaFactory<LazyArea>> layers = new ArrayList<>(2);
 
         // Ocean / Continents
 
@@ -91,15 +87,14 @@ public class TFCLayerUtil
         mainLayer = EdgeBiomeLayer.INSTANCE.apply(contextFactory.apply(1017L), mainLayer);
         mainLayer = AddLakeLayer.INSTANCE.apply(contextFactory.apply(1018L), mainLayer);
 
-        for (int i = 0; i < settings.getBiomeZoomLevel(); i++)
+        for (int i = 0; i < 2; i++)
         {
             mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), mainLayer);
         }
 
         mainLayer = ShoreLayer.CASTLE.apply(contextFactory.apply(1023L), mainLayer);
-        layers.add(mainLayer);
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 4; i++)
         {
             mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1024L), mainLayer);
         }
@@ -108,27 +103,6 @@ public class TFCLayerUtil
         mainLayer = MixRiverLayer.INSTANCE.apply(contextFactory.apply(1026L), mainLayer, riverLayer);
         mainLayer = BiomeRiverWidenLayer.MEDIUM.apply(contextFactory.apply(1027L), mainLayer);
         mainLayer = BiomeRiverWidenLayer.LOW.apply(contextFactory.apply(1028L), mainLayer);
-        layers.add(mainLayer);
-        return layers;
-    }
-
-    public static IAreaFactory<LazyArea> createOverworldLayers(long seed)
-    {
-        LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
-        IAreaFactory<LazyArea> mainLayer;
-
-        mainLayer = new IslandLayer(6).apply(contextFactory.apply(1000L));
-        mainLayer = ZoomLayer.FUZZY.apply(contextFactory.apply(1001L), mainLayer);
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.apply(1002L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1003L), mainLayer);
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.apply(1004L), mainLayer);
-
-        for (int i = 0; i < 2; i++)
-        {
-            mainLayer = AddIslandLayer.HEAVY.apply(contextFactory.apply(1005L + 2 * i), mainLayer);
-            mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1006L + 2 * i), mainLayer);
-        }
-
         return mainLayer;
     }
 
@@ -188,12 +162,12 @@ public class TFCLayerUtil
 
     static boolean isOcean(int value)
     {
-        return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_RIDGE;
+        return value == OCEAN || value == DEEP_OCEAN;
     }
 
     static boolean isMountains(int value)
     {
-        return value == MOUNTAINS || value == FLOODED_MOUNTAINS || value == MOUNTAINS_EDGE || value == OLD_MOUNTAINS;
+        return value == MOUNTAINS || value == FLOODED_MOUNTAINS || value == OLD_MOUNTAINS;
     }
 
     static boolean isLow(int value)
