@@ -18,6 +18,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,6 +26,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -57,11 +59,7 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     static
     {
         BiPredicate<World, BlockPos> skyMatcher = World::canBlockSeeSky;
-        BiPredicate<World, BlockPos> stoneMatcher = (world, pos) ->
-        {
-            IBlockState state = world.getBlockState(pos);
-            return state.getMaterial() == Material.ROCK && state.isOpaqueCube() && state.isNormalCube();
-        };
+        BiPredicate<World, BlockPos> isValidSide = (world, pos) -> BlockCharcoalForge.isValidSide(world.getBlockState(pos));
         CHARCOAL_FORGE_MULTIBLOCK = new Multiblock()
             // Top block
             .match(new BlockPos(0, 1, 0), state -> state.getBlock() == BlocksTFC.CRUCIBLE || state.getBlock() == Blocks.AIR)
@@ -78,16 +76,21 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
                 .match(new BlockPos(-2, 0, 0), skyMatcher)
             )
             // Underneath
-            .match(new BlockPos(1, 0, 0), stoneMatcher)
-            .match(new BlockPos(-1, 0, 0), stoneMatcher)
-            .match(new BlockPos(0, 0, 1), stoneMatcher)
-            .match(new BlockPos(0, 0, -1), stoneMatcher)
-            .match(new BlockPos(0, -1, 0), stoneMatcher);
+            .match(new BlockPos(1, 0, 0), isValidSide)
+            .match(new BlockPos(-1, 0, 0), isValidSide)
+            .match(new BlockPos(0, 0, 1), isValidSide)
+            .match(new BlockPos(0, 0, -1), isValidSide)
+            .match(new BlockPos(0, -1, 0), isValidSide);
     }
 
     public static boolean isValid(World world, BlockPos pos)
     {
         return CHARCOAL_FORGE_MULTIBLOCK.test(world, pos);
+    }
+
+    public static boolean isValidSide(IBlockState state)
+    {
+        return state.getMaterial() == Material.ROCK && state.isOpaqueCube() && state.isNormalCube();
     }
 
     public BlockCharcoalForge()
@@ -305,6 +308,13 @@ public class BlockCharcoalForge extends Block implements IBellowsConsumerBlock, 
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(Items.COAL, 1, 1);
+    }
+
+    @Nullable
+    @Override
+    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
+    {
+        return state.getValue(LIT) && (entity == null || !entity.isImmuneToFire()) ? net.minecraft.pathfinding.PathNodeType.DAMAGE_FIRE : null;
     }
 
 }

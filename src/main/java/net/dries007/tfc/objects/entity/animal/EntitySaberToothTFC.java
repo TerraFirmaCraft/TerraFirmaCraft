@@ -44,7 +44,7 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     public EntitySaberToothTFC(World worldIn)
     {
         this(worldIn, Gender.valueOf(Constants.RNG.nextBoolean()),
-            getRandomGrowth(96, 0));
+            getRandomGrowth(DAYS_TO_ADULTHOOD, 0));
     }
 
     public EntitySaberToothTFC(World worldIn, Gender gender, int birthDay)

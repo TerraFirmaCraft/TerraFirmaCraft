@@ -1,0 +1,99 @@
+{
+  "name": "The Natural World",
+  "icon": "tfc:textures/blocks/plants/goldenrod/goldenrod_2.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/stone_age",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The world of TFC looks a lot like Vanilla, but don't be fooled. Almost everything has changed. The variety of flora and fauna has greatly expanded, with dozens of flowers and grasses you can find, 19 trees, fruit, vegetables, and much more.$(br2)There's three kinds of water: Freshwater, good to drink, Saltwater, not good to drink, and the healing Springwater."
+    },
+    {
+      "type": "text",
+      "text": "You'll notice that gravel, stone, dirt, grass, clay, and even sand come in different shades and variations depending on where you are. In fact, there are 21 types of each in TFC! They extend all over the world, just like biomes do. The surface level is also much higher in TFC. Underground, there are two more layers of stone, and caves with stalagmites and stalactites."
+    },
+    {
+      "type": "text",
+      "text": "Many of the basic blocks you're used to are subject to $(thing)gravity$(), including cobblestone, dirt, clay, and yes, sand and gravel. Gravity is more difficult to manage than you might think. Trying to stack two dirt on top of each other will cause it to topple down, just like you'd expect in real life. Many blocks, including leaves and thatch, are also transparent, meaning that you can walk right through them."
+    },
+    {
+      "type": "text",
+      "text": "TFC does not have strict biomes as you might expect. Instead, each chunk has a different value of $(thing)temperature$() and $(thing)rainfall$(). As you head north, it will get colder, and as you head south, it will get warmer. Different places also have different levels of rainfall and local variations in temperature, causing different flora and fauna to spawn."
+    },
+    {
+      "type": "text",
+      "text": "One of the most important things you'll find is the  $(thing)wild crop$(). TFC has lots of vegetables that grow in the ground all around you. All you have to do is pick one up. But be careful! If the crop's not mature, you'll only get seeds, no veggies."
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "How a mature patch of Rye might look growing in the wild.",
+      "name": "Rye",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:crop/rye[stage=7]",
+          "D": "tfc:grass/andesite"
+        },
+        "pattern": [
+          ["   ", " P ", "   "], ["DDD", "DDD", "DDD"], ["   ", " 0 ", "   "]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "text",
+      "text": "If you look around long enough, soon you'll see berry bushes growing in the wild. When you see berries growing on them, just right click and you'll have something to eat!"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "A fruiting strawberry bush.",
+      "name": "Strawberries",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:berry_bush/strawberry[fruiting=true]",
+          "D": "tfc:grass/andesite"
+        },
+        "pattern": [
+          ["   ", " P ", "   "], ["DDD", "DDD", "DDD"], ["   ", " 0 ", "   "]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "text",
+      "text": "The other thing to look for is fruit trees. They have a distinctive look, and act much like berry bushes. Chop a branch off an axe to get a sapling."
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "A lemon tree.",
+      "name": "Lemon Tree",
+      "multiblock": {
+        "mapping": {
+          "B": "tfc:fruit_trees/branch/lemon",
+          "0": "tfc:fruit_trees/branch/lemon",
+          "L": "tfc:fruit_trees/leaves/lemon[state=fruit]"
+        },
+        "pattern": [
+          ["     ", " LLL ", " LLL ", " LLL ", "     "],
+          [" LLL ", "LLBLL", "LBBBL", "LLBLL", " LLL "],
+          ["     ", "     ", "  B  ", "     ", "     "],
+          ["     ", "     ", "  B  ", "     ", "     "],
+          ["     ", "     ", "  0  ", "     ", "     "],
+          ["     ", "     ", "  B  ", "     ", "     "]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "text",
+      "text": "The world of TFC is also affected by $(thing)seasons$(). The calendar follows a default 96 day year, with 8 days in each month. During the winter, crops die, the lakes freeze over and food becomes scarce. Foods take a while to grow, so only a few harvests are possible, depending on the region."
+    },
+    {
+      "type": "text",
+      "text": "Fruit trees and berry bushes only grow and flower at certain times of year. Some flora only grow in hotter regions, while some are only found in the cold. Rainfall is a factor as well. Some regions are deserts due to little rainfall, while some places are tropical rainforests. You probably won't want to live in the desert--you couldn't find any food! Be selective about choosing where to live."
+    }
+  ]
+}

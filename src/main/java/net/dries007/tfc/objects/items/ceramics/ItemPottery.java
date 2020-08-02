@@ -21,18 +21,32 @@ import net.dries007.tfc.objects.items.ItemTFC;
 @ParametersAreNonnullByDefault
 public class ItemPottery extends ItemTFC
 {
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack stack)
+    private final Size size;
+    private final Weight weight;
+
+    public ItemPottery()
     {
-        return Size.NORMAL; // Fits in large vessels and chests
+        this(Size.NORMAL, Weight.LIGHT);
+    }
+
+    public ItemPottery(Size size, Weight weight)
+    {
+        this.size = size;
+        this.weight = weight;
     }
 
     @Nonnull
     @Override
-    public Weight getWeight(@Nonnull ItemStack stack)
+    public Size getSize(ItemStack stack)
     {
-        return Weight.LIGHT; // Stacksize = 32
+        return size;
+    }
+
+    @Nonnull
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return weight;
     }
 
     @Nullable

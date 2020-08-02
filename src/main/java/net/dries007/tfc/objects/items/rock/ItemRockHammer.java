@@ -45,7 +45,8 @@ public class ItemRockHammer extends ItemTool implements IItemSize, IRockObject
 
     public ItemRockHammer(RockCategory category)
     {
-        super(1f * category.getToolMaterial().getAttackDamage(), -3f, category.getToolMaterial(), ImmutableSet.of());
+        // Vanilla ItemTool constructor actually treats this as "bonus attack damage", and as a result, adds + getAttackDamage(). So for our purposes, this is 1.0 * attack damage.
+        super(0f, -3f, category.getToolMaterial(), ImmutableSet.of());
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("hammer", category.getToolMaterial().getHarvestLevel());

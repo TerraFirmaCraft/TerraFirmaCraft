@@ -66,6 +66,10 @@ public class BlockRockVariant extends Block implements IItemSize
         {
             case RAW:
                 return new BlockRockRaw(type, rock);
+            case SMOOTH:
+                return new BlockRockSmooth(type, rock);
+            case ANVIL:
+                return new BlockStoneAnvil(type, rock);
             case SPIKE:
                 return new BlockRockSpike(type, rock);
             case FARMLAND:
@@ -107,6 +111,7 @@ public class BlockRockVariant extends Block implements IItemSize
         {
             case BRICKS:
             case RAW:
+            case ANVIL:
             case SPIKE:
             case SMOOTH:
                 setSoundType(SoundType.STONE);
@@ -144,7 +149,7 @@ public class BlockRockVariant extends Block implements IItemSize
                 setHarvestLevel("shovel", 0);
                 break;
         }
-        if (type != Rock.Type.SPIKE) //since spikes don't generate ItemBlocks
+        if (type != Rock.Type.SPIKE && type != Rock.Type.ANVIL) //since spikes and anvils don't generate ItemBlocks
         {
             OreDictionaryHelper.registerRockType(this, type);
         }

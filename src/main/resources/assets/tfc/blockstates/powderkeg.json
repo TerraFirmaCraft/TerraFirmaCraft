@@ -1,0 +1,39 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "tfc:powderkeg",
+    "textures": {
+      "outside": "tfc:blocks/powderkeg_outside",
+      "inside": "tfc:blocks/powderkeg_inside",
+      "sheet": "tfc:blocks/powderkeg_sheet",
+      "particle": "tfc:blocks/powderkeg_outside",
+      "fuse": "tfc:blocks/powderkeg_fuse"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "sealed": {
+      "true": {
+        "model": "tfc:powderkeg_sealed"
+      },
+      "false": {}
+    },
+    "inventory": [
+      {}
+    ],
+    "lit": {
+      "true": {
+        "textures": {
+          "fuse": "tfc:blocks/powderkeg_fuse_lit"
+        }
+      },
+      "false": {
+        "textures": {
+          "fuse": "tfc:blocks/powderkeg_fuse"
+        }
+      }
+    }
+  }
+}

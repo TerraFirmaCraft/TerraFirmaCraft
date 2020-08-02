@@ -119,7 +119,7 @@ public class ClimateHelper
     public static float latitudeFactor(int chunkZ)
     {
         int tempRange = ConfigTFC.General.WORLD.latitudeTemperatureModifier;
-        if (ConfigTFC.General.WORLD.temperatureMode != TemperatureMode.CYCLIC)
+        if (ConfigTFC.General.WORLD.temperatureMode == TemperatureMode.ENDLESS)
         {
             chunkZ = MathHelper.clamp(chunkZ, -tempRange / 2, tempRange / 2);
         }

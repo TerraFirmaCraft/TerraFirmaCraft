@@ -31,6 +31,11 @@ import net.dries007.tfc.util.IFallingBlock;
 @ParametersAreNonnullByDefault
 public class BlockRockVariantFallable extends BlockRockVariant implements IFallingBlock
 {
+    public static boolean isSupportingSideBlock(IBlockState state)
+    {
+        return state.isNormalCube() || (state.getBlock() instanceof BlockRockVariant && (((BlockRockVariant) state.getBlock()).getType() == Rock.Type.FARMLAND || ((BlockRockVariant) state.getBlock()).getType() == Rock.Type.PATH));
+    }
+
     public BlockRockVariantFallable(Rock.Type type, Rock rock)
     {
         super(type, rock);
@@ -75,22 +80,22 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
     // What is the position that the block will fall at?
     @Nullable
     @Override
-    public BlockPos getFallablePos(World world, BlockPos pos)
+    public BlockPos getFallablePos(World world, BlockPos pos, boolean ignoreSupportChecks)
     {
-        if (type.canFall() && shouldFall(world, pos, pos))
+        if (type.canFall() && shouldFall(world, pos, pos, ignoreSupportChecks))
         {
             return checkAreaClear(world, pos);
         }
         if (type.canFallHorizontal())
         {
             // Check if supported by at least two horizontals, or one on top
-            if (world.getBlockState(pos.up()).isNormalCube())
+            if (isSupportingSideBlock(world.getBlockState(pos.up())))
             {
                 return null;
             }
 
             EnumFacing[] faces = Arrays.stream(EnumFacing.HORIZONTALS)
-                .filter(x -> world.getBlockState(pos.offset(x)).isNormalCube())
+                .filter(x -> isSupportingSideBlock(world.getBlockState(pos.offset(x))))
                 .toArray(EnumFacing[]::new);
 
             if (faces.length >= 2)
@@ -101,7 +106,7 @@ public class BlockRockVariantFallable extends BlockRockVariant implements IFalli
             // Check if it can fall
             IBlockState originalState = world.getBlockState(pos);
             faces = Arrays.stream(EnumFacing.HORIZONTALS)
-                .filter(x -> shouldFall(world, pos.offset(x), pos) && IFallingBlock.canFallThrough(world, pos.offset(x), originalState.getMaterial()))
+                .filter(x -> shouldFall(world, pos.offset(x), pos, ignoreSupportChecks) && IFallingBlock.canFallThrough(world, pos.offset(x), originalState.getMaterial()))
                 .toArray(EnumFacing[]::new);
 
             if (faces.length >= 1)

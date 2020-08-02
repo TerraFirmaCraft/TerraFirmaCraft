@@ -47,7 +47,7 @@ public class AnimalProvider implements IWailaEntity
                     break;
                 case OLD:
                     currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.old").getFormattedText());
-                    break;
+                    // fall through here, can become old yet still be pregnant and give birth and/or give wool. All data retrieval below check correctly for age.
                 case ADULT:
                     if (familiarized)
                     {

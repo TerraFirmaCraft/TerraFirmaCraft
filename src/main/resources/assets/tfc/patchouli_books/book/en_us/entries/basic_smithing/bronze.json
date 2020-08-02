@@ -1,0 +1,25 @@
+{
+  "name": "Bronze",
+  "icon": "tfc:textures/items/metal/ingot/bronze.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/metal_casting",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Bronze is the next metal tier up from copper. Luckily, it's not that hard to get. Bronze is an  $(item)alloy$(), meaning that it's made up of different metals. To make an alloy, you need to put the metals in in such a way that their units follow the percentages in the $(thing)alloy recipe$() you want."
+    },
+    {
+      "type": "text",
+      "text": "$(item)Bismuth Bronze:$()$(2br)$(thing)Copper:$() 50-65%$(br)$(thing)Zinc:$() 20-30%$(br)$(thing)Bismuth:$() 10-20%$(2br)Remember that Zinc is Sphalerite, and copper has 3 ore forms."
+    },
+    {
+      "type": "text",
+      "text": "$(item)Black Bronze:$()$(2br)$(thing)Copper:$() 50-70%$(br)$(thing)Silver:$() 10-25%$(br)$(thing)Gold:$() 10-25%$(2br)When making an alloy, you want the percentages to add up to 100, so that you'll have a full ingot. As long as they fall within the bounds, these percentages may vary. Do the math before you smelt!"
+    },
+    {
+      "type": "text",
+      "text": "$(item)Bronze$()$(2br)$(thing)Copper:$() 88-92%$(br)$(thing)Tin:$() 8-12%$(2br)Remember that Cassiterite is Tin. For example, 1 cassiterite nugget and 9 native copper nuggets in a pit kiln would give you an ingot's worth of molten bronze!"
+    }
+  ]
+}

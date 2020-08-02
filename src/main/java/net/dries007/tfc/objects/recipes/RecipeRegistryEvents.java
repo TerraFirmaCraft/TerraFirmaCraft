@@ -77,6 +77,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:glass_bottle"));
             modRegistry.remove(new ResourceLocation("minecraft:flower_pot"));
             modRegistry.remove(new ResourceLocation("minecraft:brick_block"));
+            modRegistry.remove(new ResourceLocation("minecraft:enchanting_table"));
 
             //breakydowny, buildyupy things.
             modRegistry.remove(new ResourceLocation("minecraft:wheat"));

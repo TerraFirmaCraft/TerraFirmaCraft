@@ -102,7 +102,7 @@ public final class DefaultRecipes
             // Misc
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 1000), IIngredient.of("logWoodTannin"), new FluidStack(TANNIN.get(), 10000), ItemStack.EMPTY, 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("tannin"),
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 200), IIngredient.of(ItemsTFC.JUTE), null, new ItemStack(ItemsTFC.JUTE_FIBER), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("jute_fiber"),
-            new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 600), IIngredient.of(ItemFoodTFC.get(Food.SUGARCANE), 5), null, new ItemStack(Items.SUGAR), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("sugar"),
+            new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 600), new IngredientItemFood(IIngredient.of(ItemFoodTFC.get(Food.SUGARCANE), 5)), null, new ItemStack(Items.SUGAR), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("sugar"),
             new BarrelRecipe(IIngredient.of(LIMEWATER.get(), 500), IIngredient.of(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage())), null, new ItemStack(ItemsTFC.GLUE), 8 * ICalendar.TICKS_IN_HOUR).setRegistryName("glue"),
             // Alcohol - Classic created 1000mb with 4oz, which would be 8 items per full barrel at 5 oz/item. Instead we now require 20 items, so conversion is 2 oz/item here
             new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 500), IIngredient.of(ItemFoodTFC.get(Food.BARLEY_FLOUR)), new FluidStack(FluidsTFC.BEER.get(), 500), ItemStack.EMPTY, 72 * ICalendar.TICKS_IN_HOUR).setRegistryName("beer"),
@@ -143,13 +143,17 @@ public final class DefaultRecipes
             new BarrelRecipe(IIngredient.of(HOT_WATER.get(), 125), IIngredient.of(ItemsTFC.OLIVE_PASTE), new FluidStack(OLIVE_OIL_WATER.get(), 125), ItemStack.EMPTY, 2 * ICalendar.TICKS_IN_HOUR).setRegistryName("olive_water"),
             // Balance note: Classic gave 250mb for 160oz of olives ~= 32 items. We give 800 mb for that, so 3.2x more. Hopefully will help with lamp usage
             new BarrelRecipe(IIngredient.of(OLIVE_OIL_WATER.get(), 125), IIngredient.of(ItemsTFC.JUTE_NET), new FluidStack(OLIVE_OIL.get(), 25), new ItemStack(ItemsTFC.DIRTY_JUTE_NET), 0).setRegistryName("olive_oil"),
-            // Balance: hot water is mining, so don't use up any to wash with, since we use up 8 buckets to get 1600mb of oil.
-            new BarrelRecipe(IIngredient.of(HOT_WATER.get(), 125), IIngredient.of(ItemsTFC.DIRTY_JUTE_NET), new FluidStack(HOT_WATER.get(), 125), new ItemStack(ItemsTFC.JUTE_NET), ICalendar.TICKS_IN_HOUR).setRegistryName("clean_net"),
-
+            // Balance: switch to fresh water. Hot water use that way is broken
+            new BarrelRecipe(IIngredient.of(FRESH_WATER.get(), 125), IIngredient.of(ItemsTFC.DIRTY_JUTE_NET), null, new ItemStack(ItemsTFC.JUTE_NET), ICalendar.TICKS_IN_HOUR).setRegistryName("clean_net"),
             // Temperature recipes
             new BarrelRecipeTemperature(IIngredient.of(FRESH_WATER.get(), 1), 50).setRegistryName("fresh_water_cooling"),
             new BarrelRecipeTemperature(IIngredient.of(SALT_WATER.get(), 1), 50).setRegistryName("salt_water_cooling")
         );
+
+        for (Food food : new Food[] {Food.SALAD_DAIRY, Food.SALAD_FRUIT, Food.SALAD_GRAIN, Food.SALAD_MEAT, Food.SALAD_VEGETABLE, Food.SOUP_DAIRY, Food.SOUP_FRUIT, Food.SOUP_GRAIN, Food.SOUP_MEAT, Food.SOUP_VEGETABLE})
+        {
+            event.getRegistry().register(new BarrelRecipeDynamicBowlFood(IIngredient.of(FRESH_WATER.get(), 200), IIngredient.of(ItemFoodTFC.get(food)), 0).setRegistryName(food.name().toLowerCase() + "_cleaning"));
+        }
 
         //The many many many recipes that is dye. This assumes that the standard meta values for colored objects are followed.
         for (EnumDyeColor dyeColor : EnumDyeColor.values())
@@ -462,11 +466,11 @@ public final class DefaultRecipes
         addAnvil(r, INGOT, HAMMER_HEAD, true, TOOLS, PUNCH_LAST, SHRINK_NOT_LAST);
         addAnvil(r, INGOT, PROPICK_HEAD, true, TOOLS, PUNCH_LAST, DRAW_NOT_LAST, BEND_NOT_LAST);
         addAnvil(r, INGOT, SAW_BLADE, true, TOOLS, HIT_LAST, HIT_SECOND_LAST);
-        addAnvil(r, DOUBLE_INGOT, SWORD_BLADE, true, TOOLS, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
-        addAnvil(r, DOUBLE_INGOT, MACE_HEAD, true, TOOLS, HIT_LAST, SHRINK_NOT_LAST, BEND_NOT_LAST);
-        addAnvil(r, INGOT, SCYTHE_BLADE, true, TOOLS, HIT_LAST, DRAW_SECOND_LAST, BEND_THIRD_LAST);
-        addAnvil(r, INGOT, KNIFE_BLADE, true, TOOLS, HIT_LAST, DRAW_SECOND_LAST, DRAW_THIRD_LAST);
-        addAnvil(r, INGOT, JAVELIN_HEAD, true, TOOLS, HIT_LAST, HIT_SECOND_LAST, DRAW_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, SWORD_BLADE, true, WEAPONS, HIT_LAST, BEND_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, DOUBLE_INGOT, MACE_HEAD, true, WEAPONS, HIT_LAST, SHRINK_NOT_LAST, BEND_NOT_LAST);
+        addAnvil(r, INGOT, SCYTHE_BLADE, true, WEAPONS, HIT_LAST, DRAW_SECOND_LAST, BEND_THIRD_LAST);
+        addAnvil(r, INGOT, KNIFE_BLADE, true, WEAPONS, HIT_LAST, DRAW_SECOND_LAST, DRAW_THIRD_LAST);
+        addAnvil(r, INGOT, JAVELIN_HEAD, true, WEAPONS, HIT_LAST, HIT_SECOND_LAST, DRAW_THIRD_LAST);
         addAnvil(r, INGOT, CHISEL_HEAD, true, TOOLS, HIT_LAST, HIT_NOT_LAST, DRAW_NOT_LAST);
 
         // Armor
@@ -524,14 +528,14 @@ public final class DefaultRecipes
         IForgeRegistry<WeldingRecipe> r = event.getRegistry();
 
         // Basic Parts
-        addWelding(r, INGOT, DOUBLE_INGOT);
-        addWelding(r, SHEET, DOUBLE_SHEET);
+        addWelding(r, INGOT, DOUBLE_INGOT, null);
+        addWelding(r, SHEET, DOUBLE_SHEET, null);
 
         // Armor
-        addWelding(r, UNFINISHED_HELMET, SHEET, HELMET, true);
-        addWelding(r, UNFINISHED_CHESTPLATE, DOUBLE_SHEET, CHESTPLATE, true);
-        addWelding(r, UNFINISHED_GREAVES, SHEET, GREAVES, true);
-        addWelding(r, UNFINISHED_BOOTS, SHEET, BOOTS, true);
+        addWelding(r, UNFINISHED_HELMET, SHEET, HELMET, true, ARMOR);
+        addWelding(r, UNFINISHED_CHESTPLATE, DOUBLE_SHEET, CHESTPLATE, true, ARMOR);
+        addWelding(r, UNFINISHED_GREAVES, SHEET, GREAVES, true, ARMOR);
+        addWelding(r, UNFINISHED_BOOTS, SHEET, BOOTS, true, ARMOR);
 
         // Steel Welding
         addWelding(r, WEAK_STEEL, PIG_IRON, HIGH_CARBON_BLACK_STEEL);
@@ -539,7 +543,7 @@ public final class DefaultRecipes
         addWelding(r, WEAK_RED_STEEL, BLACK_STEEL, HIGH_CARBON_RED_STEEL);
 
         // Special Recipes
-        addWelding(r, KNIFE_BLADE, KNIFE_BLADE, SHEARS, true);
+        addWelding(r, KNIFE_BLADE, KNIFE_BLADE, SHEARS, true, TOOLS);
     }
 
     @SubscribeEvent
@@ -552,7 +556,7 @@ public final class DefaultRecipes
             new LoomRecipe(new ResourceLocation(MOD_ID, "wool_cloth"), IIngredient.of(ItemsTFC.WOOL_YARN, 16), new ItemStack(ItemsTFC.WOOL_CLOTH), 16, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")),
             new LoomRecipe(new ResourceLocation(MOD_ID, "silk_cloth"), IIngredient.of(Items.STRING, 24), new ItemStack(ItemsTFC.SILK_CLOTH), 24, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png")),
 
-            new LoomRecipe(new ResourceLocation(MOD_ID, "wool_block"), IIngredient.of(ItemsTFC.WOOL_CLOTH, 4), new ItemStack(Blocks.WOOL), 4, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png"))
+            new LoomRecipe(new ResourceLocation(MOD_ID, "wool_block"), IIngredient.of(ItemsTFC.WOOL_CLOTH, 4), new ItemStack(Blocks.WOOL, 8), 4, new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png"))
         );
     }
 
@@ -571,10 +575,10 @@ public final class DefaultRecipes
             new QuernRecipe(IIngredient.of("grainWheat"), new ItemStack(ItemFoodTFC.get(Food.WHEAT_FLOUR), 1)).setRegistryName("wheat"),
             new QuernRecipe(IIngredient.of("grainMaize"), new ItemStack(ItemFoodTFC.get(Food.CORNMEAL_FLOUR), 1)).setRegistryName("maize"),
 
-            new QuernRecipe(IIngredient.of(ItemFoodTFC.get(Food.OLIVE)), new ItemStack(ItemsTFC.OLIVE_PASTE, 1)).setRegistryName("olive"),
+            new QuernRecipe(new IngredientItemFood(IIngredient.of(ItemFoodTFC.get(Food.OLIVE))), new ItemStack(ItemsTFC.OLIVE_PASTE, 1)).setRegistryName("olive"),
 
             //Flux
-            new QuernRecipe(IIngredient.of("gemBorax"), new ItemStack(ItemPowder.get(Powder.FLUX), 6)).setRegistryName("boarx"),
+            new QuernRecipe(IIngredient.of("gemBorax"), new ItemStack(ItemPowder.get(Powder.FLUX), 6)).setRegistryName("borax"),
             new QuernRecipe(IIngredient.of("rockFlux"), new ItemStack(ItemPowder.get(Powder.FLUX), 2)).setRegistryName("flux"),
 
             //Redstone
@@ -671,6 +675,7 @@ public final class DefaultRecipes
             new QuernRecipe(IIngredient.of("gemSylvite"), new ItemStack(ItemPowder.get(Powder.FERTILIZER), 4)).setRegistryName("sylvite"),
             new QuernRecipe(IIngredient.of("gemSulfur"), new ItemStack(ItemPowder.get(Powder.SULFUR), 4)).setRegistryName("sulfur"),
             new QuernRecipe(IIngredient.of("gemSaltpeter"), new ItemStack(ItemPowder.get(Powder.SALTPETER), 4)).setRegistryName("saltpeter"),
+            new QuernRecipe(IIngredient.of("charcoal"), new ItemStack(ItemPowder.get(Powder.CHARCOAL), 4)).setRegistryName("charcoal"),
             new QuernRecipe(IIngredient.of("rockRocksalt"), new ItemStack(ItemPowder.get(Powder.SALT), 4)).setRegistryName("rocksalt"),
             new QuernRecipe(IIngredient.of(Items.BLAZE_ROD), new ItemStack(Items.BLAZE_POWDER, 2)).setRegistryName("blaze_powder"),
             new QuernRecipe(IIngredient.of("gemLapis"), new ItemStack(ItemPowder.get(Powder.LAPIS_LAZULI), 4)).setRegistryName("lapis_lazuli"),
@@ -781,13 +786,13 @@ public final class DefaultRecipes
         }
     }
 
-    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType)
+    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType, Metal.ItemType outputType, SmithingSkill.Type skillType)
     {
-        addWelding(registry, inputType, inputType, outputType, false);
+        addWelding(registry, inputType, inputType, outputType, false, skillType);
     }
 
     @SuppressWarnings("ConstantConditions")
-    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType1, Metal.ItemType inputType2, Metal.ItemType outputType, boolean onlyToolMetals)
+    private static void addWelding(IForgeRegistry<WeldingRecipe> registry, Metal.ItemType inputType1, Metal.ItemType inputType2, Metal.ItemType outputType, boolean onlyToolMetals, SmithingSkill.Type skillType)
     {
         // Helper method for adding all recipes that take ItemType -> ItemType
         for (Metal metal : TFCRegistries.METALS.getValuesCollection())
@@ -845,7 +850,7 @@ public final class DefaultRecipes
             if (!output.isEmpty())
             {
                 // Note: Welding recipes require one less than the tier of the metal
-                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient1, ingredient2, output, metal.getTier().previous()));
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, (outputType.name() + "_" + metal.getRegistryName().getPath()).toLowerCase()), ingredient1, ingredient2, output, metal.getTier().previous(), skillType));
             }
         }
     }
@@ -865,7 +870,7 @@ public final class DefaultRecipes
             {
                 // Note: Welding recipes require one less than the tier of the metal
                 //noinspection ConstantConditions
-                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input1), IIngredient.of(input2), output, outputMetal.getTier().previous()));
+                registry.register(new WeldingRecipe(new ResourceLocation(MOD_ID, ("ingot_" + outputMetal.getRegistryName().getPath()).toLowerCase()), IIngredient.of(input1), IIngredient.of(input2), output, outputMetal.getTier().previous(), null));
             }
         }
     }

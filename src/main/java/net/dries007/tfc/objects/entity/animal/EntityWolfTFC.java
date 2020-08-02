@@ -41,21 +41,20 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.IAnimalTFC;
-import net.dries007.tfc.api.types.IHuntable;
+import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAITamableAvoidPlayer;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @ParametersAreNonnullByDefault
-// This one is special, since it's familiarizable and is also a predator since it will attack you if provoked plus will hunt other livestock for food.
-// Since this don't fit in the predators list, but should be respawned over time, putting it into the huntable list
-public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
+// Changes in config allow placing this animal in livestock and still respawn
+public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, ILivestock
 {
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
@@ -64,7 +63,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, IHuntable
     //Is this female fertilized?
     private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityWolfTFC.class, DataSerializers.BOOLEAN);
     // The time(in days) this entity became pregnant
-    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityWolfTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityWolfTFC.class, EntitiesTFC.getLongDataSerializer());
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females

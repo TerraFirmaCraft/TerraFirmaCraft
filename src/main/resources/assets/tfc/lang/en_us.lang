@@ -93,6 +93,8 @@ tfc.tooltip.barrel_fluid=Contains %1$d mB of %2$s
 tfc.tooltip.barrel_fluid_amount=%d mB
 tfc.tooltip.barrel_item=Contains %1$dx %2$s
 tfc.tooltip.barrel_item_in_fluid= and %1$dx %2$s
+tfc.tooltip.powderkeg_amount=Contains %1$dx %2$s
+tfc.tooltip.powderkeg_empty=Empty
 tfc.tooltip.small_vessel_empty=Empty
 tfc.tooltip.small_vessel_item=%1$dx %2$s
 tfc.tooltip.weldable=Can Weld
@@ -136,6 +138,8 @@ tfc.tooltip.blast_furnace_melt_amount=Melt
 tfc.tooltip.blast_furnace_invalid_structure=Invalid Structure!
 tfc.tooltip.large_vessel_seal=Seal Large Vessel
 tfc.tooltip.large_vessel_unseal=Unseal Large Vessel
+tfc.tooltip.powderkeg_seal=Seal Powderkeg
+tfc.tooltip.powderkeg_unseal=Unseal Powderkeg
 tfc.tooltip.goldpan.chunkworked=This area seems to be overworked. You probably wouldn't find much.
 tfc.tooltip.smithing_skill=Skill Bonus: %0.1f%%
 tfc.tooltip.crucible_alloy=Contains %1$d mB of %2$s
@@ -311,6 +315,15 @@ config.tfc.general.fallable.collapseChance.tooltip=Chance that mining a raw rock
 config.tfc.general.fallable.propagateCollapseChance=Propagate Collapse Chance
 config.tfc.general.fallable.propagateCollapseChance.tooltip=Chance that collapsing blocks propagate the collapse. Influenced by distance from epicenter of collapse.
 
+config.tfc.general.fallable.supportBeamRangeHor=Horizontal Support Range
+config.tfc.general.fallable.supportBeamRangeHor.tooltip=The horizontal radius of the support range of support beams.
+
+config.tfc.general.fallable.supportBeamRangeUp=Upwards Support Range
+config.tfc.general.fallable.supportBeamRangeUp.tooltip=The upwards range support range of support beams.
+
+config.tfc.general.fallable.supportBeamRangeDown=Downwards Support Range
+config.tfc.general.fallable.supportBeamRangeDown.tooltip=The downwards support range of support beams.
+
 config.tfc.general.fallable.chiselCausesCollapse=Chiseling Causes Collapses
 config.tfc.general.fallable.chiselCausesCollapse.tooltip=Should chiseling raw stone blocks cause collapses?
 
@@ -320,11 +333,11 @@ config.tfc.general.fallable.explosionCausesCollapse.tooltip=Should exploding raw
 ### Difficulty
 config.tfc.general.difficulty=Difficulty Settings
 
-config.tfc.general.difficulty.animalSpawnCount=Animal Spawn Count
-config.tfc.general.difficulty.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded(spawned) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
+config.tfc.general.difficulty.animalSpawnCount=Animal Respawn Count
+config.tfc.general.difficulty.animalSpawnCount.tooltip=This controls how many animals (any kind) are loaded (by respawn) / player. Higher values means more animals near a player, which in turn raises difficulty and meat abundance (caution, a value too high can also negatively impact performance).
 
-config.tfc.general.difficulty.mobSpawnCount=Mob Spawn Count
-config.tfc.general.difficulty.mobSpawnCount.tooltip=This controls how many mobs are loaded(spawned) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
+config.tfc.general.difficulty.mobSpawnCount=Mob Respawn Count
+config.tfc.general.difficulty.mobSpawnCount.tooltip=This controls how many mobs are loaded(by respawn) / player. Higher values means more mobs near a player, which in turn raises difficulty (caution, a value too high may also negatively impact performance).
 
 config.tfc.general.difficulty.preventMobsOnSurface=Prevent Mobs On Surface
 config.tfc.general.difficulty.preventMobsOnSurface.tooltip=Prevent mob spawning on surface?
@@ -527,7 +540,7 @@ config.tfc.general.food.fruitTreeGrowthTimeModifier.tooltip=Modifier for how lon
 
 ### Misc
 config.tfc.general.misc=Misc Settings
-config.tfc.general.misc.tooltip=Settings for various miscelaneous things.
+config.tfc.general.misc.tooltip=Settings for various miscellaneous things.
 
 config.tfc.general.misc.defaultMonthLength=Default Month Length
 config.tfc.general.misc.defaultMonthLength.tooltip=The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.
@@ -633,13 +646,16 @@ config.tfc.devices.bloomery.ticks.tooltip=Number of ticks required for a bloomer
 
 
 ### Crucible
-config.tfc.devices.crucible=Bloomery
+config.tfc.devices.crucible=Crucible
 
 config.tfc.devices.crucible.tank=Tank Storage
 config.tfc.devices.crucible.tank.tooltip=How much metal (units / mB) can a crucible hold?
 
 config.tfc.devices.crucible.enableAllSlots=Accept Pouring from All Slots
 config.tfc.devices.crucible.enableAllSlots.tooltip=Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots at the same time.
+
+config.tfc.devices.crucible.pouringSpeed=Pouring Speed
+config.tfc.devices.crucible.pouringSpeed.tooltip=How fast should crucibles accept fluids from molds / small vessel?
 
 
 ### Charcoal Pit
@@ -1198,6 +1214,7 @@ tile.tfc.sluice.name=Sluice
 tile.tfc.ice.name=Ice
 tile.tfc.sea_ice.name=Sea Ice
 tile.tfc.nest_box.name=Nest Box
+tile.tfc.powderkeg.name=Powderkeg
 
 ## Decoration blocks
 tile.tfc.alabaster.bricks.cyan.name=Cyan Alabaster Bricks
@@ -3178,11 +3195,12 @@ item.tfc.ceramics.fired.jug.name=Jug
 item.tfc.ceramics.fired.jug.filled=%s Jug
 item.tfc.ceramics.unfired.clay_flower_pot.name=Unfired Clay Flower Pot
 item.tfc.mortar.name=Mortar
+item.tfc.halter.name=Halter
 item.tfc.wrought_iron_grill.name=Wrought Iron Grill
 item.tfc.alabaster_brick.name=Alabaster Brick
-item.tfc.metal.rod.gold=Gold Rod
-item.tfc.metal.rod.wrought_iron=Wrought Iron Rod
-item.tfc.metal.rod.steel=Steel Rod
+item.tfc.metal.rod.gold.name=Gold Rod
+item.tfc.metal.rod.wrought_iron.name=Wrought Iron Rod
+item.tfc.metal.rod.steel.name=Steel Rod
 item.tfc.brass_mechanisms.name=Brass Mechanisms
 item.tfc.glue.name=Glue
 
@@ -3376,6 +3394,7 @@ item.tfc.brick.gneiss.name=Gneiss Brick
 item.tfc.brick.marble.name=Marble Brick
 item.tfc.brick.ranite.name=Granite Brick
 
+item.tfc.stick_bunch.name=Bunch of Sticks
 item.tfc.wood.lumber.ash.name=Ash Lumber
 item.tfc.wood.lumber.aspen.name=Aspen Lumber
 item.tfc.wood.lumber.birch.name=Birch Lumber
@@ -4120,6 +4139,8 @@ item.tfc.powder.limonite.name=Limonite Powder
 item.tfc.powder.malachite.name=Malachite Powder
 item.tfc.powder.salt.name=Salt
 item.tfc.powder.fertilizer.name=Fertilizer
+item.tfc.powder.charcoal.name=Charcoal Powder
+
 
 item.tfc.ceramics.fired.mold.ingot.bismuth.name=Unshaped Bismuth
 item.tfc.ceramics.fired.mold.ingot.bismuth_bronze.name=Unshaped Bismuth Bronze
@@ -4643,8 +4664,8 @@ advancements.tfc.main.pottery.title=Handicrafts
 advancements.tfc.main.pottery.description=Knap a piece of pottery from clay and fire it in a pit kiln.
 advancements.tfc.main.get_unknown.title=D'OH!
 advancements.tfc.main.get_unknown.description=Get an Unknown Ingot from a botched alloy.
-advancements.tfc.main.stone_anvil.title=Hammer Time
-advancements.tfc.main.stone_anvil.description=Hit some igneous stone with a hammer to make your first anvil.
+#advancements.tfc.main.stone_anvil.title=Hammer Time
+#advancements.tfc.main.stone_anvil.description=Hit some igneous stone with a hammer to make your first anvil.
 advancements.tfc.main.metal_casting.title=Pouring Metal
 advancements.tfc.main.metal_casting.description=Craft a fired mold with which to cast a metal tool.
 # Copper and Bronze Ages
@@ -4720,8 +4741,8 @@ advancements.tfc.world.baker.title=Baking Bread
 advancements.tfc.world.baker.description=Make a loaf of bread.
 advancements.tfc.world.botanist.title=Botanist
 advancements.tfc.world.botanist.description=Get the seeds of every crop.
-advancements.tfc.world.rutabaga.title=Stupid Onions...
-advancements.tfc.world.rutabaga.description=Find a Rutabaga.
+#advancements.tfc.world.rutabaga.title=Stupid Onions...
+#advancements.tfc.world.rutabaga.description=Find a Rutabaga.
 advancements.tfc.world.first_familiarity.title=Making Friends
 advancements.tfc.world.first_familiarity.description=Familiarize an animal.
 advancements.tfc.world.wolf_familiarity.title=Man's Best Friend
@@ -4751,8 +4772,8 @@ advancements.tfc.world.find_graphite.title=Writing Stone
 advancements.tfc.world.find_graphite.description=Find Graphite.
 advancements.tfc.world.find_kaolinite.title=Pink Unicorn
 advancements.tfc.world.find_kaolinite.description=Find Kaolinite.
-advancements.tfc.world.find_sylvite.title=Good for your Plants
-advancements.tfc.world.find_sylvite.description=Find Sylvite.
+#advancements.tfc.world.find_sylvite.title=Good for your Plants
+#advancements.tfc.world.find_sylvite.description=Find Sylvite.
 advancements.tfc.world.find_iron.title=Pretty Ironic
 advancements.tfc.world.find_iron.description=Find Hematite, Limonite or Magnetite Ore.
 advancements.tfc.world.find_gold.title=Gold Rush
@@ -4767,6 +4788,9 @@ waila.tfc.ore_drop=Contains %s
 waila.tfc.flux_stone=Flux
 waila.tfc.temperature=Air Temperature: %dºC
 waila.tfc.metal.output=Contains %d units of %s
+
+# Patchouli
+tfc.patchouli.landing_text=A guide for TFC-TNG, a total conversion mod for 1.12.2
 
 ## Devices
 waila.tfc.devices.minutes_remaining=%d Minutes Remaining

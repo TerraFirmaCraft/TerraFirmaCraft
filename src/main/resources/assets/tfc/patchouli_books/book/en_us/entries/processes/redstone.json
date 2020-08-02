@@ -1,0 +1,82 @@
+{
+  "name": "Redstone & Rails",
+  "icon": "minecraft:textures/items/redstone_dust.png",
+  "category": "processes",
+  "advancement": "tfc:main/metal_anvil",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Redstone works the same as in vanilla, however obtaining it is a little different, requiring some different components. Redstone dust itself is made in a quern by crushing Cinnabar or Cryolite.$(br2)The first component we need is the rod. Rods can be made from Gold, Wrought Iron, or Steel by working an ingot in the anvil. 1 ingot = 2 rods."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/powered_rail",
+      "title": "Powered Rail",
+      "text": "The vanilla Powered Rail is the only use for Gold Rods."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/rail",
+      "recipe2": "tfc:vanilla/rail/detector_rail",
+      "title": "Rail & Detector Rail"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/activator_rail",
+      "title": "Activator Rail",
+      "text": "Rails are one use for Wrought Iron Rods. Steel is also used for these recipes, with double output."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/steel_rail",
+      "recipe2": "tfc:vanilla/rail/steel_detector_rail",
+      "title": "Rail & Detector Rail"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/steel_activator_rail",
+      "title": "Activator Rail",
+      "text": "These recipes are a little more productive than in Vanilla, to make up for their cost."
+    },
+    {
+      "type": "text",
+      "text": "Working a single brass ingot (9 parts Copper to 1 parts Zinc/Sphalerite) in an anvil can produce 2 brass mechanisms, which are needed to craft some redstone blocks."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/piston",
+      "recipe2": "tfc:vanilla/redstone/observer",
+      "title": "Piston & Observer"
+    },
+    {
+      "type": "crafting",
+      "recipe": "minecraft:sticky_piston",
+      "title": "Sticky Piston",
+      "text": "Sealing bonemeal in Limewater (Water + Flux) will produce Glue, a substitute for a slimeball."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/redstone_repeater",
+      "recipe2": "tfc:vanilla/redstone/redstone_comparator",
+      "title": "Redstone & Comparator"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/hopper",
+      "recipe2": "tfc:vanilla/redstone/steel_hopper",
+      "title": "The Hopper"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/daylight_detector",
+      "recipe2": "tfc:vanilla/redstone/flawless_daylight_detector",
+      "title": "Daylight Sensor"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/exquisite_daylight_detector",
+      "recipe2": "minecraft:jukebox",
+      "title": "Party Time!"
+    }
+  ]
+}

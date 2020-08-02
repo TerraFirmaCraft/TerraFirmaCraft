@@ -198,6 +198,8 @@ public class ClientEvents
                     list.add(String.format("%sTemperature: %s%.1f\u00b0C Daily: %s%.1f\u00b0C",
                         GRAY, WHITE, ClimateTFC.getMonthlyTemp(blockpos),
                         WHITE, ClimateTFC.getActualTemp(blockpos)));
+                    list.add(GRAY + "Rainfall: " + WHITE + data.getRainfall());
+                    list.add(GRAY + "Spawn Protection = " + WHITE + data.isSpawnProtected());
                 }
                 else if (mc.world.provider.getDimension() == 0)
                 {
@@ -213,7 +215,6 @@ public class ClientEvents
 
                     if (chunkDataValid)
                     {
-                        list.add(GRAY + "Rainfall: " + WHITE + data.getRainfall());
                         list.add(GRAY + "Flora Density: " + WHITE + data.getFloraDensity());
                         list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
 

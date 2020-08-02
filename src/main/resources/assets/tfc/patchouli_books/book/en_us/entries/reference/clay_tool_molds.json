@@ -1,0 +1,79 @@
+{
+  "name": "Clay Tool Molds",
+  "icon": "tfc:textures/items/ceramics/unfired/mold/scythe_blade.png",
+  "category": "reference",
+  "advancement": "tfc:main/find_clay",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:ingot_mold",
+      "text": "Ingot Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:pick_head_mold",
+      "text": "Pick Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:shovel_head_mold",
+      "text": "Shovel Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:axe_head_mold",
+      "text": "Axe Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:hoe_head_mold",
+      "text": "Hoe Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:chisel_head_mold",
+      "text": "Chisel Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:sword_blade_mold",
+      "text": "Sword Blade Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:mace_head_mold",
+      "text": "Mace Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:saw_blade_mold",
+      "text": "Saw Blade Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:javelin_head_mold",
+      "text": "Javelin Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:hammer_head_mold",
+      "text": "Hammer Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:propick_head_mold",
+      "text": "Prospector's Pickaxe Head Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:knife_blade_mold",
+      "text": "Knife Blade Mold"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:scythe_blade_mold",
+      "text": "Scythe Blade Mold"
+    }
+  ]
+}

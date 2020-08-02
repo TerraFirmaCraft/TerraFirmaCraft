@@ -1,0 +1,6 @@
+{
+  "name": "Food",
+  "description": "Cultivating, cooking, and managing your food is central to TFC's gameplay.",
+  "icon": "tfc:textures/items/food/maize.png",
+  "sortnum": 1
+}

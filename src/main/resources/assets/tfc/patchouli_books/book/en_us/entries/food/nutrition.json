@@ -1,0 +1,17 @@
+{
+  "name": "Nutrition",
+  "icon": "tfc:textures/items/food/red_apple.png",
+  "category": "food",
+  "advancement": "tfc:main/get_straw",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(thing)Nutrition$() forces you to balance your diet in TFC. It has 5 categories: $(item)Grain, Fruit, Vegetables, Protein, and Dairy$(). Each meter starts half full, except Dairy. At the beginning of the game, you will have 850 health, but as you nutrition improves or declines, your health will increase or decrease."
+    },
+    {
+      "type": "text",
+      "text": "Your nutrition values are based on the last 20 foods you ate. This means that if you eat the same food over and over, your nutrition and therefore your total health will deplete. If you mix what foods you eat, you'll be in a better spot to survive.$(br2)Achieving full nutrition, and therefore 1000 Health, is possible using $(l:food/meals)meals$()."
+    }
+  ]
+}
