@@ -5,16 +5,23 @@
 
 package net.dries007.tfc;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
+import net.dries007.tfc.client.GrassColorHandler;
+import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.config.DecayTooltipMode;
+import net.dries007.tfc.util.config.HealthDisplayFormat;
+import net.dries007.tfc.util.config.HemisphereType;
+import net.dries007.tfc.util.config.InventoryCraftingMode;
+import net.dries007.tfc.util.config.OreTooltipMode;
+import net.dries007.tfc.util.config.QuiverSearch;
+import net.dries007.tfc.util.config.TemperatureMode;
+import net.dries007.tfc.util.config.TimeTooltipMode;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.config.*;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Top level items must be static, the subclasses' fields must not be static.
@@ -29,6 +36,7 @@ public final class ConfigTFC
         {
             TerraFirmaCraft.getLog().warn("Config changed");
             ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
+            GrassColorHandler.resetColors();
         }
     }
 
@@ -875,6 +883,10 @@ public final class ConfigTFC
         @Config.Comment("Display settings")
         @Config.LangKey("config." + MOD_ID + ".client.display")
         public static final DisplayCFG DISPLAY = new DisplayCFG();
+        
+        @Config.Comment("Grass coloring settings")
+        @Config.LangKey("config." + MOD_ID + ".client.grass_color")
+        public static final GrassColorCFG GRASS_COLOR = new GrassColorCFG();
 
         public static final class TooltipCFG
         {
@@ -928,6 +940,44 @@ public final class ConfigTFC
             @Config.Comment("The color to render on top of rotten food. Express as a 256 bit color value: 0xFFFFFF = white, 0x000000 = black")
             @Config.LangKey("config." + MOD_ID + ".client.display.rottenFoodOverlayColor")
             public int rottenFoodOverlayColor = 0x88CC33;
+        }
+    
+        public static final class GrassColorCFG{
+        	@Config.Comment("If true, grass and foliage will be slightly varied in color.")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.noiseEnable")
+         	public boolean noiseEnable = true;
+	    	
+	    	@Config.Comment("If true, grass and foliage will be colored seasonally.")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.seasonColorEnable")
+         	public boolean seasonColorEnable = true;
+	    	
+	    	@Config.Comment("The noise scale. Default = 10")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.noiseScale")
+         	public float noiseScale = 10f;
+	    	
+	    	@Config.Comment("How many darkness levels should the noise have? Default = 5")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.noiseLevels")
+         	public int noiseLevels = 5;
+	    	
+	    	@Config.Comment("How potent should the darkness be? Default = 0.15")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.noiseDarkness")
+         	public float noiseDarkness = 0.15f;
+	    	
+	    	@Config.Comment("Color data for summer coloring. Synax: RED,BLUE,GREEN,ALPHA. Default=30,255,30,28")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.seasonColorSummer")
+         	public String seasonColorSummer = "30,255,30,28";
+	    	
+	    	@Config.Comment("Color data for summer coloring. Synax: RED,BLUE,GREEN,ALPHA. Default=255,168,30,128")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.seasonColorAutumn")
+         	public String seasonColorAutumn = "255,168,30,128";
+	    	
+	    	@Config.Comment("Color data for summer coloring. Synax: RED,BLUE,GREEN,ALPHA. Default=33,165,255,48")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.seasonColorWinter")
+         	public String seasonColorWinter = "33,165,255,48";
+	    	
+	    	@Config.Comment("Color data for summer coloring. Synax: RED,BLUE,GREEN,ALPHA. Default=0,255,160,64")
+         	@Config.LangKey("config." + MOD_ID + ".client.grass_color.seasonColorSpring")
+         	public String seasonColorSpring = "0,255,160,64";
         }
     }
 
