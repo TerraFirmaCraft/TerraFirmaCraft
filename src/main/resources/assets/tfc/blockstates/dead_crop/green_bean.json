@@ -10,6 +10,14 @@
   "variants": {
     "normal": [
       {}
-    ]
+    ],
+    "mature": {
+      "false": {
+        "textures": {
+          "cross": "tfc:blocks/crop/green_bean_dead_young"
+        }
+      },
+      "true": {}
+    }
   }
 }

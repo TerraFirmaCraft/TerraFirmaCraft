@@ -48,7 +48,7 @@ public class CommandTimeTFC extends CommandBase
                 }
                 else if ("monthlength".equals(args[1]))
                 {
-                    int newMonthLength = parseInt(args[2], 8, 128);
+                    int newMonthLength = parseInt(args[2], 1);
                     CalendarTFC.INSTANCE.setMonthLength(newMonthLength);
                     notifyCommandListener(sender, this, "tfc.command.timetfc.set_month_length", newMonthLength);
                 }

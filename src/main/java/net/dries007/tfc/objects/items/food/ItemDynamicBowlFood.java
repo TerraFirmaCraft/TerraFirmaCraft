@@ -95,7 +95,7 @@ public class ItemDynamicBowlFood extends ItemFoodTFC
         }
 
         @Nonnull
-        ItemStack getBowlStack()
+        public ItemStack getBowlStack()
         {
             return bowlStack.copy();
         }

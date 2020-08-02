@@ -28,7 +28,8 @@ import net.minecraft.client.model.ModelChicken;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
-public class ModelBoarTFC extends ModelBase {
+public class ModelBoarTFC extends ModelBase
+{
     public ModelRenderer legLBackTop;
     public ModelRenderer legLFrontTop;
     public ModelRenderer body;
@@ -77,9 +78,11 @@ public class ModelBoarTFC extends ModelBase {
     public ModelRenderer legRBackBottom;
     public ModelRenderer legRBackHoof;
 
-    public ModelBoarTFC() {
+    public ModelBoarTFC()
+    {
         textureWidth = 86;
         textureHeight = 64;
+
         hairBottomLeft = new ModelRenderer(this, 20, 0);
         hairBottomLeft.setRotationPoint(3.4F, 4.5F, 3.0F);
         hairBottomLeft.addBox(0.0F, 0.0F, -7.0F, 0, 4, 14, 0.0F);
@@ -274,6 +277,7 @@ public class ModelBoarTFC extends ModelBase {
         mouthTop.setRotationPoint(0.0F, -0.9F, -4.4F);
         mouthTop.addBox(-2.0F, -1.5F, -4.7F, 4, 2, 5, 0.0F);
         setRotateAngle(mouthTop, 0.2617993877991494F, 0.0F, 0.0F);
+
         body.addChild(hairBottomLeft);
         tailBasea.addChild(tailBased);
         mouthBottom.addChild(tuskL1);

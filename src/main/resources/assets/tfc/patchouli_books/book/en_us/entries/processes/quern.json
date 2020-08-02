@@ -1,0 +1,47 @@
+{
+  "name": "The Quern",
+  "icon": "tfc:textures/items/powder/salt.png",
+  "category": "processes",
+  "advancement": "tfc:main/mining",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)quern$() is used to crush things in TFC. It's made of two parts: The $(thing)handstone$() and the $(thing)base.$()"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "This is a quern without it's handstone.",
+      "name": "The Quern",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:quern"
+        },
+        "pattern": [
+          ["P"], ["0"]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "crafting",
+      "text": "Make this, and place it on the ground. The stone types don't have to match.",
+      "title": "Quern Base",
+      "recipe": "tfc:quern"
+    },
+    {
+      "type": "crafting",
+      "text": "Make this, and right click to put it on the quern.",
+      "title": "Quern Handstone",
+      "recipe": "tfc:handstone"
+    },
+    {
+      "type": "text",
+      "text": "To use the quern, $(4)right-click$() with the item you want to crush on top. Then, right click the little handle to turn the wheel. Then, right click the base to retrieve your crushed item."
+    },
+    {
+      "type": "text",
+      "text": "See the $(l:reference/quern)reference section$() for all the quern recipes except dyes, which are located in the $(l:processes/dye)dye chapter$()."
+    }
+  ]
+}

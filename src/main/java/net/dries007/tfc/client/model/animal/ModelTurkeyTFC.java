@@ -407,13 +407,8 @@ public class ModelTurkeyTFC extends ModelBase
         this.head.rotateAngleX = -(par5 / (180F / (float) Math.PI));
         this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
 
-        //setRotateAngle(wingRMain, -0.08726646259971647F, 0.0F, 0.0F);
-        //setRotateAngle(wingLMain, -0.08726646259971647F, 0.0F, 0.0F);
-
         legRTop.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
         legLTop.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-        //wingRMain.rotateAngleZ = par3;
-        //wingLMain.rotateAngleZ = -par3;
 
         tailFMain.isHidden = false;
         tailsf1.isHidden = false;

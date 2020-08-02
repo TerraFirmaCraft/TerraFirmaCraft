@@ -1,0 +1,29 @@
+{
+  "name": "Alloys",
+  "icon": "tfc:textures/items/metal/ingot/bismuth_bronze.png",
+  "category": "reference",
+  "advancement": "tfc:world/pick_nugget",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)Bismuth Bronze:$()$(2br)$(thing)Copper:$() 50-65%$(br)$(thing)Zinc:$() 20-30%$(br)$(thing)Bismuth:$() 10-20%$(2br)$(item)Black Bronze:$()$(2br)$(thing)Copper:$() 50-70%$(br)$(thing)Silver:$() 10-25%$(br)$(thing)Gold:$() 10-25%"
+    },
+    {
+      "type": "text",
+      "text": "$(item)Bronze$()$(2br)$(thing)Copper:$() 88-92%$(br)$(thing)Tin:$() 8-12%$(2br)$(item)Weak Steel$()$(2br)$(thing)Steel:$() 50-70%$(br)$(thing)Nickel$(): 15-25%$(br)$(thing)Black Bronze$(): 15-25%$(2br)"
+    },
+    {
+      "type": "text",
+      "text": "$(item)Weak Blue Steel:$()$(2br)$(thing)Black Steel:$() 50-55%$(br)$(thing)Steel:$() 20-25%$(br)$(thing)Bismuth Bronze:$() 10-15%$(br)$(thing)Sterling Silver:$() 10-15%$(2br)$(item)Sterling Silver:$()$(2br)$(thing)Copper:$() 20-40%$(br)$(thing)Silver:$() 60-80%$(br)"
+    },
+    {
+      "type": "text",
+      "text": "$(item)Weak Red Steel:$()$(2br)$(thing)Black Steel:$() 50-55%$(br)$(thing)Steel:$() 20-25%$(br)$(thing)Brass:$() 10-15%$(br)$(thing)Rose Gold:$() 10-15%$(2br)$(item)Brass:$()$(2br)$(thing)Copper:$() 88-92%$(br)$(thing)Zinc:$() 8-12%"
+    },
+    {
+      "type": "text",
+      "text": "$(item)Rose Gold:$()$(br2)$(thing)Copper:$() 15-30%$(br)$(thing)Gold:$() 70-85%"
+    }
+  ]
+}

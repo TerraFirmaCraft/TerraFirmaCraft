@@ -1,0 +1,39 @@
+{
+  "name": "Leather Knapping",
+  "icon": "minecraft:textures/items/saddle.png",
+  "category": "reference",
+  "advancement": "tfc:main/make_barrel",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_helmet",
+      "text": "Leather Helmet"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_chestplate",
+      "text": "Leather Chestplate"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_leggings",
+      "text": "Leather Leggings"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_boots",
+      "text": "Leather Boots"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_saddle",
+      "text": "Saddle"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_quiver",
+      "text": "Quiver"
+    }
+  ]
+}

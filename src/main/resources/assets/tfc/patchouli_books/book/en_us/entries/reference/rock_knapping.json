@@ -1,0 +1,39 @@
+{
+  "name": "Rock Knapping",
+  "icon": "tfc:textures/items/stonetypes/rock/chert.png",
+  "category": "reference",
+  "advancement": "tfc:main/pick_rock",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:axe_head",
+      "text": "Axe Head"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:shovel_head",
+      "text": "Shovel Head"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:hoe_head_1",
+      "text": "Hoe Heads"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:knife_head_2",
+      "text": "Knife Blades"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:javelin_head",
+      "text": "Javelin Head"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:hammer_head",
+      "text": "Hammer Head"
+    }
+  ]
+}

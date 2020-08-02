@@ -1,0 +1,72 @@
+{
+  "name": "Prospecting & Mining",
+  "icon": "tfc:textures/items/metal/propick/bismuth_bronze.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/copper_age",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Ground nuggets are good at indicating veins, but you'll want something more accurate. Work or cast a prospector's pickaxe in order to start prospecting. It only takes 100 units of any tool metal, and they're all equally useful.$(br2) While ground nuggets are only 10 units of metal, ores can be $(thing)Poor, Normal, or Rich$() (15, 25, or 35 units)"
+    },
+    {
+      "type": "text",
+      "text": "Right click on the Earth to use the prospector's pick. It checks in a 25 block cube for ores, and reports back what it finds and in what concentration.$(br)$(thing)Note: The pick will never lie about the existence of an ore vein, but sometimes it will fail to detect a vein that is there. To combat this, just click another block nearby."
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Prospecting Method$()$(br2)1. Click with prospector's pick until traces of an ore are detected.$(br)2. Walk around until you detect a very large sample.$(br)3. Walk in one direction clicking until it no longer says 'very large sample'. Mark this spot.$(br)4. Go back to the middle and do the same thing in the other direction.$(br)5. The center of the two lines formed by your markings should be the vein's center."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:wood/white_cedar/white_cedar_support",
+      "title": "Support Beam",
+      "text": "The support beam is needed to keep caves and mineshafts from collapsing on you. Falling stone will destroy ore (and you) so it's important to use safe mining practices."
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "An example support structure.",
+      "name": "Beam Structure",
+      "multiblock": {
+        "mapping": {
+          "L": "tfc:wood/support/pine[west=true,axis=y]",
+          "M": "tfc:wood/support/pine[axis=z]",
+          "R": "tfc:wood/support/pine[east=true,axis=y]",
+          "B": "tfc:wood/support/pine[axis=y]"
+        },
+        "pattern": [
+          ["LMMMR"], ["B 0 B"], ["B   B"]
+        ],
+        "symmetrical": false
+      }
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Note: Only horizontal support beam blocks can support blocks$().$(br2)To construct a support structure, first right click with a support beam on the ground. A 3 high pillar should form. Make a second pillar, then right click on the side of one to connect them.$(br2)$(thing)Note: If a block falls onto a support beam, the entire structure may collapse.$()"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "Imagine the center of this structure was a single support beam.",
+      "name": "Support Visualization",
+      "multiblock": {
+        "mapping": {
+          "W": "tfc:alabaster/polished/white",
+          "0": "tfc:alabaster/polished/lime",
+          "B": "tfc:alabaster/polished/black"
+        },
+        "pattern": [
+          ["         ", "         ", "         ", "         ", "    B    ", "         ", "         ", "         ", "         "],
+          ["    B    ", "    W    ", "    B    ", "    W    ", "BWBW0WBWB", "    W    ", "    B    ", "    W    ", "    B    "],
+          ["         ", "         ", "         ", "         ", "    B    ", "         ", "         ", "         ", "         "]
+        ],
+        "symmetrical": false
+      }
+    },
+    {
+      "type": "text",
+      "text": "With a single horizontal support, 3 blocks vertically and 4 blocks in each direction are supported, as shown by the diagram. Be careful mining into unsupported areas, as this can cause a widespread collapse that will easily kill you!"
+    }
+  ]
+}

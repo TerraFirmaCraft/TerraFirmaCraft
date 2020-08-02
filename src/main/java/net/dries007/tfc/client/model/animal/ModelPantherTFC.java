@@ -57,8 +57,8 @@ public class ModelPantherTFC extends ModelBase
     public ModelRenderer frontLeftLegBottom;
     public ModelRenderer frontLeftLegPaw;
 
-    public ModelPantherTFC() {
-
+    public ModelPantherTFC()
+    {
         textureWidth = 64;
         textureHeight = 64;
 

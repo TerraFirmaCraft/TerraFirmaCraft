@@ -14,7 +14,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 /**
@@ -24,7 +24,7 @@ import net.dries007.tfc.util.calendar.CalendarTFC;
 public abstract class EntityAnimalMammal extends EntityAnimalTFC
 {
     // The time(in days) this entity became pregnant
-    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityAnimalMammal.class, Helpers.LONG_DATA_SERIALIZER);
+    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityAnimalMammal.class, EntitiesTFC.getLongDataSerializer());
 
     @SuppressWarnings("unused")
     public EntityAnimalMammal(World worldIn)

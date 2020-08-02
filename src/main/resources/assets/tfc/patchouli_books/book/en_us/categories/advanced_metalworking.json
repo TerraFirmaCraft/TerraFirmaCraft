@@ -1,0 +1,6 @@
+{
+  "name": "Advanced Metalworking",
+  "description": "The tougher metals in TFC require special processes to smith them.",
+  "icon": "tfc:textures/items/fluids/red_steel_bucket_empty.png",
+  "sortnum": 3
+}

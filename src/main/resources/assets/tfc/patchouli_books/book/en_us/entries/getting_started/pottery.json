@@ -1,0 +1,47 @@
+{
+  "name": "Pottery 101",
+  "icon": "minecraft:textures/items/clay_ball.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/find_clay",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "In order to survive and progress in the world of TFC, you need things that can't just be made out of sticks, rocks, and grass. This is where $(thing)pottery$() comes in. Just hold at least 5 clay in your hand and $(4)right-click$(), and a knapping interface will show up, just like it did for stone. Follow the recipe on the right to shape an unfired jug. Be careful, if you screw up you could lose the clay!"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_jug",
+      "text": "The jug is used to hold drinking water.$(br2)See the $(l:reference/clay_knapping)reference section$() for more."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_small_vessel",
+      "text": "You'll also want something to store all your items in. The small vessel is handy for that! It also preserves food stored inside."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_large_vessel",
+      "text": "The large vessel is placed on the ground like a chest, and can be sealed to preserve food. It has 9 slots of storage."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:pick_head_mold",
+      "text": "You'll also want some metal tools! For now, you'll just want a pickaxe mold, but check the $(l:reference/clay_tool_molds)reference section$() for other tools."
+    },
+    {
+      "type": "text",
+      "text": "In order to fire your clay items, you'll have to build a $(thing)pit kiln$(). This is very easy! First, dig a one block hole in the ground. Then, press $(4)V$() to place your unfired clay items in the hole. Then, right click with 8 straw and then 8 logs to fill it, before lighting it with a $(item)firestarter$()."
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:pit_kiln",
+      "text": "Only the top block of the pit kiln may be exposed to air."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_jug",
+      "text": "After 8 hours, your clay items will be fired! Now, you can store your items, carry water, and begin to enter the copper age!"
+    }
+  ]
+}

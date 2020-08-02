@@ -11,6 +11,7 @@
     "fluid_food_recipe": "net.dries007.tfc.objects.recipes.ShapelessFluidFoodRecipe$Factory",
     "shaped_skill": "net.dries007.tfc.objects.recipes.ShapedSkillRecipe$Factory",
     "salting": "net.dries007.tfc.objects.recipes.SaltingRecipe$Factory",
-    "sandwich": "net.dries007.tfc.objects.recipes.SandwichRecipe$Factory"
+    "sandwich": "net.dries007.tfc.objects.recipes.SandwichRecipe$Factory",
+    "no_container_item_shaped": "net.dries007.tfc.objects.recipes.NoContainerItemShapedRecipe$Factory"
   }
 }

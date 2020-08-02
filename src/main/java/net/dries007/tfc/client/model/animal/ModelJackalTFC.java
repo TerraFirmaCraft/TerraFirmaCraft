@@ -245,9 +245,6 @@ public class ModelJackalTFC extends ModelBase
     {
         setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
         setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.7853981633974483F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
-        //neckMane.rotateAngleX = f4 / (90F / (float) Math.PI);
-        //neckMane.rotateAngleY = f3 / (90F / (float) Math.PI);
-        //setRotateAngle(neckMane, -0.4379031093253773F, 0.0F, 0.0F);
 
         frontRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1 + 0.13962634015954636F;
         frontLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1 + 0.13962634015954636F;

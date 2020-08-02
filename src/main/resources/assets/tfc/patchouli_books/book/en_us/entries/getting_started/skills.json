@@ -1,0 +1,21 @@
+{
+  "name": "Skills",
+  "icon": "tfc:textures/items/metal/propick/bronze.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/logging",
+  "sortnum": 150,
+  "pages": [
+    {
+      "type": "text",
+      "text": "As you do things, you get better at them. TFC represents this through $(thing)skills, which can be viewed on one of the inventory tabs."
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Skills$()$(br2)$(l:basic_smithing/prospecting)Prospecting: $()Reduces rate of false negatives when prospecting. Must click on ore blocks with prospector's pick at least 192 blocks apart to level up.$(br)$(l:basic_smithing/anvil)Smithing:$() Increases the more you use the anvil. Gives tools a smithing bonus, which makes them last longer and work harder.$(br)"
+    },
+    {
+      "type": "text",
+      "text": "$(l:food/farming)Agriculture:$() Increases the more crops you break. Improves drops from mature crops.$(br)$(l:food/animal_husbandry)Butchering:$() Increases when you kill an animal. Improves loot from animals (such as the amount of meat)."
+    }
+  ]
+}

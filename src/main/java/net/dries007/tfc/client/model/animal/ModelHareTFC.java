@@ -146,12 +146,8 @@ public class ModelHareTFC extends ModelBase
         EntityHareTFC EntityHareTFC = (EntityHareTFC) entityIn;
         this.hareNose.rotateAngleX = headPitch * 0.017453292F;
         this.hareHead.rotateAngleX = headPitch * 0.017453292F;
-        //this.hareRightEar.rotateAngleX = headPitch * 0.017453292F;
-        //this.hareLeftEar.rotateAngleX = headPitch * 0.017453292F;
         this.hareNose.rotateAngleY = netHeadYaw * 0.017453292F;
         this.hareHead.rotateAngleY = netHeadYaw * 0.017453292F;
-        //this.hareRightEar.rotateAngleY = this.hareNose.rotateAngleY - 0.2617994F;
-        //this.hareLeftEar.rotateAngleY = this.hareNose.rotateAngleY + 0.2617994F;
         this.jumpRotation = MathHelper.sin(EntityHareTFC.getJumpCompletion(f) * (float) Math.PI);
         this.hareLeftThigh.rotateAngleX = (this.jumpRotation * 50.0F - 21.0F) * 0.017453292F;
         this.hareRightThigh.rotateAngleX = (this.jumpRotation * 50.0F - 21.0F) * 0.017453292F;

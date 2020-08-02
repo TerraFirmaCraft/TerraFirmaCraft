@@ -5,18 +5,12 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import java.util.List;
-import java.util.Random;
-import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -29,7 +23,6 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -41,8 +34,6 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityGoatTFC extends EntityCowTFC implements ILivestock
 {
-    private static final DataParameter<Long> MILKED = EntityDataManager.createKey(EntityGoatTFC.class, Helpers.LONG_DATA_SERIALIZER);
-
     @SuppressWarnings("unused")
     public EntityGoatTFC(World worldIn)
     {
@@ -59,7 +50,7 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.PLAINS))
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
             return ConfigTFC.Animals.GOAT.rarity;
         }
@@ -77,24 +68,6 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
             baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
             this.world.spawnEntity(baby);
         }
-    }
-
-    @Override
-    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
-    {
-        return AnimalGroupingRules.MALE_AND_FEMALES;
-    }
-
-    @Override
-    public int getMinGroupSize()
-    {
-        return 3;
-    }
-
-    @Override
-    public int getMaxGroupSize()
-    {
-        return 5;
     }
 
     @Override
@@ -125,18 +98,6 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     public int getDaysToElderly()
     {
         return ConfigTFC.Animals.GOAT.elder;
-    }
-
-    @Override
-    public boolean isReadyForAnimalProduct()
-    {
-        return getFamiliarity() > 0.15f && hasMilk();
-    }
-
-    @Override
-    public void setProductsCooldown()
-    {
-        setMilkedTick(CalendarTFC.PLAYER_TIME.getTicks());
     }
 
     @Override
@@ -181,20 +142,5 @@ public class EntityGoatTFC extends EntityCowTFC implements ILivestock
     {
         // Equivalent sound
         this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
-    }
-
-    protected boolean hasMilk()
-    {
-        return getGender() == Gender.FEMALE && getAge() == Age.ADULT && getProductsCooldown() == 0;
-    }
-
-    protected long getMilkedTick()
-    {
-        return dataManager.get(MILKED);
-    }
-
-    protected void setMilkedTick(long tick)
-    {
-        dataManager.set(MILKED, tick);
     }
 }

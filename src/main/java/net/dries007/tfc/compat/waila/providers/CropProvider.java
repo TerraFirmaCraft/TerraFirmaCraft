@@ -68,8 +68,8 @@ public class CropProvider implements IWailaBlock
             }
             else
             {
-                float remainingTicksToGrow = Math.max(0, (crop.getGrowthTime() * (float) ConfigTFC.General.FOOD.cropGrowthTimeModifier) - te.getTicksSinceUpdate());
-                float curStagePerc = 1.0F - remainingTicksToGrow / crop.getGrowthTime();
+                float remainingTicksToGrow = Math.max(0, (crop.getGrowthTicks() * (float) ConfigTFC.General.FOOD.cropGrowthTimeModifier) - te.getTicksSinceUpdate());
+                float curStagePerc = 1.0F - remainingTicksToGrow / crop.getGrowthTicks();
                 // Don't show 100% since it still needs to check on randomTick to grow
                 float totalPerc = Math.min(0.99f, curStagePerc / maxStage + (float) curStage / maxStage) * 100;
                 String growth = String.format("%d%%", Math.round(totalPerc));

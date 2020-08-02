@@ -51,7 +51,6 @@ public class ModelGrizzlyBearTFC extends ModelBase
         textureWidth = 80;
         textureHeight = 64;
 
-
         ear1 = new ModelRenderer(this, 23, 11);
         ear1.mirror = true;
         ear1.setRotationPoint(-1.8F, -1.5F, -1.5F);

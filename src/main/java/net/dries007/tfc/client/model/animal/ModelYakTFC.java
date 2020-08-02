@@ -76,8 +76,8 @@ public class ModelYakTFC extends ModelBase
     public ModelRenderer hornLeftF2;
 
 
-    public ModelYakTFC() {
-
+    public ModelYakTFC()
+    {
         textureWidth = 96;
         textureHeight = 96;
 

@@ -1,0 +1,13 @@
+{
+  "name": "advancements.tfc.main.root.title",
+  "landing_text": "tfc.patchouli.landing_text",
+  "version": 1,
+  "advancement_namespaces": ["tfc"],
+  "filler_texture": "tfc:textures/gui/page_filler.png",
+  "book_texture": "patchouli:textures/gui/book_brown.png",
+  "creative_tab": "tfc:misc",
+  "model": "tfc:book",
+  "macros": {
+    "$(2br)": "$(br2)"
+  }
+}

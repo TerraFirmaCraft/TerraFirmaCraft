@@ -27,8 +27,8 @@ import net.dries007.tfc.objects.entity.animal.EntityWildebeestTFC;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
-public class ModelWildebeestTFC extends ModelBase {
-
+public class ModelWildebeestTFC extends ModelBase
+{
     public ModelRenderer headBase;
     public ModelRenderer earL;
     public ModelRenderer earR;

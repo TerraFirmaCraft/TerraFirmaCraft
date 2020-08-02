@@ -1,0 +1,29 @@
+{
+  "name": "Commands",
+  "icon": "tfc:textures/items/brass_mechanisms.png",
+  "category": "reference",
+  "advancement": "tfc:world/pick_nugget",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "TFC has a number of $(thing)commands$() that are used for debugging and creative work."
+    },
+    {
+      "type": "text",
+      "text": "$(item)/findveins [all:<vein name>] <radius> [dump:rate]$()$(br2)Finds coordinates of veins for you. Only reads from already generated chunks. Dump writes a file with all the veins, Rate writes a file with all the veins counted."
+    },
+    {
+      "type": "text",
+      "text": "$(item)/playertfc <get:set:add:reset> [nutrition:food:saturation:water:skill <name>]$()$(br2)Modifies attributes about the player. Some combinations (such as adding nutrition) are disabled."
+    },
+    {
+      "type": "text",
+      "text": "$(item)/heat <amount>$()$(br2)If holding a heatable item, it will heat it to the temperature (integer) you specify."
+    },
+    {
+      "type": "text",
+      "text": "$(item)/stripworld <radiusInBlocks>$()$(br2) Removes all stone variant blocks and water from a certain radius. Used to reveal vein structures.$(br2)$(4)WARNING!!! THIS CANNOT BE UNDONE$()"
+    }
+  ]
+}

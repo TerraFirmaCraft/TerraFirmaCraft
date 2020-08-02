@@ -140,7 +140,7 @@ dependencies {
     deobfProvided "curse.maven:hwyla:2568751"
     //compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
     deobfProvided "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
-    //deobfCompile "vazkii.patchouli:Patchouli:${config.patchouli.version}"
+    deobfCompile "vazkii.patchouli:Patchouli:${config.patchouli.version}"
 }
 
 processResources {

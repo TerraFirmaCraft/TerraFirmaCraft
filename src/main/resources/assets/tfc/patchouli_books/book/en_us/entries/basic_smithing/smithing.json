@@ -1,0 +1,54 @@
+{
+  "name": "Smithing",
+  "icon": "tfc:textures/items/metal/ingot/copper.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/get_flux",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "image",
+      "images": [
+        "tfc:textures/gui/anvil_explainer.png"
+      ],
+      "title": "Anvil GUI",
+      "border": true,
+      "text": "Let's look at how to use the $(thing)Anvil GUI$()"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)1.$() Secondary slot, used for welding items$(br)$(thing)2.$() Primary slot, for working item$(br)$(thing)3.$() Hammer goes here$(br)$(thing)4.$() Flux goes here$(br)$(thing)5.$() Red actions, move arrow left.$(br)$(thing)6.$() Green actions, move arrow right.$(br)$(thing)7.$() Working bar, tracks progress in smithing$(br)$(thing)8.$() Smithing rules$(br)$(thing)9.$() Plan selector"
+    },
+    {
+      "type": "text",
+      "text": "If your hammer and flux are in the anvil, and your ingot is at workable temperature, you are $(thing)ready to work$(). Select the plan for what you want to make. The objective is to make the green and red arrow in the working bar lineup, through the use of $(thing)techniques$().$(br2)Note: Your anvil $(thing)must$() be of the same tier metal as what you're working."
+    },
+    {
+      "type": "text",
+      "text": "Using a technique is simple. Green techniques, such as bending, move the arrow to the right, where red techniques move it left. Different techniques move the arrow different amounts. The goal is to make the top arrow and the bottom arrow align, with the final three techniques you use being the ones specified. If the hammer breaks or the metal cools off, you'll have to reheat it. If the arrow goes off screen, you'll lose the metal."
+    },
+    {
+      "type": "text",
+      "text": "The other part of successfully working an item is the $(thing)rules$(). Each item has a set of three instructions, that must be followed (typically in order) to smith the item. For example, if an instruction said $(item)BEND, LAST$() the last technique you'd have to use would be Bend."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:sheet_black_steel",
+      "text": "Double ingots are used to create sheets, a necessary smithing component for higher level items."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:double_sheet_black_steel",
+      "text": "Sheets are welded into double sheets, which you need for the $(l:advanced_metalworking/iron)bloomery."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:unfinished_chestplate_copper",
+      "text": "Armor often requires multiple welding and smithing processes. You start by making an unfinished chestplate."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:chestplate_copper",
+      "text": "A quick weld will finish the job.$(br2)$(br2)$(thing)For what items require what anvil recipe, see the $(l:reference/smithing)reference section$()."
+    }
+  ]
+}

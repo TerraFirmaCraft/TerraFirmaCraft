@@ -1,0 +1,51 @@
+{
+  "name": "Basic Materials",
+  "icon": "tfc:textures/items/straw.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/pick_rock",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Almost everything in the world in TFC is useful to us. Use your $(item)knife$() to destroy some tall grass, and get some Straw. Spend some time gathering a stack or two. You'll want a lot of it!"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:thatch",
+      "text": "Straw can be crafted into thatch, your most basic construction block. Don't build your whole house out of it, though, as predators can walk right through it!"
+    },
+    {
+      "type": "text",
+      "text": "By making an axe out of loose rocks and sticks, we've removed the need to punch a tree. Go ahead and chop down a tree, starting at the base. It might take a bit longer than you're used to, but in the end the whole tree will fall down!$(br2) The next thing we'll want to create is a $(item)shovel$()."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:shovel_head",
+      "text": "Let's make it a little easier to get dirt. Craft a stone shovel to start moving earth properly. For a complete knapping recipe guide, see the $(l:reference/rock_knapping)reference section.$()"
+    },
+    {
+      "type": "text",
+      "text": "You'll also want to look for $(item)clay dirt$(). $(l:getting_started/pottery)Clay$() spawns in areas with moderate to heavy rainfall, and you'll want your shovel to dig it up.$(br2)Since the world is covered in grass, it's easiest to look for $(thing)clay indicator plants$(). At the temperature of where you spawn, the clay indicator is the $(item)Athyrium Fern$()."
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "The Athyrium Fern spawns in the temperate region on top of Clay Dirt.",
+      "name": "Athyrium Fern",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:plants/athyrium_fern",
+          "D": "tfc:clay_grass/andesite"
+        },
+        "pattern": [
+          ["   ", " P ", "   "], ["DDD", "DDD", "DDD"], ["   ", " 0 ", "   "]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "text",
+      "text": "The following is a list of $(thing)clay indicator plants$():$(br2)- Athyrium Fern$(br)- Canna Lily$(br)- Goldenrod$(br)- Pampas Grass$(br)- Russian Sage$(br)- Rose$(br)- Water Canna$(br2)$(item)Note: Flowers bloom only at certain times of year, so searching for the plant you're looking for may be frustrating in the winter."
+    }
+  ]
+}

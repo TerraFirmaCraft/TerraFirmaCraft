@@ -214,6 +214,13 @@ public class TEBloomery extends TETickableInventory implements ITickable
         }
     }
 
+    @Override
+    public void onLoad()
+    {
+        // This caches the bloomery block as otherwise it can be null when broken
+        getExternalBlock();
+    }
+
     public long getRemainingTicks()
     {
         return ConfigTFC.Devices.BLOOMERY.ticks - (CalendarTFC.PLAYER_TIME.getTicks() - litTick);

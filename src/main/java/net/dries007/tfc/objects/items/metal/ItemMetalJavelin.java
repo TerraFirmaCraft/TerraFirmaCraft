@@ -79,7 +79,7 @@ public class ItemMetalJavelin extends ItemMetalTool
                 if (!worldIn.isRemote)
                 {
                     EntityThrownJavelin javelin = new EntityThrownJavelin(worldIn, player);
-                    javelin.setDamage(this.getAttackDamage());
+                    javelin.setDamage(2.5f * getAttackDamage());  // When thrown, it does approx 1.8x the tool material (attack damage is already 0.7x of the tool). This makes it slightly more damaging than axes but more difficult to use
                     javelin.setWeapon(stack);
                     javelin.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 1.5F, 0.5F);
                     worldIn.spawnEntity(javelin);
