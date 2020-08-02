@@ -44,6 +44,7 @@ import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -57,7 +58,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, ILivestock
 {
     private static final DataParameter<Integer> DYE_COLOR = EntityDataManager.createKey(EntitySheepTFC.class, DataSerializers.VARINT);
-    private static final DataParameter<Long> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    private static final DataParameter<Long> SHEARED = EntityDataManager.createKey(EntitySheepTFC.class, EntitiesTFC.getLongDataSerializer());
 
     @SuppressWarnings("unused")
     public EntitySheepTFC(World worldIn)

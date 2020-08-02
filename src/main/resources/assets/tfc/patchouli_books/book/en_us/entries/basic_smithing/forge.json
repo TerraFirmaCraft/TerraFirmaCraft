@@ -1,0 +1,46 @@
+{
+  "name": "The Forge",
+  "icon": "minecraft:textures/items/charcoal.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/charcoal",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(thing)forge$() is the main way of heating items in TFC. In order to construct a forge, dig a 1 deep hole, like you did with a pit kiln. However, unlike the pit kiln, the sides must be made out of some kind of stone. This could be raw stone, cobblestone, smooth stone, or stone bricks. The blocks don't have to match. Right click to place 7 $(item)charcoal$() in the hole, then light it with your firestarter."
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:forge",
+      "text": "Make sure to keep fuel in your forge, or it will burn out and you'll have to relight it."
+    },
+    {
+      "type": "text",
+      "text": "The forge will go out if rained or snowed on. However, it also needs to be exposed to air for it to breathe. The solution is the $(thing)chimney. Blocks above the forge can be covered, as long as an adjacent block is exposed to the sky."
+    },
+    {
+      "type": "text",
+      "text": "The bottom slots in the forge are for holding $(item)fuel$(). They can hold charcoal or natural fuels like lignite and bituminous coal, but not logs. The top slots are for heating items, typically ingots or vessels. The right side is for molds or vessels to catch melting things, but this is typically only used in emergencies."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_vessel",
+      "text": "The forge can carry out any $(thing)heating recipe$() that the $(l:getting_started/pottery)pit kiln$() or $(l:getting_started/logging)firepit$() can, as long as it gets to the $(item)Brilliant White$() temperature, which is only possible using a $(l:processes/leatherworking)bellows$(). The forge can be used to cook food or make torches, however if food is left in too long, it will burn."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_brick",
+      "text": "Use a forge to cook bricks."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_flower_pot",
+      "text": "The same goes for flowerpots."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:lime_glazed_terracotta",
+      "text": "The forge can turn clay to terracotta, and also glaze it."
+    }
+  ]
+}

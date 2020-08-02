@@ -158,6 +158,7 @@ public interface IFood extends INBTSerializable<NBTTagCompound>
             float saturation = getData().getSaturation();
             if (saturation > 0)
             {
+                // This display makes it so 100% saturation means a full hunger bar worth of saturation.
                 text.add(TextFormatting.GRAY + I18n.format("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))));
             }
             float water = getData().getWater();

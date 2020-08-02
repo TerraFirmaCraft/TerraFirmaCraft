@@ -1,0 +1,15 @@
+{
+  "name": "The Endgame",
+  "icon": "minecraft:textures/items/bucket_empty.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_red_steel",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/bucket",
+      "title": "The Bucket",
+      "text": "Congrats, you can now move any fluid. You have won TFC!"
+    }
+  ]
+}

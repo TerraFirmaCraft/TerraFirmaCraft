@@ -1,0 +1,63 @@
+{
+  "name": "Fire Clay",
+  "icon": "tfc:textures/items/ceramics/fire_clay.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_flux",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)Fire clay$() is needed for a few very important recipes in TFC. So where do you find it? The nether? No! You have to craft it. That's the hard part. First, you need to dig up some $(item)graphite and kaolinite$() through $(l:basic_smithing/prospecting)prospecting$()."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/kaolinite",
+      "title": "Kaolinite",
+      "text": "Kaolinite veins are found in $(thing)any sedimentary rock$()."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/graphite",
+      "title": "Graphite",
+      "text": "Graphite is found in $(thing)Gneiss, Marble, Quartzite, and Schist.$()$(br2)$(br2)$(item)Now, throw both of these ores in a $(l:processes/quern)quern$() to grind them into powder."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:fire_clay",
+      "text": "Congrats, you've completed the most difficult part of TFC!"
+    },
+    {
+      "type": "text",
+      "text": "Now that you've got some fire clay, $(4)right-click$() with at least 5 in your hand to open the $(thing)knapping interface.$()"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_crucible",
+      "text": "Now that you've got some fire clay, $(4)right-click$() with at least 5 in your hand to open the $(thing)knapping interface$() and knap a crucible."
+    },
+    {
+      "type": "text",
+      "text": "The crucible is very useful for melting down ore. It's got 9 slots that will let you melt stuff, and once they're melted, you can see what metals are in there, and if you've made a proper alloy. When you want to take some metal out, just plop an ingot mold (or other mold) into the output slot and it'll put however much you need in for you! How convenient."
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_brick"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_fire_brick"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:fire_bricks",
+      "title": "Fire Bricks",
+      "text": "Those are some expensive bricks!"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:fire_clay_block",
+      "text": "Fire clay can be crafted into blocks, if you ever obtain enough of it to require a more compact storage method.",
+      "title": "Fire Clay Block"
+    }
+  ]
+}

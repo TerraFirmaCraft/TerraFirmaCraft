@@ -1,0 +1,40 @@
+{
+  "name": "Barrels",
+  "icon": "tfc:textures/items/fluids/wooden_bucket_empty.png",
+  "category": "processes",
+  "advancement": "tfc:main/carpentry",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_barrel",
+      "title": "Barrel",
+      "text": "The barrel is used for many processes in TFC. You can place it like any other block. Barrels can hold items and liquid. Sealing the barrel combines the items and liquid, producing something new."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:wooden_bucket",
+      "title": "Wooden Bucket",
+      "text": "This can't place source blocks, but it will place 1,000 mB of liquid in a barrel for you."
+    },
+    {
+      "type": "text",
+      "text": "Liquids you can make in a barrel:$(br2)Tannin: Oak, Birch, Chestnut, Douglas Fir, Hickory, Maple, or Sequoia Log + Barrel of Fresh Water.$(br)Beer: 500mB Fresh Water + Barley Flour$(br)Cider: 500mB Fresh Water + Apple (any)$(br)Rum: 500mB Fresh Water + Sugar$(br)Sake: 500mB Fresh Water + Rice Flour$(br)Vodka: 500mB Fresh Water + Potato"
+    },
+    {
+      "type": "text",
+      "text": "(continued)$(br2)Whiskey: 500mB Fresh Water + Wheat Flour$(br)Corn Whiskey: 500mB Fresh Water + Cornmeal Flour$(br)Rye Whiskey: 500mB Fresh Water + Rye Flour$(br)$(thing)Vinegar:$() 250mB Alcohol + Fruit$(br)Salt Water: 125mB Fresh Water + Salt$(br)Brine: 9000mB Salt Water + Vinegar Bucket$(br)$(thing)Limewater: $()500mB Fresh Water + Flux"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:powderkeg",
+      "title": "Powderkeg",
+      "text": "The powderkeg functions much like a barrel, only it stores up to 12 stacks of gunpowder. Seal the barrel and power it with a redstone signal to set it off. If you regret setting it off, right click to quench the fuse."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:gunpowder",
+      "recipe2": "tfc:gunpowder_graphite",
+      "title": "Gunpowder"
+    }
+  ]
+}

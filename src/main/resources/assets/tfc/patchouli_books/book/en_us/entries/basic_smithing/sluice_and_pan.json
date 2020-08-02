@@ -1,0 +1,29 @@
+{
+  "name": "Sluicing & Panning",
+  "icon": "tfc:textures/items/goldpan/sand.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/pottery",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Sometimes it's not economical to mine for ore or pick up nuggets, often on servers. This is where $(thing)sluicing and panning$() come in."
+    },
+    {
+      "type": "crafting",
+      "title": "Goldpan",
+      "recipe": "tfc:goldpan",
+      "text": "The $(thing)gold pan$() is a basic and effective way of getting ore nuggets. It's crafted with just a simple $(l:basic_smithing/casting)ceramic bowl$(). $(4)Right-click$() on the ground and then hold down $(4)right-click$() on a water source. You'll either get nothing, or some platinum, silver, copper, or gold."
+    },
+    {
+      "type": "crafting",
+      "text": "The sluice is used to filter out sand and gravel for gems and ores.",
+      "recipe": "tfc:sluice",
+      "title": "Sluice"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Use of the Sluice$()$(br2)1. Find shoreline and dig out a trench a few blocks to create flowing water.$(br)2. Dig your flowing water trench 1 block down and 2 blocks long$(br)3. Place the sluice so that the water flows down into the sluice.$(br)4. Drop $(item)sand or gravel$() into the sluice and wait.$(br2)The sluice gives you ores that are in the rock underneath you, and gems."
+    }
+  ]
+}

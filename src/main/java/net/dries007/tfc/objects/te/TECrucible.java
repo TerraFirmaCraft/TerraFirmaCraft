@@ -145,7 +145,7 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
                         {
                             // Use mold.getMetal() to avoid off by one errors during draining
                             Metal metal = mold.getMetal();
-                            FluidStack fluidStack = mold.drain(1, true);
+                            FluidStack fluidStack = mold.drain(ConfigTFC.Devices.CRUCIBLE.pouringSpeed, true);
                             if (fluidStack != null && fluidStack.amount > 0)
                             {
                                 lastFillTimer = 5;

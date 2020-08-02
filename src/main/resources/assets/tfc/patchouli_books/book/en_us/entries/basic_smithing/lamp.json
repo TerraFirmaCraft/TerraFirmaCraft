@@ -1,0 +1,33 @@
+{
+  "name": "Lamps",
+  "icon": "tfc:textures/items/metal/lamp/bismuth_bronze.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/metal_anvil",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:lamp_rose_gold",
+      "text": "The $(item)lamp$() is the upgraded TFC light source. It takes $(thing)olive oil$(), which burns much longer than a torch does. Thankfully, making the lamp is simple! You just have to work an ingot of any metal in an anvil to make one, selecting the 'Lamp' plan. Making the olive oil is more involved."
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Olive Oil Production$()$(br2)1. Pick olives from an olive tree.$(br)2. Grind olives with a quern into Olive Paste.$(br)Soak the paste in a Barrel with 125mB of Fresh Water to produce Olive Oil Water$(br)Place a Jute Net in the barrel to strain it and make 25mB of Olive Oil$(br)5. Fill a lamp with 250mb of fuel by right-clicking a barrel or placing it into the liquid fill slot."
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "A hanging, lit lamp.",
+      "name": "Lamp",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:lamp/bismuth[facing=down,lit=true]"
+        },
+        "pattern": [
+          ["P"], ["0"]
+        ],
+        "symmetrical": true
+      }
+    }
+  ]
+}

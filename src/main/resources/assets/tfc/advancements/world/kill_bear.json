@@ -13,16 +13,30 @@
   },
   "parent": "tfc:world/hunter",
   "criteria": {
-    "native_copper": {
+    "kill_bear": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
           "type": "tfc:beartfc"
         }
       }
+    },
+    "kill_polar_bear": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "tfc:polarbeartfc"
+        }
+      }
     }
   },
   "rewards": {
     "experience": 25
-  }
+  },
+  "requirements": [
+    [
+      "kill_bear",
+      "kill_polar_bear"
+    ]
+  ]
 }

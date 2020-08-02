@@ -11,6 +11,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.config.*;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -189,6 +190,21 @@ public final class ConfigTFC
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".general.fallable.propagateCollapseChance")
             public double propagateCollapseChance = 0.55;
+
+            @Config.Comment("Horizontal radius of the support range of support beams.")
+            @Config.RangeInt(min = 0, max = 8)
+            @Config.LangKey("config." + MOD_ID + ".general.fallable.supportBeamRangeHor")
+            public int supportBeamRangeHor = 4;
+
+            @Config.Comment("Upwards support range of support beams.")
+            @Config.RangeInt(min = 0, max = 3)
+            @Config.LangKey("config." + MOD_ID + ".general.fallable.supportBeamRangeUp")
+            public int supportBeamRangeUp = 1;
+
+            @Config.Comment("Downwards support range of support beams.")
+            @Config.RangeInt(min = 0, max = 3)
+            @Config.LangKey("config." + MOD_ID + ".general.fallable.supportBeamRangeDown")
+            public int supportBeamRangeDown = 1;
 
             @Config.Comment("Should chiseling raw stone blocks cause collapses?")
             @Config.LangKey("config." + MOD_ID + ".general.fallable.chiselCausesCollapse")
@@ -513,8 +529,14 @@ public final class ConfigTFC
 
         public static final class MiscCFG
         {
+
+            @Config.Comment("If true, the player will spawn with the TFC guidebook")
+            @Config.LangKey("config." + MOD_ID + ".general.misc.guidebook")
+            public boolean giveBook = true;
+
             @Config.Comment("The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.")
             @Config.LangKey("config." + MOD_ID + ".general.misc.defaultMonthLength")
+            @Config.RangeInt(min = 1)
             public int defaultMonthLength = 8;
 
             @Config.Comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth.")
@@ -583,7 +605,7 @@ public final class ConfigTFC
 
             @Config.Comment("List of fluids allowed to be picked up by wooden bucket")
             @Config.LangKey("config." + MOD_ID + ".general.misc.woodenBucketWhitelist")
-            public String[] woodenBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar", "white_dye", "orange_dye", "magenta_dye", "light_blue_dye", "yellow_dye", "lime_dye", "pink_dye", "gray_dye", "light_gray_dye", "cyan_dye", "purple_dye", "blue_dye", "brown_dye", "green_dye", "red_dye", "black_dye"};
+            public String[] woodenBucketWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "olive_oil_water", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar", "white_dye", "orange_dye", "magenta_dye", "light_blue_dye", "yellow_dye", "lime_dye", "pink_dye", "gray_dye", "light_gray_dye", "cyan_dye", "purple_dye", "blue_dye", "brown_dye", "green_dye", "red_dye", "black_dye"};
 
             @Config.Comment("List of fluids allowed to be picked up by blue steel bucket")
             @Config.LangKey("config." + MOD_ID + ".general.misc.blueSteelBucketWhitelist")
@@ -694,7 +716,7 @@ public final class ConfigTFC
 
             @Config.Comment("List of fluids allowed to be inserted into a barrel.")
             @Config.LangKey("config." + MOD_ID + ".devices.barrel.fluidWhitelist")
-            public String[] fluidWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar", "white_dye", "orange_dye", "magenta_dye", "light_blue_dye", "yellow_dye", "lime_dye", "pink_dye", "gray_dye", "light_gray_dye", "cyan_dye", "purple_dye", "blue_dye", "brown_dye", "green_dye", "red_dye", "black_dye"};
+            public String[] fluidWhitelist = new String[] {"fresh_water", "hot_water", "salt_water", "water", "limewater", "tannin", "olive_oil", "olive_oil_water", "vinegar", "rum", "beer", "whiskey", "rye_whiskey", "corn_whiskey", "sake", "vodka", "cider", "brine", "milk", "milk_curdled", "milk_vinegar", "white_dye", "orange_dye", "magenta_dye", "light_blue_dye", "yellow_dye", "lime_dye", "pink_dye", "gray_dye", "light_gray_dye", "cyan_dye", "purple_dye", "blue_dye", "brown_dye", "green_dye", "red_dye", "black_dye"};
         }
 
         public static final class BlastFurnaceCFG
@@ -717,13 +739,18 @@ public final class ConfigTFC
         public static final class CrucibleCFG
         {
             @Config.Comment("How much metal (units / mB) can a crucible hold?")
-            @Config.RangeInt(min = 100)
+            @Config.RangeInt(min = 100, max = Alloy.SAFE_MAX_ALLOY)
             @Config.LangKey("config." + MOD_ID + ".devices.crucible.tank")
             public int tank = 3_000;
 
             @Config.Comment("Let crucibles accept pouring metal (from small vessels / molds) from all 9 input slots at the same time.")
             @Config.LangKey("config." + MOD_ID + ".devices.crucible.enableAllSlots")
             public boolean enableAllSlots = false;
+
+            @Config.Comment("How fast should crucibles accept fluids from molds / small vessel?")
+            @Config.RangeInt(min = 1)
+            @Config.LangKey("config." + MOD_ID + ".devices.crucible.pouringSpeed")
+            public int pouringSpeed = 1;
         }
 
         public static final class CharcoalPitCFG
@@ -795,7 +822,7 @@ public final class ConfigTFC
         public static final class SmallVesselCFG
         {
             @Config.Comment("How much metal (units / mB) can a small vessel hold?")
-            @Config.RangeInt(min = 100)
+            @Config.RangeInt(min = 100, max = Alloy.SAFE_MAX_ALLOY)
             @Config.LangKey("config." + MOD_ID + ".devices.small_vessel.tank")
             public int tank = 4_000;
         }
@@ -1039,7 +1066,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class SheepCFG
@@ -1077,7 +1104,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class CowCFG
@@ -1115,7 +1142,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class GoatCFG
@@ -1153,7 +1180,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class ChickenCFG
@@ -1186,7 +1213,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class DuckCFG
@@ -1219,7 +1246,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 200;
         }
 
         public static final class PigCFG
@@ -1252,7 +1279,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class CamelCFG
@@ -1285,7 +1312,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class LlamaCFG
@@ -1318,7 +1345,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class HorseCFG
@@ -1351,7 +1378,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class DonkeyCFG
@@ -1384,7 +1411,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class MuleCFG
@@ -1440,7 +1467,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1479,7 +1506,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 200;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1493,7 +1520,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1507,7 +1534,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1521,7 +1548,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1535,7 +1562,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1549,7 +1576,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
         }
 
         public static final class HyenaCFG
@@ -1557,7 +1584,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 70;
+            public int rarity = 150;
 
             @Config.Comment({"This controls which registered entities will be hunted by this animal (unless tamed), in priority order.",
                 "You must specify by 'modid:entity'",
@@ -1571,7 +1598,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 150;
         }
 
         public static final class ParrotCFG
@@ -1579,7 +1606,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 250;
         }
 
         public static final class PheasantCFG
@@ -1587,7 +1614,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 150;
         }
 
         public static final class RabbitCFG
@@ -1595,7 +1622,7 @@ public final class ConfigTFC
             @Config.Comment("How rare this animal should be, in 1 / N chunks, on valid biomes (this is used on chunk generation only)? 0 = Disable.")
             @Config.RangeInt(min = 0)
             @Config.LangKey("config." + MOD_ID + ".animals.rarity")
-            public int rarity = 50;
+            public int rarity = 150;
         }
     }
 }

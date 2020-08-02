@@ -8,7 +8,7 @@ package net.dries007.tfc.util.config;
 public enum HemisphereType
 {
     COLD_NORTH_HOT_SOUTH(1, "Cold North, Hot South"),
-    HOT_SOUTH_COLD_SOUTH(-1, "Hot North, Cold South");
+    HOT_NORTH_COLD_SOUTH(-1, "Hot North, Cold South");
 
     private final int value;
     private final String name;

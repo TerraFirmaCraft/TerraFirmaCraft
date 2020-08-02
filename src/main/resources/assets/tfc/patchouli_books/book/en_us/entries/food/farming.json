@@ -1,0 +1,25 @@
+{
+  "name": "Farming",
+  "icon": "tfc:textures/items/metal/hoe/black_bronze.png",
+  "category": "food",
+  "advancement": "tfc:main/copper_age",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "A $(item)hoe$() can be made of stone, smithed from an ingot, or casted in a $(l:basic_smithing/casting)ceramic mold$(). The hoe works like in Vanilla, $(4)right-clicking$() to make farmland, however farmland is a little more complex than in vanilla. Each farmland block has a moisture value ranging from $(thing)0$() (dry) to $(thing)15$() (wet). Proximity to water sources increases the moisture level, as well as rain."
+    },
+    {
+      "type": "text",
+      "text": "Crops require at least 3 $(thing)moisture$() to grow. More water blocks = more moisture. Farmland checks in a $(thing)15x4x15$() area for water to moisturize it, meaning that a block of farmland can be moisturized from a water source 2 blocks below it."
+    },
+    {
+      "type": "text",
+      "text": "In TFC, crops can only be grown when the $(thing)temperature$() is warm enough. Otherwise, the seedlings will die. Plant them in the spring, and you may be able to get 2 or even 3 harvests if you manage their planting regularly. A crop is typically considered mature when it turns into a golden brown color, though this isn't always the case. Some plants, like bell peppers and tomatoes, produce vegetables that you can pick with $(4)right-click$(), instead of destroying the whole plant."
+    },
+    {
+      "type": "text",
+      "text": "When crops freeze or lose moisture, they will die. Dead crops take on a distinctive blackened or desaturated texture, and don't give edible products. However, when broken, dead crops will give more seeds than a regular crop. Letting some crops die is a useful technique for expanding the size of your farm."
+    }
+  ]
+}
