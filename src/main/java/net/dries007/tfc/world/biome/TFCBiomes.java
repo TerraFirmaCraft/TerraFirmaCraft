@@ -23,7 +23,7 @@ public class TFCBiomes
     private static final List<BiomeVariants> ALL_BIOMES = new ArrayList<>(); // This has to come before any biomes, otherwise it is null during register()
 
     // Aquatic biomes
-    public static final BiomeVariants OCEAN = register("ocean", (temp, rain) -> new OceanBiome(false, temp, rain)).setLandType(BiomeLandType.OCEAN).setWeightType(BiomeWeightType.LAND_IS_SHORE); // Ocean biome found near continents.
+    public static final BiomeVariants OCEAN = register("ocean", (temp, rain) -> new OceanBiome(false, temp, rain)); // Ocean biome found near continents.
     public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", (temp, rain) -> new OceanBiome(true, temp, rain)); // Deep ocean biome covering most all oceans.
 
     // Low biomes
@@ -44,7 +44,7 @@ public class TFCBiomes
     public static final BiomeVariants CANYONS = register("canyons", (temp, rain) -> new CanyonsBiome(-7, 26, temp, rain)).setSpawnBiome(); // Medium height with snake like ridges, often slightly below sea level
 
     // Shores
-    public static final BiomeVariants SHORE = register("shore", (temperature, rainfall) -> new ShoreBiome(true, temperature, rainfall)).setLandType(BiomeLandType.SHORE); // Standard shore biome with a sandy beach
+    public static final BiomeVariants SHORE = register("shore", (temperature, rainfall) -> new ShoreBiome(true, temperature, rainfall)); // Standard shore biome with a sandy beach
     public static final BiomeVariants STONE_SHORE = register("stone_shore", (temperature, rainfall) -> new ShoreBiome(false, temperature, rainfall)); // Shore for mountain biomes
 
     // Technical biomes
@@ -52,19 +52,6 @@ public class TFCBiomes
     public static final BiomeVariants LAKE = register("lake", LakeBiome::new); // Biome for freshwater ocean areas / landlocked oceans
     public static final BiomeVariants RIVER = register("river", RiverBiome::new); // Biome for river channels
 
-
-    public static final BiomeVariants PLAINS_LARGE_EDGE = register("plains_large_edge", PLAINS).setEdgeType(BiomeEdgeType.SAMPLE_16);
-    public static final BiomeVariants PLAINS_SMALL_EDGE = register("plains_small_edge", PLAINS).setEdgeType(BiomeEdgeType.SAMPLE_8);
-    public static final BiomeVariants PLATEAU_SMALL_EDGE = register("plateau_small_edge", PLATEAU).setEdgeType(BiomeEdgeType.SAMPLE_4);
-    public static final BiomeVariants MOUNTAINS_LARGE_EDGE = register("mountains_large_edge", MOUNTAINS).setEdgeType(BiomeEdgeType.SAMPLE_16);
-    public static final BiomeVariants PLATEAU_LARGE_EDGE = register("plateau_large_edge", PLATEAU).setEdgeType(BiomeEdgeType.SAMPLE_16).setWeightType(BiomeWeightType.OCEAN_IS_SHORE).setLandType(BiomeLandType.LAND);
-
-    public static final BiomeVariants SHORE_OCEAN_LARGE_EDGE = register("shore_ocean_large_edge", SHORE).setEdgeType(BiomeEdgeType.SAMPLE_16).setLandType(BiomeLandType.SHORE).setWeightType(BiomeWeightType.NORMAL);
-    public static final BiomeVariants SHORE_LAND_LARGE_EDGE = register("shore_land_large_edge", SHORE).setEdgeType(BiomeEdgeType.SAMPLE_16).setLandType(BiomeLandType.SHORE).setWeightType(BiomeWeightType.NORMAL);
-    public static final BiomeVariants SHORE_SMALL_EDGE = register("shore_small_edge", SHORE).setEdgeType(BiomeEdgeType.SAMPLE_8).setLandType(BiomeLandType.SHORE).setWeightType(BiomeWeightType.NORMAL);
-    public static final BiomeVariants OCEAN_LARGE_EDGE = register("ocean_large_edge", OCEAN).setEdgeType(BiomeEdgeType.SAMPLE_16).setLandType(BiomeLandType.OCEAN).setWeightType(BiomeWeightType.LAND_IS_SHORE);
-
-    public static final BiomeVariants HILLS_LARGE_EDGE = register("hills_large_edge", HILLS).setEdgeType(BiomeEdgeType.SAMPLE_16).setWeightType(BiomeWeightType.OCEAN_IS_SHORE).setLandType(BiomeLandType.LAND);
 
     public static Set<TFCBiome> getBiomes()
     {
@@ -82,18 +69,6 @@ public class TFCBiomes
     public static void setup()
     {
         getBiomes().forEach(TFCBiome::registerFeatures);
-    }
-
-    private static BiomeVariants register(String baseName, BiomeVariants parent)
-    {
-        BiomeVariants variants = new BiomeVariants(BIOMES, baseName, parent);
-        if (parent.isSpawnBiome())
-        {
-            variants.setSpawnBiome();
-        }
-        variants.setLandType(parent.getLandType());
-        ALL_BIOMES.add(variants);
-        return variants;
     }
 
     private static BiomeVariants register(String baseName, BiomeVariants.IFactory factory)

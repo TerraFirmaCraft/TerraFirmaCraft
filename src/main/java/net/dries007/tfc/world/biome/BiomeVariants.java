@@ -26,9 +26,6 @@ public class BiomeVariants implements Supplier<TFCBiome>
     private final Map<BiomeTemperature, Map<BiomeRainfall, RegistryObject<TFCBiome>>> biomeVariants;
     private final List<RegistryObject<TFCBiome>> allVariants;
     private final IFactory factory;
-    private BiomeWeightType weightType = BiomeWeightType.OCEAN_IS_SHORE;
-    private BiomeEdgeType edgeType = BiomeEdgeType.SINGLE;
-    private BiomeLandType landType = BiomeLandType.LAND;
     private boolean spawnBiome;
 
     public BiomeVariants(DeferredRegister<Biome> registry, String baseName, BiomeVariants parent)
@@ -90,28 +87,6 @@ public class BiomeVariants implements Supplier<TFCBiome>
         return allVariants;
     }
 
-    public BiomeWeightType getWeightType()
-    {
-        return weightType;
-    }
-
-    public BiomeVariants setWeightType(BiomeWeightType weightType)
-    {
-        this.weightType = weightType;
-        return this;
-    }
-
-    public BiomeEdgeType getEdgeType()
-    {
-        return edgeType;
-    }
-
-    public BiomeVariants setEdgeType(BiomeEdgeType edgeType)
-    {
-        this.edgeType = edgeType;
-        return this;
-    }
-
     public boolean isSpawnBiome()
     {
         return spawnBiome;
@@ -120,17 +95,6 @@ public class BiomeVariants implements Supplier<TFCBiome>
     public BiomeVariants setSpawnBiome()
     {
         this.spawnBiome = true;
-        return this;
-    }
-
-    public BiomeLandType getLandType()
-    {
-        return landType;
-    }
-
-    public BiomeVariants setLandType(BiomeLandType landType)
-    {
-        this.landType = landType;
         return this;
     }
 
