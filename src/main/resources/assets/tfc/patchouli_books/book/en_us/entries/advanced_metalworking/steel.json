@@ -1,8 +1,8 @@
 {
-    "name": "Steel",
-    "icon": "tfc:textures/items/metal/ingot/steel.png",
-    "category": "advanced_metalworking",
-	"advancement": "tfc:main/iron_age",
+  "name": "Steel",
+  "icon": "tfc:textures/items/metal/ingot/steel.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/iron_age",
 	"sortnum": 2,
     "pages": [
 		{

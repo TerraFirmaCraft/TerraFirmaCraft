@@ -1,7 +1,7 @@
 {
-    "name": "Food Preservation",
-    "icon": "tfc:textures/items/powder/salt.png",
-    "category": "food",
+  "name": "Food Preservation",
+  "icon": "tfc:textures/items/powder/salt.png",
+  "category": "food",
 	"advancement": "tfc:main/pottery",
 	"sortnum": 0,
     "pages": [

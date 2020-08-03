@@ -9,16 +9,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropTFC;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 @ParametersAreNonnullByDefault
-public class TECropBase extends TETickCounter implements ICalendarTickable
+public class TECropBase extends TETickCounter implements ICalendarTickable, ITickable
 {
-    private static final String NBT_LAST_TICK_CAL_CHECKED = "lastTickCalChecked";
-
     protected long lastTickCalChecked;
 
     public TECropBase()
@@ -49,8 +48,7 @@ public class TECropBase extends TETickCounter implements ICalendarTickable
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
-        if (nbt.hasKey(NBT_LAST_TICK_CAL_CHECKED))
-            lastTickCalChecked = nbt.getLong(NBT_LAST_TICK_CAL_CHECKED);
+        lastTickCalChecked = nbt.getLong("lastTickCalChecked");
         super.readFromNBT(nbt);
     }
 
@@ -58,7 +56,13 @@ public class TECropBase extends TETickCounter implements ICalendarTickable
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setLong(NBT_LAST_TICK_CAL_CHECKED, lastTickCalChecked);
+        nbt.setLong("lastTickCalChecked", lastTickCalChecked);
         return super.writeToNBT(nbt);
+    }
+
+    @Override
+    public void update()
+    {
+        ICalendarTickable.super.checkForCalendarUpdate();
     }
 }

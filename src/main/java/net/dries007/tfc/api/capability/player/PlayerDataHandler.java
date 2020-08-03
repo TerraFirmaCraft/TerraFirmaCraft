@@ -113,18 +113,6 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     }
 
     @Override
-    public boolean hasBook()
-    {
-        return this.hasBook;
-    }
-
-    @Override
-    public void setHasBook(boolean value)
-    {
-        this.hasBook = value;
-    }
-
-    @Override
     public void addIntoxicatedTime(long ticks)
     {
         long currentTicks = CalendarTFC.PLAYER_TIME.getTicks();
@@ -143,6 +131,18 @@ public class PlayerDataHandler implements ICapabilitySerializable<NBTTagCompound
     public long getIntoxicatedTime()
     {
         return Math.max(0, intoxicatedTime - CalendarTFC.PLAYER_TIME.getTicks());
+    }
+
+    @Override
+    public boolean hasBook()
+    {
+        return this.hasBook;
+    }
+
+    @Override
+    public void setHasBook(boolean value)
+    {
+        this.hasBook = value;
     }
 
     @Override
