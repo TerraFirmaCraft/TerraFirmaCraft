@@ -83,4 +83,10 @@ public class OceanBiome extends TFCBiome
     {
         return SALT_WATER;
     }
+
+    @Override
+    public LargeGroup getLargeGroup()
+    {
+        return LargeGroup.OCEAN;
+    }
 }

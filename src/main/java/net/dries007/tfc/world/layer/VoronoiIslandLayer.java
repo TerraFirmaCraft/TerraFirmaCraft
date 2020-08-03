@@ -22,7 +22,7 @@ public enum VoronoiIslandLayer
 
     public <R extends IArea> IAreaFactory<R> apply(IExtendedNoiseRandom<R> context)
     {
-        return () -> context.func_212861_a_((x, z) -> {
+        return () -> context.makeArea((x, z) -> {
             long xCell = x >> GRID_BITS; // Grid point of the original
             long zCell = z >> GRID_BITS;
             context.setPosition(xCell, zCell);

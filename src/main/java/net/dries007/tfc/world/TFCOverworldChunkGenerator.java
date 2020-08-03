@@ -7,6 +7,7 @@ package net.dries007.tfc.world;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
@@ -24,9 +25,8 @@ import net.minecraft.world.gen.*;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.world.biome.TFCBiome;
-import net.dries007.tfc.world.biome.TFCBiomeProvider;
-import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.util.ChunkArraySampler;
+import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.carver.WorleyCaveCarver;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -37,7 +37,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     public static final BlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
 
     // Parabolic field with total summed area equal to 1
-    private static final double[] PARABOLIC_FIELD = Util.make(new double[9 * 9], array ->
+    public static final double[] PARABOLIC_9x9 = Util.make(new double[9 * 9], array ->
     {
         for (int x = 0; x < 9; x++)
         {
@@ -52,6 +52,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     private final Map<TFCBiome, INoise2D> biomeNoiseMap;
     private final INoiseGenerator surfaceDepthNoise;
 
+    private final TFCBiomeProvider biomeProvider;
     private final WorleyCaveCarver worleyCaveCarver;
     private final ChunkDataProvider chunkDataProvider;
     private final ChunkBlockReplacer blockReplacer;
@@ -73,11 +74,11 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
             throw new IllegalArgumentException("biome provider must extend TFCBiomeProvider");
         }
         // Generators / Providers
-        TFCBiomeProvider tfcBiomeProvider = (TFCBiomeProvider) biomeProvider; // Custom biome provider class
+        this.biomeProvider = (TFCBiomeProvider) biomeProvider; // Custom biome provider class
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator); // Worley cave carver, separate from vanilla ones
         this.chunkDataProvider = new ChunkDataProvider(world, settings, seedGenerator); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(); // Replaces default world gen blocks with TFC variants, after surface generation
-        tfcBiomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
+        this.biomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
     }
 
     public ChunkDataProvider getChunkDataProvider()
@@ -91,7 +92,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     }
 
     @Override
-    public void func_225550_a_(BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
+    public void generateCarvers(BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
     {
         ChunkPos chunkPos = chunkIn.getPos();
         if (stage == GenerationStage.Carving.AIR)
@@ -101,7 +102,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         }
 
         // Fire other world carvers
-        super.func_225550_a_(biomeManager, chunkIn, stage);
+        super.generateCarvers(biomeManager, chunkIn, stage);
     }
 
     /**
@@ -137,78 +138,60 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         SharedSeedRandom random = new SharedSeedRandom();
         int chunkX = chunkPos.getXStart(), chunkZ = chunkPos.getZStart();
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
-
-        // The spread biomes (for calculating terrain smoothing), and the 16x16 biome grid (for height map creation)
-        TFCBiome[] spreadBiomes = new TFCBiome[24 * 24];
-        TFCBiome[] localBiomes = new TFCBiome[16 * 16];
         BlockPos.Mutable pos = new BlockPos.Mutable();
-        for (int i = 0; i < 24; i++)
-        {
-            for (int j = 0; j < 24; j++)
-            {
-                pos.setPos(chunkX - 4 + i, 0, chunkZ - 4 + j);
-                spreadBiomes[i + 24 * j] = (TFCBiome) world.getBiome(pos);
-            }
-        }
 
-        // Build the base height map, and also assign surface types (different from biomes because we need more control)
+        TFCBiome[] localBiomes = new TFCBiome[16 * 16];
         double[] baseHeight = new double[16 * 16];
-        Object2DoubleMap<TFCBiome> heightBiomeMap = new Object2DoubleOpenHashMap<>(4);
+        Object2DoubleMap<TFCBiome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>();
+
+        ChunkArraySampler.CoordinateAccessor<TFCBiome> biomeAccessor = (x, z) -> (TFCBiome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(world.getSeed(), chunkX + x, 0, chunkZ + z, world);
+
+        TFCBiome[] sampledBiomes16 = ChunkArraySampler.fillSampledArray(new TFCBiome[10 * 10], biomeAccessor, 4);
+        TFCBiome[] sampledBiomes4 = ChunkArraySampler.fillSampledArray(new TFCBiome[13 * 13], biomeAccessor, 2);
+        TFCBiome[] sampledBiomes1 = ChunkArraySampler.fillSampledArray(new TFCBiome[24 * 24], biomeAccessor);
+
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
-                // At each position, apply the parabolic field to a 9x9 square area around the start position
-                heightBiomeMap.clear();
-                double totalHeight = 0, riverHeight = 0, shoreHeight = 0;
-                double riverWeight = 0, shoreWeight = 0;
-                for (int xOffset = 0; xOffset < 9; xOffset++)
-                {
-                    for (int zOffset = 0; zOffset < 9; zOffset++)
-                    {
-                        // Get the biome at the position and add it to the height biome map
-                        TFCBiome biomeAt = spreadBiomes[(x + xOffset) + 24 * (z + zOffset)];
-                        heightBiomeMap.mergeDouble(biomeAt, PARABOLIC_FIELD[xOffset + 9 * zOffset], Double::sum);
-                    }
-                }
+                pos.setPos(chunkX + x, 0, chunkZ + z);
 
-                // The biome to reference when building the initial surface
-                TFCBiome biomeAt = spreadBiomes[(x + 4) + 24 * (z + 4)];
-                TFCBiome shoreBiomeAt = biomeAt, standardBiomeAt = biomeAt;
-                double maxShoreWeight = 0, maxStandardBiomeWeight = 0;
+                ChunkArraySampler.fillSampledWeightMap(sampledBiomes16, weightMap16, 4, x, z);
+                ChunkArraySampler.fillSampledWeightMap(sampledBiomes4, weightMap4, 2, x, z);
+                ChunkArraySampler.fillSampledWeightMap(sampledBiomes1, weightMap1, x, z);
 
-                // calculate the total height based on the biome noise map, using a custom Noise2D for each biome
-                for (Object2DoubleMap.Entry<TFCBiome> entry : heightBiomeMap.object2DoubleEntrySet())
+                ChunkArraySampler.reduceGroupedWeightMap(weightMap4, weightMap16, ITFCBiome::getLargeGroup, ITFCBiome.LargeGroup.SIZE);
+                ChunkArraySampler.reduceGroupedWeightMap(weightMap1, weightMap4, ITFCBiome::getMediumGroup, ITFCBiome.SmallGroup.SIZE);
+
+                // Simple average across the final weights
+                double totalHeight = 0, riverHeight = 0;
+                double riverWeight = 0;
+                TFCBiome biomeAt = null, normalBiomeAt = null, riverBiomeAt = null;
+                double maxNormalWeight = 0, maxRiverWeight = 0;
+                for (Object2DoubleMap.Entry<TFCBiome> entry : weightMap1.object2DoubleEntrySet())
                 {
                     double weight = entry.getDoubleValue();
                     double height = weight * biomeNoiseMap.get(entry.getKey()).noise(chunkX + x, chunkZ + z);
                     totalHeight += height;
-                    if (entry.getKey().getVariantHolder() == TFCBiomes.RIVER)
+                    if (entry.getKey().getVariants() == TFCBiomes.RIVER)
                     {
                         riverHeight += height;
                         riverWeight += weight;
-                    }
-                    else if (entry.getKey().getVariantHolder() == TFCBiomes.SHORE || entry.getKey().getVariantHolder() == TFCBiomes.STONE_SHORE)
-                    {
-                        shoreHeight += height;
-                        shoreWeight += weight;
-
-                        if (maxShoreWeight < weight)
+                        if (maxRiverWeight < weight)
                         {
-                            shoreBiomeAt = entry.getKey();
-                            maxShoreWeight = weight;
+                            riverBiomeAt = entry.getKey();
+                            maxRiverWeight = weight;
                         }
                     }
-                    else if (maxStandardBiomeWeight < weight)
+                    else if (maxNormalWeight < weight)
                     {
-                        standardBiomeAt = entry.getKey();
-                        maxStandardBiomeWeight = weight;
+                        normalBiomeAt = entry.getKey();
+                        maxNormalWeight = weight;
                     }
                 }
 
-                // Create river valleys - carve cliffs around river biomes and shores, and smooth out the edges
                 double actualHeight = totalHeight;
-                if (riverWeight > 0.6)
+                if (riverWeight > 0.6 && riverBiomeAt != null)
                 {
                     // River bottom / shore
                     double aboveWaterDelta = actualHeight - riverHeight / riverWeight;
@@ -221,39 +204,21 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                         double adjustedAboveWaterDelta = 0.02 * aboveWaterDelta * (40 - aboveWaterDelta) - 0.48;
                         actualHeight = riverHeight / riverWeight + adjustedAboveWaterDelta;
                     }
-                    biomeAt = TFCBiomes.RIVER.get(biomeAt.getTemperature(), biomeAt.getRainfall()).get(); // Use river surface for the bottom of the river + small shore beneath cliffs
+                    biomeAt = riverBiomeAt; // Use river surface for the bottom of the river + small shore beneath cliffs
                 }
-                else if (riverWeight > 0)
+                else if (riverWeight > 0 && normalBiomeAt != null)
                 {
                     double adjustedRiverWeight = 0.6 * riverWeight;
                     actualHeight = (totalHeight - riverHeight) * ((1 - adjustedRiverWeight) / (1 - riverWeight)) + riverHeight * (adjustedRiverWeight / riverWeight);
 
-                    if (biomeAt.getVariantHolder() == TFCBiomes.RIVER)
-                    {
-                        biomeAt = standardBiomeAt;
-                    }
+                    biomeAt = normalBiomeAt;
                 }
-
-                // Flatten shores, and create cliffs on the edges
-                if (shoreWeight > 0.6)
+                else if (normalBiomeAt != null)
                 {
-                    if (actualHeight > getSeaLevel() + 2)
-                    {
-                        actualHeight = getSeaLevel() + 2;
-                    }
-                    biomeAt = shoreBiomeAt;
-                }
-                else if (shoreWeight > 0)
-                {
-                    double adjustedShoreWeight = 0.4 * shoreWeight;
-                    actualHeight = (actualHeight - shoreHeight) * ((1 - adjustedShoreWeight) / (1 - shoreWeight)) + shoreHeight * (adjustedShoreWeight / shoreWeight);
-
-                    if (biomeAt == shoreBiomeAt)
-                    {
-                        biomeAt = standardBiomeAt;
-                    }
+                    biomeAt = normalBiomeAt;
                 }
 
+                Objects.requireNonNull(biomeAt, "Biome should not be null!");
                 baseHeight[x + 16 * z] = actualHeight;
                 localBiomes[x + 16 * z] = biomeAt;
             }
@@ -300,10 +265,11 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         return TFCConfig.COMMON.seaLevel.get() + 1;
     }
 
+    /* getHeight */
     @Override
-    public int func_222529_a(int p_222529_1_, int p_222529_2_, Heightmap.Type p_222529_3_)
+    public int func_222529_a(int x, int z, Heightmap.Type heightMapType)
     {
-        return 0;
+        return getSeaLevel();
     }
 
     private void makeBedrock(IChunk chunk, Random random)

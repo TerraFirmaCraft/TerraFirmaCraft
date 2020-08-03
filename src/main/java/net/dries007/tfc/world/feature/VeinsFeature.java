@@ -99,12 +99,14 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
                     {
                         BlockPos posAt = new BlockPos(x, y, z);
                         BlockState stoneState = world.getBlockState(posAt);
-                        vein.getType().getStateToGenerate(stoneState, random).ifPresent(oreState -> {
+                        BlockState oreState = vein.getType().getStateToGenerate(stoneState, random);
+                        if (oreState != null)
+                        {
                             if (random.nextFloat() < vein.getChanceToGenerate(posAt))
                             {
                                 setBlockState(world, posAt, oreState);
                             }
-                        });
+                        }
                     }
                 }
             }

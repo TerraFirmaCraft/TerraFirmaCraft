@@ -16,6 +16,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -94,7 +95,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             BlockState state;
             if (!copyInputState)
             {
-                state = buffer.readRegistryIdSafe(Block.class).getDefaultState();
+                state = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).getDefaultState();
             }
             else
             {
@@ -108,7 +109,10 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         {
             IBlockIngredient.Serializer.INSTANCE.write(buffer, recipe.ingredient);
             buffer.writeBoolean(recipe.copyInputState);
-            buffer.writeRegistryId(recipe.outputState.getBlock());
+            if (!recipe.copyInputState)
+            {
+                buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.outputState.getBlock());
+            }
         }
 
         protected abstract R create(ResourceLocation id, IBlockIngredient ingredient, BlockState state, boolean copyInputState);
