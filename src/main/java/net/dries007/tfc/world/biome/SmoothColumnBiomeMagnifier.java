@@ -15,7 +15,9 @@ import net.minecraft.world.biome.IBiomeMagnifier;
  */
 public class SmoothColumnBiomeMagnifier implements IBiomeMagnifier
 {
-    public static final SmoothColumnBiomeMagnifier INSTANCE = new SmoothColumnBiomeMagnifier(0.9);
+    public static final SmoothColumnBiomeMagnifier VANILLA = new SmoothColumnBiomeMagnifier(0.9);
+    public static final SmoothColumnBiomeMagnifier SMOOTH = new SmoothColumnBiomeMagnifier(0.7);
+
     private final double fuzzValue;
 
     public SmoothColumnBiomeMagnifier(double fuzzValue)

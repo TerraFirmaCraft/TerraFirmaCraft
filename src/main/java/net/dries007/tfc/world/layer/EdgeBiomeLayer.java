@@ -41,14 +41,6 @@ public enum EdgeBiomeLayer implements ICastleTransformer
                 return TFCLayerUtil.ROLLING_HILLS;
             }
         }
-        else if (center == TFCLayerUtil.DEEP_OCEAN_RIDGE)
-        {
-            // No inverse, as we can't replace ocean with anything at this point
-            if (matcher.test(i -> i == TFCLayerUtil.OCEAN))
-            {
-                return TFCLayerUtil.DEEP_OCEAN;
-            }
-        }
         // Inverses of above conditions
         else if (center == TFCLayerUtil.LOWLANDS || center == TFCLayerUtil.LOW_CANYONS)
         {

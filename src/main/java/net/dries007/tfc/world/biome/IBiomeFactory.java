@@ -11,22 +11,18 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 
-public class BiomeFactory
+public interface IBiomeFactory
 {
-    public static TFCBiome getBiome(int id)
+    static TFCBiome getBiome(int id)
     {
         return (TFCBiome) ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getValue(id);
     }
 
-    private final LazyArea lazyArea;
-
-    public BiomeFactory(IAreaFactory<LazyArea> lazyAreaFactoryIn)
+    static IBiomeFactory create(IAreaFactory<LazyArea> areaFactory)
     {
-        this.lazyArea = lazyAreaFactoryIn.make();
+        LazyArea area = areaFactory.make();
+        return (x, z) -> getBiome(area.getValue(x, z));
     }
 
-    public TFCBiome getBiome(int x, int z)
-    {
-        return getBiome(lazyArea.getValue(x, z));
-    }
+    TFCBiome getBiome(int x, int z);
 }
