@@ -118,11 +118,19 @@ public interface INoise2D
      */
     default INoise2D warped(INoise2D warpX, INoise2D warpY)
     {
-        return (x, y) -> {
-            float x0 = x + warpX.noise(x, y);
-            float y0 = y + warpY.noise(x, y);
-            return INoise2D.this.noise(x0, y0);
-        };
+        return (x, y) -> INoise2D.this.noise(x + warpX.noise(x, y), y + warpY.noise(x, y));
+    }
+
+    /**
+     * Applies a transformation to the input coordinates. This is similar to {@link INoise2D#warped(INoise2D, INoise2D)} except it does not add values to the coordinates. This makes it useful for clamp / scale operations on the input coordinates.
+     *
+     * @param transformX the x transformation
+     * @param transformY the y transformation
+     * @return a new noise function
+     */
+    default INoise2D transformed(INoise2D transformX, INoise2D transformY)
+    {
+        return (x, y) -> INoise2D.this.noise(transformX.noise(x, y), transformY.noise(x, y));
     }
 
     /**

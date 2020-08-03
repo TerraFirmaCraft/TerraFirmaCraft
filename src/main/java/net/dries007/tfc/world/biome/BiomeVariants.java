@@ -18,16 +18,24 @@ import net.minecraftforge.registries.DeferredRegister;
 /**
  * This is a version of {@link RegistryObject} for biomes.
  * Since we have variants in both temperature and rainfall, we use this as the "biome main type" object.
- * To get the variant holder from the biome, use {@link TFCBiome#getVariantHolder()}
- * To get the biome from the variants, use one of the {@link BiomeVariantHolder#get()} methods.
+ * To get the variant holder from the biome, use {@link TFCBiome#getVariants()}
+ * To get the biome from the variants, use one of the {@link BiomeVariants#get()} methods.
  */
-public class BiomeVariantHolder implements Supplier<TFCBiome>
+public class BiomeVariants implements Supplier<TFCBiome>
 {
     private final Map<BiomeTemperature, Map<BiomeRainfall, RegistryObject<TFCBiome>>> biomeVariants;
     private final List<RegistryObject<TFCBiome>> allVariants;
+    private final IFactory factory;
+    private boolean spawnBiome;
 
-    public BiomeVariantHolder(String baseName, IFactory<TFCBiome> factory)
+    public BiomeVariants(DeferredRegister<Biome> registry, String baseName, BiomeVariants parent)
     {
+        this(registry, baseName, parent.factory);
+    }
+
+    public BiomeVariants(DeferredRegister<Biome> registry, String baseName, IFactory factory)
+    {
+        this.factory = factory;
         this.biomeVariants = new EnumMap<>(BiomeTemperature.class);
         this.allVariants = new ArrayList<>();
 
@@ -37,7 +45,7 @@ public class BiomeVariantHolder implements Supplier<TFCBiome>
             for (BiomeRainfall rain : BiomeRainfall.values())
             {
                 String name = baseName + "_" + temp.name().toLowerCase() + "_" + rain.name().toLowerCase();
-                RegistryObject<TFCBiome> obj = getRegistry().register(name, () -> {
+                RegistryObject<TFCBiome> obj = registry.register(name, () -> {
                     TFCBiome biome = factory.create(temp, rain);
                     // Set the variant holder, so we can ask each biome to get variants later!
                     biome.setVariantHolder(this);
@@ -79,16 +87,19 @@ public class BiomeVariantHolder implements Supplier<TFCBiome>
         return allVariants;
     }
 
-    /**
-     * Addons need to override this if they intend to use this class for their own biomes.
-     */
-    public DeferredRegister<Biome> getRegistry()
+    public boolean isSpawnBiome()
     {
-        return TFCBiomes.BIOMES;
+        return spawnBiome;
     }
 
-    public interface IFactory<T>
+    public BiomeVariants setSpawnBiome()
     {
-        T create(BiomeTemperature temperature, BiomeRainfall rainfall);
+        this.spawnBiome = true;
+        return this;
+    }
+
+    public interface IFactory
+    {
+        TFCBiome create(BiomeTemperature temp, BiomeRainfall rain);
     }
 }

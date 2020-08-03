@@ -21,6 +21,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -132,11 +133,11 @@ public interface IBlockIngredient extends Predicate<BlockState>
          */
         public IBlockIngredient read(PacketBuffer buffer)
         {
-            int amount = buffer.readInt();
+            int amount = buffer.readVarInt();
             List<Block> validBlocks = new ArrayList<>();
             for (int i = 0; i < amount; i++)
             {
-                validBlocks.add(buffer.readRegistryIdSafe(Block.class));
+                validBlocks.add(buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS));
             }
             return new IBlockIngredient()
             {
@@ -157,10 +158,10 @@ public interface IBlockIngredient extends Predicate<BlockState>
         public void write(PacketBuffer buffer, IBlockIngredient ingredient)
         {
             Collection<Block> validBlocks = ingredient.getValidBlocks();
-            buffer.writeInt(validBlocks.size());
+            buffer.writeVarInt(validBlocks.size());
             for (Block block : validBlocks)
             {
-                buffer.writeRegistryId(block);
+                buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, block);
             }
         }
 

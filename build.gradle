@@ -1,3 +1,6 @@
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -18,19 +21,22 @@ archivesBaseName = 'tfc'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        name 'Jitpack' // Used by mcjunitlib
+        url 'https://jitpack.io'
+    }
+}
+
 minecraft {
-    mappings channel: 'snapshot', version: '20200516-1.15.1'
-    //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    mappings channel: 'snapshot', version: '20200626-1.15.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            //property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -42,11 +48,6 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            //property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -55,9 +56,43 @@ minecraft {
                 }
             }
         }
+
+        serverTest {
+            parent server // This run config inherits settings from the server config
+            workingDirectory project.file('run')
+            main 'com.alcatrazescapee.mcjunitlib.DedicatedTestServerLauncher' // The main class which launches a customized server which then runs JUnit tests
+            ideaModule "${project.name}.test" // Tell IDEA to use the classpath of the test module
+            property 'forge.logging.console.level', 'unittest' // This logging level prevents any other server information messages and leaves only the unit test output
+            environment 'MOD_CLASSES', String.join(File.pathSeparator,
+                    "tfc%%${sourceSets.main.output.resourcesDir}",
+                    "tfc%%${sourceSets.main.output.classesDir}",
+                    "tfc%%${sourceSets.test.output.resourcesDir}",
+                    "tfc%%${sourceSets.test.output.classesDir}",
+            ) // Forge will ignore all test sources unless we explicitly tell it to include them as mod sources
+            environment 'target', 'fmltestserver' // This is a custom service used to launch with ModLauncher's transforming class loader
+            mods {
+                tfc { // The mod that is being tested
+                    sources sourceSets.main, sourceSets.test
+                }
+            }
+        }
     }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.15.2-31.2.0'
+
+    testImplementation fg.deobf('com.github.alcatrazEscapee:mcjunitlib:1.0.1-1.15.2') {
+        transitive = false
+    }
+}
+
+processResources {
+    // Minify the json files in the output jar, reduces overall jar size.
+    doLast {
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
+            file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            file.text = file.text.replace('"__comment__":"This file was automatically created by mcresources",', '')
+        }
+    }
 }

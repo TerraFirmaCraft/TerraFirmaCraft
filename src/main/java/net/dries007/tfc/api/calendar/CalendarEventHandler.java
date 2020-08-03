@@ -26,6 +26,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class CalendarEventHandler
 {
     public static final Logger LOGGER = LogManager.getLogger();
+
     /**
      * Called from LOGICAL SERVER
      * Responsible for primary time tracking for player time
@@ -119,26 +120,8 @@ public class CalendarEventHandler
             if (server != null)
             {
                 LOGGER.info("Player Logged In - Checking for Calendar Updates.");
-                int players = server.getPlayerList().getPlayers().size();
-                Calendar.INSTANCE.setPlayersLoggedOn(players > 0);
+                Calendar.INSTANCE.setPlayersLoggedOn(server.getPlayerList().getCurrentPlayerCount() > 0);
             }
         }
     }
-
-    /** todo - probably gonna need to change this to listen to the command and not the gamerule change
-     * Detects when a user manually changes `doDaylightCycle`, and updates the calendar accordingly
-     *
-     * @param event {@link GameRuleChangeEvent}
-     */
-    /*
-    @SubscribeEvent
-    public static void onGameRuleChange(GameRuleChangeEvent event)
-    {
-        if ("doDaylightCycle".equals(event.getRuleName()))
-        {
-            // This is only called on server, so it needs to sync to client
-            CalendarTFC.INSTANCE.setDoDaylightCycle();
-        }
-    }
-    */
 }
