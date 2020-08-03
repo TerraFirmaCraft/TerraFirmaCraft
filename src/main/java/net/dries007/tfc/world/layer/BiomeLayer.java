@@ -23,14 +23,7 @@ public enum BiomeLayer implements IC0Transformer
     {
         if (value == DEEP_OCEAN)
         {
-            if (context.random(8) == 0)
-            {
-                return DEEP_OCEAN_RIDGE;
-            }
-            else
-            {
-                return DEEP_OCEAN;
-            }
+            return DEEP_OCEAN;
         }
         else if (value == PLAINS)
         {

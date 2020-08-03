@@ -27,18 +27,18 @@ class BiomeMagnifierTests
     @Test
     void testSmoothColumnBiomeMagnifierVanilla()
     {
-        IMAGES.draw("smooth_biome_magnifier_vanilla", SmoothColumnBiomeMagnifier.INSTANCE);
+        IMAGES.draw("smooth_biome_magnifier_vanilla", SmoothColumnBiomeMagnifier.VANILLA);
+    }
+
+    @Test
+    void testSmoothColumnBiomeMagnifierSmall()
+    {
+        IMAGES.draw("smooth_biome_magnifier_small", SmoothColumnBiomeMagnifier.SMOOTH);
     }
 
     @Test
     void testSmoothColumnBiomeMagnifierLarge()
     {
         IMAGES.draw("smooth_biome_magnifier_large", new SmoothColumnBiomeMagnifier(1.3));
-    }
-
-    @Test
-    void testSmoothColumnBiomeMagnifierSmall()
-    {
-        IMAGES.draw("smooth_biome_magnifier_small", new SmoothColumnBiomeMagnifier(0.7));
     }
 }

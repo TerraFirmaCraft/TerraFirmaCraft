@@ -23,7 +23,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.util.Transaction;
+import net.dries007.tfc.util.ReentrantRunnable;
 
 public final class Calendar implements INBTSerializable<CompoundNBT>
 {
@@ -63,7 +63,7 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
     public static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
     public static final Map<String, String> BIRTHDAYS = new HashMap<>();
 
-    private static final Transaction DO_DAYLIGHT_CYCLE = new Transaction(Calendar.INSTANCE::setDoDaylightCycle);
+    private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(Calendar.INSTANCE::setDoDaylightCycle);
 
     static
     {

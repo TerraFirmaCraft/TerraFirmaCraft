@@ -23,7 +23,7 @@ import net.dries007.tfc.world.layer.TFCLayerUtil;
 
 public class TFCBiomeProvider extends BiomeProvider
 {
-    private final BiomeFactory biomeFactory;
+    private final IBiomeFactory biomeFactory;
     private final Lazy<List<Biome>> spawnBiomes;
 
     private ChunkDataProvider chunkDataProvider;
@@ -31,9 +31,10 @@ public class TFCBiomeProvider extends BiomeProvider
     public TFCBiomeProvider(TFCGenerationSettings settings)
     {
         super(new HashSet<>(TFCBiomes.getBiomes()));
+
         WorldInfo worldInfo = settings.getWorldInfo();
 
-        this.biomeFactory = new BiomeFactory(TFCLayerUtil.createOverworldBiomeLayer(worldInfo.getSeed(), settings));
+        this.biomeFactory = IBiomeFactory.create(TFCLayerUtil.createOverworldBiomeLayer(worldInfo.getSeed(), settings));
         this.spawnBiomes = Lazy.of(TFCBiomes::getSpawnBiomes);
     }
 
@@ -69,12 +70,12 @@ public class TFCBiomeProvider extends BiomeProvider
      * So, we need to make them accurate.
      */
     @Override
-    public Biome getNoiseBiome(int x, int y, int z)
+    public TFCBiome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
     {
-        TFCBiome baseBiome = biomeFactory.getBiome(x, z);
-        ChunkPos chunkPos = new ChunkPos(x >> 2, z >> 2);
+        TFCBiome baseBiome = biomeFactory.getBiome(biomeCoordX, biomeCoordZ);
+        ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
         BlockPos pos = chunkPos.asBlockPos();
         ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
-        return baseBiome.getVariantHolder().get(data.getAverageTemp(pos), data.getRainfall(pos)).get();
+        return baseBiome.getVariants().get(data.getAverageTemp(pos), data.getRainfall(pos)).get();
     }
 }
