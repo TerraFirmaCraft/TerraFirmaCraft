@@ -43,8 +43,15 @@
 			"text": "In order to tame a horse, you need a $(item)lead$(). Leads are made from $(l:processes/barrels)Jute Fiber, which is made by sealing Jute in a Fresh Water Barrel.$()"
 		},
 		{
-			"type": "text",
-			"text": "Horses, mules, and donkeys also exist in TFC. To tame one, first familiarize it, and then tie it with a lead to a fence. Then, follow the vanilla process of attempting to ride the animal until hearts appear. You then can place a saddle on the animal to control it. Mules and Donkeys can also carry chests for you to store stuff in."
-		}
+			"type": "crafting",
+      "recipe": "tfc:halter",
+      "title": "Taming Horses",
+			"text": "Horses, mules, and donkeys also exist in TFC. To tame one, first familiarize it, and then use the $(item)halter$() to tame it. Then, Then you can place a saddle on the animal to control it. Mules and Donkeys can also carry chests for you to store stuff in."
+		},
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_saddle",
+      "text": "The saddle must be knapped."
+    }
     ]
 }

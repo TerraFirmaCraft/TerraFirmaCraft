@@ -5,7 +5,6 @@
 	"advancement": "tfc:main/campfire",
 	"sortnum": 0,
     "pages": [
-		
 		{
 			"type": "crafting",
 			"recipe": "tfc:food/wheat/wheat_grain",

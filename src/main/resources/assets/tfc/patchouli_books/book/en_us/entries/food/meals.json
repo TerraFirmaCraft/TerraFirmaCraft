@@ -5,7 +5,6 @@
 	"advancement": "tfc:main/pottery",
 	"sortnum": 0,
     "pages": [
-		
 		{
 			"type": "text",
 			"text": "$(thing)Meals$() are important for managing nutrition in TFC. They allow you to combine multiple foods into one eating session, letting you have more nutrients at once, thus increasing your nutrition. There are three types of meals: $(thing)Soups, Salads, and Sandwiches$(). Liquid foods cannot go in a meal. For knapping recipes, see the $(l:reference/clay_knapping)reference section$()."
