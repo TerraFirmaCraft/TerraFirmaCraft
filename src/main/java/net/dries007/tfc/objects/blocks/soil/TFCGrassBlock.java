@@ -76,7 +76,8 @@ public class TFCGrassBlock extends Block
     @SuppressWarnings("deprecation")
     public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
-        worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state), 2);
+        worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state), 2); // Update this block
+        updateSurroundingGrassConnections(worldIn, pos); // And any possible surrounding connections
     }
 
     @Override
