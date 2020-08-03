@@ -5,7 +5,6 @@
 	"advancement": "tfc:main/pottery",
 	"sortnum": 0,
     "pages": [
-		
 		{
 			"type": "text",
 			"text": "TFC food $(thing)rots$() after a certain amount of time. The expiration date is viewable on the tooltip. Foods with different decay dates can be stacked in the crafting grid, or by pressing a hotkey (default $(4)X$()) while hovering over one in the inventory. This picks the food item with the nearest decay date. Foods like fruit expire pretty quickly, while grains can last a long time."
