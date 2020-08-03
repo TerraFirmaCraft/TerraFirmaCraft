@@ -1,7 +1,7 @@
 {
-    "name": "Bread",
-    "icon": "tfc:textures/items/food/wheat_bread.png",
-    "category": "food",
+  "name": "Bread",
+  "icon": "tfc:textures/items/food/wheat_bread.png",
+  "category": "food",
 	"advancement": "tfc:main/campfire",
 	"sortnum": 0,
     "pages": [

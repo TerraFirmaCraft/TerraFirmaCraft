@@ -62,15 +62,15 @@ public class IngredientOreDict implements IIngredient<ItemStack>
         return input;
     }
 
-    @Nonnull
-    public String getOreName()
-    {
-        return oreName;
-    }
-
     @Override
     public int getAmount()
     {
         return amount;
+    }
+
+    @Nonnull
+    public String getOreName()
+    {
+        return oreName;
     }
 }

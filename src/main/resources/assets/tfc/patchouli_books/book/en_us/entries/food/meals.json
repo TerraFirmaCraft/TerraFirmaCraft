@@ -1,7 +1,7 @@
 {
-    "name": "Meals & Grilling",
-    "icon": "tfc:textures/items/food/barley_bread_sandwich.png",
-    "category": "food",
+  "name": "Meals & Grilling",
+  "icon": "tfc:textures/items/food/barley_bread_sandwich.png",
+  "category": "food",
 	"advancement": "tfc:main/pottery",
 	"sortnum": 0,
     "pages": [
