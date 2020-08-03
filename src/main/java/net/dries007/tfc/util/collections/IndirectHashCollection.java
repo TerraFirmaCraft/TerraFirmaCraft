@@ -28,9 +28,9 @@ import net.minecraft.world.World;
 public class IndirectHashCollection<K, R>
 {
     private final Map<K, Collection<R>> indirectResultMap;
-    private final Function<R, Iterable<K>> keyExtractor;
+    private final Function<R, Iterable<? extends K>> keyExtractor;
 
-    public IndirectHashCollection(Function<R, Iterable<K>> keyExtractor)
+    public IndirectHashCollection(Function<R, Iterable<? extends K>> keyExtractor)
     {
         this.keyExtractor = keyExtractor;
         this.indirectResultMap = new HashMap<>();
@@ -52,6 +52,6 @@ public class IndirectHashCollection<K, R>
 
     public Collection<R> getAll(K key)
     {
-        return indirectResultMap.getOrDefault(key, Collections.emptySet());
+        return indirectResultMap.getOrDefault(key, Collections.emptyList());
     }
 }
