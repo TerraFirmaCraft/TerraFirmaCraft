@@ -11,6 +11,7 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 public class MountainsBiome extends TFCBiome
 {
@@ -36,7 +37,7 @@ public class MountainsBiome extends TFCBiome
                 TFCDefaultBiomeFeatures.addCarvers(this);
             }
 
-            setSurfaceBuilder(SurfaceBuilder.GRAVELLY_MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.MOUNTAINS.get(), SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
         });
     }
 

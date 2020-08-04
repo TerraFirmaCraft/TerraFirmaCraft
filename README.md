@@ -27,6 +27,17 @@ You can find the mod on [Curseforge](https://www.curseforge.com/minecraft/mc-mod
 ```
 Hint: Setup IntelliJ to do this automatically with a copyright profile applied to a shared scope matching pattern `net.dries007.tfc..*`.
 
+
+#### Optional
+
++ To enable debug logging, set your run config to include this argument: `-Dlog4j.configurationFile=../debug_log4j2_client.xml` or `_server`.
+
+## Addons
+
+We've tried to make systems extensible to addons wherever possible. If there's specific compatibility hooks or changes you'd like to see, let us know on discord.
+
+That said, we are aware with some large structural issues surrounding the 1.12 code base, and are looking to improve those moving forward (i.e. 1.14+), to better allow addons to use TFC base classes.
+
 ## License / Copyright / Credit
 
 Primarily Copyright (c) Dries007, AlcatrazEscapee 2018 - ...
@@ -43,4 +54,4 @@ Licensed under **EUPL v. 1.2** with additional provisions and clarifications, as
 
 Based on original work by Robert "Bioxx" Anthony, Amanda "Kittychanley" Halek and others.
 
-Parts of this project are edited source code from the original TerraFirmaCraft for 1.7.10 mod. They are used under with permission from the original author (Bioxx).
+Parts of this project (mostly worldgen) are edited source code from the original TerraFirmaCraft for 1.7.10 mod. They are used under with permission from the original author (Bioxx).

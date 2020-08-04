@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.DoubleBinaryOperator;
+import java.util.function.DoubleFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
@@ -58,11 +59,11 @@ public abstract class ImageUtil<T>
     }
 
     // All these fields are set by builders
-    protected Double2ObjectFunction<Color> color = Colors.LINEAR_GRAY;
+    protected DoubleFunction<Color> color = Colors.LINEAR_GRAY;
     protected int size = 1000;
     protected int minX = 0, minY = 0, maxX = size, maxY = size;
 
-    public ImageUtil<T> color(Double2ObjectFunction<Color> color)
+    public ImageUtil<T> color(DoubleFunction<Color> color)
     {
         this.color = color;
         return this;
@@ -122,12 +123,6 @@ public abstract class ImageUtil<T>
     }
 
     @FunctionalInterface
-    public interface Double2ObjectFunction<T>
-    {
-        T apply(double value);
-    }
-
-    @FunctionalInterface
     public interface DoubleTernaryOperator
     {
         double apply(double first, double second, double third);
@@ -135,15 +130,15 @@ public abstract class ImageUtil<T>
 
     public static final class Colors
     {
-        public static final Double2ObjectFunction<Color> LINEAR_GRAY = value -> {
+        public static final DoubleFunction<Color> LINEAR_GRAY = value -> {
             int x = MathHelper.clamp((int) (255 * value), 0, 255);
             return new Color(x, x, x);
         };
-        public static final Double2ObjectFunction<Color> LINEAR_BLUE_RED = value -> {
+        public static final DoubleFunction<Color> LINEAR_BLUE_RED = value -> {
             int x = MathHelper.clamp((int) (255 * value), 0, 255);
             return new Color(x, 0, 255 - x);
         };
-        public static final Double2ObjectFunction<Color> LINEAR_GREEN_YELLOW = value -> {
+        public static final DoubleFunction<Color> LINEAR_GREEN_YELLOW = value -> {
             int x = MathHelper.clamp((int) (255 * value), 0, 255);
             return new Color(x, 255, 0);
         };
