@@ -125,6 +125,7 @@ public interface INoise3D
         };
     }
 
+    @SuppressWarnings("ManualMinMaxCalculation")
     default INoise3D flattened(float min, float max)
     {
         return (x, y, z) -> {

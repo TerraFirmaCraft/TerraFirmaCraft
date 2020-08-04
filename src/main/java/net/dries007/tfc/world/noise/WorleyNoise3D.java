@@ -5,10 +5,6 @@
 
 package net.dries007.tfc.world.noise;
 
-/**
- * A Worley noise implementation
- * Adapted from <a href="https://github.com/Auburns/FastNoise_Java">Fast Noise</a>
- */
 public class WorleyNoise3D implements INoise3D
 {
 

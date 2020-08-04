@@ -6,8 +6,8 @@
 package net.dries007.tfc.world.noise;
 
 /**
- * Created by Stefan Gustavson
- * <a href="http://webstaff.itn.liu.se/~stegu/simplexnoise/">Source</a>
+ * This code was placed in the public domain by its original author, Stefan Gustavson.
+ *
  * Adapted to use {@link INoise3D}
  */
 public class SimplexNoise3D extends AbstractSimplexNoise implements INoise3D

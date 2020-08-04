@@ -8,8 +8,14 @@ package net.dries007.tfc.world.noise;
 import java.util.Random;
 
 /**
- * Created by Stefan Gustavson
- * <a href="http://webstaff.itn.liu.se/~stegu/simplexnoise/">Source</a>
+ * This code was placed in the public domain by its original author,
+ * Stefan Gustavson. You may use it as you see fit, but
+ * attribution is appreciated.
+ *
+ * Adapted to use the interface style of noise and reduce code duplication
+ *
+ * @see SimplexNoise2D
+ * @see SimplexNoise3D
  */
 public abstract class AbstractSimplexNoise
 {
