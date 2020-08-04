@@ -17,7 +17,7 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": ["tfc:beartfc","tfc:polarbeartfc","tfc:blackbeartfc"]
+          "type": ["tfc:grizzlybear","tfc:polarbeartfc","tfc:blackbeartfc"]
         }
       }
     },

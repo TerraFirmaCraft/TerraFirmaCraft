@@ -51,7 +51,7 @@ public class EntityMuskOxTFC extends EntitySheepTFC implements ILivestock
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.TUNDRA || biomeType == BiomeHelper.BiomeType.TAIGA))
+            (biomeType == BiomeHelper.BiomeType.TUNDRA))
         {
             return ConfigTFC.Animals.MUSKOX.rarity;
         }
