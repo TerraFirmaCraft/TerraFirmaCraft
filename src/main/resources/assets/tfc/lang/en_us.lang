@@ -790,35 +790,35 @@ config.tfc.client.display.rottenFoodOverlayColor.tooltip=The color to render on 
 
 
 ### Grass Color
-config.tfc.client.grass_color=Grass Color Settings
+config.tfc.client.grassColor=Grass Color Settings
 
-config.tfc.client.grass_color.noiseEnable=Noise Enabled?
-config.tfc.client.grass_color.noiseEnable.tooltip=Enable grass noise at all?
+config.tfc.client.grassColor.noiseEnable=Noise Enabled?
+config.tfc.client.grassColor.noiseEnable.tooltip=Enable grass noise at all?
 
-config.tfc.client.grass_color.noiseDarkness=Noise Darkness
-config.tfc.client.grass_color.noiseDarkness.tooltip=How dark should the noise be at its strongest?
+config.tfc.client.grassColor.noiseDarkness=Noise Darkness
+config.tfc.client.grassColor.noiseDarkness.tooltip=How dark should the noise be at its strongest?
 
-config.tfc.client.grass_color.noiseLevels=Noise Levels
-config.tfc.client.grass_color.noiseLevels.tooltip=How many darkness levels should the noise have?
+config.tfc.client.grassColor.noiseLevels=Noise Levels
+config.tfc.client.grassColor.noiseLevels.tooltip=How many darkness levels should the noise have?
 
-config.tfc.client.grass_color.noiseScale=Noise Scale
-config.tfc.client.grass_color.noiseScale.tooltip=How big should the noise areas be?
+config.tfc.client.grassColor.noiseScale=Noise Scale
+config.tfc.client.grassColor.noiseScale.tooltip=How big should the noise areas be?
 
 
-config.tfc.client.grass_color.seasonColorEnable=Seasonal Colors enabled?
-config.tfc.client.grass_color.seasonColorEnable.tooltip=Enable seasonal grass colors at all?
+config.tfc.client.grassColor.seasonColorEnable=Seasonal Colors enabled?
+config.tfc.client.grassColor.seasonColorEnable.tooltip=Enable seasonal grass colors at all?
 
-config.tfc.client.grass_color.seasonColorSpring=Seasonal Color: Spring
-config.tfc.client.grass_color.seasonColorSpring.tooltip=The spring color RGBA. Format: RED,GREEN,BLUE,ALPHA.
+config.tfc.client.grassColor.seasonColorSpring=Seasonal Color: Spring
+config.tfc.client.grassColor.seasonColorSpring.tooltip=The spring color RGBA. Format: RED,GREEN,BLUE,ALPHA.
 
-config.tfc.client.grass_color.seasonColorSummer=Seasonal Color: Summer
-config.tfc.client.grass_color.seasonColorSummer.tooltip=The summer color RGBA. Format: RED,GREEN,BLUE,ALPHA.
+config.tfc.client.grassColor.seasonColorSummer=Seasonal Color: Summer
+config.tfc.client.grassColor.seasonColorSummer.tooltip=The summer color RGBA. Format: RED,GREEN,BLUE,ALPHA.
 
-config.tfc.client.grass_color.seasonColorAutumn=Seasonal Color: Autumn
-config.tfc.client.grass_color.seasonColorAutumn.tooltip=The autumn color RGBA. Format: RED,GREEN,BLUE,ALPHA.
+config.tfc.client.grassColor.seasonColorAutumn=Seasonal Color: Autumn
+config.tfc.client.grassColor.seasonColorAutumn.tooltip=The autumn color RGBA. Format: RED,GREEN,BLUE,ALPHA.
 
-config.tfc.client.grass_color.seasonColorWinter=Seasonal Color: Winter
-config.tfc.client.grass_color.seasonColorWinter.tooltip=The winter color RGBA. Format: RED,GREEN,BLUE,ALPHA.
+config.tfc.client.grassColor.seasonColorWinter=Seasonal Color: Winter
+config.tfc.client.grassColor.seasonColorWinter.tooltip=The winter color RGBA. Format: RED,GREEN,BLUE,ALPHA.
 
 ## Animals
 config.tfc.animals=Animals Settings
