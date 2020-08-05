@@ -1,5 +1,6 @@
 {
   "credit": "Made with Blockbench",
+  "parent": "block/cube_all",
   "elements": [
     {
       "from": [2, 0, 2],
