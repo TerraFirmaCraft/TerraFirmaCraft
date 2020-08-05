@@ -968,17 +968,17 @@ public final class ConfigTFC
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSummer")
          	public String seasonColorSummer = "1155FF44";
 	    	
-	    	@Config.Comment("ARGB code for summer coloring in hexadecimal. Default: 99FFDD44")
+	    	@Config.Comment("ARGB code for summer coloring in hexadecimal. Default: 55FFDD44")
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorAutumn")
-         	public String seasonColorAutumn = "99FFDD44";
+         	public String seasonColorAutumn = "55FFDD44";
 	    	
-	    	@Config.Comment("ARGB code for winter coloring in hexadecimal. Default: 555577FF")
+	    	@Config.Comment("ARGB code for winter coloring in hexadecimal. Default: 335566FF")
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorWinter")
-         	public String seasonColorWinter = "555577FF";
+         	public String seasonColorWinter = "335566FF";
 	    	
-	    	@Config.Comment("ARGB code for spring coloring in hexadecimal. Default: 6644FFBB")
+	    	@Config.Comment("ARGB code for spring coloring in hexadecimal. Default: 3355FFBB")
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSpring")
-         	public String seasonColorSpring = "6644FFBB";
+         	public String seasonColorSpring = "3355FFBB";
         }
     }
 
