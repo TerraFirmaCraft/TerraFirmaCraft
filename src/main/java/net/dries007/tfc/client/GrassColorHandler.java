@@ -138,6 +138,6 @@ public class GrassColorHandler
 	
 	public static Color blendByAlpha(Color c0, Color c1)
 	{
-	    return blendByWeight(c0, c1, (double)c0.getAlpha() / (double)(c0.getAlpha() + c1.getAlpha()));
+	    return blendByWeight(c0, c1, 1d - (double)c1.getAlpha() / 255d);
 	}
 }
