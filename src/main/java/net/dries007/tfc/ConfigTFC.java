@@ -964,21 +964,21 @@ public final class ConfigTFC
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseDarkness")
          	public float noiseDarkness = 0.15f;
 	    	
-	    	@Config.Comment("Color data for summer coloring. Syntax: RED,BLUE,GREEN,ALPHA. Default=30,255,30,28")
+	    	@Config.Comment("ARGB code for summer coloring in hexadecimal. Default: 1155FF44")
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSummer")
-         	public String seasonColorSummer = "30,255,30,28";
+         	public String seasonColorSummer = "1155FF44";
 	    	
-	    	@Config.Comment("Color data for summer coloring. Syntax: RED,BLUE,GREEN,ALPHA. Default=255,168,30,128")
+	    	@Config.Comment("ARGB code for summer coloring in hexadecimal. Default: 99FFDD44")
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorAutumn")
-         	public String seasonColorAutumn = "255,168,30,128";
+         	public String seasonColorAutumn = "99FFDD44";
 	    	
-	    	@Config.Comment("Color data for summer coloring. Syntax: RED,BLUE,GREEN,ALPHA. Default=33,165,255,48")
+	    	@Config.Comment("ARGB code for winter coloring in hexadecimal. Default: 555577FF")
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorWinter")
-         	public String seasonColorWinter = "33,165,255,48";
+         	public String seasonColorWinter = "555577FF";
 	    	
-	    	@Config.Comment("Color data for summer coloring. Syntax: RED,BLUE,GREEN,ALPHA. Default=0,255,160,64")
+	    	@Config.Comment("ARGB code for spring coloring in hexadecimal. Default: 6644FFBB")
          	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSpring")
-         	public String seasonColorSpring = "0,255,160,64";
+         	public String seasonColorSpring = "6644FFBB";
         }
     }
 
