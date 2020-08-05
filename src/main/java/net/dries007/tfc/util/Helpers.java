@@ -149,6 +149,11 @@ public final class Helpers
             }
         };
     }
+    // Alc's magic mapper
+    public static <T, R> Supplier<R> mapSupplier(Supplier<T> supplier, Function<T, R> mapper)
+    {
+        return () -> mapper.apply(supplier.get());
+    }
 
     /**
      * Creates a map of each enum constant to the value as provided by the value mapper.
