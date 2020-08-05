@@ -22,6 +22,12 @@ import net.minecraftforge.fml.common.Mod;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+/**
+ * Event handler for calendar related ticking
+ *
+ * @see net.dries007.tfc.client.ClientCalendarEventHandler
+ * @see Calendar
+ */
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CalendarEventHandler
 {
@@ -37,9 +43,9 @@ public class CalendarEventHandler
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.END)
+        if (event.phase == TickEvent.Phase.START)
         {
-            Calendar.INSTANCE.onServerTick();
+            Calendar.INSTANCE.get().onServerTick();
         }
     }
 
@@ -49,7 +55,7 @@ public class CalendarEventHandler
         World world = event.world;
         if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && event.world.getDimension().getType() == DimensionType.OVERWORLD)
         {
-            Calendar.INSTANCE.onOverworldTick((ServerWorld) world);
+            Calendar.INSTANCE.get().onOverworldTick((ServerWorld) world);
         }
     }
 
@@ -66,7 +72,7 @@ public class CalendarEventHandler
             long currentWorldTime = event.getEntity().getEntityWorld().getGameTime();
             if (Calendar.CALENDAR_TIME.getDayTime() != currentWorldTime)
             {
-                long jump = Calendar.INSTANCE.setTimeFromDayTime(currentWorldTime);
+                long jump = Calendar.INSTANCE.get().setTimeFromDayTime(currentWorldTime);
                 /* todo: requires food overrides
                 // Consume food/water on all online players accordingly (EXHAUSTION_MULTIPLIER is here to de-compensate)
                 event.getEntity().getEntityWorld().getPlayers()
@@ -99,7 +105,7 @@ public class CalendarEventHandler
                 {
                     playerCount--;
                 }
-                Calendar.INSTANCE.setPlayersLoggedOn(playerCount > 0);
+                Calendar.INSTANCE.get().setPlayersLoggedOn(playerCount > 0);
             }
         }
     }
@@ -120,7 +126,7 @@ public class CalendarEventHandler
             if (server != null)
             {
                 LOGGER.info("Player Logged In - Checking for Calendar Updates.");
-                Calendar.INSTANCE.setPlayersLoggedOn(server.getPlayerList().getCurrentPlayerCount() > 0);
+                Calendar.INSTANCE.get().setPlayersLoggedOn(server.getPlayerList().getCurrentPlayerCount() > 0);
             }
         }
     }

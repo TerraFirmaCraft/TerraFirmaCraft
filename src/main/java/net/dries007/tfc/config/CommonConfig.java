@@ -53,7 +53,9 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue normalTemperatureCutoff;
     public final ForgeConfigSpec.IntValue lukewarmTemperatureCutoff;
     public final ForgeConfigSpec.IntValue aridRainfallCutoff;
+    public final ForgeConfigSpec.IntValue dryRainfallCutoff;
     public final ForgeConfigSpec.IntValue normalRainfallCutoff;
+    public final ForgeConfigSpec.IntValue dampRainfallCutoff;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -111,8 +113,10 @@ public class CommonConfig
         normalTemperatureCutoff = builder.apply("normalTemperatureCutoff").defineInRange("normalTemperatureCutoff", 14, -20, 50);
         lukewarmTemperatureCutoff = builder.apply("lukewarmTemperatureCutoff").defineInRange("lukewarmTemperatureCutoff", 22, -20, 50);
 
-        aridRainfallCutoff = builder.apply("aridRainfallCutoff").defineInRange("aridRainfallCutoff", 160, 0, 500);
-        normalRainfallCutoff = builder.apply("normalRainfallCutoff").defineInRange("normalRainfallCutoff", 340, 0, 500);
+        aridRainfallCutoff = builder.apply("aridRainfallCutoff").defineInRange("aridRainfallCutoff", 125, 0, 500);
+        dryRainfallCutoff = builder.apply("dryRainfallCutoff").defineInRange("dryRainfallCutoff", 200, 0, 500);
+        normalRainfallCutoff = builder.apply("normalRainfallCutoff").defineInRange("normalRainfallCutoff", 300, 0, 500);
+        dampRainfallCutoff = builder.apply("dampRainfallCutoff").defineInRange("dampRainfallCutoff", 375, 0, 500);
 
         innerBuilder.pop().pop();
     }
