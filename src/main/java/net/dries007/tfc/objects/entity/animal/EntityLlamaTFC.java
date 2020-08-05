@@ -29,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -45,8 +46,8 @@ import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIPanicTFC;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -63,7 +64,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     //Is this female fertilized?
     private static final DataParameter<Boolean> FERTILIZED = EntityDataManager.createKey(EntityLlamaTFC.class, DataSerializers.BOOLEAN);
     // The time(in days) this entity became pregnant
-    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityLlamaTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    private static final DataParameter<Long> PREGNANT_TIME = EntityDataManager.createKey(EntityLlamaTFC.class, EntitiesTFC.getLongDataSerializer());
     protected long lastFed; //Last time(in days) this entity was fed
     protected long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     protected long matingTime; //The last time(in ticks) this male tried fertilizing females
@@ -93,6 +94,92 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
         this.geneSpeed = 0;
         this.geneStrength = 0;
         this.geneVariant = 0;
+    }
+
+    @Override
+    public void onDeath(DamageSource cause)
+    {
+        if (!world.isRemote)
+        {
+            setChested(false); // Don't drop chest
+        }
+        super.onDeath(cause);
+    }
+
+    @Override
+    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+
+        if (!stack.isEmpty())
+        {
+            boolean holdingChest = false;
+            if (stack.getItem() instanceof ItemBlock)
+            {
+                ItemBlock itemBlock = (ItemBlock) stack.getItem();
+                holdingChest = itemBlock.getBlock() instanceof BlockChest;
+            }
+            if (stack.getItem() == Items.SPAWN_EGG)
+            {
+                return super.processInteract(player, hand); // Let vanilla spawn a baby
+            }
+            else if (!this.hasChest() && this.isTame() && holdingChest)
+            {
+                this.setChested(true);
+                this.playChestEquipSound();
+                this.initHorseChest();
+                if (!player.capabilities.isCreativeMode)
+                {
+                    stack.shrink(1);
+                }
+                return true;
+            }
+            else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
+            {
+                if (this.isHungry())
+                {
+                    // Refuses to eat rotten stuff
+                    IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+                    if (cap != null)
+                    {
+                        if (cap.isRotten())
+                        {
+                            return false;
+                        }
+                    }
+                    if (!this.world.isRemote)
+                    {
+                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
+                        lastFDecay = lastFed; //No decay needed
+                        this.consumeItemFromStack(player, stack);
+                        if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
+                        {
+                            float familiarity = this.getFamiliarity() + 0.06f;
+                            if (this.getAge() != Age.CHILD)
+                            {
+                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                            }
+                            this.setFamiliarity(familiarity);
+                        }
+                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+                        TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (!this.world.isRemote)
+                    {
+                        //Show tooltips
+                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
+                        }
+                    }
+                }
+            }
+        }
+        return super.processInteract(player, hand);
     }
 
     @Override
@@ -229,82 +316,6 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     }
 
     @Override
-    public boolean processInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand)
-    {
-        ItemStack stack = player.getHeldItem(hand);
-
-        if (!stack.isEmpty())
-        {
-            boolean holdingChest = false;
-            if (stack.getItem() instanceof ItemBlock)
-            {
-                ItemBlock itemBlock = (ItemBlock) stack.getItem();
-                holdingChest = itemBlock.getBlock() instanceof BlockChest;
-            }
-            if (stack.getItem() == Items.SPAWN_EGG)
-            {
-                return super.processInteract(player, hand); // Let vanilla spawn a baby
-            }
-            else if (!this.hasChest() && this.isTame() && holdingChest)
-            {
-                this.setChested(true);
-                this.playChestEquipSound();
-                this.initHorseChest();
-                if (!player.capabilities.isCreativeMode)
-                {
-                    stack.shrink(1);
-                }
-                return true;
-            }
-            else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
-            {
-                if (this.isHungry())
-                {
-                    // Refuses to eat rotten stuff
-                    IFood cap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-                    if (cap != null)
-                    {
-                        if (cap.isRotten())
-                        {
-                            return false;
-                        }
-                    }
-                    if (!this.world.isRemote)
-                    {
-                        lastFed = CalendarTFC.PLAYER_TIME.getTotalDays();
-                        lastFDecay = lastFed; //No decay needed
-                        this.consumeItemFromStack(player, stack);
-                        if (this.getAge() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
-                        {
-                            float familiarity = this.getFamiliarity() + 0.06f;
-                            if (this.getAge() != Age.CHILD)
-                            {
-                                familiarity = Math.min(familiarity, getAdultFamiliarityCap());
-                            }
-                            this.setFamiliarity(familiarity);
-                        }
-                        world.playSound(null, this.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.AMBIENT, 1.0F, 1.0F);
-                        TFCTriggers.FAMILIARIZATION_TRIGGER.trigger((EntityPlayerMP) player, this); // Trigger familiarization change
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (!this.world.isRemote)
-                    {
-                        //Show tooltips
-                        if (this.isFertilized() && this.getType() == Type.MAMMAL)
-                        {
-                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.mating.pregnant", getName()));
-                        }
-                    }
-                }
-            }
-        }
-        return super.processInteract(player, hand);
-    }
-
-    @Override
     public void setGrowingAge(int age)
     {
         super.setGrowingAge(0); // Ignoring this
@@ -370,7 +381,7 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (this.isTame() || this.getLeashed())
+        if (this.getFamiliarity() > 0.15f)
         {
             super.mountTo(player);
         }
@@ -461,8 +472,8 @@ public class EntityLlamaTFC extends EntityLlama implements IAnimalTFC, ILivestoc
         this.lastDeath = nbt.getLong("lastDeath");
         this.setPregnantTime(nbt.getLong("pregnant"));
         this.geneSpeed = nbt.getFloat("geneSpeed");
-        this.geneJump = nbt.getFloat("geneSpeed");
-        this.geneHealth = nbt.getFloat("geneSpeed");
+        this.geneJump = nbt.getFloat("geneJump");
+        this.geneHealth = nbt.getFloat("geneHealth");
         this.geneStrength = nbt.getFloat("geneStrength");
         this.geneVariant = nbt.getInteger("geneVariant");
     }

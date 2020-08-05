@@ -80,7 +80,6 @@ public class BlockMetalLamp extends Block implements ILightableBlock
 
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(LIT, false));
         setHardness(1f);
-        setLightLevel(0.9375F);
         setTickRandomly(true);
         setSoundType(SoundType.METAL);
 
@@ -335,7 +334,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return state.getValue(LIT) ? super.getLightValue(state, world, pos) : 0;
+        return state.getValue(LIT) ? 15 : 0;
     }
 
     @Override

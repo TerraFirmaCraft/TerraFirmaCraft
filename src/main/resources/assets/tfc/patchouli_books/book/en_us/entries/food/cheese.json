@@ -1,0 +1,17 @@
+{
+  "name": "Dairy Products",
+  "icon": "tfc:textures/items/food/cheese.png",
+  "category": "food",
+  "advancement": "tfc:main/make_barrel",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)Milk and Cheese$() are the main sources of $(l:food/nutrition)Dairy$() in TFC. Milk is obtained by $(4)right-clicking$() on a $(l:food/animal_husbandry)familiarized$() cow with a wooden bucket. Cheese requires a certain set of $(l:processes/barrels)processing$() steps to make."
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Making Cheese$()$(br2)1. Mix 250mB of Alcohol and a Fruit to get 250mB of Vinegar$(br)2. Mix 9,000mB of Milk and 1,000mB of Vinegar in a barrel. This instantly creates Vinegar Milk.$(br)3. Seal the Vinegar Milk for 8 hours to turn it into Curdled Milk$(br)4. Seal the curdled milk for 8 hour to make cheese.$(br2)$(thing)Note: 625mB of curdled milk makes 2 cheese$()"
+    }
+  ]
+}

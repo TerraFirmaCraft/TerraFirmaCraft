@@ -1,0 +1,32 @@
+{
+  "name": "Red Steel",
+  "icon": "tfc:textures/items/metal/ingot/red_steel.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_black_steel",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)Red Steel$() is one of the two final alloys you can make in TFC. Similar to Black Steel, it follows an alloy recipe:$(br2)$(item)Weak Red Steel:$()$(br2)$(thing)Black Steel:$() 50-55%$(br)$(thing)Steel:$() 20-25%$(br)$(thing)Brass:$() 10-15%$(br)$(thing)Rose Gold:$() 10-15%"
+    },
+    {
+      "type": "text",
+      "text": "Alloy reference:$(br2)$(item)Brass:$()$(br2)$(thing)Copper:$() 88-92%$(br)$(thing)Zinc:$() 8-12%$(br)$(item)Note: Sphalerite is Zinc.$()$(br2)$(item)Rose Gold:$()$(br2)$(thing)Copper:$() 15-30%$(br)$(thing)Gold:$() 70-85%"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:ingot_high_carbon_red_steel",
+      "text": "Weld a $(item)Weak Red Steel Ingot$() and $(item) Black Steel$() to produce a $(thing)High Carbon Red Steel Ingot$()"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:ingot_red_steel",
+      "text": "Work that ingot to make a Red Steel ingot."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:red_steel_bucket",
+      "text": "You can work a red steel sheet into a red steel bucket. The red steel bucket is able to pick up and move water sources, but not lava. To move lava, you need Blue Steel."
+    }
+  ]
+}

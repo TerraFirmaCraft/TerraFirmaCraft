@@ -1,0 +1,74 @@
+{
+  "name": "Wrought Iron",
+  "icon": "tfc:textures/items/metal/ingot/wrought_iron.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/bronze_age",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The next step after copper-based metals is $(item)iron$(). Cooking iron requires a new kind of furnace called a $(item)Bloomery$(), and multiple anvil steps. First, let's look at the different types of $(thing)iron bearing ore$(). For these, you'll definitely want to go prospecting and dig up some larger veins!"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/hematite",
+      "title": "Small Hematite",
+      "text": "Hematite is an iron-bearing ore."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/limonite",
+      "title": "Small Limonite",
+      "text": "Limonite!"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/magnetite",
+      "title": "Small Magnetite",
+      "text": "Unfortunately, you can't craft actual magnets in TFC."
+    },
+    {
+      "type": "text",
+      "text": "In order to smelt iron ore into wrought iron, you'll need a $(item)bloomery$(). In order to build one, you'll need some stone, preferably smooth stone or stone bricks (since they don't fall), and also the bloomery block."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:bloomery",
+      "title": "The Bloomery",
+      "text": "Any kind of bronze double sheets will work."
+    },
+    {
+      "type": "text",
+      "text": "The structure of the Bloomery consists of the Bloomery Block with a block of stone underneath it, above it, and to the left and right of it. The block immediately behind the Bloomery Block should be empty space, with stone underneath it and stone on its remaining three sides."
+    },
+    {
+      "type": "text",
+      "text": "The block immediately above that should also be empty and surrounded on all four sides by stone. Basically it's a two-block high stone chimney connected to the back of the Bloomery Block. To let the bloomery store more ore, add blocks to grow the chimney higher.$(br2)$(thing)Flip page to see diagram$()"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:bloomery",
+      "text": "The smallest possible bloomery multiblock."
+    },
+    {
+      "type": "text",
+      "text": "Steps to use the bloomery:$(br2)1. Open the bloomery hatch by $(item)right-clicking$() and $(item)shift-right click$() eight times with $(thing)charcoal$() to fill the first block of the chimney with charcoal.$(br2)2. Climb to the top of the bloomery and drop up to 24 iron-bearing ores(depending on the size of the bloomery -- the smallest bloomery can hold 8, the largest 24. Rule of thumb is that you'll want to fill it up halfway to it's full capacity with ore)."
+    },
+    {
+      "type": "text",
+      "text": "3. Drop as much or more charcoal down the chimney. At this point, the texture of the charcoal should have changed to the bloomery block, and the ore and charcoal should have disappeared.$(br2)$(item)Note: Only charcoal will work for this, not any of the other mineral types like Lignite or Bituminous Coal.$()$(br2)4. Close the bloomery hatch, light with a firestarter or flint and steel, and wait about 15 hours!"
+    },
+    {
+      "type": "text",
+      "text": "Now let's start to work ore bloom into wrought iron ingots:$(br2)1. When the bloomery is no longer lit in appearance, you're done! Open the hatch and dig out the bloom with a pickaxe. Now comes the anvil part. Your first task is to refine the bloom in an anvil. Plop it in and choose the $(item)Refined Iron Bloom$() plan, and work it. The anvil recipe for this is rather simple, don't worry."
+    },
+    {
+      "type": "text",
+      "text": "2. Put your refined bloom back in and click the $(item)Refined Iron Bloom$() plan once again. After you complete the smithing process, the bloom will split into a number of pieces.$(br2)$(thing)Note: This is only necessary if your bloom says more than 100% on the tooltip. The split recipe breaks the bloom into a number of 100% blooms, and a single bloom with whatever's left. Only 100% blooms can be worked into ingots."
+    },
+    {
+      "type": "text",
+      "text": "3. Take any 100% blooms you have and put them back in the anvil. Working the bloom once again will yield a $(item)wrought iron ingot$(). Congrats!$(br2)$(thing)For blooms left over with <100%, throw them back in the bloomery or melt them in a forge/crucible."
+    }
+  ]
+}

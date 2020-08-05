@@ -47,23 +47,22 @@ public class ItemSandwich extends ItemFoodTFC
 
         public void initCreationFoods(FoodData bread1, FoodData bread2, List<FoodData> ingredients)
         {
-            // Nutrition and saturation of sandwich is (average of breads) + (sum of ingredients)
+            // Nutrition and saturation of sandwich is (average of breads) + 0.8f (sum of ingredients), +1 bonus saturation
             float[] nutrition = new float[Nutrient.TOTAL];
-            float water = 0, saturation = 0;
+            float saturation = 1 + 0.5f * (bread1.getSaturation() + bread2.getSaturation());
+            float water = 0.5f * (bread1.getWater() + bread2.getWater());
             for (int i = 0; i < nutrition.length; i++)
             {
                 nutrition[i] = 0.5f * (bread1.getNutrients()[i] + bread2.getNutrients()[i]);
-                saturation = 0.5f * (bread1.getSaturation() + bread2.getSaturation());
-                water = 0.5f * (bread1.getWater() + bread2.getWater());
             }
             for (FoodData ingredient : ingredients)
             {
                 for (int i = 0; i < nutrition.length; i++)
                 {
-                    nutrition[i] += ingredient.getNutrients()[i];
-                    saturation += ingredient.getSaturation();
-                    water += ingredient.getWater();
+                    nutrition[i] += 0.8f * ingredient.getNutrients()[i];
                 }
+                saturation += 0.8f * ingredient.getSaturation();
+                water += 0.8f * ingredient.getWater();
             }
             this.data = new FoodData(4, water, saturation, nutrition, rootData.getDecayModifier());
         }

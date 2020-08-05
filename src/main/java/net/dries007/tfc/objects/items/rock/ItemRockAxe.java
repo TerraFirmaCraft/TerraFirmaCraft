@@ -44,7 +44,7 @@ public class ItemRockAxe extends ItemAxe implements IItemSize, IRockObject
 
     public ItemRockAxe(RockCategory category)
     {
-        super(category.getToolMaterial(), 1.5f * category.getToolMaterial().getAttackDamage(), -3);
+        super(category.getToolMaterial(), category.getToolMaterial().getAttackDamage(), -3);
         this.category = category;
         if (MAP.put(category, this) != null) throw new IllegalStateException("There can only be one.");
         setHarvestLevel("axe", category.getToolMaterial().getHarvestLevel());

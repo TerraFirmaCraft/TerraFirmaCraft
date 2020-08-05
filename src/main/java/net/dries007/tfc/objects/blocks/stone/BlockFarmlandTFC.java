@@ -188,6 +188,12 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
         }
     }
 
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
+    }
+
     @Nullable
     @Override
     public BlockPos getFallablePos(World world, BlockPos pos)
@@ -198,12 +204,6 @@ public class BlockFarmlandTFC extends BlockRockVariantFallable
             turnToDirt(world, pos);
         }
         return fallable;
-    }
-
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(get(rock, Rock.Type.DIRT));
     }
 
     private void turnToDirt(World world, BlockPos pos)

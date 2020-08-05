@@ -1,0 +1,16 @@
+{
+  "name": "Chiseling",
+  "icon": "tfc:textures/items/metal/chisel/wrought_iron.png",
+  "category": "processes",
+  "advancement": "tfc:main/mining",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Chiseling is an easy way to get stairs and slabs, and the only way to get smooth blocks. In order to chisel something, you need a $(item)chisel$(), which must be made of metal, and a $(item)hammer$(), which can be made of stone. Holding the hammer in your offhand, and the chisel in your mainhand, you can $(item)right-click$() to chisel."
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Chisel Modes$()$(br2)Press $(4)M$() to switch chisel modes.$(br2)$(thing)Smoothing:$() This setting lets you make raw stone into smooth stone.$(br2)$(thing)Stairs:$() Right click on a full block to make it into a stair.$(br2)$(thing)Slabs: $()Make full blocks into slabs.$(br2)$(item)Note: Only blocks that have stairs/slabs can be chiseled."
+    }
+  ]
+}

@@ -14,9 +14,9 @@ import net.minecraft.item.ItemStack;
 public interface ICrop
 {
     /**
-     * @return the minimum time the crop will take to grow one stage (in hours)
+     * @return the minimum time the crop will take to grow one stage (in ticks)
      */
-    float getGrowthTime();
+    long getGrowthTicks();
 
     /**
      * @return the maximum stage of growth (when current stage == max stage, the crop is fully grown)

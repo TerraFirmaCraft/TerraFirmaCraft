@@ -1,0 +1,27 @@
+{
+  "name": "Black Steel",
+  "icon": "tfc:textures/items/metal/ingot/black_steel.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_steel",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The next step after steel is $(thing)black steel$(). Luckily, we don't need to build anything new for this. We just need to follow an alloy recipe in a crucible to make weak steel. Make sure to use a bellows!$(br2)$(item)Weak Steel$()$(br2)$(thing)Steel:$() 50-70%$(br)$(thing)Nickel$(): 15-25%$(br)$(thing)Black Bronze$(): 15-25%"
+    },
+    {
+      "type": "text",
+      "text": "Alloy reference:$(br2)$(item)Black Bronze:$()$(2br)$(thing)Copper:$() 50-70%$(br)$(thing)Silver:$() 10-25%$(br)$(thing)Gold:$() 10-25%$(br2)$(br2)$(thing)Note: Nickel is Garnierite$()"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:ingot_high_carbon_black_steel",
+      "text": "Weld a $(item)weak steel ingot$() and $(item)pig iron$() to produce a $(thing)High Carbon Black Steel Ingot$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:ingot_black_steel",
+      "text": "Work that ingot to produce a $(thing)Black Steel Ingot."
+    }
+  ]
+}

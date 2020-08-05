@@ -60,9 +60,6 @@ public final class BlocksTFC
     @GameRegistry.ObjectHolder("ceramics/fired/large_vessel")
     public static final BlockLargeVessel FIRED_LARGE_VESSEL = getNull();
 
-    @GameRegistry.ObjectHolder("aggregate")
-    public static final BlockGravel AGGREGATE = getNull();
-
     @GameRegistry.ObjectHolder("alabaster/bricks/plain")
     public static final BlockDecorativeStone ALABASTER_BRICKS_PLAIN = getNull();
     @GameRegistry.ObjectHolder("alabaster/polished/plain")
@@ -92,6 +89,9 @@ public final class BlocksTFC
     public static final BlockBloomery BLOOMERY = getNull();
     public static final BlockQuern QUERN = getNull();
     public static final BlockIceTFC SEA_ICE = getNull();
+    public static final BlockPowderKeg POWDERKEG = getNull();
+    public static final BlockGravel AGGREGATE = getNull();
+    public static final Block FIRE_BRICKS = getNull();
 
     // All these are for use in model registration. Do not use for block lookups.
     // Use the static get methods in the classes instead.
@@ -319,6 +319,7 @@ public final class BlocksTFC
         normalItemBlocks.add(new ItemBlockTFC(register(r, "sea_ice", new BlockIceTFC(FluidsTFC.SALT_WATER.get()), CT_MISC)));
 
         normalItemBlocks.add(new ItemBlockLargeVessel(register(r, "ceramics/fired/large_vessel", new BlockLargeVessel(), CT_POTTERY)));
+        normalItemBlocks.add(new ItemBlockPowderKeg(register(r, "powderkeg", new BlockPowderKeg(), CT_WOOD)));
 
         normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/raw/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
         normalItemBlocks.add(new ItemBlockTFC(register(r, "alabaster/polished/plain", new BlockDecorativeStone(MapColor.SNOW), CT_DECORATIONS)));
@@ -370,8 +371,20 @@ public final class BlocksTFC
         {
             Builder<BlockRockVariant> b = ImmutableList.builder();
             for (Rock.Type type : Rock.Type.values())
+            {
                 for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                    b.add(register(r, type.name().toLowerCase() + "/" + rock.getRegistryName().getPath(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
+                {
+                    if (type != Rock.Type.ANVIL)
+                    {
+                        b.add(register(r, type.name().toLowerCase() + "/" + rock.getRegistryName().getPath(), BlockRockVariant.create(rock, type), CT_ROCK_BLOCKS));
+                    }
+                    else if (rock.getRockCategory().hasAnvil())
+                    {
+                        // Anvil registration is special, is has it's own folder
+                        register(r, "anvil/" + rock.getRegistryName().getPath(), BlockRockVariant.create(rock, type));
+                    }
+                }
+            }
             allBlockRockVariants = b.build();
             allBlockRockVariants.forEach(x ->
             {
@@ -379,7 +392,7 @@ public final class BlocksTFC
                 {
                     normalItemBlocks.add(new ItemBlockHeat(x, 1, 600));
                 }
-                else if (x.getType() != Rock.Type.SPIKE)
+                else if (x.getType() != Rock.Type.SPIKE && x.getType() != Rock.Type.ANVIL)
                 {
                     normalItemBlocks.add(new ItemBlockTFC(x));
                 }
@@ -508,17 +521,11 @@ public final class BlocksTFC
                 inventoryItemBlocks.add(new ItemBlockTFC(register(r, "stone/pressure_plate/" + rock.getRegistryName().getPath().toLowerCase(), new BlockPressurePlateTFC(rock), CT_DECORATIONS)));
             }
 
-            // Anvils are special because they don't have an ItemBlock + they only exist for certian types
-            for (Rock rock : TFCRegistries.ROCKS.getValuesCollection())
-                if (rock.getRockCategory().hasAnvil())
-                    register(r, "anvil/" + rock.getRegistryName().getPath(), new BlockStoneAnvil(rock));
-
             allWallBlocks = b.build();
             allStairsBlocks = stairs.build();
             allSlabBlocks = slab.build();
             allWallBlocks.forEach(x -> inventoryItemBlocks.add(new ItemBlockTFC(x)));
             allStairsBlocks.forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
-            // slabs are special. (ItemSlabTFC)
         }
 
         {
@@ -651,13 +658,9 @@ public final class BlocksTFC
 
         // Note: if you add blocks you don't need to put them in this list of todos. Feel free to add them where they make sense :)
 
-        // todo: metal lamps (on/off with states)
-        // todo: sluice
-        // todo: grill
         // todo: metal trap doors
         // todo: smoke rack (placed with any string, so event based?) + smoke blocks or will we use particles?
         // todo: custom flower pot (TE based probably, unless we want to not care about the dirt in it)
-        // todo: custom hopper or just a separate press block? I prefer the separate block, this will simplify things a lot.
 
         allNormalItemBlocks = normalItemBlocks.build();
         allInventoryItemBlocks = inventoryItemBlocks.build();
@@ -691,6 +694,7 @@ public final class BlocksTFC
         register(TEMetalSheet.class, "metal_sheet");
         register(TEQuern.class, "quern");
         register(TELargeVessel.class, "large_vessel");
+        register(TEPowderKeg.class, "powderkeg");
         register(TESluice.class, "sluice");
     }
 

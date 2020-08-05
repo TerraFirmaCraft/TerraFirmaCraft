@@ -1,0 +1,59 @@
+{
+  "name": "Smithing Reference",
+  "icon": "tfc:textures/items/metal/sheet/rose_gold.png",
+  "category": "reference",
+  "advancement": "tfc:main/metal_casting",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(thing)Metal items and their ingredients:$()$(br2)$(item)Ingot:$() Lamp, Pick, Shovel, Axe, Hoe, Hammer, Propick, Saw, Scythe, Knife, Javelin, Chisel, Brass Mechanisms, Rod"
+    },
+    {
+      "type": "text",
+      "text": "$(item)Double Ingot:$() Sheet, Sword, Mace$(br2)$(item)Sheet:$() Unfinished Boots, Iron Bars, Iron Door, Bucket$(br2)$(item)Double Sheet:$() Unfinished Helmet, Chestplate, and Greaves, Shield, Iron Bars (double output), Iron Trap Door, Wrought Iron Grill"
+    },
+    {
+      "type": "text",
+      "text": "$(item)Misc Recipes:$()$(br)Splitting, refining, working $(l:advanced_metalworking/iron)bloom$().$(br2)Pig Iron to High Carbon Steel, High Carbon Steel (any) to Steel (any)"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Metalworking Tiers:$()$(br2)$(item)0:$() Stone$(br)$(item)1:$() Copper$(br)$(item)2:$() Bronzes$(br)$(item)3:$() Wrought Iron$(br)$(item)4:$() Steel$(br)$(item)5:$() Black Steel$(br)$(item)6:$() Colored Steels"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/lignite",
+      "title": "Lignite",
+      "text": "Lignite is a form of natural Coal. A forge heated by Lignite can reach the White temperature without a Bellows to help."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/bituminous_coal",
+      "title": "Bituminous Coal",
+      "text": "Bituminous Coal is a form of natural Coal. A forge heated by Bituminous Coal can reach the White temperature without a Bellows to help."
+    },
+    {
+      "type": "spotlight",
+      "item": "minecraft:coal",
+      "title": "Charcoal",
+      "text": "Charcoal is the main fuel source in TFC, created with the $(l:basic_smithing/charcoal_pit)charcoal pit$(). Without the aid of a Bellows, it can heat a forge to Yellow White**."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:peat",
+      "title": "Peat",
+      "text": "Peat is used to fuel campfires. It spawns in regions of high rainfall, and is immune to gravity."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:wood/log/chestnut",
+      "title": "Logs",
+      "text": "Logs are used to fuel campfires. They have different burn temperatures.$(br2)"
+    },
+    {
+      "type": "text",
+      "text": "Dark Red: Spruce, Willow$(br)Dark Red*: Aspen, Pine, Sequoia, Sycamore, White Cedar$(br)Dark Red**: Acacia, Birch, Chestnut, Kapok, White Elm$(br)Dark Red***: Ash$(br)Dark Red****: Douglas Fir, Oak$(br)Bright Red: Hickory, Maple"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Alabaster & Concrete",
+  "icon": "tfc:textures/items/alabaster_brick.png",
+  "category": "processes",
+  "advancement": "tfc:main/make_quern",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:alabaster_brick",
+      "title": "Alabaster Brick",
+      "text": "TFC has a number of uses of dye, mainly it's own dyeable blocks, alabaster. To make it, you need alabaster bricks, which are crafted from the mineral gypsum."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:gypsum",
+      "text": "Gypsum can be obtained by crushing Raw Limestone in a $(l:processes/quern)quern$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:alabaster_bricks",
+      "text": "This follows the regular brick recipe. Plain alabaster can also be obtained by soaking Gypsum in Limewater (Water + Flux). Using a chisel on plain alabaster will create Smooth Alabaster."
+    },
+    {
+      "type": "text",
+      "text": "Alabaster's main attraction is in the fact that it's dyeable. Sealing it in a barrel of $(l:processes/dye)dye water$() will dye it to any of the 16 vanilla colors. This can be done to any form of the alabaster, plain, smooth, or bricks."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:aggregate",
+      "title": "Aggregate",
+      "text": "Aggregate is a neat intermediate to let you craft concrete powders without dyeing them first. This is so you can bulk-dye it in the barrel with liquid dyes."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/concrete_powder/orange_concrete_powder",
+      "title": "Concrete Powder",
+      "text": "Of course, you can also dye it the normal way."
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Basic Smithing",
+  "description": "Everything you need to know about finding and shaping metals.",
+  "icon": "tfc:textures/items/metal/pick/copper.png",
+  "sortnum": 2
+}

@@ -1,0 +1,76 @@
+{
+  "name": "The Anvil",
+  "icon": "tfc:textures/items/stone/hammer.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/copper_age",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "text",
+      "text": "In order to progress, we'll need to work metal. But before we can do that, we need $(item)Flux$(), which is used to weld items together. Flux is made from any of the fluxstones: $(thing)Chalk, Dolomite, Limestone, and Marble.$()"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:hammer_head",
+      "text": "In order to make flux or use an anvil, you'll need a $(item)hammer."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:flux",
+      "title": "Flux",
+      "text": "To make flux, just craft your hammer with one of the fluxstones outlined earlier."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:flux",
+      "text": "Alternatively, flux can be made in a $(l:processes/quern)quern$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:borax",
+      "text": "If you find the mineral $(item)borax$(), you can crush it in a $(l:processes/quern)quern$() to make flux."
+    },
+    {
+      "type": "text",
+      "text": "The first kind of anvil you'll use is the stone anvil. To make one, you need to $(4)right-click$() with your hammer on an exposed raw $(thing)igneous$() rock.$(br2)The igneous rocks are $(thing)Diorite, Gabbro, Granite, Andesite, Basalt, Dacite, and Rhyolite."
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "The stone anvil is the most basic anvil in the game. It looks like a raw stone block lowered by an eighth.",
+      "name": "Stone Anvil",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:anvil/granite"
+        },
+        "pattern": [
+          ["P"], ["0"]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "clay_knapping_recipe",
+      "recipe": "tfc:ingot_mold",
+      "text": "In order to get something to work in the anvil, you'll need $(item)ingots$(). Luckily, that's easy! You'll need 100 units of any metal or alloy, and pour it into the $(l:basic_smithing/casting)ceramic ingot mold.$()"
+    },
+    {
+      "type": "text",
+      "text": "Anvils can be used to shape metal into all sorts of things, but for our purposes, we're just going to worry about $(thing)welding$() for now. In order to weld something, it needs to be at a workable temperature. When something comes out of an ingot mold at first, it should say $(item)Can Work$() and/or $(item)Can Weld$(). You can also use your forge to heat things up to these temperatures."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:double_ingot_copper",
+      "text": "The longer something stays out of the forge, the more it cools, so you have to work fast. Open the anvil GUI and place your $(item)flux$() inside. Then, place two ingots on with $(4)shift+right-click$(). Exit the GUI and $(4)shift+right click$() to weld the ingots. This will give you a $(item)double ingot$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:metal/copper/copper_anvil",
+      "text": "This is just the copper anvil, which will enable to you work on copper items, but this recipe works for any of the main tool metals!"
+    },
+    {
+      "type": "text",
+      "text": "Welding can only be done on anvils of one Tier lower than the metal being welded. So, you can only work Copper tools on a Copper or better anvil. This means it's important to constantly upgrade your anvil in order to progress. Luckily, you can melt down your anvil when you're done using it to get the ingots back. See the $(l:reference/smithing)reference section$() for metal tiers."
+    }
+  ]
+}

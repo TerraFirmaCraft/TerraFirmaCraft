@@ -23,10 +23,10 @@ import net.dries007.tfc.util.climate.ClimateTFC;
 
 public class BiomeTFC extends Biome
 {
+    public final Color debugColor;
     private final int waterPlantsPerChunk;
     private final int lilyPadPerChunk;
     private boolean spawnBiome;
-    public final Color debugColor;
 
     public BiomeTFC(int debugColor, BiomeProperties properties)
     {

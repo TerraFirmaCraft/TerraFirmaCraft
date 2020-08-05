@@ -1,0 +1,22 @@
+{
+  "name": "Smelting and Casting",
+  "icon": "tfc:textures/items/ceramics/fired/vessel.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/metal_casting",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The first way you will want to smelt items is by using $(item)ceramic vessels$() and a $(l:getting_started/pottery)pit kiln$(), both of which we know how to use already. To make our first tool, we'll put 10 pieces of $(l:basic_smithing/nuggets)copper-bearing ore nuggets$() in a vessel, and place it back in our pit kiln, just like we did when we first created the vessel. Light the pit kiln, and when it's finished burning, the metal will be melted."
+    },
+    {
+      "type": "text",
+      "text": "Hold the vessel in your hand. Right click, and a GUI should open up describing what's in the vessel and how much of it. It should say $(thing)Copper - 100 Units$(). Place your $(thing)tool mold$() in the slot, and the metal will pour into the mold."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:metal/copper/copper_pick",
+      "text": "To take your tool out of the mold, wait for it to cool and place it in a crafting grid to take it out (or $(4)right-click$()). Then, take your tool head and craft it with a stick to get your first pickaxe!"
+    }
+  ]
+}
