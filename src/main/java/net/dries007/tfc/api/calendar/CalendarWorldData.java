@@ -43,7 +43,7 @@ public class CalendarWorldData extends WorldSavedData
     @Override
     public CompoundNBT write(CompoundNBT nbt)
     {
-        nbt.put("calendar", Calendar.INSTANCE.serializeNBT());
+        nbt.put("calendar", Calendar.INSTANCE.get().serializeNBT());
         return nbt;
     }
 

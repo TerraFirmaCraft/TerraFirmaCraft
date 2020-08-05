@@ -25,19 +25,32 @@ import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.ReentrantRunnable;
 
+/**
+ * This is the central tick tracking mechanism for all of TFC
+ * It tracks two main "calendar" instances:
+ * - {@link Calendar#SERVER_TIME}, which is a server wide, global, always incrementing time tracker. This should be used for anything that needs to either store timestamps, or calculate time deltas.
+ * - {@link Calendar#CALENDAR_TIME}, which is an overworld specific extension of day time. This is used for anything that needs to know months or seasons. NEVER store timestamps with this as they can quickly be invalidated when the month length is changed.
+ *
+ * Every server tick, the following statements are executed:
+ * 1. ServerTick -> playerTime++
+ * 2. ServerWorld#advanceTime -> dayTime++
+ * 3. WorldTick -> calendarTime++
+ * 4. (Possible) PlayerLoggedInEvent -> can update doDaylightCycle / arePlayersLoggedOn
+ */
 public final class Calendar implements INBTSerializable<CompoundNBT>
 {
-    public static final int SYNC_INTERVAL = 20; // Number of ticks between sync attempts
+    public static final int SYNC_INTERVAL = 20; // Number of ticks between sync attempts. This mimics vanilla's time sync
     public static final int TIME_DESYNC_THRESHOLD = 5;
-    public static final Calendar INSTANCE = new Calendar();
     public static final Logger LOGGER = LogManager.getLogger();
+
+    public static final ThreadLocal<Calendar> INSTANCE = ThreadLocal.withInitial(Calendar::new);
 
     /**
      * Player time. Advances when player sleeps, stops when no players are online
      * NOT synced with the daylight cycle.
      * Used for almost everything that tracks time.
      */
-    public static final ICalendar PLAYER_TIME = () -> Calendar.INSTANCE.playerTime;
+    public static final ICalendar SERVER_TIME = () -> INSTANCE.get().playerTime;
 
     /**
      * Calendar time. Advances when player sleeps, stops when doDaylightCycle is false
@@ -50,20 +63,20 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         @Override
         public long getTicks()
         {
-            return Calendar.INSTANCE.calendarTime;
+            return INSTANCE.get().calendarTime;
         }
 
         @Override
         public long getDaysInMonth()
         {
-            return Calendar.INSTANCE.daysInMonth;
+            return INSTANCE.get().daysInMonth;
         }
     };
 
     public static final String[] DAY_NAMES = new String[] {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
     public static final Map<String, String> BIRTHDAYS = new HashMap<>();
 
-    private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(Calendar.INSTANCE::setDoDaylightCycle);
+    private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(INSTANCE.get()::setDoDaylightCycle);
 
     static
     {
@@ -93,18 +106,18 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
      */
     public static void runTransaction(long transactionPlayerTimeOffset, long transactionCalendarTimeOffset, Runnable transaction)
     {
+        Calendar calendar = INSTANCE.get();
         try
         {
-            INSTANCE.playerTime += transactionPlayerTimeOffset;
-            INSTANCE.calendarTime += transactionCalendarTimeOffset;
-
+            calendar.playerTime += transactionPlayerTimeOffset;
+            calendar.calendarTime += transactionCalendarTimeOffset;
             transaction.run();
         }
         finally
         {
             // Always reset after transaction complete
-            INSTANCE.playerTime -= transactionPlayerTimeOffset;
-            INSTANCE.calendarTime -= transactionCalendarTimeOffset;
+            calendar.playerTime -= transactionPlayerTimeOffset;
+            calendar.calendarTime -= transactionCalendarTimeOffset;
         }
     }
 
@@ -273,6 +286,18 @@ public final class Calendar implements INBTSerializable<CompoundNBT>
         if (server.getTickCounter() % SYNC_INTERVAL == 0)
         {
             PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+        }
+    }
+
+    /**
+     * Called on client ticks. This does a soft simulation of the server and world tracking. It is soft because it is re-synced to the server values every second, so this is purely a measure to keep the client timers counting with more granularity than one second, without requiring the calendar to sync every tick (as that gets messy)
+     */
+    public void onClientTick()
+    {
+        playerTime++;
+        if (doDaylightCycle && arePlayersLoggedOn)
+        {
+            calendarTime++;
         }
     }
 

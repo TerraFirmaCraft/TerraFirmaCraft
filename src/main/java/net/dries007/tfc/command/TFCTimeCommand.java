@@ -84,7 +84,7 @@ public class TFCTimeCommand
                     .executes(context -> sendQueryResults(context.getSource(), DAY, Calendar.CALENDAR_TIME.getTotalDays()))
                 )
                 .then(Commands.literal("playerticks")
-                    .executes(context -> sendQueryResults(context.getSource(), PLAYER_TICKS, Calendar.PLAYER_TIME.getTicks()))
+                    .executes(context -> sendQueryResults(context.getSource(), PLAYER_TICKS, Calendar.SERVER_TIME.getTicks()))
                 )
                 .then(Commands.literal("calendarticks")
                     .executes(context -> sendQueryResults(context.getSource(), CALENDAR_TICKS, Calendar.CALENDAR_TIME.getTicks()))
@@ -95,7 +95,7 @@ public class TFCTimeCommand
 
     private static int setMonthLength(int months)
     {
-        Calendar.INSTANCE.setMonthLength(months);
+        Calendar.INSTANCE.get().setMonthLength(months);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -110,13 +110,13 @@ public class TFCTimeCommand
             }
             world.setDayTime(world.getDayTime() + dayTimeJump);
         }
-        Calendar.INSTANCE.setTimeFromDayTime(dayTime);
+        Calendar.INSTANCE.get().setTimeFromDayTime(dayTime);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int addTime(long ticksToAdd)
     {
-        Calendar.INSTANCE.setTimeFromCalendarTime(Calendar.CALENDAR_TIME.getTicks() + ticksToAdd);
+        Calendar.INSTANCE.get().setTimeFromCalendarTime(Calendar.CALENDAR_TIME.getTicks() + ticksToAdd);
         return Command.SINGLE_SUCCESS;
     }
 
