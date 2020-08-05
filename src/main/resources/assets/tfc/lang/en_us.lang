@@ -809,16 +809,16 @@ config.tfc.client.grassColor.seasonColorEnable=Seasonal Colors enabled?
 config.tfc.client.grassColor.seasonColorEnable.tooltip=Enable seasonal grass colors at all?
 
 config.tfc.client.grassColor.seasonColorSpring=Seasonal Color: Spring
-config.tfc.client.grassColor.seasonColorSpring.tooltip=The spring color RGBA. Format: RED,GREEN,BLUE,ALPHA.
+config.tfc.client.grassColor.seasonColorSpring.tooltip=The spring color ARGB code in hexadecimal.
 
 config.tfc.client.grassColor.seasonColorSummer=Seasonal Color: Summer
-config.tfc.client.grassColor.seasonColorSummer.tooltip=The summer color RGBA. Format: RED,GREEN,BLUE,ALPHA.
+config.tfc.client.grassColor.seasonColorSummer.tooltip=The summer color ARGB code in hexadecimal.
 
 config.tfc.client.grassColor.seasonColorAutumn=Seasonal Color: Autumn
-config.tfc.client.grassColor.seasonColorAutumn.tooltip=The autumn color RGBA. Format: RED,GREEN,BLUE,ALPHA.
+config.tfc.client.grassColor.seasonColorAutumn.tooltip=The autumn color ARGB code in hexadecimal.
 
 config.tfc.client.grassColor.seasonColorWinter=Seasonal Color: Winter
-config.tfc.client.grassColor.seasonColorWinter.tooltip=The winter color RGBA. Format: RED,GREEN,BLUE,ALPHA.
+config.tfc.client.grassColor.seasonColorWinter.tooltip=The winter color ARGB code in hexadecimal.
 
 ## Animals
 config.tfc.animals=Animals Settings

@@ -1,6 +1,7 @@
 package net.dries007.tfc.client;
 
 import java.awt.Color;
+import java.time.Month;
 import java.util.Random;
 
 import net.dries007.tfc.ConfigTFC;
@@ -16,11 +17,8 @@ import net.minecraft.world.gen.NoiseGeneratorPerlin;
 
 public class GrassColorHandler 
 {
-    static NoiseGeneratorPerlin NOISE_GRASS = new NoiseGeneratorPerlin(new Random("NOISE_GRASS".hashCode()), 2);
-    
-	public static Color january, february, march, april, may,
-						june, july, august, september, october,
-						november, december;
+	public static NoiseGeneratorPerlin noiseGenerator = new NoiseGeneratorPerlin(new Random("NOISE_GRASS".hashCode()), 2);
+	public static Color[] monthlyColors = new Color[12];
 
     static
     {
@@ -29,30 +27,30 @@ public class GrassColorHandler
     
     public static void resetColors()
     {
-    	july = parseColor(ConfigTFC.Client.GRASS_COLOR.seasonColorSummer);
-    	october = parseColor(ConfigTFC.Client.GRASS_COLOR.seasonColorAutumn);
-    	january = parseColor(ConfigTFC.Client.GRASS_COLOR.seasonColorWinter);
-    	april = parseColor(ConfigTFC.Client.GRASS_COLOR.seasonColorSpring);
-    	june = blendWithAlphas(april, july, 0.35, 0.65);
-    	september = blendWithAlphas(july, october, 0.35, 0.65);
-    	december = blendWithAlphas(october, january, 0.35, 0.65);
-    	march = blendWithAlphas(january, april, 0.35, 0.65);
-    	august = blendWithAlphas(july, october, 0.65, 0.35);
-    	november = blendWithAlphas(october, january, 0.65, 0.35);
-    	february = blendWithAlphas(january, april, 0.65, 0.35);
-    	may = blendWithAlphas(april, july, 0.65, 0.35);
-    }
-    
-    
-    public static Color parseColor(String s)
-    {
-    	String[] parts = s.split(",");
-    	int red = Integer.parseInt(parts[0].trim());
-    	int blue = Integer.parseInt(parts[1].trim());
-    	int green = Integer.parseInt(parts[2].trim());
-    	int alpha = Integer.parseInt(parts[3].trim());
-    	
-    	return new Color(red, blue, green, alpha);
+    	int julyCode = 0x00;
+    	int octoberCode = 0x00;
+    	int januaryCode = 0x00;
+    	int aprilCode = 0x00;
+    	try
+    	{
+        	julyCode = Integer.parseUnsignedInt(ConfigTFC.Client.GRASS_COLOR.seasonColorSummer, 16);
+        	octoberCode = Integer.parseUnsignedInt(ConfigTFC.Client.GRASS_COLOR.seasonColorAutumn, 16);
+        	januaryCode = Integer.parseUnsignedInt(ConfigTFC.Client.GRASS_COLOR.seasonColorWinter, 16);
+        	aprilCode = Integer.parseUnsignedInt(ConfigTFC.Client.GRASS_COLOR.seasonColorSpring, 16);
+    	}
+    	finally
+    	{
+    		monthlyColors[Month.JULY.ordinal()] = new Color(julyCode, true);
+        	monthlyColors[Month.OCTOBER.ordinal()] = new Color(octoberCode, true);
+        	monthlyColors[Month.JANUARY.ordinal()] = new Color(januaryCode, true);
+        	monthlyColors[Month.APRIL.ordinal()] = new Color(aprilCode, true);
+        	
+        	for (int i = 0; i < 12; i += 3)
+        	{
+        	    monthlyColors[i + 1] = blendWithAlphas(monthlyColors[i], monthlyColors[(i + 3) % 12], 0.7);
+        	    monthlyColors[i + 2] = blendWithAlphas(monthlyColors[i], monthlyColors[(i + 3) % 12], 0.3);
+        	}
+    	}
     }
     
     // Default TFC grass coloring
@@ -73,16 +71,13 @@ public class GrassColorHandler
     {
         if (pos != null)
         {
-            int prev = computeInitialGrassColor(state, worldIn, pos, tintIndex);
-            Color prevCol = new Color(prev);
-            Color black = Color.BLACK;
-            Color c = getSeasonalColor();
-            Color finalColor = prevCol;
-            double rand = Math.random() / 10d;
+            Color originalColor = new Color(computeInitialGrassColor(state, worldIn, pos, tintIndex));
+            Color seasonalColor = getSeasonalColor();
+            Color finalColor = originalColor;
             
             if(ConfigTFC.Client.GRASS_COLOR.seasonColorEnable) 
             {
-            	finalColor = blendByAlpha(finalColor, c);
+            	finalColor = blendByAlpha(finalColor, seasonalColor);
             }
             
             if(ConfigTFC.Client.GRASS_COLOR.noiseEnable)
@@ -90,9 +85,9 @@ public class GrassColorHandler
             	int levels = ConfigTFC.Client.GRASS_COLOR.noiseLevels;
             	float scale = ConfigTFC.Client.GRASS_COLOR.noiseScale;
             	double darkness = ConfigTFC.Client.GRASS_COLOR.noiseDarkness;
-            	double value = ((NOISE_GRASS.getValue(pos.getX() / scale, pos.getZ() / scale)));
+            	double value = noiseGenerator.getValue(pos.getX() / scale, pos.getZ() / scale);
                 value = curve(0, 1, remap(value, -((1 << levels) - 1), (1 << levels) - 1, 0, 1), 1) * darkness;
-            	finalColor = blendByWeight(black, finalColor, value, 1-value);
+            	finalColor = blendByWeight(Color.BLACK, finalColor, value);
             }
             
             return finalColor.getRGB();
@@ -103,44 +98,25 @@ public class GrassColorHandler
     
     public static Color getSeasonalColor()
     {
-        switch(CalendarTFC.CALENDAR_TIME.getMonthOfYear())
-        {
-	        case JANUARY: return january;
-	        case FEBRUARY: return february;
-	        case MARCH: return march;
-	        case APRIL: return april;
-	        case MAY: return may;
-	        case JUNE: return june;
-	        case JULY: return july;
-	        case AUGUST: return august;
-	        case SEPTEMBER: return september;
-	        case OCTOBER: return october;
-	        case NOVEMBER: return november;
-	        case DECEMBER: return december;
-	        default: return july;
-        }
+        return monthlyColors[CalendarTFC.CALENDAR_TIME.getMonthOfYear().ordinal()];
     }
     
     public static double remap(double value, double currentLow, double currentHigh, double newLow, double newHigh)
     {
         return newLow + (value - currentLow) * (newHigh - newLow) / (currentHigh - currentLow);
     }
-	
-	public static double clamp(double value, double min, double max)
-	{
-        return Math.max(min, Math.min(value, max));
-    }
     
     public static double curve(double start, double end, double amount, double waves)
     {
-        amount = clamp(amount, 0, 1);
-        amount = clamp((amount - start) / (end - start), 0, 1);
+        amount = MathHelper.clamp(amount, 0, 1);
+        amount = MathHelper.clamp((amount - start) / (end - start), 0, 1);
         
-        return clamp(0.5 + 0.5 * Math.sin(Math.cos(Math.PI * Math.tan(90 * amount))) * Math.cos(Math.sin(Math.tan(amount))), 0, 1);
+        return MathHelper.clamp(0.5 + 0.5 * MathHelper.sin(MathHelper.cos((float)(Math.PI * Math.tan(90 * amount)))) * MathHelper.cos(MathHelper.sin((float)Math.tan(amount))), 0, 1);
     }
-	
-	public static Color blendByWeight(Color c0, Color c1, double weight0, double weight1)
+    
+	public static Color blendByWeight(Color c0, Color c1, double weight0)
 	{
+		double weight1 = 1.0d - weight0;
 	    double r = weight0 * c0.getRed() + weight1 * c1.getRed();
 	    double g = weight0 * c0.getGreen() + weight1 * c1.getGreen();
 	    double b = weight0 * c0.getBlue() + weight1 * c1.getBlue();
@@ -149,8 +125,9 @@ public class GrassColorHandler
 	    return new Color((int) r, (int) g, (int) b, (int) a);
 	}
 	
-	public static Color blendWithAlphas(Color c0, Color c1, double weight0, double weight1)
+	public static Color blendWithAlphas(Color c0, Color c1, double weight0)
 	{
+		double weight1 = 1.0d - weight0;
 	    double r = weight0 * c0.getRed() + weight1 * c1.getRed();
 	    double g = weight0 * c0.getGreen() + weight1 * c1.getGreen();
 	    double b = weight0 * c0.getBlue() + weight1 * c1.getBlue();
@@ -161,10 +138,6 @@ public class GrassColorHandler
 	
 	public static Color blendByAlpha(Color c0, Color c1)
 	{
-	    double totalAlpha = c0.getAlpha() + c1.getAlpha();
-	    double weight0 = c0.getAlpha() / totalAlpha;
-	    double weight1 = c1.getAlpha() / totalAlpha;
-
-	    return blendByWeight(c0, c1, weight0, weight1);
+	    return blendByWeight(c0, c1, (double)c0.getAlpha() / (double)(c0.getAlpha() + c1.getAlpha()));
 	}
 }
