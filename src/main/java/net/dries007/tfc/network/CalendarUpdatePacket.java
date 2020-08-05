@@ -33,7 +33,7 @@ public class CalendarUpdatePacket
 
     void handle(Supplier<NetworkEvent.Context> context)
     {
-        context.get().enqueueWork(() -> Calendar.INSTANCE.resetTo(instance));
+        context.get().enqueueWork(() -> Calendar.INSTANCE.get().resetTo(instance));
         context.get().setPacketHandled(true);
     }
 }
