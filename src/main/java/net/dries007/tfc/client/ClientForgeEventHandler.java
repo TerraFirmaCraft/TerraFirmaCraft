@@ -75,7 +75,7 @@ public class ClientForgeEventHandler
 
                 // Always add calendar info
                 list.add(I18n.format("tfc.tooltip.date", Calendar.CALENDAR_TIME.getTimeAndDate()));
-                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendar.PLAYER_TIME.getTicks(), Calendar.CALENDAR_TIME.getTicks()));
+                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendar.SERVER_TIME.getTicks(), Calendar.CALENDAR_TIME.getTicks()));
 
                 IChunk chunk = mc.world.getChunk(pos);
                 ChunkData.get(chunk).ifPresent(data -> {

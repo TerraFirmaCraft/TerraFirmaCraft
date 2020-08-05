@@ -205,7 +205,7 @@ public final class ForgeEventHandler
         TFCTimeCommand.register(dispatcher);
 
         // Initialize calendar for the current server
-        Calendar.INSTANCE.init(event.getServer());
+        Calendar.INSTANCE.get().init(event.getServer());
     }
 
     @SubscribeEvent
@@ -295,8 +295,8 @@ public final class ForgeEventHandler
 
             // Calendar Sync / Initialization
             CalendarWorldData data = CalendarWorldData.get(world);
-            Calendar.INSTANCE.resetTo(data.getCalendar());
-            PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(Calendar.INSTANCE));
+            Calendar.INSTANCE.get().resetTo(data.getCalendar());
+            PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(Calendar.INSTANCE.get()));
 
             if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
             {

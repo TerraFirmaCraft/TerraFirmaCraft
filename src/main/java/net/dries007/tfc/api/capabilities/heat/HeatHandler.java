@@ -56,7 +56,7 @@ public class HeatHandler implements IHeat
     @Override
     public float getTemperature()
     {
-        return HeatCapability.adjustTemp(temperature, heatCapacity, Calendar.PLAYER_TIME.getTicks() - lastUpdateTick);
+        return HeatCapability.adjustTemp(temperature, heatCapacity, Calendar.SERVER_TIME.getTicks() - lastUpdateTick);
     }
 
     /**
@@ -68,7 +68,7 @@ public class HeatHandler implements IHeat
     public void setTemperature(float temperature)
     {
         this.temperature = temperature;
-        this.lastUpdateTick = Calendar.PLAYER_TIME.getTicks();
+        this.lastUpdateTick = Calendar.SERVER_TIME.getTicks();
     }
 
     @Override
