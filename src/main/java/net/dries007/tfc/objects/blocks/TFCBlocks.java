@@ -8,9 +8,11 @@ package net.dries007.tfc.objects.blocks;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.dries007.tfc.objects.TFCItemGroup;
 import net.dries007.tfc.objects.blocks.soil.TFCGrassBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -31,8 +33,7 @@ import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-import static net.dries007.tfc.objects.TFCItemGroup.METAL;
-import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
+import static net.dries007.tfc.objects.TFCItemGroup.*;
 
 
 /**
@@ -48,6 +49,12 @@ public final class TFCBlocks
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCKS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, type ->
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase(), () -> type.create(rock), ROCK_BLOCKS)
+        )
+    );
+
+    public static final Map<Rock.Default, Map<Ore.Default, RegistryObject<Block>>> ROCK_STAIRS = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::isCuttable, type ->
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> new StairsBlock(Helpers.mapSupplier(ROCKS.get(rock).get(type), Block::getDefaultState), Block.Properties.create(Material.ROCK)), TFCItemGroup.DECORATIONS)
         )
     );
 
