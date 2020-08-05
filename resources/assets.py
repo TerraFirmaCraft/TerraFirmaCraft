@@ -17,12 +17,12 @@ def generate(rm: ResourceManager):
                     ROCK_SPIKE_PARTS)) \
                     .with_lang(lang('%s Spike', rock)) \
                     .with_block_loot("tfc:rock/rock/%s" % rock)
+                rm.item_model(('rock', block_type, rock), 'tfc:block/rock/raw/%s' % rock, parent='tfc:block/rock/spike/%s_base' % rock)
                 for part in ROCK_SPIKE_PARTS:
                     rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
                         'texture': 'tfc:block/rock/raw/%s' % rock,
                         'particle': 'tfc:block/rock/raw/%s' % rock
-                    }, parent='tfc:block/rock/spike_%s' % part) \
-                        .with_item_model()
+                    }, parent='tfc:block/rock/spike_%s' % part)
             else:
                  block = rm.blockstate(('rock', block_type, rock)) \
                     .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
@@ -91,7 +91,8 @@ def generate(rm: ResourceManager):
                       use_default_model=False) \
             .with_block_model() \
             .with_block_loot('tfc:clay/%s' % soil) \
-            .with_lang(lang('%s Clay Dirt', soil))
+            .with_lang(lang('%s Clay Dirt', soil)) \
+            .with_item_model()
 
     # Grass
     north_face = {
