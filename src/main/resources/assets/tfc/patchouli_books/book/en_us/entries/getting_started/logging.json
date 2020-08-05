@@ -1,0 +1,61 @@
+{
+  "name": "Water and Fire",
+  "icon": "tfc:textures/items/food/cooked_venison.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/logging",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "You're probably pretty thirsty by now. That's no problem. Just $(4)right-click$() on a fresh water source block to drink."
+    },
+    {
+      "type": "text",
+      "text": "In order to prepare food and light up your starting hut at night, you will want to build a $(thing)firepit$().$(br2)To build a firepit you'll first want a firestarter, which you can make from two sticks."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:firestarter",
+      "text": "The firestarter has small durability, but works just like a $(l:advanced_metalworking/steel)flint and steel$()."
+    },
+    {
+      "type": "text",
+      "text": "To build a campfire, throw at least $(item)one log, three sticks, and up to three$() $(l:getting_started/basic_materials)straw$() on the ground. The straw are optional, but increase your chances of lighting. Hold $(4)right-click$() with your firestarter to start the fire. It may take several tries. The firepit will cook food, and make torches from sticks, but you must feed it logs or it will go out."
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "The firepit will let you cook foods, but it'll burn you if you step on it.",
+      "name": "Firepit",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:firepit[lit=true]"
+        },
+        "pattern": [
+          ["P"], ["0"]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:torch",
+      "text": "The firepit operates with $(l:reference/heating_recipes)heating recipes$(), which are essentially TFC's version of smelting recipes. As a device such as a firepit heats up using fuel, it can turn its ingredient into a product at a certain temperature. Firepits don't get very hot, but you can use them to make torches, as well as cook meat."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:glass",
+      "text": "You can make glass at a higher temperature, but it's easier to do that in a forge."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:terracotta",
+      "text": "Firing terracotta works just like vanilla!"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:cooked_beef",
+      "text": "Eating raw meat is bad, so you should cook it."
+    }
+  ]
+}

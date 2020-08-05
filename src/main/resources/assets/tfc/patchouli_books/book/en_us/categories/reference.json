@@ -1,0 +1,6 @@
+{
+  "name": "Reference",
+  "description": "An in-depth reference section for TFC recipes, mechanics, and other odds and ends.",
+  "icon": "minecraft:textures/items/paper.png",
+  "sortnum": 99
+}

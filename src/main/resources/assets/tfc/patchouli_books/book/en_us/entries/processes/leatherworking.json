@@ -1,0 +1,36 @@
+{
+  "name": "Leatherworking",
+  "icon": "tfc:textures/items/leather.png",
+  "category": "processes",
+  "advancement": "tfc:main/make_barrel",
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(thing)Leather$() is important in TFC, but getting it requires a few extra steps.$(br2)All animals in TFC drop $(item)Raw Hide$(), except Sheep which drop Sheepskin. You can craft $(item)Sheepskin$() with a knife to get a Medium Raw Hide. The size of your hide determines how much leather you get at the end of the process. Small hides make 1 leather, Medium 2, and Large 3."
+    },
+    {
+      "type": "text",
+      "text": "$(thing)Leather Preparation$()$(br2)1. Make a $(thing)Barrel of Limewater$() by placing flux in a fresh water $(l:processes/barrels)barrel$() at a ratio of 2 flux / 1,000 mB of water.$(br2)2. Seal the Raw Hide in the Barrel of Limewater and wait.$(br2)3. $(4)Right click$() with your soaked hide on a placed log, then $(4)right click$() all over it with a knife to scrape it."
+    },
+    {
+      "type": "text",
+      "text": "4. Right click to remove the hide from the log. Seal the $(item)Scraped Hide$() in a $(thing)Barrel of Fresh Water$()$(br2)5. Prepare a $(thing)Barrel of Tannin$() by sealing an Oak, Birch, Chestnut, Douglas Fir, Hickory, Maple, or Sequoia log in fresh water.$(br2)6. Seal the $(thing)Prepared Hide$() in the Tannin to produce Leather."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:bellows",
+      "title": "Bellows",
+      "text": "The Bellows is used to make forges and other furnaces reach higher temperatures, and is needed for progression."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/item_frame",
+      "recipe2": "minecraft:book",
+      "title": "Vanilla Recipes"
+    },
+    {
+      "type": "text",
+      "text": "For leather knapping recipes, see the $(l:reference/leather_knapping)reference section$()."
+    }
+  ]
+}

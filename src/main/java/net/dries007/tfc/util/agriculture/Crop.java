@@ -131,9 +131,9 @@ public enum Crop implements ICrop
     }
 
     @Override
-    public float getGrowthTime()
+    public long getGrowthTicks()
     {
-        return growthTime * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * ICalendar.TICKS_IN_DAY;
+        return (long) (growthTime * CalendarTFC.CALENDAR_TIME.getDaysInMonth() * ICalendar.TICKS_IN_DAY);
     }
 
     @Override

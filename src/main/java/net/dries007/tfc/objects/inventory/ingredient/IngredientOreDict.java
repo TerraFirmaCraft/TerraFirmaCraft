@@ -67,4 +67,10 @@ public class IngredientOreDict implements IIngredient<ItemStack>
     {
         return amount;
     }
+
+    @Nonnull
+    public String getOreName()
+    {
+        return oreName;
+    }
 }

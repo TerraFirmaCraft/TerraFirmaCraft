@@ -1,0 +1,32 @@
+{
+  "name": "Brick & Mortar",
+  "icon": "tfc:textures/items/stonetypes/brick/chert.png",
+  "category": "processes",
+  "advancement": "tfc:main/copper_age",
+  "pages": [
+    {
+      "type": "crafting",
+      "text": "Instead of using regular clay, you can make bricks out of loose stones.",
+      "recipe": "tfc:stone/rhyolite/rhyolite_brick",
+      "title": "The Brick"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:stone/rhyolite/rhyolite_pressure_plate",
+      "recipe2": "tfc:stone/rhyolite/rhyolite_button",
+      "title": "Vanilla Recipes"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:stone/rhyolite/rhyolite_bricks",
+      "title": "Bricks",
+      "text": "To make brick blocks, you need $(3)mortar$(). 500mB of Fresh Water and a Flux makes 500mB of Limewater. Seal a sand in 100mB of Limewater to make 16 mortar."
+    },
+    {
+      "type": "crafting",
+      "text": "You can also make bricks out of clay, by knapping clay bricks and heating them. The same goes for $(l:advanced_metalworking/fire_clay)fire bricks$()",
+      "recipe": "tfc:bricks",
+      "title": "Vanilla Bricks"
+    }
+  ]
+}

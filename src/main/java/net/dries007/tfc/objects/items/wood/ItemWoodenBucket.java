@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -48,6 +49,8 @@ public class ItemWoodenBucket extends ItemTFC
     {
         setHasSubtypes(true);
         setContainerItem(this);
+
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, DispenseFluidContainer.getInstance());
     }
 
     @Nonnull

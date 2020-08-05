@@ -59,6 +59,6 @@ public class QuernRecipe extends IForgeRegistryEntry.Impl<QuernRecipe> implement
 
     private boolean isValidInput(ItemStack inputItem)
     {
-        return this.inputItem.testIgnoreCount(inputItem);
+        return this.inputItem.test(inputItem);
     }
 }

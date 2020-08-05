@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustSaltpeter"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustSaltpeter"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustSulfur"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustCharcoal"
+    }
+  ],
+  "result": {
+    "item": "minecraft:gunpowder",
+    "count": 4
+  }
+}

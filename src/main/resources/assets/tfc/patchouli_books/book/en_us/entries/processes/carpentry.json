@@ -1,0 +1,83 @@
+{
+  "name": "Carpentry",
+  "icon": "tfc:textures/items/metal/saw/copper.png",
+  "category": "processes",
+  "advancement": "tfc:main/copper_age",
+  "pages": [
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:saw_blade_bronze",
+      "text": "Now that you've gotten metal, you'll be able to fashion logs into more useful things, like planks! First, you need to $(l:basic_smithing/casting)cast$() or $(l:basic_smithing/anvil)work$() a saw. It's mostly used in crafting, but it'll cut trees down if you want it to."
+    },
+    {
+      "type": "crafting",
+      "title": "Sawing lumber",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_lumber_log",
+      "text": "The first thing you'll need to do is saw your logs into lumber."
+    },
+    {
+      "type": "crafting",
+      "title": "Planks",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_planks",
+      "text": "Lumber can be made into planks. These blocks don't have gravity! Yay."
+    },
+    {
+      "type": "crafting",
+      "title": "Oops!",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_lumber_planks",
+      "text": "You can make your planks turn back into lumber."
+    },
+    {
+      "type": "crafting",
+      "title": "Workbench",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_workbench",
+      "text": "Now you can craft the big stuff."
+    },
+    {
+      "type": "crafting",
+      "title": "Tool Rack",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_tool_rack",
+      "text": "You'll want to hang this on your wall to keep all your tools together."
+    },
+    {
+      "type": "crafting",
+      "title": "Boat",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_boat",
+      "text": "These work much better than they did in 1.7.10. You can actually get places now!"
+    },
+    {
+      "type": "crafting",
+      "title": "Bookshelf",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_bookshelf",
+      "text": "These are just for decoration in TFC, but you can still make them."
+    },
+    {
+      "type": "crafting",
+      "title": "Chest",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_chest_lumber",
+      "text": "Finally, some storage! Careful though, you can't put logs in it."
+    },
+    {
+      "type": "crafting",
+      "title": "Door",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_door",
+      "text": "You get two! Isn't that nice?"
+    },
+    {
+      "type": "crafting",
+      "title": "Fence",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_fence",
+      "text": "Keeps the animals in."
+    },
+    {
+      "type": "crafting",
+      "title": "Fence Gate",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_fence_gate",
+      "text": "Lets you check on the animals."
+    },
+    {
+      "type": "text",
+      "text": "Other things like slabs, stairs, and buttons are as you'd expect! There's also a few other new TFC things, like $(l:processes/barrels)barrels$(), that we'll cover soon."
+    }
+  ]
+}

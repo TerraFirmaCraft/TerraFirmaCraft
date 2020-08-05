@@ -1,0 +1,29 @@
+{
+  "name": "A place to sleep",
+  "icon": "tfc:textures/items/hide/large/raw.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/get_straw",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)thatch bed$() is the stone age version of the vanilla bed. To make it, place two $(l:getting_started/basic_materials)thatch blocks$() on the ground next to each other. Then, stand on the end facing the two thatch blocks, and $(4)right-click$() with a $(item)Large Raw Hide$(). You can only get Large hides from cows and bears."
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": true,
+      "text": "The thatch bed can save your spawn, but you won't be able to skip the night..",
+      "name": "Thatch Bed",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:thatch_bed[facing=east,part=head]",
+          "D": "tfc:thatch_bed[facing=west,part=foot]"
+        },
+        "pattern": [
+          ["0P ", " D "]
+        ],
+        "symmetrical": false
+      }
+    }
+  ]
+}

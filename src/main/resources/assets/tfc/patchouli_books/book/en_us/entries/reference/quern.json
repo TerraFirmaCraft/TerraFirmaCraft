@@ -1,0 +1,104 @@
+{
+  "name": "Quern Recipes",
+  "icon": "tfc:textures/items/powder/malachite.png",
+  "category": "reference",
+  "advancement": "tfc:main/mining",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:wheat",
+      "text": "Flour can be made from any grain."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:olive",
+      "text": "Olive paste is necessary for the production of $(l:basic_smithing/lamp)olive oil$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:borax",
+      "text": "Borax is only found in Rock Salt, but it's a great source of $(l:basic_smithing/anvil)flux$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:flux",
+      "text": "Fluxstones can also be crushed into flux."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:cinnabar",
+      "text": "Redstone!"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:cryolite",
+      "text": "More redstone!"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:bone_meal_from_bone",
+      "text": ""
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:bone_meal_from_bone_block",
+      "text": ""
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:sulfur",
+      "text": "Sulfur is used for $(l:processes/barrels)powder kegs$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:saltpeter",
+      "text": "Also used for powder kegs."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:charcoal",
+      "text": "Charcoal powder!"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:rocksalt",
+      "text": "Salt is used in $(l:food/preservation)preservation$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:blaze_powder",
+      "text": "Blaze rods aren't obtainable in normal TFC, but we've let you use the recipe anyway."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:lapis_lazuli",
+      "text": "Lapis needs to be crushed to be useful as dye."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:graphite_powder",
+      "text": "Needed for $(l:advanced_metalworking/fire_clay)fire clay$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:kaolinite_powder",
+      "text": "Also needed for fire clay."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:diamonds",
+      "text": "Diamonds! You can't make tools, but you could make a fine jukebox..."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:gypsum",
+      "text": "Limestone can be made into gypsum, which can be made into $(l:processes/alabaster_and_concrete)alabaster$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:sylvite",
+      "text": "You can make sylvite into fertilizer, which is currently useless."
+    }
+  ]
+}

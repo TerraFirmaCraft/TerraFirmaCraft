@@ -128,6 +128,7 @@ POWDERS = [
     'malachite',
     'salt',
     'fertilizer',
+    'charcoal'
 ]
 WOOD_TYPES = [
     'ash',
@@ -483,25 +484,7 @@ DOOR_VARIANTS = {
     'facing=west,half=upper,hinge=right,open=true': {'model': 'tfc:door_top_tfc', 'y': 90},
     'facing=north,half=upper,hinge=right,open=true': {'model': 'tfc:door_top_tfc', 'y': 180}
 }
-TRAPDOOR_VARIANTS = {
-    'normal': None,
-    'facing=north,half=bottom,open=false': {'model': 'tfc:trapdoor_tfc', 'x': 180},
-    'facing=south,half=bottom,open=false': {'model': 'tfc:trapdoor_tfc', 'x': 180},
-    'facing=east,half=bottom,open=false': {'model': 'tfc:trapdoor_tfc', 'x': 180},
-    'facing=west,half=bottom,open=false': {'model': 'tfc:trapdoor_tfc', 'x': 180},
-    'facing=north,half=top,open=false': {'model': 'tfc:trapdoor_tfc'},
-    'facing=south,half=top,open=false': {'model': 'tfc:trapdoor_tfc'},
-    'facing=east,half=top,open=false': {'model': 'tfc:trapdoor_tfc'},
-    'facing=west,half=top,open=false': {'model': 'tfc:trapdoor_tfc'},
-    'facing=north,half=bottom,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270},
-    'facing=south,half=bottom,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 90},
-    'facing=east,half=bottom,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270, 'y': 90},
-    'facing=west,half=bottom,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270, 'y': 270},
-    'facing=north,half=top,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270},
-    'facing=south,half=top,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 90},
-    'facing=east,half=top,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270, 'y': 90},
-    'facing=west,half=top,open=true': {'model': 'tfc:trapdoor_tfc', 'x': 270, 'y': 270}
-}
+
 STAIR_VARIANTS = {
     'normal': {'model': 'stairs'},
     'facing=east,half=bottom,shape=straight': {'model': 'stairs'},
@@ -957,11 +940,6 @@ for wood_type in WOOD_TYPES:
     })
     cube_all(('double_slab', 'wood', wood_type), 'tfc:blocks/wood/planks/%s' % wood_type)
 
-    # (WOOD) TRAPDOORS
-    blockstate(('wood', 'trapdoor', wood_type), None, textures={
-        'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type
-    }, variants=TRAPDOOR_VARIANTS)
-
     # FenceGates
     blockstate(('wood', 'fence_gate', wood_type), None, textures={
         'texture': 'tfc:blocks/wood/planks/%s' % wood_type
@@ -1072,7 +1050,11 @@ for cropName, data in CROPS.items():
             )
         }
     )
-    blockstate(('dead_crop', cropName), data['model'], {texture: "tfc:blocks/crop/%s_dead" % cropName})
+    blockstate(
+        ('dead_crop', cropName), data['model'], {texture: "tfc:blocks/crop/%s_dead" % cropName},
+        {
+            'mature': {'false': {'textures': { texture: "tfc:blocks/crop/%s_dead_young" % cropName}}, 'true': {}}
+        })
 
 #   _____ _
 #  |_   _| |
@@ -1105,6 +1087,8 @@ for wood_type in WOOD_TYPES:
           {'texture': 'tfc:blocks/wood/trapdoor/%s' % wood_type})
     model(('item', 'wood', 'fence_gate', wood_type), 'block/fence_gate_closed',
           {'texture': 'tfc:blocks/wood/planks/%s' % wood_type})
+
+model(('item','stick_bunch'), 'item/generated', {'layer0': 'tfc:items/stick_bunch'})
 
 # GEMS
 for gem in GEM_TYPES:

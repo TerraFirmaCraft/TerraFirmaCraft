@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "barrel"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyeRed"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    }
+  ],
+  "result": {
+    "item": "tfc:powderkeg",
+    "data": 0,
+    "count": 1
+  }
+}

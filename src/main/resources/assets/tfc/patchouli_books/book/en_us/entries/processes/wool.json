@@ -1,0 +1,49 @@
+{
+  "name": "Wool",
+  "icon": "tfc:textures/items/animal/product/wool_cloth.png",
+  "category": "processes",
+  "advancement": "tfc:main/carpentry",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:wood/spruce/spruce_loom",
+      "title": "Loom",
+      "text": "In order to make things that use cloth or wool, you need a loom.$(br2)Looms take three different inputs: $(item)Jute, Wool Yarn, and String $()."
+    },
+    {
+      "type": "text",
+      "text": "String is obtained from Vanilla spiders, which you'll find underground. Jute is obtained from the Jute plant. Wool yarn requires a slightly more involved process (see next page)"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:hide/large_sheepskin",
+      "text": "To get wool to use with the spindle, craft a Sheepskin with a knife."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:unfired_spindel_head",
+      "text": "The spindle is needed to process wool from a sheep. First, craft an unfired spindle with a clay and a stick."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_spindle",
+      "text": "Then, fire it in a pit kiln"
+    },
+    {
+      "type": "crafting",
+      "title": "Wool Yarn",
+      "recipe": "tfc:wool_yarn",
+      "text": "Craft the spindle with the Wool to make wool yarn. Now we're ready to make some magic happen."
+    },
+    {
+      "type": "text",
+      "text": "In order to fill the loom, you need different amounts of material$(br2)Wool Yarn: 16$(br)String: 24$(br)Jute Fiber: 12$(br)Wool Cloth: 4$(br2) Hold down right click to weave. This will produce cloth if you used string, and a vanilla wool block if you used cloth."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/bed",
+      "title": "Vanilla Recipes",
+      "recipe2": "tfc:vanilla/painting"
+    }
+  ]
+}

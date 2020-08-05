@@ -55,7 +55,7 @@ public class LoomRecipe extends IForgeRegistryEntry.Impl<LoomRecipe> implements 
 
     public ItemStack getOutputItem()
     {
-        return outputItem;
+        return outputItem.copy();
     }
 
     public ResourceLocation getInProgressTexture()

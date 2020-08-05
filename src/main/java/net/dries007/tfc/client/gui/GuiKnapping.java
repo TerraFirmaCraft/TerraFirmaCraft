@@ -17,6 +17,7 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 import net.dries007.tfc.api.recipes.knapping.KnappingType;
+import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.button.GuiButtonKnapping;
 import net.dries007.tfc.objects.container.ContainerKnapping;
 
@@ -25,8 +26,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class GuiKnapping extends GuiContainerTFC
 {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping.png");
-    private static final ResourceLocation CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_disabled.png");
-    private static final ResourceLocation FIRE_CLAY_DISABLED_TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/knapping/clay_button_fire_disabled.png");
 
     private final ResourceLocation buttonTexture;
     private final KnappingType type;
@@ -103,7 +102,7 @@ public class GuiKnapping extends GuiContainerTFC
         if (type == KnappingType.CLAY || type == KnappingType.FIRE_CLAY)
         {
             GlStateManager.color(1, 1, 1, 1);
-            mc.getTextureManager().bindTexture(type == KnappingType.CLAY ? CLAY_DISABLED_TEXTURE : FIRE_CLAY_DISABLED_TEXTURE);
+            mc.getTextureManager().bindTexture(type == KnappingType.CLAY ? TFCGuiHandler.CLAY_DISABLED_TEXTURE : TFCGuiHandler.FIRE_CLAY_DISABLED_TEXTURE);
             for (GuiButton button : buttonList)
             {
                 if (!button.visible)

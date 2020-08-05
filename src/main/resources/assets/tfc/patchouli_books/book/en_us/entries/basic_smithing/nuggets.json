@@ -1,0 +1,75 @@
+{
+  "name": "Gathering Ore",
+  "icon": "tfc:textures/items/ore/small/native_copper.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:world/pick_nugget",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Scattered among the rocks and sticks on the ground are $(item)ore nuggets$(). While useless on their own, these can be melted down and casted into tools. To see where ore nuggets spawn, visit the $(l:reference/ore)reference section$()."
+    },
+    {
+      "type": "text",
+      "text": "The most basic tools you can make are made of $(thing)copper$(). To make a single tool, you need to find 10 pieces of small, copper-bearing ore. These ores are $(thing)Native Copper, Tetrahedrite, and Malachite$(). Each of these ore nuggets contains 10 units of metal. A tool is made up of 100 units."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/native_copper",
+      "title": "Native Copper Nugget",
+      "text": "Pick this up like you would any other rock."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/malachite",
+      "title": "Malachite Nugget",
+      "text": "This is another form of copper. It's blue, but melts down all the same."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/tetrahedrite",
+      "title": "Tetrahedrite Nugget",
+      "text": "This is also copper!"
+    },
+    {
+      "type": "text",
+      "text": "You might also want to skip to making $(l:basic_smithing/bronze)bronze$() tools, the next upgrade up. We'll get to alloys later, but start picking up $(thing)Bismuthinite, Cassiterite, Sphalerite, Native Gold, and Native Silver$() if you want to get ahead of the game. Every bit helps!"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/bismuthinite",
+      "title": "Bismuth Nugget",
+      "text": "Bismuth is, well, Bismuth! It's used to make alloys."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/cassiterite",
+      "title": "Cassiterite Nugget",
+      "text": "Cassiterite is tin."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/sphalerite",
+      "title": "Sphalerite Nugget",
+      "text": "Sphalerite is zinc."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/native_gold",
+      "title": "Native Gold Nugget",
+      "text": "You can't make gold tools in TFC, but it's not $(l:basic_smithing/lamp)completely useless$()!"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/native_silver",
+      "title": "Native Silver Nugget",
+      "text": "Silver is also mainly used in alloys."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/limonite",
+      "title": "Other Nuggets",
+      "text": "Ores on the ground are actually markers for larger veins underground. You may have spotted some exposed already. Feel free to gather other nuggets, like the Limonite nugget above, but you may find yourself only wanting the ore variants!"
+    }
+  ]
+}

@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.objects.te;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -198,7 +199,7 @@ public class TEAnvilTFC extends TEInventory
         {
             case SLOT_INPUT_1:
             case SLOT_INPUT_2:
-                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null) && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                return stack.hasCapability(CapabilityForgeable.FORGEABLE_CAPABILITY, null);
             case SLOT_FLUX:
                 return OreDictionaryHelper.doesStackMatchOre(stack, "dustFlux");
             case SLOT_HAMMER:
@@ -285,7 +286,17 @@ public class TEAnvilTFC extends TEInventory
 
                     // Reset forge stuff
                     resetFields();
-                    setRecipe(null);
+                    // if we have a valid single item recipe for our output, use it!
+                    AnvilRecipe newRecipe = null;
+                    if (inventory.getStackInSlot(SLOT_INPUT_2).isEmpty())
+                    {
+                        List<AnvilRecipe> recipes = AnvilRecipe.getAllFor(inventory.getStackInSlot(SLOT_INPUT_1));
+                        if (recipes.size() == 1)
+                        {
+                            newRecipe = recipes.get(0);
+                        }
+                    }
+                    setRecipe(newRecipe);
                 }
                 else if (workingProgress < 0 || workingProgress > WORK_MAX)
                 {
@@ -340,7 +351,7 @@ public class TEAnvilTFC extends TEInventory
                 }
                 return false;
             }
-            ItemStack result = recipe.getOutput();
+            ItemStack result = recipe.getOutput(player);
             IItemHeat heatResult = result.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
             float resultTemperature = 0;
             if (cap1 instanceof IItemHeat)

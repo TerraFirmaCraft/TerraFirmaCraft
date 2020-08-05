@@ -1,0 +1,54 @@
+{
+  "name": "Clay Knapping",
+  "icon": "minecraft:textures/items/clay_ball.png",
+  "category": "reference",
+  "advancement": "tfc:main/find_clay",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_small_vessel",
+      "text": "Small Vessel"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_jug",
+      "text": "Jug"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_pot",
+      "text": "Pot"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_bowl_2",
+      "text": "Clay Bowls"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_large_vessel",
+      "text": "Large Vessel"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_brick",
+      "text": "Clay Brick"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_flower_pot",
+      "text": "Clay Flower Pot"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_crucible",
+      "text": "Crucible"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_brick",
+      "text": "Fire Brick"
+    }
+  ]
+}

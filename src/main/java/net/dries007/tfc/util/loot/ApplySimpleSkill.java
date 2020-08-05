@@ -56,6 +56,7 @@ public class ApplySimpleSkill extends LootFunction
                 SimpleSkill skill = skills.getSkill(this.skillType);
                 if (skill != null)
                 {
+                    // Minimum of 1, At 0 skill, returns a bonus of an amount between the difference, At max skill, returns the actual range
                     stack.setCount(1 + (int) (valueRange.generateInt(rand) - valueRange.getMin() * (1 - skill.getTotalLevel())));
                     skill.add(incrementAmount);
                 }

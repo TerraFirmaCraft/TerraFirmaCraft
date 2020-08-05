@@ -39,8 +39,8 @@ import net.dries007.tfc.api.capability.egg.IEgg;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
+import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -51,7 +51,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
 {
     //The last time(in ticks) this chicken has laid eggs
-    private static final DataParameter<Long> LAID = EntityDataManager.createKey(EntityChickenTFC.class, Helpers.LONG_DATA_SERIALIZER);
+    private static final DataParameter<Long> LAID = EntityDataManager.createKey(EntityChickenTFC.class, EntitiesTFC.getLongDataSerializer());
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
     public float destPos;

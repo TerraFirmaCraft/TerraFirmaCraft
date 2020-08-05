@@ -30,6 +30,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -42,11 +44,16 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.capability.food.CapabilityFood;
 import net.dries007.tfc.api.capability.food.IFood;
+import net.dries007.tfc.api.capability.size.CapabilityItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -59,6 +66,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.VARINT);
     private static final DataParameter<Float> FAMILIARITY = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> HALTER = EntityDataManager.createKey(EntityMuleTFC.class, DataSerializers.BOOLEAN);
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long lastDeath; //Last time(in days) this entity checked for dying of old age
@@ -168,6 +176,16 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         return new TextComponentTranslation(MOD_ID + ".animal." + entityString + "." + this.getGender().name().toLowerCase());
     }
 
+    public boolean isHalter()
+    {
+        return dataManager.get(HALTER);
+    }
+
+    public void setHalter(boolean value)
+    {
+        dataManager.set(HALTER, value);
+    }
+
     @Override
     public boolean getCanSpawnHere()
     {
@@ -252,7 +270,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     @Override
     protected void mountTo(EntityPlayer player)
     {
-        if (this.isTame() || this.getLeashed())
+        if (isHalter())
         {
             super.mountTo(player);
         }
@@ -268,6 +286,28 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         }
         if (!this.world.isRemote)
         {
+            if (this.hasChest() && this.ticksExisted % 20 == 0)
+            {
+                // Apply overburdened when carrying more than one heavy item
+                int hugeHeavyCount = 0;
+                for (int i = 2; i < this.horseChest.getSizeInventory(); ++i)
+                {
+                    ItemStack stack = this.horseChest.getStackInSlot(i);
+                    if (CapabilityItemSize.checkItemSize(stack, Size.HUGE, Weight.VERY_HEAVY))
+                    {
+                        hugeHeavyCount++;
+                        if (hugeHeavyCount >= 2)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (hugeHeavyCount >= 2)
+                {
+                    // Does not work when ridden, mojang bug: https://bugs.mojang.com/browse/MC-121788
+                    this.addPotionEffect(new PotionEffect(PotionEffectsTFC.OVERBURDENED, 25, 125, false, false));
+                }
+            }
             // Is it time to decay familiarity?
             // If this entity was never fed(eg: new born, wild)
             // or wasn't fed yesterday(this is the starting of the second day)
@@ -327,6 +367,17 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         getDataManager().register(GENDER, true);
         getDataManager().register(BIRTHDAY, 0);
         getDataManager().register(FAMILIARITY, 0f);
+        getDataManager().register(HALTER, false);
+    }
+
+    @Override
+    public void onDeath(DamageSource cause)
+    {
+        if (!world.isRemote)
+        {
+            setChested(false); // Don't drop chest
+        }
+        super.onDeath(cause);
     }
 
     @Override
@@ -339,6 +390,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         nbt.setLong("decay", lastFDecay);
         nbt.setFloat("familiarity", getFamiliarity());
         nbt.setLong("lastDeath", lastDeath);
+        nbt.setBoolean("halter", isHalter());
     }
 
     @Override
@@ -351,6 +403,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
         this.lastFDecay = nbt.getLong("decay");
         this.setFamiliarity(nbt.getFloat("familiarity"));
         this.lastDeath = nbt.getLong("lastDeath");
+        this.setHalter(nbt.getBoolean("halter"));
     }
 
     @Override
@@ -380,6 +433,35 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
                     stack.shrink(1);
                 }
                 return true;
+            }
+            else if (!isHalter() && OreDictionaryHelper.doesStackMatchOre(stack, "halter"))
+            {
+                if (this.getAge() != Age.CHILD && getFamiliarity() > 0.15f)
+                {
+                    if (!this.world.isRemote)
+                    {
+                        this.consumeItemFromStack(player, stack);
+                        this.setHalter(true);
+                    }
+                    return true;
+                }
+                else
+                {
+                    // Show tooltips
+                    if (!this.world.isRemote)
+                    {
+                        if (this.getAge() == Age.CHILD)
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.young", getName()));
+                        }
+                        else
+                        {
+                            player.sendMessage(new TextComponentTranslation(MOD_ID + ".tooltip.animal.product.low_familiarity", getName()));
+                        }
+
+                    }
+                    return false;
+                }
             }
             else if (this.isFood(stack) && player.isSneaking() && getAdultFamiliarityCap() > 0.0F)
             {
