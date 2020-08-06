@@ -12,10 +12,10 @@
             {
               "function": "tfc:apply_skill",
               "skill": "butchering",
-              "add": 0.08,
+              "add": 0.06,
               "count": {
-                "min": 10,
-                "max": 18
+                "min": 6,
+                "max": 14
               }
             },
             {

@@ -15,7 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelYakTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
-import net.dries007.tfc.objects.entity.animal.EntityMuskOxTFC;
 import net.dries007.tfc.objects.entity.animal.EntityYakTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;

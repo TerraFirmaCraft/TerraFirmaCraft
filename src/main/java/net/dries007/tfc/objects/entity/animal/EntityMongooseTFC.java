@@ -5,14 +5,10 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import java.util.List;
-import java.util.Random;
-import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.SoundEvents;
@@ -72,12 +68,6 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     }
 
     @Override
-    public double getOldDeathChance()
-    {
-        return 0;
-    }
-
-    @Override
     public int getDaysToAdulthood()
     {
         return DAYS_TO_ADULTHOOD;
@@ -105,6 +95,12 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     public boolean canMateWith(EntityAnimal otherAnimal)
     {
         return false;
+    }
+
+    @Override
+    public double getOldDeathChance()
+    {
+        return 0;
     }
 
     @Override

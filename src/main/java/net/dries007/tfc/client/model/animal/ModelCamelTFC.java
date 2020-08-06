@@ -95,7 +95,6 @@ public class ModelCamelTFC extends ModelBase
 
     public ModelCamelTFC(float scale)
     {
-
         textureWidth = 128;
         textureHeight = 80;
 

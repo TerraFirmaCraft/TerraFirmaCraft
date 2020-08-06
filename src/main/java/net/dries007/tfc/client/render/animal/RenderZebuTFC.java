@@ -14,7 +14,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelZebuTFC;
-import net.dries007.tfc.objects.entity.animal.EntitySaberToothTFC;
 import net.dries007.tfc.objects.entity.animal.EntityZebuTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;

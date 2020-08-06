@@ -19,7 +19,7 @@
     {
       "type": "entity",
       "name": "Lion",
-      "text": "The Lion hunts during the day.",
+      "text": "The Lion hunts during the night.",
       "entity": "tfc:liontfc",
       "scale": 0.7
     },

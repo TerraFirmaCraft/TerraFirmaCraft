@@ -57,9 +57,11 @@ public class ModelCougarTFC extends ModelBase
     public ModelRenderer frontLeftLegBottom;
     public ModelRenderer frontLeftLegPaw;
 
-    public ModelCougarTFC() {
+    public ModelCougarTFC()
+    {
         textureWidth = 64;
         textureHeight = 64;
+
         frontLeftLegPaw = new ModelRenderer(this, 1, 33);
         frontLeftLegPaw.mirror = true;
         frontLeftLegPaw.setRotationPoint(0.0F, 2.4F, 0.5F);
@@ -96,7 +98,6 @@ public class ModelCougarTFC extends ModelBase
         head = new ModelRenderer(this, 0, 6);
         head.setRotationPoint(0.5F, 11.2F, -9.8F);
         head.addBox(-3.0F, -3.0F, -5.0F, 5, 5, 5, 0.1F);
-        //setRotateAngle(head, 0.17453292519943295F, 0.0F, 0.0F);
         mouthTop = new ModelRenderer(this, 23, 9);
         mouthTop.setRotationPoint(-2.5F, -0.6F, -9.0F);
         mouthTop.addBox(0.0F, 0.0F, 1.0F, 4, 2, 3, 0.0F);
@@ -198,7 +199,6 @@ public class ModelCougarTFC extends ModelBase
         backLeftLegBottom.addChild(backLeftLegPaw);
         backRightLegTop.addChild(backRightLegMiddle);
         frontRightLegTop.addChild(frontRightLegMiddle);
-        //neck.addChild(head);
     }
 
     @Override
@@ -239,12 +239,8 @@ public class ModelCougarTFC extends ModelBase
     @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
-        //super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
         setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
         setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.18203784098300857F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
-
-        //setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
-        //setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.7853981633974483F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
 
         frontRightLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
         frontLeftLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;

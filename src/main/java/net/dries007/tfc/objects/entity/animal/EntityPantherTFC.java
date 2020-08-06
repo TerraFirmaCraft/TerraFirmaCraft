@@ -24,7 +24,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraft.entity.monster.EntitySpider;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;

@@ -5,15 +5,11 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import java.util.List;
-import java.util.Random;
-import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;

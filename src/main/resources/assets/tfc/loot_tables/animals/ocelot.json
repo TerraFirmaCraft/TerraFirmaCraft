@@ -11,6 +11,7 @@
           "functions": [
             {
               "function": "set_count",
+              "add": 0.03,
               "count": 1
             },
             {

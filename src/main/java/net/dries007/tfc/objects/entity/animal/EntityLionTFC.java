@@ -260,7 +260,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
 
         public EntityAILionAttack()
         {
-            super(EntityLionTFC.this, 1.3D, 1.5D, AttackBehavior.DAYLIGHT_ONLY);
+            super(EntityLionTFC.this, 1.3D, 1.5D, AttackBehavior.NIGHTTIME_ONLY);
             this.attackTicks = 0;
         }
 

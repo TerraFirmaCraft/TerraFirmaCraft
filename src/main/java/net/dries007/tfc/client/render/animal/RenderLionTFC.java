@@ -15,9 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelLionTFC;
-import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityLionTFC;
-import net.dries007.tfc.objects.entity.animal.EntityPantherTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
