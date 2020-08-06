@@ -288,7 +288,7 @@ public class ModelZebuTFC extends ModelBase
         earR.addBox(-5.0F, -0.5F, -1.5F, 4, 1, 3, 0.0F);
         setRotateAngle(earR, 0.4363323129985824F, 0.08726646259971647F, -0.08726646259971647F);
         humpBack = new ModelRenderer(this, 44, 13);
-        humpBack.setRotationPoint(0.0F, -0.4F, -2.8F);
+        humpBack.setRotationPoint(0.0F, -0.2F, -2.8F);
         humpBack.addBox(-3.0F, -2.0F, -2.5F, 6, 2, 4, 0.0F);
         setRotateAngle(humpBack, 0.17453292519943295F, 0.0F, 0.0F);
         legLFrontHoof = new ModelRenderer(this, 10, 88);
@@ -436,15 +436,15 @@ public class ModelZebuTFC extends ModelBase
 
         if (zebu.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-           udders.isHidden = true;
-           hornRightF1A.isHidden = true;
-           hornLeftF1A.isHidden = true;
+            udders.isHidden = true;
+            hornRightF1A.isHidden = true;
+            hornLeftF1A.isHidden = true;
         }
         else
         {
-           hornMR1.isHidden = true;
-           hornML1.isHidden = true;
-           maleNeck.isHidden = true;
+            hornMR1.isHidden = true;
+            hornML1.isHidden = true;
+            maleNeck.isHidden = true;
         }
 
         GlStateManager.pushMatrix();
@@ -487,7 +487,8 @@ public class ModelZebuTFC extends ModelBase
         maleNeck.isHidden = false;
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

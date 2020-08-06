@@ -54,24 +54,11 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.TUNDRA || biomeType == BiomeHelper.BiomeType.TAIGA))
+            (biomeType == BiomeHelper.BiomeType.TAIGA))
         {
             return ConfigTFC.Animals.ALPACA.rarity;
         }
         return 0;
-    }
-
-    @Override
-    public void birthChildren()
-    {
-        int numberOfChildren = ConfigTFC.Animals.ALPACA.babies;
-        for (int i = 0; i < numberOfChildren; i++)
-        {
-            EntityAlpacaTFC baby = new EntityAlpacaTFC(world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), getDyeColor());
-            baby.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
-            baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
-            world.spawnEntity(baby);
-        }
     }
 
     @Override
@@ -90,6 +77,19 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
     public int getMaxGroupSize()
     {
         return 5;
+    }
+
+    @Override
+    public void birthChildren()
+    {
+        int numberOfChildren = ConfigTFC.Animals.ALPACA.babies;
+        for (int i = 0; i < numberOfChildren; i++)
+        {
+            EntityAlpacaTFC baby = new EntityAlpacaTFC(world, Gender.valueOf(Constants.RNG.nextBoolean()), (int) CalendarTFC.PLAYER_TIME.getTotalDays(), getDyeColor());
+            baby.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
+            baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
+            world.spawnEntity(baby);
+        }
     }
 
     @Override

@@ -76,8 +76,8 @@ public class ModelYakTFC extends ModelBase
     public ModelRenderer hornLeftF2;
 
 
-    public ModelYakTFC() {
-
+    public ModelYakTFC()
+    {
         textureWidth = 96;
         textureHeight = 96;
 
@@ -331,11 +331,11 @@ public class ModelYakTFC extends ModelBase
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
+        head.render(par7);
         neck.render(par7);
         udder.render(par7);
         bodyCollar.render(par7);
         bodyRumpHair.render(par7);
-        head.render(par7);
         tail.render(par7);
         bodyCenter.render(par7);
         legFrontRight.render(par7);

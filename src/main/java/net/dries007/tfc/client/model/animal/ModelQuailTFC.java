@@ -179,10 +179,11 @@ public class ModelQuailTFC extends ModelBase
         this.wingR.rotateAngleZ = par3;
         this.wingL.rotateAngleZ = -par3;
 
-        tail.isHidden=false;
+        tail.isHidden = false;
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

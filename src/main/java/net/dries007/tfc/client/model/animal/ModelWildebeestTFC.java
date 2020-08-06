@@ -18,7 +18,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
-import net.dries007.tfc.objects.entity.animal.EntityWildebeestTFC;
 
 /**
  * ModelWildebeestTFC
@@ -27,8 +26,8 @@ import net.dries007.tfc.objects.entity.animal.EntityWildebeestTFC;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
-public class ModelWildebeestTFC extends ModelBase {
-
+public class ModelWildebeestTFC extends ModelBase
+{
     public ModelRenderer headBase;
     public ModelRenderer earL;
     public ModelRenderer earR;
@@ -385,14 +384,15 @@ public class ModelWildebeestTFC extends ModelBase {
             headBase.rotateAngleX = headPitch / (180F / (float) Math.PI);
             headBase.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
-            legRFront.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F) * 0.8F * limbSwingAmount + 0.3490658503988659F;;
-            legLFront.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F + (float) Math.PI) * 0.8F * limbSwingAmount + 0.3490658503988659F;;
+            legRFront.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F) * 0.8F * limbSwingAmount + 0.3490658503988659F;
+            legLFront.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F + (float) Math.PI) * 0.8F * limbSwingAmount + 0.3490658503988659F;
             thighRBack.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F + (float) Math.PI) * 0.8F * limbSwingAmount + -0.17453292519943295F;
             thighLBack.rotateAngleX = MathHelper.cos(limbSwing * 0.4662F) * 0.8F * limbSwingAmount + -0.17453292519943295F;
         }
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

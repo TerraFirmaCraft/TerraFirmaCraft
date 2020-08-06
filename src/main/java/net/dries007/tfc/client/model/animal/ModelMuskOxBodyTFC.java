@@ -26,7 +26,8 @@ import net.dries007.tfc.objects.entity.animal.EntityMuskOxTFC;
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
-public class ModelMuskOxBodyTFC extends ModelBase {
+public class ModelMuskOxBodyTFC extends ModelBase
+{
     public ModelRenderer bodyMain;
     public ModelRenderer legBackLeft;
     public ModelRenderer legBackRight;

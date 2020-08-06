@@ -16,7 +16,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.client.model.animal.ModelDeerTFC;
 import net.dries007.tfc.objects.entity.animal.EntityDeerTFC;
-import net.dries007.tfc.objects.entity.animal.EntityDireWolfTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -46,14 +45,14 @@ public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
         }
     }
 
-    protected void preRenderCallback(EntityDeerTFC deerTFC, float par2)
-    {
-        GlStateManager.scale(0.8f, 0.8f, 0.8f);
-    }
-
     @Override
     protected float handleRotationFloat(EntityDeerTFC deer, float par2)
     {
         return 1.0f;
+    }
+
+    protected void preRenderCallback(EntityDeerTFC deerTFC, float par2)
+    {
+        GlStateManager.scale(0.8f, 0.8f, 0.8f);
     }
 }

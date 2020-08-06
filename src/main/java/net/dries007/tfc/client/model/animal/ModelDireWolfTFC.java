@@ -64,7 +64,6 @@ public class ModelDireWolfTFC extends ModelBase
 
     public ModelDireWolfTFC()
     {
-
         textureWidth = 88;
         textureHeight = 88;
 
@@ -264,7 +263,8 @@ public class ModelDireWolfTFC extends ModelBase
         backLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

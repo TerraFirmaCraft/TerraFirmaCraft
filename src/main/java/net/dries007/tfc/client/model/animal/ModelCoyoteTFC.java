@@ -61,8 +61,8 @@ public class ModelCoyoteTFC extends ModelBase
     public ModelRenderer frontLLegBottom;
     public ModelRenderer frontLLegPaw;
 
-    public ModelCoyoteTFC() {
-
+    public ModelCoyoteTFC()
+    {
         textureWidth = 64;
         textureHeight = 64;
 
@@ -259,17 +259,14 @@ public class ModelCoyoteTFC extends ModelBase
         setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
         setRotateAngle(neck, f4 / (1.5F * (180F / (float) Math.PI)) + -0.7853981633974483F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
 
-        //setRotateAngle(frontRLegTop, 0.13962634015954636F, 0.0F, 0.04363323129985824F);
-        //setRotateAngle(frontLLegTop, 0.13962634015954636F, 0.0F, -0.04363323129985824F);
-
         frontRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1 + 0.13962634015954636F;
         frontLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1 + 0.13962634015954636F;
         backRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;
         backLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
-
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

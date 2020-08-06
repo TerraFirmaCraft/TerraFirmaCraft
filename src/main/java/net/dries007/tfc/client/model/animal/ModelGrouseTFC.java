@@ -39,6 +39,8 @@ public class ModelGrouseTFC extends ModelBase
     public ModelRenderer feetR;
     public ModelRenderer feetL;
     public ModelRenderer body;
+    public ModelRenderer beak1;
+    public ModelRenderer beak2;
     public ModelRenderer tails7;
     public ModelRenderer tails8;
     public ModelRenderer head;
@@ -50,9 +52,7 @@ public class ModelGrouseTFC extends ModelBase
     public ModelRenderer tails9;
     public ModelRenderer tailBase;
     public ModelRenderer tailFTip;
-    public ModelRenderer bill;
-    public ModelRenderer maleL;
-    public ModelRenderer maleR;
+    public ModelRenderer maleMane;
     public ModelRenderer wingRChild;
     public ModelRenderer wingLChild;
 
@@ -60,7 +60,6 @@ public class ModelGrouseTFC extends ModelBase
     {
         textureWidth = 64;
         textureHeight = 32;
-
 
         wingRChild = new ModelRenderer(this, 18, 20);
         wingRChild.setRotationPoint(0.0F, 0.0F, 2.0F);
@@ -78,29 +77,32 @@ public class ModelGrouseTFC extends ModelBase
         wingR = new ModelRenderer(this, 14, 23);
         wingR.setRotationPoint(-4.0F, 14.5F, 1.0F);
         wingR.addBox(0.0F, 0.0F, -3.0F, 1, 4, 5, 0.0F);
-        bill = new ModelRenderer(this, 3, 2);
-        bill.setRotationPoint(1.0F, -4.0F, -3.0F);
-        bill.addBox(-2.0F, -1.0F, -1.0F, 2, 2, 2, 0.0F);
         tailFTip = new ModelRenderer(this, 53, 9);
         tailFTip.setRotationPoint(-0.5F, 0.0F, 0.0F);
         tailFTip.addBox(0.0F, 0.0F, 0.0F, 2, 3, 2, 0.0F);
-        maleL = new ModelRenderer(this, 52, 12);
-        maleL.setRotationPoint(2.1F, -2.0F, 0.5F);
-        maleL.addBox(0.0F, -2.0F, 0.0F, 0, 4, 5, 0.0F);
         bodyTop = new ModelRenderer(this, 31, 10);
         bodyTop.setRotationPoint(0.0F, 16.0F, -3.1F);
         bodyTop.addBox(-2.5F, -2.0F, -1.5F, 5, 4, 4, 0.0F);
         setRotateAngle(bodyTop, 0.6108652381980153F, 0.0F, 0.0F);
-        maleR = new ModelRenderer(this, 52, 12);
-        maleR.setRotationPoint(-2.1F, -2.0F, 0.5F);
-        maleR.addBox(0.0F, -2.0F, 0.0F, 0, 4, 5, 0.0F);
         tailBase = new ModelRenderer(this, 32, 4);
         tailBase.setRotationPoint(-0.5F, 5.6F, 0.6F);
         tailBase.addBox(-1.5F, -2.0F, -2.0F, 4, 2, 4, 0.0F);
         setRotateAngle(tailBase, -0.1647590813882647F, 0.0F, 0.0F);
         head = new ModelRenderer(this, 0, 6);
         head.setRotationPoint(0.0F, 15.0F, -3.2F);
-        head.addBox(-2.0F, -6.0F, -2.0F, 4, 6, 3, 0.0F);
+        head.addBox(-2.0F, -6.0F, -2.0F, 4, 6, 3, 0.05F);
+        maleMane = new ModelRenderer(this, 48, 0);
+        maleMane.setRotationPoint(-2.0F, -0.9F, 1.5F);
+        maleMane.addBox(0.0F, -2.0F, 0.0F, 4, 3, 4, 0.0F);
+        setRotateAngle(maleMane, 1.0471975511965976F, 0.0F, 0.0F);
+        beak1 = new ModelRenderer(this, 3, 3);
+        beak1.setRotationPoint(1.0F, -3.4F, -2.8F);
+        beak1.addBox(-2.0F, -1.0F, -1.0F, 2, 1, 2, 0.0F);
+        setRotateAngle(beak1, 0.08726646259971647F, 0.0F, 0.0F);
+        beak2 = new ModelRenderer(this, 3, 3);
+        beak2.setRotationPoint(0.0F, -3.9F, -3.8F);
+        beak2.addBox(-1.0F, 0.0F, 0.0F, 2, 1, 2, 0.0F);
+        setRotateAngle(beak2, -0.08726646259971647F, 0.0F, 0.0F);
 
         tails2 = new ModelRenderer(this, 54, 22);
         tails2.setRotationPoint(-0.3F, 15.0F, 6.0F);
@@ -169,10 +171,10 @@ public class ModelGrouseTFC extends ModelBase
 
         wingR.addChild(wingRChild);
         wingL.addChild(wingLChild);
-        head.addChild(bill);
+        head.addChild(beak1);
+        head.addChild(beak2);
+        head.addChild(maleMane);
         tailBase.addChild(tailFTip);
-        bodyTop.addChild(maleL);
-        bodyTop.addChild(maleR);
         body.addChild(tailBase);
         legR1.addChild(legR2);
         legR2.addChild(feetR);
@@ -192,10 +194,10 @@ public class ModelGrouseTFC extends ModelBase
 
         if (grouse.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            if (percent >= 0.5)
+            if (percent < 0.5)
             {
-                maleR.isHidden = true;
-                maleL.isHidden = true;
+                tailFTip.isHidden = true;
+                maleMane.isHidden = true;
                 tails1.isHidden = true;
                 tails2.isHidden = true;
                 tails3.isHidden = true;
@@ -208,8 +210,8 @@ public class ModelGrouseTFC extends ModelBase
             }
             else
             {
-                maleR.isHidden = false;
-                maleL.isHidden = false;
+                tailFTip.isHidden = true;
+                maleMane.isHidden = false;
                 tails1.isHidden = false;
                 tails2.isHidden = false;
                 tails3.isHidden = false;
@@ -219,23 +221,32 @@ public class ModelGrouseTFC extends ModelBase
                 tails7.isHidden = false;
                 tails8.isHidden = false;
                 tails9.isHidden = false;
+
             }
         }
 
         else
         {
-            maleR.isHidden = true;
-            maleL.isHidden = true;
-            tails1.isHidden = true;
-            tails2.isHidden = true;
-            tails3.isHidden = true;
-            tails4.isHidden = true;
-            tails5.isHidden = true;
-            tails6.isHidden = true;
-            tails7.isHidden = true;
-            tails8.isHidden = true;
-            tails9.isHidden = true;
+            if (percent < 0.5)
+            {
+                tailFTip.isHidden = true;
+            }
+            else
+            {
+                tailFTip.isHidden = false;
+                maleMane.isHidden = true;
+                tails1.isHidden = true;
+                tails2.isHidden = true;
+                tails3.isHidden = true;
+                tails4.isHidden = true;
+                tails5.isHidden = true;
+                tails6.isHidden = true;
+                tails7.isHidden = true;
+                tails8.isHidden = true;
+                tails9.isHidden = true;
+            }
         }
+
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
@@ -275,8 +286,8 @@ public class ModelGrouseTFC extends ModelBase
         //rightWing.setRotationPoint(-4.0F, 13, 0.0F);
         //leftWing.setRotationPoint(4.0F, 13, 0.0F);
 
-        maleR.isHidden = false;
-        maleL.isHidden = false;
+        tailFTip.isHidden = false;
+        maleMane.isHidden = false;
         tails1.isHidden = false;
         tails2.isHidden = false;
         tails3.isHidden = false;
@@ -288,7 +299,8 @@ public class ModelGrouseTFC extends ModelBase
         tails9.isHidden = false;
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
+    {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
