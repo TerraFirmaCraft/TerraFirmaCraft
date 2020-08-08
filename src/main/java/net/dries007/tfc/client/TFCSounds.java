@@ -144,8 +144,6 @@ public class TFCSounds
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.zebu.say")
     public static final SoundEvent ANIMAL_ZEBU_SAY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.zebu.cry")
-    public static final SoundEvent ANIMAL_ZEBU_CRY = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.zebu.hurt")
     public static final SoundEvent ANIMAL_ZEBU_HURT = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.zebu.death")
@@ -153,8 +151,6 @@ public class TFCSounds
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.muskox.say")
     public static final SoundEvent ANIMAL_MUSKOX_SAY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.muskox.cry")
-    public static final SoundEvent ANIMAL_MUSKOX_CRY = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.muskox.hurt")
     public static final SoundEvent ANIMAL_MUSKOX_HURT = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.muskox.death")
@@ -162,8 +158,6 @@ public class TFCSounds
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.turkey.say")
     public static final SoundEvent ANIMAL_TURKEY_SAY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.turkey.cry")
-    public static final SoundEvent ANIMAL_TURKEY_CRY = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.turkey.hurt")
     public static final SoundEvent ANIMAL_TURKEY_HURT = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.turkey.death")
@@ -171,8 +165,6 @@ public class TFCSounds
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.boar.say")
     public static final SoundEvent ANIMAL_BOAR_SAY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.boar.cry")
-    public static final SoundEvent ANIMAL_BOAR_CRY = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.boar.hurt")
     public static final SoundEvent ANIMAL_BOAR_HURT = getNull();
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.boar.death")
@@ -180,12 +172,33 @@ public class TFCSounds
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.wildebeest.say")
     public static final SoundEvent ANIMAL_WILDEBEEST_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.wildebeest.hurt")
+    public static final SoundEvent ANIMAL_WILDEBEEST_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.wildebeest.death")
+    public static final SoundEvent ANIMAL_WILDEBEEST_DEATH = getNull();
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.grouse.say")
     public static final SoundEvent ANIMAL_GROUSE_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.grouse.hurt")
+    public static final SoundEvent ANIMAL_GROUSE_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.grouse.death")
+    public static final SoundEvent ANIMAL_GROUSE_DEATH = getNull();
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.quail.say")
     public static final SoundEvent ANIMAL_QUAIL_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.quail.hurt")
+    public static final SoundEvent ANIMAL_QUAIL_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.quail.death")
+    public static final SoundEvent ANIMAL_QUAIL_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.say")
+    public static final SoundEvent ANIMAL_COYOTE_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.cry")
+    public static final SoundEvent ANIMAL_COYOTE_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.hurt")
+    public static final SoundEvent ANIMAL_COYOTE_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.death")
+    public static final SoundEvent ANIMAL_COYOTE_DEATH = getNull();
 
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.say")
     public static final SoundEvent ANIMAL_COUGAR_SAY = getNull();
@@ -196,14 +209,44 @@ public class TFCSounds
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.cougar.death")
     public static final SoundEvent ANIMAL_COUGAR_DEATH = getNull();
 
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.say")
-    public static final SoundEvent ANIMAL_COYOTE_SAY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.cry")
-    public static final SoundEvent ANIMAL_COYOTE_CRY = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.hurt")
-    public static final SoundEvent ANIMAL_COYOTE_HURT = getNull();
-    @GameRegistry.ObjectHolder(MOD_ID + ":animal.coyote.death")
-    public static final SoundEvent ANIMAL_COYOTE_DEATH = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.gazelle.say")
+    public static final SoundEvent ANIMAL_GAZELLE_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.gazelle.hurt")
+    public static final SoundEvent ANIMAL_GAZELLE_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.gazelle.death")
+    public static final SoundEvent ANIMAL_GAZELLE_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.direwolf.say")
+    public static final SoundEvent ANIMAL_DIREWOLF_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.direwolf.cry")
+    public static final SoundEvent ANIMAL_DIREWOLF_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.direwolf.hurt")
+    public static final SoundEvent ANIMAL_DIREWOLF_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.direwolf.death")
+    public static final SoundEvent ANIMAL_DIREWOLF_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.yak.say")
+    public static final SoundEvent ANIMAL_YAK_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.yak.hurt")
+    public static final SoundEvent ANIMAL_YAK_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.yak.death")
+    public static final SoundEvent ANIMAL_YAK_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.jackal.say")
+    public static final SoundEvent ANIMAL_JACKAL_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.jackal.cry")
+    public static final SoundEvent ANIMAL_JACKAL_CRY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.jackal.hurt")
+    public static final SoundEvent ANIMAL_JACKAL_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.jackal.death")
+    public static final SoundEvent ANIMAL_JACKAL_DEATH = getNull();
+
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.mongoose.say")
+    public static final SoundEvent ANIMAL_MONGOOSE_SAY = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.mongoose.hurt")
+    public static final SoundEvent ANIMAL_MONGOOSE_HURT = getNull();
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.mongoose.death")
+    public static final SoundEvent ANIMAL_MONGOOSE_DEATH = getNull();
 
     // These are static initialized because we need a custom sound type which uses the sounds before initialization
     private static final SoundEvent CHARCOAL_PILE_BREAK = createSoundEvent("block.charcoal.break");
@@ -252,7 +295,6 @@ public class TFCSounds
             createSoundEvent("animal.alpaca.say"),
             createSoundEvent("animal.alpaca.hurt"),
             createSoundEvent("animal.alpaca.death"),
-            createSoundEvent("animal.alpaca.step"),
             createSoundEvent("animal.duck.cry"),
             createSoundEvent("animal.duck.say"),
             createSoundEvent("animal.duck.hurt"),
@@ -285,15 +327,12 @@ public class TFCSounds
             createSoundEvent("animal.coyote.say"),
             createSoundEvent("animal.coyote.hurt"),
             createSoundEvent("animal.coyote.death"),
-            createSoundEvent("animal.gazelle.cry"),
             createSoundEvent("animal.gazelle.say"),
             createSoundEvent("animal.gazelle.hurt"),
             createSoundEvent("animal.gazelle.death"),
-            createSoundEvent("animal.wildebeest.cry"),
             createSoundEvent("animal.wildebeest.say"),
             createSoundEvent("animal.wildebeest.hurt"),
             createSoundEvent("animal.wildebeest.death"),
-            createSoundEvent("animal.boar.cry"),
             createSoundEvent("animal.boar.say"),
             createSoundEvent("animal.boar.hurt"),
             createSoundEvent("animal.boar.death"),
@@ -301,28 +340,27 @@ public class TFCSounds
             createSoundEvent("animal.direwolf.say"),
             createSoundEvent("animal.direwolf.hurt"),
             createSoundEvent("animal.direwolf.death"),
-            createSoundEvent("animal.turkey.cry"),
             createSoundEvent("animal.turkey.say"),
             createSoundEvent("animal.turkey.hurt"),
             createSoundEvent("animal.turkey.death"),
-            createSoundEvent("animal.yak.cry"),
             createSoundEvent("animal.yak.say"),
             createSoundEvent("animal.yak.hurt"),
             createSoundEvent("animal.yak.death"),
-            createSoundEvent("animal.muskox.cry"),
             createSoundEvent("animal.muskox.say"),
             createSoundEvent("animal.muskox.hurt"),
             createSoundEvent("animal.muskox.death"),
-            createSoundEvent("animal.zebu.cry"),
             createSoundEvent("animal.zebu.say"),
             createSoundEvent("animal.zebu.hurt"),
             createSoundEvent("animal.zebu.death"),
-            createSoundEvent("animal.mongoose.cry"),
             createSoundEvent("animal.mongoose.say"),
             createSoundEvent("animal.mongoose.hurt"),
             createSoundEvent("animal.mongoose.death"),
             createSoundEvent("animal.quail.say"),
+            createSoundEvent("animal.quail.hurt"),
+            createSoundEvent("animal.quail.death"),
             createSoundEvent("animal.grouse.say"),
+            createSoundEvent("animal.grouse.hurt"),
+            createSoundEvent("animal.grouse.death"),
             createSoundEvent("animal.cougar.cry"),
             createSoundEvent("animal.cougar.say"),
             createSoundEvent("animal.cougar.hurt"),
@@ -332,7 +370,6 @@ public class TFCSounds
             createSoundEvent("animal.jackal.hurt"),
             createSoundEvent("animal.jackal.death")
         );
-
     }
 
     private static SoundEvent createSoundEvent(String name)

@@ -99,19 +99,19 @@ public class EntityGrouseTFC extends EntityChickenTFC implements ILivestock
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSounds.ANIMAL_DUCK_HURT;
+        return TFCSounds.ANIMAL_GROUSE_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSounds.ANIMAL_DUCK_DEATH;
+        return TFCSounds.ANIMAL_GROUSE_DEATH;
     }
 
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DUCK_CRY : TFCSounds.ANIMAL_DUCK_SAY;
+        return TFCSounds.ANIMAL_GROUSE_SAY;
     }
 
     @Nullable

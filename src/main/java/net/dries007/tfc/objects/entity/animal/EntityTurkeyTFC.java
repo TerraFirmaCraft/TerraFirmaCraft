@@ -122,10 +122,9 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements IHuntable
     @Override
     protected void initEntityAI()
     {
-        EntityAnimalTFC.addCommonLivestockAI(this, 1.3D);
-        EntityAnimalTFC.addCommonPreyAI(this, 1.3D);
-
-        this.tasks.addTask(5, new EntityAIFindNest(this, 1D));
+        double speedMult = 1.3D;
+        EntityAnimalTFC.addWildPreyAI(this, speedMult);
+        EntityAnimalTFC.addCommonPreyAI(this, speedMult);
     }
 
     @Override

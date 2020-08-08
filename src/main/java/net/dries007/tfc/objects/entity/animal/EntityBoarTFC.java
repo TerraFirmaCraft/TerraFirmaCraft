@@ -158,7 +158,7 @@ public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        playSound(SoundEvents.ENTITY_PIG_STEP, 0.15F, 1.0F);
+        playSound(SoundEvents.ENTITY_PIG_STEP, 0.16F, 0.9F);
     }
 }
 

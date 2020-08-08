@@ -27,8 +27,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -38,6 +40,7 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.api.types.ILivestock;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -261,6 +264,18 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     {
         return 2;
     }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_CAMEL_CRY : TFCSounds.ANIMAL_CAMEL_SAY;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_CAMEL_HURT; }
+
+    @Override
+    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_CAMEL_DEATH; }
 
     @Override
     protected void mountTo(EntityPlayer player)

@@ -102,10 +102,10 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_PANTHER_HURT; }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_DIREWOLF_HURT; }
 
     @Override
-    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_PANTHER_DEATH; }
+    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_DIREWOLF_DEATH; }
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn)
@@ -167,7 +167,7 @@ public class EntityDireWolfTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_PANTHER_CRY : TFCSounds.ANIMAL_PANTHER_SAY;
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DIREWOLF_CRY : TFCSounds.ANIMAL_DIREWOLF_SAY;
     }
 
     @Nullable

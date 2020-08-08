@@ -121,13 +121,13 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSounds.ANIMAL_WILDEBEEST_SAY;
+        return TFCSounds.ANIMAL_WILDEBEEST_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSounds.ANIMAL_DEER_DEATH;
+        return TFCSounds.ANIMAL_WILDEBEEST_DEATH;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DEER_CRY : TFCSounds.ANIMAL_WILDEBEEST_SAY;
+        return TFCSounds.ANIMAL_WILDEBEEST_SAY;
     }
 
     @Nullable
@@ -166,6 +166,6 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.14F, 0.9F);
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 0.9F);
     }
 }
