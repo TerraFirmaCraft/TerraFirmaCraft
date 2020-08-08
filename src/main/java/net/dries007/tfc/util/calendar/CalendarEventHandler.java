@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.calendar;
+package net.dries007.tfc.util.calendar;
 
 import java.util.List;
 
@@ -19,6 +19,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
+
+import net.dries007.tfc.api.calendar.Calendars;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -33,6 +37,18 @@ public class CalendarEventHandler
 {
     public static final Logger LOGGER = LogManager.getLogger();
 
+    @SubscribeEvent
+    public static void onServerStart(FMLServerStartingEvent event)
+    {
+        Calendars.SERVER.onServerStart(event.getServer());
+    }
+
+    @SubscribeEvent
+    public static void onServerStop(FMLServerStoppedEvent event)
+    {
+        Calendars.SERVER.onServerStop();
+    }
+
     /**
      * Called from LOGICAL SERVER
      * Responsible for primary time tracking for player time
@@ -45,7 +61,7 @@ public class CalendarEventHandler
     {
         if (event.phase == TickEvent.Phase.START)
         {
-            Calendar.INSTANCE.get().onServerTick();
+            Calendars.SERVER.onServerTick();
         }
     }
 
@@ -55,7 +71,7 @@ public class CalendarEventHandler
         World world = event.world;
         if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && event.world.getDimension().getType() == DimensionType.OVERWORLD)
         {
-            Calendar.INSTANCE.get().onOverworldTick((ServerWorld) world);
+            Calendars.SERVER.onOverworldTick((ServerWorld) world);
         }
     }
 
@@ -70,9 +86,9 @@ public class CalendarEventHandler
         if (!event.getEntity().getEntityWorld().isRemote() && !event.updateWorld())
         {
             long currentWorldTime = event.getEntity().getEntityWorld().getGameTime();
-            if (Calendar.CALENDAR_TIME.getDayTime() != currentWorldTime)
+            if (Calendars.SERVER.getCalendarDayTime() != currentWorldTime)
             {
-                long jump = Calendar.INSTANCE.get().setTimeFromDayTime(currentWorldTime);
+                long jump = Calendars.SERVER.setTimeFromDayTime(currentWorldTime);
                 /* todo: requires food overrides
                 // Consume food/water on all online players accordingly (EXHAUSTION_MULTIPLIER is here to de-compensate)
                 event.getEntity().getEntityWorld().getPlayers()
@@ -105,7 +121,7 @@ public class CalendarEventHandler
                 {
                     playerCount--;
                 }
-                Calendar.INSTANCE.get().setPlayersLoggedOn(playerCount > 0);
+                Calendars.SERVER.setPlayersLoggedOn(playerCount > 0);
             }
         }
     }
@@ -126,7 +142,7 @@ public class CalendarEventHandler
             if (server != null)
             {
                 LOGGER.info("Player Logged In - Checking for Calendar Updates.");
-                Calendar.INSTANCE.get().setPlayersLoggedOn(server.getPlayerList().getCurrentPlayerCount() > 0);
+                Calendars.SERVER.setPlayersLoggedOn(server.getPlayerList().getCurrentPlayerCount() > 0);
             }
         }
     }

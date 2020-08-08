@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import net.dries007.tfc.api.calendar.Calendar;
+import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.client.TFCSounds;
@@ -83,6 +83,6 @@ public final class TerraFirmaCraft
 
         TFCBiomes.setup();
 
-        Calendar.setup();
+        Calendars.setup();
     }
 }

@@ -215,6 +215,24 @@ DEFAULT_LANG = {
     # Item groups
     'itemGroup.tfc.rock.blocks': 'TFC Rock Blocks',
     'itemGroup.tfc.metals': 'TFC Metals',
+    # Tooltips
+    'tfc.tooltip.metal': '§fMetal:§7 %s',
+    'tfc.tooltip.units': '%d units',
+    'tfc.tooltip.forging': '§f - Can Work',
+    'tfc.tooltip.welding': '§f - Can Weld',
+    'tfc.tooltip.calendar': 'Calendar',
+    'tfc.tooltip.calendar_hours_minutes': '%d:%02d',
+    'tfc.tooltip.calendar_days_years': '%d, %04d',
+    'tfc.tooltip.season': 'Season : %s',
+    'tfc.tooltip.day': 'Day : %s',
+    'tfc.tooltip.calendar_date': 'Date:',
+    'tfc.tooltip.debug_times': 'PT: %d | CT: %d (%d) | DT: %d',
+    # Commands
+    'tfc.command.heat': 'Held item heat set to %s',
+    'tfc.command.clear_world_done': 'Cleared.',
+
+    # ENUMS
+
     # Metal Tiers
     **dict(
         ('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % lang(tier))
@@ -222,23 +240,15 @@ DEFAULT_LANG = {
     ),
     # Heat
     **dict(
-        ('tfc.enum.heat.%s' % heat, '%s' % lang(heat))
+        ('tfc.enum.heat.%s' % heat, lang(heat))
         for heat in ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')
     ),
-    # Tooltips
-    'tfc.tooltip.metal': '§fMetal:§7 %s',
-    'tfc.tooltip.units': '%d units',
-    'tfc.tooltip.forging': '§f - Can Work',
-    'tfc.tooltip.welding': '§f - Can Weld',
-    'tfc.tooltip.calendar': 'Calendar',
-    'tfc.tooltip.season': 'Season : %s',
-    'tfc.tooltip.day': 'Day : %s',
-    'tfc.tooltip.date': 'Date : %s',
-    'tfc.tooltip.full_date': '%s %s %02d: %04d',
-    'tfc.tooltip.debug_times': 'PT: %d | CT: %d',
-    # Commands
-    'tfc.command.heat': 'Held item heat set to %s',
-    'tfc.command.clear_world_done': 'Cleared.',
+    # Months
+    **dict(
+        ('tfc.enum.month.%s' % month, lang(month))
+        for month in ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')
+    ),
+
     # Metals
     **dict(
         ('metal.tfc.%s' % metal, lang('%s' % metal))

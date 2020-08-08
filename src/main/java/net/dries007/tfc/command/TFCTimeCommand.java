@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import net.dries007.tfc.api.calendar.Calendar;
+import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.api.calendar.ICalendar;
 
 public class TFCTimeCommand
@@ -54,12 +54,12 @@ public class TFCTimeCommand
             .then(Commands.literal("add")
                 .then(Commands.literal("years")
                     .then(Commands.argument("value", IntegerArgumentType.integer(1))
-                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * Calendar.CALENDAR_TIME.getTicksInYear()))
+                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * Calendars.SERVER.getCalendarTicksInYear()))
                     )
                 )
                 .then(Commands.literal("months")
                     .then(Commands.argument("value", IntegerArgumentType.integer(1))
-                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * Calendar.CALENDAR_TIME.getTicksInMonth()))
+                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * Calendars.SERVER.getCalendarTicksInMonth()))
                     )
                 )
                 .then(Commands.literal("days")
@@ -75,19 +75,19 @@ public class TFCTimeCommand
             )
             .then(Commands.literal("query")
                 .then(Commands.literal("daytime")
-                    .executes(context -> sendQueryResults(context.getSource(), DAYTIME, Calendar.CALENDAR_TIME.getDayTime()))
+                    .executes(context -> sendQueryResults(context.getSource(), DAYTIME, Calendars.SERVER.getCalendarDayTime()))
                 )
                 .then(Commands.literal("gametime")
                     .executes(context -> sendQueryResults(context.getSource(), GAME_TIME, context.getSource().getWorld().getGameTime()))
                 )
                 .then(Commands.literal("day")
-                    .executes(context -> sendQueryResults(context.getSource(), DAY, Calendar.CALENDAR_TIME.getTotalDays()))
+                    .executes(context -> sendQueryResults(context.getSource(), DAY, Calendars.SERVER.getTotalDays()))
                 )
-                .then(Commands.literal("playerticks")
-                    .executes(context -> sendQueryResults(context.getSource(), PLAYER_TICKS, Calendar.SERVER_TIME.getTicks()))
+                .then(Commands.literal("ticks")
+                    .executes(context -> sendQueryResults(context.getSource(), PLAYER_TICKS, Calendars.SERVER.getTicks()))
                 )
                 .then(Commands.literal("calendarticks")
-                    .executes(context -> sendQueryResults(context.getSource(), CALENDAR_TICKS, Calendar.CALENDAR_TIME.getTicks()))
+                    .executes(context -> sendQueryResults(context.getSource(), CALENDAR_TICKS, Calendars.SERVER.getCalendarTicks()))
                 )
             )
         );
@@ -95,7 +95,7 @@ public class TFCTimeCommand
 
     private static int setMonthLength(int months)
     {
-        Calendar.INSTANCE.get().setMonthLength(months);
+        Calendars.SERVER.setMonthLength(months);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -110,13 +110,13 @@ public class TFCTimeCommand
             }
             world.setDayTime(world.getDayTime() + dayTimeJump);
         }
-        Calendar.INSTANCE.get().setTimeFromDayTime(dayTime);
+        Calendars.SERVER.setTimeFromDayTime(dayTime);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int addTime(long ticksToAdd)
     {
-        Calendar.INSTANCE.get().setTimeFromCalendarTime(Calendar.CALENDAR_TIME.getTicks() + ticksToAdd);
+        Calendars.SERVER.setTimeFromCalendarTime(Calendars.SERVER.getCalendarTicks() + ticksToAdd);
         return Command.SINGLE_SUCCESS;
     }
 

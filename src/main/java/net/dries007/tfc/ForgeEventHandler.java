@@ -39,8 +39,6 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.dries007.tfc.api.calendar.Calendar;
-import net.dries007.tfc.api.calendar.CalendarWorldData;
 import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.api.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.api.capabilities.heat.HeatCapability;
@@ -48,7 +46,6 @@ import net.dries007.tfc.command.ClearWorldCommand;
 import net.dries007.tfc.command.HeatCommand;
 import net.dries007.tfc.command.TFCTimeCommand;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.ChunkDataRequestPacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.TFCTags;
@@ -203,9 +200,6 @@ public final class ForgeEventHandler
         ClearWorldCommand.register(dispatcher);
         HeatCommand.register(dispatcher);
         TFCTimeCommand.register(dispatcher);
-
-        // Initialize calendar for the current server
-        Calendar.INSTANCE.get().init(event.getServer());
     }
 
     @SubscribeEvent
@@ -292,12 +286,6 @@ public final class ForgeEventHandler
         if (event.getWorld() instanceof ServerWorld && event.getWorld().getDimension().getType() == DimensionType.OVERWORLD)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
-
-            // Calendar Sync / Initialization
-            CalendarWorldData data = CalendarWorldData.get(world);
-            Calendar.INSTANCE.get().resetTo(data.getCalendar());
-            PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(Calendar.INSTANCE.get()));
-
             if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
             {
                 // Natural regeneration should be disabled, allows TFC to have custom regeneration
