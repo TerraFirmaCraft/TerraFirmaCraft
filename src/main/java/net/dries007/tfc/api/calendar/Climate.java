@@ -13,6 +13,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.biome.BiomeRainfall;
 import net.dries007.tfc.world.biome.BiomeTemperature;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -22,6 +23,8 @@ import net.dries007.tfc.world.noise.NoiseUtil;
 /**
  * Central class for all TFC climate requirements.
  * This is only valid in the overworld!
+ *
+ * todo: this needs to be checked and tested (and possibly rewritten / modified) to have proper client / server separation as the calendar does
  */
 public final class Climate
 {
@@ -56,7 +59,7 @@ public final class Climate
     public static float getTemperature(IWorld world, BlockPos pos)
     {
         ChunkData data = ChunkData.get(world, pos, ChunkData.Status.CLIMATE, true);
-        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendar.CALENDAR_TIME.getTicks(), Calendar.CALENDAR_TIME.getDaysInMonth());
+        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
     }
 
     public static float getRainfall(IWorld world, BlockPos pos)
@@ -74,7 +77,7 @@ public final class Climate
     public static float getTemperature(BlockPos pos)
     {
         ChunkData data = ChunkDataCache.get(pos);
-        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendar.CALENDAR_TIME.getTicks(), Calendar.CALENDAR_TIME.getDaysInMonth());
+        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
     }
 
     public static float getRainfall(BlockPos pos)
@@ -86,15 +89,15 @@ public final class Climate
     private static float calculateTemperature(int z, int y, float averageTemperature, long calendarTime, long daysInMonth)
     {
         // Start by checking the monthly / seasonal temperature
-        Month currentMonth = ICalendarFormatted.getMonthOfYear(calendarTime, daysInMonth);
+        Month currentMonth = ICalendar.getMonthOfYear(calendarTime, daysInMonth);
         Month nextMonth = currentMonth.next();
-        float delta = (float) ICalendarFormatted.getDayOfMonth(calendarTime, daysInMonth) / daysInMonth;
+        float delta = (float) ICalendar.getDayOfMonth(calendarTime, daysInMonth) / daysInMonth;
         float monthFactor = NoiseUtil.lerp(currentMonth.getTemperatureModifier(), nextMonth.getTemperatureModifier(), delta);
         float monthTemperature = monthFactor * (15 + 5 * MathHelper.sin(PI * z / TFCConfig.COMMON.temperatureLayerScale.get()));
 
         // Next, add hourly and daily variations
         // Hottest part of the day at 12, coldest at 0
-        int hourOfDay = ICalendarFormatted.getHourOfDay(calendarTime);
+        int hourOfDay = ICalendar.getHourOfDay(calendarTime);
         if (hourOfDay > 12)
         {
             // Range: 0 - 12

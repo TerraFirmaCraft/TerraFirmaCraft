@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.MetalItem;
-import net.dries007.tfc.api.calendar.Calendar;
+import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -74,13 +74,14 @@ public class ClientForgeEventHandler
                 list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
                 // Always add calendar info
-                list.add(I18n.format("tfc.tooltip.date", Calendar.CALENDAR_TIME.getTimeAndDate()));
-                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendar.SERVER_TIME.getTicks(), Calendar.CALENDAR_TIME.getTicks()));
+                list.add(I18n.format("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getFormattedText());
+                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), Calendars.CLIENT.getCalendarDayTime(), mc.getRenderViewEntity().world.getDayTime()));
 
                 IChunk chunk = mc.world.getChunk(pos);
                 ChunkData.get(chunk).ifPresent(data -> {
                     if (data.getStatus().isAtLeast(ChunkData.Status.CLIMATE))
                     {
+                        // todo: translation keys
                         list.add(String.format("%sAvg. Temp: %s%.1f\u00b0C", GRAY, WHITE, data.getAverageTemp(pos)));
                         list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall(pos)));
                     }

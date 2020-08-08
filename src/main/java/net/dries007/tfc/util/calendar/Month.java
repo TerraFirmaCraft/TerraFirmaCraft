@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.api.calendar;
+package net.dries007.tfc.util.calendar;
 
 import java.util.Arrays;
 

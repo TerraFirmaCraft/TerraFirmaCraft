@@ -12,23 +12,24 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import net.dries007.tfc.api.calendar.Calendar;
+import net.dries007.tfc.api.calendar.Calendars;
+import net.dries007.tfc.util.calendar.CalendarEventHandler;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
- * @see net.dries007.tfc.api.calendar.CalendarEventHandler
+ * @see CalendarEventHandler
  */
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public final class ClientCalendarEventHandler
 {
     @SubscribeEvent
-    public static void onOverworldTick(TickEvent.ClientTickEvent event)
+    public static void onClientTick(TickEvent.ClientTickEvent event)
     {
         World world = Minecraft.getInstance().world;
         if (event.phase == TickEvent.Phase.END && world != null && !Minecraft.getInstance().isGamePaused())
         {
-            Calendar.INSTANCE.get().onClientTick();
+            Calendars.CLIENT.onClientTick();
         }
     }
 }
