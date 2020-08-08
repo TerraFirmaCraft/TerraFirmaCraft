@@ -14,6 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -128,19 +129,19 @@ public class EntityMuskOxTFC extends EntitySheepTFC implements ILivestock
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSounds.ANIMAL_ALPACA_HURT;
+        return TFCSounds.ANIMAL_MUSKOX_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSounds.ANIMAL_ALPACA_DEATH;
+        return TFCSounds.ANIMAL_MUSKOX_DEATH;
     }
 
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_ALPACA_CRY : TFCSounds.ANIMAL_ALPACA_SAY;
+        return TFCSounds.ANIMAL_MUSKOX_SAY;
     }
 
     @Nullable
@@ -150,8 +151,9 @@ public class EntityMuskOxTFC extends EntitySheepTFC implements ILivestock
     }
 
     @Override
+    // Equivalent sound
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
+        playSound(SoundEvents.ENTITY_COW_STEP, 0.16F, 1.1F);
     }
 }

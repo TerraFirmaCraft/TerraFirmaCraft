@@ -106,13 +106,13 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSounds.ANIMAL_GOAT_HURT;
+        return TFCSounds.ANIMAL_ZEBU_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSounds.ANIMAL_GOAT_DEATH;
+        return TFCSounds.ANIMAL_ZEBU_DEATH;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_GOAT_CRY : TFCSounds.ANIMAL_GOAT_SAY;
+        return TFCSounds.ANIMAL_ZEBU_SAY;
     }
 
     @Nullable
@@ -135,9 +135,6 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
     }
 
     @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        // Equivalent sound
-        this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
-    }
+    // Equivalent sound
+    protected void playStepSound(BlockPos pos, Block blockIn){ playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 1.0F); }
 }

@@ -22,6 +22,7 @@ import net.minecraft.world.biome.Biome;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IHuntable;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
@@ -106,13 +107,13 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_PIG_HURT;
+        return TFCSounds.ANIMAL_MONGOOSE_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_PIG_DEATH;
+        return TFCSounds.ANIMAL_MONGOOSE_DEATH;
     }
 
     @Override
@@ -134,7 +135,7 @@ public class EntityMongooseTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_PIG_AMBIENT;
+        return TFCSounds.ANIMAL_MONGOOSE_SAY;
     }
 
     @Nullable

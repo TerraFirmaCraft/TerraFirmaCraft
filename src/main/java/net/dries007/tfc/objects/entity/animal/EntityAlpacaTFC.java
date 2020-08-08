@@ -14,6 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -146,15 +147,14 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
         return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_ALPACA_CRY : TFCSounds.ANIMAL_ALPACA_SAY;
     }
 
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn) {
+        this.playSound(SoundEvents.ENTITY_LLAMA_STEP, 0.15F, 1.0F);
+    }
+
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_ALPACA;
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        playSound(TFCSounds.ANIMAL_ALPACA_STEP, 0.15F, 1.0F);
     }
 }

@@ -99,19 +99,19 @@ public class EntityQuailTFC extends EntityChickenTFC implements ILivestock
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return TFCSounds.ANIMAL_DUCK_HURT;
+        return TFCSounds.ANIMAL_QUAIL_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return TFCSounds.ANIMAL_DUCK_DEATH;
+        return TFCSounds.ANIMAL_QUAIL_DEATH;
     }
 
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DUCK_CRY : TFCSounds.ANIMAL_DUCK_SAY;
+        return TFCSounds.ANIMAL_QUAIL_SAY;
     }
 
     @Nullable
@@ -124,7 +124,7 @@ public class EntityQuailTFC extends EntityChickenTFC implements ILivestock
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         // Same sound, no need to create another
-        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.14F, 0.9F);
     }
 
     @Override

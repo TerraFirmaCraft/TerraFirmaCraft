@@ -154,7 +154,7 @@ public class EntityGazelleTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_DEER_CRY : TFCSounds.ANIMAL_DEER_SAY;
+        return TFCSounds.ANIMAL_GAZELLE_SAY;
     }
 
     @Nullable
@@ -166,6 +166,6 @@ public class EntityGazelleTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.14F, 0.9F);
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.14F, 0.8F);
     }
 }
