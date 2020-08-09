@@ -11,8 +11,9 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 
@@ -20,12 +21,12 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class HeatCommand
 {
-    public static void register(CommandDispatcher<CommandSource> dispatcher)
+    public static LiteralArgumentBuilder<CommandSource> create()
     {
-        dispatcher.register(
-            Commands.literal("heat").requires(source -> source.hasPermissionLevel(2))
-                .then(Commands.argument("value", IntegerArgumentType.integer(0))
-                    .executes(cmd -> heatItem(cmd.getSource(), IntegerArgumentType.getInteger(cmd, "value")))));
+        return Commands.literal("heat").requires(source -> source.hasPermissionLevel(2))
+            .then(Commands.argument("value", IntegerArgumentType.integer(0))
+                .executes(cmd -> heatItem(cmd.getSource(), IntegerArgumentType.getInteger(cmd, "value")))
+            );
     }
 
     private static int heatItem(CommandSource source, int value) throws CommandSyntaxException
@@ -40,6 +41,6 @@ public final class HeatCommand
                 source.sendFeedback(new TranslationTextComponent(MOD_ID + ".command.heat", value), true);
             });
         }
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 }

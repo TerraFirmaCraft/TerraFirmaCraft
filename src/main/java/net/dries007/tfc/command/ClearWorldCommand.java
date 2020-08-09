@@ -16,15 +16,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dries007.tfc.world.vein.VeinType;
 import net.dries007.tfc.world.vein.VeinTypeManager;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 public final class ClearWorldCommand
 {
+    public static final String STARTING = "tfc.command.clear_world.starting";
+    public static final String DONE = "tfc.command.clear_world.done";
+
     private static final Set<BlockState> VEIN_STATES = new HashSet<>();
 
     public static void resetVeinStates()
@@ -32,19 +34,17 @@ public final class ClearWorldCommand
         VeinTypeManager.INSTANCE.getValues().stream().map(VeinType::getOreStates).forEach(VEIN_STATES::addAll);
     }
 
-    public static void register(CommandDispatcher<CommandSource> dispatcher)
+    public static LiteralArgumentBuilder<CommandSource> create()
     {
-        dispatcher.register(
-            Commands.literal("clearworld")
-                .requires(source -> source.hasPermissionLevel(2))
-                .then(Commands.argument("radius", IntegerArgumentType.integer(1, 250))
-                    .executes(cmd -> clearWorld(cmd.getSource(), IntegerArgumentType.getInteger(cmd, "radius")))
-                )
-        );
+        return Commands.literal("clearworld")
+            .requires(source -> source.hasPermissionLevel(2))
+            .then(Commands.argument("radius", IntegerArgumentType.integer(1, 250)).executes(cmd -> clearWorld(cmd.getSource(), IntegerArgumentType.getInteger(cmd, "radius")))
+            );
     }
 
     private static int clearWorld(CommandSource source, int radius)
     {
+        source.sendFeedback(new TranslationTextComponent(STARTING), true);
         final World world = source.getWorld();
         final BlockPos center = new BlockPos(source.getPos());
         final BlockState air = Blocks.AIR.getDefaultState();
@@ -57,7 +57,7 @@ public final class ClearWorldCommand
             }
         }
 
-        source.sendFeedback(new TranslationTextComponent(MOD_ID + ".command.clear_world_done"), true);
-        return 1;
+        source.sendFeedback(new TranslationTextComponent(DONE), true);
+        return Command.SINGLE_SUCCESS;
     }
 }

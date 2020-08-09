@@ -12,12 +12,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.api.calendar.ICalendar;
 
-public class TFCTimeCommand
+public class TimeCommand
 {
     private static final String DAYTIME = "tfc.commands.time.query.daytime";
     private static final String GAME_TIME = "tfc.commands.time.query.game_time";
@@ -25,12 +25,9 @@ public class TFCTimeCommand
     private static final String PLAYER_TICKS = "tfc.commands.time.query.player_ticks";
     private static final String CALENDAR_TICKS = "tfc.commands.time.query.calendar_ticks";
 
-    public static void register(CommandDispatcher<CommandSource> dispatcher)
+    public static LiteralArgumentBuilder<CommandSource> create()
     {
-        // First, remove the vanilla command by the same name
-        // This seems to work. It does leave the command still lying around, but it shouldn't matter as we replace it anyway
-        dispatcher.getRoot().getChildren().removeIf(node -> node.getName().equals("time"));
-        dispatcher.register(Commands.literal("time")
+        return Commands.literal("time")
             .requires(source -> source.hasPermissionLevel(2))
             .then(Commands.literal("set")
                 .then(Commands.literal("monthlength")
@@ -89,8 +86,7 @@ public class TFCTimeCommand
                 .then(Commands.literal("calendarticks")
                     .executes(context -> sendQueryResults(context.getSource(), CALENDAR_TICKS, Calendars.SERVER.getCalendarTicks()))
                 )
-            )
-        );
+            );
     }
 
     private static int setMonthLength(int months)

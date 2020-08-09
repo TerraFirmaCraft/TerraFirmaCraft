@@ -233,9 +233,16 @@ DEFAULT_LANG = {
     'tfc.tooltip.calendar_birthday': '%s\'s Birthday!',
     'tfc.tooltip.calendar_date': 'Date : ',
     'tfc.tooltip.debug_times': 'PT: %d | CT: %d | DT: %d',
+
     # Commands
+    'tfc.commands.time.query.daytime': 'The day time is %s',
+    'tfc.commands.time.query.game_time': 'The game time is %s',
+    'tfc.commands.time.query.day': 'The day is %s',
+    'tfc.commands.time.query.player_ticks': 'The player ticks is %s',
+    'tfc.commands.time.query.calendar_ticks': 'The calendar ticks is %s',
     'tfc.command.heat': 'Held item heat set to %s',
-    'tfc.command.clear_world_done': 'Cleared.',
+    'tfc.command.clear_world.starting': 'Clearing world. Prepare for lag...',
+    'tfc.command.clear_world.done': 'Cleared.',
 
     # ENUMS
 

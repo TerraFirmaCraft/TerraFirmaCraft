@@ -15,6 +15,6 @@ import net.dries007.tfc.util.Helpers;
  */
 public class TFCContainerProviders
 {
-    public static final INamedContainerProvider CALENDAR = Helpers.createNamedContainerProvider(new TranslationTextComponent("tfc.screen.calendar"), (windowId, inv, player) -> TFCContainerTypes.CALENDAR.get().create(windowId, inv));
-    public static final INamedContainerProvider NUTRITION = Helpers.createNamedContainerProvider(new TranslationTextComponent("tfc.screen.nutrition"), (windowId, inv, player) -> TFCContainerTypes.NUTRITION.get().create(windowId, inv));
+    public static final INamedContainerProvider CALENDAR = Helpers.createNamedContainerProvider(new TranslationTextComponent("tfc.screen.calendar"), (windowId, inv, player) -> new SimpleContainer(TFCContainerTypes.CALENDAR.get(), windowId, player.inventory));
+    public static final INamedContainerProvider NUTRITION = Helpers.createNamedContainerProvider(new TranslationTextComponent("tfc.screen.nutrition"), (windowId, inv, player) -> new SimpleContainer(TFCContainerTypes.NUTRITION.get(), windowId, player.inventory));
 }
