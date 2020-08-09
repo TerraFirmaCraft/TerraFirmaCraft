@@ -34,6 +34,6 @@ public class PacketHandler
         CHANNEL.registerMessage(id++, ChunkDataUpdatePacket.class, ChunkDataUpdatePacket::encode, ChunkDataUpdatePacket::new, ChunkDataUpdatePacket::handle);
         CHANNEL.registerMessage(id++, ChunkDataRequestPacket.class, ChunkDataRequestPacket::encode, ChunkDataRequestPacket::new, ChunkDataRequestPacket::handle);
         CHANNEL.registerMessage(id++, CalendarUpdatePacket.class, CalendarUpdatePacket::encode, CalendarUpdatePacket::new, CalendarUpdatePacket::handle);
-
+        CHANNEL.registerMessage(id++, SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
     }
 }

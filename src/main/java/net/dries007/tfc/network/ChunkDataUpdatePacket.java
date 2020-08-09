@@ -37,16 +37,16 @@ public class ChunkDataUpdatePacket
 
     ChunkDataUpdatePacket(PacketBuffer buffer)
     {
-        chunkX = buffer.readInt();
-        chunkZ = buffer.readInt();
+        chunkX = buffer.readVarInt();
+        chunkZ = buffer.readVarInt();
         rainfallLayer = new LerpFloatLayer(buffer);
         temperatureLayer = new LerpFloatLayer(buffer);
     }
 
     void encode(PacketBuffer buffer)
     {
-        buffer.writeInt(chunkX);
-        buffer.writeInt(chunkZ);
+        buffer.writeVarInt(chunkX);
+        buffer.writeVarInt(chunkZ);
         rainfallLayer.serialize(buffer);
         temperatureLayer.serialize(buffer);
     }

@@ -17,11 +17,21 @@ import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.api.calendar.ICalendar;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.util.ReentrantRunnable;
 
 public class ServerCalendar extends Calendar
 {
     public static final int SYNC_INTERVAL = 20; // Number of ticks between sync attempts. This mimics vanilla's time sync
     public static final int TIME_DESYNC_THRESHOLD = 5;
+
+    private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(Calendars.SERVER::setDoDaylightCycle);
+
+    @SuppressWarnings("unchecked")
+    public static void setup()
+    {
+        GameRules.RuleType<GameRules.BooleanValue> type = (GameRules.RuleType<GameRules.BooleanValue>) GameRules.GAME_RULES.get(GameRules.DO_DAYLIGHT_CYCLE);
+        type.changeListener = type.changeListener.andThen((server, t) -> DO_DAYLIGHT_CYCLE.run());
+    }
 
     @Nullable
     private MinecraftServer server;
@@ -122,12 +132,12 @@ public class ServerCalendar extends Calendar
             this.arePlayersLoggedOn = arePlayersLoggedOn;
             if (arePlayersLoggedOn)
             {
-                Calendars.DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(doDaylightCycle, server));
+                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(doDaylightCycle, server));
                 LOGGER.info("Reverted doDaylightCycle to {} as players are logged in.", doDaylightCycle);
             }
             else
             {
-                Calendars.DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
+                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
                 LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
             }
 
@@ -143,7 +153,7 @@ public class ServerCalendar extends Calendar
             doDaylightCycle = rules.getBoolean(GameRules.DO_DAYLIGHT_CYCLE);
             if (!arePlayersLoggedOn)
             {
-                Calendars.DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
+                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
                 LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
             }
 
@@ -159,7 +169,7 @@ public class ServerCalendar extends Calendar
         this.server = server;
 
         GameRules rules = server.getWorld(DimensionType.OVERWORLD).getGameRules();
-        Calendars.DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
+        DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
 
         reset(CalendarWorldData.get(server.getWorld(DimensionType.OVERWORLD)).getCalendar());
         sendUpdatePacket();

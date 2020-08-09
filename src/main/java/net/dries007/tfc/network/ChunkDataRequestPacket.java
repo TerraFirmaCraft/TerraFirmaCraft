@@ -29,14 +29,14 @@ public class ChunkDataRequestPacket
 
     public ChunkDataRequestPacket(PacketBuffer buffer)
     {
-        chunkX = buffer.readInt();
-        chunkZ = buffer.readInt();
+        chunkX = buffer.readVarInt();
+        chunkZ = buffer.readVarInt();
     }
 
     void encode(PacketBuffer buffer)
     {
-        buffer.writeInt(chunkX);
-        buffer.writeInt(chunkZ);
+        buffer.writeVarInt(chunkX);
+        buffer.writeVarInt(chunkZ);
     }
 
     void handle(Supplier<NetworkEvent.Context> context)

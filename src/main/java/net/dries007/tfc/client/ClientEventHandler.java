@@ -8,6 +8,7 @@ package net.dries007.tfc.client;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -25,8 +26,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.api.calendar.Climate;
+import net.dries007.tfc.client.screen.CalendarScreen;
+import net.dries007.tfc.client.screen.NutritionScreen;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
+import net.dries007.tfc.objects.container.TFCContainerTypes;
 import net.dries007.tfc.objects.entities.TFCEntities;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -41,6 +45,13 @@ public final class ClientEventHandler
     {
         LOGGER.debug("Client Setup");
 
+        // Screens
+
+        ScreenManager.registerFactory(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
+        ScreenManager.registerFactory(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
+
+        // Render Types
+
         // Rock blocks
         TFCBlocks.ROCKS.values().stream().map(map -> map.get(Rock.BlockType.SPIKE)).forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutout()));
         TFCBlocks.ORES.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutout())));
@@ -52,6 +63,8 @@ public final class ClientEventHandler
 
         // Metal blocks
         TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.getCutout())));
+
+        // Entity Rendering
 
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
     }
