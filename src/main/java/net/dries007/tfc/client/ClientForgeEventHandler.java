@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.CreateWorldScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -117,7 +116,8 @@ public class ClientForgeEventHandler
     @SubscribeEvent
     public static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event)
     {
-        if (event.getGui() instanceof InventoryScreen)
+        PlayerEntity player = Minecraft.getInstance().player;
+        if (event.getGui() instanceof InventoryScreen && player != null && !player.isCreative())
         {
             InventoryScreen screen = (InventoryScreen) event.getGui();
             int guiLeft = ((InventoryScreen) event.getGui()).getGuiLeft();
@@ -130,23 +130,6 @@ public class ClientForgeEventHandler
             event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 96, 0, 1, 3, 64, 0, button -> {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.NUTRITION));
             }).setRecipeBookCallback(screen));
-        }
-    }
-
-    @SubscribeEvent
-    public static void onGuiButtonPressPost(GuiScreenEvent.ActionPerformedEvent.Post event)
-    {
-        if (event.getGui() instanceof InventoryScreen)
-        {
-            // This is necessary to catch the resizing of the inventory gui when you open the recipe book
-            InventoryScreen screen = (InventoryScreen) event.getGui();
-            for (Button button : event.getButtonList())
-            {
-                if (button instanceof PlayerInventoryTabButton)
-                {
-                    ((PlayerInventoryTabButton) button).updateGuiSize(screen.getGuiLeft(), screen.getGuiTop());
-                }
-            }
         }
     }
 }

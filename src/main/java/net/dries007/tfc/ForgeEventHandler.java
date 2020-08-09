@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.command.CommandSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.tags.BlockTags;
@@ -38,13 +37,10 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-import com.mojang.brigadier.CommandDispatcher;
 import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.api.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.api.capabilities.heat.HeatCapability;
-import net.dries007.tfc.command.ClearWorldCommand;
-import net.dries007.tfc.command.HeatCommand;
-import net.dries007.tfc.command.TFCTimeCommand;
+import net.dries007.tfc.command.TFCCommands;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.ChunkDataRequestPacket;
 import net.dries007.tfc.network.PacketHandler;
@@ -194,12 +190,9 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onServerStarting(FMLServerStartingEvent event)
     {
-        LOGGER.debug("On Server Starting");
-
-        CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
-        ClearWorldCommand.register(dispatcher);
-        HeatCommand.register(dispatcher);
-        TFCTimeCommand.register(dispatcher);
+        // todo: move this to the dedicated command register event on forge update
+        LOGGER.debug("Registering TFC Commands");
+        TFCCommands.register(event.getCommandDispatcher());
     }
 
     @SubscribeEvent

@@ -82,9 +82,7 @@ public final class TerraFirmaCraft
         ForgingCapability.setup();
         ChunkDataCapability.setup();
         WorldTrackerCapability.setup();
-
         TFCBiomes.setup();
-
         ServerCalendar.setup();
     }
 }

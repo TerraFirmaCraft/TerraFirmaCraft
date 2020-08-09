@@ -85,10 +85,10 @@ public class CalendarEventHandler
     {
         if (!event.getEntity().getEntityWorld().isRemote() && !event.updateWorld())
         {
-            long currentWorldTime = event.getEntity().getEntityWorld().getGameTime();
-            if (Calendars.SERVER.getCalendarDayTime() != currentWorldTime)
+            long currentDayTime = event.getEntity().getEntityWorld().getDayTime();
+            if (Calendars.SERVER.getCalendarDayTime() != currentDayTime)
             {
-                long jump = Calendars.SERVER.setTimeFromDayTime(currentWorldTime);
+                long jump = Calendars.SERVER.setTimeFromDayTime(currentDayTime);
                 /* todo: requires food overrides
                 // Consume food/water on all online players accordingly (EXHAUSTION_MULTIPLIER is here to de-compensate)
                 event.getEntity().getEntityWorld().getPlayers()
