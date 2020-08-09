@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "tfc:block/rock/cracked_bricks/claystone",
+    "top": "tfc:block/rock/cracked_bricks/claystone",
+    "side": "tfc:block/rock/cracked_bricks/claystone"
+  }
+}

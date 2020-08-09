@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "tfc:block/rock/mossy_bricks/granite",
+    "top": "tfc:block/rock/mossy_bricks/granite",
+    "side": "tfc:block/rock/mossy_bricks/granite"
+  }
+}

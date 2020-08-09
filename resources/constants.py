@@ -213,8 +213,8 @@ ORE_VEINS: Dict[str, Vein] = {
         'diamond': Vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
         'emerald': Vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
 }
-
-ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'spike', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled']
+ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike']
+CUTTABLE_ROCKS = ['raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks']
 ROCK_SPIKE_PARTS = ['base', 'middle', 'tip']
 SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'green', 'pink']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path', 'clay', 'clay_grass']
@@ -237,6 +237,7 @@ DEFAULT_LANG = {
     'itemGroup.tfc.metals': 'TFC Metals',
     'itemGroup.tfc.gems': 'TFC Gems',
     'itemGroup.tfc.misc': 'TFC Misc',
+    'itemGroup.tfc.decorations': 'TFC Decorations',
     # Metal Tiers
     **dict(
         ('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % lang(tier))
@@ -271,4 +272,5 @@ DEFAULT_LANG = {
         ('metal.tfc.%s' % metal, lang('%s' % metal))
         for metal in METALS.keys()
     )
+
 }

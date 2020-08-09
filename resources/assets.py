@@ -27,14 +27,31 @@ def generate(rm: ResourceManager):
                  block = rm.blockstate(('rock', block_type, rock)) \
                     .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
                     .with_item_model()
+                 if block_type in CUTTABLE_ROCKS:
+                    # Stairs
+                    rm.block('tfc:rock/' + block_type + '/' + rock).make_stairs()
+                    rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_stairs','tfc:rock/' + block_type + '/' + rock + '_stairs')
+                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_stairs',lang('%s %s Stairs', rock, block_type))
+                    # Slabs
+                    rm.block('tfc:rock/' + block_type + '/' + rock).make_slab()
+                    slab_namespace = 'tfc:rock/' + block_type + '/' + rock + '_slab'
+                    rm.block_loot(slab_namespace,{"rolls":1,"entries":[{"type":"minecraft:item","functions":[{"function":"minecraft:set_count","conditions":[{"condition":"minecraft:block_state_property","block":slab_namespace,"properties":{"type":"double"}}],"count":2},{"function":"minecraft:explosion_decay"}],"name":slab_namespace}]})
+                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_slab',lang('%s %s Slab', rock, block_type))
+                    # Walls
+                    rm.block('tfc:rock/' + block_type + '/' + rock).make_wall()
+                    rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_wall','tfc:rock/' + block_type + '/' + rock + '_wall')
+                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_wall',lang('%s %s Wall', rock, block_type))
+                    rm.block_tag('minecraft:walls','tfc:rock/' + block_type + '/' + rock + '_wall')
                  if block_type == 'raw':
                     block.with_block_loot({"entries": "tfc:rock/rock/%s" % rock, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 3, "type": "minecraft:uniform"}}]})
                  else:
                     block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
-                 if block_type in {'smooth', 'raw'}:
+                 if block_type in {'smooth', 'raw', 'chiseled'}:
                     block.with_lang(lang('%s %s', block_type, rock))
                  else:
                     block.with_lang(lang('%s %s', rock, block_type))
+
+
 
 
         # Ores

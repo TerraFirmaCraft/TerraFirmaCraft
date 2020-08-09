@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "tfc:block/rock/cracked_bricks/conglomerate",
+    "top": "tfc:block/rock/cracked_bricks/conglomerate",
+    "side": "tfc:block/rock/cracked_bricks/conglomerate"
+  }
+}
