@@ -89,10 +89,10 @@ public class Calendar implements ICalendar
 
     public void write(PacketBuffer buffer)
     {
-        buffer.writeInt(daysInMonth);
+        buffer.writeVarInt(daysInMonth);
 
-        buffer.writeLong(playerTicks);
-        buffer.writeLong(calendarTicks);
+        buffer.writeVarLong(playerTicks);
+        buffer.writeVarLong(calendarTicks);
 
         buffer.writeBoolean(doDaylightCycle);
         buffer.writeBoolean(arePlayersLoggedOn);
@@ -100,10 +100,10 @@ public class Calendar implements ICalendar
 
     public void read(PacketBuffer buffer)
     {
-        daysInMonth = buffer.readInt();
+        daysInMonth = buffer.readVarInt();
 
-        playerTicks = buffer.readLong();
-        calendarTicks = buffer.readLong();
+        playerTicks = buffer.readVarLong();
+        calendarTicks = buffer.readVarLong();
 
         doDaylightCycle = buffer.readBoolean();
         arePlayersLoggedOn = buffer.readBoolean();

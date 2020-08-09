@@ -11,13 +11,20 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerProvider;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -171,6 +178,38 @@ public final class Helpers
      */
     public static String getEnumTranslationKey(Enum<?> anEnum)
     {
-        return String.join(".", MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum.name()).toLowerCase();
+        return getEnumTranslationKey(anEnum, anEnum.getDeclaringClass().getSimpleName());
+    }
+
+    /**
+     * Gets the translation key name for an enum, using a custom name instead of the enum class name
+     */
+    public static String getEnumTranslationKey(Enum<?> anEnum, String enumName)
+    {
+        return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase();
+    }
+
+    /**
+     * Names a simple container provider.
+     *
+     * @return a singleton container provider
+     */
+    public static INamedContainerProvider createNamedContainerProvider(ITextComponent name, IContainerProvider provider)
+    {
+        return new INamedContainerProvider()
+        {
+            @Override
+            public ITextComponent getDisplayName()
+            {
+                return name;
+            }
+
+            @Nullable
+            @Override
+            public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+            {
+                return provider.createMenu(windowId, inv, player);
+            }
+        };
     }
 }

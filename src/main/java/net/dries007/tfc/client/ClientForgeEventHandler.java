@@ -11,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.CreateWorldScreen;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -26,11 +28,16 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.MetalItem;
 import net.dries007.tfc.api.calendar.Calendars;
+import net.dries007.tfc.api.calendar.ICalendar;
 import net.dries007.tfc.api.capabilities.heat.HeatCapability;
+import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -75,7 +82,7 @@ public class ClientForgeEventHandler
 
                 // Always add calendar info
                 list.add(I18n.format("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getFormattedText());
-                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), Calendars.CLIENT.getCalendarDayTime(), mc.getRenderViewEntity().world.getDayTime()));
+                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getRenderViewEntity().world.getDayTime() % ICalendar.TICKS_IN_DAY));
 
                 IChunk chunk = mc.world.getChunk(pos);
                 ChunkData.get(chunk).ifPresent(data -> {
@@ -104,6 +111,42 @@ public class ClientForgeEventHandler
         {
             MetalItem.addTooltipInfo(stack, text);
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onInitGuiPost(GuiScreenEvent.InitGuiEvent.Post event)
+    {
+        if (event.getGui() instanceof InventoryScreen)
+        {
+            InventoryScreen screen = (InventoryScreen) event.getGui();
+            int guiLeft = ((InventoryScreen) event.getGui()).getGuiLeft();
+            int guiTop = ((InventoryScreen) event.getGui()).getGuiTop();
+
+            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176 - 3, 4, 20 + 3, 22, 96 + 20, 0, 1, 3, 0, 0, button -> {}).setRecipeBookCallback(screen));
+            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 27, 20, 22, 96, 0, 1, 3, 32, 0, button -> {
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.CALENDAR));
+            }).setRecipeBookCallback(screen));
+            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 96, 0, 1, 3, 64, 0, button -> {
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.NUTRITION));
+            }).setRecipeBookCallback(screen));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onGuiButtonPressPost(GuiScreenEvent.ActionPerformedEvent.Post event)
+    {
+        if (event.getGui() instanceof InventoryScreen)
+        {
+            // This is necessary to catch the resizing of the inventory gui when you open the recipe book
+            InventoryScreen screen = (InventoryScreen) event.getGui();
+            for (Button button : event.getButtonList())
+            {
+                if (button instanceof PlayerInventoryTabButton)
+                {
+                    ((PlayerInventoryTabButton) button).updateGuiSize(screen.getGuiLeft(), screen.getGuiTop());
+                }
+            }
         }
     }
 }

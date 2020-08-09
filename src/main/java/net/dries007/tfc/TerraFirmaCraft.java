@@ -13,17 +13,18 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
+import net.dries007.tfc.objects.container.TFCContainerTypes;
 import net.dries007.tfc.objects.entities.TFCEntities;
 import net.dries007.tfc.objects.fluids.TFCFluids;
 import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.objects.recipes.TFCRecipeSerializers;
+import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCWorldCarvers;
@@ -52,8 +53,9 @@ public final class TerraFirmaCraft
 
         TFCBlocks.BLOCKS.register(modEventBus);
         TFCItems.ITEMS.register(modEventBus);
-        TFCFluids.FLUIDS.register(modEventBus);
+        TFCContainerTypes.CONTAINERS.register(modEventBus);
         TFCEntities.ENTITIES.register(modEventBus);
+        TFCFluids.FLUIDS.register(modEventBus);
         TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
         TFCSounds.SOUNDS.register(modEventBus);
 
@@ -83,6 +85,6 @@ public final class TerraFirmaCraft
 
         TFCBiomes.setup();
 
-        Calendars.setup();
+        ServerCalendar.setup();
     }
 }

@@ -11,8 +11,14 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Day;
 import net.dries007.tfc.util.calendar.Month;
 
+/**
+ * An interface for all manner of time based calculations
+ *
+ * @see Calendars
+ */
 public interface ICalendar
 {
     /* Constants */
@@ -185,6 +191,22 @@ public interface ICalendar
     default int getCalendarDayOfMonth()
     {
         return ICalendar.getDayOfMonth(getCalendarTicks(), getCalendarDaysInMonth());
+    }
+
+    /**
+     * Calculates the current day from a calendar time.
+     */
+    default ITextComponent getCalendarDayOfYear()
+    {
+        return Day.getDayName(getTotalCalendarDays(), getCalendarMonthOfYear(), getCalendarDayOfMonth());
+    }
+
+    /**
+     * Gets the current month of the year in calendar time
+     */
+    default Month getCalendarMonthOfYear()
+    {
+        return ICalendar.getMonthOfYear(getCalendarTicks(), getCalendarDaysInMonth());
     }
 
     /**

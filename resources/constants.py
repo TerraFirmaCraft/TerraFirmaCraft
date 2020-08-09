@@ -2,7 +2,7 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 from collections import namedtuple
-from typing import Dict, List, NamedTuple
+from typing import Dict, List, NamedTuple, Sequence
 
 Rock = NamedTuple('Rock', category=str, sand_color=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
@@ -210,48 +210,51 @@ def lang(key: str, *args) -> str:
     return ((key % args) if len(args) > 0 else key).replace('_', ' ').replace('/', ' ').title()
 
 
+def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
+    return dict(('tfc.enum.%s.%s' % (name, value), lang(value)) for value in values)
+
+
 # This is here as it's used only once in a generic lang call by generate_resources.py
 DEFAULT_LANG = {
     # Item groups
     'itemGroup.tfc.rock.blocks': 'TFC Rock Blocks',
     'itemGroup.tfc.metals': 'TFC Metals',
+    # Containers
+    'tfc.screen.calendar': 'Calendar',
+    'tfc.screen.nutrition': 'Nutrition',
     # Tooltips
     'tfc.tooltip.metal': '§fMetal:§7 %s',
     'tfc.tooltip.units': '%d units',
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
-    'tfc.tooltip.calendar': 'Calendar',
-    'tfc.tooltip.calendar_hours_minutes': '%d:%02d',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
-    'tfc.tooltip.season': 'Season : %s',
-    'tfc.tooltip.day': 'Day : %s',
-    'tfc.tooltip.calendar_date': 'Date:',
-    'tfc.tooltip.debug_times': 'PT: %d | CT: %d (%d) | DT: %d',
+    'tfc.tooltip.calendar_season': 'Season : ',
+    'tfc.tooltip.calendar_day': 'Day : ',
+    'tfc.tooltip.calendar_birthday': '%s\'s Birthday!',
+    'tfc.tooltip.calendar_date': 'Date : ',
+    'tfc.tooltip.debug_times': 'PT: %d | CT: %d | DT: %d',
     # Commands
     'tfc.command.heat': 'Held item heat set to %s',
     'tfc.command.clear_world_done': 'Cleared.',
 
     # ENUMS
 
-    # Metal Tiers
-    **dict(
-        ('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % lang(tier))
-        for tier in ('0', 'i', 'ii', 'iii', 'iv', 'v', 'vi')
-    ),
-    # Heat
-    **dict(
-        ('tfc.enum.heat.%s' % heat, lang(heat))
-        for heat in ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')
-    ),
-    # Months
-    **dict(
-        ('tfc.enum.month.%s' % month, lang(month))
-        for month in ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')
-    ),
+    **dict(('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % lang(tier)) for tier in ('0', 'i', 'ii', 'iii', 'iv', 'v', 'vi')),
+    **lang_enum('heat', ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')),
+    **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
+    **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
+    'tfc.enum.season.january': 'Winter',
+    'tfc.enum.season.february': 'Late Winter',
+    'tfc.enum.season.march': 'Early Spring',
+    'tfc.enum.season.april': 'Spring',
+    'tfc.enum.season.may': 'Late Spring',
+    'tfc.enum.season.june': 'Early Summer',
+    'tfc.enum.season.july': 'Summer',
+    'tfc.enum.season.august': 'Late Summer',
+    'tfc.enum.season.september': 'Early Autumn',
+    'tfc.enum.season.october': 'Autumn',
+    'tfc.enum.season.november': 'Late Autumn',
+    'tfc.enum.season.december': 'Winter',
 
-    # Metals
-    **dict(
-        ('metal.tfc.%s' % metal, lang('%s' % metal))
-        for metal in METALS.keys()
-    )
+    **dict(('metal.tfc.%s' % metal, lang('%s' % metal)) for metal in METALS.keys())
 }

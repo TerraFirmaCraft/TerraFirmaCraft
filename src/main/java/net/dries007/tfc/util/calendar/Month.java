@@ -5,7 +5,7 @@
 
 package net.dries007.tfc.util.calendar;
 
-import java.util.Arrays;
+import net.dries007.tfc.util.Helpers;
 
 public enum Month
 {
@@ -23,7 +23,6 @@ public enum Month
     DECEMBER(-0.866f);
 
     private static final Month[] VALUES = values();
-    public static final float AVERAGE_TEMPERATURE_MODIFIER = (float) Arrays.stream(VALUES).mapToDouble(Month::getTemperatureModifier).average().orElse(0);
 
     public static Month valueOf(int id)
     {
@@ -55,5 +54,23 @@ public enum Month
         }
         // If comparing the range NOV - FEB (for example), then both above and below count
         return this.ordinal() >= lowerBoundInclusive.ordinal() || this.ordinal() <= upperBoundInclusive.ordinal();
+    }
+
+    public String getTranslationKey(Style style)
+    {
+        switch (style)
+        {
+            case LONG_MONTH:
+                return Helpers.getEnumTranslationKey(this);
+            case SEASON:
+                return Helpers.getEnumTranslationKey(this, "season");
+            default:
+                throw new IllegalArgumentException("Unknown text style? " + style);
+        }
+    }
+
+    public enum Style
+    {
+        LONG_MONTH, SEASON
     }
 }
