@@ -1,0 +1,17 @@
+{
+  "name": "乳制品",
+  "icon": "tfc:textures/items/food/cheese.png",
+  "category": "food",
+  "advancement": "tfc:main/make_barrel",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)奶和奶酪$()是$(l:food/nutrition)乳制品$()营养值的主要来源。拿着木桶$(4)右键点击$()$(l:food/animal_husbandry)已驯服$()的母牛或母山羊就能得到奶了。要得到奶酪，需要$(l:processes/barrels)一系列的操作$()。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)制作奶酪$()$(br2)1. 混合 250mB 的酒精饮料和一颗水果，得到 250mB 的醋。$(br)2. 在大桶中混合 9,000mB 的奶和 1,000mB 的醋，得到醋奶。$(br)3. 密封醋奶 8 小时，得到凝乳。$(br)4. 密封凝乳 8 小时，得到奶酪。$(br2)$(thing)注意：每 625mB 凝乳可得到 2 块奶酪。$()"
+    }
+  ]
+}

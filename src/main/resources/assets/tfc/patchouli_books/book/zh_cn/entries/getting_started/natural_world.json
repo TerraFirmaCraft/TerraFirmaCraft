@@ -1,0 +1,99 @@
+{
+  "name": "自然世界",
+  "icon": "tfc:textures/blocks/plants/goldenrod/goldenrod_2.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/stone_age",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "text",
+      "text": "群峦传说的世界乍一看和原版挺像的，但别被骗了。几乎一切都变了：动植物的种类极大地拓展了，你可以找到几十种花花草草、19 种树木、水果、蔬菜，等等。$(br2)有三种水：淡水，适于饮用；咸水，不宜饮用；可以疗养身心的热泉水。"
+    },
+    {
+      "type": "text",
+      "text": "你会注意到沙砾、石头、草方块、粘土、甚至沙子都会因你所在位置的不同有不同的色调和变种。事实上，群峦传说中，它们有 21 种变种！它们遍布世界各地，就像生物群系一样。群峦传说中海平面高度也要高得多。在地下还有额外的两层石头，以及布满石笋和钟乳石的洞穴。"
+    },
+    {
+      "type": "text",
+      "text": "你可能已经习惯了原版那时有时无的$(thing)重力$()，但在群峦传说中，圆石、泥土、粘土都受重力影响，沙子和沙砾更不用说。重力比你想象得更难管理，例如，就像在现实生活中那样，把两块泥土堆起来，上边的那块就会滑下去。许多方块，比如树叶和干草块，都是“透明”的，你可以直接穿过。"
+    },
+    {
+      "type": "text",
+      "text": "群峦传说的生物群系并不那么严格。每个区块有不同的$(thing)温度$()和$(thing)降水量$()值。你越往南走，温度会越高，往北走则相反。不同地区不同的降水量和地区温度生成了不同的动植物群。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)野生作物$()是你可能找到的最重要的东西之一。荒郊野外有大批好东西等着你，你所要做的再简单不过，就是把它们捡起来。不过当心，如果作物没有成熟，那么你只能得到种子。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "野生的成熟黑麦看起来可能这个样子。",
+      "name": "黑麦",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:crop/rye[stage=7]",
+          "D": "tfc:grass/andesite"
+        },
+        "pattern": [
+          ["   ", " P ", "   "], ["DDD", "DDD", "DDD"], ["   ", " 0 ", "   "]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "text",
+      "text": "如果你找得够久，很快你就会找到野生的浆果丛了。如果你看到它们上边长着浆果，只要右键点击，就能吃到好东西了！"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "已经结果的浆果丛。是草莓耶。",
+      "name": "草莓灌木",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:berry_bush/strawberry[fruiting=true]",
+          "D": "tfc:grass/andesite"
+        },
+        "pattern": [
+          ["   ", " P ", "   "], ["DDD", "DDD", "DDD"], ["   ", " 0 ", "   "]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "text",
+      "text": "要找的另一个好东西是果树。它们看上去很有特色，作用和浆果丛差不多。用斧头砍下一根树枝，就能得到一棵树苗。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "一颗柠檬树。真酸。",
+      "name": "柠檬树",
+      "multiblock": {
+        "mapping": {
+          "B": "tfc:fruit_trees/branch/lemon",
+          "0": "tfc:fruit_trees/branch/lemon",
+          "L": "tfc:fruit_trees/leaves/lemon[state=fruit]"
+        },
+        "pattern": [
+          ["     ", " LLL ", " LLL ", " LLL ", "     "],
+          [" LLL ", "LLBLL", "LBBBL", "LLBLL", " LLL "],
+          ["     ", "     ", "  B  ", "     ", "     "],
+          ["     ", "     ", "  B  ", "     ", "     "],
+          ["     ", "     ", "  0  ", "     ", "     "],
+          ["     ", "     ", "  B  ", "     ", "     "]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "text",
+      "text": "群峦传说的世界有$(thing)四季$()。默认是 96 天一年，每个月 8 天。在冬天，作物死去，湖面冰封，食物稀缺。食物成长是需要时间的，尽管所在区域会影响生长时间，但一年到头农产品也只能收获很少的几次。"
+    },
+    {
+      "type": "text",
+      "text": "果树和灌木丛只在一年中的某些时候生长、开花、结果。有些植物只生长在较热的地区，另一些则相反。降水量也是影响因素，有些地区会因为降水稀少而成为沙漠，另一些地区则成为了雨林。你大概不会想住在沙漠里的——什么食物都找不到！要明智地选择你居住的地方。"
+    }
+  ]
+}

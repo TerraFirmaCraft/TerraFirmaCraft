@@ -1,0 +1,33 @@
+{
+  "name": "提起油灯",
+  "icon": "tfc:textures/items/metal/lamp/bismuth_bronze.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/metal_anvil",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:lamp_rose_gold",
+      "text": "$(item)油灯$()是群峦传说中的升级版光源。油灯需要消耗$(thing)橄榄油$()，但比单纯的火把要持久得多。当然，制作油灯的方法也很简单！你只需要将一块金属锭在砧上选择相应的“金属灯”开始锻造就可以做出一把崭新的金属油灯了。而产出橄榄油的手艺则需要花多一点功夫"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)橄榄油生产指南：$()$(br2)1.从橄榄树上摘一些橄榄。$(br)2.用手推磨把橄榄磨成橄榄酱。$(br)将橄榄酱浸入盛有125mB淡水的大桶中来产出毛橄榄油$(br)把一张黄麻网放进大桶里来滤出25mB的橄榄油$(br)5.手持油灯右键大桶或是把油灯放进液体填充槽就可以为其装填燃料啦。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "一盏悬挂着的明亮油灯",
+      "name": "Lamp",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:lamp/bismuth[facing=down,lit=true]"
+        },
+        "pattern": [
+          ["P"], ["0"]
+        ],
+        "symmetrical": true
+      }
+    }
+  ]
+}

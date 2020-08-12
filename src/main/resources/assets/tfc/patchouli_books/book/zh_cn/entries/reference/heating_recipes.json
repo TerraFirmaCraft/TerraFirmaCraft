@@ -1,0 +1,48 @@
+{
+  "name": "加热配方",
+  "icon": "tfc:textures/items/food/cooked_beef.png",
+  "category": "reference",
+  "advancement": "tfc:main/logging",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_vessel",
+      "text": "所有粘土制品的处理方法与其一致。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:glass",
+      "text": "所有沙子都可以制成玻璃。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:cooked_pheasant",
+      "text": "所有生肉和面团以及鸡蛋都可以烹饪。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_brick"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_fire_brick"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_flower_pot"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:terracotta"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:lime_glazed_terracotta"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_spindle"
+    }
+  ]
+}

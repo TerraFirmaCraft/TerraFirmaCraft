@@ -1,0 +1,54 @@
+{
+  "name": "锻造工艺",
+  "icon": "tfc:textures/items/metal/ingot/copper.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/get_flux",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "image",
+      "images": [
+        "tfc:textures/gui/anvil_explainer.png"
+      ],
+      "title": "砧的界面",
+      "border": true,
+      "text": "接下来让我们学习如何使用$(thing)砧的界面$()。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)1. $()在焊接时，1 号物品槽用于放置额外原料$(br)$(thing)2. $()在焊接和锻造时，2 号物品槽用于放置主要原料$(br)$(thing)3. $()3 号物品槽用于放置锤$(br)$(thing)4. $()此处放置助焊剂$(br)$(thing)5. $()红色锻造手法，将下方绿色指针向左移。$(br)$(thing)6. $()绿色锻造手法，将下方绿色指针向右移。$(br)$(thing)7. $()工作条，指示锻造进度$(br)$(thing)8. $()锻造规则$(br)$(thing)9. $()目标产物选择"
+    },
+    {
+      "type": "text",
+      "text": "如果你的锤子和助焊剂都已就位，金属锭也在适宜的工作温度，那么你就已经$(thing)准备好锻造$()了。选择你想锻造的目标产物。锻造的目标就是通过$(thing)锻造手法$()将下方工作条内的红绿指针对应在同一位置。$(br2)注意：你的金属砧$(thing)必须$()与被锻造金属同级或更高。"
+    },
+    {
+      "type": "text",
+      "text": "使用锻造手法十分简单。绿色锻造手法，比如弯曲，会使绿色指针向右移动，而红色锻造手法会将绿色指针向左移动。不同的锻造手法会使指针移动不同的距离。而目标就是让上下两个指针相对应，同时最后三个手法满足锻造规则中的要求。如果锤子损坏或者金属变冷，你都需要重新加热原材料。如果指针跳出工作条，则原材料就会损坏消失。"
+    },
+    {
+      "type": "text",
+      "text": "另一个成功锻造的关键就是$(thing)锻造规则$()。每个目标产物都有一组不同的三个要求，需要（通常按顺序）满足。举个例子，如果锻造规则中其一要求$(item)弯曲，末尾$()，那么你使用的最后一个锻造手法就必须是弯曲。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:sheet_black_steel",
+      "text": "双锭用于制作薄板，一种更高级物品锻造的必需材料。"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:double_sheet_black_steel",
+      "text": "薄板可以被焊接成双层薄板，双层薄板可以用于制作$(l:advanced_metalworking/iron)锻铁炉$()。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:unfinished_chestplate_copper",
+      "text": "护甲通常需要多个焊接和锻造步骤。胸甲的制作从未完成的胸甲开始。"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:chestplate_copper",
+      "text": "再来个焊接就完成了。$(br2)$(br2)$(thing)关于需要砧加工的配方，请查看书中$(l:reference/smithing)参考$()$(thing)部分。$()"
+    }
+  ]
+}

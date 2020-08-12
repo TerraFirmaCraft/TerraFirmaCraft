@@ -1,0 +1,27 @@
+{
+  "name": "呜呼，飞不起来",
+  "icon": "tfc:textures/items/stonetypes/rock/granite.png",
+  "category": "getting_started",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "如果你玩的是原版，进游戏的第一件事大概就是撸树，但在群峦传说中可不是这样！你可以看见满地都是石子和木棍，这两者你都需要捡一些。$(4)右键点击$()可以捡起来，多捡点吧。$(br2)一旦你捡到了超过两块同一类型的石子，把它们握在手里，$(4)右键点击$()就可以打开$(thing)石子塑形$()的界面。$(4)左键点击$()敲掉一部分岩石，做一把斧头和几把刀刃。"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:axe_head",
+      "text": "完全跳过了木制工具！这一制作石制工具的方法被称作$(thing)石子塑形$()。你可以阅读$(l:reference/rock_knapping)参考部分$()以查看所有的塑形配方。接下来，我们要做一把刀刃。"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:knife_head_2",
+      "text": "处理得当的话，一块石子可以做成两把刀刃。用木棍和你刚刚做的这些工具部件合成出石制工具吧。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:stonetools/sedimentary/sedimentary_rock_axe",
+      "recipe2": "tfc:stonetools/sedimentary/sedimentary_rock_knife"
+    }
+  ]
+}

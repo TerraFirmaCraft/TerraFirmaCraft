@@ -1,0 +1,27 @@
+{
+  "name": "黑钢",
+  "icon": "tfc:textures/items/metal/ingot/black_steel.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_steel",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "在制出钢后，下一步便是$(thing)黑钢$()。幸运的是，我们不需要为黑钢搭建任何新东西，只需要参照以下的合金配方来制作脆钢。别忘了使用风箱！$(br2)$(item)脆钢：$()$(br2)$(thing)钢：$()50-70%$(br)$(thing)镍：$()15-25%$(br)$(thing)黑铜：$()15-25%"
+    },
+    {
+      "type": "text",
+      "text": "合金参考：$(br2)$(item)黑铜：$()$(br2)$(thing)铜：$()50-70%$(br)$(thing)银：$()10-25%$(br)$(thing)金：$()10-25%$(br2)$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:ingot_high_carbon_black_steel",
+      "text": "焊接$(item)脆钢锭$()和$(item)生铁锭$()来制作一块$(thing)高碳钢锭$()。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:ingot_black_steel",
+      "text": "锻造脆钢锭来制作一块$(thing)黑钢锭$()。"
+    }
+  ]
+}

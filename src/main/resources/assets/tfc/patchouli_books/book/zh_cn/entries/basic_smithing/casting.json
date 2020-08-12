@@ -1,0 +1,22 @@
+{
+  "name": "熔化与浇铸",
+  "icon": "tfc:textures/items/ceramics/fired/vessel.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/metal_casting",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "熔化物品的第一种方法便是利用$(item)陶器$()和一个$(l:getting_started/pottery)坑窑$()，这二者的使用方法在之前的章节中已经介绍过了。要制作第一个工具，我们需要在小缸中放入 10 个$(l:basic_smithing/nuggets)小型铜矿（粒）$()，然后把陶器放进坑窑之中，就如同我们制造出第一个小缸那样。点燃坑窑，待到火焰燃尽的时候，金属就已经熔化在缸中了。"
+    },
+    {
+      "type": "text",
+      "text": "手持陶器右键点击，就会出现一个界面告诉你容器的内容物及其含量。如果你放进去的是 10 块小型铜矿（粒），那么陶器里就应该显示$(thing)铜 - 100 单元$()。把你的$(thing)工具模具$()放进物品槽，金属就会填满这个模具。记得要趁热！凉了的话，就要再烧一次了。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:metal/copper/copper_pick",
+      "text": "如果想要把工具从模具中取出，等待模具中的金属冷却下来，然后把它放进合成栏或者 $(4)shift + 右键点击$()就可以将其取出。接着，把工具部件和木棍合成就可以拿到你的第一把金属工具了！"
+    }
+  ]
+}

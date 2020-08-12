@@ -1,0 +1,57 @@
+{
+  "name": "生活水与火",
+  "icon": "tfc:textures/items/food/cooked_venison.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/logging",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "现在你可能已经渴了，不过这只是个小问题。$(4)右键点击$()淡水水源就可以喝了。$(br2)要想烹饪食物、并在晚上照亮你的小屋，你需要燃起一团$(thing)篝火$()。$(br2)首先你要做一个起火器，用两根木棍合成就可以了。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:firestarter",
+      "text": "起火器耐久度很低，不过它和$(l:advanced_metalworking/steel)打火石$()差别不大，除了耗时较长、还有可能打不着火外。"
+    },
+    {
+      "type": "text",
+      "text": "要燃起篝火，需要至少$(item)一块原木、三根木棍$()，和用以提升成功率的最多$(l:getting_started/basic_materials)三团干草$()。把它们扔在同一格里，拿好起火器，按住$(4)右键$()。可能需要多试几次才能成功点起篝火。篝火可用于烹饪食物、用木棍制作火把，但你必须加原木作燃料（侧边栏），不然很快它就会灭掉。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "篝火可用于烹饪食物，但可别把你自己点着了：别踩上去！",
+      "name": "篝火",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:firepit[lit=true]"
+        },
+        "pattern": [
+          ["P"], ["0"]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:torch",
+      "text": "篝火的那些配方被称为$(l:reference/heating_recipes)加热配方$()，它们与群峦传说中金属的熔炼密切相关。篝火之类的设施消耗燃料加热其中的物品，在一定的温度下原料会变为成品。篝火的温度并不很高，不能用于熔炼金属，但对于制作火把、烹饪食物来说已经足够了。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:glass",
+      "text": "更高的温度下可以烧出玻璃来，但是我建议你用木炭炉，那会容易得多。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:terracotta",
+      "text": "烧制陶瓦，和原版一样！"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:cooked_beef",
+      "text": "吃生肉可不好，烤熟了再吃吧。"
+    }
+  ]
+}

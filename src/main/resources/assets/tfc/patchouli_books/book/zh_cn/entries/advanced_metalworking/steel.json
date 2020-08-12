@@ -1,0 +1,57 @@
+{
+  "name": "炼钢",
+  "icon": "tfc:textures/items/metal/ingot/steel.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/iron_age",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "钢铁时代中的下一步就是炼钢，而炼钢则需要用到$(item)生铁$()。$(thing)高炉$()是游戏中获取生铁的唯一途径。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)搭建高炉的物品清单（至少需要这些）：$()$(br2)- 4 个耐火砖块$(br)- 28 个锻铁薄板$(br)- 1 个任意工具金属双层薄板$(br)- 2 个坩埚$(br)- 1 个$(l:processes/leatherworking)风箱$()$(br2)$(thing)每层额外烟囱（最高五层）：$(br2)$()- 4 个耐火砖块$(br)- 12 个锻铁薄板"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:blast_furnace",
+      "title": "高炉",
+      "text": "高炉之心：高炉方块"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:tuyere_wrought_iron",
+      "text": "鼓风口可由任意工具金属的$(thing)双层薄板$()制成，通常为锻铁制。鼓风口是让高炉达到熔化金属温度的必要条件。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)搭建高炉：$()$(br2)1. 将坩埚放置于地面$(br)2. 把高炉放在坩埚之上。$(br)3. 在高炉方块上一格搭建烟囱。$(br)4. 右键点击把 12 个锻铁薄板完全包裹在每层耐火砖上。"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:blast_furnace",
+      "text": "锻铁薄板在图中没有显示出来，不过点击可视化就可以显示锻铁薄板的摆放位置了，就像物品展示框那样放。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)使用方法：$()$(br)1. 右键打开高炉界面，将鼓风口放置在右上角的物品槽内。$(br)2. 爬到高炉顶，从烟囱丢入 4 个铁矿，4 个助焊剂，以及$(item)至少$() 4 个木炭。木炭和铁矿的比例至少为 1:1。结构中的每一层烟囱都可以处理 4 个矿石。$(br)3. 点燃高炉方块。$(br)4. 猛推风箱使温度保持在能熔化铁矿的高温。$(br)5. 矿物熔化后，生铁会流进下方的坩埚里，之后用铸锭模具取出即可。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:ingot_high_carbon_steel",
+      "text": "把$(item)生铁锭$()放在砧上。选择$(thing)高碳钢锭$()目标产物开始锻造。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:ingot_steel",
+      "text": "完成后，选择$(thing)钢锭$()配方并再一次锻造。恭喜你，你现在有钢锭了！"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/flint_and_steel",
+      "title": "打火石",
+      "text": "更快更好更耐久，居家旅行、杀人放火必备！"
+    }
+  ]
+}

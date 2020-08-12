@@ -1,0 +1,32 @@
+{
+  "name": "蓝钢",
+  "icon": "tfc:textures/items/metal/ingot/blue_steel.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_black_steel",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)蓝钢$()是两种群峦传说的最终合金之一。与黑钢类似，蓝钢需要参照以下合成配方：$(br2)$(item)脆蓝钢：$()$(br2)$(thing)黑钢：$()50-55%$(br)$(thing)钢：$()20-25%$(br)$(thing)铋铜：$()10-15%$(br)$(thing)纯银：$()10-15%"
+    },
+    {
+      "type": "text",
+      "text": "合金参考：$(br2)$(item)纯银：$()$(br2)$(thing)铜：$()20-40%$(br)$(thing)银：$()60-80%$(br2)$(item)铋铜：$()$(2br)$(thing)铜：$()50-65%$(br)$(thing)锌：$()20-30%$(br)$(thing)铋：$()10-20%"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:ingot_high_carbon_blue_steel",
+      "text": "焊接$(item)脆蓝钢锭$()和$(item)黑钢锭$()来制作一块$(thing)高碳蓝钢锭$()。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:ingot_blue_steel",
+      "text": "锻造高碳蓝钢锭来制作一块$(thing)蓝钢锭$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:blue_steel_bucket",
+      "text": "你可以将蓝钢薄板锻造成蓝钢桶。蓝钢桶可以用于舀取及移动熔岩，但是无法移动水源。如果想要移动水源，你需要红钢桶。"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "羊毛",
+  "icon": "tfc:textures/items/animal/product/wool_cloth.png",
+  "category": "processes",
+  "advancement": "tfc:main/carpentry",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:wood/spruce/spruce_loom",
+      "title": "织机",
+      "text": "你需要一台织机来制造那些用毛和布制成的东西。$(br2)它们由三种原料构成：$(item)黄麻、羊毛纱和线$()。"
+    },
+    {
+      "type": "text",
+      "text": "线可以从原版蜘蛛身上取得，你可以在地底找到它们，黄麻可以从黄麻植株上收获，而要获得羊毛纱则需要一个稍微复杂一些的过程。（见下一页）"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:hide/large_sheepskin",
+      "text": "你可以用刀从羊皮上刮下羊毛。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:unfired_spindel_head",
+      "text": "纺锤是处理羊毛所必须的。首先，用一个粘土球和木棍合成未烧制的纺锤头。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_spindle",
+      "text": "接着，把它放在坑窑中烧制。"
+    },
+    {
+      "type": "crafting",
+      "title": "羊毛纱",
+      "recipe": "tfc:wool_yarn",
+      "text": "使用羊毛和纺锤合成羊毛纱。奇迹马上就要发生啦！"
+    },
+    {
+      "type": "text",
+      "text": "想好好装饰你的房子？你需要以下的原料：$(br2)羊毛纱：16$(br)线：24$(br)黄麻纤维：12$(br)羊毛布：4$(br2)长按右键来纺织。如果你用线，则会纺织出布，如果你用布，则会纺织出原版羊毛块。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/bed",
+      "title": "原版配方",
+      "recipe2": "tfc:vanilla/painting"
+    }
+  ]
+}
