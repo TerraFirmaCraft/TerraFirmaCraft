@@ -794,6 +794,38 @@ config.tfc.client.display.rottenFoodOverlayColor=腐烂食物覆盖层颜色
 config.tfc.client.display.rottenFoodOverlayColor.tooltip=在腐烂食物上额外渲染的颜色。以 256 位颜色值表示：0xFFFFFF = 白色，0x000000 = 黑色
 
 
+
+### Grass Color
+config.tfc.client.grassColor=草色设置
+
+config.tfc.client.grassColor.noiseEnable=Noise Enabled?
+config.tfc.client.grassColor.noiseEnable.tooltip=Enable grass noise at all?
+
+config.tfc.client.grassColor.noiseDarkness=Noise Darkness
+config.tfc.client.grassColor.noiseDarkness.tooltip=How dark should the noise be at its strongest?
+
+config.tfc.client.grassColor.noiseLevels=Noise Levels
+config.tfc.client.grassColor.noiseLevels.tooltip=How many darkness levels should the noise have?
+
+config.tfc.client.grassColor.noiseScale=Noise Scale
+config.tfc.client.grassColor.noiseScale.tooltip=How big should the noise areas be?
+
+
+config.tfc.client.grassColor.seasonColorEnable=Seasonal Colors enabled?
+config.tfc.client.grassColor.seasonColorEnable.tooltip=Enable seasonal grass colors at all?
+
+config.tfc.client.grassColor.seasonColorSpring=Seasonal Color: Spring
+config.tfc.client.grassColor.seasonColorSpring.tooltip=The spring color ARGB code in hexadecimal.
+
+config.tfc.client.grassColor.seasonColorSummer=Seasonal Color: Summer
+config.tfc.client.grassColor.seasonColorSummer.tooltip=The summer color ARGB code in hexadecimal.
+
+config.tfc.client.grassColor.seasonColorAutumn=Seasonal Color: Autumn
+config.tfc.client.grassColor.seasonColorAutumn.tooltip=The autumn color ARGB code in hexadecimal.
+
+config.tfc.client.grassColor.seasonColorWinter=Seasonal Color: Winter
+config.tfc.client.grassColor.seasonColorWinter.tooltip=The winter color ARGB code in hexadecimal.
+
 ## Animals
 config.tfc.animals=动物设置
 config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数目，生成稀有度。
@@ -802,7 +834,7 @@ config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数目，�
 ### Config Names
 config.tfc.animals.alpaca=羊驼
 config.tfc.animals.sheep=绵羊
-config.tfc.animals.cow=母牛
+config.tfc.animals.cow=母奶牛
 config.tfc.animals.goat=山羊
 config.tfc.animals.chicken=母鸡
 config.tfc.animals.duck=母鸭
@@ -814,7 +846,7 @@ config.tfc.animals.donkey=驴
 config.tfc.animals.mule=骡
 config.tfc.animals.ocelot=豹猫
 config.tfc.animals.wolf=狼
-config.tfc.animals.bear=熊
+config.tfc.animals.grizzly_bear=棕熊
 config.tfc.animals.polar_bear=北极熊
 config.tfc.animals.lion=狮
 config.tfc.animals.panther=黑豹
@@ -824,6 +856,22 @@ config.tfc.animals.deer=鹿
 config.tfc.animals.parrot=鹦鹉
 config.tfc.animals.pheasant=雉鸡
 config.tfc.animals.rabbit=兔
+config.tfc.animals.direwolf=冰原狼
+config.tfc.animals.hare=野兔
+config.tfc.animals.boar=野猪
+config.tfc.animals.zebu=瘤牛
+config.tfc.animals.gazelle=羚羊
+config.tfc.animals.wildebeest=角马
+config.tfc.animals.quail=鹌鹑
+config.tfc.animals.grouse=松鸡
+config.tfc.animals.mongoose=獴
+config.tfc.animals.turkey=火鸡
+config.tfc.animals.jackal=豺
+config.tfc.animals.muskox=麝牛
+config.tfc.animals.yak=牦牛
+config.tfc.animals.black_bear=黑熊
+config.tfc.animals.cougar=山狮
+config.tfc.animals.coyote=郊狼
 
 
 ### Common
@@ -1058,7 +1106,7 @@ jei.category.tfc.anvil=砧类配方
 jei.category.tfc.barrel=桶类配方
 jei.category.tfc.blast_furnace=高炉配方
 jei.category.tfc.bloomery=锻铁炉配方
-jei.category.tfc.casting=浇筑配方
+jei.category.tfc.casting=浇铸配方
 jei.category.tfc.chisel=凿类平滑配方
 jei.category.tfc.heat=加热配方
 jei.category.tfc.knap.clay=粘土塑形
@@ -1211,7 +1259,7 @@ tile.tfc.crucible.name=坩埚
 tile.tfc.torch.name=火把
 tile.tfc.blast_furnace.name=高炉
 tile.tfc.bloomery.name=锻铁炉
-tile.tfc.fire_bricks.name=耐火砖
+tile.tfc.fire_bricks.name=耐火砖块
 tile.tfc.quern.name=手推磨
 tile.tfc.ceramics.fired.large_vessel.name=大缸
 tile.tfc.fire_clay_block.name=耐火粘土块
@@ -2677,6 +2725,26 @@ tile.tfc.wood.button.acacia.name=金合欢木按钮
 tile.tfc.wood.button.rosewood.name=蔷薇木按钮
 tile.tfc.wood.button.blackwood.name=黑檀木按钮
 tile.tfc.wood.button.palm.name=棕榈木按钮
+
+tile.tfc.wood.pressure_plate.ash.name=黑梣木压力板
+tile.tfc.wood.pressure_plate.aspen.name=山杨木压力板
+tile.tfc.wood.pressure_plate.birch.name=白桦木压力板
+tile.tfc.wood.pressure_plate.chestnut.name=栗木压力板
+tile.tfc.wood.pressure_plate.douglas_fir.name=花旗松木压力板
+tile.tfc.wood.pressure_plate.hickory.name=山核桃木压力板
+tile.tfc.wood.pressure_plate.maple.name=枫木压力板
+tile.tfc.wood.pressure_plate.oak.name=白橡木压力板
+tile.tfc.wood.pressure_plate.pine.name=松木压力板
+tile.tfc.wood.pressure_plate.sequoia.name=红杉木压力板
+tile.tfc.wood.pressure_plate.spruce.name=云杉木压力板
+tile.tfc.wood.pressure_plate.sycamore.name=悬铃木压力板
+tile.tfc.wood.pressure_plate.white_cedar.name=香柏木压力板
+tile.tfc.wood.pressure_plate.willow.name=柳木压力板
+tile.tfc.wood.pressure_plate.kapok.name=木棉木压力板
+tile.tfc.wood.pressure_plate.acacia.name=金合欢木压力板
+tile.tfc.wood.pressure_plate.rosewood.name=蔷薇木压力板
+tile.tfc.wood.pressure_plate.blackwood.name=黑檀木压力板
+tile.tfc.wood.pressure_plate.palm.name=棕榈木压力板
 
 tile.tfc.wood.tool_rack.ash.name=黑梣木工具架
 tile.tfc.wood.tool_rack.aspen.name=山杨木工具架
@@ -4401,36 +4469,32 @@ item.tfc.food.cooked_egg.name=煎蛋
 item.tfc.food.sugarcane.name=甘蔗
 item.tfc.food.beef.name=生牛肉
 item.tfc.food.pork.name=生猪肉
-item.tfc.food.chicken.name=生鸡肉
-item.tfc.food.mutton.name=生绵羊肉
+item.tfc.food.chicken.name=生禽肉
+item.tfc.food.mutton.name=生羊肉
 item.tfc.food.fish.name=生鱼
 item.tfc.food.bear.name=生熊肉
 item.tfc.food.calamari.name=生鱿鱼
 item.tfc.food.horse_meat.name=生马肉
-item.tfc.food.pheasant.name=生雉鸡肉
+item.tfc.food.pheasant.name=生鸟肉
 item.tfc.food.venison.name=生鹿肉
 item.tfc.food.rabbit.name=生兔肉
-item.tfc.food.wolf.name=生狼肉
-item.tfc.food.hyena.name=生鬣狗肉
-item.tfc.food.duck.name=生鸭肉
-item.tfc.food.chevon.name=生山羊肉
+item.tfc.food.wolf.name=生犬肉
+item.tfc.food.mongoose.name=生獴肉
 item.tfc.food.gran_feline.name=生大猫肉
 item.tfc.food.camelidae.name=生驼肉
 item.tfc.food.cooked_beef.name=熟牛肉
 item.tfc.food.cooked_pork.name=熟猪肉
-item.tfc.food.cooked_chicken.name=熟鸡肉
-item.tfc.food.cooked_mutton.name=熟绵羊肉
+item.tfc.food.cooked_chicken.name=熟禽肉
+item.tfc.food.cooked_mutton.name=熟羊肉
 item.tfc.food.cooked_fish.name=熟鱼
 item.tfc.food.cooked_bear.name=熟熊肉
 item.tfc.food.cooked_calamari.name=熟鱿鱼
 item.tfc.food.cooked_horse_meat.name=熟马肉
-item.tfc.food.cooked_pheasant.name=熟雉鸡肉
+item.tfc.food.cooked_pheasant.name=熟鸟肉
 item.tfc.food.cooked_venison.name=熟鹿肉
 item.tfc.food.cooked_rabbit.name=熟兔肉
-item.tfc.food.cooked_wolf.name=熟狼肉
-item.tfc.food.cooked_hyena.name=熟鬣狗肉
-item.tfc.food.cooked_duck.name=熟鸭肉
-item.tfc.food.cooked_chevon.name=熟山羊肉
+item.tfc.food.cooked_wolf.name=熟犬肉
+item.tfc.food.cooked_mongoose.name=熟獴肉
 item.tfc.food.cooked_gran_feline.name=熟大猫肉
 item.tfc.food.cooked_camelidae.name=熟驼肉
 item.tfc.food.barley_bread_sandwich.name=大麦面包三明治
@@ -4498,8 +4562,8 @@ item.tfc.quiver.name=箭袋
 
 # Animals
 entity.sheeptfc.name=绵羊
-entity.cowtfc.name=牛
-entity.beartfc.name=熊
+entity.cowtfc.name=奶牛
+entity.grizzlybeartfc.name=棕熊
 entity.pigtfc.name=猪
 entity.chickentfc.name=鸡
 entity.deertfc.name=鹿
@@ -4521,6 +4585,22 @@ entity.sabertoothtfc.name=剑齿虎
 entity.cameltfc.name=骆驼
 entity.liontfc.name=狮
 entity.hyenatfc.name=鬣狗
+entity.direwolftfc.name=冰原狼
+entity.haretfc.name=野兔
+entity.boartfc.name=野猪
+entity.zebutfc.name=瘤牛
+entity.gazelletfc.name=羚羊
+entity.wildebeesttfc.name=角马
+entity.quailtfc.name=鹌鹑
+entity.grousetfc.name=松鸡
+entity.mongoosetfc.name=獴
+entity.turkeytfc.name=火鸡
+entity.jackaltfc.name=豺
+entity.muskoxtfc.name=麝牛
+entity.yaktfc.name=牦牛
+entity.blackbeartfc.name=黑熊
+entity.cougartfc.name=山狮
+entity.coyotetfc.name=郊狼
 
 #TFC death messages
 death.attack.dehydration=%1$s 死于脱水
@@ -4535,10 +4615,10 @@ effectsTFC.food_poison=食物中毒
 # Animal names by gender
 tfc.animal.sheeptfc.male=公绵羊
 tfc.animal.sheeptfc.female=母绵羊
-tfc.animal.cowtfc.male=公牛
-tfc.animal.cowtfc.female=母牛
-tfc.animal.beartfc.male=公熊
-tfc.animal.beartfc.female=母熊
+tfc.animal.cowtfc.male=公奶牛
+tfc.animal.cowtfc.female=母奶牛
+tfc.animal.grizzlybeartfc.male=公棕熊
+tfc.animal.grizzlybeartfc.female=母棕熊
 tfc.animal.pigtfc.male=公猪
 tfc.animal.pigtfc.female=母猪
 tfc.animal.chickentfc.male=公鸡
@@ -4583,6 +4663,38 @@ tfc.animal.liontfc.male=雄狮
 tfc.animal.liontfc.female=雌狮
 tfc.animal.hyenatfc.male=公鬣狗
 tfc.animal.hyenatfc.female=母鬣狗
+tfc.animal.direwolftfc.male=公冰原狼
+tfc.animal.direwolftfc.female=母冰原狼
+tfc.animal.haretfc.male=雄野兔
+tfc.animal.haretfc.female=雌野兔
+tfc.animal.boartfc.male=公野猪
+tfc.animal.boartfc.female=母野猪
+tfc.animal.zebutfc.male=公瘤牛
+tfc.animal.zebutfc.female=母瘤牛
+tfc.animal.gazelletfc.male=公羚羊
+tfc.animal.gazelletfc.female=母羚羊
+tfc.animal.wildebeesttfc.male=公角马
+tfc.animal.wildebeesttfc.female=母角马
+tfc.animal.quailtfc.male=雄鹌鹑
+tfc.animal.quailtfc.female=雌鹌鹑
+tfc.animal.grousetfc.male=公松鸡
+tfc.animal.grousetfc.female=母松鸡
+tfc.animal.mongoosetfc.male=雄獴
+tfc.animal.mongoosetfc.female=雌獴
+tfc.animal.turkeytfc.male=公火鸡
+tfc.animal.turkeytfc.female=母火鸡
+tfc.animal.jackaltfc.male=公豺
+tfc.animal.jackaltfc.female=母豺
+tfc.animal.muskoxtfc.male=公麝牛
+tfc.animal.muskoxtfc.female=母麝牛
+tfc.animal.yaktfc.male=公牦牛
+tfc.animal.yaktfc.female=母牦牛
+tfc.animal.blackbeartfc.male=公黑熊
+tfc.animal.blackbeartfc.female=母黑熊
+tfc.animal.cougartfc.male=雄山狮
+tfc.animal.cougartfc.female=雌山狮
+tfc.animal.coyotetfc.male=公郊狼
+tfc.animal.coyotetfc.female=母郊狼
 
 # Sound Events
 tfc.item.ceramicbreak=陶器：被破坏
@@ -4641,6 +4753,33 @@ tfc.animal.hyena.say=鬣狗：吠叫
 tfc.animal.hyena.cry=鬣狗：狂吠
 tfc.animal.hyena.hurt=鬣狗：受伤
 tfc.animal.hyena.death=鬣狗：死亡
+tfc.animal.zebu.say=瘤牛：呼噜
+tfc.animal.zebu.cry=瘤牛：吼叫
+tfc.animal.zebu.hurt=瘤牛：受伤
+tfc.animal.zebu.death=瘤牛：死亡
+tfc.animal.muskox.say=麝牛：呼噜
+tfc.animal.muskox.cry=麝牛：吼叫
+tfc.animal.muskox.hurt=麝牛：受伤
+tfc.animal.muskox.death=麝牛：死亡
+tfc.animal.turkey.say=火鸡：咯咯~
+tfc.animal.turkey.cry=火鸡：咯咯
+tfc.animal.turkey.hurt=火鸡：受伤
+tfc.animal.turkey.death=火鸡：死亡
+tfc.animal.boar.say=野猪：呼噜
+tfc.animal.boar.cry=野猪：吼叫
+tfc.animal.boar.hurt=野猪：受伤
+tfc.animal.boar.death=野猪：死亡
+tfc.animal.wildebeest.say=角马：呼噜
+tfc.animal.quail.say=鹌鹑：啾~
+tfc.animal.grouse.say=松鸡：啾~
+tfc.animal.cougar.say=山狮：呼噜
+tfc.animal.cougar.cry=山狮：咆哮
+tfc.animal.cougar.hurt=山狮：受伤
+tfc.animal.cougar.death=山狮：死亡
+tfc.animal.coyote.say=郊狼：呼噜
+tfc.animal.coyote.cry=郊狼：吼叫
+tfc.animal.coyote.hurt=郊狼：受伤
+tfc.animal.coyote.death=郊狼：死亡
 tfc.animal.cricket=蟋蟀叫
 tfc.animal.frog=蛙鸣
 
@@ -4755,7 +4894,7 @@ advancements.tfc.world.wolf_familiarity.title=最好的朋友
 advancements.tfc.world.wolf_familiarity.description=和一只狼的亲密度达到最大值。
 advancements.tfc.world.make_spindle.title=理顺毛线
 advancements.tfc.world.make_spindle.description=制作一个纺锤以把羊毛变成羊毛纱。
-advancements.tfc.world.make_loom.title=扎扎弄机杼
+advancements.tfc.world.make_loom.title=札札弄机杼
 advancements.tfc.world.make_loom.description=制作一台织布机，并用它把线织成布。
 advancements.tfc.world.make_bed.title=祝你好梦
 advancements.tfc.world.make_bed.description=用羊毛布或丝绸制作床。
@@ -4771,7 +4910,7 @@ advancements.tfc.world.make_propick.description=制作一把勘矿镐。
 advancements.tfc.world.geologist.title=岩石学家
 advancements.tfc.world.geologist.description=收集每种石子和矿石。
 advancements.tfc.world.find_diamonds.title=宝石迷情
-advancements.tfc.world.find_diamonds.description=在辉长岩岩层中找到金伯利岩。
+advancements.tfc.world.find_diamonds.description=在辉长岩岩层中找到钻石。
 advancements.tfc.world.find_coal.title=黑色的金子
 advancements.tfc.world.find_coal.description=在沉积岩岩层中找到烟煤或褐煤。
 advancements.tfc.world.find_graphite.title=石墨
@@ -4836,6 +4975,12 @@ waila.tfc.animal.pregnant=怀孕
 waila.tfc.animal.can_shear=可剪毛
 
 # Overwrite Vanilla
+entity.Cow.name=奶牛
+subtitles.entity.cow.ambient=奶牛：哞~
+subtitles.entity.cow.death=奶牛：死亡
+subtitles.entity.cow.hurt=奶牛：受伤
+subtitles.entity.cow.milk=奶牛：被挤奶
+
 entity.Rabbit.name=兔
 subtitles.entity.rabbit.ambient=兔：吱吱叫
 subtitles.entity.rabbit.attack=兔：攻击

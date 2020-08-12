@@ -1,0 +1,171 @@
+{
+  "name": "矿石与矿物",
+  "icon": "tfc:textures/items/ore/limonite.png",
+  "category": "reference",
+  "advancement": "tfc:world/pick_nugget",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "text",
+      "text": "群峦传说中有 21 种岩石，一共可分成四大类:$(thing)喷出型岩浆岩、侵入型岩浆岩、变质岩与沉积岩$()。$(2br)$(item)喷出型岩浆岩$()包括：安山岩、玄武岩、英安岩与流纹岩$(2br)$(item)侵入型岩浆岩$()包括：闪长岩、辉长岩与花岗岩"
+    },
+    {
+      "type": "text",
+      "text": "$(item)变质岩$()包括：片麻岩、大理岩、千枚岩、石英岩、片岩与板岩$(br2)$(item)沉积岩$()包括：白垩岩、硅质岩、粘土岩、砾岩、白云岩、石灰岩、盐岩与页岩$(br2)$(thing)注意$()：岩浆岩存在于全部的三层岩石中，变质岩存在于表层与中层中，沉积岩只存在于表层。"
+    },
+    {
+      "type": "spotlight",
+      "title": "辉铋矿",
+      "item": "tfc:ore/bismuthinite",
+      "text": "铋$(br2)存在于喷出型岩浆岩、沉积岩（表层）中"
+    },
+    {
+      "type": "spotlight",
+      "title": "锡石",
+      "item": "tfc:ore/cassiterite",
+      "text": "锡$(br2)存在于侵入型岩浆岩（在表层中只存在于花岗岩内）中"
+    },
+    {
+      "type": "spotlight",
+      "title": "绿镍矿",
+      "item": "tfc:ore/garnierite",
+      "text": "镍$(br2)只存在于辉长岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "赤铁矿",
+      "item": "tfc:ore/hematite",
+      "text": "铁$(br2)存在于喷出型岩浆岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "褐铁矿",
+      "item": "tfc:ore/limonite",
+      "text": "铁$(br2)存在于沉积岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "磁铁矿",
+      "item": "tfc:ore/magnetite",
+      "text": "铁$(br2)存在于沉积岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "孔雀石",
+      "item": "tfc:ore/malachite",
+      "text": "铜$(br2)只存在于大理岩与石灰岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "原生铜",
+      "item": "tfc:ore/native_copper",
+      "text": "铜$(br2)存在于喷出型岩浆岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "原生金",
+      "item": "tfc:ore/native_gold",
+      "text": "金$(br2)存在于喷出与侵入型岩浆岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "原生银",
+      "item": "tfc:ore/native_silver",
+      "text": "银$(br2)只存在于花岗岩与片麻岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "闪锌矿",
+      "item": "tfc:ore/sphalerite",
+      "text": "锌$(br2)存在于变质岩（表层）中"
+    },
+    {
+      "type": "spotlight",
+      "title": "黝铜矿",
+      "item": "tfc:ore/tetrahedrite",
+      "text": "铜$(br2)存在于变质岩（表层）中"
+    },
+    {
+      "type": "spotlight",
+      "title": "烟煤",
+      "item": "tfc:ore/bituminous_coal",
+      "text": "煤$(br2)存在于沉积岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "硼砂",
+      "item": "tfc:ore/borax",
+      "text": "助焊剂$(br2)只存在于盐岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "朱砂",
+      "item": "tfc:ore/cinnabar",
+      "text": "红石$(br2)存在于喷出型岩浆岩，石英岩和页岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "冰晶石",
+      "item": "tfc:ore/cryolite",
+      "text": "红石$(br2)只存在于花岗岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "石墨",
+      "item": "tfc:ore/graphite",
+      "text": "石墨$(br2)只存在于片麻岩、大理岩、石英岩与片岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "石膏",
+      "item": "tfc:ore/gypsum",
+      "text": "雪花石膏$(br2)存在于沉积岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "高岭石",
+      "item": "tfc:ore/kaolinite",
+      "text": "高岭石$(br2)存在于沉积岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "金伯利岩",
+      "item": "tfc:ore/kimberlite",
+      "text": "钻石$(br2)只存在于辉长岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "青金石",
+      "item": "tfc:ore/lapis_lazuli",
+      "text": "青金石$(br2)只存在于大理岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "褐煤",
+      "item": "tfc:ore/lignite",
+      "text": "煤$(br2)存在于沉积岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "硝石",
+      "item": "tfc:ore/saltpeter",
+      "text": "硝石$(br2)存在于除盐岩以外的所有沉积岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "钾石盐（无用）",
+      "item": "tfc:ore/sylvite",
+      "text": "肥料（无用）$(br2)只存在于盐岩中"
+    },
+    {
+      "type": "spotlight",
+      "title": "原生铂（无用）",
+      "item": "tfc:ore/native_platinum",
+      "text": "在极高的温度下可以熔化为铂，理论上可以被制成灯。$(br2)存在于沉积岩中。$(br2)$(br2)"
+    },
+    {
+      "type": "text",
+      "text": "另外，有些矿石虽然存在但目前不能生成，包括：方铅矿、黑玉、微斜长石、橄榄石、硅化木、沥青铀矿、纤维石膏、透石膏与蛇纹石。"
+    }
+  ]
+}

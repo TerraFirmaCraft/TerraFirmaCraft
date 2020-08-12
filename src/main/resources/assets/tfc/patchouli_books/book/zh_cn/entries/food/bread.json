@@ -1,0 +1,31 @@
+{
+  "name": "面包",
+  "icon": "tfc:textures/items/food/wheat_bread.png",
+  "category": "food",
+  "advancement": "tfc:main/campfire",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:food/wheat/wheat_grain",
+      "title": "谷物",
+      "text": "群峦传说中有六种谷物，$(item)小麦，大麦，黑麦，稻米，燕麦和玉米$()。首先把它们成熟的作物和小刀合成得到谷物粒。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:barley",
+      "text": "之后用$(thing)手推磨$()磨成$(item)面粉$()。"
+    },
+    {
+      "type": "crafting",
+      "text": "之后和盛了水的桶合成面粉团。",
+      "recipe": "tfc:food/wheat/wheat_dough",
+      "title": "面粉团"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:cornbread",
+      "text": "在篝火或者木炭炉里就可以烤成$(item)面包$()了。"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "洗矿与淘金",
+  "icon": "tfc:textures/items/goldpan/sand.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/pottery",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "有时捡矿粒和挖矿并不是最经济实惠的选择，尤其是在服务器里。所以$(thing)洗矿与淘金$()便应运而生。"
+    },
+    {
+      "type": "crafting",
+      "title": "淘金盘",
+      "recipe": "tfc:goldpan",
+      "text": "使用$(thing)淘金盘$()可以简单有效地获取矿物粒。用一个普通的$(l:basic_smithing/casting)陶碗$()就可以合成。$(4)右键点击$()地面，之后对准水源$(4)按住右键$()。你可能会淘到铜、银、铂、金，又或者什么都淘不到。"
+    },
+    {
+      "type": "crafting",
+      "text": "洗矿槽可以用来过滤出沙子和沙砾中的宝石及矿物。",
+      "recipe": "tfc:sluice",
+      "title": "洗矿槽"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)洗矿槽使用指南：$()$(br2)1. 挖一个三格长两格深的坑。$(br)2. 挖一个小水渠，将水从坑一侧的顶部引入作为入水口。$(br)3. 将洗矿槽放在坑的底部，高侧紧挨入水口。这时会看到有水流入洗矿槽。$(br)4. 在坑中入水口对侧，未放置洗矿槽的位置再下挖一格作为出水口。这时可以看到有水从洗矿槽流出。$(br)5. 把$(item)沙子或沙砾$()丢进洗矿槽，然后稍等一会。$(br2)洗矿槽会产出你脚下的岩层里所含的矿物和宝石。"
+    }
+  ]
+}
