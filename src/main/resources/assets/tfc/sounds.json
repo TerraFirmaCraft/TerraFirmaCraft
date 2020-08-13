@@ -830,6 +830,16 @@
       "tfc:mongoosedeath1"
     ]
   },
+  "animal.feline.step": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.feline.step",
+    "sounds": [
+      "tfc:felinestep1",
+      "tfc:felinestep2",
+      "tfc:felinestep3",
+      "tfc:felinestep4"
+    ]
+  },
   "animal.cricket": {
     "category": "ambient",
     "subtitle": "tfc.animal.cricket",

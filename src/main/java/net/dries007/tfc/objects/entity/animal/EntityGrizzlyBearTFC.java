@@ -50,7 +50,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityGrizzlyBearTFC extends EntityAnimalMammal implements IPredator, EntityAIStandAttack.IEntityStandAttack
 {
-    private static final int DAYS_TO_ADULTHOOD = 480;
+    private static final int DAYS_TO_ADULTHOOD = 240;
     private static final DataParameter<Boolean> IS_STANDING;
 
     static

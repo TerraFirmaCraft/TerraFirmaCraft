@@ -19,7 +19,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -46,7 +45,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityLionTFC extends EntityAnimalMammal implements IPredator
 {
-    private static final int DAYS_TO_ADULTHOOD = 480;
+    private static final int DAYS_TO_ADULTHOOD = 192;
 
     //Values that has a visual effect on client
     private static final DataParameter<Integer> MOUTH_TICKS = EntityDataManager.createKey(EntityLionTFC.class, DataSerializers.VARINT);
@@ -78,32 +77,20 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.MALE_AND_FEMALES;
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
-    public int getMinGroupSize()
-    {
-        return 1;
-    }
+    public int getMinGroupSize() { return 1; }
 
     @Override
-    public int getMaxGroupSize()
-    {
-        return 5;
-    }
+    public int getMaxGroupSize() { return 5; }
 
     @Override
-    public int getDaysToAdulthood()
-    {
-        return DAYS_TO_ADULTHOOD;
-    }
+    public int getDaysToAdulthood() { return DAYS_TO_ADULTHOOD; }
 
     @Override
-    public int getDaysToElderly()
-    {
-        return 0;
-    }
+    public int getDaysToElderly() { return 0; }
 
     @Override
     public void birthChildren()
@@ -118,10 +105,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    public long gestationDays()
-    {
-        return 0;
-    }
+    public long gestationDays() { return 0; }
 
     @Override
     protected void entityInit()
@@ -131,16 +115,10 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        return false;
-    }
+    public boolean canMateWith(EntityAnimal otherAnimal) { return false; }
 
     @Override
-    public double getOldDeathChance()
-    {
-        return 0;
-    }
+    public double getOldDeathChance() { return 0; }
 
     public int getMouthTicks()
     {
@@ -153,16 +131,10 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
-        return TFCSounds.ANIMAL_LION_HURT;
-    }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_LION_HURT; }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
-        return TFCSounds.ANIMAL_LION_DEATH;
-    }
+    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_LION_DEATH; }
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn)
@@ -224,16 +196,10 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected SoundEvent getAmbientSound()
-    {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_LION_CRY : TFCSounds.ANIMAL_LION_SAY;
-    }
+    protected SoundEvent getAmbientSound() { return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_LION_CRY : TFCSounds.ANIMAL_LION_SAY; }
 
     @Nullable
-    protected ResourceLocation getLootTable()
-    {
-        return LootTablesTFC.ANIMALS_LION;
-    }
+    protected ResourceLocation getLootTable() { return LootTablesTFC.ANIMALS_LION; }
 
     @Override
     protected void updateAITasks()
@@ -248,7 +214,7 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // Close enough
+        playSound(TFCSounds.ANIMAL_FELINE_STEP, 0.15F, 1.0F);
     }
 
     /**

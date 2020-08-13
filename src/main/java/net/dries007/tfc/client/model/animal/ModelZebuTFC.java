@@ -436,15 +436,132 @@ public class ModelZebuTFC extends ModelBase
 
         if (zebu.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            udders.isHidden = true;
-            hornRightF1A.isHidden = true;
-            hornLeftF1A.isHidden = true;
+            if (percent < 0.5)
+            {
+                hornML1.isHidden = true;
+                hornML2.isHidden = true;
+                hornML3a.isHidden = true;
+                hornML3b.isHidden = true;
+                hornML3c.isHidden = true;
+                hornML3d.isHidden = true;
+                hornML4.isHidden = true;
+                hornMR1.isHidden = true;
+                hornMR2.isHidden = true;
+                hornMR3a.isHidden = true;
+                hornMR3b.isHidden = true;
+                hornMR3c.isHidden = true;
+                hornMR3d.isHidden = true;
+                hornMR4.isHidden = true;
+                hornRightF1A.isHidden = true;
+                hornRightF1B.isHidden = true;
+                hornRightF1C.isHidden = true;
+                hornRightF1D.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1A.isHidden = true;
+                hornLeftF1B.isHidden = true;
+                hornLeftF1C.isHidden = true;
+                hornLeftF1D.isHidden = true;
+                hornLeftF2.isHidden = true;
+                udders.isHidden = true;
+                maleNeck.isHidden = true;
+            }
+            else if (percent < 0.75)
+            {
+                hornML3a.isHidden = true;
+                hornML3b.isHidden = true;
+                hornML3c.isHidden = true;
+                hornML3d.isHidden = true;
+                hornML4.isHidden = true;
+                hornMR3a.isHidden = true;
+                hornMR3b.isHidden = true;
+                hornMR3c.isHidden = true;
+                hornMR3d.isHidden = true;
+                hornMR4.isHidden = true;
+                hornRightF1A.isHidden = true;
+                hornRightF1B.isHidden = true;
+                hornRightF1C.isHidden = true;
+                hornRightF1D.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1A.isHidden = true;
+                hornLeftF1B.isHidden = true;
+                hornLeftF1C.isHidden = true;
+                hornLeftF1D.isHidden = true;
+                hornLeftF2.isHidden = true;
+                udders.isHidden = true;
+            }
+            else
+            {
+                hornRightF1A.isHidden = true;
+                hornRightF1B.isHidden = true;
+                hornRightF1C.isHidden = true;
+                hornRightF1D.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1A.isHidden = true;
+                hornLeftF1B.isHidden = true;
+                hornLeftF1C.isHidden = true;
+                hornLeftF1D.isHidden = true;
+                hornLeftF2.isHidden = true;
+                udders.isHidden = true;
+            }
         }
+
         else
         {
-            hornMR1.isHidden = true;
-            hornML1.isHidden = true;
-            maleNeck.isHidden = true;
+            if (percent < 0.5)
+            {
+                hornML1.isHidden = true;
+                hornML2.isHidden = true;
+                hornML3a.isHidden = true;
+                hornML3b.isHidden = true;
+                hornML3c.isHidden = true;
+                hornML3d.isHidden = true;
+                hornML4.isHidden = true;
+                hornMR1.isHidden = true;
+                hornMR2.isHidden = true;
+                hornMR3a.isHidden = true;
+                hornMR3b.isHidden = true;
+                hornMR3c.isHidden = true;
+                hornMR3d.isHidden = true;
+                hornMR4.isHidden = true;
+                hornRightF1A.isHidden = true;
+                hornRightF1B.isHidden = true;
+                hornRightF1C.isHidden = true;
+                hornRightF1D.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1A.isHidden = true;
+                hornLeftF1B.isHidden = true;
+                hornLeftF1C.isHidden = true;
+                hornLeftF1D.isHidden = true;
+                hornLeftF2.isHidden = true;
+                udders.isHidden = true;
+                maleNeck.isHidden = true;
+            }
+            else if (percent < 0.75)
+            {
+                hornML1.isHidden = true;
+                hornML2.isHidden = true;
+                hornML3a.isHidden = true;
+                hornML3b.isHidden = true;
+                hornML3c.isHidden = true;
+                hornML3d.isHidden = true;
+                hornML4.isHidden = true;
+                hornMR1.isHidden = true;
+                hornMR2.isHidden = true;
+                hornMR3a.isHidden = true;
+                hornMR3b.isHidden = true;
+                hornMR3c.isHidden = true;
+                hornMR3d.isHidden = true;
+                hornMR4.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF2.isHidden = true;
+                maleNeck.isHidden = true;
+            }
+            else
+            {
+                hornMR1.isHidden = true;
+                hornML1.isHidden = true;
+                maleNeck.isHidden = true;
+            }
         }
 
         GlStateManager.pushMatrix();
@@ -477,12 +594,30 @@ public class ModelZebuTFC extends ModelBase
         this.legRBackTop.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * f1;
         this.legLBackTop.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
 
-        hornMR1.isHidden = false;
         hornML1.isHidden = false;
-
+        hornML2.isHidden = false;
+        hornML3a.isHidden = false;
+        hornML3b.isHidden = false;
+        hornML3c.isHidden = false;
+        hornML3d.isHidden = false;
+        hornML4.isHidden = false;
+        hornMR1.isHidden = false;
+        hornMR2.isHidden = false;
+        hornMR3a.isHidden = false;
+        hornMR3b.isHidden = false;
+        hornMR3c.isHidden = false;
+        hornMR3d.isHidden = false;
+        hornMR4.isHidden = false;
         hornRightF1A.isHidden = false;
+        hornRightF1B.isHidden = false;
+        hornRightF1C.isHidden = false;
+        hornRightF1D.isHidden = false;
+        hornRightF2.isHidden = false;
         hornLeftF1A.isHidden = false;
-
+        hornLeftF1B.isHidden = false;
+        hornLeftF1C.isHidden = false;
+        hornLeftF1D.isHidden = false;
+        hornLeftF2.isHidden = false;
         udders.isHidden = false;
         maleNeck.isHidden = false;
     }

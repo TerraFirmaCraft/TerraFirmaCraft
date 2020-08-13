@@ -86,7 +86,7 @@ public class ModelYakTFC extends ModelBase
         neck.addBox(-2.5F, -2.0F, -3.0F, 5, 5, 3, 0.0F);
         setRotateAngle(neck, -0.17453292519943295F, 0.0F, 0.0F);
         udder = new ModelRenderer(this, 32, 24);
-        udder.setRotationPoint(0.0F, 18.0F, 5.0F);
+        udder.setRotationPoint(0.0F, 18.0F, 4.8F);
         udder.addBox(-2.5F, -0.5F, -3.5F, 5, 2, 8, 0.0F);
         bodyCollar = new ModelRenderer(this, 61, 15);
         bodyCollar.setRotationPoint(0.0F, 5.5F, -11.0F);
@@ -299,32 +299,126 @@ public class ModelYakTFC extends ModelBase
 
         if (yak.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            udder.isHidden = true;
-            hornRightF1A.isHidden = true;
-            hornRightF1B.isHidden = true;
-            hornRightF1C.isHidden = true;
-            hornRightF1D.isHidden = true;
-            hornRightF2.isHidden = true;
-            hornLeftF1A.isHidden = true;
-            hornLeftF1B.isHidden = true;
-            hornLeftF1C.isHidden = true;
-            hornLeftF1D.isHidden = true;
-            hornLeftF2.isHidden = true;
+            if (percent < 0.5)
+            {
+                udder.isHidden = true;
+                hornRightF1A.isHidden = true;
+                hornRightF1B.isHidden = true;
+                hornRightF1C.isHidden = true;
+                hornRightF1D.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1A.isHidden = true;
+                hornLeftF1B.isHidden = true;
+                hornLeftF1C.isHidden = true;
+                hornLeftF1D.isHidden = true;
+                hornLeftF2.isHidden = true;
+                hornR1a.isHidden = true;
+                hornR1b.isHidden = true;
+                hornR1c.isHidden = true;
+                hornR1d.isHidden = true;
+                hornR2.isHidden = true;
+                hornR3.isHidden = true;
+                hornL1a.isHidden = true;
+                hornL1b.isHidden = true;
+                hornL1c.isHidden = true;
+                hornL1d.isHidden = true;
+                hornL2.isHidden = true;
+                hornL3.isHidden = true;
+            }
+            if (percent < 0.75)
+            {
+                udder.isHidden = true;
+                hornRightF1A.isHidden = true;
+                hornRightF1B.isHidden = true;
+                hornRightF1C.isHidden = true;
+                hornRightF1D.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1A.isHidden = true;
+                hornLeftF1B.isHidden = true;
+                hornLeftF1C.isHidden = true;
+                hornLeftF1D.isHidden = true;
+                hornLeftF2.isHidden = true;
+                hornR2.isHidden = true;
+                hornR3.isHidden = true;
+                hornL2.isHidden = true;
+                hornL3.isHidden = true;
+            }
+            else
+            {
+                udder.isHidden = true;
+                hornRightF1A.isHidden = true;
+                hornRightF1B.isHidden = true;
+                hornRightF1C.isHidden = true;
+                hornRightF1D.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1A.isHidden = true;
+                hornLeftF1B.isHidden = true;
+                hornLeftF1C.isHidden = true;
+                hornLeftF1D.isHidden = true;
+                hornLeftF2.isHidden = true;
+            }
         }
+
         else
         {
-            hornR1a.isHidden = true;
-            hornR1b.isHidden = true;
-            hornR1c.isHidden = true;
-            hornR1d.isHidden = true;
-            hornR2.isHidden = true;
-            hornR3.isHidden = true;
-            hornL1a.isHidden = true;
-            hornL1b.isHidden = true;
-            hornL1c.isHidden = true;
-            hornL1d.isHidden = true;
-            hornL2.isHidden = true;
-            hornL3.isHidden = true;
+            if (percent < 0.5)
+            {
+                udder.isHidden = true;
+                hornRightF1A.isHidden = true;
+                hornRightF1B.isHidden = true;
+                hornRightF1C.isHidden = true;
+                hornRightF1D.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1A.isHidden = true;
+                hornLeftF1B.isHidden = true;
+                hornLeftF1C.isHidden = true;
+                hornLeftF1D.isHidden = true;
+                hornLeftF2.isHidden = true;
+                hornR1a.isHidden = true;
+                hornR1b.isHidden = true;
+                hornR1c.isHidden = true;
+                hornR1d.isHidden = true;
+                hornR2.isHidden = true;
+                hornR3.isHidden = true;
+                hornL1a.isHidden = true;
+                hornL1b.isHidden = true;
+                hornL1c.isHidden = true;
+                hornL1d.isHidden = true;
+                hornL2.isHidden = true;
+                hornL3.isHidden = true;
+            }
+            if (percent < 0.75)
+            {
+                hornRightF2.isHidden = true;
+                hornLeftF2.isHidden = true;
+                hornR1a.isHidden = true;
+                hornR1b.isHidden = true;
+                hornR1c.isHidden = true;
+                hornR1d.isHidden = true;
+                hornR2.isHidden = true;
+                hornR3.isHidden = true;
+                hornL1a.isHidden = true;
+                hornL1b.isHidden = true;
+                hornL1c.isHidden = true;
+                hornL1d.isHidden = true;
+                hornL2.isHidden = true;
+                hornL3.isHidden = true;
+            }
+            else
+            {
+                hornR1a.isHidden = true;
+                hornR1b.isHidden = true;
+                hornR1c.isHidden = true;
+                hornR1d.isHidden = true;
+                hornR2.isHidden = true;
+                hornR3.isHidden = true;
+                hornL1a.isHidden = true;
+                hornL1b.isHidden = true;
+                hornL1c.isHidden = true;
+                hornL1d.isHidden = true;
+                hornL2.isHidden = true;
+                hornL3.isHidden = true;
+            }
         }
 
         GlStateManager.pushMatrix();
@@ -360,6 +454,7 @@ public class ModelYakTFC extends ModelBase
         this.legBackRight.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
         this.legBackLeft.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
 
+        udder.isHidden = false;
         hornR1a.isHidden = false;
         hornR1b.isHidden = false;
         hornR1c.isHidden = false;
@@ -372,7 +467,6 @@ public class ModelYakTFC extends ModelBase
         hornL1d.isHidden = false;
         hornL2.isHidden = false;
         hornL3.isHidden = false;
-
         hornRightF1A.isHidden = false;
         hornRightF1B.isHidden = false;
         hornRightF1C.isHidden = false;
@@ -383,8 +477,6 @@ public class ModelYakTFC extends ModelBase
         hornLeftF1C.isHidden = false;
         hornLeftF1D.isHidden = false;
         hornLeftF2.isHidden = false;
-
-
     }
 
     private void setRotateAngle(ModelRenderer model, float x, float y, float z)

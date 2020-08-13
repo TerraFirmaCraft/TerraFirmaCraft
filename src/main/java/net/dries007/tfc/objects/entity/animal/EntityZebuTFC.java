@@ -136,5 +136,5 @@ public class EntityZebuTFC extends EntityCowTFC implements ILivestock
 
     @Override
     // Equivalent sound
-    protected void playStepSound(BlockPos pos, Block blockIn){ playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 1.0F); }
+    protected void playStepSound(BlockPos pos, Block blockIn) { playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 1.0F); }
 }

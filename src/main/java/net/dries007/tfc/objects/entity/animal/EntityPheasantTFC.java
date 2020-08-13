@@ -34,7 +34,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 16;
+    private static final int DAYS_TO_ADULTHOOD = 24;
 
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;

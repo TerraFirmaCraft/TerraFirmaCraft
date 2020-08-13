@@ -38,7 +38,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 192;
+    private static final int DAYS_TO_ADULTHOOD = 128;
 
     @SuppressWarnings("unused")
     public EntityDeerTFC(World worldIn)

@@ -40,7 +40,8 @@ public class ModelDireWolfTFC extends ModelBase
     public ModelRenderer frontRLegPaw;
     public ModelRenderer nose;
     public ModelRenderer earR;
-    public ModelRenderer mouthBottom;
+    public ModelRenderer mouthBottom1;
+    public ModelRenderer mouthBottom2;
     public ModelRenderer mouthTop;
     public ModelRenderer headMane;
     public ModelRenderer earL;
@@ -59,8 +60,7 @@ public class ModelDireWolfTFC extends ModelBase
     public ModelRenderer neckMane2;
     public ModelRenderer neckManeLower1;
     public ModelRenderer neckManeLower2;
-    public ModelRenderer mouthMid1;
-    public ModelRenderer mouthMid2;
+
 
     public ModelDireWolfTFC()
     {
@@ -137,9 +137,12 @@ public class ModelDireWolfTFC extends ModelBase
         headMane = new ModelRenderer(this, 56, 0);
         headMane.setRotationPoint(0.0F, -1.5F, -3.0F);
         headMane.addBox(-3.0F, -2.0F, -1.0F, 6, 6, 4, 0.0F);
-        mouthBottom = new ModelRenderer(this, 11, 20);
-        mouthBottom.setRotationPoint(0.5F, -0.3F, -5.5F);
-        mouthBottom.addBox(-2.0F, 1.0F, -3.0F, 3, 1, 4, 0.0F);
+        mouthBottom1 = new ModelRenderer(this, 6, 20);
+        mouthBottom1.setRotationPoint(0.6F, -0.3F, -5.48F);
+        mouthBottom1.addBox(-2.0F, 1.0F, -3.0F, 2, 1, 4, 0.0F);
+        mouthBottom2 = new ModelRenderer(this, 18, 20);
+        mouthBottom2.setRotationPoint(1.4F, -0.3F, -5.48F);
+        mouthBottom2.addBox(-2.0F, 1.0F, -3.0F, 2, 1, 4, 0.0F);
         nose = new ModelRenderer(this, 15, 18);
         nose.setRotationPoint(0.0F, 0.0F, -5.3F);
         nose.addBox(-1.0F, -1.0F, -3.7F, 2, 1, 1, 0.0F);
@@ -184,12 +187,7 @@ public class ModelDireWolfTFC extends ModelBase
         neckManeLower2.setRotationPoint(0.0F, 11.0F, -9.5F);
         neckManeLower2.addBox(-3.0F, -2.5F, -1.5F, 6, 5, 3, -0.1F);
         setRotateAngle(neckManeLower2, 0.4363323129985824F, 0.0F, 0.0F);
-        mouthMid1 = new ModelRenderer(this, 0, 0);
-        mouthMid1.setRotationPoint(-0.4F, 0.5F, -7.55F);
-        mouthMid1.addBox(-1.0F, -0.5F, -1.0F, 2, 1, 2, 0.0F);
-        mouthMid2 = new ModelRenderer(this, 0, 0);
-        mouthMid2.setRotationPoint(0.4F, 0.5F, -7.55F);
-        mouthMid2.addBox(-1.0F, -0.5F, -1.0F, 2, 1, 2, 0.0F);
+
 
         backRLegAnkle.addChild(backRLegPaw);
         frontRLegCalf.addChild(frontRLegAnkle);
@@ -205,14 +203,13 @@ public class ModelDireWolfTFC extends ModelBase
         backRLegTop.addChild(backRLegCalf);
         frontRLegTop.addChild(frontRLegCalf);
         head.addChild(headMane);
-        head.addChild(mouthBottom);
+        head.addChild(mouthBottom1);
+        head.addChild(mouthBottom2);
         head.addChild(nose);
         backRLegCalf.addChild(backRLegAnkle);
         backLLegAnkle.addChild(backLLegPaw);
         backLLegTop.addChild(backLLegCalf);
         tailMain.addChild(tailBody);
-        head.addChild(mouthMid1);
-        head.addChild(mouthMid2);
     }
 
     @Override
@@ -248,14 +245,8 @@ public class ModelDireWolfTFC extends ModelBase
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
         setRotateAngle(head, f4 / (180F / (float) Math.PI), f3 / (180F / (float) Math.PI), 0F);
-        setRotateAngle(neckMane1, f4 / (1.5F * (180F / (float) Math.PI)) + -0.47123889803846897F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
-        setRotateAngle(neckManeLower1, f4 / (1.5F * (180F / (float) Math.PI)) + 0.3141592653589793F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
-
-        //head.rotateAngleX = f4 / (180F / (float) Math.PI);
-        //head.rotateAngleY = f3 / (180F / (float) Math.PI);
-        //neckMane1.rotateAngleX = f4 / (90F / (float) Math.PI);
-        //neckMane1.rotateAngleY = f3 / (90F / (float) Math.PI);
-        //setRotateAngle(neckMane1, -0.4379031093253773F, 0.0F, 0.0F);
+        //setRotateAngle(neckMane1, f4 / (1.5F * (180F / (float) Math.PI)) + -0.47123889803846897F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
+        //setRotateAngle(neckManeLower1, f4 / (1.5F * (180F / (float) Math.PI)) + 0.3141592653589793F, f3 / (1.5F * (180F / (float) Math.PI)), 0F);
 
         frontRLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F) * 0.8F * f1;
         frontLLegTop.rotateAngleX = MathHelper.cos(f * 0.4862F + (float) Math.PI) * 0.8F * f1;

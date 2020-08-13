@@ -27,14 +27,13 @@ import net.dries007.tfc.Constants;
 import net.dries007.tfc.api.types.IHuntable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.LootTablesTFC;
-import net.dries007.tfc.objects.entity.ai.EntityAIFindNest;
 import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
 public class EntityTurkeyTFC extends EntityAnimalTFC implements IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 24;
+    private static final int DAYS_TO_ADULTHOOD = 32;
 
     public float wingRotation;
     public float destPos;
@@ -68,7 +67,7 @@ public class EntityTurkeyTFC extends EntityAnimalTFC implements IHuntable
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.MALE_AND_FEMALES;
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override

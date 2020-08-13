@@ -71,6 +71,18 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
         return this.getControllingPassenger() instanceof EntityLivingBase;
     }
 
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_CAMEL_CRY : TFCSounds.ANIMAL_CAMEL_SAY;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_CAMEL_HURT; }
+
+    @Override
+    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_CAMEL_DEATH; }
+
     @SuppressWarnings("deprecation")
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
@@ -250,7 +262,7 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
+        return AnimalGroupingRules.MALE_AND_FEMALES;
     }
 
     @Override
@@ -264,18 +276,6 @@ public class EntityCamelTFC extends EntityLlamaTFC implements IAnimalTFC, ILives
     {
         return 2;
     }
-
-    @Override
-    protected SoundEvent getAmbientSound()
-    {
-        return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_CAMEL_CRY : TFCSounds.ANIMAL_CAMEL_SAY;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_CAMEL_HURT; }
-
-    @Override
-    protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_CAMEL_DEATH; }
 
     @Override
     protected void mountTo(EntityPlayer player)

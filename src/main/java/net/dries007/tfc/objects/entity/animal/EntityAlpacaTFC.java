@@ -147,14 +147,15 @@ public class EntityAlpacaTFC extends EntitySheepTFC implements ILivestock
         return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_ALPACA_CRY : TFCSounds.ANIMAL_ALPACA_SAY;
     }
 
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn) {
-        this.playSound(SoundEvents.ENTITY_LLAMA_STEP, 0.15F, 1.0F);
-    }
-
     @Nullable
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_ALPACA;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_LLAMA_STEP, 0.15F, 1.0F);
     }
 }

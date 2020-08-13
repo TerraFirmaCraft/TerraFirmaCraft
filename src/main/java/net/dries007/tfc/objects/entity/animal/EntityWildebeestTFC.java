@@ -38,7 +38,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 192;
+    private static final int DAYS_TO_ADULTHOOD = 128;
 
     @SuppressWarnings("unused")
     public EntityWildebeestTFC(World worldIn)
@@ -77,10 +77,7 @@ public class EntityWildebeestTFC extends EntityAnimalMammal implements IHuntable
     }
 
     @Override
-    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
-    {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
-    }
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules() { return AnimalGroupingRules.ELDER_AND_POPULATION; }
 
     @Override
     public int getMinGroupSize()

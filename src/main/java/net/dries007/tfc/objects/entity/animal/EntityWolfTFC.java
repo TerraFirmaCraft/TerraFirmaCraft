@@ -105,10 +105,7 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, ILivestock
     }
 
     @Override
-    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
-    {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
-    }
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules() { return AnimalGroupingRules.ELDER_AND_POPULATION; }
 
     @Override
     public int getMinGroupSize()
