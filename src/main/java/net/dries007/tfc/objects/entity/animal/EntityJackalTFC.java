@@ -11,9 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -36,7 +34,7 @@ import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 @ParametersAreNonnullByDefault
-public class EntityJackalTFC extends EntityAnimalMammal implements IPredator
+public class EntityJackalTFC extends EntityCoyoteTFC implements IPredator
 {
     private static final int DAYS_TO_ADULTHOOD = 112;
 
@@ -66,74 +64,10 @@ public class EntityJackalTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    public int getMinGroupSize()
-    {
-        return 2;
-    }
-
-    @Override
-    public int getMaxGroupSize()
-    {
-        return 3;
-    }
-
-    @Override
-    public int getDaysToAdulthood()
-    {
-        return DAYS_TO_ADULTHOOD;
-    }
-
-    @Override
-    public int getDaysToElderly()
-    {
-        return 0;
-    }
-
-    @Override
-    public void birthChildren()
-    {
-        // Not farmable
-    }
-
-    @Override
-    public long gestationDays()
-    {
-        return 0; // not farmable
-    }
-
-    @Override
-    public boolean canMateWith(EntityAnimal otherAnimal)
-    {
-        return false;
-    }
-
-    @Override
-    public double getOldDeathChance()
-    {
-        return 0;
-    }
-
-    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return TFCSounds.ANIMAL_JACKAL_HURT; }
 
     @Override
     protected SoundEvent getDeathSound() { return TFCSounds.ANIMAL_JACKAL_DEATH; }
-
-    @Override
-    public boolean attackEntityAsMob(Entity entityIn)
-    {
-        double attackDamage = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-        if (this.isChild())
-        {
-            attackDamage /= 2;
-        }
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) attackDamage);
-        if (flag)
-        {
-            this.applyEnchantments(this, entityIn);
-        }
-        return flag;
-    }
 
     @Override
     protected void initEntityAI()
@@ -166,17 +100,6 @@ public class EntityJackalTFC extends EntityAnimalMammal implements IPredator
     }
 
     @Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-    }
-
-    @Override
     protected SoundEvent getAmbientSound()
     {
         return Constants.RNG.nextInt(100) < 5 ? TFCSounds.ANIMAL_JACKAL_CRY : TFCSounds.ANIMAL_JACKAL_SAY;
@@ -187,16 +110,6 @@ public class EntityJackalTFC extends EntityAnimalMammal implements IPredator
     protected ResourceLocation getLootTable()
     {
         return LootTablesTFC.ANIMALS_JACKAL;
-    }
-
-    @Override
-    protected void updateAITasks()
-    {
-        super.updateAITasks();
-        if (!this.hasHome())
-        {
-            this.setHomePosAndDistance(this.getPosition(), 80);
-        }
     }
 
     @Override

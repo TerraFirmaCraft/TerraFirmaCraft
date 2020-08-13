@@ -212,6 +212,6 @@ public class EntityCoyoteTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F); // Close enough
+        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.14F, 1.0F); // Close enough
     }
 }
