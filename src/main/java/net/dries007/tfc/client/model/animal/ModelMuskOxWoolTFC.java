@@ -59,6 +59,21 @@ public class ModelMuskOxWoolTFC extends ModelBase
         float percent = (float) muskox.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
 
+        if (percent < 0.5)
+        {
+            bodyHairQiviut.isHidden = true;
+            bodyMainQiviut.isHidden = true;
+            bodyShoulderQiviut.isHidden = true;
+            humpQiviut.isHidden = true;
+        }
+        else
+        {
+            bodyHairQiviut.isHidden = false;
+            bodyMainQiviut.isHidden = false;
+            bodyShoulderQiviut.isHidden = false;
+            humpQiviut.isHidden = false;
+        }
+
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);

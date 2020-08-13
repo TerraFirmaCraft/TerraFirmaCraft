@@ -231,7 +231,6 @@ public class ClientEvents
 
                     if (chunkDataValid)
                     {
-                        list.add(GRAY + "Rainfall: " + WHITE + data.getRainfall());
                         list.add(GRAY + "Flora Density: " + WHITE + data.getFloraDensity());
                         list.add(GRAY + "Flora Diversity: " + WHITE + data.getFloraDiversity());
 

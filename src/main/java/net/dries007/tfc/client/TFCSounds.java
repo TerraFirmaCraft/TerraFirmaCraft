@@ -248,6 +248,9 @@ public class TFCSounds
     @GameRegistry.ObjectHolder(MOD_ID + ":animal.mongoose.death")
     public static final SoundEvent ANIMAL_MONGOOSE_DEATH = getNull();
 
+    @GameRegistry.ObjectHolder(MOD_ID + ":animal.feline.step")
+    public static final SoundEvent ANIMAL_FELINE_STEP = getNull();
+
     // These are static initialized because we need a custom sound type which uses the sounds before initialization
     private static final SoundEvent CHARCOAL_PILE_BREAK = createSoundEvent("block.charcoal.break");
     private static final SoundEvent CHARCOAL_PILE_FALL = createSoundEvent("block.charcoal.fall");
@@ -368,7 +371,8 @@ public class TFCSounds
             createSoundEvent("animal.jackal.cry"),
             createSoundEvent("animal.jackal.say"),
             createSoundEvent("animal.jackal.hurt"),
-            createSoundEvent("animal.jackal.death")
+            createSoundEvent("animal.jackal.death"),
+            createSoundEvent("animal.feline.step")
         );
     }
 

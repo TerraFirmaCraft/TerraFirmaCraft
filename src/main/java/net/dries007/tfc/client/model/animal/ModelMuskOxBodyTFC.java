@@ -197,17 +197,83 @@ public class ModelMuskOxBodyTFC extends ModelBase
 
         if (muskox.getGender() == EntityAnimalTFC.Gender.MALE)
         {
-            hornRightF1.isHidden = true;
-            hornRightF2.isHidden = true;
-            hornLeftF1.isHidden = true;
-            hornLeftF2.isHidden = true;
+            if (percent < 0.5)
+            {
+                hornCenter.isHidden = true;
+                hornRightBase.isHidden = true;
+                hornLeftBase.isHidden = true;
+                hornRightF1.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1.isHidden = true;
+                hornLeftF2.isHidden = true;
+                hornRight1.isHidden = true;
+                hornRight2.isHidden = true;
+                hornRight3.isHidden = true;
+                hornLeft1.isHidden = true;
+                hornLeft2.isHidden = true;
+                hornLeft3.isHidden = true;
+            }
+            else if (percent < 0.75)
+            {
+                hornRightF1.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1.isHidden = true;
+                hornLeftF2.isHidden = true;
+                hornRight1.isHidden = true;
+                hornRight2.isHidden = true;
+                hornRight3.isHidden = true;
+                hornLeft1.isHidden = true;
+                hornLeft2.isHidden = true;
+                hornLeft3.isHidden = true;
+            }
+
+            else
+            {
+                hornRightF1.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1.isHidden = true;
+                hornLeftF2.isHidden = true;
+            }
         }
+
         else
         {
-            hornRight2.isHidden = true;
-            hornRight3.isHidden = true;
-            hornLeft2.isHidden = true;
-            hornLeft3.isHidden = true;
+            if (percent < 0.5)
+            {
+                hornCenter.isHidden = true;
+                hornRightBase.isHidden = true;
+                hornLeftBase.isHidden = true;
+                hornRightF1.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1.isHidden = true;
+                hornLeftF2.isHidden = true;
+                hornRight1.isHidden = true;
+                hornRight2.isHidden = true;
+                hornRight3.isHidden = true;
+                hornLeft1.isHidden = true;
+                hornLeft2.isHidden = true;
+                hornLeft3.isHidden = true;
+            }
+            else if (percent < 0.75)
+            {
+                hornRightF1.isHidden = true;
+                hornRightF2.isHidden = true;
+                hornLeftF1.isHidden = true;
+                hornLeftF2.isHidden = true;
+                hornRight1.isHidden = true;
+                hornRight2.isHidden = true;
+                hornRight3.isHidden = true;
+                hornLeft1.isHidden = true;
+                hornLeft2.isHidden = true;
+                hornLeft3.isHidden = true;
+            }
+            else
+            {
+                hornRight2.isHidden = true;
+                hornRight3.isHidden = true;
+                hornLeft2.isHidden = true;
+                hornLeft3.isHidden = true;
+            }
         }
 
         GlStateManager.pushMatrix();
@@ -237,18 +303,18 @@ public class ModelMuskOxBodyTFC extends ModelBase
         this.legBackLeft.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
 
         hornCenter.isHidden = false;
-        hornLeft1.isHidden = false;
-        hornLeft2.isHidden = false;
-        hornLeft3.isHidden = false;
-        hornLeftBase.isHidden = false;
         hornRightBase.isHidden = false;
-        hornRight1.isHidden = false;
-        hornRight2.isHidden = false;
-        hornRight3.isHidden = false;
+        hornLeftBase.isHidden = false;
         hornRightF1.isHidden = false;
         hornRightF2.isHidden = false;
         hornLeftF1.isHidden = false;
         hornLeftF2.isHidden = false;
+        hornRight1.isHidden = false;
+        hornRight2.isHidden = false;
+        hornRight3.isHidden = false;
+        hornLeft1.isHidden = false;
+        hornLeft2.isHidden = false;
+        hornLeft3.isHidden = false;
     }
 
     private void setRotateAngle(ModelRenderer model, float x, float y, float z)

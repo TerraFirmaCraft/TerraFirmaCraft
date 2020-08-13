@@ -34,7 +34,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityBoarTFC extends EntityAnimalMammal implements IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 16;
+    private static final int DAYS_TO_ADULTHOOD = 104;
 
     @SuppressWarnings("unused")
     public EntityBoarTFC(World worldIn)

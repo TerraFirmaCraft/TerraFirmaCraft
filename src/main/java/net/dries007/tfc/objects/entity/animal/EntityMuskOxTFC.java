@@ -5,14 +5,10 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
-import java.util.List;
-import java.util.Random;
-import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
@@ -57,12 +53,6 @@ public class EntityMuskOxTFC extends EntitySheepTFC implements ILivestock
             return ConfigTFC.Animals.MUSKOX.rarity;
         }
         return 0;
-    }
-
-    @Override
-    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
-    {
-        return AnimalGroupingRules.MALE_AND_FEMALES;
     }
 
     @Override
