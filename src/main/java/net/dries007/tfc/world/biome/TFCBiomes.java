@@ -19,7 +19,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCBiomes
 {
-    public static final DeferredRegister<Biome> BIOMES = new DeferredRegister<>(ForgeRegistries.BIOMES, MOD_ID);
+    public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, MOD_ID);
     private static final List<BiomeVariants> ALL_BIOMES = new ArrayList<>(); // This has to come before any biomes, otherwise it is null during register()
 
     // Aquatic biomes

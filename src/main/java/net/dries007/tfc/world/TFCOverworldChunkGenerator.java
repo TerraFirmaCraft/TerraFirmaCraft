@@ -264,9 +264,8 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         return TFCConfig.COMMON.seaLevel.get() + 1;
     }
 
-    /* getHeight */
     @Override
-    public int func_222529_a(int x, int z, Heightmap.Type heightMapType)
+    public int getHeight(int x, int z, Heightmap.Type heightMapType)
     {
         return getSeaLevel();
     }

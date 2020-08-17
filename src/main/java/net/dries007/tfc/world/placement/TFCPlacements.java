@@ -14,7 +14,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCPlacements
 {
-    public static final DeferredRegister<Placement<?>> PLACEMENTS = new DeferredRegister<>(ForgeRegistries.DECORATORS, MOD_ID);
+    public static final DeferredRegister<Placement<?>> PLACEMENTS = DeferredRegister.create(ForgeRegistries.DECORATORS, MOD_ID);
 
     public static final RegistryObject<AtFlatSurfaceWithChance> FLAT_SURFACE_WITH_CHANCE = PLACEMENTS.register("at_flat_surface_with_chance", AtFlatSurfaceWithChance::new);
 }

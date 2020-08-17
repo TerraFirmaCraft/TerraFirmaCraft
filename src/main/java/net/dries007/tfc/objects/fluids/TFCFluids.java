@@ -34,7 +34,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class TFCFluids
 {
-    public static final DeferredRegister<Fluid> FLUIDS = new DeferredRegister<>(ForgeRegistries.FLUIDS, MOD_ID);
+    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, MOD_ID);
     private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "block/lava_still");
     private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "block/lava_flow");
     public static final Map<Metal.Default, Map<Type, RegistryObject<FlowingFluid>>> METAL_FLUIDS = Util.make(new EnumMap<>(Metal.Default.class), map -> {

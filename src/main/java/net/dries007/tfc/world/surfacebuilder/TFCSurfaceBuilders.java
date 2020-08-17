@@ -16,7 +16,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCSurfaceBuilders
 {
-    public static final DeferredRegister<SurfaceBuilder<?>> SURFACE_BUILDERS = new DeferredRegister<>(ForgeRegistries.SURFACE_BUILDERS, MOD_ID);
+    public static final DeferredRegister<SurfaceBuilder<?>> SURFACE_BUILDERS = DeferredRegister.create(ForgeRegistries.SURFACE_BUILDERS, MOD_ID);
 
     public static final RegistryObject<SurfaceBuilder<SurfaceBuilderConfig>> MOUNTAINS = SURFACE_BUILDERS.register("mountains", TFCMountainSurfaceBuilder::new);
 
