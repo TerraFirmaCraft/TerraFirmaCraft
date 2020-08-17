@@ -27,7 +27,7 @@ import net.dries007.tfc.objects.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomes;
-import net.dries007.tfc.world.carver.TFCWorldCarvers;
+import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
@@ -65,7 +65,7 @@ public final class TerraFirmaCraft
         TFCFeatures.FEATURES.register(modEventBus);
         TFCPlacements.PLACEMENTS.register(modEventBus);
         TFCSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
-        TFCWorldCarvers.CARVERS.register(modEventBus);
+        TFCCarvers.CARVERS.register(modEventBus);
 
         // Init methods
         TFCConfig.init();

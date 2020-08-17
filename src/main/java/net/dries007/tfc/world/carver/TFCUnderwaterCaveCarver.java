@@ -15,16 +15,16 @@ import net.minecraft.world.gen.feature.ProbabilityConfig;
 import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.objects.types.RockManager;
 
-public class TFCUnderwaterCaveWorldCarver extends UnderwaterCaveWorldCarver
+public class TFCUnderwaterCaveCarver extends UnderwaterCaveWorldCarver
 {
     private final Set<Block> originalCarvableBlocks;
 
-    public TFCUnderwaterCaveWorldCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic)
+    public TFCUnderwaterCaveCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic)
     {
         super(dynamic);
         originalCarvableBlocks = carvableBlocks;
 
         // Need to run this every time the rock registry is reloaded
-        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCWorldCarvers.fixCarvableBlocksList(originalCarvableBlocks));
+        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
     }
 }

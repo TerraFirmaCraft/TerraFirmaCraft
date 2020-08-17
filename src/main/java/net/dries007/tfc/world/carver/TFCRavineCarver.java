@@ -21,19 +21,33 @@ import net.minecraft.world.gen.feature.ProbabilityConfig;
 import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.objects.types.RockManager;
 
-public class TFCCanyonWorldCarver extends CanyonWorldCarver
+public class TFCRavineCarver extends CanyonWorldCarver
 {
     private final Set<Block> originalCarvableBlocks;
     private final CaveBlockReplacer blockCarver;
 
-    public TFCCanyonWorldCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic)
+    public TFCRavineCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic)
     {
         super(dynamic);
         originalCarvableBlocks = carvableBlocks;
         blockCarver = new CaveBlockReplacer();
 
         // Need to run this every time the rock registry is reloaded
-        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCWorldCarvers.fixCarvableBlocksList(originalCarvableBlocks));
+        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
+    }
+
+    @Override
+    public boolean carveRegion(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig configIn)
+    {
+        double xOffset = chunkXOffset * 16 + rand.nextInt(16);
+        double yOffset = rand.nextInt(rand.nextInt(seaLevel + 20) + 32) + 20; // Modified to use sea level, should reach surface more often
+        double zOffset = chunkZOffset * 16 + rand.nextInt(16);
+        float yaw = rand.nextFloat() * ((float) Math.PI * 2F);
+        float pitch = (rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
+        float width = (rand.nextFloat() * 2.0F + rand.nextFloat()) * 2.0F;
+        int branchAmount = 112 - rand.nextInt(28);
+        func_227204_a_(chunkIn, biomePos, rand.nextLong(), seaLevel, chunkX, chunkZ, xOffset, yOffset, zOffset, width, yaw, pitch, 0, branchAmount, 3.0D, carvingMask); /* carveRegion */
+        return true;
     }
 
     @Override

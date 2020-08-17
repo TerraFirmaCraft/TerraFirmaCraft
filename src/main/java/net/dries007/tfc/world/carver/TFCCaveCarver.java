@@ -21,19 +21,19 @@ import net.minecraft.world.gen.feature.ProbabilityConfig;
 import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.objects.types.RockManager;
 
-public class TFCCaveWorldCarver extends CaveWorldCarver
+public class TFCCaveCarver extends CaveWorldCarver
 {
     private final Set<Block> originalCarvableBlocks;
     private final CaveBlockReplacer blockCarver;
 
-    public TFCCaveWorldCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic, int maxHeight)
+    public TFCCaveCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic, int maxHeight)
     {
         super(dynamic, maxHeight);
         originalCarvableBlocks = carvableBlocks;
         blockCarver = new CaveBlockReplacer();
 
         // Need to run this every time the rock registry is reloaded
-        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCWorldCarvers.fixCarvableBlocksList(originalCarvableBlocks));
+        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
     }
 
     @Override
