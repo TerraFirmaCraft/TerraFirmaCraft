@@ -7,7 +7,6 @@ package net.dries007.tfc.network;
 
 import java.util.function.Supplier;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -16,18 +15,22 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.util.LerpFloatLayer;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
-public class ChunkDataUpdatePacket
+/**
+ * Sent from server -> client on chunk watch, partially syncs chunk data and updates the client cache
+ */
+public class ChunkWatchPacket
 {
     private final int chunkX;
     private final int chunkZ;
     private final LerpFloatLayer rainfallLayer;
     private final LerpFloatLayer temperatureLayer;
 
-    public ChunkDataUpdatePacket(int chunkX, int chunkZ, LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer)
+    public ChunkWatchPacket(int chunkX, int chunkZ, LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer)
     {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
@@ -35,7 +38,7 @@ public class ChunkDataUpdatePacket
         this.temperatureLayer = temperatureLayer;
     }
 
-    ChunkDataUpdatePacket(PacketBuffer buffer)
+    ChunkWatchPacket(PacketBuffer buffer)
     {
         chunkX = buffer.readVarInt();
         chunkZ = buffer.readVarInt();
@@ -54,16 +57,20 @@ public class ChunkDataUpdatePacket
     void handle(Supplier<NetworkEvent.Context> context)
     {
         context.get().enqueueWork(() -> {
+            ChunkPos pos = new ChunkPos(chunkX, chunkZ);
             // Update client-side chunk data capability
-            World world = DistExecutor.callWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().world);
+            World world = DistExecutor.callWhenOn(Dist.CLIENT, () -> ClientHelpers::getWorld);
             if (world != null)
             {
-                ChunkPos pos = new ChunkPos(chunkX, chunkZ);
+                // First, synchronize the chunk data in the capability and cache.
+                // Then, update the single data instance with the packet data
                 IChunk chunk = world.chunkExists(chunkX, chunkZ) ? world.getChunk(chunkX, chunkZ) : null;
-                ChunkData.get(chunk).ifPresent(data -> {
-                    data.onUpdatePacket(rainfallLayer, temperatureLayer);
-                    ChunkDataCache.update(pos, data);
-                });
+                ChunkData data = ChunkData.getCapability(chunk)
+                    .map(dataIn -> {
+                        ChunkDataCache.CLIENT.update(pos, dataIn);
+                        return dataIn;
+                    }).orElseGet(() -> ChunkDataCache.CLIENT.getOrCreate(pos));
+                data.onUpdatePacket(rainfallLayer, temperatureLayer);
             }
         });
         context.get().setPacketHandled(true);

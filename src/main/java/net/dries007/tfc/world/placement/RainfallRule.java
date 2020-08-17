@@ -8,9 +8,11 @@ package net.dries007.tfc.world.placement;
 import com.google.gson.JsonObject;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class RainfallRule implements IPlacementRule
 {
@@ -25,7 +27,8 @@ public class RainfallRule implements IPlacementRule
     @Override
     public boolean test(IWorld world, BlockPos pos)
     {
-        float rainfall = ChunkData.get(world, pos, ChunkData.Status.CLIMATE, false).getRainfall(pos);
+        ChunkData chunkData = ChunkDataProvider.get(world).map(provider -> provider.get(new ChunkPos(pos), ChunkData.Status.CLIMATE)).orElseThrow(() -> new IllegalStateException("Invalid chunk data"));
+        float rainfall = chunkData.getRainfall(pos);
         return rainfall >= minimum && rainfall <= maximum;
     }
 }

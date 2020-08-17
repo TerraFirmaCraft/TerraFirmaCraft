@@ -8,6 +8,7 @@ package net.dries007.tfc.api.calendar;
 import net.minecraft.world.IWorldReader;
 
 import net.dries007.tfc.client.ClientCalendar;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 
 /**
@@ -32,7 +33,6 @@ public final class Calendars
      */
     public static ICalendar get(IWorldReader world)
     {
-        return world.isRemote() ? CLIENT : SERVER;
+        return Helpers.isRemote(world) ? CLIENT : SERVER;
     }
-
 }

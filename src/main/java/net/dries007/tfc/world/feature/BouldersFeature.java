@@ -18,6 +18,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class BouldersFeature extends Feature<BoulderConfig>
 {
@@ -35,7 +36,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, BoulderConfig config)
     {
-        ChunkData data = ChunkData.get(worldIn, pos, ChunkData.Status.ROCKS, false);
+        ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.ROCKS)).orElseThrow(() -> new IllegalStateException("Missing rock data, cannot generate boulders."));
         Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
         BlockState baseState = rock.getBlock(config.getBaseType()).getDefaultState();
         BlockState decorationState = rock.getBlock(config.getDecorationType()).getDefaultState();

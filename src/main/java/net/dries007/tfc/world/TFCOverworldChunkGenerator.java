@@ -24,6 +24,7 @@ import net.minecraft.world.gen.*;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import net.dries007.tfc.api.world.ITFCChunkGenerator;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.world.biome.*;
@@ -32,7 +33,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.INoise2D;
 
-public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSettings>
+public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSettings> implements ITFCChunkGenerator
 {
     public static final BlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
 
@@ -69,11 +70,13 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         this.shadowBiomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
     }
 
+    @Override
     public ChunkDataProvider getChunkDataProvider()
     {
         return chunkDataProvider;
     }
 
+    @Override
     public ChunkBlockReplacer getBlockReplacer()
     {
         return blockReplacer;
@@ -93,7 +96,8 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         if (stage == GenerationStage.Carving.AIR)
         {
             // First, run worley cave carver
-            worleyCaveCarver.carve(chunkIn, chunkIn.getPos().x << 4, chunkIn.getPos().z << 4, chunkIn.getCarvingMask(stage));
+            // todo: this should use a vanilla world carver for ease of use (despite the worse efficiency)
+            worleyCaveCarver.carve(chunkIn, chunkPos.getXStart(), chunkPos.getZStart(), chunkIn.getCarvingMask(stage));
         }
 
         // Fire other world carvers
@@ -112,7 +116,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         makeBedrock(chunk, random);
 
-        ChunkData chunkData = ChunkData.get(worldGenRegion, chunkPos, ChunkData.Status.ROCKS, false);
+        ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
         blockReplacer.replace(worldGenRegion, chunk, random, chunkData);
     }
 

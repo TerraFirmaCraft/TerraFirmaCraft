@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -81,21 +80,18 @@ public class ClientForgeEventHandler
 
                 // Always add calendar info
                 list.add(I18n.format("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getFormattedText());
-                list.add(I18n.format(MOD_ID + ".tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getRenderViewEntity().world.getDayTime() % ICalendar.TICKS_IN_DAY));
+                list.add(I18n.format("tfc.tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getRenderViewEntity().world.getDayTime() % ICalendar.TICKS_IN_DAY));
 
-                IChunk chunk = mc.world.getChunk(pos);
-                ChunkData.get(chunk).ifPresent(data -> {
-                    if (data.getStatus().isAtLeast(ChunkData.Status.CLIMATE))
-                    {
-                        // todo: translation keys
-                        list.add(String.format("%sAvg. Temp: %s%.1f\u00b0C", GRAY, WHITE, data.getAverageTemp(pos)));
-                        list.add(String.format("%sRainfall: %s%.1f", GRAY, WHITE, data.getRainfall(pos)));
-                    }
-                    else
-                    {
-                        list.add("Invalid Chunk Data");
-                    }
-                });
+                ChunkData data = ChunkData.get(mc.world, pos);
+                if (data.getStatus().isAtLeast(ChunkData.Status.CLIMATE))
+                {
+                    list.add(GRAY + I18n.format("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
+                    list.add(GRAY + I18n.format("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", data.getRainfall(pos))));
+                }
+                else
+                {
+                    list.add(GRAY + I18n.format("tfc.tooltip.f3_invalid_chunk_data"));
+                }
             }
         }
     }
@@ -124,12 +120,8 @@ public class ClientForgeEventHandler
             int guiTop = ((InventoryScreen) event.getGui()).getGuiTop();
 
             event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176 - 3, 4, 20 + 3, 22, 96 + 20, 0, 1, 3, 0, 0, button -> {}).setRecipeBookCallback(screen));
-            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 27, 20, 22, 96, 0, 1, 3, 32, 0, button -> {
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.CALENDAR));
-            }).setRecipeBookCallback(screen));
-            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 96, 0, 1, 3, 64, 0, button -> {
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.NUTRITION));
-            }).setRecipeBookCallback(screen));
+            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 27, 20, 22, 96, 0, 1, 3, 32, 0, button -> PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.CALENDAR))).setRecipeBookCallback(screen));
+            event.addWidget(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 96, 0, 1, 3, 64, 0, button -> PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.NUTRITION))).setRecipeBookCallback(screen));
         }
     }
 }

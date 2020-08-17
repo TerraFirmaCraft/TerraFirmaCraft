@@ -6,6 +6,7 @@
 package net.dries007.tfc.util;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -24,7 +25,13 @@ import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Unit;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -158,6 +165,20 @@ public final class Helpers
     }
 
     /**
+     * Applies two possible consumers of a given lazy optional
+     */
+    public static <T> void ifPresentOrElse(LazyOptional<T> lazyOptional, Consumer<T> ifPresent, Runnable orElse)
+    {
+        lazyOptional.map(t -> {
+            ifPresent.accept(t);
+            return Unit.INSTANCE;
+        }).orElseGet(() -> {
+            orElse.run();
+            return Unit.INSTANCE;
+        });
+    }
+
+    /**
      * Creates a map of each enum constant to the value as provided by the value mapper.
      */
     public static <E extends Enum<E>, V> EnumMap<E, V> mapOfKeys(Class<E> enumClass, Function<E, V> valueMapper)
@@ -211,5 +232,19 @@ public final class Helpers
                 return provider.createMenu(windowId, inv, player);
             }
         };
+    }
+
+    /**
+     * Normally, one would just call {@link IWorld#isRemote()}
+     * HOWEVER
+     * There exists a BIG HUGE PROBLEM in very specific scenarios with this
+     * Since World's isRemote() actually returns the isRemote boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
+     * At this point, THE CLIENT WORLD WILL RETURN {@code true} to {@link IWorld#isRemote()}
+     *
+     * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
+     */
+    public static boolean isRemote(IWorldReader world)
+    {
+        return world instanceof World ? !(world instanceof ServerWorld) : world.isRemote();
     }
 }

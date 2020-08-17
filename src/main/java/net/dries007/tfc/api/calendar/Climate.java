@@ -23,8 +23,6 @@ import net.dries007.tfc.world.noise.NoiseUtil;
 /**
  * Central class for all TFC climate requirements.
  * This is only valid in the overworld!
- *
- * todo: this needs to be checked and tested (and possibly rewritten / modified) to have proper client / server separation as the calendar does
  */
 public final class Climate
 {
@@ -49,40 +47,41 @@ public final class Climate
             return Biome.RainType.RAIN;
         }
     }
+    // todo: this all needs chunk data, need to figure out sided-ness of queries
 
     public static float getAverageTemperature(IWorld world, BlockPos pos)
     {
-        ChunkData data = ChunkData.get(world, pos, ChunkData.Status.CLIMATE, true);
+        ChunkData data = ChunkData.get(world, pos);
         return data.getAverageTemp(pos);
     }
 
     public static float getTemperature(IWorld world, BlockPos pos)
     {
-        ChunkData data = ChunkData.get(world, pos, ChunkData.Status.CLIMATE, true);
+        ChunkData data = ChunkData.get(world, pos);
         return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
     }
 
     public static float getRainfall(IWorld world, BlockPos pos)
     {
-        ChunkData data = ChunkData.get(world, pos, ChunkData.Status.CLIMATE, true);
+        ChunkData data = ChunkData.get(world, pos);
         return data.getRainfall(pos);
     }
 
     public static float getAverageTemperature(BlockPos pos)
     {
-        ChunkData data = ChunkDataCache.get(pos);
+        ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
         return data.getAverageTemp(pos);
     }
 
     public static float getTemperature(BlockPos pos)
     {
-        ChunkData data = ChunkDataCache.get(pos);
+        ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
         return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
     }
 
     public static float getRainfall(BlockPos pos)
     {
-        ChunkData data = ChunkDataCache.get(pos);
+        ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
         return data.getRainfall(pos);
     }
 
