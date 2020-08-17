@@ -7,7 +7,6 @@ package net.dries007.tfc.world.noise;
 
 public class WorleyNoise2D implements INoise2D
 {
-
     private final long seed;
 
     public WorleyNoise2D(long seed)

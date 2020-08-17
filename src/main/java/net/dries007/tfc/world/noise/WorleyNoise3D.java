@@ -7,7 +7,6 @@ package net.dries007.tfc.world.noise;
 
 public class WorleyNoise3D implements INoise3D
 {
-
     private final long seed;
     private final float[] distances = new float[27];
 
