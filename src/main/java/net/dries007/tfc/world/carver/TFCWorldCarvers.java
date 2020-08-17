@@ -24,7 +24,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCWorldCarvers
 {
-    public static final DeferredRegister<WorldCarver<?>> CARVERS = new DeferredRegister<>(ForgeRegistries.WORLD_CARVERS, MOD_ID);
+    public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(ForgeRegistries.WORLD_CARVERS, MOD_ID);
 
     public static final RegistryObject<WorldCarver<ProbabilityConfig>> CAVE = CARVERS.register("cave", () -> new TFCCaveWorldCarver(ProbabilityConfig::deserialize, 256));
     public static final RegistryObject<WorldCarver<ProbabilityConfig>> CANYON = CARVERS.register("canyon", () -> new TFCCanyonWorldCarver(ProbabilityConfig::deserialize));

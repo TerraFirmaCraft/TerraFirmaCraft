@@ -21,8 +21,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCWorldType extends WorldType
 {
-    public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATORS = new DeferredRegister<>(ForgeRegistries.CHUNK_GENERATOR_TYPES, MOD_ID);
-    public static final DeferredRegister<BiomeProviderType<?, ?>> BIOME_PROVIDERS = new DeferredRegister<>(ForgeRegistries.BIOME_PROVIDER_TYPES, MOD_ID);
+    public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATORS = DeferredRegister.create(ForgeRegistries.CHUNK_GENERATOR_TYPES, MOD_ID);
+    public static final DeferredRegister<BiomeProviderType<?, ?>> BIOME_PROVIDERS = DeferredRegister.create(ForgeRegistries.BIOME_PROVIDER_TYPES, MOD_ID);
 
     public static final RegistryObject<ChunkGeneratorType<TFCGenerationSettings, TFCOverworldChunkGenerator>> CHUNK_GENERATOR_TYPE = CHUNK_GENERATORS.register("overworld", () -> new ChunkGeneratorType<>(TFCOverworldChunkGenerator::new, false, TFCGenerationSettings::new));
 

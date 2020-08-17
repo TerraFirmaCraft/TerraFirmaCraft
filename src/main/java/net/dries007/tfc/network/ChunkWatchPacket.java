@@ -59,7 +59,7 @@ public class ChunkWatchPacket
         context.get().enqueueWork(() -> {
             ChunkPos pos = new ChunkPos(chunkX, chunkZ);
             // Update client-side chunk data capability
-            World world = DistExecutor.callWhenOn(Dist.CLIENT, () -> ClientHelpers::getWorld);
+            World world = DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> ClientHelpers::getWorld);
             if (world != null)
             {
                 // First, synchronize the chunk data in the capability and cache.

@@ -15,9 +15,10 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'idea'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-version = '0.1.0'
-group = 'net.dries007.tfc' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'tfc'
+def envVersion = System.getenv("version")
+version = envVersion == null ? "dev" : envVersion
+group = "net.dries007.tfc" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "TerraFirmaCraft-Forge-${minecraft_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -31,7 +32,7 @@ repositories {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200626-1.15.1'
+    mappings channel: "${mcp_channel}", version: "${mcp_version}"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -80,9 +81,9 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.2.0'
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    testImplementation fg.deobf('com.github.alcatrazEscapee:mcjunitlib:1.0.1-1.15.2') {
+    testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}") {
         transitive = false
     }
 }
