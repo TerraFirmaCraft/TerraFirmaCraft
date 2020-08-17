@@ -22,14 +22,14 @@ import net.dries007.tfc.objects.types.RockManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class TFCWorldCarvers
+public class TFCCarvers
 {
     public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(ForgeRegistries.WORLD_CARVERS, MOD_ID);
 
-    public static final RegistryObject<WorldCarver<ProbabilityConfig>> CAVE = CARVERS.register("cave", () -> new TFCCaveWorldCarver(ProbabilityConfig::deserialize, 256));
-    public static final RegistryObject<WorldCarver<ProbabilityConfig>> CANYON = CARVERS.register("canyon", () -> new TFCCanyonWorldCarver(ProbabilityConfig::deserialize));
-    public static final RegistryObject<WorldCarver<ProbabilityConfig>> UNDERWATER_CAVE = CARVERS.register("underwater_cave", () -> new TFCUnderwaterCaveWorldCarver(ProbabilityConfig::deserialize));
-    public static final RegistryObject<WorldCarver<ProbabilityConfig>> UNDERWATER_CANYON = CARVERS.register("underwater_canyon", () -> new TFCUnderwaterCanyonWorldCarver(ProbabilityConfig::deserialize));
+    public static final RegistryObject<WorldCarver<ProbabilityConfig>> CAVE = CARVERS.register("cave", () -> new TFCCaveCarver(ProbabilityConfig::deserialize, 256));
+    public static final RegistryObject<WorldCarver<ProbabilityConfig>> CANYON = CARVERS.register("canyon", () -> new TFCRavineCarver(ProbabilityConfig::deserialize));
+    public static final RegistryObject<WorldCarver<ProbabilityConfig>> UNDERWATER_CAVE = CARVERS.register("underwater_cave", () -> new TFCUnderwaterCaveCarver(ProbabilityConfig::deserialize));
+    public static final RegistryObject<WorldCarver<ProbabilityConfig>> UNDERWATER_CANYON = CARVERS.register("underwater_canyon", () -> new TFCUnderwaterRavineCarver(ProbabilityConfig::deserialize));
 
     /**
      * Vanilla carvers have a set of blocks they think are valid for carving
