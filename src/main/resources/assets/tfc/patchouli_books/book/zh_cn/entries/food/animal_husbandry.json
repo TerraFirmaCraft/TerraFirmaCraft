@@ -38,8 +38,15 @@
       "text": "要驯养马，首先得有一根$(item)拴绳$()。拴绳是用黄麻纤维合成的，将黄麻密封到装着淡水的$(l:processes/barrels)大桶$()中就可以制造黄麻纤维了。"
     },
     {
-      "type": "text",
+      "type": "crafting",
+	  "recipe": "tfc:halter",
+	  "title": "驯养马",
       "text": "马，驴和骡在群峦传说中也存在。要养的话，首先自然是提升亲密度，之后把它栓到栅栏上。再之后的步骤和原版一样，不断试着骑它，直到出现红心。之后安上鞍，就可以控制移动了。驴和骡还可以装载上盛放物品的箱子。"
-    }
+    },
+	{
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_saddle",
+      "text": "必须先塑形出鞍。"
+	}
   ]
 }
