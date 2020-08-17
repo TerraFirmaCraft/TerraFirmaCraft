@@ -7,59 +7,107 @@ package net.dries007.tfc.world.chunkdata;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nullable;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+
+import net.dries007.tfc.util.Helpers;
 
 /**
- * Client side position based cache of chunk data.
- * Used when there isn't a world context (so this assumes we are in the overworld)
+ * Cache of chunk data
+ * Used for various purposes:
+ * {@link ChunkDataCache#CLIENT} and {@link ChunkDataCache#SERVER} are logical sided caches, used for when chunk data is needed without a world context. Care must be taken to choose the cache for the correct logical side
+ * {@link ChunkDataCache#WORLD_GEN} is used for chunk data during world generation, as it's being generated. It is cleared once the chunk is completely generated
  */
 public class ChunkDataCache
 {
-    // This acts as both a server + client cache
-    private static final Map<ChunkPos, ChunkData> CACHE = new HashMap<>();
+    /**
+     * This is a cache of client side chunk data, used for when there is no world context available.
+     * It is serialized and synced on chunk watch
+     */
+    public static final ChunkDataCache CLIENT = new ChunkDataCache();
+
 
     /**
-     * @see ChunkDataCache#get(ChunkPos)
+     * This is a cache of server side chunk data.
      */
-    public static ChunkData get(BlockPos pos)
+    public static final ChunkDataCache SERVER = new ChunkDataCache();
+
+    /**
+     * This is a cache of incomplete chunk data used by world generation
+     * It is generated in stages:
+     * - {@link ChunkData.Status#CLIMATE} during biome generation to generate climate variants
+     * - {@link ChunkData.Status#ROCKS} during surface generation, later used for feature generation
+     * When the chunk is finished generating on server, this cache is cleared and the data is saved to the chunk capability for long term storage
+     */
+    public static final ChunkDataCache WORLD_GEN = new ChunkDataCache();
+
+    /**
+     * Gets the normal (not world gen) cache of chunk data for the current logical side
+     */
+    public static ChunkDataCache get(IWorldReader world)
+    {
+        return Helpers.isRemote(world) ? CLIENT : SERVER;
+    }
+
+    /**
+     * Gets the normal (not world en) cache of chunk data based on a heuristic - pick the one that is not empty
+     * On dedicated servers / clients only one will be non-empty
+     * On logical server / clients, this will default to using the server cache
+     * DO NOT call this unless absolutely necessary, e.g. returning from a vanilla method which is called from both logical sides
+     */
+    public static ChunkDataCache getUnsided()
+    {
+        return SERVER.cache.isEmpty() ? CLIENT : SERVER;
+    }
+
+    private final Map<ChunkPos, ChunkData> cache;
+
+    /**
+     * Creates an infinite size cache that must be managed to not create memory leaks
+     */
+    private ChunkDataCache()
+    {
+        cache = new HashMap<>();
+    }
+
+    public ChunkData getOrEmpty(BlockPos pos)
+    {
+        return getOrEmpty(new ChunkPos(pos));
+    }
+
+    public ChunkData getOrEmpty(ChunkPos pos)
+    {
+        return cache.getOrDefault(pos, ChunkData.EMPTY);
+    }
+
+    @Nullable
+    public ChunkData get(BlockPos pos)
     {
         return get(new ChunkPos(pos));
     }
 
-    /**
-     * Directly get the chunk data from the cache, when no world context is available, or the logical side is unknown.
-     *
-     * @see ChunkData#get(IWorld, ChunkPos, ChunkData.Status, boolean) for when a world is available
-     * @see ChunkDataProvider#get(ChunkPos, ChunkData.Status) for when the side (server) is known and generation should be forced
-     */
-    public static ChunkData get(ChunkPos pos)
+    @Nullable
+    public ChunkData get(ChunkPos pos)
     {
-        return CACHE.computeIfAbsent(pos, key -> new ChunkData());
+        return cache.get(pos);
     }
 
-    public static void remove(ChunkPos pos)
+    @Nullable
+    public ChunkData remove(ChunkPos pos)
     {
-        CACHE.remove(pos);
+        return cache.remove(pos);
     }
 
-    public static void update(ChunkPos pos, ChunkData data)
+    public void update(ChunkPos pos, ChunkData data)
     {
-        if (CACHE.containsKey(pos))
-        {
-            // There's original data here, so instead of remapping, copy into the existing data
-            // This allows callers to get a piece of data and have it be populated when the server replies
-            ChunkData original = CACHE.get(pos);
-            if (original != data)
-            {
-                original.copyFrom(data);
-            }
-        }
-        else
-        {
-            CACHE.put(pos, data);
-        }
+        cache.put(pos, data);
+    }
+
+    public ChunkData getOrCreate(ChunkPos pos)
+    {
+        return cache.computeIfAbsent(pos, ChunkData::new);
     }
 }

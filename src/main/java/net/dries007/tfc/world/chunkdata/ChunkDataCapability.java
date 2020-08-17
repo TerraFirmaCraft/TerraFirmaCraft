@@ -23,6 +23,8 @@ public class ChunkDataCapability
 
     public static void setup()
     {
-        CapabilityManager.INSTANCE.register(ChunkData.class, new NoopStorage<>(), ChunkData::new);
+        CapabilityManager.INSTANCE.register(ChunkData.class, new NoopStorage<>(), () -> {
+            throw new UnsupportedOperationException("Creating default instances is not supported");
+        });
     }
 }

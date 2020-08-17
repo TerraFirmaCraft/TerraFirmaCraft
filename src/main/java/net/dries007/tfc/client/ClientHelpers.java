@@ -5,8 +5,12 @@
 
 package net.dries007.tfc.client;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.world.World;
 
 /**
  * This class exists because forge can't bloody well make a usable mapping system... like jesus christ really?
@@ -38,5 +42,11 @@ public class ClientHelpers
     public static void drawTexturedScaledRect(int x, int y, int width, int height, float u, float v, int actualWidth, int actualHeight, int textureWidth, int textureHeight)
     {
         AbstractGui.blit(x, y, width, height, u, v, actualWidth, actualHeight, textureWidth, textureHeight);
+    }
+
+    @Nullable
+    public static World getWorld()
+    {
+        return Minecraft.getInstance().world;
     }
 }

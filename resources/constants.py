@@ -233,6 +233,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.calendar_birthday': '%s\'s Birthday!',
     'tfc.tooltip.calendar_date': 'Date : ',
     'tfc.tooltip.debug_times': 'PT: %d | CT: %d | DT: %d',
+    'tfc.tooltip.f3_rainfall': 'Rainfall: %s',
+    'tfc.tooltip.f3_average_temperature': 'Avg. Temp: %s\u00b0C',
+    'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
 
     # Commands
     'tfc.commands.time.query.daytime': 'The day time is %s',
