@@ -7,7 +7,6 @@ package net.dries007.tfc.api;
 
 import java.util.Arrays;
 import java.util.Map;
-import javax.annotation.Nonnull;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -128,7 +127,6 @@ public class Rock
             return cuttable;
         }
 
-        @Nonnull
         public Block create(Default rock)
         {
             return blockFactory.apply(rock);

@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/chestnut",
+    "top": "tfc:block/wood/planks/chestnut",
+    "side": "tfc:block/wood/planks/chestnut"
+  }
+}

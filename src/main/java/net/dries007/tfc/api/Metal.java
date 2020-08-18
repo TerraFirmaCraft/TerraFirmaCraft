@@ -6,6 +6,7 @@
 package net.dries007.tfc.api;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -224,9 +225,9 @@ public class Metal
             this(null, type, blockFactory);
         }
 
-        public Block create(Metal.Default metal)
+        public Supplier<Block> create(Metal.Default metal)
         {
-            return blockFactory.apply(metal);
+            return () -> blockFactory.apply(metal);
         }
 
         public boolean hasMetal(Default metal)
