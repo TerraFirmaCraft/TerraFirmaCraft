@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/button_inventory",
+  "textures": {
+    "layer0": {
+      "texture": "tfc:block/wood/planks/sequoia"
+    }
+  }
+}

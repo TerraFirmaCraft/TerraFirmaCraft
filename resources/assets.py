@@ -157,34 +157,34 @@ def generate(rm: ResourceManager):
     }, parent='block/block', elements=[north_face])
 
     # Grass Blocks
-    for var in SOIL_BLOCK_VARIANTS:
-        for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % var), ('clay_grass', 'tfc:block/clay/%s' % var)):
-            rm.blockstate_multipart((grass_var, var), [
-                {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'x': 270},
-                {'model': 'tfc:block/%s/%s_bottom' % (grass_var, var), 'x': 90},
-                ({'north': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, var)}),
-                ({'east': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'y': 90}),
-                ({'south': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'y': 180}),
-                ({'west': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, var), 'y': 270}),
-                ({'north': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var)}),
-                ({'east': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var), 'y': 90}),
-                ({'south': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var), 'y': 180}),
-                ({'west': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, var), 'y': 270}),
+    for wood in SOIL_BLOCK_VARIANTS:
+        for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % wood), ('clay_grass', 'tfc:block/clay/%s' % wood)):
+            rm.blockstate_multipart((grass_var, wood), [
+                {'model': 'tfc:block/%s/%s_top' % (grass_var, wood), 'x': 270},
+                {'model': 'tfc:block/%s/%s_bottom' % (grass_var, wood), 'x': 90},
+                ({'north': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, wood)}),
+                ({'east': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, wood), 'y': 90}),
+                ({'south': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, wood), 'y': 180}),
+                ({'west': True}, {'model': 'tfc:block/%s/%s_top' % (grass_var, wood), 'y': 270}),
+                ({'north': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, wood)}),
+                ({'east': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, wood), 'y': 90}),
+                ({'south': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, wood), 'y': 180}),
+                ({'west': False}, {'model': 'tfc:block/%s/%s_side' % (grass_var, wood), 'y': 270}),
             ]) \
-                .with_block_loot('tfc:dirt/%s' % var) \
+                .with_block_loot('tfc:dirt/%s' % wood) \
                 .with_tag('grass') \
-                .with_lang(lang('%s %s', var, grass_var))
+                .with_lang(lang('%s %s', wood, grass_var))
             # Grass Models, one for the side, top and bottom
-            rm.block_model((grass_var, '%s_top' % var), {
+            rm.block_model((grass_var, '%s_top' % wood), {
                 'overlay': 'tfc:block/grass_top',
                 'particle': dirt
             }, parent='block/block', elements=[north_face_tint0])
-            rm.block_model((grass_var, '%s_side' % var), {
+            rm.block_model((grass_var, '%s_side' % wood), {
                 'overlay': 'tfc:block/grass_side',
                 'texture': dirt,
                 'particle': dirt
             }, parent='block/block', elements=[north_face, north_face_tint0])
-            rm.block_model((grass_var, '%s_bottom' % var), {
+            rm.block_model((grass_var, '%s_bottom' % wood), {
                 'texture': dirt,
                 'particle': dirt
             }, parent='block/block', elements=[north_face])
@@ -225,3 +225,50 @@ def generate(rm: ResourceManager):
         for grade in GEM_GRADES:
             rm.item_model(('gem', grade, gem), 'tfc:item/gem/%s/%s' % (grade, gem)) \
                 .with_lang(lang('%s %s' % (grade, gem)))
+
+    # Wood Blocks
+    for wood in WOODS:
+        # Logs
+        for variant in ('log', 'stripped_log', 'wood', 'stripped_wood'):
+            block = rm.blockstate(('wood', variant, wood), variants={
+                'axis=y': {'model': 'tfc:block/wood/%s/%s' % (variant, wood)},
+                'axis=z': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90},
+                'axis=x': {'model': 'tfc:block/wood/%s/%s' % (variant, wood), 'x': 90, 'y': 90}
+            }, use_default_model=False) \
+                .with_item_model()
+            end = 'tfc:block/wood/%s/%s' % (variant.replace('log', 'log_top').replace('wood', 'log'), wood)
+            side = 'tfc:block/wood/%s/%s' % (variant.replace('wood', 'log'), wood)
+            block.with_block_model({'end': end, 'side': side}, parent='block/cube_column')
+            if 'stripped' in variant:
+                block.with_lang(lang(variant.replace('_', ' ' + wood + ' ')))
+            else:
+                block.with_lang(lang('%s %s', wood, variant))
+            if variant == 'log':
+                block.with_tag('minecraft:logs')
+
+        # Leaves
+        rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood) \
+            .with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves') \
+            .with_item_model() \
+            .with_tag('minecraft:leaves')
+
+        # Sapling
+        rm.blockstate(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood) \
+            .with_block_model({'cross': 'tfc:block/wood/sapling/%s' % wood}, 'block/cross')
+        rm.item_model(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood)
+
+        # Planks and variant blocks
+        rm.block(('wood', 'planks', wood)) \
+            .with_blockstate() \
+            .with_block_model() \
+            .with_item_model() \
+            .with_block_loot('tfc:wood/planks/%s' % wood) \
+            .with_lang(lang('%s planks', wood)) \
+            .make_slab() \
+            .make_stairs() \
+            .make_button() \
+            .make_pressure_plate() \
+            .make_door() \
+            .make_trapdoor() \
+            .make_fence() \
+            .make_fence_gate()

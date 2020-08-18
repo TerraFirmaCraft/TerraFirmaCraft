@@ -14,6 +14,8 @@ public class Ore
      * Default ores used for block registration calls
      * Not extensible
      *
+     * todo: re-evaluate if there is any data driven behavior that needs a json driven ore
+     *
      * @see Ore instead and register via json
      */
     public enum Default
