@@ -9,12 +9,19 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.LogBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.ToolType;
+import net.minecraft.util.Util;
+
+import net.dries007.tfc.api.Tree;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -34,6 +41,7 @@ import net.dries007.tfc.util.Helpers;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.objects.TFCItemGroup.METAL;
 import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
+import static net.dries007.tfc.objects.TFCItemGroup.WOOD;
 
 
 /**
@@ -112,4 +120,36 @@ public final class TFCBlocks
         TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), blockItemProperties));
         return block;
     }
+    public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Util.make(new EnumMap<>(SoilBlockType.class), map -> {
+        for (SoilBlockType type : SoilBlockType.values())
+        {
+            Map<SoilBlockType.Variant, RegistryObject<Block>> inner = new EnumMap<>(SoilBlockType.Variant.class);
+            for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
+            {
+                String name = (type.name() + "/" + variant.name()).toLowerCase();
+                RegistryObject<Block> block = BLOCKS.register(name, type::create);
+                TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ROCK_BLOCKS)));
+                inner.put(variant, block);
+            }
+            map.put(type, inner);
+        }
+    });
+
+    public static final Map<Tree.Default, RegistryObject<Block>> LOGS = Util.make(new EnumMap<>(Tree.Default.class), map -> {
+        for (Tree.Default type : Tree.Default.values()) {
+            String name = ("wood/log/" + type.name()).toLowerCase();
+            RegistryObject<Block> block = BLOCKS.register(name, () -> new LogBlock(MaterialColor.SAND, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
+            TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(WOOD)));
+            map.put(type, block);
+        }
+    });
+
+    public static final Map<Tree.Default, RegistryObject<Block>> LEAVES = Util.make(new EnumMap<>(Tree.Default.class), map -> {
+        for (Tree.Default type : Tree.Default.values()) {
+            String name = ("wood/leaves/" + type.name()).toLowerCase();
+            RegistryObject<Block> block = BLOCKS.register(name, () -> new LeavesBlock(Block.Properties.create(Material.LEAVES, MaterialColor.ADOBE).hardnessAndResistance(0.5F).sound(SoundType.PLANT).tickRandomly().notSolid()));
+            TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(WOOD)));
+            map.put(type, block);
+        }
+    });
 }
