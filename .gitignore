@@ -4,9 +4,11 @@
 !.gitignore
 !.editorconfig
 
-# Source code and build script
-!.github/**
-!gradle/**
+# Github and build script
+!.github/**/*.md
+!.github/**/*.yml
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
 !src/**
 
 # Resource generation
