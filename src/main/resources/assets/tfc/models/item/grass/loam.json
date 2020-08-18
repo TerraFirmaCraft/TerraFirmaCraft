@@ -1,4 +1,6 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/grass/loam"
+  "parent": "tfc:item/grass_inv",
+  "textures": {
+		"block": "tfc:block/dirt/loam"
+  }
 }

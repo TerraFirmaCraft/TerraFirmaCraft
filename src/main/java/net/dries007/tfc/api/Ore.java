@@ -41,8 +41,17 @@ public class Ore
         SALTPETER(false),
         SYLVITE(false),
         BORAX(false),
+        HALITE(false),
+        // gem ores
+        AMETHYST(false),
+        DIAMOND(false),
+        EMERALD(false),
         LAPIS_LAZULI(false),
-        HALITE(false);
+        OPAL(false),
+        PYRITE(false),
+        RUBY(false),
+        SAPPHIRE(false),
+        TOPAZ(false);
 
         private final boolean graded;
 

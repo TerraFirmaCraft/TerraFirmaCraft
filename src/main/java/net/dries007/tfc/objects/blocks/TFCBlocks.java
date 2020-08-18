@@ -8,13 +8,15 @@ package net.dries007.tfc.objects.blocks;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
+import net.dries007.tfc.objects.TFCItemGroup;
+import net.dries007.tfc.objects.blocks.soil.TFCGrassBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,8 +32,7 @@ import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-import static net.dries007.tfc.objects.TFCItemGroup.METAL;
-import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
+import static net.dries007.tfc.objects.TFCItemGroup.*;
 
 
 /**
@@ -47,6 +48,24 @@ public final class TFCBlocks
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCKS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, type ->
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase(), () -> type.create(rock), ROCK_BLOCKS)
+        )
+    );
+
+    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_STAIRS = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::isCuttable, type ->
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> new StairsBlock(Helpers.mapSupplier(ROCKS.get(rock).get(type), Block::getDefaultState), Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
+        )
+    );
+
+    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_WALLS = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::isCuttable, type ->
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_wall", () -> new WallBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
+        )
+    );
+
+    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_SLABS = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::isCuttable, type ->
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_slab", () -> new SlabBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
         )
     );
 
@@ -68,7 +87,7 @@ public final class TFCBlocks
     );
 
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Block.Properties.create(Material.EARTH)), ROCK_BLOCKS);
-    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new Block(Block.Properties.create(Material.EARTH)), ROCK_BLOCKS);
+    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new TFCGrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT)), ROCK_BLOCKS);
     public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
         Helpers.mapOfKeys(SoilBlockType.Variant.class, variant ->
             register((type.name() + "/" + variant.name()).toLowerCase(), type::create, ROCK_BLOCKS)

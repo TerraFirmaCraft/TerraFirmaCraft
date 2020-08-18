@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "tfc:block/rock/smooth/rhyolite",
+    "top": "tfc:block/rock/smooth/rhyolite",
+    "side": "tfc:block/rock/smooth/rhyolite"
+  }
+}
