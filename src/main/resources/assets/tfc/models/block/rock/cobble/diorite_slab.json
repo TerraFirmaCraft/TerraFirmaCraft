@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "tfc:block/rock/cobble/diorite",
+    "top": "tfc:block/rock/cobble/diorite",
+    "side": "tfc:block/rock/cobble/diorite"
+  }
+}

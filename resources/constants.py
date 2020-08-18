@@ -15,6 +15,7 @@ HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
 ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
 ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe_head', 'javelin', 'javelin_head', 'knife', 'knife_head', 'shovel', 'shovel_head']
+MISC_ROCK_ITEMS: List[str] = ['brick', 'rock']
 
 ROCKS: Dict[str, Rock] = {
     'chalk': Rock('sedimentary', 'yellow'),
@@ -143,8 +144,16 @@ ORES: Dict[str, Ore] = {
     'saltpeter': Ore(None, False),
     'sylvite': Ore(None, False),
     'borax': Ore(None, False),
+    'halite': Ore(None, False),
+    'amethyst': Ore(None, False),
+    'diamond': Ore(None, False),
+    'emerald': Ore(None, False),
     'lapis_lazuli': Ore(None, False),
-    'halite': Ore(None, False)
+    'opal': Ore(None, False),
+    'pyrite': Ore(None, False),
+    'ruby': Ore(None, False),
+    'sapphire': Ore(None, False),
+    'topaz': Ore(None, False)
 }
 ORE_GRADES: Dict[str, OreGrade] = {
     'normal': OreGrade(50),
@@ -195,14 +204,20 @@ ORE_VEINS: Dict[str, Vein] = {
     'gravel': Vein('gravel', 'disc', 100, 40, 20, 80, 60, 0, 0, 0, ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']),
     'halite': Vein('halite', 'disc', 120, 30, 80, 100, 80, 0, 0, 0, ['sedimentary']),
 
-    # 'kimberlite': Vein('kimberlite', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
+    'diamond': Vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
+    'emerald': Vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
 }
-
-ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'spike', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled']
+ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike']
+CUTTABLE_ROCKS = ['raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks']
 ROCK_SPIKE_PARTS = ['base', 'middle', 'tip']
 SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'green', 'pink']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path', 'clay', 'clay_grass']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam']
+
+GEMS = ['amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz']
+GEM_GRADES = ['cut', 'uncut', 'powder']
+
+COLORS = ['white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black']
 
 
 # This is here because it's used all over, and it's easier to import with all constants
@@ -219,6 +234,9 @@ DEFAULT_LANG = {
     # Item groups
     'itemGroup.tfc.rock.blocks': 'TFC Rock Blocks',
     'itemGroup.tfc.metals': 'TFC Metals',
+    'itemGroup.tfc.gems': 'TFC Gems',
+    'itemGroup.tfc.misc': 'TFC Misc',
+    'itemGroup.tfc.decorations': 'TFC Decorations',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',

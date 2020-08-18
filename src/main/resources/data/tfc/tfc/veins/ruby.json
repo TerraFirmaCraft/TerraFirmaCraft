@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster",
+  "rarity": 80,
+  "min_y": 5,
+  "max_y": 50,
+  "size": 6,
+  "density": 70,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/chalk",
+      "ore": "tfc:ore/ruby/chalk"
+    },
+    {
+      "stone": "tfc:rock/raw/chert",
+      "ore": "tfc:ore/ruby/chert"
+    },
+    {
+      "stone": "tfc:rock/raw/claystone",
+      "ore": "tfc:ore/ruby/claystone"
+    },
+    {
+      "stone": "tfc:rock/raw/conglomerate",
+      "ore": "tfc:ore/ruby/conglomerate"
+    },
+    {
+      "stone": "tfc:rock/raw/dolomite",
+      "ore": "tfc:ore/ruby/dolomite"
+    },
+    {
+      "stone": "tfc:rock/raw/limestone",
+      "ore": "tfc:ore/ruby/limestone"
+    },
+    {
+      "stone": "tfc:rock/raw/shale",
+      "ore": "tfc:ore/ruby/shale"
+    }
+  ]
+}

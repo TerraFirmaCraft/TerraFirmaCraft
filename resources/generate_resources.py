@@ -9,6 +9,7 @@ import assets
 import collapse_recipes
 import data
 import ore_veins
+import recipes
 from constants import *
 
 
@@ -22,6 +23,7 @@ def main():
     # generic assets / data
     assets.generate(rm)
     data.generate(rm)
+    recipes.generate(rm)
 
     # more complex stuff n things
     ore_veins.generate(rm)

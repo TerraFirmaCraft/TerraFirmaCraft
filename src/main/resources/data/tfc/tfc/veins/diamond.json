@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:pipe",
+  "rarity": 60,
+  "min_y": 5,
+  "max_y": 140,
+  "size": 60,
+  "density": 40,
+  "blocks": [
+    {
+      "stone": "tfc:rock/raw/gabbro",
+      "ore": "tfc:ore/diamond/gabbro"
+    }
+  ]
+}
