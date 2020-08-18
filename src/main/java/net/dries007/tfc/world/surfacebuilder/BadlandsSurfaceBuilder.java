@@ -41,7 +41,7 @@ public class BadlandsSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
         }
         else
         {
-            buildSandySurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
+            buildSandySurface(random, chunkIn, x, z, startHeight, noise, defaultBlock, seaLevel, config);
         }
     }
 
@@ -73,9 +73,8 @@ public class BadlandsSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
         }
     }
 
-    private void buildSandySurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    private void buildSandySurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, int seaLevel, SurfaceBuilderConfig config)
     {
-        BlockState topState;
         BlockState underState = config.getUnder();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
@@ -104,15 +103,14 @@ public class BadlandsSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                     surfaceDepth = maxSurfaceDepth;
                     if (y >= seaLevel)
                     {
-                        topState = sandLayers[y % sandLayers.length];
-                        underState = config.getUnder();
+                        underState = sandLayers[y % sandLayers.length];
                     }
                     else
                     {
-                        topState = underState = config.getUnderWaterMaterial();
+                        underState = config.getUnderWaterMaterial();
                     }
 
-                    chunkIn.setBlockState(pos, topState, false);
+                    chunkIn.setBlockState(pos, underState, false);
                 }
                 else if (surfaceDepth > 0)
                 {
