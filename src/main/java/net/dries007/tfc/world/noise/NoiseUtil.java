@@ -25,6 +25,14 @@ public final class NoiseUtil
         return lerp(valueN, valueS, tNS);
     }
 
+    /**
+     * 3rd degree smoothstep function
+     */
+    public static float smooth3(float t)
+    {
+        return (3 - 2 * t) * t * t;
+    }
+
     public static int fastFloor(float f)
     {
         return f < 0 ? (int) f - 1 : (int) f;
