@@ -78,13 +78,13 @@ public class MetalItem
         return amount;
     }
 
-    private boolean isValid(ItemStack stack)
-    {
-        return this.ingredient.test(stack);
-    }
-
     public Collection<Item> getValidItems()
     {
         return Arrays.stream(this.ingredient.getMatchingStacks()).map(ItemStack::getItem).collect(Collectors.toSet());
+    }
+
+    private boolean isValid(ItemStack stack)
+    {
+        return this.ingredient.test(stack);
     }
 }

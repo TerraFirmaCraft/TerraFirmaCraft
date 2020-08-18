@@ -163,7 +163,10 @@ public final class Helpers
             }
         };
     }
-    // Alc's magic mapper
+
+    /**
+     * Like {@link Optional#map(Function)} but for suppliers. Does not unbox the provided supplier
+     */
     public static <T, R> Supplier<R> mapSupplier(Supplier<T> supplier, Function<T, R> mapper)
     {
         return () -> mapper.apply(supplier.get());

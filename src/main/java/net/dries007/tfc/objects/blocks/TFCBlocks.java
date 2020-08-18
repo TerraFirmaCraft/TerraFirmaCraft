@@ -8,8 +8,6 @@ package net.dries007.tfc.objects.blocks;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.dries007.tfc.objects.TFCItemGroup;
-import net.dries007.tfc.objects.blocks.soil.TFCGrassBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -24,15 +22,18 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.api.Metal;
 import net.dries007.tfc.api.Ore;
 import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.objects.TFCItemGroup;
 import net.dries007.tfc.objects.blocks.rock.TFCOreBlock;
 import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
+import net.dries007.tfc.objects.blocks.soil.TFCGrassBlock;
 import net.dries007.tfc.objects.blocks.soil.TFCSandBlock;
 import net.dries007.tfc.objects.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-import static net.dries007.tfc.objects.TFCItemGroup.*;
+import static net.dries007.tfc.objects.TFCItemGroup.METAL;
+import static net.dries007.tfc.objects.TFCItemGroup.ROCK_BLOCKS;
 
 
 /**

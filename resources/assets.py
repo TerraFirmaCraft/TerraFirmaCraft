@@ -1,6 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
+import mcresources.loot_tables as loot_tables
 from mcresources import ResourceManager
 
 from constants import *
@@ -13,8 +14,7 @@ def generate(rm: ResourceManager):
             if block_type == 'spike':
                 # Spikes have special block states
                 rm.blockstate(('rock', block_type, rock), variants=dict(
-                    ('part=%s' % part, {'model': 'tfc:block/rock/%s/%s_%s' % (block_type, rock, part)}) for part in
-                    ROCK_SPIKE_PARTS)) \
+                    ('part=%s' % part, {'model': 'tfc:block/rock/%s/%s_%s' % (block_type, rock, part)}) for part in ROCK_SPIKE_PARTS)) \
                     .with_lang(lang('%s Spike', rock)) \
                     .with_block_loot("tfc:rock/rock/%s" % rock)
                 rm.item_model(('rock', block_type, rock), 'tfc:block/rock/raw/%s' % rock, parent='tfc:block/rock/spike/%s_base' % rock)
@@ -24,35 +24,46 @@ def generate(rm: ResourceManager):
                         'particle': 'tfc:block/rock/raw/%s' % rock
                     }, parent='tfc:block/rock/spike_%s' % part)
             else:
-                 block = rm.blockstate(('rock', block_type, rock)) \
+                block = rm.blockstate(('rock', block_type, rock)) \
                     .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
                     .with_item_model()
-                 if block_type in CUTTABLE_ROCKS:
+                if block_type in CUTTABLE_ROCKS:
                     # Stairs
                     rm.block('tfc:rock/' + block_type + '/' + rock).make_stairs()
-                    rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_stairs','tfc:rock/' + block_type + '/' + rock + '_stairs')
-                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_stairs',lang('%s %s Stairs', rock, block_type))
+                    rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_stairs', 'tfc:rock/' + block_type + '/' + rock + '_stairs')
+                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_stairs', lang('%s %s Stairs', rock, block_type))
                     # Slabs
                     rm.block('tfc:rock/' + block_type + '/' + rock).make_slab()
                     slab_namespace = 'tfc:rock/' + block_type + '/' + rock + '_slab'
-                    rm.block_loot(slab_namespace,{"rolls":1,"entries":[{"type":"minecraft:item","functions":[{"function":"minecraft:set_count","conditions":[{"condition":"minecraft:block_state_property","block":slab_namespace,"properties":{"type":"double"}}],"count":2},{"function":"minecraft:explosion_decay"}],"name":slab_namespace}]})
-                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_slab',lang('%s %s Slab', rock, block_type))
+                    rm.block_loot(slab_namespace, {
+                        'entries': [{
+                            'type': 'minecraft:item',
+                            'functions': [
+                                {'function': 'minecraft:set_count', 'conditions': [{'condition': 'minecraft:block_state_property', 'block': slab_namespace, 'properties': {'type': 'double'}}], 'count': 2},
+                                {'function': 'minecraft:explosion_decay'}
+                            ],
+                            'name': slab_namespace
+                        }]
+                    })
+                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_slab', lang('%s %s Slab', rock, block_type))
                     # Walls
                     rm.block('tfc:rock/' + block_type + '/' + rock).make_wall()
-                    rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_wall','tfc:rock/' + block_type + '/' + rock + '_wall')
-                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_wall',lang('%s %s Wall', rock, block_type))
-                    rm.block_tag('minecraft:walls','tfc:rock/' + block_type + '/' + rock + '_wall')
-                 if block_type == 'raw':
-                    block.with_block_loot({"entries": "tfc:rock/rock/%s" % rock, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 3, "type": "minecraft:uniform"}}]})
-                 else:
+                    rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_wall', 'tfc:rock/' + block_type + '/' + rock + '_wall')
+                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_wall', lang('%s %s Wall', rock, block_type))
+                    rm.block_tag('minecraft:walls', 'tfc:rock/' + block_type + '/' + rock + '_wall')
+                if block_type == 'raw':
+                    block.with_block_loot({
+                        'entries': 'tfc:rock/rock/%s' % rock,
+                        'functions': [
+                            loot_tables.set_count(1, 3)
+                        ]
+                    })
+                else:
                     block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
-                 if block_type in {'smooth', 'raw', 'chiseled'}:
+                if block_type in {'smooth', 'raw', 'chiseled'}:
                     block.with_lang(lang('%s %s', block_type, rock))
-                 else:
+                else:
                     block.with_lang(lang('%s %s', rock, block_type))
-
-
-
 
         # Ores
         # todo: fix / add loot tables
@@ -60,22 +71,20 @@ def generate(rm: ResourceManager):
             if ore_data.graded:
                 for grade in ORE_GRADES:
                     rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock)) \
-                        .with_block_model(
-                        {
-                            'all': 'tfc:block/rock/raw/%s' % rock,
-                            'particle': 'tfc:block/rock/raw/%s' % rock,
-                            'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
-                        }, parent='tfc:block/ore') \
+                        .with_block_model({
+                        'all': 'tfc:block/rock/raw/%s' % rock,
+                        'particle': 'tfc:block/rock/raw/%s' % rock,
+                        'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
+                    }, parent='tfc:block/ore') \
                         .with_item_model() \
                         .with_lang(lang('%s %s %s', grade, rock, ore))
             else:
                 rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock)) \
-                    .with_block_model(
-                    {
-                        'all': 'tfc:block/rock/raw/%s' % rock,
-                        'particle': 'tfc:block/rock/raw/%s' % rock,
-                        'overlay': 'tfc:block/ore/%s' % ore
-                    }, parent='tfc:block/ore') \
+                    .with_block_model({
+                    'all': 'tfc:block/rock/raw/%s' % rock,
+                    'particle': 'tfc:block/rock/raw/%s' % rock,
+                    'overlay': 'tfc:block/ore/%s' % ore
+                }, parent='tfc:block/ore') \
                     .with_item_model() \
                     .with_lang(lang('%s %s', rock, ore))
     # Sand
@@ -95,17 +104,13 @@ def generate(rm: ResourceManager):
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
-        rm.blockstate(('dirt', soil),
-                      variants={'': [{'model': 'tfc:block/dirt/%s' % soil, 'y': i} for i in range(0, 360, 90)]},
-                      use_default_model=False) \
+        rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False) \
             .with_block_model() \
             .with_item_model() \
             .with_block_loot('tfc:dirt/%s' % soil) \
             .with_lang(lang('%s Dirt', soil))
         # todo: fix loot table
-        rm.blockstate(('clay', soil),
-                      variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]},
-                      use_default_model=False) \
+        rm.blockstate(('clay', soil), variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False) \
             .with_block_model() \
             .with_block_loot('tfc:clay/%s' % soil) \
             .with_lang(lang('%s Clay Dirt', soil)) \
@@ -141,17 +146,17 @@ def generate(rm: ResourceManager):
         'overlay': 'tfc:block/grass_top',
         'particle': 'tfc:block/peat'
     }, parent='block/block', elements=[north_face_tint0])
-    rm.block_model(('peat_grass','peat_grass_side'), {
+    rm.block_model(('peat_grass', 'peat_grass_side'), {
         'overlay': 'tfc:block/grass_side',
         'texture': 'tfc:block/peat',
         'particle': 'tfc:block/peat'
     }, parent='block/block', elements=[north_face, north_face_tint0])
-    rm.block_model(('peat_grass','peat_grass_bottom'), {
+    rm.block_model(('peat_grass', 'peat_grass_bottom'), {
         'texture': 'tfc:block/peat',
         'particle': 'tfc:block/peat'
     }, parent='block/block', elements=[north_face])
 
-    #Grass Blocks
+    # Grass Blocks
     for var in SOIL_BLOCK_VARIANTS:
         for grass_var, dirt in (('grass', 'tfc:block/dirt/%s' % var), ('clay_grass', 'tfc:block/clay/%s' % var)):
             rm.blockstate_multipart((grass_var, var), [
@@ -187,15 +192,13 @@ def generate(rm: ResourceManager):
     # Rock Tools
     for rock in ROCK_CATEGORIES:
         for rock_item in ROCK_ITEMS:
-            rm.item_model(('stone', '%s' % rock_item, '%s' % rock), \
-                'tfc:item/stone/%s' % rock_item, \
-                parent='item/handheld') \
+            rm.item_model(('stone', '%s' % rock_item, '%s' % rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld') \
                 .with_lang(lang('Stone %s' % rock_item))
 
     # Rock Items
     for rock in ROCKS.keys():
         for misc_rock_item in MISC_ROCK_ITEMS:
-            rm.item_model(('rock', '%s' % misc_rock_item, '%s' % rock), 'tfc:item/rock/%s/%s' % (misc_rock_item,rock), parent='item/handheld') \
+            rm.item_model(('rock', '%s' % misc_rock_item, '%s' % rock), 'tfc:item/rock/%s/%s' % (misc_rock_item, rock), parent='item/handheld') \
                 .with_lang(lang('%s %s' % (rock, misc_rock_item)))
 
     for metal, metal_data in METALS.items():

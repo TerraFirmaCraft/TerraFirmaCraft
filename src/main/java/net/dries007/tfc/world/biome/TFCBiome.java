@@ -120,6 +120,23 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
     }
 
     @Override
+    public float getTemperatureRaw(BlockPos pos)
+    {
+        // Vanilla expects < 0.15 = snowy, and generally returns values between -1 and 2.
+        return MathHelper.clamp(0.15f + Climate.getTemperature(pos) / 30f, -1, 2);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public int getGrassColor(double posX, double posZ)
+    {
+        BlockPos pos = new BlockPos(posX, 0, posZ);
+        double temp = MathHelper.clamp((Climate.getTemperature(pos) + 30) / 60, 0, 1);
+        double rain = MathHelper.clamp((Climate.getRainfall(pos) - 50) / 400, 0, 1);
+        return GrassColors.get(temp, rain);
+    }
+
+    @Override
     public void buildSurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed)
     {
         getSurfaceBuilder().setSeed(seed);
@@ -146,22 +163,5 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
     public ISurfaceBuilderConfig getSurfaceBuilderConfig()
     {
         return getSurfaceBuilder().getConfig();
-    }
-
-    @Override
-    public float getTemperatureRaw(BlockPos pos)
-    {
-        // Vanilla expects < 0.15 = snowy, and generally returns values between -1 and 2.
-        return MathHelper.clamp(0.15f + Climate.getTemperature(pos) / 30f, -1, 2);
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getGrassColor(double posX, double posZ)
-    {
-        BlockPos pos = new BlockPos(posX, 0, posZ);
-        double temp = MathHelper.clamp((Climate.getTemperature(pos) + 30) / 60, 0, 1);
-        double rain = MathHelper.clamp((Climate.getRainfall(pos) - 50) / 400, 0, 1);
-        return GrassColors.get(temp, rain);
     }
 }
