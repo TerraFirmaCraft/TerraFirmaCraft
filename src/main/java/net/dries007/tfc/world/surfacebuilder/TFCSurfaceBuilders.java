@@ -34,7 +34,7 @@ public class TFCSurfaceBuilders
     public static final SurfaceBuilderConfig SANDSTONE_CONFIG = register(Blocks.SANDSTONE);
     public static final SurfaceBuilderConfig RED_SANDSTONE_CONFIG = register(Blocks.RED_SANDSTONE);
 
-    public static final DeepSurfaceBuilderConfig GRASS_DIRT_GRAVEL_GRAVEL_CONFIG = register(Blocks.GRASS, Blocks.DIRT, Blocks.GRAVEL, Blocks.GRAVEL);
+    public static final DeepSurfaceBuilderConfig GRASS_DIRT_GRAVEL_GRAVEL_CONFIG = register(Blocks.GRASS_BLOCK, Blocks.DIRT, Blocks.GRAVEL, Blocks.GRAVEL);
 
     private static <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> RegistryObject<S> register(String name, Supplier<S> factory)
     {
