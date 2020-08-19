@@ -6,7 +6,6 @@
 package net.dries007.tfc.util.data;
 
 import java.util.*;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.BiMap;
@@ -86,19 +85,16 @@ public abstract class DataManager<T> extends JsonReloadListener
         return orderedTypes.get(id);
     }
 
-    @Nonnull
     public Set<T> getValues()
     {
         return types.values();
     }
 
-    @Nonnull
     public Set<ResourceLocation> getKeys()
     {
         return types.keySet();
     }
 
-    @Nonnull
     public List<T> getOrderedValues()
     {
         return orderedTypes;

@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.api.capabilities.forge;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -81,7 +80,6 @@ public class ForgingHandler implements IForging
     }
 
     @Override
-    @Nonnull
     public ForgeSteps getSteps()
     {
         CompoundNBT tag = container.getTag();
@@ -114,9 +112,8 @@ public class ForgingHandler implements IForging
         }
     }
 
-    @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         return ForgingCapability.CAPABILITY.orEmpty(cap, capability);
     }

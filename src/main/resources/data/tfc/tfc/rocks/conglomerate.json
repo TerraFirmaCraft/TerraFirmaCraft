@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/conglomerate"
   },
   "category": "sedimentary",
-  "sand_color": "red"
+  "desert_sand_color": "gray",
+  "beach_sand_color": "green"
 }

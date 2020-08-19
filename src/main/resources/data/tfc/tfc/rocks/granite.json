@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/granite"
   },
   "category": "igneous_intrusive",
-  "sand_color": "brown"
+  "desert_sand_color": "white",
+  "beach_sand_color": "white"
 }

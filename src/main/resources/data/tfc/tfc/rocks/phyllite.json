@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/phyllite"
   },
   "category": "metamorphic",
-  "sand_color": "white"
+  "desert_sand_color": "gray",
+  "beach_sand_color": "gray"
 }

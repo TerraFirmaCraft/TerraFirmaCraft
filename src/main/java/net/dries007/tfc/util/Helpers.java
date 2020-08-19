@@ -150,18 +150,16 @@ public final class Helpers
     /**
      * Maps a {@link Supplier} to a supplier of {@link Optional} by swallowing any runtime exceptions.
      */
-    public static <T> Supplier<Optional<T>> mapSafeOptional(Supplier<T> unsafeSupplier)
+    public static <T> Optional<T> mapSafeOptional(Supplier<T> unsafeSupplier)
     {
-        return () -> {
-            try
-            {
-                return Optional.of(unsafeSupplier.get());
-            }
-            catch (RuntimeException e)
-            {
-                return Optional.empty();
-            }
-        };
+        try
+        {
+            return Optional.of(unsafeSupplier.get());
+        }
+        catch (RuntimeException e)
+        {
+            return Optional.empty();
+        }
     }
 
     /**
