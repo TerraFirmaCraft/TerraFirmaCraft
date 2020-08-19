@@ -17,10 +17,12 @@ import net.minecraft.world.gen.placement.ChanceConfig;
 import net.minecraft.world.gen.placement.CountConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidWithNoiseConfig;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 public class OceanBiome extends TFCBiome
 {
@@ -43,7 +45,7 @@ public class OceanBiome extends TFCBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addOceanCarvers(this);
-            setSurfaceBuilder(TFCDefaultBiomeFeatures.getOceanSurfaceBuilder(this), TFCDefaultBiomeFeatures.getUnderwaterSurfaceConfig(this));
+            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.AIR_CONFIG);
 
             if (temperature == BiomeTemperature.FROZEN)
             {

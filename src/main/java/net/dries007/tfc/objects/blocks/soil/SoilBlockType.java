@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.objects.blocks.soil;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -54,7 +52,6 @@ public enum SoilBlockType
 
         private static final Variant[] VALUES = values();
 
-        @Nonnull
         public static Variant valueOf(int i)
         {
             return i >= 0 && i < TOTAL ? VALUES[i] : SILT;

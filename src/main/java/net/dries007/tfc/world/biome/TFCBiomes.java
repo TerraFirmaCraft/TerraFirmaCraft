@@ -44,11 +44,9 @@ public class TFCBiomes
     public static final BiomeVariants CANYONS = register("canyons", (temp, rain) -> new CanyonsBiome(-7, 26, temp, rain)).setSpawnBiome(); // Medium height with snake like ridges, often slightly below sea level
 
     // Shores
-    public static final BiomeVariants SHORE = register("shore", (temperature, rainfall) -> new ShoreBiome(true, temperature, rainfall)); // Standard shore biome with a sandy beach
-    public static final BiomeVariants STONE_SHORE = register("stone_shore", (temperature, rainfall) -> new ShoreBiome(false, temperature, rainfall)); // Shore for mountain biomes
+    public static final BiomeVariants SHORE = register("shore", ShoreBiome::new); // Standard shore biome with a sandy beach
 
     // Technical biomes
-    public static final BiomeVariants MOUNTAINS_EDGE = register("mountains_edge", (temp, rain) -> new MountainsBiome(36, 34, false, temp, rain)); // Edge biome for mountains
     public static final BiomeVariants LAKE = register("lake", LakeBiome::new); // Biome for freshwater ocean areas / landlocked oceans
     public static final BiomeVariants RIVER = register("river", RiverBiome::new); // Biome for river channels
 

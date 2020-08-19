@@ -6,24 +6,22 @@
 package net.dries007.tfc.objects.blocks.soil;
 
 import java.awt.*;
-import javax.annotation.Nonnull;
 
 public enum SandBlockType
 {
-    BROWN(new Color(30, 30, 30).getRGB()),
-    WHITE(new Color(30, 30, 30).getRGB()),
-    BLACK(new Color(30, 30, 30).getRGB()),
-    RED(new Color(30, 30, 30).getRGB()),
-    YELLOW(new Color(30, 30, 30).getRGB()),
-    GREEN(new Color(30, 30, 30).getRGB()),
-    PINK(new Color(30, 30, 30).getRGB());
+    BROWN(new Color(112, 113, 89).getRGB()),
+    WHITE(new Color(202, 202, 201).getRGB()),
+    BLACK(new Color(56, 56, 56).getRGB()),
+    RED(new Color(125, 99, 84).getRGB()),
+    YELLOW(new Color(215, 196, 140).getRGB()),
+    GREEN(new Color(106, 116, 81).getRGB()),
+    PINK(new Color(150, 101, 97).getRGB());
 
     public static final int TOTAL = values().length;
 
 
     private static final SandBlockType[] VALUES = values();
 
-    @Nonnull
     public static SandBlockType valueOf(int i)
     {
         return i >= 0 && i < TOTAL ? VALUES[i] : BROWN;

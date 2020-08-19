@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/andesite"
   },
   "category": "igneous_extrusive",
-  "sand_color": "black"
+  "desert_sand_color": "red",
+  "beach_sand_color": "gray"
 }

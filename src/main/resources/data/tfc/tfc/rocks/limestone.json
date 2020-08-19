@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/limestone"
   },
   "category": "sedimentary",
-  "sand_color": "white"
+  "desert_sand_color": "yellow",
+  "beach_sand_color": "white"
 }

@@ -10,6 +10,7 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 public class LakeBiome extends TFCBiome
 {
@@ -19,7 +20,7 @@ public class LakeBiome extends TFCBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(SurfaceBuilder.DEFAULT, TFCDefaultBiomeFeatures.getUnderwaterSurfaceConfig(this));
+            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.AIR_CONFIG);
         });
     }
 

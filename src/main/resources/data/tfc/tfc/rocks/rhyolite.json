@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/rhyolite"
   },
   "category": "igneous_extrusive",
-  "sand_color": "pink"
+  "desert_sand_color": "red",
+  "beach_sand_color": "gray"
 }

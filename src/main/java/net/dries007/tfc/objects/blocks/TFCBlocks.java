@@ -53,19 +53,19 @@ public final class TFCBlocks
     );
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_STAIRS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::isCuttable, type ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> new StairsBlock(Helpers.mapSupplier(ROCKS.get(rock).get(type), Block::getDefaultState), Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
         )
     );
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_WALLS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::isCuttable, type ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_wall", () -> new WallBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
         )
     );
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_SLABS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::isCuttable, type ->
+        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_slab", () -> new SlabBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
         )
     );

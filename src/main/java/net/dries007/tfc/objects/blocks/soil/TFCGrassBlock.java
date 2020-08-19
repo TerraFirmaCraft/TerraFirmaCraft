@@ -6,7 +6,6 @@
 package net.dries007.tfc.objects.blocks.soil;
 
 import java.util.Random;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -92,7 +91,6 @@ public class TFCGrassBlock extends Block
     }
 
     @Override
-    @Nonnull
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return updateStateFromNeighbors(context.getWorld(), context.getPos(), getDefaultState());
