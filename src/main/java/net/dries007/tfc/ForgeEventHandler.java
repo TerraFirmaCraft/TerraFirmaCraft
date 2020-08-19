@@ -33,6 +33,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
@@ -165,16 +166,27 @@ public final class ForgeEventHandler
         // Send an update packet to the client when watching the chunk
         ChunkPos pos = event.getPos();
         ChunkData chunkData = ChunkData.get(event.getWorld(), pos);
-        PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket(pos.x, pos.z));
+        if (chunkData.getStatus() != ChunkData.Status.EMPTY)
+        {
+            PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket());
+        }
+        else
+        {
+            // Chunk does not exist yet but it's queue'd for watch. Queue an update packet to be sent on chunk load
+            ChunkDataCache.WATCH_QUEUE.enqueueUnloadedChunk(pos, event.getPlayer());
+        }
     }
 
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event)
     {
-        // Update server side chunk data cache
         if (!Helpers.isRemote(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
         {
-            ChunkData.getCapability(event.getChunk()).ifPresent(data -> ChunkDataCache.SERVER.update(event.getChunk().getPos(), data));
+            ChunkPos pos = event.getChunk().getPos();
+            ChunkData.getCapability(event.getChunk()).ifPresent(data -> {
+                ChunkDataCache.SERVER.update(pos, data);
+                ChunkDataCache.WATCH_QUEUE.dequeueLoadedChunk(pos, data);
+            });
         }
     }
 
@@ -194,6 +206,7 @@ public final class ForgeEventHandler
         // Send an update packet to the client when un-watching the chunk
         ChunkPos pos = event.getPos();
         PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), new ChunkUnwatchPacket(pos));
+        ChunkDataCache.WATCH_QUEUE.dequeueChunk(pos, event.getPlayer());
     }
 
     @SubscribeEvent
@@ -228,6 +241,12 @@ public final class ForgeEventHandler
         // todo: move this to the dedicated command register event on forge update
         LOGGER.debug("Registering TFC Commands");
         TFCCommands.register(event.getCommandDispatcher());
+    }
+
+    @SubscribeEvent
+    public static void onServerStopped(FMLServerStoppedEvent event)
+    {
+        TFCServerTracker.INSTANCE.onServerStop();
     }
 
     @SubscribeEvent

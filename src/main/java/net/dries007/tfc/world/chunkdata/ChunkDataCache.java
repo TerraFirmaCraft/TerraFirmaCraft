@@ -6,13 +6,18 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorldReader;
+import net.minecraftforge.fml.network.PacketDistributor;
 
+import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -25,13 +30,13 @@ public class ChunkDataCache
 {
     /**
      * This is a cache of client side chunk data, used for when there is no world context available.
-     * It is serialized and synced on chunk watch
+     * It is synced on chunk watch / unwatch
      */
     public static final ChunkDataCache CLIENT = new ChunkDataCache();
 
-
     /**
      * This is a cache of server side chunk data.
+     * It is not synced, it is updated on chunk load / unload
      */
     public static final ChunkDataCache SERVER = new ChunkDataCache();
 
@@ -43,6 +48,12 @@ public class ChunkDataCache
      * When the chunk is finished generating on server, this cache is cleared and the data is saved to the chunk capability for long term storage
      */
     public static final ChunkDataCache WORLD_GEN = new ChunkDataCache();
+
+    /**
+     * This is a set of chunk positions which have been queue'd for chunk watch, but were not loaded or generated at the time.
+     * As a result, no data was able to be sent to the client cache. In these situations, we wait for chunk load on server, and if the chunk is present here, it is re-synchronized.
+     */
+    public static final WatchQueue WATCH_QUEUE = new WatchQueue();
 
     /**
      * Gets the normal (not world gen) cache of chunk data for the current logical side
@@ -61,6 +72,14 @@ public class ChunkDataCache
     public static ChunkDataCache getUnsided()
     {
         return SERVER.cache.isEmpty() ? CLIENT : SERVER;
+    }
+
+    public static void clearAll()
+    {
+        CLIENT.cache.clear();
+        SERVER.cache.clear();
+        WORLD_GEN.cache.clear();
+        WATCH_QUEUE.queue.clear();
     }
 
     private final Map<ChunkPos, ChunkData> cache;
@@ -109,5 +128,45 @@ public class ChunkDataCache
     public ChunkData getOrCreate(ChunkPos pos)
     {
         return cache.computeIfAbsent(pos, ChunkData::new);
+    }
+
+    public static class WatchQueue
+    {
+        private final Map<ChunkPos, Set<ServerPlayerEntity>> queue;
+
+        private WatchQueue()
+        {
+            queue = new HashMap<>(256);
+        }
+
+        public void enqueueUnloadedChunk(ChunkPos pos, ServerPlayerEntity player)
+        {
+            queue.computeIfAbsent(pos, key -> new HashSet<>()).add(player);
+        }
+
+        public void dequeueChunk(ChunkPos pos, ServerPlayerEntity player)
+        {
+            Set<ServerPlayerEntity> players = queue.get(pos);
+            if (players != null)
+            {
+                players.remove(player);
+                if (players.isEmpty())
+                {
+                    queue.remove(pos);
+                }
+            }
+        }
+
+        public void dequeueLoadedChunk(ChunkPos pos, ChunkData data)
+        {
+            if (queue.containsKey(pos))
+            {
+                Set<ServerPlayerEntity> players = queue.remove(pos);
+                for (ServerPlayerEntity player : players)
+                {
+                    PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), data.getUpdatePacket());
+                }
+            }
+        }
     }
 }

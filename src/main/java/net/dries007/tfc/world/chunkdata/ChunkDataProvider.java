@@ -83,17 +83,16 @@ public class ChunkDataProvider
     public ChunkData get(ChunkPos pos, ChunkData.Status requiredStatus)
     {
         ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos);
-        generateToStatus(pos, data, requiredStatus);
-        data.setStatus(requiredStatus);
+        if (!data.getStatus().isAtLeast(requiredStatus))
+        {
+            generateToStatus(pos, data, requiredStatus);
+            data.setStatus(requiredStatus);
+        }
         return data;
     }
 
     private void generateToStatus(ChunkPos pos, ChunkData data, ChunkData.Status status)
     {
-        if (data.getStatus().isAtLeast(status))
-        {
-            return;
-        }
         int chunkX = pos.getXStart(), chunkZ = pos.getZStart();
         if (status.isAtLeast(ChunkData.Status.CLIMATE))
         {
