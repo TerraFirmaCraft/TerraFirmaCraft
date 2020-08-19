@@ -17,7 +17,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.api.calendar.ICalendar;
 
-public class TimeCommand
+public final class TimeCommand
 {
     private static final String DAYTIME = "tfc.commands.time.query.daytime";
     private static final String GAME_TIME = "tfc.commands.time.query.game_time";

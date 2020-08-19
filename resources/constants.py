@@ -263,9 +263,11 @@ DEFAULT_LANG = {
     'tfc.commands.time.query.day': 'The day is %s',
     'tfc.commands.time.query.player_ticks': 'The player ticks is %s',
     'tfc.commands.time.query.calendar_ticks': 'The calendar ticks is %s',
-    'tfc.command.heat': 'Held item heat set to %s',
-    'tfc.command.clear_world.starting': 'Clearing world. Prepare for lag...',
-    'tfc.command.clear_world.done': 'Cleared.',
+    'tfc.commands.heat.set_heat': 'Held item heat set to %s',
+    'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
+    'tfc.commands.clear_world.done': 'Cleared.',
+    'tfc.commands.player.query_hunger': 'Hunger is %s',
+    'tfc.commands.player.query_saturation': 'Saturation is %s',
 
     # ENUMS
 
