@@ -157,7 +157,6 @@ public class EntityLionTFC extends EntityAnimalMammal implements IPredator
     {
         EntityAIWander wander = new EntityAIWanderHuntArea(this, 1.0D);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAILeapAtTarget(this, 0.5F));
         this.tasks.addTask(2, new EntityAILionAttack().setWanderAI(wander));
         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
         this.tasks.addTask(5, wander);
