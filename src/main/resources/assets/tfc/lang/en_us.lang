@@ -4915,3 +4915,4 @@ waila.tfc.animal.not_familiarized=Not familiarized
 waila.tfc.animal.old=Animal is old
 waila.tfc.animal.pregnant=Pregnant
 waila.tfc.animal.can_shear=Shearable
+waila.tfc.animal.pregnant_end=Will give birth in %s days
