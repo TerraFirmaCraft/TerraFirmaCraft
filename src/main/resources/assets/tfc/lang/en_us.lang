@@ -4874,6 +4874,7 @@ advancements.tfc.world.find_nickel.description=Find Garnierite Ore.
 waila.tfc.ore_drop=Contains %s
 waila.tfc.flux_stone=Flux
 waila.tfc.temperature=Air Temperature: %dºC
+waila.tfc.rainfall=Rainfall: %d
 waila.tfc.metal.output=Contains %d units of %s
 
 # Patchouli
