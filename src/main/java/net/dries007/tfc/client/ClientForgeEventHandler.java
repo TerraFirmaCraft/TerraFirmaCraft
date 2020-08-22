@@ -29,13 +29,13 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.api.MetalItem;
-import net.dries007.tfc.api.calendar.Calendars;
-import net.dries007.tfc.api.calendar.ICalendar;
-import net.dries007.tfc.api.capabilities.heat.HeatCapability;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.types.MetalItem;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 

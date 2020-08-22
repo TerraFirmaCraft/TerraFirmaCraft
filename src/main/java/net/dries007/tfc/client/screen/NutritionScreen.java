@@ -13,9 +13,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
+import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
-import net.dries007.tfc.objects.container.SimpleContainer;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

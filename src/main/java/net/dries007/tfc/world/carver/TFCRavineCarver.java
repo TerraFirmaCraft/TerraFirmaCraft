@@ -19,7 +19,7 @@ import net.minecraft.world.gen.carver.CanyonWorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 
 import com.mojang.datafixers.Dynamic;
-import net.dries007.tfc.objects.types.RockManager;
+import net.dries007.tfc.common.types.RockManager;
 
 public class TFCRavineCarver extends CanyonWorldCarver
 {

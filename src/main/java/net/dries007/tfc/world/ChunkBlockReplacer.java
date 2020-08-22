@@ -19,13 +19,12 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 
-import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.api.world.IBlockReplacer;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.blocks.soil.TFCGrassBlock;
+import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.blocks.TFCBlocks;
-import net.dries007.tfc.objects.blocks.soil.SandBlockType;
-import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
-import net.dries007.tfc.objects.blocks.soil.TFCGrassBlock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
 

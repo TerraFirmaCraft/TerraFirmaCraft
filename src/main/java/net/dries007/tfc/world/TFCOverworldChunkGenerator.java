@@ -24,16 +24,16 @@ import net.minecraft.world.gen.*;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import net.dries007.tfc.api.world.ITFCChunkGenerator;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.carver.WorleyCaveCarver;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.IChunkDataProvidingChunkGenerator;
 import net.dries007.tfc.world.noise.INoise2D;
 
-public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSettings> implements ITFCChunkGenerator
+public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSettings> implements IChunkDataProvidingChunkGenerator
 {
     public static final BlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
 

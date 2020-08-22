@@ -12,7 +12,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import net.dries007.tfc.objects.container.TFCContainerProviders;
+import net.dries007.tfc.common.container.TFCContainerProviders;
 
 public class SwitchInventoryTabPacket
 {

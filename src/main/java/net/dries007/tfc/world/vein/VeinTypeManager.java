@@ -7,7 +7,7 @@ package net.dries007.tfc.world.vein;
 
 import com.google.gson.GsonBuilder;
 
-import net.dries007.tfc.command.ClearWorldCommand;
+import net.dries007.tfc.common.command.ClearWorldCommand;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.TypedDataManager;
 import net.dries007.tfc.world.feature.VeinsFeature;

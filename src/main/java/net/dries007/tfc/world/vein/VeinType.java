@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
-import net.dries007.tfc.objects.recipes.IBlockIngredient;
+import net.dries007.tfc.common.recipes.IBlockIngredient;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.json.TFCJSONUtils;

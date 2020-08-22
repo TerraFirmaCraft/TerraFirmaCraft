@@ -8,8 +8,8 @@ package net.dries007.tfc.world.chunkdata;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 
-import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.objects.types.RockManager;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.RockManager;
 
 public class RockFactory
 {
