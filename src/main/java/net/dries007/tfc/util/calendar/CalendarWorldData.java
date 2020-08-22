@@ -9,8 +9,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 
-import net.dries007.tfc.api.calendar.Calendars;
-
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class CalendarWorldData extends WorldSavedData

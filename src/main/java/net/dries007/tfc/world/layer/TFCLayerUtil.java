@@ -19,7 +19,7 @@ import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 
-import net.dries007.tfc.objects.types.RockManager;
+import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.biome.TFCBiomes;
 

@@ -26,8 +26,8 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.api.calendar.Climate;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.collections.DelayedRunnable;
 import net.dries007.tfc.world.feature.BoulderConfig;
 import net.dries007.tfc.world.feature.TFCFeatures;
@@ -39,6 +39,25 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
     // todo: replace with actual blocks
     protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState();
     protected static final BlockState FRESH_WATER = Blocks.WATER.getDefaultState();
+
+    /**
+     * Used for initial biome assignments. TFC overrides this to use out temperature models
+     */
+    private static RainType getDefaultRainType(BiomeTemperature temperature, BiomeRainfall rainfall)
+    {
+        if (rainfall == BiomeRainfall.ARID)
+        {
+            return RainType.NONE;
+        }
+        else if (temperature == BiomeTemperature.FROZEN || temperature == BiomeTemperature.COLD)
+        {
+            return RainType.SNOW;
+        }
+        else
+        {
+            return RainType.RAIN;
+        }
+    }
 
     protected final DelayedRunnable biomeFeatures;
 
@@ -57,7 +76,7 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
             // Provide reasonable defaults, TFC doesn't use these
             .waterColor(temperature.getWaterColor())
             .waterFogColor(temperature.getWaterFogColor())
-            .precipitation(Climate.getDefaultRainType(temperature, rainfall))
+            .precipitation(getDefaultRainType(temperature, rainfall))
             .temperature(temperature.getTemperature())
             .downfall(rainfall.getDownfall())
             // Since this is a registry object, we just do them all later for consistency

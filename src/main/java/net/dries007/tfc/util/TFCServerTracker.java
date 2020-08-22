@@ -20,11 +20,11 @@ import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.server.MinecraftServer;
 
-import net.dries007.tfc.api.capabilities.heat.HeatCapability;
-import net.dries007.tfc.objects.recipes.CollapseRecipe;
-import net.dries007.tfc.objects.recipes.LandslideRecipe;
-import net.dries007.tfc.objects.recipes.TFCRecipeTypes;
-import net.dries007.tfc.objects.types.MetalItemManager;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.recipes.LandslideRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
 /**

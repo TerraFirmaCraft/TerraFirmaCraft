@@ -22,11 +22,11 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.TFCTags;
-import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
-import net.dries007.tfc.objects.recipes.CollapseRecipe;
-import net.dries007.tfc.objects.recipes.LandslideRecipe;
 
 public class WorldTracker implements IWorldTracker, ICapabilitySerializable<CompoundNBT>
 {

@@ -16,7 +16,7 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.datafixers.Dynamic;
-import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
