@@ -14,6 +14,10 @@
 # Resource generation
 !resources/*.py
 
+# These should not be nessecary, but they do seem to be
+__pycache__/
+*.pyc
+
 # Metadata
 !build.gradle
 !gradle.properties
