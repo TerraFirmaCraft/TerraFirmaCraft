@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.Lazy;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.layer.TFCLayerUtil;
 
 public class TFCBiomeProvider extends BiomeProvider
 {
@@ -34,7 +33,9 @@ public class TFCBiomeProvider extends BiomeProvider
 
         WorldInfo worldInfo = settings.getWorldInfo();
 
-        this.biomeFactory = IBiomeFactory.create(TFCLayerUtil.createOverworldBiomeLayer(worldInfo.getSeed(), settings));
+        //this.biomeFactory = IBiomeFactory.create(TFCLayerUtil.createOverworldBiomeLayer(worldInfo.getSeed(), settings));
+        this.biomeFactory = (x, z) -> TFCBiomes.MOUNTAINS.get();
+
         this.spawnBiomes = Lazy.of(TFCBiomes::getSpawnBiomes);
     }
 
