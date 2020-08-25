@@ -76,11 +76,11 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         return chunkDataProvider;
     }
 
-    @Override
+    /*@Override
     public ChunkBlockReplacer getBlockReplacer()
     {
         return blockReplacer;
-    }
+    }*/
 
     @Override
     public void generateBiomes(IChunk chunkIn)

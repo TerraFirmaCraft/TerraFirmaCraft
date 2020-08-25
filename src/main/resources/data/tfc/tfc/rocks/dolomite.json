@@ -10,7 +10,10 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/dolomite",
     "cracked_bricks": "tfc:rock/cracked_bricks/dolomite",
     "chiseled": "tfc:rock/chiseled/dolomite",
-    "spike": "tfc:rock/spike/dolomite"
+    "spike": "tfc:rock/spike/dolomite",
+    "pebble": "tfc:rock/pebble/dolomite",
+    "rubble": "tfc:rock/rubble/dolomite",
+    "boulder": "tfc:rock/boulder/dolomite"
   },
   "category": "sedimentary",
   "desert_sand_color": "gray",

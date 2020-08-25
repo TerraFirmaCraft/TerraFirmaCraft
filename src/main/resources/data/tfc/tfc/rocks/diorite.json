@@ -10,7 +10,10 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/diorite",
     "cracked_bricks": "tfc:rock/cracked_bricks/diorite",
     "chiseled": "tfc:rock/chiseled/diorite",
-    "spike": "tfc:rock/spike/diorite"
+    "spike": "tfc:rock/spike/diorite",
+    "pebble": "tfc:rock/pebble/diorite",
+    "rubble": "tfc:rock/rubble/diorite",
+    "boulder": "tfc:rock/boulder/diorite"
   },
   "category": "igneous_intrusive",
   "desert_sand_color": "white",
