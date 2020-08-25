@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -112,7 +113,10 @@ public class Rock
         CRACKED_BRICKS(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         MOSSY_BRICKS(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         MOSSY_COBBLE(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-        CHISELED(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false);
+        CHISELED(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
+        PEBBLE(rock -> new GroundcoverBlock(GroundcoverBlock.RockCoverTypes.PEBBLE), false),
+        RUBBLE(rock -> new GroundcoverBlock(GroundcoverBlock.RockCoverTypes.RUBBLE), false),
+        BOULDER(rock -> new GroundcoverBlock(GroundcoverBlock.RockCoverTypes.BOULDER), false);
 
         public static final BlockType[] VALUES = values();
 

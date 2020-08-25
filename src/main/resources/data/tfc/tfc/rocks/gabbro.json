@@ -10,7 +10,10 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/gabbro",
     "cracked_bricks": "tfc:rock/cracked_bricks/gabbro",
     "chiseled": "tfc:rock/chiseled/gabbro",
-    "spike": "tfc:rock/spike/gabbro"
+    "spike": "tfc:rock/spike/gabbro",
+    "pebble": "tfc:rock/pebble/gabbro",
+    "rubble": "tfc:rock/rubble/gabbro",
+    "boulder": "tfc:rock/boulder/gabbro"
   },
   "category": "igneous_intrusive",
   "desert_sand_color": "gray",

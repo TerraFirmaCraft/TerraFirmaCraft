@@ -8,6 +8,8 @@ package net.dries007.tfc.common.items;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.fml.RegistryObject;
@@ -55,6 +57,10 @@ public final class TFCItems
         Helpers.mapOfKeys(Rock.ItemType.class, type ->
             register(("rock/" + type.name().toLowerCase() + "/" + rock.name()).toLowerCase(), TFCItemGroup.MISC)
         )
+    );
+
+    public static final Map<GroundcoverBlock.MiscCoverTypes, RegistryObject<Item>> GROUND_ITEMS = Helpers.mapOfKeys(GroundcoverBlock.MiscCoverTypes.class, GroundcoverBlock.MiscCoverTypes::isHasItem, type ->
+        register(("grounditem/" + type.name().toLowerCase()), TFCItemGroup.MISC)
     );
 
     private static RegistryObject<Item> register(String name, ItemGroup group)
