@@ -2,31 +2,31 @@
   "name": "Meals & Grilling",
   "icon": "tfc:textures/items/food/barley_bread_sandwich.png",
   "category": "food",
-  "advancement": "tfc:main/pottery",
-  "sortnum": 0,
-  "pages": [
-    {
-      "type": "text",
-      "text": "$(thing)Meals$() are important for managing nutrition in TFC. They allow you to combine multiple foods into one eating session, letting you have more nutrients at once, thus increasing your nutrition. There are three types of meals: $(thing)Soups, Salads, and Sandwiches$(). Liquid foods cannot go in a meal."
-    },
-    {
-      "type": "text",
-      "text": "$(item)Soup Preparation$()$(br2)1. Light a firepit$(br)2. Knap and fire a $(item)ceramic pot$(). $(4)Right-click$() to place it on the firepit.$(br)3. Get some ceramic bowls$(br)4. Place ingredients in soup GUI ( $(4)right-click$() to open)$(br)5. Allow soup to boil$(br)6. Retrieve soup with bowl.$(br2)$(thing)Note: grains and dairy cannot go in a soup."
-    },
-    {
-      "type": "crafting",
-      "recipe": "tfc:food/barley/barley_bread_sandwich",
-      "title": "Sandwich Prep",
-      "text": "Use two bread, a knife, and three kinds of food to make a sandwich. A great source of grain!"
-    },
-    {
-      "type": "text",
-      "text": "$(item)Salad Preparation$()$(br2)This is the easiest meal to make. Place a $(thing)knife$() in your offhand and a bowl in your main hand. $(thing)right-click$() to open the Salad GUI. Put your ingredients in, and retrieve your salad."
-    },
-    {
-      "type": "tfc:anvil_recipe",
-      "recipe": "tfc:wrought_iron_grill",
-      "text": "The $(item)wrought iron grill$() can be smithed from wrought iron and placed on a firepit like a ceramic pot. It allows you to cook up to 5 foods at once."
-    }
-  ]
+	"advancement": "tfc:main/pottery",
+	"sortnum": 0,
+    "pages": [
+		{
+			"type": "text",
+			"text": "$(thing)Meals$() are important for managing nutrition in TFC. They allow you to combine multiple foods into one eating session, letting you have more nutrients at once, thus increasing your nutrition. There are three types of meals: $(thing)Soups, Salads, and Sandwiches$(). Liquid foods cannot go in a meal. For knapping recipes, see the $(l:reference/clay_knapping)reference section$()."
+		},
+		{
+			"type": "text",
+			"text": "$(item)Soup Preparation$()$(br2)1. Light a firepit$(br)2. Knap and fire a $(item)ceramic pot$(). $(4)Right-click$() to place it on the firepit.$(br)3. Get some ceramic or wooden bowls$(br)4. Place ingredients in soup GUI ( $(4)right-click$() to open)$(br)5. Allow soup to boil$(br)6. Retrieve soup with bowl.$(br2)$(thing)Note: grains and dairy cannot go in a soup."
+		},
+		{
+			"type": "crafting",
+			"recipe": "tfc:food/barley/barley_bread_sandwich",
+			"title": "Sandwich Prep",
+			"text": "Use two bread, a knife, and three kinds of food to make a sandwich. A great source of grain!"
+		},
+		{
+			"type": "text",
+			"text": "$(item)Salad Preparation$()$(br2)This is the easiest meal to make. Place a $(thing)knife$() in your offhand and a bowl in your main hand. $(thing)right-click$() to open the Salad GUI. Put your ingredients in, and retrieve your salad."
+		},
+		{
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:wrought_iron_grill",
+			"text": "The $(item)wrought iron grill$() can be smithed from wrought iron and placed on a firepit like a ceramic pot. It allows you to cook up to 5 foods at once."
+		}
+	]
 }

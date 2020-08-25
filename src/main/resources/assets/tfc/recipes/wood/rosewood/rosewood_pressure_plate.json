@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/lumber/rosewood"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/pressure_plate/rosewood",
+    "count": 1
+  }
+}

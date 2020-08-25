@@ -2,30 +2,30 @@
   "name": "Bread",
   "icon": "tfc:textures/items/food/wheat_bread.png",
   "category": "food",
-  "advancement": "tfc:main/campfire",
-  "sortnum": 0,
-  "pages": [
-    {
-      "type": "crafting",
-      "recipe": "tfc:food/wheat/wheat_grain",
-      "title": "Grain",
-      "text": "TFC has 5 grains, $(item)Wheat, Rye, Rice, Oat, and Maize (corn)$(). To start processing them, craft them with a knife."
-    },
-    {
-      "type": "tfc:quern_recipe",
-      "recipe": "tfc:barley",
-      "text": "Then, grind them in a $(thing)quern$() to make $(item)flour$()."
-    },
-    {
-      "type": "crafting",
-      "text": "Craft the flour with a water bucket to make dough.",
-      "recipe": "tfc:food/wheat/wheat_dough",
-      "title": "Dough"
-    },
-    {
-      "type": "tfc:heat_recipe",
-      "recipe": "tfc:cornbread",
-      "text": "Cook it in a forge or firepit to make $(item)bread$()."
-    }
-  ]
+	"advancement": "tfc:main/campfire",
+	"sortnum": 0,
+    "pages": [
+		{
+			"type": "crafting",
+			"recipe": "tfc:food/wheat/wheat_grain",
+			"title": "Grain",
+			"text": "TFC has 6 grains, $(item)Wheat, Barley, Rye, Rice, Oat, and Maize (corn)$(). To start processing them, craft them with a knife."
+		},
+		{
+			"type": "tfc:quern_recipe",
+			"recipe": "tfc:barley",
+			"text": "Then, grind them in a $(thing)quern$() to make $(item)flour$()."
+		},
+		{
+			"type": "crafting",
+			"text": "Craft the flour with a water bucket to make dough.",
+			"recipe": "tfc:food/wheat/wheat_dough",
+			"title": "Dough"
+		},
+		{
+			"type": "tfc:heat_recipe",
+			"recipe": "tfc:cornbread",
+			"text": "Cook it in a forge or firepit to make $(item)bread$()."
+		}
+    ]
 }
