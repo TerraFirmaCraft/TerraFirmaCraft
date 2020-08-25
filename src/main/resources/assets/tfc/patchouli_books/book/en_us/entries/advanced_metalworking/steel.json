@@ -3,62 +3,63 @@
   "icon": "tfc:textures/items/metal/ingot/steel.png",
   "category": "advanced_metalworking",
   "advancement": "tfc:main/iron_age",
-  "sortnum": 2,
-  "pages": [
-    {
-      "type": "text",
-      "text": "The next step in the iron age is Steel, which we make from $(item)Pig Iron$(). The only way to get pig iron is the final furnace in the game, the $(thing)blast furnace$()."
-    },
-    {
-      "type": "text",
-      "text": "$(thing)Your blast furnace shopping list (minimum size):$()$(br2)- 4 fire brick blocks$(br)- 28 wrought iron sheets$(br)- A double sheet of any tool metal$(br)- 2 crucibles$(br)- 1 $(l:processes/leatherworking)bellows$()$(br2)$(thing)For each additional layer to the chimney (max is 5 layers total):$(br2)$()- 4 fire brick blocks$(br)- 12 wrought iron sheets"
-    },
-    {
-      "type": "crafting",
-      "recipe": "tfc:blast_furnace",
-      "title": "Blast Furnace",
-      "text": "The blast furnace block is the heart of the blast furnace."
-    },
-    {
-      "type": "text",
-      "text": "The tuyere is worked from a double sheet of any tool metal, though it is typical to make it from wrought iron. It is needed for the blast furnace to reach the higher temperatures it needs to smelt ore."
-    },
-    {
-      "type": "text",
-      "text": "$(thing)Construction:$()$(br2)1. Place crucible on the ground$(br)2. Place blast furnace on top of crucible$(br)3. Form chimney out of fire clay starting the block above the blast furnace block.$(br)4. Right click to place 12 wrought iron sheets on each layer of the fire clay, covering it completely"
-    },
-    {
-      "type": "multiblock",
-      "multiblock_id": "tfc:blast_furnace",
-      "text": "The sheets don't show up on the blast furnace in the image, but if you hit 'visualize' on the multiblock it will count them. They place just like item frames."
-    },
-    {
-      "type": "text",
-      "text": "$(thing)Usage:$()$(br)1. Right click to open the Blast Furnace GUI and place the tuyere in the top right slot.$(br)2. Climb to the top of the blast furnace and drop 4 iron ore, 4 flux, and $(item)at least$()  4 charcoal into the top. The charcoal:ore ratio should be at least 1:1. Each layer of chimney you build can process 4 ore.$(br)3. Light the blast furnace block."
-    },
-    {
-      "type": "text",
-      "text": "4. Work the Bellows in order to keep the temperature high enough to smelt the ore."
-    },
-    {
-      "type": "text",
-      "text": "5. When the ore is smelted, pig iron should drop into the crucible. You can remove it with an ingot mold."
-    },
-    {
-      "type": "tfc:anvil_recipe",
-      "recipe": "tfc:ingot_high_carbon_steel",
-      "text": "Place the $(item)pig iron $() ingot into the anvil. Choose the $(thing)High Carbon Steel$() plan and work it."
-    },
-    {
-      "type": "tfc:anvil_recipe",
-      "recipe": "tfc:ingot_steel",
-      "text": " When that's done, choose $(thing)Steel$() and work it once again. Congrats, you now have a Steel ingot!"
-    },
-    {
-      "type": "crafting",
-      "recipe": "tfc:vanilla/flint_and_steel",
-      "title": "Flint and Steel",
-      "text": "Now you can light stuff on fire faster than ever!"
-    }
-  ]
+	"sortnum": 2,
+    "pages": [
+		{
+			"type": "text",
+			"text": "The next step in the iron age is Steel, which we make from $(item)Pig Iron$(). The only way to get pig iron is the final furnace in the game, the $(thing)blast furnace$()."
+		},
+		{
+			"type": "text",
+			"text": "$(thing)Your blast furnace shopping list (minimum size):$()$(br2)- 4 fire brick blocks$(br)- 28 wrought iron sheets$(br)- A double sheet of any tool metal$(br)- 2 crucibles$(br)- 1 $(l:processes/leatherworking)bellows$()$(br2)$(thing)For each additional layer to the chimney (max is 5 layers total):$(br2)$()- 4 fire brick blocks$(br)- 12 wrought iron sheets"
+		},
+		{
+			"type": "crafting",
+			"recipe": "tfc:blast_furnace",
+			"title": "Blast Furnace",
+			"text": "The blast furnace block is the heart of the blast furnace."
+		},
+		{
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:tuyere_wrought_iron",
+			"text": "The tuyere is worked from a $(thing)double sheet$() of any tool metal, though it is typical to make it from wrought iron. It is needed for the blast furnace to reach the higher temperatures it needs to smelt ore."
+		},
+		{
+			"type": "text",
+			"text": "$(thing)Construction:$()$(br2)1. Place crucible on the ground$(br)2. Place blast furnace on top of crucible$(br)3. Form chimney out of fire clay starting the block above the blast furnace block.$(br)4. Right click to place 12 wrought iron sheets on each layer of the fire clay, covering it completely"
+		},
+		{
+		    "type": "multiblock",
+		    "multiblock_id": "tfc:blast_furnace",
+		    "text": "The sheets don't show up on the blast furnace in the image, but if you hit 'visualize' on the multiblock it will count them. They place just like item frames."
+		},
+		{
+			"type": "text",
+			"text": "$(thing)Usage:$()$(br)1. Right click to open the Blast Furnace GUI and place the tuyere in the top right slot.$(br)2. Climb to the top of the blast furnace and drop 4 iron ore, 4 flux, and $(item)at least$()  4 charcoal into the top. The charcoal:ore ratio should be at least 1:1. Each layer of chimney you build can process 4 ore.$(br)3. Light the blast furnace block."
+		},
+		{
+			"type": "text",
+			"text": "4. Work the Bellows in order to keep the temperature high enough to smelt the ore."
+		},
+		{
+			"type": "text",
+			"text": "5. When the ore is smelted, pig iron should drop into the crucible. You can remove it with an ingot mold."
+		},
+		{
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:ingot_high_carbon_steel",
+			"text": "Place the $(item)pig iron $() ingot into the anvil. Choose the $(thing)High Carbon Steel$() plan and work it."
+		},
+		{
+			"type": "tfc:anvil_recipe",
+			"recipe": "tfc:ingot_steel",
+			"text": " When that's done, choose $(thing)Steel$() and work it once again. Congrats, you now have a Steel ingot!"
+		},
+		{
+			"type": "crafting",
+			"recipe": "tfc:vanilla/flint_and_steel",
+			"title": "Flint and Steel",
+			"text": "Now you can light stuff on fire faster than ever!"
+		}
+    ]
 }

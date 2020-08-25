@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/lumber/white_cedar"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/pressure_plate/white_cedar",
+    "count": 1
+  }
+}

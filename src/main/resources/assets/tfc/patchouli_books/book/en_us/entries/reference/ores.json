@@ -1,13 +1,13 @@
 {
-  "name": "Ores & Minerals",
-  "icon": "tfc:textures/items/ore/limonite.png",
-  "category": "reference",
-  "advancement": "tfc:world/pick_nugget",
-  "sortnum": 7,
-  "pages": [
+	"name": "Ores & Minerals",
+	"icon": "tfc:textures/items/ore/limonite.png",
+	"category": "reference",
+	"advancement": "tfc:world/pick_nugget",
+	"sortnum": 7,
+	"pages": [
     {
       "type": "text",
-      "text": "TFC has 21 stone types, broken up into 4 categories: $(thing)Igneous Extrusive, Igneous Intrusive, Metamorphic, and Sedimentary$().$(2br)$(item)Igneous Extrusive$(): Andesite, Basalt, Dacite, Rhyolite$(2br)$(item)Igneous Intrusive$(): Diorite, Gabbro, Granite"
+	  "text": "TFC has 21 stone types, broken up into 4 categories: $(thing)Igneous Extrusive, Igneous Intrusive, Metamorphic, and Sedimentary$().$(2br)$(item)Igneous Extrusive$(): Andesite, Basalt, Dacite, Rhyolite$(2br)$(item)Igneous Intrusive$(): Diorite, Gabbro, Granite"
     },
     {
       "type": "text",
@@ -64,7 +64,7 @@
     {
       "type": "spotlight",
       "title": "Gold",
-      "item": "tfc:ore/gold",
+      "item": "tfc:ore/native_gold",
       "text": "Gold.$(br2)Igneous Extrusive and Intrusive."
     },
     {

@@ -146,6 +146,7 @@ public class RecipeRegistryEvents
             modRegistry.remove(new ResourceLocation("minecraft:wooden_shovel"));
             modRegistry.remove(new ResourceLocation("minecraft:wooden_pickaxe"));
             modRegistry.remove(new ResourceLocation("minecraft:wooden_button"));
+            modRegistry.remove(new ResourceLocation("minecraft:wooden_pressure_plate"));
             modRegistry.remove(new ResourceLocation("minecraft:wooden_door"));
             modRegistry.remove(new ResourceLocation("minecraft:trapdoor"));
             //birch

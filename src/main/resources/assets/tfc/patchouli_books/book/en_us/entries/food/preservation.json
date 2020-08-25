@@ -2,30 +2,30 @@
   "name": "Food Preservation",
   "icon": "tfc:textures/items/powder/salt.png",
   "category": "food",
-  "advancement": "tfc:main/pottery",
-  "sortnum": 0,
-  "pages": [
-    {
-      "type": "text",
-      "text": "TFC food $(thing)rots$() after a certain amount of time. The expiration date is viewable on the tooltip. Foods with different decay dates can be stacked in the crafting grid, or by pressing a hotkey (default $(4)X$()) while hovering over one in the inventory. This picks the food item with the nearest decay date. Foods like fruit expire pretty quickly, while grains can last a long time."
-    },
-    {
-      "type": "text",
-      "text": "We extend the life of food in TFC through preservation. The most basic way to preserve food is by making a small or large vessel, and storing food inside. Food stored in a vessel gets a Preserved tag (if using a large vessel, it has to be sealed first), and you can see that reflected in the decay date."
-    },
-    {
-      "type": "tfc:quern_recipe",
-      "recipe": "tfc:rocksalt",
-      "title": "Salting Meat",
-      "text": "Rocksalt is a stone type in TFC whose rock items can be crushed in a $(l:processes/quern)quern$() into Salt. Crafting salt with raw meat will make it last longer. Afterwards, you'll want to cook it, as raw meat expires faster than cooked meat."
-    },
-    {
-      "type": "text",
-      "text": "Recall from the $(l:processes/barrels)Barrel$() chapter that alcohol is made from 500mB of Fresh Water and some Flour. Sealing 1 fruit per 250mB of alcohol makes Vinegar. Sealing fruit in a vinegar barrel will extend its life."
-    },
-    {
-      "type": "text",
-      "text": "Mixing a 9:1 ratio of Salt Water to Vinegar instantly produces Brine. Sealing food in Brine lets you pickle it, extending its life."
-    }
-  ]
+	"advancement": "tfc:main/pottery",
+	"sortnum": 0,
+    "pages": [
+		{
+			"type": "text",
+			"text": "TFC food $(thing)rots$() after a certain amount of time. The expiration date is viewable on the tooltip. Foods with different decay dates can be stacked in the crafting grid, or by pressing a hotkey (default $(4)X$()) while hovering over one in the inventory. This picks the food item with the nearest decay date. Foods like fruit expire pretty quickly, while grains can last a long time."
+		},
+		{
+			"type": "text",
+			"text": "We extend the life of food in TFC through preservation. The most basic way to preserve food is by making a small or large vessel, and storing food inside. Food stored in a vessel gets a Preserved tag (if using a large vessel, it has to be sealed first), and you can see that reflected in the decay date."
+		},
+		{
+			"type": "tfc:quern_recipe",
+			"recipe": "tfc:rocksalt",
+			"title": "Salting Meat",
+			"text": "Rocksalt is a stone type in TFC whose rock items can be crushed in a $(l:processes/quern)quern$() into Salt. Crafting salt with raw meat will make it last longer. Afterwards, you'll want to cook it, as raw meat expires faster than cooked meat."
+		},
+		{
+			"type": "text",
+			"text": "Recall from the $(l:processes/barrels)Barrel$() chapter that alcohol is made from 500mB of Fresh Water and some Flour. Sealing 1 fruit per 250mB of alcohol makes Vinegar."
+		},
+		{
+			"type": "text",
+			"text": "Mixing a 9:1 ratio of Salt Water to Vinegar instantly produces Brine. Sealing food in Brine causes it to become Brined. Brined food can then be stored in Vinegar to be pickled, extending its life.."
+		}
+    ]
 }
