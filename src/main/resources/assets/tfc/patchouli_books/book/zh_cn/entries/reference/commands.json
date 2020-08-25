@@ -1,0 +1,29 @@
+{
+  "name": "指令",
+  "icon": "tfc:textures/items/brass_mechanisms.png",
+  "category": "reference",
+  "advancement": "tfc:world/pick_nugget",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "群峦传说中有许多用于调试与创造的$(thing)指令$()。"
+    },
+    {
+      "type": "text",
+      "text": "$(item)/findveins [all:<vein name>] <radius> [dump:rate]$()$(br2)这个指令可以为你从已生成的区块中找到矿脉的坐标。如果在最后添加“dump”，那么将会在你的计算机中生成一个储存了指定矿脉的文件，如果在最后添加“rate”，那么将会生成一个储存了指定矿脉比率的文件。"
+    },
+    {
+      "type": "text",
+      "text": "$(item)/playertfc <get:set:add:reset> [nutrition:food:saturation:water:skill <name>]$()$(br2)这个指令可以修改玩家的各项属性，不过有些指令组合是禁用的，比如增加营养值。"
+    },
+    {
+      "type": "text",
+      "text": "$(item)/heat <amount>$()$(br2)当你手持一个可以加热的物品时，这个指令可以将它加热到指定的温度（整数）。"
+    },
+    {
+      "type": "text",
+      "text": "$(item)/stripworld <radiusInBlocks>$()$(br2)这个指令可以在指定的范围内移除所有的普通岩石和水，露出其中的矿脉结构。$(br2)$(4)特别警告！！！该指令不可撤销！$()"
+    }
+  ]
+}

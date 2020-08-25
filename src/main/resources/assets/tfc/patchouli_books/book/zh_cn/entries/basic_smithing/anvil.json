@@ -1,0 +1,76 @@
+{
+  "name": "砧功夫",
+  "icon": "tfc:textures/items/stone/hammer.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/copper_age",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "text",
+      "text": "想要取得更多进度，我们必须学会金属锻造。但是在那之前，我们要先拿到$(item)助焊剂$()。助焊剂可以用这些种类的石子制成：$(thing)白垩岩，白云岩，石灰岩，大理岩$()。"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:hammer_head",
+      "text": "而为了制作助焊剂及使用砧，我们需要一把$(item)锤子。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:flux",
+      "title": "助焊剂",
+      "text": "助焊剂可以在合成栏中用锤子砸碎这些石子取得。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:flux",
+      "text": "你同样可以用$(l:processes/quern)手推磨$()把这些石子磨成助焊剂。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:borax",
+      "text": "如果你找到了$(item)硼砂$()，也可以用$(l:processes/quern)手推磨$()磨成更多的助焊剂。"
+    },
+    {
+      "type": "text",
+      "text": "你将要使用的第一种砧便是石砧。只需手持锤子$(4)右键点击$()一块裸露的未加工$(thing)岩浆岩$()就可以制作一个石砧。$(br2)岩浆岩包括：$(thing)闪长岩，辉长岩，花岗岩，安山岩，玄武岩，英安岩，以及流纹岩。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "石砧是游戏中最基础的一种砧，外观像一个矮了八分之一的未加工岩石。",
+      "name": "石砧",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:anvil/granite"
+        },
+        "pattern": [
+          ["P"], ["0"]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "clay_knapping_recipe",
+      "recipe": "tfc:ingot_mold",
+      "text": "在砧上锻造需要原料——$(item)金属锭$()。不过这简单得很！你只需要 100 单元的任意纯金属或合金，然后把它们倒进$(l:basic_smithing/casting)铸锭模具$()里。"
+    },
+    {
+      "type": "text",
+      "text": "砧可以用来将金属打造成很多种东西，但是出于教学考虑，我们现在只把注意力集中在$(thing)焊接$()上。想要焊接物品，我们需要一个适宜的可加工温度。当一个金属锭刚刚从铸锭模具中倒出来时，下方的工具提示通常都会说$(item)可加工$()或是$(item)可焊接$()。你同样可以用锻铁炉将物品加热到适宜的工作温度。"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:double_ingot_copper",
+      "text": "物品在炉火外待得越久，温度流失得越多，所以你需要尽量快地完成锻造。打开砧的界面并放入$(item)助焊剂$()。然后，$(4)shift + 右键点击$()放入两个金属锭。退出界面并拿着锤子$(4) shift + 右键点击$()来焊接金属锭，由此产出一枚$(item)金属双锭$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:metal/copper/copper_anvil",
+      "text": "这是铜砧的合成配方，可用于加工铜质物品，不过任何主要的工具金属都可以用这个配方制作相应的砧！"
+    },
+    {
+      "type": "text",
+      "text": "焊接仅能在比被焊接金属次一级的金属砧上执行，因此你只能在铜砧及更高级的砧上加工铜质工具。这意味着你必须不断升级你的砧来达到更高级的进度。温馨提示，你可以把已经没用的低级砧熔化回金属锭以便再次使用。关于金属等级请查看书中的$(l:reference/smithing)参考$()部分。"
+    }
+  ]
+}

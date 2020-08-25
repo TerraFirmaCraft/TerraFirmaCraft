@@ -1,0 +1,32 @@
+{
+  "name": "烹饪大法",
+  "icon": "tfc:textures/items/food/barley_bread_sandwich.png",
+  "category": "food",
+  "advancement": "tfc:main/pottery",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(thing)烹饪$()在管理你的营养值上非常重要。烹饪可以把多个食物结合在一起，提供给你更多的营养值，进而提高你的生命上限。有三类可烹饪的食物：$(thing)汤，沙拉，三明治$()。液态的食物进入不了烹饪步骤。你可以阅读$(l:reference/clay_knapping)参考部分$()以查看所有的塑形配方。"
+    },
+    {
+      "type": "text",
+      "text": "$(item)如何做汤$()$(br2)1. 点燃一团篝火$(br)2. 烧个$(item)陶锅$()。$(4)右键点击$()把锅放到篝火上。$(br)3. 烧一些陶碗$(br)4. 把原料放进汤的界面里（$(4)右键点击$()打开）$(br)5. 等汤烧开$(br)6. 用碗就可以舀了。$(br2)$(thing)注意：谷物和乳制品不能进汤。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:food/barley/barley_bread_sandwich",
+      "title": "如何制作三明治",
+      "text": "两片面包、一把小刀、三种食物。谷物营养值的极佳来源！"
+    },
+    {
+      "type": "text",
+      "text": "$(item)如何制作沙拉$()$(br2)这是三者之中最简单的。在副手中握一把$(thing)刀$()，主手拿一个碗——陶碗和木碗都可以。$(thing)右键点击$()就可以打开沙拉制作界面了。把原料放进去，就可以拿到沙拉了。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:wrought_iron_grill",
+      "text": "$(item)锻铁烤架$()可以放在篝火上，就像陶锅那样。允许你同时烹饪最多 5 个食物。"
+    }
+  ]
+}

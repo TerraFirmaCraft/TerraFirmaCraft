@@ -1,0 +1,40 @@
+{
+  "name": "大桶",
+  "icon": "tfc:textures/items/fluids/wooden_bucket_empty.png",
+  "category": "processes",
+  "advancement": "tfc:main/carpentry",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_barrel",
+      "title": "大桶",
+      "text": "群峦传说中的许多工艺流程都会用到大桶。你可以像放置其他方块一样来放置它。大桶可以容纳一些物品和液体，将物品和液体一起密封在桶中，制作一些新东西吧！"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:wooden_bucket",
+      "title": "木桶",
+      "text": "你不能通过木桶放置水源方块, 不过你可以用它把 1,000mB 的液体倒进大桶。"
+    },
+    {
+      "type": "text",
+      "text": "可以在大桶中制作的液体包括：$(br2)鞣酸：白橡木原木、白桦木原木、栗木原木、花旗松木原木、山核桃木原木、枫木原木或红杉木原木 + 一大桶淡水$(br)啤酒：500mB 淡水 + 大麦粉$(br)苹果酒：500mB 淡水 + 苹果（青红都行）$(br)朗姆酒：500mB 淡水 + 糖$(br)清酒：500mB 淡水 + 稻米面粉$(br)伏特加：500mB 淡水 + 马铃薯"
+    },
+    {
+      "type": "text",
+      "text": "(续)$(br2)威士忌：500mB 淡水 + 小麦面粉$(br)玉米威士忌：500mB 淡水 + 玉米面粉$(br)黑麦威士忌：500mB 淡水 + 黑麦面粉$(br)$(thing)醋：$()250mB 酒精饮料 + 水果$(br)咸水：125mB 淡水 + 盐$(br)卤水：9000mB 咸水 + 一桶醋$(br)$(thing)石灰水：$()500mB 淡水 + 助焊剂"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:powderkeg",
+      "title": "火药桶",
+      "text": "火药桶的功能与大桶类似，不过它能储存多达 12 组火药。你可以先密封火药桶，接着用红石信号充能来引燃它，如果你后悔将其引燃，右键点击它就可以熄灭引线。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:gunpowder",
+      "recipe2": "tfc:gunpowder_graphite",
+      "title": "火药"
+    }
+  ]
+}

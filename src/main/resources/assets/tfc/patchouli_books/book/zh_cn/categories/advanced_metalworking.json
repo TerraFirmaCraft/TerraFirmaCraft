@@ -1,0 +1,6 @@
+{
+  "name": "进阶金属工艺",
+  "description": "更高级的金属需要更特殊的工序。",
+  "icon": "tfc:textures/items/fluids/red_steel_bucket_empty.png",
+  "sortnum": 3
+}

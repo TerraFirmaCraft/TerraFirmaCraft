@@ -1,0 +1,27 @@
+{
+  "name": "木炭坑",
+  "icon": "tfc:textures/items/wood/log/oak.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/pottery",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(thing)木炭坑$()是游戏中获取$(item)木炭$()的主要方法，而木炭是群峦传说中最主要的$(l:basic_smithing/forge)燃料$()。要制作一个木炭坑，我们需要先手持原木 $(4)shift + 右键点击$()地面来搭起一个$(item)木材堆$()。"
+    },
+    {
+      "type": "text",
+      "text": "简单来讲，木炭坑就是木材堆被不可燃方块埋起来的结构。你可以在地上挖一个小洞，然后用木材堆填满（每个木材堆 16 个原木，以最大化产出）。然后，用固体方块把木材堆全部盖住（推荐使用泥土），只留一格小坑暴露出其中一个木材堆，对着木材堆丢入一根$(item)火把$()（手动点燃也可以）。静候几秒钟，木柴堆会被点燃开始燃烧，这时候就可以把最后一个缺口盖住。等待八个小时，新鲜的木炭就可以用铲子挖出来了！"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:charcoal_pit_1x1",
+      "text": "这是一个简单的 1x1 木炭坑图例。尽管花这么长时间只烧这么点很低效，但是毕竟人家也能烧出木炭嘛。"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:charcoal_pit_3x3",
+      "text": "这是一个更大的木炭坑图例。实际上，木炭坑可以是任意形状的！"
+    }
+  ]
+}
