@@ -1,0 +1,79 @@
+{
+  "name": "陶瓷模具",
+  "icon": "tfc:textures/items/ceramics/unfired/mold/scythe_blade.png",
+  "category": "reference",
+  "advancement": "tfc:main/find_clay",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:ingot_mold",
+      "text": "铸锭模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:pick_head_mold",
+      "text": "镐头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:shovel_head_mold",
+      "text": "铲头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:axe_head_mold",
+      "text": "斧头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:hoe_head_mold",
+      "text": "锄头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:chisel_head_mold",
+      "text": "凿头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:sword_blade_mold",
+      "text": "剑刃模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:mace_head_mold",
+      "text": "狼牙棒头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:saw_blade_mold",
+      "text": "锯片模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:javelin_head_mold",
+      "text": "标枪头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:hammer_head_mold",
+      "text": "锤头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:propick_head_mold",
+      "text": "勘矿镐头模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:knife_blade_mold",
+      "text": "刀刃模具"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:scythe_blade_mold",
+      "text": "镰刀头模具"
+    }
+  ]
+}

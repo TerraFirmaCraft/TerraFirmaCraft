@@ -1,0 +1,75 @@
+{
+  "name": "收集矿石",
+  "icon": "tfc:textures/items/ore/small/native_copper.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:world/pick_nugget",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "在地上的木棍和石子之间散落着一些$(item)矿物粒$()。这些矿物粒本身没有任何作用，不过它们可以被熔化并浇铸成工具。矿物生成位置详见$(l:reference/ores)参考$()。"
+    },
+    {
+      "type": "text",
+      "text": "最基础的工具由$(thing)铜$()制成。要制作一把工具，你需要至少收集 10 枚小型铜矿（粒）。含铜矿物包括$(thing)原生铜，黝铜矿，以及孔雀石$()。每个矿物粒含有 10 单元金属，而一把工具由 100 单元金属制成。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/native_copper",
+      "title": "原生铜粒",
+      "text": "随便捡，不要钱。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/malachite",
+      "title": "小型孔雀石",
+      "text": "这是自然界中铜的另一种存在形式，颜色偏蓝，但丢进锅里大家都一样。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/tetrahedrite",
+      "title": "小型黝铜矿",
+      "text": "还是铜！"
+    },
+    {
+      "type": "text",
+      "text": "你或许想要跳过铜直接制作$(l:basic_smithing/bronze)青铜$()工具，铜的下一级升级。我们会在之后介绍合金，但是顺手在路上多捡些$(thing)辉铋矿，锡石，闪锌矿，原生金，以及原生银$()可以加速你爬科技树的进度。涓涓细流汇成江海！"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/bismuthinite",
+      "title": "小型辉铋矿",
+      "text": "铋主要用于制成合金。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/cassiterite",
+      "title": "小型锡石",
+      "text": "锡石，炼锡的主要原料。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/sphalerite",
+      "title": "小型闪锌矿",
+      "text": "富含人体必需微量元素——锌，但不可以吃。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/native_gold",
+      "title": "原生金粒",
+      "text": "你没法在群峦传说中制造金质工具，但是它可以做$(l:basic_smithing/lamp)灯$()。好吧，其他金属也可以。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/native_silver",
+      "title": "原生银粒",
+      "text": "银同样主要用于制成合金。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/small/limonite",
+      "title": "其他矿粒",
+      "text": "地面上自然生成的矿物通常是大型地下矿脉的标志，你可能已经借此发现了一些裸露的矿脉。对于其他矿物粒，比如这个小型褐铁矿，同样很值得收集，每一种矿物都有自己的用武之地。"
+    }
+  ]
+}

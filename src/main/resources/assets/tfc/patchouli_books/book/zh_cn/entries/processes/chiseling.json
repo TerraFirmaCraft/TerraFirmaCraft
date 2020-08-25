@@ -1,0 +1,16 @@
+{
+  "name": "凿制",
+  "icon": "tfc:textures/items/metal/chisel/wrought_iron.png",
+  "category": "processes",
+  "advancement": "tfc:main/mining",
+  "pages": [
+    {
+      "type": "text",
+      "text": "想要获得楼梯和台阶，自然可以合成一些出来，不过有个更简单的方式——凿制，这也是得到平滑方块的唯一方式。你可以先将一把$(item)锤$()握在你的副手中，然后将一把金属$(item)凿$()握在你的主手中，接着$(item)右键点击$()方块来凿东西。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)凿制模式$()$(br2)按 $(4)M$() 切换凿制模式。$(br2)$(thing)平滑模式：$()在这个模式下可将普通方块凿成平滑方块。$(br2)$(thing)楼梯模式：$()在这个模式下可将完整方块凿成楼梯方块。$(br2)$(thing)台阶模式：$()在这个模式下可将完整方块凿成台阶方块。$(br2)$(item)注意：$()只有拥有对应变体的方块可以进行凿制。"
+    }
+  ]
+}

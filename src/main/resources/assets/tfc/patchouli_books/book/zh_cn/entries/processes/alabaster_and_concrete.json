@@ -1,0 +1,40 @@
+{
+  "name": "雪花石膏与混凝土",
+  "icon": "tfc:textures/items/alabaster_brick.png",
+  "category": "processes",
+  "advancement": "tfc:main/make_quern",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:alabaster_brick",
+      "title": "雪花石砖",
+      "text": "群峦传说中的染料有许多作用，其中一个主要用途就是给雪花石膏染色，制作它们需要用雪花石砖，而雪花石砖由石膏合成而来。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:gypsum",
+      "text": "石膏可以通过在$(l:processes/quern)手推磨$()中粉碎未加工石灰岩来获得。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:alabaster_bricks",
+      "text": "用一般的砖块合成配方就可以合成雪花石膏砖块，在此之外，你也可以通过将石膏浸泡在石灰水（水 + 助焊剂）中来制作它们，而平滑雪花石膏则是通过凿制雪花石膏砖块来制作的。"
+    },
+    {
+      "type": "text",
+      "text": "雪花石膏的主要特点就在于可以染色。将其密封在装了液体$(l:processes/dye)染料$()的大桶中，就可以把它染成 16 种原版颜色中的任何一种，而且这一过程可以在任何一种形态的雪花石膏上进行。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:aggregate",
+      "title": "集料",
+      "text": "集料是一种很好的中间物，可以让你在不提前染色的情况下合成混凝土粉末，这样一来你就可以用液体染料在大桶中批量染色了。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/concrete_powder/orange_concrete_powder",
+      "title": "混凝土粉末",
+      "text": "当然，你也可以用一般方法来给它染色。"
+    }
+  ]
+}

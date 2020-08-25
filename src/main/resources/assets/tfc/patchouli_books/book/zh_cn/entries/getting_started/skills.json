@@ -1,0 +1,17 @@
+{
+  "name": "技能",
+  "icon": "tfc:textures/items/metal/propick/bronze.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/logging",
+  "sortnum": 150,
+  "pages": [
+    {
+      "type": "text",
+      "text": "正所谓熟能生巧，群峦传说引入了$(thing)技能$()机制，在物品栏的某一页中可以看到详细信息。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)技能$()$(br2)$(l:basic_smithing/prospecting)探矿：$()减少误报的几率。用探矿镐探到至少 192 次矿后提升一级。$(br)$(l:basic_smithing/anvil)锻造：$()使用铁砧越多等级越高。在制作工具时提供锻造加成，使其更耐久、更合用。$(br)$(l:food/farming)农业：$()收获作物越多等级越高。收获成熟作物时掉落更多。$(br)$(l:food/animal_husbandry)屠宰：$()击杀动物越多等级越高。增加动物的掉落，比如肉的数量。"
+    }
+  ]
+}

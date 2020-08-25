@@ -1,0 +1,51 @@
+{
+  "name": "基本材料",
+  "icon": "tfc:textures/items/straw.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/pick_rock",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "在群峦传说中，世界上的一切都能派上合适的用场。用你的$(item)石刀$()割些草吧，打掉的草会变成干草。很快，你就会用得到干草了——而且会用到很多！"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:thatch",
+      "text": "干草可以合成干草块，最基础的建筑方块。别直接拿它盖房子，捕食者可以直接穿过的！"
+    },
+    {
+      "type": "text",
+      "text": "从地上捡石头和木棍就能做出斧子，所以别再去空手撸树了，去找棵树试试你的新斧子吧。破坏单个方块的时间可能比你习惯的要长一些，不过只要砍掉了一个方块，整棵树都会倒下！$(br2)我们要做的下一个工具是$(item)铲$()."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:shovel_head",
+      "text": "有了铲之后，铲土的速度要快上不少。你可以阅读$(l:reference/rock_knapping)参考部分$()以查看所有的塑形配方。"
+    },
+    {
+      "type": "text",
+      "text": "那么现在，去找一些$(item)粘土$()吧。$(l:getting_started/pottery)粘土$()会生成在降水量中到大的地区，你需要拿着铲子才能挖。$(br2)考虑到整个世界都在长草，找到$(thing)粘土指示植物$()会大有帮助。在你最开始出生地区的温度下，这一植物是$(item)蹄盖蕨$()。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "蹄盖蕨生成于温带地区的粘土之上。",
+      "name": "蹄盖蕨",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:plants/athyrium_fern",
+          "D": "tfc:clay_grass/andesite"
+        },
+        "pattern": [
+          ["   ", " P ", "   "], ["DDD", "DDD", "DDD"], ["   ", " 0 ", "   "]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "text",
+      "text": "所有$(thing)粘土指示植物$()的列表：$(br2)- 蹄盖蕨$(br)- 美人蕉$(br)- 一枝黄花$(br)- 蒲苇$(br)- 分药花$(br)- 玫瑰$(br)- 水生美人蕉$(br2)$(item)注意：植物只在一年中的某些时候开花，所以在冬天去找你要找的植物可能会不尽如人意。"
+    }
+  ]
+}

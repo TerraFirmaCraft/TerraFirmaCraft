@@ -1,0 +1,46 @@
+{
+  "name": "锻铁炉",
+  "icon": "minecraft:textures/items/charcoal.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/charcoal",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "text",
+      "text": "使用$(thing)锻铁炉$()是在群峦传说中加热物品的主要途径。要搭建一个锻铁炉，需要先挖一格深的洞（和坑窑差不多）。但是，和坑窑不一样的是，坑的周围（包括底部）需要是任意一种岩石。这包括：未加工岩石，圆石，平滑岩石或是石砖，且周围可以不为同种岩石。右键在坑里放 7 个$(item)木炭$()，然后用起火器点燃。"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:forge",
+      "text": "请注意随时为锻铁炉添加燃料，不然一旦熄灭就需要重新点燃。"
+    },
+    {
+      "type": "text",
+      "text": "锻铁炉淋了雨雪就会熄灭，但是锻铁炉同样需要暴露在空气中才能维持燃烧。防止雨雪熄灭炉火的方法就是$(thing)烟囱$()，锻铁炉正上方可以用方块遮住天空（不要直接盖在锻铁炉上），留周围的方块暴露在天空下即可。"
+    },
+    {
+      "type": "text",
+      "text": "锻铁炉底部的五个物品槽用来放入$(item)燃料$()，锻铁炉可以使用木炭和任何天然燃料，如烟煤和褐煤，但原木除外。燃料栏上方的五个格子用来放需要加热的物品，通常是矿锭或者容器。右侧的四个物品栏用于（通常在紧急情况下）使用模具或者容器来接受熔化的物品。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_vessel",
+      "text": "只要加热到$(item)炽白$()温度（只能通过$(l:processes/leatherworking)风箱$()达到，炽白温度可以用来熔化金属），锻铁炉就可以完成任何$(l:getting_started/pottery)坑窑$()或者$(l:getting_started/logging)篝火$()中的$(thing)加热配方$()。锻铁炉同样可以用来烹饪食物以及制作火把，但是如果食物留在里面太久就会烧掉。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_brick",
+      "text": "锻铁炉可以用于烧制红砖。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_flower_pot",
+      "text": "同样，也可以烧制花盆。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:lime_glazed_terracotta",
+      "text": "锻铁炉可以将粘土块烧制成陶瓦，也可以给陶瓦上釉。"
+    }
+  ]
+}

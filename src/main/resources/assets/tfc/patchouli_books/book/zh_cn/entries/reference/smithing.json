@@ -1,0 +1,59 @@
+{
+  "name": "锻造配方",
+  "icon": "tfc:textures/items/metal/sheet/rose_gold.png",
+  "category": "reference",
+  "advancement": "tfc:main/metal_casting",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(thing)以下是金属制品对应的原料表：$()$(br2)$(item)锭$()：灯、铲、斧、锄、锤、勘矿镐、锯、镰刀、刀、标枪、凿、黄铜机件与金属棒"
+    },
+    {
+      "type": "text",
+      "text": "$(item)双锭$()：薄板、剑与狼牙棒$(br2)$(item)薄板$()：未完成的靴、铁栏杆、铁门与桶$(br2)$(item)双层薄板$()：未完成的头盔、胸甲和护腿、盾牌、铁栏杆（双倍）、铁活版门与锻铁烤架"
+    },
+    {
+      "type": "text",
+      "text": "$(item)其他配方：$()$(br)分解、精制、加工$(l:advanced_metalworking/iron)方坯$()。$(br2)把生铁制成高碳钢，把任何高碳钢制成对应的钢。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)材料层级：$()$(br2)$(item)0:$()石$(br)$(item)1:$()铜$(br)$(item)2:$()铜合金$(br)$(item)3:$()锻铁$(br)$(item)4:$()钢$(br)$(item)5:$()黑钢$(br)$(item)6:$()蓝钢与红钢"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/lignite",
+      "title": "褐煤",
+      "text": "褐煤是一种天然煤。烧褐煤的木炭炉不需要风箱就可以达到白色温度。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/bituminous_coal",
+      "title": "烟煤",
+      "text": "烟煤是一种天然煤。烧烟煤的木炭炉不需要风箱就可以达到白色温度。"
+    },
+    {
+      "type": "spotlight",
+      "item": "minecraft:coal",
+      "title": "木炭",
+      "text": "木炭作为群峦传说中的主要燃料，是通过$(l:basic_smithing/charcoal_pit)木炭坑$()来制造的。在没有风箱的情况下可以将木炭炉烧到黄白**的温度。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:peat",
+      "title": "泥炭",
+      "text": "泥炭可以用来烧篝火，在降雨量大的地方生成，而且不受重力影响。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:wood/log/chestnut",
+      "title": "原木",
+      "text": "原木可以用来烧篝火，不同的原木可以烧到不同的温度。（见右）$(br2)"
+    },
+    {
+      "type": "text",
+      "text": "暗红：云杉木与柳木$(br)暗红*：山杨木、松木、红杉木、香柏木与蔷薇木$(br)暗红**：悬铃木、金合欢木、白桦木、栗木与木棉木$(br)暗红***：黑梣木$(br)暗红****：黑檀木、花旗松木、白橡木与棕榈木$(br)亮红：山核桃木与枫木"
+    }
+  ]
+}

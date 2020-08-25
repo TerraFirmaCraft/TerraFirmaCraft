@@ -1,0 +1,59 @@
+{
+  "name": "耐火粘土",
+  "icon": "tfc:textures/items/ceramics/fire_clay.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_flux",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "在群峦传说中我们需要$(item)耐火粘土球$()来合成几个很重要的无拼。那么在哪里可以找到它呢？下界？不！在这里你必须自己将它合成出来。这是比较难的部分。首先，你需要通过$(l:basic_smithing/prospecting)勘矿$()挖掘一些$(item)石墨和高岭石$()。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/kaolinite",
+      "title": "高岭石",
+      "text": "高岭石矿脉通常可以在$(thing)任意沉积岩地貌$()找到。"
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:ore/graphite",
+      "title": "石墨",
+      "text": "石墨可以在$(thing)片麻岩，大理岩，硅质岩，以及片岩地貌$()找到。$(br2)$(br2)$(item)现在，将两种矿物都丢进$(l:processes/quern)手推磨$()$(item)来把他们磨成粉吧。$()"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:fire_clay",
+      "text": "恭喜你，你已经完成了群峦传说中最难的部分！"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_crucible",
+      "text": "现在你已经拿到了耐火粘土球, 手持至少 5 个，$(4)右键点击$()打开$(thing)塑形界面$()捏一个坩埚吧。"
+    },
+    {
+      "type": "text",
+      "text": "坩埚对熔化矿物来说非常有用。其内有 9 个空槽可以放入待熔化的矿物，一旦内容物全部熔化，你就可以看见里面都是些什么金属，以及你是否成功制作了一种合金。当你想拿些金属出来的时候，只需要把一个铸锭模具（或者其他模具）放入输出槽，它会为你自动把金属注入模具！多方便啊。"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_brick"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_fire_brick"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:fire_bricks",
+      "title": "耐火砖",
+      "text": "真是些昂贵的砖头！"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:fire_clay_block",
+      "text": "如果你有一天获得了足够多的耐火粘土并需要一种更紧凑的储存方法的话，耐火粘土球也可以被制作成方块。",
+      "title": "耐火粘土块"
+    }
+  ]
+}
