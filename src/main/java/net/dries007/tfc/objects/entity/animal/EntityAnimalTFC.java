@@ -66,7 +66,6 @@ public abstract class EntityAnimalTFC extends EntityAnimal implements IAnimalTFC
      */
     public static int getRandomGrowth(int daysToAdult, int daysToElder)
     {
-        int today = (int) CalendarTFC.PLAYER_TIME.getTotalDays();
         int randomFactor = daysToElder > 0 ? (int) (daysToElder * 1.25f) : daysToAdult * 4;
         int lifeTimeDays = daysToAdult + Constants.RNG.nextInt(randomFactor);
         return (int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays);
