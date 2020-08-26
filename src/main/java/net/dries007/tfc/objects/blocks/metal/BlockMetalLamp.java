@@ -74,7 +74,7 @@ public class BlockMetalLamp extends Block implements ILightableBlock
 
     public BlockMetalLamp(Metal metal)
     {
-        super(Material.IRON);
+        super(Material.REDSTONE_LIGHT);
         this.metal = metal;
         if (MAP.put(metal, this) != null) throw new IllegalStateException("There can only be one.");
 
