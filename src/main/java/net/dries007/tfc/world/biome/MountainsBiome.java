@@ -44,9 +44,37 @@ public class MountainsBiome extends TFCBiome
     @Override
     public INoise2D createNoiseLayer(long seed)
     {
-        // Power scaled noise, looks like mountains over large area
-        final INoise2D mountainNoise = new SimplexNoise2D(seed).octaves(6).spread(0.14f).map(x -> 2.67f * (float) Math.pow(0.5f * (x + 1), 3.2f) - 0.8f);
-        return (x, z) -> TFCConfig.COMMON.seaLevel.get() + baseHeight + scaleHeight * mountainNoise.noise(x, z);
+        final int seaLevel = TFCConfig.COMMON.seaLevel.get();
+
+        final INoise2D baseNoise = new SimplexNoise2D(seed) // A simplex noise forms the majority of the base
+            .octaves(6) // High octaves to create highly fractal terrain
+            .spread(0.14f)
+            .add(new SimplexNoise2D(seed + 1) // Ridge noise is added to mimic real mountain ridges. It is scaled smaller than the base noise to not be overpowering
+                .octaves(4)
+                .ridged() // Ridges are applied after octaves as it creates less directional artifacts this way
+                .spread(0.02f)
+                .scaled(-0.7f, 0.7f))
+            .map(x -> 0.125f * (x + 1) * (x + 1) * (x + 1)) // Power scaled, flattens most areas but maximizes peaks
+            .map(x -> seaLevel + baseHeight + scaleHeight * x); // Scale the entire thing to mountain ranges
+
+        // Cliff noise consists of noise that's been artificially clamped over half the domain, which is then selectively added above a base height level
+        // This matches up with the distinction between dirt and stone
+        final INoise2D cliffNoise = new SimplexNoise2D(seed + 2).octaves(2).map(x -> x > 0 ? x : 0).spread(0.01f).scaled(-25, 25);
+        final INoise2D cliffHeightNoise = new SimplexNoise2D(seed + 3).octaves(2).spread(0.01f).scaled(-20, 20);
+
+        return (x, z) -> {
+            float height = baseNoise.noise(x, z);
+            if (height > 120) // Only sample each cliff noise layer if the base noise could be influenced by it
+            {
+                float cliffHeight = cliffHeightNoise.noise(x, z);
+                if (height > 140 + cliffHeight)
+                {
+                    float cliff = cliffNoise.noise(x, z);
+                    return height + cliff;
+                }
+            }
+            return height;
+        };
     }
 
     @Override
