@@ -1,0 +1,32 @@
+{
+  "name": "砖与砂浆",
+  "icon": "tfc:textures/items/stonetypes/brick/chert.png",
+  "category": "processes",
+  "advancement": "tfc:main/copper_age",
+  "pages": [
+    {
+      "type": "crafting",
+      "text": "你可以用石子来制作砖，而不是用粘土球。",
+      "recipe": "tfc:stone/rhyolite/rhyolite_brick",
+      "title": "砖"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:stone/rhyolite/rhyolite_pressure_plate",
+      "recipe2": "tfc:stone/rhyolite/rhyolite_button",
+      "title": "原版配方"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:stone/rhyolite/rhyolite_bricks",
+      "title": "砖块",
+      "text": "制作砖块需要用$(3)砂浆$()。先用 500mB 淡水与一份助焊剂来制作 500mB 石灰水，接着把沙子密封在石灰水中，这样你就可以得到砂浆了。每 100mB 石灰水可以制作 16 份砂浆。"
+    },
+    {
+      "type": "crafting",
+      "text": "你也可以用粘土球做砖，先捏成砖块，再烧制出红砖。$(l:advanced_metalworking/fire_clay)耐火砖$()也一样。",
+      "recipe": "tfc:bricks",
+      "title": "原版砖块"
+    }
+  ]
+}

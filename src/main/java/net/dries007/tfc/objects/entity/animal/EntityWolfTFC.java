@@ -48,6 +48,7 @@ import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.entity.EntitiesTFC;
 import net.dries007.tfc.objects.entity.ai.EntityAITamableAvoidPlayer;
 import net.dries007.tfc.util.calendar.CalendarTFC;
+import net.dries007.tfc.util.climate.BiomeHelper;
 import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -94,19 +95,17 @@ public class EntityWolfTFC extends EntityWolf implements IAnimalTFC, ILivestock
     @Override
     public int getSpawnWeight(Biome biome, float temperature, float rainfall, float floraDensity, float floraDiversity)
     {
-        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome))
+        BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
+        if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TAIGA))
         {
-            // Spawns everywhere, there's so many species...
             return ConfigTFC.Animals.WOLF.rarity;
         }
         return 0;
     }
 
     @Override
-    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
-    {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
-    }
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules() { return AnimalGroupingRules.ELDER_AND_POPULATION; }
 
     @Override
     public int getMinGroupSize()

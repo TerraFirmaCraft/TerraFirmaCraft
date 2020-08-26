@@ -357,7 +357,7 @@ public class EntityMuleTFC extends EntityMule implements IAnimalTFC, ILivestock
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_HORSE;
+        return LootTablesTFC.ANIMALS_MULE;
     }
 
     @Override

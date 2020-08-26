@@ -1,0 +1,29 @@
+{
+  "name": "侯汝入梦",
+  "icon": "tfc:textures/items/hide/large/raw.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/get_straw",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)干草床$()是石器时代中床的替代品。把两块$(l:getting_started/basic_materials)干草块$()并排放置，拿出$(item)大块兽皮$()，在适当的位置$(4)右键点击$()即可。只有牛和熊才会掉落大块皮革。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": true,
+      "text": "干草床可以设置重生点，但是不能帮你跳过夜晚…",
+      "name": "干草床",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:thatch_bed[facing=east,part=head]",
+          "D": "tfc:thatch_bed[facing=west,part=foot]"
+        },
+        "pattern": [
+          ["0P ", " D "]
+        ],
+        "symmetrical": false
+      }
+    }
+  ]
+}

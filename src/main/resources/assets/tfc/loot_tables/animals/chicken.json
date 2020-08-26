@@ -7,15 +7,15 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "minecraft:feather",
+          "name": "tfc:food/chicken",
           "functions": [
             {
               "function": "tfc:apply_skill",
               "skill": "butchering",
-              "add": 0.05,
+              "add": 0.03,
               "count": {
-                "min": 4,
-                "max": 7
+                "min": 1,
+                "max": 4
               }
             },
             {
@@ -36,11 +36,14 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:food/chicken",
+          "name": "minecraft:feather",
           "functions": [
             {
               "function": "set_count",
-              "count": 1
+              "count": {
+                "min": 4,
+                "max": 7
+              }
             },
             {
               "function": "looting_enchant",

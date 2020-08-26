@@ -5,17 +5,20 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -38,7 +41,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
 {
-    private static final int DAYS_TO_ADULTHOOD = 480;
+    private static final int DAYS_TO_ADULTHOOD = 192;
 
     @SuppressWarnings("unused")
     public EntitySaberToothTFC(World worldIn)
@@ -50,7 +53,7 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     public EntitySaberToothTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.4F, 1.3F);
+        this.setSize(1.3F, 1.5F);
     }
 
     @Override
@@ -58,11 +61,17 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
             return ConfigTFC.Animals.SABER_TOOTH.rarity;
         }
         return 0;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
@@ -143,8 +152,11 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(5, wander);
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        // Avoid players at daytime
+        this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
+
         int priority = 2;
-        for (String input : ConfigTFC.Animals.POLAR_BEAR.huntCreatures)
+        for (String input : ConfigTFC.Animals.SABER_TOOTH.huntCreatures)
         {
             ResourceLocation key = new ResourceLocation(input);
             EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
@@ -164,11 +176,11 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
     }
 
     @Override
@@ -181,12 +193,12 @@ public class EntitySaberToothTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_GRAN_FELINE;
+        return LootTablesTFC.ANIMALS_SABERTOOTH;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // Close enough
+        playSound(TFCSounds.ANIMAL_FELINE_STEP, 0.15F, 1.0F);
     }
 }

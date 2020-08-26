@@ -57,8 +57,7 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA ||
-                biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
             return ConfigTFC.Animals.PIG.rarity;
         }
@@ -68,7 +67,7 @@ public class EntityPigTFC extends EntityAnimalMammal implements ILivestock
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
+        return AnimalGroupingRules.MALE_AND_FEMALES;
     }
 
     @Override

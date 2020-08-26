@@ -13,6 +13,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
 
+/**
+ * ModelSabertoothTFC
+ * Created using Tabula 7.1.0
+ */
+
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
 public class ModelSaberToothTFC extends ModelBase
@@ -56,7 +61,7 @@ public class ModelSaberToothTFC extends ModelBase
         textureHeight = 64;
 
         tailBottom = new ModelRenderer(this, 34, 3);
-        tailBottom.setRotationPoint(-1.0F, 13.3F, 12.5F);
+        tailBottom.setRotationPoint(-1.0F, 13.3F, 13.0F);
         tailBottom.addBox(0.0F, 0.0F, 0.0F, 2, 4, 2, -0.1F);
         setRotation(tailBottom, 0.9560913642424937F, 0.0F, 0.0F);
         ear1 = new ModelRenderer(this, 0, 4);
@@ -72,26 +77,26 @@ public class ModelSaberToothTFC extends ModelBase
         head.setRotationPoint(0.5F, 10.0F, -11.5F);
         head.addBox(-3.0F, -4.0F, -4.5F, 5, 6, 5, 0.1F);
         tailBody = new ModelRenderer(this, 32, 15);
-        tailBody.setRotationPoint(0.0F, 9.2F, 10.0F);
+        tailBody.setRotationPoint(0.0F, 9.2F, 10.5F);
         tailBody.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3, -0.2F);
         setRotation(tailBody, 0.5989969992844539F, 0.0F, 0.0F);
-        neck = new ModelRenderer(this, 53, 4);
+        neck = new ModelRenderer(this, 53, 3);
         neck.setRotationPoint(0.0F, 8.6F, -6.0F);
         neck.addBox(-2.0F, -2.5F, -6.5F, 4, 5, 5, 0.0F);
         setRotation(neck, 0.091106186954104F, 0.0F, 0.0F);
-        frontBody = new ModelRenderer(this, 44, 43);
-        frontBody.setRotationPoint(0.5F, 10.0F, -8.8F);
-        frontBody.addBox(-4.0F, -5.0F, 0.0F, 7, 10, 11, 0.0F);
+        frontBody = new ModelRenderer(this, 42, 43);
+        frontBody.setRotationPoint(0.0F, 10.0F, -8.8F);
+        frontBody.addBox(-4.0F, -5.0F, 0.0F, 8, 10, 11, 0.0F);
         setRotation(frontBody, -0.07592182246175333F, 0.0F, 0.0F);
         nose = new ModelRenderer(this, 16, 3);
         nose.setRotationPoint(-1.5F, -2.299999952316284F, -8.600000381469727F);
         nose.addBox(0.0F, 0.0F, 0.4000000059604645F, 2, 2, 4, 0.0F);
         setRotation(nose, 0.1820378452539444F, 0.0F, 0.0F);
-        backBody = new ModelRenderer(this, 46, 25);
-        backBody.setRotationPoint(0.0F, 10.4F, 4.8F);
-        backBody.addBox(-3.0F, -4.0F, -4.0F, 6, 8, 10, 0.0F);
+        backBody = new ModelRenderer(this, 46, 24);
+        backBody.setRotationPoint(0.0F, 10.2F, 4.8F);
+        backBody.addBox(-3.5F, -4.0F, -4.0F, 7, 9, 10, 0.0F);
         setRotation(backBody, -0.028623399732707F, 0.0F, 0.0F);
-        neckBase = new ModelRenderer(this, 51, 14);
+        neckBase = new ModelRenderer(this, 51, 13);
         neckBase.setRotationPoint(0.5F, 9.4F, -6.8F);
         neckBase.addBox(-4.0F, -4.0F, -3.0F, 7, 7, 4, -0.1F);
         setRotation(neckBase, 0.136659280431156F, 0.0F, 0.0F);
@@ -99,7 +104,7 @@ public class ModelSaberToothTFC extends ModelBase
         mouthBottom.setRotationPoint(-2.0F, -0.10000000149011612F, -8.0F);
         mouthBottom.addBox(0.0F, 0.0F, 0.5F, 3, 2, 3, 0.0F);
         tailTop = new ModelRenderer(this, 34, 9);
-        tailTop.setRotationPoint(-1.0F, 10.8F, 9.8F);
+        tailTop.setRotationPoint(-1.0F, 10.8F, 10.3F);
         tailTop.addBox(0.0F, 0.0F, 0.0F, 2, 4, 2, 0.0F);
         setRotation(tailTop, 0.8337679215359916F, 0.0F, 0.0F);
         mouthTop = new ModelRenderer(this, 3, 20);
@@ -114,19 +119,19 @@ public class ModelSaberToothTFC extends ModelBase
         tooth2.addBox(-2.8F, -0.2F, -7.2F, 1, 4, 1, -0.1F);
         setRotation(tooth2, 0.2F, 0.0F, 0.0F);
 
-        frontRightLegTop = new ModelRenderer(this, 25, 52);
-        frontRightLegTop.setRotationPoint(-4.0F, 8.0F, -6.5F);
+        frontRightLegTop = new ModelRenderer(this, 23, 52);
+        frontRightLegTop.setRotationPoint(-3.5F, 8.0F, -6.5F);
         frontRightLegTop.addBox(-1.5F, -1.0F, -1.0F, 4, 7, 5, 0.0F);
         setRotation(frontRightLegTop, 0.08726646259971647F, 0.0F, 0.0F);
-        frontRightLegMiddle = new ModelRenderer(this, 27, 41);
+        frontRightLegMiddle = new ModelRenderer(this, 25, 41);
         frontRightLegMiddle.setRotationPoint(1.0F, 6.0F, 1.6F);
         frontRightLegMiddle.addBox(-2.0F, -1.0F, -2.0F, 3, 7, 4, 0.0F);
         setRotation(frontRightLegMiddle, 0.08726646259971647F, 0.0F, 0.0F);
-        frontRightLegBottom = new ModelRenderer(this, 28, 34);
+        frontRightLegBottom = new ModelRenderer(this, 26, 34);
         frontRightLegBottom.setRotationPoint(-0.99F, 6.0F, 0.2F);
         frontRightLegBottom.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
         setRotation(frontRightLegBottom, -0.2617993877991494F, 0.0F, 0.0F);
-        frontRightPaw = new ModelRenderer(this, 27, 28);
+        frontRightPaw = new ModelRenderer(this, 25, 28);
         frontRightPaw.setRotationPoint(-0.009F, 3.0F, 1.0F);
         frontRightPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
         setRotation(frontRightPaw, 0.17453292519943295F, 0.0F, 0.0F);
@@ -147,19 +152,19 @@ public class ModelSaberToothTFC extends ModelBase
         backRightPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
         setRotation(backRightPaw, 0.08726646259971647F, 0.0F, 0.0F);
 
-        frontLeftLegTop = new ModelRenderer(this, 25, 52);
-        frontLeftLegTop.setRotationPoint(3.0F, 8.0F, -6.5F);
+        frontLeftLegTop = new ModelRenderer(this, 23, 52);
+        frontLeftLegTop.setRotationPoint(2.5F, 8.0F, -6.5F);
         frontLeftLegTop.addBox(-1.5F, -1.0F, -1.0F, 4, 7, 5, 0.0F);
         setRotation(frontLeftLegTop, 0.08726646259971647F, 0.0F, 0.0F);
-        frontLeftLegMiddle = new ModelRenderer(this, 27, 41);
+        frontLeftLegMiddle = new ModelRenderer(this, 25, 41);
         frontLeftLegMiddle.setRotationPoint(1.0F, 6.0F, 1.6F);
         frontLeftLegMiddle.addBox(-2.0F, -1.0F, -2.0F, 3, 7, 4, 0.0F);
         setRotation(frontLeftLegMiddle, 0.08726646259971647F, 0.0F, 0.0F);
-        frontLeftLegBottom = new ModelRenderer(this, 28, 34);
+        frontLeftLegBottom = new ModelRenderer(this, 26, 34);
         frontLeftLegBottom.setRotationPoint(-1.009F, 6.0F, 0.2F);
         frontLeftLegBottom.addBox(-1.0F, -1.0F, -1.5F, 3, 4, 3, 0.0F);
         setRotation(frontLeftLegBottom, -0.2617993877991494F, 0.0F, 0.0F);
-        frontLeftPaw = new ModelRenderer(this, 27, 28);
+        frontLeftPaw = new ModelRenderer(this, 25, 28);
         frontLeftPaw.setRotationPoint(0.009F, 3.0F, 1.0F);
         frontLeftPaw.addBox(-1.0F, -1.0F, -3.5F, 3, 2, 4, 0.0F);
         setRotation(frontLeftPaw, 0.17453292519943295F, 0.0F, 0.0F);
@@ -225,11 +230,10 @@ public class ModelSaberToothTFC extends ModelBase
             GlStateManager.translate(0.0F, 1.25f - (1.25f * percent), 0f);
         }
 
-        head.render(f5);
-
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0D, 1.0D, 1.0D);
 
+        head.render(f5);
         neck.render(f5);
         neckBase.render(f5);
         frontBody.render(f5);

@@ -45,7 +45,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, IPredator, EntityAIStandAttack.IEntityStandAttack
 {
-    private static final int DAYS_TO_ADULTHOOD = 480;
+    private static final int DAYS_TO_ADULTHOOD = 180;
     //Values that has a visual effect on client
     private static final DataParameter<Boolean> GENDER = EntityDataManager.createKey(EntityPolarBearTFC.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BIRTHDAY = EntityDataManager.createKey(EntityPolarBearTFC.class, DataSerializers.VARINT);
@@ -61,6 +61,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     public EntityPolarBearTFC(World world, IAnimalTFC.Gender gender, int birthDay)
     {
         super(world);
+        this.setSize(1.4F, 1.7F);
         this.setGender(gender);
         this.setBirthDay(birthDay);
         this.setFamiliarity(0);
@@ -116,7 +117,7 @@ public class EntityPolarBearTFC extends EntityPolarBear implements IAnimalTFC, I
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_BEAR;
+        return LootTablesTFC.ANIMALS_POLAR_BEAR;
     }
 
     @Override

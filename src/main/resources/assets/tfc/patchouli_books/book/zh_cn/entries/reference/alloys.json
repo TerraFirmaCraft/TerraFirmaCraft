@@ -1,0 +1,29 @@
+{
+  "name": "合金配方",
+  "icon": "tfc:textures/items/metal/ingot/bismuth_bronze.png",
+  "category": "reference",
+  "advancement": "tfc:world/pick_nugget",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)铋铜：$()$(2br)$(thing)铜：$()50-65%$(br)$(thing)锌：$()20-30%$(br)$(thing)铋：$()10-20%$(2br)$(item)黑铜：$()$(2br)$(thing)铜：$()50-70%$(br)$(thing)银：$()10-25%$(br)$(thing)金：$()10-25%"
+    },
+    {
+      "type": "text",
+      "text": "$(item)青铜：$()$(2br)$(thing)铜：$()88-92%$(br)$(thing)锡：$()8-12%$(2br)$(item)脆钢：$()$(2br)$(thing)钢：$()50-70%$(br)$(thing)镍：$()15-25%$(br)$(thing)黑铜：$()15-25%$(2br)"
+    },
+    {
+      "type": "text",
+      "text": "$(item)脆蓝钢：$()$(2br)$(thing)黑钢：$()50-55%$(br)$(thing)钢：$()20-25%$(br)$(thing)铋铜：$()10-15%$(br)$(thing)纯银：$()10-15%$(2br)$(item)纯银：$()$(2br)$(thing)铜：$()20-40%$(br)$(thing)银：$()60-80%$(br)"
+    },
+    {
+      "type": "text",
+      "text": "$(item)脆红钢：$()$(2br)$(thing)黑钢：$()50-55%$(br)$(thing)钢：$()20-25%$(br)$(thing)黄铜：$()10-15%$(br)$(thing)玫瑰金：$()10-15%$(2br)$(item)黄铜：$()$(2br)$(thing)铜：$()88-92%$(br)$(thing)锌：$()8-12%"
+    },
+    {
+      "type": "text",
+      "text": "$(item)玫瑰金：$()$(br2)$(thing)铜：$()15-30%$(br)$(thing)金：$()70-85%"
+    }
+  ]
+}

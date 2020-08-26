@@ -17,6 +17,7 @@ import net.minecraftforge.common.IShearable;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.compat.waila.interfaces.IWailaEntity;
+import net.dries007.tfc.objects.entity.animal.EntityAnimalMammal;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
@@ -59,9 +60,15 @@ public class AnimalProvider implements IWailaEntity
                         {
                             if (animal.getType() == IAnimalTFC.Type.MAMMAL)
                             {
-                                // Pregnancy end time not possible due to how it is handled currently
-                                // in 1.15, refactor animals to hold an object (`AnimalProperties`) with all needed data, serializable and sync to client via NBT
                                 currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.pregnant").getFormattedText());
+                                // In 1.15+ this will move to AnimalProperties and everything needed will be there
+                                // For 1.12, addons will need to either extend EntityAnimalMammal or handle the tooltip themselves
+                                if (animal instanceof EntityAnimalMammal)
+                                {
+                                    EntityAnimalMammal mother = (EntityAnimalMammal)animal;
+                                    long gestationDaysRemaining = mother.getPregnantTime() + mother.gestationDays() - CalendarTFC.PLAYER_TIME.getTotalDays();
+                                    currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.pregnant_end", gestationDaysRemaining).getFormattedText());
+                                }
                             }
                             else
                             {

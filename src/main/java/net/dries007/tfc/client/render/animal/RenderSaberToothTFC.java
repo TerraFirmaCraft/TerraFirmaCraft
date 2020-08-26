@@ -19,7 +19,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderSaberToothTFC extends RenderLiving<EntitySaberToothTFC>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/sabertooth.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/predators/sabertooth.png");
 
     public RenderSaberToothTFC(RenderManager renderManager)
     {
@@ -42,7 +42,7 @@ public class RenderSaberToothTFC extends RenderLiving<EntitySaberToothTFC>
     @Override
     protected void preRenderCallback(EntitySaberToothTFC sabertooth, float par2)
     {
-        GlStateManager.scale(1.2f, 1.2f, 1.2f);
+        GlStateManager.scale(1.3f, 1.3f, 1.3f);
     }
 
     @Override

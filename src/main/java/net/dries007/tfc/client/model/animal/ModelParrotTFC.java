@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.model.ModelBase;
@@ -79,20 +80,26 @@ public class ModelParrotTFC extends ModelBase
     }
 
     @Override
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void render(@Nonnull Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        if (((EntityAnimal) entityIn).isChild())
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+
+        if (((EntityAnimal) entity).isChild())
         {
             double ageScale = 1;
             double percent = 1;
-            if (entityIn instanceof IAnimalTFC)
+            if (entity instanceof IAnimalTFC)
             {
-                percent = ((IAnimalTFC) entityIn).getPercentToAdulthood();
+                percent = ((IAnimalTFC) entity).getPercentToAdulthood();
                 ageScale = 1 / (2.0D - percent);
             }
             GlStateManager.scale(ageScale, ageScale, ageScale);
             GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.0D, 1.0D, 1.0D);
+
         this.body.render(scale);
         this.wingLeft.render(scale);
         this.wingRight.render(scale);
@@ -100,6 +107,7 @@ public class ModelParrotTFC extends ModelBase
         this.head.render(scale);
         this.legLeft.render(scale);
         this.legRight.render(scale);
+        GlStateManager.popMatrix();
     }
 
     @Override

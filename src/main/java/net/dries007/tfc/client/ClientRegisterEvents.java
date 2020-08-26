@@ -258,27 +258,11 @@ public final class ClientRegisterEvents
         BlockColors blockColors = event.getBlockColors();
 
         // Grass Colors
-        IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> {
-            if (pos != null)
-            {
-                double temp = MathHelper.clamp((ClimateTFC.getMonthlyTemp(pos) + 30) / 60, 0, 1);
-                double rain = MathHelper.clamp((ClimateTFC.getRainfall(pos) - 50) / 400, 0, 1);
-                return ColorizerGrass.getGrassColor(temp, rain);
-            }
-            return ColorizerGrass.getGrassColor(0.5, 0.5);
-        };
+        IBlockColor grassColor = GrassColorHandler::computeGrassColor;
 
         // Foliage Color
         // todo: do something different for conifers - they should have a different color mapping through the seasons
-        IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> {
-            if (pos != null)
-            {
-                double temp = MathHelper.clamp((ClimateTFC.getMonthlyTemp(pos) + 30) / 60, 0, 1);
-                double rain = MathHelper.clamp((ClimateTFC.getRainfall(pos) - 50) / 400, 0, 1);
-                return ColorizerGrass.getGrassColor(temp, rain);
-            }
-            return ColorizerGrass.getGrassColor(0.5, 0.5);
-        };
+        IBlockColor foliageColor = GrassColorHandler::computeGrassColor;
 
         blockColors.registerBlockColorHandler(grassColor, BlocksTFC.PEAT_GRASS);
         blockColors.registerBlockColorHandler(grassColor, BlocksTFC.getAllBlockRockVariants().stream().filter(x -> x.getType().isGrass).toArray(BlockRockVariant[]::new));

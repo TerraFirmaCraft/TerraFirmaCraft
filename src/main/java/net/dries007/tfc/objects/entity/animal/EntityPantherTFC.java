@@ -5,17 +5,20 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -38,7 +41,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
 {
-    private static final int DAYS_TO_ADULTHOOD = 480;
+    private static final int DAYS_TO_ADULTHOOD = 160;
 
     @SuppressWarnings("unused")
     public EntityPantherTFC(World worldIn)
@@ -50,7 +53,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     public EntityPantherTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.2F);
+        this.setSize(1.1F, 1.1F);
     }
 
     @Override
@@ -58,11 +61,17 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
             return ConfigTFC.Animals.PANTHER.rarity;
         }
         return 0;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
@@ -137,7 +146,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
         this.tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.0D, 1.25D));
 
         int priority = 2;
-        for (String input : ConfigTFC.Animals.BEAR.huntCreatures)
+        for (String input : ConfigTFC.Animals.PANTHER.huntCreatures)
         {
             ResourceLocation key = new ResourceLocation(input);
             EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(key);
@@ -174,7 +183,7 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_GRAN_FELINE;
+        return LootTablesTFC.ANIMALS_PANTHER;
     }
 
     @Override
@@ -190,6 +199,6 @@ public class EntityPantherTFC extends EntityAnimalMammal implements IPredator
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F); // Close enough
+        playSound(TFCSounds.ANIMAL_FELINE_STEP, 0.14F, 1.1F);
     }
 }

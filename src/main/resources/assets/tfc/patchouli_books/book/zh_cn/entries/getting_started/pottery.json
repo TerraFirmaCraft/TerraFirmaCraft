@@ -1,0 +1,47 @@
+{
+  "name": "陶器制造术",
+  "icon": "minecraft:textures/items/clay_ball.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/find_clay",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "想在群峦传说的世界中做出一番事业，仅凭木棍、岩石和草可不行。你需要$(thing)陶器$()以过渡到金属。把至少五块粘土球握在手里$(4)右键点击$()，粘土塑形的界面就出现了，像石子塑形一样。右边展示了如何捏出未烧制的罐。小心点，如果搞砸了，原料就没了！"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_jug",
+      "text": "烧制后的罐可以用于盛装饮用水。$(br2)你可以阅读$(l:reference/clay_knapping)参考部分$()以查看所有的塑形配方。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_small_vessel",
+      "text": "你可能也想要点什么东西来储存物品。小缸正合用！它还能延长储存食物的保质期。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_large_vessel",
+      "text": "大缸放在地上就像个小箱子，还可以密封上，延长食物的保质期。有九格储存空间。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:pick_head_mold",
+      "text": "想要点金属工具吗？现在你可能只想要一把镐子，如果想要点别的工具，你可以阅读$(l:reference/clay_knapping)参考部分$()。"
+    },
+    {
+      "type": "text",
+      "text": "要烧制这些粘土坯子，你要搭出一个$(thing)坑窑$()来。很简单！首先，在地上挖个洞。然后，按 $(4)V$() 把那些未烧制的物品放进洞里。之后，右键把八团干草塞进去，之后塞入八块原木，就可以用$(item)起火器$()点燃这个坑窑了。"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "tfc:pit_kiln",
+      "text": "只有坑窑最顶部的方块可以暴露在空气中。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:unfired_jug",
+      "text": "八小时后，你的坯子就烧制完成了！现在，你可以储存物品、随身带水了，准备踏入铜器时代吧！"
+    }
+  ]
+}

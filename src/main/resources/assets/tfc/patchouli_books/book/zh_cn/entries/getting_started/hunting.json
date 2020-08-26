@@ -1,0 +1,41 @@
+{
+  "name": "狩猎本能",
+  "icon": "tfc:textures/items/stone/javelin.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/stone_age",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "text",
+      "text": "狩猎动物是你获取食物的第一个途径。刀自然好用，但对于那些大家伙，你可能就要用到$(item)标枪$()了，它可是远程打击武器。"
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipe": "tfc:javelin_head",
+      "text": "和木棍合成出标枪后，右键蓄力投掷。"
+    },
+    {
+      "type": "text",
+      "text": "你不能繁殖这些被作为$(thing)猎物$()的动物，所以尽管狩猎吧，它们死了才有用。它们会重新生成的，所以要狩猎的时候请优先考虑它们。"
+    },
+    {
+      "type": "entity",
+      "name": "鹿",
+      "scale": 0.8,
+      "text": "鹿会掉很多肉，而且这种温顺的生物不会反击。",
+      "entity": "tfc:deertfc"
+    },
+    {
+      "type": "entity",
+      "name": "雉鸡",
+      "text": "不掉多少肉，但是掉羽毛，可以用来做箭。",
+      "entity": "tfc:pheasanttfc"
+    },
+    {
+      "type": "entity",
+      "name": "兔",
+      "text": "反正打就对了。",
+      "entity": "tfc:rabbittfc"
+    }
+  ]
+}

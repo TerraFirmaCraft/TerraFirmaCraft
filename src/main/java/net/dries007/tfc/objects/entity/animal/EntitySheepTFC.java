@@ -79,7 +79,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.PLAINS))
         {
             return ConfigTFC.Animals.SHEEP.rarity;
         }
@@ -89,7 +89,7 @@ public class EntitySheepTFC extends EntityAnimalMammal implements IShearable, IL
     @Override
     public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
     {
-        return AnimalGroupingRules.ELDER_AND_POPULATION;
+        return AnimalGroupingRules.MALE_AND_FEMALES;
     }
 
     @Override

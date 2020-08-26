@@ -90,7 +90,7 @@ public class BlockLeavesTFC extends BlockLeaves
     @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World world, BlockPos pos, @Nullable Block blockIn, @Nullable BlockPos fromPos)
     {
-        doLeafDecay(world, pos, state);
+        world.scheduleUpdate(pos, this, 0);
     }
 
     @Override

@@ -74,6 +74,7 @@ public class ModelHorseTFC extends ModelHorse
     {
         this.textureWidth = 128;
         this.textureHeight = 128;
+
         this.body = new ModelRenderer(this, 0, 34);
         this.body.addBox(-5.0F, -8.0F, -19.0F, 10, 10, 24);
         this.body.setRotationPoint(0.0F, 11.0F, 9.0F);

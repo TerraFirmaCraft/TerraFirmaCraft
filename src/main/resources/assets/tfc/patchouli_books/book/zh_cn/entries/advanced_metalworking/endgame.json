@@ -1,0 +1,15 @@
+{
+  "name": "最后收官",
+  "icon": "minecraft:textures/items/bucket_empty.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_red_steel",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/bucket",
+      "title": "桶",
+      "text": "祝贺你，你现在已经能够移动任何液体了。这意味着你已经成功通关了群峦传说（大概吧）！"
+    }
+  ]
+}

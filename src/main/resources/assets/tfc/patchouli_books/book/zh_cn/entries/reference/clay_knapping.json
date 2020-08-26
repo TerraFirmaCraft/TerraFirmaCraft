@@ -1,0 +1,54 @@
+{
+  "name": "粘土塑形",
+  "icon": "minecraft:textures/items/clay_ball.png",
+  "category": "reference",
+  "advancement": "tfc:main/find_clay",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_small_vessel",
+      "text": "小缸"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_jug",
+      "text": "罐"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_pot",
+      "text": "陶锅"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_bowl_2",
+      "text": "陶碗"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_large_vessel",
+      "text": "大缸"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_brick",
+      "text": "粘土砖"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_flower_pot",
+      "text": "粘土花盆"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_crucible",
+      "text": "坩埚"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_brick",
+      "text": "耐火砖"
+    }
+  ]
+}

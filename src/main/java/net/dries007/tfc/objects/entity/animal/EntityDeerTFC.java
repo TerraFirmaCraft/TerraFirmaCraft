@@ -38,7 +38,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 192;
+    private static final int DAYS_TO_ADULTHOOD = 128;
 
     @SuppressWarnings("unused")
     public EntityDeerTFC(World worldIn)
@@ -49,7 +49,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     public EntityDeerTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.3F, 1.9F);
+        this.setSize(1.0F, 1.4F);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST || biomeType == BiomeHelper.BiomeType.TUNDRA))
+            (biomeType == BiomeHelper.BiomeType.TAIGA || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
         {
             return ConfigTFC.Animals.DEER.rarity;
         }
@@ -85,7 +85,7 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     @Override
     public int getMinGroupSize()
     {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -166,6 +166,6 @@ public class EntityDeerTFC extends EntityAnimalMammal implements IHuntable
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_HORSE_STEP, 0.14F, 0.9F);
     }
 }

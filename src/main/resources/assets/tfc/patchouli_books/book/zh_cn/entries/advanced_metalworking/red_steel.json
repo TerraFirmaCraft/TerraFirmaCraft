@@ -1,0 +1,32 @@
+{
+  "name": "红钢",
+  "icon": "tfc:textures/items/metal/ingot/red_steel.png",
+  "category": "advanced_metalworking",
+  "advancement": "tfc:main/get_black_steel",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)红钢$()是两种群峦传说的最终合金之一。与黑钢类似，红钢需要参照以下合成配方：$(br2)$(item)脆红钢：$()$(br2)$(thing)黑钢：$()50-55%$(br)$(thing)钢：$()20-25%$(br)$(thing)黄铜：$()10-15%$(br)$(thing)玫瑰金：$()10-15%"
+    },
+    {
+      "type": "text",
+      "text": "合金参考：$(br2)$(item)黄铜：$()$(br2)$(thing)铜：$()88-92%$(br)$(thing)锌：$()8-12%$(br)$(br2)$(item)玫瑰金$()$(br2)$(thing)铜：$()15-30%$(br)$(thing)金：$()70-85%"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:ingot_high_carbon_red_steel",
+      "text": "焊接$(item)脆红钢锭$()和$(item)黑钢锭$()来制作一块$(thing)高碳红钢锭$()。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:ingot_red_steel",
+      "text": "锻造高碳红钢锭来制作一块$(thing)红钢锭$()。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:red_steel_bucket",
+      "text": "你可以将红钢薄板锻造成红钢桶。红钢桶可以用于舀取及移动水源，但是无法移动熔岩。如果想要移动熔岩，你需要蓝钢桶。"
+    }
+  ]
+}

@@ -21,8 +21,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderCowTFC extends RenderAnimalTFC<EntityCowTFC>
 {
-    private static final ResourceLocation COW_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/cow_young.png");
-    private static final ResourceLocation COW_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/cow_old.png");
+    private static final ResourceLocation COW_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/cow_young.png");
+    private static final ResourceLocation COW_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/cow_old.png");
 
     public RenderCowTFC(RenderManager renderManager)
     {

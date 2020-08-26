@@ -1,0 +1,43 @@
+{
+  "name": "手推磨",
+  "icon": "tfc:textures/items/powder/salt.png",
+  "category": "processes",
+  "advancement": "tfc:main/mining",
+  "pages": [
+    {
+      "type": "text",
+      "text": "群峦传说中的$(item)手推磨$()是用来粉碎东西的，它由两部分组成：$(thing)手推磨磨盘$()和$(thing)手推磨底座$()。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "这是没有磨盘的手推磨底座。",
+      "name": "手推磨",
+      "multiblock": {
+        "mapping": {
+          "P": "tfc:quern"
+        },
+        "pattern": [
+          ["P"], ["0"]
+        ],
+        "symmetrical": true
+      }
+    },
+    {
+      "type": "crafting",
+      "text": "先把它合成出来放在地上，石头种类不一定要一致。",
+      "title": "手推磨底座",
+      "recipe": "tfc:quern"
+    },
+    {
+      "type": "crafting",
+      "text": "然后把它合成出来，右键放在底座上。",
+      "title": "手推磨磨盘",
+      "recipe": "tfc:handstone"
+    },
+    {
+      "type": "text",
+      "text": "使用手推磨的方法：首先拿着你想粉碎的东西$(4)右键点击$()顶部的洞，接着右键点击把手来转动磨盘，最后右键点击磨盘底座拿回磨好的东西。$(br2)在$(l:reference/quern)参考$()中可以看到除了染料外所有的手推磨配方，染料的配方在$(l:processes/dye)染料$()一节中。"
+    }
+  ]
+}

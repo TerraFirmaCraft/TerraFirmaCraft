@@ -117,13 +117,6 @@
       "tfc:alpacacry3"
     ]
   },
-  "animal.alpaca.death": {
-    "category": "ambient",
-    "subtitle": "tfc.animal.alpaca.death",
-    "sounds": [
-      "tfc:alpacadeath1"
-    ]
-  },
   "animal.alpaca.hurt": {
     "category": "ambient",
     "subtitle": "tfc.animal.alpaca.hurt",
@@ -132,14 +125,11 @@
       "tfc:alpacahurt2"
     ]
   },
-  "animal.alpaca.step": {
+  "animal.alpaca.death": {
     "category": "ambient",
-    "subtitle": "tfc.animal.alpaca.step",
+    "subtitle": "tfc.animal.alpaca.death",
     "sounds": [
-      "tfc:alpacastep1",
-      "tfc:alpacastep2",
-      "tfc:alpacastep3",
-      "tfc:alpacastep4"
+      "tfc:alpacadeath1"
     ]
   },
   "animal.duck.say": {
@@ -350,7 +340,7 @@
       "tfc:pantherdeath1"
     ]
   },
-  "animal.sabertooth.say": {
+  "animal.sabertooth.cry": {
     "category": "ambient",
     "subtitle": "tfc.animal.sabertooth.say",
     "sounds": [
@@ -359,7 +349,7 @@
       "tfc:sabertooth3"
     ]
   },
-  "animal.sabertooth.cry": {
+  "animal.sabertooth.say": {
     "category": "ambient",
     "subtitle": "tfc.animal.sabertooth.cry",
     "sounds": [
@@ -411,19 +401,11 @@
       "tfc:pheasantdeath1"
     ]
   },
-  "animal.lion.death": {
+  "animal.lion.say": {
     "category": "ambient",
-    "subtitle": "tfc.animal.lion.death",
+    "subtitle": "tfc.animal.lion.say",
     "sounds": [
-      "tfc:liondeath"
-    ]
-  },
-  "animal.lion.hurt": {
-    "category": "ambient",
-    "subtitle": "tfc.animal.lion.hurt",
-    "sounds": [
-      "tfc:lionhurt1",
-      "tfc:lionhurt2"
+      "tfc:lionambient"
     ]
   },
   "animal.lion.cry": {
@@ -434,11 +416,19 @@
       "tfc:lionroarlong"
     ]
   },
-  "animal.lion.say": {
+  "animal.lion.hurt": {
     "category": "ambient",
-    "subtitle": "tfc.animal.lion.say",
+    "subtitle": "tfc.animal.lion.hurt",
     "sounds": [
-      "tfc:lionambient"
+      "tfc:lionhurt1",
+      "tfc:lionhurt2"
+    ]
+  },
+  "animal.lion.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.lion.death",
+    "sounds": [
+      "tfc:liondeath"
     ]
   },
   "animal.hyena.say": {
@@ -471,6 +461,390 @@
     "subtitle": "tfc.animal.hyena.hurt",
     "sounds": [
       "tfc:hyenahurt1"
+    ]
+  },
+  "animal.zebu.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.zebu.say",
+    "sounds": [
+      "tfc:zebu_call",
+      "tfc:zebusay1",
+      "tfc:zebusay2",
+      "tfc:zebusay3"
+    ]
+  },
+  "animal.zebu.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.zebu.hurt",
+    "sounds": [
+      "tfc:zebuhurt1",
+      "tfc:zebuhurt2"
+    ]
+  },
+  "animal.zebu.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.zebu.death",
+    "sounds": [
+      "tfc:zebudeath1"
+    ]
+  },
+  "animal.muskox.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.muskox.say",
+    "sounds": [
+      "tfc:muskox_call",
+      "tfc:muskoxsay1",
+      "tfc:muskoxsay2"
+    ]
+  },
+  "animal.muskox.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.muskox.hurt",
+    "sounds": [
+      "tfc:muskoxhurt1",
+      "tfc:muskoxhurt2"
+    ]
+  },
+  "animal.muskox.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.muskox.death",
+    "sounds": [
+      "tfc:muskoxdeath1"
+    ]
+  },
+  "animal.turkey.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.turkey.say",
+    "sounds": [
+      "tfc:turkeysay1",
+      "tfc:turkeysay2",
+      "tfc:turkeysay3"
+    ]
+  },
+  "animal.turkey.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.turkey.hurt",
+    "sounds": [
+      "tfc:turkeyhurt1",
+      "tfc:turkeyhurt2"
+    ]
+  },
+  "animal.turkey.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.turkey.death",
+    "sounds": [
+      "tfc:turkeydeath1"
+    ]
+  },
+  "animal.boar.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.boar.say",
+    "sounds": [
+      "tfc:boarsay1",
+      "tfc:boarsay2",
+      "tfc:boarsay3"
+    ]
+  },
+  "animal.boar.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.boar.hurt",
+    "sounds": [
+      "tfc:boarhurt1",
+      "tfc:boarhurt2"
+    ]
+  },
+  "animal.boar.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.boar.death",
+    "sounds": [
+      "tfc:boardeath1"
+    ]
+  },
+  "animal.wildebeest.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.wildebeest.say",
+    "sounds": [
+      "tfc:wildebeest_moo",
+      "tfc:wildebeest1",
+      "tfc:wildebeest2",
+      "tfc:wildebeest3"
+    ]
+  },
+  "animal.wildebeest.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.wildebeest.hurt",
+    "sounds": [
+      "tfc:wildebeesthurt1",
+      "tfc:wildebeesthurt2"
+    ]
+  },
+  "animal.wildebeest.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.wildebeest.death",
+    "sounds": [
+      "tfc:wildebeestdeath1"
+    ]
+  },
+  "animal.grouse.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.grouse.say",
+    "sounds": [
+      "tfc:grousesay1",
+      "tfc:grousesay2",
+      "tfc:grousesay3",
+      "tfc:grousesay4"
+    ]
+  },
+  "animal.grouse.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.grouse.hurt",
+    "sounds": [
+      "tfc:grousehurt1",
+      "tfc:grousehurt2"
+    ]
+  },
+  "animal.grouse.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.grouse.death",
+    "sounds": [
+      "tfc:grousedeath1"
+    ]
+  },
+  "animal.quail.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.quail.say",
+    "sounds": [
+      "tfc:quailsay1",
+      "tfc:quailsay2",
+      "tfc:quailsay3",
+      "tfc:quailsay4",
+      "tfc:quailsay5"
+    ]
+  },
+  "animal.quail.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.quail.hurt",
+    "sounds": [
+      "tfc:quailhurt1",
+      "tfc:quailhurt2"
+    ]
+  },
+  "animal.quail.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.quail.death",
+    "sounds": [
+      "tfc:quaildeath1"
+    ]
+  },
+  "animal.coyote.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.coyote.say",
+    "sounds": [
+      "tfc:coyotesay1",
+      "tfc:coyotesay2",
+      "tfc:coyotesay3"
+    ]
+  },
+  "animal.coyote.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.coyote.cry",
+    "sounds": [
+      "tfc:coyoteattack1",
+      "tfc:coyoteattack2"
+    ]
+  },
+  "animal.coyote.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.coyote.hurt",
+    "sounds": [
+      "tfc:coyotehurt1",
+      "tfc:coyotehurt2"
+    ]
+  },
+  "animal.coyote.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.coyote.death",
+    "sounds": [
+      "tfc:coyotedeath1"
+    ]
+  },
+  "animal.cougar.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.cougar.say",
+    "sounds": [
+      "tfc:cougarsay1",
+      "tfc:cougarsay2",
+      "tfc:cougarsay3"
+    ]
+  },
+  "animal.cougar.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.cougar.cry",
+    "sounds": [
+      "tfc:cougarattack1"
+    ]
+  },
+  "animal.cougar.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.cougar.hurt",
+    "sounds": [
+      "tfc:cougarhurt1",
+      "tfc:cougarhurt2"
+    ]
+  },
+  "animal.cougar.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.cougar.death",
+    "sounds": [
+      "tfc:cougardeath1"
+    ]
+  },
+  "animal.gazelle.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.gazelle.say",
+    "sounds": [
+      "tfc:gazellesay1",
+      "tfc:gazellesay2",
+      "tfc:gazellesay3",
+      "tfc:gazellesay4"
+    ]
+  },
+  "animal.gazelle.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.gazelle.hurt",
+    "sounds": [
+      "tfc:gazellehurt1",
+      "tfc:gazellehurt2"
+    ]
+  },
+  "animal.gazelle.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.gazelle.death",
+    "sounds": [
+      "tfc:gazelledeath1"
+    ]
+  },
+  "animal.direwolf.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.direwolf.say",
+    "sounds": [
+      "tfc:direwolfsay1",
+      "tfc:direwolfsay2",
+      "tfc:direwolfsay3"
+    ]
+  },
+  "animal.direwolf.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.direwolf.cry",
+    "sounds": [
+      "tfc:direwolfattack1",
+      "tfc:direwolfattack2"
+    ]
+  },
+  "animal.direwolf.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.direwolf.hurt",
+    "sounds": [
+      "tfc:direwolfhurt1",
+      "tfc:direwolfhurt2"
+    ]
+  },
+  "animal.direwolf.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.direwolf.death",
+    "sounds": [
+      "tfc:direwolfdeath1"
+    ]
+  },
+  "animal.yak.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.yak.say",
+    "sounds": [
+      "tfc:yaksay1",
+      "tfc:yaksay2",
+      "tfc:yaksay3",
+      "tfc:yaksay4"
+    ]
+  },
+  "animal.yak.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.yak.hurt",
+    "sounds": [
+      "tfc:yakhurt1",
+      "tfc:yakhurt2"
+    ]
+  },
+  "animal.yak.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.yak.death",
+    "sounds": [
+      "tfc:yakdeath1"
+    ]
+  },
+  "animal.jackal.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.jackal.say",
+    "sounds": [
+      "tfc:jackalsay1",
+      "tfc:jackalsay2",
+      "tfc:jackalsay3"
+    ]
+  },
+  "animal.jackal.cry": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.jackal.cry",
+    "sounds": [
+      "tfc:jackalattack1",
+      "tfc:jackalattack2"
+    ]
+  },
+  "animal.jackal.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.jackal.hurt",
+    "sounds": [
+      "tfc:jackalhurt1",
+      "tfc:jackalhurt2"
+    ]
+  },
+  "animal.jackal.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.jackal.death",
+    "sounds": [
+      "tfc:jackaldeath1"
+    ]
+  },
+  "animal.mongoose.say": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.mongoose.say",
+    "sounds": [
+      "tfc:mongoosesay1",
+      "tfc:mongoosesay2",
+      "tfc:mongoosesay3"
+    ]
+  },
+  "animal.mongoose.hurt": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.mongoose.hurt",
+    "sounds": [
+      "tfc:mongoosehurt1",
+      "tfc:mongoosehurt2"
+    ]
+  },
+  "animal.mongoose.death": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.mongoose.death",
+    "sounds": [
+      "tfc:mongoosedeath1"
+    ]
+  },
+  "animal.feline.step": {
+    "category": "ambient",
+    "subtitle": "tfc.animal.feline.step",
+    "sounds": [
+      "tfc:felinestep1",
+      "tfc:felinestep2",
+      "tfc:felinestep3",
+      "tfc:felinestep4"
     ]
   },
   "animal.cricket": {
