@@ -189,16 +189,16 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         {
             TEFirePit tile = Helpers.getTE(world, pos, TEFirePit.class);
             IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            boolean takeTheGrillPill = false;
+            boolean anythingInInv = false;
             for (int i = TEFirePit.SLOT_EXTRA_INPUT_START; i <= TEFirePit.SLOT_EXTRA_INPUT_END; i++)
             {
                 if(!cap.getStackInSlot(i).isEmpty())
                 {
-                    takeTheGrillPill = true;
+                    anythingInInv = true;
                     break;
                 }
             }
-            if (state.getValue(LIT) && takeTheGrillPill)
+            if (state.getValue(LIT) && anythingInInv)
             {
                 world.playSound(x, y + 0.425F, z, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.25F, rng.nextFloat() * 0.7F + 0.4F, false);
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + rng.nextFloat()/2 - 0.25, y + 0.6, z + rng.nextFloat()/2 - 0.25, 0.0D, 0.1D, 0.0D);
