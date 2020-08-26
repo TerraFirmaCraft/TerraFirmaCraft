@@ -10,7 +10,9 @@ import java.util.Random;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.ConfigTFC;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPane;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -58,6 +60,13 @@ public class BlockLogPile extends Block implements ILightableBlock
         if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.CHARCOAL_PILE)
         {
             return true;
+        }
+        else if (ConfigTFC.Devices.CHARCOAL_PIT.canAcceptGlass)
+        {
+            if ((state.getMaterial() == Material.GLASS) && !(state.getBlock() instanceof BlockPane))
+            {
+                return true;
+            }
         }
         if (state.getMaterial().getCanBurn())
         {

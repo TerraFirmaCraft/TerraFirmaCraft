@@ -6,11 +6,11 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/kapok"
+      "item": "tfc:wood/lumber/kapok"
     }
   },
   "result": {
     "item": "tfc:wood/trapdoor/kapok",
-    "count": 4
+    "count": 3
   }
 }

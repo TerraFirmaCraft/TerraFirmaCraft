@@ -28,34 +28,29 @@ import static net.dries007.tfc.util.agriculture.Crop.CropType.*;
 
 public enum Crop implements ICrop
 {
-    // todo: unique rain tolerances for each crop
-    // todo: unique temp range for beets
-    // todo: unique temp range for pumpkins
-    // todo: unique temp range for melons
     // these definitions are defined in the spreadsheet at
     // https://docs.google.com/spreadsheets/d/1Ghw3dCmVO5Gv0MMGBydUxox_nwLYmmcZkGSbbf0QSAE/edit#gid=893781093
     // It should be modified first, and then the resulting definitions copied to this space here
-    BARLEY(Food.BARLEY, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
-    MAIZE(Food.MAIZE, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
-    OAT(Food.OAT, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
-    RICE(Food.RICE, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
+    BARLEY(Food.BARLEY, 0f, 1f, 26f, 33f, 50f, 70f, 310f, 330f, 8, 0.4f, SIMPLE),
+    MAIZE(Food.MAIZE, 10f, 19f, 40f, 45f, 110f, 140f, 400f, 450f, 6, 0.6f, SIMPLE),
+    OAT(Food.OAT, 0f, 3f, 30f, 34f, 50f, 100f, 350f, 400f, 8, 0.5f, SIMPLE),
+    RICE(Food.RICE, 20f, 22f, 40f, 45f, 250f, 300f, 450f, 500f, 8, 0.6f, SIMPLE),
     RYE(Food.RYE, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
-    WHEAT(Food.WHEAT, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
-    BEET(Food.BEET, 0f, 5f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
-    CABBAGE(Food.CABBAGE, 0f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE),
-    CARROT(Food.CARROT, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 5, 0.5f, SIMPLE),
-    GARLIC(Food.GARLIC, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 5, 0.5f, SIMPLE),
-    GREEN_BEAN(Food.GREEN_BEAN, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
-    ONION(Food.ONION, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
-    POTATO(Food.POTATO, 0f, 4f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
-    SOYBEAN(Food.SOYBEAN, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, SIMPLE),
-    SQUASH(Food.SQUASH, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
-    SUGARCANE(Food.SUGARCANE, 12f, 18f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, SIMPLE),
-    TOMATO(Food.TOMATO, 0f, 8f, 35f, 40f, 50f, 100f, 400f, 450f, 8, 0.5f, PICKABLE),
-    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
-    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 35f, 40f, 50f, 100f, 400f, 450f, 7, 0.5f, PICKABLE),
-    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 10f, 35f, 40f, 50f, 100f, 400f, 450f, 6, 0.5f, SIMPLE);
-
+    WHEAT(Food.WHEAT, 0f, 3f, 30f, 34f, 50f, 100f, 350f, 400f, 8, 0.5f, SIMPLE),
+    BEET(Food.BEET, -5f, 0f, 20f, 25f, 50f, 70f, 300f, 320f, 7, 0.6f, SIMPLE),
+    CABBAGE(Food.CABBAGE, -10f, 0f, 27f, 33f, 50f, 60f, 280f, 300f, 6, 0.6f, SIMPLE),
+    CARROT(Food.CARROT, 3f, 10f, 30f, 36f, 50f, 100f, 400f, 450f, 5, 0.6f, SIMPLE),
+    GARLIC(Food.GARLIC, -20f, -1f, 18f, 26f, 50f, 60f, 310f, 340f, 5, 0.65f, SIMPLE),
+    GREEN_BEAN(Food.GREEN_BEAN, 2f, 9f, 35f, 41f, 70f, 150f, 410f, 450f, 7, 0.45f, PICKABLE),
+    ONION(Food.ONION, -1f, 10f, 37f, 40f, 70f, 200f, 410f, 450f, 7, 0.4f, SIMPLE),
+    POTATO(Food.POTATO, 0f, 4f, 30f, 35f, 50f, 100f, 390f, 440f, 7, 0.55f, SIMPLE),
+    SOYBEAN(Food.SOYBEAN, 8f, 12f, 30f, 36f, 55f, 160f, 410f, 450f, 7, 0.5f, SIMPLE),
+    SQUASH(Food.SQUASH, 5f, 14f, 33f, 37f, 45f, 90f, 390f, 440f, 8, 0.5f, SIMPLE),
+    SUGARCANE(Food.SUGARCANE, 12f, 20f, 38f, 45f, 50f, 160f, 410f, 450f, 8, 0.5f, SIMPLE),
+    TOMATO(Food.TOMATO, 0f, 8f, 36f, 40f, 50f, 120f, 390f, 430f, 8, 0.45f, PICKABLE),
+    RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 32f, 38f, 50f, 100f, 400f, 450f, 7, 0.55f, PICKABLE),
+    YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 32f, 38f, 50f, 100f, 400f, 450f, 7, 0.55f, PICKABLE),
+    JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 11f, 37f, 42f, 50f, 100f, 410f, 450f, 6, 0.5f, SIMPLE);
     static
     {
         for (ICrop crop : values())

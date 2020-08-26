@@ -9,8 +9,10 @@ import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.dries007.tfc.objects.blocks.metal.BlockTrapDoorMetalTFC;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -192,6 +194,7 @@ public class Metal extends IForgeRegistryEntry.Impl<Metal>
         ANVIL(true, 1400, ItemAnvil::new),
         TUYERE(true, 400),
         LAMP(false, 100, (metal, itemType) -> new ItemBlockMetalLamp(metal)),
+        TRAPDOOR(false, 200, (metal, itemType) -> new ItemBlock(BlockTrapDoorMetalTFC.get(metal))),
 
         PICK(true, 100, ItemMetalTool::new),
         PICK_HEAD(true, 100, true, "XXXXX", "X   X", " XXX ", "XXXXX"),

@@ -262,6 +262,9 @@ config.tfc.general.overrides.enableThatchBed.tooltip=Enable the creation of that
 config.tfc.general.overrides.enableGrassPath=Enable Grass Path
 config.tfc.general.overrides.enableGrassPath.tooltip=Enable the creation of grass paths.
 
+config.tfc.general.overrides.enableHoeing=Enable Hoeing
+config.tfc.general.overrides.enableHoeing.tooltip=Enable the creation of farmland.
+
 config.tfc.general.overrides.enableStoneAnvil=Enable Stone Anvil
 config.tfc.general.overrides.enableStoneAnvil.tooltip=Enable the creation of stone anvils.
 
@@ -344,6 +347,9 @@ config.tfc.general.difficulty.preventMobsOnSurface.tooltip=Prevent mob spawning 
 
 config.tfc.general.difficulty.giveVanillaMobsEquipment=Give Vanilla Mobs Equipment
 config.tfc.general.difficulty.giveVanillaMobsEquipment.tooltip=Give wrought iron weapons and armor to vanilla mobs?
+
+config.tfc.general.difficulty.acceptableAnvilRange=Acceptable Anvil Range
+config.tfc.general.difficulty.acceptableAnvilRange.tooltip=Range of pixels on either side of the working target that can be accepted to complete a smithing recipe
 
 ### Trees
 config.tfc.general.tree=Tree Settings
@@ -477,6 +483,16 @@ config.tfc.general.world.clayRainfallThreshold.tooltip=The minimum rainfall in a
 config.tfc.general.world.looseRocksFrequency=Loose Rocks Frequency
 config.tfc.general.world.looseRocksFrequency.tooltip=The number of attempts per chunk to spawn loose rocks. Includes surface ore samples.
 
+config.tfc.general.world.enableLooseRocks=Enable Loose Rocks
+config.tfc.general.world.enableLooseRocks.tooltip=Enable generation of loose rocks (just the rocks)?
+
+config.tfc.general.world.enableLooseOres=Enable Loose Rocks
+config.tfc.general.world.enableLooseOres.tooltip=Enable generation of loose ores?
+
+config.tfc.general.world.enableLooseSticks=Enable Loose Rocks
+config.tfc.general.world.enableLooseSticks.tooltip=Enable generation of loose sticks?
+
+
 config.tfc.general.world.sticksDensityModifier=Stick Density Modifier
 config.tfc.general.world.sticksDensityModifier.tooltip=This controls the number of sticks generated on chunk generation. The number of trees in the area and flora density is also a factor in this.
 
@@ -541,6 +557,9 @@ config.tfc.general.food.fruitTreeGrowthTimeModifier.tooltip=Modifier for how lon
 ### Misc
 config.tfc.general.misc=Misc Settings
 config.tfc.general.misc.tooltip=Settings for various miscellaneous things.
+
+config.tfc.general.misc.guidebook=Give Guidebook
+config.tfc.general.misc.guidebook.tooltip=Give the player the guidebook? (Requires patchouli)
 
 config.tfc.general.misc.defaultMonthLength=Default Month Length
 config.tfc.general.misc.defaultMonthLength.tooltip=The default length of a month (in days) when a new world is started. This can be changed in existing worlds via the /timetfc command.
@@ -663,6 +682,8 @@ config.tfc.devices.charcoal_pit=Charcoal Pit
 
 config.tfc.devices.charcoal_pit.ticks=Ticks
 config.tfc.devices.charcoal_pit.ticks.tooltip=Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.
+config.tfc.devices.charcoal_pit.glass=Can Accept Glass
+config.tfc.devices.charcoal_pit.glass.tooltip=Can charcoal pits take glass (or stained glass) as a valid cover block?
 
 
 ### Charcoal Forge
@@ -1068,11 +1089,13 @@ jei.category.tfc.welding=Welding recipes
 
 ## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=Instant
-jei.tooltips.tfc.barrel.duration=%d hours
+jei.tooltips.tfc.barrel.duration=%d Days
+jei.tooltips.tfc.barrel.duration.short=%d Hours
 
 ## JEI Descriptions
 jei.description.tfc.pit_kiln=Used for firing pottery and melting your first metals. Place up to 4 items (Default Hotkey: V) into a 1x1 hole, then fill (right-click) with 8 straw and 8 logs and light it with a fire starter or drop a torch on top. Recipe is complete after the fire on top goes out.
 jei.description.tfc.placed_item=Items can be placed on the ground, mostly for placing into a pit kiln. Use the Place key (default V) to place each item (up to 4) on a single block.
+jei.description.tfc.charcoal_pit=To get Charcoal, use Shift + Rightclick to make log piles. Cover these log piles almost completely with solid blocks, light one on fire, and then finish covering it. After a few hours, you will have charcoal.
 
 ### Rock Layer
 jei.tooltips.tfc.rock_layer.category=Category
@@ -1105,6 +1128,7 @@ fluid.brine=Brine
 fluid.olive_oil=Olive Oil
 fluid.olive_oil_water=Olive Oil Water
 fluid.tannin=Tannin
+fluid.lye=Lye
 fluid.limewater=Limewater
 fluid.milk=Milk
 fluid.milk_curdled=Curdled Milk
@@ -3199,6 +3223,30 @@ tile.tfc.lamp.black_steel.filled.name=%s Black Steel Lamp
 tile.tfc.lamp.blue_steel.filled.name=%s Blue Steel Lamp
 tile.tfc.lamp.red_steel.filled.name=%s Red Steel Lamp
 
+tile.tfc.lavalamp.name=Blue Steel Lava Lamp
+
+tile.tfc.trapdoor.bismuth.name=Bismuth Trapdoor
+tile.tfc.trapdoor.bismuth_bronze.name=Bismuth Bronze Trapdoor
+tile.tfc.trapdoor.black_bronze.name=Black Bronze Trapdoor
+tile.tfc.trapdoor.brass.name=Brass Trapdoor
+tile.tfc.trapdoor.bronze.name=Bronze Trapdoor
+tile.tfc.trapdoor.copper.name=Copper Trapdoor
+tile.tfc.trapdoor.gold.name=Gold Trapdoor
+tile.tfc.trapdoor.lead.name=Lead Trapdoor
+tile.tfc.trapdoor.nickel.name=Nickel Trapdoor
+tile.tfc.trapdoor.rose_gold.name=Rose Gold Trapdoor
+tile.tfc.trapdoor.silver.name=Silver Trapdoor
+tile.tfc.trapdoor.tin.name=Tin Trapdoor
+tile.tfc.trapdoor.zinc.name=Zinc Trapdoor
+tile.tfc.trapdoor.sterling_silver.name=Sterling Silver Trapdoor
+tile.tfc.trapdoor.wrought_iron.name=Wrought Iron Trapdoor
+tile.tfc.trapdoor.pig_iron.name=Pig Iron Trapdoor
+tile.tfc.trapdoor.steel.name=Steel Trapdoor
+tile.tfc.trapdoor.platinum.name=Platinum Trapdoor
+tile.tfc.trapdoor.black_steel.name=Black Steel Trapdoor
+tile.tfc.trapdoor.blue_steel.name=Blue Steel Trapdoor
+tile.tfc.trapdoor.red_steel.name=Red Steel Trapdoor
+
 ### ======================= ITEMS ======================
 
 
@@ -3208,12 +3256,14 @@ item.tfc.firestarter.name=Firestarter
 item.tfc.straw.name=Straw
 item.leather.name=Leather
 item.tfc.spindle.name=Spindle
+item.tfc.glass_shard.name=Glass Shard
 item.tfc.handstone.name=Quern Handstone
 item.tfc.wooden_bucket.name=Bucket
 item.tfc.wooden_bucket.filled.name=%s Bucket
 item.tfc.ceramics.fired.jug.name=Jug
 item.tfc.ceramics.fired.jug.filled=%s Jug
 item.tfc.ceramics.unfired.clay_flower_pot.name=Unfired Clay Flower Pot
+item.tfc.ceramics.unfired.crucible.name=Unfired Crucible
 item.tfc.mortar.name=Mortar
 item.tfc.halter.name=Halter
 item.tfc.wrought_iron_grill.name=Wrought Iron Grill
@@ -3415,6 +3465,8 @@ item.tfc.brick.marble.name=Marble Brick
 item.tfc.brick.ranite.name=Granite Brick
 
 item.tfc.stick_bunch.name=Bunch of Sticks
+item.tfc.stick_bundle.name=Stick Bundle
+item.tfc.wood_ash.name=Wood Ash
 item.tfc.wood.lumber.ash.name=Ash Lumber
 item.tfc.wood.lumber.aspen.name=Aspen Lumber
 item.tfc.wood.lumber.birch.name=Birch Lumber
@@ -4540,6 +4592,8 @@ entity.hyenatfc.name=Hyena
 death.attack.dehydration=%1$s died of dehydration
 death.attack.food_poison=%1$s died of food poisoning
 death.attack.plucking=%1$s died by having it's feathers plucked
+death.attack.grill=%1$s grilled themselves well-done
+death.attack.soup=%1$s made their hand into stew
 
 #Effects
 effectsTFC.overburdened=Overburdened
@@ -4602,6 +4656,7 @@ tfc.animal.hyenatfc.female=Hyena♀
 tfc.item.ceramicbreak=Ceramic item breaks
 tfc.item.firestarter=Firestarter sizzles
 tfc.item.jug.blow=The sound of music!!!
+tfc.item.jug.fill=Jug fills
 tfc.item.throw=Javelin thrown
 tfc.animal.rooster.cry=Rooster cries
 tfc.quern.stonedrag=Quern grinds
@@ -4797,9 +4852,9 @@ advancements.tfc.world.find_kaolinite.description=Find Kaolinite.
 advancements.tfc.world.find_iron.title=Pretty Ironic
 advancements.tfc.world.find_iron.description=Find Hematite, Limonite or Magnetite Ore.
 advancements.tfc.world.find_gold.title=Gold Rush
-advancements.tfc.world.find_gold.description=Find Navite Gold Ore.
+advancements.tfc.world.find_gold.description=Find Native Gold Ore.
 advancements.tfc.world.find_silver.title=Silver Bullet
-advancements.tfc.world.find_silver.description=Find Navite Silver Ore.
+advancements.tfc.world.find_silver.description=Find Native Silver Ore.
 advancements.tfc.world.find_nickel.title=Dime and Nickel
 advancements.tfc.world.find_nickel.description=Find Garnierite Ore.
 
