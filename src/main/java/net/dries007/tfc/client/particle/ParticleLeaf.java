@@ -5,11 +5,15 @@
 
 package net.dries007.tfc.client.particle;
 
+import net.dries007.tfc.client.GrassColorHandler;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class ParticleLeaf extends Particle
@@ -30,6 +34,12 @@ public class ParticleLeaf extends Particle
         this.motionY += speedY;
         this.motionZ += speedZ;
         this.particleScale *= 2.5F;
+        BlockPos pos = new BlockPos(x, y, z);
+        int colorInteger = GrassColorHandler.computeGrassColor(worldIn.getBlockState(pos), worldIn, pos, 0);
+        Color c = new Color(colorInteger);
+        this.particleRed = (float) (c.getRed() / 255.0);
+        this.particleBlue = (float) (c.getBlue() / 255.0);
+        this.particleGreen = (float) (c.getGreen() / 255.0);
     }
 
     @Override
