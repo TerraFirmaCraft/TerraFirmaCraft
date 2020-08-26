@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import net.dries007.tfc.common.types.Ore;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -44,6 +45,16 @@ public final class TFCItems
     public static final Map<Metal.Default, Map<Metal.ItemType, RegistryObject<Item>>> METAL_ITEMS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         Helpers.mapOfKeys(Metal.ItemType.class, type -> type.hasMetal(metal), type ->
             register(("metal/" + type.name() + "/" + metal.name()).toLowerCase(), () -> type.create(metal))
+        )
+    );
+
+    public static final Map<Ore.Default, RegistryObject<Item>> ORE = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isNotGem, type ->
+        register( "ore/" + type.name().toLowerCase(), TFCItemGroup.MISC)
+    );
+
+    public static final Map<Ore.Default, Map<Ore.ItemGrade, RegistryObject<Item>>> ORE_GRADES = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, ore ->
+        Helpers.mapOfKeys(Ore.ItemGrade.class, grade ->
+            register(("ore/" + grade.name().toLowerCase() + '/' + ore.name().toLowerCase()), TFCItemGroup.MISC)
         )
     );
 

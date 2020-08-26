@@ -77,6 +77,8 @@ def generate(rm: ResourceManager):
         # Ores
         # todo: fix / add loot tables
         for ore, ore_data in ORES.items():
+            rm.item_model('tfc:ore/%s' % ore) \
+            .with_lang(lang('%s', ore))
             if ore_data.graded:
                 for grade in ORE_GRADES:
                     rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock)) \
@@ -87,6 +89,9 @@ def generate(rm: ResourceManager):
                     }, parent='tfc:block/ore') \
                         .with_item_model() \
                         .with_lang(lang('%s %s %s', grade, rock, ore))
+                for grade in ORE_ITEM_GRADES:
+                    rm.item_model('tfc:ore/%s/%s' % (grade, ore)) \
+                    .with_lang(lang('%s %s', grade, ore))
             else:
                 rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock)) \
                     .with_block_model({
