@@ -33,7 +33,7 @@ public enum AnimalGroupingRules implements BiConsumer<List<EntityLiving>, Random
                         if (i == 0)
                         {
                             // Mother
-                            int lifeTimeDays = (int) Math.ceil(animal.getDaysToAdulthood() + animal.getDaysToElderly() * (0.05 + random.nextDouble()));
+                            int lifeTimeDays = 1 + (int) Math.ceil(animal.getDaysToAdulthood() + animal.getDaysToElderly() * (0.05 + random.nextDouble()));
                             animal.setGender(entityLivings.size() > 1 ? IAnimalTFC.Gender.FEMALE : IAnimalTFC.Gender.MALE);
                             animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                         }
@@ -62,14 +62,17 @@ public enum AnimalGroupingRules implements BiConsumer<List<EntityLiving>, Random
                         if (i == 0)
                         {
                             // Elder
-                            int lifeTimeDays = (int) Math.ceil(animal.getDaysToAdulthood() + animal.getDaysToElderly() * (0.33 + random.nextDouble()));
+                            int lifeTimeDays = 1 + (int) Math.ceil(animal.getDaysToAdulthood() + animal.getDaysToElderly() * (0.33 + random.nextDouble()));
                             animal.setGender(IAnimalTFC.Gender.valueOf(random.nextBoolean()));
                             animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                         }
                         else
                         {
-                            int lifeTimeDays = random.nextInt(animal.getDaysToAdulthood() + animal.getDaysToElderly());
-                            animal.setGender(IAnimalTFC.Gender.valueOf(random.nextBoolean()));
+                            // Weighted towards adult individuals
+                            double growth = Math.pow(random.nextDouble(), 0.5D);
+                            double maxLifetime = 1 + animal.getDaysToAdulthood() * 1.25D + animal.getDaysToElderly();
+                            int lifeTimeDays = (int) (maxLifetime * growth);
+                            animal.setGender(IAnimalTFC.Gender.FEMALE);
                             animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                         }
                     }
@@ -90,13 +93,16 @@ public enum AnimalGroupingRules implements BiConsumer<List<EntityLiving>, Random
                         if (i == 0)
                         {
                             // Male
-                            int lifeTimeDays = (int) Math.ceil(animal.getDaysToAdulthood() + animal.getDaysToElderly() * (0.2 + random.nextDouble()));
+                            int lifeTimeDays = 1 + (int) Math.ceil(animal.getDaysToAdulthood() + animal.getDaysToElderly() * (0.2 + random.nextDouble()));
                             animal.setGender(IAnimalTFC.Gender.MALE);
                             animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                         }
                         else
                         {
-                            int lifeTimeDays = random.nextInt(animal.getDaysToAdulthood() + animal.getDaysToElderly());
+                            // Weighted towards adult individuals
+                            double growth = Math.pow(random.nextDouble(), 0.5D);
+                            double maxLifetime = 1 + animal.getDaysToAdulthood() * 1.25D + animal.getDaysToElderly();
+                            int lifeTimeDays = (int) (maxLifetime * growth);
                             animal.setGender(IAnimalTFC.Gender.FEMALE);
                             animal.setBirthDay((int) (CalendarTFC.PLAYER_TIME.getTotalDays() - lifeTimeDays));
                         }
