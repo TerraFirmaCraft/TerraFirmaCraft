@@ -76,7 +76,6 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         return chunkDataProvider;
     }
 
-    @Override
     public ChunkBlockReplacer getBlockReplacer()
     {
         return blockReplacer;

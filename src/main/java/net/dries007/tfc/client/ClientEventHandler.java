@@ -8,16 +8,21 @@ package net.dries007.tfc.client;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GrassColors;
+import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -68,6 +73,14 @@ public final class ClientEventHandler
         // Entity Rendering
 
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
+
+        // Dynamic water color setup
+        BiomeColors.WATER_COLOR = (biome, posX, posZ) -> {
+            BlockPos pos = new BlockPos(posX, 96, posZ);
+            float temperature = Climate.getTemperature(pos);
+            float rainfall = Climate.getRainfall(pos);
+            return WaterColors.getWaterColor(temperature, rainfall);
+        };
     }
 
     @SubscribeEvent
@@ -92,5 +105,11 @@ public final class ClientEventHandler
         blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
         blockColors.register(grassColor, TFCBlocks.PEAT_GRASS.get());
 
+    }
+
+    @SubscribeEvent
+    public static void registerParticleFactoriesAndOtherStuff(ParticleFactoryRegisterEvent event)
+    {
+        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new WaterColorReloadListener());
     }
 }
