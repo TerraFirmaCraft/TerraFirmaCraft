@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -61,7 +62,11 @@ public class WorldGenWildCrops implements IWorldGenerator
                         final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
                         if (world.isAirBlock(pos) && BlocksTFC.isSoil(world.getBlockState(pos.down())))
                         {
-                            int growth = 2 + random.nextInt(crop.getMaxStage() - 2);
+                            double yearProgress = CalendarTFC.CALENDAR_TIME.getMonthOfYear().ordinal() / 11.0;
+                            int maxStage = crop.getMaxStage();
+                            int growth = (int) (yearProgress * maxStage) + 3 - random.nextInt(2);
+                            if (growth > maxStage)
+                                growth = maxStage;
                             world.setBlockState(pos, cropBlock.getDefaultState().withProperty(cropBlock.getStageProperty(), growth).withProperty(BlockCropTFC.WILD, true), 2);
 
                         }

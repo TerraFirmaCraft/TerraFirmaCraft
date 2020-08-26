@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -44,6 +45,7 @@ import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.Constants.RNG;
 import static net.dries007.tfc.objects.te.TEAnvilTFC.SLOT_HAMMER;
 
 @ParametersAreNonnullByDefault
@@ -212,6 +214,11 @@ public class BlockAnvilTFC extends Block
                 {
                     // Valid welding occurred.
                     worldIn.playSound(null, pos, TFCSounds.ANVIL_IMPACT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    double x = pos.getX() + 0.5;
+                    double y = pos.getY() + 0.69;
+                    double z = pos.getZ() + 0.5;
+                    for(int i = 0; i < RNG.nextInt(5)+3; i++)
+                        TFCParticles.SPARK.spawn(worldIn, x + (RNG.nextFloat()-0.5)/7, y, z + (RNG.nextFloat()-0.5)/7, 6*(RNG.nextFloat()-0.5), 2D, 6*(RNG.nextFloat()-0.5), 22);
                     return true;
                 }
             }

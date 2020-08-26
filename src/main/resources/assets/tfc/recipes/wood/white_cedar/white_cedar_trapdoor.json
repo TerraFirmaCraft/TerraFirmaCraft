@@ -6,11 +6,11 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/white_cedar"
+      "item": "tfc:wood/lumber/white_cedar"
     }
   },
   "result": {
     "item": "tfc:wood/trapdoor/white_cedar",
-    "count": 4
+    "count": 3
   }
 }

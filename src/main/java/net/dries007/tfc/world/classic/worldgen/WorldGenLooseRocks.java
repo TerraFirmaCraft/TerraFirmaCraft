@@ -125,11 +125,17 @@ public class WorldGenLooseRocks implements IWorldGenerator
                 ItemStack stack = ItemStack.EMPTY;
                 if (vein != null && vein.getType() != null)
                 {
-                    stack = vein.getType().getLooseRockItem();
+                    if (ConfigTFC.General.WORLD.enableLooseOres)
+                    {
+                        stack = vein.getType().getLooseRockItem();
+                    }
                 }
                 if (stack.isEmpty())
                 {
-                    stack = ItemRock.get(rock, 1);
+                    if (ConfigTFC.General.WORLD.enableLooseRocks)
+                    {
+                        stack = ItemRock.get(rock, 1);
+                    }
                 }
                 tile.setStack(stack);
             }

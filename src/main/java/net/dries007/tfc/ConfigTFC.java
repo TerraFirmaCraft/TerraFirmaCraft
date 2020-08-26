@@ -119,6 +119,10 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableGrassPath")
             public boolean enableGrassPath = true;
 
+            @Config.Comment("Enable the creation of farmland on TFC's soil.")
+            @Config.LangKey("config." + MOD_ID + ".general.overrides.enableHoeing")
+            public boolean enableHoeing = true;
+
             @Config.Comment("Enable the creation of stone anvils.")
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableStoneAnvil")
             public boolean enableStoneAnvil = true;
@@ -234,6 +238,11 @@ public final class ConfigTFC
             @Config.Comment("Give wrought iron weapons to vanilla mobs?")
             @Config.LangKey("config." + MOD_ID + ".general.difficulty.giveVanillaMobsEquipment")
             public boolean giveVanillaMobsEquipment = true;
+
+            @Config.Comment("Range of pixels on either side of the working target that can be accepted to complete a smithing recipe")
+            @Config.RangeInt(min = 0)
+            @Config.LangKey("config." + MOD_ID + ".general.difficulty.acceptableAnvilRange")
+            public int acceptableAnvilRange = 0;
         }
 
         public static final class TreeCFG
@@ -426,6 +435,18 @@ public final class ConfigTFC
             @Config.RangeInt(min = 1)
             @Config.LangKey("config." + MOD_ID + ".general.world.looseRocksFrequency")
             public int looseRocksFrequency = 18;
+
+            @Config.Comment("Enable generation of loose rocks (just the rocks)?")
+            @Config.LangKey("config." + MOD_ID + ".general.world.enableLooseRocks")
+            public boolean enableLooseRocks = true;
+
+            @Config.Comment("Enable generation of loose ores?")
+            @Config.LangKey("config." + MOD_ID + ".general.world.enableLooseOres")
+            public boolean enableLooseOres = true;
+
+            @Config.Comment("Enable generation of loose rocks (just the rocks)?")
+            @Config.LangKey("config." + MOD_ID + ".general.world.enableLooseSticks")
+            public boolean enableLooseSticks = true;
 
             @Config.Comment({"This controls the number of sticks generated on chunk generation.",
                 "The number of trees in the area and flora density is also a factor in this."})
@@ -758,6 +779,10 @@ public final class ConfigTFC
             @Config.Comment("Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.")
             @Config.LangKey("config." + MOD_ID + ".devices.charcoal_pit.ticks")
             public int ticks = 18_000;
+
+            @Config.Comment("Can charcoal pits take glass (or stained glass) as a valid cover block?")
+            @Config.LangKey("config." + MOD_ID + ".devices.charcoal_pit.glass")
+            public boolean canAcceptGlass = true;
         }
 
         public static final class CharcoalForgeCFG

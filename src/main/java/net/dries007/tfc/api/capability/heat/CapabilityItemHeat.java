@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -45,6 +46,8 @@ public final class CapabilityItemHeat
         //register heat on vanilla egg for cooking
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Items.EGG), () -> new ItemHeatHandler(null, 1, 480));
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of("blockClay"), () -> new ItemHeatHandler(null, 1, 600));
+        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(ItemsTFC.GLASS_SHARD), () -> new ItemHeatHandler(null, 1, 1000));
+        CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(ItemsTFC.STICK_BUNCH), () -> new ItemHeatHandler(null, 1, 200));
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of("terracotta"), () -> new ItemHeatHandler(null, 1, 1200));
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(Blocks.IRON_BARS), () -> new ItemHeatHandler(null, Metal.WROUGHT_IRON.getSpecificHeat(), Metal.WROUGHT_IRON.getMeltTemp()));
     }

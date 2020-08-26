@@ -6,11 +6,11 @@
   ],
   "key": {
     "X": {
-      "item": "tfc:wood/planks/sequoia"
+      "item": "tfc:wood/lumber/sequoia"
     }
   },
   "result": {
     "item": "tfc:wood/trapdoor/sequoia",
-    "count": 4
+    "count": 3
   }
 }
