@@ -348,14 +348,9 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
                     }
                     else
                     {
-                        tile.onRemoveAttachment();
+                        tile.onRemoveAttachment(player, held);
                         worldIn.setBlockState(pos, state.withProperty(ATTACHMENT, FirePitAttachment.NONE));
-                        ItemStack attachmentItem = ItemStack.EMPTY;
-                        if (attachment == FirePitAttachment.COOKING_POT)
-                            attachmentItem = ItemsTFC.FIRED_POT.getDefaultInstance();
-                        if (attachment == FirePitAttachment.GRILL)
-                            attachmentItem = ItemsTFC.WROUGHT_IRON_GRILL.getDefaultInstance();
-                        player.addItemStackToInventory(attachmentItem);
+                        return true;
                     }
 
                 }

@@ -583,8 +583,9 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
         attachedItemStack = stack.splitStack(1);
     }
 
-    public void onRemoveAttachment()
+    public void onRemoveAttachment(EntityPlayer player, ItemStack stack)
     {
+        ItemHandlerHelper.giveItemToPlayer(player, attachedItemStack);
         attachedItemStack = ItemStack.EMPTY;
     }
 
