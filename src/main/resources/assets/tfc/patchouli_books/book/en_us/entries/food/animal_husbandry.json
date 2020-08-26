@@ -7,11 +7,11 @@
     "pages": [
 		{
 			"type": "text",
-			"text": "TFC has $(thing)livestock$(), animals that you can raise. The following animals count as livestock: $(item)Chickens, Cows, Horses, Sheep, Llamas, Alpacas, Camels, Goats, and Pigs.$()$(br2)In order for an animal to trust you, you need to $(thing)familiarize$() it. Do this by holding shift and $(4)right-clicking$() on the animal with grain."
+			"text": "TFC has $(thing)livestock$(), animals that you can raise. The following animals count as livestock: $(item)Chickens, Cows, Horses, Sheep, Llamas, Alpacas, Camels, Goats, Pigs, Zebus, Quail, Grouses, Musk Oxen, and Yaks.$()$(br2)"
 		},
 		{
 			"type": "text",
-			"text": "Feed the animal once every 24 hours, and the heart displayed above the animal while you hold shift will begin to fill up."
+			"text": "In order for an animal to trust you, you need to $(thing)familiarize$() it. Do this by holding shift and $(4)right-clicking$() on the animal with grain.$(br2)Feed the animal once every 24 hours, and the heart displayed above the animal while you hold shift will begin to fill up."
 		},
 		{
 			"type": "text",
@@ -23,13 +23,13 @@
 		},
 		{
 			"type": "text",
-			"text": "Some livestock are able to produce different products when they are familiarized and an adult. Cows and goats produce milk (right-click with a bucket to retrieve), while sheep and alpacas will allow you to shear them."
+			"text": "Some livestock are able to produce different products when they are familiarized and an adult. Cows, Zebus, Yaks, and goats produce milk (right-click with a bucket to retrieve), while sheep and alpacas will allow you to shear them."
 		},
 		{
 			"type": "crafting",
 			"recipe": "tfc:nest_box",
 			"title": "Nest Box",
-			"text": "Chickens lay eggs daily if you give them a $(item)nest box$() to use. As long as a rooster is near the nest box when the egg is laid, the egg will become fertilized and will hatch eventually. Eggs can also be cooked for food."
+			"text": "Chickens, Grouses, and Quails lay eggs daily if you give them a $(item)nest box$() to use. As long as a rooster is near the nest box when the egg is laid, the egg will become fertilized and will hatch eventually. Eggs can also be cooked for food."
 		},
 		{
 			"type": "text",
