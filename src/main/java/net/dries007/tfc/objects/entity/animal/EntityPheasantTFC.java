@@ -34,7 +34,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
 {
-    private static final int DAYS_TO_ADULTHOOD = 16;
+    private static final int DAYS_TO_ADULTHOOD = 24;
 
     //Copy from vanilla's EntityChicken, used by renderer to properly handle wing flap
     public float wingRotation;
@@ -60,8 +60,7 @@ public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA
-                || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST || biomeType == BiomeHelper.BiomeType.TAIGA))
         {
             return ConfigTFC.Animals.PHEASANT.rarity;
         }
@@ -177,6 +176,6 @@ public class EntityPheasantTFC extends EntityAnimalTFC implements IHuntable
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.14F, 0.9F);
     }
 }

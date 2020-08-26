@@ -1,5 +1,6 @@
 package net.dries007.tfc.client.model.animal;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.model.ModelBase;
@@ -12,6 +13,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.IAnimalTFC;
+
+/**
+ * ModelHyenaTFC
+ * Created using Tabula 7.1.0
+ */
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
@@ -234,39 +240,34 @@ public class ModelHyenaTFC extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(@Nonnull Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
         if (((EntityAnimal) entity).isChild())
         {
             double ageScale = 1;
             double percent = 1;
-
             if (entity instanceof IAnimalTFC)
             {
                 percent = ((IAnimalTFC) entity).getPercentToAdulthood();
                 ageScale = 1 / (2.0D - percent);
             }
-
             GlStateManager.scale(ageScale, ageScale, ageScale);
-            GlStateManager.translate(0.0F, 1.25f - (1.25f * percent), 0f);
+            GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
         }
-
-        head.render(f5);
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0D, 1.0D, 1.0D);
 
-        frontBody.render(f5);
-        neck.render(f5);
-        backBody.render(f5);
-        frontRightLegTop.render(f5);
-        frontLeftLegTop.render(f5);
-        backRightLegTop.render(f5);
-        backLeftLegTop.render(f5);
-
+        head.render(scale);
+        frontBody.render(scale);
+        neck.render(scale);
+        backBody.render(scale);
+        frontRightLegTop.render(scale);
+        frontLeftLegTop.render(scale);
+        backRightLegTop.render(scale);
+        backLeftLegTop.render(scale);
         GlStateManager.popMatrix();
     }
 

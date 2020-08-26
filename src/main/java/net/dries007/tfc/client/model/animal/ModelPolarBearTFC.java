@@ -12,13 +12,18 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.dries007.tfc.api.types.IAnimalTFC;
 import net.dries007.tfc.objects.entity.animal.EntityPolarBearTFC;
 
-//import net.minecraft.client.model.ModelPolarBear;
+/**
+ * ModelPolarBearTFC
+ * Created using Tabula 7.1.0
+ */
 
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
@@ -123,38 +128,30 @@ public class ModelPolarBearTFC extends ModelBase
     {
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
-        float age = 1;
+        if (((EntityAnimal) entity).isChild())
+        {
+            double ageScale = 1;
+            double percent = 1;
+            if (entity instanceof IAnimalTFC)
+            {
+                percent = ((IAnimalTFC) entity).getPercentToAdulthood();
+                ageScale = 1 / (2.0D - percent);
+            }
+            GlStateManager.scale(ageScale, ageScale, ageScale);
+            GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
+        }
 
-        if (isChild)
-        {
-            float aa = 2F - (1.0F - age);
-            GlStateManager.pushMatrix();
-            float ab = (float) Math.sqrt(1.0F / aa);
-            GlStateManager.scale(ab, ab, ab);
-            GlStateManager.translate(0.0F, 24F * scale * age / aa, 2F * scale * age / ab);
-            head.render(scale);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(1.0F / aa, 1.0F / aa, 1.0F / aa);
-            GlStateManager.translate(0.0F, 24F * scale * age, 0.0F);
-            rearbody.render(scale);
-            frontbody.render(scale);
-            leg1.render(scale);
-            leg2.render(scale);
-            leg3.render(scale);
-            leg4.render(scale);
-            GlStateManager.popMatrix();
-        }
-        else
-        {
-            head.render(scale);
-            rearbody.render(scale);
-            frontbody.render(scale);
-            leg1.render(scale);
-            leg2.render(scale);
-            leg3.render(scale);
-            leg4.render(scale);
-        }
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.0D, 1.0D, 1.0D);
+
+        head.render(scale);
+        rearbody.render(scale);
+        frontbody.render(scale);
+        leg1.render(scale);
+        leg2.render(scale);
+        leg3.render(scale);
+        leg4.render(scale);
+        GlStateManager.popMatrix();
     }
 
     @Override

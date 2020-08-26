@@ -22,8 +22,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderAlpacaTFC extends RenderAnimalTFC<EntityAlpacaTFC>
 {
-    private static final ResourceLocation ALPACA_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/alpaca_old.png");
-    private static final ResourceLocation ALPACA_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/alpaca_young.png");
+    private static final ResourceLocation ALPACA_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/alpaca_old.png");
+    private static final ResourceLocation ALPACA_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/alpaca_young.png");
 
     public RenderAlpacaTFC(RenderManager renderManager)
     {

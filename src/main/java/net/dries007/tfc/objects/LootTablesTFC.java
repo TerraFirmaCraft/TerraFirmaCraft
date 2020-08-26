@@ -21,7 +21,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @Mod.EventBusSubscriber(modid = MOD_ID)
 public class LootTablesTFC
 {
-    public static ResourceLocation ANIMALS_BEAR;
+    public static ResourceLocation ANIMALS_BLACK_BEAR;
+    public static ResourceLocation ANIMALS_GRIZZLY_BEAR;
+    public static ResourceLocation ANIMALS_POLAR_BEAR;
     public static ResourceLocation ANIMALS_CHICKEN;
     public static ResourceLocation ANIMALS_COW;
     public static ResourceLocation ANIMALS_DEER;
@@ -35,16 +37,37 @@ public class LootTablesTFC
     public static ResourceLocation ANIMALS_DUCK;
     public static ResourceLocation ANIMALS_GOAT;
     public static ResourceLocation ANIMALS_CAMEL;
-    public static ResourceLocation ANIMALS_GRAN_FELINE;
+    public static ResourceLocation ANIMALS_COUGAR;
     public static ResourceLocation ANIMALS_LLAMA;
     public static ResourceLocation ANIMALS_OCELOT;
     public static ResourceLocation ANIMALS_SQUID;
     public static ResourceLocation ANIMALS_PARROT;
     public static ResourceLocation ANIMALS_HYENA;
+    public static ResourceLocation ANIMALS_MUSKOX;
+    public static ResourceLocation ANIMALS_BOAR;
+    public static ResourceLocation ANIMALS_COYOTE;
+    public static ResourceLocation ANIMALS_DIREWOLF;
+    public static ResourceLocation ANIMALS_DONKEY;
+    public static ResourceLocation ANIMALS_GAZELLE;
+    public static ResourceLocation ANIMALS_GROUSE;
+    public static ResourceLocation ANIMALS_HARE;
+    public static ResourceLocation ANIMALS_JACKAL;
+    public static ResourceLocation ANIMALS_LION;
+    public static ResourceLocation ANIMALS_MONGOOSE;
+    public static ResourceLocation ANIMALS_MULE;
+    public static ResourceLocation ANIMALS_PANTHER;
+    public static ResourceLocation ANIMALS_QUAIL;
+    public static ResourceLocation ANIMALS_SABERTOOTH;
+    public static ResourceLocation ANIMALS_TURKEY;
+    public static ResourceLocation ANIMALS_WILDEBEEST;
+    public static ResourceLocation ANIMALS_YAK;
+    public static ResourceLocation ANIMALS_ZEBU;
 
     public static void init()
     {
-        ANIMALS_BEAR = register("animals/bear");
+        ANIMALS_BLACK_BEAR = register("animals/black_bear");
+        ANIMALS_GRIZZLY_BEAR = register("animals/grizzly_bear");
+        ANIMALS_POLAR_BEAR = register("animals/polar_bear");
         ANIMALS_CHICKEN = register("animals/chicken");
         ANIMALS_COW = register("animals/cow");
         ANIMALS_DEER = register("animals/deer");
@@ -58,13 +81,31 @@ public class LootTablesTFC
         ANIMALS_DUCK = register("animals/duck");
         ANIMALS_GOAT = register("animals/goat");
         ANIMALS_CAMEL = register("animals/camel");
-        ANIMALS_GRAN_FELINE = register("animals/gran_feline");
+        ANIMALS_COUGAR = register("animals/cougar");
         ANIMALS_LLAMA = register("animals/llama");
         ANIMALS_OCELOT = register("animals/ocelot");
         ANIMALS_SQUID = register("animals/squid");
         ANIMALS_PARROT = register("animals/parrot");
         ANIMALS_HYENA = register("animals/hyena");
-
+        ANIMALS_MUSKOX = register("animals/muskox");
+        ANIMALS_BOAR = register("animals/boar");
+        ANIMALS_COYOTE = register("animals/coyote");
+        ANIMALS_DIREWOLF = register("animals/direwolf");
+        ANIMALS_DONKEY = register("animals/donkey");
+        ANIMALS_GAZELLE = register("animals/gazelle");
+        ANIMALS_GROUSE = register("animals/grouse");
+        ANIMALS_HARE = register("animals/hare");
+        ANIMALS_JACKAL = register("animals/jackal");
+        ANIMALS_LION = register("animals/lion");
+        ANIMALS_MONGOOSE = register("animals/mongoose");
+        ANIMALS_MULE = register("animals/mule");
+        ANIMALS_PANTHER = register("animals/panther");
+        ANIMALS_QUAIL = register("animals/quail");
+        ANIMALS_SABERTOOTH = register("animals/sabertooth");
+        ANIMALS_TURKEY = register("animals/turkey");
+        ANIMALS_WILDEBEEST = register("animals/wildebeest");
+        ANIMALS_YAK = register("animals/yak");
+        ANIMALS_ZEBU = register("animals/zebu");
 
         // Loot function for skill drop multiplier
         LootFunctionManager.registerFunction(new ApplySimpleSkill.Serializer(new ResourceLocation(MOD_ID, "apply_skill")));

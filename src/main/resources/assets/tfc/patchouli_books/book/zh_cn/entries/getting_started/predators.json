@@ -1,0 +1,55 @@
+{
+  "name": "捕食者们",
+  "icon": "minecraft:textures/items/bone.png",
+  "category": "getting_started",
+  "advancement": "tfc:main/stone_age",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "群峦传说中有不少凶猛的捕食者，但是到底谁捕食谁可不好说。这些捕食者们的某些会在日间狩猎，某些则是在夜间。机遇和危险并存，如果你能杀掉一只捕食者，就能得到大量的肉和宝贵的$(l:processes/leatherworking)兽皮$()作为回报。"
+    },
+    {
+      "type": "entity",
+      "name": "熊",
+      "text": "会在日间狩猎。",
+      "entity": "tfc:beartfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "狮",
+      "text": "会在夜间狩猎。",
+      "entity": "tfc:liontfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "剑齿虎",
+      "text": "会在夜间狩猎。",
+      "entity": "tfc:sabertoothtfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "北极熊",
+      "text": "会在日间狩猎。",
+      "entity": "tfc:polarbeartfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "鬣狗",
+      "text": "会在夜间狩猎。",
+      "entity": "tfc:hyenatfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "黑豹",
+      "text": "会在夜间狩猎。",
+      "entity": "tfc:panthertfc",
+      "scale": 0.7
+    }
+  ]
+}

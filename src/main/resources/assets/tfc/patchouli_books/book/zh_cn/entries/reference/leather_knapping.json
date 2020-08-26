@@ -1,0 +1,39 @@
+{
+  "name": "皮革塑形",
+  "icon": "minecraft:textures/items/saddle.png",
+  "category": "reference",
+  "advancement": "tfc:main/make_barrel",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_helmet",
+      "text": "皮革帽子"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_chestplate",
+      "text": "皮革外套"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_leggings",
+      "text": "皮革裤子"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_boots",
+      "text": "皮革靴子"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_saddle",
+      "text": "鞍"
+    },
+    {
+      "type": "tfc:leather_knapping_recipe",
+      "recipe": "tfc:leather_quiver",
+      "text": "箭袋"
+    }
+  ]
+}

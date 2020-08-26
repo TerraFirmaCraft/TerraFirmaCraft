@@ -129,5 +129,59 @@
         "data": 0
       }
     }
+  },
+  "tfc:yaktfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:muskoxtfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:zebutfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:quailtfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:grousetfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
+  },
+  "tfc:parrottfc": {
+    "eat_rotten": false,
+    "foods": {
+      "grain": {
+        "type": "forge:ore_dict",
+        "ore": "grain"
+      }
+    }
   }
 }

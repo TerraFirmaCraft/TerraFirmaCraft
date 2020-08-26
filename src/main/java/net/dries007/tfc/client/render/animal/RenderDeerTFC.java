@@ -7,6 +7,7 @@ package net.dries007.tfc.client.render.animal;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -22,9 +23,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
 {
-    private static final ResourceLocation DEER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer.png");
+    private static final ResourceLocation DEER_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/deer.png");
 
-    private static final ResourceLocation FAWN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/deer_fawn.png");
+    private static final ResourceLocation FAWN_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/huntable/deer_fawn.png");
 
     public RenderDeerTFC(RenderManager manager)
     {
@@ -48,5 +49,10 @@ public class RenderDeerTFC extends RenderLiving<EntityDeerTFC>
     protected float handleRotationFloat(EntityDeerTFC deer, float par2)
     {
         return 1.0f;
+    }
+
+    protected void preRenderCallback(EntityDeerTFC deerTFC, float par2)
+    {
+        GlStateManager.scale(0.8f, 0.8f, 0.8f);
     }
 }

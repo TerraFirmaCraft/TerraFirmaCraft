@@ -1,0 +1,83 @@
+{
+  "name": "木工",
+  "icon": "tfc:textures/items/metal/saw/copper.png",
+  "category": "processes",
+  "advancement": "tfc:main/copper_age",
+  "pages": [
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:saw_blade_bronze",
+      "text": "既然你已经得到了金属，那么你就可以将原木加工为更多有用的东西了！首先，你需要$(l:basic_smithing/casting)浇铸$()或$(l:basic_smithing/anvil)打造$()出一把锯。大多数情况下锯是用来合成其他东西的，不过你乐意的话也可以用它砍树。"
+    },
+    {
+      "type": "crafting",
+      "title": "木材",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_lumber_log",
+      "text": "你要做的第一件事是把原木锯成木材。"
+    },
+    {
+      "type": "crafting",
+      "title": "木板",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_planks",
+      "text": "木材可以制作成木板。木板不受重力影响！欢呼吧！"
+    },
+    {
+      "type": "crafting",
+      "title": "哇！",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_lumber_planks",
+      "text": "你可以把木板加工回木材。"
+    },
+    {
+      "type": "crafting",
+      "title": "工作台",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_workbench",
+      "text": "现在你可以干点大事了。"
+    },
+    {
+      "type": "crafting",
+      "title": "工具架",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_tool_rack",
+      "text": "你一定会想把它挂在墙上，把你的工具明明白白地放在一起的。"
+    },
+    {
+      "type": "crafting",
+      "title": "木船",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_boat",
+      "text": "比 1.7.10 中的船要好得多了，现在你可以想去哪就去哪！"
+    },
+    {
+      "type": "crafting",
+      "title": "书架",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_bookshelf",
+      "text": "目前它们在群峦传说中只是装饰品，不过你依然可以制造它们。"
+    },
+    {
+      "type": "crafting",
+      "title": "木箱子",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_chest_lumber",
+      "text": "你终于可以储存东西了！不过你不能把原木放进去。"
+    },
+    {
+      "type": "crafting",
+      "title": "木门",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_door",
+      "text": "一次造俩，超爽！"
+    },
+    {
+      "type": "crafting",
+      "title": "木栅栏",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_fence",
+      "text": "把动物关进来。"
+    },
+    {
+      "type": "crafting",
+      "title": "木栅栏门",
+      "recipe": "tfc:wood/douglas_fir/douglas_fir_fence_gate",
+      "text": "现在你可以和你的动物们玩耍了。"
+    },
+    {
+      "type": "text",
+      "text": "正如你所期待的那样，台阶、楼梯和按钮也被保留了！同时群峦传说也新增了一些其他的东西，比如说$(l:processes/barrels)大桶$()，马上我们就会讲到。"
+    }
+  ]
+}

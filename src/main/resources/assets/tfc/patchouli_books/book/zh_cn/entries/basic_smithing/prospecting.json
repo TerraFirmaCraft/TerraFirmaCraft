@@ -1,0 +1,72 @@
+{
+  "name": "勘探与采掘",
+  "icon": "tfc:textures/items/metal/propick/bismuth_bronze.png",
+  "category": "basic_smithing",
+  "advancement": "tfc:main/copper_age",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "地表矿粒对寻找矿脉来说十分有帮助，但是你可能会需要一些更准确的方法。锻造或浇铸一把勘矿镐来开始你的勘矿生涯吧。每把只需要 100 单元工具金属，每种金属制成的都同样有效。$(br2)虽然地表矿粒只有 10 单元金属，矿脉开采的矿物通常有三种品质：$(thing)贫瘠，普通，富集$() (15, 25, 或 35 单元)"
+    },
+    {
+      "type": "text",
+      "text": "对着方块右键使用勘矿镐。它会在 25 格的空间内内探测矿物，并告诉你矿物的种类及其储量。$(br)$(thing)注意：勘矿镐说有矿那就是有矿，但它说没矿可能还是有矿（一般来说距离太近是这样的）。想解决这个问题，只需要用勘矿镐再探测一块周围的岩石。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)勘探方法：$()$(br2)1. 用勘矿镐不断敲击岩石直到找到痕量矿物。$(br)2. 继续在周围勘探直到发现巨量矿物。$(br)3. 向一个方向一边行进一边勘探直到勘矿镐不再显示“巨量的”矿物储量。标记这个点。$(br)4. 回到中间向另一个方向重复 3 中的操作。$(br)5. 这两条线交汇处即是矿脉的中心。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:wood/white_cedar/white_cedar_support",
+      "title": "支撑梁",
+      "text": "支撑梁是保证矿井不会塌方的重要结构。塌方的岩石会把你连着你心爱的矿物一并压扁，所以保持安全采掘的好习惯十分重要。"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "一个支撑结构的图例。",
+      "name": "梁结构",
+      "multiblock": {
+        "mapping": {
+          "L": "tfc:wood/support/pine[west=true,axis=y]",
+          "M": "tfc:wood/support/pine[axis=z]",
+          "R": "tfc:wood/support/pine[east=true,axis=y]",
+          "B": "tfc:wood/support/pine[axis=y]"
+        },
+        "pattern": [
+          ["LMMMR"], ["B 0 B"], ["B   B"]
+        ],
+        "symmetrical": false
+      }
+    },
+    {
+      "type": "text",
+      "text": "$(thing)注意：只有横向的支撑梁可以支撑方块。$()$(br2)要搭建一个支撑结构，首先手持支撑梁右键点击地面，就可以摆放出一个三格高的支撑梁柱子（如果空间足够），然后在同一直线上建造第二根支撑梁柱子，再用支撑梁右键其中一根柱子的一侧来连接两根支撑柱。$(br2)$(thing)注意：如果有方块掉落在了支撑梁上，整个结构都会坍塌。$()"
+    },
+    {
+      "type": "multiblock",
+      "enable_visualize": false,
+      "text": "该结构以一个支撑梁为中心。",
+      "name": "可视化支撑",
+      "multiblock": {
+        "mapping": {
+          "W": "tfc:alabaster/polished/white",
+          "0": "tfc:alabaster/polished/lime",
+          "B": "tfc:alabaster/polished/black"
+        },
+        "pattern": [
+          ["         ", "         ", "         ", "         ", "    B    ", "         ", "         ", "         ", "         "],
+          ["    B    ", "    W    ", "    B    ", "    W    ", "BWBW0WBWB", "    W    ", "    B    ", "    W    ", "    B    "],
+          ["         ", "         ", "         ", "         ", "    B    ", "         ", "         ", "         ", "         "]
+        ],
+        "symmetrical": false
+      }
+    },
+    {
+      "type": "text",
+      "text": "单个横向支撑梁可以支撑垂直方向 3 格、水平方向各 4 格的方块（参考图示）。采掘没有支撑的区域要小心，由此引发的大面积塌方可以轻而易举把你砸成肉饼！"
+    }
+  ]
+}

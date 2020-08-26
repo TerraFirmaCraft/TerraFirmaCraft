@@ -5,11 +5,15 @@
 
 package net.dries007.tfc.objects.entity.animal;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -38,7 +42,7 @@ import net.dries007.tfc.world.classic.biomes.BiomesTFC;
 @ParametersAreNonnullByDefault
 public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
 {
-    private static final int DAYS_TO_ADULTHOOD = 480;
+    private static final int DAYS_TO_ADULTHOOD = 112;
 
     @SuppressWarnings("unused")
     public EntityHyenaTFC(World worldIn)
@@ -50,7 +54,7 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     public EntityHyenaTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(1.2F, 1.2F);
+        this.setSize(1.1F, 1.2F);
     }
 
     @Override
@@ -70,11 +74,17 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.SAVANNA))
+            (biomeType == BiomeHelper.BiomeType.SAVANNA))
         {
             return ConfigTFC.Animals.HYENA.rarity;
         }
         return 0;
+    }
+
+    @Override
+    public BiConsumer<List<EntityLiving>, Random> getGroupingRules()
+    {
+        return AnimalGroupingRules.ELDER_AND_POPULATION;
     }
 
     @Override
@@ -169,7 +179,7 @@ public class EntityHyenaTFC extends EntityAnimalMammal implements IPredator
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.32D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);

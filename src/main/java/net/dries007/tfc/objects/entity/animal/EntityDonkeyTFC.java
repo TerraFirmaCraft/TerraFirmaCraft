@@ -266,7 +266,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.SAVANNA || biomeType == BiomeHelper.BiomeType.DESERT))
+            (biomeType == BiomeHelper.BiomeType.PLAINS))
         {
             return ConfigTFC.Animals.DONKEY.rarity;
         }
@@ -580,7 +580,7 @@ public class EntityDonkeyTFC extends EntityDonkey implements IAnimalTFC, ILivest
     @Override
     protected ResourceLocation getLootTable()
     {
-        return LootTablesTFC.ANIMALS_HORSE;
+        return LootTablesTFC.ANIMALS_DONKEY;
     }
 
     @Override

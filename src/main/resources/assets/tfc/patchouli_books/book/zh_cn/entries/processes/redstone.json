@@ -1,0 +1,82 @@
+{
+  "name": "红石与铁轨",
+  "icon": "minecraft:textures/items/redstone_dust.png",
+  "category": "processes",
+  "advancement": "tfc:main/metal_anvil",
+  "pages": [
+    {
+      "type": "text",
+      "text": "红石电路的运作机制和原版是一致的，不过那些部件的组成原料有了些区别。红石粉是由朱砂或冰晶石在手推磨中制作的。$(br2)我们所需的第一个部件是金属棒，它们可以由金、锻铁或钢在砧上用相应的锭制作而成。（1 块锭 = 2 根棒）"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/powered_rail",
+      "title": "充能铁轨",
+      "text": "制作原版的充能铁轨是金棒的唯一用处。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/rail",
+      "recipe2": "tfc:vanilla/rail/detector_rail",
+      "title": "铁轨与探测铁轨"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/activator_rail",
+      "title": "激活铁轨",
+      "text": "制作原版的铁轨是锻铁棒的唯一用处。如果用钢棒替代锻铁棒合成，可以得到双倍的产物。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/steel_rail",
+      "recipe2": "tfc:vanilla/rail/steel_detector_rail",
+      "title": "铁轨与探测铁轨"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/rail/steel_activator_rail",
+      "title": "激活铁轨",
+      "text": "为了弥补成本，这个配方比原版产率更高。"
+    },
+    {
+      "type": "text",
+      "text": "在砧上加工一个黄铜锭（9 份铜与 1 份锌或闪锌矿）可以制作出两个黄铜机件，这是合成某些红石原件所必要的。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/piston",
+      "recipe2": "tfc:vanilla/redstone/observer",
+      "title": "活塞和侦测器"
+    },
+    {
+      "type": "crafting",
+      "recipe": "minecraft:sticky_piston",
+      "title": "粘性活塞",
+      "text": "将骨粉密封在石灰水（水 + 助焊剂）中来制作胶水，胶水是粘液球的替代品。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/redstone_repeater",
+      "recipe2": "tfc:vanilla/redstone/redstone_comparator",
+      "title": "红石中继器和比较器"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/hopper",
+      "recipe2": "tfc:vanilla/redstone/steel_hopper",
+      "title": "漏斗"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/daylight_detector",
+      "recipe2": "tfc:vanilla/redstone/flawless_daylight_detector",
+      "title": "阳光传感器"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/redstone/exquisite_daylight_detector",
+      "recipe2": "minecraft:jukebox",
+      "title": "派对时间！"
+    }
+  ]
+}

@@ -47,7 +47,7 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     public EntityDuckTFC(World worldIn, Gender gender, int birthDay)
     {
         super(worldIn, gender, birthDay);
-        this.setSize(0.9F, 0.9F);
+        this.setSize(0.8F, 0.9F);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class EntityDuckTFC extends EntityChickenTFC implements ILivestock
     {
         BiomeHelper.BiomeType biomeType = BiomeHelper.getBiomeType(temperature, rainfall, floraDensity);
         if (!BiomesTFC.isOceanicBiome(biome) && !BiomesTFC.isBeachBiome(biome) &&
-            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TEMPERATE_FOREST))
+            (biomeType == BiomeHelper.BiomeType.PLAINS || biomeType == BiomeHelper.BiomeType.TROPICAL_FOREST))
         {
             return ConfigTFC.Animals.DUCK.rarity;
         }

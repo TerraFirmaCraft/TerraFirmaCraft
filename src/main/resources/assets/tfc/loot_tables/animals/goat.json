@@ -7,14 +7,14 @@
         {
           "type": "item",
           "weight": 1,
-          "name": "tfc:food/chevon",
+          "name": "tfc:food/mutton",
           "functions": [
             {
               "function": "tfc:apply_skill",
               "skill": "butchering",
-              "add": 0.1,
+              "add": 0.06,
               "count": {
-                "min": 12,
+                "min": 10,
                 "max": 16
               }
             },

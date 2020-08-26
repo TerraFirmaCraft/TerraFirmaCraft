@@ -18,6 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.objects.entity.animal.EntityAlpacaTFC;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 
+/**
+ * ModelAlpacaBodyTFC
+ * Created using Tabula 7.1.0
+ */
+
 @SideOnly(Side.CLIENT)
 @ParametersAreNonnullByDefault
 public class ModelAlpacaBodyTFC extends ModelBase
@@ -131,14 +136,6 @@ public class ModelAlpacaBodyTFC extends ModelBase
 
         float percent = (float) alpaca.getPercentToAdulthood();
         float ageScale = 2.0F - percent;
-        float ageHeadScale = (float) Math.pow(1 / ageScale, 0.66);
-
-        GlStateManager.pushMatrix();
-
-        GlStateManager.scale(ageHeadScale, ageHeadScale, ageHeadScale);
-        GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
-        GlStateManager.translate(0.0F, (ageScale - 1) * -0.125f, 0.1875f - (0.1875f * percent));
-
 
         if (alpaca.getGender() == EntityAnimalTFC.Gender.MALE)
         {
@@ -162,15 +159,13 @@ public class ModelAlpacaBodyTFC extends ModelBase
             tailm.isHidden = true;
         }
 
-        head.render(par7);
-        neck2.render(par7);
-        neck1.render(par7);
-
-        GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
         GlStateManager.scale(1 / ageScale, 1 / ageScale, 1 / ageScale);
         GlStateManager.translate(0.0F, 1.5f - (1.5f * percent), 0f);
 
+        head.render(par7);
+        neck2.render(par7);
+        neck1.render(par7);
         body.render(par7);
         tailf.render(par7);
         tailm.render(par7);

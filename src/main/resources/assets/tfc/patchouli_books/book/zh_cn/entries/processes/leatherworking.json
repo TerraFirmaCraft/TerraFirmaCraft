@@ -1,0 +1,36 @@
+{
+  "name": "皮革加工",
+  "icon": "tfc:textures/items/leather.png",
+  "category": "processes",
+  "advancement": "tfc:main/make_barrel",
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(thing)皮革$()在群峦传说中十分重要，不过要得到它需要经过一系列步骤。$(br2)群峦传说中，除了羊的所有动物都会直接掉落$(item)兽皮$()（$(item)羊皮$()需要用刀处理成兽皮）。兽皮的大小决定了你最终能得到皮革的数量，加工小块兽皮可以得到 1 个皮革，中块可以得到 2 个，大块是 3 个。"
+    },
+    {
+      "type": "text",
+      "text": "$(thing)皮革加工的步骤$()$(br2)1. 以每 1,000mB 淡水 + 2 助焊剂的比例把助焊剂放在一$(l:processes/barrels)大桶$()淡水中来得到$(thing)一大桶石灰水$()，$(br2)接着把兽皮密封在石灰水中，静置等待。$(br2)3. 拿着浸泡皮革$(4)右键点击$()原木，将其放置在原木上，接着拿着刀$(4)右键点击$()它以刮净。"
+    },
+    {
+      "type": "text",
+      "text": "4. 右键点击从原木上拿下兽皮，然后把$(item)刮制兽皮$()密封到$(thing)一大桶淡水$()中。$(br2)5. 把白橡木原木、白桦木原木、栗木原木、花旗松木原木、山核桃木原木、枫木原木或红杉木原木密封在淡水中来得到$(thing)一大桶鞣酸$()。$(br2)6. 把$(thing)预制皮革$()密封在鞣酸中以得到皮革。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:bellows",
+      "title": "风箱",
+      "text": "风箱可以使各种炉达到更高的温度，这是进一步发展所必须的。放风箱的时候要注意方向，有个洞的那一面对着需要鼓风的方块。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "tfc:vanilla/item_frame",
+      "recipe2": "minecraft:book",
+      "title": "原版配方"
+    },
+    {
+      "type": "text",
+      "text": "在$(l:reference/leather_knapping)参考$()中可以看到皮革塑形的配方。"
+    }
+  ]
+}

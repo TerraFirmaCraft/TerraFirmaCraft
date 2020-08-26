@@ -26,13 +26,13 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 @ParametersAreNonnullByDefault
 public class RenderChickenTFC extends RenderLiving<EntityChickenTFC>
 {
-    private static final ResourceLocation CHICKEN_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/chicken_young.png");
-    private static final ResourceLocation CHICKEN_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/chicken_old.png");
+    private static final ResourceLocation CHICKEN_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/chicken_young.png");
+    private static final ResourceLocation CHICKEN_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/chicken_old.png");
 
-    private static final ResourceLocation ROOSTER_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/rooster_young.png");
-    private static final ResourceLocation ROOSTER_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/rooster_old.png");
+    private static final ResourceLocation ROOSTER_YOUNG = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/rooster_young.png");
+    private static final ResourceLocation ROOSTER_OLD = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/rooster_old.png");
 
-    private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/chick.png");
+    private static final ResourceLocation CHICK_TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/animal/livestock/chick.png");
 
     public RenderChickenTFC(RenderManager manager)
     {

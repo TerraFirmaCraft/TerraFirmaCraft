@@ -20,13 +20,10 @@ import net.dries007.tfc.objects.entity.animal.EntityRabbitTFC;
 @ParametersAreNonnullByDefault
 public class RenderRabbitTFC extends RenderLiving<EntityRabbitTFC>
 {
-    private static final ResourceLocation BROWN = new ResourceLocation("textures/entity/rabbit/brown.png");
     private static final ResourceLocation WHITE = new ResourceLocation("textures/entity/rabbit/white.png");
-    private static final ResourceLocation BLACK = new ResourceLocation("textures/entity/rabbit/black.png");
     private static final ResourceLocation GOLD = new ResourceLocation("textures/entity/rabbit/gold.png");
     private static final ResourceLocation SALT = new ResourceLocation("textures/entity/rabbit/salt.png");
     private static final ResourceLocation WHITE_SPLOTCHED = new ResourceLocation("textures/entity/rabbit/white_splotched.png");
-    private static final ResourceLocation TOAST = new ResourceLocation("textures/entity/rabbit/toast.png");
     private static final ResourceLocation CAERBANNOG = new ResourceLocation("textures/entity/rabbit/caerbannog.png");
 
     public RenderRabbitTFC(RenderManager renderManager)
@@ -48,20 +45,14 @@ public class RenderRabbitTFC extends RenderLiving<EntityRabbitTFC>
         {
             case 0:
             default:
-                return BROWN;
-            case 1:
                 return WHITE;
-            case 2:
-                return BLACK;
-            case 3:
+            case 1:
                 return WHITE_SPLOTCHED;
-            case 4:
+            case 2:
                 return GOLD;
-            case 5:
+            case 3:
                 return SALT;
-            case 6:
-                return TOAST;
-            case 7:
+            case 4:
                 return CAERBANNOG;
         }
     }
