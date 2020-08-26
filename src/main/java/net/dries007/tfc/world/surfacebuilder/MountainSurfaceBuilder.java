@@ -24,7 +24,7 @@ public class MountainSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         double heightNoise = noise * 3f + startHeight;
-        if (heightNoise > 120)
+        if (heightNoise > 130)
         {
             TFCSurfaceBuilders.NORMAL.get().buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.STONE_STONE_GRAVEL_CONFIG);
         }
