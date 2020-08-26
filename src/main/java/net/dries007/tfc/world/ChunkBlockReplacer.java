@@ -101,6 +101,17 @@ public class ChunkBlockReplacer
             }
         });
 
+        register(Blocks.COBBLESTONE, (rockData, x, y, z, rainfall, temperature, noise) -> {
+            if (y < rockData.getRockHeight(x, z))
+            {
+                return rockData.getBottomRock(x, z).getBlock(Rock.BlockType.COBBLE).getDefaultState();
+            }
+            else
+            {
+                return rockData.getTopRock(x, z).getBlock(Rock.BlockType.COBBLE).getDefaultState();
+            }
+        });
+
         // Dirt -> under surface material. Replaced with dirt, or inland sand (deco rock layer)
         register(Blocks.DIRT, (rockData, x, y, z, rainfall, temperature, noise) -> getSoilBlock(SoilBlockType.DIRT, rockData, x, z, rainfall, noise));
 
