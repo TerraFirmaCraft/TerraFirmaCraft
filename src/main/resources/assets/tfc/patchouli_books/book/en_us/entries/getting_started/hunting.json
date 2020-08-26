@@ -36,6 +36,42 @@
       "name": "Rabbit",
       "text": "I'm hunting wabbits.",
       "entity": "tfc:rabbittfc"
+    },
+    {
+      "type": "entity",
+      "name": "Hare",
+      "text": "A hare is a kind of rabbit.",
+      "entity": "tfc:haretfc"
+    },
+    {
+      "type": "entity",
+      "name": "Boar",
+      "text": "Oink Oink.",
+      "entity": "tfc:boartfc"
+    },
+    {
+      "type": "entity",
+      "name": "Gazelle",
+      "text": "These guys are fast.",
+      "entity": "tfc:gazelletfc"
+    },
+    {
+      "type": "entity",
+      "name": "Wildebeest",
+      "text": "The wild beast.",
+      "entity": "tfc:wildebeesttfc"
+    },
+    {
+      "type": "entity",
+      "name": "Mongoose",
+      "text": "It's like a cat, but more ugly.",
+      "entity": "tfc:mongoosetfc"
+    },
+    {
+      "type": "entity",
+      "name": "Turkey",
+      "text": "Time for some Thanksgiving dinner.",
+      "entity": "tfc:turkeytfc"
     }
   ]
 }
