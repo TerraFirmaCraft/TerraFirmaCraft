@@ -162,6 +162,7 @@ ORE_GRADES: Dict[str, OreGrade] = {
     'poor': OreGrade(30),
     'rich': OreGrade(20)
 }
+ORE_ITEM_GRADES = ['small', 'poor', 'rich']
 ORE_VEINS: Dict[str, Vein] = {
     'normal_native_copper': Vein('native_copper', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
     'surface_native_copper': Vein('native_copper', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['igneous_extrusive']),
