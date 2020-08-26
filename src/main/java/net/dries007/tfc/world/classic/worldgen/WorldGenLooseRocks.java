@@ -137,7 +137,10 @@ public class WorldGenLooseRocks implements IWorldGenerator
                         stack = ItemRock.get(rock, 1);
                     }
                 }
-                tile.setStack(stack);
+                if (!stack.isEmpty())
+                {
+                    tile.setStack(stack);
+                }
             }
         }
     }
