@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/chalk"
   },
   "category": "sedimentary",
-  "sand_color": "yellow"
+  "desert_sand_color": "white",
+  "beach_sand_color": "white"
 }

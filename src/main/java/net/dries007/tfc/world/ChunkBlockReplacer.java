@@ -23,6 +23,7 @@ import net.dries007.tfc.api.Rock;
 import net.dries007.tfc.api.world.IBlockReplacer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.objects.blocks.TFCBlocks;
+import net.dries007.tfc.objects.blocks.soil.SandBlockType;
 import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
 import net.dries007.tfc.objects.blocks.soil.TFCGrassBlock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -32,7 +33,6 @@ import net.dries007.tfc.world.chunkdata.RockData;
  * Replaces world gen blocks with TFC equivalents.
  * This allows us to use minecraft blocks for the majority of early world gen, which works much better with vanilla systems such as surface builders.
  *
- * todo: this is not particularly data driven, and will be quite difficult to convert to
  * This structure is necessary in order to not bastardize the vanilla generation pipeline
  */
 public class ChunkBlockReplacer
@@ -124,31 +124,37 @@ public class ChunkBlockReplacer
             }
         });
 
-        // Gravel -> accent block used in some mountains
+        // Gravel -> surface material. Replace with rock type gravel
         register(Blocks.GRAVEL, (rockData, x, y, z, rainfall, temperature, random) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
 
-        // Sand -> ocean floor material. Switch based on the biome temp category
-        register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature, noise) -> {
-            if (temperature > TFCConfig.COMMON.sandGravelTemperatureCutoff.get() + TFCConfig.COMMON.sandGravelTemperatureRange.get() * noise)
+        // Sand -> Desert sand layer. Replace with sand color from top rock layer
+        register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature, noise) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().getDefaultState());
+
+        // Red Sand -> Beach sand layer. Replace with the beach sand color from top rock layer
+        register(Blocks.RED_SAND, (rockData, x, y, z, rainfall, temperature, noise) -> TFCBlocks.SAND.get(rockData.getMidRock(x, z).getBeachSandColor()).get().getDefaultState());
+
+        // Red Sandstone -> Beach variant sand layer. If tropical, replace with pink sand.
+        register(Blocks.RED_SANDSTONE, (rockData, x, y, z, rainfall, temperature, noise) -> {
+            if (rainfall > 300f && temperature > 15f)
             {
-                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getSandColor()).get().getDefaultState();
+                return TFCBlocks.SAND.get(SandBlockType.PINK).get().getDefaultState();
+            }
+            else if (rainfall < 300f)
+            {
+                return TFCBlocks.SAND.get(SandBlockType.BLACK).get().getDefaultState();
             }
             else
             {
-                return rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState();
+                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getBeachSandColor()).get().getDefaultState();
             }
         });
-
-        // Sandstone (normal / red) used for shores. Replace with sand / gravel, using mid rock sand color where necessary.
-        register(Blocks.SANDSTONE, (rockData, x, y, z, rainfall, temperature, noise) -> TFCBlocks.SAND.get(rockData.getMidRock(x, z).getSandColor()).get().getDefaultState());
-        register(Blocks.RED_SANDSTONE, (rockData, x, y, z, rainfall, temperature, noise) -> rockData.getMidRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
     }
 
     private BlockState getSoilBlock(SoilBlockType soil, RockData rockData, int x, int z, float rainfall, float noise)
     {
         if (rainfall < TFCConfig.COMMON.sandRainfallCutoff.get() + TFCConfig.COMMON.sandRainfallRange.get() * noise)
         {
-            return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getSandColor()).get().getDefaultState();
+            return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().getDefaultState();
         }
         else if (rainfall < TFCConfig.COMMON.sandyLoamRainfallCutoff.get() + TFCConfig.COMMON.sandyLoamRainfallRange.get() * noise)
         {

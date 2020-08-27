@@ -7,7 +7,6 @@ package net.dries007.tfc.api;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -163,30 +162,27 @@ public class Metal
 
         private static final Tier[] VALUES = values();
 
-        @Nonnull
         public static Tier valueOf(int tier)
         {
             return tier < 0 || tier > VALUES.length ? TIER_I : VALUES[tier];
         }
 
-        @Nonnull
         public Tier next()
         {
             return this == TIER_VI ? TIER_VI : VALUES[this.ordinal() + 1];
         }
 
-        @Nonnull
         public Tier previous()
         {
             return this == TIER_0 ? TIER_0 : VALUES[this.ordinal() - 1];
         }
 
-        public boolean isAtLeast(@Nonnull Tier requiredInclusive)
+        public boolean isAtLeast(Tier requiredInclusive)
         {
             return this.ordinal() >= requiredInclusive.ordinal();
         }
 
-        public boolean isAtMost(@Nonnull Tier requiredInclusive)
+        public boolean isAtMost(Tier requiredInclusive)
         {
             return this.ordinal() <= requiredInclusive.ordinal();
         }

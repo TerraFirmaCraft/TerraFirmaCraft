@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/chert"
   },
   "category": "sedimentary",
-  "sand_color": "yellow"
+  "desert_sand_color": "brown",
+  "beach_sand_color": "yellow"
 }

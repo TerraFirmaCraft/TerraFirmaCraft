@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/quartzite"
   },
   "category": "metamorphic",
-  "sand_color": "pink"
+  "desert_sand_color": "white",
+  "beach_sand_color": "white"
 }

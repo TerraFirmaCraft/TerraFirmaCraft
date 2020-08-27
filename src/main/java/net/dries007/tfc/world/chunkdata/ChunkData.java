@@ -7,6 +7,8 @@ package net.dries007.tfc.world.chunkdata;
 
 import javax.annotation.Nullable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +26,8 @@ import net.dries007.tfc.util.LerpFloatLayer;
 public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static ChunkData get(IWorld world, BlockPos pos)
     {
@@ -94,7 +98,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer.getValue(x / 16f, z / 16f);
+        return rainfallLayer.getValue(-z / 16f, x / 16f);
     }
 
     public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
@@ -109,7 +113,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer.getValue(x / 16f, z / 16f);
+        return temperatureLayer.getValue(-z / 16f, x / 16f);
     }
 
     public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
@@ -130,9 +134,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     /**
      * Create an update packet to send to client with necessary information
      */
-    public ChunkWatchPacket getUpdatePacket(int chunkX, int chunkZ)
+    public ChunkWatchPacket getUpdatePacket()
     {
-        return new ChunkWatchPacket(chunkX, chunkZ, rainfallLayer, temperatureLayer);
+        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer);
     }
 
     /**
@@ -142,7 +146,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
-        this.status = Status.CLIMATE;
+        if (status == Status.CLIENT || status == Status.EMPTY)
+        {
+            this.status = Status.CLIENT;
+        }
+        else
+        {
+            LOGGER.warn("Called client side update method on server side chunk data: {}. This should not happen.", this);
+        }
     }
 
     @Override
@@ -204,6 +215,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     public enum Status
     {
         EMPTY,
+        CLIENT,
         CLIMATE,
         ROCKS;
 
@@ -217,6 +229,11 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         public boolean isAtLeast(Status otherStatus)
         {
             return this.ordinal() >= otherStatus.ordinal();
+        }
+
+        public boolean isAtMost(Status otherStatus)
+        {
+            return this.ordinal() <= otherStatus.ordinal();
         }
     }
 

@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/schist"
   },
   "category": "metamorphic",
-  "sand_color": "green"
+  "desert_sand_color": "yellow",
+  "beach_sand_color": "green"
 }

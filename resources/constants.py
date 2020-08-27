@@ -4,7 +4,7 @@
 from collections import namedtuple
 from typing import Dict, List, NamedTuple, Sequence
 
-Rock = NamedTuple('Rock', category=str, sand_color=str)
+Rock = NamedTuple('Rock', category=str, desert_sand_color=str, beach_sand_color=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
 MetalItem = namedtuple('MetalItem', ('type', 'smelt_amount', 'parent_model', 'tag'))
 Ore = namedtuple('Ore', ('metal', 'graded'))
@@ -18,26 +18,28 @@ ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe
 MISC_ROCK_ITEMS: List[str] = ['brick', 'rock']
 
 ROCKS: Dict[str, Rock] = {
-    'chalk': Rock('sedimentary', 'yellow'),
-    'chert': Rock('sedimentary', 'yellow'),
-    'claystone': Rock('sedimentary', 'red'),
-    'conglomerate': Rock('sedimentary', 'red'),
-    'dolomite': Rock('sedimentary', 'green'),
-    'limestone': Rock('sedimentary', 'white'),
-    'shale': Rock('sedimentary', 'red'),
-    'gneiss': Rock('metamorphic', 'red'),
-    'marble': Rock('metamorphic', 'white'),
-    'phyllite': Rock('metamorphic', 'white'),
-    'quartzite': Rock('metamorphic', 'pink'),
-    'schist': Rock('metamorphic', 'green'),
-    'slate': Rock('metamorphic', 'yellow'),
-    'diorite': Rock('igneous_intrusive', 'brown'),
-    'gabbro': Rock('igneous_intrusive', 'black'),
-    'granite': Rock('igneous_intrusive', 'brown'),
-    'andesite': Rock('igneous_extrusive', 'black'),
-    'basalt': Rock('igneous_extrusive', 'black'),
-    'dacite': Rock('igneous_extrusive', 'black'),
-    'rhyolite': Rock('igneous_extrusive', 'pink')
+    # Desert sand color is either white, brown, gray, or yellow based on rock color. red is an indicator of hematite rocks
+    # Beach sand color is either white, gray, yellow, black or green based on rock color. Pink and black are used for accents in tropical regions.
+    'chalk': Rock('sedimentary', 'white', 'white'),
+    'chert': Rock('sedimentary', 'brown', 'yellow'),
+    'claystone': Rock('sedimentary', 'brown', 'yellow'),
+    'conglomerate': Rock('sedimentary', 'gray', 'green'),
+    'dolomite': Rock('sedimentary', 'gray', 'black'),
+    'limestone': Rock('sedimentary', 'yellow', 'white'),
+    'shale': Rock('sedimentary', 'gray', 'black'),
+    'gneiss': Rock('metamorphic', 'gray', 'gray'),
+    'marble': Rock('metamorphic', 'yellow', 'white'),
+    'phyllite': Rock('metamorphic', 'gray', 'gray'),
+    'quartzite': Rock('metamorphic', 'white', 'white'),
+    'schist': Rock('metamorphic', 'yellow', 'green'),
+    'slate': Rock('metamorphic', 'gray', 'gray'),
+    'diorite': Rock('igneous_intrusive', 'white', 'white'),
+    'gabbro': Rock('igneous_intrusive', 'gray', 'black'),
+    'granite': Rock('igneous_intrusive', 'white', 'white'),
+    'andesite': Rock('igneous_extrusive', 'red', 'gray'),
+    'basalt': Rock('igneous_extrusive', 'red', 'black'),
+    'dacite': Rock('igneous_extrusive', 'red', 'gray'),
+    'rhyolite': Rock('igneous_extrusive', 'red', 'gray')
 }
 METALS: Dict[str, Metal] = {
     'bismuth': Metal(1, {'part'}, 0.14, 270),
@@ -263,9 +265,11 @@ DEFAULT_LANG = {
     'tfc.commands.time.query.day': 'The day is %s',
     'tfc.commands.time.query.player_ticks': 'The player ticks is %s',
     'tfc.commands.time.query.calendar_ticks': 'The calendar ticks is %s',
-    'tfc.command.heat': 'Held item heat set to %s',
-    'tfc.command.clear_world.starting': 'Clearing world. Prepare for lag...',
-    'tfc.command.clear_world.done': 'Cleared.',
+    'tfc.commands.heat.set_heat': 'Held item heat set to %s',
+    'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
+    'tfc.commands.clear_world.done': 'Cleared.',
+    'tfc.commands.player.query_hunger': 'Hunger is %s',
+    'tfc.commands.player.query_saturation': 'Saturation is %s',
 
     # ENUMS
 

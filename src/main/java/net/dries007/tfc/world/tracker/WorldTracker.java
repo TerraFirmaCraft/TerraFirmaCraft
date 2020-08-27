@@ -7,7 +7,6 @@ package net.dries007.tfc.world.tracker;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -153,9 +152,8 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         }
     }
 
-    @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
     }

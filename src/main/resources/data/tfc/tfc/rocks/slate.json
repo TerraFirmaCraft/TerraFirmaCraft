@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/slate"
   },
   "category": "metamorphic",
-  "sand_color": "yellow"
+  "desert_sand_color": "gray",
+  "beach_sand_color": "gray"
 }

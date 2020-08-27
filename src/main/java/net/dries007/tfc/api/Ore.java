@@ -5,9 +5,6 @@
 
 package net.dries007.tfc.api;
 
-import javax.annotation.Nonnull;
-
-
 public class Ore
 {
     /**
@@ -74,7 +71,6 @@ public class Ore
 
         private static final Grade[] VALUES = values();
 
-        @Nonnull
         public static Grade valueOf(int i)
         {
             return i < 0 || i >= VALUES.length ? NORMAL : VALUES[i];

@@ -24,8 +24,8 @@ import net.dries007.tfc.world.vein.VeinTypeManager;
 
 public final class ClearWorldCommand
 {
-    public static final String STARTING = "tfc.command.clear_world.starting";
-    public static final String DONE = "tfc.command.clear_world.done";
+    private static final String STARTING = "tfc.commands.clear_world.starting";
+    private static final String DONE = "tfc.commands.clear_world.done";
 
     private static final Set<BlockState> VEIN_STATES = new HashSet<>();
 
