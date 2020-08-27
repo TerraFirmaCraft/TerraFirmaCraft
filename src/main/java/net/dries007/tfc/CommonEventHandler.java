@@ -7,8 +7,11 @@ package net.dries007.tfc;
 
 import java.util.Arrays;
 
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -149,6 +152,10 @@ public final class CommonEventHandler
     public static void breakEvent(BlockEvent.BreakEvent event)
     {
         final EntityPlayer player = event.getPlayer();
+        final ItemStack heldItem = player == null ? ItemStack.EMPTY : player.getHeldItemMainhand();
+        final IBlockState state = event.getState();
+        final Block block = state.getBlock();
+
         if (player != null)
         {
             IPlayerData cap = player.getCapability(CapabilityPlayerData.CAPABILITY, null);
@@ -180,6 +187,17 @@ public final class CommonEventHandler
             {
                 event.getDrops().add(new ItemStack(Items.STICK));
             }
+        }
+        // Harvest ice from saws
+        if (OreDictionaryHelper.doesStackMatchOre(heldItem,"saw") && block == Blocks.ICE)
+        {
+            event.getDrops().add(new ItemStack(Blocks.ICE));
+        }
+
+        // Drop shards from glass
+        if (state.getMaterial() == Material.GLASS && Constants.RNG.nextInt(2) == 0)
+        {
+            event.getDrops().add(new ItemStack(ItemsTFC.GLASS_SHARD));
         }
 
         // Apply durability modifier on tools
@@ -292,17 +310,20 @@ public final class CommonEventHandler
         BlockPos pos = event.getPos();
         IBlockState state = world.getBlockState(pos);
 
-        if (state.getBlock() instanceof BlockRockVariant)
+        if (ConfigTFC.General.OVERRIDES.enableHoeing)
         {
-            BlockRockVariant blockRock = (BlockRockVariant) state.getBlock();
-            if (blockRock.getType() == Rock.Type.GRASS || blockRock.getType() == Rock.Type.DIRT)
+            if (state.getBlock() instanceof BlockRockVariant)
             {
-                if (!world.isRemote)
+                BlockRockVariant blockRock = (BlockRockVariant) state.getBlock();
+                if (blockRock.getType() == Rock.Type.GRASS || blockRock.getType() == Rock.Type.DIRT)
                 {
-                    world.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    world.setBlockState(pos, BlockRockVariant.get(blockRock.getRock(), Rock.Type.FARMLAND).getDefaultState());
+                    if (!world.isRemote)
+                    {
+                        world.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        world.setBlockState(pos, BlockRockVariant.get(blockRock.getRock(), Rock.Type.FARMLAND).getDefaultState());
+                    }
+                    event.setResult(Event.Result.ALLOW);
                 }
-                event.setResult(Event.Result.ALLOW);
             }
         }
     }

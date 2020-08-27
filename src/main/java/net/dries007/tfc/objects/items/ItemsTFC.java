@@ -114,6 +114,8 @@ public final class ItemsTFC
     public static final ItemPottery FIRED_SPINDLE = getNull();
     @GameRegistry.ObjectHolder("ceramics/unfired/large_vessel")
     public static final ItemPottery UNFIRED_LARGE_VESSEL = getNull();
+    @GameRegistry.ObjectHolder("ceramics/unfired/crucible")
+    public static final ItemPottery UNFIRED_CRUCIBLE = getNull();
     @GameRegistry.ObjectHolder("ceramics/fire_clay")
     public static final Item FIRE_CLAY = getNull();
 
@@ -165,6 +167,12 @@ public final class ItemsTFC
     public static final Item DIRTY_JUTE_NET = getNull();
     @GameRegistry.ObjectHolder("food/olive_paste")
     public static final Item OLIVE_PASTE = getNull();
+    @GameRegistry.ObjectHolder("glass_shard")
+    public static final Item GLASS_SHARD = getNull();
+    @GameRegistry.ObjectHolder("stick_bunch")
+    public static final Item STICK_BUNCH = getNull();
+    @GameRegistry.ObjectHolder("wood_ash")
+    public static final Item WOOD_ASH = getNull();
 
     private static ImmutableList<Item> allSimpleItems;
     private static ImmutableList<ItemOreTFC> allOreItems;
@@ -258,6 +266,8 @@ public final class ItemsTFC
         }
 
         simpleItems.add(register(r, "stick_bunch", new ItemMisc(Size.NORMAL, Weight.LIGHT), CT_WOOD));
+        simpleItems.add(register(r, "stick_bundle", new ItemMisc(Size. VERY_LARGE, Weight.MEDIUM, "log_wood", "stick_bundle"), CT_WOOD));
+        simpleItems.add(register(r, "wood_ash", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT), CT_WOOD));
 
         for (RockCategory cat : TFCRegistries.ROCK_CATEGORIES.getValuesCollection())
         {
@@ -284,6 +294,7 @@ public final class ItemsTFC
             }
 
             simpleItems.add(register(r, "ceramics/unfired/large_vessel", new ItemUnfiredLargeVessel(), CT_POTTERY));
+            simpleItems.add(register(r, "ceramics/unfired/crucible", new ItemPottery(Size.LARGE, Weight.VERY_HEAVY), CT_POTTERY));
 
             registerPottery(simpleItems, r, "ceramics/unfired/vessel", "ceramics/fired/vessel", new ItemUnfiredSmallVessel(false), new ItemSmallVessel(false));
             registerPottery(null, r, "ceramics/unfired/vessel_glazed", "ceramics/fired/vessel_glazed", new ItemUnfiredSmallVessel(true), new ItemSmallVessel(true));
@@ -348,6 +359,7 @@ public final class ItemsTFC
 
         simpleItems.add(register(r, "firestarter", new ItemFireStarter(), CT_MISC));
         simpleItems.add(register(r, "straw", new ItemMisc(Size.SMALL, Weight.VERY_LIGHT, "kindling", "straw"), CT_MISC));
+        simpleItems.add(register(r, "glass_shard", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT), CT_MISC));
         simpleItems.add(register(r, "handstone", new ItemCraftingTool(250, Size.NORMAL, Weight.VERY_HEAVY, "handstone"), CT_MISC));
 
         simpleItems.add(register(r, "spindle", new ItemCraftingTool(40, Size.NORMAL, Weight.MEDIUM, "spindle"), CT_MISC));

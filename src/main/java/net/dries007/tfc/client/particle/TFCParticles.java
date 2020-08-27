@@ -29,7 +29,14 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public enum TFCParticles
 {
     STEAM(new ResourceLocation(MOD_ID, "particle/steam"), ParticleSteam::new),
-    FIRE_PIT_SMOKE(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke"), ParticleFirePitSmoke::new);
+    FIRE_PIT_SMOKE1(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke1"), ParticleFirePitSmoke::new),
+    FIRE_PIT_SMOKE2(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke2"), ParticleFirePitSmoke::new),
+    FIRE_PIT_SMOKE3(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke3"), ParticleFirePitSmoke::new),
+    LEAF1(new ResourceLocation(MOD_ID, "particle/leaf1"), ParticleLeaf::new),
+    LEAF2(new ResourceLocation(MOD_ID, "particle/leaf2"), ParticleLeaf::new),
+    LEAF3(new ResourceLocation(MOD_ID, "particle/leaf3"), ParticleLeaf::new),
+    SPARK(new ResourceLocation(MOD_ID, "particle/spark"), ParticleSpark::new),
+    BUBBLE(new ResourceLocation(MOD_ID, "particle/bubble"), ParticleBubbleTFC::new);
 
     @SubscribeEvent
     public static void onTextureStitchEvent(TextureStitchEvent.Pre event)

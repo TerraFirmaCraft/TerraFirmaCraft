@@ -11,6 +11,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.objects.items.ItemsTFC;
+import net.dries007.tfc.util.DamageSourcesTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -51,6 +53,10 @@ import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TEFirePit;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+
+import static net.dries007.tfc.Constants.RNG;
 
 @ParametersAreNonnullByDefault
 public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILightableBlock
@@ -58,8 +64,8 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     public static final PropertyEnum<FirePitAttachment> ATTACHMENT = PropertyEnum.create("attachment", FirePitAttachment.class);
 
     private static final AxisAlignedBB FIREPIT_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
-    private static final AxisAlignedBB FIREPIT_ATTACHMENT_SELECTION_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.7, 1);
-    private static final AxisAlignedBB ATTACHMENT_COLLISION_ADDITION_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.6875, 0.8125);
+    private static final AxisAlignedBB FIREPIT_ATTACHMENT_SELECTION_AABB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
+    private static final AxisAlignedBB ATTACHMENT_COLLISION_ADDITION_AABB = new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.9375, 0.8125);
 
     public BlockFirePit()
     {
@@ -151,12 +157,53 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         {
             world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F + rng.nextFloat(), rng.nextFloat() * 0.7F + 0.3F, false);
         }
+
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 0.1;
         double z = pos.getZ() + 0.5;
+        switch(rng.nextInt(3))
+        {
+            case 0:
+                TFCParticles.FIRE_PIT_SMOKE1.spawn(world, x, y, z, 0, 0.1D, 0, 120);
+                break;
+            case 1:
+                TFCParticles.FIRE_PIT_SMOKE2.spawn(world, x, y, z, 0, 0.1D, 0, 110);
+                break;
+            case 2:
+                TFCParticles.FIRE_PIT_SMOKE3.spawn(world, x, y, z, 0, 0.1D, 0, 100);
+                break;
+        }
 
-        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + rng.nextFloat() - 0.5, y, z + rng.nextFloat() - 0.5, 0.0D, 0.2D, 0.0D);
-        TFCParticles.FIRE_PIT_SMOKE.spawn(world, x, y, z, 0, 0.2D, 0, 120);
+        if(state.getValue(ATTACHMENT) == FirePitAttachment.COOKING_POT)
+        {
+            TEFirePit tile = Helpers.getTE(world, pos, TEFirePit.class);
+            if (tile.getCookingPotStage() == TEFirePit.CookingPotStage.BOILING)
+            {
+                for (int i = 0; i < rng.nextInt(5) + 4; i++)
+                    TFCParticles.BUBBLE.spawn(world, x + rng.nextFloat() * 0.375 - 0.1875, y + 0.525, z + rng.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0, 3);
+                TFCParticles.STEAM.spawn(world, x, y + 0.425F, z, 0, 0, 0, (int) (12.0F / (rng.nextFloat() * 0.9F + 0.1F)));
+                world.playSound(x, y + 0.425F, z, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS, 1.0F, rng.nextFloat() * 0.7F + 0.4F, false);
+            }
+        }
+        if ((state.getValue(ATTACHMENT) == FirePitAttachment.GRILL))
+        {
+            TEFirePit tile = Helpers.getTE(world, pos, TEFirePit.class);
+            IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            boolean anythingInInv = false;
+            for (int i = TEFirePit.SLOT_EXTRA_INPUT_START; i <= TEFirePit.SLOT_EXTRA_INPUT_END; i++)
+            {
+                if(!cap.getStackInSlot(i).isEmpty())
+                {
+                    anythingInInv = true;
+                    break;
+                }
+            }
+            if (state.getValue(LIT) && anythingInInv)
+            {
+                world.playSound(x, y + 0.425F, z, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.25F, rng.nextFloat() * 0.7F + 0.4F, false);
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + rng.nextFloat()/2 - 0.25, y + 0.6, z + rng.nextFloat()/2 - 0.25, 0.0D, 0.1D, 0.0D);
+            }
+        }
     }
 
     @Override
@@ -273,6 +320,41 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
             {
                 TFCGuiHandler.openGui(worldIn, pos, player, TFCGuiHandler.Type.FIRE_PIT);
             }
+            else if ((held == ItemStack.EMPTY) && (attachment != FirePitAttachment.NONE))
+            {
+                boolean anythingInTheInv = false;
+                IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                for (int i = TEFirePit.SLOT_EXTRA_INPUT_START; i <= TEFirePit.SLOT_EXTRA_INPUT_END; i++)
+                {
+                    if(!cap.getStackInSlot(i).isEmpty())
+                    {
+                        anythingInTheInv = true;
+                        break;
+                    }
+                }
+                if (!anythingInTheInv)
+                {
+                    if (state.getValue(LIT))
+                    {
+                        if (attachment == FirePitAttachment.COOKING_POT)
+                        {
+                            player.attackEntityFrom(DamageSourcesTFC.SOUP, 1);
+                        }
+                        else
+                        {
+                            player.attackEntityFrom(DamageSourcesTFC.GRILL, 1);
+                        }
+
+                    }
+                    else
+                    {
+                        tile.onRemoveAttachment(player, held);
+                        worldIn.setBlockState(pos, state.withProperty(ATTACHMENT, FirePitAttachment.NONE));
+                        return true;
+                    }
+
+                }
+            }
 
         }
         return true;
@@ -347,6 +429,13 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         {
             teFirePit.onAirIntake(airAmount);
         }
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        for (int i = 3; i <= 3 + RNG.nextInt(5); i++)
+            drops.add(ItemsTFC.WOOD_ASH.getDefaultInstance());
     }
 
     private boolean canBePlacedOn(World worldIn, BlockPos pos)

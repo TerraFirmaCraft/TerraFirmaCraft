@@ -219,6 +219,7 @@ METAL_ITEMS = {
     'sheet': False,
     'double_sheet': False,
     'anvil': True,
+    'trapdoor': False,
     'tuyere': True,
     'lamp': False,
     'pick': True,
@@ -284,6 +285,7 @@ FLUIDS = {
     'milk': 'milk',
     'olive_oil': 'olive_oil',
     'tannin': 'tannin',
+    'lye': 'lye',
     'limewater': 'limewater',
     'milk_curdled': 'milk_curdled',
     'milk_vinegar': 'milk_vinegar',
@@ -700,7 +702,6 @@ for key in METAL_TYPES:
         'facing': {'up': {}, 'down': {'model': "tfc:lamp/down"}}
     })
 
-
 # METAL SHEETS
 for key in METAL_TYPES:
     blockstate(('sheet', key), 'tfc:empty', textures={
@@ -1116,6 +1117,9 @@ for item_type, tool_item in METAL_ITEMS.items():
         if item_type == 'anvil':
             model(('item', 'metal', 'anvil', metal), 'tfc:item/metal/anvil/transformations',
                   {'all': 'tfc:blocks/metal/%s' % metal})
+        if item_type == 'trapdoor':
+            model(('item', 'metal', 'trapdoor', metal), 'block/trapdoor_bottom',
+                  {'texture': 'tfc:blocks/trapdoor/%s' % metal})
         else:
             parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
             if item_type in ['knife', 'javelin']:

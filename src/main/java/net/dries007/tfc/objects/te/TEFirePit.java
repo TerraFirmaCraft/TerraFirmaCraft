@@ -188,6 +188,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
             BlockFirePit.FirePitAttachment attachment = state.getValue(ATTACHMENT);
             if (attachment == BlockFirePit.FirePitAttachment.NONE)
             {
+                markForSync();
                 if (temperature > 0)
                 {
                     // The fire pit is nice: it will automatically move input to output for you, saving the trouble of losing the input due to melting / burning
@@ -222,6 +223,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
             {
                 if (cookingPotStage == CookingPotStage.WAITING)
                 {
+                    markForSync();
                     if (temperature > COOKING_POT_BOILING_TEMPERATURE)
                     {
                         // Begin boiling
@@ -581,6 +583,12 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
         attachedItemStack = stack.splitStack(1);
     }
 
+    public void onRemoveAttachment(EntityPlayer player, ItemStack stack)
+    {
+        ItemHandlerHelper.giveItemToPlayer(player, attachedItemStack);
+        attachedItemStack = ItemStack.EMPTY;
+    }
+
     public void addWaterToCookingPot()
     {
         // Advance the stage
@@ -793,6 +801,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
             ItemStack output = recipe.getOutputStack(stack);
             CapabilityFood.applyTrait(output, FoodTrait.WOOD_GRILLED);
             inventory.setStackInSlot(slot, output);
+            markForSync();
         }
     }
 

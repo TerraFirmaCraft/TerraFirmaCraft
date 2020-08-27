@@ -65,6 +65,7 @@ public final class FluidsTFC
     public static FluidWrapper MILK_VINEGAR;
     public static FluidWrapper OLIVE_OIL;
     public static FluidWrapper OLIVE_OIL_WATER;
+    public static FluidWrapper LYE;
     // Alcohols
     public static FluidWrapper CIDER;
     public static FluidWrapper VODKA;
@@ -191,7 +192,8 @@ public final class FluidsTFC
                 TANNIN = registerFluid(new Fluid("tannin", STILL, FLOW, 0xFF63594E)),
                 LIMEWATER = registerFluid(new Fluid("limewater", STILL, FLOW, 0xFFB4B4B4)),
                 CURDLED_MILK = registerFluid(new Fluid("milk_curdled", STILL, FLOW, 0xFFFFFBE8)),
-                MILK_VINEGAR = registerFluid(new Fluid("milk_vinegar", STILL, FLOW, 0xFFFFFBE8))
+                MILK_VINEGAR = registerFluid(new Fluid("milk_vinegar", STILL, FLOW, 0xFFFFFBE8)),
+                LYE = registerFluid(new Fluid("lye", STILL, FLOW, 0xFFfeffde))
             )
             .build();
 

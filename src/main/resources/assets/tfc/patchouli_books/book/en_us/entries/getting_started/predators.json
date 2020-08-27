@@ -50,6 +50,41 @@
       "text": "The Panther hunts during the night.",
       "entity": "tfc:panthertfc",
       "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "Direwolf",
+      "text": "The Direwolf hunts during the night.",
+      "entity": "tfc:direwolftfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "Jackal",
+      "text": "The Jackal hunts during the night.",
+      "entity": "tfc:jackaltfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "Black Bear",
+      "text": "The Black Bear hunts during the day.",
+      "entity": "tfc:blackbeartfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "Cougar",
+      "text": "The Cougar hunts during the night.",
+      "entity": "tfc:cougartfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "Coyote",
+      "text": "The Coyote hunts during the night.",
+      "entity": "tfc:coyotetfc",
+      "scale": 0.7
     }
   ]
 }

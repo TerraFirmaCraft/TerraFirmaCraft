@@ -12,9 +12,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.objects.blocks.metal.BlockTrapDoorMetalTFC;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -48,6 +50,10 @@ public class ItemMetal extends ItemTFC implements IMetalItem
         if (type == Metal.ItemType.LAMP)
         {
             return ItemBlockMetalLamp.get(metal);
+        }
+        if (type == Metal.ItemType.TRAPDOOR)
+        {
+            return ItemBlock.getItemFromBlock(BlockTrapDoorMetalTFC.get(metal));
         }
         return TABLE.get(metal).get(type);
     }
@@ -205,6 +211,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
             case DUST:
             case LAMP:
             case ANVIL:
+            case TRAPDOOR:
             case SCRAP:
             case INGOT:
             case SHEET:

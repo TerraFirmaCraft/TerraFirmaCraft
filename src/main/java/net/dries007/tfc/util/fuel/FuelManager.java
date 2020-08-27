@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -61,6 +62,9 @@ public final class FuelManager
 
         // Peat
         FUELS.add(new Fuel(IIngredient.of("peat"), 2500, 680));
+
+        // Stick Bundle
+        FUELS.add(new Fuel(IIngredient.of("stickBundle"), 600, 900));
     }
 
     /**
