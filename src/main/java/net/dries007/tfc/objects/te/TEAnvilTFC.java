@@ -243,7 +243,7 @@ public class TEAnvilTFC extends TEInventory
                 AnvilRecipe completedRecipe = recipe; // Hold the current recipe, as setting the input slot to empty will clear it
                 int workMin = workingTarget - ConfigTFC.General.DIFFICULTY.acceptableAnvilRange;
                 int workMax = workingTarget + ConfigTFC.General.DIFFICULTY.acceptableAnvilRange;
-                if ((workingProgress < workMax && workingProgress > workMin) && completedRecipe.matches(steps))
+                if ((workingProgress <= workMax && workingProgress >= workMin) && completedRecipe.matches(steps))
                 {
                     //Consume input
                     inventory.setStackInSlot(SLOT_INPUT_1, ItemStack.EMPTY);
