@@ -855,10 +855,10 @@ config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数目，�
 ### Config Names
 config.tfc.animals.alpaca=羊驼
 config.tfc.animals.sheep=绵羊
-config.tfc.animals.cow=母奶牛
+config.tfc.animals.cow=奶牛
 config.tfc.animals.goat=山羊
-config.tfc.animals.chicken=母鸡
-config.tfc.animals.duck=母鸭
+config.tfc.animals.chicken=鸡
+config.tfc.animals.duck=鸭
 config.tfc.animals.pig=猪
 config.tfc.animals.camel=骆驼
 config.tfc.animals.llama=驼马
