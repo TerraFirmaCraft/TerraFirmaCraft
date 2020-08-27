@@ -80,6 +80,17 @@ def generate(rm: ResourceManager):
             rm.item_model('tfc:ore/%s' % ore) \
             .with_lang(lang('%s', ore))
             if ore_data.graded:
+                rm.blockstate('tfc:groundcover/%s' % ore, variants ={
+                    "facing=east": {"model": "tfc:block/groundcover/%s" % ore,"y": 90},
+                    "facing=north": {"model": "tfc:block/groundcover/%s" % ore},
+                    "facing=south": {"model": "tfc:block/groundcover/%s" % ore,"y": 180},
+                    "facing=west": {"model": "tfc:block/groundcover/%s" % ore,"y": 270}}) \
+                    .with_lang(lang('%s Nugget', ore)) \
+                    .with_item_model() \
+                    .with_block_loot('tfc:ore/small/%s' % ore)
+                rm.block_loot('tfc:ore/poor_%s/%s' % (ore, rock), 'tfc:ore/poor/%s' % ore)
+                rm.block_loot('tfc:ore/normal_%s/%s' % (ore, rock), 'tfc:ore/%s' % ore)
+                rm.block_loot('tfc:ore/rich_%s/%s' % (ore, rock), 'tfc:ore/rich/%s' % ore)
                 for grade in ORE_GRADES:
                     rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock)) \
                         .with_block_model({
@@ -101,16 +112,7 @@ def generate(rm: ResourceManager):
                 }, parent='tfc:block/ore') \
                     .with_item_model() \
                     .with_lang(lang('%s %s', rock, ore))
-    # Nugget Blocks
-    for ore, ore_data in ORES.items():
-        if ore_data.graded:
-            rm.blockstate('tfc:groundcover/%s' % ore, variants ={
-                "facing=east": {"model": "tfc:block/groundcover/%s" % ore,"y": 90},
-                "facing=north": {"model": "tfc:block/groundcover/%s" % ore},
-                "facing=south": {"model": "tfc:block/groundcover/%s" % ore,"y": 180},
-                "facing=west": {"model": "tfc:block/groundcover/%s" % ore,"y": 270}}) \
-                .with_lang(lang('%s Nugget', ore)) \
-                .with_item_model()
+                rm.block_loot('tfc:ore/%s/%s' % (ore, rock), 'tfc:ore/%s' % ore)
 
     # Sand
     for sand in SAND_BLOCK_TYPES:
