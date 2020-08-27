@@ -22,6 +22,16 @@
       "type": "multiblock",
       "multiblock_id": "tfc:charcoal_pit_3x3",
       "text": "This is an example of a larger charcoal pit you can try. However, almost any shape will work!"
-    }
+    },
+	{
+	  "type": "crafting",
+	  "recipe": "tfc:stick_bunch",
+	  "text": "The Stick Bunch is used to store sticks. It can be cooked into torches."
+	},
+	{
+	  "type": "crafting",
+	  "recipe": "tfc:stick_bundle",
+	  "text": "The Stick Bundle is for all intents and purposes a kind of log. You can use it to make charcoal pits as well as cook it in a firepit."
+	}
   ]
 }
