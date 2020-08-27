@@ -36,6 +36,42 @@
       "name": "兔",
       "text": "反正打就对了。",
       "entity": "tfc:rabbittfc"
-    }
+    },
+    {
+      "type": "entity",
+      "name": "野兔",
+      "text": "野兔也是兔。",
+      "entity": "tfc:haretfc"
+    },
+    {
+      "type": "entity",
+      "name": "野猪",
+      "text": "猪会哼哼，但你不要啊啊啊啊。",
+      "entity": "tfc:boartfc"
+    },
+    {
+      "type": "entity",
+      "name": "羚羊",
+      "text": "速度堪比香港记者。",
+      "entity": "tfc:gazelletfc"
+    },
+    {
+      "type": "entity",
+      "name": "角马",
+      "text": "角马又叫牛羚，但羚牛又是另一种生物了。",
+      "entity": "tfc:wildebeesttfc"
+    },
+    {
+      "type": "entity",
+      "name": "獴",
+      "text": "看上去像是长得丑的猫。",
+      "entity": "tfc:mongoosetfc"
+    },
+    {
+      "type": "entity",
+      "name": "火鸡",
+      "text": "感恩节大餐。",
+      "entity": "tfc:turkeytfc"
+	}
   ]
 }
