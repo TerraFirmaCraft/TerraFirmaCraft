@@ -7,7 +7,7 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:saw_blade_bronze",
-      "text": "既然你已经得到了金属，那么你就可以将原木加工为更多有用的东西了！首先，你需要$(l:basic_smithing/casting)浇铸$()或$(l:basic_smithing/anvil)打造$()出一把锯。大多数情况下锯是用来合成其他东西的，不过你乐意的话也可以用它砍树。"
+      "text": "既然你已经得到了金属，那么你就可以将原木加工为更多有用的东西了！首先，你需要$(l:basic_smithing/casting)浇铸$()或$(l:basic_smithing/anvil)锻造$()出一把锯。大多数情况下锯是用来合成其他东西的，不过你乐意的话也可以用它砍树。"
     },
     {
       "type": "crafting",
