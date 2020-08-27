@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.compat.patchouli;
 
+import java.util.Collections;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,6 +13,7 @@ import javax.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -21,6 +23,8 @@ import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.VariableHolder;
 import vazkii.patchouli.client.book.gui.GuiBook;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
 @SuppressWarnings("unused")
 public abstract class KnappingComponent extends CustomComponent
 {
@@ -28,7 +32,8 @@ public abstract class KnappingComponent extends CustomComponent
     @SerializedName("recipe")
     public String recipeName;
 
-    private transient KnappingRecipe recipe;
+    @Nullable
+    protected transient KnappingRecipe recipe;
 
     @Override
     public void build(int componentX, int componentY, int pageNum)
@@ -37,7 +42,6 @@ public abstract class KnappingComponent extends CustomComponent
         this.posY = componentY;
         Objects.requireNonNull(recipeName, "Missing recipe name?");
         this.recipe = TFCRegistries.KNAPPING.getValue(new ResourceLocation(recipeName));
-        Objects.requireNonNull(recipe, "Unknown knapping recipe: " + recipeName);
     }
 
     @Override
@@ -56,23 +60,45 @@ public abstract class KnappingComponent extends CustomComponent
         ResourceLocation squareHigh = getSquareHigh(ticks);
         ResourceLocation squareLow = getSquareLow(ticks);
 
-        for (int y = 0; y < recipe.getMatrix().getHeight(); y++)
+        if (recipe != null)
         {
-            for (int x = 0; x < recipe.getMatrix().getWidth(); x++)
+            for (int y = 0; y < recipe.getMatrix().getHeight(); y++)
             {
-                if (recipe.getMatrix().get(x, y) && squareHigh != null)
+                for (int x = 0; x < recipe.getMatrix().getWidth(); x++)
                 {
-                    context.getGui().mc.getTextureManager().bindTexture(squareHigh);
-                    Gui.drawModalRectWithCustomSizedTexture(5 + x * 16, 5 + y * 16, 0, 0, 16, 16, 16, 16);
+                    if (recipe.getMatrix().get(x, y) && squareHigh != null)
+                    {
+                        context.getGui().mc.getTextureManager().bindTexture(squareHigh);
+                        Gui.drawModalRectWithCustomSizedTexture(5 + x * 16, 5 + y * 16, 0, 0, 16, 16, 16, 16);
+                    }
+                    else if (squareLow != null)
+                    {
+                        context.getGui().mc.getTextureManager().bindTexture(squareLow);
+                        Gui.drawModalRectWithCustomSizedTexture(5 + x * 16, 5 + y * 16, 0, 0, 16, 16, 16, 16);
+                    }
                 }
-                else if (squareLow != null)
+            }
+            context.renderItemStack(95, 37, mouseX, mouseY, recipe.getOutput(getInputItem(ticks)));
+        }
+        else
+        {
+            Gui.drawModalRectWithCustomSizedTexture(92, 34, 2, 144, 22, 22, 256, 256);
+            if (context.isAreaHovered(mouseX, mouseY, 92, 34, 22, 22))
+            {
+                context.setHoverTooltip(Collections.singletonList(I18n.format(MOD_ID + ".patchouli.recipe_removed")));
+            }
+            for (int y = 0; y < 5; y++)
+            {
+                for (int x = 0; x < 5; x++)
                 {
-                    context.getGui().mc.getTextureManager().bindTexture(squareLow);
-                    Gui.drawModalRectWithCustomSizedTexture(5 + x * 16, 5 + y * 16, 0, 0, 16, 16, 16, 16);
+                    if (squareHigh != null)
+                    {
+                        context.getGui().mc.getTextureManager().bindTexture(squareHigh);
+                        Gui.drawModalRectWithCustomSizedTexture(5 + x * 16, 5 + y * 16, 0, 0, 16, 16, 16, 16);
+                    }
                 }
             }
         }
-        context.renderItemStack(95, 37, mouseX, mouseY, recipe.getOutput(getInputItem(ticks)));
         GlStateManager.popMatrix();
     }
 

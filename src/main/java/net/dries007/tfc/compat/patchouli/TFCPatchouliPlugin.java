@@ -5,6 +5,9 @@
 
 package net.dries007.tfc.compat.patchouli;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -52,6 +55,16 @@ public class TFCPatchouliPlugin
         {
             return Ingredient.EMPTY;
         }
+    }
+
+    public static Ingredient getIngredient(List<IIngredient<ItemStack>> ingredients)
+    {
+        List<ItemStack> stacks = new ArrayList<>();
+        for (IIngredient<ItemStack> ingredient : ingredients)
+        {
+            stacks.addAll(ingredient.getValidIngredients());
+        }
+        return Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
     }
 
     public static void init()
