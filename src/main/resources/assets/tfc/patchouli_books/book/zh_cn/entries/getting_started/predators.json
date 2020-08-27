@@ -11,9 +11,9 @@
     },
     {
       "type": "entity",
-      "name": "熊",
+      "name": "棕熊",
       "text": "会在日间狩猎。",
-      "entity": "tfc:beartfc",
+      "entity": "tfc:grizzlybeartfc",
       "scale": 0.7
     },
     {
@@ -49,6 +49,41 @@
       "name": "黑豹",
       "text": "会在夜间狩猎。",
       "entity": "tfc:panthertfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "冰原狼",
+      "text": "会在夜间狩猎。",
+      "entity": "tfc:direwolftfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "豺",
+      "text": "会在夜间狩猎。",
+      "entity": "tfc:jackaltfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "黑熊",
+      "text": "会在日间狩猎。",
+      "entity": "tfc:blackbeartfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "山狮",
+      "text": "会在夜间狩猎。",
+      "entity": "tfc:cougartfc",
+      "scale": 0.7
+    },
+    {
+      "type": "entity",
+      "name": "郊狼",
+      "text": "会在夜间狩猎。",
+      "entity": "tfc:coyotetfc",
       "scale": 0.7
     }
   ]
