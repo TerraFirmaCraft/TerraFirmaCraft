@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.dries007.tfc.ConfigTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -240,7 +241,9 @@ public class TEAnvilTFC extends TEInventory
             if (recipe != null)
             {
                 AnvilRecipe completedRecipe = recipe; // Hold the current recipe, as setting the input slot to empty will clear it
-                if (workingProgress == workingTarget && completedRecipe.matches(steps))
+                int workMin = workingTarget - ConfigTFC.General.DIFFICULTY.acceptableAnvilRange;
+                int workMax = workingTarget + ConfigTFC.General.DIFFICULTY.acceptableAnvilRange;
+                if ((workingProgress <= workMax && workingProgress >= workMin) && completedRecipe.matches(steps))
                 {
                     //Consume input
                     inventory.setStackInSlot(SLOT_INPUT_1, ItemStack.EMPTY);

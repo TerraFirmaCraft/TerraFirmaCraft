@@ -127,7 +127,14 @@ public class BarrelRecipeWrapper implements IRecipeWrapper
         String text;
         if (recipe.getDuration() > 0)
         {
-            text = I18n.format("jei.tooltips.tfc.barrel.duration", recipe.getDuration() / ICalendar.TICKS_IN_HOUR);
+            if (recipe.getDuration() / ICalendar.TICKS_IN_HOUR < 25)
+            {
+                text = I18n.format("jei.tooltips.tfc.barrel.duration.short", recipe.getDuration() / ICalendar.TICKS_IN_HOUR);
+            }
+            else
+            {
+                text = I18n.format("jei.tooltips.tfc.barrel.duration",recipe.getDuration() / ICalendar.TICKS_IN_DAY);
+            }
         }
         else
         {

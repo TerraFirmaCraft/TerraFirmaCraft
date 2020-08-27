@@ -27,6 +27,10 @@
     {
       "type": "text",
       "text": "Dyes follow the regular color mixing recipes in the crafting menu like in Vanilla, however TFC provides another feature--dye liquids. In a Barrel, sealing a dye in 1,000mB of Hot Spring Water will create a liquid of that dye, in which you can seal dyeable items (like wool) to dye them. This is less expensive than traditional dyeing. You can also mix colors in barrels like this."
-    }
+    },
+    {
+      "type": "text",
+	  "text": "Only things that are in their natural state, such as White Wool and Aggregate, are able to be dyed. If you dye something the wrong color, use $(item)Lye$() to un-dye it. Lye is made by putting $(item)Wood Ash$() (dropped by campfires) in 125mB of Spring Water. Sealing 125mB of Lye with a dyed item will remove the dye."
+	}
   ]
 }

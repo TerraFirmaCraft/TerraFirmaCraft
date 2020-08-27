@@ -23,13 +23,8 @@ public class ParticleFirePitSmoke extends Particle
         this.motionX += speedX;
         this.motionY += speedY;
         this.motionZ += speedZ;
-        float color = 0.5F + rand.nextFloat() * 0.5F;
-        // brownish
-        this.particleRed = (float) 0x62 / 0xFF * color;
-        this.particleGreen = (float) 0x4A / 0xFF * color;
-        this.particleBlue = (float) 0x2E / 0xFF * color;
-        this.particleScale *= 0.75F;
-        this.particleScale *= 2.5F;
+        this.particleScale *= 1.3F + (rand.nextFloat()/4);
+        this.particleAlpha = (float) 0.5;
     }
 
     @Override

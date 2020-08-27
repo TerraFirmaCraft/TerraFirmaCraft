@@ -7,6 +7,7 @@ package net.dries007.tfc.objects.blocks;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import net.dries007.tfc.objects.blocks.metal.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.material.MapColor;
@@ -31,10 +32,6 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.agriculture.*;
 import net.dries007.tfc.objects.blocks.devices.*;
-import net.dries007.tfc.objects.blocks.metal.BlockAnvilTFC;
-import net.dries007.tfc.objects.blocks.metal.BlockIngotPile;
-import net.dries007.tfc.objects.blocks.metal.BlockMetalLamp;
-import net.dries007.tfc.objects.blocks.metal.BlockMetalSheet;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;
@@ -109,6 +106,7 @@ public final class BlocksTFC
     private static ImmutableList<BlockSaplingTFC> allSaplingBlocks;
     private static ImmutableList<BlockDoorTFC> allDoorBlocks;
     private static ImmutableList<BlockTrapDoorWoodTFC> allTrapDoorWoodBlocks;
+    private static ImmutableList<BlockTrapDoorMetalTFC> allTrapDoorMetalBlocks;
     private static ImmutableList<BlockStairsTFC> allStairsBlocks;
     private static ImmutableList<BlockSlabTFC.Half> allSlabBlocks;
     private static ImmutableList<BlockChestTFC> allChestBlocks;
@@ -193,6 +191,11 @@ public final class BlocksTFC
     public static ImmutableList<BlockTrapDoorWoodTFC> getAllTrapDoorWoodBlocks()
     {
         return allTrapDoorWoodBlocks;
+    }
+
+    public static ImmutableList<BlockTrapDoorMetalTFC> getAllTrapDoorMetalBlocks()
+    {
+        return allTrapDoorMetalBlocks;
     }
 
     public static ImmutableList<BlockStairsTFC> getAllStairsBlocks()
@@ -536,20 +539,26 @@ public final class BlocksTFC
             Builder<BlockAnvilTFC> anvils = ImmutableList.builder();
             Builder<BlockMetalSheet> sheets = ImmutableList.builder();
             Builder<BlockMetalLamp> lamps = ImmutableList.builder();
+            Builder<BlockTrapDoorMetalTFC> metalTrapdoors = ImmutableList.builder();
 
             for (Metal metal : TFCRegistries.METALS.getValuesCollection())
             {
                 if (Metal.ItemType.ANVIL.hasType(metal))
                     anvils.add(register(r, "anvil/" + metal.getRegistryName().getPath(), new BlockAnvilTFC(metal), CT_METAL));
                 if (Metal.ItemType.SHEET.hasType(metal))
+                {
                     sheets.add(register(r, "sheet/" + metal.getRegistryName().getPath(), new BlockMetalSheet(metal), CT_METAL));
+                    metalTrapdoors.add(register(r, "trapdoor/" + metal.getRegistryName().getPath(), new BlockTrapDoorMetalTFC(metal), CT_METAL));
+                }
                 if (Metal.ItemType.LAMP.hasType(metal))
                     lamps.add(register(r, "lamp/" + metal.getRegistryName().getPath(), new BlockMetalLamp(metal), CT_METAL));
+
             }
 
             allAnvils = anvils.build();
             allSheets = sheets.build();
             allLamps = lamps.build();
+            allTrapDoorMetalBlocks = metalTrapdoors.build();
         }
 
         {
@@ -662,7 +671,6 @@ public final class BlocksTFC
 
         // Note: if you add blocks you don't need to put them in this list of todos. Feel free to add them where they make sense :)
 
-        // todo: metal trap doors
         // todo: smoke rack (placed with any string, so event based?) + smoke blocks or will we use particles?
         // todo: custom flower pot (TE based probably, unless we want to not care about the dirt in it)
 

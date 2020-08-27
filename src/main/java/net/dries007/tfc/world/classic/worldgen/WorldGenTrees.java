@@ -34,23 +34,26 @@ public class WorldGenTrees implements IWorldGenerator
 {
     public static void generateLooseSticks(Random rand, int chunkX, int chunkZ, World world, int amount)
     {
-        for (int i = 0; i < amount; i++)
+        if (ConfigTFC.General.WORLD.enableLooseSticks)
         {
-            final int x = chunkX * 16 + rand.nextInt(16) + 8;
-            final int z = chunkZ * 16 + rand.nextInt(16) + 8;
-            final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
-
-            // Use air, so it doesn't replace other replaceable world gen
-            // This matches the check in BlockPlacedItemFlat for if the block can stay
-            // Also, only add on soil, since this is called by the world regen handler later
-            IBlockState stateDown = world.getBlockState(pos.down());
-            if (world.isAirBlock(pos) && stateDown.isSideSolid(world, pos.down(), EnumFacing.UP) && BlocksTFC.isGround(stateDown))
+            for (int i = 0; i < amount; i++)
             {
-                world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
-                TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
-                if (tile != null)
+                final int x = chunkX * 16 + rand.nextInt(16) + 8;
+                final int z = chunkZ * 16 + rand.nextInt(16) + 8;
+                final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
+
+                // Use air, so it doesn't replace other replaceable world gen
+                // This matches the check in BlockPlacedItemFlat for if the block can stay
+                // Also, only add on soil, since this is called by the world regen handler later
+                IBlockState stateDown = world.getBlockState(pos.down());
+                if (world.isAirBlock(pos) && stateDown.isSideSolid(world, pos.down(), EnumFacing.UP) && BlocksTFC.isGround(stateDown))
                 {
-                    tile.setStack(new ItemStack(Items.STICK));
+                    world.setBlockState(pos, BlocksTFC.PLACED_ITEM_FLAT.getDefaultState());
+                    TEPlacedItemFlat tile = (TEPlacedItemFlat) world.getTileEntity(pos);
+                    if (tile != null)
+                    {
+                        tile.setStack(new ItemStack(Items.STICK));
+                    }
                 }
             }
         }

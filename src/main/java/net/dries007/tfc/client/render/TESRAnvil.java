@@ -35,7 +35,7 @@ public class TESRAnvil extends TileEntitySpecialRenderer<TEAnvilTFC>
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
             GlStateManager.rotate(90f, 1f, 0f, 0f);
             GlStateManager.rotate(90f * rotation, 0f, 0f, 1f);
-            GlStateManager.translate(1.1f, 0, 0);
+            GlStateManager.translate(1.2f, 0, 0);
 
             // Hammer Item
             ItemStack hammer = cap.getStackInSlot(SLOT_HAMMER);
@@ -44,7 +44,7 @@ public class TESRAnvil extends TileEntitySpecialRenderer<TEAnvilTFC>
                 Minecraft.getMinecraft().getRenderItem().renderItem(hammer, ItemCameraTransforms.TransformType.FIXED);
             }
 
-            GlStateManager.translate(-1.2f, 0, 0);
+            GlStateManager.translate(-1.3f, 0, 0);
             ItemStack input1 = cap.getStackInSlot(SLOT_INPUT_1);
             if (!input1.isEmpty())
             {
@@ -58,18 +58,15 @@ public class TESRAnvil extends TileEntitySpecialRenderer<TEAnvilTFC>
                 Minecraft.getMinecraft().getRenderItem().renderItem(input2, ItemCameraTransforms.TransformType.FIXED);
             }
 
-            /* Commented out because it looks funky too small.
-            // If you want to try tweaking this, feel free to do it so.
             ItemStack flux = cap.getStackInSlot(SLOT_FLUX);
             if (!flux.isEmpty())
             {
                 GlStateManager.pushMatrix();
-                GlStateManager.translate(0.2f, -0.4f, 0.05f);
-                GlStateManager.scale(0.3f, 0.3f, 0.3f);
+                GlStateManager.translate(0.9f, -0.25f, 0.05f);
+                GlStateManager.scale(0.6f, 0.6f, 0.6f);
                 Minecraft.getMinecraft().getRenderItem().renderItem(flux, ItemCameraTransforms.TransformType.FIXED);
                 GlStateManager.popMatrix();
             }
-            */
 
 
             GlStateManager.popMatrix();

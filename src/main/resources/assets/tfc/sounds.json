@@ -29,6 +29,13 @@
       "tfc:jugblow1"
     ]
   },
+  "item.jug.fill": {
+    "category": "ambient",
+    "subtitle": "tfc.item.jug.fill",
+    "sounds": [
+      "tfc:jugfill"
+    ]
+  },
   "item.throw": {
     "category": "ambient",
     "subtitle": "tfc.item.throw",
