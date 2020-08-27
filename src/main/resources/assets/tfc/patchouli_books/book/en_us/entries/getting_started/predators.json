@@ -81,15 +81,8 @@
     },
     {
       "type": "entity",
-      "name": "Panther",
-      "text": "The Panther hunts during the night.",
-      "entity": "tfc:panthertfc",
-      "scale": 0.7
-    },
-    {
-      "type": "entity",
-      "name": "Panther",
-      "text": "The Panther hunts during the night.",
+      "name": "Coyote",
+      "text": "The Coyote hunts during the night.",
       "entity": "tfc:coyotetfc",
       "scale": 0.7
     }
