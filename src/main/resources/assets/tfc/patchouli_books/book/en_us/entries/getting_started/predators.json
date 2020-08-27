@@ -13,7 +13,7 @@
       "type": "entity",
       "name": "Bear",
       "text": "The Bear attacks during the day.",
-      "entity": "tfc:beartfc",
+      "entity": "tfc:grizzlybeartfc",
       "scale": 0.7
     },
     {
