@@ -412,9 +412,8 @@ FOODS = [
     'venison',
     'rabbit',
     'wolf',
-    'viande',
-    'chevon',
-    'duck',
+    'camelidae',
+    'mongoose',
     'gran_feline',
     'cooked_beef',
     'cooked_pork',
@@ -428,9 +427,8 @@ FOODS = [
     'cooked_wolf',
     'cooked_venison',
     'cooked_rabbit',
-    'cooked_viande',
-    'cooked_chevon',
-    'cooked_duck',
+    'cooked_camelidae',
+    'cooked_mongoose',
     'cooked_gran_feline',
     'barley_bread_sandwich',
     'cornbread_sandwich',
@@ -1117,7 +1115,7 @@ for item_type, tool_item in METAL_ITEMS.items():
         if item_type == 'anvil':
             model(('item', 'metal', 'anvil', metal), 'tfc:item/metal/anvil/transformations',
                   {'all': 'tfc:blocks/metal/%s' % metal})
-        if item_type == 'trapdoor':
+        elif item_type == 'trapdoor':
             model(('item', 'metal', 'trapdoor', metal), 'block/trapdoor_bottom',
                   {'texture': 'tfc:blocks/trapdoor/%s' % metal})
         else:
