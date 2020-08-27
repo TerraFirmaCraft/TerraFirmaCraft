@@ -29,7 +29,7 @@
 			"type": "crafting",
 			"recipe": "tfc:nest_box",
 			"title": "Nest Box",
-			"text": "Chickens, Grouses, Ducks, and Quails lay eggs daily if you give them a $(item)nest box$() to use. As long as a rooster is near the nest box when the egg is laid, the egg will become fertilized and will hatch eventually. Eggs can also be cooked for food."
+			"text": "Chickens, Grouses, Ducks, and Quails lay eggs daily if you give them a $(item)nest box$() to use. As long as a male from the same species mate with the female before she lay eggs, the egg will become fertilized and will hatch eventually. Eggs can also be cooked for food."
 		},
 		{
 			"type": "text",
