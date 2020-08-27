@@ -268,6 +268,9 @@ config.tfc.general.overrides.enableThatchBed.tooltip=允许用干草做床。
 config.tfc.general.overrides.enableGrassPath=启用草径
 config.tfc.general.overrides.enableGrassPath.tooltip=允许使用铲制造草径。
 
+config.tfc.general.overrides.enableHoeing=启用锄地
+config.tfc.general.overrides.enableHoeing.tooltip=允许使用锄制造耕地。
+
 config.tfc.general.overrides.enableStoneAnvil=启用石砧
 config.tfc.general.overrides.enableStoneAnvil.tooltip=允许用岩石造砧。
 
@@ -350,6 +353,9 @@ config.tfc.general.difficulty.preventMobsOnSurface.tooltip=禁止在地表生成
 
 config.tfc.general.difficulty.giveVanillaMobsEquipment=原版怪物装备
 config.tfc.general.difficulty.giveVanillaMobsEquipment.tooltip=给原版的怪物装备锻铁武器和护甲吗？
+
+config.tfc.general.difficulty.acceptableAnvilRange=可接受砧范围
+config.tfc.general.difficulty.acceptableAnvilRange.tooltip=砧类锻造时上下工作目标对齐可存在的差距范围，以像素为单位。
 
 ### Trees
 config.tfc.general.tree=树木设置
@@ -483,6 +489,16 @@ config.tfc.general.world.clayRainfallThreshold.tooltip=区域生成粘土所需�
 config.tfc.general.world.looseRocksFrequency=零散石子频率
 config.tfc.general.world.looseRocksFrequency.tooltip=每个区块生成地表零散石子的尝试次数。包括地表矿石样本。
 
+config.tfc.general.world.enableLooseRocks=启用零散石子
+config.tfc.general.world.enableLooseRocks.tooltip=启用零散石子的生成（只是石子）。
+
+config.tfc.general.world.enableLooseOres=启用零散矿石
+config.tfc.general.world.enableLooseOres.tooltip=启用零散矿石的生成。
+
+config.tfc.general.world.enableLooseSticks=启用零散木棍
+config.tfc.general.world.enableLooseSticks.tooltip=启用零散木棍的生成。
+
+
 config.tfc.general.world.sticksDensityModifier=木棍密度修正值
 config.tfc.general.world.sticksDensityModifier.tooltip=控制区块生成时生成木棍的数目。该区域树木的数目和植物群密度同样影响最终结果。
 
@@ -548,6 +564,9 @@ config.tfc.general.food.fruitTreeGrowthTimeModifier.tooltip=修改果树结果�
 config.tfc.general.misc=杂项设置
 config.tfc.general.misc.tooltip=各种杂项的设置。
 
+config.tfc.general.misc.guidebook=给予指南书
+config.tfc.general.misc.guidebook.tooltip=给玩家指南书吗？（需要 Patchouli 模组）
+
 config.tfc.general.misc.defaultMonthLength=默认月长度
 config.tfc.general.misc.defaultMonthLength.tooltip=当新建世界时默认的月长度（以天为单位）。通过使用 /timetfc 命令可以修改已存在的世界的月长度。
 
@@ -591,13 +610,13 @@ config.tfc.general.misc.dictionaryPlates=矿物词典 薄板 - plate
 config.tfc.general.misc.dictionaryPlates.tooltip=是否为薄板添加 plate 矿物词典（plateIron，plateBronze）？
 
 config.tfc.general.misc.woodenBucketWhitelist=木桶液体白名单
-config.tfc.general.misc.woodenBucketWhitelist.tooltip=允许木桶盛装的液体列表。
+config.tfc.general.misc.woodenBucketWhitelist.tooltip=允许木桶容纳的液体列表。
 
 config.tfc.general.misc.blueSteelBucketWhitelist=蓝钢桶白名单
-config.tfc.general.misc.blueSteelBucketWhitelist.tooltip=允许蓝钢桶盛装的液体列表。
+config.tfc.general.misc.blueSteelBucketWhitelist.tooltip=允许蓝钢桶容纳的液体列表。
 
 config.tfc.general.misc.redSteelBucketWhitelist=红钢桶白名单
-config.tfc.general.misc.redSteelBucketWhitelist.tooltip=允许红钢桶盛装的液体列表。
+config.tfc.general.misc.redSteelBucketWhitelist.tooltip=允许红钢桶容纳的液体列表。
 
 config.tfc.general.misc.pluckableEntities=羽毛采集实体
 config.tfc.general.misc.pluckableEntities.tooltip=Shift + 右键点击时掉落羽毛的实体。
@@ -669,6 +688,8 @@ config.tfc.devices.charcoal_pit=木炭坑
 
 config.tfc.devices.charcoal_pit.ticks=刻
 config.tfc.devices.charcoal_pit.ticks.tooltip=木炭坑燃烧完毕所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 18 小时。
+config.tfc.devices.charcoal_pit.glass=玻璃顶
+config.tfc.devices.charcoal_pit.glass.tooltip=可以用玻璃（或彩色玻璃）封顶吗？
 
 
 ### Charcoal Forge
@@ -834,10 +855,10 @@ config.tfc.animals.tooltip=各种动物设置，如妊娠期，后代数目，�
 ### Config Names
 config.tfc.animals.alpaca=羊驼
 config.tfc.animals.sheep=绵羊
-config.tfc.animals.cow=母奶牛
+config.tfc.animals.cow=奶牛
 config.tfc.animals.goat=山羊
-config.tfc.animals.chicken=母鸡
-config.tfc.animals.duck=母鸭
+config.tfc.animals.chicken=鸡
+config.tfc.animals.duck=鸭
 config.tfc.animals.pig=猪
 config.tfc.animals.camel=骆驼
 config.tfc.animals.llama=驼马
@@ -1122,11 +1143,13 @@ jei.category.tfc.welding=焊接配方
 
 ## JEI Tooltips
 jei.tooltips.tfc.barrel.instant=立即
-jei.tooltips.tfc.barrel.duration=%d 小时
+jei.tooltips.tfc.barrel.duration=%d 天
+jei.tooltips.tfc.barrel.duration.short=%d 小时
 
 ## JEI Descriptions
 jei.description.tfc.pit_kiln=用于烧制陶器和融化软金属。将不超过四件物品放置（默认为 V）在 1x1 的坑中，用 8 干草和 8 原木填充（右键）。用起火器点燃或在上面丢个火把。等到火熄灭后取回物品。
 jei.description.tfc.placed_item=物品可以放置在地面上，主要放置到坑窑中。使用放置键（默认为 V）将物品（不超过 4 件）放置在一个方块上。
+jei.description.tfc.charcoal_pit=要烧制木炭，Shift + 右键点击以放置原木堆。用实心方块盖住这些原木堆，只留一个小孔，点一把火，之后把孔填上。几个小时后，你就可以去挖木炭了。
 
 ### Rock Layer
 jei.tooltips.tfc.rock_layer.category=岩石类别
@@ -1159,6 +1182,7 @@ fluid.brine=卤水
 fluid.olive_oil=橄榄油
 fluid.olive_oil_water=毛橄榄油
 fluid.tannin=鞣酸
+fluid.lye=碱液
 fluid.limewater=石灰水
 fluid.milk=奶
 fluid.milk_curdled=凝乳
@@ -3253,6 +3277,30 @@ tile.tfc.lamp.black_steel.filled.name=%s黑钢灯
 tile.tfc.lamp.blue_steel.filled.name=%s蓝钢灯
 tile.tfc.lamp.red_steel.filled.name=%s红钢灯
 
+tile.tfc.lavalamp.name=熔岩蓝钢灯
+
+tile.tfc.trapdoor.bismuth.name=铋活板门
+tile.tfc.trapdoor.bismuth_bronze.name=铋铜活板门
+tile.tfc.trapdoor.black_bronze.name=黑铜活板门
+tile.tfc.trapdoor.brass.name=黄铜活板门
+tile.tfc.trapdoor.bronze.name=青铜活板门
+tile.tfc.trapdoor.copper.name=铜活板门
+tile.tfc.trapdoor.gold.name=金活板门
+tile.tfc.trapdoor.lead.name=铅活板门
+tile.tfc.trapdoor.nickel.name=镍活板门
+tile.tfc.trapdoor.rose_gold.name=玫瑰金活板门
+tile.tfc.trapdoor.silver.name=银活板门
+tile.tfc.trapdoor.tin.name=锡活板门
+tile.tfc.trapdoor.zinc.name=锌活板门
+tile.tfc.trapdoor.sterling_silver.name=纯银活板门
+tile.tfc.trapdoor.wrought_iron.name=锻铁活板门
+tile.tfc.trapdoor.pig_iron.name=生铁活板门
+tile.tfc.trapdoor.steel.name=钢铁活板门
+tile.tfc.trapdoor.platinum.name=铂活板门
+tile.tfc.trapdoor.black_steel.name=黑钢活板门
+tile.tfc.trapdoor.blue_steel.name=蓝钢活板门
+tile.tfc.trapdoor.red_steel.name=红钢活板门
+
 ### ======================= ITEMS ======================
 
 
@@ -3262,12 +3310,14 @@ item.tfc.firestarter.name=起火器
 item.tfc.straw.name=干草
 item.leather.name=皮革
 item.tfc.spindle.name=纺锤
+item.tfc.glass_shard.name=玻璃片
 item.tfc.handstone.name=手推磨磨盘
 item.tfc.wooden_bucket.name=木桶
 item.tfc.wooden_bucket.filled.name=%s木桶
 item.tfc.ceramics.fired.jug.name=罐
 item.tfc.ceramics.fired.jug.filled=%s罐
 item.tfc.ceramics.unfired.clay_flower_pot.name=未烧制的粘土花盆
+item.tfc.ceramics.unfired.crucible.name=未烧制的坩埚
 item.tfc.mortar.name=砂浆
 item.tfc.halter.name=笼头
 item.tfc.wrought_iron_grill.name=锻铁烤架
@@ -3468,7 +3518,9 @@ item.tfc.brick.gneiss.name=片麻岩砖
 item.tfc.brick.marble.name=大理岩砖
 item.tfc.brick.ranite.name=花岗岩砖
 
-item.tfc.stick_bunch.name=木棍捆
+item.tfc.stick_bunch.name=木棍堆
+item.tfc.stick_bundle.name=木棍捆
+item.tfc.wood_ash.name=草木灰
 item.tfc.wood.lumber.ash.name=黑梣木材
 item.tfc.wood.lumber.aspen.name=山杨木材
 item.tfc.wood.lumber.birch.name=白桦木材
@@ -4606,6 +4658,8 @@ entity.coyotetfc.name=郊狼
 death.attack.dehydration=%1$s 死于脱水
 death.attack.food_poison=%1$s 死于食物中毒
 death.attack.plucking=%1$s 被拔光了毛
+death.attack.grill=%1$s 烤得烂熟
+death.attack.soup=%1$s 把自己炖了
 
 #Effects
 effectsTFC.overburdened=负担过重
@@ -4700,6 +4754,7 @@ tfc.animal.coyotetfc.female=母郊狼
 tfc.item.ceramicbreak=陶器：被破坏
 tfc.item.firestarter=起火器：嘶嘶作响
 tfc.item.jug.blow=音乐的声音！！！
+tfc.item.jug.fill=罐：注满
 tfc.item.throw=标枪：投掷
 tfc.animal.rooster.cry=公鸡：打鸣
 tfc.quern.stonedrag=手推磨：磨粉
@@ -4770,8 +4825,14 @@ tfc.animal.boar.cry=野猪：吼叫
 tfc.animal.boar.hurt=野猪：受伤
 tfc.animal.boar.death=野猪：死亡
 tfc.animal.wildebeest.say=角马：呼噜
+tfc.animal.wildebeest.hurt=角马：受伤
+tfc.animal.wildebeest.death=角马：死亡
 tfc.animal.quail.say=鹌鹑：啾~
+tfc.animal.quail.hurt=鹌鹑：受伤
+tfc.animal.quail.death=鹌鹑：死亡
 tfc.animal.grouse.say=松鸡：啾~
+tfc.animal.grouse.hurt=松鸡：受伤
+tfc.animal.grouse.death=松鸡：死亡
 tfc.animal.cougar.say=山狮：呼噜
 tfc.animal.cougar.cry=山狮：咆哮
 tfc.animal.cougar.hurt=山狮：受伤
@@ -4780,6 +4841,24 @@ tfc.animal.coyote.say=郊狼：呼噜
 tfc.animal.coyote.cry=郊狼：吼叫
 tfc.animal.coyote.hurt=郊狼：受伤
 tfc.animal.coyote.death=郊狼：死亡
+tfc.animal.gazelle.say=羚羊：呼噜
+tfc.animal.gazelle.hurt=羚羊：受伤
+tfc.animal.gazelle.death=羚羊：死亡
+tfc.animal.direwolf.cry=冰原狼：嚎叫
+tfc.animal.direwolf.say=冰原狼：吠叫
+tfc.animal.direwolf.hurt=冰原狼：呜咽
+tfc.animal.direwolf.death=冰原狼：死亡
+tfc.animal.yak.say=牦牛：哞~
+tfc.animal.yak.hurt=牦牛：哼哼
+tfc.animal.yak.death=牦牛：死亡
+tfc.animal.jackal.say=豺：呼噜
+tfc.animal.jackal.cry=豺：尖叫
+tfc.animal.jackal.hurt=豺：受伤
+tfc.animal.jackal.death=豺：死亡
+tfc.animal.mongoose.say=獴：呼噜
+tfc.animal.mongoose.hurt=獴：受伤
+tfc.animal.mongoose.death=獴：死亡
+tfc.animal.feline.step=大猫：走动
 tfc.animal.cricket=蟋蟀叫
 tfc.animal.frog=蛙鸣
 
