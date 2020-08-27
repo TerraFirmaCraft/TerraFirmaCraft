@@ -83,7 +83,7 @@ public class ClientForgeEventHandler
                 list.add(I18n.format("tfc.tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getRenderViewEntity().world.getDayTime() % ICalendar.TICKS_IN_DAY));
 
                 ChunkData data = ChunkData.get(mc.world, pos);
-                if (data.getStatus().isAtLeast(ChunkData.Status.CLIMATE))
+                if (data.getStatus().isAtLeast(ChunkData.Status.CLIENT))
                 {
                     list.add(GRAY + I18n.format("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
                     list.add(GRAY + I18n.format("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", data.getRainfall(pos))));

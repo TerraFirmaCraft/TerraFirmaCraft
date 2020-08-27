@@ -18,6 +18,7 @@ public final class TFCCommands
         dispatcher.register(Commands.literal("tfc")
             .then(ClearWorldCommand.create())
             .then(HeatCommand.create())
+            .then(PlayerCommand.create())
         );
 
         // For command modifications / replacements, we register directly

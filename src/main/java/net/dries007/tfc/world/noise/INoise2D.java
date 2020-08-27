@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.noise;
 
+import net.minecraft.util.math.MathHelper;
+
 import net.dries007.tfc.util.function.FloatUnaryFunction;
 
 /**
@@ -58,6 +60,16 @@ public interface INoise2D
             value = value < 0 ? -value : value;
             return 1f - 2f * value;
         };
+    }
+
+    /**
+     * Takes the absolute value of a noise function. Does not scale the result
+     *
+     * @return a new noise function
+     */
+    default INoise2D abs()
+    {
+        return (x, y) -> Math.abs(INoise2D.this.noise(x, y));
     }
 
     /**
@@ -140,13 +152,9 @@ public interface INoise2D
      * @param max the maximum noise value
      * @return a new noise function
      */
-    @SuppressWarnings("ManualMinMaxCalculation")
     default INoise2D flattened(float min, float max)
     {
-        return (x, y) -> {
-            float noise = INoise2D.this.noise(x, y);
-            return noise > max ? max : noise < min ? min : noise;
-        };
+        return (x, y) -> MathHelper.clamp(INoise2D.this.noise(x, y), min, max);
     }
 
     default INoise2D add(INoise2D other)

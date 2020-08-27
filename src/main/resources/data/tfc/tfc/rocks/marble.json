@@ -13,5 +13,6 @@
     "spike": "tfc:rock/spike/marble"
   },
   "category": "metamorphic",
-  "sand_color": "white"
+  "desert_sand_color": "yellow",
+  "beach_sand_color": "white"
 }

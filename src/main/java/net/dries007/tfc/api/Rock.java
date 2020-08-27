@@ -27,7 +27,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class Rock
 {
-    private final SandBlockType sandColor;
+    private final SandBlockType desertSandColor, beachSandColor;
     private final RockCategory category;
     private final Map<BlockType, Block> blockVariants;
     private final ResourceLocation id;
@@ -36,9 +36,12 @@ public class Rock
     {
         this.id = id;
         String rockCategoryName = JSONUtils.getString(json, "category");
-        this.category = Helpers.mapSafeOptional(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).get().orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
-        String sandColorName = JSONUtils.getString(json, "sand_color");
-        this.sandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(sandColorName.toUpperCase())).get().orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + sandColorName));
+        this.category = Helpers.mapSafeOptional(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
+        String desertSandColorName = JSONUtils.getString(json, "desert_sand_color");
+        this.desertSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(desertSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + desertSandColorName));
+
+        String beachSandColorName = JSONUtils.getString(json, "beach_sand_color");
+        this.beachSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(beachSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown beach sand color for rock: " + beachSandColorName));
 
         this.blockVariants = Helpers.findRegistryObjects(json, "blocks", ForgeRegistries.BLOCKS, Arrays.asList(Rock.BlockType.values()), type -> type.name().toLowerCase());
     }
@@ -58,9 +61,14 @@ public class Rock
         return category;
     }
 
-    public SandBlockType getSandColor()
+    public SandBlockType getDesertSandColor()
     {
-        return sandColor;
+        return desertSandColor;
+    }
+
+    public SandBlockType getBeachSandColor()
+    {
+        return beachSandColor;
     }
 
     /**
@@ -113,18 +121,21 @@ public class Rock
             return i >= 0 && i < VALUES.length ? VALUES[i] : RAW;
         }
 
-        private final boolean cuttable;
+        private final boolean variants;
         private final NonNullFunction<Default, Block> blockFactory;
 
-        BlockType(NonNullFunction<Default, Block> blockFactory, boolean cuttable)
+        BlockType(NonNullFunction<Default, Block> blockFactory, boolean variants)
         {
             this.blockFactory = blockFactory;
-            this.cuttable = cuttable;
+            this.variants = variants;
         }
 
-        public boolean isCuttable()
+        /**
+         * @return if this block type should be given slab, stair and wall variants
+         */
+        public boolean hasVariants()
         {
-            return cuttable;
+            return variants;
         }
 
         public Block create(Default rock)

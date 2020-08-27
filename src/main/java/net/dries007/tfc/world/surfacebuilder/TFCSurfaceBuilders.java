@@ -28,13 +28,14 @@ public class TFCSurfaceBuilders
 
     public static final RegistryObject<BadlandsSurfaceBuilder> BADLANDS = register("badlands", BadlandsSurfaceBuilder::new);
     public static final RegistryObject<MountainSurfaceBuilder> MOUNTAINS = register("mountains", MountainSurfaceBuilder::new);
+    public static final RegistryObject<ShoreSurfaceBuilder> SHORE = register("shore", ShoreSurfaceBuilder::new);
+    public static final RegistryObject<UnderwaterSurfaceBuilder> UNDERWATER = register("underwater", UnderwaterSurfaceBuilder::new);
 
-    // Used for shores
-    // todo: switch away from using sandstone
-    public static final SurfaceBuilderConfig SANDSTONE_CONFIG = register(Blocks.SANDSTONE);
+    // Used for shores - red sand = normal beach sand, sandstone = variant beach sand (pink / black)
+    public static final SurfaceBuilderConfig RED_SAND_CONFIG = register(Blocks.RED_SAND);
     public static final SurfaceBuilderConfig RED_SANDSTONE_CONFIG = register(Blocks.RED_SANDSTONE);
 
-    public static final DeepSurfaceBuilderConfig GRASS_DIRT_GRAVEL_GRAVEL_CONFIG = register(Blocks.GRASS, Blocks.DIRT, Blocks.GRAVEL, Blocks.GRAVEL);
+    public static final DeepSurfaceBuilderConfig GRASS_DIRT_GRAVEL_GRAVEL_CONFIG = register(Blocks.GRASS_BLOCK, Blocks.DIRT, Blocks.GRAVEL, Blocks.GRAVEL);
 
     private static <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> RegistryObject<S> register(String name, Supplier<S> factory)
     {

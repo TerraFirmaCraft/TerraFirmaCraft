@@ -7,7 +7,6 @@ package net.dries007.tfc.world.biome;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -16,15 +15,14 @@ import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 public class ShoreBiome extends TFCBiome
 {
-    public ShoreBiome(boolean isSandy, BiomeTemperature temperature, BiomeRainfall rainfall)
+    public ShoreBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
         super(new Biome.Builder().category(Category.BEACH), temperature, rainfall);
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
 
-            SurfaceBuilderConfig config = isSandy ? TFCSurfaceBuilders.SANDSTONE_CONFIG : TFCSurfaceBuilders.RED_SANDSTONE_CONFIG;
-            setSurfaceBuilder(SurfaceBuilder.DEFAULT, config);
+            setSurfaceBuilder(TFCSurfaceBuilders.SHORE.get(), SurfaceBuilder.AIR_CONFIG);
         });
     }
 
