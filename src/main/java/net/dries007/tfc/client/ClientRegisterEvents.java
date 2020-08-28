@@ -20,8 +20,6 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ColorizerGrass;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -61,7 +59,6 @@ import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemMold;
 import net.dries007.tfc.objects.items.metal.ItemOreTFC;
 import net.dries007.tfc.objects.te.*;
-import net.dries007.tfc.util.climate.ClimateTFC;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.objects.blocks.BlockPlacedHide.SIZE;
