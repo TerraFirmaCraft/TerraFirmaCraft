@@ -5,7 +5,7 @@
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package net.dries007.tfc.command;
+package net.dries007.tfc.util.command;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
