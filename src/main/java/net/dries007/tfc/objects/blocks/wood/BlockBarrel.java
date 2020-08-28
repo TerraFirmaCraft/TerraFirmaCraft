@@ -40,6 +40,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.Helpers;
 
@@ -237,17 +238,13 @@ public class BlockBarrel extends Block implements IItemSize
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        if (!worldIn.isRemote)
+        if (!worldIn.isRemote && stack.getTagCompound() != null)
         {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt != null)
+            TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
+            if (te != null)
             {
-                TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
-                if (te != null)
-                {
-                    worldIn.setBlockState(pos, state.withProperty(SEALED, true));
-                    te.readFromItemTag(nbt);
-                }
+                worldIn.setBlockState(pos, state.withProperty(SEALED, true));
+                te.loadFromItemStack(stack);
             }
         }
     }
@@ -311,7 +308,7 @@ public class BlockBarrel extends Block implements IItemSize
         TEBarrel tile = Helpers.getTE(world, pos, TEBarrel.class);
         if (tile != null && tile.isSealed())
         {
-            stack.setTagCompound(tile.getItemTag());
+            tile.saveToItemStack(stack);
         }
         return stack;
     }
