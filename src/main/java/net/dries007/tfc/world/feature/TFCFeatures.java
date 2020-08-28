@@ -10,6 +10,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.world.feature.trees.NormalTreeFeature;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCFeatures
@@ -23,4 +25,6 @@ public class TFCFeatures
 
     public static final RegistryObject<BouldersFeature> BOULDERS = FEATURES.register("boulders", BouldersFeature::new);
     public static final RegistryObject<FissureFeature> FISSURES = FEATURES.register("fissures", FissureFeature::new);
+
+    public static final RegistryObject<NormalTreeFeature> NORMAL_TREE = FEATURES.register("normal_tree", NormalTreeFeature::new);
 }

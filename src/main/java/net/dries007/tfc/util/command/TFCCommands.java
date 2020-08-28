@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.command;
+package net.dries007.tfc.util.command;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -19,6 +19,7 @@ public final class TFCCommands
             .then(ClearWorldCommand.create())
             .then(HeatCommand.create())
             .then(PlayerCommand.create())
+            .then(TreeCommand.create())
         );
 
         // For command modifications / replacements, we register directly
