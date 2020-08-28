@@ -35,7 +35,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Tree;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.util.OreDictionaryHelper;
+
+import static net.dries007.tfc.Constants.RNG;
 
 @ParametersAreNonnullByDefault
 public class BlockLeavesTFC extends BlockLeaves
@@ -248,8 +251,6 @@ public class BlockLeavesTFC extends BlockLeaves
         }
 
         world.setBlockToAir(pos);
-        // todo: this cannot be here as it's only ever run on logical server
-        /*
         int particleScale = 10;
         double x = pos.getX();
         double y = pos.getY();
@@ -258,16 +259,15 @@ public class BlockLeavesTFC extends BlockLeaves
         {
             switch (RNG.nextInt(4)) {
                 case 1:
-                    TFCParticles.LEAF1.spawn(world, x + RNG.nextFloat() / particleScale, y - RNG.nextFloat() / particleScale, z + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, -0.15D + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, 90);
+                    TFCParticles.LEAF1.sendToAllNear(world, x + RNG.nextFloat() / particleScale, y - RNG.nextFloat() / particleScale, z + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, -0.15D + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, 90);
                     break;
                 case 2:
-                    TFCParticles.LEAF2.spawn(world, x + RNG.nextFloat() / particleScale, y - RNG.nextFloat() / particleScale, z + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, -0.15D + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, 70);
+                    TFCParticles.LEAF2.sendToAllNear(world, x + RNG.nextFloat() / particleScale, y - RNG.nextFloat() / particleScale, z + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, -0.15D + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, 70);
                     break;
                 case 3:
-                    TFCParticles.LEAF3.spawn(world, x + RNG.nextFloat() / particleScale, y - RNG.nextFloat() / particleScale, z + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, -0.15D + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, 80);
+                    TFCParticles.LEAF3.sendToAllNear(world, x + RNG.nextFloat() / particleScale, y - RNG.nextFloat() / particleScale, z + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, -0.15D + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, 80);
                     break;
             }
         }
-        */
     }
 }
