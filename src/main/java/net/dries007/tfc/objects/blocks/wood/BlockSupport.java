@@ -365,9 +365,19 @@ public class BlockSupport extends Block
                 && worldIn.isAirBlock(pos.up()) && worldIn.isAirBlock(pos.up(2)))
             {
                 //Place two more support blocks to make a 3 column in one click
-                worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
-                worldIn.setBlockState(pos.up(2), this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
-                stack.shrink(2);
+                if (worldIn.checkNoEntityCollision(new AxisAlignedBB(pos.up())))
+                {
+                    worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
+                    if (worldIn.checkNoEntityCollision(new AxisAlignedBB(pos.up(2))))
+                    {
+                        worldIn.setBlockState(pos.up(2), this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
+                        stack.shrink(2);
+                    }
+                    else
+                    {
+                        stack.shrink(1);
+                    }
+                }
             }
         }
         else
@@ -392,6 +402,7 @@ public class BlockSupport extends Block
                     if (worldIn.getBlockState(pos.offset(face, i)).getMaterial().isReplaceable())
                     {
                         worldIn.setBlockState(pos.offset(face, i), this.getDefaultState().withProperty(AXIS, axis), 2);
+                        worldIn.scheduleBlockUpdate(pos.offset(face, i).down(), worldIn.getBlockState(pos.offset(face, i).down()).getBlock(), 3, 2);
                     }
                 }
             }
