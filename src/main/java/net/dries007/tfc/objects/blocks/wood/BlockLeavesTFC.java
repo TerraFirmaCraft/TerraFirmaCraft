@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableList;
-import net.dries007.tfc.client.particle.TFCParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
@@ -37,8 +36,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.util.OreDictionaryHelper;
-
-import static net.dries007.tfc.Constants.RNG;
 
 @ParametersAreNonnullByDefault
 public class BlockLeavesTFC extends BlockLeaves
@@ -251,6 +248,8 @@ public class BlockLeavesTFC extends BlockLeaves
         }
 
         world.setBlockToAir(pos);
+        // todo: this cannot be here as it's only ever run on logical server
+        /*
         int particleScale = 10;
         double x = pos.getX();
         double y = pos.getY();
@@ -269,5 +268,6 @@ public class BlockLeavesTFC extends BlockLeaves
                     break;
             }
         }
+        */
     }
 }
