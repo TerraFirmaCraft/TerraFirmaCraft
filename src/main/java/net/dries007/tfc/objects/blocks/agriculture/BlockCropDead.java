@@ -147,7 +147,7 @@ public class BlockCropDead extends BlockBush
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state)
     {
         IBlockState soil = world.getBlockState(pos.down());
-        return soil.getBlock().canSustainPlant(soil, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+        return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
     }
     
     @Override
