@@ -40,11 +40,12 @@ import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.dries007.tfc.util.FluidTransferHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockBarrel.SEALED;
 
 @ParametersAreNonnullByDefault
-public class TEBarrel extends TETickableInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback, IFluidTankCallback
+public class TEBarrel extends TETickableInventory implements ITickable, ICalendarTickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback, IFluidTankCallback
 {
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
@@ -55,6 +56,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
     private final Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
+    private long lastPlayerTick; // Last player tick this barrel was ticked (for purposes of catching up)
     private BarrelRecipe recipe;
     private int tickCounter;
     private boolean checkInstantRecipe = false;
@@ -228,6 +230,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
     public void update()
     {
         super.update();
+        checkForCalendarUpdate();
         if (!world.isRemote)
         {
             tickCounter++;
@@ -341,6 +344,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
         sealed = nbt.getBoolean("sealed");
+        lastPlayerTick = nbt.getLong("lastPlayerTick");
 
         surplus.clear();
         if (nbt.hasKey("surplus"))
@@ -363,6 +367,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         nbt.setLong("sealedTick", sealedTick);
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
         nbt.setBoolean("sealed", sealed);
+        nbt.setLong("lastPlayerTick", lastPlayerTick);
 
         if (!surplus.isEmpty())
         {
@@ -453,6 +458,57 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void onCalendarUpdate(long deltaPlayerTicks)
+    {
+        while(deltaPlayerTicks > 0)
+        {
+            deltaPlayerTicks = 0;
+            if (recipe != null && sealed && recipe.getDuration() > 0)
+            {
+                long tickFinish = sealedTick + recipe.getDuration();
+                if (tickFinish <= CalendarTFC.PLAYER_TIME.getTicks())
+                {
+                    // Mark to run this transaction again in case this recipe produces valid output for another which could potentially finish in this time period.
+                    deltaPlayerTicks = 1;
+                    long offset = tickFinish - CalendarTFC.PLAYER_TIME.getTicks();
+
+                    CalendarTFC.runTransaction(offset, offset, () -> {
+                        ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
+                        FluidStack inputFluid = tank.getFluid();
+                        if (recipe.isValidInput(inputFluid, inputStack))
+                        {
+                            tank.setFluid(recipe.getOutputFluid(inputFluid, inputStack));
+                            List<ItemStack> output = recipe.getOutputItem(inputFluid, inputStack);
+                            ItemStack first = output.get(0);
+                            output.remove(0);
+                            inventory.setStackInSlot(SLOT_ITEM, first);
+                            surplus.addAll(output);
+                            markForSync();
+                            onSealed(); //run the sealed check again in case we have a new valid recipe.
+                        }
+                        else
+                        {
+                            recipe = null;
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
     }
 
     protected static class BarrelFluidTank extends FluidTankCallback
