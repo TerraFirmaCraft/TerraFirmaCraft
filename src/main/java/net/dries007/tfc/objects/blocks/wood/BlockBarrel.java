@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -245,6 +246,23 @@ public class BlockBarrel extends Block implements IItemSize
             {
                 worldIn.setBlockState(pos, state.withProperty(SEALED, true));
                 te.loadFromItemStack(stack);
+            }
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+    {
+        if (!world.isRemote)
+        {
+            boolean powered = world.isBlockPowered(pos);
+            if (powered || block.getDefaultState().canProvidePower())
+            {
+                if (powered != state.getValue(SEALED))
+                {
+                    toggleBarrelSeal(world, pos);
+                }
             }
         }
     }
