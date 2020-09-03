@@ -214,11 +214,17 @@ public final class FluidsTFC
     @Nonnull
     private static FluidWrapper registerFluid(@Nonnull Fluid newFluid)
     {
-        boolean isDefault = FluidRegistry.registerFluid(newFluid);
+        boolean isDefault = !FluidRegistry.isFluidRegistered(newFluid.getName());
+
         if (!isDefault)
         {
             // Fluid was already registered with this name, default to that fluid
             newFluid = FluidRegistry.getFluid(newFluid.getName());
+        }
+        else
+        {
+            // No fluid found we are safe to register our default
+            FluidRegistry.registerFluid(newFluid);
         }
         FluidRegistry.addBucketForFluid(newFluid);
         FluidWrapper properties = new FluidWrapper(newFluid, isDefault);
