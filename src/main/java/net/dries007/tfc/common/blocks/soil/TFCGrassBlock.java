@@ -6,6 +6,7 @@
 package net.dries007.tfc.common.blocks.soil;
 
 import java.util.Random;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -49,11 +50,19 @@ public class TFCGrassBlock extends Block
         }
     }
 
-    public TFCGrassBlock(Properties properties)
+    private final Supplier<Block> dirt;
+
+    public TFCGrassBlock(Properties properties, Supplier<Block> dirt)
     {
         super(properties);
+        this.dirt = dirt;
 
         setDefaultState(stateContainer.getBaseState().with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false));
+    }
+
+    public Block getDirt()
+    {
+        return dirt.get();
     }
 
     @Override

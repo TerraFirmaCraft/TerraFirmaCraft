@@ -16,6 +16,6 @@ public class TFCRecipeSerializers
 {
     public static final DeferredRegister<IRecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);
 
-    public static final RegistryObject<CollapseRecipe.Serializer> COLLAPSE = SERIALIZERS.register("collapse", CollapseRecipe.Serializer::new);
-    public static final RegistryObject<LandslideRecipe.Serializer> LANDSLIDE = SERIALIZERS.register("landslide", LandslideRecipe.Serializer::new);
+    public static final RegistryObject<SimpleBlockRecipe.Serializer<CollapseRecipe>> COLLAPSE = SERIALIZERS.register("collapse", () -> new SimpleBlockRecipe.Serializer<>(CollapseRecipe::new));
+    public static final RegistryObject<SimpleBlockRecipe.Serializer<LandslideRecipe>> LANDSLIDE = SERIALIZERS.register("landslide", () -> new SimpleBlockRecipe.Serializer<>(LandslideRecipe::new));
 }

@@ -145,7 +145,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
         }).orElse(false);
     }
 
-    public CollapseRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
+    CollapseRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
     {
         super(id, ingredient, outputState, copyInputState);
     }
@@ -160,14 +160,5 @@ public class CollapseRecipe extends SimpleBlockRecipe
     public IRecipeType<?> getType()
     {
         return TFCRecipeTypes.COLLAPSE;
-    }
-
-    public static class Serializer extends SimpleBlockRecipe.Serializer<CollapseRecipe>
-    {
-        @Override
-        protected CollapseRecipe create(ResourceLocation id, IBlockIngredient ingredient, BlockState state, boolean copyInputState)
-        {
-            return new CollapseRecipe(id, ingredient, state, copyInputState);
-        }
     }
 }
