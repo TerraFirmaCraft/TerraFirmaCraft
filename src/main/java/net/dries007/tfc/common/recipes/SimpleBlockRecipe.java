@@ -67,8 +67,15 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         return ingredient;
     }
 
-    public static abstract class Serializer<R extends SimpleBlockRecipe> extends RecipeSerializer<R>
+    public static class Serializer<R extends SimpleBlockRecipe> extends RecipeSerializer<R>
     {
+        private final Factory<R> factory;
+
+        public Serializer(Factory<R> factory)
+        {
+            this.factory = factory;
+        }
+
         @Override
         public R read(ResourceLocation recipeId, JsonObject json)
         {
@@ -83,7 +90,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             {
                 state = Blocks.AIR.getDefaultState();
             }
-            return create(recipeId, ingredient, state, copyInputState);
+            return factory.create(recipeId, ingredient, state, copyInputState);
         }
 
         @Nullable
@@ -101,7 +108,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             {
                 state = Blocks.AIR.getDefaultState();
             }
-            return create(recipeId, ingredient, state, copyInputState);
+            return factory.create(recipeId, ingredient, state, copyInputState);
         }
 
         @Override
@@ -115,6 +122,9 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             }
         }
 
-        protected abstract R create(ResourceLocation id, IBlockIngredient ingredient, BlockState state, boolean copyInputState);
+        protected interface Factory<R extends SimpleBlockRecipe>
+        {
+            R create(ResourceLocation id, IBlockIngredient ingredient, BlockState state, boolean copyInputState);
+        }
     }
 }

@@ -6,6 +6,7 @@
 package net.dries007.tfc.common.recipes;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,9 +17,9 @@ import net.minecraft.world.World;
  */
 public class BlockRecipeWrapper extends ItemStackRecipeWrapper
 {
-    private final World world;
-    private final BlockPos pos;
-    private final BlockState state;
+    protected final World world;
+    protected final BlockPos pos;
+    protected BlockState state;
 
     public BlockRecipeWrapper(World world, BlockPos pos)
     {
@@ -46,5 +47,28 @@ public class BlockRecipeWrapper extends ItemStackRecipeWrapper
     public BlockState getState()
     {
         return state;
+    }
+
+    public static class Mutable extends BlockRecipeWrapper
+    {
+        private final BlockPos.Mutable mutablePos;
+
+        public Mutable(World world)
+        {
+            this(world, new BlockPos.Mutable());
+        }
+
+        private Mutable(World world, BlockPos.Mutable pos)
+        {
+            super(world, pos, Blocks.AIR.getDefaultState()); // Since the position is not expected to be initialized, we set a default null block state
+
+            this.mutablePos = pos;
+        }
+
+        public void setPos(int x, int y, int z, BlockState state)
+        {
+            this.mutablePos.setPos(x, y, z);
+            this.state = state;
+        }
     }
 }

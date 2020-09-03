@@ -20,10 +20,15 @@ import net.dries007.tfc.world.chunkdata.RockData;
 @FunctionalInterface
 public interface IBlockReplacer
 {
-    BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature, float noise);
+    BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature);
 
     /**
-     * Override to do additional things on post placement, such as schedule ticks
+     * Override to do additional things on post placement, such as schedule ticks or erosion updates
      */
     default void updatePostPlacement(IWorld world, BlockPos pos, BlockState state) {}
+
+    /**
+     * Set the seed for this replacer
+     */
+    default void setSeed(long seed) {}
 }

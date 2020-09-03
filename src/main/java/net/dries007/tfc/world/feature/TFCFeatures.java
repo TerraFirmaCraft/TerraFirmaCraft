@@ -23,4 +23,6 @@ public class TFCFeatures
 
     public static final RegistryObject<BouldersFeature> BOULDERS = FEATURES.register("boulders", BouldersFeature::new);
     public static final RegistryObject<FissureFeature> FISSURES = FEATURES.register("fissures", FissureFeature::new);
+
+    public static final RegistryObject<ErosionFeature> EROSION = FEATURES.register("erosion", ErosionFeature::new);
 }

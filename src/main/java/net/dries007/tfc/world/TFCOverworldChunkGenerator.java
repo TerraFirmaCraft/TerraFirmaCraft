@@ -66,7 +66,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         this.shadowBiomeProvider = (TFCBiomeProvider) biomeProvider; // Custom biome provider class
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator); // Worley cave carver, separate from vanilla ones
         this.chunkDataProvider = new ChunkDataProvider(world, settings, seedGenerator); // Chunk data
-        this.blockReplacer = new ChunkBlockReplacer(); // Replaces default world gen blocks with TFC variants, after surface generation
+        this.blockReplacer = new ChunkBlockReplacer(world.getSeed()); // Replaces default world gen blocks with TFC variants, after surface generation
         this.shadowBiomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
     }
 
@@ -116,7 +116,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         makeBedrock(chunk, random);
 
         ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
-        blockReplacer.replace(worldGenRegion, chunk, random, chunkData);
+        blockReplacer.replace(worldGenRegion, chunk, chunkData);
     }
 
     @Override
