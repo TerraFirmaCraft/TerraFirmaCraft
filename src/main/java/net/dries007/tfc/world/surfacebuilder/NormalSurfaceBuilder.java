@@ -73,11 +73,6 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                     // Subsurface layers
                     surfaceDepth--;
                     chunkIn.setBlockState(pos, underState, false);
-                    if (surfaceDepth == 0 && underState.getBlock() == Blocks.SAND && maxSurfaceDepth > 1)
-                    {
-                        surfaceDepth = random.nextInt(4) + Math.max(0, y - 63);
-                        underState = SANDSTONE;
-                    }
                 }
             }
         }

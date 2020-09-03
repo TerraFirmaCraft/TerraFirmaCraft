@@ -46,7 +46,7 @@ public class ShoreSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     {
         if (lastSeed != seed || !initialized)
         {
-            variantNoise = new SimplexNoise2D(seed).octaves(2).spread(0.3f).abs();
+            variantNoise = new SimplexNoise2D(seed).octaves(2).spread(0.003f).abs();
 
             lastSeed = seed;
             initialized = true;

@@ -18,15 +18,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class CommonConfig
 {
-    // World Generation - Surface
-    public final ForgeConfigSpec.IntValue sandRainfallCutoff;
-    public final ForgeConfigSpec.IntValue sandRainfallRange;
-    public final ForgeConfigSpec.IntValue sandyLoamRainfallCutoff;
-    public final ForgeConfigSpec.IntValue sandyLoamRainfallRange;
-    public final ForgeConfigSpec.IntValue siltyLoamRainfallCutoff;
-    public final ForgeConfigSpec.IntValue siltyLoamRainfallRange;
-    public final ForgeConfigSpec.IntValue sandGravelTemperatureCutoff;
-    public final ForgeConfigSpec.DoubleValue sandGravelTemperatureRange;
     // World Generation - General
     public final ForgeConfigSpec.BooleanValue flatBedrock;
     public final ForgeConfigSpec.IntValue islandFrequency;
@@ -62,21 +53,7 @@ public class CommonConfig
         // Standardization for translation keys
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.general." + name);
 
-        innerBuilder.push("worldGeneration").push("surface");
-
-        sandRainfallCutoff = builder.apply("sandGrassRainfallCutoff").defineInRange("sandGrassRainfallCutoff", 125, 0, 500);
-        sandRainfallRange = builder.apply("sandGrassRainfallSpread").defineInRange("sandGrassRainfallSpread", 2, 0, 500);
-
-        sandyLoamRainfallCutoff = builder.apply("sandyLoamRainfallCutoff").defineInRange("sandyLoamRainfallCutoff", 250, 0, 500);
-        sandyLoamRainfallRange = builder.apply("sandyLoamRainfallRange").defineInRange("sandyLoamRainfallRange", 2, 0, 500);
-
-        siltyLoamRainfallCutoff = builder.apply("siltyLoamRainfallCutoff").defineInRange("siltyLoamRainfallCutoff", 375, 0, 500);
-        siltyLoamRainfallRange = builder.apply("siltyLoamRainfallRange").defineInRange("siltyLoamRainfallRange", 2, 0, 500);
-
-        sandGravelTemperatureCutoff = builder.apply("sandGravelTemperatureCutoff").defineInRange("sandGravelTemperatureCutoff", 10, -40, 40);
-        sandGravelTemperatureRange = builder.apply("sandGravelTemperatureRange").defineInRange("sandGravelTemperatureSpread", 0.3, 0, 80);
-
-        innerBuilder.pop().push("general");
+        innerBuilder.push("worldGeneration").push("general");
 
         flatBedrock = builder.apply("flatBedrock").define("flatBedrock", false);
 

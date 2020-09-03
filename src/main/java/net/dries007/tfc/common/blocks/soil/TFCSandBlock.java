@@ -13,5 +13,4 @@ public class TFCSandBlock extends SandBlock
     {
         super(dustColorIn, properties);
     }
-
 }
