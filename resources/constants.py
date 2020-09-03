@@ -239,6 +239,7 @@ DEFAULT_LANG = {
     'itemGroup.tfc.gems': 'TFC Gems',
     'itemGroup.tfc.misc': 'TFC Misc',
     'itemGroup.tfc.decorations': 'TFC Decorations',
+    'itemGroup.tfc.wood.blocks': 'TFC Wood Blocks',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
