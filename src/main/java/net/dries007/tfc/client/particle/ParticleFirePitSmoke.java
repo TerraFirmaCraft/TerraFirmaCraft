@@ -23,7 +23,7 @@ public class ParticleFirePitSmoke extends Particle
         this.motionX += speedX;
         this.motionY += speedY;
         this.motionZ += speedZ;
-        this.particleScale *= 1.3F + (rand.nextFloat()/4);
+        this.particleScale *= 1.3F + (rand.nextFloat() / 4);
         this.particleAlpha = (float) 0.5;
     }
 

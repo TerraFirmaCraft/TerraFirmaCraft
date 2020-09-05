@@ -275,7 +275,7 @@ public class TEFirePit extends TETickableInventory implements ICalendarTickable,
                                 float multiplier = 1 - (0.05f * ingredientCount); // per-serving multiplier of nutrition
                                 water *= multiplier;
                                 saturation *= multiplier;
-                                Nutrient maxNutrient = null;
+                                Nutrient maxNutrient = Nutrient.GRAIN; // default nutrient in case there is no nutrition
                                 float maxNutrientValue = 0;
                                 for (Nutrient nutrient : Nutrient.values())
                                 {

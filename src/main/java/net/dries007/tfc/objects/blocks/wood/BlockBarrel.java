@@ -20,7 +20,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -177,6 +176,23 @@ public class BlockBarrel extends Block implements IItemSize
         return false;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+    {
+        if (!world.isRemote)
+        {
+            boolean powered = world.isBlockPowered(pos);
+            if (powered || block.getDefaultState().canProvidePower())
+            {
+                if (powered != state.getValue(SEALED))
+                {
+                    toggleBarrelSeal(world, pos);
+                }
+            }
+        }
+    }
+
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -237,17 +253,13 @@ public class BlockBarrel extends Block implements IItemSize
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        if (!worldIn.isRemote)
+        if (!worldIn.isRemote && stack.getTagCompound() != null)
         {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt != null)
+            TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
+            if (te != null)
             {
-                TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
-                if (te != null)
-                {
-                    worldIn.setBlockState(pos, state.withProperty(SEALED, true));
-                    te.readFromItemTag(nbt);
-                }
+                worldIn.setBlockState(pos, state.withProperty(SEALED, true));
+                te.loadFromItemStack(stack);
             }
         }
     }
@@ -311,7 +323,7 @@ public class BlockBarrel extends Block implements IItemSize
         TEBarrel tile = Helpers.getTE(world, pos, TEBarrel.class);
         if (tile != null && tile.isSealed())
         {
-            stack.setTagCompound(tile.getItemTag());
+            tile.saveToItemStack(stack);
         }
         return stack;
     }

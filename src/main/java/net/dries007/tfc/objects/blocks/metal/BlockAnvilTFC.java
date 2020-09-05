@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.client.particle.TFCParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -41,6 +40,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.client.TFCGuiHandler;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.objects.items.metal.ItemAnvil;
 import net.dries007.tfc.objects.te.TEAnvilTFC;
 import net.dries007.tfc.util.Helpers;
@@ -217,8 +217,8 @@ public class BlockAnvilTFC extends Block
                     double x = pos.getX() + 0.5;
                     double y = pos.getY() + 0.69;
                     double z = pos.getZ() + 0.5;
-                    for(int i = 0; i < RNG.nextInt(5)+3; i++)
-                        TFCParticles.SPARK.spawn(worldIn, x + (RNG.nextFloat()-0.5)/7, y, z + (RNG.nextFloat()-0.5)/7, 6*(RNG.nextFloat()-0.5), 2D, 6*(RNG.nextFloat()-0.5), 22);
+                    for (int i = 0; i < RNG.nextInt(5) + 3; i++)
+                        TFCParticles.SPARK.spawn(worldIn, x + (RNG.nextFloat() - 0.5) / 7, y, z + (RNG.nextFloat() - 0.5) / 7, 6 * (RNG.nextFloat() - 0.5), 2D, 6 * (RNG.nextFloat() - 0.5), 22);
                     return true;
                 }
             }

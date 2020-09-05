@@ -25,6 +25,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.ConfigTFC;
@@ -35,14 +36,16 @@ import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
 import net.dries007.tfc.objects.fluids.capability.IFluidTankCallback;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.dries007.tfc.util.FluidTransferHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 import static net.dries007.tfc.objects.blocks.wood.BlockBarrel.SEALED;
 
 @ParametersAreNonnullByDefault
-public class TEBarrel extends TETickableInventory implements ITickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback, IFluidTankCallback
+public class TEBarrel extends TETickableInventory implements ITickable, ICalendarTickable, IItemHandlerSidedCallback, IFluidHandlerSidedCallback, IFluidTankCallback
 {
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
@@ -53,6 +56,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
     private final Queue<ItemStack> surplus = new LinkedList<>(); // Surplus items from a recipe with output > stackSize
     private boolean sealed;
     private long sealedTick, sealedCalendarTick;
+    private long lastPlayerTick; // Last player tick this barrel was ticked (for purposes of catching up)
     private BarrelRecipe recipe;
     private int tickCounter;
     private boolean checkInstantRecipe = false;
@@ -63,40 +67,74 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
     }
 
     /**
-     * Called when this TileEntity was created by placing a sealed Barrel Item.
-     * Loads its data from the Item's NBTTagCompound without loading xyz coordinates.
+     * Save up item and fluid handler contents to a barrel's ItemStack
      *
-     * @param nbt The NBTTagCompound to load from.
+     * @param stack the barrel's stack to save contents to
      */
-    public void readFromItemTag(NBTTagCompound nbt)
+    public void saveToItemStack(ItemStack stack)
     {
-        tank.readFromNBT(nbt.getCompoundTag("tank"));
-        if (tank.getFluidAmount() > tank.getCapacity())
+        IFluidHandler barrelCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (barrelCap instanceof ItemBlockBarrel.ItemBarrelFluidHandler)
         {
-            // Fix config changes
-            FluidStack fluidStack = tank.getFluid();
-            if (fluidStack != null)
+            NBTTagCompound inventoryTag = null;
+            // Check if inventory has contents
+            for (int i = 0; i < inventory.getSlots(); i++)
             {
-                fluidStack.amount = tank.getCapacity();
+                if (!inventory.getStackInSlot(i).isEmpty())
+                {
+                    inventoryTag = inventory.serializeNBT();
+                    break;
+                }
             }
-            tank.setFluid(fluidStack);
+            NBTTagList surplusTag = null;
+            // Check if there's remaining surplus from recipe
+            if (!surplus.isEmpty())
+            {
+                surplusTag = new NBTTagList();
+                for (ItemStack surplusStack : surplus)
+                {
+                    surplusTag.appendTag(surplusStack.serializeNBT());
+                }
+            }
+            FluidStack storing = tank.getFluid();
+            if (storing != null || inventoryTag != null || surplusTag != null)
+            {
+                ((ItemBlockBarrel.ItemBarrelFluidHandler) barrelCap).setBarrelContents(storing, inventoryTag, surplusTag, sealedTick, sealedCalendarTick);
+            }
         }
-        inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
-        sealedTick = nbt.getLong("sealedTick");
-        sealedCalendarTick = nbt.getLong("sealedCalendarTick");
+    }
 
-        surplus.clear();
-        if (nbt.hasKey("surplus"))
+    /**
+     * Load up item and fluid handler contents from a barrel's ItemStack
+     *
+     * @param stack the barrel's stack to load contents from
+     */
+    public void loadFromItemStack(ItemStack stack)
+    {
+        IFluidHandler barrelCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (barrelCap instanceof ItemBlockBarrel.ItemBarrelFluidHandler)
         {
-            NBTTagList surplusItems = nbt.getTagList("surplus", Constants.NBT.TAG_COMPOUND);
-            for (int i = 0; i < surplusItems.tagCount(); i++)
+            NBTTagCompound contents = ((ItemBlockBarrel.ItemBarrelFluidHandler) barrelCap).getBarrelContents();
+            if (contents != null)
             {
-                surplus.add(new ItemStack(surplusItems.getCompoundTagAt(i)));
+                inventory.deserializeNBT(contents.getCompoundTag("inventory"));
+                surplus.clear();
+                NBTTagList surplusItems = contents.getTagList("surplus", Constants.NBT.TAG_COMPOUND);
+                if (!surplusItems.isEmpty())
+                {
+                    for (int i = 0; i < surplusItems.tagCount(); i++)
+                    {
+                        surplus.add(new ItemStack(surplusItems.getCompoundTagAt(i)));
+                    }
+                }
+                sealedTick = contents.getLong("sealedTick");
+                sealedCalendarTick = contents.getLong("sealedCalendarTick");
+                tank.fill(((ItemBlockBarrel.ItemBarrelFluidHandler) barrelCap).getFluid(), true);
+                sealed = true;
+                recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
+                markForSync();
             }
         }
-        sealed = true;
-        recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
-        markForSync();
     }
 
     /**
@@ -194,6 +232,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
     public void update()
     {
         super.update();
+        checkForCalendarUpdate();
         if (!world.isRemote)
         {
             tickCounter++;
@@ -307,6 +346,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         sealedTick = nbt.getLong("sealedTick");
         sealedCalendarTick = nbt.getLong("sealedCalendarTick");
         sealed = nbt.getBoolean("sealed");
+        lastPlayerTick = nbt.getLong("lastPlayerTick");
 
         surplus.clear();
         if (nbt.hasKey("surplus"))
@@ -329,6 +369,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         nbt.setLong("sealedTick", sealedTick);
         nbt.setLong("sealedCalendarTick", sealedCalendarTick);
         nbt.setBoolean("sealed", sealed);
+        nbt.setLong("lastPlayerTick", lastPlayerTick);
 
         if (!surplus.isEmpty())
         {
@@ -376,7 +417,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
             if (recipe != null)
             {
                 // Drop the sealed barrel with inventory only if it's a valid recipe.
-                barrelStack.setTagCompound(getItemTag());
+                saveToItemStack(barrelStack);
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
             }
             else
@@ -396,7 +437,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
                     }
                     surplus.clear();
                 }
-                barrelStack.setTagCompound(getItemTag());
+                saveToItemStack(barrelStack);
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), barrelStack);
             }
         }
@@ -421,33 +462,55 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         }
     }
 
-    /**
-     * Called to get the NBTTagCompound that is put on Barrel Items.
-     * This happens when a sealed Barrel was broken.
-     *
-     * Public access needed from BlockBarrel during getPickBlock
-     *
-     * @return An NBTTagCompound containing inventory and tank data.
-     */
-    public NBTTagCompound getItemTag()
+    @Override
+    public void onCalendarUpdate(long deltaPlayerTicks)
     {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
-        nbt.setTag("inventory", inventory.serializeNBT());
-        nbt.setLong("sealedTick", sealedTick);
-        nbt.setLong("sealedCalendarTick", sealedCalendarTick);
-
-        if (!surplus.isEmpty())
+        while (deltaPlayerTicks > 0)
         {
-            NBTTagList surplusList = new NBTTagList();
-            for (ItemStack stack : surplus)
+            deltaPlayerTicks = 0;
+            if (recipe != null && sealed && recipe.getDuration() > 0)
             {
-                surplusList.appendTag(stack.serializeNBT());
-            }
-            nbt.setTag("surplus", surplusList);
-        }
+                long tickFinish = sealedTick + recipe.getDuration();
+                if (tickFinish <= CalendarTFC.PLAYER_TIME.getTicks())
+                {
+                    // Mark to run this transaction again in case this recipe produces valid output for another which could potentially finish in this time period.
+                    deltaPlayerTicks = 1;
+                    long offset = tickFinish - CalendarTFC.PLAYER_TIME.getTicks();
 
-        return nbt;
+                    CalendarTFC.runTransaction(offset, offset, () -> {
+                        ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM);
+                        FluidStack inputFluid = tank.getFluid();
+                        if (recipe.isValidInput(inputFluid, inputStack))
+                        {
+                            tank.setFluid(recipe.getOutputFluid(inputFluid, inputStack));
+                            List<ItemStack> output = recipe.getOutputItem(inputFluid, inputStack);
+                            ItemStack first = output.get(0);
+                            output.remove(0);
+                            inventory.setStackInSlot(SLOT_ITEM, first);
+                            surplus.addAll(output);
+                            markForSync();
+                            onSealed(); //run the sealed check again in case we have a new valid recipe.
+                        }
+                        else
+                        {
+                            recipe = null;
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    @Override
+    public long getLastUpdateTick()
+    {
+        return lastPlayerTick;
+    }
+
+    @Override
+    public void setLastUpdateTick(long tick)
+    {
+        this.lastPlayerTick = tick;
     }
 
     protected static class BarrelFluidTank extends FluidTankCallback
@@ -463,7 +526,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, IItemHan
         @Override
         public boolean canFillFluidType(FluidStack fluid)
         {
-            return whitelist.contains(fluid.getFluid()) || BarrelRecipe.isBarrelFluid(fluid);
+            return fluid != null && (whitelist.contains(fluid.getFluid()) || BarrelRecipe.isBarrelFluid(fluid));
         }
     }
 }

@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.objects.blocks.metal.BlockTrapDoorMetalTFC;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -31,6 +30,7 @@ import net.dries007.tfc.api.capability.metal.IMetalItem;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.objects.blocks.metal.BlockTrapDoorMetalTFC;
 import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 import net.dries007.tfc.util.OreDictionaryHelper;
