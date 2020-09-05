@@ -22,15 +22,18 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
 
 import net.dries007.tfc.api.capability.player.CapabilityPlayerData;
 import net.dries007.tfc.api.types.ICrop;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.items.ItemSeedsTFC;
 import net.dries007.tfc.util.agriculture.Crop;
 import net.dries007.tfc.util.skills.SimpleSkill;
@@ -140,6 +143,13 @@ public class BlockCropDead extends BlockBush
         return count;
     }
 
+    @Override
+    public boolean canBlockStay(World world, BlockPos pos, IBlockState state)
+    {
+        IBlockState soil = world.getBlockState(pos.down());
+        return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+    }
+    
     @Override
     @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
