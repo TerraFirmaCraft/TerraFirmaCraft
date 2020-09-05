@@ -7,8 +7,6 @@ package net.dries007.tfc;
 
 import java.util.Arrays;
 
-import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.material.Material;
@@ -104,11 +102,13 @@ import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemQuiver;
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.DamageSourcesTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MonsterEquipment;
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.CalendarWorldData;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -189,7 +189,7 @@ public final class CommonEventHandler
             }
         }
         // Harvest ice from saws
-        if (OreDictionaryHelper.doesStackMatchOre(heldItem,"saw") && block == Blocks.ICE)
+        if (OreDictionaryHelper.doesStackMatchOre(heldItem, "saw") && block == Blocks.ICE)
         {
             event.getDrops().add(new ItemStack(Blocks.ICE));
         }

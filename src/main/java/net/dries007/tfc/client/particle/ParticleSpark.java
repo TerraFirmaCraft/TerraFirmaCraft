@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.client.particle;
 
 import net.minecraft.client.particle.Particle;
@@ -19,14 +24,15 @@ public class ParticleSpark extends Particle
         this.motionX *= speedX;
         this.motionY *= speedY;
         this.motionZ *= speedZ;
-        float f = (float)(RNG.nextFloat() * 0.3D + 0.6D);
-        float f2 = RNG.nextFloat()/5;
+        float f = (float) (RNG.nextFloat() * 0.3D + 0.6D);
+        float f2 = RNG.nextFloat() / 5;
         this.particleRed = f;
         this.particleGreen = f - f2;
         this.particleBlue = 0;
         this.particleScale *= 0.75F;
         this.particleMaxAge = duration + RNG.nextInt(5);
     }
+
     @Override
     public void onUpdate()
     {
@@ -38,9 +44,9 @@ public class ParticleSpark extends Particle
 
         this.move(this.motionX, this.motionY, this.motionZ);
 
-        if(this.particleRed > 0)
+        if (this.particleRed > 0)
             this.particleRed *= 0.9D;
-        if(this.particleGreen > 0)
+        if (this.particleGreen > 0)
             this.particleGreen *= 0.82D;
 
         this.motionX *= 0.9D;

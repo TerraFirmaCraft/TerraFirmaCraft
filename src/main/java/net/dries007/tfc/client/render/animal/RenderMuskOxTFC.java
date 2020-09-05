@@ -36,7 +36,7 @@ public class RenderMuskOxTFC extends RenderAnimalTFC<EntityMuskOxTFC>
     protected void preRenderCallback(EntityMuskOxTFC muskoxTFC, float par2)
     {
         if (muskoxTFC.getGender() == EntityAnimalTFC.Gender.MALE)
-        GlStateManager.scale(1.2f, 1.2f, 1.2f);
+            GlStateManager.scale(1.2f, 1.2f, 1.2f);
         else
         {
             GlStateManager.scale(1.0f, 1.0f, 1.0f);

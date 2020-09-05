@@ -8,8 +8,6 @@ package net.dries007.tfc.util;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -28,6 +26,9 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.objects.items.ItemsTFC;
 
 import static net.minecraftforge.fluids.FluidUtil.getFluidHandler;
 

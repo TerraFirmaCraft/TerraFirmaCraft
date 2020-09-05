@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.ConfigTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -22,6 +21,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextComponentTranslation;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.capability.forge.CapabilityForgeable;
 import net.dries007.tfc.api.capability.forge.IForgeable;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;

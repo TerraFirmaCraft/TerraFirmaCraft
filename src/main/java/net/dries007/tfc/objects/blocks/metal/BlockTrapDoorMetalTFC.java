@@ -1,15 +1,19 @@
-package net.dries007.tfc.objects.blocks.metal;
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
 
-import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.util.OreDictionaryHelper;
-import net.minecraft.block.BlockTrapDoor;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+package net.dries007.tfc.objects.blocks.metal;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraft.block.BlockTrapDoor;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+
+import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.util.OreDictionaryHelper;
 
 public class BlockTrapDoorMetalTFC extends BlockTrapDoor
 {

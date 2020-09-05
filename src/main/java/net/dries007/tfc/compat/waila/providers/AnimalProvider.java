@@ -65,7 +65,7 @@ public class AnimalProvider implements IWailaEntity
                                 // For 1.12, addons will need to either extend EntityAnimalMammal or handle the tooltip themselves
                                 if (animal instanceof EntityAnimalMammal)
                                 {
-                                    EntityAnimalMammal mother = (EntityAnimalMammal)animal;
+                                    EntityAnimalMammal mother = (EntityAnimalMammal) animal;
                                     long gestationDaysRemaining = mother.getPregnantTime() + mother.gestationDays() - CalendarTFC.PLAYER_TIME.getTotalDays();
                                     currentTooltip.add(new TextComponentTranslation("waila.tfc.animal.pregnant_end", gestationDaysRemaining).getFormattedText());
                                 }

@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.network;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,12 +71,12 @@ public class PacketSpawnTFCParticle implements IMessage
         public IMessage onMessage(PacketSpawnTFCParticle message, MessageContext ctx)
         {
             TerraFirmaCraft.getProxy().getThreadListener(ctx).addScheduledTask(() -> {
-               EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
-               if (player != null)
-               {
-                   TFCParticles particle = TFCParticles.values()[message.particleID];
-                   particle.spawn(player.getEntityWorld(), message.x, message.y, message.z, message.speedX, message.speedY, message.speedZ, message.duration);
-               }
+                EntityPlayer player = TerraFirmaCraft.getProxy().getPlayer(ctx);
+                if (player != null)
+                {
+                    TFCParticles particle = TFCParticles.values()[message.particleID];
+                    particle.spawn(player.getEntityWorld(), message.x, message.y, message.z, message.speedX, message.speedY, message.speedZ, message.duration);
+                }
             });
             return null;
         }

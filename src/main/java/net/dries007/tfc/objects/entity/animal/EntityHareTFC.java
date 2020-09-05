@@ -60,16 +60,6 @@ public class EntityHareTFC extends EntityRabbitTFC implements IHuntable
         return 0;
     }
 
-    public int getHareType()
-    {
-        return this.dataManager.get(HARE_TYPE);
-    }
-
-    public void setHareType(int hareTypeId)
-    {
-        this.dataManager.set(HARE_TYPE, hareTypeId);
-    }
-
     @Override
     protected void entityInit()
     {
@@ -113,6 +103,16 @@ public class EntityHareTFC extends EntityRabbitTFC implements IHuntable
         this.setHareType(i);
 
         return livingdata;
+    }
+
+    public int getHareType()
+    {
+        return this.dataManager.get(HARE_TYPE);
+    }
+
+    public void setHareType(int hareTypeId)
+    {
+        this.dataManager.set(HARE_TYPE, hareTypeId);
     }
 
     private int getRandomHareType()

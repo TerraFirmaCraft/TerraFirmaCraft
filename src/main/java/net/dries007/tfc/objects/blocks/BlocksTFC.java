@@ -7,7 +7,6 @@ package net.dries007.tfc.objects.blocks;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
-import net.dries007.tfc.objects.blocks.metal.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.material.MapColor;
@@ -32,6 +31,7 @@ import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.*;
 import net.dries007.tfc.objects.blocks.agriculture.*;
 import net.dries007.tfc.objects.blocks.devices.*;
+import net.dries007.tfc.objects.blocks.metal.*;
 import net.dries007.tfc.objects.blocks.plants.BlockFloatingWaterTFC;
 import net.dries007.tfc.objects.blocks.plants.BlockPlantTFC;
 import net.dries007.tfc.objects.blocks.stone.*;

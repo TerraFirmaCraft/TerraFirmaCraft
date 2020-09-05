@@ -255,9 +255,10 @@ public class BlockLeavesTFC extends BlockLeaves
         double x = pos.getX();
         double y = pos.getY();
         double z = pos.getZ();
-        for(int i = 1; i < RNG.nextInt(4); i++)
+        for (int i = 1; i < RNG.nextInt(4); i++)
         {
-            switch (RNG.nextInt(4)) {
+            switch (RNG.nextInt(4))
+            {
                 case 1:
                     TFCParticles.LEAF1.sendToAllNear(world, x + RNG.nextFloat() / particleScale, y - RNG.nextFloat() / particleScale, z + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, -0.15D + RNG.nextFloat() / particleScale, (RNG.nextFloat() - 0.5) / particleScale, 90);
                     break;

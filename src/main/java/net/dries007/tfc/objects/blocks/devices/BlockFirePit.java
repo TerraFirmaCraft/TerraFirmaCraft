@@ -11,8 +11,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.util.DamageSourcesTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -41,6 +39,8 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.api.util.IBellowsConsumerBlock;
 import net.dries007.tfc.client.TFCGuiHandler;
@@ -49,12 +49,12 @@ import net.dries007.tfc.objects.advancements.TFCTriggers;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemFireStarter;
+import net.dries007.tfc.objects.items.ItemsTFC;
 import net.dries007.tfc.objects.te.TEBellows;
 import net.dries007.tfc.objects.te.TEFirePit;
+import net.dries007.tfc.util.DamageSourcesTFC;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.OreDictionaryHelper;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import static net.dries007.tfc.Constants.RNG;
 
@@ -161,7 +161,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 0.1;
         double z = pos.getZ() + 0.5;
-        switch(rng.nextInt(3))
+        switch (rng.nextInt(3))
         {
             case 0:
                 TFCParticles.FIRE_PIT_SMOKE1.spawn(world, x, y, z, 0, 0.1D, 0, 120);
@@ -174,10 +174,10 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
                 break;
         }
 
-        if(state.getValue(ATTACHMENT) == FirePitAttachment.COOKING_POT)
+        if (state.getValue(ATTACHMENT) == FirePitAttachment.COOKING_POT)
         {
             TEFirePit tile = Helpers.getTE(world, pos, TEFirePit.class);
-            if (tile.getCookingPotStage() == TEFirePit.CookingPotStage.BOILING)
+            if (tile != null && tile.getCookingPotStage() == TEFirePit.CookingPotStage.BOILING)
             {
                 for (int i = 0; i < rng.nextInt(5) + 4; i++)
                     TFCParticles.BUBBLE.spawn(world, x + rng.nextFloat() * 0.375 - 0.1875, y + 0.525, z + rng.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0, 3);
@@ -188,20 +188,26 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         if ((state.getValue(ATTACHMENT) == FirePitAttachment.GRILL))
         {
             TEFirePit tile = Helpers.getTE(world, pos, TEFirePit.class);
-            IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            boolean anythingInInv = false;
-            for (int i = TEFirePit.SLOT_EXTRA_INPUT_START; i <= TEFirePit.SLOT_EXTRA_INPUT_END; i++)
+            if (tile != null)
             {
-                if(!cap.getStackInSlot(i).isEmpty())
+                IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (cap != null)
                 {
-                    anythingInInv = true;
-                    break;
+                    boolean anythingInInv = false;
+                    for (int i = TEFirePit.SLOT_EXTRA_INPUT_START; i <= TEFirePit.SLOT_EXTRA_INPUT_END; i++)
+                    {
+                        if (!cap.getStackInSlot(i).isEmpty())
+                        {
+                            anythingInInv = true;
+                            break;
+                        }
+                    }
+                    if (state.getValue(LIT) && anythingInInv)
+                    {
+                        world.playSound(x, y + 0.425F, z, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.25F, rng.nextFloat() * 0.7F + 0.4F, false);
+                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + rng.nextFloat() / 2 - 0.25, y + 0.6, z + rng.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
+                    }
                 }
-            }
-            if (state.getValue(LIT) && anythingInInv)
-            {
-                world.playSound(x, y + 0.425F, z, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.25F, rng.nextFloat() * 0.7F + 0.4F, false);
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + rng.nextFloat()/2 - 0.25, y + 0.6, z + rng.nextFloat()/2 - 0.25, 0.0D, 0.1D, 0.0D);
             }
         }
     }
@@ -323,36 +329,42 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
             else if ((held == ItemStack.EMPTY) && (attachment != FirePitAttachment.NONE))
             {
                 boolean anythingInTheInv = false;
-                IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                for (int i = TEFirePit.SLOT_EXTRA_INPUT_START; i <= TEFirePit.SLOT_EXTRA_INPUT_END; i++)
+                if (tile != null)
                 {
-                    if(!cap.getStackInSlot(i).isEmpty())
+                    IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                    if (cap != null)
                     {
-                        anythingInTheInv = true;
-                        break;
-                    }
-                }
-                if (!anythingInTheInv)
-                {
-                    if (state.getValue(LIT))
-                    {
-                        if (attachment == FirePitAttachment.COOKING_POT)
+                        for (int i = TEFirePit.SLOT_EXTRA_INPUT_START; i <= TEFirePit.SLOT_EXTRA_INPUT_END; i++)
                         {
-                            player.attackEntityFrom(DamageSourcesTFC.SOUP, 1);
+                            if (!cap.getStackInSlot(i).isEmpty())
+                            {
+                                anythingInTheInv = true;
+                                break;
+                            }
                         }
-                        else
+                        if (!anythingInTheInv)
                         {
-                            player.attackEntityFrom(DamageSourcesTFC.GRILL, 1);
+                            if (state.getValue(LIT))
+                            {
+                                if (attachment == FirePitAttachment.COOKING_POT)
+                                {
+                                    player.attackEntityFrom(DamageSourcesTFC.SOUP, 1);
+                                }
+                                else
+                                {
+                                    player.attackEntityFrom(DamageSourcesTFC.GRILL, 1);
+                                }
+
+                            }
+                            else
+                            {
+                                tile.onRemoveAttachment(player, held);
+                                worldIn.setBlockState(pos, state.withProperty(ATTACHMENT, FirePitAttachment.NONE));
+                                return true;
+                            }
+
                         }
-
                     }
-                    else
-                    {
-                        tile.onRemoveAttachment(player, held);
-                        worldIn.setBlockState(pos, state.withProperty(ATTACHMENT, FirePitAttachment.NONE));
-                        return true;
-                    }
-
                 }
             }
 
@@ -408,6 +420,13 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         return new TEFirePit();
     }
 
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        for (int i = 3; i <= 3 + RNG.nextInt(5); i++)
+            drops.add(ItemsTFC.WOOD_ASH.getDefaultInstance());
+    }
+
     @Nullable
     @Override
     public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EntityLiving entity)
@@ -429,13 +448,6 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
         {
             teFirePit.onAirIntake(airAmount);
         }
-    }
-
-    @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        for (int i = 3; i <= 3 + RNG.nextInt(5); i++)
-            drops.add(ItemsTFC.WOOD_ASH.getDefaultInstance());
     }
 
     private boolean canBePlacedOn(World worldIn, BlockPos pos)

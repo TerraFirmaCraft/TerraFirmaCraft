@@ -5,11 +5,7 @@
 
 package net.dries007.tfc.objects.items.itemblock;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -32,24 +28,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
-import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandler;
 import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.OreDictionaryHelper;
@@ -225,40 +216,9 @@ public class ItemBlockBarrel extends ItemBlockTFC
             return super.canFillFluidType(fluid) || BarrelRecipe.isBarrelFluid(fluid);
         }
 
-        @Override
-        protected void setFluid(@Nonnull FluidStack fluid)
-        {
-            // Update the sealed tick whenever there is an update in the stored fluid
-            if (!container.hasTagCompound())
-            {
-                container.setTagCompound(new NBTTagCompound());
-            }
-            NBTTagCompound nbt = container.getTagCompound();
-            //noinspection ConstantConditions
-            nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
-            nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
-            container.setTagCompound(nbt);
-            super.setFluid(fluid);
-        }
-
-        @Override
-        protected void setContainerToEmpty()
-        {
-            if (container.getTagCompound() != null)
-            {
-                super.setContainerToEmpty();
-                // If not holding any items, we can safely clear the item tag
-                if (!container.getTagCompound().hasKey("inventory") && !container.getTagCompound().hasKey("surplus"))
-                {
-                    container.setTagCompound(null);
-                }
-            }
-        }
-
         /**
          * Set the contents to be saved in this capability
          * This method assume you have at least one content to save
-         *
          */
         public void setBarrelContents(@Nullable FluidStack fluidStack, @Nullable NBTTagCompound inventoryTag, @Nullable NBTTagList surplusTag, long sealedTick, long sealedCalendarTick)
         {
@@ -288,6 +248,36 @@ public class ItemBlockBarrel extends ItemBlockTFC
         public NBTTagCompound getBarrelContents()
         {
             return container.getTagCompound();
+        }
+
+        @Override
+        protected void setFluid(@Nonnull FluidStack fluid)
+        {
+            // Update the sealed tick whenever there is an update in the stored fluid
+            if (!container.hasTagCompound())
+            {
+                container.setTagCompound(new NBTTagCompound());
+            }
+            NBTTagCompound nbt = container.getTagCompound();
+            //noinspection ConstantConditions
+            nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
+            nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
+            container.setTagCompound(nbt);
+            super.setFluid(fluid);
+        }
+
+        @Override
+        protected void setContainerToEmpty()
+        {
+            if (container.getTagCompound() != null)
+            {
+                super.setContainerToEmpty();
+                // If not holding any items, we can safely clear the item tag
+                if (!container.getTagCompound().hasKey("inventory") && !container.getTagCompound().hasKey("surplus"))
+                {
+                    container.setTagCompound(null);
+                }
+            }
         }
     }
 }

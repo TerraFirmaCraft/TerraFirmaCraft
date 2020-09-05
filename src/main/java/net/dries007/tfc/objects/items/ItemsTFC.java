@@ -266,7 +266,7 @@ public final class ItemsTFC
         }
 
         simpleItems.add(register(r, "stick_bunch", new ItemMisc(Size.NORMAL, Weight.LIGHT), CT_WOOD));
-        simpleItems.add(register(r, "stick_bundle", new ItemMisc(Size. VERY_LARGE, Weight.MEDIUM, "log_wood", "stick_bundle"), CT_WOOD));
+        simpleItems.add(register(r, "stick_bundle", new ItemMisc(Size.VERY_LARGE, Weight.MEDIUM, "log_wood", "stick_bundle"), CT_WOOD));
         simpleItems.add(register(r, "wood_ash", new ItemMisc(Size.VERY_SMALL, Weight.VERY_LIGHT), CT_WOOD));
 
         for (RockCategory cat : TFCRegistries.ROCK_CATEGORIES.getValuesCollection())
