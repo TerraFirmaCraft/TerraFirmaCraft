@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -21,7 +20,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -41,7 +39,6 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.TFCGuiHandler;
-import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.Helpers;
 
@@ -179,6 +176,23 @@ public class BlockBarrel extends Block implements IItemSize
         return false;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+    {
+        if (!world.isRemote)
+        {
+            boolean powered = world.isBlockPowered(pos);
+            if (powered || block.getDefaultState().canProvidePower())
+            {
+                if (powered != state.getValue(SEALED))
+                {
+                    toggleBarrelSeal(world, pos);
+                }
+            }
+        }
+    }
+
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -246,23 +260,6 @@ public class BlockBarrel extends Block implements IItemSize
             {
                 worldIn.setBlockState(pos, state.withProperty(SEALED, true));
                 te.loadFromItemStack(stack);
-            }
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-    {
-        if (!world.isRemote)
-        {
-            boolean powered = world.isBlockPowered(pos);
-            if (powered || block.getDefaultState().canProvidePower())
-            {
-                if (powered != state.getValue(SEALED))
-                {
-                    toggleBarrelSeal(world, pos);
-                }
             }
         }
     }

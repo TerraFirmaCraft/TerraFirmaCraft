@@ -33,12 +33,12 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public enum TFCParticles
 {
     STEAM(new ResourceLocation(MOD_ID, "particle/steam"), () -> ParticleSteam::new),
-    FIRE_PIT_SMOKE1(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke1"), () ->  ParticleFirePitSmoke::new),
-    FIRE_PIT_SMOKE2(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke2"), () ->  ParticleFirePitSmoke::new),
-    FIRE_PIT_SMOKE3(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke3"), () ->  ParticleFirePitSmoke::new),
-    LEAF1(new ResourceLocation(MOD_ID, "particle/leaf1"), () ->  ParticleLeaf::new),
-    LEAF2(new ResourceLocation(MOD_ID, "particle/leaf2"), () ->  ParticleLeaf::new),
-    LEAF3(new ResourceLocation(MOD_ID, "particle/leaf3"), () ->  ParticleLeaf::new),
+    FIRE_PIT_SMOKE1(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke1"), () -> ParticleFirePitSmoke::new),
+    FIRE_PIT_SMOKE2(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke2"), () -> ParticleFirePitSmoke::new),
+    FIRE_PIT_SMOKE3(new ResourceLocation(MOD_ID, "particle/fire_pit_smoke3"), () -> ParticleFirePitSmoke::new),
+    LEAF1(new ResourceLocation(MOD_ID, "particle/leaf1"), () -> ParticleLeaf::new),
+    LEAF2(new ResourceLocation(MOD_ID, "particle/leaf2"), () -> ParticleLeaf::new),
+    LEAF3(new ResourceLocation(MOD_ID, "particle/leaf3"), () -> ParticleLeaf::new),
     SPARK(new ResourceLocation(MOD_ID, "particle/spark"), () -> ParticleSpark::new),
     BUBBLE(new ResourceLocation(MOD_ID, "particle/bubble"), () -> ParticleBubbleTFC::new);
 
@@ -58,8 +58,8 @@ public enum TFCParticles
     /**
      * Register a new particle to have it's texture atlas initialized and be ready to be used by TFC
      *
-     * @param location the resource (textures) location
-     * @param factorySupplier  the supplier (so we can instantiate this class server side) for method on how to create new instances of this particle
+     * @param location        the resource (textures) location
+     * @param factorySupplier the supplier (so we can instantiate this class server side) for method on how to create new instances of this particle
      */
     TFCParticles(ResourceLocation location, Supplier<IParticleFactoryTFC> factorySupplier)
     {
@@ -102,7 +102,7 @@ public enum TFCParticles
     public void sendToAllNear(World worldIn, double x, double y, double z, double speedX, double speedY, double speedZ, int duration)
     {
         final int range = 80;
-        PacketSpawnTFCParticle packet = new PacketSpawnTFCParticle(this, x , y, z, speedX, speedY, speedZ, duration);
+        PacketSpawnTFCParticle packet = new PacketSpawnTFCParticle(this, x, y, z, speedX, speedY, speedZ, duration);
         NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(worldIn.provider.getDimension(), x, y, z, range);
         TerraFirmaCraft.getNetwork().sendToAllAround(packet, point);
     }

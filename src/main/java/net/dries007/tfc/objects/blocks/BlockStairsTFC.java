@@ -84,14 +84,14 @@ public class BlockStairsTFC extends BlockStairs
     }
 
     @Override
-    public void onBlockAdded(@Nonnull World worldIn, @Nonnull BlockPos pos, IBlockState state)
-    {
-        // Prevents cobble stairs from falling
-    }
-
-    @Override
     public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
     {
         // Prevents chiseled smooth stone stairs from collapsing
+    }
+
+    @Override
+    public void onBlockAdded(@Nonnull World worldIn, @Nonnull BlockPos pos, IBlockState state)
+    {
+        // Prevents cobble stairs from falling
     }
 }

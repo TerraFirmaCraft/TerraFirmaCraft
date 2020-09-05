@@ -167,7 +167,7 @@ public final class DefaultRecipes
                 // Vanilla dye-able items
                 new BarrelRecipe(IIngredient.of(FluidsTFC.getFluidFromDye(dyeColor).get(), 125), IIngredient.of("woolWhite"), null, new ItemStack(Blocks.WOOL, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("wool_" + dyeName),
                 new BarrelRecipe(IIngredient.of(FluidsTFC.getFluidFromDye(dyeColor).get(), 25), IIngredient.of(new ItemStack(Blocks.CARPET, 1, 0)), null, new ItemStack(Blocks.CARPET, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("carpet_" + dyeName),
-                new BarrelRecipe(IIngredient.of(FluidsTFC.getFluidFromDye(dyeColor).get(), 125), IIngredient.of(new ItemStack(Blocks.BED, 1, 0)), null, new ItemStack(Items.BED, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("bed_" + dyeName),
+                new BarrelRecipe(IIngredient.of(FluidsTFC.getFluidFromDye(dyeColor).get(), 125), IIngredient.of(new ItemStack(Items.BED, 1, 0)), null, new ItemStack(Items.BED, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("bed_" + dyeName),
                 new BarrelRecipe(IIngredient.of(FluidsTFC.getFluidFromDye(dyeColor).get(), 125), IIngredient.of(Blocks.HARDENED_CLAY), null, new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("terracotta_" + dyeName),
                 // Concrete (vanilla + aggregate)
                 new BarrelRecipe(IIngredient.of(FluidsTFC.getFluidFromDye(dyeColor).get(), 125), IIngredient.of(new ItemStack(Blocks.CONCRETE_POWDER, 1, 0)), null, new ItemStack(Blocks.CONCRETE_POWDER, 1, dyeMeta), ICalendar.TICKS_IN_HOUR).setRegistryName("concrete_" + dyeName),

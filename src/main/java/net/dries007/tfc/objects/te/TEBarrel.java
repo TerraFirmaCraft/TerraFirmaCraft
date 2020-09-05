@@ -68,12 +68,13 @@ public class TEBarrel extends TETickableInventory implements ITickable, ICalenda
 
     /**
      * Save up item and fluid handler contents to a barrel's ItemStack
+     *
      * @param stack the barrel's stack to save contents to
      */
     public void saveToItemStack(ItemStack stack)
     {
         IFluidHandler barrelCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if(barrelCap instanceof ItemBlockBarrel.ItemBarrelFluidHandler)
+        if (barrelCap instanceof ItemBlockBarrel.ItemBarrelFluidHandler)
         {
             NBTTagCompound inventoryTag = null;
             // Check if inventory has contents
@@ -105,15 +106,16 @@ public class TEBarrel extends TETickableInventory implements ITickable, ICalenda
 
     /**
      * Load up item and fluid handler contents from a barrel's ItemStack
+     *
      * @param stack the barrel's stack to load contents from
      */
     public void loadFromItemStack(ItemStack stack)
     {
         IFluidHandler barrelCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if(barrelCap instanceof ItemBlockBarrel.ItemBarrelFluidHandler)
+        if (barrelCap instanceof ItemBlockBarrel.ItemBarrelFluidHandler)
         {
             NBTTagCompound contents = ((ItemBlockBarrel.ItemBarrelFluidHandler) barrelCap).getBarrelContents();
-            if(contents != null)
+            if (contents != null)
             {
                 inventory.deserializeNBT(contents.getCompoundTag("inventory"));
                 surplus.clear();
@@ -463,7 +465,7 @@ public class TEBarrel extends TETickableInventory implements ITickable, ICalenda
     @Override
     public void onCalendarUpdate(long deltaPlayerTicks)
     {
-        while(deltaPlayerTicks > 0)
+        while (deltaPlayerTicks > 0)
         {
             deltaPlayerTicks = 0;
             if (recipe != null && sealed && recipe.getDuration() > 0)
