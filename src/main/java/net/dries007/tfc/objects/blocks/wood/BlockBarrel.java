@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -40,6 +41,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.TFCGuiHandler;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.Helpers;
 
@@ -237,16 +239,29 @@ public class BlockBarrel extends Block implements IItemSize
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        if (!worldIn.isRemote)
+        if (!worldIn.isRemote && stack.getTagCompound() != null)
         {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt != null)
+            TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
+            if (te != null)
             {
-                TEBarrel te = Helpers.getTE(worldIn, pos, TEBarrel.class);
-                if (te != null)
+                worldIn.setBlockState(pos, state.withProperty(SEALED, true));
+                te.loadFromItemStack(stack);
+            }
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+    {
+        if (!world.isRemote)
+        {
+            boolean powered = world.isBlockPowered(pos);
+            if (powered || block.getDefaultState().canProvidePower())
+            {
+                if (powered != state.getValue(SEALED))
                 {
-                    worldIn.setBlockState(pos, state.withProperty(SEALED, true));
-                    te.readFromItemTag(nbt);
+                    toggleBarrelSeal(world, pos);
                 }
             }
         }
@@ -311,7 +326,7 @@ public class BlockBarrel extends Block implements IItemSize
         TEBarrel tile = Helpers.getTE(world, pos, TEBarrel.class);
         if (tile != null && tile.isSealed())
         {
-            stack.setTagCompound(tile.getItemTag());
+            tile.saveToItemStack(stack);
         }
         return stack;
     }
