@@ -1,4 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/groundcover/rotten_flesh"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/groundcover/rotten_flesh"
+  }
 }
