@@ -133,7 +133,7 @@ public class BarrelRecipeWrapper implements IRecipeWrapper
             }
             else
             {
-                text = I18n.format("jei.tooltips.tfc.barrel.duration",recipe.getDuration() / ICalendar.TICKS_IN_DAY);
+                text = I18n.format("jei.tooltips.tfc.barrel.duration", recipe.getDuration() / ICalendar.TICKS_IN_DAY);
             }
         }
         else

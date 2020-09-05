@@ -19,6 +19,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -26,18 +27,21 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
+import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
 import net.dries007.tfc.objects.te.TEBarrel;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
@@ -61,55 +65,40 @@ public class ItemBlockBarrel extends ItemBlockTFC
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (player.getHeldItem(hand).getTagCompound() == null)
+        ItemStack stack = player.getHeldItem(hand);
+        if (!stack.isEmpty())
         {
-            BlockPos fluidPos = pos.offset(facing); //Since the clicked facing is the block bellow fluids
-            IBlockState state = worldIn.getBlockState(fluidPos);
-            IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, fluidPos, facing);
-            if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
+            IFluidHandler barrelCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            if (barrelCap != null && barrelCap.drain(1, false) == null)
             {
-                //noinspection ConstantConditions
-                Fluid fluid = handler.drain(Fluid.BUCKET_VOLUME, false).getFluid();
-                if (fluid.getTemperature() < BARREL_MAX_FLUID_TEMPERATURE)
+                BlockPos fluidPos = pos.offset(facing); //Since the clicked facing is the block bellow fluids
+                IBlockState state = worldIn.getBlockState(fluidPos);
+                IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, fluidPos, facing);
+                if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
                 {
-                    FluidTank tank = new FluidTank(ConfigTFC.Devices.BARREL.tank);
-                    boolean canCreateSources = false; //default
-                    if (state.getBlock() instanceof BlockFluidClassic)
+                    //noinspection ConstantConditions
+                    Fluid fluid = handler.drain(Fluid.BUCKET_VOLUME, false).getFluid();
+                    if (fluid.getTemperature() < BARREL_MAX_FLUID_TEMPERATURE)
                     {
-                        BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(fluidPos).getBlock();
-                        canCreateSources = ObfuscationReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                        boolean canCreateSources = false; //default
+                        if (state.getBlock() instanceof BlockFluidClassic)
+                        {
+                            BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(fluidPos).getBlock();
+                            canCreateSources = ObfuscationReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                        }
+                        else if (state.getBlock() instanceof BlockLiquid)
+                        {
+                            //Fire the event so other mods that prevent infinite water disable this
+                            canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, fluidPos, state, state.getMaterial() == Material.WATER);
+                        }
+                        FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
+                        if (canCreateSources && fluidStack != null)
+                        {
+                            fluidStack.amount = ConfigTFC.Devices.BARREL.tank;
+                        }
+                        barrelCap.fill(fluidStack, true);
+                        return EnumActionResult.SUCCESS;
                     }
-                    else if (state.getBlock() instanceof BlockLiquid)
-                    {
-                        //Fire the event so other mods that prevent infinite water disable this
-                        canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, fluidPos, state, state.getMaterial() == Material.WATER);
-                    }
-                    FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
-                    if (canCreateSources && fluidStack != null)
-                    {
-                        fluidStack.amount = ConfigTFC.Devices.BARREL.tank;
-                    }
-                    tank.fill(fluidStack, true);
-
-                    NBTTagCompound nbt = new NBTTagCompound();
-                    nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
-                    nbt.setTag("inventory", new ItemStackHandler(3).serializeNBT());
-
-                    nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
-                    nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
-                    ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
-                    stack.setTagCompound(nbt);
-                    player.getHeldItem(hand).shrink(1);
-                    if (player.getHeldItem(hand).isEmpty())
-                    {
-                        player.setHeldItem(hand, stack);
-                    }
-                    else
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(player, stack);
-                    }
-
-                    return EnumActionResult.SUCCESS;
                 }
             }
         }
@@ -120,22 +109,24 @@ public class ItemBlockBarrel extends ItemBlockTFC
     @Nonnull
     public String getTranslationKey(@Nonnull ItemStack stack)
     {
-        return stack.getTagCompound() != null ? super.getTranslationKey() + ".sealed" : super.getTranslationKey();
+        IFluidHandler barrelCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        return barrelCap != null && barrelCap.drain(1, false) != null ? super.getTranslationKey() + ".sealed" : super.getTranslationKey();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt != null)
+        IFluidHandler barrelCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (barrelCap instanceof ItemBarrelFluidHandler && ((ItemBarrelFluidHandler) barrelCap).getBarrelContents() != null) // Have either fluid or items stored
         {
-            FluidTank tank = new FluidTank(0).readFromNBT(nbt.getCompoundTag("tank"));
-            ItemStackHandler stackHandler = new ItemStackHandler();
-            stackHandler.deserializeNBT(nbt.getCompoundTag("inventory"));
+            FluidStack fluidStack = barrelCap.drain(Integer.MAX_VALUE, false);
+            ItemStackHandler stackHandler = new ItemStackHandler(3);
+            //noinspection ConstantConditions
+            stackHandler.deserializeNBT(((ItemBarrelFluidHandler) barrelCap).getBarrelContents().getCompoundTag("inventory"));
             ItemStack inventory = stackHandler.getStackInSlot(TEBarrel.SLOT_ITEM);
 
-            if (tank.getFluid() == null || tank.getFluidAmount() == 0)
+            if (fluidStack == null || fluidStack.amount == 0)
             {
                 if (inventory.isEmpty())
                 {
@@ -148,7 +139,7 @@ public class ItemBlockBarrel extends ItemBlockTFC
             }
             else
             {
-                tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_fluid", tank.getFluidAmount(), tank.getFluid().getLocalizedName()));
+                tooltip.add(I18n.format(TerraFirmaCraft.MOD_ID + ".tooltip.barrel_fluid", fluidStack.amount, fluidStack.getLocalizedName()));
 
                 if (!inventory.isEmpty())
                 {
@@ -162,49 +153,131 @@ public class ItemBlockBarrel extends ItemBlockTFC
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
-        if (player.getHeldItem(hand).getTagCompound() == null)
+        ItemStack stack = player.getHeldItem(hand);
+        if (!stack.isEmpty())
         {
-            RayTraceResult rayTrace = rayTrace(worldIn, player, true);
-            //noinspection ConstantConditions - ray trace can be null
-            if (rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK)
+            IFluidHandler barrelCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            if (barrelCap != null && barrelCap.drain(1, false) == null)
             {
-                BlockPos pos = rayTrace.getBlockPos();
-                IBlockState state = worldIn.getBlockState(pos);
-                IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, rayTrace.sideHit);
-                if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
+                RayTraceResult rayTrace = rayTrace(worldIn, player, true);
+                //noinspection ConstantConditions - ray trace can be null
+                if (rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK)
                 {
-                    FluidTank tank = new FluidTank(ConfigTFC.Devices.BARREL.tank);
-                    boolean canCreateSources = false; //default
-                    if (state.getBlock() instanceof BlockFluidClassic)
+                    BlockPos pos = rayTrace.getBlockPos();
+                    IBlockState state = worldIn.getBlockState(pos);
+                    IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, rayTrace.sideHit);
+                    if (handler != null && handler.drain(Fluid.BUCKET_VOLUME, false) != null)
                     {
-                        BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(pos).getBlock();
-                        canCreateSources = ObfuscationReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                        FluidTank tank = new FluidTank(ConfigTFC.Devices.BARREL.tank);
+                        boolean canCreateSources = false; //default
+                        if (state.getBlock() instanceof BlockFluidClassic)
+                        {
+                            BlockFluidClassic fluidblock = (BlockFluidClassic) worldIn.getBlockState(pos).getBlock();
+                            canCreateSources = ObfuscationReflectionHelper.getPrivateValue(BlockFluidClassic.class, fluidblock, "canCreateSources");
+                        }
+                        else if (state.getBlock() instanceof BlockLiquid)
+                        {
+                            //Fire the event so other mods that prevent infinite water disable this
+                            canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, pos, state, state.getMaterial() == Material.WATER);
+                        }
+                        FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
+                        if (canCreateSources && fluidStack != null)
+                        {
+                            fluidStack.amount = ConfigTFC.Devices.BARREL.tank;
+                        }
+                        barrelCap.fill(fluidStack, true);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
                     }
-                    else if (state.getBlock() instanceof BlockLiquid)
-                    {
-                        //Fire the event so other mods that prevent infinite water disable this
-                        canCreateSources = ForgeEventFactory.canCreateFluidSource(worldIn, pos, state, state.getMaterial() == Material.WATER);
-                    }
-                    FluidStack fluidStack = handler.drain(Fluid.BUCKET_VOLUME, true);
-                    if (canCreateSources && fluidStack != null)
-                    {
-                        fluidStack.amount = ConfigTFC.Devices.BARREL.tank;
-                    }
-                    tank.fill(fluidStack, true);
-
-                    NBTTagCompound nbt = new NBTTagCompound();
-                    nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
-                    nbt.setTag("inventory", new ItemStackHandler(3).serializeNBT());
-
-                    nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
-                    nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
-                    ItemStack stack = new ItemStack(player.getHeldItem(hand).getItem());
-                    stack.setTagCompound(nbt);
-                    player.setHeldItem(hand, stack);
-                    return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
                 }
             }
         }
         return super.onItemRightClick(worldIn, player, hand);
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        return new ItemBarrelFluidHandler(stack);
+    }
+
+    // This is not an item handler, but still saves items from a sealed barrel
+    public static class ItemBarrelFluidHandler extends FluidWhitelistHandlerComplex
+    {
+        protected ItemBarrelFluidHandler(@Nonnull ItemStack container)
+        {
+            super(container, ConfigTFC.Devices.BARREL.tank, ConfigTFC.Devices.BARREL.fluidWhitelist);
+        }
+
+        @Override
+        public boolean canFillFluidType(FluidStack fluid)
+        {
+            // Also, accept fluids from recipes
+            return super.canFillFluidType(fluid) || BarrelRecipe.isBarrelFluid(fluid);
+        }
+
+        /**
+         * Set the contents to be saved in this capability
+         * This method assume you have at least one content to save
+         */
+        public void setBarrelContents(@Nullable FluidStack fluidStack, @Nullable NBTTagCompound inventoryTag, @Nullable NBTTagList surplusTag, long sealedTick, long sealedCalendarTick)
+        {
+            NBTTagCompound nbt = container.getTagCompound();
+            if (nbt == null)
+            {
+                nbt = new NBTTagCompound();
+            }
+            if (inventoryTag != null)
+            {
+                nbt.setTag("inventory", inventoryTag);
+            }
+            if (surplusTag != null)
+            {
+                nbt.setTag("surplus", surplusTag);
+            }
+            nbt.setLong("sealedTick", sealedTick);
+            nbt.setLong("sealedCalendarTick", sealedCalendarTick);
+            container.setTagCompound(nbt);
+            this.fill(fluidStack, true);
+        }
+
+        /**
+         * For convenience, this method only serves as a reference to the item tag, which holds all necessary data.
+         */
+        @Nullable
+        public NBTTagCompound getBarrelContents()
+        {
+            return container.getTagCompound();
+        }
+
+        @Override
+        protected void setFluid(@Nonnull FluidStack fluid)
+        {
+            // Update the sealed tick whenever there is an update in the stored fluid
+            if (!container.hasTagCompound())
+            {
+                container.setTagCompound(new NBTTagCompound());
+            }
+            NBTTagCompound nbt = container.getTagCompound();
+            //noinspection ConstantConditions
+            nbt.setLong("sealedTick", CalendarTFC.PLAYER_TIME.getTicks());
+            nbt.setLong("sealedCalendarTick", CalendarTFC.CALENDAR_TIME.getTicks());
+            container.setTagCompound(nbt);
+            super.setFluid(fluid);
+        }
+
+        @Override
+        protected void setContainerToEmpty()
+        {
+            if (container.getTagCompound() != null)
+            {
+                super.setContainerToEmpty();
+                // If not holding any items, we can safely clear the item tag
+                if (!container.getTagCompound().hasKey("inventory") && !container.getTagCompound().hasKey("surplus"))
+                {
+                    container.setTagCompound(null);
+                }
+            }
+        }
     }
 }

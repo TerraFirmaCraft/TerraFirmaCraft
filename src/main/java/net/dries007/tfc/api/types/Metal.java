@@ -9,7 +9,6 @@ import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.dries007.tfc.objects.blocks.metal.BlockTrapDoorMetalTFC;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -17,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.dries007.tfc.objects.blocks.metal.BlockTrapDoorMetalTFC;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 import net.dries007.tfc.objects.items.metal.*;
 import net.dries007.tfc.util.Helpers;

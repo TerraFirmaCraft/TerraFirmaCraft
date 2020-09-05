@@ -22,6 +22,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -145,6 +146,13 @@ public class BlockCropDead extends BlockBush
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(ItemSeedsTFC.get(crop));
+    }
+
+    @Override
+    public boolean canBlockStay(World world, BlockPos pos, IBlockState state)
+    {
+        IBlockState soil = world.getBlockState(pos.down());
+        return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
     }
 
     @Override

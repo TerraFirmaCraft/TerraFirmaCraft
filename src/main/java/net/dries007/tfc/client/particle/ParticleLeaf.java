@@ -5,7 +5,8 @@
 
 package net.dries007.tfc.client.particle;
 
-import net.dries007.tfc.client.GrassColorHandler;
+import java.awt.*;
+
 import net.minecraft.client.particle.Particle;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -13,15 +14,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.awt.*;
+import net.dries007.tfc.client.GrassColorHandler;
 
 @SideOnly(Side.CLIENT)
 public class ParticleLeaf extends Particle
 {
     private final int xSignModifier = rand.nextInt(2) - 1;
     private final int zSignModifier = rand.nextInt(2) - 1;
-    private final double xMod = (rand.nextFloat() - 0.5)/7;
-    private final double zMod = (rand.nextFloat() - 0.5)/7;
+    private final double xMod = (rand.nextFloat() - 0.5) / 7;
+    private final double zMod = (rand.nextFloat() - 0.5) / 7;
 
     public ParticleLeaf(World worldIn, double x, double y, double z, double speedX, double speedY, double speedZ, int duration)
     {

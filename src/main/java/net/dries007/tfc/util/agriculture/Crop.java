@@ -51,6 +51,7 @@ public enum Crop implements ICrop
     RED_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.RED_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 32f, 38f, 50f, 100f, 400f, 450f, 7, 0.55f, PICKABLE),
     YELLOW_BELL_PEPPER(() -> new ItemStack(ItemFoodTFC.get(Food.YELLOW_BELL_PEPPER)), () -> new ItemStack(ItemFoodTFC.get(Food.GREEN_BELL_PEPPER)), 4f, 12f, 32f, 38f, 50f, 100f, 400f, 450f, 7, 0.55f, PICKABLE),
     JUTE(() -> new ItemStack(ItemsTFC.JUTE), () -> ItemStack.EMPTY, 5f, 11f, 37f, 42f, 50f, 100f, 410f, 450f, 6, 0.5f, SIMPLE);
+
     static
     {
         for (ICrop crop : values())

@@ -5,35 +5,38 @@
 
 package net.dries007.tfc.client.render;
 
-import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
-import net.dries007.tfc.objects.te.TEFirePit;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import org.lwjgl.opengl.GL11;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import org.lwjgl.opengl.GL11;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.client.FluidSpriteCache;
+import net.dries007.tfc.objects.blocks.devices.BlockFirePit;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
+import net.dries007.tfc.objects.te.TEFirePit;
 
-import static net.dries007.tfc.objects.te.TEFirePit.SLOT_EXTRA_INPUT_START;
 import static net.dries007.tfc.objects.te.TEFirePit.SLOT_EXTRA_INPUT_END;
+import static net.dries007.tfc.objects.te.TEFirePit.SLOT_EXTRA_INPUT_START;
 
 /**
  * Render water in the cooking pot
  */
+@ParametersAreNonnullByDefault
 @SideOnly(Side.CLIENT)
 public class TESRFirePit extends TileEntitySpecialRenderer<TEFirePit>
 {
@@ -63,7 +66,7 @@ public class TESRFirePit extends TileEntitySpecialRenderer<TEFirePit>
             float b = (color & 0xFF) / 255F;
             float a = ((color >> 24) & 0xFF) / 255F;
 
-            if(te.getCookingPotStage() == TEFirePit.CookingPotStage.FINISHED)
+            if (te.getCookingPotStage() == TEFirePit.CookingPotStage.FINISHED)
             {
                 b = 0;
                 g /= 4;
@@ -89,7 +92,8 @@ public class TESRFirePit extends TileEntitySpecialRenderer<TEFirePit>
             GlStateManager.popMatrix();
         }
         // Render food on the grill
-        if (te.hasWorld()) {
+        if (te.hasWorld())
+        {
             IBlockState state = te.getWorld().getBlockState(te.getPos());
             if (state.getValue(BlockFirePit.ATTACHMENT) == BlockFirePit.FirePitAttachment.GRILL)
             {
@@ -118,7 +122,7 @@ public class TESRFirePit extends TileEntitySpecialRenderer<TEFirePit>
 
                         GlStateManager.translate(-leftTranslate, 0, 0);
                         if ((i == SLOT_EXTRA_INPUT_START + 1) || (i == SLOT_EXTRA_INPUT_START + 3))
-                            GlStateManager.translate(2*leftTranslate,-0.7f,0);
+                            GlStateManager.translate(2 * leftTranslate, -0.7f, 0);
                     }
 
                     GlStateManager.popMatrix();

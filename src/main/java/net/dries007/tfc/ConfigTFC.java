@@ -5,23 +5,17 @@
 
 package net.dries007.tfc;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
-import net.dries007.tfc.client.GrassColorHandler;
-import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.config.DecayTooltipMode;
-import net.dries007.tfc.util.config.HealthDisplayFormat;
-import net.dries007.tfc.util.config.HemisphereType;
-import net.dries007.tfc.util.config.InventoryCraftingMode;
-import net.dries007.tfc.util.config.OreTooltipMode;
-import net.dries007.tfc.util.config.QuiverSearch;
-import net.dries007.tfc.util.config.TemperatureMode;
-import net.dries007.tfc.util.config.TimeTooltipMode;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import net.dries007.tfc.client.GrassColorHandler;
+import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.config.*;
+
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Top level items must be static, the subclasses' fields must not be static.
@@ -908,7 +902,7 @@ public final class ConfigTFC
         @Config.Comment("Display settings")
         @Config.LangKey("config." + MOD_ID + ".client.display")
         public static final DisplayCFG DISPLAY = new DisplayCFG();
-        
+
         @Config.Comment("Grass coloring settings")
         @Config.LangKey("config." + MOD_ID + ".client.grassColor")
         public static final GrassColorCFG GRASS_COLOR = new GrassColorCFG();
@@ -966,44 +960,44 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".client.display.rottenFoodOverlayColor")
             public int rottenFoodOverlayColor = 0x88CC33;
         }
-    
+
         public static final class GrassColorCFG
         {
-        	@Config.Comment("If true, grass and foliage will be slightly varied in color.")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseEnable")
-         	public boolean noiseEnable = true;
-	    	
-	    	@Config.Comment("If true, grass and foliage will be colored seasonally.")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorEnable")
-         	public boolean seasonColorEnable = true;
-	    	
-	    	@Config.Comment("The noise scale. Default = 10")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseScale")
-         	public float noiseScale = 10f;
-	    	
-	    	@Config.Comment("How many darkness levels should the noise have? Default = 5")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseLevels")
-         	public int noiseLevels = 5;
-	    	
-	    	@Config.Comment("How potent should the darkness be? Default = 0.15")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseDarkness")
-         	public float noiseDarkness = 0.15f;
-	    	
-	    	@Config.Comment("ARGB code for summer coloring in hexadecimal. Default: 1155FF44")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSummer")
-         	public String seasonColorSummer = "1155FF44";
-	    	
-	    	@Config.Comment("ARGB code for summer coloring in hexadecimal. Default: 55FFDD44")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorAutumn")
-         	public String seasonColorAutumn = "55FFDD44";
-	    	
-	    	@Config.Comment("ARGB code for winter coloring in hexadecimal. Default: 335566FF")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorWinter")
-         	public String seasonColorWinter = "335566FF";
-	    	
-	    	@Config.Comment("ARGB code for spring coloring in hexadecimal. Default: 3355FFBB")
-         	@Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSpring")
-         	public String seasonColorSpring = "3355FFBB";
+            @Config.Comment("If true, grass and foliage will be slightly varied in color.")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseEnable")
+            public boolean noiseEnable = true;
+
+            @Config.Comment("If true, grass and foliage will be colored seasonally.")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorEnable")
+            public boolean seasonColorEnable = true;
+
+            @Config.Comment("The noise scale. Default = 10")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseScale")
+            public float noiseScale = 10f;
+
+            @Config.Comment("How many darkness levels should the noise have? Default = 5")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseLevels")
+            public int noiseLevels = 5;
+
+            @Config.Comment("How potent should the darkness be? Default = 0.15")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.noiseDarkness")
+            public float noiseDarkness = 0.15f;
+
+            @Config.Comment("ARGB code for summer coloring in hexadecimal. Default: 1155FF44")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSummer")
+            public String seasonColorSummer = "1155FF44";
+
+            @Config.Comment("ARGB code for summer coloring in hexadecimal. Default: 55FFDD44")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorAutumn")
+            public String seasonColorAutumn = "55FFDD44";
+
+            @Config.Comment("ARGB code for winter coloring in hexadecimal. Default: 335566FF")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorWinter")
+            public String seasonColorWinter = "335566FF";
+
+            @Config.Comment("ARGB code for spring coloring in hexadecimal. Default: 3355FFBB")
+            @Config.LangKey("config." + MOD_ID + ".client.grassColor.seasonColorSpring")
+            public String seasonColorSpring = "3355FFBB";
         }
     }
 

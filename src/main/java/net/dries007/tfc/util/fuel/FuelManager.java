@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import net.dries007.tfc.objects.items.ItemsTFC;
 import net.minecraft.item.ItemStack;
 
 import net.dries007.tfc.api.registries.TFCRegistries;
