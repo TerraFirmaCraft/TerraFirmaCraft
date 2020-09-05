@@ -13,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.common.util.Lazy;
 
 public class ThinSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 {
@@ -24,6 +25,9 @@ public class ThinSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     @Override
     public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
+        // Lazy because this queries a noise layer
+        Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
+
         BlockState topState;
         BlockState underState = config.getUnder();
         BlockPos.Mutable pos = new BlockPos.Mutable();
@@ -58,7 +62,8 @@ public class ThinSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                     }
                     else
                     {
-                        topState = underState = config.getUnderWaterMaterial();
+                        // Dynamic under water material
+                        topState = underState = underWaterConfig.get().getUnderWaterMaterial();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);

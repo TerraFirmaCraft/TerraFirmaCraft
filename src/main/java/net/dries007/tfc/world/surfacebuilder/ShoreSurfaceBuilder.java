@@ -10,16 +10,13 @@ import java.util.Random;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-public class ShoreSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
+public class ShoreSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderConfig>
 {
-    private long lastSeed;
-    private boolean initialized;
     private INoise2D variantNoise;
 
     public ShoreSurfaceBuilder()
@@ -42,14 +39,8 @@ public class ShoreSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     }
 
     @Override
-    public void setSeed(long seed)
+    protected void initSeed(long seed)
     {
-        if (lastSeed != seed || !initialized)
-        {
-            variantNoise = new SimplexNoise2D(seed).octaves(2).spread(0.003f).abs();
-
-            lastSeed = seed;
-            initialized = true;
-        }
+        variantNoise = new SimplexNoise2D(seed).octaves(2).spread(0.003f).abs();
     }
 }

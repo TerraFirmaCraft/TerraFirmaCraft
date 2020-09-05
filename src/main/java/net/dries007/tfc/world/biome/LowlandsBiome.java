@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.biome;
 
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
@@ -19,7 +21,7 @@ public class LowlandsBiome extends TFCBiome
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
 
-            setSurfaceBuilder(TFCSurfaceBuilders.DEEP.get(), TFCSurfaceBuilders.GRASS_DIRT_GRAVEL_GRAVEL_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.DEEP.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG);
         });
     }
 
