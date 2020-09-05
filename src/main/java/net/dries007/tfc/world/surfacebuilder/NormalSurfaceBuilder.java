@@ -14,11 +14,11 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.common.util.Lazy;
 
 public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 {
-    public static final BlockState AIR = Blocks.AIR.getDefaultState();
-    public static final BlockState SANDSTONE = Blocks.SANDSTONE.getDefaultState();
+    private static final BlockState AIR = Blocks.AIR.getDefaultState();
 
     public NormalSurfaceBuilder()
     {
@@ -28,6 +28,9 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     @Override
     public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
+        // Lazy because this queries a noise layer
+        Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
+
         BlockState topState;
         BlockState underState = config.getUnder();
         BlockPos.Mutable pos = new BlockPos.Mutable();
@@ -63,7 +66,7 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                     }
                     else
                     {
-                        topState = underState = config.getUnderWaterMaterial();
+                        topState = underState = underWaterConfig.get().getUnderWaterMaterial();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);

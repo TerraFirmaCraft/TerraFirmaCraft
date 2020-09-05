@@ -8,12 +8,12 @@ package net.dries007.tfc.world;
 /**
  * An {@link IBlockReplacer} which is able to initialize custom noise layers to be used during placement.
  */
-public abstract class ExtendedBlockReplacer implements IBlockReplacer
+public abstract class SeedBlockReplacer implements IBlockReplacer
 {
     private long cachedSeed;
     private boolean initialized;
 
-    protected ExtendedBlockReplacer()
+    protected SeedBlockReplacer()
     {
         this.initialized = false;
     }
@@ -25,9 +25,9 @@ public abstract class ExtendedBlockReplacer implements IBlockReplacer
         {
             initialized = true;
             cachedSeed = seed;
-            init(seed);
+            initSeed(seed);
         }
     }
 
-    protected abstract void init(long seed);
+    protected abstract void initSeed(long seed);
 }

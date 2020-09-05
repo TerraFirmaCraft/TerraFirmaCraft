@@ -13,19 +13,29 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.common.util.Lazy;
 
-public class DeepSurfaceBuilder extends SurfaceBuilder<DeepSurfaceBuilderConfig>
+/**
+ * Places gravel under subsurface material
+ * Not extending config due to concerns with how possible that is in 1.16. This is our only use case for that, it works fine
+ */
+public class DeepSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 {
-    public static final BlockState AIR = Blocks.AIR.getDefaultState();
+    private static final BlockState AIR = Blocks.AIR.getDefaultState();
+    private static final BlockState GRAVEL = Blocks.GRAVEL.getDefaultState();
 
     public DeepSurfaceBuilder()
     {
-        super(DeepSurfaceBuilderConfig::deserialize);
+        super(SurfaceBuilderConfig::deserialize);
     }
 
     @Override
-    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, DeepSurfaceBuilderConfig config)
+    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
+        // Lazy because this queries a noise layer
+        Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
+
         BlockState topState;
         BlockState underState = config.getUnder();
         BlockPos.Mutable pos = new BlockPos.Mutable();
@@ -64,7 +74,7 @@ public class DeepSurfaceBuilder extends SurfaceBuilder<DeepSurfaceBuilderConfig>
                     }
                     else
                     {
-                        topState = underState = config.getUnderWaterMaterial();
+                        topState = underState = underWaterConfig.get().getUnderWaterMaterial();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);
@@ -78,7 +88,7 @@ public class DeepSurfaceBuilder extends SurfaceBuilder<DeepSurfaceBuilderConfig>
                     {
                         subsurface = true;
                         surfaceDepth = maxSurfaceDepth + random.nextInt(3) - random.nextInt(3);
-                        underState = config.getDeepUnderMaterial();
+                        underState = GRAVEL;
                     }
                 }
             }
