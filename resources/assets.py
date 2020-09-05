@@ -129,8 +129,8 @@ def generate(rm: ResourceManager):
             "facing=north": {"model": "tfc:block/groundcover/%s" % misc},
             "facing=south": {"model": "tfc:block/groundcover/%s" % misc,"y": 180},
             "facing=west": {"model": "tfc:block/groundcover/%s" % misc,"y": 270}}) \
-            .with_item_model() \
-            .with_lang(lang('%s', misc))
+            .with_lang(lang('%s Block', misc))
+        rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
         if misc == 'branch':
             block.with_block_loot({
                 'entries': 'minecraft:stick',
