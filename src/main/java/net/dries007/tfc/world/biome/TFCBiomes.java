@@ -40,7 +40,7 @@ public class TFCBiomes
 
     // High biomes
     public static final BiomeVariants MOUNTAINS = register("mountains", (temp, rain) -> new MountainsBiome(10, 70, false, temp, rain)).setSpawnBiome(); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
-    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", (temp, rain) -> new MountainsBiome(-20, 60, true, temp, rain)).setSpawnBiome(); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", (temp, rain) -> new MountainsBiome(-16, 60, true, temp, rain)).setSpawnBiome(); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
     public static final BiomeVariants CANYONS = register("canyons", (temp, rain) -> new CanyonsBiome(-7, 26, temp, rain)).setSpawnBiome(); // Medium height with snake like ridges, often slightly below sea level
 
     // Shores

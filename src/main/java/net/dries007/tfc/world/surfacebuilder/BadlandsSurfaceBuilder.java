@@ -11,7 +11,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -19,10 +18,8 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-public class BadlandsSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
+public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderConfig>
 {
-    private long lastSeed;
-    private boolean initialized;
     private BlockState[] sandLayers;
     private INoise2D heightVariationNoise;
 
@@ -46,31 +43,25 @@ public class BadlandsSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     }
 
     @Override
-    public void setSeed(long seed)
+    protected void initSeed(long seed)
     {
-        if (lastSeed != seed || !initialized)
+        sandLayers = new BlockState[32];
+
+        // Alternating red + brown sand layers
+        Random random = new Random(seed);
+        BlockState redSand = TFCBlocks.SAND.get(SandBlockType.RED).get().getDefaultState();
+        BlockState brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN).get().getDefaultState();
+        boolean state = random.nextBoolean();
+        for (int i = 0; i < sandLayers.length; i++)
         {
-            sandLayers = new BlockState[32];
-
-            // Alternating red + brown sand layers
-            Random random = new Random(seed);
-            BlockState redSand = TFCBlocks.SAND.get(SandBlockType.RED).get().getDefaultState();
-            BlockState brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN).get().getDefaultState();
-            boolean state = random.nextBoolean();
-            for (int i = 0; i < sandLayers.length; i++)
+            if (random.nextInt(3) != 0)
             {
-                if (random.nextInt(3) != 0)
-                {
-                    state = !state;
-                }
-                sandLayers[i] = state ? redSand : brownSand;
+                state = !state;
             }
-
-            heightVariationNoise = new SimplexNoise2D(seed).octaves(2).scaled(110, 114).spread(0.5f);
-
-            lastSeed = seed;
-            initialized = true;
+            sandLayers[i] = state ? redSand : brownSand;
         }
+
+        heightVariationNoise = new SimplexNoise2D(seed).octaves(2).scaled(110, 114).spread(0.5f);
     }
 
     private void buildSandySurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, int seaLevel, SurfaceBuilderConfig config)

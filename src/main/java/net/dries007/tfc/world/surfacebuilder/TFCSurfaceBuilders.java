@@ -30,32 +30,26 @@ public class TFCSurfaceBuilders
     public static final RegistryObject<MountainSurfaceBuilder> MOUNTAINS = register("mountains", MountainSurfaceBuilder::new);
     public static final RegistryObject<ShoreSurfaceBuilder> SHORE = register("shore", ShoreSurfaceBuilder::new);
     public static final RegistryObject<UnderwaterSurfaceBuilder> UNDERWATER = register("underwater", UnderwaterSurfaceBuilder::new);
+    public static final RegistryObject<PlateauSurfaceBuilder> PLATEAU = register("plateau", PlateauSurfaceBuilder::new);
 
     // Used for shores - red sand = normal beach sand, sandstone = variant beach sand (pink / black)
-    public static final SurfaceBuilderConfig RED_SAND_CONFIG = register(Blocks.RED_SAND);
-    public static final SurfaceBuilderConfig RED_SANDSTONE_CONFIG = register(Blocks.RED_SANDSTONE);
+    public static final SurfaceBuilderConfig RED_SAND_CONFIG = config(Blocks.RED_SAND);
+    public static final SurfaceBuilderConfig RED_SANDSTONE_CONFIG = config(Blocks.RED_SANDSTONE);
 
-    public static final SurfaceBuilderConfig COBBLE_COBBLE_GRAVEL_CONFIG = register(Blocks.COBBLESTONE, Blocks.COBBLESTONE, Blocks.GRAVEL);
-
-    public static final DeepSurfaceBuilderConfig GRASS_DIRT_GRAVEL_GRAVEL_CONFIG = register(Blocks.GRASS_BLOCK, Blocks.DIRT, Blocks.GRAVEL, Blocks.GRAVEL);
+    public static final SurfaceBuilderConfig COBBLE_COBBLE_RED_SAND_CONFIG = config(Blocks.COBBLESTONE, Blocks.COBBLESTONE, Blocks.RED_SAND);
 
     private static <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> RegistryObject<S> register(String name, Supplier<S> factory)
     {
         return SURFACE_BUILDERS.register(name, factory);
     }
 
-    private static SurfaceBuilderConfig register(Block all)
+    private static SurfaceBuilderConfig config(Block all)
     {
-        return register(all, all, all);
+        return config(all, all, all);
     }
 
-    private static SurfaceBuilderConfig register(Block top, Block under, Block underwater)
+    private static SurfaceBuilderConfig config(Block top, Block under, Block underwater)
     {
         return new SurfaceBuilderConfig(top.getDefaultState(), under.getDefaultState(), underwater.getDefaultState());
-    }
-
-    private static DeepSurfaceBuilderConfig register(Block top, Block under, Block deepUnder, Block underwater)
-    {
-        return new DeepSurfaceBuilderConfig(top.getDefaultState(), under.getDefaultState(), deepUnder.getDefaultState(), underwater.getDefaultState());
     }
 }

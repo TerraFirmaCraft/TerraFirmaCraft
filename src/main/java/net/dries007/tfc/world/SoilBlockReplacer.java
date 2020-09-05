@@ -16,7 +16,7 @@ import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-public class SoilBlockReplacer extends ExtendedBlockReplacer
+public class SoilBlockReplacer extends SeedBlockReplacer
 {
     private final SoilBlockType soil;
     private INoise2D patchNoise;
@@ -87,7 +87,7 @@ public class SoilBlockReplacer extends ExtendedBlockReplacer
     }
 
     @Override
-    protected void init(long seed)
+    protected void initSeed(long seed)
     {
         patchNoise = new SimplexNoise2D(seed).octaves(2).spread(0.06f);
     }

@@ -16,11 +16,11 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-public class MountainSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderConfig>
+public class PlateauSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderConfig>
 {
     private INoise2D surfaceMaterialNoise;
 
-    public MountainSurfaceBuilder()
+    public PlateauSurfaceBuilder()
     {
         super(SurfaceBuilderConfig::deserialize);
     }
