@@ -5,12 +5,22 @@
 
 package net.dries007.tfc.common.blocks.soil;
 
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 
 public class TFCDirtBlock extends Block
 {
-    public TFCDirtBlock(Properties properties)
+    private final Supplier<Block> grass;
+
+    public TFCDirtBlock(Properties properties, Supplier<Block> grass)
     {
         super(properties);
+        this.grass = grass;
+    }
+
+    public Block getGrass()
+    {
+        return grass.get();
     }
 }

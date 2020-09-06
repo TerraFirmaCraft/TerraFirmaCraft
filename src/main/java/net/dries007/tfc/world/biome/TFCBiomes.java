@@ -36,11 +36,11 @@ public class TFCBiomes
     public static final BiomeVariants ROLLING_HILLS = register("rolling_hills", (temp, rain) -> new HillsBiome(28, temp, rain)).setSpawnBiome(); // Higher hills, above sea level. Some larger / steeper hills.
     public static final BiomeVariants BADLANDS = register("badlands", BadlandsBiome::new).setSpawnBiome(); // Very high flat area with steep relief carving, similar to vanilla mesas.
     public static final BiomeVariants PLATEAU = register("plateau", PlateauBiome::new).setSpawnBiome(); // Very high area, very flat top.
-    public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", (temp, rain) -> new MountainsBiome(48, 28, false, temp, rain)).setSpawnBiome(); // Rounded top mountains, very large hills.
+    public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", (temp, rain) -> new MountainsBiome(16, 40, false, temp, rain)).setSpawnBiome(); // Rounded top mountains, very large hills.
 
     // High biomes
-    public static final BiomeVariants MOUNTAINS = register("mountains", (temp, rain) -> new MountainsBiome(48, 56, false, temp, rain)).setSpawnBiome(); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
-    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", (temp, rain) -> new MountainsBiome(30, 64, true, temp, rain)).setSpawnBiome(); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final BiomeVariants MOUNTAINS = register("mountains", (temp, rain) -> new MountainsBiome(10, 70, false, temp, rain)).setSpawnBiome(); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
+    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", (temp, rain) -> new MountainsBiome(-16, 60, true, temp, rain)).setSpawnBiome(); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
     public static final BiomeVariants CANYONS = register("canyons", (temp, rain) -> new CanyonsBiome(-7, 26, temp, rain)).setSpawnBiome(); // Medium height with snake like ridges, often slightly below sea level
 
     // Shores

@@ -8,6 +8,8 @@ package net.dries007.tfc.world.biome;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
+
 public class PlateauBiome extends FlatBiome
 {
     protected PlateauBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
@@ -16,7 +18,7 @@ public class PlateauBiome extends FlatBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(SurfaceBuilder.MOUNTAIN, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.PLATEAU.get(), SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
         });
     }
 }

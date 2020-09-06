@@ -5,10 +5,12 @@
 
 package net.dries007.tfc.common;
 
+import net.minecraft.item.IArmorMaterial;
+
 /**
  * @see TFCArmorMaterial
  */
-public interface IDamageTypeArmor
+public interface ITFCArmorMaterial extends IArmorMaterial
 {
     /**
      * Returns the crushing modifier this armor has

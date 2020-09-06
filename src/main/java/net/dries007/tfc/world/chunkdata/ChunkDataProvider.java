@@ -20,7 +20,6 @@ import net.minecraft.world.server.ServerChunkProvider;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.world.ITFCChunkGenerator;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -40,9 +39,9 @@ public class ChunkDataProvider
         if (chunkProvider instanceof ServerChunkProvider)
         {
             ChunkGenerator<?> chunkGenerator = ((ServerChunkProvider) chunkProvider).getChunkGenerator();
-            if (chunkGenerator instanceof ITFCChunkGenerator)
+            if (chunkGenerator instanceof IChunkDataProvidingChunkGenerator)
             {
-                return Optional.of(((ITFCChunkGenerator) chunkGenerator).getChunkDataProvider());
+                return Optional.of(((IChunkDataProvidingChunkGenerator) chunkGenerator).getChunkDataProvider());
             }
         }
         return Optional.empty();

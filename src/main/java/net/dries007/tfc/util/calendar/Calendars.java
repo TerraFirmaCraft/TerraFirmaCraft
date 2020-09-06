@@ -34,4 +34,6 @@ public final class Calendars
     {
         return Helpers.isRemote(world) ? CLIENT : SERVER;
     }
+
+    private Calendars() {}
 }

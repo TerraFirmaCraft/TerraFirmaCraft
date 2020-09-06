@@ -8,14 +8,13 @@ package net.dries007.tfc.common;
 import java.util.function.Supplier;
 
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public final class TFCArmorMaterial implements IArmorMaterial, IDamageTypeArmor
+public final class TFCArmorMaterial implements ITFCArmorMaterial
 {
     public static final TFCArmorMaterial COPPER = new TFCArmorMaterial(MOD_ID + ":copper", 14, new int[] {1, 3, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F, () -> Ingredient.EMPTY, 10, 10, 6.25f);
     public static final TFCArmorMaterial BISMUTH_BRONZE = new TFCArmorMaterial(MOD_ID + ":bismuth_bronze", 21, new int[] {1, 4, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F, () -> Ingredient.EMPTY, 15, 10, 8.25f);
@@ -27,7 +26,8 @@ public final class TFCArmorMaterial implements IArmorMaterial, IDamageTypeArmor
     public static final TFCArmorMaterial BLUE_STEEL = new TFCArmorMaterial(MOD_ID + ":blue_steel", 68, new int[] {3, 6, 8, 3}, 23, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2.0F, () -> Ingredient.EMPTY, 62.5f, 50, 50);
     public static final TFCArmorMaterial RED_STEEL = new TFCArmorMaterial(MOD_ID + ":red_steel", 68, new int[] {3, 6, 8, 3}, 23, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2.0F, () -> Ingredient.EMPTY, 50, 62.5f, 50);
 
-    protected static final int[] MAX_DAMAGE_ARRAY = new int[] {13, 15, 16, 11};
+    /* Copied from ArmorMaterial */
+    public static final int[] MAX_DAMAGE_ARRAY = new int[] {13, 15, 16, 11};
 
     private final String name;
     private final int maxDamageFactor;

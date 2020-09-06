@@ -20,6 +20,7 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.placement.ChanceConfig;
+import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
@@ -30,7 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
-import net.dries007.tfc.util.calendar.Climate;
+import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.collections.DelayedRunnable;
 import net.dries007.tfc.world.feature.BoulderConfig;
 import net.dries007.tfc.world.feature.TFCFeatures;
@@ -43,6 +44,25 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
     // todo: replace with actual blocks
     protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState(); // Custom salt water block
     protected static final BlockState FRESH_WATER = Blocks.WATER.getDefaultState(); // Vanilla water
+
+    /**
+     * Used for initial biome assignments. TFC overrides this to use out temperature models
+     */
+    private static RainType getDefaultRainType(BiomeTemperature temperature, BiomeRainfall rainfall)
+    {
+        if (rainfall == BiomeRainfall.ARID)
+        {
+            return RainType.NONE;
+        }
+        else if (temperature == BiomeTemperature.FROZEN || temperature == BiomeTemperature.COLD)
+        {
+            return RainType.SNOW;
+        }
+        else
+        {
+            return RainType.RAIN;
+        }
+    }
 
     protected final DelayedRunnable biomeFeatures;
 
@@ -61,7 +81,7 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
             // Provide reasonable defaults, TFC doesn't use these
             .waterColor(temperature.getWaterColor())
             .waterFogColor(temperature.getWaterFogColor())
-            .precipitation(Climate.getDefaultRainType(temperature, rainfall))
+            .precipitation(getDefaultRainType(temperature, rainfall))
             .temperature(temperature.getTemperature())
             .downfall(rainfall.getDownfall())
             // Since this is a registry object, we just do them all later for consistency
@@ -80,6 +100,8 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
             addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.RAW)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
             addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.COBBLE)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
             addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.COBBLE, Rock.BlockType.MOSSY_COBBLE)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+
+            addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, TFCFeatures.EROSION.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
 
             addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFCFeatures.FORESTS.get().withConfiguration(new ForestFeatureConfig(Stream.of(
                 new ForestFeatureConfig.Entry(30f, 210f, 19f, 31f, Wood.Default.ACACIA.getTree().getFeature()),
