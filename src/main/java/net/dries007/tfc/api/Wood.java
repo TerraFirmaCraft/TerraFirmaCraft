@@ -61,7 +61,7 @@ public class Wood
 
         public MaterialColor getMaterialColor()
         {
-            return MaterialColor.ADOBE; // todo
+            return MaterialColor.ADOBE; // todo: in 1.16 there are two material colors, one for the top, one for bark. We need to figure out which materials match our logs.
         }
     }
 
