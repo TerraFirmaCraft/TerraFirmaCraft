@@ -6,6 +6,8 @@
 package net.dries007.tfc.world.biome;
 
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,18 +29,20 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.api.Wood;
 import net.dries007.tfc.api.calendar.Climate;
 import net.dries007.tfc.util.collections.DelayedRunnable;
 import net.dries007.tfc.world.feature.BoulderConfig;
 import net.dries007.tfc.world.feature.TFCFeatures;
+import net.dries007.tfc.world.feature.trees.ForestFeatureConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.placement.TFCPlacements;
 
 public abstract class TFCBiome extends Biome implements ITFCBiome
 {
     // todo: replace with actual blocks
-    protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState();
-    protected static final BlockState FRESH_WATER = Blocks.WATER.getDefaultState();
+    protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState(); // Custom salt water block
+    protected static final BlockState FRESH_WATER = Blocks.WATER.getDefaultState(); // Vanilla water
 
     protected final DelayedRunnable biomeFeatures;
 
@@ -76,6 +80,28 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
             addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.RAW)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
             addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.COBBLE)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
             addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.COBBLE, Rock.BlockType.MOSSY_COBBLE)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+
+            addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFCFeatures.FORESTS.get().withConfiguration(new ForestFeatureConfig(Stream.of(
+                new ForestFeatureConfig.Entry(30f, 210f, 19f, 31f, Wood.Default.ACACIA.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(60f, 140f, -6f, 12f, Wood.Default.ASH.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(10f, 80f, -10f, 16f, Wood.Default.ASPEN.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(20f, 180f, -15f, 7f, Wood.Default.BIRCH.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(0f, 120f, 4f, 33f, Wood.Default.BLACKWOOD.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(160f, 320f, 11f, 35f, Wood.Default.CHESTNUT.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(280f, 480f, -2f, 14f, Wood.Default.DOUGLAS_FIR.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(80f, 250f, 7f, 29f, Wood.Default.HICKORY.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(210f, 500f, 15f, 35f, Wood.Default.KAPOK.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(140f, 360f, 3f, 20f, Wood.Default.MAPLE.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(180f, 430f, -8f, 12f, Wood.Default.OAK.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(280f, 500f, 16f, 35f, Wood.Default.PALM.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(60f, 250f, -15f, 7f, Wood.Default.PINE.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(10f, 190f, 8f, 18f, Wood.Default.ROSEWOOD.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(250f, 420f, -5f, 12f, Wood.Default.SEQUOIA.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(120f, 380f, -11f, 6f, Wood.Default.SPRUCE.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(120f, 290f, 17f, 33f, Wood.Default.SYCAMORE.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(10f, 240f, -8f, 17f, Wood.Default.WHITE_CEDAR.getTree().getFeature()),
+                new ForestFeatureConfig.Entry(230f, 400f, 15f, 32f, Wood.Default.WILLOW.getTree().getFeature())
+            ).collect(Collectors.toList()))));
         });
     }
 

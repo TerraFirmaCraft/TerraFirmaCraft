@@ -72,6 +72,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     private Status status;
     private LerpFloatLayer rainfallLayer;
     private LerpFloatLayer temperatureLayer;
+    private ForestType forestType;
+    private float forestWeirdness;
+    private float forestDensity;
 
     public ChunkData(ChunkPos pos)
     {
@@ -119,6 +122,28 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
     {
         temperatureLayer.init(tempNW, tempNE, tempSW, tempSE);
+    }
+
+    public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
+    {
+        this.forestType = forestType;
+        this.forestWeirdness = forestWeirdness;
+        this.forestDensity = forestDensity;
+    }
+
+    public ForestType getForestType()
+    {
+        return forestType;
+    }
+
+    public float getForestWeirdness()
+    {
+        return forestWeirdness;
+    }
+
+    public float getForestDensity()
+    {
+        return forestDensity;
     }
 
     public Status getStatus()
@@ -177,6 +202,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         {
             nbt.put("rockData", rockData.serializeNBT());
         }
+        if (status.isAtLeast(Status.FLORA))
+        {
+            nbt.putByte("forestType", (byte) forestType.ordinal());
+            nbt.putFloat("forestWeirdness", forestWeirdness);
+            nbt.putFloat("forestDensity", forestDensity);
+        }
         return nbt;
     }
 
@@ -194,6 +225,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
             if (status.isAtLeast(Status.ROCKS))
             {
                 rockData.deserializeNBT(nbt.getCompound("rockData"));
+            }
+            if (status.isAtLeast(Status.FLORA))
+            {
+                forestType = ForestType.valueOf(nbt.getByte("forestType"));
+                forestWeirdness = nbt.getFloat("forestWeirdness");
+                forestDensity = nbt.getFloat("forestDensity");
             }
         }
     }
@@ -217,7 +254,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         EMPTY,
         CLIENT,
         CLIMATE,
-        ROCKS;
+        ROCKS,
+        FLORA;
 
         private static final Status[] VALUES = values();
 
@@ -262,6 +300,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
         @Override
         public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }

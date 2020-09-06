@@ -17,14 +17,15 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraftforge.common.util.Lazy;
 
 public class DefaultTree extends Tree
 {
-    private final Supplier<ConfiguredFeature<?, ?>> featureFactory;
+    private final Lazy<ConfiguredFeature<?, ?>> featureFactory;
 
     public DefaultTree(Supplier<ConfiguredFeature<?, ?>> featureFactory)
     {
-        this.featureFactory = featureFactory;
+        this.featureFactory = Lazy.of(featureFactory);
     }
 
     @Nullable
@@ -32,6 +33,11 @@ public class DefaultTree extends Tree
     protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean flowersNearby)
     {
         return null; // Not using minecraft's tree configuration
+    }
+
+    public ConfiguredFeature<?, ?> getFeature()
+    {
+        return featureFactory.get();
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.world.feature.trees.ForestFeature;
 import net.dries007.tfc.world.feature.trees.NormalTreeFeature;
 import net.dries007.tfc.world.feature.trees.RandomlyChosenTreeFeature;
 
@@ -26,6 +27,8 @@ public class TFCFeatures
 
     public static final RegistryObject<BouldersFeature> BOULDERS = FEATURES.register("boulders", BouldersFeature::new);
     public static final RegistryObject<FissureFeature> FISSURES = FEATURES.register("fissures", FissureFeature::new);
+
+    public static final RegistryObject<ForestFeature> FORESTS = FEATURES.register("forest", ForestFeature::new);
 
     public static final RegistryObject<NormalTreeFeature> NORMAL_TREE = FEATURES.register("normal_tree", NormalTreeFeature::new);
     public static final RegistryObject<RandomlyChosenTreeFeature> RANDOM_TREE = FEATURES.register("random_tree", RandomlyChosenTreeFeature::new);
