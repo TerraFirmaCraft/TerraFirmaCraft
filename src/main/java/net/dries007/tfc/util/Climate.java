@@ -3,18 +3,18 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.util.calendar;
+package net.dries007.tfc.util;
 
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.world.biome.BiomeRainfall;
-import net.dries007.tfc.world.biome.BiomeTemperature;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.noise.NoiseUtil;
@@ -27,26 +27,6 @@ public final class Climate
 {
     private static final Random RANDOM = new Random(); // Used for daily temperature variations
     private static final float PI = (float) Math.PI;
-
-    /**
-     * Used for initial biome assignments. TFC overrides this to use out temperature models
-     */
-    public static Biome.RainType getDefaultRainType(BiomeTemperature temperature, BiomeRainfall rainfall)
-    {
-        if (rainfall == BiomeRainfall.ARID)
-        {
-            return Biome.RainType.NONE;
-        }
-        else if (temperature == BiomeTemperature.FROZEN || temperature == BiomeTemperature.COLD)
-        {
-            return Biome.RainType.SNOW;
-        }
-        else
-        {
-            return Biome.RainType.RAIN;
-        }
-    }
-    // todo: this all needs chunk data, need to figure out sided-ness of queries
 
     public static float getAverageTemperature(IWorld world, BlockPos pos)
     {

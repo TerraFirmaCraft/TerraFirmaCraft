@@ -51,7 +51,7 @@ public class TFCTags
 
         public static final Tag<Block> SUPPORTS_LANDSLIDE = blockTag("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
 
-        public static final Tag<Block> GRASS = blockTag("grass");
+        public static final Tag<Block> GRASS = blockTag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
     }
 
     public static class Items

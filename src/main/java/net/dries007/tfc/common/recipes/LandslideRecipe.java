@@ -132,7 +132,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
         return sideState.isSolidSide(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
     }
 
-    private LandslideRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
+    LandslideRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
     {
         super(id, ingredient, outputState, copyInputState);
     }
@@ -147,14 +147,5 @@ public class LandslideRecipe extends SimpleBlockRecipe
     public IRecipeType<?> getType()
     {
         return TFCRecipeTypes.LANDSLIDE;
-    }
-
-    public static class Serializer extends SimpleBlockRecipe.Serializer<LandslideRecipe>
-    {
-        @Override
-        protected LandslideRecipe create(ResourceLocation id, IBlockIngredient ingredient, BlockState state, boolean copyInputState)
-        {
-            return new LandslideRecipe(id, ingredient, state, copyInputState);
-        }
     }
 }

@@ -178,6 +178,14 @@ public abstract class ImageUtil<T>
         {
             return (value, min, max) -> DYNAMIC_RANGE.apply(value, fixedMin, fixedMax);
         }
+
+        public static DoubleTernaryOperator dynamicRangeRounded(int increments)
+        {
+            return (value, min, max) -> {
+                double dynamic = DYNAMIC_RANGE.apply(value, min, max);
+                return (double) ((int) (dynamic * increments)) / increments;
+            };
+        }
     }
 
     @SuppressWarnings("SuspiciousNameCombination")

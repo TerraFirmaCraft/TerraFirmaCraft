@@ -88,10 +88,10 @@ public final class TFCBlocks
     );
 
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Block.Properties.create(Material.EARTH)), ROCK_BLOCKS);
-    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new TFCGrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT)), ROCK_BLOCKS);
+    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new TFCGrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT), PEAT), ROCK_BLOCKS);
     public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
         Helpers.mapOfKeys(SoilBlockType.Variant.class, variant ->
-            register((type.name() + "/" + variant.name()).toLowerCase(), type::create, ROCK_BLOCKS)
+            register((type.name() + "/" + variant.name()).toLowerCase(), () -> type.create(variant), ROCK_BLOCKS)
         )
     );
 
