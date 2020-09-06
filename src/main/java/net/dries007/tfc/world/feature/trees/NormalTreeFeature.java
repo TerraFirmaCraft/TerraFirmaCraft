@@ -28,32 +28,30 @@ public class NormalTreeFeature extends TreeFeature<NormalTreeConfig>
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NormalTreeConfig config)
     {
-        if (!isValidLocation(worldIn, pos))
-        {
-            return false;
-        }
+      if (!isValidLocation(worldIn, pos)) {
+        return false;
+      }
 
-        final ChunkPos chunkPos = new ChunkPos(pos);
-        final TemplateManager manager = getTemplateManager(worldIn);
-        final Template structureBase = manager.getTemplateDefaulted(config.getBase());
-        final Template structureOverlay = manager.getTemplateDefaulted(config.getOverlay());
-        final int height = config.getHeightMin() + (config.getHeightRange() > 0 ? rand.nextInt(config.getHeightRange()) : 0);
+      final ChunkPos chunkPos = new ChunkPos(pos);
+      final TemplateManager manager = getTemplateManager(worldIn);
+      final Template structureBase = manager.getTemplateDefaulted(config.getBase());
+      final Template structureOverlay = manager.getTemplateDefaulted(config.getOverlay());
+      final int height = config.getHeightMin() + (config.getHeightRange() > 0 ? rand.nextInt(config.getHeightRange()) : 0);
 
-        final BlockPos size = structureBase.getSize();
-        final BlockPos offset = new BlockPos(-size.getX() / 2, height, -size.getZ() / 2);
-        final BlockPos structurePos = pos.add(offset);
+      final BlockPos baseStructurePos = pos.add(-structureBase.getSize().getX() / 2, height, -structureBase.getSize().getZ() / 2);
+      final BlockPos overlayStructurePos = pos.add(-structureOverlay.getSize().getX() / 2, height, -structureOverlay.getSize().getZ() / 2);
 
-        final PlacementSettings settings = getPlacementSettings(chunkPos, size, rand);
+      final PlacementSettings settings = getPlacementSettings(chunkPos, structureBase.getSize(), rand);
 
-        structureBase.addBlocksToWorld(worldIn, structurePos, settings);
-        settings.addProcessor(new IntegrityProcessor(0.5f));
-        structureOverlay.addBlocksToWorld(worldIn, structurePos, settings);
+      structureBase.addBlocksToWorld(worldIn, baseStructurePos, settings);
+      settings.addProcessor(new IntegrityProcessor(0.5f))
+        .setCenterOffset(new BlockPos(structureOverlay.getSize().getX() / 2, 0, structureOverlay.getSize().getZ() / 2));
+      structureOverlay.addBlocksToWorld(worldIn, overlayStructurePos, settings);
 
-        final BlockState log = config.getTrunkState();
-        for (int i = 0; i < height; i++)
-        {
-            worldIn.setBlockState(pos.add(0, i, 0), log, 3);
-        }
-        return true;
+      final BlockState log = config.getTrunkState();
+      for (int i = 0; i < height; i++) {
+        worldIn.setBlockState(pos.add(0, i, 0), log, 3);
+      }
+      return true;
     }
 }
