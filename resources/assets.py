@@ -2,6 +2,7 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 import mcresources.loot_tables as loot_tables
+import mcresources.block_states as block_states
 from mcresources import ResourceManager
 
 from constants import *
@@ -272,3 +273,59 @@ def generate(rm: ResourceManager):
             .make_trapdoor() \
             .make_fence() \
             .make_fence_gate()
+
+        # Tool Rack
+        rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood
+        rm.blockstate(rack_namespace, model = 'tfc:block/wood/planks/%s_tool_rack' % wood, variants ={
+            "facing=east": {"model": "tfc:block/wood/planks/%s_tool_rack" % wood,"y": 270},
+            "facing=north": {"model": "tfc:block/wood/planks/%s_tool_rack" % wood,"y": 180},
+            "facing=south": {"model": "tfc:block/wood/planks/%s_tool_rack"% wood},
+            "facing=west": {"model": "tfc:block/wood/planks/%s_tool_rack"% wood,"y": 90}})
+        rm.block_model(rack_namespace, textures={'texture': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/tool_rack')
+        rm.item_model(rack_namespace, parent='tfc:block/wood/planks/%s_tool_rack' % wood, no_textures=True)
+        rm.lang('block.tfc.wood.planks.%s_tool_rack' % wood, lang('%s Tool Rack', wood))
+        rm.block_loot(rack_namespace, rack_namespace)
+
+        # Bookshelf
+        rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood) \
+        .with_block_model({'planks': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/bookshelf') \
+        .with_item_model() \
+        .with_lang(lang('%s Bookshelf', wood))
+
+        # Doors
+        rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/%s_door' % wood)
+
+        # Log Fences
+        log_fence_namespace = 'tfc:wood/planks/' + wood + '_log_fence'
+        rm.blockstate_multipart(log_fence_namespace, parts=block_states.fence_multipart('tfc:block/wood/planks/' + wood + '_log_fence_post', 'tfc:block/wood/planks/' + wood + '_log_fence_side'))
+        rm.block_model(log_fence_namespace + '_post', textures={'texture': 'tfc:block/wood/log/' + wood}, parent='block/fence_post')
+        rm.block_model(log_fence_namespace + '_side', textures={'texture': 'tfc:block/wood/planks/' + wood}, parent='block/fence_side')
+        rm.block_model(log_fence_namespace + '_inventory', textures={'log': 'tfc:block/wood/log/' + wood, 'planks': 'tfc:block/wood/planks/' + wood}, parent='tfc:block/fence_inventory')
+        rm.item_model('tfc:wood/planks/' + wood + '_log_fence', parent='tfc:block/wood/planks/' + wood + '_log_fence_inventory', no_textures=True)
+        rm.block_loot(log_fence_namespace, log_fence_namespace)
+
+        # Tags
+        for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
+            rm.block_tag('minecraft:wooden_fences', fence_namespace)
+            rm.block_tag('minecraft:fences', fence_namespace)
+            rm.block_tag('forge:fences', fence_namespace)
+            rm.block_tag('forge:fences/wooden', fence_namespace)
+        fence_gate_namespace = 'tfc:wood/planks/' + wood + '_fence_gate'
+        rm.block_tag('forge:fence_gates/wooden', fence_gate_namespace)
+        rm.block_tag('forge:fence_gates', fence_gate_namespace)
+        rm.block_tag('minecraft:doors', 'tfc:wood/planks/' + wood + '_door')
+        rm.block_tag('minecraft:buttons', 'tfc:wood/planks/' + wood + '_button')
+        rm.block_tag('minecraft:wooden_buttons', 'tfc:wood/planks/' + wood + '_button')
+        rm.block_tag('minecraft:wooden_pressure_plates', 'tfc:wood/planks/' + wood + '_pressure_plate')
+        rm.block_tag('minecraft:wooden_slabs', 'tfc:wood/planks/' + wood + '_slabs')
+        rm.block_tag('minecraft:wooden_stairs', 'tfc:wood/planks/' + wood + '_stairs')
+        for variant in ('log', 'stripped_log', 'wood', 'stripped_wood'):
+            if variant != 'log':
+                rm.block_tag('minecraft:logs', 'tfc:wood/' + variant + '/' + wood)
+            rm.block_tag('tfc:' + wood + '_logs', 'tfc:wood/' + variant + '/' + wood)
+
+        # Lang
+        for variant in ('door', 'trapdoor', 'fence', 'log_fence','fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
+            rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
+        for variant in ('sapling', 'leaves'):
+            rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
