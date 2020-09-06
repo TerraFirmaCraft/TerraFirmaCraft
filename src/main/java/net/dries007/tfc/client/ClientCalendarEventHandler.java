@@ -12,8 +12,8 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
+import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

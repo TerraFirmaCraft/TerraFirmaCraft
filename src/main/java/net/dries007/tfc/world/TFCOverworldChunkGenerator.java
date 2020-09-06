@@ -24,7 +24,6 @@ import net.minecraft.world.gen.*;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import net.dries007.tfc.api.world.ITFCChunkGenerator;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.world.biome.*;

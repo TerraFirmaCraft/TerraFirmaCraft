@@ -13,13 +13,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
-import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.blocks.TFCBlocks;
-import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
-import net.dries007.tfc.objects.types.RockManager;
 
-import static net.dries007.tfc.objects.blocks.rock.RawRockBlock.SUPPORTED;
+import static net.dries007.tfc.common.blocks.rock.RawRockBlock.SUPPORTED;
 
 /**
  * This is a block replacer, used for carvers to replace blocks with cave air, unsupported blocks with supported variants, and exposed blocks with surface variants.

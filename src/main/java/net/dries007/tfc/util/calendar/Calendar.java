@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 
-import net.dries007.tfc.api.calendar.ICalendar;
 import net.dries007.tfc.config.TFCConfig;
 
 /**

@@ -28,9 +28,9 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.api.Wood;
-import net.dries007.tfc.api.calendar.Climate;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.util.calendar.Climate;
 import net.dries007.tfc.util.collections.DelayedRunnable;
 import net.dries007.tfc.world.feature.BoulderConfig;
 import net.dries007.tfc.world.feature.TFCFeatures;
