@@ -40,6 +40,6 @@ public class SinNoise
 
     private float sin(float q)
     {
-        return midpoint + amplitude * MathHelper.sin(PI * (phaseShift + frequency * q));
+        return midpoint + amplitude * (float) Math.sin(PI * (phaseShift + frequency * q));
     }
 }

@@ -28,6 +28,11 @@ public class NormalTreeFeature extends TreeFeature<NormalTreeConfig>
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NormalTreeConfig config)
     {
+        if (!isValidLocation(worldIn, pos))
+        {
+            return false;
+        }
+
         final ChunkPos chunkPos = new ChunkPos(pos);
         final TemplateManager manager = getTemplateManager(worldIn);
         final Template structureBase = manager.getTemplateDefaulted(config.getBase());
@@ -38,7 +43,7 @@ public class NormalTreeFeature extends TreeFeature<NormalTreeConfig>
         final BlockPos offset = new BlockPos(-size.getX() / 2, height, -size.getZ() / 2);
         final BlockPos structurePos = pos.add(offset);
 
-        PlacementSettings settings = getPlacementSettings(chunkPos, size, rand);
+        final PlacementSettings settings = getPlacementSettings(chunkPos, size, rand);
 
         structureBase.addBlocksToWorld(worldIn, structurePos, settings);
         settings.addProcessor(new IntegrityProcessor(0.5f));

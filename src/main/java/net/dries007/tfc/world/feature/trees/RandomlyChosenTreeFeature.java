@@ -28,6 +28,11 @@ public class RandomlyChosenTreeFeature extends TreeFeature<RandomlyChosenTreeCon
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, RandomlyChosenTreeConfig config)
     {
+        if (!isValidLocation(worldIn, pos))
+        {
+            return false;
+        }
+
         final ChunkPos chunkPos = new ChunkPos(pos);
         final TemplateManager manager = getTemplateManager(worldIn);
         final List<ResourceLocation> structureIds = config.getStructureNames();

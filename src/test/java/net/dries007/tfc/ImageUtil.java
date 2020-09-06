@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 
@@ -102,7 +103,7 @@ public abstract class ImageUtil<T>
         File outFile = new File(name + ".png");
         BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = ((Graphics2D) image.getGraphics());
-        draw(instance, graphics);
+        draw(name, instance, graphics);
         try
         {
             ImageIO.write(image, "PNG", outFile);
@@ -114,7 +115,7 @@ public abstract class ImageUtil<T>
         return this;
     }
 
-    protected abstract void draw(T instance, Graphics graphics);
+    protected abstract void draw(String name, T instance, Graphics graphics);
 
     @FunctionalInterface
     public interface Double2ObjectBiFunction<T>
@@ -197,7 +198,7 @@ public abstract class ImageUtil<T>
         }
 
         @Override
-        protected void draw(T instance, Graphics graphics)
+        protected void draw(String name, T instance, Graphics graphics)
         {
             final double[] sourceMinMax = new double[] {Double.MAX_VALUE, Double.MIN_VALUE};
             DoubleBinaryOperator source = noiseTransformer.apply(instance);
@@ -205,19 +206,23 @@ public abstract class ImageUtil<T>
                 .mapToObj(i -> {
                     int posX = (i / size);
                     int posY = (i % size);
-                    int x = minX + (i / size) * (maxX - minX) / size;
-                    int y = minY + (i % size) * (maxY - minY) / size;
+                    double x = minX + (posX + 0.5) * (double) (maxX - minX) / size;
+                    double y = minY + (posY + 0.5) * (double) (maxY - minY) / size;
                     double value = source.applyAsDouble(x, y);
                     sourceMinMax[0] = Math.min(sourceMinMax[0], value);
                     sourceMinMax[1] = Math.max(sourceMinMax[1], value);
                     return new Local<>(posX, posY, value);
                 })
+                // Stop the stream here, as we need the entire previous step to run before this (as it needs proper min/max values for scaling)
+                .collect(Collectors.toList())
+                .stream()
                 .map(Local.map(value -> scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1])))
                 .map(Local.map(value -> color.apply(value)))
                 .forEach(loc -> {
                     graphics.setColor(loc.value);
-                    graphics.drawRect(loc.x, loc.y, 1, 1);
+                    graphics.fillRect(loc.x, loc.y, 1, 1);
                 });
+            System.out.println("Drawing: " + name + " Min: " + sourceMinMax[0] + " Max: " + sourceMinMax[1]);
         }
     }
 
@@ -231,7 +236,7 @@ public abstract class ImageUtil<T>
         }
 
         @Override
-        protected void draw(T instance, Graphics graphics)
+        protected void draw(String name, T instance, Graphics graphics)
         {
             Double2ObjectBiFunction<Color> colorSource = colorTransformer.apply(instance);
             IntStream.range(0, size * size)

@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature.trees;
 import java.util.Random;
 import java.util.function.Function;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -32,6 +33,12 @@ public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
         super(configFactoryIn);
     }
 
+    protected boolean isValidLocation(IWorld worldIn, BlockPos pos)
+    {
+        BlockState stateDown = worldIn.getBlockState(pos);
+        return true;
+    }
+
     protected TemplateManager getTemplateManager(IWorld worldIn)
     {
         return ((ServerWorld) worldIn.getWorld()).getSaveHandler().getStructureTemplateManager();
@@ -39,9 +46,12 @@ public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
 
     protected PlacementSettings getRandomPlacementSettings(ChunkPos chunkPos, BlockPos size, Random random)
     {
-        return getPlacementSettings(chunkPos, size, random)
-            .setRotation(Rotation.randomRotation(random))
-            .setMirror(randomMirror(random));
+        // todo: figure out how to handle mirrors
+        // Templates correctly rotate the template around the center when transforming each individual block position
+        // They do NOT do this for mirrors (for whatever reason)
+        // As a result, the center position of the template gets shifted with the mirror.
+        // In order to do random mirrors, the center offset needs to be adjusted correctly for each mirror setting, and checked against any possible rotation.
+        return getPlacementSettings(chunkPos, size, random).setRotation(Rotation.randomRotation(random));
     }
 
     protected PlacementSettings getPlacementSettings(ChunkPos chunkPos, BlockPos size, Random random)
