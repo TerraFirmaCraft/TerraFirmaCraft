@@ -12,8 +12,8 @@
 !src/**
 
 # Resource generation
-!resources/*.py
-!resources/structure_templates/*.nbt
+!resources/**/*.py
+!resources/structure_templates/**/*.nbt
 
 # Metadata
 !build.gradle

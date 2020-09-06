@@ -73,9 +73,9 @@ def tree(origin, wood, name_out):
         if block['Name'] == 'minecraft:oak_leaves':
             block['Name'] = String('tfc:wood/leaves/' + wood)
 
-    if not os.path.exists('src/main/resources/assets/tfc/structures/' + wood):
-        os.makedirs('src/main/resources/assets/tfc/structures/' + wood)
-    f.save('src/main/resources/assets/tfc/structures/' + wood + '/' + name_out + '.nbt')
+    if not os.path.exists('src/main/resources/data/tfc/structures/' + wood):
+        os.makedirs('src/main/resources/data/tfc/structures/' + wood)
+    f.save('src/main/resources/data/tfc/structures/' + wood + '/' + name_out + '.nbt')
 
 
 def fruit_tree(name):
@@ -88,9 +88,9 @@ def fruit_tree(name):
         elif block['Name'] == 'tfc:fruit_trees/trunk/peach':
             block['Name'] = String('tfc:fruit_trees/trunk/' + name)
 
-    if not os.path.exists('src/main/resources/assets/tfc/structures/fruit_trees'):
-        os.makedirs('src/main/resources/assets/tfc/structures/fruit_trees')
-    f.save('src/main/resources/assets/tfc/structures/fruit_trees/' + name + '.nbt')
+    if not os.path.exists('src/main/resources/data/tfc/structures/fruit_trees'):
+        os.makedirs('src/main/resources/data/tfc/structures/fruit_trees')
+    f.save('src/main/resources/data/tfc/structures/fruit_trees/' + name + '.nbt')
 
 
 TREES = {
