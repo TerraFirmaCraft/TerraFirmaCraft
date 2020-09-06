@@ -10,8 +10,8 @@ import java.util.function.Supplier;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import net.dries007.tfc.api.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Calendar;
+import net.dries007.tfc.util.calendar.Calendars;
 
 public class CalendarUpdatePacket
 {

@@ -27,15 +27,15 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.api.Wood;
-import net.dries007.tfc.api.calendar.Climate;
 import net.dries007.tfc.client.screen.CalendarScreen;
 import net.dries007.tfc.client.screen.NutritionScreen;
-import net.dries007.tfc.objects.blocks.TFCBlocks;
-import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
-import net.dries007.tfc.objects.container.TFCContainerTypes;
-import net.dries007.tfc.objects.entities.TFCEntities;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.container.TFCContainerTypes;
+import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.util.calendar.Climate;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 

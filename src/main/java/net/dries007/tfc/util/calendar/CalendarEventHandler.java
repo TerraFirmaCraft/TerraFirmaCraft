@@ -22,8 +22,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 
-import net.dries007.tfc.api.calendar.Calendars;
-
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
