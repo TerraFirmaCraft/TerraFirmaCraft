@@ -32,6 +32,16 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     protected static final VoxelShape RACK_SOUTH_AABB;
     protected static final VoxelShape RACK_NORTH_AABB;
 
+    static
+    {
+        FACING = HorizontalBlock.HORIZONTAL_FACING;
+        WATERLOGGED = BlockStateProperties.WATERLOGGED;
+        RACK_EAST_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
+        RACK_WEST_AABB = Block.makeCuboidShape(14.0D, 3.0D, 0.0D, 16.0D, 12.0D, 16.0D);
+        RACK_SOUTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 2.0D);
+        RACK_NORTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 14.0D, 16.0D, 12.0D, 16.0D);
+    }
+
     public ToolRackBlock(Properties properties)
     {
         super(properties);
@@ -39,8 +49,25 @@ public class ToolRackBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        switch(state.get(FACING)) {
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.isValidPosition(worldIn, currentPos))
+        {
+            return Blocks.AIR.getDefaultState();
+        }
+        else if (stateIn.get(WATERLOGGED))
+        {
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+        }
+        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        switch (state.get(FACING))
+        {
             case NORTH:
                 return RACK_NORTH_AABB;
             case SOUTH:
@@ -53,34 +80,17 @@ public class ToolRackBlock extends Block implements IWaterLoggable
         }
     }
 
-    private boolean canAttachTo(IBlockReader blockReader, BlockPos pos, Direction directionIn) {
-        BlockState blockstate = blockReader.getBlockState(pos);
-        return !blockstate.canProvidePower() && blockstate.isSolidSide(blockReader, pos, directionIn);
-    }
-
     @Override
     @SuppressWarnings("deprecation")
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
+    {
         Direction direction = state.get(FACING);
         return this.canAttachTo(worldIn, pos.offset(direction.getOpposite()), direction);
     }
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.isValidPosition(worldIn, currentPos))
-        {
-            return Blocks.AIR.getDefaultState();
-        }
-        else if (stateIn.get(WATERLOGGED))
-        {
-                worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
-        }
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
         BlockState contextualState;
         if (!context.replacingClickedOnBlock())
         {
@@ -113,21 +123,18 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) { builder.add(FACING, WATERLOGGED); }
-
-    @Override
     @SuppressWarnings("deprecation")
     public IFluidState getFluidState(BlockState state)
     {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
-    static {
-        FACING = HorizontalBlock.HORIZONTAL_FACING;
-        WATERLOGGED = BlockStateProperties.WATERLOGGED;
-        RACK_EAST_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
-        RACK_WEST_AABB = Block.makeCuboidShape(14.0D, 3.0D, 0.0D, 16.0D, 12.0D, 16.0D);
-        RACK_SOUTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 2.0D);
-        RACK_NORTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 14.0D, 16.0D, 12.0D, 16.0D);
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) { builder.add(FACING, WATERLOGGED); }
+
+    private boolean canAttachTo(IBlockReader blockReader, BlockPos pos, Direction directionIn)
+    {
+        BlockState blockstate = blockReader.getBlockState(pos);
+        return !blockstate.canProvidePower() && blockstate.isSolidSide(blockReader, pos, directionIn);
     }
 }
