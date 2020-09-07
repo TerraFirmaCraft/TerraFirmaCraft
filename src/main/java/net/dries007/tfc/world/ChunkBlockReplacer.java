@@ -33,11 +33,13 @@ import net.dries007.tfc.world.chunkdata.RockData;
 public class ChunkBlockReplacer
 {
     protected final Map<Block, IBlockReplacer> replacements;
+    private final BlockPos.Mutable mutablePos;
     private final long seed;
 
     public ChunkBlockReplacer(long seed)
     {
         this.seed = seed;
+        this.mutablePos = new BlockPos.Mutable();
         this.replacements = new HashMap<>();
 
         // Stone block variants (Stone / Cobblestone)
@@ -87,10 +89,10 @@ public class ChunkBlockReplacer
 
     public void replace(IWorld worldGenRegion, IChunk chunk, ChunkData data)
     {
-        BlockPos.Mutable pos = new BlockPos.Mutable();
-        int xStart = chunk.getPos().getXStart();
-        int zStart = chunk.getPos().getZStart();
-        RockData rockData = data.getRockData();
+        final int xStart = chunk.getPos().getXStart();
+        final int zStart = chunk.getPos().getZStart();
+        final RockData rockData = data.getRockData();
+
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
@@ -100,16 +102,16 @@ public class ChunkBlockReplacer
 
                 for (int y = 0; y <= chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z); y++)
                 {
-                    pos.setPos(xStart + x, y, zStart + z);
+                    mutablePos.setPos(xStart + x, y, zStart + z);
 
                     // Base replacement
-                    BlockState stateAt = chunk.getBlockState(pos);
+                    BlockState stateAt = chunk.getBlockState(mutablePos);
                     IBlockReplacer replacer = replacements.get(stateAt.getBlock());
                     if (replacer != null)
                     {
                         stateAt = replacer.getReplacement(rockData, xStart + x, y, zStart + z, rainfall, temperature);
-                        chunk.setBlockState(pos, stateAt, false);
-                        replacer.updatePostPlacement(worldGenRegion, pos, stateAt);
+                        chunk.setBlockState(mutablePos, stateAt, false);
+                        replacer.updatePostPlacement(worldGenRegion, mutablePos, stateAt);
                     }
                 }
             }
