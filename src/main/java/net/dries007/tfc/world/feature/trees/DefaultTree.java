@@ -28,13 +28,6 @@ public class DefaultTree extends Tree
         this.featureFactory = Lazy.of(featureFactory);
     }
 
-    @Nullable
-    @Override
-    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean flowersNearby)
-    {
-        return null; // Not using minecraft's tree configuration
-    }
-
     public ConfiguredFeature<?, ?> getFeature()
     {
         return featureFactory.get();
@@ -54,5 +47,12 @@ public class DefaultTree extends Tree
             worldIn.setBlockState(blockPosIn, blockStateIn, 4);
             return false;
         }
+    }
+
+    @Nullable
+    @Override
+    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean flowersNearby)
+    {
+        return null; // Not using minecraft's tree configuration
     }
 }

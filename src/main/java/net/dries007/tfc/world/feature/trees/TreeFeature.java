@@ -26,29 +26,35 @@ import net.minecraft.world.server.ServerWorld;
 import com.mojang.datafixers.Dynamic;
 import net.dries007.tfc.common.TFCTags;
 
-public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C> {
-  private static final Mirror[] MIRROR_VALUES = Mirror.values();
+public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
+{
+    private static final Mirror[] MIRROR_VALUES = Mirror.values();
 
-  public TreeFeature(Function<Dynamic<?>, ? extends C> configFactoryIn) {
-    super(configFactoryIn);
-  }
-
-  protected boolean isValidLocation(IWorld worldIn, BlockPos pos) {
-    BlockState stateDown = worldIn.getBlockState(pos.down());
-    if (!TFCTags.Blocks.GRASS.contains(stateDown.getBlock())) {
-      return false;
+    public TreeFeature(Function<Dynamic<?>, ? extends C> configFactoryIn)
+    {
+        super(configFactoryIn);
     }
 
-    BlockState stateAt = worldIn.getBlockState(pos);
-    return stateAt.getBlock() instanceof SaplingBlock || stateAt.isAir(worldIn, pos);
-  }
+    protected boolean isValidLocation(IWorld worldIn, BlockPos pos)
+    {
+        BlockState stateDown = worldIn.getBlockState(pos.down());
+        if (!TFCTags.Blocks.GRASS.contains(stateDown.getBlock()))
+        {
+            return false;
+        }
 
-  protected TemplateManager getTemplateManager(IWorld worldIn) {
-    return ((ServerWorld) worldIn.getWorld()).getSaveHandler().getStructureTemplateManager();
-  }
+        BlockState stateAt = worldIn.getBlockState(pos);
+        return stateAt.getBlock() instanceof SaplingBlock || stateAt.isAir(worldIn, pos);
+    }
 
-  protected PlacementSettings getRandomPlacementSettings(ChunkPos chunkPos, BlockPos size, Random random) {
-    // todo: figure out how to handle mirrors
+    protected TemplateManager getTemplateManager(IWorld worldIn)
+    {
+        return ((ServerWorld) worldIn.getWorld()).getSaveHandler().getStructureTemplateManager();
+    }
+
+    protected PlacementSettings getRandomPlacementSettings(ChunkPos chunkPos, BlockPos size, Random random)
+    {
+        // todo: figure out how to handle mirrors
         // Templates correctly rotate the template around the center when transforming each individual block position
         // They do NOT do this for mirrors (for whatever reason)
         // As a result, the center position of the template gets shifted with the mirror.

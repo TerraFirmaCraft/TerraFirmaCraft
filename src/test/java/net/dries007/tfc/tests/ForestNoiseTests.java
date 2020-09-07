@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.tests;
 
 import java.awt.*;
@@ -29,28 +34,28 @@ public class ForestNoiseTests
         INoise2D forestDensity = new SimplexNoise2D(seed + 2).octaves(4).spread(0.0015f);
 
         INoise2D temperature = NoiseLayerType.PERIODIC_Z.create(seed + 3, 20_000).scaled(-10, 30);
-        INoise2D rainfall = NoiseLayerType.NOISE.create(seed + 4, 20_000).scaled(-50, 550).flattened(0, 500);
+        INoise2D rainfall = NoiseLayerType.PERIODIC_X.create(seed + 4, 20_000).scaled(0, 500).flattened(0, 500);
 
         List<TreeSpawn> trees = Stream.of(
-            new TreeSpawn(30f, 210f, 19f, 31f),
+            new TreeSpawn(30f, 210f, 21f, 31f),
             new TreeSpawn(60f, 140f, -6f, 12f),
             new TreeSpawn(10f, 80f, -10f, 16f),
             new TreeSpawn(20f, 180f, -15f, 7f),
-            new TreeSpawn(0f, 120f, 4f, 33f),
+            new TreeSpawn(0f, 120f, 15f, 35f),
             new TreeSpawn(160f, 320f, 11f, 35f),
-            new TreeSpawn(280f, 480f, -2f, 14f),
-            new TreeSpawn(80f, 250f, 7f, 29f),
-            new TreeSpawn(210f, 500f, 15f, 35f),
+            new TreeSpawn(280f, 480f, -2f, 15f),
+            new TreeSpawn(90f, 250f, 7f, 27f),
+            new TreeSpawn(240f, 500f, 15f, 35f),
             new TreeSpawn(140f, 360f, 3f, 20f),
-            new TreeSpawn(180f, 430f, -8f, 12f),
-            new TreeSpawn(280f, 500f, 16f, 35f),
+            new TreeSpawn(180f, 430f, -10f, 12f),
+            new TreeSpawn(280f, 500f, 20f, 35f),
             new TreeSpawn(60f, 250f, -15f, 7f),
-            new TreeSpawn(10f, 190f, 8f, 18f),
+            new TreeSpawn(10f, 190f, 5f, 20f),
             new TreeSpawn(250f, 420f, -5f, 12f),
-            new TreeSpawn(120f, 380f, -11f, 6f),
+            new TreeSpawn(120f, 380f, -14f, 7f),
             new TreeSpawn(120f, 290f, 17f, 33f),
             new TreeSpawn(10f, 240f, -8f, 17f),
-            new TreeSpawn(230f, 400f, 15f, 32f)
+            new TreeSpawn(260f, 480f, 15f, 32f)
         ).collect(Collectors.toList());
 
         Color darkGreen = new Color(0, 100, 0);

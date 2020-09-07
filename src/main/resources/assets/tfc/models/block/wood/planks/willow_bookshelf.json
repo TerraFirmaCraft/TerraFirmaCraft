@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/bookshelf",
+  "textures": {
+    "planks": "tfc:block/wood/planks/willow"
+  }
+}
