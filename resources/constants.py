@@ -258,6 +258,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.debug_times': 'PT: %d | CT: %d | DT: %d',
     'tfc.tooltip.f3_rainfall': 'Rainfall: %s',
     'tfc.tooltip.f3_average_temperature': 'Avg. Temp: %s\u00b0C',
+    'tfc.tooltip.f3_forest_type': 'Forest Type: ',
+    'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
     'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
 
     # Commands
@@ -278,6 +280,7 @@ DEFAULT_LANG = {
     **lang_enum('heat', ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')),
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
+    **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'none')),
     'tfc.enum.season.january': 'Winter',
     'tfc.enum.season.february': 'Late Winter',
     'tfc.enum.season.march': 'Early Spring',

@@ -161,16 +161,20 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      */
     public ChunkWatchPacket getUpdatePacket()
     {
-        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer);
+        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
     }
 
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer)
+    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
     {
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
+        this.forestType = forestType;
+        this.forestDensity = forestDensity;
+        this.forestWeirdness = forestWeirdness;
+
         if (status == Status.CLIENT || status == Status.EMPTY)
         {
             this.status = Status.CLIENT;
@@ -317,7 +321,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
 
         @Override
-        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer)
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }

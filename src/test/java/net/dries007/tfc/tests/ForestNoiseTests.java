@@ -1,3 +1,8 @@
+/*
+ * Work under Copyright. Licensed under the EUPL.
+ * See the project README.md and LICENSE.txt for more information.
+ */
+
 package net.dries007.tfc.tests;
 
 import java.awt.*;
@@ -29,7 +34,7 @@ public class ForestNoiseTests
         INoise2D forestDensity = new SimplexNoise2D(seed + 2).octaves(4).spread(0.0015f);
 
         INoise2D temperature = NoiseLayerType.PERIODIC_Z.create(seed + 3, 20_000).scaled(-10, 30);
-        INoise2D rainfall = NoiseLayerType.NOISE.create(seed + 4, 20_000).scaled(-50, 550).flattened(0, 500);
+        INoise2D rainfall = NoiseLayerType.PERIODIC_X.create(seed + 4, 20_000).scaled(0, 500).flattened(0, 500);
 
         List<TreeSpawn> trees = Stream.of(
             new TreeSpawn(30f, 210f, 21f, 31f),
@@ -38,10 +43,10 @@ public class ForestNoiseTests
             new TreeSpawn(20f, 180f, -15f, 7f),
             new TreeSpawn(0f, 120f, 15f, 35f),
             new TreeSpawn(160f, 320f, 11f, 35f),
-            new TreeSpawn(290f, 500f, -4f, 15f),
+            new TreeSpawn(280f, 480f, -2f, 15f),
             new TreeSpawn(90f, 250f, 7f, 27f),
             new TreeSpawn(240f, 500f, 15f, 35f),
-            new TreeSpawn(140f, 410f, -5f, 20f),
+            new TreeSpawn(140f, 360f, 3f, 20f),
             new TreeSpawn(180f, 430f, -10f, 12f),
             new TreeSpawn(280f, 500f, 20f, 35f),
             new TreeSpawn(60f, 250f, -15f, 7f),

@@ -19,31 +19,36 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraftforge.common.util.Lazy;
 
-public class DefaultTree extends Tree
+public class TFCTree extends Tree
 {
     private final Lazy<ConfiguredFeature<?, ?>> featureFactory;
+    private final Lazy<ConfiguredFeature<?, ?>> oldGrowthFeatureFactory;
 
-    public DefaultTree(Supplier<ConfiguredFeature<?, ?>> featureFactory)
+    public TFCTree(Supplier<ConfiguredFeature<?, ?>> featureFactory)
+    {
+        this(featureFactory, featureFactory);
+    }
+
+    public TFCTree(Supplier<ConfiguredFeature<?, ?>> featureFactory, Supplier<ConfiguredFeature<?, ?>> oldGrowthFeatureFactory)
     {
         this.featureFactory = Lazy.of(featureFactory);
+        this.oldGrowthFeatureFactory = Lazy.of(oldGrowthFeatureFactory);
     }
 
-    @Nullable
-    @Override
-    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean flowersNearby)
-    {
-        return null; // Not using minecraft's tree configuration
-    }
-
-    public ConfiguredFeature<?, ?> getFeature()
+    public ConfiguredFeature<?, ?> getNormalFeature()
     {
         return featureFactory.get();
+    }
+
+    public ConfiguredFeature<?, ?> getOldGrowthFeature()
+    {
+        return oldGrowthFeatureFactory.get();
     }
 
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
     {
-        ConfiguredFeature<?, ?> feature = featureFactory.get();
+        ConfiguredFeature<?, ?> feature = getNormalFeature();
         worldIn.setBlockState(blockPosIn, Blocks.AIR.getDefaultState(), 4);
         if (feature.place(worldIn, chunkGeneratorIn, randomIn, blockPosIn))
         {
@@ -54,5 +59,12 @@ public class DefaultTree extends Tree
             worldIn.setBlockState(blockPosIn, blockStateIn, 4);
             return false;
         }
+    }
+
+    @Nullable
+    @Override
+    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean flowersNearby)
+    {
+        return null; // Not using minecraft's tree configuration
     }
 }

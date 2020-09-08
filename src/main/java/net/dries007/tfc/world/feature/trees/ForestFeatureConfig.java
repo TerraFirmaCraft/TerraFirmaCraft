@@ -47,14 +47,16 @@ public class ForestFeatureConfig implements IFeatureConfig
         private final float minAverageTemp;
         private final float maxAverageTemp;
         private final ConfiguredFeature<?, ?> treeFeature;
+        private final ConfiguredFeature<?, ?> oldGrowthFeature;
 
-        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, ConfiguredFeature<?, ?> treeFeature)
+        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, ConfiguredFeature<?, ?> treeFeature, ConfiguredFeature<?, ?> oldGrowthFeature)
         {
             this.minRainfall = minRainfall;
             this.maxRainfall = maxRainfall;
             this.minAverageTemp = minAverageTemp;
             this.maxAverageTemp = maxAverageTemp;
             this.treeFeature = treeFeature;
+            this.oldGrowthFeature = oldGrowthFeature;
         }
 
         public boolean isValid(float rainfall, float temperature)
@@ -65,6 +67,11 @@ public class ForestFeatureConfig implements IFeatureConfig
         public ConfiguredFeature<?, ?> getFeature()
         {
             return treeFeature;
+        }
+
+        public ConfiguredFeature<?, ?> getOldGrowthFeature()
+        {
+            return oldGrowthFeature;
         }
     }
 }
