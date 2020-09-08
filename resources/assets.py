@@ -293,7 +293,7 @@ def generate(rm: ResourceManager):
         .with_lang(lang('%s Bookshelf', wood))
 
         # Doors
-        rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/%s_door' % wood)
+        rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/door/%s_door' % wood)
 
         # Log Fences
         log_fence_namespace = 'tfc:wood/planks/' + wood + '_log_fence'

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.types;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.dries007.tfc.common.blocks.wood.TFCBookshelfBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -95,7 +96,7 @@ public class Wood
         LEAVES(wood -> new LeavesBlock(Block.Properties.create(Material.LEAVES, wood.getMaterialColor()).hardnessAndResistance(0.5F).sound(SoundType.PLANT).tickRandomly().notSolid()), false),
         PLANKS(wood -> new Block(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), false),
         SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0).sound(SoundType.PLANT)), false),
-        BOOKSHELF(wood -> new Block(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
+        BOOKSHELF(wood -> new TFCBookshelfBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         DOOR(wood -> new DoorBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()) {}, true),
         TRAPDOOR(wood -> new TrapDoorBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()) {}, true),
         FENCE(wood -> new FenceBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
