@@ -18,6 +18,8 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
+import net.dries007.tfc.util.Helpers;
+
 public class NormalTreeFeature extends TreeFeature<NormalTreeConfig>
 {
     public NormalTreeFeature()
@@ -44,15 +46,15 @@ public class NormalTreeFeature extends TreeFeature<NormalTreeConfig>
 
         final PlacementSettings settings = getPlacementSettings(chunkPos, structureBase.getSize(), rand);
 
-        structureBase.addBlocksToWorld(worldIn, baseStructurePos, settings);
+        Helpers.addTemplateToWorldForTreeGen(structureBase, settings, worldIn, baseStructurePos);
         settings.addProcessor(new IntegrityProcessor(0.5f))
             .setCenterOffset(new BlockPos(structureOverlay.getSize().getX() / 2, 0, structureOverlay.getSize().getZ() / 2));
-        structureOverlay.addBlocksToWorld(worldIn, overlayStructurePos, settings);
+        Helpers.addTemplateToWorldForTreeGen(structureOverlay, settings, worldIn, overlayStructurePos);
 
         final BlockState log = config.getTrunkState();
         for (int i = 0; i < height; i++)
         {
-            worldIn.setBlockState(pos.add(0, i, 0), log, 3);
+            worldIn.setBlockState(pos.add(0, i, 0), log, 2);
         }
         return true;
     }

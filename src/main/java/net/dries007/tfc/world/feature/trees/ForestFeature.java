@@ -41,22 +41,23 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
         boolean placedTrees = false;
         if (forestType == ForestType.SPARSE)
         {
-            for (int i = 0; i < 2; i++)
+            if (rand.nextFloat() < 0.08f)
             {
-                if (rand.nextFloat() < 0.2f)
+                int trees = 1 + rand.nextInt(3);
+                for (int i = 0; i < trees; i++)
                 {
-                    placedTrees |= placeTree(worldIn, generator, rand, pos, config, data, mutablePos);
+                    placedTrees |= placeTree(worldIn, generator, rand, pos, config, data, mutablePos, false);
                 }
             }
             return true;
         }
         else if (forestType == ForestType.NORMAL)
         {
-            treeCount = 4;
+            treeCount = 5;
         }
         else if (forestType == ForestType.OLD_GROWTH)
         {
-            treeCount = 6;
+            treeCount = 7;
         }
         else
         {
@@ -64,15 +65,15 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
         }
 
         final float density = data.getForestDensity();
-        treeCount = (int) (treeCount * (1 + 0.5f * density));
+        treeCount = (int) (treeCount * (0.6f + 0.9f * density));
         for (int i = 0; i < treeCount; i++)
         {
-            placedTrees |= placeTree(worldIn, generator, rand, pos, config, data, mutablePos);
+            placedTrees |= placeTree(worldIn, generator, rand, pos, config, data, mutablePos, forestType == ForestType.OLD_GROWTH);
         }
         return placedTrees;
     }
 
-    private boolean placeTree(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos chunkBlockPos, ForestFeatureConfig config, ChunkData data, BlockPos.Mutable mutablePos)
+    private boolean placeTree(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos chunkBlockPos, ForestFeatureConfig config, ChunkData data, BlockPos.Mutable mutablePos, boolean allowOldGrowth)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
@@ -80,16 +81,25 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
         mutablePos.setPos(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
-        final ConfiguredFeature<?, ?> feature = getTree(data, random, config, mutablePos);
-        if (feature != null)
+        final ForestFeatureConfig.Entry entry = getTree(data, random, config, mutablePos);
+        if (entry != null)
         {
+            ConfiguredFeature<?, ?> feature;
+            if (allowOldGrowth && random.nextInt(6) == 0)
+            {
+                feature = entry.getOldGrowthFeature();
+            }
+            else
+            {
+                feature = entry.getFeature();
+            }
             return feature.place(worldIn, generator, random, mutablePos);
         }
         return false;
     }
 
     @Nullable
-    private ConfiguredFeature<?, ?> getTree(ChunkData chunkData, Random random, ForestFeatureConfig config, BlockPos pos)
+    private ForestFeatureConfig.Entry getTree(ChunkData chunkData, Random random, ForestFeatureConfig config, BlockPos pos)
     {
         List<ForestFeatureConfig.Entry> entries = new ArrayList<>(4);
         float rainfall = chunkData.getRainfall(pos);
@@ -114,6 +124,6 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
         {
             index++;
         }
-        return entries.get(index).getFeature();
+        return entries.get(index);
     }
 }

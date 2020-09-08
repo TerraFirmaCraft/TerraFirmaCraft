@@ -19,24 +19,36 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraftforge.common.util.Lazy;
 
-public class DefaultTree extends Tree
+public class TFCTree extends Tree
 {
     private final Lazy<ConfiguredFeature<?, ?>> featureFactory;
+    private final Lazy<ConfiguredFeature<?, ?>> oldGrowthFeatureFactory;
 
-    public DefaultTree(Supplier<ConfiguredFeature<?, ?>> featureFactory)
+    public TFCTree(Supplier<ConfiguredFeature<?, ?>> featureFactory)
     {
-        this.featureFactory = Lazy.of(featureFactory);
+        this(featureFactory, featureFactory);
     }
 
-    public ConfiguredFeature<?, ?> getFeature()
+    public TFCTree(Supplier<ConfiguredFeature<?, ?>> featureFactory, Supplier<ConfiguredFeature<?, ?>> oldGrowthFeatureFactory)
+    {
+        this.featureFactory = Lazy.of(featureFactory);
+        this.oldGrowthFeatureFactory = Lazy.of(oldGrowthFeatureFactory);
+    }
+
+    public ConfiguredFeature<?, ?> getNormalFeature()
     {
         return featureFactory.get();
+    }
+
+    public ConfiguredFeature<?, ?> getOldGrowthFeature()
+    {
+        return oldGrowthFeatureFactory.get();
     }
 
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
     {
-        ConfiguredFeature<?, ?> feature = featureFactory.get();
+        ConfiguredFeature<?, ?> feature = getNormalFeature();
         worldIn.setBlockState(blockPosIn, Blocks.AIR.getDefaultState(), 4);
         if (feature.place(worldIn, chunkGeneratorIn, randomIn, blockPosIn))
         {
