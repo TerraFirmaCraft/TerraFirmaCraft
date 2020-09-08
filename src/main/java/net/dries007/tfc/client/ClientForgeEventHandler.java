@@ -34,6 +34,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.types.MetalItem;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.TFCWorldType;
@@ -87,6 +88,10 @@ public class ClientForgeEventHandler
                 {
                     list.add(GRAY + I18n.format("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
                     list.add(GRAY + I18n.format("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", data.getRainfall(pos))));
+                    list.add(GRAY + I18n.format("tfc.tooltip.f3_forest_type") + WHITE + I18n.format(Helpers.getEnumTranslationKey(data.getForestType())));
+                    list.add(GRAY + I18n.format("tfc.tooltip.f3_forest_properties",
+                        WHITE + String.format("%.1f%%", 100 * data.getForestDensity()) + GRAY,
+                        WHITE + String.format("%.1f%%", 100 * data.getForestWeirdness()) + GRAY));
                 }
                 else
                 {

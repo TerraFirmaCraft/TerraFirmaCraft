@@ -18,6 +18,8 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
+import net.dries007.tfc.util.Helpers;
+
 public class RandomlyChosenTreeFeature extends TreeFeature<RandomlyChosenTreeConfig>
 {
     public RandomlyChosenTreeFeature()
@@ -44,7 +46,7 @@ public class RandomlyChosenTreeFeature extends TreeFeature<RandomlyChosenTreeCon
         final BlockPos structurePos = pos.add(offset);
 
         final PlacementSettings settings = getRandomPlacementSettings(chunkPos, size, rand);
-        structure.addBlocksToWorld(worldIn, structurePos, settings);
+        Helpers.addTemplateToWorldForTreeGen(structure, settings, worldIn, structurePos);
 
         return true;
     }
