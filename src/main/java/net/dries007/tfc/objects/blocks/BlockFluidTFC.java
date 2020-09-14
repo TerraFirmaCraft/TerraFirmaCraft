@@ -107,7 +107,7 @@ public class BlockFluidTFC extends BlockFluidClassic
                     {
                         BlockFluidTFC neighborBlock = (BlockFluidTFC) block;
                         int neighborMeta;
-                        Block neighborAboveBlock = world.getBlockState(neighborPos.up(densityDir)).getBlock();
+                        Block neighborAboveBlock = world.getBlockState(neighborPos.down(densityDir)).getBlock();
                         if (neighborAboveBlock == neighborBlock)
                             neighborMeta = 0;
                         else
