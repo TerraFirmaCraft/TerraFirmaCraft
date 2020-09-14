@@ -158,6 +158,10 @@ def generate(rm: ResourceManager):
     rm.block_loot('tfc:groundcover/rotten_flesh', 'minecraft:rotten_flesh') # needs fancier loot table
     # todo: dead grass, pinecone, podzol, salt lick
 
+    rm.block('tfc:calcite') \
+    .with_item_model() \
+    .with_lang(lang('Calcite'))
+
     for rock in ROCKS.keys():
         rm.block_loot('tfc:rock/boulder/%s' % rock,{
             'entries': 'tfc:rock/rock/%s' % rock,
