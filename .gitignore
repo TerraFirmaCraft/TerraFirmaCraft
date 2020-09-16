@@ -15,10 +15,6 @@
 !resources/**/*.py
 !resources/structure_templates/**/*.nbt
 
-# These should not be nessecary, but they do seem to be
-__pycache__/
-*.pyc
-
 # Metadata
 !build.gradle
 !gradle.properties
@@ -27,3 +23,8 @@ __pycache__/
 !LICENSE.txt
 !README.md
 !CodeStyle.xml
+
+# Other exclusions
+__pycache__/
+*.pyc
+*.pdn

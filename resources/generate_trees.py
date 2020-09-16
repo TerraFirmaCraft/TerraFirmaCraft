@@ -10,16 +10,16 @@ from nbtlib.tag import String
 TREES = {
     'acacia': 'acacia',
     'ash': 'normal',
-    'aspen': 'normal',
-    'birch': 'normal',
+    'aspen': 'aspen',
+    'birch': 'aspen',
     'blackwood': 'tall',
     'chestnut': 'normal',
-    'douglas_fir': 'tall',
-    'hickory': 'normal',
+    'douglas_fir': 'fir',
+    'hickory': 'fir',
     'maple': 'normal',
     'oak': 'tall',
     'palm': 'tropical',
-    'pine': 'conifer',
+    'pine': 'fir',
     'rosewood': 'tall',
     'sequoia': 'conifer',
     'spruce': 'conifer',
@@ -30,25 +30,25 @@ TREES = {
 }
 
 LARGE_TREES = {
-    # 'acacia': 'acacia',
+    'acacia': 'kapok_large',  # Use kapok structure as they are closer
     'ash': 'normal_large',
-    'aspen': 'normal_large',
-    'birch': 'normal_large',
-    'blackwood': 'tall_large',
+    # 'aspen': 'aspen',  # larger trunk done in code
+    # 'birch': 'aspen',  # larger trunk done in code
+    # 'blackwood': 'tall_large',  # todo: needs rework
     'chestnut': 'normal_large',
-    'douglas_fir': 'tall_large',
-    'hickory': 'normal_large',
+    'douglas_fir': 'fir_large',
+    'hickory': 'fir_large',
     'maple': 'normal_large',
-    'oak': 'tall_large',
-    # 'palm': 'tropical',
-    # 'pine': 'conifer',
-    'rosewood': 'tall_large',
-    # 'sequoia': 'conifer',
-    # 'spruce': 'conifer',
+    # 'oak': 'tall_large',  # todo: needs rework
+    # 'palm': 'tropical',  # larger trunk done in code
+    'pine': 'fir_large',
+    # 'rosewood': 'tall_large',  # todo: needs rework
+    'sequoia': 'conifer_large',
+    'spruce': 'conifer_large',
     'sycamore': 'normal_large',
-    'white_cedar': 'tall_large',
-    # 'willow': 'willow',
-    # 'kapok': 'jungle'
+    # 'white_cedar': 'tall_large',  # todo: needs rework
+    # 'willow': 'willow_large',  # todo: need templates
+    # 'kapok': 'jungle'  # No large variant, all trees are varied heights. todo: need more varied heights (structures)
 }
 
 
@@ -86,8 +86,26 @@ def make_tree_variant(wood: str, variant: str):
         for i in range(1, 1 + 7):
             make_tree_structure('jungle%d' % i, wood, str(i))
     elif variant == 'conifer':
-        for i in range(1, 1 + 7):
+        for i in range(1, 1 + 9):
             make_tree_structure('conifer%d' % i, wood, str(i))
+    elif variant == 'conifer_large':
+        for i in range(1, 1 + 3):
+            for struct in ('base', 'mid', 'top'):
+                make_tree_structure('sequoia_%s%d' % (struct, i), wood, struct + str(i), wood + '_large')
+    elif variant == 'fir':
+        for i in range(1, 1 + 9):
+            make_tree_structure('fir%d' % i, wood, str(i))
+    elif variant == 'fir_large':
+        for i in range(1, 1 + 5):
+            make_tree_structure('fir_large%d' % i, wood, str(i), wood + '_large')
+    elif variant == 'kapok_large':
+        for i in range(1, 1 + 6):
+            make_tree_structure('kapok_large%d' % i, wood, str(i), wood + '_large')
+    elif variant == 'aspen':
+        for i in range(1, 1 + 16):
+            make_tree_structure('aspen%d' % i, wood, str(i))
+    else:
+        raise NotImplementedError(variant)
 
 
 def make_tree_structure(template: str, wood: str, dest: Optional[str] = None, wood_dir: Optional[str] = None):

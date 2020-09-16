@@ -7,20 +7,22 @@ package net.dries007.tfc.util.calendar;
 
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.util.calendar.Season.*;
+
 public enum Month
 {
-    JANUARY(-1f),
-    FEBRUARY(-0.866f),
-    MARCH(-0.5f),
-    APRIL(0f),
-    MAY(0.5f),
-    JUNE(0.866f),
-    JULY(1f),
-    AUGUST(0.866f),
-    SEPTEMBER(0.5f),
-    OCTOBER(0f),
-    NOVEMBER(-0.5f),
-    DECEMBER(-0.866f);
+    JANUARY(-1f, WINTER),
+    FEBRUARY(-0.866f, WINTER),
+    MARCH(-0.5f, SPRING),
+    APRIL(0f, SPRING),
+    MAY(0.5f, SPRING),
+    JUNE(0.866f, SUMMER),
+    JULY(1f, SUMMER),
+    AUGUST(0.866f, SUMMER),
+    SEPTEMBER(0.5f, FALL),
+    OCTOBER(0f, FALL),
+    NOVEMBER(-0.5f, FALL),
+    DECEMBER(-0.866f, WINTER);
 
     private static final Month[] VALUES = values();
 
@@ -30,10 +32,12 @@ public enum Month
     }
 
     private final float temperatureModifier;
+    private final Season season;
 
-    Month(float temperatureModifier)
+    Month(float temperatureModifier, Season season)
     {
         this.temperatureModifier = temperatureModifier;
+        this.season = season;
     }
 
     public float getTemperatureModifier()
@@ -67,6 +71,11 @@ public enum Month
             default:
                 throw new IllegalArgumentException("Unknown text style? " + style);
         }
+    }
+
+    public Season getSeason()
+    {
+        return season;
     }
 
     public enum Style

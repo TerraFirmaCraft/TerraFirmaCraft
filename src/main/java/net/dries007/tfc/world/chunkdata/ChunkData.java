@@ -250,6 +250,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         rockData = new RockData();
         rainfallLayer = new LerpFloatLayer(250);
         temperatureLayer = new LerpFloatLayer(10);
+        forestWeirdness = 0.5f;
+        forestDensity = 0.5f;
+        forestType = ForestType.NONE;
         status = Status.EMPTY;
     }
 

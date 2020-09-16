@@ -10,9 +10,10 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.world.feature.trees.DoubleRandomTreeFeature;
 import net.dries007.tfc.world.feature.trees.ForestFeature;
-import net.dries007.tfc.world.feature.trees.NormalTreeFeature;
-import net.dries007.tfc.world.feature.trees.RandomlyChosenTreeFeature;
+import net.dries007.tfc.world.feature.trees.OverlayTreeFeature;
+import net.dries007.tfc.world.feature.trees.RandomTreeFeature;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -32,6 +33,7 @@ public class TFCFeatures
 
     public static final RegistryObject<ForestFeature> FORESTS = FEATURES.register("forest", ForestFeature::new);
 
-    public static final RegistryObject<NormalTreeFeature> NORMAL_TREE = FEATURES.register("normal_tree", NormalTreeFeature::new);
-    public static final RegistryObject<RandomlyChosenTreeFeature> RANDOM_TREE = FEATURES.register("random_tree", RandomlyChosenTreeFeature::new);
+    public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = FEATURES.register("overlay_tree", OverlayTreeFeature::new);
+    public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = FEATURES.register("random_tree", RandomTreeFeature::new);
+    public static final RegistryObject<DoubleRandomTreeFeature> DOUBLE_RANDOM_TREE = FEATURES.register("double_random_tree", DoubleRandomTreeFeature::new);
 }
