@@ -15,12 +15,13 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.TFCFeatures;
-import net.dries007.tfc.world.feature.trees.NormalTreeConfig;
-import net.dries007.tfc.world.feature.trees.RandomlyChosenTreeConfig;
+import net.dries007.tfc.world.feature.trees.OverlayTreeConfig;
+import net.dries007.tfc.world.feature.trees.RandomTreeConfig;
 import net.dries007.tfc.world.feature.trees.TFCTree;
 
 public class Wood
@@ -36,75 +37,88 @@ public class Wood
     public enum Default
     {
         ACACIA(false,
-            () -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("acacia", 35))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("acacia", 35)),
+            wood -> TFCFeatures.DOUBLE_RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("acacia_large", 6, 2, 2, 2))
+        ),
         ASH(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("ash/base"), Helpers.identifier("ash/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("ash_large", 5))),
+            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("ash/base"), Helpers.identifier("ash/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("ash_large", 5))
+        ),
         ASPEN(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("aspen/base"), Helpers.identifier("aspen/overlay"), 3, 5, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("aspen_large", 5))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("aspen", 16))
+        ),
         BIRCH(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("birch/base"), Helpers.identifier("birch/overlay"), 4, 8, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("birch_large", 5))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("birch", 16))
+        ),
         BLACKWOOD(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("blackwood/base"), Helpers.identifier("blackwood/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("blackwood_large/base"), Helpers.identifier("blackwood_large/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))),
+            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("blackwood/base"), Helpers.identifier("blackwood/overlay"), 2, 2, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
+        ),
         CHESTNUT(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("chestnut/base"), Helpers.identifier("chestnut/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("chestnut_large", 5))),
+            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("chestnut/base"), Helpers.identifier("chestnut/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
+        ),
         DOUGLAS_FIR(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("douglas_fir/base"), Helpers.identifier("douglas_fir/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("douglas_fir_large/base"), Helpers.identifier("douglas_fir_large/overlay"), 3, 5, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("douglas_fir", 9)),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("douglas_fir_large", 5))
+        ),
         HICKORY(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("hickory/base"), Helpers.identifier("hickory/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("ash_large", 5))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("hickory", 9)),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("hickory_large", 5))
+        ),
         KAPOK(false,
-            () -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("kapok", 7))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("kapok", 7))
+        ),
         MAPLE(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("maple/base"), Helpers.identifier("maple/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("maple_large", 5))),
+            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("maple/base"), Helpers.identifier("maple/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
+            wood -> TFCFeatures.DOUBLE_RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("maple_large", 5))
+        ),
         OAK(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("oak/base"), Helpers.identifier("oak/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("oak_large/base"), Helpers.identifier("oak_large/overlay"), 3, 5, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))),
+            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("oak/base"), Helpers.identifier("oak/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
+        ),
         PALM(false,
-            () -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("palm", 7))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("palm", 7)) // todo: random height variation
+        ),
         PINE(true,
-            () -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("pine", 7))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("pine", 9)),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("pine_large", 5))
+        ),
         ROSEWOOD(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("rosewood/base"), Helpers.identifier("rosewood/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("rosewood_large/base"), Helpers.identifier("rosewood_large/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))),
+            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("rosewood/base"), Helpers.identifier("rosewood/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
+        ),
         SEQUOIA(true,
-            () -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("sequoia", 7))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("sequoia", 7))
+            // todo: large conifer generator
+        ),
         SPRUCE(true,
-            () -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("spruce", 7))),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("spruce", 7))
+            // todo: large conifer generator
+        ),
         SYCAMORE(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("sycamore/base"), Helpers.identifier("sycamore/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("sycamore_large", 5))),
+            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("sycamore/base"), Helpers.identifier("sycamore/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("sycamore_large", 5))
+        ),
         WHITE_CEDAR(false,
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("white_cedar/base"), Helpers.identifier("white_cedar/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.NORMAL_TREE.get().withConfiguration(new NormalTreeConfig(Helpers.identifier("white_cedar_large/base"), Helpers.identifier("white_cedar_large/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))),
+            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("white_cedar/base"), Helpers.identifier("white_cedar/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
+        ),
         WILLOW(false,
-            () -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomlyChosenTreeConfig.forVariants("willow", 7)));
+            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("willow", 7))
+        );
 
         private final boolean conifer;
         private final TFCTree tree;
-
-        Default(boolean conifer, Supplier<ConfiguredFeature<?, ?>> feature)
-        {
-            this.conifer = conifer;
-            this.tree = new TFCTree(feature);
-        }
+        private final int fallFoliageCoords;
 
         Default(boolean conifer, Function<Default, ConfiguredFeature<?, ?>> feature)
         {
             this.conifer = conifer;
             this.tree = new TFCTree(() -> feature.apply(this)); // Allow the possibility to use a "this" reference in the initializer
+            this.fallFoliageCoords = 100 | (100 << 8); // todo: random locations for each non-conifer tree
         }
 
         Default(boolean conifer, Function<Default, ConfiguredFeature<?, ?>> feature, Function<Default, ConfiguredFeature<?, ?>> oldGrowthFeature)
         {
             this.conifer = conifer;
             this.tree = new TFCTree(() -> feature.apply(this), () -> oldGrowthFeature.apply(this)); // Allow the possibility to use a "this" reference in the initializer
+            this.fallFoliageCoords = 100 | (100 << 8); // todo: random locations for each non-conifer tree
         }
 
         public boolean isConifer()
@@ -115,6 +129,11 @@ public class Wood
         public TFCTree getTree()
         {
             return tree;
+        }
+
+        public int getFallFoliageCoords()
+        {
+            return fallFoliageCoords;
         }
 
         public MaterialColor getMaterialColor()
@@ -129,7 +148,7 @@ public class Wood
         STRIPPED_LOG(wood -> new LogBlock(MaterialColor.WOOD, Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F).sound(SoundType.WOOD)), false),
         WOOD(wood -> new RotatedPillarBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F).sound(SoundType.WOOD)), false),
         STRIPPED_WOOD(wood -> new RotatedPillarBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F).sound(SoundType.WOOD)), false),
-        LEAVES(wood -> new LeavesBlock(Block.Properties.create(Material.LEAVES, wood.getMaterialColor()).hardnessAndResistance(0.5F).sound(SoundType.PLANT).tickRandomly().notSolid()), false),
+        LEAVES(wood -> TFCLeavesBlock.create(Block.Properties.create(Material.LEAVES, wood.getMaterialColor()).hardnessAndResistance(0.5F).sound(SoundType.PLANT).tickRandomly().notSolid(), 6), false),
         PLANKS(wood -> new Block(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), false),
         SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0).sound(SoundType.PLANT)), false),
         BOOKSHELF(wood -> new Block(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),

@@ -292,7 +292,7 @@ DEFAULT_LANG = {
     'tfc.enum.season.september': 'Early Autumn',
     'tfc.enum.season.october': 'Autumn',
     'tfc.enum.season.november': 'Late Autumn',
-    'tfc.enum.season.december': 'Winter',
+    'tfc.enum.season.december': 'Early Winter',
 
     **dict(('metal.tfc.%s' % metal, lang('%s' % metal)) for metal in METALS.keys())
 }

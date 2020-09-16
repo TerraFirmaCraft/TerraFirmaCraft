@@ -72,7 +72,7 @@ public class ChunkDataProvider
         this.rainfallNoise = TFCConfig.COMMON.rainfallLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
 
         // Flora
-        forestBaseNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.001f).abs();
+        forestBaseNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.002f).abs();
         forestWeirdnessNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0015f).scaled(0, 1);
         forestDensityNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0015f).scaled(0, 1);
     }
@@ -143,7 +143,7 @@ public class ChunkDataProvider
             // Tree generation layers
             float forestBase = forestBaseNoise.noise(chunkX + 8, chunkZ + 8);
             ForestType forestType = ForestType.NONE;
-            if (forestBase > 0.5f)
+            if (forestBase > 0.4f)
             {
                 forestType = ForestType.OLD_GROWTH;
             }

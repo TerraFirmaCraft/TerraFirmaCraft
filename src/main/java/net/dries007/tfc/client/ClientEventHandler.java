@@ -15,13 +15,9 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.FoliageColors;
-import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -87,7 +83,7 @@ public final class ClientEventHandler
             BlockPos pos = new BlockPos(posX, 96, posZ);
             float temperature = Climate.getTemperature(pos);
             float rainfall = Climate.getRainfall(pos);
-            return WaterColors.getWaterColor(temperature, rainfall);
+            return TFCColors.getWaterColor(temperature, rainfall);
         };
     }
 
@@ -97,38 +93,39 @@ public final class ClientEventHandler
         LOGGER.debug("Registering Color Handler Blocks");
         BlockColors blockColors = event.getBlockColors();
 
-        // Grass Colors
-        IBlockColor grassColor = (state, worldIn, pos, tintIndex) -> {
-            if (pos != null && tintIndex == 0)
+        blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
+        blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
+        blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.PEAT_GRASS.get());
+
+        TFCBlocks.WOODS.forEach((key, value) -> {
+            Block block = value.get(Wood.BlockType.LEAVES).get();
+            if (key.isConifer())
             {
-                // Bias both temperature + rainfall towards the edges
-                double temp = MathHelper.clamp((Climate.getTemperature(pos) + 30) / 60, 0, 1);
-                double rain = MathHelper.clamp((Climate.getRainfall(pos) - 50) / 400, 0, 1);
-                return GrassColors.get(temp, rain);
+                blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex), block);
             }
-            return -1;
-        };
-
-        IBlockColor foliageColor = (state, worldIn, pos, tintIndex) -> {
-            if (pos != null && tintIndex == 0)
+            else
             {
-                double temp = MathHelper.clamp((Climate.getTemperature(pos) + 30) / 60, 0, 1);
-                double rain = MathHelper.clamp((Climate.getRainfall(pos) - 50) / 400, 0, 1);
-                return FoliageColors.get(temp, rain);
+                blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, key.getFallFoliageCoords()), block);
             }
-            return -1;
-        };
-
-        blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
-        blockColors.register(grassColor, TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
-        blockColors.register(grassColor, TFCBlocks.PEAT_GRASS.get());
-
-        blockColors.register(foliageColor, TFCBlocks.WOODS.entrySet().stream().filter(entry -> !entry.getKey().isConifer()).map(entry -> entry.getValue().get(Wood.BlockType.LEAVES).get()).toArray(Block[]::new));
+        });
     }
 
     @SubscribeEvent
     public static void registerParticleFactoriesAndOtherStuff(ParticleFactoryRegisterEvent event)
     {
-        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new WaterColorReloadListener());
+        // Add client reload listeners here, as it's closest to the location where they are added in vanilla
+        IReloadableResourceManager resourceManager = (IReloadableResourceManager) Minecraft.getInstance().getResourceManager();
+
+        // Color maps
+        // We maintain a series of color maps independent and beyond the vanilla color maps
+        // Water and water fog color (the latter unused until we can mixin to provide position context in 1.16) to replace hardcoded per-biome water colors
+        // Grass and foliage (which we replace vanilla's anyway, but use our own for better indexing)
+        // Foliage winter and fall (for deciduous trees which have leaves which change color during those seasons)
+
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setWaterColors, TFCColors.WATER_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setGrassColors, TFCColors.GRASS_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setFoliageColors, TFCColors.FOLIAGE_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));
+        resourceManager.addReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
     }
 }

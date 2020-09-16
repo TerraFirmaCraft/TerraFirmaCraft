@@ -70,6 +70,12 @@ public interface ICalendar
         return 1 + (int) ((time / TICKS_IN_DAY) % daysInMonth);
     }
 
+    static float getFractionOfMonth(long time, long daysInMonth)
+    {
+        long ticksInMonth = daysInMonth * TICKS_IN_DAY;
+        return (float) (time % ticksInMonth) / ticksInMonth;
+    }
+
     static Month getMonthOfYear(long time, long daysInMonth)
     {
         return Month.valueOf((int) ((time / (TICKS_IN_DAY * daysInMonth)) % MONTHS_IN_YEAR));
@@ -192,6 +198,14 @@ public interface ICalendar
     default int getCalendarDayOfMonth()
     {
         return ICalendar.getDayOfMonth(getCalendarTicks(), getCalendarDaysInMonth());
+    }
+
+    /**
+     * Returns the progress through the month from a calendar time (i.e. 0 - 1)
+     */
+    default float getCalendarFractionOfMonth()
+    {
+        return ICalendar.getFractionOfMonth(getCalendarTicks(), getCalendarDaysInMonth());
     }
 
     /**

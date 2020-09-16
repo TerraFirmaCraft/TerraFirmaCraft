@@ -29,7 +29,7 @@ public class ForestNoiseTests
     void testForestBaseNoise()
     {
         long seed = System.currentTimeMillis();
-        INoise2D forestBase = new SimplexNoise2D(seed).octaves(4).spread(0.001f).abs();
+        INoise2D forestBase = new SimplexNoise2D(seed).octaves(4).spread(0.002f).abs();
         INoise2D forestWeirdness = new SimplexNoise2D(seed + 1).octaves(4).spread(0.0015f);
         INoise2D forestDensity = new SimplexNoise2D(seed + 2).octaves(4).spread(0.0015f);
 
@@ -39,20 +39,20 @@ public class ForestNoiseTests
         List<TreeSpawn> trees = Stream.of(
             new TreeSpawn(30f, 210f, 21f, 31f),
             new TreeSpawn(60f, 140f, -6f, 12f),
-            new TreeSpawn(10f, 80f, -10f, 16f),
+            new TreeSpawn(10f, 180f, -10f, 16f),
             new TreeSpawn(20f, 180f, -15f, 7f),
             new TreeSpawn(0f, 120f, 15f, 35f),
             new TreeSpawn(160f, 320f, 11f, 35f),
-            new TreeSpawn(280f, 480f, -2f, 15f),
+            new TreeSpawn(290f, 500f, -4f, 15f),
             new TreeSpawn(90f, 250f, 7f, 27f),
             new TreeSpawn(240f, 500f, 15f, 35f),
-            new TreeSpawn(140f, 360f, 3f, 20f),
+            new TreeSpawn(140f, 410f, -5f, 20f),
             new TreeSpawn(180f, 430f, -10f, 12f),
             new TreeSpawn(280f, 500f, 20f, 35f),
             new TreeSpawn(60f, 250f, -15f, 7f),
             new TreeSpawn(10f, 190f, 5f, 20f),
             new TreeSpawn(250f, 420f, -5f, 12f),
-            new TreeSpawn(120f, 380f, -14f, 7f),
+            new TreeSpawn(120f, 430f, -14f, 7f),
             new TreeSpawn(120f, 290f, 17f, 33f),
             new TreeSpawn(10f, 240f, -8f, 17f),
             new TreeSpawn(260f, 480f, 15f, 32f)
@@ -65,7 +65,7 @@ public class ForestNoiseTests
 
         COLOR.draw("forest_base", (x, z) -> {
             float value = forestBase.noise((float) x, (float) z);
-            if (value > 0.5) return darkGreen;
+            if (value > 0.4) return darkGreen;
             if (value > 0.18) return midGreen;
             if (value > 0.06) return midGreenGray;
             return gray;

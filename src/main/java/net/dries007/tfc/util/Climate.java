@@ -12,6 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
@@ -58,10 +59,38 @@ public final class Climate
         return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
     }
 
+    /**
+     * For when the logical side is known
+     */
+    public static float getTemperature(BlockPos pos, boolean isClient)
+    {
+        ChunkData data = (isClient ? ChunkDataCache.CLIENT : ChunkDataCache.SERVER).getOrEmpty(pos);
+        Calendar calendar = isClient ? Calendars.CLIENT : Calendars.SERVER;
+        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
+    }
+
+    public static float getRainfall(BlockPos pos, boolean isClient)
+    {
+        ChunkData data = (isClient ? ChunkDataCache.CLIENT : ChunkDataCache.SERVER).getOrEmpty(pos);
+        return data.getRainfall(pos);
+    }
+
     public static float getRainfall(BlockPos pos)
     {
         ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
         return data.getRainfall(pos);
+    }
+
+    public static float getRainfall(BlockPos pos, ChunkDataCache cache)
+    {
+        ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
+        return data.getRainfall(pos);
+    }
+
+    private static float getTemperature(BlockPos pos, ChunkDataCache cache)
+    {
+        ChunkData data = cache.getOrEmpty(pos);
+        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
     }
 
     private static float calculateTemperature(int z, int y, float averageTemperature, long calendarTime, long daysInMonth)
