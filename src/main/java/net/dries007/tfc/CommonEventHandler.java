@@ -189,7 +189,7 @@ public final class CommonEventHandler
             }
         }
         // Harvest ice from saws
-        if (OreDictionaryHelper.doesStackMatchOre(heldItem, "saw") && block == Blocks.ICE)
+        if (OreDictionaryHelper.doesStackMatchOre(heldItem, "craftingToolHardSaw") && block == Blocks.ICE)
         {
             event.getDrops().add(new ItemStack(Blocks.ICE));
         }
