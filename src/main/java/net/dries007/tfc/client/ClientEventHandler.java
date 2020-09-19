@@ -29,6 +29,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import net.dries007.tfc.client.screen.CalendarScreen;
+import net.dries007.tfc.client.screen.ClimateScreen;
 import net.dries007.tfc.client.screen.NutritionScreen;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -54,6 +55,7 @@ public final class ClientEventHandler
 
         ScreenManager.registerFactory(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
         ScreenManager.registerFactory(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
+        ScreenManager.registerFactory(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
 
         // Render Types
 

@@ -53,13 +53,21 @@ public class SwitchInventoryTabPacket
                 {
                     NetworkHooks.openGui(player, TFCContainerProviders.NUTRITION);
                 }
+                else if (type == Type.CLIMATE)
+                {
+                    NetworkHooks.openGui(player, TFCContainerProviders.CLIMATE);
+                }
+                else
+                {
+                    throw new IllegalStateException("Unknown type?");
+                }
             }
         });
     }
 
     public enum Type
     {
-        INVENTORY, CALENDAR, NUTRITION;
+        INVENTORY, CALENDAR, NUTRITION, CLIMATE;
 
         private static final Type[] VALUES = values();
     }

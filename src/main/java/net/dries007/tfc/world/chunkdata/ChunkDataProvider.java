@@ -20,6 +20,7 @@ import net.minecraft.world.server.ServerChunkProvider;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -68,7 +69,7 @@ public class ChunkDataProvider
         this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
 
         // Climate
-        this.temperatureNoise = TFCConfig.COMMON.temperatureLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(-10, 30);
+        this.temperatureNoise = TFCConfig.COMMON.temperatureLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(Climate.MINIMUM_TEMPERATURE_SCALE, Climate.MAXIMUM_TEMPERATURE_SCALE);
         this.rainfallNoise = TFCConfig.COMMON.rainfallLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
 
         // Flora

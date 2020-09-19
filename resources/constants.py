@@ -245,6 +245,7 @@ DEFAULT_LANG = {
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
+    'tfc.screen.climate': 'Climate',
     # Tooltips
     'tfc.tooltip.metal': '§fMetal:§7 %s',
     'tfc.tooltip.units': '%d units',
@@ -255,6 +256,10 @@ DEFAULT_LANG = {
     'tfc.tooltip.calendar_day': 'Day : ',
     'tfc.tooltip.calendar_birthday': '%s\'s Birthday!',
     'tfc.tooltip.calendar_date': 'Date : ',
+    'tfc.tooltip.climate_koppen_climate_classification': 'Climate: ',
+    'tfc.tooltip.climate_average_temperature': 'Avg. Temp: %s\u00b0C',
+    'tfc.tooltip.climate_annual_rainfall': 'Annual Rainfall: %smm',
+    'tfc.tooltip.climate_current_temp': 'Current Temp: %s\u00b0C',
     'tfc.tooltip.debug_times': 'PT: %d | CT: %d | DT: %d',
     'tfc.tooltip.f3_rainfall': 'Rainfall: %s',
     'tfc.tooltip.f3_average_temperature': 'Avg. Temp: %s\u00b0C',
@@ -281,6 +286,7 @@ DEFAULT_LANG = {
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'none')),
+    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
     'tfc.enum.season.january': 'Winter',
     'tfc.enum.season.february': 'Late Winter',
     'tfc.enum.season.march': 'Early Spring',
