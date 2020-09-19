@@ -17,4 +17,5 @@ public class TFCContainerProviders
 {
     public static final INamedContainerProvider CALENDAR = Helpers.createNamedContainerProvider(new TranslationTextComponent("tfc.screen.calendar"), (windowId, inv, player) -> new SimpleContainer(TFCContainerTypes.CALENDAR.get(), windowId, player.inventory));
     public static final INamedContainerProvider NUTRITION = Helpers.createNamedContainerProvider(new TranslationTextComponent("tfc.screen.nutrition"), (windowId, inv, player) -> new SimpleContainer(TFCContainerTypes.NUTRITION.get(), windowId, player.inventory));
+    public static final INamedContainerProvider CLIMATE = Helpers.createNamedContainerProvider(new TranslationTextComponent("tfc.screen.climate"), (windowId, inv, player) -> new SimpleContainer(TFCContainerTypes.CLIMATE.get(), windowId, player.inventory));
 }

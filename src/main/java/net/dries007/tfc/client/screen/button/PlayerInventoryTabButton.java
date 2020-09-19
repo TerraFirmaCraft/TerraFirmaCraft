@@ -9,9 +9,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.SwitchInventoryTabPacket;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -28,6 +31,11 @@ public class PlayerInventoryTabButton extends Button
     private int prevGuiLeft;
     private int prevGuiTop;
     private Runnable tickCallback;
+
+    public PlayerInventoryTabButton(int guiLeft, int guiTop, int xIn, int yIn, int widthIn, int heightIn, int textureU, int textureV, int iconX, int iconY, int iconU, int iconV, SwitchInventoryTabPacket.Type type)
+    {
+        this(guiLeft, guiTop, xIn, yIn, widthIn, heightIn, textureU, textureV, iconX, iconY, iconU, iconV, button -> PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(type)));
+    }
 
     public PlayerInventoryTabButton(int guiLeft, int guiTop, int xIn, int yIn, int widthIn, int heightIn, int textureU, int textureV, int iconX, int iconY, int iconU, int iconV, IPressable onPressIn)
     {
