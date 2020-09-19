@@ -25,22 +25,13 @@ import net.minecraft.world.IWorldReader;
 
 public class ToolRackBlock extends Block implements IWaterLoggable
 {
-    public static final DirectionProperty FACING;
-    public static final BooleanProperty WATERLOGGED;
-    protected static final VoxelShape RACK_EAST_AABB;
-    protected static final VoxelShape RACK_WEST_AABB;
-    protected static final VoxelShape RACK_SOUTH_AABB;
-    protected static final VoxelShape RACK_NORTH_AABB;
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    static
-    {
-        FACING = HorizontalBlock.HORIZONTAL_FACING;
-        WATERLOGGED = BlockStateProperties.WATERLOGGED;
-        RACK_EAST_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
-        RACK_WEST_AABB = Block.makeCuboidShape(14.0D, 3.0D, 0.0D, 16.0D, 12.0D, 16.0D);
-        RACK_SOUTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 2.0D);
-        RACK_NORTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 14.0D, 16.0D, 12.0D, 16.0D);
-    }
+    public static final VoxelShape RACK_EAST_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
+    public static final VoxelShape RACK_WEST_AABB = Block.makeCuboidShape(14.0D, 3.0D, 0.0D, 16.0D, 12.0D, 16.0D);
+    public static final VoxelShape RACK_SOUTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 2.0D);
+    public static final VoxelShape RACK_NORTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 14.0D, 16.0D, 12.0D, 16.0D);
 
     public ToolRackBlock(Properties properties)
     {
@@ -85,7 +76,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         Direction direction = state.get(FACING);
-        return this.canAttachTo(worldIn, pos.offset(direction.getOpposite()), direction);
+        return canAttachTo(worldIn, pos.offset(direction.getOpposite()), direction);
     }
 
     @Nullable
@@ -101,10 +92,10 @@ public class ToolRackBlock extends Block implements IWaterLoggable
             }
         }
 
-        contextualState = this.getDefaultState();
-        IWorldReader iworldreader = context.getWorld();
-        BlockPos blockpos = context.getPos();
-        IFluidState ifluidstate = iworldreader.getFluidState(context.getPos());
+        contextualState = getDefaultState();
+        IWorldReader world = context.getWorld();
+        BlockPos pos = context.getPos();
+        IFluidState fluidState = world.getFluidState(context.getPos());
         Direction[] directionList = context.getNearestLookingDirections();
 
         for (Direction direction : directionList)
@@ -112,9 +103,9 @@ public class ToolRackBlock extends Block implements IWaterLoggable
             if (direction.getAxis().isHorizontal())
             {
                 contextualState = contextualState.with(FACING, direction.getOpposite());
-                if (contextualState.isValidPosition(iworldreader, blockpos))
+                if (contextualState.isValidPosition(world, pos))
                 {
-                    return contextualState.with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
+                    return contextualState.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
                 }
             }
         }
@@ -130,7 +121,10 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) { builder.add(FACING, WATERLOGGED); }
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, WATERLOGGED);
+    }
 
     private boolean canAttachTo(IBlockReader blockReader, BlockPos pos, Direction directionIn)
     {

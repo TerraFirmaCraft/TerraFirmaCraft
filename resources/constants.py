@@ -18,28 +18,28 @@ ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe
 MISC_ROCK_ITEMS: List[str] = ['brick', 'rock']
 
 ROCKS: Dict[str, Rock] = {
-    # Desert sand color is either white, brown, gray, or yellow based on rock color. red is an indicator of hematite rocks
+    # Desert sand color is either white, brown, black, or yellow based on rock color. red is an indicator of hematite rocks
     # Beach sand color is either white, gray, yellow, black or green based on rock color. Pink and black are used for accents in tropical regions.
     'chalk': Rock('sedimentary', 'white', 'white'),
     'chert': Rock('sedimentary', 'brown', 'yellow'),
     'claystone': Rock('sedimentary', 'brown', 'yellow'),
-    'conglomerate': Rock('sedimentary', 'gray', 'green'),
-    'dolomite': Rock('sedimentary', 'gray', 'black'),
+    'conglomerate': Rock('sedimentary', 'yellow', 'green'),
+    'dolomite': Rock('sedimentary', 'black', 'black'),
     'limestone': Rock('sedimentary', 'yellow', 'white'),
-    'shale': Rock('sedimentary', 'gray', 'black'),
-    'gneiss': Rock('metamorphic', 'gray', 'gray'),
+    'shale': Rock('sedimentary', 'black', 'black'),
+    'gneiss': Rock('metamorphic', 'brown', 'brown'),
     'marble': Rock('metamorphic', 'yellow', 'white'),
-    'phyllite': Rock('metamorphic', 'gray', 'gray'),
+    'phyllite': Rock('metamorphic', 'brown', 'yellow'),
     'quartzite': Rock('metamorphic', 'white', 'white'),
     'schist': Rock('metamorphic', 'yellow', 'green'),
-    'slate': Rock('metamorphic', 'gray', 'gray'),
+    'slate': Rock('metamorphic', 'brown', 'yellow'),
     'diorite': Rock('igneous_intrusive', 'white', 'white'),
-    'gabbro': Rock('igneous_intrusive', 'gray', 'black'),
+    'gabbro': Rock('igneous_intrusive', 'black', 'black'),
     'granite': Rock('igneous_intrusive', 'white', 'white'),
-    'andesite': Rock('igneous_extrusive', 'red', 'gray'),
+    'andesite': Rock('igneous_extrusive', 'red', 'green'),
     'basalt': Rock('igneous_extrusive', 'red', 'black'),
-    'dacite': Rock('igneous_extrusive', 'red', 'gray'),
-    'rhyolite': Rock('igneous_extrusive', 'red', 'gray')
+    'dacite': Rock('igneous_extrusive', 'red', 'yellow'),
+    'rhyolite': Rock('igneous_extrusive', 'red', 'white')
 }
 METALS: Dict[str, Metal] = {
     'bismuth': Metal(1, {'part'}, 0.14, 270),

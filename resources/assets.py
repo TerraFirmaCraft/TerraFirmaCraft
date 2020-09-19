@@ -1,8 +1,8 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-import mcresources.loot_tables as loot_tables
 import mcresources.block_states as block_states
+import mcresources.loot_tables as loot_tables
 from mcresources import ResourceManager
 
 from constants import *
@@ -268,8 +268,8 @@ def generate(rm: ResourceManager):
             .make_slab() \
             .make_stairs() \
             .make_button() \
-            .make_pressure_plate() \
             .make_door() \
+            .make_pressure_plate() \
             .make_trapdoor() \
             .make_fence() \
             .make_fence_gate()
@@ -288,9 +288,9 @@ def generate(rm: ResourceManager):
 
         # Bookshelf
         rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood) \
-        .with_block_model({'planks': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/bookshelf') \
-        .with_item_model() \
-        .with_lang(lang('%s Bookshelf', wood))
+            .with_block_model({'planks': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/bookshelf') \
+            .with_item_model() \
+            .with_lang(lang('%s Bookshelf', wood))
 
         # Doors
         rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/%s_door' % wood)
@@ -300,7 +300,7 @@ def generate(rm: ResourceManager):
         rm.blockstate_multipart(log_fence_namespace, parts=block_states.fence_multipart('tfc:block/wood/planks/' + wood + '_log_fence_post', 'tfc:block/wood/planks/' + wood + '_log_fence_side'))
         rm.block_model(log_fence_namespace + '_post', textures={'texture': 'tfc:block/wood/log/' + wood}, parent='block/fence_post')
         rm.block_model(log_fence_namespace + '_side', textures={'texture': 'tfc:block/wood/planks/' + wood}, parent='block/fence_side')
-        rm.block_model(log_fence_namespace + '_inventory', textures={'log': 'tfc:block/wood/log/' + wood, 'planks': 'tfc:block/wood/planks/' + wood}, parent='tfc:block/fence_inventory')
+        rm.block_model(log_fence_namespace + '_inventory', textures={'log': 'tfc:block/wood/log/' + wood, 'planks': 'tfc:block/wood/planks/' + wood}, parent='tfc:block/log_fence_inventory')
         rm.item_model('tfc:wood/planks/' + wood + '_log_fence', parent='tfc:block/wood/planks/' + wood + '_log_fence_inventory', no_textures=True)
         rm.block_loot(log_fence_namespace, log_fence_namespace)
 
