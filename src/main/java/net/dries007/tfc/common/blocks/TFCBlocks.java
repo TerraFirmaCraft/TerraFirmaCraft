@@ -29,6 +29,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.common.types.Ore;
 import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -105,7 +106,13 @@ public final class TFCBlocks
 
     public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         Helpers.mapOfKeys(Metal.BlockType.class, type -> type.hasMetal(metal), type ->
-            register(("metal/" + type.name() + "/" + metal.name()).toLowerCase(), () -> type.create(metal), METAL)
+            register(("metal/" + type.name() + "/" + metal.name()).toLowerCase(), type.create(metal), METAL)
+        )
+    );
+
+    public static final Map<Wood.Default, Map<Wood.BlockType, RegistryObject<Block>>> WOODS = Helpers.mapOfKeys(Wood.Default.class, wood ->
+        Helpers.mapOfKeys(Wood.BlockType.class, type ->
+            register(type.id(wood), type.create(wood), WOOD)
         )
     );
 

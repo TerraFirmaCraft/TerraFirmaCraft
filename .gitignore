@@ -12,11 +12,8 @@
 !src/**
 
 # Resource generation
-!resources/*.py
-
-# These should not be nessecary, but they do seem to be
-__pycache__/
-*.pyc
+!resources/**/*.py
+!resources/structure_templates/**/*.nbt
 
 # Metadata
 !build.gradle
@@ -26,3 +23,8 @@ __pycache__/
 !LICENSE.txt
 !README.md
 !CodeStyle.xml
+
+# Other exclusions
+__pycache__/
+*.pyc
+*.pdn

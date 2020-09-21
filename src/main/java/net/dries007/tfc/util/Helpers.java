@@ -23,13 +23,18 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Unit;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullFunction;
@@ -252,5 +257,28 @@ public final class Helpers
     public static boolean isRemote(IWorldReader world)
     {
         return world instanceof World ? !(world instanceof ServerWorld) : world.isRemote();
+    }
+
+    /**
+     * A variant of {@link Template#addBlocksToWorld(IWorld, BlockPos, PlacementSettings)} that is much simpler and faster for use in tree generation
+     * Allows replacing leaves and air blocks
+     */
+    public static void addTemplateToWorldForTreeGen(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
+    {
+        List<Template.BlockInfo> transformedBlockInfos = placementIn.func_227459_a_(template.blocks, pos); // Gets a single list of block infos
+        MutableBoundingBox boundingBox = placementIn.getBoundingBox();
+        for (Template.BlockInfo blockInfo : Template.processBlockInfos(template, worldIn, pos, placementIn, transformedBlockInfos))
+        {
+            BlockPos posAt = blockInfo.pos;
+            if (boundingBox == null || boundingBox.isVecInside(posAt))
+            {
+                BlockState stateAt = worldIn.getBlockState(posAt);
+                if (stateAt.isAir(worldIn, posAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
+                {
+                    BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
+                    worldIn.setBlockState(posAt, stateReplace, 2);
+                }
+            }
+        }
     }
 }

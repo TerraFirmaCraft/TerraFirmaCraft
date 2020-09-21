@@ -18,28 +18,28 @@ ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe
 MISC_ROCK_ITEMS: List[str] = ['brick', 'rock']
 
 ROCKS: Dict[str, Rock] = {
-    # Desert sand color is either white, brown, gray, or yellow based on rock color. red is an indicator of hematite rocks
+    # Desert sand color is either white, brown, black, or yellow based on rock color. red is an indicator of hematite rocks
     # Beach sand color is either white, gray, yellow, black or green based on rock color. Pink and black are used for accents in tropical regions.
     'chalk': Rock('sedimentary', 'white', 'white'),
     'chert': Rock('sedimentary', 'brown', 'yellow'),
     'claystone': Rock('sedimentary', 'brown', 'yellow'),
-    'conglomerate': Rock('sedimentary', 'gray', 'green'),
-    'dolomite': Rock('sedimentary', 'gray', 'black'),
+    'conglomerate': Rock('sedimentary', 'yellow', 'green'),
+    'dolomite': Rock('sedimentary', 'black', 'black'),
     'limestone': Rock('sedimentary', 'yellow', 'white'),
-    'shale': Rock('sedimentary', 'gray', 'black'),
-    'gneiss': Rock('metamorphic', 'gray', 'gray'),
+    'shale': Rock('sedimentary', 'black', 'black'),
+    'gneiss': Rock('metamorphic', 'brown', 'brown'),
     'marble': Rock('metamorphic', 'yellow', 'white'),
-    'phyllite': Rock('metamorphic', 'gray', 'gray'),
+    'phyllite': Rock('metamorphic', 'brown', 'yellow'),
     'quartzite': Rock('metamorphic', 'white', 'white'),
     'schist': Rock('metamorphic', 'yellow', 'green'),
-    'slate': Rock('metamorphic', 'gray', 'gray'),
+    'slate': Rock('metamorphic', 'brown', 'yellow'),
     'diorite': Rock('igneous_intrusive', 'white', 'white'),
-    'gabbro': Rock('igneous_intrusive', 'gray', 'black'),
+    'gabbro': Rock('igneous_intrusive', 'black', 'black'),
     'granite': Rock('igneous_intrusive', 'white', 'white'),
-    'andesite': Rock('igneous_extrusive', 'red', 'gray'),
+    'andesite': Rock('igneous_extrusive', 'red', 'green'),
     'basalt': Rock('igneous_extrusive', 'red', 'black'),
-    'dacite': Rock('igneous_extrusive', 'red', 'gray'),
-    'rhyolite': Rock('igneous_extrusive', 'red', 'gray')
+    'dacite': Rock('igneous_extrusive', 'red', 'yellow'),
+    'rhyolite': Rock('igneous_extrusive', 'red', 'white')
 }
 METALS: Dict[str, Metal] = {
     'bismuth': Metal(1, {'part'}, 0.14, 270),
@@ -210,18 +210,33 @@ ORE_VEINS: Dict[str, Vein] = {
     'diamond': Vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
     'emerald': Vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
 }
+<<<<<<< HEAD
 ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'pebble', 'rubble','boulder']
 CUTTABLE_ROCKS = ['raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks']
 ROCK_SPIKE_PARTS = ['base', 'middle', 'tip']
 SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'green', 'pink']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path', 'clay', 'clay_grass']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam']
+=======
+ROCK_BLOCK_TYPES = ('raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike')
+CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
+ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
+SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
+SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass')
+SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
+>>>>>>> upstream/1.15.x
 
-GEMS = ['amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz']
-GEM_GRADES = ['cut', 'uncut', 'powder']
+GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
+GEM_GRADES = ('cut', 'uncut', 'powder')
 
+<<<<<<< HEAD
 MISC_GROUNDCOVER = ['bones', 'branch', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'podzol', 'rotten_flesh', 'salt_lick']
 GROUND_ITEMS = ['clam', 'mollusk', 'mussel', 'guano']
+=======
+COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
+
+WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fir', 'hickory', 'kapok', 'maple', 'oak', 'palm', 'pine', 'rosewood', 'sequoia', 'spruce', 'sycamore', 'white_cedar', 'willow')
+>>>>>>> upstream/1.15.x
 
 COLORS = ['white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black']
 
@@ -242,9 +257,11 @@ DEFAULT_LANG = {
     'itemGroup.tfc.gems': 'TFC Gems',
     'itemGroup.tfc.misc': 'TFC Misc',
     'itemGroup.tfc.decorations': 'TFC Decorations',
+    'itemGroup.tfc.wood.blocks': 'TFC Wood Blocks',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',
+    'tfc.screen.climate': 'Climate',
     # Tooltips
     'tfc.tooltip.metal': '§fMetal:§7 %s',
     'tfc.tooltip.units': '%d units',
@@ -255,9 +272,15 @@ DEFAULT_LANG = {
     'tfc.tooltip.calendar_day': 'Day : ',
     'tfc.tooltip.calendar_birthday': '%s\'s Birthday!',
     'tfc.tooltip.calendar_date': 'Date : ',
+    'tfc.tooltip.climate_koppen_climate_classification': 'Climate: ',
+    'tfc.tooltip.climate_average_temperature': 'Avg. Temp: %s\u00b0C',
+    'tfc.tooltip.climate_annual_rainfall': 'Annual Rainfall: %smm',
+    'tfc.tooltip.climate_current_temp': 'Current Temp: %s\u00b0C',
     'tfc.tooltip.debug_times': 'PT: %d | CT: %d | DT: %d',
     'tfc.tooltip.f3_rainfall': 'Rainfall: %s',
     'tfc.tooltip.f3_average_temperature': 'Avg. Temp: %s\u00b0C',
+    'tfc.tooltip.f3_forest_type': 'Forest Type: ',
+    'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
     'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
 
     # Commands
@@ -266,9 +289,11 @@ DEFAULT_LANG = {
     'tfc.commands.time.query.day': 'The day is %s',
     'tfc.commands.time.query.player_ticks': 'The player ticks is %s',
     'tfc.commands.time.query.calendar_ticks': 'The calendar ticks is %s',
-    'tfc.command.heat': 'Held item heat set to %s',
-    'tfc.command.clear_world.starting': 'Clearing world. Prepare for lag...',
-    'tfc.command.clear_world.done': 'Cleared.',
+    'tfc.commands.heat.set_heat': 'Held item heat set to %s',
+    'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
+    'tfc.commands.clear_world.done': 'Cleared.',
+    'tfc.commands.player.query_hunger': 'Hunger is %s',
+    'tfc.commands.player.query_saturation': 'Saturation is %s',
 
     # ENUMS
 
@@ -276,6 +301,8 @@ DEFAULT_LANG = {
     **lang_enum('heat', ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')),
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
+    **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'none')),
+    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
     'tfc.enum.season.january': 'Winter',
     'tfc.enum.season.february': 'Late Winter',
     'tfc.enum.season.march': 'Early Spring',
@@ -287,7 +314,7 @@ DEFAULT_LANG = {
     'tfc.enum.season.september': 'Early Autumn',
     'tfc.enum.season.october': 'Autumn',
     'tfc.enum.season.november': 'Late Autumn',
-    'tfc.enum.season.december': 'Winter',
+    'tfc.enum.season.december': 'Early Winter',
 
     **dict(('metal.tfc.%s' % metal, lang('%s' % metal)) for metal in METALS.keys())
 }

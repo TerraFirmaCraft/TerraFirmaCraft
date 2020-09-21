@@ -17,10 +17,10 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 public final class HeatCommand
 {
+    private static final String QUERY_HEAT = "tfc.commands.heat.set_heat";
+
     public static LiteralArgumentBuilder<CommandSource> create()
     {
         return Commands.literal("heat").requires(source -> source.hasPermissionLevel(2))
@@ -38,7 +38,7 @@ public final class HeatCommand
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
             {
                 heat.setTemperature(value);
-                source.sendFeedback(new TranslationTextComponent(MOD_ID + ".command.heat", value), true);
+                source.sendFeedback(new TranslationTextComponent(QUERY_HEAT, value), true);
             });
         }
         return Command.SINGLE_SUCCESS;
