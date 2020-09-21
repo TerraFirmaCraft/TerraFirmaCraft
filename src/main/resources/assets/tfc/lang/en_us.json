@@ -2671,12 +2671,10 @@
   "item.tfc.gem.cut.topaz": "Cut Topaz",
   "item.tfc.gem.uncut.topaz": "Uncut Topaz",
   "item.tfc.gem.powder.topaz": "Powder Topaz",
-<<<<<<< HEAD
   "item.tfc.grounditem.clam": "Clam",
   "item.tfc.grounditem.mollusk": "Mollusk",
   "item.tfc.grounditem.mussel": "Mussel",
-  "item.tfc.grounditem.guano": "Guano"
-=======
+  "item.tfc.grounditem.guano": "Guano",
   "block.tfc.wood.log.acacia": "Acacia Log",
   "block.tfc.wood.stripped_log.acacia": "Stripped Acacia Log",
   "block.tfc.wood.wood.acacia": "Acacia Wood",
@@ -3019,5 +3017,4 @@
   "block.tfc.wood.planks.willow_stairs": "Willow Stairs",
   "block.tfc.wood.sapling.willow": "Willow Sapling",
   "block.tfc.wood.leaves.willow": "Willow Leaves"
->>>>>>> upstream/1.15.x
 }

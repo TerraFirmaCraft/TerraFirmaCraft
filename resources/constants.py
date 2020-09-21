@@ -210,33 +210,22 @@ ORE_VEINS: Dict[str, Vein] = {
     'diamond': Vein('diamond', 'pipe', 60, 60, 5, 140, 40, 0, 0, 0, ['gabbro']),
     'emerald': Vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
 }
-<<<<<<< HEAD
 ROCK_BLOCK_TYPES = ['raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'pebble', 'rubble','boulder']
 CUTTABLE_ROCKS = ['raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks']
 ROCK_SPIKE_PARTS = ['base', 'middle', 'tip']
 SAND_BLOCK_TYPES = ['brown', 'white', 'black', 'red', 'yellow', 'green', 'pink']
 SOIL_BLOCK_TYPES = ['dirt', 'grass', 'grass_path', 'clay', 'clay_grass']
 SOIL_BLOCK_VARIANTS = ['silt', 'loam', 'sandy_loam', 'silty_loam']
-=======
-ROCK_BLOCK_TYPES = ('raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike')
-CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
-ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
-SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
-SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass')
-SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
->>>>>>> upstream/1.15.x
 
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 GEM_GRADES = ('cut', 'uncut', 'powder')
 
-<<<<<<< HEAD
 MISC_GROUNDCOVER = ['bones', 'branch', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'podzol', 'rotten_flesh', 'salt_lick']
 GROUND_ITEMS = ['clam', 'mollusk', 'mussel', 'guano']
-=======
+
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
 WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fir', 'hickory', 'kapok', 'maple', 'oak', 'palm', 'pine', 'rosewood', 'sequoia', 'spruce', 'sycamore', 'white_cedar', 'willow')
->>>>>>> upstream/1.15.x
 
 COLORS = ['white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black']
 
