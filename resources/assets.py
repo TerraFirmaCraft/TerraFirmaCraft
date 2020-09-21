@@ -309,13 +309,12 @@ def generate(rm: ResourceManager):
             rm.item_model(('gem', grade, gem), 'tfc:item/gem/%s/%s' % (grade, gem)) \
                 .with_lang(lang('%s %s' % (grade, gem)))
 
-<<<<<<< HEAD
     # Ground Items
     for ground in GROUND_ITEMS:
         rm.item_model('tfc:grounditem/%s' % ground, 'tfc:block/groundcover/%s' % ground) \
         .with_lang(lang('%s' % ground))
         rm.block_loot('tfc:groundcover/%s' % ground, 'tfc:grounditem/%s' % ground)
-=======
+
     # Wood Blocks
     for wood in WOODS:
         # Logs
@@ -377,7 +376,7 @@ def generate(rm: ResourceManager):
 
         # Bookshelf
         rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood) \
-            .with_block_model({'planks': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/bookshelf') \
+            .with_block_model({'end': 'tfc:block/wood/planks/%s' % wood, 'side': 'tfc:block/wood/planks/%s_bookshelf' % wood}, parent='minecraft:block/bookshelf') \
             .with_item_model() \
             .with_lang(lang('%s Bookshelf', wood))
 
@@ -418,4 +417,3 @@ def generate(rm: ResourceManager):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
->>>>>>> upstream/1.15.x
