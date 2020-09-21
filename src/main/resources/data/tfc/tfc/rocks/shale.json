@@ -16,6 +16,6 @@
     "boulder": "tfc:rock/boulder/shale"
   },
   "category": "sedimentary",
-  "desert_sand_color": "gray",
+  "desert_sand_color": "black",
   "beach_sand_color": "black"
 }

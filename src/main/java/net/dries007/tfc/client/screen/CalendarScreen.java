@@ -36,16 +36,14 @@ public class CalendarScreen extends TFCContainerScreen<SimpleContainer>
     public void init()
     {
         super.init();
-
         addButton(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 4, 20, 22, 96, 0, 1, 3, 0, 0, button -> {
             playerInventory.player.openContainer = playerInventory.player.container;
             Minecraft.getInstance().displayGuiScreen(new InventoryScreen(playerInventory.player));
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.INVENTORY));
         }));
         addButton(new PlayerInventoryTabButton(guiLeft, guiTop, 176 - 3, 27, 20 + 3, 22, 96 + 20, 0, 1, 3, 32, 0, button -> {}));
-        addButton(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 96, 0, 1, 3, 64, 0, button -> {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.NUTRITION));
-        }));
+        addButton(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 96, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Type.NUTRITION));
+        addButton(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 73, 20, 22, 96, 0, 1, 3, 96, 0, SwitchInventoryTabPacket.Type.CLIMATE));
     }
 
     @Override

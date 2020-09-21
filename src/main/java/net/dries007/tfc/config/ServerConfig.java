@@ -29,6 +29,10 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
     // Player
     public final ForgeConfigSpec.BooleanValue enableVanillaNaturalRegeneration;
+    // Leaves
+    public final ForgeConfigSpec.BooleanValue leavesDecayVanilla;
+    public final ForgeConfigSpec.BooleanValue leavesSolidBlocks;
+    public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -50,6 +54,10 @@ public class ServerConfig
 
         enableVanillaNaturalRegeneration = builder.apply("enableVanillaNaturalRegeneration").comment("Enables the vanilla `naturalRegeneration` gamerule, which regenerates your health much quicker than TFC does.").define("enableVanillaNaturalRegeneration", false);
 
-        innerBuilder.pop();
+        innerBuilder.pop().push("leaves");
+
+        leavesDecayVanilla = builder.apply("leavesDecayVanilla").comment("Should leaves decay over time like vanilla?").define("leavesDecayVanilla", false);
+        leavesSolidBlocks = builder.apply("leavesSolidBlocks").comment("Are leaves solid blocks and non-passable?").define("leavesSolidBlocks", false);
+        leavesMovementModifier = builder.apply("leavesMovementModifier").comment("How much to leaves slow entities passing through them?").defineInRange("leavesMovementModifier", 0.8, 0, 1);
     }
 }

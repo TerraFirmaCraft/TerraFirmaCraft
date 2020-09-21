@@ -6,6 +6,7 @@
 package net.dries007.tfc.common.types;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -220,9 +221,9 @@ public class Metal
             this(null, type, blockFactory);
         }
 
-        public Block create(Metal.Default metal)
+        public Supplier<Block> create(Metal.Default metal)
         {
-            return blockFactory.apply(metal);
+            return () -> blockFactory.apply(metal);
         }
 
         public boolean hasMetal(Default metal)

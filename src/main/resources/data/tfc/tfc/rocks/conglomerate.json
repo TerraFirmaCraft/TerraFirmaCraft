@@ -16,6 +16,6 @@
     "boulder": "tfc:rock/boulder/conglomerate"
   },
   "category": "sedimentary",
-  "desert_sand_color": "gray",
+  "desert_sand_color": "yellow",
   "beach_sand_color": "green"
 }

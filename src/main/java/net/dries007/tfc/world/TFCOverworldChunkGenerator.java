@@ -28,6 +28,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.carver.WorleyCaveCarver;
+import net.dries007.tfc.world.chunk.FastChunkPrimer;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.IChunkDataProvidingChunkGenerator;
@@ -45,6 +46,8 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     private final WorleyCaveCarver worleyCaveCarver;
     private final ChunkDataProvider chunkDataProvider;
     private final ChunkBlockReplacer blockReplacer;
+
+    private final BlockState defaultBlock, defaultFluid;
 
     public TFCOverworldChunkGenerator(IWorld world, BiomeProvider biomeProvider, TFCGenerationSettings settings)
     {
@@ -68,6 +71,9 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         this.chunkDataProvider = new ChunkDataProvider(world, settings, seedGenerator); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(world.getSeed()); // Replaces default world gen blocks with TFC variants, after surface generation
         this.shadowBiomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
+
+        this.defaultBlock = settings.getDefaultBlock();
+        this.defaultFluid = settings.getDefaultFluid();
     }
 
     @Override
@@ -109,14 +115,17 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     @Override
     public void generateSurface(WorldGenRegion worldGenRegion, IChunk chunk)
     {
-        ChunkPos chunkPos = chunk.getPos();
-        SharedSeedRandom random = new SharedSeedRandom();
+        final ChunkPos chunkPos = chunk.getPos();
+        final SharedSeedRandom random = new SharedSeedRandom();
+        final IChunk fastChunk = FastChunkPrimer.deslowificate(chunk);
+
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
+        makeBedrock(fastChunk, random);
 
-        makeBedrock(chunk, random);
+        final ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
+        blockReplacer.replace(worldGenRegion, fastChunk, chunkData);
 
-        ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
-        blockReplacer.replace(worldGenRegion, chunk, chunkData);
+        FastChunkPrimer.updateChunkHeightMaps(fastChunk);
     }
 
     @Override
@@ -132,26 +141,28 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     public void makeBase(IWorld world, IChunk chunk)
     {
         // Initialization
-        ChunkPos chunkPos = chunk.getPos();
-        SharedSeedRandom random = new SharedSeedRandom();
-        int chunkX = chunkPos.getXStart(), chunkZ = chunkPos.getZStart();
+        final IChunk fastChunk = FastChunkPrimer.deslowificate(chunk);
+        final ChunkPos chunkPos = chunk.getPos();
+        final SharedSeedRandom random = new SharedSeedRandom();
+        final int chunkX = chunkPos.getXStart(), chunkZ = chunkPos.getZStart();
+        final BlockPos.Mutable pos = new BlockPos.Mutable();
+
         random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
-        BlockPos.Mutable pos = new BlockPos.Mutable();
 
         // The accurate version of biomes which we use for surface building
         // These are calculated during height generation in order to generate cliffs with harsh borders between biomes
-        TFCBiome[] localBiomes = new TFCBiome[16 * 16];
-        double[] baseHeight = new double[16 * 16];
+        final TFCBiome[] localBiomes = new TFCBiome[16 * 16];
+        final double[] baseHeight = new double[16 * 16];
 
         // The biome weights at different distance intervals
-        Object2DoubleMap<TFCBiome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>();
+        final Object2DoubleMap<TFCBiome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>();
 
         // Faster than vanilla (only does 2d interpolation) and uses the already generated biomes by the chunk where possible
-        ChunkArraySampler.CoordinateAccessor<TFCBiome> biomeAccessor = (x, z) -> (TFCBiome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(world.getSeed(), chunkX + x, 0, chunkZ + z, world);
+        final ChunkArraySampler.CoordinateAccessor<TFCBiome> biomeAccessor = (x, z) -> (TFCBiome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(world.getSeed(), chunkX + x, 0, chunkZ + z, world);
 
-        TFCBiome[] sampledBiomes16 = ChunkArraySampler.fillSampledArray(new TFCBiome[10 * 10], biomeAccessor, 4);
-        TFCBiome[] sampledBiomes4 = ChunkArraySampler.fillSampledArray(new TFCBiome[13 * 13], biomeAccessor, 2);
-        TFCBiome[] sampledBiomes1 = ChunkArraySampler.fillSampledArray(new TFCBiome[24 * 24], biomeAccessor);
+        final TFCBiome[] sampledBiomes16 = ChunkArraySampler.fillSampledArray(new TFCBiome[10 * 10], biomeAccessor, 4);
+        final TFCBiome[] sampledBiomes4 = ChunkArraySampler.fillSampledArray(new TFCBiome[13 * 13], biomeAccessor, 2);
+        final TFCBiome[] sampledBiomes1 = ChunkArraySampler.fillSampledArray(new TFCBiome[24 * 24], biomeAccessor);
 
         for (int x = 0; x < 16; x++)
         {
@@ -258,24 +269,27 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         }
 
         // Build terrain using height map, using just default block and fluid for now
-        BlockState defaultBlock = settings.getDefaultBlock();
-        BlockState defaultFluid = settings.getDefaultFluid();
         int seaLevel = getSeaLevel();
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
-                int totalHeight = (int) baseHeight[x + 16 * z];
-                for (int y = 0; y <= totalHeight; y++)
+                int landHeight = (int) baseHeight[x + 16 * z];
+                int landOrSeaHeight = Math.max(landHeight, seaLevel);
+                for (int y = 0; y <= landHeight; y++)
                 {
                     pos.setPos(chunkX + x, y, chunkZ + z);
-                    chunk.setBlockState(pos, defaultBlock, false);
+                    fastChunk.setBlockState(pos, defaultBlock, false);
                 }
-                for (int y = totalHeight + 1; y <= seaLevel; y++)
+
+                for (int y = landHeight + 1; y <= seaLevel; y++)
                 {
                     pos.setPos(chunkX + x, y, chunkZ + z);
-                    chunk.setBlockState(pos, defaultFluid, false);
+                    fastChunk.setBlockState(pos, defaultFluid, false);
                 }
+
+                fastChunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG).set(x, z, landHeight + 1);
+                fastChunk.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG).set(x, z, landOrSeaHeight + 1);
             }
         }
 
@@ -287,9 +301,9 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
             {
                 int posX = chunkPos.getXStart() + x;
                 int posZ = chunkPos.getZStart() + z;
-                int posY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
+                int posY = fastChunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
                 double noise = surfaceDepthNoise.noiseAt(posX * 0.0625, posZ * 0.0625, 0.0625, x * 0.0625) * 15;
-                localBiomes[x + 16 * z].buildSurface(random, chunk, posX, posZ, posY, noise, getSettings().getDefaultBlock(), getSettings().getDefaultFluid(), getSeaLevel(), world.getSeed());
+                localBiomes[x + 16 * z].buildSurface(random, fastChunk, posX, posZ, posY, noise, getSettings().getDefaultBlock(), getSettings().getDefaultFluid(), getSeaLevel(), world.getSeed());
             }
         }
     }

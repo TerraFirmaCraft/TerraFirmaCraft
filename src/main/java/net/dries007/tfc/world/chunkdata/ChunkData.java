@@ -72,6 +72,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     private Status status;
     private LerpFloatLayer rainfallLayer;
     private LerpFloatLayer temperatureLayer;
+    private ForestType forestType;
+    private float forestWeirdness;
+    private float forestDensity;
 
     public ChunkData(ChunkPos pos)
     {
@@ -121,6 +124,28 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         temperatureLayer.init(tempNW, tempNE, tempSW, tempSE);
     }
 
+    public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
+    {
+        this.forestType = forestType;
+        this.forestWeirdness = forestWeirdness;
+        this.forestDensity = forestDensity;
+    }
+
+    public ForestType getForestType()
+    {
+        return forestType;
+    }
+
+    public float getForestWeirdness()
+    {
+        return forestWeirdness;
+    }
+
+    public float getForestDensity()
+    {
+        return forestDensity;
+    }
+
     public Status getStatus()
     {
         return status;
@@ -136,16 +161,20 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      */
     public ChunkWatchPacket getUpdatePacket()
     {
-        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer);
+        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
     }
 
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer)
+    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
     {
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
+        this.forestType = forestType;
+        this.forestDensity = forestDensity;
+        this.forestWeirdness = forestWeirdness;
+
         if (status == Status.CLIENT || status == Status.EMPTY)
         {
             this.status = Status.CLIENT;
@@ -177,6 +206,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         {
             nbt.put("rockData", rockData.serializeNBT());
         }
+        if (status.isAtLeast(Status.FLORA))
+        {
+            nbt.putByte("forestType", (byte) forestType.ordinal());
+            nbt.putFloat("forestWeirdness", forestWeirdness);
+            nbt.putFloat("forestDensity", forestDensity);
+        }
         return nbt;
     }
 
@@ -195,6 +230,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
             {
                 rockData.deserializeNBT(nbt.getCompound("rockData"));
             }
+            if (status.isAtLeast(Status.FLORA))
+            {
+                forestType = ForestType.valueOf(nbt.getByte("forestType"));
+                forestWeirdness = nbt.getFloat("forestWeirdness");
+                forestDensity = nbt.getFloat("forestDensity");
+            }
         }
     }
 
@@ -209,6 +250,9 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         rockData = new RockData();
         rainfallLayer = new LerpFloatLayer(250);
         temperatureLayer = new LerpFloatLayer(10);
+        forestWeirdness = 0.5f;
+        forestDensity = 0.5f;
+        forestType = ForestType.NONE;
         status = Status.EMPTY;
     }
 
@@ -217,7 +261,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         EMPTY,
         CLIENT,
         CLIMATE,
-        ROCKS;
+        ROCKS,
+        FLORA;
 
         private static final Status[] VALUES = values();
 
@@ -267,13 +312,19 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
 
         @Override
+        public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
         public void setStatus(Status status)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
 
         @Override
-        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer)
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
