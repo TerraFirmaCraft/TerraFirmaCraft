@@ -9,6 +9,7 @@ import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -66,6 +67,7 @@ public class ItemBlockMetalLamp extends ItemBlockTFC implements IMetalItem
 
         // In the interest of not writing a joint heat / fluid capability that extends ICapabilityProvider, I think this is justified
         CapabilityItemHeat.CUSTOM_ITEMS.put(IIngredient.of(this), () -> new ItemHeatHandler(null, metal.getSpecificHeat(), metal.getMeltTemp()));
+        OreDictionaryHelper.register(this, "lamp");
     }
 
     @Override

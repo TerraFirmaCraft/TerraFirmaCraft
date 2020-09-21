@@ -37,7 +37,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,7 +47,6 @@ import net.dries007.tfc.objects.blocks.BlockTorchTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
 import net.dries007.tfc.objects.te.TELamp;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 @ParametersAreNonnullByDefault
@@ -82,8 +80,6 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         setHardness(1f);
         setTickRandomly(true);
         setSoundType(SoundType.METAL);
-
-        OreDictionaryHelper.register(this, "lamp");
     }
 
     public Metal getMetal()
@@ -302,25 +298,20 @@ public class BlockMetalLamp extends Block implements ILightableBlock
         world.setBlockToAir(pos);
     }
 
+    // after BlockBarrel#onBlockPlacedBy
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        if (!worldIn.isRemote)
+        if (!worldIn.isRemote && stack.getTagCompound() != null)
         {
             // Set the initial counter value and fill from item
             TELamp tile = Helpers.getTE(worldIn, pos, TELamp.class);
             if (tile != null)
             {
                 tile.resetCounter();
-                IFluidHandlerItem itemCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                IFluidHandler teCap = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                if (itemCap != null && teCap != null)
-                {
-                    teCap.fill(itemCap.drain(TELamp.CAPACITY, false), true); //don't drain creative item
-                }
+                tile.loadFromItemStack(stack);
             }
             worldIn.setBlockState(pos, state.withProperty(LIT, false));
-            super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
         }
     }
 
