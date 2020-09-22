@@ -39,11 +39,14 @@ import net.dries007.tfc.world.feature.trees.ForestFeatureConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.placement.TFCPlacements;
 
+import net.minecraft.world.biome.Biome.Builder;
+import net.minecraft.world.biome.Biome.RainType;
+
 public abstract class TFCBiome extends Biome implements ITFCBiome
 {
     // todo: replace with actual blocks
-    protected static final BlockState SALT_WATER = Blocks.WATER.getDefaultState(); // Custom salt water block
-    protected static final BlockState FRESH_WATER = Blocks.WATER.getDefaultState(); // Vanilla water
+    protected static final BlockState SALT_WATER = Blocks.WATER.defaultBlockState(); // Custom salt water block
+    protected static final BlockState FRESH_WATER = Blocks.WATER.defaultBlockState(); // Vanilla water
 
     /**
      * Used for initial biome assignments. TFC overrides this to use out temperature models
@@ -85,25 +88,25 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
             .temperature(temperature.getTemperature())
             .downfall(rainfall.getDownfall())
             // Since this is a registry object, we just do them all later for consistency
-            .surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.NOPE, SurfaceBuilder.AIR_CONFIG))
+            .surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.NOPE, SurfaceBuilder.CONFIG_EMPTY))
         );
         this.temperature = temperature;
         this.rainfall = rainfall;
 
         this.biomeFeatures = new DelayedRunnable();
         this.biomeFeatures.enqueue(() -> {
-            addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFCFeatures.VEINS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(NoPlacementConfig.NO_PLACEMENT_CONFIG)));
+            addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFCFeatures.VEINS.get().configured(NoFeatureConfig.NONE).decorated(Placement.NOPE.configured(NoPlacementConfig.NONE)));
 
-            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.WATER.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
-            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().withConfiguration(new BlockStateFeatureConfig(Blocks.LAVA.getDefaultState())).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(80))));
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().configured(new BlockStateFeatureConfig(Blocks.WATER.defaultBlockState())).decorated(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configured(new ChanceConfig(60))));
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.FISSURES.get().configured(new BlockStateFeatureConfig(Blocks.LAVA.defaultBlockState())).decorated(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configured(new ChanceConfig(80))));
 
-            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.RAW)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
-            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.COBBLE)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
-            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().withConfiguration(new BoulderConfig(Rock.BlockType.COBBLE, Rock.BlockType.MOSSY_COBBLE)).withPlacement(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configure(new ChanceConfig(60))));
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().configured(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.RAW)).decorated(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configured(new ChanceConfig(60))));
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().configured(new BoulderConfig(Rock.BlockType.RAW, Rock.BlockType.COBBLE)).decorated(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configured(new ChanceConfig(60))));
+            addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, TFCFeatures.BOULDERS.get().configured(new BoulderConfig(Rock.BlockType.COBBLE, Rock.BlockType.MOSSY_COBBLE)).decorated(TFCPlacements.FLAT_SURFACE_WITH_CHANCE.get().configured(new ChanceConfig(60))));
 
-            addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, TFCFeatures.EROSION.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
+            addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, TFCFeatures.EROSION.get().configured(NoFeatureConfig.NONE).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)));
 
-            addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFCFeatures.FORESTS.get().withConfiguration(new ForestFeatureConfig(Stream.of(
+            addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFCFeatures.FORESTS.get().configured(new ForestFeatureConfig(Stream.of(
                 new ForestFeatureConfig.Entry(30f, 210f, 21f, 31f, Wood.Default.ACACIA.getTree().getNormalFeature(), Wood.Default.ACACIA.getTree().getOldGrowthFeature()),
                 new ForestFeatureConfig.Entry(60f, 140f, -6f, 12f, Wood.Default.ASH.getTree().getNormalFeature(), Wood.Default.ASH.getTree().getOldGrowthFeature()),
                 new ForestFeatureConfig.Entry(10f, 180f, -10f, 16f, Wood.Default.ASPEN.getTree().getNormalFeature(), Wood.Default.ASPEN.getTree().getOldGrowthFeature()),
@@ -168,7 +171,7 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
     }
 
     @Override
-    public float getTemperatureRaw(BlockPos pos)
+    public float getTemperatureNoCache(BlockPos pos)
     {
         // Vanilla expects < 0.15 = snowy, and generally returns values between -1 and 2.
         return MathHelper.clamp(0.15f + Climate.getTemperature(pos) / 30f, -1, 2);
@@ -185,10 +188,10 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
     }
 
     @Override
-    public void buildSurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed)
+    public void buildSurfaceAt(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed)
     {
-        getSurfaceBuilder().setSeed(seed);
-        getSurfaceBuilder().buildSurface(random, chunkIn, this, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed);
+        getSurfaceBuilder().initNoise(seed);
+        getSurfaceBuilder().apply(random, chunkIn, this, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed);
     }
 
     @Override
@@ -210,6 +213,6 @@ public abstract class TFCBiome extends Biome implements ITFCBiome
     @Override
     public ISurfaceBuilderConfig getSurfaceBuilderConfig()
     {
-        return getSurfaceBuilder().getConfig();
+        return getSurfaceBuilder().getSurfaceBuilderConfiguration();
     }
 }

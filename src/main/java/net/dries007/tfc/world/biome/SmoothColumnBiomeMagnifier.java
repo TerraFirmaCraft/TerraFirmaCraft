@@ -52,12 +52,12 @@ public class SmoothColumnBiomeMagnifier implements IBiomeMagnifier
 
     private double distanceToCorner(long seed, int coordX, int coordZ, double localX, double localZ)
     {
-        long localSeed = FastRandom.mix(seed, coordX);
-        localSeed = FastRandom.mix(localSeed, coordZ);
-        localSeed = FastRandom.mix(localSeed, coordX);
-        localSeed = FastRandom.mix(localSeed, coordZ);
+        long localSeed = FastRandom.next(seed, coordX);
+        localSeed = FastRandom.next(localSeed, coordZ);
+        localSeed = FastRandom.next(localSeed, coordX);
+        localSeed = FastRandom.next(localSeed, coordZ);
         double varianceX = randomValue(localSeed);
-        localSeed = FastRandom.mix(localSeed, seed);
+        localSeed = FastRandom.next(localSeed, seed);
         double varianceZ = randomValue(localSeed);
         return square(localZ + varianceZ) + square(localX + varianceX);
     }

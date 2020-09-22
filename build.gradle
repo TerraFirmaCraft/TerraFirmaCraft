@@ -32,7 +32,7 @@ repositories {
 }
 
 minecraft {
-    mappings channel: "${mcp_channel}", version: "${mcp_version}"
+    mappings channel: "official", version: "1.15.2"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {

@@ -44,18 +44,18 @@ public class TFCBiomeProvider extends BiomeProvider
     }
 
     @Override
-    public List<Biome> getBiomesToSpawnIn()
+    public List<Biome> getPlayerSpawnBiomes()
     {
         return spawnBiomes.get();
     }
 
     @Override
-    public boolean hasStructure(Structure<?> structureIn)
+    public boolean canGenerateStructure(Structure<?> structureIn)
     {
-        return this.hasStructureCache.computeIfAbsent(structureIn, structure -> {
-            for (Biome biome : biomes) // valid biomes
+        return this.supportedStructures.computeIfAbsent(structureIn, structure -> {
+            for (Biome biome : possibleBiomes) // valid biomes
             {
-                if (biome.hasStructure(structure))
+                if (biome.isValidStart(structure))
                 {
                     return true;
                 }
@@ -74,7 +74,7 @@ public class TFCBiomeProvider extends BiomeProvider
     {
         TFCBiome baseBiome = biomeFactory.getBiome(biomeCoordX, biomeCoordZ);
         ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
-        BlockPos pos = chunkPos.asBlockPos();
+        BlockPos pos = chunkPos.getWorldPosition();
         ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
         return baseBiome.getVariants().get(data.getAverageTemp(pos), data.getRainfall(pos)).get();
     }

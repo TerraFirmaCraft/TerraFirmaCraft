@@ -81,9 +81,9 @@ public class CalendarEventHandler
     @SubscribeEvent
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
-        if (!event.getEntity().getEntityWorld().isRemote() && !event.updateWorld())
+        if (!event.getEntity().getCommandSenderWorld().isClientSide() && !event.updateWorld())
         {
-            long currentDayTime = event.getEntity().getEntityWorld().getDayTime();
+            long currentDayTime = event.getEntity().getCommandSenderWorld().getDayTime();
             if (Calendars.SERVER.getCalendarDayTime() != currentDayTime)
             {
                 long jump = Calendars.SERVER.setTimeFromDayTime(currentDayTime);
@@ -140,7 +140,7 @@ public class CalendarEventHandler
             if (server != null)
             {
                 LOGGER.info("Player Logged In - Checking for Calendar Updates.");
-                Calendars.SERVER.setPlayersLoggedOn(server.getPlayerList().getCurrentPlayerCount() > 0);
+                Calendars.SERVER.setPlayersLoggedOn(server.getPlayerList().getPlayerCount() > 0);
             }
         }
     }

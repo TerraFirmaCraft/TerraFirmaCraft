@@ -54,7 +54,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     @SuppressWarnings("UnusedReturnValue")
     public static boolean tryLandslide(World world, BlockPos pos, BlockState state)
     {
-        if (!world.isRemote() && TFCConfig.SERVER.enableBlockLandslides.get())
+        if (!world.isClientSide() && TFCConfig.SERVER.enableBlockLandslides.get())
         {
             BlockPos fallPos = getLandSlidePos(world, pos);
             if (fallPos != null)
@@ -66,9 +66,9 @@ public class LandslideRecipe extends SimpleBlockRecipe
                     {
                         world.removeBlock(pos, false);
                     }
-                    world.setBlockState(fallPos, fallingState);
+                    world.setBlockAndUpdate(fallPos, fallingState);
                     world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.4f, 1.0f);
-                    world.addEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY() + 0.5, fallPos.getZ() + 0.5, fallingState));
+                    world.addFreshEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY() + 0.5, fallPos.getZ() + 0.5, fallingState));
                 });
                 return true;
             }
@@ -83,7 +83,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
         {
             return null;
         }
-        else if (TFCFallingBlockEntity.canFallThrough(world, pos.down()))
+        else if (TFCFallingBlockEntity.canFallThrough(world, pos.below()))
         {
             return pos;
         }
@@ -108,8 +108,8 @@ public class LandslideRecipe extends SimpleBlockRecipe
                     else
                     {
                         // In order to fall in a direction, we need both the block immediately next to, and the one below to be open
-                        BlockPos posSide = pos.offset(side);
-                        if (TFCFallingBlockEntity.canFallThrough(world, posSide) && TFCFallingBlockEntity.canFallThrough(world, posSide.down()))
+                        BlockPos posSide = pos.relative(side);
+                        if (TFCFallingBlockEntity.canFallThrough(world, posSide) && TFCFallingBlockEntity.canFallThrough(world, posSide.below()))
                         {
                             possibleDirections.add(posSide);
                         }
@@ -127,9 +127,9 @@ public class LandslideRecipe extends SimpleBlockRecipe
 
     public static boolean isSupportedOnSide(IBlockReader world, BlockPos pos, Direction side)
     {
-        BlockPos sidePos = pos.offset(side);
+        BlockPos sidePos = pos.relative(side);
         BlockState sideState = world.getBlockState(sidePos);
-        return sideState.isSolidSide(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
+        return sideState.isFaceSturdy(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
     }
 
     LandslideRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)

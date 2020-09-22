@@ -12,18 +12,21 @@ import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.minecraft.world.biome.Biome.Builder;
+import net.minecraft.world.biome.Biome.Category;
+
 public class HillsBiome extends TFCBiome
 {
     private final float height;
 
     public HillsBiome(float height, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.PLAINS), temperature, rainfall);
+        super(new Builder().biomeCategory(Category.PLAINS), temperature, rainfall);
         this.height = height;
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), SurfaceBuilder.CONFIG_OCEAN_SAND);
         });
     }
 

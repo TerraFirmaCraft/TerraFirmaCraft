@@ -10,15 +10,17 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.minecraft.world.biome.Biome.Category;
+
 public class PlateauBiome extends FlatBiome
 {
     protected PlateauBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Biome.Builder().category(Category.EXTREME_HILLS), 20, 30, temperature, rainfall);
+        super(new Biome.Builder().biomeCategory(Category.EXTREME_HILLS), 20, 30, temperature, rainfall);
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(TFCSurfaceBuilders.PLATEAU.get(), SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.PLATEAU.get(), SurfaceBuilder.CONFIG_OCEAN_SAND);
         });
     }
 }

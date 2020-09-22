@@ -12,6 +12,8 @@ import net.minecraft.state.StateContainer;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
+import net.minecraft.block.Block.Properties;
+
 public class RawRockBlock extends Block
 {
     public static final BooleanProperty SUPPORTED = TFCBlockStateProperties.SUPPORTED;
@@ -20,11 +22,11 @@ public class RawRockBlock extends Block
     {
         super(properties);
 
-        setDefaultState(stateContainer.getBaseState().with(SUPPORTED, false));
+        registerDefaultState(stateDefinition.any().setValue(SUPPORTED, false));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(SUPPORTED);
     }

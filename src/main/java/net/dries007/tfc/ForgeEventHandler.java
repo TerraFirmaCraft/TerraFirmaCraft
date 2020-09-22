@@ -74,14 +74,14 @@ public final class ForgeEventHandler
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
         // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
-        if (event.getWorld() instanceof ServerWorld && ((World) event.getWorld()).getWorldType() == TFCWorldType.INSTANCE)
+        if (event.getWorld() instanceof ServerWorld && ((World) event.getWorld()).getGeneratorType() == TFCWorldType.INSTANCE)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
             event.setCanceled(true);
 
-            BiomeProvider biomeProvider = world.getChunkProvider().getChunkGenerator().getBiomeProvider();
+            BiomeProvider biomeProvider = world.getChunkSource().getGenerator().getBiomeSource();
             Random random = new Random(world.getSeed());
-            BlockPos pos = biomeProvider.func_225531_a_(0, world.getChunkProvider().getChunkGenerator().getSeaLevel(), 0, 256, biomeProvider.getBiomesToSpawnIn(), random);
+            BlockPos pos = biomeProvider.findBiomeHorizontal(0, world.getChunkSource().getGenerator().getSeaLevel(), 0, 256, biomeProvider.getPlayerSpawnBiomes(), random);
             ChunkPos chunkPos = pos == null ? new ChunkPos(0, 0) : new ChunkPos(pos);
             if (pos == null)
             {
@@ -89,16 +89,16 @@ public final class ForgeEventHandler
             }
 
             boolean flag = false;
-            for (Block block : BlockTags.VALID_SPAWN.getAllElements())
+            for (Block block : BlockTags.VALID_SPAWN.getValues())
             {
-                if (biomeProvider.getSurfaceBlocks().contains(block.getDefaultState()))
+                if (biomeProvider.getSurfaceBlocks().contains(block.defaultBlockState()))
                 {
                     flag = true;
                     break;
                 }
             }
             // Initial guess at spawn position
-            world.getWorldInfo().setSpawn(chunkPos.asBlockPos().add(8, world.getChunkProvider().getChunkGenerator().getGroundHeight(), 8));
+            world.getLevelData().setSpawn(chunkPos.getWorldPosition().offset(8, world.getChunkSource().getGenerator().getSpawnHeight(), 8));
             int x = 0;
             int z = 0;
             int xStep = 0;
@@ -108,10 +108,10 @@ public final class ForgeEventHandler
             {
                 if (x > -16 && x <= 16 && z > -16 && z <= 16)
                 {
-                    BlockPos spawnPos = world.dimension.findSpawn(new ChunkPos(chunkPos.x + x, chunkPos.z + z), flag);
+                    BlockPos spawnPos = world.dimension.getSpawnPosInChunk(new ChunkPos(chunkPos.x + x, chunkPos.z + z), flag);
                     if (spawnPos != null)
                     {
-                        world.getWorldInfo().setSpawn(spawnPos);
+                        world.getLevelData().setSpawn(spawnPos);
                         break;
                     }
                 }
@@ -136,7 +136,7 @@ public final class ForgeEventHandler
     {
         if (!event.getObject().isEmpty())
         {
-            World world = event.getObject().getWorld();
+            World world = event.getObject().getLevel();
             ChunkPos chunkPos = event.getObject().getPos();
             ChunkData data;
             if (!Helpers.isRemote(world))
@@ -221,15 +221,15 @@ public final class ForgeEventHandler
         LOGGER.debug("Before Server Start");
 
         // Initializes json data listeners
-        IReloadableResourceManager resourceManager = event.getServer().getResourceManager();
-        resourceManager.addReloadListener(RockManager.INSTANCE);
-        resourceManager.addReloadListener(MetalManager.INSTANCE);
-        resourceManager.addReloadListener(MetalItemManager.INSTANCE);
-        resourceManager.addReloadListener(VeinTypeManager.INSTANCE);
-        resourceManager.addReloadListener(SupportManager.INSTANCE);
+        IReloadableResourceManager resourceManager = event.getServer().getResources();
+        resourceManager.registerReloadListener(RockManager.INSTANCE);
+        resourceManager.registerReloadListener(MetalManager.INSTANCE);
+        resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
+        resourceManager.registerReloadListener(VeinTypeManager.INSTANCE);
+        resourceManager.registerReloadListener(SupportManager.INSTANCE);
 
         // Capability json data loader
-        resourceManager.addReloadListener(HeatCapability.HeatManager.INSTANCE);
+        resourceManager.registerReloadListener(HeatCapability.HeatManager.INSTANCE);
 
         // Server tracker
         TFCServerTracker.INSTANCE.onServerStart(event.getServer());
@@ -270,7 +270,7 @@ public final class ForgeEventHandler
         for (Direction direction : event.getNotifiedSides())
         {
             // Check each notified block for a potential gravity block
-            BlockPos pos = event.getPos().offset(direction);
+            BlockPos pos = event.getPos().relative(direction);
             BlockState state = world.getBlockState(pos);
             if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()) && world instanceof World)
             {
@@ -302,7 +302,7 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
-        if (!event.getWorld().isRemote)
+        if (!event.getWorld().isClientSide)
         {
             event.getWorld().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
         }
@@ -336,7 +336,7 @@ public final class ForgeEventHandler
             if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
             {
                 // Natural regeneration should be disabled, allows TFC to have custom regeneration
-                world.getGameRules().get(GameRules.NATURAL_REGENERATION).set(false, world.getServer());
+                world.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, world.getServer());
                 LOGGER.info("Updating gamerule naturalRegeneration to false!");
             }
         }

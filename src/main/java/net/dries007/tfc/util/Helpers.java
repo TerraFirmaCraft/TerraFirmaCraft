@@ -98,11 +98,11 @@ public final class Helpers
         if (obj.has(path))
         {
             Map<K, V> objects = new HashMap<>();
-            JsonObject objectsJson = JSONUtils.getJsonObject(obj, path);
+            JsonObject objectsJson = JSONUtils.getAsJsonObject(obj, path);
             for (K expectedKey : keyValues)
             {
                 String jsonKey = keyStringMapper.apply(expectedKey);
-                ResourceLocation id = new ResourceLocation(JSONUtils.getString(objectsJson, jsonKey));
+                ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
                 V registryObject = registry.getValue(id);
                 if (registryObject == null)
                 {
@@ -115,7 +115,7 @@ public final class Helpers
                 String jsonKey = keyStringMapper.apply(optionalKey);
                 if (objectsJson.has(jsonKey))
                 {
-                    ResourceLocation id = new ResourceLocation(JSONUtils.getString(objectsJson, jsonKey));
+                    ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
                     V registryObject = registry.getValue(id);
                     if (registryObject == null)
                     {
@@ -256,7 +256,7 @@ public final class Helpers
      */
     public static boolean isRemote(IWorldReader world)
     {
-        return world instanceof World ? !(world instanceof ServerWorld) : world.isRemote();
+        return world instanceof World ? !(world instanceof ServerWorld) : world.isClientSide();
     }
 
     /**
@@ -265,18 +265,18 @@ public final class Helpers
      */
     public static void addTemplateToWorldForTreeGen(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
     {
-        List<Template.BlockInfo> transformedBlockInfos = placementIn.func_227459_a_(template.blocks, pos); // Gets a single list of block infos
+        List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(template.palettes, pos); // Gets a single list of block infos
         MutableBoundingBox boundingBox = placementIn.getBoundingBox();
         for (Template.BlockInfo blockInfo : Template.processBlockInfos(template, worldIn, pos, placementIn, transformedBlockInfos))
         {
             BlockPos posAt = blockInfo.pos;
-            if (boundingBox == null || boundingBox.isVecInside(posAt))
+            if (boundingBox == null || boundingBox.isInside(posAt))
             {
                 BlockState stateAt = worldIn.getBlockState(posAt);
                 if (stateAt.isAir(worldIn, posAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
                 {
                     BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
-                    worldIn.setBlockState(posAt, stateReplace, 2);
+                    worldIn.setBlock(posAt, stateReplace, 2);
                 }
             }
         }

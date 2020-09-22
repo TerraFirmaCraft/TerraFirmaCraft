@@ -78,7 +78,7 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
 
-        mutablePos.setPos(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestFeatureConfig.Entry entry = getTree(data, random, config, mutablePos);

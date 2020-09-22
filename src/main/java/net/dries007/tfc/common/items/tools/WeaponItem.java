@@ -34,7 +34,7 @@ public class WeaponItem extends TieredItem
     {
         super(tier, builder);
         this.attackSpeed = attackSpeed;
-        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();
+        this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
     }
 
     public float getAttackSpeed()
@@ -48,37 +48,37 @@ public class WeaponItem extends TieredItem
     }
 
     @Override
-    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
+    public boolean canAttackBlock(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
     {
         return !player.isCreative();
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
-        stack.damageItem(1, attacker, (entity) -> entity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+        stack.hurtAndBreak(1, attacker, (entity) -> entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
         return true;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
+    public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
-        if (state.getBlockHardness(worldIn, pos) != 0.0F)
+        if (state.getDestroySpeed(worldIn, pos) != 0.0F)
         {
-            stack.damageItem(2, entityLiving, (entity) -> entity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+            stack.hurtAndBreak(2, entityLiving, (entity) -> entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
         }
         return true;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot)
+    public Multimap<String, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType equipmentSlot)
     {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
+        Multimap<String, AttributeModifier> multimap = super.getDefaultAttributeModifiers(equipmentSlot);
         if (equipmentSlot == EquipmentSlotType.MAINHAND)
         {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
         }
         return multimap;
     }

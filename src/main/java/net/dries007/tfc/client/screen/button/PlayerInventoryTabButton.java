@@ -18,6 +18,8 @@ import net.dries007.tfc.network.SwitchInventoryTabPacket;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+import net.minecraft.client.gui.widget.button.Button.IPressable;
+
 public class PlayerInventoryTabButton extends Button
 {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/icons.png");
@@ -56,12 +58,12 @@ public class PlayerInventoryTabButton extends Button
         // Because forge is ass and removed the event for "button clicked", and I don't care to deal with the shit in MinecraftForge#5548, this will do for now
         this.tickCallback = new Runnable()
         {
-            boolean recipeBookVisible = screen.getRecipeGui().isVisible();
+            boolean recipeBookVisible = screen.getRecipeBookComponent().isVisible();
 
             @Override
             public void run()
             {
-                boolean newRecipeBookVisible = screen.getRecipeGui().isVisible();
+                boolean newRecipeBookVisible = screen.getRecipeBookComponent().isVisible();
                 if (newRecipeBookVisible != recipeBookVisible)
                 {
                     recipeBookVisible = newRecipeBookVisible;
@@ -76,7 +78,7 @@ public class PlayerInventoryTabButton extends Button
     public void renderButton(int mouseX, int mouseY, float partialTicks)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindTexture(TEXTURE);
+        minecraft.getTextureManager().bind(TEXTURE);
         RenderSystem.disableDepthTest();
 
         tickCallback.run();

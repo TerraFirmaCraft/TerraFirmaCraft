@@ -17,7 +17,7 @@ public enum ElevationLayer implements IC1Transformer
     {
         if (!TFCLayerUtil.isOcean(value))
         {
-            int rand = context.random(4);
+            int rand = context.nextRandom(4);
             if (rand == 0)
             {
                 return TFCLayerUtil.PLAINS;

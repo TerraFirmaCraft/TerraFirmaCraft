@@ -29,12 +29,12 @@ public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderCon
     }
 
     @Override
-    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         float heightVariation = heightVariationNoise.noise(x, z);
         if (startHeight > heightVariation)
         {
-            TFCSurfaceBuilders.NORMAL.get().buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
+            TFCSurfaceBuilders.NORMAL.get().apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
         }
         else
         {
@@ -49,8 +49,8 @@ public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderCon
 
         // Alternating red + brown sand layers
         Random random = new Random(seed);
-        BlockState redSand = TFCBlocks.SAND.get(SandBlockType.RED).get().getDefaultState();
-        BlockState brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN).get().getDefaultState();
+        BlockState redSand = TFCBlocks.SAND.get(SandBlockType.RED).get().defaultBlockState();
+        BlockState brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN).get().defaultBlockState();
         boolean state = random.nextBoolean();
         for (int i = 0; i < sandLayers.length; i++)
         {
@@ -66,7 +66,7 @@ public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderCon
 
     private void buildSandySurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, int seaLevel, SurfaceBuilderConfig config)
     {
-        BlockState underState = config.getUnder();
+        BlockState underState = config.getUnderMaterial();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
         int maxSurfaceDepth = (int) (noise / 3.0D + random.nextDouble() * 0.25D);
@@ -79,7 +79,7 @@ public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderCon
 
         for (int y = startHeight; y >= 0; --y)
         {
-            pos.setPos(localX, y, localZ);
+            pos.set(localX, y, localZ);
             BlockState stateAt = chunkIn.getBlockState(pos);
             if (stateAt.isAir(chunkIn, pos))
             {
@@ -98,7 +98,7 @@ public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderCon
                     }
                     else
                     {
-                        underState = config.getUnderWaterMaterial();
+                        underState = config.getUnderwaterMaterial();
                     }
 
                     chunkIn.setBlockState(pos, underState, false);

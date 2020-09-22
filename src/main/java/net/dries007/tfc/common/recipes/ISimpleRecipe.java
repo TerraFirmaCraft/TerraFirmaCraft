@@ -15,13 +15,13 @@ import net.minecraft.item.crafting.IRecipe;
 public interface ISimpleRecipe<C extends IInventory> extends IRecipe<C>
 {
     @Override
-    default ItemStack getCraftingResult(C inv)
+    default ItemStack assemble(C inv)
     {
-        return getRecipeOutput().copy();
+        return getResultItem().copy();
     }
 
     @Override
-    default boolean canFit(int width, int height)
+    default boolean canCraftInDimensions(int width, int height)
     {
         return true;
     }

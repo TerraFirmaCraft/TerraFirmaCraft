@@ -46,24 +46,24 @@ public class TFCTree extends Tree
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
+    public boolean growTree(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
     {
         ConfiguredFeature<?, ?> feature = getNormalFeature();
-        worldIn.setBlockState(blockPosIn, Blocks.AIR.getDefaultState(), 4);
+        worldIn.setBlock(blockPosIn, Blocks.AIR.defaultBlockState(), 4);
         if (feature.place(worldIn, chunkGeneratorIn, randomIn, blockPosIn))
         {
             return true;
         }
         else
         {
-            worldIn.setBlockState(blockPosIn, blockStateIn, 4);
+            worldIn.setBlock(blockPosIn, blockStateIn, 4);
             return false;
         }
     }
 
     @Nullable
     @Override
-    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean flowersNearby)
+    protected ConfiguredFeature<TreeFeatureConfig, ?> getConfiguredFeature(Random randomIn, boolean flowersNearby)
     {
         return null; // Not using minecraft's tree configuration
     }

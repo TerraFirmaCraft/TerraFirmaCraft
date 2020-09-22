@@ -28,8 +28,8 @@ public class ColumnBiomeContainer extends BiomeContainer
         // This copies the initialization except it only queries the biome provider once per column, saving 98% of the biome generation calls
         super(Util.make(() -> {
             Biome[] biomes = new Biome[BIOMES_SIZE];
-            int biomeCoordX = chunkPosIn.getXStart() >> 2;
-            int biomeCoordZ = chunkPosIn.getZStart() >> 2;
+            int biomeCoordX = chunkPosIn.getMinBlockX() >> 2;
+            int biomeCoordZ = chunkPosIn.getMinBlockZ() >> 2;
 
             for (int index = 0; index < (1 << HORIZONTAL_BITS); ++index)
             {

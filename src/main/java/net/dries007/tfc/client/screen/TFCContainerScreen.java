@@ -29,11 +29,11 @@ public abstract class TFCContainerScreen<C extends Container> extends ContainerS
     {
         renderBackground();
         super.render(mouseX, mouseY, partialTicks);
-        renderHoveredToolTip(mouseX, mouseY);
+        renderTooltip(mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(float partialTicks, int mouseX, int mouseY)
     {
         drawDefaultBackground();
     }
@@ -42,7 +42,7 @@ public abstract class TFCContainerScreen<C extends Container> extends ContainerS
     protected void drawDefaultBackground()
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(texture);
-        ClientHelpers.drawTexturedRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        minecraft.getTextureManager().bind(texture);
+        ClientHelpers.drawTexturedRect(leftPos, topPos, 0, 0, imageWidth, imageHeight);
     }
 }

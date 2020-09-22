@@ -48,7 +48,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         ChunkData data = ChunkDataCache.get(world).get(pos);
         if (data == null)
         {
-            return getCapability(world.chunkExists(pos.x, pos.z) ? world.getChunk(pos.asBlockPos()) : null).orElse(ChunkData.EMPTY);
+            return getCapability(world.hasChunk(pos.x, pos.z) ? world.getChunk(pos.getWorldPosition()) : null).orElse(ChunkData.EMPTY);
         }
         return data;
     }
@@ -290,7 +290,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         private Immutable()
         {
-            super(new ChunkPos(ChunkPos.SENTINEL));
+            super(new ChunkPos(ChunkPos.INVALID_CHUNK_POS));
         }
 
         @Override

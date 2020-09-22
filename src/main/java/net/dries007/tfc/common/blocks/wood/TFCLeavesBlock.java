@@ -28,6 +28,8 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
+import net.minecraft.block.Block.Properties;
+
 public abstract class TFCLeavesBlock extends Block
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
@@ -70,7 +72,7 @@ public abstract class TFCLeavesBlock extends Block
         this.maxDecayDistance = maxDecayDistance;
 
         // Distance is dependent on tree species
-        setDefaultState(stateContainer.getBaseState().with(getDistanceProperty(), 1).with(PERSISTENT, false).with(SEASON_NO_SPRING, Season.SUMMER));
+        registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false).setValue(SEASON_NO_SPRING, Season.SUMMER));
     }
 
     /**
@@ -81,18 +83,18 @@ public abstract class TFCLeavesBlock extends Block
      */
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         int i = getDistance(facingState) + 1;
-        if (i != 1 || stateIn.get(getDistanceProperty()) != i)
+        if (i != 1 || stateIn.getValue(getDistanceProperty()) != i)
         {
-            worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
+            worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
         }
         return stateIn;
     }
 
     @Override
-    public boolean ticksRandomly(BlockState state)
+    public boolean isRandomlyTicking(BlockState state)
     {
         return true; // Not for the purposes of leaf decay, but for the purposes of seasonal updates
     }
@@ -106,7 +108,7 @@ public abstract class TFCLeavesBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos)
+    public int getLightBlock(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
         return 1;
     }
@@ -116,7 +118,7 @@ public abstract class TFCLeavesBlock extends Block
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
         // Adjust the season based on the current time
-        Season oldSeason = state.get(SEASON_NO_SPRING);
+        Season oldSeason = state.getValue(SEASON_NO_SPRING);
         Season newSeason = Calendars.SERVER.getCalendarMonthOfYear().getSeason();
         if (newSeason == Season.SPRING)
         {
@@ -124,7 +126,7 @@ public abstract class TFCLeavesBlock extends Block
         }
         if (oldSeason != newSeason)
         {
-            worldIn.setBlockState(pos, state.with(SEASON_NO_SPRING, newSeason));
+            worldIn.setBlockAndUpdate(pos, state.setValue(SEASON_NO_SPRING, newSeason));
         }
     }
 
@@ -141,12 +143,12 @@ public abstract class TFCLeavesBlock extends Block
         }
         else
         {
-            worldIn.setBlockState(pos, state.with(getDistanceProperty(), distance), 3);
+            worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
         }
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(PERSISTENT, SEASON_NO_SPRING, getDistanceProperty());
     }
@@ -162,7 +164,7 @@ public abstract class TFCLeavesBlock extends Block
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (Direction direction : Direction.values())
         {
-            mutablePos.setPos(pos).move(direction);
+            mutablePos.set(pos).move(direction);
             distance = Math.min(distance, getDistance(worldIn.getBlockState(mutablePos)) + 1);
             if (distance == 1)
             {
@@ -181,7 +183,7 @@ public abstract class TFCLeavesBlock extends Block
         else
         {
             // Check against this leaf block only, not any leaves
-            return neighbor.getBlock() == this ? neighbor.get(getDistanceProperty()) : maxDecayDistance;
+            return neighbor.getBlock() == this ? neighbor.getValue(getDistanceProperty()) : maxDecayDistance;
         }
     }
 }

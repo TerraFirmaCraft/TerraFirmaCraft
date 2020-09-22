@@ -82,7 +82,7 @@ public class SoilBlockReplacer extends SeedBlockReplacer
         if (state.getBlock() instanceof TFCGrassBlock)
         {
             // Handle grass update ticks for adjacent blocks
-            world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 0);
+            world.getBlockTicks().scheduleTick(pos, state.getBlock(), 0);
         }
     }
 
@@ -94,11 +94,11 @@ public class SoilBlockReplacer extends SeedBlockReplacer
 
     private BlockState sand(RockData rockData, int x, int z)
     {
-        return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().getDefaultState();
+        return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().defaultBlockState();
     }
 
     private BlockState soil(SoilBlockType.Variant variant)
     {
-        return TFCBlocks.SOIL.get(soil).get(variant).get().getDefaultState();
+        return TFCBlocks.SOIL.get(soil).get(variant).get().defaultBlockState();
     }
 }

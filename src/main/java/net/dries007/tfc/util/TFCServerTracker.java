@@ -27,6 +27,8 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
+import net.minecraft.resources.IFutureReloadListener.IStage;
+
 /**
  * This is a simple reload listener that just notifies anything in need of being notified when resources reload (cache invalidations, etc.)
  */
@@ -41,7 +43,7 @@ public enum TFCServerTracker implements IFutureReloadListener
     public void onServerStart(MinecraftServer server)
     {
         this.server = server;
-        this.server.getResourceManager().addReloadListener(this);
+        this.server.getResources().registerReloadListener(this);
 
         ChunkDataCache.clearAll();
     }
@@ -63,7 +65,7 @@ public enum TFCServerTracker implements IFutureReloadListener
     public CompletableFuture<Void> reload(IStage stage, IResourceManager resourceManager, IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
     {
         return CompletableFuture.runAsync(() -> {
-        }, backgroundExecutor).thenCompose(stage::markCompleteAwaitingOthers).thenRunAsync(() -> {
+        }, backgroundExecutor).thenCompose(stage::wait).thenRunAsync(() -> {
             LOGGER.debug("TFC Server Tracker Reloading");
 
             // Reload all recipe cache / ingredient maps.
@@ -77,6 +79,6 @@ public enum TFCServerTracker implements IFutureReloadListener
     @SuppressWarnings("unchecked")
     private <C extends IInventory, R extends IRecipe<C>> Collection<R> getRecipes(IRecipeType<R> recipeType)
     {
-        return (Collection<R>) server.getRecipeManager().getRecipes(recipeType).values();
+        return (Collection<R>) server.getRecipeManager().byType(recipeType).values();
     }
 }

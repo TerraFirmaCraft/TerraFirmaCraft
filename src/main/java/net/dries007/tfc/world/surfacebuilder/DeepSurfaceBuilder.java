@@ -22,8 +22,8 @@ import net.minecraftforge.common.util.Lazy;
  */
 public class DeepSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 {
-    private static final BlockState AIR = Blocks.AIR.getDefaultState();
-    private static final BlockState GRAVEL = Blocks.GRAVEL.getDefaultState();
+    private static final BlockState AIR = Blocks.AIR.defaultBlockState();
+    private static final BlockState GRAVEL = Blocks.GRAVEL.defaultBlockState();
 
     public DeepSurfaceBuilder()
     {
@@ -31,13 +31,13 @@ public class DeepSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     }
 
     @Override
-    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         // Lazy because this queries a noise layer
         Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
 
         BlockState topState;
-        BlockState underState = config.getUnder();
+        BlockState underState = config.getUnderMaterial();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
         int maxSurfaceDepth = (int) (noise / 3.0D + 5.0D + random.nextDouble() * 0.25D);
@@ -47,7 +47,7 @@ public class DeepSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 
         for (int y = startHeight; y >= 0; --y)
         {
-            pos.setPos(localX, y, localZ);
+            pos.set(localX, y, localZ);
             BlockState stateAt = chunkIn.getBlockState(pos);
             if (stateAt.isAir(chunkIn, pos))
             {
@@ -69,12 +69,12 @@ public class DeepSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
                     }
                     else if (y >= seaLevel)
                     {
-                        topState = config.getTop();
-                        underState = config.getUnder();
+                        topState = config.getTopMaterial();
+                        underState = config.getUnderMaterial();
                     }
                     else
                     {
-                        topState = underState = underWaterConfig.get().getUnderWaterMaterial();
+                        topState = underState = underWaterConfig.get().getUnderwaterMaterial();
                     }
 
                     chunkIn.setBlockState(pos, topState, false);

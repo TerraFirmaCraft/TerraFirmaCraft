@@ -110,11 +110,11 @@ public interface IBlockIngredient extends Predicate<BlockState>
                 }
                 else if (obj.has("block"))
                 {
-                    return createSingle(JSONUtils.getString(obj, "block"));
+                    return createSingle(JSONUtils.getAsString(obj, "block"));
                 }
                 else if (obj.has("tag"))
                 {
-                    return createTag(JSONUtils.getString(obj, "tag"));
+                    return createTag(JSONUtils.getAsString(obj, "tag"));
                 }
                 else
                 {
@@ -203,7 +203,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
                         {
                             for (Map.Entry<IProperty<?>, Comparable<?>> entry : parser.getProperties().entrySet())
                             {
-                                if (!stateIn.get(entry.getKey()).equals(entry.getValue()))
+                                if (!stateIn.getValue(entry.getKey()).equals(entry.getValue()))
                                 {
                                     return false;
                                 }
@@ -224,7 +224,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
 
         private IBlockIngredient createTag(String tagName) throws JsonParseException
         {
-            Tag<Block> tag = BlockTags.getCollection().get(new ResourceLocation(tagName));
+            Tag<Block> tag = BlockTags.getAllTags().getTag(new ResourceLocation(tagName));
             if (tag != null)
             {
                 return new IBlockIngredient()
@@ -238,7 +238,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
                     @Override
                     public Collection<Block> getValidBlocks()
                     {
-                        return tag.getAllElements();
+                        return tag.getValues();
                     }
                 };
             }

@@ -26,16 +26,16 @@ public class UnderwaterSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderC
     }
 
     @Override
-    public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
+    public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
-        TFCSurfaceBuilders.NORMAL.get().buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, getUnderwaterConfig(x, z, seed));
+        TFCSurfaceBuilders.NORMAL.get().apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, getUnderwaterConfig(x, z, seed));
     }
 
     public SurfaceBuilderConfig getUnderwaterConfig(int x, int z, long seed)
     {
-        setSeed(seed);
+        initNoise(seed);
         float variantValue = variantNoise.noise(x, z);
-        return variantValue > 0 ? SurfaceBuilder.SAND_CONFIG : SurfaceBuilder.GRAVEL_CONFIG;
+        return variantValue > 0 ? SurfaceBuilder.CONFIG_FULL_SAND : SurfaceBuilder.CONFIG_GRAVEL;
     }
 
     @Override

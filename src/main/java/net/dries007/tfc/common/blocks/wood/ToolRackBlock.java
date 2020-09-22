@@ -23,15 +23,17 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 
+import net.minecraft.block.Block.Properties;
+
 public class ToolRackBlock extends Block implements IWaterLoggable
 {
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final VoxelShape RACK_EAST_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
-    public static final VoxelShape RACK_WEST_AABB = Block.makeCuboidShape(14.0D, 3.0D, 0.0D, 16.0D, 12.0D, 16.0D);
-    public static final VoxelShape RACK_SOUTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 2.0D);
-    public static final VoxelShape RACK_NORTH_AABB = Block.makeCuboidShape(0.0D, 3.0D, 14.0D, 16.0D, 12.0D, 16.0D);
+    public static final VoxelShape RACK_EAST_AABB = Block.box(0.0D, 3.0D, 0.0D, 2.0D, 12.0D, 16.0D);
+    public static final VoxelShape RACK_WEST_AABB = Block.box(14.0D, 3.0D, 0.0D, 16.0D, 12.0D, 16.0D);
+    public static final VoxelShape RACK_SOUTH_AABB = Block.box(0.0D, 3.0D, 0.0D, 16.0D, 12.0D, 2.0D);
+    public static final VoxelShape RACK_NORTH_AABB = Block.box(0.0D, 3.0D, 14.0D, 16.0D, 12.0D, 16.0D);
 
     public ToolRackBlock(Properties properties)
     {
@@ -40,24 +42,24 @@ public class ToolRackBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.get(FACING) && !stateIn.isValidPosition(worldIn, currentPos))
+        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(worldIn, currentPos))
         {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
-        else if (stateIn.get(WATERLOGGED))
+        else if (stateIn.getValue(WATERLOGGED))
         {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.get(FACING))
+        switch (state.getValue(FACING))
         {
             case NORTH:
                 return RACK_NORTH_AABB;
@@ -73,10 +75,10 @@ public class ToolRackBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        Direction direction = state.get(FACING);
-        return canAttachTo(worldIn, pos.offset(direction.getOpposite()), direction);
+        Direction direction = state.getValue(FACING);
+        return canAttachTo(worldIn, pos.relative(direction.getOpposite()), direction);
     }
 
     @Nullable
@@ -85,27 +87,27 @@ public class ToolRackBlock extends Block implements IWaterLoggable
         BlockState contextualState;
         if (!context.replacingClickedOnBlock())
         {
-            contextualState = context.getWorld().getBlockState(context.getPos().offset(context.getFace().getOpposite()));
-            if (contextualState.getBlock() == this && contextualState.get(FACING) == context.getFace())
+            contextualState = context.getLevel().getBlockState(context.getClickedPos().relative(context.getClickedFace().getOpposite()));
+            if (contextualState.getBlock() == this && contextualState.getValue(FACING) == context.getClickedFace())
             {
                 return null;
             }
         }
 
-        contextualState = getDefaultState();
-        IWorldReader world = context.getWorld();
-        BlockPos pos = context.getPos();
-        IFluidState fluidState = world.getFluidState(context.getPos());
+        contextualState = defaultBlockState();
+        IWorldReader world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        IFluidState fluidState = world.getFluidState(context.getClickedPos());
         Direction[] directionList = context.getNearestLookingDirections();
 
         for (Direction direction : directionList)
         {
             if (direction.getAxis().isHorizontal())
             {
-                contextualState = contextualState.with(FACING, direction.getOpposite());
-                if (contextualState.isValidPosition(world, pos))
+                contextualState = contextualState.setValue(FACING, direction.getOpposite());
+                if (contextualState.canSurvive(world, pos))
                 {
-                    return contextualState.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+                    return contextualState.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
                 }
             }
         }
@@ -117,11 +119,11 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     @SuppressWarnings("deprecation")
     public IFluidState getFluidState(BlockState state)
     {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(FACING, WATERLOGGED);
     }
@@ -129,6 +131,6 @@ public class ToolRackBlock extends Block implements IWaterLoggable
     private boolean canAttachTo(IBlockReader blockReader, BlockPos pos, Direction directionIn)
     {
         BlockState blockstate = blockReader.getBlockState(pos);
-        return !blockstate.canProvidePower() && blockstate.isSolidSide(blockReader, pos, directionIn);
+        return !blockstate.isSignalSource() && blockstate.isFaceSturdy(blockReader, pos, directionIn);
     }
 }

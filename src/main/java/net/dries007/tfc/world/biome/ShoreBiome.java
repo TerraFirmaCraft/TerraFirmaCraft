@@ -13,16 +13,19 @@ import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.dries007.tfc.world.biome.ITFCBiome.LargeGroup;
+import net.minecraft.world.biome.Biome.Category;
+
 public class ShoreBiome extends TFCBiome
 {
     public ShoreBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Biome.Builder().category(Category.BEACH), temperature, rainfall);
+        super(new Biome.Builder().biomeCategory(Category.BEACH), temperature, rainfall);
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
 
-            setSurfaceBuilder(TFCSurfaceBuilders.SHORE.get(), SurfaceBuilder.AIR_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.SHORE.get(), SurfaceBuilder.CONFIG_EMPTY);
         });
     }
 

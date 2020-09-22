@@ -9,6 +9,8 @@ import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 
+import net.minecraft.block.Block.Properties;
+
 public class TFCDirtBlock extends Block
 {
     private final Supplier<Block> grass;

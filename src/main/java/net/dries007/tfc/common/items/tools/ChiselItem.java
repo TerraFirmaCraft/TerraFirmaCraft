@@ -7,6 +7,8 @@ package net.dries007.tfc.common.items.tools;
 
 import net.minecraft.item.IItemTier;
 
+import net.minecraft.item.Item.Properties;
+
 public class ChiselItem extends TFCToolItem
 {
     public ChiselItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)

@@ -35,12 +35,12 @@ public class Rock
     public Rock(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        String rockCategoryName = JSONUtils.getString(json, "category");
+        String rockCategoryName = JSONUtils.getAsString(json, "category");
         this.category = Helpers.mapSafeOptional(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
-        String desertSandColorName = JSONUtils.getString(json, "desert_sand_color");
+        String desertSandColorName = JSONUtils.getAsString(json, "desert_sand_color");
         this.desertSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(desertSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + desertSandColorName));
 
-        String beachSandColorName = JSONUtils.getString(json, "beach_sand_color");
+        String beachSandColorName = JSONUtils.getAsString(json, "beach_sand_color");
         this.beachSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(beachSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown beach sand color for rock: " + beachSandColorName));
 
         this.blockVariants = Helpers.findRegistryObjects(json, "blocks", ForgeRegistries.BLOCKS, Arrays.asList(Rock.BlockType.values()), type -> type.name().toLowerCase());
@@ -103,16 +103,16 @@ public class Rock
 
     public enum BlockType
     {
-        RAW(rock -> new RawRockBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-        SMOOTH(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-        COBBLE(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-        BRICKS(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-        GRAVEL(rock -> new Block(Block.Properties.create(Material.SAND, MaterialColor.STONE).sound(SoundType.STONE).hardnessAndResistance(0.8f).harvestLevel(0).harvestTool(ToolType.SHOVEL)), false),
+        RAW(rock -> new RawRockBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        SMOOTH(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        COBBLE(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        BRICKS(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.0f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        GRAVEL(rock -> new Block(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.STONE).strength(0.8f).harvestLevel(0).harvestTool(ToolType.SHOVEL)), false),
         SPIKE(rock -> new RockSpikeBlock(), false),
-        CRACKED_BRICKS(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-        MOSSY_BRICKS(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-        MOSSY_COBBLE(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
-        CHISELED(rock -> new Block(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false);
+        CRACKED_BRICKS(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        MOSSY_BRICKS(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        MOSSY_COBBLE(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
+        CHISELED(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false);
 
         public static final BlockType[] VALUES = values();
 

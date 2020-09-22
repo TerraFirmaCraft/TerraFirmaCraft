@@ -47,6 +47,6 @@ public class ClientHelpers
     @Nullable
     public static World getWorld()
     {
-        return Minecraft.getInstance().world;
+        return Minecraft.getInstance().level;
     }
 }

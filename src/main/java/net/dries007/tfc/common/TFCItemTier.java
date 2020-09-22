@@ -48,37 +48,37 @@ public final class TFCItemTier implements IItemTier
     }
 
     @Override
-    public int getMaxUses()
+    public int getUses()
     {
         return durability;
     }
 
     @Override
-    public float getEfficiency()
+    public float getSpeed()
     {
         return efficiency;
     }
 
     @Override
-    public float getAttackDamage()
+    public float getAttackDamageBonus()
     {
         return damage;
     }
 
     @Override
-    public int getHarvestLevel()
+    public int getLevel()
     {
         return harvestLevel;
     }
 
     @Override
-    public int getEnchantability()
+    public int getEnchantmentValue()
     {
         return enchantability;
     }
 
     @Override
-    public Ingredient getRepairMaterial()
+    public Ingredient getRepairIngredient()
     {
         // TFC items can't be repaired
         return Ingredient.EMPTY;

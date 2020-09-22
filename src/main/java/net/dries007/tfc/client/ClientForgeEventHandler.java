@@ -54,11 +54,11 @@ public class ClientForgeEventHandler
         {
             // Only change if default is selected, because coming back from customisation, this will be set already.
             CreateWorldScreen gui = ((CreateWorldScreen) event.getGui());
-            Integer selectedIndex = ObfuscationReflectionHelper.getPrivateValue(CreateWorldScreen.class, gui, "field_146331_K");
-            if (selectedIndex != null && selectedIndex == WorldType.DEFAULT.getId())
+            Integer selectedIndex = ObfuscationReflectionHelper.getPrivateValue(CreateWorldScreen.class, gui, "levelTypeIndex");
+            if (selectedIndex != null && selectedIndex == WorldType.NORMAL.getId())
             {
                 LOGGER.debug("Setting Selected World Type to TFC Default");
-                ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TFCWorldType.INSTANCE.getId(), "field_146331_K");
+                ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TFCWorldType.INSTANCE.getId(), "levelTypeIndex");
             }
         }
     }
@@ -68,32 +68,32 @@ public class ClientForgeEventHandler
     {
         Minecraft mc = Minecraft.getInstance();
         List<String> list = event.getRight();
-        if (mc.world != null && mc.gameSettings.showDebugInfo) // todo: config
+        if (mc.level != null && mc.options.renderDebug) // todo: config
         {
             //noinspection ConstantConditions
-            BlockPos pos = new BlockPos(mc.getRenderViewEntity().getPosX(), mc.getRenderViewEntity().getBoundingBox().minY, mc.getRenderViewEntity().getPosZ());
-            if (mc.world.chunkExists(pos.getX() >> 4, pos.getZ() >> 4))
+            BlockPos pos = new BlockPos(mc.getCameraEntity().getX(), mc.getCameraEntity().getBoundingBox().minY, mc.getCameraEntity().getZ());
+            if (mc.level.hasChunk(pos.getX() >> 4, pos.getZ() >> 4))
             {
                 list.add("");
                 list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
                 // Always add calendar info
-                list.add(I18n.format("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getFormattedText());
-                list.add(I18n.format("tfc.tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getRenderViewEntity().world.getDayTime() % ICalendar.TICKS_IN_DAY));
+                list.add(I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getColoredString());
+                list.add(I18n.get("tfc.tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
 
-                ChunkData data = ChunkData.get(mc.world, pos);
+                ChunkData data = ChunkData.get(mc.level, pos);
                 if (data.getStatus().isAtLeast(ChunkData.Status.CLIENT))
                 {
-                    list.add(GRAY + I18n.format("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
-                    list.add(GRAY + I18n.format("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", data.getRainfall(pos))));
-                    list.add(GRAY + I18n.format("tfc.tooltip.f3_forest_type") + WHITE + I18n.format(Helpers.getEnumTranslationKey(data.getForestType())));
-                    list.add(GRAY + I18n.format("tfc.tooltip.f3_forest_properties",
+                    list.add(GRAY + I18n.get("tfc.tooltip.f3_average_temperature", WHITE + String.format("%.1f", data.getAverageTemp(pos))));
+                    list.add(GRAY + I18n.get("tfc.tooltip.f3_rainfall", WHITE + String.format("%.1f", data.getRainfall(pos))));
+                    list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_type") + WHITE + I18n.get(Helpers.getEnumTranslationKey(data.getForestType())));
+                    list.add(GRAY + I18n.get("tfc.tooltip.f3_forest_properties",
                         WHITE + String.format("%.1f%%", 100 * data.getForestDensity()) + GRAY,
                         WHITE + String.format("%.1f%%", 100 * data.getForestWeirdness()) + GRAY));
                 }
                 else
                 {
-                    list.add(GRAY + I18n.format("tfc.tooltip.f3_invalid_chunk_data"));
+                    list.add(GRAY + I18n.get("tfc.tooltip.f3_invalid_chunk_data"));
                 }
             }
         }

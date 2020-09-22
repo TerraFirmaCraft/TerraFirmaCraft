@@ -39,11 +39,11 @@ public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
         final TemplateManager manager = getTemplateManager(worldIn);
         final List<ResourceLocation> structureIds = config.structureNames;
         final ResourceLocation structureId = structureIds.get(rand.nextInt(structureIds.size()));
-        final Template structure = manager.getTemplateDefaulted(structureId);
+        final Template structure = manager.getOrCreate(structureId);
 
         final BlockPos size = structure.getSize();
         final BlockPos offset = new BlockPos(-size.getX() / 2, 0, -size.getZ() / 2);
-        final BlockPos structurePos = pos.add(offset);
+        final BlockPos structurePos = pos.offset(offset);
 
         final PlacementSettings settings = getRandomPlacementSettings(chunkPos, size, rand);
         Helpers.addTemplateToWorldForTreeGen(structure, settings, worldIn, structurePos);
