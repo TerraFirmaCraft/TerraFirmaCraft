@@ -31,16 +31,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.collections.DelayedRunnable;
 import net.dries007.tfc.world.feature.BoulderConfig;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.feature.trees.ForestFeatureConfig;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.placement.TFCPlacements;
-
-import net.minecraft.world.biome.Biome.Builder;
-import net.minecraft.world.biome.Biome.RainType;
 
 public abstract class TFCBiome extends Biome implements ITFCBiome
 {

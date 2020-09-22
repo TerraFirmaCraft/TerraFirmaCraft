@@ -13,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -23,9 +24,9 @@ public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderCon
     private BlockState[] sandLayers;
     private INoise2D heightVariationNoise;
 
-    public BadlandsSurfaceBuilder()
+    public BadlandsSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {
-        super(SurfaceBuilderConfig::deserialize);
+        super(codec);
     }
 
     @Override

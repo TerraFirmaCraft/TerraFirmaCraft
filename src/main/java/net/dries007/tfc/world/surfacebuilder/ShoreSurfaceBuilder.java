@@ -12,6 +12,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -19,9 +20,9 @@ public class ShoreSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderConfig
 {
     private INoise2D variantNoise;
 
-    public ShoreSurfaceBuilder()
+    public ShoreSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {
-        super(SurfaceBuilderConfig::deserialize);
+        super(codec);
     }
 
     @Override
