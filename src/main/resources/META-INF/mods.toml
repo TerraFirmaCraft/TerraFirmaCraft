@@ -1,6 +1,6 @@
 # Loader metadata
 modLoader="javafml" # mandatory
-loaderVersion="[31.2.0,)" # mandatory
+loaderVersion="[34.0.9,)" # mandatory
 #issueTrackerURL="http://my.issue.tracker/"
 
 # TFC
@@ -15,16 +15,23 @@ loaderVersion="[31.2.0,)" # mandatory
     # A file name (in the root of the mod JAR) containing a logo for display
     #logoFile="examplemod.png" #optional
     # A text field displayed in the mod UI
-    credits="Made by AlcatrazEscapee" #optional
+    credits="By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianGuy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty." #optional
     # A text field displayed in the mod UI
-    #authors="Love, Cheese and small house plants" #optional
+    authors="AlcatrazEscapee" #optional
     # The description text for the mod (multi line!) (#mandatory)
     description='''TerraFirmaCraft - The Next Generation'''
 
-# Dependencies
-[[dependencies.tfc]] #optional
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="[31.2.0,)" #mandatory
+# dependencies
+[[dependencies.primalwinter]]
+    modId="forge"
+    mandatory=true
+    versionRange="[34.0.9,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.primalwinter]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.3,)"
     ordering="NONE"
     side="BOTH"
