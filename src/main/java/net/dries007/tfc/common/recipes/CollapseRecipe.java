@@ -53,7 +53,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean tryTriggerCollapse(World world, BlockPos pos)
     {
-        if (!world.isRemote() && world.isAreaLoaded(pos, 32))
+        if (!world.isClientSide() && world.isAreaLoaded(pos, 32))
         {
             if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
             {
@@ -61,7 +61,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
                 int radX = (RANDOM.nextInt(5) + 4) / 2;
                 int radY = (RANDOM.nextInt(3) + 2) / 2;
                 int radZ = (RANDOM.nextInt(5) + 4) / 2;
-                for (BlockPos checking : SupportManager.findUnsupportedPositions(world, pos.add(-radX, -radY, -radZ), pos.add(radX, radY, radZ))) // 9x5x9 max
+                for (BlockPos checking : SupportManager.findUnsupportedPositions(world, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
                 {
                     if (canStartCollapse(world, checking))
                     {
@@ -80,7 +80,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean canStartCollapse(IWorld world, BlockPos pos)
     {
-        return TFCTags.Blocks.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.down());
+        return TFCTags.Blocks.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.below());
     }
 
     /**
@@ -96,22 +96,22 @@ public class CollapseRecipe extends SimpleBlockRecipe
         List<BlockPos> secondaryPositions = new ArrayList<>();
 
         // Initially only scan on the bottom layer, and advance upwards
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(centerPos.add(-radius, -4, -radius), centerPos.add(radius, -4, radius)))
+        for (BlockPos pos : BlockPos.betweenClosed(centerPos.offset(-radius, -4, -radius), centerPos.offset(radius, -4, radius)))
         {
             boolean foundEmpty = false; // If we've found a space to collapse into
             for (int y = 0; y <= 8; y++)
             {
-                BlockPos posAt = pos.up(y);
+                BlockPos posAt = pos.above(y);
                 BlockState stateAt = world.getBlockState(posAt);
                 if (foundEmpty && TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()))
                 {
                     // Check for a possible collapse
-                    if (posAt.distanceSq(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                    if (posAt.distSqr(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                     {
                         if (collapseBlock(world, posAt, stateAt))
                         {
                             // This column has started to collapse. Mark the next block above as unstable for the "follow up"
-                            secondaryPositions.add(posAt.up());
+                            secondaryPositions.add(posAt.above());
                             break;
                         }
                     }
@@ -139,8 +139,8 @@ public class CollapseRecipe extends SimpleBlockRecipe
         BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
         return getRecipe(world, wrapper).map(recipe -> {
             BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
-            world.setBlockState(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
-            world.addEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, collapseState));
+            world.setBlockAndUpdate(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
+            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, collapseState));
             return true;
         }).orElse(false);
     }

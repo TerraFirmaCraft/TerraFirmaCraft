@@ -26,8 +26,8 @@ public final class ClientCalendarEventHandler
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event)
     {
-        World world = Minecraft.getInstance().world;
-        if (event.phase == TickEvent.Phase.END && world != null && !Minecraft.getInstance().isGamePaused())
+        World world = Minecraft.getInstance().level;
+        if (event.phase == TickEvent.Phase.END && world != null && !Minecraft.getInstance().isPaused())
         {
             Calendars.CLIENT.onClientTick();
         }

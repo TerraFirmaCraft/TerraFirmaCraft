@@ -13,6 +13,9 @@ import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.minecraft.world.biome.Biome.Builder;
+import net.minecraft.world.biome.Biome.Category;
+
 public class MountainsBiome extends TFCBiome
 {
     private final float baseHeight;
@@ -21,7 +24,7 @@ public class MountainsBiome extends TFCBiome
 
     public MountainsBiome(float baseHeight, float scaleHeight, boolean isOceanMountains, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.EXTREME_HILLS), temperature, rainfall);
+        super(new Builder().biomeCategory(Category.EXTREME_HILLS), temperature, rainfall);
 
         this.baseHeight = baseHeight;
         this.scaleHeight = scaleHeight;
@@ -37,7 +40,7 @@ public class MountainsBiome extends TFCBiome
                 TFCDefaultBiomeFeatures.addCarvers(this);
             }
 
-            setSurfaceBuilder(TFCSurfaceBuilders.MOUNTAINS.get(), SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.MOUNTAINS.get(), SurfaceBuilder.CONFIG_OCEAN_SAND);
         });
     }
 

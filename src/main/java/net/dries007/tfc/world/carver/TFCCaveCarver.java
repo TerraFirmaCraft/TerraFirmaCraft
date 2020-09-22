@@ -29,15 +29,15 @@ public class TFCCaveCarver extends CaveWorldCarver
     public TFCCaveCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic, int maxHeight)
     {
         super(dynamic, maxHeight);
-        originalCarvableBlocks = carvableBlocks;
+        originalCarvableBlocks = replaceableBlocks;
         blockCarver = new CaveBlockReplacer();
 
         // Need to run this every time the rock registry is reloaded
-        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
+        RockManager.INSTANCE.addCallback(() -> replaceableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
     }
 
     @Override
-    protected int generateCaveStartY(Random random)
+    protected int getCaveY(Random random)
     {
         // Lower level caves are composed mostly of worley caves, higher level caves are vanilla.
         return 32 + random.nextInt(120);
@@ -49,7 +49,7 @@ public class TFCCaveCarver extends CaveWorldCarver
     @Override
     protected boolean carveBlock(IChunk chunkIn, Function<BlockPos, Biome> lazyBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutablePos1, BlockPos.Mutable mutablePos2, BlockPos.Mutable mutablePos3, int p_225556_8_, int p_225556_9_, int p_225556_10_, int actualX, int actualZ, int localX, int y, int localZ, AtomicBoolean reachedSurface)
     {
-        mutablePos1.setPos(actualX, y, actualZ);
+        mutablePos1.set(actualX, y, actualZ);
         return blockCarver.carveBlock(chunkIn, mutablePos1, carvingMask);
     }
 }

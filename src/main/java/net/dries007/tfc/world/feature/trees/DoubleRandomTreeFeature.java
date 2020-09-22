@@ -17,7 +17,7 @@ public class DoubleRandomTreeFeature extends RandomTreeFeature
     @Override
     protected boolean isValidLocation(IWorld worldIn, BlockPos pos)
     {
-        return super.isValidLocation(worldIn, pos) && super.isValidLocation(worldIn, pos.add(1, 0, 0)) && super.isValidLocation(worldIn, pos.add(0, 0, 1)) && super.isValidLocation(worldIn, pos.add(1, 0, 1));
+        return super.isValidLocation(worldIn, pos) && super.isValidLocation(worldIn, pos.offset(1, 0, 0)) && super.isValidLocation(worldIn, pos.offset(0, 0, 1)) && super.isValidLocation(worldIn, pos.offset(1, 0, 1));
     }
 
     /**
@@ -33,7 +33,7 @@ public class DoubleRandomTreeFeature extends RandomTreeFeature
             {
                 for (int z = -radius; z <= radius + 1; z++)
                 {
-                    mutablePos.setPos(pos);
+                    mutablePos.set(pos);
                     mutablePos.move(x, y, z);
                     BlockState stateAt = world.getBlockState(mutablePos);
                     if (!stateAt.isAir(world, mutablePos))

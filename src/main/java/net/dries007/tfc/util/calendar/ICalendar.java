@@ -91,9 +91,9 @@ public interface ICalendar
     static ITextComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
         return new StringTextComponent(String.format("%d:%02d ", hour, minute))
-            .appendSibling(new TranslationTextComponent(Helpers.getEnumTranslationKey(month)))
-            .appendText(" ")
-            .appendSibling(new TranslationTextComponent("tfc.tooltip.calendar_days_years", day, years));
+            .append(new TranslationTextComponent(Helpers.getEnumTranslationKey(month)))
+            .append(" ")
+            .append(new TranslationTextComponent("tfc.tooltip.calendar_days_years", day, years));
     }
 
     /**

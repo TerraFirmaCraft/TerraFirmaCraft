@@ -16,10 +16,10 @@ public enum MixRiverLayer implements IAreaTransformer2, IDimOffset0Transformer
 {
     INSTANCE;
 
-    public int apply(INoiseRandom context, IArea mainArea, IArea riverArea, int x, int z)
+    public int applyPixel(INoiseRandom context, IArea mainArea, IArea riverArea, int x, int z)
     {
-        int mainValue = mainArea.getValue(getOffsetX(x), getOffsetZ(z));
-        int riverValue = riverArea.getValue(getOffsetX(x), getOffsetZ(z));
+        int mainValue = mainArea.get(getParentX(x), getParentY(z));
+        int riverValue = riverArea.get(getParentX(x), getParentY(z));
         if (TFCLayerUtil.isOcean(mainValue) || mainValue == TFCLayerUtil.FLOODED_MOUNTAINS || mainValue == TFCLayerUtil.LAKE)
         {
             return mainValue;

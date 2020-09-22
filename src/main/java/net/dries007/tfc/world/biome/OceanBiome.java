@@ -24,13 +24,17 @@ import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.dries007.tfc.world.biome.ITFCBiome.LargeGroup;
+import net.minecraft.world.biome.Biome.Builder;
+import net.minecraft.world.biome.Biome.Category;
+
 public class OceanBiome extends TFCBiome
 {
     private final float depthMin, depthMax;
 
     public OceanBiome(boolean isDeep, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.OCEAN), temperature, rainfall);
+        super(new Builder().biomeCategory(Category.OCEAN), temperature, rainfall);
 
         if (isDeep)
         {
@@ -45,9 +49,9 @@ public class OceanBiome extends TFCBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addOceanCarvers(this);
-            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.AIR_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.CONFIG_EMPTY);
 
-            DefaultBiomeFeatures.addSeagrass(this);
+            DefaultBiomeFeatures.addDefaultSeagrass(this);
             if (temperature == BiomeTemperature.FROZEN)
             {
                 DefaultBiomeFeatures.addIcebergs(this);
@@ -55,18 +59,18 @@ public class OceanBiome extends TFCBiome
             }
             else if (temperature == BiomeTemperature.COLD || temperature == BiomeTemperature.NORMAL)
             {
-                DefaultBiomeFeatures.addExtraKelp(this);
+                DefaultBiomeFeatures.addColdOceanExtraVegetation(this);
             }
             else if (temperature == BiomeTemperature.LUKEWARM)
             {
-                DefaultBiomeFeatures.addTallSeagrassLush(this);
-                DefaultBiomeFeatures.addKelp(this);
+                DefaultBiomeFeatures.addDeepWarmSeagrass(this);
+                DefaultBiomeFeatures.addLukeWarmKelp(this);
             }
             else if (temperature == BiomeTemperature.WARM)
             {
-                DefaultBiomeFeatures.addTallSeagrassLush(this);
-                addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SIMPLE_RANDOM_SELECTOR.withConfiguration(new SingleRandomFeature(ImmutableList.of(Feature.CORAL_TREE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), Feature.CORAL_CLAW.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), Feature.CORAL_MUSHROOM.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)))).withPlacement(Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED.configure(new TopSolidWithNoiseConfig(20, 400.0D, 0.0D, Heightmap.Type.OCEAN_FLOOR_WG))));
-                addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SEA_PICKLE.withConfiguration(new CountConfig(20)).withPlacement(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configure(new ChanceConfig(16))));
+                DefaultBiomeFeatures.addDeepWarmSeagrass(this);
+                addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SIMPLE_RANDOM_SELECTOR.configured(new SingleRandomFeature(ImmutableList.of(Feature.CORAL_TREE.configured(IFeatureConfig.NONE), Feature.CORAL_CLAW.configured(IFeatureConfig.NONE), Feature.CORAL_MUSHROOM.configured(IFeatureConfig.NONE)))).decorated(Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED.configured(new TopSolidWithNoiseConfig(20, 400.0D, 0.0D, Heightmap.Type.OCEAN_FLOOR_WG))));
+                addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SEA_PICKLE.configured(new CountConfig(20)).decorated(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configured(new ChanceConfig(16))));
             }
         });
     }

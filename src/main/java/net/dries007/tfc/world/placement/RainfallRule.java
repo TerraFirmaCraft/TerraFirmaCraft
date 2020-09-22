@@ -20,8 +20,8 @@ public class RainfallRule implements IPlacementRule
 
     public RainfallRule(JsonObject json)
     {
-        minimum = JSONUtils.getFloat(json, "minimum", 0);
-        maximum = JSONUtils.getFloat(json, "maximum", 500);
+        minimum = JSONUtils.getAsFloat(json, "minimum", 0);
+        maximum = JSONUtils.getAsFloat(json, "maximum", 500);
     }
 
     @Override

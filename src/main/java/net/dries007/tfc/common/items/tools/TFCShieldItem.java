@@ -9,13 +9,15 @@ import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 
+import net.minecraft.item.Item.Properties;
+
 public class TFCShieldItem extends ShieldItem
 {
     private final IItemTier tier;
 
     public TFCShieldItem(IItemTier tier, Properties builder)
     {
-        super(builder.defaultMaxDamage(tier.getMaxUses()));
+        super(builder.defaultDurability(tier.getUses()));
         this.tier = tier;
     }
 
@@ -25,13 +27,13 @@ public class TFCShieldItem extends ShieldItem
     }
 
     @Override
-    public int getItemEnchantability()
+    public int getEnchantmentValue()
     {
-        return this.tier.getEnchantability();
+        return this.tier.getEnchantmentValue();
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
     {
         return false;
     }

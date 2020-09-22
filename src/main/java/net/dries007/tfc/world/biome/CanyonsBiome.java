@@ -12,6 +12,9 @@ import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.minecraft.world.biome.Biome.Builder;
+import net.minecraft.world.biome.Biome.Category;
+
 public class CanyonsBiome extends TFCBiome
 {
     private final float minHeight;
@@ -19,14 +22,14 @@ public class CanyonsBiome extends TFCBiome
 
     public CanyonsBiome(float minHeight, float maxHeight, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.EXTREME_HILLS), temperature, rainfall);
+        super(new Builder().biomeCategory(Category.EXTREME_HILLS), temperature, rainfall);
 
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(TFCSurfaceBuilders.THIN.get(), SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.THIN.get(), SurfaceBuilder.CONFIG_OCEAN_SAND);
         });
     }
 

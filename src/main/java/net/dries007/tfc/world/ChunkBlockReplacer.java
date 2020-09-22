@@ -46,11 +46,11 @@ public class ChunkBlockReplacer
         Function<Rock.BlockType, IBlockReplacer> factory = rockType -> (rockData, x, y, z, rainfall, temperature) -> {
             if (y < rockData.getRockHeight(x, z))
             {
-                return rockData.getBottomRock(x, z).getBlock(rockType).getDefaultState();
+                return rockData.getBottomRock(x, z).getBlock(rockType).defaultBlockState();
             }
             else
             {
-                return rockData.getTopRock(x, z).getBlock(rockType).getDefaultState();
+                return rockData.getTopRock(x, z).getBlock(rockType).defaultBlockState();
             }
         };
         register(Blocks.STONE, factory.apply(Rock.BlockType.RAW));
@@ -62,35 +62,35 @@ public class ChunkBlockReplacer
         register(Blocks.GRASS_BLOCK, new SoilBlockReplacer(SoilBlockType.GRASS));
 
         // Gravel -> surface material. Replace with rock type gravel
-        register(Blocks.GRAVEL, (rockData, x, y, z, rainfall, temperature) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
+        register(Blocks.GRAVEL, (rockData, x, y, z, rainfall, temperature) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).defaultBlockState());
 
         // Sand -> Desert sand layer. Replace with sand color from top rock layer
-        register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().getDefaultState());
+        register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().defaultBlockState());
 
         // Red Sand -> Beach sand layer. Replace with the beach sand color from top rock layer
-        register(Blocks.RED_SAND, (rockData, x, y, z, rainfall, temperature) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getBeachSandColor()).get().getDefaultState());
+        register(Blocks.RED_SAND, (rockData, x, y, z, rainfall, temperature) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getBeachSandColor()).get().defaultBlockState());
 
         // Red Sandstone -> Beach variant sand layer. If tropical, replace with pink sand.
         register(Blocks.RED_SANDSTONE, (rockData, x, y, z, rainfall, temperature) -> {
             if (rainfall > 300f && temperature > 15f)
             {
-                return TFCBlocks.SAND.get(SandBlockType.PINK).get().getDefaultState();
+                return TFCBlocks.SAND.get(SandBlockType.PINK).get().defaultBlockState();
             }
             else if (rainfall < 300f)
             {
-                return TFCBlocks.SAND.get(SandBlockType.BLACK).get().getDefaultState();
+                return TFCBlocks.SAND.get(SandBlockType.BLACK).get().defaultBlockState();
             }
             else
             {
-                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getBeachSandColor()).get().getDefaultState();
+                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getBeachSandColor()).get().defaultBlockState();
             }
         });
     }
 
     public void replace(IWorld worldGenRegion, IChunk chunk, ChunkData data)
     {
-        final int xStart = chunk.getPos().getXStart();
-        final int zStart = chunk.getPos().getZStart();
+        final int xStart = chunk.getPos().getMinBlockX();
+        final int zStart = chunk.getPos().getMinBlockZ();
         final RockData rockData = data.getRockData();
 
         for (int x = 0; x < 16; x++)
@@ -100,9 +100,9 @@ public class ChunkBlockReplacer
                 float temperature = data.getAverageTemp(x, z);
                 float rainfall = data.getRainfall(x, z);
 
-                for (int y = 0; y <= chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z); y++)
+                for (int y = 0; y <= chunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z); y++)
                 {
-                    mutablePos.setPos(xStart + x, y, zStart + z);
+                    mutablePos.set(xStart + x, y, zStart + z);
 
                     // Base replacement
                     BlockState stateAt = chunk.getBlockState(mutablePos);

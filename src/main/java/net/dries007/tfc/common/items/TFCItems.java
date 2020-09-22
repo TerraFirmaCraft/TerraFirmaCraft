@@ -59,7 +59,7 @@ public final class TFCItems
 
     private static RegistryObject<Item> register(String name, ItemGroup group)
     {
-        return register(name, () -> new Item(new Item.Properties().group(group)));
+        return register(name, () -> new Item(new Item.Properties().tab(group)));
     }
 
     private static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item)

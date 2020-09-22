@@ -14,9 +14,9 @@ public enum RemoveOceanLayer implements ICastleTransformer
 
     public int apply(INoiseRandom context, int top, int right, int bottom, int left, int center)
     {
-        if (TFCLayerUtil.isOcean(top) && TFCLayerUtil.isOcean(right) && TFCLayerUtil.isOcean(bottom) && TFCLayerUtil.isOcean(left) && context.random(32) == 0)
+        if (TFCLayerUtil.isOcean(top) && TFCLayerUtil.isOcean(right) && TFCLayerUtil.isOcean(bottom) && TFCLayerUtil.isOcean(left) && context.nextRandom(32) == 0)
         {
-            if (context.random(3) == 0)
+            if (context.nextRandom(3) == 0)
             {
                 return TFCLayerUtil.HILLS;
             }
@@ -45,7 +45,7 @@ public enum RemoveOceanLayer implements ICastleTransformer
                 replacement = bottom;
                 count++;
             }
-            if (count == 4 || (count == 3 && context.random(3) == 0))
+            if (count == 4 || (count == 3 && context.nextRandom(3) == 0))
             {
                 return replacement;
             }

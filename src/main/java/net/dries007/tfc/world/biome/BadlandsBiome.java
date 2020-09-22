@@ -12,15 +12,18 @@ import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.Category;
+
 public class BadlandsBiome extends TFCBiome
 {
     public BadlandsBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new TFCBiome.Builder().category(Category.MESA), temperature, rainfall);
+        super(new Biome.Builder().biomeCategory(Category.MESA), temperature, rainfall);
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(TFCSurfaceBuilders.BADLANDS.get(), SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.BADLANDS.get(), SurfaceBuilder.CONFIG_OCEAN_SAND);
         });
     }
 

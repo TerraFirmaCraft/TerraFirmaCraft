@@ -55,7 +55,7 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
             {
                 for (int z = -radius; z <= radius; z++)
                 {
-                    mutablePos.setPos(pos).move(x, y * direction.getYOffset(), z);
+                    mutablePos.set(pos).move(x, y * direction.getStepY(), z);
                     float actualRadius = ((x * x) + (z * z)) / radiusSquared;
                     if (actualRadius < 0.7)
                     {
@@ -69,7 +69,7 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
                     else if (actualRadius < 0.85 && rand.nextBoolean())
                     {
                         // Only fill in if continuing downwards
-                        if (worldIn.getBlockState(mutablePos.add(0, -direction.getYOffset(), 0)) == raw)
+                        if (worldIn.getBlockState(mutablePos.offset(0, -direction.getStepY(), 0)) == raw)
                         {
                             replaceBlock(worldIn, mutablePos, raw);
                         }
@@ -81,7 +81,7 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
                 }
             }
         }
-        mutablePos.setPos(pos).move(direction, maxHeightReached - 1);
+        mutablePos.set(pos).move(direction, maxHeightReached - 1);
         placeSmallSpike(worldIn, mutablePos, spike, raw, direction, rand, 1.0f);
     }
 }

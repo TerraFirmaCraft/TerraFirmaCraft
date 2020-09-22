@@ -13,6 +13,8 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.SwordItem;
 
+import net.minecraft.item.Item.Properties;
+
 /**
  * This is needed so we override the damage math done by vanilla
  *
@@ -28,7 +30,7 @@ public class TFCSwordItem extends SwordItem
     public TFCSwordItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {
         super(tier, 0, attackSpeed, builder);
-        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();
+        this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
         this.attackSpeed = attackSpeed;
     }
 
@@ -38,19 +40,19 @@ public class TFCSwordItem extends SwordItem
     }
 
     @Override
-    public float getAttackDamage()
+    public float getDamage()
     {
         return attackDamage;
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot)
+    public Multimap<String, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType equipmentSlot)
     {
         Multimap<String, AttributeModifier> multimap = HashMultimap.create();
         if (equipmentSlot == EquipmentSlotType.MAINHAND)
         {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
         }
         return multimap;
     }

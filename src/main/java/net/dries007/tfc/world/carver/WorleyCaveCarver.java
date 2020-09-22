@@ -115,7 +115,7 @@ public class WorleyCaveCarver
                                 for (int z0 = z * 4; z0 < (z + 1) * 4; z0++)
                                 {
                                     // set the current position
-                                    pos.setPos(chunkX + x0, yPos, chunkZ + z0);
+                                    pos.set(chunkX + x0, yPos, chunkZ + z0);
 
                                     float finalNoise = NoiseUtil.lerp(section[x0 + 16 * z0], prevSection[x0 + 16 * z0], 0.25f * y0);
                                     finalNoise *= heightFadeValue;

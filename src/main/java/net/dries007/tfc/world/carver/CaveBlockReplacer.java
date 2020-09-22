@@ -46,7 +46,7 @@ public class CaveBlockReplacer
         int maskIndex = (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
         if (!carvingMask.get(maskIndex))
         {
-            BlockPos posUp = pos.up();
+            BlockPos posUp = pos.above();
             BlockState stateAt = chunk.getBlockState(pos);
             BlockState stateAbove = chunk.getBlockState(posUp);
 
@@ -55,26 +55,26 @@ public class CaveBlockReplacer
             {
                 if (pos.getY() < 11)
                 {
-                    chunk.setBlockState(pos, Blocks.LAVA.getDefaultState(), false);
+                    chunk.setBlockState(pos, Blocks.LAVA.defaultBlockState(), false);
                 }
                 else
                 {
-                    chunk.setBlockState(pos, Blocks.CAVE_AIR.getDefaultState(), false);
+                    chunk.setBlockState(pos, Blocks.CAVE_AIR.defaultBlockState(), false);
                 }
                 carvingMask.set(maskIndex);
 
                 // Adjust above and below blocks
-                if (stateAbove.has(SUPPORTED))
+                if (stateAbove.hasProperty(SUPPORTED))
                 {
-                    chunk.setBlockState(posUp, stateAbove.with(SUPPORTED, true), false);
+                    chunk.setBlockState(posUp, stateAbove.setValue(SUPPORTED, true), false);
                 }
 
                 // Check below state for replacements
-                BlockPos posDown = pos.down();
+                BlockPos posDown = pos.below();
                 BlockState stateBelow = chunk.getBlockState(posDown);
                 if (exposedBlockReplacements.containsKey(stateBelow.getBlock()))
                 {
-                    chunk.setBlockState(posDown, exposedBlockReplacements.get(stateBelow.getBlock()).getDefaultState(), false);
+                    chunk.setBlockState(posDown, exposedBlockReplacements.get(stateBelow.getBlock()).defaultBlockState(), false);
                 }
                 return true;
             }

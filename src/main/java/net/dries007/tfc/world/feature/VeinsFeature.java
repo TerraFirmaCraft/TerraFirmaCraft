@@ -50,12 +50,12 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
 
     private static void getVeinsAtChunk(IWorld world, ChunkPos pos, List<Vein<?>> veins)
     {
-        RANDOM.setSeed(FastRandom.mix(FastRandom.mix(world.getSeed(), pos.x), pos.z));
+        RANDOM.setSeed(FastRandom.next(FastRandom.next(world.getSeed(), pos.x), pos.z));
         for (VeinType<?> type : VeinTypeManager.INSTANCE.getOrderedValues())
         {
-            if (RANDOM.nextInt(type.getRarity()) == 0 && type.canGenerateVein(world, pos.asBlockPos()))
+            if (RANDOM.nextInt(type.getRarity()) == 0 && type.canGenerateVein(world, pos.getWorldPosition()))
             {
-                veins.add(type.createVein(pos.getXStart(), pos.getZStart(), RANDOM));
+                veins.add(type.createVein(pos.getMinBlockX(), pos.getMinBlockZ(), RANDOM));
             }
         }
     }
@@ -104,7 +104,7 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
                         {
                             if (random.nextFloat() < vein.getChanceToGenerate(posAt))
                             {
-                                setBlockState(world, posAt, oreState);
+                                setBlock(world, posAt, oreState);
                             }
                         }
                     }

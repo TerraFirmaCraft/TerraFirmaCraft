@@ -21,7 +21,7 @@ public interface IBiomeFactory
     static IBiomeFactory create(IAreaFactory<LazyArea> areaFactory)
     {
         LazyArea area = areaFactory.make();
-        return (x, z) -> getBiome(area.getValue(x, z));
+        return (x, z) -> getBiome(area.get(x, z));
     }
 
     TFCBiome getBiome(int x, int z);

@@ -20,8 +20,8 @@ public class TemperatureRule implements IPlacementRule
 
     public TemperatureRule(JsonObject json)
     {
-        minimum = JSONUtils.getFloat(json, "minimum", Float.MIN_VALUE);
-        maximum = JSONUtils.getFloat(json, "maximum", Float.MAX_VALUE);
+        minimum = JSONUtils.getAsFloat(json, "minimum", Float.MIN_VALUE);
+        maximum = JSONUtils.getAsFloat(json, "maximum", Float.MAX_VALUE);
     }
 
     @Override

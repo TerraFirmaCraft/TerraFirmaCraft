@@ -27,8 +27,8 @@ public class ServerCalendar extends Calendar
     @SuppressWarnings("unchecked")
     public static void setup()
     {
-        GameRules.RuleType<GameRules.BooleanValue> type = (GameRules.RuleType<GameRules.BooleanValue>) GameRules.GAME_RULES.get(GameRules.DO_DAYLIGHT_CYCLE);
-        type.changeListener = type.changeListener.andThen((server, t) -> DO_DAYLIGHT_CYCLE.run());
+        GameRules.RuleType<GameRules.BooleanValue> type = (GameRules.RuleType<GameRules.BooleanValue>) GameRules.GAME_RULE_TYPES.get(GameRules.RULE_DAYLIGHT);
+        type.callback = type.callback.andThen((server, t) -> DO_DAYLIGHT_CYCLE.run());
     }
 
     @Nullable
@@ -75,7 +75,7 @@ public class ServerCalendar extends Calendar
             playerTicks += timeJump;
 
             // Update the actual world times
-            for (ServerWorld world : server.getWorlds())
+            for (ServerWorld world : server.getAllLevels())
             {
                 long currentDayTime = world.getDayTime();
                 world.setDayTime(currentDayTime + timeJump);
@@ -126,16 +126,16 @@ public class ServerCalendar extends Calendar
     {
         if (server != null)
         {
-            GameRules rules = server.getWorld(DimensionType.OVERWORLD).getGameRules();
+            GameRules rules = server.getLevel(DimensionType.OVERWORLD).getGameRules();
             this.arePlayersLoggedOn = arePlayersLoggedOn;
             if (arePlayersLoggedOn)
             {
-                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(doDaylightCycle, server));
+                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(doDaylightCycle, server));
                 LOGGER.info("Reverted doDaylightCycle to {} as players are logged in.", doDaylightCycle);
             }
             else
             {
-                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
+                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, server));
                 LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
             }
 
@@ -148,10 +148,10 @@ public class ServerCalendar extends Calendar
         if (server != null)
         {
             GameRules rules = server.getGameRules();
-            doDaylightCycle = rules.getBoolean(GameRules.DO_DAYLIGHT_CYCLE);
+            doDaylightCycle = rules.getBoolean(GameRules.RULE_DAYLIGHT);
             if (!arePlayersLoggedOn)
             {
-                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
+                DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, server));
                 LOGGER.info("Forced doDaylightCycle to false as no players are logged in. Will revert to {} as soon as a player logs in.", doDaylightCycle);
             }
 
@@ -166,10 +166,10 @@ public class ServerCalendar extends Calendar
     {
         this.server = server;
 
-        GameRules rules = server.getWorld(DimensionType.OVERWORLD).getGameRules();
-        DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server));
+        GameRules rules = server.getLevel(DimensionType.OVERWORLD).getGameRules();
+        DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, server));
 
-        reset(CalendarWorldData.get(server.getWorld(DimensionType.OVERWORLD)).getCalendar());
+        reset(CalendarWorldData.get(server.getLevel(DimensionType.OVERWORLD)).getCalendar());
         sendUpdatePacket();
     }
 
@@ -211,17 +211,17 @@ public class ServerCalendar extends Calendar
             LOGGER.debug("Calendar Time = {} ({}), Player Time = {}, World Time = {}, doDaylightCycle = {}, ArePlayersLoggedOn = {}", calendarTicks, getCalendarDayTime(), playerTicks, world.getDayTime() % ICalendar.TICKS_IN_DAY, doDaylightCycle, arePlayersLoggedOn);
 
             // Check if tracking values are wrong
-            boolean checkArePlayersLoggedOn = server.getPlayerList().getCurrentPlayerCount() > 0;
+            boolean checkArePlayersLoggedOn = server.getPlayerList().getPlayerCount() > 0;
             if (arePlayersLoggedOn != checkArePlayersLoggedOn)
             {
                 // Whoops, somehow we missed this.
                 LOGGER.info("Setting ArePlayersLoggedOn = {}", checkArePlayersLoggedOn);
                 setPlayersLoggedOn(checkArePlayersLoggedOn);
             }
-            if (arePlayersLoggedOn && doDaylightCycle != server.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE))
+            if (arePlayersLoggedOn && doDaylightCycle != server.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT))
             {
                 // Do daylight cycle should match
-                LOGGER.info("Setting DoDaylightCycle = {}", server.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE));
+                LOGGER.info("Setting DoDaylightCycle = {}", server.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT));
                 setDoDaylightCycle();
             }
             if (deltaWorldTime < 0)

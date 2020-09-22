@@ -23,7 +23,7 @@ public final class HeatCommand
 
     public static LiteralArgumentBuilder<CommandSource> create()
     {
-        return Commands.literal("heat").requires(source -> source.hasPermissionLevel(2))
+        return Commands.literal("heat").requires(source -> source.hasPermission(2))
             .then(Commands.argument("value", IntegerArgumentType.integer(0))
                 .executes(cmd -> heatItem(cmd.getSource(), IntegerArgumentType.getInteger(cmd, "value")))
             );
@@ -31,14 +31,14 @@ public final class HeatCommand
 
     private static int heatItem(CommandSource source, int value) throws CommandSyntaxException
     {
-        final ServerPlayerEntity player = source.asPlayer();
-        final ItemStack stack = player.getHeldItemMainhand();
+        final ServerPlayerEntity player = source.getPlayerOrException();
+        final ItemStack stack = player.getMainHandItem();
         if (!stack.isEmpty())
         {
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
             {
                 heat.setTemperature(value);
-                source.sendFeedback(new TranslationTextComponent(QUERY_HEAT, value), true);
+                source.sendSuccess(new TranslationTextComponent(QUERY_HEAT, value), true);
             });
         }
         return Command.SINGLE_SUCCESS;

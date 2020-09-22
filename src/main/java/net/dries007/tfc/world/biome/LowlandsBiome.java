@@ -12,16 +12,19 @@ import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.minecraft.world.biome.Biome.Builder;
+import net.minecraft.world.biome.Biome.Category;
+
 public class LowlandsBiome extends TFCBiome
 {
     public LowlandsBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.PLAINS), temperature, rainfall);
+        super(new Builder().biomeCategory(Category.PLAINS), temperature, rainfall);
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
 
-            setSurfaceBuilder(TFCSurfaceBuilders.DEEP.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.DEEP.get(), SurfaceBuilder.CONFIG_GRASS);
         });
     }
 

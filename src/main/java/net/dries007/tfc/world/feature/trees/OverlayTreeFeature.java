@@ -37,24 +37,24 @@ public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
 
         final ChunkPos chunkPos = new ChunkPos(pos);
         final TemplateManager manager = getTemplateManager(worldIn);
-        final Template structureBase = manager.getTemplateDefaulted(config.base);
-        final Template structureOverlay = manager.getTemplateDefaulted(config.overlay);
+        final Template structureBase = manager.getOrCreate(config.base);
+        final Template structureOverlay = manager.getOrCreate(config.overlay);
         final int height = config.heightMin + (config.heightRange > 0 ? rand.nextInt(config.heightRange) : 0);
 
-        final BlockPos baseStructurePos = pos.add(-structureBase.getSize().getX() / 2, height, -structureBase.getSize().getZ() / 2);
-        final BlockPos overlayStructurePos = pos.add(-structureOverlay.getSize().getX() / 2, height, -structureOverlay.getSize().getZ() / 2);
+        final BlockPos baseStructurePos = pos.offset(-structureBase.getSize().getX() / 2, height, -structureBase.getSize().getZ() / 2);
+        final BlockPos overlayStructurePos = pos.offset(-structureOverlay.getSize().getX() / 2, height, -structureOverlay.getSize().getZ() / 2);
 
         final PlacementSettings settings = getPlacementSettings(chunkPos, structureBase.getSize(), rand);
 
         Helpers.addTemplateToWorldForTreeGen(structureBase, settings, worldIn, baseStructurePos);
         settings.addProcessor(new IntegrityProcessor(0.5f))
-            .setCenterOffset(new BlockPos(structureOverlay.getSize().getX() / 2, 0, structureOverlay.getSize().getZ() / 2));
+            .setRotationPivot(new BlockPos(structureOverlay.getSize().getX() / 2, 0, structureOverlay.getSize().getZ() / 2));
         Helpers.addTemplateToWorldForTreeGen(structureOverlay, settings, worldIn, overlayStructurePos);
 
         final BlockState log = config.trunkState;
         for (int i = 0; i < height; i++)
         {
-            worldIn.setBlockState(pos.add(0, i, 0), log, 2);
+            worldIn.setBlock(pos.offset(0, i, 0), log, 2);
         }
         return true;
     }

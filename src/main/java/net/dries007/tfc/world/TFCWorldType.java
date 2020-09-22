@@ -39,7 +39,7 @@ public class TFCWorldType extends WorldType
     public ChunkGenerator<?> createChunkGenerator(World world)
     {
         TFCGenerationSettings settings = CHUNK_GENERATOR_TYPE.get().createSettings();
-        settings.setWorldInfo(world.getWorldInfo());
+        settings.setWorldInfo(world.getLevelData());
         BiomeProvider biomeProvider = BIOME_PROVIDER_TYPE.get().create(settings);
         return CHUNK_GENERATOR_TYPE.get().create(world, biomeProvider, settings);
     }

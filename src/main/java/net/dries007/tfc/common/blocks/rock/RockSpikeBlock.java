@@ -26,31 +26,33 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 
+import net.minecraft.block.Block.Properties;
+
 public class RockSpikeBlock extends Block
 {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
 
-    public static final VoxelShape BASE_SHAPE = makeCuboidShape(2, 0, 2, 14, 16, 14);
-    public static final VoxelShape MIDDLE_SHAPE = makeCuboidShape(4, 0, 4, 12, 16, 12);
-    public static final VoxelShape TIP_SHAPE = makeCuboidShape(6, 0, 6, 10, 16, 10);
+    public static final VoxelShape BASE_SHAPE = box(2, 0, 2, 14, 16, 14);
+    public static final VoxelShape MIDDLE_SHAPE = box(4, 0, 4, 12, 16, 12);
+    public static final VoxelShape TIP_SHAPE = box(6, 0, 6, 10, 16, 10);
 
     public RockSpikeBlock()
     {
-        this(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.4f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE));
+        this(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.4f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE));
     }
 
     public RockSpikeBlock(Properties properties)
     {
         super(properties);
 
-        setDefaultState(stateContainer.getBaseState().with(PART, Part.BASE));
+        registerDefaultState(stateDefinition.any().setValue(PART, Part.BASE));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.get(PART))
+        switch (state.getValue(PART))
         {
             case BASE:
                 return BASE_SHAPE;
@@ -68,11 +70,11 @@ public class RockSpikeBlock extends Block
     {
         if (TFCTags.Blocks.CAN_COLLAPSE.contains(this))
         {
-            BlockPos downPos = pos.down();
+            BlockPos downPos = pos.below();
             if (TFCFallingBlockEntity.canFallThrough(world, downPos))
             {
                 // Potential to collapse from the top
-                if (!world.isRemote && !isSupported(world, pos))
+                if (!world.isClientSide && !isSupported(world, pos))
                 {
                     // Spike is unsupported
                     boolean collapsed = false;
@@ -81,7 +83,7 @@ public class RockSpikeBlock extends Block
                     while (stateAt.getBlock() == this)
                     {
                         collapsed |= CollapseRecipe.collapseBlock(world, pos, stateAt);
-                        pos = pos.down();
+                        pos = pos.below();
                         stateAt = world.getBlockState(pos);
                     }
                     if (collapsed)
@@ -94,7 +96,7 @@ public class RockSpikeBlock extends Block
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(PART);
     }
@@ -102,19 +104,19 @@ public class RockSpikeBlock extends Block
     private boolean isSupported(World world, BlockPos pos)
     {
         BlockState state = world.getBlockState(pos);
-        BlockState stateDown = world.getBlockState(pos.down());
+        BlockState stateDown = world.getBlockState(pos.below());
         // It can be directly supported below, by either a flat surface, *or* a spike that's larger than this one
-        if (stateDown.isSolidSide(world, pos.down(), Direction.UP) || (stateDown.getBlock() == this && stateDown.get(PART).ordinal() > state.get(PART).ordinal()))
+        if (stateDown.isFaceSturdy(world, pos.below(), Direction.UP) || (stateDown.getBlock() == this && stateDown.getValue(PART).ordinal() > state.getValue(PART).ordinal()))
         {
             return true;
         }
         // Otherwise, we need to walk upwards and find the roof
         while (state.getBlock() == this)
         {
-            pos = pos.up();
+            pos = pos.above();
             state = world.getBlockState(pos);
         }
-        return state.isSolidSide(world, pos.up(), Direction.DOWN);
+        return state.isFaceSturdy(world, pos.above(), Direction.DOWN);
     }
 
     public enum Part implements IStringSerializable
@@ -122,7 +124,7 @@ public class RockSpikeBlock extends Block
         BASE, MIDDLE, TIP;
 
         @Override
-        public String getName()
+        public String getSerializedName()
         {
             return name().toLowerCase();
         }

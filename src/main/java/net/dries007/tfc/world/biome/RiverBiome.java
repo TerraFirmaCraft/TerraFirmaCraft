@@ -12,15 +12,20 @@ import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
+import net.dries007.tfc.world.biome.ITFCBiome.LargeGroup;
+import net.dries007.tfc.world.biome.ITFCBiome.SmallGroup;
+import net.minecraft.world.biome.Biome.Builder;
+import net.minecraft.world.biome.Biome.Category;
+
 public class RiverBiome extends TFCBiome
 {
     public RiverBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        super(new Builder().category(Category.RIVER), temperature, rainfall);
+        super(new Builder().biomeCategory(Category.RIVER), temperature, rainfall);
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.AIR_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.CONFIG_EMPTY);
         });
     }
 

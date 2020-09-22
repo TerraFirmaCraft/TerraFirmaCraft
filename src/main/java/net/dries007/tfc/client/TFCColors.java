@@ -70,7 +70,7 @@ public final class TFCColors
     {
         if (pos != null && tintIndex == 0)
         {
-            final Season season = state.get(TFCBlockStateProperties.SEASON_NO_SPRING);
+            final Season season = state.getValue(TFCBlockStateProperties.SEASON_NO_SPRING);
             final Month month = Calendars.CLIENT.getCalendarMonthOfYear();
             switch (adjustSeason(season, month))
             {

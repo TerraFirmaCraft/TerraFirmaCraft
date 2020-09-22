@@ -22,6 +22,6 @@ public class RockFactory
 
     public Rock get(int x, int z)
     {
-        return RockManager.INSTANCE.get(area.getValue(x, z));
+        return RockManager.INSTANCE.get(area.get(x, z));
     }
 }

@@ -29,7 +29,7 @@ public enum Season implements IStringSerializable
     }
 
     @Override
-    public String getName()
+    public String getSerializedName()
     {
         return serializedName;
     }

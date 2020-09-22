@@ -38,20 +38,20 @@ public class BouldersFeature extends Feature<BoulderConfig>
     {
         ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.ROCKS)).orElseThrow(() -> new IllegalStateException("Missing rock data, cannot generate boulders."));
         Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
-        BlockState baseState = rock.getBlock(config.getBaseType()).getDefaultState();
-        BlockState decorationState = rock.getBlock(config.getDecorationType()).getDefaultState();
+        BlockState baseState = rock.getBlock(config.getBaseType()).defaultBlockState();
+        BlockState decorationState = rock.getBlock(config.getDecorationType()).defaultBlockState();
         int size = 2 + rand.nextInt(4);
-        for (BlockPos posAt : BlockPos.getAllInBoxMutable(pos.getX() - size, pos.getY() - size, pos.getZ() - size, pos.getX() + size, pos.getY() + size, pos.getZ() + size))
+        for (BlockPos posAt : BlockPos.betweenClosed(pos.getX() - size, pos.getY() - size, pos.getZ() - size, pos.getX() + size, pos.getY() + size, pos.getZ() + size))
         {
-            if (posAt.distanceSq(pos) <= size * size)
+            if (posAt.distSqr(pos) <= size * size)
             {
                 if (rand.nextFloat() < 0.4f)
                 {
-                    setBlockState(worldIn, posAt, decorationState);
+                    setBlock(worldIn, posAt, decorationState);
                 }
                 else
                 {
-                    setBlockState(worldIn, posAt, baseState);
+                    setBlock(worldIn, posAt, baseState);
                 }
             }
         }

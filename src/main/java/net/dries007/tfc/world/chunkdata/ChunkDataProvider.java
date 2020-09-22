@@ -36,10 +36,10 @@ public class ChunkDataProvider
     public static Optional<ChunkDataProvider> get(IWorld world)
     {
         // Chunk provider can be null during the attach capabilities event
-        AbstractChunkProvider chunkProvider = world.getChunkProvider();
+        AbstractChunkProvider chunkProvider = world.getChunkSource();
         if (chunkProvider instanceof ServerChunkProvider)
         {
-            ChunkGenerator<?> chunkGenerator = ((ServerChunkProvider) chunkProvider).getChunkGenerator();
+            ChunkGenerator<?> chunkGenerator = ((ServerChunkProvider) chunkProvider).getGenerator();
             if (chunkGenerator instanceof IChunkDataProvidingChunkGenerator)
             {
                 return Optional.of(((IChunkDataProvidingChunkGenerator) chunkGenerator).getChunkDataProvider());
@@ -101,7 +101,7 @@ public class ChunkDataProvider
 
     private void generateToStatus(ChunkPos pos, ChunkData data, ChunkData.Status status)
     {
-        int chunkX = pos.getXStart(), chunkZ = pos.getZStart();
+        int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ();
         if (status.isAtLeast(ChunkData.Status.CLIMATE))
         {
             // Temperature / Rainfall

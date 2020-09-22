@@ -22,9 +22,9 @@ public class TFCUnderwaterRavineCarver extends UnderwaterCanyonWorldCarver
     public TFCUnderwaterRavineCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic)
     {
         super(dynamic);
-        originalCarvableBlocks = carvableBlocks;
+        originalCarvableBlocks = replaceableBlocks;
 
         // Need to run this every time the rock registry is reloaded
-        RockManager.INSTANCE.addCallback(() -> carvableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
+        RockManager.INSTANCE.addCallback(() -> replaceableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
     }
 }

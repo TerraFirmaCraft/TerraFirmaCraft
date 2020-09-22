@@ -50,6 +50,6 @@ public class TFCSurfaceBuilders
 
     private static SurfaceBuilderConfig config(Block top, Block under, Block underwater)
     {
-        return new SurfaceBuilderConfig(top.getDefaultState(), under.getDefaultState(), underwater.getDefaultState());
+        return new SurfaceBuilderConfig(top.defaultBlockState(), under.defaultBlockState(), underwater.defaultBlockState());
     }
 }

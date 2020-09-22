@@ -50,59 +50,59 @@ public class TFCLayerUtil
 
         // Ocean / Continents
 
-        mainLayer = new IslandLayer(settings.getIslandFrequency()).apply(contextFactory.apply(1000L));
-        mainLayer = ZoomLayer.FUZZY.apply(contextFactory.apply(1001L), mainLayer);
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.apply(1002L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1003L), mainLayer);
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.apply(1004L), mainLayer);
+        mainLayer = new IslandLayer(settings.getIslandFrequency()).run(contextFactory.apply(1000L));
+        mainLayer = ZoomLayer.FUZZY.run(contextFactory.apply(1001L), mainLayer);
+        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.apply(1002L), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1003L), mainLayer);
+        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.apply(1004L), mainLayer);
 
         for (int i = 0; i < 2; i++)
         {
-            mainLayer = AddIslandLayer.HEAVY.apply(contextFactory.apply(1005L + 2 * i), mainLayer);
-            mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1006L + 2 * i), mainLayer);
+            mainLayer = AddIslandLayer.HEAVY.run(contextFactory.apply(1005L + 2 * i), mainLayer);
+            mainLayer = SmoothLayer.INSTANCE.run(contextFactory.apply(1006L + 2 * i), mainLayer);
         }
 
         // Oceans and Continents => Elevation Mapping
-        mainLayer = ElevationLayer.INSTANCE.apply(contextFactory.apply(1009L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1010L), mainLayer);
+        mainLayer = ElevationLayer.INSTANCE.run(contextFactory.apply(1009L), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1010L), mainLayer);
 
         // Elevation Mapping => Rivers
-        riverLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1011L), mainLayer);
+        riverLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1011L), mainLayer);
 
         for (int i = 0; i < 6; i++)
         {
-            riverLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1012L + i), riverLayer);
+            riverLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1012L + i), riverLayer);
         }
 
-        riverLayer = RiverLayer.INSTANCE.apply(contextFactory.apply(1018L), riverLayer);
-        riverLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), riverLayer);
+        riverLayer = RiverLayer.INSTANCE.run(contextFactory.apply(1018L), riverLayer);
+        riverLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1019L), riverLayer);
 
         // Elevation Mapping => Biomes
-        mainLayer = BiomeLayer.INSTANCE.apply(contextFactory.apply(1011L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1012L), mainLayer);
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.apply(1013L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1014L), mainLayer);
-        mainLayer = RemoveOceanLayer.INSTANCE.apply(contextFactory.apply(1015L), mainLayer);
-        mainLayer = OceanLayer.INSTANCE.apply(contextFactory.apply(1016L), mainLayer);
-        mainLayer = EdgeBiomeLayer.INSTANCE.apply(contextFactory.apply(1017L), mainLayer);
-        mainLayer = AddLakeLayer.INSTANCE.apply(contextFactory.apply(1018L), mainLayer);
+        mainLayer = BiomeLayer.INSTANCE.run(contextFactory.apply(1011L), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1012L), mainLayer);
+        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.apply(1013L), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1014L), mainLayer);
+        mainLayer = RemoveOceanLayer.INSTANCE.run(contextFactory.apply(1015L), mainLayer);
+        mainLayer = OceanLayer.INSTANCE.run(contextFactory.apply(1016L), mainLayer);
+        mainLayer = EdgeBiomeLayer.INSTANCE.run(contextFactory.apply(1017L), mainLayer);
+        mainLayer = AddLakeLayer.INSTANCE.run(contextFactory.apply(1018L), mainLayer);
 
         for (int i = 0; i < 2; i++)
         {
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1019L), mainLayer);
+            mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1019L), mainLayer);
         }
 
-        mainLayer = ShoreLayer.CASTLE.apply(contextFactory.apply(1023L), mainLayer);
+        mainLayer = ShoreLayer.CASTLE.run(contextFactory.apply(1023L), mainLayer);
 
         for (int i = 0; i < 4; i++)
         {
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1024L), mainLayer);
+            mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1024L), mainLayer);
         }
 
-        mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1025L), mainLayer);
-        mainLayer = MixRiverLayer.INSTANCE.apply(contextFactory.apply(1026L), mainLayer, riverLayer);
-        mainLayer = BiomeRiverWidenLayer.MEDIUM.apply(contextFactory.apply(1027L), mainLayer);
-        mainLayer = BiomeRiverWidenLayer.LOW.apply(contextFactory.apply(1028L), mainLayer);
+        mainLayer = SmoothLayer.INSTANCE.run(contextFactory.apply(1025L), mainLayer);
+        mainLayer = MixRiverLayer.INSTANCE.run(contextFactory.apply(1026L), mainLayer, riverLayer);
+        mainLayer = BiomeRiverWidenLayer.MEDIUM.run(contextFactory.apply(1027L), mainLayer);
+        mainLayer = BiomeRiverWidenLayer.LOW.run(contextFactory.apply(1028L), mainLayer);
         return mainLayer;
     }
 
@@ -120,7 +120,7 @@ public class TFCLayerUtil
         {
             RandomLayer randomLayer = new RandomLayer(numRocks);
             RockManager.INSTANCE.addCallback(() -> randomLayer.setLimit(RockManager.INSTANCE.getKeys().size()));
-            seedLayer = randomLayer.apply(contextFactory.apply(1000L));
+            seedLayer = randomLayer.run(contextFactory.apply(1000L));
 
             // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
             // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
@@ -131,18 +131,18 @@ public class TFCLayerUtil
             // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
             RandomizeNeighborsLayer randomNeighborLayer = new RandomizeNeighborsLayer(numRocks);
             RockManager.INSTANCE.addCallback(() -> randomNeighborLayer.setLimit(RockManager.INSTANCE.getKeys().size()));
-            seedLayer = randomNeighborLayer.apply(contextFactory.apply(1001L), seedLayer);
+            seedLayer = randomNeighborLayer.run(contextFactory.apply(1001L), seedLayer);
 
             for (int i = 0; i < 2; i++)
             {
-                seedLayer = ExactZoomLayer.INSTANCE.apply(contextFactory.apply(1001L), seedLayer);
-                seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
-                seedLayer = SmoothLayer.INSTANCE.apply(contextFactory.apply(1001L), seedLayer);
+                seedLayer = ExactZoomLayer.INSTANCE.run(contextFactory.apply(1001L), seedLayer);
+                seedLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1001L), seedLayer);
+                seedLayer = SmoothLayer.INSTANCE.run(contextFactory.apply(1001L), seedLayer);
             }
 
             for (int i = 0; i < settings.getRockZoomLevel(j); i++)
             {
-                seedLayer = ZoomLayer.NORMAL.apply(contextFactory.apply(1001L), seedLayer);
+                seedLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1001L), seedLayer);
             }
 
             completedLayers.add(seedLayer);

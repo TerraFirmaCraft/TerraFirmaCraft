@@ -65,7 +65,7 @@ public enum Heat
                 {
                     if (temperature <= heat.getMin() + ((float) i * 0.2f) * (heat.getMax() - heat.getMin()))
                         continue;
-                    base.appendText("\u2605");
+                    base.append("\u2605");
                 }
             }
             return base;
@@ -80,7 +80,7 @@ public enum Heat
         ITextComponent tooltip = getTooltipColorless(temperature);
         if (tooltip != null && heat != null)
         {
-            tooltip.applyTextStyle(heat.format);
+            tooltip.withStyle(heat.format);
         }
         return tooltip;
     }
@@ -92,7 +92,7 @@ public enum Heat
         ITextComponent tooltip = getTooltipColorless(temperature);
         if (tooltip != null && heat != null)
         {
-            tooltip.applyTextStyle(heat.alternate);
+            tooltip.withStyle(heat.alternate);
         }
         return tooltip;
     }

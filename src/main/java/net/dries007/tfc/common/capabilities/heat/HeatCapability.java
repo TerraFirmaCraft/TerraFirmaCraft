@@ -120,10 +120,10 @@ public class HeatCapability
         public HeatWrapper(ResourceLocation id, JsonObject obj)
         {
             this.id = id;
-            float heatCapacity = JSONUtils.getFloat(obj, "heat_capacity");
-            float forgingTemp = JSONUtils.getFloat(obj, "forging_temperature", 0);
-            float weldingTemp = JSONUtils.getFloat(obj, "welding_temperature", 0);
-            this.ingredient = CraftingHelper.getIngredient(JSONUtils.getJsonObject(obj, "ingredient"));
+            float heatCapacity = JSONUtils.getAsFloat(obj, "heat_capacity");
+            float forgingTemp = JSONUtils.getAsFloat(obj, "forging_temperature", 0);
+            float weldingTemp = JSONUtils.getAsFloat(obj, "welding_temperature", 0);
+            this.ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(obj, "ingredient"));
             this.capability = () -> new HeatHandler(heatCapacity, forgingTemp, weldingTemp);
         }
 
@@ -144,7 +144,7 @@ public class HeatCapability
 
         public Collection<Item> getValidItems()
         {
-            return Arrays.stream(this.ingredient.getMatchingStacks()).map(ItemStack::getItem).collect(Collectors.toSet());
+            return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
         }
     }
 }

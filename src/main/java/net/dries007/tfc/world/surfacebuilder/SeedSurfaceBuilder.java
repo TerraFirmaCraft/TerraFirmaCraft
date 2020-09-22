@@ -23,7 +23,7 @@ public abstract class SeedSurfaceBuilder<C extends SurfaceBuilderConfig> extends
     }
 
     @Override
-    public void setSeed(long seed)
+    public void initNoise(long seed)
     {
         if (lastSeed != seed || !initialized)
         {

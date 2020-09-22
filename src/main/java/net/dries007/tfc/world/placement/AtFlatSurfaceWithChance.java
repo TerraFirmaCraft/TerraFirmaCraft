@@ -41,7 +41,7 @@ public class AtFlatSurfaceWithChance extends AtSurfaceWithChance
             {
                 if (isFlatEnough(worldIn, targetPos, y))
                 {
-                    return targetPos.up(y);
+                    return targetPos.above(y);
                 }
             }
             return null;
@@ -55,11 +55,11 @@ public class AtFlatSurfaceWithChance extends AtSurfaceWithChance
         {
             for (int z = -4; z <= 4; z++)
             {
-                BlockPos posAt = pos.add(x, y, z);
-                BlockPos posDown = posAt.down();
+                BlockPos posAt = pos.offset(x, y, z);
+                BlockPos posDown = posAt.below();
                 BlockState stateAt = world.getBlockState(posAt);
                 BlockState stateDown = world.getBlockState(posDown);
-                if (stateDown.isSolid() && stateAt.isAir(world, posAt))
+                if (stateDown.canOcclude() && stateAt.isAir(world, posAt))
                 {
                     flatAmount++;
                 }

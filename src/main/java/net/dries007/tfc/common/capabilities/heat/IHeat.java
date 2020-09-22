@@ -78,11 +78,11 @@ public interface IHeat extends ICapabilitySerializable<CompoundNBT>
             // Only add " - can work" and " - can weld" if both temperatures are set
             if (getWeldingTemperature() > 0 && getWeldingTemperature() <= temperature)
             {
-                tooltip.appendSibling(new TranslationTextComponent(MOD_ID + ".tooltip.welding"));
+                tooltip.append(new TranslationTextComponent(MOD_ID + ".tooltip.welding"));
             }
             else if (getForgingTemperature() > 0 && getForgingTemperature() <= temperature)
             {
-                tooltip.appendSibling(new TranslationTextComponent(MOD_ID + ".tooltip.forging"));
+                tooltip.append(new TranslationTextComponent(MOD_ID + ".tooltip.forging"));
             }
             text.add(tooltip);
         }
