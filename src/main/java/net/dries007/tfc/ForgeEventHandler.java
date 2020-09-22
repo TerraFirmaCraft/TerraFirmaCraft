@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -24,9 +25,11 @@ import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.IServerWorldInfo;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -68,20 +71,22 @@ public final class ForgeEventHandler
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * Duplicates logic from {@link ServerWorld#createSpawnPosition(WorldSettings)} as that version only asks the dimension for the sea level...
+     * Duplicates logic from {@link net.minecraft.server.MinecraftServer#setInitialSpawn(ServerWorld, IServerWorldInfo, boolean, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
     @SubscribeEvent
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
         // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
-        if (event.getWorld() instanceof ServerWorld && ((World) event.getWorld()).getGeneratorType() == TFCWorldType.INSTANCE)
+        // todo: fix this, it was broken anyway, vanilla changed it
+        /*
+        if (event.getWorld() instanceof ServerWorld)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
             event.setCanceled(true);
 
             BiomeProvider biomeProvider = world.getChunkSource().getGenerator().getBiomeSource();
             Random random = new Random(world.getSeed());
-            BlockPos pos = biomeProvider.findBiomeHorizontal(0, world.getChunkSource().getGenerator().getSeaLevel(), 0, 256, biomeProvider.getPlayerSpawnBiomes(), random);
+            BlockPos pos = biomeProvider.findBiomeHorizontal(0, world.getChunkSource().getGenerator().getSeaLevel(), 0, 256, biomeProvider.spawb(), random);
             ChunkPos chunkPos = pos == null ? new ChunkPos(0, 0) : new ChunkPos(pos);
             if (pos == null)
             {
@@ -129,6 +134,7 @@ public final class ForgeEventHandler
 
             // Don't create bonus chest
         }
+         */
     }
 
     @SubscribeEvent
@@ -216,12 +222,12 @@ public final class ForgeEventHandler
     }
 
     @SubscribeEvent
-    public static void beforeServerStart(FMLServerAboutToStartEvent event)
+    public static void addReloadListeners(AddReloadListenerEvent event)
     {
         LOGGER.debug("Before Server Start");
 
         // Initializes json data listeners
-        IReloadableResourceManager resourceManager = event.getServer().getResources();
+        IReloadableResourceManager resourceManager = (IReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
         resourceManager.registerReloadListener(RockManager.INSTANCE);
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
@@ -230,17 +236,20 @@ public final class ForgeEventHandler
 
         // Capability json data loader
         resourceManager.registerReloadListener(HeatCapability.HeatManager.INSTANCE);
+    }
 
+    @SubscribeEvent
+    public static void beforeServerStart(FMLServerAboutToStartEvent event)
+    {
         // Server tracker
         TFCServerTracker.INSTANCE.onServerStart(event.getServer());
     }
 
     @SubscribeEvent
-    public static void onServerStarting(FMLServerStartingEvent event)
+    public static void onRegisterCommands(RegisterCommandsEvent event)
     {
-        // todo: move this to the dedicated command register event on forge update
         LOGGER.debug("Registering TFC Commands");
-        TFCCommands.register(event.getCommandDispatcher());
+        TFCCommands.register(event.getDispatcher());
     }
 
     @SubscribeEvent
@@ -330,7 +339,8 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof ServerWorld && event.getWorld().getDimension().getType() == DimensionType.OVERWORLD)
+        // todo: overworld check
+        if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).dimension() == World.OVERWORLD)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
             if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())

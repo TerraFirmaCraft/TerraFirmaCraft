@@ -4,14 +4,17 @@ import groovy.json.JsonSlurper
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url='https://dist.creeper.host/Sponge/maven' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'idea'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
@@ -46,6 +49,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=' + mod_id + '.mixins.json'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -57,6 +61,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg '-mixin.config=' + mod_id + '.mixins.json'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -110,4 +115,18 @@ processResources {
             file.text = file.text.replace('"__comment__":"This file was automatically created by mcresources",', '')
         }
     }
+}
+
+// Puts the mod version into the jar for mods.toml to read from
+jar {
+    manifest {
+        attributes ([
+                "Implementation-Version": "${version}",
+                "MixinConfigs": "${mod_id}.mixins.json"
+        ])
+    }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
 }

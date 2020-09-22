@@ -43,7 +43,8 @@ public enum TFCServerTracker implements IFutureReloadListener
     public void onServerStart(MinecraftServer server)
     {
         this.server = server;
-        this.server.getResources().registerReloadListener(this);
+        // todo: resource manager is private and/or vanished on server
+        //this.server.getResources().registerReloadListener(this);
 
         ChunkDataCache.clearAll();
     }

@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -126,7 +126,7 @@ public class ServerCalendar extends Calendar
     {
         if (server != null)
         {
-            GameRules rules = server.getLevel(DimensionType.OVERWORLD).getGameRules();
+            GameRules rules = server.overworld().getGameRules();
             this.arePlayersLoggedOn = arePlayersLoggedOn;
             if (arePlayersLoggedOn)
             {
@@ -166,10 +166,10 @@ public class ServerCalendar extends Calendar
     {
         this.server = server;
 
-        GameRules rules = server.getLevel(DimensionType.OVERWORLD).getGameRules();
+        GameRules rules = server.overworld().getGameRules();
         DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, server));
 
-        reset(CalendarWorldData.get(server.getLevel(DimensionType.OVERWORLD)).getCalendar());
+        reset(CalendarWorldData.get(server.overworld()).getCalendar());
         sendUpdatePacket();
     }
 

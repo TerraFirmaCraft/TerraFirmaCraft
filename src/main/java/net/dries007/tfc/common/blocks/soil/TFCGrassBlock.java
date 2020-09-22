@@ -24,7 +24,6 @@ import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.TFCTags;
 
-import net.minecraft.block.Block.Properties;
 
 public class TFCGrassBlock extends Block
 {

@@ -8,8 +8,8 @@ package net.dries007.tfc.common.blocks.wood;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.*;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -22,8 +22,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
-
-import net.minecraft.block.Block.Properties;
 
 public class ToolRackBlock extends Block implements IWaterLoggable
 {
@@ -97,7 +95,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
         contextualState = defaultBlockState();
         IWorldReader world = context.getLevel();
         BlockPos pos = context.getClickedPos();
-        IFluidState fluidState = world.getFluidState(context.getClickedPos());
+        FluidState fluidState = world.getFluidState(context.getClickedPos());
         Direction[] directionList = context.getNearestLookingDirections();
 
         for (Direction direction : directionList)
@@ -117,7 +115,7 @@ public class ToolRackBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public IFluidState getFluidState(BlockState state)
+    public FluidState getFluidState(BlockState state)
     {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }

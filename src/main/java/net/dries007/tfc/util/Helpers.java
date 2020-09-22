@@ -30,6 +30,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -246,11 +247,11 @@ public final class Helpers
     }
 
     /**
-     * Normally, one would just call {@link IWorld#isRemote()}
+     * Normally, one would just call {@link IWorld#isClientSide()}
      * HOWEVER
      * There exists a BIG HUGE PROBLEM in very specific scenarios with this
      * Since World's isRemote() actually returns the isRemote boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
-     * At this point, THE CLIENT WORLD WILL RETURN {@code true} to {@link IWorld#isRemote()}
+     * At this point, THE CLIENT WORLD WILL RETURN {@code true} to {@link IWorld#isClientSide()}
      *
      * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
      */
@@ -260,14 +261,14 @@ public final class Helpers
     }
 
     /**
-     * A variant of {@link Template#addBlocksToWorld(IWorld, BlockPos, PlacementSettings)} that is much simpler and faster for use in tree generation
+     * A variant of {@link Template#placeInWorld(IServerWorld, BlockPos, PlacementSettings, Random)} that is much simpler and faster for use in tree generation
      * Allows replacing leaves and air blocks
      */
     public static void addTemplateToWorldForTreeGen(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
     {
-        List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(template.palettes, pos); // Gets a single list of block infos
+        List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(template.palettes, pos).blocks(); // Gets a single list of block infos
         MutableBoundingBox boundingBox = placementIn.getBoundingBox();
-        for (Template.BlockInfo blockInfo : Template.processBlockInfos(template, worldIn, pos, placementIn, transformedBlockInfos))
+        for (Template.BlockInfo blockInfo : Template.processBlockInfos(worldIn, pos, pos, placementIn, transformedBlockInfos, template))
         {
             BlockPos posAt = blockInfo.pos;
             if (boundingBox == null || boundingBox.isInside(posAt))

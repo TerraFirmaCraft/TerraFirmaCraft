@@ -8,8 +8,6 @@ package net.dries007.tfc.common.blocks.wood;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.trees.Tree;
 
-import net.minecraft.block.Block.Properties;
-
 public class TFCSaplingBlock extends SaplingBlock
 {
     public TFCSaplingBlock(Tree treeIn, Properties properties)

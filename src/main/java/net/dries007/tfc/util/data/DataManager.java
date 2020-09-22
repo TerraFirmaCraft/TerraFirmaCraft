@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
@@ -106,15 +108,15 @@ public abstract class DataManager<T> extends JsonReloadListener
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonObject> resources, IResourceManager resourceManager, IProfiler profiler)
+    protected void apply(Map<ResourceLocation, JsonElement> objectIn, IResourceManager resourceManagerIn, IProfiler profilerIn)
     {
         types.clear();
         typeIds.clear();
         orderedTypes.clear();
-        for (Map.Entry<ResourceLocation, JsonObject> entry : resources.entrySet())
+        for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet())
         {
             ResourceLocation name = entry.getKey();
-            JsonObject json = entry.getValue();
+            JsonObject json = JSONUtils.convertToJsonObject(entry.getValue(), "root");
             try
             {
                 if (CraftingHelper.processConditions(json, "conditions"))

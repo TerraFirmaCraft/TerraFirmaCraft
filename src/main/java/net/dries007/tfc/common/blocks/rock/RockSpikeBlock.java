@@ -26,7 +26,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 
-import net.minecraft.block.Block.Properties;
 
 public class RockSpikeBlock extends Block
 {
