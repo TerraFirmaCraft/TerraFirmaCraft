@@ -195,7 +195,7 @@ public final class CommonEventHandler
         }
 
         // Drop shards from glass
-        if (state.getMaterial() == Material.GLASS && Constants.RNG.nextInt(2) == 0)
+        if (state.getMaterial() == Material.GLASS && Constants.RNG.nextInt(2) == 0 && block != Blocks.GLASS_PANE)
         {
             event.getDrops().add(new ItemStack(ItemsTFC.GLASS_SHARD));
         }
