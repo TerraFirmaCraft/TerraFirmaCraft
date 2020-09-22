@@ -10,6 +10,7 @@ import net.minecraft.command.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -97,7 +98,7 @@ public final class TimeCommand
 
     private static int setTime(MinecraftServer server, int dayTime)
     {
-        for (World world : server.getAllLevels())
+        for (ServerWorld world : server.getAllLevels())
         {
             long dayTimeJump = dayTime - (world.getDayTime() % ICalendar.TICKS_IN_DAY);
             if (dayTimeJump < 0)

@@ -14,13 +14,14 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.TFCDirtBlock;
 import net.dries007.tfc.common.blocks.soil.TFCGrassBlock;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
@@ -29,13 +30,13 @@ import net.dries007.tfc.common.recipes.LandslideRecipe;
 
 public class ErosionFeature extends Feature<NoFeatureConfig>
 {
-    public ErosionFeature()
+    public ErosionFeature(Codec<NoFeatureConfig> codec)
     {
-        super(NoFeatureConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         ChunkPos chunkPos = new ChunkPos(pos);
         int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();

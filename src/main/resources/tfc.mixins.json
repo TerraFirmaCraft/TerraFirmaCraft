@@ -3,7 +3,14 @@
   "minVersion": "0.8",
   "package": "net.dries007.tfc.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
+  "mixins": [
+    "entity.item.FallingBlockEntityAccessor",
+    "item.crafting.RecipeManagerAccessor",
+    "world.GameRulesAccessor",
+    "world.GameRulesRuleTypeAccessor",
+    "world.gen.HeightmapAccessor",
+    "world.gen.carver.CanyonWorldCarverAccessor"
+  ],
   "client": [],
   "injectors": {
     "defaultRequire": 1

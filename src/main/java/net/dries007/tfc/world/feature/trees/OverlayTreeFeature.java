@@ -10,25 +10,26 @@ import java.util.Random;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.template.IntegrityProcessor;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Helpers;
 
 public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
 {
-    public OverlayTreeFeature()
+    public OverlayTreeFeature(Codec<OverlayTreeConfig> codec)
     {
-        super(OverlayTreeConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, OverlayTreeConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, OverlayTreeConfig config)
     {
         if (!isValidLocation(worldIn, pos) || !isAreaClear(worldIn, pos, config.radius, 3))
         {

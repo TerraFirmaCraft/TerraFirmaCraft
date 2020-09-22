@@ -13,32 +13,26 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 
 public class CaveSpikesFeature extends Feature<NoFeatureConfig>
 {
-    @SuppressWarnings("unused")
-    public CaveSpikesFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn)
+    public CaveSpikesFeature(Codec<NoFeatureConfig> codec)
     {
-        super(configFactoryIn);
-    }
-
-    public CaveSpikesFeature()
-    {
-        super(NoFeatureConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         // Must start at an air state
         BlockState stateAt = worldIn.getBlockState(pos);
@@ -72,17 +66,17 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
 
     }
 
-    protected void place(IWorld worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    protected void place(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
         placeSmallSpike(worldIn, pos, spike, raw, direction, rand);
     }
 
-    protected void placeSmallSpike(IWorld worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    protected void placeSmallSpike(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
         placeSmallSpike(worldIn, pos, spike, raw, direction, rand, rand.nextFloat());
     }
 
-    protected void placeSmallSpike(IWorld worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
+    protected void placeSmallSpike(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
     {
         // Build a spike starting downwards from the target block
         if (sizeWeight < 0.2f)
@@ -105,7 +99,7 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
         }
     }
 
-    protected void replaceBlock(IWorld world, BlockPos pos, BlockState state)
+    protected void replaceBlock(ISeedReader world, BlockPos pos, BlockState state)
     {
         // We check explicitly for cave air here, because spikes shouldn't generate not in caves
         Block block = world.getBlockState(pos).getBlock();

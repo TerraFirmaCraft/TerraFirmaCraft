@@ -13,10 +13,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Lazy;
 
 public class TFCTree extends Tree
@@ -46,7 +48,7 @@ public class TFCTree extends Tree
     }
 
     @Override
-    public boolean growTree(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
+    public boolean growTree(ServerWorld worldIn, ChunkGenerator chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
     {
         ConfiguredFeature<?, ?> feature = getNormalFeature();
         worldIn.setBlock(blockPosIn, Blocks.AIR.defaultBlockState(), 4);
@@ -63,8 +65,8 @@ public class TFCTree extends Tree
 
     @Nullable
     @Override
-    protected ConfiguredFeature<TreeFeatureConfig, ?> getConfiguredFeature(Random randomIn, boolean flowersNearby)
+    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random randomIn, boolean largeHive)
     {
-        return null; // Not using minecraft's tree configuration
+        return null; // Not using vanilla's feature config
     }
 }

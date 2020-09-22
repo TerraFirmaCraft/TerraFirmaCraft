@@ -6,19 +6,18 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.*;
-import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -27,18 +26,13 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 public class FissureFeature extends Feature<BlockStateFeatureConfig>
 {
     @SuppressWarnings("unused")
-    public FissureFeature(Function<Dynamic<?>, ? extends BlockStateFeatureConfig> configFactoryIn)
+    public FissureFeature(Codec<BlockStateFeatureConfig> configFactoryIn)
     {
         super(configFactoryIn);
     }
 
-    public FissureFeature()
-    {
-        super(BlockStateFeatureConfig::deserialize);
-    }
-
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
     {
         BlockPos pos = startPos.below(); // start slightly below the surface
         ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.ROCKS)).orElseThrow(() -> new IllegalStateException("Missing rock data, cannot generate fissures."));

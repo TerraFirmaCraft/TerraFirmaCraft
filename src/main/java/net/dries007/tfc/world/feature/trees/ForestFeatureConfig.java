@@ -6,21 +6,19 @@
 package net.dries007.tfc.world.feature.trees;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public class ForestFeatureConfig implements IFeatureConfig
 {
-    @Nullable
-    public static <T> ForestFeatureConfig deserialize(Dynamic<T> config)
-    {
-        return null;
-    }
+    public static final Codec<ForestFeatureConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Entry.CODEC.listOf().fieldOf("entries").forGetter(c -> c.entries)
+    ).apply(instance, ForestFeatureConfig::new));
 
     private final List<Entry> entries;
 
@@ -34,22 +32,25 @@ public class ForestFeatureConfig implements IFeatureConfig
         return entries;
     }
 
-    @Override
-    public <T> Dynamic<T> serialize(DynamicOps<T> ops)
-    {
-        return new Dynamic<>(ops, ops.emptyMap());
-    }
-
     public static class Entry
     {
+        public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.FLOAT.fieldOf("min_rainfall").forGetter(c -> c.minRainfall),
+            Codec.FLOAT.fieldOf("max_rainfall").forGetter(c -> c.maxRainfall),
+            Codec.FLOAT.fieldOf("min_average_temperature").forGetter(c -> c.minAverageTemp),
+            Codec.FLOAT.fieldOf("max_average_temperature").forGetter(c -> c.maxAverageTemp),
+            ConfiguredFeature.CODEC.fieldOf("tree_feature").forGetter(c -> c.treeFeature),
+            ConfiguredFeature.CODEC.fieldOf("old_growth_feature").forGetter(c -> c.oldGrowthFeature)
+        ).apply(instance, Entry::new));
+
         private final float minRainfall;
         private final float maxRainfall;
         private final float minAverageTemp;
         private final float maxAverageTemp;
-        private final ConfiguredFeature<?, ?> treeFeature;
-        private final ConfiguredFeature<?, ?> oldGrowthFeature;
+        private final Supplier<ConfiguredFeature<?, ?>> treeFeature;
+        private final Supplier<ConfiguredFeature<?, ?>> oldGrowthFeature;
 
-        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, ConfiguredFeature<?, ?> treeFeature, ConfiguredFeature<?, ?> oldGrowthFeature)
+        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, Supplier<ConfiguredFeature<?, ?>> treeFeature, Supplier<ConfiguredFeature<?, ?>> oldGrowthFeature)
         {
             this.minRainfall = minRainfall;
             this.maxRainfall = maxRainfall;
@@ -66,12 +67,12 @@ public class ForestFeatureConfig implements IFeatureConfig
 
         public ConfiguredFeature<?, ?> getFeature()
         {
-            return treeFeature;
+            return treeFeature.get();
         }
 
         public ConfiguredFeature<?, ?> getOldGrowthFeature()
         {
-            return oldGrowthFeature;
+            return oldGrowthFeature.get();
         }
     }
 }

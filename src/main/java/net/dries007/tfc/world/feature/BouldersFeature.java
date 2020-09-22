@@ -6,35 +6,28 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.Random;
-import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class BouldersFeature extends Feature<BoulderConfig>
 {
-    @SuppressWarnings("unused")
-    public BouldersFeature(Function<Dynamic<?>, ? extends BoulderConfig> configFactoryIn)
+    public BouldersFeature(Codec<BoulderConfig> codec)
     {
-        super(configFactoryIn);
-    }
-
-    public BouldersFeature()
-    {
-        super(BoulderConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, BoulderConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BoulderConfig config)
     {
         ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.ROCKS)).orElseThrow(() -> new IllegalStateException("Missing rock data, cannot generate boulders."));
         Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
