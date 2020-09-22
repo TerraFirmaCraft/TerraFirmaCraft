@@ -28,7 +28,6 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
-import net.minecraft.block.Block.Properties;
 
 public abstract class TFCLeavesBlock extends Block
 {

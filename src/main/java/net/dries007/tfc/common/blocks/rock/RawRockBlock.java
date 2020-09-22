@@ -12,8 +12,6 @@ import net.minecraft.state.StateContainer;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
-import net.minecraft.block.Block.Properties;
-
 public class RawRockBlock extends Block
 {
     public static final BooleanProperty SUPPORTED = TFCBlockStateProperties.SUPPORTED;

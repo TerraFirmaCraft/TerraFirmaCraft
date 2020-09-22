@@ -21,7 +21,7 @@ import net.minecraft.world.World;
  * - For any K, V, R, {@code (keyMapper.apply(V) == K) -> (keyExtractor.apply(R).contains(K))}
  * <p>
  * This was benchmarked using VisualVM, with a recipe list of ~1000 recipes (not uncommon), using Landslide Recipes, over >10,000 invocations.
- * - {@link net.minecraft.item.crafting.RecipeManager#getRecipe(IRecipeType, IInventory, World)} took 847 us / recipe
+ * - {@link net.minecraft.item.crafting.RecipeManager#getRecipeFor(IRecipeType, IInventory, World)} took 847 us / recipe
  * - Using a LRU cache of size 1, delegating to the above took 273 us / recipe
  * - this took 11 us / recipe.
  */
