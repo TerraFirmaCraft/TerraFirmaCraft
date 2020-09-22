@@ -121,14 +121,15 @@ public class ItemProspectorPick extends ItemMetalTool
                         {
                             translationKey = "tfc.propick.found_very_large";
                         }
-
-                        player.sendStatusMessage(new TextComponentTranslation(translationKey, result.ore.getDisplayName()), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
+                        String oreName = (new TextComponentTranslation(result.ore.getTranslationKey())).getFormattedText();
+                        player.sendStatusMessage(new TextComponentTranslation(translationKey, oreName), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
 
                         if (ConfigTFC.General.DEBUG.enable)
                         {
                             for (ProspectResult debugResult : results)
                             {
-                                TerraFirmaCraft.getLog().debug(debugResult.ore.getDisplayName() + ": " + String.format("%.02f", debugResult.score));
+                                String debugName = (new TextComponentTranslation(debugResult.ore.getTranslationKey())).getFormattedText();
+                                TerraFirmaCraft.getLog().debug(debugName + ": " + String.format("%.02f", debugResult.score));
                             }
                         }
                     }

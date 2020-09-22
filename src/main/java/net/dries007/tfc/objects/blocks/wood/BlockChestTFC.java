@@ -72,6 +72,8 @@ public class BlockChestTFC extends BlockChest implements IItemSize
         {
             if (MAP_BASIC.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
             OreDictionaryHelper.register(this, "chest");
+            OreDictionaryHelper.register(this, "chest", "wood");
+
             //noinspection ConstantConditions
             OreDictionaryHelper.register(this, "chest", wood.getRegistryName().getPath());
         }
