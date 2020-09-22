@@ -15,6 +15,8 @@ import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 
+import net.dries007.tfc.mixin.world.gen.HeightmapAccessor;
+
 public class FastChunkPrimer implements IChunkDelegate
 {
     private static final BlockState VOID_AIR = Blocks.VOID_AIR.defaultBlockState();
@@ -42,7 +44,7 @@ public class FastChunkPrimer implements IChunkDelegate
 
     private final ChunkPrimer chunk;
     private final int chunkX, chunkZ;
-    private final Heightmap oceanFloorHeightMap, worldSurfaceHeightMap;
+    private final HeightmapAccessor oceanFloorHeightMap, worldSurfaceHeightMap;
     private final BlockPos.Mutable mutablePos;
 
     public FastChunkPrimer(ChunkPrimer chunk)
@@ -52,8 +54,9 @@ public class FastChunkPrimer implements IChunkDelegate
         this.chunkZ = chunk.getPos().getMinBlockZ();
 
         // This serves a dual purpose of initializing the height maps so we don't have to check that every time in setBlockState
-        this.oceanFloorHeightMap = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
-        this.worldSurfaceHeightMap = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
+        // We also just store the interface with the method we need to call back to
+        this.oceanFloorHeightMap = (HeightmapAccessor) chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
+        this.worldSurfaceHeightMap = (HeightmapAccessor) chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
 
         this.mutablePos = new BlockPos.Mutable();
     }
@@ -110,14 +113,14 @@ public class FastChunkPrimer implements IChunkDelegate
                         if (!reachedTopSurface)
                         {
                             // Non-air block found, update world surface height map
-                            worldSurfaceHeightMap.setHeight(localX, localZ, y + 1);
+                            worldSurfaceHeightMap.call$setHeight(localX, localZ, y + 1);
                             reachedTopSurface = true;
                         }
 
                         if (Heightmap.Type.OCEAN_FLOOR_WG.isOpaque().test(state))
                         {
                             // Update ocean floor height map, then go to next x/z position
-                            oceanFloorHeightMap.setHeight(localX, localZ, y + 1);
+                            oceanFloorHeightMap.call$setHeight(localX, localZ, y + 1);
                             break;
                         }
                     }

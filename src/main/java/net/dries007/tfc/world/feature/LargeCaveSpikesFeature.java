@@ -11,29 +11,24 @@ import java.util.function.Function;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.config.TFCConfig;
 
 public class LargeCaveSpikesFeature extends CaveSpikesFeature
 {
-    @SuppressWarnings("unused")
-    public LargeCaveSpikesFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn)
+    public LargeCaveSpikesFeature(Codec<NoFeatureConfig> codec)
     {
-        super(configFactoryIn);
-    }
-
-    public LargeCaveSpikesFeature()
-    {
-        super(NoFeatureConfig::deserialize);
+        super(codec);
     }
 
     /**
      * Much larger spikes, calls to the smaller spikes on the outsides
      */
-    public void place(IWorld worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    public void place(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
         if (pos.getY() > TFCConfig.COMMON.caveSpikeMaxY.get())
         {

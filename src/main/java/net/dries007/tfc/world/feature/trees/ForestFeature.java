@@ -12,26 +12,27 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
 public class ForestFeature extends Feature<ForestFeatureConfig>
 {
-    public ForestFeature()
+    public ForestFeature(Codec<ForestFeatureConfig> codec)
     {
-        super(ForestFeatureConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, ForestFeatureConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestFeatureConfig config)
     {
         final ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.FLORA)).orElseThrow(() -> new IllegalStateException("Missing flora data, cannot place forests."));
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
@@ -73,7 +74,7 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
         return placedTrees;
     }
 
-    private boolean placeTree(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos chunkBlockPos, ForestFeatureConfig config, ChunkData data, BlockPos.Mutable mutablePos, boolean allowOldGrowth)
+    private boolean placeTree(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestFeatureConfig config, ChunkData data, BlockPos.Mutable mutablePos, boolean allowOldGrowth)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();

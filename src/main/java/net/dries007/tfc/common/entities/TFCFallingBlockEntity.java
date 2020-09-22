@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.mixin.entity.item.FallingBlockEntityAccessor;
 import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 /**
@@ -66,18 +67,19 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     @Override
     public void tick()
     {
-        if (blockState.isAir())
+        final BlockState fallingBlockState = getBlockState();
+        if (fallingBlockState.isAir())
         {
             remove();
         }
         else
         {
-            Block block = blockState.getBlock();
+            Block block = fallingBlockState.getBlock();
             if (time++ == 0)
             {
                 // First tick, replace the existing block
-                BlockPos blockpos = new BlockPos(this);
-                if (level.getBlockState(blockpos).getBlock() == block)
+                BlockPos blockpos = blockPosition();
+                if (level.getBlockState(blockpos).getBlock().is(block))
                 {
                     level.removeBlock(blockpos, false);
                 }
@@ -97,7 +99,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
             if (!level.isClientSide)
             {
-                BlockPos posAt = new BlockPos(this);
+                BlockPos posAt = blockPosition();
                 if (!onGround)
                 {
                     failedBreakCheck = false;
@@ -129,35 +131,35 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                         }
                     }
 
-                    BlockState blockstate = level.getBlockState(posAt);
+                    BlockState hitBlockState = level.getBlockState(posAt);
                     setDeltaMovement(getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
 
-                    if (blockstate.getBlock() != Blocks.MOVING_PISTON)
+                    if (hitBlockState.getBlock() != Blocks.MOVING_PISTON)
                     {
                         remove();
                         if (!dontSetBlock)
                         {
-                            if (blockstate.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && blockState.canSurvive(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.below())))
+                            if (hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.canSurvive(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.below())))
                             {
-                                if (blockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(posAt).getType() == Fluids.WATER)
+                                if (fallingBlockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(posAt).getType() == Fluids.WATER)
                                 {
-                                    blockState = blockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE);
+                                    ((FallingBlockEntityAccessor)this).accessor$setBlockState(fallingBlockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
                                 }
 
-                                if (level.setBlockAndUpdate(posAt, blockState))
+                                if (level.setBlockAndUpdate(posAt, fallingBlockState))
                                 {
                                     if (block instanceof FallingBlock)
                                     {
-                                        ((FallingBlock) block).onLand(this.level, posAt, blockState, blockstate);
+                                        ((FallingBlock) block).onLand(this.level, posAt, fallingBlockState, hitBlockState, this);
                                     }
 
-                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(blockState.getBlock()))
+                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(fallingBlockState.getBlock()))
                                     {
                                         level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
                                     }
 
                                     // Sets the tile entity if it exists
-                                    if (blockData != null && blockState.hasTileEntity())
+                                    if (blockData != null && fallingBlockState.hasTileEntity())
                                     {
                                         TileEntity tileEntity = level.getBlockEntity(posAt);
                                         if (tileEntity != null)
@@ -171,7 +173,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                                     tileEntityData.put(dataKey, dataElement.copy());
                                                 }
                                             }
-                                            tileEntity.load(tileEntityData);
+                                            tileEntity.load(fallingBlockState, tileEntityData);
                                             tileEntity.setChanged();
                                         }
                                     }
@@ -188,7 +190,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                         }
                         else if (block instanceof FallingBlock)
                         {
-                            ((FallingBlock) block).onBroken(this.level, posAt);
+                            ((FallingBlock) block).onBroken(this.level, posAt, this);
                         }
                     }
                 }

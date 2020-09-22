@@ -8,9 +8,9 @@ package net.dries007.tfc.world.carver;
 import java.util.BitSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
@@ -18,17 +18,18 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.carver.CanyonWorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.RockManager;
+import net.dries007.tfc.mixin.world.gen.carver.CanyonWorldCarverAccessor;
 
 public class TFCRavineCarver extends CanyonWorldCarver
 {
     private final Set<Block> originalCarvableBlocks;
     private final CaveBlockReplacer blockCarver;
 
-    public TFCRavineCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> dynamic)
+    public TFCRavineCarver(Codec<ProbabilityConfig> codec)
     {
-        super(dynamic);
+        super(codec);
         originalCarvableBlocks = replaceableBlocks;
         blockCarver = new CaveBlockReplacer();
 
@@ -46,12 +47,12 @@ public class TFCRavineCarver extends CanyonWorldCarver
         float pitch = (rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
         float width = (rand.nextFloat() * 2.0F + rand.nextFloat()) * 2.0F;
         int branchAmount = 112 - rand.nextInt(28);
-        genCanyon(chunkIn, biomePos, rand.nextLong(), seaLevel, chunkX, chunkZ, xOffset, yOffset, zOffset, width, yaw, pitch, 0, branchAmount, 3.0D, carvingMask); /* carveRegion */
+        ((CanyonWorldCarverAccessor)this).call$genCanyon(chunkIn, biomePos, rand.nextLong(), seaLevel, chunkX, chunkZ, xOffset, yOffset, zOffset, width, yaw, pitch, 0, branchAmount, 3.0D, carvingMask);
         return true;
     }
 
     @Override
-    protected boolean carveBlock(IChunk chunkIn, Function<BlockPos, Biome> lazyBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutablePos1, BlockPos.Mutable mutablePos2, BlockPos.Mutable mutablePos3, int p_225556_8_, int p_225556_9_, int p_225556_10_, int actualX, int actualZ, int localX, int y, int localZ, AtomicBoolean reachedSurface)
+    protected boolean carveBlock(IChunk chunkIn, Function<BlockPos, Biome> lazyBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutablePos1, BlockPos.Mutable mutablePos2, BlockPos.Mutable mutablePos3, int p_225556_8_, int p_225556_9_, int p_225556_10_, int actualX, int actualZ, int localX, int y, int localZ, MutableBoolean reachedSurface)
     {
         mutablePos1.set(actualX, y, actualZ);
         return blockCarver.carveBlock(chunkIn, mutablePos1, carvingMask);

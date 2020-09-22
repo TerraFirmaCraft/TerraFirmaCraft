@@ -11,24 +11,25 @@ import java.util.Random;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Helpers;
 
 public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
 {
-    public RandomTreeFeature()
+    public RandomTreeFeature(Codec<RandomTreeConfig> codec)
     {
-        super(RandomTreeConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, RandomTreeConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, RandomTreeConfig config)
     {
         if (!isValidLocation(worldIn, pos) || !isAreaClear(worldIn, pos, config.radius, 2))
         {

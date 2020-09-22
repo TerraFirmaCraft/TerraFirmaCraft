@@ -25,6 +25,7 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.types.MetalItemManager;
+import net.dries007.tfc.mixin.item.crafting.RecipeManagerAccessor;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 
 import net.minecraft.resources.IFutureReloadListener.IStage;
@@ -80,6 +81,6 @@ public enum TFCServerTracker implements IFutureReloadListener
     @SuppressWarnings("unchecked")
     private <C extends IInventory, R extends IRecipe<C>> Collection<R> getRecipes(IRecipeType<R> recipeType)
     {
-        return (Collection<R>) server.getRecipeManager().byType(recipeType).values();
+        return (Collection<R>) ((RecipeManagerAccessor) server.getRecipeManager()).call$byType(recipeType).values();
     }
 }

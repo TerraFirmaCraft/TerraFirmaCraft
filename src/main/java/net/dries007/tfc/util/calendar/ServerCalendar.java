@@ -13,6 +13,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import net.dries007.tfc.mixin.world.GameRulesAccessor;
+import net.dries007.tfc.mixin.world.GameRulesRuleTypeAccessor;
 import net.dries007.tfc.network.CalendarUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.ReentrantRunnable;
@@ -27,8 +29,9 @@ public class ServerCalendar extends Calendar
     @SuppressWarnings("unchecked")
     public static void setup()
     {
-        GameRules.RuleType<GameRules.BooleanValue> type = (GameRules.RuleType<GameRules.BooleanValue>) GameRules.GAME_RULE_TYPES.get(GameRules.RULE_DAYLIGHT);
-        type.callback = type.callback.andThen((server, t) -> DO_DAYLIGHT_CYCLE.run());
+        GameRules.RuleType<GameRules.BooleanValue> type = (GameRules.RuleType<GameRules.BooleanValue>) GameRulesAccessor.accessor$getGameRuleTypes().get(GameRules.RULE_DAYLIGHT);
+        GameRulesRuleTypeAccessor typeAccessor = (GameRulesRuleTypeAccessor) type;
+        typeAccessor.accessor$setCallback(typeAccessor.accessor$getCallback().andThen((server, t) -> DO_DAYLIGHT_CYCLE.run()));
     }
 
     @Nullable

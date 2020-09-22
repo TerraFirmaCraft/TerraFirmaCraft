@@ -7,6 +7,7 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -53,12 +54,12 @@ public enum Heat
     }
 
     @Nullable
-    public static ITextComponent getTooltipColorless(float temperature)
+    public static IFormattableTextComponent getTooltipColorless(float temperature)
     {
         Heat heat = Heat.getHeat(temperature);
         if (heat != null)
         {
-            ITextComponent base = heat.getDisplayName();
+            IFormattableTextComponent base = heat.getDisplayName();
             if (heat != Heat.BRILLIANT_WHITE)
             {
                 for (int i = 1; i <= 4; i++)
@@ -74,10 +75,10 @@ public enum Heat
     }
 
     @Nullable
-    public static ITextComponent getTooltip(float temperature)
+    public static IFormattableTextComponent getTooltip(float temperature)
     {
         Heat heat = Heat.getHeat(temperature);
-        ITextComponent tooltip = getTooltipColorless(temperature);
+        IFormattableTextComponent tooltip = getTooltipColorless(temperature);
         if (tooltip != null && heat != null)
         {
             tooltip.withStyle(heat.format);
@@ -86,10 +87,10 @@ public enum Heat
     }
 
     @Nullable
-    public static ITextComponent getTooltipAlternate(float temperature)
+    public static IFormattableTextComponent getTooltipAlternate(float temperature)
     {
         Heat heat = Heat.getHeat(temperature);
-        ITextComponent tooltip = getTooltipColorless(temperature);
+        IFormattableTextComponent tooltip = getTooltipColorless(temperature);
         if (tooltip != null && heat != null)
         {
             tooltip.withStyle(heat.alternate);
@@ -124,7 +125,7 @@ public enum Heat
         return max;
     }
 
-    public ITextComponent getDisplayName()
+    public IFormattableTextComponent getDisplayName()
     {
         return new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".enum.heat." + this.name().toLowerCase());
     }

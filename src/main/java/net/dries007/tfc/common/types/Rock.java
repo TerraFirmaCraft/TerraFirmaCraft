@@ -7,6 +7,7 @@ package net.dries007.tfc.common.types;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -14,12 +15,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.rock.RawRockBlock;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
@@ -101,7 +105,7 @@ public class Rock
         MARBLE,
     }
 
-    public enum BlockType
+    public enum BlockType implements IStringSerializable
     {
         RAW(rock -> new RawRockBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         SMOOTH(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
@@ -115,19 +119,28 @@ public class Rock
         CHISELED(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false);
 
         public static final BlockType[] VALUES = values();
+        public static final Codec<BlockType> CODEC = IStringSerializable.fromEnum(BlockType::values, BlockType::byName);
+        public static final Map<String, BlockType> BY_NAME = Arrays.stream(values()).collect(Collectors.toMap(k -> k.name().toLowerCase(), v -> v));
 
         public static BlockType valueOf(int i)
         {
             return i >= 0 && i < VALUES.length ? VALUES[i] : RAW;
         }
 
+        public static BlockType byName(String id)
+        {
+            return BY_NAME.get(id);
+        }
+
         private final boolean variants;
         private final NonNullFunction<Default, Block> blockFactory;
+        private final String serializedName;
 
         BlockType(NonNullFunction<Default, Block> blockFactory, boolean variants)
         {
             this.blockFactory = blockFactory;
             this.variants = variants;
+            this.serializedName = name().toLowerCase();
         }
 
         /**
@@ -141,6 +154,12 @@ public class Rock
         public Block create(Default rock)
         {
             return blockFactory.apply(rock);
+        }
+
+        @Override
+        public String getSerializedName()
+        {
+            return serializedName;
         }
     }
 

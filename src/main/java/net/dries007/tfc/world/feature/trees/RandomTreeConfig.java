@@ -13,37 +13,21 @@ import javax.annotation.Nullable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public class RandomTreeConfig implements IFeatureConfig
 {
-    public static RandomTreeConfig forVariants(String baseName, int variants)
-    {
-        return new RandomTreeConfig(IntStream.range(1, 1 + variants).mapToObj(i -> new ResourceLocation(MOD_ID, baseName + "/" + i)).collect(Collectors.toList()));
-    }
-
-    public static RandomTreeConfig forVariants(String baseName, int variants, int trunkHeightMin, int trunkHeightRange, int radius)
-    {
-        return new RandomTreeConfig(IntStream.range(1, 1 + variants).mapToObj(i -> new ResourceLocation(MOD_ID, baseName + "/" + i)).collect(Collectors.toList()), trunkHeightMin, trunkHeightRange, radius);
-    }
-
-    @Nullable
-    public static <T> RandomTreeConfig deserialize(Dynamic<T> config)
-    {
-        return null;
-    }
+    public static final Codec<RandomTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        ResourceLocation.CODEC.listOf().fieldOf("structures").forGetter(c -> c.structureNames),
+        Codec.INT.fieldOf("trunk_height_min").forGetter(c -> c.trunkHeightMin),
+        Codec.INT.fieldOf("trunk_height_range").forGetter(c -> c.trunkHeightRange),
+        Codec.INT.fieldOf("radius").forGetter(c -> c.radius)
+    ).apply(instance, RandomTreeConfig::new));
 
     public final List<ResourceLocation> structureNames;
     public final int trunkHeightMin, trunkHeightRange;
     public final int radius;
-
-    public RandomTreeConfig(List<ResourceLocation> structureNames)
-    {
-        this(structureNames, 0, 0, 1);
-    }
 
     public RandomTreeConfig(List<ResourceLocation> structureNames, int trunkHeightMin, int trunkHeightRange, int radius)
     {
@@ -51,11 +35,5 @@ public class RandomTreeConfig implements IFeatureConfig
         this.trunkHeightMin = trunkHeightMin;
         this.trunkHeightRange = trunkHeightRange;
         this.radius = radius;
-    }
-
-    @Override
-    public <T> Dynamic<T> serialize(DynamicOps<T> ops)
-    {
-        return new Dynamic<>(ops, ops.emptyMap());
     }
 }

@@ -22,6 +22,8 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.config.TFCConfig;
@@ -36,6 +38,8 @@ import net.dries007.tfc.world.noise.INoise2D;
 
 public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSettings> implements IChunkDataProvidingChunkGenerator
 {
+    public static final Codec<TFCOverworldChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group());
+
     public static final BlockState BEDROCK = Blocks.BEDROCK.defaultBlockState();
 
     // Noise

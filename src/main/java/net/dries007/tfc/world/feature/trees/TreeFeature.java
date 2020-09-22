@@ -15,6 +15,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
@@ -23,7 +24,7 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 
 public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
@@ -32,9 +33,9 @@ public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
 
     protected final BlockPos.Mutable mutablePos;
 
-    public TreeFeature(Function<Dynamic<?>, ? extends C> configFactoryIn)
+    protected TreeFeature(Codec<C> codec)
     {
-        super(configFactoryIn);
+        super(codec);
 
         this.mutablePos = new BlockPos.Mutable();
     }
@@ -82,9 +83,9 @@ public abstract class TreeFeature<C extends IFeatureConfig> extends Feature<C>
         return false;
     }
 
-    protected TemplateManager getTemplateManager(IWorld worldIn)
+    protected TemplateManager getTemplateManager(ISeedReader worldIn)
     {
-        return ((ServerWorld) worldIn.getLevel()).getLevelStorage().getStructureManager();
+        return worldIn.getLevel().getServer().getStructureManager();
     }
 
     protected PlacementSettings getRandomPlacementSettings(ChunkPos chunkPos, BlockPos size, Random random)

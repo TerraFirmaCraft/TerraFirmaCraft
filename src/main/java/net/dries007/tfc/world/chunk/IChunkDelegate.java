@@ -5,10 +5,10 @@
 
 package net.dries007.tfc.world.chunk;
 
-import java.util.BitSet;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
@@ -16,11 +16,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.palette.UpgradeData;
 import net.minecraft.world.ITickList;
 import net.minecraft.world.IWorld;
@@ -28,8 +29,8 @@ import net.minecraft.world.biome.BiomeContainer;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 
 import it.unimi.dsi.fastutil.longs.LongSet;
@@ -41,9 +42,62 @@ public interface IChunkDelegate extends IChunk
 
     @Nullable
     @Override
+    default StructureStart<?> getStartForFeature(Structure<?> structureIn)
+    {
+        return getDelegate().getStartForFeature(structureIn);
+    }
+
+    @Override
+    default void setStartForFeature(Structure<?> structureIn, StructureStart<?> structureStartIn)
+    {
+        getDelegate().setStartForFeature(structureIn, structureStartIn);
+    }
+
+    @Override
+    default LongSet getReferencesForFeature(Structure<?> structureIn)
+    {
+        return getDelegate().getReferencesForFeature(structureIn);
+    }    @Override
+    default ChunkStatus getStatus()
+    {
+        return getDelegate().getStatus();
+    }
+
+    @Override
+    default void addReferenceForFeature(Structure<?> structureIn, long referenceIn)
+    {
+        getDelegate().addReferenceForFeature(structureIn, referenceIn);
+    }
+
+    @Override
+    default Map<Structure<?>, LongSet> getAllReferences()
+    {
+        return getDelegate().getAllReferences();
+    }
+
+    @Override
+    default void setAllReferences(Map<Structure<?>, LongSet> structureReferences)
+    {
+        getDelegate().setAllReferences(structureReferences);
+    }
+
+    @Nullable
+    @Override
     default BlockState setBlockState(BlockPos pos, BlockState state, boolean isMoving)
     {
         return getDelegate().setBlockState(pos, state, isMoving);
+    }
+
+    @Override
+    default void setBlockEntity(BlockPos pos, TileEntity tileEntityIn)
+    {
+        getDelegate().setBlockEntity(pos, tileEntityIn);
+    }
+
+    @Override
+    default void addEntity(Entity entityIn)
+    {
+        getDelegate().addEntity(entityIn);
     }
 
     @Nullable
@@ -108,13 +162,13 @@ public interface IChunkDelegate extends IChunk
     }
 
     @Override
-    default Map<String, StructureStart> getAllStarts()
+    default Map<Structure<?>, StructureStart<?>> getAllStarts()
     {
         return getDelegate().getAllStarts();
     }
 
     @Override
-    default void setAllStarts(Map<String, StructureStart> structureStartsIn)
+    default void setAllStarts(Map<Structure<?>, StructureStart<?>> structureStartsIn)
     {
         getDelegate().setAllStarts(structureStartsIn);
     }
@@ -132,18 +186,6 @@ public interface IChunkDelegate extends IChunk
         return getDelegate().getBiomes();
     }
 
-    @Override
-    default void setBlockEntity(BlockPos pos, TileEntity tileEntityIn)
-    {
-        getDelegate().setBlockEntity(pos, tileEntityIn);
-    }
-
-    @Override
-    default void addEntity(Entity entityIn)
-    {
-        getDelegate().addEntity(entityIn);
-    }
-
     @Nullable
     @Override
     default TileEntity getBlockEntity(BlockPos pos)
@@ -158,13 +200,9 @@ public interface IChunkDelegate extends IChunk
     }
 
     @Override
-    default IFluidState getFluidState(BlockPos pos)
+    default FluidState getFluidState(BlockPos pos)
     {
         return getDelegate().getFluidState(pos);
-    }    @Override
-    default void setUnsaved(boolean modified)
-    {
-        getDelegate().setUnsaved(modified);
     }
 
     @Override
@@ -183,10 +221,12 @@ public interface IChunkDelegate extends IChunk
     default int getMaxBuildHeight()
     {
         return getDelegate().getMaxBuildHeight();
-    }    @Override
-    default boolean isUnsaved()
+    }
+
+    @Override
+    default Stream<BlockState> getBlockStates(AxisAlignedBB axisAlignedBB)
     {
-        return getDelegate().isUnsaved();
+        return getDelegate().getBlockStates(axisAlignedBB);
     }
 
     @Override
@@ -197,54 +237,39 @@ public interface IChunkDelegate extends IChunk
 
     @Nullable
     @Override
-    default BlockRayTraceResult clipWithInteractionOverride(Vec3d startVec, Vec3d endVec, BlockPos pos, VoxelShape shape, BlockState state)
+    default BlockRayTraceResult clipWithInteractionOverride(Vector3d startVec, Vector3d endVec, BlockPos pos, VoxelShape shape, BlockState state)
     {
-        return getDelegate().clipWithInteractionOverride(startVec, endVec, pos, shape, state);
-    }
-
-    @Nullable
-    @Override
-    default StructureStart getStartForFeature(String stucture)
+        return null;
+    }    default void setUnsaved(boolean modified)
     {
-        return getDelegate().getStartForFeature(stucture);
-    }    @Override
-    default ChunkStatus getStatus()
-    {
-        return getDelegate().getStatus();
+        getDelegate().setUnsaved(modified);
     }
 
     @Override
-    default void setStartForFeature(String structureIn, StructureStart structureStartIn)
+    default double getBlockFloorHeight(VoxelShape voxelShape_, Supplier<VoxelShape> supplier_)
     {
-        getDelegate().setStartForFeature(structureIn, structureStartIn);
+        return 0;
     }
 
     @Override
-    default LongSet getReferencesForFeature(String structureIn)
+    default double getBlockFloorHeight(BlockPos blockPos_)
     {
-        return getDelegate().getReferencesForFeature(structureIn);
+        return 0;
     }
 
+
+
     @Override
-    default void addReferenceForFeature(String structure, long reference)
+    default boolean isUnsaved()
     {
-        getDelegate().addReferenceForFeature(structure, reference);
-    }    @Override
+        return getDelegate().isUnsaved();
+    }
+
+
+
     default void removeBlockEntity(BlockPos pos)
     {
         getDelegate().removeBlockEntity(pos);
-    }
-
-    @Override
-    default Map<String, LongSet> getAllReferences()
-    {
-        return getDelegate().getAllReferences();
-    }
-
-    @Override
-    default void setAllReferences(Map<String, LongSet> structureReferences)
-    {
-        getDelegate().setAllReferences(structureReferences);
     }
 
     @Override
@@ -253,19 +278,11 @@ public interface IChunkDelegate extends IChunk
         getDelegate().markPosForPostprocessing(pos);
     }
 
-
-
-
-
     @Override
     default ShortList[] getPostProcessing()
     {
         return getDelegate().getPostProcessing();
     }
-
-
-
-
 
     @Override
     default void addPackedPostProcess(short packedPosition, int index)
@@ -273,13 +290,11 @@ public interface IChunkDelegate extends IChunk
         getDelegate().addPackedPostProcess(packedPosition, index);
     }
 
-
     @Override
     default void setBlockEntityNbt(CompoundNBT nbt)
     {
         getDelegate().setBlockEntityNbt(nbt);
     }
-
 
     @Nullable
     @Override
@@ -288,7 +303,6 @@ public interface IChunkDelegate extends IChunk
         return getDelegate().getBlockEntityNbt(pos);
     }
 
-
     @Nullable
     @Override
     default CompoundNBT getBlockEntityNbtForSaving(BlockPos pos)
@@ -296,13 +310,11 @@ public interface IChunkDelegate extends IChunk
         return getDelegate().getBlockEntityNbtForSaving(pos);
     }
 
-
     @Override
     default Stream<BlockPos> getLights()
     {
         return getDelegate().getLights();
     }
-
 
     @Override
     default ITickList<Block> getBlockTicks()
@@ -310,18 +322,10 @@ public interface IChunkDelegate extends IChunk
         return getDelegate().getBlockTicks();
     }
 
-
     @Override
     default ITickList<Fluid> getLiquidTicks()
     {
         return getDelegate().getLiquidTicks();
-    }
-
-
-    @Override
-    default BitSet getCarvingMask(GenerationStage.Carving type)
-    {
-        return getDelegate().getCarvingMask(type);
     }
 
     @Override
@@ -360,6 +364,4 @@ public interface IChunkDelegate extends IChunk
     {
         return getDelegate().getWorldForge();
     }
-
-
 }
