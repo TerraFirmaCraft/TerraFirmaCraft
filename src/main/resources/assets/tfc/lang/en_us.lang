@@ -643,7 +643,7 @@ config.tfc.devices.temperature.heatingModifier.tooltip=Modifier for how quickly 
 ### Barrel
 config.tfc.devices.barrel=Barrel
 
-config.tfc.devices.barrel.tank=Tank Storage
+config.tfc.devices.barrel.tank=Barrel Storage
 config.tfc.devices.barrel.tank.tooltip=How much fluid (mB) can a barrel hold?
 
 config.tfc.devices.barrel.fluidWhitelist=Fluid Whitelist
@@ -667,7 +667,7 @@ config.tfc.devices.bloomery.ticks.tooltip=Number of ticks required for a bloomer
 ### Crucible
 config.tfc.devices.crucible=Crucible
 
-config.tfc.devices.crucible.tank=Tank Storage
+config.tfc.devices.crucible.tank=Crucible Storage
 config.tfc.devices.crucible.tank.tooltip=How much metal (units / mB) can a crucible hold?
 
 config.tfc.devices.crucible.enableAllSlots=Accept Pouring from All Slots
@@ -713,7 +713,7 @@ config.tfc.devices.pit_kiln.ticks.tooltip=Number of ticks required for a pit kil
 ### Lamp
 config.tfc.devices.lamp=Lamp
 
-config.tfc.devices.lamp.tank=Tank Storage
+config.tfc.devices.lamp.tank=Lamp Storage
 config.tfc.devices.lamp.tank.tooltip=How much fuel (mB) can a metal lamps hold?
 
 config.tfc.devices.lamp.burnRate=Burn Rate
@@ -736,17 +736,17 @@ config.tfc.devices.chisel.requireHammerInOffHand.tooltip=If true, hammer must be
 ### Small Vessel
 config.tfc.devices.small_vessel=Small Vessel
 
-config.tfc.devices.small_vessel.tank=Tank Storage
+config.tfc.devices.small_vessel.tank=Small Vessel Storage
 config.tfc.devices.small_vessel.tank.tooltip=How much metal (units / mB) can a small vessel hold?
 
 
 ### Sluice
 config.tfc.devices.sluice=Sluice
 
-config.tfc.devices.sluice.maxWorkChunk=Tank Storage
+config.tfc.devices.sluice.maxWorkChunk=Max Chunk Work
 config.tfc.devices.sluice.maxWorkChunk.tooltip=The amount of times a chunk can be worked (300 = default, 0 = disable). Note: While sluices increase work by 1, Goldpan increase by 6.
 
-config.tfc.devices.sluice.radius=Tank Storage
+config.tfc.devices.sluice.radius=Sluice Chunk Radius
 config.tfc.devices.sluice.radius.tooltip=The radius sluice works, in chunks.
 
 config.tfc.devices.sluice.ticks=Ticks
