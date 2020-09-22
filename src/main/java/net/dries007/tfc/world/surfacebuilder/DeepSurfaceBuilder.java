@@ -16,6 +16,8 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.common.util.Lazy;
 
+import com.mojang.serialization.Codec;
+
 /**
  * Places gravel under subsurface material
  * Not extending config due to concerns with how possible that is in 1.16. This is our only use case for that, it works fine
@@ -25,9 +27,9 @@ public class DeepSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();
     private static final BlockState GRAVEL = Blocks.GRAVEL.defaultBlockState();
 
-    public DeepSurfaceBuilder()
+    public DeepSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {
-        super(SurfaceBuilderConfig::deserialize);
+        super(codec);
     }
 
     @Override

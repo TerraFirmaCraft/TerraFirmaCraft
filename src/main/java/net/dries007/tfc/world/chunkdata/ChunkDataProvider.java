@@ -11,6 +11,7 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -39,7 +40,7 @@ public class ChunkDataProvider
         AbstractChunkProvider chunkProvider = world.getChunkSource();
         if (chunkProvider instanceof ServerChunkProvider)
         {
-            ChunkGenerator<?> chunkGenerator = ((ServerChunkProvider) chunkProvider).getGenerator();
+            ChunkGenerator chunkGenerator = ((ServerChunkProvider) chunkProvider).getGenerator();
             if (chunkGenerator instanceof IChunkDataProvidingChunkGenerator)
             {
                 return Optional.of(((IChunkDataProvidingChunkGenerator) chunkGenerator).getChunkDataProvider());
@@ -57,7 +58,7 @@ public class ChunkDataProvider
     private final INoise2D forestWeirdnessNoise;
     private final INoise2D forestDensityNoise;
 
-    public ChunkDataProvider(IWorld world, TFCGenerationSettings settings, Random seedGenerator)
+    public ChunkDataProvider(ISeedReader world, TFCGenerationSettings settings, Random seedGenerator)
     {
         List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings);
         this.bottomRockLayer = new RockFactory(rockLayers.get(0));

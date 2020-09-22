@@ -15,11 +15,13 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.common.util.Lazy;
 
+import com.mojang.serialization.Codec;
+
 public class ThinSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 {
-    public ThinSurfaceBuilder()
+    public ThinSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {
-        super(SurfaceBuilderConfig::deserialize);
+        super(codec);
     }
 
     @Override

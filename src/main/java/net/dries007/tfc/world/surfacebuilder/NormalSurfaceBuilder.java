@@ -16,13 +16,15 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.common.util.Lazy;
 
+import com.mojang.serialization.Codec;
+
 public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 {
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();
 
-    public NormalSurfaceBuilder()
+    public NormalSurfaceBuilder(Codec<SurfaceBuilderConfig> codec)
     {
-        super(SurfaceBuilderConfig::deserialize);
+        super(codec);
     }
 
     @Override

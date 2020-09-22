@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
@@ -16,21 +17,23 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.serialization.Codec;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCSurfaceBuilders
 {
     public static final DeferredRegister<SurfaceBuilder<?>> SURFACE_BUILDERS = DeferredRegister.create(ForgeRegistries.SURFACE_BUILDERS, MOD_ID);
 
-    public static final RegistryObject<NormalSurfaceBuilder> NORMAL = register("normal", NormalSurfaceBuilder::new);
-    public static final RegistryObject<ThinSurfaceBuilder> THIN = register("thin", ThinSurfaceBuilder::new);
-    public static final RegistryObject<DeepSurfaceBuilder> DEEP = register("deep", DeepSurfaceBuilder::new);
+    public static final RegistryObject<NormalSurfaceBuilder> NORMAL = register("normal", () -> new NormalSurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<ThinSurfaceBuilder> THIN = register("thin", () -> new ThinSurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<DeepSurfaceBuilder> DEEP = register("deep", () -> new DeepSurfaceBuilder(SurfaceBuilderConfig.CODEC));
 
-    public static final RegistryObject<BadlandsSurfaceBuilder> BADLANDS = register("badlands", BadlandsSurfaceBuilder::new);
-    public static final RegistryObject<MountainSurfaceBuilder> MOUNTAINS = register("mountains", MountainSurfaceBuilder::new);
-    public static final RegistryObject<ShoreSurfaceBuilder> SHORE = register("shore", ShoreSurfaceBuilder::new);
-    public static final RegistryObject<UnderwaterSurfaceBuilder> UNDERWATER = register("underwater", UnderwaterSurfaceBuilder::new);
-    public static final RegistryObject<PlateauSurfaceBuilder> PLATEAU = register("plateau", PlateauSurfaceBuilder::new);
+    public static final RegistryObject<BadlandsSurfaceBuilder> BADLANDS = register("badlands", () -> new BadlandsSurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<MountainSurfaceBuilder> MOUNTAINS = register("mountains", () -> new MountainSurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<ShoreSurfaceBuilder> SHORE = register("shore", () -> new ShoreSurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<UnderwaterSurfaceBuilder> UNDERWATER = register("underwater", () -> new UnderwaterSurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<PlateauSurfaceBuilder> PLATEAU = register("plateau", () -> new PlateauSurfaceBuilder(SurfaceBuilderConfig.CODEC));
 
     // Used for shores - red sand = normal beach sand, sandstone = variant beach sand (pink / black)
     public static final SurfaceBuilderConfig RED_SAND_CONFIG = config(Blocks.RED_SAND);
