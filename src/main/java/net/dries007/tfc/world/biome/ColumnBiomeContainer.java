@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.world.biome;
 
+import net.minecraft.util.IObjectIntIterable;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.Biome;
@@ -22,11 +23,11 @@ public class ColumnBiomeContainer extends BiomeContainer
     public static final int HEIGHT_BITS = (int) Math.round(Math.log(256.0D) / Math.log(2.0D)) - 2; // 6
     public static final int HORIZONTAL_BITS = WIDTH_BITS + WIDTH_BITS; // 4
 
-    public ColumnBiomeContainer(ChunkPos chunkPosIn, BiomeProvider biomeProviderIn)
+    public ColumnBiomeContainer(IObjectIntIterable<Biome> biomeIdRegistry, ChunkPos chunkPosIn, BiomeProvider biomeProviderIn)
     {
         // Use Util.make to pass the already initialized biomes array into the correct constructor
         // This copies the initialization except it only queries the biome provider once per column, saving 98% of the biome generation calls
-        super(Util.make(() -> {
+        super(biomeIdRegistry, Util.make(() -> {
             Biome[] biomes = new Biome[BIOMES_SIZE];
             int biomeCoordX = chunkPosIn.getMinBlockX() >> 2;
             int biomeCoordZ = chunkPosIn.getMinBlockZ() >> 2;

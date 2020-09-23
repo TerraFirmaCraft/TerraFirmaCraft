@@ -5,15 +5,13 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.function.LongFunction;
 
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
+
+import net.dries007.tfc.world.noise.INoise2D;
 
 /**
  * This is a version of {@link RegistryObject} for biomes.
@@ -21,55 +19,49 @@ import net.minecraftforge.registries.DeferredRegister;
  * To get the variant holder from the biome, use {@link TFCBiome#getVariants()}
  * To get the biome from the variants, use one of the {@link BiomeVariants#get()} methods.
  */
-public class BiomeVariants implements Supplier<TFCBiome>
+public class BiomeVariants
 {
-    private final Map<BiomeTemperature, Map<BiomeRainfall, RegistryObject<TFCBiome>>> biomeVariants;
-    private final List<RegistryObject<TFCBiome>> allVariants;
-    private final IFactory factory;
-    private boolean spawnBiome;
+    private final Map<BiomeTemperature, Map<BiomeRainfall, BiomeExtension>> extensions;
+    private final LongFunction<INoise2D> noiseFactory;
+    private final SmallGroup smallGroup;
+    private final LargeGroup largeGroup;
 
-    public BiomeVariants(DeferredRegister<Biome> registry, String baseName, BiomeVariants parent)
+    public BiomeVariants(LongFunction<INoise2D> noiseFactory, SmallGroup smallGroup, LargeGroup largeGroup)
     {
-        this(registry, baseName, parent.factory);
-    }
-
-    public BiomeVariants(DeferredRegister<Biome> registry, String baseName, IFactory factory)
-    {
-        this.factory = factory;
-        this.biomeVariants = new EnumMap<>(BiomeTemperature.class);
-        this.allVariants = new ArrayList<>();
-
-        for (BiomeTemperature temp : BiomeTemperature.values())
+        this.noiseFactory = noiseFactory;
+        this.smallGroup = smallGroup;
+        this.largeGroup = largeGroup;
+        extensions = new EnumMap<>(BiomeTemperature.class);
+        for (BiomeTemperature temperature : BiomeTemperature.values())
         {
-            Map<BiomeRainfall, RegistryObject<TFCBiome>> innerBiomes = new EnumMap<>(BiomeRainfall.class);
-            for (BiomeRainfall rain : BiomeRainfall.values())
-            {
-                String name = baseName + "_" + temp.name().toLowerCase() + "_" + rain.name().toLowerCase();
-                RegistryObject<TFCBiome> obj = registry.register(name, () -> {
-                    TFCBiome biome = factory.create(temp, rain);
-                    // Set the variant holder, so we can ask each biome to get variants later!
-                    biome.setVariantHolder(this);
-                    return biome;
-                });
-                innerBiomes.put(rain, obj);
-                allVariants.add(obj);
-            }
-            biomeVariants.put(temp, innerBiomes);
+            extensions.put(temperature, new EnumMap<>(BiomeRainfall.class));
         }
     }
 
-    /**
-     * @return the default instance (normal / normal)
-     */
-    public TFCBiome get()
+    public LargeGroup getLargeGroup()
     {
-        return get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL).get();
+        return largeGroup;
+    }
+
+    public SmallGroup getSmallGroup()
+    {
+        return smallGroup;
+    }
+
+    public INoise2D createNoiseLayer(long seed)
+    {
+        return noiseFactory.apply(seed);
+    }
+
+    public void put(BiomeTemperature temperature, BiomeRainfall rainfall, BiomeExtension extension)
+    {
+        extensions.get(temperature).put(rainfall, extension);
     }
 
     /**
      * @return the biome instance of the specified temperature / rainfall
      */
-    public RegistryObject<TFCBiome> get(float averageTemperature, float rainfall)
+    public BiomeExtension get(float averageTemperature, float rainfall)
     {
         return get(BiomeTemperature.get(averageTemperature), BiomeRainfall.get(rainfall));
     }
@@ -77,29 +69,22 @@ public class BiomeVariants implements Supplier<TFCBiome>
     /**
      * @return the biome instance of the specified temperature / rainfall
      */
-    public RegistryObject<TFCBiome> get(BiomeTemperature temp, BiomeRainfall rain)
+    public BiomeExtension get(BiomeTemperature temp, BiomeRainfall rain)
     {
-        return biomeVariants.get(temp).get(rain);
+        return extensions.get(temp).get(rain);
     }
 
-    public List<RegistryObject<TFCBiome>> getAll()
+    public enum LargeGroup
     {
-        return allVariants;
+        LAND, OCEAN, RIVER, LAKE;
+
+        public static final int SIZE = LargeGroup.values().length;
     }
 
-    public boolean isSpawnBiome()
+    public enum SmallGroup
     {
-        return spawnBiome;
-    }
+        BODY, RIVER;
 
-    public BiomeVariants setSpawnBiome()
-    {
-        this.spawnBiome = true;
-        return this;
-    }
-
-    public interface IFactory
-    {
-        TFCBiome create(BiomeTemperature temp, BiomeRainfall rain);
+        public static final int SIZE = SmallGroup.values().length;
     }
 }

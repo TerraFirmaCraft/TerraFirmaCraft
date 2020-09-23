@@ -9,24 +9,33 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Blockreader;
+import net.minecraft.world.EmptyBlockReader;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.mixin.world.gen.HeightmapAccessor;
 import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.carver.WorleyCaveCarver;
@@ -36,33 +45,52 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.IChunkDataProvidingChunkGenerator;
 import net.dries007.tfc.world.noise.INoise2D;
 
-public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSettings> implements IChunkDataProvidingChunkGenerator
+public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvidingChunkGenerator
 {
-    public static final Codec<TFCOverworldChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group());
+    // todo: codec for chunk gen settings
+    public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        BiomeProvider.CODEC.fieldOf("biome_source").forGetter(c -> c.biomeSource),
+        DimensionStructuresSettings.CODEC.fieldOf("settings").forGetter(c -> c.settings),
+        Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock),
+        Codec.LONG.fieldOf("seed").forGetter(c -> c.seed)
+    ).apply(instance, TFCChunkGenerator::new));
+
+    public static final int SEA_LEVEL = 96;
 
     public static final BlockState BEDROCK = Blocks.BEDROCK.defaultBlockState();
+    public static final BlockState STONE = Blocks.STONE.defaultBlockState();
+    public static final BlockState WATER = Blocks.WATER.defaultBlockState();
 
     // Noise
-    private final Map<TFCBiome, INoise2D> biomeNoiseMap;
+    private final Map<BiomeVariants, INoise2D> biomeNoiseMap;
     private final INoiseGenerator surfaceDepthNoise;
 
-    private final TFCBiomeProvider shadowBiomeProvider;
     private final WorleyCaveCarver worleyCaveCarver;
     private final ChunkDataProvider chunkDataProvider;
     private final ChunkBlockReplacer blockReplacer;
 
-    private final BlockState defaultBlock, defaultFluid;
+    // Properties set from codec
+    private final BiomeProvider biomeProvider;
+    private final DimensionStructuresSettings settings;
+    private final boolean flatBedrock;
+    private final long seed;
 
-    public TFCOverworldChunkGenerator(IWorld world, BiomeProvider biomeProvider, TFCGenerationSettings settings)
+    private TFCChunkGenerator(BiomeProvider biomeProvider, DimensionStructuresSettings settings, boolean flatBedrock, long seed)
     {
-        super(world, biomeProvider, settings);
+        super(biomeProvider, settings);
 
-        SharedSeedRandom seedGenerator = new SharedSeedRandom(world.getSeed());
+        this.biomeProvider = biomeProvider;
+        this.settings = settings;
+        this.flatBedrock = flatBedrock;
+        this.seed = seed;
 
         // Noise
         this.biomeNoiseMap = new HashMap<>();
+
+        final Random seedGenerator = new Random(seed);
         final long biomeNoiseSeed = seedGenerator.nextLong();
-        TFCBiomes.getBiomes().forEach(biome -> biomeNoiseMap.put(biome, biome.createNoiseLayer(biomeNoiseSeed)));
+
+        TFCBiomes.getVariants().forEach(variant -> biomeNoiseMap.put(variant, variant.createNoiseLayer(biomeNoiseSeed)));
         surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, 3, 0); // From vanilla
 
         if (!(biomeProvider instanceof TFCBiomeProvider))
@@ -70,14 +98,11 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
             throw new IllegalArgumentException("biome provider must extend TFCBiomeProvider");
         }
         // Generators / Providers
-        this.shadowBiomeProvider = (TFCBiomeProvider) biomeProvider; // Custom biome provider class
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator); // Worley cave carver, separate from vanilla ones
-        this.chunkDataProvider = new ChunkDataProvider(world, settings, seedGenerator); // Chunk data
-        this.blockReplacer = new ChunkBlockReplacer(world.getSeed()); // Replaces default world gen blocks with TFC variants, after surface generation
-        this.shadowBiomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
+        this.chunkDataProvider = new ChunkDataProvider(settings, seedGenerator); // Chunk data
+        this.blockReplacer = new ChunkBlockReplacer(seedGenerator.nextLong()); // Replaces default world gen blocks with TFC variants, after surface generation
 
-        this.defaultBlock = settings.getDefaultBlock();
-        this.defaultFluid = settings.getDefaultFluid();
+        ((TFCBiomeProvider) biomeProvider).setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
     }
 
     @Override
@@ -92,29 +117,41 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
     }
 
     @Override
-    public void createBiomes(IChunk chunkIn)
+    public void createBiomes(Registry<Biome> biomeIdRegistry, IChunk chunkIn)
     {
         // Saves 98% of vanilla biome generation calls
-        ((ChunkPrimer) chunkIn).setBiomes(new ColumnBiomeContainer(chunkIn.getPos(), shadowBiomeProvider));
+        ((ChunkPrimer) chunkIn).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunkIn.getPos(), biomeProvider));
     }
 
     @Override
-    public void applyCarvers(BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
+    protected Codec<TFCChunkGenerator> codec()
+    {
+        return CODEC;
+    }
+
+    @Override
+    public ChunkGenerator withSeed(long seedIn)
+    {
+        return new TFCChunkGenerator(biomeProvider, settings, flatBedrock, seedIn);
+    }
+
+    @Override
+    public void applyCarvers(long worldSeed, BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
     {
         ChunkPos chunkPos = chunkIn.getPos();
         if (stage == GenerationStage.Carving.AIR)
         {
             // First, run worley cave carver
             // todo: this should use a vanilla world carver for ease of use (despite the worse efficiency)
-            worleyCaveCarver.carve(chunkIn, chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), chunkIn.getCarvingMask(stage));
+            worleyCaveCarver.carve(chunkIn, chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), ((ChunkPrimer)chunkIn).getOrCreateCarvingMask(stage));
         }
 
         // Fire other world carvers
-        super.applyCarvers(biomeManager, chunkIn, stage);
+        super.applyCarvers(worldSeed, biomeManager, chunkIn, stage);
     }
 
     /**
-     * Since we build surface in {@link TFCOverworldChunkGenerator#makeBase(IWorld, IChunk)}, we just have to make bedrock and replace surface with TFC blocks here.
+     * Since we build surface in {@link TFCChunkGenerator#makeBase(IWorld, IChunk)}, we just have to make bedrock and replace surface with TFC blocks here.
      */
     @Override
     public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, IChunk chunk)
@@ -142,7 +179,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
      * This runs after biome generation. In order to do accurate surface placement, we don't use the already generated biome container, as the biome magnifier really sucks for definition on cliffs
      */
     @Override
-    public void fillFromNoise(IWorld world, IChunk chunk)
+    public void fillFromNoise(IWorld world, StructureManager structureManager, IChunk chunk)
     {
         // Initialization
         final IChunk fastChunk = FastChunkPrimer.deslowificate(chunk);
@@ -155,18 +192,21 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
         // The accurate version of biomes which we use for surface building
         // These are calculated during height generation in order to generate cliffs with harsh borders between biomes
-        final TFCBiome[] localBiomes = new TFCBiome[16 * 16];
+        final Biome[] localBiomes = new Biome[16 * 16];
         final double[] baseHeight = new double[16 * 16];
 
         // The biome weights at different distance intervals
-        final Object2DoubleMap<TFCBiome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>();
+        final Object2DoubleMap<Biome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>();
 
         // Faster than vanilla (only does 2d interpolation) and uses the already generated biomes by the chunk where possible
-        final ChunkArraySampler.CoordinateAccessor<TFCBiome> biomeAccessor = (x, z) -> (TFCBiome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(world.getSeed(), chunkX + x, 0, chunkZ + z, world);
+        final ChunkArraySampler.CoordinateAccessor<Biome> biomeAccessor = (x, z) -> (Biome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(seed, chunkX + x, 0, chunkZ + z, world);
 
-        final TFCBiome[] sampledBiomes16 = ChunkArraySampler.fillSampledArray(new TFCBiome[10 * 10], biomeAccessor, 4);
-        final TFCBiome[] sampledBiomes4 = ChunkArraySampler.fillSampledArray(new TFCBiome[13 * 13], biomeAccessor, 2);
-        final TFCBiome[] sampledBiomes1 = ChunkArraySampler.fillSampledArray(new TFCBiome[24 * 24], biomeAccessor);
+        final Biome[] sampledBiomes16 = ChunkArraySampler.fillSampledArray(new Biome[10 * 10], biomeAccessor, 4);
+        final Biome[] sampledBiomes4 = ChunkArraySampler.fillSampledArray(new Biome[13 * 13], biomeAccessor, 2);
+        final Biome[] sampledBiomes1 = ChunkArraySampler.fillSampledArray(new Biome[24 * 24], biomeAccessor);
+
+        Registry<Biome> biomeRegistry = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+        Function<Biome, BiomeVariants> variantAccessor = biome -> TFCBiomes.getExtension(biomeRegistry, biome).getVariants();
 
         for (int x = 0; x < 16; x++)
         {
@@ -181,21 +221,22 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
 
                 // Group biomes at different distances. This has the effect of making some biome transitions happen over larger distances than others.
                 // This is used to make most land biomes blend at maximum distance, while allowing biomes such as rivers to blend at short distances, creating better cliffs as river biomes are smaller width than other biomes.
-                ChunkArraySampler.reduceGroupedWeightMap(weightMap4, weightMap16, ITFCBiome::getLargeGroup, ITFCBiome.LargeGroup.SIZE);
-                ChunkArraySampler.reduceGroupedWeightMap(weightMap1, weightMap4, ITFCBiome::getMediumGroup, ITFCBiome.SmallGroup.SIZE);
+                ChunkArraySampler.reduceGroupedWeightMap(weightMap4, weightMap16, variantAccessor.andThen(BiomeVariants::getLargeGroup), BiomeVariants.LargeGroup.SIZE);
+                ChunkArraySampler.reduceGroupedWeightMap(weightMap1, weightMap4, variantAccessor.andThen(BiomeVariants::getSmallGroup), BiomeVariants.SmallGroup.SIZE);
 
                 // Based on total weight of all biomes included, calculate heights of a couple important groups
                 // Rivers and shores are seperated in order to force cliff generation
                 double totalHeight = 0, riverHeight = 0, shoreHeight = 0;
                 double riverWeight = 0, shoreWeight = 0;
-                TFCBiome biomeAt = null, normalBiomeAt = null, riverBiomeAt = null, shoreBiomeAt = null;
+                Biome biomeAt = null, normalBiomeAt = null, riverBiomeAt = null, shoreBiomeAt = null;
                 double maxNormalWeight = 0, maxRiverWeight = 0, maxShoreWeight = 0;
-                for (Object2DoubleMap.Entry<TFCBiome> entry : weightMap1.object2DoubleEntrySet())
+                for (Object2DoubleMap.Entry<Biome> entry : weightMap1.object2DoubleEntrySet())
                 {
                     double weight = entry.getDoubleValue();
-                    double height = weight * biomeNoiseMap.get(entry.getKey()).noise(chunkX + x, chunkZ + z);
+                    BiomeVariants variants = variantAccessor.apply(entry.getKey());
+                    double height = weight * biomeNoiseMap.get(variants).noise(chunkX + x, chunkZ + z);
                     totalHeight += height;
-                    if (entry.getKey().getVariants() == TFCBiomes.RIVER)
+                    if (variants == TFCBiomes.RIVER)
                     {
                         riverHeight += height;
                         riverWeight += weight;
@@ -205,7 +246,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                             maxRiverWeight = weight;
                         }
                     }
-                    else if (entry.getKey().getVariants() == TFCBiomes.SHORE)
+                    else if (variants == TFCBiomes.SHORE)
                     {
                         shoreHeight += height;
                         shoreWeight += weight;
@@ -283,17 +324,17 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 for (int y = 0; y <= landHeight; y++)
                 {
                     pos.set(chunkX + x, y, chunkZ + z);
-                    fastChunk.setBlockState(pos, defaultBlock, false);
+                    fastChunk.setBlockState(pos, STONE, false);
                 }
 
                 for (int y = landHeight + 1; y <= seaLevel; y++)
                 {
                     pos.set(chunkX + x, y, chunkZ + z);
-                    fastChunk.setBlockState(pos, defaultFluid, false);
+                    fastChunk.setBlockState(pos, WATER, false);
                 }
 
-                fastChunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG).setHeight(x, z, landHeight + 1);
-                fastChunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG).setHeight(x, z, landOrSeaHeight + 1);
+                ((HeightmapAccessor) fastChunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG)).call$setHeight(x, z, landHeight + 1);
+                ((HeightmapAccessor) fastChunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG)).call$setHeight(x, z, landOrSeaHeight + 1);
             }
         }
 
@@ -307,7 +348,7 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
                 int posZ = chunkPos.getMinBlockZ() + z;
                 int posY = fastChunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
                 double noise = surfaceDepthNoise.getSurfaceNoiseValue(posX * 0.0625, posZ * 0.0625, 0.0625, x * 0.0625) * 15;
-                localBiomes[x + 16 * z].buildSurfaceAt(random, fastChunk, posX, posZ, posY, noise, getSettings().getDefaultBlock(), getSettings().getDefaultFluid(), getSeaLevel(), world.getSeed());
+                localBiomes[x + 16 * z].buildSurfaceAt(random, fastChunk, posX, posZ, posY, noise, STONE, WATER, getSeaLevel(), seed);
             }
         }
     }
@@ -324,9 +365,14 @@ public class TFCOverworldChunkGenerator extends ChunkGenerator<TFCGenerationSett
         return getSeaLevel();
     }
 
+    @Override
+    public IBlockReader getBaseColumn(int x, int z)
+    {
+        return EmptyBlockReader.INSTANCE; // todo: is this important?
+    }
+
     private void makeBedrock(IChunk chunk, Random random)
     {
-        boolean flatBedrock = getSettings().isFlatBedrock();
         BlockPos.Mutable posAt = new BlockPos.Mutable();
         for (BlockPos pos : BlockPos.betweenClosed(chunk.getPos().getMinBlockX(), 0, chunk.getPos().getMinBlockZ(), chunk.getPos().getMinBlockX() + 15, 0, chunk.getPos().getMinBlockZ() + 15))
         {

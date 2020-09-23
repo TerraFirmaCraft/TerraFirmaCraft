@@ -17,7 +17,6 @@ import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
 import net.dries007.tfc.ImageUtil;
-import net.dries007.tfc.world.biome.IBiomeFactory;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.layer.*;
 import org.junit.jupiter.api.Test;
