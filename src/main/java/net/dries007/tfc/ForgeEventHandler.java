@@ -5,24 +5,17 @@
 
 package net.dries007.tfc;
 
-import java.util.Random;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings;
-import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.server.ServerWorld;
@@ -35,7 +28,6 @@ import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -55,7 +47,6 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCServerTracker;
 import net.dries007.tfc.util.support.SupportManager;
-import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;

@@ -11,7 +11,11 @@
     "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor"
   ],
-  "client": [],
+  "client": [
+    "client.gui.screen.BiomeGeneratorTypeScreensAccessor",
+    "client.renderer.FogRendererMixin",
+    "world.biome.BiomeColorsAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

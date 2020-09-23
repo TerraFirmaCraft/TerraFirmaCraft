@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.function.LongFunction;
 import java.util.function.Supplier;
 
+import net.minecraft.util.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.LazyAreaLayerContext;
 import net.minecraft.world.gen.area.IAreaFactory;
@@ -19,38 +20,53 @@ import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.dries007.tfc.common.types.RockManager;
-import net.dries007.tfc.world.TFCGenerationSettings;
+import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 
 public class TFCLayerUtil
 {
-    /* Biomes */
-    public static final int OCEAN = getId(TFCBiomes.OCEAN);
-    public static final int DEEP_OCEAN = getId(TFCBiomes.DEEP_OCEAN);
-    public static final int PLAINS = getId(TFCBiomes.PLAINS);
-    public static final int HILLS = getId(TFCBiomes.HILLS);
-    public static final int LOWLANDS = getId(TFCBiomes.LOWLANDS);
-    public static final int LOW_CANYONS = getId(TFCBiomes.LOW_CANYONS);
-    public static final int ROLLING_HILLS = getId(TFCBiomes.ROLLING_HILLS);
-    public static final int BADLANDS = getId(TFCBiomes.BADLANDS);
-    public static final int PLATEAU = getId(TFCBiomes.PLATEAU);
-    public static final int OLD_MOUNTAINS = getId(TFCBiomes.OLD_MOUNTAINS);
-    public static final int MOUNTAINS = getId(TFCBiomes.MOUNTAINS);
-    public static final int FLOODED_MOUNTAINS = getId(TFCBiomes.FLOODED_MOUNTAINS);
-    public static final int CANYONS = getId(TFCBiomes.CANYONS);
-    public static final int SHORE = getId(TFCBiomes.SHORE);
-    public static final int LAKE = getId(TFCBiomes.LAKE);
-    public static final int RIVER = getId(TFCBiomes.RIVER);
+    static final Int2ObjectMap<BiomeVariants> REGISTRY = new Int2ObjectOpenHashMap<>();
+    private static int ID = -1;
 
-    public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, TFCGenerationSettings settings)
+    /**
+     * These are the int IDs that are used for layer generation
+     * They are mapped to registry keys here
+     * When the biome is requested, the json biome is requested
+     */
+    public static final int OCEAN = makeLayerId(TFCBiomes.OCEAN);
+    public static final int DEEP_OCEAN = makeLayerId(TFCBiomes.DEEP_OCEAN);
+    public static final int PLAINS = makeLayerId(TFCBiomes.PLAINS);
+    public static final int HILLS = makeLayerId(TFCBiomes.HILLS);
+    public static final int LOWLANDS = makeLayerId(TFCBiomes.LOWLANDS);
+    public static final int LOW_CANYONS = makeLayerId(TFCBiomes.LOW_CANYONS);
+    public static final int ROLLING_HILLS = makeLayerId(TFCBiomes.ROLLING_HILLS);
+    public static final int BADLANDS = makeLayerId(TFCBiomes.BADLANDS);
+    public static final int PLATEAU = makeLayerId(TFCBiomes.PLATEAU);
+    public static final int OLD_MOUNTAINS = makeLayerId(TFCBiomes.OLD_MOUNTAINS);
+    public static final int MOUNTAINS = makeLayerId(TFCBiomes.MOUNTAINS);
+    public static final int FLOODED_MOUNTAINS = makeLayerId(TFCBiomes.FLOODED_MOUNTAINS);
+    public static final int CANYONS = makeLayerId(TFCBiomes.CANYONS);
+    public static final int SHORE = makeLayerId(TFCBiomes.SHORE);
+    public static final int LAKE = makeLayerId(TFCBiomes.LAKE);
+    public static final int RIVER = makeLayerId(TFCBiomes.RIVER);
+
+    public static BiomeVariants getFromLayerId(int id)
+    {
+        return REGISTRY.get(id);
+    }
+
+    public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, int landFrequency, int biomeSize)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
         IAreaFactory<LazyArea> mainLayer, riverLayer;
 
         // Ocean / Continents
 
-        mainLayer = new IslandLayer(settings.getIslandFrequency()).run(contextFactory.apply(1000L));
+        mainLayer = new IslandLayer(landFrequency).run(contextFactory.apply(1000L));
         mainLayer = ZoomLayer.FUZZY.run(contextFactory.apply(1001L), mainLayer);
         mainLayer = AddIslandLayer.NORMAL.run(contextFactory.apply(1002L), mainLayer);
         mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1003L), mainLayer);
@@ -69,7 +85,7 @@ public class TFCLayerUtil
         // Elevation Mapping => Rivers
         riverLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1011L), mainLayer);
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < biomeSize; i++)
         {
             riverLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1012L + i), riverLayer);
         }
@@ -106,7 +122,7 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
-    public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed, TFCGenerationSettings settings)
+    public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
 
@@ -140,7 +156,8 @@ public class TFCLayerUtil
                 seedLayer = SmoothLayer.INSTANCE.run(contextFactory.apply(1001L), seedLayer);
             }
 
-            for (int i = 0; i < settings.getRockZoomLevel(j); i++)
+            // todo: config option through biome provider codec?
+            for (int i = 0; i < 7; i++)
             {
                 seedLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1001L), seedLayer);
             }
@@ -175,8 +192,10 @@ public class TFCLayerUtil
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
     }
 
-    private static <T extends Biome> int getId(Supplier<T> biome)
+    private static int makeLayerId(BiomeVariants variants)
     {
-        return ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(biome.get());
+        ID++;
+        REGISTRY.put(ID, variants);
+        return ID;
     }
 }

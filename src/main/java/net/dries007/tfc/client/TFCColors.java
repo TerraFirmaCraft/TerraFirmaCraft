@@ -11,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Climate;
@@ -64,6 +65,11 @@ public final class TFCColors
         int temperatureIndex = MathHelper.clamp((int) ((temperature + 30f) * 255f / 60f), 0, 255);
         int rainfallIndex = 255 - MathHelper.clamp((int) (rainfall * 255f / 500f), 0, 255);
         return WATER_COLORS_CACHE[temperatureIndex | (rainfallIndex << 8)];
+    }
+
+    public static int getWaterFogColor(Biome biome, BlockPos pos)
+    {
+        return biome.getWaterFogColor(); // todo: use position context and return a climate based color
     }
 
     public static int getSeasonalFoliageColor(BlockState state, @Nullable BlockPos pos, int tintIndex, int fallColorBaseIndex)
