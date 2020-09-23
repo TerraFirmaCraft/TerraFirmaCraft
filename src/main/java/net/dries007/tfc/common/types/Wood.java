@@ -12,6 +12,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraftforge.common.util.NonNullFunction;
 
@@ -37,89 +38,42 @@ public class Wood
      */
     public enum Default
     {
-        ACACIA(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("acacia", 35)),
-            wood -> TFCFeatures.DOUBLE_RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("acacia_large", 6, 2, 2, 2))
-        ),
-        ASH(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().configured(new OverlayTreeConfig(Helpers.identifier("ash/base"), Helpers.identifier("ash/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().defaultBlockState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("ash_large", 5))
-        ),
-        ASPEN(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("aspen", 16))
-        ),
-        BIRCH(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("birch", 16))
-        ),
-        BLACKWOOD(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().configured(new OverlayTreeConfig(Helpers.identifier("blackwood/base"), Helpers.identifier("blackwood/overlay"), 2, 2, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().defaultBlockState()))
-        ),
-        CHESTNUT(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().configured(new OverlayTreeConfig(Helpers.identifier("chestnut/base"), Helpers.identifier("chestnut/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().defaultBlockState()))
-        ),
-        DOUGLAS_FIR(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("douglas_fir", 9)),
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("douglas_fir_large", 5))
-        ),
-        HICKORY(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("hickory", 9)),
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("hickory_large", 5))
-        ),
-        KAPOK(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("kapok", 7))
-        ),
-        MAPLE(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().configured(new OverlayTreeConfig(Helpers.identifier("maple/base"), Helpers.identifier("maple/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().defaultBlockState())),
-            wood -> TFCFeatures.DOUBLE_RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("maple_large", 5))
-        ),
-        OAK(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().configured(new OverlayTreeConfig(Helpers.identifier("oak/base"), Helpers.identifier("oak/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().defaultBlockState()))
-        ),
-        PALM(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("palm", 7)) // todo: random height variation
-        ),
-        PINE(true,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("pine", 9)),
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("pine_large", 5))
-        ),
-        ROSEWOOD(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().configured(new OverlayTreeConfig(Helpers.identifier("rosewood/base"), Helpers.identifier("rosewood/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().defaultBlockState()))
-        ),
-        SEQUOIA(true,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("sequoia", 7))
-            // todo: large conifer generator
-        ),
-        SPRUCE(true,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("spruce", 7))
-            // todo: large conifer generator
-        ),
-        SYCAMORE(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().configured(new OverlayTreeConfig(Helpers.identifier("sycamore/base"), Helpers.identifier("sycamore/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().defaultBlockState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("sycamore_large", 5))
-        ),
-        WHITE_CEDAR(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().configured(new OverlayTreeConfig(Helpers.identifier("white_cedar/base"), Helpers.identifier("white_cedar/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().defaultBlockState()))
-        ),
-        WILLOW(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().configured(RandomTreeConfig.forVariants("willow", 7))
-        );
+        // todo: actual values for the three material colors, and fall foliage coords by wood type
+        ACACIA(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        ASH(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        ASPEN(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        BIRCH(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        BLACKWOOD(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        CHESTNUT(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        DOUGLAS_FIR(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        HICKORY(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        KAPOK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        MAPLE(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        OAK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        PALM(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        PINE(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        ROSEWOOD(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        SEQUOIA(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        SPRUCE(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        SYCAMORE(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        WHITE_CEDAR(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0),
+        WILLOW(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0);
 
         private final boolean conifer;
+        private final MaterialColor mainColor;
+        private final MaterialColor topColor;
+        private final MaterialColor barkColor;
         private final TFCTree tree;
         private final int fallFoliageCoords;
 
-        Default(boolean conifer, Function<Default, ConfiguredFeature<?, ?>> feature)
+        Default(boolean conifer, MaterialColor mainColor, MaterialColor topColor, MaterialColor barkColor, int fallFoliageCoords)
         {
             this.conifer = conifer;
-            this.tree = new TFCTree(() -> feature.apply(this)); // Allow the possibility to use a "this" reference in the initializer
-            this.fallFoliageCoords = 100 | (100 << 8); // todo: random locations for each non-conifer tree
-        }
-
-        Default(boolean conifer, Function<Default, ConfiguredFeature<?, ?>> feature, Function<Default, ConfiguredFeature<?, ?>> oldGrowthFeature)
-        {
-            this.conifer = conifer;
-            this.tree = new TFCTree(() -> feature.apply(this), () -> oldGrowthFeature.apply(this)); // Allow the possibility to use a "this" reference in the initializer
-            this.fallFoliageCoords = 100 | (100 << 8); // todo: random locations for each non-conifer tree
+            this.mainColor = mainColor;
+            this.topColor = topColor;
+            this.barkColor = barkColor;
+            this.tree = new TFCTree(Helpers.identifier("tree/" + name().toLowerCase()), Helpers.identifier("tree/" + name().toLowerCase() + "_large"));
+            this.fallFoliageCoords = fallFoliageCoords;
         }
 
         public boolean isConifer()
@@ -139,17 +93,17 @@ public class Wood
 
         public MaterialColor getMainColor()
         {
-            return MaterialColor.WOOD; // todo: unique material colors for wood planks texture
+            return mainColor;
         }
 
         public MaterialColor getTopColor()
         {
-            return MaterialColor.WOOD; // todo: unique material colors for log top texture
+            return topColor;
         }
 
         public MaterialColor getBarkColor()
         {
-            return MaterialColor.COLOR_BROWN; // todo: unique material colors for log bark / side texture
+            return barkColor;
         }
     }
 
@@ -180,14 +134,6 @@ public class Wood
         public static BlockType valueOf(int i)
         {
             return i >= 0 && i < VALUES.length ? VALUES[i] : LOG;
-        }
-
-        /**
-         * Copy paste from {@link Blocks#log(MaterialColor, MaterialColor)}
-         */
-        private static RotatedPillarBlock log(MaterialColor topColor, MaterialColor barkColor)
-        {
-            return new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : barkColor).strength(2.0F).sound(SoundType.WOOD));
         }
 
         private final NonNullFunction<Default, Block> blockFactory;

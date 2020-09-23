@@ -9,6 +9,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.BlockPosArgument;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.server.command.EnumArgument;
@@ -37,7 +38,8 @@ public final class TreeCommand
     private static int placeTree(ServerWorld world, BlockPos pos, Wood.Default wood, Variant variant)
     {
         TFCTree tree = wood.getTree();
-        ConfiguredFeature<?, ?> feature = variant == Variant.NORMAL ? tree.getNormalFeature() : tree.getOldGrowthFeature();
+        Registry<ConfiguredFeature<?, ?>> registry = world.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+        ConfiguredFeature<?, ?> feature = variant == Variant.NORMAL ? tree.getNormalFeature(registry) : tree.getOldGrowthFeature(registry);
         feature.place(world, world.getChunkSource().getGenerator(), world.getRandom(), pos);
         return Command.SINGLE_SUCCESS;
     }

@@ -37,6 +37,7 @@ import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
+import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
 import net.dries007.tfc.util.Climate;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -81,12 +82,12 @@ public final class ClientEventHandler
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
 
         // Dynamic water color setup
-        BiomeColors.WATER_COLOR_RESOLVER = (biome, posX, posZ) -> {
+        BiomeColorsAccessor.accessor$setWaterColorResolver((biome, posX, posZ) -> {
             BlockPos pos = new BlockPos(posX, 96, posZ);
             float temperature = Climate.getTemperature(pos);
             float rainfall = Climate.getRainfall(pos);
             return TFCColors.getWaterColor(temperature, rainfall);
-        };
+        });
     }
 
     @SubscribeEvent

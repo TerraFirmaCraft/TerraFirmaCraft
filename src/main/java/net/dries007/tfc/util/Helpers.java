@@ -44,6 +44,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.dries007.tfc.mixin.world.gen.feature.template.TemplateAccessor;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -266,7 +267,7 @@ public final class Helpers
      */
     public static void addTemplateToWorldForTreeGen(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
     {
-        List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(template.palettes, pos).blocks(); // Gets a single list of block infos
+        List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((TemplateAccessor) template).accessor$getPalettes(), pos).blocks();
         MutableBoundingBox boundingBox = placementIn.getBoundingBox();
         for (Template.BlockInfo blockInfo : Template.processBlockInfos(worldIn, pos, pos, placementIn, transformedBlockInfos, template))
         {
@@ -276,6 +277,8 @@ public final class Helpers
                 BlockState stateAt = worldIn.getBlockState(posAt);
                 if (stateAt.isAir(worldIn, posAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
                 {
+                    // No world, can't rotate with world context
+                    @SuppressWarnings("deprecation")
                     BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
                     worldIn.setBlock(posAt, stateReplace, 2);
                 }

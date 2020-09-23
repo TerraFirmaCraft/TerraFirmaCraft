@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.util.calendar;
 
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -211,7 +212,7 @@ public interface ICalendar
     /**
      * Calculates the current day from a calendar time.
      */
-    default ITextComponent getCalendarDayOfYear()
+    default IFormattableTextComponent getCalendarDayOfYear()
     {
         return Day.getDayName(getTotalCalendarDays(), getCalendarMonthOfYear(), getCalendarDayOfMonth());
     }

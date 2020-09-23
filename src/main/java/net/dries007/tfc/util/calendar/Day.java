@@ -8,6 +8,7 @@ package net.dries007.tfc.util.calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -49,7 +50,7 @@ public enum Day
         return i < 0 ? MONDAY : i >= VALUES.length ? SUNDAY : VALUES[i];
     }
 
-    public static ITextComponent getDayName(long totalDays, Month month, int dayOfMonth)
+    public static IFormattableTextComponent getDayName(long totalDays, Month month, int dayOfMonth)
     {
         String birthday = BIRTHDAYS.get(month.name() + dayOfMonth);
         if (birthday != null)

@@ -12,9 +12,9 @@ import javax.annotation.Nullable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.trees.Tree;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -23,34 +23,29 @@ import net.minecraftforge.common.util.Lazy;
 
 public class TFCTree extends Tree
 {
-    private final Lazy<ConfiguredFeature<?, ?>> featureFactory;
-    private final Lazy<ConfiguredFeature<?, ?>> oldGrowthFeatureFactory;
+    private final ResourceLocation normalTree;
+    private final ResourceLocation oldGrowthTree;
 
-    public TFCTree(Supplier<ConfiguredFeature<?, ?>> featureFactory)
+    public TFCTree(ResourceLocation normalTree, ResourceLocation oldGrowthFeatureFactory)
     {
-        this(featureFactory, featureFactory);
+        this.normalTree = normalTree;
+        this.oldGrowthTree = oldGrowthFeatureFactory;
     }
 
-    public TFCTree(Supplier<ConfiguredFeature<?, ?>> featureFactory, Supplier<ConfiguredFeature<?, ?>> oldGrowthFeatureFactory)
+    public ConfiguredFeature<?, ?> getNormalFeature(Registry<ConfiguredFeature<?, ?>> registry)
     {
-        this.featureFactory = Lazy.of(featureFactory);
-        this.oldGrowthFeatureFactory = Lazy.of(oldGrowthFeatureFactory);
+        return registry.getOptional(normalTree).orElseThrow(() -> new IllegalStateException("Missing tree feature: " + normalTree));
     }
 
-    public ConfiguredFeature<?, ?> getNormalFeature()
+    public ConfiguredFeature<?, ?> getOldGrowthFeature(Registry<ConfiguredFeature<?, ?>> registry)
     {
-        return featureFactory.get();
-    }
-
-    public ConfiguredFeature<?, ?> getOldGrowthFeature()
-    {
-        return oldGrowthFeatureFactory.get();
+        return registry.getOptional(oldGrowthTree).orElseThrow(() -> new IllegalStateException("Missing old growth tree feature: " + oldGrowthTree));
     }
 
     @Override
     public boolean growTree(ServerWorld worldIn, ChunkGenerator chunkGeneratorIn, BlockPos blockPosIn, BlockState blockStateIn, Random randomIn)
     {
-        ConfiguredFeature<?, ?> feature = getNormalFeature();
+        ConfiguredFeature<?, ?> feature = getNormalFeature(worldIn.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY));
         worldIn.setBlock(blockPosIn, Blocks.AIR.defaultBlockState(), 4);
         if (feature.place(worldIn, chunkGeneratorIn, randomIn, blockPosIn))
         {

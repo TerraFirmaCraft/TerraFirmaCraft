@@ -11,6 +11,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.network.PacketHandler;
@@ -19,6 +20,8 @@ import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 import net.minecraft.client.gui.widget.button.Button.IPressable;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class PlayerInventoryTabButton extends Button
 {
@@ -41,7 +44,7 @@ public class PlayerInventoryTabButton extends Button
 
     public PlayerInventoryTabButton(int guiLeft, int guiTop, int xIn, int yIn, int widthIn, int heightIn, int textureU, int textureV, int iconX, int iconY, int iconU, int iconV, IPressable onPressIn)
     {
-        super(guiLeft + xIn, guiTop + yIn, widthIn, heightIn, "", onPressIn);
+        super(guiLeft + xIn, guiTop + yIn, widthIn, heightIn, StringTextComponent.EMPTY, onPressIn);
         this.prevGuiLeft = guiLeft;
         this.prevGuiTop = guiTop;
         this.textureU = textureU;
@@ -75,7 +78,7 @@ public class PlayerInventoryTabButton extends Button
     }
 
     @Override
-    public void renderButton(int mouseX, int mouseY, float partialTicks)
+    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bind(TEXTURE);
@@ -83,8 +86,8 @@ public class PlayerInventoryTabButton extends Button
 
         tickCallback.run();
 
-        ClientHelpers.drawTexturedRect(x, y, textureU, textureV, width, height);
-        ClientHelpers.drawTexturedScaledRect(iconX, iconY, 16, 16, iconU, iconV, 32, 32, 256, 256);
+        ClientHelpers.drawTexturedRect(matrixStack, x, y, textureU, textureV, width, height);
+        ClientHelpers.drawTexturedScaledRect(matrixStack, iconX, iconY, 16, 16, iconU, iconV, 32, 32, 256, 256);
         RenderSystem.enableDepthTest();
     }
 

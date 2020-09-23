@@ -15,9 +15,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
@@ -196,12 +196,11 @@ public interface IBlockIngredient extends Predicate<BlockState>
                 return new IBlockIngredient()
                 {
                     @Override
-                    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
                     public boolean test(BlockState stateIn)
                     {
                         if (stateIn.getBlock() == block)
                         {
-                            for (Map.Entry<IProperty<?>, Comparable<?>> entry : parser.getProperties().entrySet())
+                            for (Map.Entry<Property<?>, Comparable<?>> entry : parser.getProperties().entrySet())
                             {
                                 if (!stateIn.getValue(entry.getKey()).equals(entry.getValue()))
                                 {
@@ -224,7 +223,7 @@ public interface IBlockIngredient extends Predicate<BlockState>
 
         private IBlockIngredient createTag(String tagName) throws JsonParseException
         {
-            Tag<Block> tag = BlockTags.getAllTags().getTag(new ResourceLocation(tagName));
+            ITag<Block> tag = BlockTags.getAllTags().getTag(new ResourceLocation(tagName));
             if (tag != null)
             {
                 return new IBlockIngredient()

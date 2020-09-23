@@ -255,7 +255,7 @@ public class Metal
         AXE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SHOVEL(Type.TOOL, metal -> new TFCShovelItem(metal.getItemTier(), 0.875F, -3.0F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
         SHOVEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        HOE(Type.TOOL, metal -> new HoeItem(metal.getItemTier(), -1, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
+        HOE(Type.TOOL, metal -> new HoeItem(metal.getItemTier(), -1, -2f, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
         HOE_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         CHISEL(Type.TOOL, metal -> new ChiselItem(metal.getItemTier(), 0.27F, -1.5F, (new Item.Properties()).tab(ItemGroup.TAB_TOOLS))),
         CHISEL_HEAD(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),

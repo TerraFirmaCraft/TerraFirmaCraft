@@ -16,6 +16,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
@@ -50,15 +51,15 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
     }
 
     @Override
-    protected void renderLabels(int mouseX, int mouseY)
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY)
     {
-        super.renderLabels(mouseX, mouseY);
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
-        String tooltip = TextFormatting.WHITE + "" + TextFormatting.UNDERLINE + title.getColoredString();
-        font.draw(tooltip, (imageWidth - font.width(tooltip)) / 2f, 7, 0x404040);
+        String tooltip = TextFormatting.WHITE + "" + TextFormatting.UNDERLINE + title.getString();
+        font.draw(matrixStack, tooltip, (imageWidth - font.width(tooltip)) / 2f, 7, 0x404040);
 
         IWorld world = inventory.player.level;
-        BlockPos pos = inventory.player.getCommandSenderBlockPosition();
+        BlockPos pos = inventory.player.blockPosition();
 
         float averageTemp = Climate.getAverageTemperature(world, pos);
         float rainfall = Climate.getRainfall(world, pos);
@@ -69,9 +70,9 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
         String rainfallTooltip = I18n.get("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall));
         String currentTempTooltip = I18n.get("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp));
 
-        font.draw(climateType, (imageWidth - font.width(climateType)) / 2f, 25, 0x404040);
-        font.draw(averageTempTooltip, (imageWidth - font.width(averageTempTooltip)) / 2f, 34, 0x404040);
-        font.draw(rainfallTooltip, (imageWidth - font.width(rainfallTooltip)) / 2f, 43, 0x404040);
-        font.draw(currentTempTooltip, (imageWidth - font.width(currentTempTooltip)) / 2f, 52, 0x404040);
+        font.draw(matrixStack, climateType, (imageWidth - font.width(climateType)) / 2f, 25, 0x404040);
+        font.draw(matrixStack, averageTempTooltip, (imageWidth - font.width(averageTempTooltip)) / 2f, 34, 0x404040);
+        font.draw(matrixStack, rainfallTooltip, (imageWidth - font.width(rainfallTooltip)) / 2f, 43, 0x404040);
+        font.draw(matrixStack, currentTempTooltip, (imageWidth - font.width(currentTempTooltip)) / 2f, 52, 0x404040);
     }
 }
