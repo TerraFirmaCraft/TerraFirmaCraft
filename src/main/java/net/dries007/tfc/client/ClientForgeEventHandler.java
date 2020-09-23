@@ -17,7 +17,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.WorldType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -48,6 +47,8 @@ public class ClientForgeEventHandler
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event)
     {
+        // todo: stuff
+        /*
         LOGGER.debug("Init Gui Pre Event");
         if (event.getGui() instanceof CreateWorldScreen)
         {
@@ -59,7 +60,7 @@ public class ClientForgeEventHandler
                 LOGGER.debug("Setting Selected World Type to TFC Default");
                 ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TFCWorldType.INSTANCE.getId(), "levelTypeIndex");
             }
-        }
+        }*/
     }
 
     @SubscribeEvent
@@ -77,7 +78,7 @@ public class ClientForgeEventHandler
                 list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
                 // Always add calendar info
-                list.add(I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getColoredString());
+                list.add(I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getString());
                 list.add(I18n.get("tfc.tooltip.debug_times", Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), mc.getCameraEntity().level.getDayTime() % ICalendar.TICKS_IN_DAY));
 
                 ChunkData data = ChunkData.get(mc.level, pos);

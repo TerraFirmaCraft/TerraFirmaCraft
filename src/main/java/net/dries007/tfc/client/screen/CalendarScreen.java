@@ -14,6 +14,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
@@ -47,19 +48,19 @@ public class CalendarScreen extends TFCContainerScreen<SimpleContainer>
     }
 
     @Override
-    protected void renderLabels(int mouseX, int mouseY)
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY)
     {
-        super.renderLabels(mouseX, mouseY);
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
-        String tooltip = TextFormatting.WHITE + "" + TextFormatting.UNDERLINE + title.getColoredString();
-        font.draw(tooltip, (imageWidth - font.width(tooltip)) / 2f, 7, 0x404040);
+        String tooltip = TextFormatting.WHITE + "" + TextFormatting.UNDERLINE + title.getString();
+        font.draw(matrixStack, tooltip, (imageWidth - font.width(tooltip)) / 2f, 7, 0x404040);
 
         String season = I18n.get("tfc.tooltip.calendar_season") + I18n.get(Calendars.CLIENT.getCalendarMonthOfYear().getTranslationKey(Month.Style.SEASON));
-        String day = I18n.get("tfc.tooltip.calendar_day") + Calendars.CLIENT.getCalendarDayOfYear().getColoredString();
-        String date = I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getColoredString();
+        String day = I18n.get("tfc.tooltip.calendar_day") + Calendars.CLIENT.getCalendarDayOfYear().getString();
+        String date = I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getString();
 
-        font.draw(season, (imageWidth - font.width(season)) / 2f, 25, 0x404040);
-        font.draw(day, (imageWidth - font.width(day)) / 2f, 34, 0x404040);
-        font.draw(date, (imageWidth - font.width(date)) / 2f, 43, 0x404040);
+        font.draw(matrixStack, season, (imageWidth - font.width(season)) / 2f, 25, 0x404040);
+        font.draw(matrixStack, day, (imageWidth - font.width(day)) / 2f, 34, 0x404040);
+        font.draw(matrixStack, date, (imageWidth - font.width(date)) / 2f, 43, 0x404040);
     }
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -87,11 +88,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
         // Noise
         this.biomeNoiseMap = new HashMap<>();
 
-        final Random seedGenerator = new Random(seed);
+        final SharedSeedRandom seedGenerator = new SharedSeedRandom(seed);
         final long biomeNoiseSeed = seedGenerator.nextLong();
 
         TFCBiomes.getVariants().forEach(variant -> biomeNoiseMap.put(variant, variant.createNoiseLayer(biomeNoiseSeed)));
-        surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, 3, 0); // From vanilla
+        surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, IntStream.rangeClosed(-3, 0)); // From vanilla
 
         if (!(biomeProvider instanceof TFCBiomeProvider))
         {
@@ -99,7 +100,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
         }
         // Generators / Providers
         this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator); // Worley cave carver, separate from vanilla ones
-        this.chunkDataProvider = new ChunkDataProvider(settings, seedGenerator); // Chunk data
+        this.chunkDataProvider = new ChunkDataProvider(seedGenerator); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(seedGenerator.nextLong()); // Replaces default world gen blocks with TFC variants, after surface generation
 
         ((TFCBiomeProvider) biomeProvider).setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
