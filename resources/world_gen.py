@@ -31,8 +31,8 @@ DEFAULT_SKY_COLOR = 0x84E6FF  # todo: this was a complete guess. Make it color m
 def generate(rm: ResourceManager):
 
     # Surface Builder Configs
-    grass_dirt_sand = wg_surface_builder_config('minecraft:grass[snowy=false]', 'minecraft:dirt', 'minecraft:sand')
-    grass_dirt_gravel = wg_surface_builder_config('minecraft:grass[snowy=false]', 'minecraft:dirt', 'minecraft:gravel')
+    grass_dirt_sand = wg_surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:sand')
+    grass_dirt_gravel = wg_surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:gravel')
     air_air_air = wg_surface_builder_config('minecraft:air', 'minecraft:air', 'minecraft:air')
 
     # Surface Builders
@@ -52,13 +52,13 @@ def generate(rm: ResourceManager):
     rm_feature(rm, 'water_fissure',
         wg_decorated(
             wg_decorated(
-                wg_configure('tfc:fissure', {'state': utils_wg_block_state('minecraft:water')}),
+                wg_configure('tfc:fissure', {'state': utils_wg_block_state('minecraft:water[level=0]')}),
                 'minecraft:chance', {'chance': 60}),
             'minecraft:heightmap_world_surface'))
     rm_feature(rm, 'lava_fissure',
         wg_decorated(
             wg_decorated(
-                wg_configure('tfc:fissure', {'state': utils_wg_block_state('minecraft:lava')}),
+                wg_configure('tfc:fissure', {'state': utils_wg_block_state('minecraft:lava[level=0]')}),
                 'minecraft:chance', {'chance': 60}),
             'minecraft:heightmap_world_surface'))
 
@@ -80,7 +80,7 @@ def generate(rm: ResourceManager):
                 'minecraft:heightmap_world_surface'))
 
     # Trees / Forests
-    rm_feature(rm, 'forests', wg_configure('forest', {'entries': [
+    rm_feature(rm, 'forest', wg_configure('tfc:forest', {'entries': [
         {'min_rain': 30, 'max_rain': 210, 'min_temp': 21, 'max_temp': 31, 'tree_feature': 'tfc:tree/acacia', 'old_growth_feature': 'tfc:tree/acacia_large'},
         {'min_rain': 60, 'max_rain': 140, 'min_temp': -6, 'max_temp': 12, 'tree_feature': 'tfc:tree/ash', 'old_growth_feature': 'tfc:tree/ash_large'},
         {'min_rain': 10, 'max_rain': 180, 'min_temp': -10, 'max_temp': 16, 'tree_feature': 'tfc:tree/aspen', 'old_growth_feature': 'tfc:tree/aspen'},
@@ -158,21 +158,6 @@ def random_tree_structures(name: str, max_count: int):
     return ['tfc:%s/%d' % (name, i) for i in range(1, 1 + max_count)]
 
 
-def default_features():
-    return [
-        ['tfc:erosion'],  # raw generation
-        [],  # lakes
-        [],  # local modification
-        ['tfc:lava_fissure', 'tfc:water_fissure'],  # underground structure
-        ['tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder'],  # surface structure
-        [],  # strongholds
-        ['tfc:ore_veins'],  # underground ores
-        [],  # underground decoration
-        ['tfc:forests'],  # vegetal decoration
-        []   # top layer modification
-    ]
-
-
 def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str):
     if rain.id == 'arid':
         rain_type = 'none'
@@ -205,7 +190,7 @@ def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: 
             [],  # strongholds
             ['tfc:ore_veins'],  # underground ores
             [],  # underground decoration
-            ['tfc:forests'],  # vegetal decoration
+            ['tfc:forest'],  # vegetal decoration
             []   # top layer modification
         ])
 
@@ -224,6 +209,10 @@ def rm_biome(self: ResourceManager, name_parts, precipitation: str = 'none', cat
         features = []
     if structures is None:
         structures = []
+    if spawners is None:
+        spawners = {}
+    if spawn_costs is None:
+        spawn_costs = {}
     res = utils.resource_location(self.domain, name_parts)
     utils.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'biome', res.path), {
         'precipitation': precipitation,
@@ -266,7 +255,7 @@ def rm_surface_builder(self: ResourceManager, name_parts: utils.ResourceIdentifi
         config = {}
     surface_builder_res = utils.resource_location(self.domain, surface_builder_name_parts)
     res = utils.resource_location(self.domain, name_parts)
-    utils.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'surface_builder', res.path), {
+    utils.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'configured_surface_builder', res.path), {
         'type': surface_builder_res.join(),
         'config': config
     })
@@ -284,6 +273,8 @@ def wg_configure(name_parts: utils.ResourceIdentifier, config: Optional[Dict[str
 
 def wg_decorated(feature: Dict[str, Any], decorator_name_parts: utils.ResourceIdentifier, config: Optional[Dict[str, Any]] = None):
     decorator_res = utils.resource_location(decorator_name_parts)
+    if config is None:
+        config = {}
     return {
         'type': 'minecraft:decorated',
         'config': {

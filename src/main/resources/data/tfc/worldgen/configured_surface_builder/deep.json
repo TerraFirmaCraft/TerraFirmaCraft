@@ -3,7 +3,7 @@
   "type": "tfc:deep",
   "config": {
     "top_material": {
-      "Name": "minecraft:grass",
+      "Name": "minecraft:grass_block",
       "Properties": {
         "snowy": "false"
       }

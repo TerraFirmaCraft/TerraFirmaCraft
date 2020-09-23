@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:badlands",
+  "type": "tfc:normal",
   "config": {
     "top_material": {
-      "Name": "minecraft:grass",
+      "Name": "minecraft:grass_block",
       "Properties": {
         "snowy": "false"
       }

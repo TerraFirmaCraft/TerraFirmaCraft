@@ -21,7 +21,8 @@
       }
     },
     "decorator": {
-      "type": "minecraft:heightmap_world_surface"
+      "type": "minecraft:heightmap_world_surface",
+      "config": {}
     }
   }
 }

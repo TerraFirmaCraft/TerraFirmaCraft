@@ -42,7 +42,7 @@ public final class TerraFirmaCraft
     public static final String MOD_ID = "tfc";
     public static final String MOD_NAME = "TerraFirmaCraft";
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public TerraFirmaCraft()
     {
@@ -88,5 +88,7 @@ public final class TerraFirmaCraft
         Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
 
         TFCFeatures.setup();
+        TFCSurfaceBuilders.setup();
+        TFCCarvers.setup();
     }
 }
