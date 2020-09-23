@@ -20,20 +20,15 @@ public class RandomTreeConfig implements IFeatureConfig
 {
     public static final Codec<RandomTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ResourceLocation.CODEC.listOf().fieldOf("structures").forGetter(c -> c.structureNames),
-        Codec.INT.fieldOf("trunk_height_min").forGetter(c -> c.trunkHeightMin),
-        Codec.INT.fieldOf("trunk_height_range").forGetter(c -> c.trunkHeightRange),
         Codec.INT.fieldOf("radius").forGetter(c -> c.radius)
     ).apply(instance, RandomTreeConfig::new));
 
     public final List<ResourceLocation> structureNames;
-    public final int trunkHeightMin, trunkHeightRange;
     public final int radius;
 
-    public RandomTreeConfig(List<ResourceLocation> structureNames, int trunkHeightMin, int trunkHeightRange, int radius)
+    public RandomTreeConfig(List<ResourceLocation> structureNames, int radius)
     {
         this.structureNames = structureNames;
-        this.trunkHeightMin = trunkHeightMin;
-        this.trunkHeightRange = trunkHeightRange;
         this.radius = radius;
     }
 }

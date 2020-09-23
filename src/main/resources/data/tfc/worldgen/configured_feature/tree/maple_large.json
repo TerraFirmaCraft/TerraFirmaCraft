@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:maple_large/1",
+      "tfc:maple_large/2",
+      "tfc:maple_large/3",
+      "tfc:maple_large/4",
+      "tfc:maple_large/5"
+    ],
+    "radius": 2
+  }
+}

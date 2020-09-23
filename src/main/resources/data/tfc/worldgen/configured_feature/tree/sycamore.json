@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:overlay_tree",
+  "config": {
+    "base": "tfc:sycamore/base",
+    "overlay": "tfc:sycamore/overlay",
+    "height_min": 2,
+    "height_range": 3,
+    "trunk_state": {
+      "Name": "tfc:wood/log/sycamore",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "radius": 1
+  }
+}

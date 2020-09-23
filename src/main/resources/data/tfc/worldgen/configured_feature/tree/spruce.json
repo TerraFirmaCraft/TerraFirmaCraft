@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:spruce/1",
+      "tfc:spruce/2",
+      "tfc:spruce/3",
+      "tfc:spruce/4",
+      "tfc:spruce/5",
+      "tfc:spruce/6",
+      "tfc:spruce/7"
+    ],
+    "radius": 1
+  }
+}

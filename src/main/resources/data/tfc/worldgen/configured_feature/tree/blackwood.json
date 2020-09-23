@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:overlay_tree",
+  "config": {
+    "base": "tfc:blackwood/base",
+    "overlay": "tfc:blackwood/overlay",
+    "height_min": 1,
+    "height_range": 3,
+    "trunk_state": {
+      "Name": "tfc:wood/log/blackwood",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "radius": 1
+  }
+}

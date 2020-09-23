@@ -23,8 +23,8 @@ public class TFCBiomeProvider extends BiomeProvider
 {
     public static final Codec<TFCBiomeProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),
-        Codec.INT.optionalFieldOf("land_frequency", 12).forGetter(c -> c.landFrequency),
-        Codec.INT.optionalFieldOf("biome_size", 6).forGetter(c -> c.biomeSize),
+        Codec.INT.optionalFieldOf("land_frequency", 6).forGetter(c -> c.landFrequency),
+        Codec.INT.optionalFieldOf("biome_size", 4).forGetter(c -> c.biomeSize),
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeProvider::new));
 

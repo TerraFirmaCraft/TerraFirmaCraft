@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:pine_large/1",
+      "tfc:pine_large/2",
+      "tfc:pine_large/3",
+      "tfc:pine_large/4",
+      "tfc:pine_large/5",
+      "tfc:pine_large/6",
+      "tfc:pine_large/7",
+      "tfc:pine_large/8",
+      "tfc:pine_large/9"
+    ],
+    "radius": 1
+  }
+}

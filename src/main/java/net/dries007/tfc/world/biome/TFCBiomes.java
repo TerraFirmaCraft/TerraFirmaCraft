@@ -60,7 +60,6 @@ public class TFCBiomes
 
     public static BiomeExtension getExtension(Registry<Biome> registry, Biome biome)
     {
-        BiomeMixin cachedAccess = (BiomeMixin) (Object) biome;
         return EXTENSIONS.get(registry.getKey(biome));
     }
 
@@ -98,7 +97,7 @@ public class TFCBiomes
                 EXTENSIONS.put(id, extension);
                 EXTENSIONS_BY_KEY.put(key, extension);
                 DEFAULT_BIOME_KEYS.add(key);
-                TFCBiomes.BIOMES.register(name, BiomeMaker::theVoidBiome);
+                //TFCBiomes.BIOMES.register(name, BiomeMaker::theVoidBiome);
 
                 variants.put(temp, rain, extension);
             }

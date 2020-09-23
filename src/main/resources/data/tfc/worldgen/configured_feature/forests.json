@@ -1,0 +1,160 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:forest",
+  "config": {
+    "entries": [
+      {
+        "min_rain": 30,
+        "max_rain": 210,
+        "min_temp": 21,
+        "max_temp": 31,
+        "tree_feature": "tfc:tree/acacia",
+        "old_growth_feature": "tfc:tree/acacia_large"
+      },
+      {
+        "min_rain": 60,
+        "max_rain": 140,
+        "min_temp": -6,
+        "max_temp": 12,
+        "tree_feature": "tfc:tree/ash",
+        "old_growth_feature": "tfc:tree/ash_large"
+      },
+      {
+        "min_rain": 10,
+        "max_rain": 180,
+        "min_temp": -10,
+        "max_temp": 16,
+        "tree_feature": "tfc:tree/aspen",
+        "old_growth_feature": "tfc:tree/aspen"
+      },
+      {
+        "min_rain": 20,
+        "max_rain": 180,
+        "min_temp": -15,
+        "max_temp": 7,
+        "tree_feature": "tfc:tree/birch",
+        "old_growth_feature": "tfc:tree/birch"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 120,
+        "min_temp": 15,
+        "max_temp": 35,
+        "tree_feature": "tfc:tree/blackwood",
+        "old_growth_feature": "tfc:tree/blackwood"
+      },
+      {
+        "min_rain": 160,
+        "max_rain": 320,
+        "min_temp": 11,
+        "max_temp": 35,
+        "tree_feature": "tfc:tree/chestnut",
+        "old_growth_feature": "tfc:tree/chestnut"
+      },
+      {
+        "min_rain": 290,
+        "max_rain": 500,
+        "min_temp": -4,
+        "max_temp": 15,
+        "tree_feature": "tfc:tree/douglas_fir",
+        "old_growth_feature": "tfc:tree/douglas_fir_large"
+      },
+      {
+        "min_rain": 90,
+        "max_rain": 250,
+        "min_temp": 7,
+        "max_temp": 27,
+        "tree_feature": "tfc:tree/hickory",
+        "old_growth_feature": "tfc:tree/hickory_large"
+      },
+      {
+        "min_rain": 240,
+        "max_rain": 500,
+        "min_temp": 15,
+        "max_temp": 35,
+        "tree_feature": "tfc:tree/kapok",
+        "old_growth_feature": "tfc:tree/kapok"
+      },
+      {
+        "min_rain": 140,
+        "max_rain": 410,
+        "min_temp": -5,
+        "max_temp": 20,
+        "tree_feature": "tfc:tree/maple",
+        "old_growth_feature": "tfc:tree/maple_large"
+      },
+      {
+        "min_rain": 180,
+        "max_rain": 430,
+        "min_temp": -10,
+        "max_temp": 12,
+        "tree_feature": "tfc:tree/oak",
+        "old_growth_feature": "tfc:tree/oak"
+      },
+      {
+        "min_rain": 280,
+        "max_rain": 500,
+        "min_temp": 20,
+        "max_temp": 35,
+        "tree_feature": "tfc:tree/palm",
+        "old_growth_feature": "tfc:tree/palm"
+      },
+      {
+        "min_rain": 60,
+        "max_rain": 250,
+        "min_temp": -15,
+        "max_temp": 7,
+        "tree_feature": "tfc:tree/pine",
+        "old_growth_feature": "tfc:tree/pine_large"
+      },
+      {
+        "min_rain": 10,
+        "max_rain": 190,
+        "min_temp": 5,
+        "max_temp": 20,
+        "tree_feature": "tfc:tree/rosewood",
+        "old_growth_feature": "tfc:tree/rosewood"
+      },
+      {
+        "min_rain": 250,
+        "max_rain": 420,
+        "min_temp": -5,
+        "max_temp": 12,
+        "tree_feature": "tfc:tree/sequoia",
+        "old_growth_feature": "tfc:tree/sequoia"
+      },
+      {
+        "min_rain": 120,
+        "max_rain": 430,
+        "min_temp": -14,
+        "max_temp": 7,
+        "tree_feature": "tfc:tree/spruce",
+        "old_growth_feature": "tfc:tree/spruce"
+      },
+      {
+        "min_rain": 120,
+        "max_rain": 290,
+        "min_temp": 17,
+        "max_temp": 33,
+        "tree_feature": "tfc:tree/sycamore",
+        "old_growth_feature": "tfc:tree/sycamore_large"
+      },
+      {
+        "min_rain": 10,
+        "max_rain": 240,
+        "min_temp": -8,
+        "max_temp": 17,
+        "tree_feature": "tfc:tree/white_cedar",
+        "old_growth_feature": "tfc:tree/white_cedar"
+      },
+      {
+        "min_rain": 260,
+        "max_rain": 480,
+        "min_temp": 15,
+        "max_temp": 32,
+        "tree_feature": "tfc:tree/willow",
+        "old_growth_feature": "tfc:tree/willow"
+      }
+    ]
+  }
+}

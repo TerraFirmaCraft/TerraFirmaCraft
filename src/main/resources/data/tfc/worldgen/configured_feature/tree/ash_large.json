@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:ash_large/1",
+      "tfc:ash_large/2",
+      "tfc:ash_large/3",
+      "tfc:ash_large/4",
+      "tfc:ash_large/5"
+    ],
+    "radius": 2
+  }
+}

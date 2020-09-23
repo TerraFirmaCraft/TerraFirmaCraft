@@ -34,11 +34,13 @@ public class ForestFeatureConfig implements IFeatureConfig
 
     public static class Entry
     {
+        int i = 0xc0d8ff;
+
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.FLOAT.fieldOf("min_rainfall").forGetter(c -> c.minRainfall),
-            Codec.FLOAT.fieldOf("max_rainfall").forGetter(c -> c.maxRainfall),
-            Codec.FLOAT.fieldOf("min_average_temperature").forGetter(c -> c.minAverageTemp),
-            Codec.FLOAT.fieldOf("max_average_temperature").forGetter(c -> c.maxAverageTemp),
+            Codec.FLOAT.fieldOf("min_rain").forGetter(c -> c.minRainfall),
+            Codec.FLOAT.fieldOf("max_rain").forGetter(c -> c.maxRainfall),
+            Codec.FLOAT.fieldOf("min_temp").forGetter(c -> c.minAverageTemp),
+            Codec.FLOAT.fieldOf("max_temp").forGetter(c -> c.maxAverageTemp),
             ConfiguredFeature.CODEC.fieldOf("tree_feature").forGetter(c -> c.treeFeature),
             ConfiguredFeature.CODEC.fieldOf("old_growth_feature").forGetter(c -> c.oldGrowthFeature)
         ).apply(instance, Entry::new));

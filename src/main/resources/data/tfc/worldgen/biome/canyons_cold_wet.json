@@ -1,0 +1,52 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "precipitation": "snow",
+  "category": "plains",
+  "depth": 0,
+  "scale": 0,
+  "temperature": 0.25,
+  "temperature_modifier": "none",
+  "downfall": 0.9,
+  "effects": {
+    "fog_color": 12638463,
+    "sky_color": 8709887,
+    "water_color": 4020182,
+    "water_fog_color": 329011
+  },
+  "carvers": {
+    "air": [
+      "tfc:cave",
+      "tfc:canyon"
+    ],
+    "liquid": []
+  },
+  "surface_builder": "tfc:canyons",
+  "features": [
+    [
+      "tfc:erosion"
+    ],
+    [],
+    [],
+    [
+      "tfc:lava_fissure",
+      "tfc:water_fissure"
+    ],
+    [
+      "tfc:raw_boulder",
+      "tfc:cobble_boulder",
+      "tfc:mossy_boulder"
+    ],
+    [],
+    [
+      "tfc:ore_veins"
+    ],
+    [],
+    [
+      "tfc:forests"
+    ],
+    []
+  ],
+  "starts": [],
+  "player_spawn_friendly": true,
+  "creature_spawn_probability": 0.5
+}
