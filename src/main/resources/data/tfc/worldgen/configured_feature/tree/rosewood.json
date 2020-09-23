@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:overlay_tree",
+  "config": {
+    "base": "tfc:rosewood/base",
+    "overlay": "tfc:rosewood/overlay",
+    "height_min": 1,
+    "height_range": 2,
+    "trunk_state": {
+      "Name": "tfc:wood/log/rosewood",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "radius": 1
+  }
+}

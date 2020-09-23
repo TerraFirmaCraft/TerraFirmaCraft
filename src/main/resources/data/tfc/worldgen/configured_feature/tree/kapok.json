@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:kapok/1",
+      "tfc:kapok/2",
+      "tfc:kapok/3",
+      "tfc:kapok/4",
+      "tfc:kapok/5",
+      "tfc:kapok/6",
+      "tfc:kapok/7"
+    ],
+    "radius": 1
+  }
+}

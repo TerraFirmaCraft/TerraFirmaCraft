@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:overlay_tree",
+  "config": {
+    "base": "tfc:white_cedar/base",
+    "overlay": "tfc:white_cedar/overlay",
+    "height_min": 1,
+    "height_range": 3,
+    "trunk_state": {
+      "Name": "tfc:wood/log/white_cedar",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "radius": 1
+  }
+}

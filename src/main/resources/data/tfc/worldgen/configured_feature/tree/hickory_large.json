@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:hickory_large/1",
+      "tfc:hickory_large/2",
+      "tfc:hickory_large/3",
+      "tfc:hickory_large/4",
+      "tfc:hickory_large/5"
+    ],
+    "radius": 2
+  }
+}

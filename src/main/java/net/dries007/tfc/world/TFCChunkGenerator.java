@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import net.minecraft.block.BlockState;
@@ -51,7 +52,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     // todo: codec for chunk gen settings
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         BiomeProvider.CODEC.fieldOf("biome_source").forGetter(c -> c.biomeSource),
-        DimensionStructuresSettings.CODEC.fieldOf("settings").forGetter(c -> c.settings),
+        DimensionSettings.CODEC.fieldOf("settings").forGetter(c -> () -> c.settings),
         Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock),
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed)
     ).apply(instance, TFCChunkGenerator::new));
@@ -72,16 +73,16 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
 
     // Properties set from codec
     private final BiomeProvider biomeProvider;
-    private final DimensionStructuresSettings settings;
+    private final DimensionSettings settings;
     private final boolean flatBedrock;
     private final long seed;
 
-    private TFCChunkGenerator(BiomeProvider biomeProvider, DimensionStructuresSettings settings, boolean flatBedrock, long seed)
+    public TFCChunkGenerator(BiomeProvider biomeProvider, Supplier<DimensionSettings> settings, boolean flatBedrock, long seed)
     {
-        super(biomeProvider, settings);
+        super(biomeProvider, settings.get().structureSettings());
 
         this.biomeProvider = biomeProvider;
-        this.settings = settings;
+        this.settings = settings.get();
         this.flatBedrock = flatBedrock;
         this.seed = seed;
 
@@ -133,7 +134,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     @Override
     public ChunkGenerator withSeed(long seedIn)
     {
-        return new TFCChunkGenerator(biomeProvider, settings, flatBedrock, seedIn);
+        return new TFCChunkGenerator(biomeProvider, () -> settings, flatBedrock, seedIn);
     }
 
     @Override
@@ -357,7 +358,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     @Override
     public int getSeaLevel()
     {
-        return TFCConfig.COMMON.seaLevel.get();
+        return TFCChunkGenerator.SEA_LEVEL;
     }
 
     @Override

@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:overlay_tree",
+  "config": {
+    "base": "tfc:maple/base",
+    "overlay": "tfc:maple/overlay",
+    "height_min": 2,
+    "height_range": 3,
+    "trunk_state": {
+      "Name": "tfc:wood/log/maple",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "radius": 1
+  }
+}

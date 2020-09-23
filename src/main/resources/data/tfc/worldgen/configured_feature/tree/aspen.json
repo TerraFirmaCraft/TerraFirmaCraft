@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:aspen/1",
+      "tfc:aspen/2",
+      "tfc:aspen/3",
+      "tfc:aspen/4",
+      "tfc:aspen/5",
+      "tfc:aspen/6",
+      "tfc:aspen/7",
+      "tfc:aspen/8",
+      "tfc:aspen/9",
+      "tfc:aspen/10",
+      "tfc:aspen/11",
+      "tfc:aspen/12",
+      "tfc:aspen/13",
+      "tfc:aspen/14",
+      "tfc:aspen/15",
+      "tfc:aspen/16"
+    ],
+    "radius": 1
+  }
+}

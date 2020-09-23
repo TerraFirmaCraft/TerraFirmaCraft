@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:overlay_tree",
+  "config": {
+    "base": "tfc:ash/base",
+    "overlay": "tfc:ash/overlay",
+    "height_min": 3,
+    "height_range": 3,
+    "trunk_state": {
+      "Name": "tfc:wood/log/ash",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "radius": 1
+  }
+}

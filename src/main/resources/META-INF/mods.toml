@@ -1,7 +1,8 @@
 # Loader metadata
 modLoader="javafml" # mandatory
-loaderVersion="[34.0.9,)" # mandatory
-#issueTrackerURL="http://my.issue.tracker/"
+loaderVersion="[34,)" # mandatory
+license="EUPL-1.2"
+issueTrackerURL="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
 # TFC
 [[mods]]
@@ -22,16 +23,16 @@ loaderVersion="[34.0.9,)" # mandatory
     description='''TerraFirmaCraft - The Next Generation'''
 
 # dependencies
-[[dependencies.primalwinter]]
+[[dependencies.tfc]]
     modId="forge"
     mandatory=true
     versionRange="[34.0.9,)"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
-[[dependencies.primalwinter]]
+[[dependencies.tfc]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.16.3,)"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
