@@ -10,7 +10,9 @@
           "config": {
             "state": {
               "Name": "minecraft:lava",
-              "Properties": {}
+              "Properties": {
+                "level": "0"
+              }
             }
           }
         },
@@ -23,7 +25,8 @@
       }
     },
     "decorator": {
-      "type": "minecraft:heightmap_world_surface"
+      "type": "minecraft:heightmap_world_surface",
+      "config": {}
     }
   }
 }

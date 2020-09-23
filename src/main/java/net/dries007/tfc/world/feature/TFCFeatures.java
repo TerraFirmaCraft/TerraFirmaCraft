@@ -22,17 +22,18 @@ public class TFCFeatures
 {
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, MOD_ID);
 
+
     public static final RegistryObject<CaveSpikesFeature> CAVE_SPIKE = FEATURES.register("cave_spike", () -> new CaveSpikesFeature(NoFeatureConfig.CODEC));
     public static final RegistryObject<LargeCaveSpikesFeature> LARGE_CAVE_SPIKE = FEATURES.register("large_cave_spike", () -> new LargeCaveSpikesFeature(NoFeatureConfig.CODEC));
 
-    public static final RegistryObject<VeinsFeature> VEINS = FEATURES.register("veins", () -> new VeinsFeature(NoFeatureConfig.CODEC));
+    public static final RegistryObject<VeinsFeature> ORE_VEINS = FEATURES.register("ore_veins", () -> new VeinsFeature(NoFeatureConfig.CODEC));
 
-    public static final RegistryObject<BouldersFeature> BOULDERS = FEATURES.register("boulder", () -> new BouldersFeature(BoulderConfig.CODEC));
-    public static final RegistryObject<FissureFeature> FISSURES = FEATURES.register("fissure", () -> new FissureFeature(BlockStateFeatureConfig.CODEC));
+    public static final RegistryObject<BouldersFeature> BOULDER = FEATURES.register("boulder", () -> new BouldersFeature(BoulderConfig.CODEC));
+    public static final RegistryObject<FissureFeature> FISSURE = FEATURES.register("fissure", () -> new FissureFeature(BlockStateFeatureConfig.CODEC));
 
     public static final RegistryObject<ErosionFeature> EROSION = FEATURES.register("erosion", () -> new ErosionFeature(NoFeatureConfig.CODEC));
 
-    public static final RegistryObject<ForestFeature> FORESTS = FEATURES.register("forest", () -> new ForestFeature(ForestFeatureConfig.CODEC));
+    public static final RegistryObject<ForestFeature> FOREST = FEATURES.register("forest", () -> new ForestFeature(ForestFeatureConfig.CODEC));
 
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = FEATURES.register("overlay_tree", () -> new OverlayTreeFeature(OverlayTreeConfig.CODEC));
     public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = FEATURES.register("random_tree", () -> new RandomTreeFeature(RandomTreeConfig.CODEC));
@@ -49,7 +50,7 @@ public class TFCFeatures
         register("raw_boulder");
         register("cobble_boulder");
         register("mossy_boulder");
-        register("forests");
+        register("forest");
         register("ore_veins");
         register("erosion");
     }
