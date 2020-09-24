@@ -25,6 +25,15 @@ def generate(rm: ResourceManager):
                         'texture': 'tfc:block/rock/raw/%s' % rock,
                         'particle': 'tfc:block/rock/raw/%s' % rock
                     }, parent='tfc:block/rock/spike_%s' % part)
+            elif block_type in {'pebble', 'rubble', 'boulder'}:
+                block = rm.blockstate('rock/%s/%s' % (block_type, rock), variants ={
+                    "facing=east": {"model": "tfc:block/rock/%s/%s" % (block_type, rock),"y": 90},
+                    "facing=north": {"model": "tfc:block/rock/%s/%s" % (block_type, rock)},
+                    "facing=south": {"model": "tfc:block/rock/%s/%s" % (block_type, rock),"y": 180},
+                    "facing=west": {"model": "tfc:block/rock/%s/%s" % (block_type, rock),"y": 270}}) \
+                    .with_item_model() \
+                    .with_lang(lang('%s %s', rock, block_type)) \
+                    .with_block_model('tfc:item/rock/rock/%s' % rock, parent = 'tfc:block/groundcover/%s' % block_type)
             else:
                 block = rm.blockstate(('rock', block_type, rock)) \
                     .with_block_model('tfc:block/rock/%s/%s' % (block_type, rock)) \
@@ -70,7 +79,20 @@ def generate(rm: ResourceManager):
         # Ores
         # todo: fix / add loot tables
         for ore, ore_data in ORES.items():
+            rm.item_model('tfc:ore/%s' % ore) \
+            .with_lang(lang('%s', ore))
             if ore_data.graded:
+                rm.blockstate('tfc:groundcover/%s' % ore, variants ={
+                    "facing=east": {"model": "tfc:block/groundcover/%s" % ore,"y": 90},
+                    "facing=north": {"model": "tfc:block/groundcover/%s" % ore},
+                    "facing=south": {"model": "tfc:block/groundcover/%s" % ore,"y": 180},
+                    "facing=west": {"model": "tfc:block/groundcover/%s" % ore,"y": 270}}) \
+                    .with_lang(lang('%s Nugget', ore)) \
+                    .with_item_model() \
+                    .with_block_loot('tfc:ore/small/%s' % ore)
+                rm.block_loot('tfc:ore/poor_%s/%s' % (ore, rock), 'tfc:ore/poor/%s' % ore)
+                rm.block_loot('tfc:ore/normal_%s/%s' % (ore, rock), 'tfc:ore/%s' % ore)
+                rm.block_loot('tfc:ore/rich_%s/%s' % (ore, rock), 'tfc:ore/rich/%s' % ore)
                 for grade in ORE_GRADES:
                     rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock)) \
                         .with_block_model({
@@ -80,6 +102,9 @@ def generate(rm: ResourceManager):
                         }, parent='tfc:block/ore') \
                         .with_item_model() \
                         .with_lang(lang('%s %s %s', grade, rock, ore))
+                for grade in ORE_ITEM_GRADES:
+                    rm.item_model('tfc:ore/%s/%s' % (grade, ore)) \
+                    .with_lang(lang('%s %s', grade, ore))
             else:
                 rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock)) \
                     .with_block_model({
@@ -89,6 +114,8 @@ def generate(rm: ResourceManager):
                     }, parent='tfc:block/ore') \
                     .with_item_model() \
                     .with_lang(lang('%s %s', rock, ore))
+                rm.block_loot('tfc:ore/%s/%s' % (ore, rock), 'tfc:ore/%s' % ore)
+
     # Sand
     for sand in SAND_BLOCK_TYPES:
         rm.blockstate(('sand', sand)) \
@@ -96,6 +123,61 @@ def generate(rm: ResourceManager):
             .with_item_model() \
             .with_block_loot('tfc:sand/%s' % sand) \
             .with_lang(lang('%s Sand', sand))
+
+    # Groundcover
+    for misc in MISC_GROUNDCOVER:
+        block = rm.blockstate(('groundcover', misc), variants ={
+            "facing=east": {"model": "tfc:block/groundcover/%s" % misc,"y": 90},
+            "facing=north": {"model": "tfc:block/groundcover/%s" % misc},
+            "facing=south": {"model": "tfc:block/groundcover/%s" % misc,"y": 180},
+            "facing=west": {"model": "tfc:block/groundcover/%s" % misc,"y": 270}}) \
+            .with_lang(lang('%s Block', misc))
+        rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
+        if misc == 'branch':
+            block.with_block_loot({
+                'entries': 'minecraft:stick',
+                'functions': [
+                    loot_tables.set_count(1, 3)
+                ]
+            })
+        if misc == 'bones':
+            block.with_block_loot({
+                'entries': 'minecraft:bone',
+                'functions': [
+                    loot_tables.set_count(1, 3)
+                ]
+            })
+        if misc == 'driftwood':
+            block.with_block_loot({
+                'entries': 'minecraft:stick',
+                'functions': [
+                    loot_tables.set_count(2, 4)
+                ]
+            })
+    rm.block_loot('tfc:groundcover/stick', 'minecraft:stick')
+    rm.block_loot('tfc:groundcover/flint', 'minecraft:flint')
+    rm.block_loot('tfc:groundcover/feather', 'minecraft:feather')
+    rm.block_loot('tfc:groundcover/rotten_flesh', 'minecraft:rotten_flesh') # needs fancier loot table
+    # todo: dead grass, pinecone, podzol, salt lick
+
+    rm.block('tfc:calcite') \
+    .with_item_model() \
+    .with_lang(lang('Calcite'))
+
+    for rock in ROCKS.keys():
+        rm.block_loot('tfc:rock/boulder/%s' % rock,{
+            'entries': 'tfc:rock/rock/%s' % rock,
+            'functions': [
+                loot_tables.set_count(1, 3)
+            ]
+        })
+        rm.block_loot('tfc:rock/rubble/%s' % rock,{
+            'entries': 'tfc:rock/rock/%s' % rock,
+            'functions': [
+                loot_tables.set_count(1, 2)
+            ]
+        })
+        rm.block_loot('tfc:rock/pebble/%s' % rock,'tfc:rock/rock/%s' % rock)
 
     # Peat
     rm.blockstate('peat') \
@@ -228,6 +310,12 @@ def generate(rm: ResourceManager):
             rm.item_model(('gem', grade, gem), 'tfc:item/gem/%s/%s' % (grade, gem)) \
                 .with_lang(lang('%s %s' % (grade, gem)))
 
+    # Ground Items
+    for ground in GROUND_ITEMS:
+        rm.item_model('tfc:grounditem/%s' % ground, 'tfc:block/groundcover/%s' % ground) \
+        .with_lang(lang('%s' % ground))
+        rm.block_loot('tfc:groundcover/%s' % ground, 'tfc:grounditem/%s' % ground)
+
     # Wood Blocks
     for wood in WOODS:
         # Logs
@@ -289,7 +377,7 @@ def generate(rm: ResourceManager):
 
         # Bookshelf
         rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood) \
-            .with_block_model({'planks': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/bookshelf') \
+            .with_block_model({'end': 'tfc:block/wood/planks/%s' % wood, 'side': 'tfc:block/wood/planks/%s_bookshelf' % wood}, parent='minecraft:block/bookshelf') \
             .with_item_model() \
             .with_lang(lang('%s Bookshelf', wood))
 
