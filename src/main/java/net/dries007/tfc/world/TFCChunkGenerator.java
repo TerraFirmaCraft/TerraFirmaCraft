@@ -112,7 +112,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     {
         return chunkDataProvider;
     }
-
+    
     public ChunkBlockReplacer getBlockReplacer()
     {
         return blockReplacer;

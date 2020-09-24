@@ -17,52 +17,56 @@ public class Ore
      */
     public enum Default
     {
-        NATIVE_COPPER(true),
-        NATIVE_GOLD(true),
-        HEMATITE(true),
-        NATIVE_SILVER(true),
-        CASSITERITE(true),
-        BISMUTHINITE(true),
-        GARNIERITE(true),
-        MALACHITE(true),
-        MAGNETITE(true),
-        LIMONITE(true),
-        SPHALERITE(true),
-        TETRAHEDRITE(true),
-        BITUMINOUS_COAL(false),
-        LIGNITE(false),
-        KAOLINITE(false),
-        GYPSUM(false),
-        GRAPHITE(false),
-        SULFUR(false),
-        CINNABAR(false),
-        CRYOLITE(false),
-        SALTPETER(false),
-        SYLVITE(false),
-        BORAX(false),
-        HALITE(false),
+        NATIVE_COPPER(true, false),
+        NATIVE_GOLD(true, false),
+        HEMATITE(true, false),
+        NATIVE_SILVER(true, false),
+        CASSITERITE(true, false),
+        BISMUTHINITE(true, false),
+        GARNIERITE(true, false),
+        MALACHITE(true, false),
+        MAGNETITE(true, false),
+        LIMONITE(true, false),
+        SPHALERITE(true, false),
+        TETRAHEDRITE(true, false),
+        BITUMINOUS_COAL(false, false),
+        LIGNITE(false, false),
+        KAOLINITE(false, false),
+        GYPSUM(false, false),
+        GRAPHITE(false, false),
+        SULFUR(false, false),
+        CINNABAR(false, false),
+        CRYOLITE(false, false),
+        SALTPETER(false, false),
+        SYLVITE(false, false),
+        BORAX(false, false),
+        HALITE(false, false),
         // gem ores
-        AMETHYST(false),
-        DIAMOND(false),
-        EMERALD(false),
-        LAPIS_LAZULI(false),
-        OPAL(false),
-        PYRITE(false),
-        RUBY(false),
-        SAPPHIRE(false),
-        TOPAZ(false);
+        AMETHYST(false, true),
+        DIAMOND(false, true),
+        EMERALD(false, true),
+        LAPIS_LAZULI(false, true),
+        OPAL(false, true),
+        PYRITE(false, true),
+        RUBY(false, true),
+        SAPPHIRE(false, true),
+        TOPAZ(false, true);
 
         private final boolean graded;
+        private final boolean gem;
 
-        Default(boolean graded)
+        Default(boolean graded, boolean gem)
         {
             this.graded = graded;
+            this.gem = gem;
         }
 
         public boolean isGraded()
         {
             return graded;
         }
+        public boolean isGem() { return gem; }
+        public boolean isNotGem() { return !gem; }
     }
 
     public enum Grade
@@ -76,4 +80,20 @@ public class Ore
             return i < 0 || i >= VALUES.length ? NORMAL : VALUES[i];
         }
     }
+<<<<<<< HEAD
 }
+=======
+
+    public enum ItemGrade
+    {
+        SMALL, POOR, RICH;
+
+        private static final ItemGrade[] VALUES = values();
+
+        public static ItemGrade valueOf(int i)
+        {
+            return i < 0 || i >= VALUES.length ? SMALL : VALUES[i];
+        }
+    }
+}
+>>>>>>> 1.15.x

@@ -10,7 +10,10 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/claystone",
     "cracked_bricks": "tfc:rock/cracked_bricks/claystone",
     "chiseled": "tfc:rock/chiseled/claystone",
-    "spike": "tfc:rock/spike/claystone"
+    "spike": "tfc:rock/spike/claystone",
+    "pebble": "tfc:rock/pebble/claystone",
+    "rubble": "tfc:rock/rubble/claystone",
+    "boulder": "tfc:rock/boulder/claystone"
   },
   "category": "sedimentary",
   "desert_sand_color": "brown",
