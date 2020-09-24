@@ -195,7 +195,9 @@ public final class CommonEventHandler
         }
 
         // Drop shards from glass
-        if (state.getMaterial() == Material.GLASS && Constants.RNG.nextInt(2) == 0 && block != Blocks.GLASS_PANE)
+        if (state.getMaterial() == Material.GLASS &&  // chance of glass blocks dropping shards 50%, everything else 25%
+            ((block == Blocks.GLASS || block == Blocks.STAINED_GLASS) && Constants.RNG.nextInt(2) == 0 ) ||
+            (Constants.RNG.nextInt(4) == 0))
         {
             event.getDrops().add(new ItemStack(ItemsTFC.GLASS_SHARD));
         }
