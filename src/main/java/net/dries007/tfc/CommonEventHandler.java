@@ -194,7 +194,7 @@ public final class CommonEventHandler
             event.getDrops().add(new ItemStack(Blocks.ICE));
         }
         // Drop shards from glass
-        ItemStack stackAt = state.getBlock().getPickBlock(state, null, event.getWorld(), event.getPos(), player);
+        ItemStack stackAt = new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, state.getBlock().damageDropped(state));
         if (OreDictionaryHelper.doesStackMatchOre(stackAt,"blockGlass"))
         {
             event.getDrops().add(new ItemStack(ItemsTFC.GLASS_SHARD));
