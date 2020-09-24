@@ -193,11 +193,9 @@ public final class CommonEventHandler
         {
             event.getDrops().add(new ItemStack(Blocks.ICE));
         }
-
         // Drop shards from glass
-        if (state.getMaterial() == Material.GLASS &&  // chance of glass blocks dropping shards 50%, everything else 25%
-            ((block == Blocks.GLASS || block == Blocks.STAINED_GLASS) && Constants.RNG.nextInt(2) == 0 ) ||
-            (Constants.RNG.nextInt(4) == 0))
+        ItemStack stackAt = state.getBlock().getPickBlock(state, null, event.getWorld(), event.getPos(), player);
+        if (OreDictionaryHelper.doesStackMatchOre(stackAt,"blockGlass"))
         {
             event.getDrops().add(new ItemStack(ItemsTFC.GLASS_SHARD));
         }
