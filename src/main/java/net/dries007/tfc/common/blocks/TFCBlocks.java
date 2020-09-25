@@ -116,7 +116,7 @@ public final class TFCBlocks
         )
     );
 
-    public static final RegistryObject<Block> CALCITE = register("calcite", CalciteBlock::new, TFCItemGroup.DECORATIONS);
+    //public static final RegistryObject<Block> CALCITE = register("calcite", CalciteBlock::new, TFCItemGroup.DECORATIONS);
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, ItemGroup group)
     {
