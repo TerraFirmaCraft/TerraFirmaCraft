@@ -14,6 +14,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(CanyonWorldCarver.class)
 public interface CanyonWorldCarverAccessor
 {
+    /**
+     * We need to override the generate method in order to change the height, but this method is not protected.
+     */
     @Invoker("genCanyon")
     void call$genCanyon(IChunk chunk, Function<BlockPos, Biome> biomeReader, long canyonSeed, int seaLevel, int chunkX, int chunkZ, double xOffset, double yOffset, double zOffset, float width, float yaw, float pitch, int branchMin, int branchMax, double three, BitSet carvingMask);
 }

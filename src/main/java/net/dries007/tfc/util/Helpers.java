@@ -48,6 +48,7 @@ import net.dries007.tfc.mixin.world.gen.feature.template.TemplateAccessor;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
+import static net.dries007.tfc.TerraFirmaCraft.LOGGER;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class Helpers
@@ -251,8 +252,8 @@ public final class Helpers
      * Normally, one would just call {@link IWorld#isClientSide()}
      * HOWEVER
      * There exists a BIG HUGE PROBLEM in very specific scenarios with this
-     * Since World's isRemote() actually returns the isRemote boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
-     * At this point, THE CLIENT WORLD WILL RETURN {@code true} to {@link IWorld#isClientSide()}
+     * Since World's isClientSide() actually returns the isClientSide boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
+     * At this point, THE CLIENT WORLD WILL RETURN {@code false} to {@link IWorld#isClientSide()}
      *
      * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
      */
@@ -267,7 +268,16 @@ public final class Helpers
      */
     public static void addTemplateToWorldForTreeGen(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
     {
-        List<Template.BlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((TemplateAccessor) template).accessor$getPalettes(), pos).blocks();
+        List<Template.BlockInfo> transformedBlockInfos;
+        try
+        {
+            transformedBlockInfos = placementIn.getRandomPalette(((TemplateAccessor) template).accessor$getPalettes(), pos).blocks();
+        }
+        catch (IllegalStateException e)
+        {
+            LOGGER.info("HEY BOI THERE's A PROBLEM!", e);
+            return;
+        }
         MutableBoundingBox boundingBox = placementIn.getBoundingBox();
         for (Template.BlockInfo blockInfo : Template.processBlockInfos(worldIn, pos, pos, placementIn, transformedBlockInfos, template))
         {

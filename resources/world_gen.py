@@ -1,9 +1,7 @@
 # Handles generation of all world gen objects
 
-from mcresources import ResourceManager
-from mcresources import utils
-
-from typing import NamedTuple, List, Dict, Optional, Any, Union, Sequence
+from mcresources import ResourceManager, world_gen as wg
+from typing import NamedTuple
 
 BiomeTemperature = NamedTuple('BiomeTemperature', id=str, temperature=float, water_color=float, water_fog_color=float)
 BiomeRainfall = NamedTuple('BiomeRainfall', id=str, downfall=float)
@@ -24,63 +22,63 @@ RAINFALLS = (
     BiomeRainfall('wet', 0.9)
 )
 
-DEFAULT_FOG_COLOR = 12638463  # todo: colormap
-DEFAULT_SKY_COLOR = 0x84E6FF  # todo: this was a complete guess. Make it color map
+DEFAULT_FOG_COLOR = 12638463
+DEFAULT_SKY_COLOR = 0x84E6FF
 
 
 def generate(rm: ResourceManager):
 
     # Surface Builder Configs
-    grass_dirt_sand = wg_surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:sand')
-    grass_dirt_gravel = wg_surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:gravel')
-    air_air_air = wg_surface_builder_config('minecraft:air', 'minecraft:air', 'minecraft:air')
+    grass_dirt_sand = wg.surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:sand')
+    grass_dirt_gravel = wg.surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:gravel')
+    air_air_air = wg.surface_builder_config('minecraft:air', 'minecraft:air', 'minecraft:air')
 
     # Surface Builders
-    rm_surface_builder(rm, 'badlands', 'badlands', grass_dirt_sand)
-    rm_surface_builder(rm, 'canyons', 'thin', grass_dirt_sand)
-    rm_surface_builder(rm, 'deep', 'deep', grass_dirt_gravel)
-    rm_surface_builder(rm, 'plateau', 'plateau', grass_dirt_sand)
-    rm_surface_builder(rm, 'default', 'normal', grass_dirt_sand)
-    rm_surface_builder(rm, 'underwater', 'underwater', air_air_air)
-    rm_surface_builder(rm, 'mountains', 'mountains', grass_dirt_sand)
-    rm_surface_builder(rm, 'shore', 'shore', air_air_air)
+    rm.surface_builder('badlands', wg.configure('badlands', grass_dirt_sand))
+    rm.surface_builder('canyons', wg.configure('thin', grass_dirt_sand))
+    rm.surface_builder('deep', wg.configure('deep', grass_dirt_gravel))
+    rm.surface_builder('plateau', wg.configure('plateau', grass_dirt_sand))
+    rm.surface_builder('default', wg.configure('normal', grass_dirt_sand))
+    rm.surface_builder('underwater', wg.configure('underwater', air_air_air))
+    rm.surface_builder('mountains', wg.configure('mountains', grass_dirt_sand))
+    rm.surface_builder('shore', wg.configure('shore', air_air_air))
 
     # Configured Features
-    rm_feature(rm, 'ore_veins', wg_configure('tfc:ore_veins'))
-    rm_feature(rm, 'erosion', wg_configure('tfc:erosion'))
+    rm.feature('ore_veins', wg.configure('tfc:ore_veins'))
+    rm.feature('erosion', wg.configure('tfc:erosion'))
 
-    rm_feature(rm, 'water_fissure',
-        wg_decorated(
-            wg_decorated(
-                wg_configure('tfc:fissure', {'state': utils_wg_block_state('minecraft:water[level=0]')}),
+    rm.feature('water_fissure',
+        wg.decorated(
+            wg.decorated(
+                wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:water[level=0]')}),
                 'minecraft:chance', {'chance': 60}),
             'minecraft:heightmap_world_surface'))
-    rm_feature(rm, 'lava_fissure',
-        wg_decorated(
-            wg_decorated(
-                wg_configure('tfc:fissure', {'state': utils_wg_block_state('minecraft:lava[level=0]')}),
+    rm.feature('lava_fissure',
+        wg.decorated(
+            wg.decorated(
+                wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:lava[level=0]')}),
                 'minecraft:chance', {'chance': 60}),
             'minecraft:heightmap_world_surface'))
 
-    rm_feature(rm, 'cave_spike',
-        wg_decorated(
-            wg_configure('tfc:cave_spike'),
+    rm.feature('cave_spike',
+        wg.decorated(
+            wg.configure('tfc:cave_spike'),
             'minecraft:carving_mask', {'step': 'air', 'probability': 0.09}))
-    rm_feature(rm, 'large_cave_spike',
-        wg_decorated(
-            wg_configure('tfc:large_cave_spike'),
+    rm.feature('large_cave_spike',
+        wg.decorated(
+            wg.configure('tfc:large_cave_spike'),
             'minecraft:carving_mask', {'step': 'air', 'probability': 0.02}))
 
     for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
-        rm_feature(rm, boulder_cfg[0],
-            wg_decorated(
-                wg_decorated(
-                    wg_configure('tfc:boulder', {'base_type': boulder_cfg[1], 'decoration_type': boulder_cfg[2]}),
+        rm.feature(boulder_cfg[0],
+            wg.decorated(
+                wg.decorated(
+                    wg.configure('tfc:boulder', {'base_type': boulder_cfg[1], 'decoration_type': boulder_cfg[2]}),
                     'minecraft:chance', {'chance': 60}),
                 'minecraft:heightmap_world_surface'))
 
     # Trees / Forests
-    rm_feature(rm, 'forest', wg_configure('tfc:forest', {'entries': [
+    rm.feature('forest', wg.configure('tfc:forest', {'entries': [
         {'min_rain': 30, 'max_rain': 210, 'min_temp': 21, 'max_temp': 31, 'tree_feature': 'tfc:tree/acacia', 'old_growth_feature': 'tfc:tree/acacia_large'},
         {'min_rain': 60, 'max_rain': 140, 'min_temp': -6, 'max_temp': 12, 'tree_feature': 'tfc:tree/ash', 'old_growth_feature': 'tfc:tree/ash_large'},
         {'min_rain': 10, 'max_rain': 180, 'min_temp': -10, 'max_temp': 16, 'tree_feature': 'tfc:tree/aspen', 'old_growth_feature': 'tfc:tree/aspen'},
@@ -102,36 +100,36 @@ def generate(rm: ResourceManager):
         {'min_rain': 260, 'max_rain': 480, 'min_temp': 15, 'max_temp': 32, 'tree_feature': 'tfc:tree/willow', 'old_growth_feature': 'tfc:tree/willow'}
     ]}))
 
-    rm_feature(rm, ('tree', 'acacia'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('acacia', 35), 'radius': 1}))
-    rm_feature(rm, ('tree', 'acacia_large'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('acacia', 6), 'radius': 2}))
-    rm_feature(rm, ('tree', 'ash'), wg_configure('tfc:overlay_tree', {'base': 'tfc:ash/base', 'overlay': 'tfc:ash/overlay', 'height_min': 3, 'height_range': 3, 'trunk_state': utils_wg_block_state('tfc:wood/log/ash[axis=y]'), 'radius': 1}))
-    rm_feature(rm, ('tree', 'ash_large'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('ash_large', 5), 'radius': 2}))
-    rm_feature(rm, ('tree', 'aspen'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('aspen', 16), 'radius': 1}))
-    rm_feature(rm, ('tree', 'birch'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('birch', 16), 'radius': 1}))
-    rm_feature(rm, ('tree', 'blackwood'), wg_configure('tfc:overlay_tree', {'base': 'tfc:blackwood/base', 'overlay': 'tfc:blackwood/overlay', 'height_min': 1, 'height_range': 3, 'trunk_state': utils_wg_block_state('tfc:wood/log/blackwood[axis=y]'), 'radius': 1}))
-    rm_feature(rm, ('tree', 'chestnut'), wg_configure('tfc:overlay_tree', {'base': 'tfc:blackwood/base', 'overlay': 'tfc:blackwood/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': utils_wg_block_state('tfc:wood/log/chestnut[axis=y]'), 'radius': 1}))
-    rm_feature(rm, ('tree', 'douglas_fir'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('douglas_fir', 9), 'radius': 1}))
-    rm_feature(rm, ('tree', 'douglas_fir_large'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('douglas_fir_large', 5), 'radius': 2}))
-    rm_feature(rm, ('tree', 'hickory'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('hickory', 9), 'radius': 1}))
-    rm_feature(rm, ('tree', 'hickory_large'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('hickory_large', 5), 'radius': 2}))
-    rm_feature(rm, ('tree', 'kapok'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('kapok', 7), 'radius': 1}))
-    rm_feature(rm, ('tree', 'maple'), wg_configure('tfc:overlay_tree', {'base': 'tfc:maple/base', 'overlay': 'tfc:maple/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': utils_wg_block_state('tfc:wood/log/maple[axis=y]'), 'radius': 1}))
-    rm_feature(rm, ('tree', 'maple_large'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('maple_large', 5), 'radius': 2}))
-    rm_feature(rm, ('tree', 'oak'), wg_configure('tfc:overlay_tree', {'base': 'tfc:oak/base', 'overlay': 'tfc:oak/overlay', 'height_min': 3, 'height_range': 3, 'trunk_state': utils_wg_block_state('tfc:wood/log/oak[axis=y]'), 'radius': 2}))
-    rm_feature(rm, ('tree', 'palm'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('palm', 7), 'radius': 1}))
-    rm_feature(rm, ('tree', 'pine'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('pine', 9), 'radius': 1}))
-    rm_feature(rm, ('tree', 'pine_large'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('pine_large', 9), 'radius': 1}))
-    rm_feature(rm, ('tree', 'rosewood'), wg_configure('tfc:overlay_tree', {'base': 'tfc:rosewood/base', 'overlay': 'tfc:rosewood/overlay', 'height_min': 1, 'height_range': 2, 'trunk_state': utils_wg_block_state('tfc:wood/log/rosewood[axis=y]'), 'radius': 1}))
-    rm_feature(rm, ('tree', 'sequoia'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('sequoia', 7), 'radius': 1}))
-    rm_feature(rm, ('tree', 'spruce'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('spruce', 7), 'radius': 1}))
-    rm_feature(rm, ('tree', 'sycamore'), wg_configure('tfc:overlay_tree', {'base': 'tfc:sycamore/base', 'overlay': 'tfc:sycamore/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': utils_wg_block_state('tfc:wood/log/sycamore[axis=y]'), 'radius': 1}))
-    rm_feature(rm, ('tree', 'sycamore_large'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('sycamore_large', 5), 'radius': 2}))
-    rm_feature(rm, ('tree', 'white_cedar'), wg_configure('tfc:overlay_tree', {'base': 'tfc:white_cedar/base', 'overlay': 'tfc:white_cedar/overlay', 'height_min': 1, 'height_range': 3, 'trunk_state': utils_wg_block_state('tfc:wood/log/white_cedar[axis=y]'), 'radius': 1}))
-    rm_feature(rm, ('tree', 'willow'), wg_configure('tfc:random_tree', {'structures': random_tree_structures('willow', 7), 'radius': 2}))
+    rm.feature(('tree', 'acacia'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('acacia', 35), 'radius': 1}))
+    rm.feature(('tree', 'acacia_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('acacia', 6), 'radius': 2}))
+    rm.feature(('tree', 'ash'), wg.configure('tfc:overlay_tree', {'base': 'tfc:ash/base', 'overlay': 'tfc:ash/overlay', 'height_min': 3, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/ash[axis=y]'), 'radius': 1}))
+    rm.feature(('tree', 'ash_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('ash_large', 5), 'radius': 2}))
+    rm.feature(('tree', 'aspen'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('aspen', 16), 'radius': 1}))
+    rm.feature(('tree', 'birch'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('birch', 16), 'radius': 1}))
+    rm.feature(('tree', 'blackwood'), wg.configure('tfc:overlay_tree', {'base': 'tfc:blackwood/base', 'overlay': 'tfc:blackwood/overlay', 'height_min': 1, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/blackwood[axis=y]'), 'radius': 1}))
+    rm.feature(('tree', 'chestnut'), wg.configure('tfc:overlay_tree', {'base': 'tfc:blackwood/base', 'overlay': 'tfc:blackwood/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/chestnut[axis=y]'), 'radius': 1}))
+    rm.feature(('tree', 'douglas_fir'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('douglas_fir', 9), 'radius': 1}))
+    rm.feature(('tree', 'douglas_fir_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('douglas_fir_large', 5), 'radius': 2}))
+    rm.feature(('tree', 'hickory'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('hickory', 9), 'radius': 1}))
+    rm.feature(('tree', 'hickory_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('hickory_large', 5), 'radius': 2}))
+    rm.feature(('tree', 'kapok'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('kapok', 7), 'radius': 1}))
+    rm.feature(('tree', 'maple'), wg.configure('tfc:overlay_tree', {'base': 'tfc:maple/base', 'overlay': 'tfc:maple/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/maple[axis=y]'), 'radius': 1}))
+    rm.feature(('tree', 'maple_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('maple_large', 5), 'radius': 2}))
+    rm.feature(('tree', 'oak'), wg.configure('tfc:overlay_tree', {'base': 'tfc:oak/base', 'overlay': 'tfc:oak/overlay', 'height_min': 3, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/oak[axis=y]'), 'radius': 2}))
+    rm.feature(('tree', 'palm'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('palm', 7), 'radius': 1}))
+    rm.feature(('tree', 'pine'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('pine', 9), 'radius': 1}))
+    rm.feature(('tree', 'pine_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('pine_large', 9), 'radius': 1}))
+    rm.feature(('tree', 'rosewood'), wg.configure('tfc:overlay_tree', {'base': 'tfc:rosewood/base', 'overlay': 'tfc:rosewood/overlay', 'height_min': 1, 'height_range': 2, 'trunk_state': wg.block_state('tfc:wood/log/rosewood[axis=y]'), 'radius': 1}))
+    rm.feature(('tree', 'sequoia'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('sequoia', 7), 'radius': 1}))
+    rm.feature(('tree', 'spruce'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('spruce', 7), 'radius': 1}))
+    rm.feature(('tree', 'sycamore'), wg.configure('tfc:overlay_tree', {'base': 'tfc:sycamore/base', 'overlay': 'tfc:sycamore/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/sycamore[axis=y]'), 'radius': 1}))
+    rm.feature(('tree', 'sycamore_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('sycamore_large', 5), 'radius': 2}))
+    rm.feature(('tree', 'white_cedar'), wg.configure('tfc:overlay_tree', {'base': 'tfc:white_cedar/base', 'overlay': 'tfc:white_cedar/overlay', 'height_min': 1, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/white_cedar[axis=y]'), 'radius': 1}))
+    rm.feature(('tree', 'willow'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('willow', 7), 'radius': 2}))
 
     # Carvers
-    rm_carver(rm, 'cave', wg_configure('tfc:cave', {'probability': 0.1}))
-    rm_carver(rm, 'canyon', wg_configure('tfc:canyon', {'probability': 0.015}))
+    rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
+    rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
 
     # Biomes
     for temp in TEMPERATURES:
@@ -165,8 +163,7 @@ def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: 
         rain_type = 'snow'
     else:
         rain_type = 'rain'
-    rm_biome(
-        rm,
+    rm.biome(
         name_parts='%s_%s_%s' % (name, temp.id, rain.id),
         precipitation=rain_type,
         category=category,
@@ -193,132 +190,3 @@ def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: 
             ['tfc:forest'],  # vegetal decoration
             []   # top layer modification
         ])
-
-
-# TODO: move all below to mcresources ====================================
-
-
-def rm_biome(self: ResourceManager, name_parts, precipitation: str = 'none', category: str = 'none', depth: float = 0, scale: float = 0, temperature: float = 0, temperature_modifier: str = 'none', downfall: float = 0.5, effects: Dict = None, surface_builder: str = 'minecraft:nope', air_carvers: Optional[List[str]] = None, water_carvers: Optional[List[str]] = None, features: List[List[str]] = None, structures: List[str] = None, spawners=None, player_spawn_friendly: bool = True, creature_spawn_probability: float = 0.5, parent: Optional[str] = None, spawn_costs=None):
-    if effects is None:
-        effects = {}  # todo: default effects
-    if air_carvers is None:
-        air_carvers = []
-    if water_carvers is None:
-        water_carvers = []
-    if features is None:
-        features = []
-    if structures is None:
-        structures = []
-    if spawners is None:
-        spawners = {}
-    if spawn_costs is None:
-        spawn_costs = {}
-    res = utils.resource_location(self.domain, name_parts)
-    utils.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'biome', res.path), {
-        'precipitation': precipitation,
-        'category': category,
-        'depth': depth,
-        'scale': scale,
-        'temperature': temperature,
-        'temperature_modifier': temperature_modifier,
-        'downfall': downfall,
-        'effects': effects,
-        'carvers': {
-            'air': air_carvers,
-            'liquid': water_carvers
-        },
-        'surface_builder': surface_builder,
-        'features': features,
-        'starts': structures,
-        'spawners': spawners,
-        'player_spawn_friendly': player_spawn_friendly,
-        'creature_spawn_probability': creature_spawn_probability,
-        'parent': parent,
-        'spawn_costs': spawn_costs
-    }, self.indent)
-
-
-def rm_feature(self: ResourceManager, name_parts: utils.ResourceIdentifier, data: Any):
-    res = utils.resource_location(self.domain, name_parts)
-    utils.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'configured_feature', res.path), utils_wg_expand_type_config(data), self.indent)
-
-
-def rm_carver(self: ResourceManager, name_parts: utils.ResourceIdentifier, data: Any):
-    res = utils.resource_location(self.domain, name_parts)
-    utils.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'configured_carver', res.path), utils_wg_expand_type_config(data), self.indent)
-
-
-def rm_surface_builder(self: ResourceManager, name_parts: utils.ResourceIdentifier, surface_builder_name_parts: utils.ResourceIdentifier = None, config: Optional[Dict[str, Any]] = None):
-    if surface_builder_name_parts is None:
-        surface_builder_name_parts = name_parts
-    if config is None:
-        config = {}
-    surface_builder_res = utils.resource_location(self.domain, surface_builder_name_parts)
-    res = utils.resource_location(self.domain, name_parts)
-    utils.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'configured_surface_builder', res.path), {
-        'type': surface_builder_res.join(),
-        'config': config
-    })
-
-
-def wg_configure(name_parts: utils.ResourceIdentifier, config: Optional[Dict[str, Any]] = None):
-    res = utils.resource_location(name_parts)
-    if config is None:
-        config = {}
-    return {
-        'type': res.join(),
-        'config': config
-    }
-
-
-def wg_decorated(feature: Dict[str, Any], decorator_name_parts: utils.ResourceIdentifier, config: Optional[Dict[str, Any]] = None):
-    decorator_res = utils.resource_location(decorator_name_parts)
-    if config is None:
-        config = {}
-    return {
-        'type': 'minecraft:decorated',
-        'config': {
-            'feature': feature,
-            'decorator': {
-                'type': decorator_res.join(),
-                'config': config
-            }
-        }
-    }
-
-
-def wg_surface_builder_config(top_material: Union[str, Dict[str, Any]], under_material: Union[str, Dict[str, Any]], underwater_material: Union[str, Dict[str, Any]]):
-    return {
-        'top_material': utils_wg_block_state(top_material),
-        'under_material': utils_wg_block_state(under_material),
-        'underwater_material': utils_wg_block_state(underwater_material)
-    }
-
-
-def utils_wg_expand_type_config(data: Union[str, Sequence, Dict[str, Any]]) -> Dict[str, Any]:
-    if isinstance(data, Dict):
-        return data
-    elif isinstance(data, str):
-        return {'type': data, 'config': {}}
-    elif isinstance(data, Sequence) and len(data) == 2 and isinstance(data[0], str) and isinstance(data[1], Dict):
-        return {'type': data[0], 'config': data[1]}
-    else:
-        raise ValueError('Unknown data')
-
-
-def utils_wg_block_state(data: Any):
-    if isinstance(data, str):
-        property_map = {}
-        if '[' in data and data.endswith(']'):
-            name, properties = data[:-1].split('[')
-            for pair in properties.split(']'):
-                key, value = pair.split('=')
-                property_map[key] = value
-        else:
-            name = data
-        return {'Name': name, 'Properties': property_map}
-    elif isinstance(data, dict):
-        return data
-    else:
-        raise ValueError('Unknown data type: ' + data)
-

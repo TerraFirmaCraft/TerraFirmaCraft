@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.biome;
 
+import java.util.stream.Collectors;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
@@ -39,7 +41,7 @@ public class TFCBiomeProvider extends BiomeProvider
 
     public TFCBiomeProvider(long seed, int landFrequency, int biomeSize, Registry<Biome> biomeRegistry)
     {
-        super(TFCBiomes.DEFAULT_BIOME_KEYS.stream().map(key -> () -> biomeRegistry.getOrThrow(key)));
+        super(TFCBiomes.getAllKeys().stream().map(biomeRegistry::getOrThrow).collect(Collectors.toList()));
 
         this.seed = seed;
         this.landFrequency = landFrequency;

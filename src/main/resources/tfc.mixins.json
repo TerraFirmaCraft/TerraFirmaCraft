@@ -3,11 +3,23 @@
   "minVersion": "0.8",
   "package": "net.dries007.tfc.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": ["entity.item.FallingBlockEntityAccessor", "item.crafting.RecipeManagerAccessor", "util.registry.WorldSettingsImportMixin", "world.GameRulesAccessor", "world.GameRulesRuleTypeAccessor", "world.biome.BiomeMixin", "world.gen.HeightmapAccessor", "world.gen.carver.CanyonWorldCarverAccessor", "world.gen.feature.template.TemplateAccessor"],
+  "mixins": [
+    "entity.item.FallingBlockEntityAccessor",
+    "item.crafting.RecipeManagerAccessor",
+    "util.registry.WorldSettingsImportMixin",
+    "world.biome.BiomeMixin",
+    "world.GameRulesAccessor",
+    "world.GameRulesRuleTypeAccessor",
+    "world.gen.HeightmapAccessor",
+    "world.gen.carver.CanyonWorldCarverAccessor",
+    "world.gen.feature.template.TemplateAccessor"
+  ],
   "client": [
     "client.gui.screen.CreateWorldScreenMixin",
     "client.gui.screen.WorldOptionsScreenAccessor",
     "client.renderer.FogRendererMixin",
+    "client.renderer.WorldRendererMixin",
+    "client.world.ClientWorldMixin",
     "world.biome.BiomeColorsAccessor"
   ],
   "injectors": {

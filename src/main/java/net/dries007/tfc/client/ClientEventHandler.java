@@ -40,6 +40,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
 import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.world.TFCChunkGenerator;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -87,11 +88,10 @@ public final class ClientEventHandler
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
 
         // Dynamic water color setup
+        final BlockPos.Mutable colorResolverPos = new BlockPos.Mutable();
         BiomeColorsAccessor.accessor$setWaterColorResolver((biome, posX, posZ) -> {
-            BlockPos pos = new BlockPos(posX, 96, posZ);
-            float temperature = Climate.getTemperature(pos);
-            float rainfall = Climate.getRainfall(pos);
-            return TFCColors.getWaterColor(temperature, rainfall);
+            colorResolverPos.set(posX, TFCChunkGenerator.SEA_LEVEL, posZ);
+            return TFCColors.getWaterColor(colorResolverPos);
         });
     }
 
@@ -126,11 +126,13 @@ public final class ClientEventHandler
 
         // Color maps
         // We maintain a series of color maps independent and beyond the vanilla color maps
-        // Water and water fog color (the latter unused until we can mixin to provide position context in 1.16) to replace hardcoded per-biome water colors
+        // Water and water fog color to replace hardcoded per-biome water colors
         // Grass and foliage (which we replace vanilla's anyway, but use our own for better indexing)
         // Foliage winter and fall (for deciduous trees which have leaves which change color during those seasons)
 
+        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setSkyColors, TFCColors.SKY_COLORS_LOCATION));
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setWaterColors, TFCColors.WATER_COLORS_LOCATION));
+        resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setWaterFogColors, TFCColors.WATER_FOG_COLORS_LOCATION));
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setGrassColors, TFCColors.GRASS_COLORS_LOCATION));
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageColors, TFCColors.FOLIAGE_COLORS_LOCATION));
         resourceManager.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));

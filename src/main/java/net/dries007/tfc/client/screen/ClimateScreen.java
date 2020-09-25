@@ -17,6 +17,7 @@ import net.minecraft.world.IWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
@@ -58,12 +59,10 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
         String tooltip = TextFormatting.WHITE + "" + TextFormatting.UNDERLINE + title.getString();
         font.draw(matrixStack, tooltip, (imageWidth - font.width(tooltip)) / 2f, 7, 0x404040);
 
-        IWorld world = inventory.player.level;
-        BlockPos pos = inventory.player.blockPosition();
-
-        float averageTemp = Climate.getAverageTemperature(world, pos);
-        float rainfall = Climate.getRainfall(world, pos);
-        float currentTemp = Climate.getTemperature(world, pos);
+        // Climate at the current player
+        float averageTemp = ClimateRenderCache.INSTANCE.getAverageTemperature();
+        float rainfall = ClimateRenderCache.INSTANCE.getRainfall();
+        float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
 
         String climateType = I18n.get("tfc.tooltip.climate_koppen_climate_classification") + I18n.get(Helpers.getEnumTranslationKey(KoppenClimateClassification.classify(averageTemp, rainfall)));
         String averageTempTooltip = I18n.get("tfc.tooltip.climate_average_temperature", String.format("%.1f", averageTemp));

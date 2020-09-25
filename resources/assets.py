@@ -49,7 +49,7 @@ def generate(rm: ResourceManager):
                     })
                     rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_slab', lang('%s %s Slab', rock, block_type))
                     # Walls
-                    wall_v2(rm.block('tfc:rock/' + block_type + '/' + rock))
+                    rm.block('tfc:rock/' + block_type + '/' + rock).make_wall()
                     rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_wall', 'tfc:rock/' + block_type + '/' + rock + '_wall')
                     rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_wall', lang('%s %s Wall', rock, block_type))
                     rm.block_tag('minecraft:walls', 'tfc:rock/' + block_type + '/' + rock + '_wall')
@@ -330,32 +330,3 @@ def generate(rm: ResourceManager):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
-
-
-def wall_v2(ctx: BlockContext, wall_suffix: str = '_wall'):
-    block = ctx.res.join('block/')
-    wall = ctx.res.join() + wall_suffix
-    wall_post = block + wall_suffix + '_post'
-    wall_side = block + wall_suffix + '_side'
-    wall_side_tall = block + wall_suffix + '_side_tall'
-    wall_inv = block + wall_suffix + '_inventory'
-    ctx.rm.blockstate_multipart(wall, wall_multipart_v2(wall_post, wall_side, wall_side_tall))
-    ctx.rm.block_model(wall + '_post', textures={'wall': block}, parent='block/template_wall_post')
-    ctx.rm.block_model(wall + '_side', textures={'wall': block}, parent='block/template_wall_side')
-    ctx.rm.block_model(wall + '_side_tall', textures={'wall': block}, parent='block/template_wall_side_tall')
-    ctx.rm.block_model(wall + '_inventory', textures={'wall': block}, parent='block/wall_inventory')
-    ctx.rm.item_model(wall, parent=wall_inv, no_textures=True)
-
-
-def wall_multipart_v2(wall_post: str, wall_side: str, wall_side_tall: str):
-    return [
-        ({'up': 'true'}, {'model': wall_post}),
-        ({'north': 'low'}, {'model': wall_side, 'uvlock': True}),
-        ({'east': 'low'}, {'model': wall_side, 'y': 90, 'uvlock': True}),
-        ({'south': 'low'}, {'model': wall_side, 'y': 180, 'uvlock': True}),
-        ({'west': 'low'}, {'model': wall_side, 'y': 270, 'uvlock': True}),
-        ({'north': 'tall'}, {'model': wall_side_tall, 'uvlock': True}),
-        ({'east': 'tall'}, {'model': wall_side_tall, 'y': 90, 'uvlock': True}),
-        ({'south': 'tall'}, {'model': wall_side_tall, 'y': 180, 'uvlock': True}),
-        ({'west': 'tall'}, {'model': wall_side_tall, 'y': 270, 'uvlock': True})
-    ]
