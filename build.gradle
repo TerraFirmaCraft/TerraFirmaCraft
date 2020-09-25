@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url='https://dist.creeper.host/Sponge/maven' }
+        maven { url = 'https://dist.creeper.host/Sponge/maven' }
         jcenter()
         mavenCentral()
     }
@@ -62,6 +62,7 @@ minecraft {
         server {
             workingDirectory project.file('run')
             arg '-mixin.config=' + mod_id + '.mixins.json'
+            arg '--nogui'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -70,41 +71,35 @@ minecraft {
                 }
             }
         }
-        // todo: fix
-/*
+
         serverTest {
             parent server // This run config inherits settings from the server config
             workingDirectory project.file('run')
-            main 'com.alcatrazescapee.mcjunitlib.DedicatedTestServerLauncher'
-            // The main class which launches a customized server which then runs JUnit tests
+            main 'com.alcatrazescapee.mcjunitlib.DedicatedTestServerLauncher' // The main class which launches a customized server which then runs JUnit tests
             ideaModule "${project.name}.test" // Tell IDEA to use the classpath of the test module
-            property 'forge.logging.console.level', 'unittest'
-            // This logging level prevents any other server information messages and leaves only the unit test output
+            property 'forge.logging.console.level', 'unittest' // This logging level prevents any other server information messages and leaves only the unit test output
             environment 'MOD_CLASSES', String.join(File.pathSeparator,
                     "tfc%%${sourceSets.main.output.resourcesDir}",
                     "tfc%%${sourceSets.main.output.classesDir}",
                     "tfc%%${sourceSets.test.output.resourcesDir}",
                     "tfc%%${sourceSets.test.output.classesDir}",
             ) // Forge will ignore all test sources unless we explicitly tell it to include them as mod sources
-            environment 'target', 'fmltestserver'
-            // This is a custom service used to launch with ModLauncher's transforming class loader
+            environment 'target', 'fmltestserver' // This is a custom service used to launch with ModLauncher's transforming class loader
             mods {
-                tfc { // The mod that is being tested
+                tfc {
                     sources sourceSets.main, sourceSets.test
                 }
             }
         }
-*/
     }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // todo: fix
-    //testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}") {
-    //    transitive = false
-    //}
+    testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}") {
+        transitive = false
+    }
 }
 
 processResources {

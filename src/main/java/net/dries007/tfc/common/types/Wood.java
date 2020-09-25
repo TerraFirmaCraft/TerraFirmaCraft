@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.common.types;
 
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -28,6 +29,7 @@ import net.dries007.tfc.world.feature.trees.TFCTree;
 
 public class Wood
 {
+    private static final Random rng = new Random();
     /**
      * Default wood types used for block registration calls
      * Not extensible
@@ -73,7 +75,7 @@ public class Wood
             this.topColor = topColor;
             this.barkColor = barkColor;
             this.tree = new TFCTree(Helpers.identifier("tree/" + name().toLowerCase()), Helpers.identifier("tree/" + name().toLowerCase() + "_large"));
-            this.fallFoliageCoords = fallFoliageCoords;
+            this.fallFoliageCoords = rng.nextInt(256 * 256);
         }
 
         public boolean isConifer()

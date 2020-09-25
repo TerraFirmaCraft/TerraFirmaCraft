@@ -8,7 +8,7 @@ package net.dries007.tfc.world.chunkdata;
 import net.minecraft.world.IWorld;
 
 /**
- * Identifier interface for TFC-enabled chunk generators
+ * Identifier interface for the TFC chunk generators
  */
 public interface IChunkDataProvidingChunkGenerator
 {

@@ -5,7 +5,9 @@ import java.util.function.LongFunction;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectFunction;
 import net.dries007.tfc.util.Climate;
@@ -18,6 +20,9 @@ import net.dries007.tfc.world.noise.INoise2D;
  */
 public class BiomeExtension
 {
+    @SuppressWarnings("ConstantConditions")
+    public static final BiomeExtension EMPTY = new BiomeExtension(null, null, null, null);
+
     private final RegistryKey<Biome> id;
     private final BiomeTemperature temperature;
     private final BiomeRainfall rainfall;
@@ -40,10 +45,4 @@ public class BiomeExtension
     {
         return id;
     }
-
-    public float getHeightAdjustedTemperature(BlockPos pos)
-    {
-        return MathHelper.clamp(0.15f + Climate.getTemperature(pos) / 30f, -1, 2);
-    }
-
 }
