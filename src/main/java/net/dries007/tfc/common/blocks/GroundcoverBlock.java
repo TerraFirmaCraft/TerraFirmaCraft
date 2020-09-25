@@ -1,13 +1,11 @@
 package net.dries007.tfc.common.blocks;
 
-import net.dries007.tfc.common.types.Ore;
-import net.dries007.tfc.common.types.Rock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -36,67 +34,68 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     //todo: fallen leaves/logs
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
-    protected static final VoxelShape FLAT = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
-    protected static final VoxelShape SMALL = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
-    protected static final VoxelShape MEDIUM = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
-    protected static final VoxelShape LARGE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
-    protected static final VoxelShape LONG = Block.makeCuboidShape(1.0D, 0.0D, 5.0D, 15.0D, 4.0D, 11.0D);
+    protected static final VoxelShape FLAT = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+    protected static final VoxelShape SMALL = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
+    protected static final VoxelShape MEDIUM = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
+    protected static final VoxelShape LARGE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
+    protected static final VoxelShape LONG = Block.box(1.0D, 0.0D, 5.0D, 15.0D, 4.0D, 11.0D);
 
     public VoxelShape shape;
 
     public GroundcoverBlock(MiscCoverTypes cover)
     {
-        super(Properties.create(Material.ORGANIC).hardnessAndResistance(0.05F, 0.0F).notSolid());
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F));
         shape = cover.getShape();
-        this.setDefaultState(getDefaultState().with(WATERLOGGED, false).with(FACING, Direction.EAST));
+        this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
     public GroundcoverBlock(RockCoverTypes cover)
     {
-        super(Properties.create(Material.EARTH).hardnessAndResistance(0.05F, 0.0F).notSolid());
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F));
         shape = cover.getShape();
-        this.setDefaultState(getDefaultState().with(WATERLOGGED, false).with(FACING, Direction.EAST));
+        this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
-    public GroundcoverBlock()
+    public GroundcoverBlock() // used for nuggets
     {
-        super(Properties.create(Material.EARTH).hardnessAndResistance(0.05F, 0.0F).notSolid());
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F));
         shape = SMALL;
-        this.setDefaultState(getDefaultState().with(WATERLOGGED, false).with(FACING, Direction.EAST));
+        this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
     @Nonnull
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-        boolean flag = ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8;
-        return super.getStateForPlacement(context).with(WATERLOGGED, flag).with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        boolean flag = fluidstate.is(FluidTags.WATER) && fluidstate.isSource();
+        return super.getStateForPlacement(context).setValue(WATERLOGGED, flag).setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.isValidPosition(worldIn, currentPos))
+        if (!stateIn.isFaceSturdy(worldIn, currentPos, Direction.DOWN))
         {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
         else
         {
-            if (stateIn.get(WATERLOGGED))
+            if (stateIn.getValue(WATERLOGGED))
             {
-                worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+                worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
             }
-            return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (player.getHeldItem(handIn) == ItemStack.EMPTY)
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (player.getMainHandItem() == ItemStack.EMPTY)
         {
             worldIn.destroyBlock(pos, (!player.isCreative()));
         }
@@ -104,18 +103,18 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(WATERLOGGED, FACING);
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        if(!world.isRemote)
+        if(!world.isClientSide())
         {
-            IFluidState ifluidstate = world.getFluidState(pos);
-            world.setBlockState(pos, state.with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER));
+            FluidState fluidstate = world.getFluidState(pos);
+            world.setBlock(pos, state.setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER), 1);
         }
     }
 
@@ -135,15 +134,15 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).isSolid();
+        return worldIn.getBlockState(pos.below()).isFaceSturdy(worldIn, pos, Direction.UP);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public IFluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     public enum MiscCoverTypes

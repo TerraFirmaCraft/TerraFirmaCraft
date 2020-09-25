@@ -54,31 +54,19 @@ public final class TFCBlocks
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_STAIRS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
-<<<<<<< HEAD
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> new StairsBlock(Helpers.mapSupplier(ROCKS.get(rock).get(type), Block::defaultBlockState), Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
-=======
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> new StairsBlock(Helpers.mapSupplier(ROCKS.get(rock).get(type), Block::getDefaultState), Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), DECORATIONS)
->>>>>>> 1.15.x
         )
     );
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_WALLS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
-<<<<<<< HEAD
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_wall", () -> new WallBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
-=======
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_wall", () -> new WallBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), DECORATIONS)
->>>>>>> 1.15.x
         )
     );
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_SLABS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
-<<<<<<< HEAD
             register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
-=======
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_slab", () -> new SlabBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), DECORATIONS)
->>>>>>> 1.15.x
         )
     );
 
@@ -99,10 +87,9 @@ public final class TFCBlocks
         register(("sand/" + type.name()).toLowerCase(), () -> new TFCSandBlock(type.getDustColor(), Block.Properties.of(Material.SAND, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.SAND)), ROCK_BLOCKS)
     );
 
-<<<<<<< HEAD
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Block.Properties.of(Material.DIRT)), ROCK_BLOCKS);
     public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new TFCGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), PEAT), ROCK_BLOCKS);
-=======
+
     public static final Map<GroundcoverBlock.MiscCoverTypes, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlock.MiscCoverTypes.class, type ->
         register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), TFCItemGroup.DECORATIONS)
     );
@@ -111,10 +98,6 @@ public final class TFCBlocks
         register(("groundcover/" + type.name()).toLowerCase(), GroundcoverBlock::new, TFCItemGroup.DECORATIONS)
     );
 
-    public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Block.Properties.create(Material.EARTH)), ROCK_BLOCKS);
-    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new TFCGrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT), PEAT), ROCK_BLOCKS);
-
->>>>>>> 1.15.x
     public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
         Helpers.mapOfKeys(SoilBlockType.Variant.class, variant ->
             register((type.name() + "/" + variant.name()).toLowerCase(), () -> type.create(variant), ROCK_BLOCKS)

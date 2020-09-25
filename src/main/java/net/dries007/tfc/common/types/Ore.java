@@ -80,9 +80,6 @@ public class Ore
             return i < 0 || i >= VALUES.length ? NORMAL : VALUES[i];
         }
     }
-<<<<<<< HEAD
-}
-=======
 
     public enum ItemGrade
     {
@@ -96,4 +93,3 @@ public class Ore
         }
     }
 }
->>>>>>> 1.15.x
