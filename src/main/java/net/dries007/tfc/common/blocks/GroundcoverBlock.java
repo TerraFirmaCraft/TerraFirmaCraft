@@ -78,7 +78,7 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.isFaceSturdy(worldIn, currentPos, Direction.DOWN))
+        if (!stateIn.canSurvive(worldIn, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
