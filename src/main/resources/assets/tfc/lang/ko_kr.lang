@@ -169,12 +169,12 @@ tfc.tooltip.animal.product.no_egg=이 %s 는 아직 알이 나오지 않는다.
 
 
 ## Prospecting Result Messages
-tfc.propick.found=녹았다 %s
-tfc.propick.found_traces=발견된 흔적 %s
-tfc.propick.found_small=작은 광맥을 찾았다 %s
-tfc.propick.found_medium=중간크기의 광맥을 찾았다 %s
-tfc.propick.found_large=큰 광맥을 찾았다 %s
-tfc.propick.found_very_large=매우큰 광맥을 찾았다 %s
+tfc.propick.found=녹았다
+tfc.propick.found_traces=발견된 흔적
+tfc.propick.found_small=작은 광맥을 찾았다
+tfc.propick.found_medium=중간크기의 광맥을 찾았다
+tfc.propick.found_large=큰 광맥을 찾았다
+tfc.propick.found_very_large=매우큰 광맥을 찾았다
 tfc.propick.found_nothing=관심이 없다.
 
 ## Thatch Bed

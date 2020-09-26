@@ -171,16 +171,6 @@ tfc.tooltip.animal.product.no_wool=A lã desse(a) %s ainda não cresceu.
 tfc.tooltip.animal.product.no_milk=Esta %s ainda não está pronta para ser ordenhada.
 tfc.tooltip.animal.product.no_egg=Esta %s ainda não está pronta para botar ovos.
 
-
-## Mensagens Resultantes da Prospecção
-tfc.propick.found=%s Encontrado
-tfc.propick.found_traces=Traços de %s foram encontrados
-tfc.propick.found_small=Encontrou uma pequena amostra de %s
-tfc.propick.found_medium=Encontrou uma amostra média de %s
-tfc.propick.found_large=Encontrou uma grande amostra de %s
-tfc.propick.found_very_large=Encontrou uma amostra muito grande de %s
-tfc.propick.found_nothing=Nada de interessante foi encontrado.
-
 ## Cama de Sapê
 tfc.thatch_bed.spawnpoint=Spawn point redefinido.
 tfc.thatch_bed.not_thundering=Esta cama é muito desconfortável para dormir.
