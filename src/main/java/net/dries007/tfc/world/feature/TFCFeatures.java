@@ -33,11 +33,11 @@ public class TFCFeatures
 
     public static final RegistryObject<ErosionFeature> EROSION = FEATURES.register("erosion", () -> new ErosionFeature(NoFeatureConfig.CODEC));
 
-    public static final RegistryObject<ForestFeature> FOREST = FEATURES.register("forest", () -> new ForestFeature(ForestFeatureConfig.CODEC));
+    public static final RegistryObject<ForestFeature> FOREST = FEATURES.register("forest", () -> new ForestFeature(ForestConfig.CODEC));
 
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = FEATURES.register("overlay_tree", () -> new OverlayTreeFeature(OverlayTreeConfig.CODEC));
     public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = FEATURES.register("random_tree", () -> new RandomTreeFeature(RandomTreeConfig.CODEC));
-    public static final RegistryObject<DoubleRandomTreeFeature> DOUBLE_RANDOM_TREE = FEATURES.register("double_random_tree", () -> new DoubleRandomTreeFeature(RandomTreeConfig.CODEC));
+    public static final RegistryObject<StackedTreeFeature> STACKED_TREE = FEATURES.register("stacked_tree", () -> new StackedTreeFeature(StackedTreeConfig.CODEC));
 
     public static void setup()
     {

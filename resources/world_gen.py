@@ -1,7 +1,7 @@
 # Handles generation of all world gen objects
 
 from mcresources import ResourceManager, world_gen as wg
-from typing import NamedTuple
+from typing import NamedTuple, Tuple, List
 
 BiomeTemperature = NamedTuple('BiomeTemperature', id=str, temperature=float, water_color=float, water_fog_color=float)
 BiomeRainfall = NamedTuple('BiomeRainfall', id=str, downfall=float)
@@ -34,14 +34,14 @@ def generate(rm: ResourceManager):
     air_air_air = wg.surface_builder_config('minecraft:air', 'minecraft:air', 'minecraft:air')
 
     # Surface Builders
-    rm.surface_builder('badlands', wg.configure('badlands', grass_dirt_sand))
-    rm.surface_builder('canyons', wg.configure('thin', grass_dirt_sand))
-    rm.surface_builder('deep', wg.configure('deep', grass_dirt_gravel))
-    rm.surface_builder('plateau', wg.configure('plateau', grass_dirt_sand))
-    rm.surface_builder('default', wg.configure('normal', grass_dirt_sand))
-    rm.surface_builder('underwater', wg.configure('underwater', air_air_air))
-    rm.surface_builder('mountains', wg.configure('mountains', grass_dirt_sand))
-    rm.surface_builder('shore', wg.configure('shore', air_air_air))
+    rm.surface_builder('badlands', wg.configure('tfc:badlands', grass_dirt_sand))
+    rm.surface_builder('canyons', wg.configure('tfc:thin', grass_dirt_sand))
+    rm.surface_builder('deep', wg.configure('tfc:deep', grass_dirt_gravel))
+    rm.surface_builder('plateau', wg.configure('tfc:plateau', grass_dirt_sand))
+    rm.surface_builder('default', wg.configure('tfc:normal', grass_dirt_sand))
+    rm.surface_builder('underwater', wg.configure('tfc:underwater', air_air_air))
+    rm.surface_builder('mountains', wg.configure('tfc:mountains', grass_dirt_sand))
+    rm.surface_builder('shore', wg.configure('tfc:shore', air_air_air))
 
     # Configured Features
     rm.feature('ore_veins', wg.configure('tfc:ore_veins'))
@@ -79,53 +79,55 @@ def generate(rm: ResourceManager):
 
     # Trees / Forests
     rm.feature('forest', wg.configure('tfc:forest', {'entries': [
-        {'min_rain': 30, 'max_rain': 210, 'min_temp': 21, 'max_temp': 31, 'tree_feature': 'tfc:tree/acacia', 'old_growth_feature': 'tfc:tree/acacia_large'},
-        {'min_rain': 60, 'max_rain': 140, 'min_temp': -6, 'max_temp': 12, 'tree_feature': 'tfc:tree/ash', 'old_growth_feature': 'tfc:tree/ash_large'},
-        {'min_rain': 10, 'max_rain': 180, 'min_temp': -10, 'max_temp': 16, 'tree_feature': 'tfc:tree/aspen', 'old_growth_feature': 'tfc:tree/aspen'},
-        {'min_rain': 20, 'max_rain': 180, 'min_temp': -15, 'max_temp': 7, 'tree_feature': 'tfc:tree/birch', 'old_growth_feature': 'tfc:tree/birch'},
-        {'min_rain': 0, 'max_rain': 120, 'min_temp': 15, 'max_temp': 35, 'tree_feature': 'tfc:tree/blackwood', 'old_growth_feature': 'tfc:tree/blackwood'},
-        {'min_rain': 160, 'max_rain': 320, 'min_temp': 11, 'max_temp': 35, 'tree_feature': 'tfc:tree/chestnut', 'old_growth_feature': 'tfc:tree/chestnut'},
-        {'min_rain': 290, 'max_rain': 500, 'min_temp': -4, 'max_temp': 15, 'tree_feature': 'tfc:tree/douglas_fir', 'old_growth_feature': 'tfc:tree/douglas_fir_large'},
-        {'min_rain': 90, 'max_rain': 250, 'min_temp': 7, 'max_temp': 27, 'tree_feature': 'tfc:tree/hickory', 'old_growth_feature': 'tfc:tree/hickory_large'},
-        {'min_rain': 240, 'max_rain': 500, 'min_temp': 15, 'max_temp': 35, 'tree_feature': 'tfc:tree/kapok', 'old_growth_feature': 'tfc:tree/kapok'},
-        {'min_rain': 140, 'max_rain': 410, 'min_temp': -5, 'max_temp': 20, 'tree_feature': 'tfc:tree/maple', 'old_growth_feature': 'tfc:tree/maple_large'},
-        {'min_rain': 180, 'max_rain': 430, 'min_temp': -10, 'max_temp': 12, 'tree_feature': 'tfc:tree/oak', 'old_growth_feature': 'tfc:tree/oak'},
-        {'min_rain': 280, 'max_rain': 500, 'min_temp': 20, 'max_temp': 35, 'tree_feature': 'tfc:tree/palm', 'old_growth_feature': 'tfc:tree/palm'},
-        {'min_rain': 60, 'max_rain': 250, 'min_temp': -15, 'max_temp': 7, 'tree_feature': 'tfc:tree/pine', 'old_growth_feature': 'tfc:tree/pine_large'},
-        {'min_rain': 10, 'max_rain': 190, 'min_temp': 5, 'max_temp': 20, 'tree_feature': 'tfc:tree/rosewood', 'old_growth_feature': 'tfc:tree/rosewood'},
-        {'min_rain': 250, 'max_rain': 420, 'min_temp': -5, 'max_temp': 12, 'tree_feature': 'tfc:tree/sequoia', 'old_growth_feature': 'tfc:tree/sequoia'},
-        {'min_rain': 120, 'max_rain': 430, 'min_temp': -14, 'max_temp': 7, 'tree_feature': 'tfc:tree/spruce', 'old_growth_feature': 'tfc:tree/spruce'},
-        {'min_rain': 120, 'max_rain': 290, 'min_temp': 17, 'max_temp': 33, 'tree_feature': 'tfc:tree/sycamore', 'old_growth_feature': 'tfc:tree/sycamore_large'},
-        {'min_rain': 10, 'max_rain': 240, 'min_temp': -8, 'max_temp': 17, 'tree_feature': 'tfc:tree/white_cedar', 'old_growth_feature': 'tfc:tree/white_cedar'},
-        {'min_rain': 260, 'max_rain': 480, 'min_temp': 15, 'max_temp': 32, 'tree_feature': 'tfc:tree/willow', 'old_growth_feature': 'tfc:tree/willow'}
+        forest_config(30, 210, 21, 31, 'acacia', True),
+        forest_config(60, 140, -6, 12, 'ash', True),
+        forest_config(10, 180, -10, 16, 'aspen', False),
+        forest_config(20, 180, -15, 7, 'birch', False),
+        forest_config(0, 120, 15, 35, 'blackwood', False),
+        forest_config(160, 320, 11, 35, 'chestnut', False),
+        forest_config(290, 500, -4, 15, 'douglas_fir', True),
+        forest_config(90, 250, 7, 27, 'hickory', True),
+        forest_config(240, 500, 15, 35, 'kapok', False),
+        forest_config(140, 410, -5, 20, 'maple', True),
+        forest_config(180, 430, -10, 12, 'oak', False),
+        forest_config(280, 500, 20, 35, 'palm', False),
+        forest_config(60, 250, -15, 7, 'pine', True),
+        forest_config(10, 190, 5, 20, 'rosewood', False),
+        forest_config(250, 420, -5, 12, 'sequoia', True),
+        forest_config(120, 430, -14, 7, 'spruce', True),
+        forest_config(120, 290, 17, 33, 'sycamore', True),
+        forest_config(10, 240, -8, 17, 'white_cedar', False),
+        forest_config(260, 480, 15, 32, 'willow', False),
     ]}))
 
-    rm.feature(('tree', 'acacia'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('acacia', 35), 'radius': 1}))
-    rm.feature(('tree', 'acacia_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('acacia', 6), 'radius': 2}))
-    rm.feature(('tree', 'ash'), wg.configure('tfc:overlay_tree', {'base': 'tfc:ash/base', 'overlay': 'tfc:ash/overlay', 'height_min': 3, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/ash[axis=y]'), 'radius': 1}))
-    rm.feature(('tree', 'ash_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('ash_large', 5), 'radius': 2}))
-    rm.feature(('tree', 'aspen'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('aspen', 16), 'radius': 1}))
-    rm.feature(('tree', 'birch'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('birch', 16), 'radius': 1}))
-    rm.feature(('tree', 'blackwood'), wg.configure('tfc:overlay_tree', {'base': 'tfc:blackwood/base', 'overlay': 'tfc:blackwood/overlay', 'height_min': 1, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/blackwood[axis=y]'), 'radius': 1}))
-    rm.feature(('tree', 'chestnut'), wg.configure('tfc:overlay_tree', {'base': 'tfc:blackwood/base', 'overlay': 'tfc:blackwood/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/chestnut[axis=y]'), 'radius': 1}))
-    rm.feature(('tree', 'douglas_fir'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('douglas_fir', 9), 'radius': 1}))
-    rm.feature(('tree', 'douglas_fir_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('douglas_fir_large', 5), 'radius': 2}))
-    rm.feature(('tree', 'hickory'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('hickory', 9), 'radius': 1}))
-    rm.feature(('tree', 'hickory_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('hickory_large', 5), 'radius': 2}))
-    rm.feature(('tree', 'kapok'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('kapok', 7), 'radius': 1}))
-    rm.feature(('tree', 'maple'), wg.configure('tfc:overlay_tree', {'base': 'tfc:maple/base', 'overlay': 'tfc:maple/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/maple[axis=y]'), 'radius': 1}))
-    rm.feature(('tree', 'maple_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('maple_large', 5), 'radius': 2}))
-    rm.feature(('tree', 'oak'), wg.configure('tfc:overlay_tree', {'base': 'tfc:oak/base', 'overlay': 'tfc:oak/overlay', 'height_min': 3, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/oak[axis=y]'), 'radius': 2}))
-    rm.feature(('tree', 'palm'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('palm', 7), 'radius': 1}))
-    rm.feature(('tree', 'pine'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('pine', 9), 'radius': 1}))
-    rm.feature(('tree', 'pine_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('pine_large', 9), 'radius': 1}))
-    rm.feature(('tree', 'rosewood'), wg.configure('tfc:overlay_tree', {'base': 'tfc:rosewood/base', 'overlay': 'tfc:rosewood/overlay', 'height_min': 1, 'height_range': 2, 'trunk_state': wg.block_state('tfc:wood/log/rosewood[axis=y]'), 'radius': 1}))
-    rm.feature(('tree', 'sequoia'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('sequoia', 7), 'radius': 1}))
-    rm.feature(('tree', 'spruce'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('spruce', 7), 'radius': 1}))
-    rm.feature(('tree', 'sycamore'), wg.configure('tfc:overlay_tree', {'base': 'tfc:sycamore/base', 'overlay': 'tfc:sycamore/overlay', 'height_min': 2, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/sycamore[axis=y]'), 'radius': 1}))
-    rm.feature(('tree', 'sycamore_large'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('sycamore_large', 5), 'radius': 2}))
-    rm.feature(('tree', 'white_cedar'), wg.configure('tfc:overlay_tree', {'base': 'tfc:white_cedar/base', 'overlay': 'tfc:white_cedar/overlay', 'height_min': 1, 'height_range': 3, 'trunk_state': wg.block_state('tfc:wood/log/white_cedar[axis=y]'), 'radius': 1}))
-    rm.feature(('tree', 'willow'), wg.configure('tfc:random_tree', {'structures': random_tree_structures('willow', 7), 'radius': 2}))
+    rm.feature(('tree', 'acacia'), wg.configure('tfc:random_tree', random_config('acacia', 35)))
+    rm.feature(('tree', 'acacia_large'), wg.configure('tfc:random_tree', random_config('acacia', 6, 2, True)))
+    rm.feature(('tree', 'ash'), wg.configure('tfc:overlay_tree', overlay_config('ash', 3, 5)))
+    rm.feature(('tree', 'ash_large'), wg.configure('tfc:random_tree', random_config('ash', 5, 2, True)))
+    rm.feature(('tree', 'aspen'), wg.configure('tfc:random_tree', random_config('aspen', 16, trunk=[3, 5, 1])))
+    rm.feature(('tree', 'birch'), wg.configure('tfc:random_tree', random_config('birch', 16, trunk=[2, 3, 1])))
+    rm.feature(('tree', 'blackwood'), wg.configure('tfc:overlay_tree', overlay_config('blackwood', 1, 3)))
+    rm.feature(('tree', 'chestnut'), wg.configure('tfc:overlay_tree', overlay_config('chestnut', 2, 4)))
+    rm.feature(('tree', 'douglas_fir'), wg.configure('tfc:random_tree', random_config('douglas_fir', 9)))
+    rm.feature(('tree', 'douglas_fir_large'), wg.configure('tfc:random_tree', random_config('douglas_fir', 5, 2, True)))
+    rm.feature(('tree', 'hickory'), wg.configure('tfc:random_tree', random_config('hickory', 9)))
+    rm.feature(('tree', 'hickory_large'), wg.configure('tfc:random_tree', random_config('hickory', 5, 2, True)))
+    rm.feature(('tree', 'kapok'), wg.configure('tfc:random_tree', random_config('kapok', 10)))
+    rm.feature(('tree', 'maple'), wg.configure('tfc:overlay_tree', overlay_config('maple', 2, 4)))
+    rm.feature(('tree', 'maple_large'), wg.configure('tfc:random_tree', random_config('maple', 5, 2, True)))
+    rm.feature(('tree', 'oak'), wg.configure('tfc:overlay_tree', overlay_config('oak', 3, 5)))
+    rm.feature(('tree', 'palm'), wg.configure('tfc:random_tree', random_config('palm', 7)))
+    rm.feature(('tree', 'pine'), wg.configure('tfc:random_tree', random_config('pine', 9)))
+    rm.feature(('tree', 'pine_large'), wg.configure('tfc:random_tree', random_config('pine', 5, 2, True)))
+    rm.feature(('tree', 'rosewood'), wg.configure('tfc:overlay_tree', overlay_config('rosewood', 1, 3)))
+    rm.feature(('tree', 'sequoia'), wg.configure('tfc:random_tree', random_config('sequoia', 7)))
+    rm.feature(('tree', 'sequoia_large'), wg.configure('tfc:stacked_tree', stacked_config('sequoia', 3, 7, 2, [(2, 4, 3), (1, 2, 3), (1, 1, 3)], 2, True)))
+    rm.feature(('tree', 'spruce'), wg.configure('tfc:random_tree', random_config('sequoia', 7)))
+    rm.feature(('tree', 'spruce_large'), wg.configure('tfc:stacked_tree', stacked_config('spruce', 3, 5, 2, [(1, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True)))
+    rm.feature(('tree', 'sycamore'), wg.configure('tfc:overlay_tree', overlay_config('sycamore', 2, 5)))
+    rm.feature(('tree', 'sycamore_large'), wg.configure('tfc:random_tree', random_config('sycamore', 5, 2, True)))
+    rm.feature(('tree', 'white_cedar'), wg.configure('tfc:overlay_tree', overlay_config('white_cedar', 1, 5)))
+    rm.feature(('tree', 'willow'), wg.configure('tfc:random_tree', random_config('willow', 7)))
 
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
@@ -152,8 +154,67 @@ def generate(rm: ResourceManager):
             default_biome(rm, 'shore', temp, rain, category='beach', surface_builder='tfc:shore')
 
 
-def random_tree_structures(name: str, max_count: int):
-    return ['tfc:%s/%d' % (name, i) for i in range(1, 1 + max_count)]
+def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):
+    cfg = {
+        'min_rain': min_rain,
+        'max_rain': max_rain,
+        'min_temp': min_temp,
+        'max_temp': max_temp,
+        'tree_feature': 'tfc:tree/%s' % tree
+    }
+    if old_growth:
+        cfg['old_growth_tree_feature'] = 'tfc:tree/%s_large' % tree
+    return cfg
+
+
+def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, large: bool = False):
+    block = 'tfc:wood/%s/maple[axis=y]' % tree
+    if large:
+        tree += '_large'
+    return {
+        'base': 'tfc:%s/base' % tree,
+        'overlay': 'tfc:%s/overlay' % tree,
+        'trunk': trunk_config(block, min_height, max_height, width),
+        'radius': radius
+    }
+
+
+def random_config(tree: str, structure_count: int, radius: int = 1, large: bool = False, trunk: List = None):
+    block = 'tfc:wood/%s/maple[axis=y]' % tree
+    if large:
+        tree += '_large'
+    cfg = {
+        'structures': ['tfc:%s/%d' % (tree, i) for i in range(1, 1 + structure_count)],
+        'radius': radius
+    }
+    if trunk is not None:
+        cfg['trunk'] = trunk_config(block, *trunk)
+    return cfg
+
+
+def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, large: bool = False):
+    # layers consists of each layer, which is a (min_count, max_count, total_templates)
+    block = 'tfc:wood/%s/maple[axis=y]' % tree
+    if large:
+        tree += '_large'
+    return {
+        'trunk': trunk_config(block, min_height, max_height, width),
+        'layers': [{
+            'templates': ['tfc:%s/layer%d_%d' % (tree, 1 + i, j) for j in range(1, 1 + layer[2])],
+            'min_count': layer[0],
+            'max_count': layer[1]
+        } for i, layer in enumerate(layers)],
+        'radius': radius
+    }
+
+
+def trunk_config(block: str, min_height: int, max_height: int, width: int):
+    return {
+        'state': wg.block_state(block),
+        'min_height': min_height,
+        'max_height': max_height,
+        'width': width
+    }
 
 
 def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str):

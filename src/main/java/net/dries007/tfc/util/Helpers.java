@@ -24,9 +24,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Unit;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.text.ITextComponent;
@@ -262,37 +260,4 @@ public final class Helpers
         return world instanceof World ? !(world instanceof ServerWorld) : world.isClientSide();
     }
 
-    /**
-     * A variant of {@link Template#placeInWorld(IServerWorld, BlockPos, PlacementSettings, Random)} that is much simpler and faster for use in tree generation
-     * Allows replacing leaves and air blocks
-     */
-    public static void addTemplateToWorldForTreeGen(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
-    {
-        List<Template.BlockInfo> transformedBlockInfos;
-        try
-        {
-            transformedBlockInfos = placementIn.getRandomPalette(((TemplateAccessor) template).accessor$getPalettes(), pos).blocks();
-        }
-        catch (IllegalStateException e)
-        {
-            LOGGER.info("HEY BOI THERE's A PROBLEM!", e);
-            return;
-        }
-        MutableBoundingBox boundingBox = placementIn.getBoundingBox();
-        for (Template.BlockInfo blockInfo : Template.processBlockInfos(worldIn, pos, pos, placementIn, transformedBlockInfos, template))
-        {
-            BlockPos posAt = blockInfo.pos;
-            if (boundingBox == null || boundingBox.isInside(posAt))
-            {
-                BlockState stateAt = worldIn.getBlockState(posAt);
-                if (stateAt.isAir(worldIn, posAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
-                {
-                    // No world, can't rotate with world context
-                    @SuppressWarnings("deprecation")
-                    BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
-                    worldIn.setBlock(posAt, stateReplace, 2);
-                }
-            }
-        }
-    }
 }

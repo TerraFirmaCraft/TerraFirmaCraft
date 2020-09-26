@@ -32,10 +32,6 @@ def main():
     ore_veins.generate(rm)
     collapse_recipes.generate(rm)
 
-    # Random things
-    rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
-    rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
-
     rm.flush()
 
 

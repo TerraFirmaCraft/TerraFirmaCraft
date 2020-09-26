@@ -4,13 +4,16 @@
   "config": {
     "base": "tfc:white_cedar/base",
     "overlay": "tfc:white_cedar/overlay",
-    "height_min": 1,
-    "height_range": 3,
-    "trunk_state": {
-      "Name": "tfc:wood/log/white_cedar",
-      "Properties": {
-        "axis": "y"
-      }
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/white_cedar/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 1,
+      "max_height": 5,
+      "width": 1
     },
     "radius": 1
   }

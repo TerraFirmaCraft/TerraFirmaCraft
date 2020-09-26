@@ -15,6 +15,7 @@
     "world.gen.feature.template.TemplateAccessor"
   ],
   "client": [
+    "client.MinecraftMixin",
     "client.gui.screen.CreateWorldScreenMixin",
     "client.gui.screen.WorldOptionsScreenAccessor",
     "client.renderer.FogRendererMixin",

@@ -4,13 +4,16 @@
   "config": {
     "base": "tfc:rosewood/base",
     "overlay": "tfc:rosewood/overlay",
-    "height_min": 1,
-    "height_range": 2,
-    "trunk_state": {
-      "Name": "tfc:wood/log/rosewood",
-      "Properties": {
-        "axis": "y"
-      }
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/rosewood/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 1,
+      "max_height": 3,
+      "width": 1
     },
     "radius": 1
   }

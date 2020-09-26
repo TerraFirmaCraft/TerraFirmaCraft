@@ -4,13 +4,16 @@
   "config": {
     "base": "tfc:blackwood/base",
     "overlay": "tfc:blackwood/overlay",
-    "height_min": 1,
-    "height_range": 3,
-    "trunk_state": {
-      "Name": "tfc:wood/log/blackwood",
-      "Properties": {
-        "axis": "y"
-      }
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/blackwood/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 1,
+      "max_height": 3,
+      "width": 1
     },
     "radius": 1
   }

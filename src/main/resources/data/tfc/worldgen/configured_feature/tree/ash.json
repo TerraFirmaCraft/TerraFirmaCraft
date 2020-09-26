@@ -4,13 +4,16 @@
   "config": {
     "base": "tfc:ash/base",
     "overlay": "tfc:ash/overlay",
-    "height_min": 3,
-    "height_range": 3,
-    "trunk_state": {
-      "Name": "tfc:wood/log/ash",
-      "Properties": {
-        "axis": "y"
-      }
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/ash/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 3,
+      "max_height": 5,
+      "width": 1
     },
     "radius": 1
   }
