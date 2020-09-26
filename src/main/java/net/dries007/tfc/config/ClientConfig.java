@@ -19,6 +19,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class ClientConfig
 {
     public final ForgeConfigSpec.BooleanValue setTFCWorldPresetAsDefault;
+    public final ForgeConfigSpec.BooleanValue ignoreExperimentalWorldGenWarning;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -26,5 +27,6 @@ public class ClientConfig
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.general." + name);
 
         setTFCWorldPresetAsDefault = builder.apply("setTFCWorldPresetAsDefault").define("setTFCWorldPresetAsDefault", true);
+        ignoreExperimentalWorldGenWarning = builder.apply("ignoreExperimentalWorldGenWarning").define("ignoreExperimentalWorldGenWarning", true);
     }
 }

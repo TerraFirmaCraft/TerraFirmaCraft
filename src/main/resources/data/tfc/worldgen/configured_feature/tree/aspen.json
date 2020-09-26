@@ -20,6 +20,17 @@
       "tfc:aspen/15",
       "tfc:aspen/16"
     ],
-    "radius": 1
+    "radius": 1,
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/aspen/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 3,
+      "max_height": 5,
+      "width": 1
+    }
   }
 }

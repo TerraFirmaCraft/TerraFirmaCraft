@@ -4,13 +4,16 @@
   "config": {
     "base": "tfc:sycamore/base",
     "overlay": "tfc:sycamore/overlay",
-    "height_min": 2,
-    "height_range": 3,
-    "trunk_state": {
-      "Name": "tfc:wood/log/sycamore",
-      "Properties": {
-        "axis": "y"
-      }
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/sycamore/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 2,
+      "max_height": 5,
+      "width": 1
     },
     "radius": 1
   }

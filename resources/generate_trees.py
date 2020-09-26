@@ -30,25 +30,17 @@ TREES = {
 }
 
 LARGE_TREES = {
-    'acacia': 'kapok_large',  # Use kapok structure as they are closer
+    'acacia': 'kapok_large',
     'ash': 'normal_large',
-    # 'aspen': 'aspen',  # larger trunk done in code
-    # 'birch': 'aspen',  # larger trunk done in code
-    # 'blackwood': 'tall_large',  # todo: needs rework
     'chestnut': 'normal_large',
     'douglas_fir': 'fir_large',
     'hickory': 'fir_large',
     'maple': 'normal_large',
-    # 'oak': 'tall_large',  # todo: needs rework
-    # 'palm': 'tropical',  # larger trunk done in code
     'pine': 'fir_large',
-    # 'rosewood': 'tall_large',  # todo: needs rework
     'sequoia': 'conifer_large',
     'spruce': 'conifer_large',
     'sycamore': 'normal_large',
-    # 'white_cedar': 'tall_large',  # todo: needs rework
     # 'willow': 'willow_large',  # todo: need templates
-    # 'kapok': 'jungle'  # No large variant, all trees are varied heights. todo: need more varied heights (structures)
 }
 
 
@@ -83,15 +75,15 @@ def make_tree_variant(wood: str, variant: str):
         for i in range(1, 1 + 7):
             make_tree_structure('willow%d' % i, wood, str(i))
     elif variant == 'jungle':
-        for i in range(1, 1 + 7):
+        for i in range(1, 1 + 10):
             make_tree_structure('jungle%d' % i, wood, str(i))
     elif variant == 'conifer':
         for i in range(1, 1 + 9):
             make_tree_structure('conifer%d' % i, wood, str(i))
     elif variant == 'conifer_large':
         for i in range(1, 1 + 3):
-            for struct in ('base', 'mid', 'top'):
-                make_tree_structure('sequoia_%s%d' % (struct, i), wood, struct + str(i), wood + '_large')
+            for layer in (1, 2, 3):
+                make_tree_structure('conifer_large_layer%d_%d' % (layer, i), wood, 'layer%d_%d' % (layer, i), wood + '_large')
     elif variant == 'fir':
         for i in range(1, 1 + 9):
             make_tree_structure('fir%d' % i, wood, str(i))
