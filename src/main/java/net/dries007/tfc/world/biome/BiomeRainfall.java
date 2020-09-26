@@ -13,7 +13,9 @@ import net.dries007.tfc.config.TFCConfig;
 public enum BiomeRainfall
 {
     ARID(0.0f),
-    NORMAL(0.4f),
+    DRY(0.2f),
+    NORMAL(0.45f),
+    DAMP(0.7f),
     WET(0.9f);
 
     public static BiomeRainfall get(float rainfall)
@@ -22,7 +24,15 @@ public enum BiomeRainfall
         {
             return ARID;
         }
+        else if (rainfall < TFCConfig.COMMON.dryRainfallCutoff.get())
+        {
+            return NORMAL;
+        }
         else if (rainfall < TFCConfig.COMMON.normalRainfallCutoff.get())
+        {
+            return NORMAL;
+        }
+        else if (rainfall < TFCConfig.COMMON.dampRainfallCutoff.get())
         {
             return NORMAL;
         }

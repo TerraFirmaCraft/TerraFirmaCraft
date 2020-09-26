@@ -6,12 +6,13 @@
     "cobble": "tfc:rock/cobble/limestone",
     "gravel": "tfc:rock/gravel/limestone",
     "smooth": "tfc:rock/smooth/limestone",
-    "spike": "tfc:rock/spike/limestone",
     "mossy_cobble": "tfc:rock/mossy_cobble/limestone",
     "mossy_bricks": "tfc:rock/mossy_bricks/limestone",
     "cracked_bricks": "tfc:rock/cracked_bricks/limestone",
-    "chiseled": "tfc:rock/chiseled/limestone"
+    "chiseled": "tfc:rock/chiseled/limestone",
+    "spike": "tfc:rock/spike/limestone"
   },
   "category": "sedimentary",
-  "sand_color": "white"
+  "desert_sand_color": "yellow",
+  "beach_sand_color": "white"
 }

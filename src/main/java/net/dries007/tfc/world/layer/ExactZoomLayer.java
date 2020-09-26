@@ -14,7 +14,7 @@ public enum ExactZoomLayer implements IAreaTransformer1
     INSTANCE;
 
     @Override
-    public int func_215728_a(IExtendedNoiseRandom<?> context, IArea area, int x, int z)
+    public int apply(IExtendedNoiseRandom<?> context, IArea area, int x, int z)
     {
         return area.getValue(getOffsetX(x), getOffsetZ(z));
     }

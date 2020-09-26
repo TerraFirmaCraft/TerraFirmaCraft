@@ -8,7 +8,7 @@ package net.dries007.tfc.world.noise;
 import java.util.Random;
 
 /**
- * A 2D Implementation of <a href="https://en.wikipedia.org/wiki/Metaballs">Metaballs</a>, primarily using the techniques outlined in <a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/">This blog</a>
+ * A 2D Implementation of <a href="https://en.wikipedia.org/wiki/Metaballs">Metaballs</a>, primarily using the techniques outlined in <a href="http://jamie-wong.com/2014/08/19/metaballs-and-marching-squares/">this blog</a>
  */
 public class Metaballs2D implements INoise2D
 {

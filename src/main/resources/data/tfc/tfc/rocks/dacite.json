@@ -6,12 +6,13 @@
     "cobble": "tfc:rock/cobble/dacite",
     "gravel": "tfc:rock/gravel/dacite",
     "smooth": "tfc:rock/smooth/dacite",
-    "spike": "tfc:rock/spike/dacite",
     "mossy_cobble": "tfc:rock/mossy_cobble/dacite",
     "mossy_bricks": "tfc:rock/mossy_bricks/dacite",
     "cracked_bricks": "tfc:rock/cracked_bricks/dacite",
-    "chiseled": "tfc:rock/chiseled/dacite"
+    "chiseled": "tfc:rock/chiseled/dacite",
+    "spike": "tfc:rock/spike/dacite"
   },
   "category": "igneous_extrusive",
-  "sand_color": "black"
+  "desert_sand_color": "red",
+  "beach_sand_color": "yellow"
 }

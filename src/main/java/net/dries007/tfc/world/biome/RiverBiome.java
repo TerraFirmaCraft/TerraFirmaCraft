@@ -10,6 +10,7 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 public class RiverBiome extends TFCBiome
 {
@@ -19,7 +20,7 @@ public class RiverBiome extends TFCBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(SurfaceBuilder.DEFAULT, TFCDefaultBiomeFeatures.getUnderwaterSurfaceConfig(this));
+            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.AIR_CONFIG);
         });
     }
 
@@ -27,5 +28,17 @@ public class RiverBiome extends TFCBiome
     public INoise2D createNoiseLayer(long seed)
     {
         return new SimplexNoise2D(seed).octaves(6).spread(0.17f).scaled(TFCConfig.COMMON.seaLevel.get() - 6, TFCConfig.COMMON.seaLevel.get() - 1);
+    }
+
+    @Override
+    public LargeGroup getLargeGroup()
+    {
+        return LargeGroup.RIVER;
+    }
+
+    @Override
+    public SmallGroup getMediumGroup()
+    {
+        return SmallGroup.RIVER;
     }
 }

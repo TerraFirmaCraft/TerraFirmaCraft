@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/sycamore",
+    "top": "tfc:block/wood/planks/sycamore",
+    "side": "tfc:block/wood/planks/sycamore"
+  }
+}

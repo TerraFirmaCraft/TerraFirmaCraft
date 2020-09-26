@@ -7,7 +7,6 @@ package net.dries007.tfc.world.tracker;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -23,11 +22,11 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.TFCTags;
-import net.dries007.tfc.objects.entities.TFCFallingBlockEntity;
-import net.dries007.tfc.objects.recipes.CollapseRecipe;
-import net.dries007.tfc.objects.recipes.LandslideRecipe;
 
 public class WorldTracker implements IWorldTracker, ICapabilitySerializable<CompoundNBT>
 {
@@ -153,9 +152,8 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         }
     }
 
-    @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
     }

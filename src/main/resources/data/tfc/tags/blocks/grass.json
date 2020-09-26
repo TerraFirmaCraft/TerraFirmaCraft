@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:peat_grass",
     "tfc:grass/silt",
     "tfc:clay_grass/silt",
     "tfc:grass/loam",

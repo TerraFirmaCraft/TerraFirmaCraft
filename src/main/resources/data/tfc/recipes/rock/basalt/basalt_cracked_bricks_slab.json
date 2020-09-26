@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:rock/cracked_bricks/basalt"
+    }
+  },
+  "result": {
+    "count": 6,
+    "item": "tfc:rock/cracked_bricks/basalt_slab"
+  }
+}

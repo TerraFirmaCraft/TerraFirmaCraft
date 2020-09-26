@@ -6,12 +6,13 @@
     "cobble": "tfc:rock/cobble/dolomite",
     "gravel": "tfc:rock/gravel/dolomite",
     "smooth": "tfc:rock/smooth/dolomite",
-    "spike": "tfc:rock/spike/dolomite",
     "mossy_cobble": "tfc:rock/mossy_cobble/dolomite",
     "mossy_bricks": "tfc:rock/mossy_bricks/dolomite",
     "cracked_bricks": "tfc:rock/cracked_bricks/dolomite",
-    "chiseled": "tfc:rock/chiseled/dolomite"
+    "chiseled": "tfc:rock/chiseled/dolomite",
+    "spike": "tfc:rock/spike/dolomite"
   },
   "category": "sedimentary",
-  "sand_color": "green"
+  "desert_sand_color": "black",
+  "beach_sand_color": "black"
 }

@@ -17,10 +17,12 @@ import net.minecraft.world.gen.placement.ChanceConfig;
 import net.minecraft.world.gen.placement.CountConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidWithNoiseConfig;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 public class OceanBiome extends TFCBiome
 {
@@ -43,8 +45,9 @@ public class OceanBiome extends TFCBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addOceanCarvers(this);
-            setSurfaceBuilder(TFCDefaultBiomeFeatures.getOceanSurfaceBuilder(this), TFCDefaultBiomeFeatures.getUnderwaterSurfaceConfig(this));
+            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.AIR_CONFIG);
 
+            DefaultBiomeFeatures.addSeagrass(this);
             if (temperature == BiomeTemperature.FROZEN)
             {
                 DefaultBiomeFeatures.addIcebergs(this);
@@ -53,16 +56,15 @@ public class OceanBiome extends TFCBiome
             else if (temperature == BiomeTemperature.COLD || temperature == BiomeTemperature.NORMAL)
             {
                 DefaultBiomeFeatures.addExtraKelp(this);
-                DefaultBiomeFeatures.addSeagrass(this);
             }
             else if (temperature == BiomeTemperature.LUKEWARM)
             {
-                DefaultBiomeFeatures.addTallSeagrassSparse(this);
+                DefaultBiomeFeatures.addTallSeagrassLush(this);
                 DefaultBiomeFeatures.addKelp(this);
             }
             else if (temperature == BiomeTemperature.WARM)
             {
-                DefaultBiomeFeatures.addTallSeagrassSparse(this);
+                DefaultBiomeFeatures.addTallSeagrassLush(this);
                 addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SIMPLE_RANDOM_SELECTOR.withConfiguration(new SingleRandomFeature(ImmutableList.of(Feature.CORAL_TREE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), Feature.CORAL_CLAW.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG), Feature.CORAL_MUSHROOM.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)))).withPlacement(Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED.configure(new TopSolidWithNoiseConfig(20, 400.0D, 0.0D, Heightmap.Type.OCEAN_FLOOR_WG))));
                 addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SEA_PICKLE.withConfiguration(new CountConfig(20)).withPlacement(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configure(new ChanceConfig(16))));
             }
@@ -82,5 +84,11 @@ public class OceanBiome extends TFCBiome
     public BlockState getWaterState()
     {
         return SALT_WATER;
+    }
+
+    @Override
+    public LargeGroup getLargeGroup()
+    {
+        return LargeGroup.OCEAN;
     }
 }

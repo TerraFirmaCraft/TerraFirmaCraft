@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "minecraft:grass_block",
+    "#forge:dirt",
+    "#tfc:grass"
+  ]
+}

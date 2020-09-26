@@ -20,9 +20,9 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.datafixers.Dynamic;
-import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.objects.blocks.rock.RockSpikeBlock;
-import net.dries007.tfc.objects.types.RockManager;
+import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.RockManager;
 
 public class CaveSpikesFeature extends Feature<NoFeatureConfig>
 {

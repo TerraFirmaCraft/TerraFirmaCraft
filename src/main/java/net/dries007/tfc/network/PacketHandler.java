@@ -31,9 +31,9 @@ public class PacketHandler
     {
         int id = 0;
 
-        CHANNEL.registerMessage(id++, ChunkDataUpdatePacket.class, ChunkDataUpdatePacket::encode, ChunkDataUpdatePacket::new, ChunkDataUpdatePacket::handle);
-        CHANNEL.registerMessage(id++, ChunkDataRequestPacket.class, ChunkDataRequestPacket::encode, ChunkDataRequestPacket::new, ChunkDataRequestPacket::handle);
+        CHANNEL.registerMessage(id++, ChunkWatchPacket.class, ChunkWatchPacket::encode, ChunkWatchPacket::new, ChunkWatchPacket::handle);
+        CHANNEL.registerMessage(id++, ChunkUnwatchPacket.class, ChunkUnwatchPacket::encode, ChunkUnwatchPacket::new, ChunkUnwatchPacket::handle);
         CHANNEL.registerMessage(id++, CalendarUpdatePacket.class, CalendarUpdatePacket::encode, CalendarUpdatePacket::new, CalendarUpdatePacket::handle);
-
+        CHANNEL.registerMessage(id++, SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
     }
 }

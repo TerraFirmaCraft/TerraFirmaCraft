@@ -20,7 +20,6 @@ public class IslandLayer implements IAreaTransformer0
     @Override
     public int apply(INoiseRandom random, int x, int z)
     {
-        // In order to generate better continents, start with 3x3 blobs
         if (x == 0 && z == 0)
         {
             return TFCLayerUtil.PLAINS;

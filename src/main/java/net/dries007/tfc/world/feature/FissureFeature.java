@@ -19,8 +19,9 @@ import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.datafixers.Dynamic;
-import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 // todo: need to reduce the frequency with which fissures are able to spawn next to eachother.
 public class FissureFeature extends Feature<BlockStateFeatureConfig>
@@ -40,7 +41,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
     {
         BlockPos pos = startPos.down(); // start slightly below the surface
-        ChunkData data = ChunkData.get(worldIn, pos, ChunkData.Status.ROCKS, false);
+        ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.ROCKS)).orElseThrow(() -> new IllegalStateException("Missing rock data, cannot generate fissures."));
         Rock bottomRock = data.getRockData().getBottomRock(pos.getX(), pos.getZ());
         BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).getDefaultState();
 

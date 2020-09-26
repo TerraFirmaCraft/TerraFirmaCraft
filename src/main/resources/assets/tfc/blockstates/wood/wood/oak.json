@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=y": {
+      "model": "tfc:block/wood/wood/oak"
+    },
+    "axis=z": {
+      "model": "tfc:block/wood/wood/oak",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "tfc:block/wood/wood/oak",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

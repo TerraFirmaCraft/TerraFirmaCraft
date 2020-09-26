@@ -12,7 +12,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
-import net.dries007.tfc.objects.recipes.IBlockIngredient;
+import net.dries007.tfc.common.recipes.IBlockIngredient;
 
 public class Support
 {

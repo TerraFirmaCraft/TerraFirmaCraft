@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.command.CommandSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.tags.BlockTags;
@@ -24,39 +23,33 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-import com.mojang.brigadier.CommandDispatcher;
-import net.dries007.tfc.api.calendar.Calendar;
-import net.dries007.tfc.api.calendar.CalendarWorldData;
-import net.dries007.tfc.api.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.api.capabilities.forge.ForgingHandler;
-import net.dries007.tfc.api.capabilities.heat.HeatCapability;
-import net.dries007.tfc.command.ClearWorldCommand;
-import net.dries007.tfc.command.HeatCommand;
-import net.dries007.tfc.command.TFCTimeCommand;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
+import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.command.TFCCommands;
+import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.recipes.LandslideRecipe;
+import net.dries007.tfc.common.types.MetalItemManager;
+import net.dries007.tfc.common.types.MetalManager;
+import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.CalendarUpdatePacket;
-import net.dries007.tfc.network.ChunkDataRequestPacket;
+import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.objects.TFCTags;
-import net.dries007.tfc.objects.recipes.CollapseRecipe;
-import net.dries007.tfc.objects.recipes.LandslideRecipe;
-import net.dries007.tfc.objects.types.MetalItemManager;
-import net.dries007.tfc.objects.types.MetalManager;
-import net.dries007.tfc.objects.types.RockManager;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCServerTracker;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.world.TFCWorldType;
@@ -142,31 +135,79 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<Chunk> event)
     {
-        World world = event.getObject().getWorld();
-        if (world.getWorldType() == TFCWorldType.INSTANCE)
+        if (!event.getObject().isEmpty())
         {
-            // Add the rock data to the chunk capability, for long term storage
+            World world = event.getObject().getWorld();
             ChunkPos chunkPos = event.getObject().getPos();
-            ChunkData data = ChunkDataCache.get(chunkPos);
+            ChunkData data;
+            if (!Helpers.isRemote(world))
+            {
+                // Chunk was created on server thread.
+                // 1. If this was due to world gen, it won't have any cap data. This is where we clear the world gen cache and attach it to the chunk
+                // 2. If this was due to chunk loading, the caps will be deserialized from NBT after this event is posted. Attach empty data here
+                data = ChunkDataCache.WORLD_GEN.remove(chunkPos);
+                if (data == null)
+                {
+                    data = new ChunkData(chunkPos);
+                }
+            }
+            else
+            {
+                // This may happen before or after the chunk is watched and synced to client
+                // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
+                data = ChunkDataCache.CLIENT.getOrCreate(chunkPos);
+            }
             event.addCapability(ChunkDataCapability.KEY, data);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onChunkWatch(ChunkWatchEvent.Watch event)
+    {
+        // Send an update packet to the client when watching the chunk
+        ChunkPos pos = event.getPos();
+        ChunkData chunkData = ChunkData.get(event.getWorld(), pos);
+        if (chunkData.getStatus() != ChunkData.Status.EMPTY)
+        {
+            PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket());
+        }
+        else
+        {
+            // Chunk does not exist yet but it's queue'd for watch. Queue an update packet to be sent on chunk load
+            ChunkDataCache.WATCH_QUEUE.enqueueUnloadedChunk(pos, event.getPlayer());
         }
     }
 
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event)
     {
-        // Chunk has been loaded so ask the server to update the client cache
-        ChunkPos pos = event.getChunk().getPos();
-        if (event.getWorld().isRemote() && ChunkDataCache.get(pos).getStatus() == ChunkData.Status.DEFAULT)
+        if (!Helpers.isRemote(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
         {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ChunkDataRequestPacket(pos.x, pos.z));
+            ChunkPos pos = event.getChunk().getPos();
+            ChunkData.getCapability(event.getChunk()).ifPresent(data -> {
+                ChunkDataCache.SERVER.update(pos, data);
+                ChunkDataCache.WATCH_QUEUE.dequeueLoadedChunk(pos, data);
+            });
         }
     }
 
     @SubscribeEvent
     public static void onChunkUnload(ChunkEvent.Unload event)
     {
-        ChunkDataCache.remove(event.getChunk().getPos());
+        // Clear server side chunk data cache
+        if (!Helpers.isRemote(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
+        {
+            ChunkDataCache.SERVER.remove(event.getChunk().getPos());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onChunkUnwatch(ChunkWatchEvent.UnWatch event)
+    {
+        // Send an update packet to the client when un-watching the chunk
+        ChunkPos pos = event.getPos();
+        PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), new ChunkUnwatchPacket(pos));
+        ChunkDataCache.WATCH_QUEUE.dequeueChunk(pos, event.getPlayer());
     }
 
     @SubscribeEvent
@@ -199,15 +240,15 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onServerStarting(FMLServerStartingEvent event)
     {
-        LOGGER.debug("On Server Starting");
+        // todo: move this to the dedicated command register event on forge update
+        LOGGER.debug("Registering TFC Commands");
+        TFCCommands.register(event.getCommandDispatcher());
+    }
 
-        CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
-        ClearWorldCommand.register(dispatcher);
-        HeatCommand.register(dispatcher);
-        TFCTimeCommand.register(dispatcher);
-
-        // Initialize calendar for the current server
-        Calendar.INSTANCE.init(event.getServer());
+    @SubscribeEvent
+    public static void onServerStopped(FMLServerStoppedEvent event)
+    {
+        TFCServerTracker.INSTANCE.onServerStop();
     }
 
     @SubscribeEvent
@@ -294,12 +335,6 @@ public final class ForgeEventHandler
         if (event.getWorld() instanceof ServerWorld && event.getWorld().getDimension().getType() == DimensionType.OVERWORLD)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
-
-            // Calendar Sync / Initialization
-            CalendarWorldData data = CalendarWorldData.get(world);
-            Calendar.INSTANCE.resetTo(data.getCalendar());
-            PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(Calendar.INSTANCE));
-
             if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
             {
                 // Natural regeneration should be disabled, allows TFC to have custom regeneration

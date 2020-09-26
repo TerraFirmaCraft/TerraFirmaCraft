@@ -13,13 +13,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
-import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.blocks.TFCBlocks;
-import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
-import net.dries007.tfc.objects.types.RockManager;
 
-import static net.dries007.tfc.objects.blocks.rock.RawRockBlock.SUPPORTED;
+import static net.dries007.tfc.common.blocks.rock.RawRockBlock.SUPPORTED;
 
 /**
  * This is a block replacer, used for carvers to replace blocks with cave air, unsupported blocks with supported variants, and exposed blocks with surface variants.
@@ -36,24 +36,9 @@ public class CaveBlockReplacer
         exposedBlockReplacements = new HashMap<>();
 
         // This needs to run post rock reload
-        RockManager.INSTANCE.addCallback(() -> {
-            carvableBlocks.clear();
-            carvableBlocksAboveSeaLevel.clear();
-            exposedBlockReplacements.clear();
+        RockManager.INSTANCE.addCallback(this::reload);
 
-            for (Rock rock : RockManager.INSTANCE.getValues())
-            {
-                carvableBlocks.add(rock.getBlock(Rock.BlockType.RAW));
-                carvableBlocksAboveSeaLevel.add(rock.getBlock(Rock.BlockType.RAW));
-                carvableBlocksAboveSeaLevel.add(rock.getBlock(Rock.BlockType.GRAVEL));
-            }
-            for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
-            {
-                carvableBlocksAboveSeaLevel.add(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get());
-                carvableBlocksAboveSeaLevel.add(TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
-                exposedBlockReplacements.put(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get(), TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
-            }
-        });
+        reload();
     }
 
     public boolean carveBlock(IChunk chunk, BlockPos pos, BitSet carvingMask)
@@ -95,5 +80,25 @@ public class CaveBlockReplacer
             }
         }
         return false;
+    }
+
+    private void reload()
+    {
+        carvableBlocks.clear();
+        carvableBlocksAboveSeaLevel.clear();
+        exposedBlockReplacements.clear();
+
+        for (Rock rock : RockManager.INSTANCE.getValues())
+        {
+            carvableBlocks.add(rock.getBlock(Rock.BlockType.RAW));
+            carvableBlocksAboveSeaLevel.add(rock.getBlock(Rock.BlockType.RAW));
+            carvableBlocksAboveSeaLevel.add(rock.getBlock(Rock.BlockType.GRAVEL));
+        }
+        for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
+        {
+            carvableBlocksAboveSeaLevel.add(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get());
+            carvableBlocksAboveSeaLevel.add(TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
+            exposedBlockReplacements.put(TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant).get(), TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant).get());
+        }
     }
 }
