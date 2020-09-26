@@ -74,7 +74,7 @@ public class ItemProspectorPick extends ItemMetalTool
                 if (!targetStack.isEmpty())
                 {
                     // Just clicked on an ore block
-                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found", targetStack.getDisplayName()), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
+                    player.sendStatusMessage(new TextComponentTranslation("tfc.propick.found").appendText(" ").appendSibling(new TextComponentTranslation(targetStack.getTranslationKey() + ".name")), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
 
                     // Increment skill
                     if (skill != null)
@@ -122,7 +122,7 @@ public class ItemProspectorPick extends ItemMetalTool
                             translationKey = "tfc.propick.found_very_large";
                         }
 
-                        player.sendStatusMessage(new TextComponentTranslation(translationKey, result.ore.getDisplayName()), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
+                        player.sendStatusMessage(new TextComponentTranslation(translationKey).appendText(" ").appendSibling(new TextComponentTranslation(result.ore.getTranslationKey() + ".name")), ConfigTFC.Client.TOOLTIP.propickOutputToActionBar);
 
                         if (ConfigTFC.General.DEBUG.enable)
                         {
