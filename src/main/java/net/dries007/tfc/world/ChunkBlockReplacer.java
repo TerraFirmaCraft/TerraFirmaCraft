@@ -7,10 +7,8 @@ package net.dries007.tfc.world;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+import java.util.function.Function;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,108 +17,101 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 
-import net.dries007.tfc.api.Rock;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.objects.blocks.TFCBlocks;
-import net.dries007.tfc.objects.blocks.soil.SoilBlockType;
-import net.dries007.tfc.objects.blocks.soil.TFCGrassBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 /**
  * Replaces world gen blocks with TFC equivalents.
  * This allows us to use minecraft blocks for the majority of early world gen, which works much better with vanilla systems such as surface builders.
+ *
+ * This structure is necessary in order to not bastardize the vanilla generation pipeline
  */
 public class ChunkBlockReplacer
 {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     protected final Map<Block, IBlockReplacer> replacements;
+    private final BlockPos.Mutable mutablePos;
+    private final long seed;
 
-    public ChunkBlockReplacer()
+    public ChunkBlockReplacer(long seed)
     {
-        replacements = new HashMap<>();
+        this.seed = seed;
+        this.mutablePos = new BlockPos.Mutable();
+        this.replacements = new HashMap<>();
 
-        // Stone -> raw rock
-        register(Blocks.STONE, (rockData, x, y, z, rainfall, temperature, random) -> {
+        // Stone block variants (Stone / Cobblestone)
+        Function<Rock.BlockType, IBlockReplacer> factory = rockType -> (rockData, x, y, z, rainfall, temperature) -> {
             if (y < rockData.getRockHeight(x, z))
             {
-                return rockData.getBottomRock(x, z).getBlock(Rock.BlockType.RAW).getDefaultState();
+                return rockData.getBottomRock(x, z).getBlock(rockType).getDefaultState();
             }
             else
             {
-                return rockData.getTopRock(x, z).getBlock(Rock.BlockType.RAW).getDefaultState();
+                return rockData.getTopRock(x, z).getBlock(rockType).getDefaultState();
             }
-        });
+        };
+        register(Blocks.STONE, factory.apply(Rock.BlockType.RAW));
+        register(Blocks.COBBLESTONE, factory.apply(Rock.BlockType.COBBLE));
 
-        // Dirt -> under surface material. Replaced with dirt, or inland sand (deco rock layer)
-        register(Blocks.DIRT, (rockData, x, y, z, rainfall, temperature, noise) -> getSoilBlock(SoilBlockType.DIRT, rockData, x, z, rainfall, noise));
-
+        // Dirt -> under surface material. Replaced with dirt, or inland sand
         // Grass -> top layer surface material (grass in high rainfall, sand in low rainfall)
-        register(Blocks.GRASS_BLOCK, new IBlockReplacer()
-        {
-            @Override
-            public BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature, float noise)
+        register(Blocks.DIRT, new SoilBlockReplacer(SoilBlockType.DIRT));
+        register(Blocks.GRASS_BLOCK, new SoilBlockReplacer(SoilBlockType.GRASS));
+
+        // Gravel -> surface material. Replace with rock type gravel
+        register(Blocks.GRAVEL, (rockData, x, y, z, rainfall, temperature) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
+
+        // Sand -> Desert sand layer. Replace with sand color from top rock layer
+        register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getDesertSandColor()).get().getDefaultState());
+
+        // Red Sand -> Beach sand layer. Replace with the beach sand color from top rock layer
+        register(Blocks.RED_SAND, (rockData, x, y, z, rainfall, temperature) -> TFCBlocks.SAND.get(rockData.getTopRock(x, z).getBeachSandColor()).get().getDefaultState());
+
+        // Red Sandstone -> Beach variant sand layer. If tropical, replace with pink sand.
+        register(Blocks.RED_SANDSTONE, (rockData, x, y, z, rainfall, temperature) -> {
+            if (rainfall > 300f && temperature > 15f)
             {
-                return getSoilBlock(SoilBlockType.GRASS, rockData, x, z, rainfall, noise);
+                return TFCBlocks.SAND.get(SandBlockType.PINK).get().getDefaultState();
             }
-
-            @Override
-            public void updatePostPlacement(IWorld world, BlockPos pos, BlockState state)
+            else if (rainfall < 300f)
             {
-                if (state.getBlock() instanceof TFCGrassBlock)
-                {
-                    world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 0);
-                }
-            }
-        });
-
-        // Gravel -> accent block used in some mountains
-        register(Blocks.GRAVEL, (rockData, x, y, z, rainfall, temperature, random) -> rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
-
-        // Sand -> ocean floor material. Switch based on the biome temp category
-        register(Blocks.SAND, (rockData, x, y, z, rainfall, temperature, noise) -> {
-            if (temperature > TFCConfig.COMMON.sandGravelTemperatureCutoff.get() + TFCConfig.COMMON.sandGravelTemperatureRange.get() * noise)
-            {
-                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getSandColor()).get().getDefaultState();
+                return TFCBlocks.SAND.get(SandBlockType.BLACK).get().getDefaultState();
             }
             else
             {
-                return rockData.getTopRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState();
+                return TFCBlocks.SAND.get(rockData.getMidRock(x, z).getBeachSandColor()).get().getDefaultState();
             }
         });
-
-        // Sandstone (normal / red) used for shores. Replace with sand / gravel, using mid rock sand color where necessary.
-        register(Blocks.SANDSTONE, (rockData, x, y, z, rainfall, temperature, noise) -> TFCBlocks.SAND.get(rockData.getMidRock(x, z).getSandColor()).get().getDefaultState());
-        register(Blocks.RED_SANDSTONE, (rockData, x, y, z, rainfall, temperature, noise) -> rockData.getMidRock(x, z).getBlock(Rock.BlockType.GRAVEL).getDefaultState());
     }
 
-    public void replace(IWorld worldGenRegion, IChunk chunk, Random random, ChunkData data)
+    public void replace(IWorld worldGenRegion, IChunk chunk, ChunkData data)
     {
-        BlockPos.Mutable pos = new BlockPos.Mutable();
-        int xStart = chunk.getPos().getXStart();
-        int zStart = chunk.getPos().getZStart();
-        RockData rockData = data.getRockData();
+        final int xStart = chunk.getPos().getXStart();
+        final int zStart = chunk.getPos().getZStart();
+        final RockData rockData = data.getRockData();
+
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
                 float temperature = data.getAverageTemp(x, z);
                 float rainfall = data.getRainfall(x, z);
-                float noise = random.nextFloat() - random.nextFloat(); // One simple "gaussian" noise value per column
 
                 for (int y = 0; y <= chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z); y++)
                 {
-                    pos.setPos(xStart + x, y, zStart + z);
+                    mutablePos.setPos(xStart + x, y, zStart + z);
 
                     // Base replacement
-                    BlockState stateAt = chunk.getBlockState(pos);
+                    BlockState stateAt = chunk.getBlockState(mutablePos);
                     IBlockReplacer replacer = replacements.get(stateAt.getBlock());
                     if (replacer != null)
                     {
-                        stateAt = replacer.getReplacement(rockData, x, y, z, rainfall, temperature, noise);
-                        chunk.setBlockState(pos, stateAt, false);
-                        replacer.updatePostPlacement(worldGenRegion, pos, stateAt);
+                        stateAt = replacer.getReplacement(rockData, xStart + x, y, zStart + z, rainfall, temperature);
+                        chunk.setBlockState(mutablePos, stateAt, false);
+                        replacer.updatePostPlacement(worldGenRegion, mutablePos, stateAt);
                     }
                 }
             }
@@ -131,29 +122,9 @@ public class ChunkBlockReplacer
     {
         if (replacements.containsKey(block))
         {
-            LOGGER.debug("Replaced entry {} in ChunkBlockReplacer", block);
+            throw new IllegalStateException("Block " + block.getRegistryName() + " is already assigned to a replacement");
         }
+        replacer.setSeed(seed);
         replacements.put(block, replacer);
     }
-
-    private BlockState getSoilBlock(SoilBlockType soil, RockData rockData, int x, int z, float rainfall, float noise)
-    {
-        if (rainfall < TFCConfig.COMMON.sandRainfallCutoff.get() + TFCConfig.COMMON.sandRainfallRange.get() * noise)
-        {
-            return TFCBlocks.SAND.get(rockData.getTopRock(x, z).getSandColor()).get().getDefaultState();
-        }
-        else if (rainfall < TFCConfig.COMMON.sandyLoamRainfallCutoff.get() + TFCConfig.COMMON.sandyLoamRainfallRange.get() * noise)
-        {
-            return TFCBlocks.SOIL.get(soil).get(SoilBlockType.Variant.SANDY_LOAM).get().getDefaultState();
-        }
-        else if (rainfall < TFCConfig.COMMON.siltyLoamRainfallCutoff.get() + TFCConfig.COMMON.siltyLoamRainfallRange.get() * noise)
-        {
-            return TFCBlocks.SOIL.get(soil).get(SoilBlockType.Variant.SILTY_LOAM).get().getDefaultState();
-        }
-        else
-        {
-            return TFCBlocks.SOIL.get(soil).get(SoilBlockType.Variant.SILT).get().getDefaultState();
-        }
-    }
-
 }

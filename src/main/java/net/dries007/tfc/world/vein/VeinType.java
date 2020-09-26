@@ -13,14 +13,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
-import net.dries007.tfc.objects.recipes.IBlockIngredient;
+import net.dries007.tfc.common.recipes.IBlockIngredient;
 import net.dries007.tfc.util.collections.IWeighted;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.json.TFCJSONUtils;
 import net.dries007.tfc.world.placement.IPlacementRule;
 
@@ -33,6 +35,7 @@ public abstract class VeinType<V extends Vein<?>>
     protected final int minY;
     protected final int maxY;
     protected final Map<IBlockIngredient, IWeighted<BlockState>> blocks;
+    protected final IndirectHashCollection<Block, Map.Entry<IBlockIngredient, IWeighted<BlockState>>> blocksIndirect;
     protected final List<IPlacementRule> rules;
     private final ResourceLocation id;
 
@@ -61,7 +64,7 @@ public abstract class VeinType<V extends Vein<?>>
             throw new JsonParseException("Density must be in [1, 100]");
         }
 
-        blocks = new HashMap<>();
+        this.blocks = new HashMap<>();
         JsonArray blocksJson = JSONUtils.getJsonArray(json, "blocks");
         for (JsonElement blocksElement : blocksJson)
         {
@@ -78,6 +81,9 @@ public abstract class VeinType<V extends Vein<?>>
         }
         indicator = json.has("indicator") ? TFCJSONUtils.getWeighted(json.get("indicator"), Indicator.Serializer.INSTANCE::read) : IWeighted.empty();
         rules = json.has("rules") ? TFCJSONUtils.getListLenient(json.get("rules"), IPlacementRule.Serializer.INSTANCE::read) : Collections.emptyList();
+
+        this.blocksIndirect = new IndirectHashCollection<>(pair -> pair.getKey().getValidBlocks());
+        this.blocksIndirect.reload(blocks.entrySet());
     }
 
     public ResourceLocation getId()
@@ -117,9 +123,17 @@ public abstract class VeinType<V extends Vein<?>>
         return 1 + (size >> 4);
     }
 
-    public Optional<BlockState> getStateToGenerate(BlockState stoneState, Random random)
+    @Nullable
+    public BlockState getStateToGenerate(BlockState stoneState, Random random)
     {
-        return blocks.entrySet().stream().filter(entry -> entry.getKey().test(stoneState)).map(entry -> entry.getValue().get(random)).findFirst();
+        for (Map.Entry<IBlockIngredient, IWeighted<BlockState>> entry : blocksIndirect.getAll(stoneState.getBlock()))
+        {
+            if (entry.getKey().test(stoneState))
+            {
+                return entry.getValue().get(random);
+            }
+        }
+        return null;
     }
 
     public Collection<BlockState> getOreStates()

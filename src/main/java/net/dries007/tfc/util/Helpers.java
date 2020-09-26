@@ -6,18 +6,37 @@
 package net.dries007.tfc.util;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerProvider;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Unit;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -136,18 +155,38 @@ public final class Helpers
     /**
      * Maps a {@link Supplier} to a supplier of {@link Optional} by swallowing any runtime exceptions.
      */
-    public static <T> Supplier<Optional<T>> mapSafeOptional(Supplier<T> unsafeSupplier)
+    public static <T> Optional<T> mapSafeOptional(Supplier<T> unsafeSupplier)
     {
-        return () -> {
-            try
-            {
-                return Optional.of(unsafeSupplier.get());
-            }
-            catch (RuntimeException e)
-            {
-                return Optional.empty();
-            }
-        };
+        try
+        {
+            return Optional.of(unsafeSupplier.get());
+        }
+        catch (RuntimeException e)
+        {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Like {@link Optional#map(Function)} but for suppliers. Does not unbox the provided supplier
+     */
+    public static <T, R> Supplier<R> mapSupplier(Supplier<T> supplier, Function<T, R> mapper)
+    {
+        return () -> mapper.apply(supplier.get());
+    }
+
+    /**
+     * Applies two possible consumers of a given lazy optional
+     */
+    public static <T> void ifPresentOrElse(LazyOptional<T> lazyOptional, Consumer<T> ifPresent, Runnable orElse)
+    {
+        lazyOptional.map(t -> {
+            ifPresent.accept(t);
+            return Unit.INSTANCE;
+        }).orElseGet(() -> {
+            orElse.run();
+            return Unit.INSTANCE;
+        });
     }
 
     /**
@@ -171,6 +210,75 @@ public final class Helpers
      */
     public static String getEnumTranslationKey(Enum<?> anEnum)
     {
-        return String.join(".", MOD_ID, "enum", anEnum.getDeclaringClass().getSimpleName(), anEnum.name()).toLowerCase();
+        return getEnumTranslationKey(anEnum, anEnum.getDeclaringClass().getSimpleName());
+    }
+
+    /**
+     * Gets the translation key name for an enum, using a custom name instead of the enum class name
+     */
+    public static String getEnumTranslationKey(Enum<?> anEnum, String enumName)
+    {
+        return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase();
+    }
+
+    /**
+     * Names a simple container provider.
+     *
+     * @return a singleton container provider
+     */
+    public static INamedContainerProvider createNamedContainerProvider(ITextComponent name, IContainerProvider provider)
+    {
+        return new INamedContainerProvider()
+        {
+            @Override
+            public ITextComponent getDisplayName()
+            {
+                return name;
+            }
+
+            @Nullable
+            @Override
+            public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+            {
+                return provider.createMenu(windowId, inv, player);
+            }
+        };
+    }
+
+    /**
+     * Normally, one would just call {@link IWorld#isRemote()}
+     * HOWEVER
+     * There exists a BIG HUGE PROBLEM in very specific scenarios with this
+     * Since World's isRemote() actually returns the isRemote boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
+     * At this point, THE CLIENT WORLD WILL RETURN {@code true} to {@link IWorld#isRemote()}
+     *
+     * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
+     */
+    public static boolean isRemote(IWorldReader world)
+    {
+        return world instanceof World ? !(world instanceof ServerWorld) : world.isRemote();
+    }
+
+    /**
+     * A variant of {@link Template#addBlocksToWorld(IWorld, BlockPos, PlacementSettings)} that is much simpler and faster for use in tree generation
+     * Allows replacing leaves and air blocks
+     */
+    public static void addTemplateToWorldForTreeGen(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
+    {
+        List<Template.BlockInfo> transformedBlockInfos = placementIn.func_227459_a_(template.blocks, pos); // Gets a single list of block infos
+        MutableBoundingBox boundingBox = placementIn.getBoundingBox();
+        for (Template.BlockInfo blockInfo : Template.processBlockInfos(template, worldIn, pos, placementIn, transformedBlockInfos))
+        {
+            BlockPos posAt = blockInfo.pos;
+            if (boundingBox == null || boundingBox.isVecInside(posAt))
+            {
+                BlockState stateAt = worldIn.getBlockState(posAt);
+                if (stateAt.isAir(worldIn, posAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
+                {
+                    BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
+                    worldIn.setBlockState(posAt, stateReplace, 2);
+                }
+            }
+        }
     }
 }

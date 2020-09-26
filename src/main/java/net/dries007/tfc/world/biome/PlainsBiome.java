@@ -7,6 +7,8 @@ package net.dries007.tfc.world.biome;
 
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
+
 public class PlainsBiome extends FlatBiome
 {
     public PlainsBiome(BiomeTemperature temperature, BiomeRainfall rainfall)
@@ -15,7 +17,7 @@ public class PlainsBiome extends FlatBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG);
+            setSurfaceBuilder(TFCSurfaceBuilders.DEEP.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG);
         });
     }
 }

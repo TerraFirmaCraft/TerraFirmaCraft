@@ -16,21 +16,14 @@ public enum BiomeLayer implements IC0Transformer
 
     public static final int[] LOW_BIOMES = new int[] {PLAINS, HILLS, LOW_CANYONS, LOWLANDS, HILLS};
     public static final int[] MID_BIOMES = new int[] {ROLLING_HILLS, OLD_MOUNTAINS, BADLANDS, HILLS, PLAINS};
-    public static final int[] HIGH_BIOMES = new int[] {PLATEAU, BADLANDS, MOUNTAINS, FLOODED_MOUNTAINS};
+    public static final int[] HIGH_BIOMES = new int[] {PLATEAU, BADLANDS, MOUNTAINS, FLOODED_MOUNTAINS, OLD_MOUNTAINS};
 
     @Override
     public int apply(INoiseRandom context, int value)
     {
         if (value == DEEP_OCEAN)
         {
-            if (context.random(8) == 0)
-            {
-                return DEEP_OCEAN_RIDGE;
-            }
-            else
-            {
-                return DEEP_OCEAN;
-            }
+            return DEEP_OCEAN;
         }
         else if (value == PLAINS)
         {

@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.Optional;
 import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,23 +19,19 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.network.PacketDistributor;
 
-import net.dries007.tfc.network.ChunkDataRequestPacket;
-import net.dries007.tfc.network.ChunkDataUpdatePacket;
-import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.ChunkWatchPacket;
 import net.dries007.tfc.util.LerpFloatLayer;
 
 public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 {
+    public static final ChunkData EMPTY = new ChunkData.Immutable();
+
     private static final Logger LOGGER = LogManager.getLogger();
 
-    /**
-     * @see ChunkData#get(IWorld, ChunkPos, Status, boolean)
-     */
-    public static ChunkData get(IWorld world, BlockPos pos, Status requiredStatus, boolean loadChunk)
+    public static ChunkData get(IWorld world, BlockPos pos)
     {
-        return get(world, new ChunkPos(pos), requiredStatus, loadChunk);
+        return get(world, new ChunkPos(pos));
     }
 
     /**
@@ -47,54 +42,21 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      * @see ChunkDataProvider#get(ChunkPos, Status) to directly force chunk generation, or if a world is not available
      * @see ChunkDataCache#get(ChunkPos) to directly access the cache
      */
-    public static ChunkData get(IWorld world, ChunkPos pos, Status requiredStatus, boolean loadChunk)
+    public static ChunkData get(IWorld world, ChunkPos pos)
     {
-        if (world.isRemote())
+        // Query cache first, picking the correct cache for the current logical side
+        ChunkData data = ChunkDataCache.get(world).get(pos);
+        if (data == null)
         {
-            if (requiredStatus.ordinal() > Status.CLIMATE.ordinal())
-            {
-                LOGGER.warn("Illegal request of chunk data with status {} on client", requiredStatus);
-                LOGGER.debug(new IllegalStateException("Stacktrace"));
-            }
-            // Client side, with world context
-            // First query the capability, fallback to cache with network request if cache miss
-            IChunk chunkIn = world.getChunk(pos.asBlockPos());
-            return Optional.ofNullable(chunkIn instanceof Chunk ? (Chunk) chunkIn : null)
-                .map(chunk -> chunk.getCapability(ChunkDataCapability.CAPABILITY))
-                .orElseGet(LazyOptional::empty)
-                .orElseGet(() -> {
-                    ChunkData cached = ChunkDataCache.get(pos);
-                    if (!cached.getStatus().isAtLeast(Status.CLIMATE))
-                    {
-                        PacketHandler.send(PacketDistributor.SERVER.noArg(), new ChunkDataRequestPacket(pos.x, pos.z));
-                    }
-                    return cached;
-                });
+            return getCapability(world.chunkExists(pos.x, pos.z) ? world.getChunk(pos.asBlockPos()) : null).orElse(ChunkData.EMPTY);
         }
-        else if (loadChunk)
-        {
-            // Server side, with world context, allowed to force chunk load
-            // First query capability, fallback to cache
-            IChunk chunkIn = world.chunkExists(pos.x, pos.z) ? world.getChunk(pos.asBlockPos()) : null;
-            return Optional.ofNullable(chunkIn instanceof Chunk ? (Chunk) chunkIn : null)
-                .map(chunk -> chunk.getCapability(ChunkDataCapability.CAPABILITY))
-                .orElseGet(LazyOptional::empty)
-                .orElseGet(() -> ChunkDataCache.get(pos));
-        }
-        else
-        {
-            // Server side, with world context, not allowed for force chunk load
-            // This call path is during world generation, so we generate the data up to the required status
-            return ChunkDataProvider.get(world)
-                .map(provider -> provider.get(pos, requiredStatus))
-                .orElseThrow(() -> new IllegalStateException("No ChunkDataProvider present on logical server?"));
-        }
+        return data;
     }
 
     /**
      * Helper method, since lazy optionals and instanceof checks together are ugly
      */
-    public static LazyOptional<ChunkData> get(@Nullable IChunk chunk)
+    public static LazyOptional<ChunkData> getCapability(@Nullable IChunk chunk)
     {
         if (chunk instanceof Chunk)
         {
@@ -103,16 +65,23 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         return LazyOptional.empty();
     }
 
-    private final LazyOptional<ChunkData> capability = LazyOptional.of(() -> this);
+    private final LazyOptional<ChunkData> capability;
+    private final ChunkPos pos;
 
     private RockData rockData;
     private Status status;
     private LerpFloatLayer rainfallLayer;
     private LerpFloatLayer temperatureLayer;
+    private ForestType forestType;
+    private float forestWeirdness;
+    private float forestDensity;
 
-    public ChunkData()
+    public ChunkData(ChunkPos pos)
     {
-        initWithDefaultValues();
+        this.pos = pos;
+        this.capability = LazyOptional.of(() -> this);
+
+        reset();
     }
 
     public RockData getRockData()
@@ -132,7 +101,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer.getValue(x / 16f, z / 16f);
+        return rainfallLayer.getValue(-z / 16f, x / 16f);
     }
 
     public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
@@ -147,7 +116,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer.getValue(x / 16f, z / 16f);
+        return temperatureLayer.getValue(-z / 16f, x / 16f);
     }
 
     public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
@@ -155,38 +124,65 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         temperatureLayer.init(tempNW, tempNE, tempSW, tempSE);
     }
 
+    public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
+    {
+        this.forestType = forestType;
+        this.forestWeirdness = forestWeirdness;
+        this.forestDensity = forestDensity;
+    }
+
+    public ForestType getForestType()
+    {
+        return forestType;
+    }
+
+    public float getForestWeirdness()
+    {
+        return forestWeirdness;
+    }
+
+    public float getForestDensity()
+    {
+        return forestDensity;
+    }
+
     public Status getStatus()
     {
         return status;
     }
 
+    public void setStatus(Status status)
+    {
+        this.status = status;
+    }
+
     /**
      * Create an update packet to send to client with necessary information
      */
-    public ChunkDataUpdatePacket getUpdatePacket(int chunkX, int chunkZ)
+    public ChunkWatchPacket getUpdatePacket()
     {
-        return new ChunkDataUpdatePacket(chunkX, chunkZ, rainfallLayer, temperatureLayer);
+        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
     }
 
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer)
+    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
     {
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
-        this.status = Status.CLIMATE;
-    }
+        this.forestType = forestType;
+        this.forestDensity = forestDensity;
+        this.forestWeirdness = forestWeirdness;
 
-    /**
-     * Called on client, copies from newer data
-     */
-    public void copyFrom(ChunkData other)
-    {
-        this.rockData = other.rockData;
-        this.rainfallLayer = other.rainfallLayer;
-        this.temperatureLayer = other.temperatureLayer;
-        this.status = other.status;
+        if (status == Status.CLIENT || status == Status.EMPTY)
+        {
+            this.status = Status.CLIENT;
+        }
+        else
+        {
+            LOGGER.warn("Called client side update method on server side chunk data: {}. This should not happen.", this);
+        }
     }
 
     @Override
@@ -200,7 +196,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         CompoundNBT nbt = new CompoundNBT();
 
-        nbt.putInt("status", status.ordinal());
+        nbt.putByte("status", (byte) status.ordinal());
         if (status.isAtLeast(Status.CLIMATE))
         {
             nbt.put("rainfall", rainfallLayer.serializeNBT());
@@ -210,6 +206,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         {
             nbt.put("rockData", rockData.serializeNBT());
         }
+        if (status.isAtLeast(Status.FLORA))
+        {
+            nbt.putByte("forestType", (byte) forestType.ordinal());
+            nbt.putFloat("forestWeirdness", forestWeirdness);
+            nbt.putFloat("forestDensity", forestDensity);
+        }
         return nbt;
     }
 
@@ -218,8 +220,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     {
         if (nbt != null)
         {
-            status = Status.valueOf(nbt.getInt("status"));
-            initWithDefaultValues();
+            status = Status.valueOf(nbt.getByte("status"));
             if (status.isAtLeast(Status.CLIMATE))
             {
                 rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
@@ -229,34 +230,115 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
             {
                 rockData.deserializeNBT(nbt.getCompound("rockData"));
             }
+            if (status.isAtLeast(Status.FLORA))
+            {
+                forestType = ForestType.valueOf(nbt.getByte("forestType"));
+                forestWeirdness = nbt.getFloat("forestWeirdness");
+                forestDensity = nbt.getFloat("forestDensity");
+            }
         }
     }
 
-    private void initWithDefaultValues()
+    @Override
+    public String toString()
+    {
+        return "ChunkData{pos=" + pos + ", status=" + status + ", hashCode=" + Integer.toHexString(hashCode()) + '}';
+    }
+
+    private void reset()
     {
         rockData = new RockData();
         rainfallLayer = new LerpFloatLayer(250);
         temperatureLayer = new LerpFloatLayer(10);
-        status = Status.DEFAULT;
+        forestWeirdness = 0.5f;
+        forestDensity = 0.5f;
+        forestType = ForestType.NONE;
+        status = Status.EMPTY;
     }
 
     public enum Status
     {
-        DEFAULT,
+        EMPTY,
+        CLIENT,
         CLIMATE,
         ROCKS,
-        FULL;
+        FLORA;
 
         private static final Status[] VALUES = values();
 
         public static Status valueOf(int i)
         {
-            return i >= 0 && i < VALUES.length ? VALUES[i] : DEFAULT;
+            return i >= 0 && i < VALUES.length ? VALUES[i] : EMPTY;
         }
 
         public boolean isAtLeast(Status otherStatus)
         {
             return this.ordinal() >= otherStatus.ordinal();
+        }
+
+        public boolean isAtMost(Status otherStatus)
+        {
+            return this.ordinal() <= otherStatus.ordinal();
+        }
+    }
+
+    /**
+     * Only used for the empty instance, this will enforce that it never leaks data
+     * New empty instances can be constructed via constructor, EMPTY instance is specifically for an immutable empty copy, representing invalid chunk data
+     */
+    private static class Immutable extends ChunkData
+    {
+        private Immutable()
+        {
+            super(new ChunkPos(ChunkPos.SENTINEL));
+        }
+
+        @Override
+        public void setRockData(RockData rockData)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public void setFloraData(ForestType forestType, float forestWeirdness, float forestDensity)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public void setStatus(Status status)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public void deserializeNBT(CompoundNBT nbt)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public String toString()
+        {
+            return "ImmutableChunkData";
         }
     }
 }

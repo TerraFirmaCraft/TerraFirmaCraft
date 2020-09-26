@@ -10,6 +10,7 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 
 public class LakeBiome extends TFCBiome
 {
@@ -19,13 +20,19 @@ public class LakeBiome extends TFCBiome
 
         biomeFeatures.enqueue(() -> {
             TFCDefaultBiomeFeatures.addCarvers(this);
-            setSurfaceBuilder(SurfaceBuilder.DEFAULT, TFCDefaultBiomeFeatures.getUnderwaterSurfaceConfig(this));
+            setSurfaceBuilder(TFCSurfaceBuilders.UNDERWATER.get(), SurfaceBuilder.AIR_CONFIG);
         });
     }
 
     @Override
     public INoise2D createNoiseLayer(long seed)
     {
-        return new SimplexNoise2D(seed).octaves(4).spread(0.2f).scaled(TFCConfig.COMMON.seaLevel.get() - 8, TFCConfig.COMMON.seaLevel.get() - 3);
+        return new SimplexNoise2D(seed).octaves(4).spread(0.15f).scaled(TFCConfig.COMMON.seaLevel.get() - 12, TFCConfig.COMMON.seaLevel.get() - 2);
+    }
+
+    @Override
+    public LargeGroup getLargeGroup()
+    {
+        return LargeGroup.LAKE;
     }
 }

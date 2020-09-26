@@ -13,7 +13,6 @@ You can find the mod on [Curseforge](https://www.curseforge.com/minecraft/mc-mod
 ## Contributing
 
  - Firstly, join our [Discord](https://invite.gg/terrafirmacraft), as it's where all discussion surrounding development, tasks, and decisions happens.
- - Any contributors will be asked to sign the Contributor License Agreement, which is automated and kept track of by a github action.
  - As per the Github terms of service, you grant us the right to use your contribution under the same license as this project.
  - In addition we request that you give us the right to change the license in the future.
  - Import & use the project's Code Style. (Recommend using Intellij as that's what our code style xml is based on)

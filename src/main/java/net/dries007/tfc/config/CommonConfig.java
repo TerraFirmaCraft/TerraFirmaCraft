@@ -18,15 +18,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class CommonConfig
 {
-    // World Generation - Surface
-    public final ForgeConfigSpec.IntValue sandRainfallCutoff;
-    public final ForgeConfigSpec.IntValue sandRainfallRange;
-    public final ForgeConfigSpec.IntValue sandyLoamRainfallCutoff;
-    public final ForgeConfigSpec.IntValue sandyLoamRainfallRange;
-    public final ForgeConfigSpec.IntValue siltyLoamRainfallCutoff;
-    public final ForgeConfigSpec.IntValue siltyLoamRainfallRange;
-    public final ForgeConfigSpec.IntValue sandGravelTemperatureCutoff;
-    public final ForgeConfigSpec.DoubleValue sandGravelTemperatureRange;
     // World Generation - General
     public final ForgeConfigSpec.BooleanValue flatBedrock;
     public final ForgeConfigSpec.IntValue islandFrequency;
@@ -53,28 +44,16 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue normalTemperatureCutoff;
     public final ForgeConfigSpec.IntValue lukewarmTemperatureCutoff;
     public final ForgeConfigSpec.IntValue aridRainfallCutoff;
+    public final ForgeConfigSpec.IntValue dryRainfallCutoff;
     public final ForgeConfigSpec.IntValue normalRainfallCutoff;
+    public final ForgeConfigSpec.IntValue dampRainfallCutoff;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         // Standardization for translation keys
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.general." + name);
 
-        innerBuilder.push("worldGeneration").push("surface");
-
-        sandRainfallCutoff = builder.apply("sandGrassRainfallCutoff").defineInRange("sandGrassRainfallCutoff", 125, 0, 500);
-        sandRainfallRange = builder.apply("sandGrassRainfallSpread").defineInRange("sandGrassRainfallSpread", 2, 0, 500);
-
-        sandyLoamRainfallCutoff = builder.apply("sandyLoamRainfallCutoff").defineInRange("sandyLoamRainfallCutoff", 250, 0, 500);
-        sandyLoamRainfallRange = builder.apply("sandyLoamRainfallRange").defineInRange("sandyLoamRainfallRange", 2, 0, 500);
-
-        siltyLoamRainfallCutoff = builder.apply("siltyLoamRainfallCutoff").defineInRange("siltyLoamRainfallCutoff", 375, 0, 500);
-        siltyLoamRainfallRange = builder.apply("siltyLoamRainfallRange").defineInRange("siltyLoamRainfallRange", 2, 0, 500);
-
-        sandGravelTemperatureCutoff = builder.apply("sandGravelTemperatureCutoff").defineInRange("sandGravelTemperatureCutoff", 10, -40, 40);
-        sandGravelTemperatureRange = builder.apply("sandGravelTemperatureRange").defineInRange("sandGravelTemperatureSpread", 0.3, 0, 80);
-
-        innerBuilder.pop().push("general");
+        innerBuilder.push("worldGeneration").push("general");
 
         flatBedrock = builder.apply("flatBedrock").define("flatBedrock", false);
 
@@ -111,8 +90,10 @@ public class CommonConfig
         normalTemperatureCutoff = builder.apply("normalTemperatureCutoff").defineInRange("normalTemperatureCutoff", 14, -20, 50);
         lukewarmTemperatureCutoff = builder.apply("lukewarmTemperatureCutoff").defineInRange("lukewarmTemperatureCutoff", 22, -20, 50);
 
-        aridRainfallCutoff = builder.apply("aridRainfallCutoff").defineInRange("aridRainfallCutoff", 160, 0, 500);
-        normalRainfallCutoff = builder.apply("normalRainfallCutoff").defineInRange("normalRainfallCutoff", 340, 0, 500);
+        aridRainfallCutoff = builder.apply("aridRainfallCutoff").defineInRange("aridRainfallCutoff", 125, 0, 500);
+        dryRainfallCutoff = builder.apply("dryRainfallCutoff").defineInRange("dryRainfallCutoff", 200, 0, 500);
+        normalRainfallCutoff = builder.apply("normalRainfallCutoff").defineInRange("normalRainfallCutoff", 300, 0, 500);
+        dampRainfallCutoff = builder.apply("dampRainfallCutoff").defineInRange("dampRainfallCutoff", 375, 0, 500);
 
         innerBuilder.pop().pop();
     }

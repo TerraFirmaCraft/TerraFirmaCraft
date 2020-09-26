@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.IFeatureConfig;
 
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
-import net.dries007.tfc.api.Rock;
+import net.dries007.tfc.common.types.Rock;
 
 public class BoulderConfig implements IFeatureConfig
 {

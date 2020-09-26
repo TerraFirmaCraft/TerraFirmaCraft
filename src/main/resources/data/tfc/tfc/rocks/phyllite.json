@@ -6,12 +6,13 @@
     "cobble": "tfc:rock/cobble/phyllite",
     "gravel": "tfc:rock/gravel/phyllite",
     "smooth": "tfc:rock/smooth/phyllite",
-    "spike": "tfc:rock/spike/phyllite",
     "mossy_cobble": "tfc:rock/mossy_cobble/phyllite",
     "mossy_bricks": "tfc:rock/mossy_bricks/phyllite",
     "cracked_bricks": "tfc:rock/cracked_bricks/phyllite",
-    "chiseled": "tfc:rock/chiseled/phyllite"
+    "chiseled": "tfc:rock/chiseled/phyllite",
+    "spike": "tfc:rock/spike/phyllite"
   },
   "category": "metamorphic",
-  "sand_color": "white"
+  "desert_sand_color": "brown",
+  "beach_sand_color": "yellow"
 }

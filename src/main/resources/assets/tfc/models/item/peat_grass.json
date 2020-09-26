@@ -1,0 +1,6 @@
+{
+  "parent": "tfc:item/grass_inv",
+  "textures": {
+    "block": "tfc:block/peat"
+  }
+}

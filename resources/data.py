@@ -43,5 +43,6 @@ def generate(rm: ResourceManager):
         rm.data(('tfc', 'rocks', rock), {
             'blocks': dict((block_type, 'tfc:rock/%s/%s' % (block_type, rock)) for block_type in ROCK_BLOCK_TYPES),
             'category': rock_data.category,
-            'sand_color': rock_data.sand_color
+            'desert_sand_color': rock_data.desert_sand_color,
+            'beach_sand_color': rock_data.beach_sand_color
         })

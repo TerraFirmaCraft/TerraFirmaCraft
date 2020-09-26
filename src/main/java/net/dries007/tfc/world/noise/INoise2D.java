@@ -5,6 +5,8 @@
 
 package net.dries007.tfc.world.noise;
 
+import net.minecraft.util.math.MathHelper;
+
 import net.dries007.tfc.util.function.FloatUnaryFunction;
 
 /**
@@ -58,6 +60,16 @@ public interface INoise2D
             value = value < 0 ? -value : value;
             return 1f - 2f * value;
         };
+    }
+
+    /**
+     * Takes the absolute value of a noise function. Does not scale the result
+     *
+     * @return a new noise function
+     */
+    default INoise2D abs()
+    {
+        return (x, y) -> Math.abs(INoise2D.this.noise(x, y));
     }
 
     /**
@@ -118,11 +130,19 @@ public interface INoise2D
      */
     default INoise2D warped(INoise2D warpX, INoise2D warpY)
     {
-        return (x, y) -> {
-            float x0 = x + warpX.noise(x, y);
-            float y0 = y + warpY.noise(x, y);
-            return INoise2D.this.noise(x0, y0);
-        };
+        return (x, y) -> INoise2D.this.noise(x + warpX.noise(x, y), y + warpY.noise(x, y));
+    }
+
+    /**
+     * Applies a transformation to the input coordinates. This is similar to {@link INoise2D#warped(INoise2D, INoise2D)} except it does not add values to the coordinates. This makes it useful for clamp / scale operations on the input coordinates.
+     *
+     * @param transformX the x transformation
+     * @param transformY the y transformation
+     * @return a new noise function
+     */
+    default INoise2D transformed(INoise2D transformX, INoise2D transformY)
+    {
+        return (x, y) -> INoise2D.this.noise(transformX.noise(x, y), transformY.noise(x, y));
     }
 
     /**
@@ -132,13 +152,9 @@ public interface INoise2D
      * @param max the maximum noise value
      * @return a new noise function
      */
-    @SuppressWarnings("ManualMinMaxCalculation")
     default INoise2D flattened(float min, float max)
     {
-        return (x, y) -> {
-            float noise = INoise2D.this.noise(x, y);
-            return noise > max ? max : noise < min ? min : noise;
-        };
+        return (x, y) -> MathHelper.clamp(INoise2D.this.noise(x, y), min, max);
     }
 
     default INoise2D add(INoise2D other)

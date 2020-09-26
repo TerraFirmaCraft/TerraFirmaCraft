@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/acacia",
+    "top": "tfc:block/wood/planks/acacia",
+    "side": "tfc:block/wood/planks/acacia"
+  }
+}

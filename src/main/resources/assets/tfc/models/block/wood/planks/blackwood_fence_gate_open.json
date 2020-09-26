@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/template_fence_gate_open",
+  "textures": {
+    "texture": "tfc:block/wood/planks/blackwood"
+  }
+}

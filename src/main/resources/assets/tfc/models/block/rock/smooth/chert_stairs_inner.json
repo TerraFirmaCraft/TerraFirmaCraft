@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "tfc:block/rock/smooth/chert",
+    "top": "tfc:block/rock/smooth/chert",
+    "side": "tfc:block/rock/smooth/chert"
+  }
+}

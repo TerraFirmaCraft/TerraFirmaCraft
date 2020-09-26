@@ -6,12 +6,13 @@
     "cobble": "tfc:rock/cobble/marble",
     "gravel": "tfc:rock/gravel/marble",
     "smooth": "tfc:rock/smooth/marble",
-    "spike": "tfc:rock/spike/marble",
     "mossy_cobble": "tfc:rock/mossy_cobble/marble",
     "mossy_bricks": "tfc:rock/mossy_bricks/marble",
     "cracked_bricks": "tfc:rock/cracked_bricks/marble",
-    "chiseled": "tfc:rock/chiseled/marble"
+    "chiseled": "tfc:rock/chiseled/marble",
+    "spike": "tfc:rock/spike/marble"
   },
   "category": "metamorphic",
-  "sand_color": "white"
+  "desert_sand_color": "yellow",
+  "beach_sand_color": "white"
 }
