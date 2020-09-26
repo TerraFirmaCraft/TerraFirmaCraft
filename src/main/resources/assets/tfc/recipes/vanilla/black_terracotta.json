@@ -1,0 +1,16 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:hardened_clay"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyeBlack"
+    }
+  ],
+  "result": {
+    "item": "minecraft:stained_hardened_clay",
+    "data": 15
+  }
+}
