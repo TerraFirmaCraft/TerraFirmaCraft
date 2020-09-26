@@ -73,7 +73,7 @@ public final class ClientEventHandler
 
         // Wood blocks
         Stream.of(Wood.BlockType.SAPLING, Wood.BlockType.DOOR, Wood.BlockType.TRAPDOOR, Wood.BlockType.FENCE, Wood.BlockType.FENCE_GATE, Wood.BlockType.BUTTON, Wood.BlockType.PRESSURE_PLATE, Wood.BlockType.SLAB, Wood.BlockType.STAIRS).forEach(type -> TFCBlocks.WOODS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(type).get(), RenderType.cutout())));
-        TFCBlocks.WOODS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(Wood.BlockType.LEAVES).get(), RenderType.cutoutMipped()));
+        Stream.of(Wood.BlockType.LEAVES, Wood.BlockType.FALLEN_LEAVES, Wood.BlockType.FALLEN_LOG, Wood.BlockType.FALLEN_TWIG, Wood.BlockType.STUMP).forEach(type -> TFCBlocks.WOODS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(type).get(), RenderType.cutoutMipped())));
 
         // Grass
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
@@ -108,13 +108,16 @@ public final class ClientEventHandler
 
         TFCBlocks.WOODS.forEach((key, value) -> {
             Block block = value.get(Wood.BlockType.LEAVES).get();
+            Block block2 = value.get(Wood.BlockType.FALLEN_LEAVES).get();
             if (key.isConifer())
             {
                 blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex), block);
+                blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex), block2);
             }
             else
             {
                 blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, key.getFallFoliageCoords()), block);
+                blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, key.getFallFoliageCoords()), block2);
             }
         });
     }

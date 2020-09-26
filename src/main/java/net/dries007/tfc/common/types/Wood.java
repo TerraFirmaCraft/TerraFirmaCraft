@@ -8,6 +8,8 @@ package net.dries007.tfc.common.types;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import net.dries007.tfc.common.blocks.wood.FallenLeavesBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -127,7 +129,11 @@ public class Wood
         PRESSURE_PLATE(wood -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, wood.getMainColor()).noCollission().strength(0.5F).sound(SoundType.WOOD)) {}, true),
         SLAB(wood -> new SlabBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         STAIRS(wood -> new StairsBlock(() -> TFCBlocks.WOODS.get(wood).get(PLANKS).get().defaultBlockState(), Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true);
+        TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
+        FALLEN_LOG(wood -> new GroundcoverBlock(GroundcoverBlock.WoodCoverTypes.FALLEN_LOG), false),
+        FALLEN_TWIG(wood -> new GroundcoverBlock(GroundcoverBlock.WoodCoverTypes.FALLEN_TWIG), false),
+        STUMP(wood -> new GroundcoverBlock(GroundcoverBlock.WoodCoverTypes.STUMP), false),
+        FALLEN_LEAVES(wood -> new FallenLeavesBlock(), false);
 
         public static final BlockType[] VALUES = values();
 
