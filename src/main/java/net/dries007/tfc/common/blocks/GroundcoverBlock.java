@@ -30,40 +30,46 @@ import javax.annotation.Nonnull;
 
 public class GroundcoverBlock extends Block implements IWaterLoggable
 {
-    //todo: random rotations through the blockstate
-    //todo: fallen leaves/logs
-
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
     protected static final VoxelShape FLAT = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+    protected static final VoxelShape FLAT_TALL = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 5.0D, 14.0D);
     protected static final VoxelShape SMALL = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
     protected static final VoxelShape MEDIUM = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
     protected static final VoxelShape LARGE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
-    protected static final VoxelShape LONG = Block.box(1.0D, 0.0D, 5.0D, 15.0D, 4.0D, 11.0D);
 
     public VoxelShape shape;
 
     public GroundcoverBlock(MiscCoverTypes cover)
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F));
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART));
         shape = cover.getShape();
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
     public GroundcoverBlock(RockCoverTypes cover)
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F));
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.STONE));
+        shape = cover.getShape();
+        this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
+    }
+
+    public GroundcoverBlock(WoodCoverTypes cover)
+    {
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.SCAFFOLDING));
         shape = cover.getShape();
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
     public GroundcoverBlock() // used for nuggets
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F));
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE));
         shape = SMALL;
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
+
+    public GroundcoverBlock(Properties properties) { super(properties); } // used for leaf constructor
 
     @Nonnull
     @Override
@@ -145,13 +151,13 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    public enum MiscCoverTypes
+    public enum MiscCoverTypes //todo: finish these loot tables as items get added
     {
         BONES(MEDIUM, false), // drops bones
         BRANCH(FLAT, false), // drops sticks
         CLAM(SMALL, true), // flux
         DEAD_GRASS(FLAT, false), // drops straw
-        DRIFTWOOD(LONG, false), // drops sticks
+        DRIFTWOOD(FLAT, false), // drops sticks
         FEATHER(FLAT, false),
         FLINT(SMALL, false),
         GUANO(SMALL, true), // guano is traditionally a fertilizer
@@ -161,7 +167,7 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
         PODZOL(FLAT, false), // drops something useful for compost?
         ROTTEN_FLESH(FLAT, false),
         SALT_LICK(FLAT, false), // drops salt
-        SEAWEED(LONG, false), //todo: this should refer to the Food seaweed
+        SEAWEED(FLAT, false), // drops seaweed (tbd)
         STICK(FLAT, false);
 
         private final VoxelShape shape;
@@ -179,20 +185,30 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
 
     public enum RockCoverTypes
     {
-        PEBBLE(SMALL, false),
-        RUBBLE(FLAT, false),
-        BOULDER(MEDIUM, false);
+        PEBBLE(SMALL),
+        RUBBLE(FLAT),
+        BOULDER(MEDIUM);
 
         private final VoxelShape shape;
-        private final boolean hasItem;
 
-        RockCoverTypes(VoxelShape shape, boolean hasItem)
+        RockCoverTypes(VoxelShape shape) { this.shape = shape; }
+
+        public VoxelShape getShape() { return shape; }
+    }
+
+    public enum WoodCoverTypes
+    {
+        FALLEN_LOG(FLAT_TALL),
+        FALLEN_TWIG(FLAT),
+        STUMP(LARGE);
+
+        private final VoxelShape shape;
+
+        WoodCoverTypes(VoxelShape shape)
         {
             this.shape = shape;
-            this.hasItem = hasItem;
         }
 
         public VoxelShape getShape() { return shape; }
-        public boolean isHasItem() { return hasItem; }
     }
 }

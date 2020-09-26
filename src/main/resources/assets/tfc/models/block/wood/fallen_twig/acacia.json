@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/groundcover/fallen_twig",
+  "textures": {
+    "side": "tfc:block/wood/log/acacia",
+    "top": "tfc:block/wood/log_top/acacia"
+  }
+}

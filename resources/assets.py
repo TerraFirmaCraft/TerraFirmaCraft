@@ -336,6 +336,30 @@ def generate(rm: ResourceManager):
             if variant == 'log':
                 block.with_tag('minecraft:logs')
 
+        # Groundcover
+        for variant in {'fallen_log', 'fallen_twig', 'stump'}:
+            block = rm.blockstate('wood/%s/%s' % (variant, wood), variants ={
+                "facing=east": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 90},
+                "facing=north": {"model": "tfc:block/wood/%s/%s" % (variant, wood)},
+                "facing=south": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 180},
+                "facing=west": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 270}}) \
+                .with_item_model() \
+                .with_lang(lang('%s %s', wood, variant)) \
+                .with_block_model({'side': 'tfc:block/wood/log/%s'%wood, 'top': 'tfc:block/wood/log_top/%s'%wood}, parent = 'tfc:block/groundcover/%s' % variant)
+
+        # Groundcover
+        for variant in {'fallen_leaves'}:
+            block = rm.blockstate('wood/%s/%s' % (variant, wood), variants ={
+                "facing=east": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 90},
+                "facing=north": {"model": "tfc:block/wood/%s/%s" % (variant, wood)},
+                "facing=south": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 180},
+                "facing=west": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 270}}) \
+                .with_item_model() \
+                .with_lang(lang('%s %s', wood, variant)) \
+                .with_block_model('tfc:block/wood/leaves/%s' % wood, parent = 'tfc:block/groundcover/%s' % variant)
+
+
+
         # Leaves
         rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood) \
             .with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves') \
