@@ -1,0 +1,17 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:wool",
+      "data": 0
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyeBlack"
+    }
+  ],
+  "result": {
+    "item": "minecraft:wool",
+    "data": 15
+  }
+}

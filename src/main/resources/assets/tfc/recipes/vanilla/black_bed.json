@@ -1,0 +1,17 @@
+{
+  "type": "tfc:damage_item_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:bed",
+      "data": 0
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dyeBlack"
+    }
+  ],
+  "result": {
+    "item": "minecraft:bed",
+    "data": 15
+  }
+}
