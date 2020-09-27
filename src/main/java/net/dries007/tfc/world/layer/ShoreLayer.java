@@ -41,8 +41,8 @@ public enum ShoreLayer implements ICastleTransformer, IBishopTransformer
     }
 
     @Override
-    public int apply(IExtendedNoiseRandom<?> context, IArea area, int x, int z)
+    public int applyPixel(IExtendedNoiseRandom<?> context, IArea area, int x, int z)
     {
-        return this == CASTLE ? ICastleTransformer.super.apply(context, area, x, z) : IBishopTransformer.super.apply(context, area, x, z);
+        return this == CASTLE ? ICastleTransformer.super.applyPixel(context, area, x, z) : IBishopTransformer.super.applyPixel(context, area, x, z);
     }
 }

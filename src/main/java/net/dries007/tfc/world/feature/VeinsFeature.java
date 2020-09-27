@@ -14,17 +14,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.FastRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.vein.Vein;
 import net.dries007.tfc.world.vein.VeinType;
 import net.dries007.tfc.world.vein.VeinTypeManager;
 
+// todo: reconsider the vein approach to use world gen datapacks more closely?
 public class VeinsFeature extends Feature<NoFeatureConfig>
 {
     private static final Random RANDOM = new Random();
@@ -35,7 +36,7 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
         CHUNK_RADIUS = 1 + VeinTypeManager.INSTANCE.getValues().stream().mapToInt(VeinType::getChunkRadius).max().orElse(0);
     }
 
-    public static List<Vein<?>> getNearbyVeins(IWorld world, ChunkPos pos, int radius)
+    public static List<Vein<?>> getNearbyVeins(ISeedReader world, ChunkPos pos, int radius)
     {
         List<Vein<?>> veins = new ArrayList<>();
         for (int x = pos.x - radius; x <= pos.x + radius; x++)
@@ -48,31 +49,25 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
         return veins;
     }
 
-    private static void getVeinsAtChunk(IWorld world, ChunkPos pos, List<Vein<?>> veins)
+    private static void getVeinsAtChunk(ISeedReader world, ChunkPos pos, List<Vein<?>> veins)
     {
-        RANDOM.setSeed(FastRandom.mix(FastRandom.mix(world.getSeed(), pos.x), pos.z));
+        RANDOM.setSeed(FastRandom.next(FastRandom.next(world.getSeed(), pos.x), pos.z));
         for (VeinType<?> type : VeinTypeManager.INSTANCE.getOrderedValues())
         {
-            if (RANDOM.nextInt(type.getRarity()) == 0 && type.canGenerateVein(world, pos.asBlockPos()))
+            if (RANDOM.nextInt(type.getRarity()) == 0 && type.canGenerateVein(world, pos.getWorldPosition()))
             {
-                veins.add(type.createVein(pos.getXStart(), pos.getZStart(), RANDOM));
+                veins.add(type.createVein(pos.getMinBlockX(), pos.getMinBlockZ(), RANDOM));
             }
         }
     }
 
-    @SuppressWarnings("unused")
-    public VeinsFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory)
+    public VeinsFeature(Codec<NoFeatureConfig> codec)
     {
-        super(configFactory);
-    }
-
-    public VeinsFeature()
-    {
-        super(NoFeatureConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         List<Vein<?>> veins = getNearbyVeins(worldIn, new ChunkPos(pos), CHUNK_RADIUS);
         if (!veins.isEmpty())
@@ -86,7 +81,7 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
         return false;
     }
 
-    private void generate(IWorld world, Random random, int xOff, int zOff, Vein<?> vein)
+    private void generate(ISeedReader world, Random random, int xOff, int zOff, Vein<?> vein)
     {
         for (int x = xOff; x < 16 + xOff; x++)
         {
@@ -104,7 +99,7 @@ public class VeinsFeature extends Feature<NoFeatureConfig>
                         {
                             if (random.nextFloat() < vein.getChanceToGenerate(posAt))
                             {
-                                setBlockState(world, posAt, oreState);
+                                setBlock(world, posAt, oreState);
                             }
                         }
                     }

@@ -14,6 +14,6 @@ public class TFCOreBlock extends Block
 {
     public TFCOreBlock()
     {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(10, 10).harvestTool(ToolType.PICKAXE).harvestLevel(0));
+        super(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(10, 10).harvestTool(ToolType.PICKAXE).harvestLevel(0));
     }
 }

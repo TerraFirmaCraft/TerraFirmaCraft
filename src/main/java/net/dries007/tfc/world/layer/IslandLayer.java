@@ -18,7 +18,7 @@ public class IslandLayer implements IAreaTransformer0
     }
 
     @Override
-    public int apply(INoiseRandom random, int x, int z)
+    public int applyPixel(INoiseRandom random, int x, int z)
     {
         if (x == 0 && z == 0)
         {
@@ -26,7 +26,7 @@ public class IslandLayer implements IAreaTransformer0
         }
         else
         {
-            return random.random(islandFrequency) == 0 ? TFCLayerUtil.PLAINS : TFCLayerUtil.DEEP_OCEAN;
+            return random.nextRandom(islandFrequency) == 0 ? TFCLayerUtil.PLAINS : TFCLayerUtil.DEEP_OCEAN;
         }
     }
 }

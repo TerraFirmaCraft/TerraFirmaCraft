@@ -17,7 +17,7 @@ public class CalendarWorldData extends WorldSavedData
 
     public static CalendarWorldData get(ServerWorld world)
     {
-        return world.getSavedData().getOrCreate(CalendarWorldData::new, NAME);
+        return world.getDataStorage().computeIfAbsent(CalendarWorldData::new, NAME);
     }
 
     private final Calendar calendar;
@@ -35,13 +35,13 @@ public class CalendarWorldData extends WorldSavedData
     }
 
     @Override
-    public void read(CompoundNBT nbt)
+    public void load(CompoundNBT nbt)
     {
         calendar.read(nbt.getCompound("calendar"));
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt)
+    public CompoundNBT save(CompoundNBT nbt)
     {
         nbt.put("calendar", Calendars.SERVER.write());
         return nbt;

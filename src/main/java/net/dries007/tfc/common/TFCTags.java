@@ -16,50 +16,53 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 
+import net.minecraftforge.common.Tags;
+
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCTags
 {
-    public static Tag<Item> itemTag(String id)
+    public static Tags.IOptionalNamedTag<Item> itemTag(String id)
     {
-        return new ItemTags.Wrapper(Helpers.identifier(id));
+        return ItemTags.createOptional(Helpers.identifier(id));
     }
 
-    public static Tag<Block> forgeBlockTag(String name)
+    public static Tags.IOptionalNamedTag<Block> forgeBlockTag(String name)
     {
-        return new BlockTags.Wrapper(new ResourceLocation("forge", name));
+        return BlockTags.createOptional(new ResourceLocation("forge", name));
     }
 
 
-    public static Tag<Block> blockTag(String id)
+    public static Tags.IOptionalNamedTag<Block> blockTag(String id)
     {
-        return new BlockTags.Wrapper(Helpers.identifier(id));
+        return BlockTags.createOptional(Helpers.identifier(id));
     }
 
-    public static Tag<Item> forgeItemTag(String name)
+    public static Tags.IOptionalNamedTag<Item> forgeItemTag(String name)
     {
-        return new ItemTags.Wrapper(new ResourceLocation("forge", name));
+        return ItemTags.createOptional(new ResourceLocation("forge", name));
     }
 
     public static class Blocks
     {
-        public static final Tag<Block> CAN_TRIGGER_COLLAPSE = blockTag("can_trigger_collapse");
-        public static final Tag<Block> CAN_START_COLLAPSE = blockTag("can_start_collapse");
-        public static final Tag<Block> CAN_COLLAPSE = blockTag("can_collapse");
-        public static final Tag<Block> CAN_LANDSLIDE = blockTag("can_landslide");
+        public static final Tags.IOptionalNamedTag<Block> CAN_TRIGGER_COLLAPSE = blockTag("can_trigger_collapse");
+        public static final Tags.IOptionalNamedTag<Block> CAN_START_COLLAPSE = blockTag("can_start_collapse");
+        public static final Tags.IOptionalNamedTag<Block> CAN_COLLAPSE = blockTag("can_collapse");
+        public static final Tags.IOptionalNamedTag<Block> CAN_LANDSLIDE = blockTag("can_landslide");
 
-        public static final Tag<Block> SUPPORTS_LANDSLIDE = blockTag("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
+        public static final Tags.IOptionalNamedTag<Block> SUPPORTS_LANDSLIDE = blockTag("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
 
-        public static final Tag<Block> GRASS = blockTag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
+        public static final Tags.IOptionalNamedTag<Block> GRASS = blockTag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
 
-        public static final Tag<Block> TREE_GROWS_ON = blockTag("tree_grows_on"); // Used for tree growth
-        public static final Tag<Block> BUSH_PLANTABLE_ON = blockTag("bush_plantable_on"); // Used for plantable plants and bushes
+        public static final Tags.IOptionalNamedTag<Block> TREE_GROWS_ON = blockTag("tree_grows_on"); // Used for tree growth
+        public static final Tags.IOptionalNamedTag<Block> BUSH_PLANTABLE_ON = blockTag("bush_plantable_on"); // Used for tree growth
+
     }
 
     public static class Items
     {
-        public static final Map<Metal.BlockType, Tag<Item>> METAL_ITEM_BLOCK_TYPES = Util.make(new EnumMap<>(Metal.BlockType.class), map ->
+        public static final Map<Metal.BlockType, Tags.IOptionalNamedTag<Item>> METAL_ITEM_BLOCK_TYPES = Util.make(new EnumMap<>(Metal.BlockType.class), map ->
         {
             for (Metal.BlockType type : Metal.BlockType.values())
             {
@@ -70,7 +73,7 @@ public class TFCTags
             }
         });
 
-        public static final Map<Metal.ItemType, Tag<Item>> METAL_ITEM_TYPES = Util.make(new EnumMap<>(Metal.ItemType.class), map ->
+        public static final Map<Metal.ItemType, Tags.IOptionalNamedTag<Item>> METAL_ITEM_TYPES = Util.make(new EnumMap<>(Metal.ItemType.class), map ->
         {
             for (Metal.ItemType type : Metal.ItemType.values())
             {
@@ -81,11 +84,11 @@ public class TFCTags
             }
         });
 
-        public static final Map<Metal.Default, Map<Metal.BlockType, Tag<Item>>> METAL_ITEM_BLOCKS = Util.make(new EnumMap<>(Metal.Default.class), map ->
+        public static final Map<Metal.Default, Map<Metal.BlockType, Tags.IOptionalNamedTag<Item>>> METAL_ITEM_BLOCKS = Util.make(new EnumMap<>(Metal.Default.class), map ->
         {
             for (Metal.Default metal : Metal.Default.values())
             {
-                Map<Metal.BlockType, Tag<Item>> inner = new EnumMap<>(Metal.BlockType.class);
+                Map<Metal.BlockType, Tags.IOptionalNamedTag<Item>> inner = new EnumMap<>(Metal.BlockType.class);
                 for (Metal.BlockType type : Metal.BlockType.values())
                 {
                     if (type.getTag() != null && type.hasMetal(metal))
@@ -97,11 +100,11 @@ public class TFCTags
             }
         });
 
-        public static final Map<Metal.Default, Map<Metal.ItemType, Tag<Item>>> METAL_ITEMS = Util.make(new EnumMap<>(Metal.Default.class), map ->
+        public static final Map<Metal.Default, Map<Metal.ItemType, Tags.IOptionalNamedTag<Item>>> METAL_ITEMS = Util.make(new EnumMap<>(Metal.Default.class), map ->
         {
             for (Metal.Default metal : Metal.Default.values())
             {
-                Map<Metal.ItemType, Tag<Item>> inner = new EnumMap<>(Metal.ItemType.class);
+                Map<Metal.ItemType, Tags.IOptionalNamedTag<Item>> inner = new EnumMap<>(Metal.ItemType.class);
                 for (Metal.ItemType type : Metal.ItemType.values())
                 {
                     if (type.hasTag() && type.hasMetal(metal))

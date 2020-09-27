@@ -11,7 +11,7 @@
     },
     {
       "when": {
-        "north": "true"
+        "north": "low"
       },
       "apply": {
         "model": "tfc:block/rock/mossy_cobble/schist_wall_side",
@@ -20,7 +20,7 @@
     },
     {
       "when": {
-        "east": "true"
+        "east": "low"
       },
       "apply": {
         "model": "tfc:block/rock/mossy_cobble/schist_wall_side",
@@ -30,7 +30,7 @@
     },
     {
       "when": {
-        "south": "true"
+        "south": "low"
       },
       "apply": {
         "model": "tfc:block/rock/mossy_cobble/schist_wall_side",
@@ -40,10 +40,49 @@
     },
     {
       "when": {
-        "west": "true"
+        "west": "low"
       },
       "apply": {
         "model": "tfc:block/rock/mossy_cobble/schist_wall_side",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "tall"
+      },
+      "apply": {
+        "model": "tfc:block/rock/mossy_cobble/schist_wall_side_tall",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "tall"
+      },
+      "apply": {
+        "model": "tfc:block/rock/mossy_cobble/schist_wall_side_tall",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "tall"
+      },
+      "apply": {
+        "model": "tfc:block/rock/mossy_cobble/schist_wall_side_tall",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "tall"
+      },
+      "apply": {
+        "model": "tfc:block/rock/mossy_cobble/schist_wall_side_tall",
         "y": 270,
         "uvlock": true
       }

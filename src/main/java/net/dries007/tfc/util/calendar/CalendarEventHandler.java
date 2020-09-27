@@ -11,8 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.Dimension;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -27,7 +27,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 /**
  * Event handler for calendar related ticking
  *
- * @see net.dries007.tfc.client.ClientCalendarEventHandler
  * @see Calendar
  */
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -67,7 +66,8 @@ public class CalendarEventHandler
     public static void onOverworldTick(TickEvent.WorldTickEvent event)
     {
         World world = event.world;
-        if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && event.world.getDimension().getType() == DimensionType.OVERWORLD)
+        // todo: verify this is the correct overworld dimension check
+        if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && event.world.dimension() == World.OVERWORLD)
         {
             Calendars.SERVER.onOverworldTick((ServerWorld) world);
         }
@@ -81,9 +81,9 @@ public class CalendarEventHandler
     @SubscribeEvent
     public static void onPlayerWakeUp(PlayerWakeUpEvent event)
     {
-        if (!event.getEntity().getEntityWorld().isRemote() && !event.updateWorld())
+        if (!event.getEntity().getCommandSenderWorld().isClientSide() && !event.updateWorld())
         {
-            long currentDayTime = event.getEntity().getEntityWorld().getDayTime();
+            long currentDayTime = event.getEntity().getCommandSenderWorld().getDayTime();
             if (Calendars.SERVER.getCalendarDayTime() != currentDayTime)
             {
                 long jump = Calendars.SERVER.setTimeFromDayTime(currentDayTime);
@@ -140,7 +140,7 @@ public class CalendarEventHandler
             if (server != null)
             {
                 LOGGER.info("Player Logged In - Checking for Calendar Updates.");
-                Calendars.SERVER.setPlayersLoggedOn(server.getPlayerList().getCurrentPlayerCount() > 0);
+                Calendars.SERVER.setPlayersLoggedOn(server.getPlayerList().getPlayerCount() > 0);
             }
         }
     }

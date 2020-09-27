@@ -24,7 +24,7 @@ public final class PlayerCommand
     public static LiteralArgumentBuilder<CommandSource> create()
     {
         return Commands.literal("player")
-            .requires(source -> source.hasPermissionLevel(2))
+            .requires(source -> source.hasPermission(2))
             .then(Commands.argument("target", EntityArgument.player())
                 .then(Commands.literal("query")
                     .then(Commands.literal("hunger")
@@ -85,15 +85,15 @@ public final class PlayerCommand
 
     private static int queryHunger(CommandContext<CommandSource> context, PlayerEntity player)
     {
-        int hunger = player.getFoodStats().getFoodLevel();
-        context.getSource().sendFeedback(new TranslationTextComponent(QUERY_HUNGER, hunger), true);
+        int hunger = player.getFoodData().getFoodLevel();
+        context.getSource().sendSuccess(new TranslationTextComponent(QUERY_HUNGER, hunger), true);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int querySaturation(CommandContext<CommandSource> context, PlayerEntity player)
     {
-        float saturation = player.getFoodStats().getSaturationLevel();
-        context.getSource().sendFeedback(new TranslationTextComponent(QUERY_SATURATION, saturation), true);
+        float saturation = player.getFoodData().getSaturationLevel();
+        context.getSource().sendSuccess(new TranslationTextComponent(QUERY_SATURATION, saturation), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -113,9 +113,9 @@ public final class PlayerCommand
     {
         if (add)
         {
-            hunger += player.getFoodStats().getFoodLevel();
+            hunger += player.getFoodData().getFoodLevel();
         }
-        player.getFoodStats().setFoodLevel(hunger);
+        player.getFoodData().setFoodLevel(hunger);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -123,9 +123,9 @@ public final class PlayerCommand
     {
         if (add)
         {
-            saturation += player.getFoodStats().getSaturationLevel();
+            saturation += player.getFoodData().getSaturationLevel();
         }
-        player.getFoodStats().setFoodSaturationLevel(saturation);
+        player.getFoodData().setSaturation(saturation);
         return Command.SINGLE_SUCCESS;
     }
 

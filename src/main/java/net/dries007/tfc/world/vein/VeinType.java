@@ -42,34 +42,34 @@ public abstract class VeinType<V extends Vein<?>>
     public VeinType(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        rarity = JSONUtils.getInt(json, "rarity", 10);
+        rarity = JSONUtils.getAsInt(json, "rarity", 10);
         if (rarity <= 0)
         {
             throw new JsonParseException("Rarity must be > 0.");
         }
-        minY = JSONUtils.getInt(json, "min_y", 16);
-        maxY = JSONUtils.getInt(json, "max_y", 128);
+        minY = JSONUtils.getAsInt(json, "min_y", 16);
+        maxY = JSONUtils.getAsInt(json, "max_y", 128);
         if (minY < 0 || maxY > 256 || minY > maxY)
         {
             throw new JsonParseException("Min Y and Max Y must be within [0, 256], and Min Y must be <= Max Y.");
         }
-        size = JSONUtils.getInt(json, "size", 8);
+        size = JSONUtils.getAsInt(json, "size", 8);
         if (size <= 0)
         {
             throw new JsonParseException("Vertical Size must be > 0.");
         }
-        density = JSONUtils.getInt(json, "density", 20) / 100f;
+        density = JSONUtils.getAsInt(json, "density", 20) / 100f;
         if (density <= 0 || density > 1)
         {
             throw new JsonParseException("Density must be in [1, 100]");
         }
 
         this.blocks = new HashMap<>();
-        JsonArray blocksJson = JSONUtils.getJsonArray(json, "blocks");
+        JsonArray blocksJson = JSONUtils.getAsJsonArray(json, "blocks");
         for (JsonElement blocksElement : blocksJson)
         {
             // Parse each element of blocks
-            JsonObject blockJson = JSONUtils.getJsonObject(blocksElement, "blocks");
+            JsonObject blockJson = JSONUtils.convertToJsonObject(blocksElement, "blocks");
             IBlockIngredient stoneStates = IBlockIngredient.Serializer.INSTANCE.read(blockJson.get("stone"));
             IWeighted<BlockState> oreStates = TFCJSONUtils.getWeighted(blockJson.get("ore"), TFCJSONUtils::getBlockState);
             if (oreStates.isEmpty())

@@ -24,7 +24,7 @@ public enum AddIslandLayer implements IBishopTransformer
     {
         if (!TFCLayerUtil.isOcean(center) || (TFCLayerUtil.isOcean(bottomLeft) && TFCLayerUtil.isOcean(bottomRight) && TFCLayerUtil.isOcean(topLeft) && TFCLayerUtil.isOcean(topRight)))
         {
-            if (context.random(oceanWeight) == 0)
+            if (context.nextRandom(oceanWeight) == 0)
             {
                 if (TFCLayerUtil.isOcean(topLeft))
                 {
@@ -47,27 +47,27 @@ public enum AddIslandLayer implements IBishopTransformer
         }
         int counter = 1;
         int replacement = 1;
-        if (!TFCLayerUtil.isOcean(topLeft) && context.random(counter++) == 0)
+        if (!TFCLayerUtil.isOcean(topLeft) && context.nextRandom(counter++) == 0)
         {
             replacement = topLeft;
         }
 
-        if (!TFCLayerUtil.isOcean(topRight) && context.random(counter++) == 0)
+        if (!TFCLayerUtil.isOcean(topRight) && context.nextRandom(counter++) == 0)
         {
             replacement = topRight;
         }
 
-        if (!TFCLayerUtil.isOcean(bottomLeft) && context.random(counter++) == 0)
+        if (!TFCLayerUtil.isOcean(bottomLeft) && context.nextRandom(counter++) == 0)
         {
             replacement = bottomLeft;
         }
 
-        if (!TFCLayerUtil.isOcean(bottomRight) && context.random(counter) == 0)
+        if (!TFCLayerUtil.isOcean(bottomRight) && context.nextRandom(counter) == 0)
         {
             replacement = bottomRight;
         }
 
-        if (context.random(3) == 0)
+        if (context.nextRandom(3) == 0)
         {
             return replacement;
         }
@@ -77,4 +77,3 @@ public enum AddIslandLayer implements IBishopTransformer
         }
     }
 }
-

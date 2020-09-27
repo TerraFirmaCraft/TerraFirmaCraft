@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -72,17 +73,17 @@ public interface IHeat extends ICapabilitySerializable<CompoundNBT>
     default void addHeatInfo(ItemStack stack, List<ITextComponent> text)
     {
         float temperature = getTemperature();
-        ITextComponent tooltip = Heat.getTooltip(temperature);
+        IFormattableTextComponent tooltip = Heat.getTooltip(temperature);
         if (tooltip != null)
         {
             // Only add " - can work" and " - can weld" if both temperatures are set
             if (getWeldingTemperature() > 0 && getWeldingTemperature() <= temperature)
             {
-                tooltip.appendSibling(new TranslationTextComponent(MOD_ID + ".tooltip.welding"));
+                tooltip.append(new TranslationTextComponent(MOD_ID + ".tooltip.welding"));
             }
             else if (getForgingTemperature() > 0 && getForgingTemperature() <= temperature)
             {
-                tooltip.appendSibling(new TranslationTextComponent(MOD_ID + ".tooltip.forging"));
+                tooltip.append(new TranslationTextComponent(MOD_ID + ".tooltip.forging"));
             }
             text.add(tooltip);
         }

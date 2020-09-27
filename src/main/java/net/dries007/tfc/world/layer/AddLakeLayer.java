@@ -17,7 +17,7 @@ public enum AddLakeLayer implements ICastleTransformer
     {
         if (TFCLayerUtil.isLakeCompatible(north) && TFCLayerUtil.isLakeCompatible(west) && TFCLayerUtil.isLakeCompatible(south) && TFCLayerUtil.isLakeCompatible(east) && TFCLayerUtil.isLakeCompatible(center))
         {
-            if (context.random(15) == 0)
+            if (context.nextRandom(15) == 0)
             {
                 return TFCLayerUtil.LAKE;
             }

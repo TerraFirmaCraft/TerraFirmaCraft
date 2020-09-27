@@ -5,49 +5,47 @@
 
 package net.dries007.tfc.world.feature.trees;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
-import net.dries007.tfc.util.Helpers;
+import com.mojang.serialization.Codec;
 
 public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
 {
-    public RandomTreeFeature()
+    public RandomTreeFeature(Codec<RandomTreeConfig> codec)
     {
-        super(RandomTreeConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, RandomTreeConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, RandomTreeConfig config)
     {
         if (!isValidLocation(worldIn, pos) || !isAreaClear(worldIn, pos, config.radius, 2))
         {
             return false;
         }
 
-        final ChunkPos chunkPos = new ChunkPos(pos);
         final TemplateManager manager = getTemplateManager(worldIn);
-        final List<ResourceLocation> structureIds = config.structureNames;
-        final ResourceLocation structureId = structureIds.get(rand.nextInt(structureIds.size()));
-        final Template structure = manager.getTemplateDefaulted(structureId);
+        final ResourceLocation structureId = config.structureNames.get(random.nextInt(config.structureNames.size()));
+        final Template structure = manager.getOrCreate(structureId);
+        final BlockPos centerVariation = getCenterVariation(structure.getSize(), random);
+        final PlacementSettings settings = getRandomPlacementSettings(new ChunkPos(pos), random);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
 
-        final BlockPos size = structure.getSize();
-        final BlockPos offset = new BlockPos(-size.getX() / 2, 0, -size.getZ() / 2);
-        final BlockPos structurePos = pos.add(offset);
+        config.trunk.ifPresent(trunk -> {
+            final int height = placeTrunk(worldIn, pos, centerVariation, random, trunk);
+            mutablePos.move(0, height, 0);
+        });
 
-        final PlacementSettings settings = getRandomPlacementSettings(chunkPos, size, rand);
-        Helpers.addTemplateToWorldForTreeGen(structure, settings, worldIn, structurePos);
-
+        placeTemplateInWorld(structure, settings, worldIn, mutablePos.subtract(getCenteredOffset(structure.getSize(), centerVariation, settings)));
         return true;
     }
 }

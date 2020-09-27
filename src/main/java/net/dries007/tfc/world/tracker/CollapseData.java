@@ -35,8 +35,8 @@ public class CollapseData implements INBTSerializable<CompoundNBT>
     public CompoundNBT serializeNBT()
     {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putLong("centerPos", centerPos.toLong());
-        nbt.putLongArray("nextPositions", nextPositions.stream().mapToLong(BlockPos::toLong).toArray());
+        nbt.putLong("centerPos", centerPos.asLong());
+        nbt.putLongArray("nextPositions", nextPositions.stream().mapToLong(BlockPos::asLong).toArray());
         nbt.putDouble("radiusSquared", radiusSquared);
         return nbt;
     }
@@ -46,8 +46,8 @@ public class CollapseData implements INBTSerializable<CompoundNBT>
     {
         if (nbt != null)
         {
-            centerPos = BlockPos.fromLong(nbt.getLong("centerPos"));
-            nextPositions = Arrays.stream(nbt.getLongArray("nextPositions")).mapToObj(BlockPos::fromLong).collect(Collectors.toList());
+            centerPos = BlockPos.of(nbt.getLong("centerPos"));
+            nextPositions = Arrays.stream(nbt.getLongArray("nextPositions")).mapToObj(BlockPos::of).collect(Collectors.toList());
             radiusSquared = nbt.getDouble("radiusSquared");
         }
     }

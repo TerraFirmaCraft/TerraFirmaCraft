@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:acacia_large/1",
+      "tfc:acacia_large/2",
+      "tfc:acacia_large/3",
+      "tfc:acacia_large/4",
+      "tfc:acacia_large/5",
+      "tfc:acacia_large/6"
+    ],
+    "radius": 2
+  }
+}

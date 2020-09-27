@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:palm/1",
+      "tfc:palm/2",
+      "tfc:palm/3",
+      "tfc:palm/4",
+      "tfc:palm/5",
+      "tfc:palm/6",
+      "tfc:palm/7"
+    ],
+    "radius": 1
+  }
+}

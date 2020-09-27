@@ -77,7 +77,7 @@ public class ChunkWatchPacket
             {
                 // First, synchronize the chunk data in the capability and cache.
                 // Then, update the single data instance with the packet data
-                IChunk chunk = world.chunkExists(chunkX, chunkZ) ? world.getChunk(chunkX, chunkZ) : null;
+                IChunk chunk = world.hasChunk(chunkX, chunkZ) ? world.getChunk(chunkX, chunkZ) : null;
                 ChunkData data = ChunkData.getCapability(chunk)
                     .map(dataIn -> {
                         ChunkDataCache.CLIENT.update(pos, dataIn);

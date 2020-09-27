@@ -46,7 +46,7 @@ public class TypedDataManager<T> extends DataManager<T>
         ResourceLocation type;
         if (json.has("type"))
         {
-            type = new ResourceLocation(JSONUtils.getString(json, "type"));
+            type = new ResourceLocation(JSONUtils.getAsString(json, "type"));
         }
         else
         {

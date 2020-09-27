@@ -7,6 +7,7 @@ package net.dries007.tfc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,13 +25,14 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ServerCalendar;
-import net.dries007.tfc.world.TFCWorldType;
+import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.feature.TFCFeatures;
-import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
@@ -40,7 +42,7 @@ public final class TerraFirmaCraft
     public static final String MOD_ID = "tfc";
     public static final String MOD_NAME = "TerraFirmaCraft";
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public TerraFirmaCraft()
     {
@@ -59,11 +61,8 @@ public final class TerraFirmaCraft
         TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
         TFCSounds.SOUNDS.register(modEventBus);
 
-        TFCWorldType.BIOME_PROVIDERS.register(modEventBus);
-        TFCWorldType.CHUNK_GENERATORS.register(modEventBus);
         TFCBiomes.BIOMES.register(modEventBus);
         TFCFeatures.FEATURES.register(modEventBus);
-        TFCPlacements.PLACEMENTS.register(modEventBus);
         TFCSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
         TFCCarvers.CARVERS.register(modEventBus);
 
@@ -82,7 +81,14 @@ public final class TerraFirmaCraft
         ForgingCapability.setup();
         ChunkDataCapability.setup();
         WorldTrackerCapability.setup();
-        TFCBiomes.setup();
         ServerCalendar.setup();
+
+        // World gen registry objects
+        Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
+
+        TFCFeatures.setup();
+        TFCSurfaceBuilders.setup();
+        TFCCarvers.setup();
     }
 }

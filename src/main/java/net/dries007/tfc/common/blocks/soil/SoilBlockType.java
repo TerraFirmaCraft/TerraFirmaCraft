@@ -32,15 +32,15 @@ public enum SoilBlockType
         switch (this)
         {
             case DIRT:
-                return new TFCDirtBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND), () -> TFCBlocks.SOIL.get(GRASS).get(variant).get());
+                return new TFCDirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), () -> TFCBlocks.SOIL.get(GRASS).get(variant).get());
             case CLAY:
-                return new TFCDirtBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND), () -> TFCBlocks.SOIL.get(CLAY_GRASS).get(variant).get());
+                return new TFCDirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), () -> TFCBlocks.SOIL.get(CLAY_GRASS).get(variant).get());
             case GRASS:
-                return new TFCGrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT), () -> TFCBlocks.SOIL.get(DIRT).get(variant).get());
+                return new TFCGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), () -> TFCBlocks.SOIL.get(DIRT).get(variant).get());
             case CLAY_GRASS:
-                return new TFCGrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT), () -> TFCBlocks.SOIL.get(CLAY).get(variant).get());
+                return new TFCGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), () -> TFCBlocks.SOIL.get(CLAY).get(variant).get());
             case GRASS_PATH:
-                return new TFCGrassPathBlock(Block.Properties.create(Material.EARTH).hardnessAndResistance(0.65F).sound(SoundType.PLANT));
+                return new TFCGrassPathBlock(Block.Properties.of(Material.DIRT).strength(0.65F).sound(SoundType.GRASS));
         }
         throw new IllegalArgumentException("Unknown block type");
     }

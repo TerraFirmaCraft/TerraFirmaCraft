@@ -20,7 +20,7 @@ public class PipeVeinType extends VeinType<PipeVeinType.PipeVein>
     {
         super(id, json);
 
-        radius = JSONUtils.getInt(json, "radius", 3);
+        radius = JSONUtils.getAsInt(json, "radius", 3);
     }
 
     @Override

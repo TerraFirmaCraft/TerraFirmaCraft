@@ -11,6 +11,7 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -21,7 +22,6 @@ import net.minecraft.world.server.ServerChunkProvider;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
-import net.dries007.tfc.world.TFCGenerationSettings;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
@@ -36,10 +36,10 @@ public class ChunkDataProvider
     public static Optional<ChunkDataProvider> get(IWorld world)
     {
         // Chunk provider can be null during the attach capabilities event
-        AbstractChunkProvider chunkProvider = world.getChunkProvider();
+        AbstractChunkProvider chunkProvider = world.getChunkSource();
         if (chunkProvider instanceof ServerChunkProvider)
         {
-            ChunkGenerator<?> chunkGenerator = ((ServerChunkProvider) chunkProvider).getChunkGenerator();
+            ChunkGenerator chunkGenerator = ((ServerChunkProvider) chunkProvider).getGenerator();
             if (chunkGenerator instanceof IChunkDataProvidingChunkGenerator)
             {
                 return Optional.of(((IChunkDataProvidingChunkGenerator) chunkGenerator).getChunkDataProvider());
@@ -57,16 +57,16 @@ public class ChunkDataProvider
     private final INoise2D forestWeirdnessNoise;
     private final INoise2D forestDensityNoise;
 
-    public ChunkDataProvider(IWorld world, TFCGenerationSettings settings, Random seedGenerator)
+    public ChunkDataProvider(Random seedGenerator)
     {
-        List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(world.getSeed(), settings);
+        List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(seedGenerator.nextLong());
         this.bottomRockLayer = new RockFactory(rockLayers.get(0));
         this.middleRockLayer = new RockFactory(rockLayers.get(1));
         this.topRockLayer = new RockFactory(rockLayers.get(2));
 
         int baseHeight = TFCConfig.COMMON.rockLayerHeight.get();
         int range = TFCConfig.COMMON.rockLayerSpread.get();
-        this.layerHeightNoise = new SimplexNoise2D(world.getSeed()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
+        this.layerHeightNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
 
         // Climate
         this.temperatureNoise = TFCConfig.COMMON.temperatureLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(Climate.MINIMUM_TEMPERATURE_SCALE, Climate.MAXIMUM_TEMPERATURE_SCALE);
@@ -101,7 +101,7 @@ public class ChunkDataProvider
 
     private void generateToStatus(ChunkPos pos, ChunkData data, ChunkData.Status status)
     {
-        int chunkX = pos.getXStart(), chunkZ = pos.getZStart();
+        int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ();
         if (status.isAtLeast(ChunkData.Status.CLIMATE))
         {
             // Temperature / Rainfall

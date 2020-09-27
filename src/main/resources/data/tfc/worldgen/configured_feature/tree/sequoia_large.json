@@ -1,0 +1,47 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:stacked_tree",
+  "config": {
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/sequoia/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 3,
+      "max_height": 7,
+      "width": 2
+    },
+    "layers": [
+      {
+        "templates": [
+          "tfc:sequoia_large/layer1_1",
+          "tfc:sequoia_large/layer1_2",
+          "tfc:sequoia_large/layer1_3"
+        ],
+        "min_count": 2,
+        "max_count": 4
+      },
+      {
+        "templates": [
+          "tfc:sequoia_large/layer2_1",
+          "tfc:sequoia_large/layer2_2",
+          "tfc:sequoia_large/layer2_3"
+        ],
+        "min_count": 1,
+        "max_count": 2
+      },
+      {
+        "templates": [
+          "tfc:sequoia_large/layer3_1",
+          "tfc:sequoia_large/layer3_2",
+          "tfc:sequoia_large/layer3_3"
+        ],
+        "min_count": 1,
+        "max_count": 1
+      }
+    ],
+    "radius": 2
+  }
+}

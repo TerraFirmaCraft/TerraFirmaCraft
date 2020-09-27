@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:overlay_tree",
+  "config": {
+    "base": "tfc:sycamore/base",
+    "overlay": "tfc:sycamore/overlay",
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/sycamore/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 2,
+      "max_height": 5,
+      "width": 1
+    },
+    "radius": 1
+  }
+}

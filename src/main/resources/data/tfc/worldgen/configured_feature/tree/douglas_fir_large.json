@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:douglas_fir_large/1",
+      "tfc:douglas_fir_large/2",
+      "tfc:douglas_fir_large/3",
+      "tfc:douglas_fir_large/4",
+      "tfc:douglas_fir_large/5"
+    ],
+    "radius": 2
+  }
+}

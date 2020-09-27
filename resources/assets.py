@@ -4,6 +4,7 @@
 import mcresources.block_states as block_states
 import mcresources.loot_tables as loot_tables
 from mcresources import ResourceManager
+from mcresources.block_context import BlockContext
 
 from constants import *
 
@@ -73,19 +74,19 @@ def generate(rm: ResourceManager):
                 for grade in ORE_GRADES:
                     rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock)) \
                         .with_block_model({
-                        'all': 'tfc:block/rock/raw/%s' % rock,
-                        'particle': 'tfc:block/rock/raw/%s' % rock,
-                        'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
-                    }, parent='tfc:block/ore') \
+                            'all': 'tfc:block/rock/raw/%s' % rock,
+                            'particle': 'tfc:block/rock/raw/%s' % rock,
+                            'overlay': 'tfc:block/ore/%s_%s' % (grade, ore)
+                        }, parent='tfc:block/ore') \
                         .with_item_model() \
                         .with_lang(lang('%s %s %s', grade, rock, ore))
             else:
                 rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock)) \
                     .with_block_model({
-                    'all': 'tfc:block/rock/raw/%s' % rock,
-                    'particle': 'tfc:block/rock/raw/%s' % rock,
-                    'overlay': 'tfc:block/ore/%s' % ore
-                }, parent='tfc:block/ore') \
+                        'all': 'tfc:block/rock/raw/%s' % rock,
+                        'particle': 'tfc:block/rock/raw/%s' % rock,
+                        'overlay': 'tfc:block/ore/%s' % ore
+                    }, parent='tfc:block/ore') \
                     .with_item_model() \
                     .with_lang(lang('%s %s', rock, ore))
     # Sand
@@ -233,9 +234,9 @@ def generate(rm: ResourceManager):
             if metal_block_data.type in metal_data.types or metal_block_data.type == 'all':
                 rm.blockstate(('metal', '%s' % metal_block, metal)) \
                     .with_block_model({
-                    'all': 'tfc:block/metal/%s' % metal,
-                    'particle': 'tfc:block/metal/%s' % metal
-                }, parent=metal_block_data.parent_model) \
+                        'all': 'tfc:block/metal/%s' % metal,
+                        'particle': 'tfc:block/metal/%s' % metal
+                    }, parent=metal_block_data.parent_model) \
                     .with_block_loot('tfc:metal/%s/%s' % (metal_block, metal)) \
                     .with_lang(lang('%s %s' % (metal, metal_block))) \
                     .with_item_model()
@@ -295,11 +296,11 @@ def generate(rm: ResourceManager):
 
         # Tool Rack
         rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood
-        rm.blockstate(rack_namespace, model = 'tfc:block/wood/planks/%s_tool_rack' % wood, variants ={
-            "facing=east": {"model": "tfc:block/wood/planks/%s_tool_rack" % wood,"y": 270},
-            "facing=north": {"model": "tfc:block/wood/planks/%s_tool_rack" % wood,"y": 180},
-            "facing=south": {"model": "tfc:block/wood/planks/%s_tool_rack"% wood},
-            "facing=west": {"model": "tfc:block/wood/planks/%s_tool_rack"% wood,"y": 90}})
+        rm.blockstate(rack_namespace, model='tfc:block/wood/planks/%s_tool_rack' % wood, variants={
+            "facing=east": {"model": "tfc:block/wood/planks/%s_tool_rack" % wood, "y": 270},
+            "facing=north": {"model": "tfc:block/wood/planks/%s_tool_rack" % wood, "y": 180},
+            "facing=south": {"model": "tfc:block/wood/planks/%s_tool_rack" % wood},
+            "facing=west": {"model": "tfc:block/wood/planks/%s_tool_rack" % wood, "y": 90}})
         rm.block_model(rack_namespace, textures={'texture': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/tool_rack')
         rm.item_model(rack_namespace, parent='tfc:block/wood/planks/%s_tool_rack' % wood, no_textures=True)
         rm.lang('block.tfc.wood.planks.%s_tool_rack' % wood, lang('%s Tool Rack', wood))
@@ -336,7 +337,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('minecraft:buttons', 'tfc:wood/planks/' + wood + '_button')
         rm.block_tag('minecraft:wooden_buttons', 'tfc:wood/planks/' + wood + '_button')
         rm.block_tag('minecraft:wooden_pressure_plates', 'tfc:wood/planks/' + wood + '_pressure_plate')
-        rm.block_tag('minecraft:wooden_slabs', 'tfc:wood/planks/' + wood + '_slabs')
+        rm.block_tag('minecraft:wooden_slabs', 'tfc:wood/planks/' + wood + '_slab')
         rm.block_tag('minecraft:wooden_stairs', 'tfc:wood/planks/' + wood + '_stairs')
         for variant in ('log', 'stripped_log', 'wood', 'stripped_wood'):
             if variant != 'log':
@@ -344,7 +345,7 @@ def generate(rm: ResourceManager):
             rm.block_tag('tfc:' + wood + '_logs', 'tfc:wood/' + variant + '/' + wood)
 
         # Lang
-        for variant in ('door', 'trapdoor', 'fence', 'log_fence','fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
+        for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))

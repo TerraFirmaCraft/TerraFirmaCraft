@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:willow/1",
+      "tfc:willow/2",
+      "tfc:willow/3",
+      "tfc:willow/4",
+      "tfc:willow/5",
+      "tfc:willow/6",
+      "tfc:willow/7"
+    ],
+    "radius": 1
+  }
+}
