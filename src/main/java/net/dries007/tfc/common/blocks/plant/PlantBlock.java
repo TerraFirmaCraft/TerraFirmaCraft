@@ -21,6 +21,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.calendar.Month;
 
 public abstract class PlantBlock extends TFCBushBlock
 {
@@ -62,26 +63,21 @@ public abstract class PlantBlock extends TFCBushBlock
         {
             state = state.with(AGE, Math.min(state.get(AGE) + 1, 3));
         }
-        world.setBlockState(pos, state.with(stage, getMonthStage()).with(DAYPERIOD, getDayTime()));
+        world.setBlockState(pos, state.with(stage, getMonthStage(Calendars.SERVER.getCalendarMonthOfYear())).with(DAYPERIOD, getDayTime()));
     }
+
+    public abstract float getSpeedFactor();
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        stage = IntegerProperty.create("stage", 0, Math.max(1, getPlant().getMaxStage()));
+        stage = IntegerProperty.create("stage", 0, Math.max(1, getMaxStage()));
         builder.add(stage, DAYPERIOD, AGE);
     }
 
-    /**
-     * Only way to do without having to create a class for each plant with different number of stages
-     * Or ATing into {@link Block}'s stateContainer to make it not final
-     */
-    public abstract Plant getPlant();
+    public abstract int getMaxStage();
 
-    protected int getMonthStage()
-    {
-        return getPlant().getStage(Calendars.SERVER.getCalendarMonthOfYear());
-    }
+    public abstract int getMonthStage(Month month);
 
     protected int getDayTime()
     {
