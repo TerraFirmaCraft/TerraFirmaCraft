@@ -54,6 +54,7 @@ public class TFCTags
         public static final Tag<Block> GRASS = blockTag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
 
         public static final Tag<Block> TREE_GROWS_ON = blockTag("tree_grows_on"); // Used for tree growth
+        public static final Tag<Block> BUSH_PLANTABLE_ON = blockTag("bush_plantable_on"); // Used for plantable plants and bushes
     }
 
     public static class Items

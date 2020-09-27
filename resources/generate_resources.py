@@ -32,6 +32,7 @@ def main():
     # Random things
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
+    rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
 
     rm.flush()
 

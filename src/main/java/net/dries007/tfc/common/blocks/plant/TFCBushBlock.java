@@ -9,7 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BushBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
 
@@ -23,6 +22,6 @@ public class TFCBushBlock extends BushBlock
     @Override
     protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
-        return super.isValidGround(state, worldIn, pos) || TFCTags.Blocks.GRASS.contains(state.getBlock()) || Tags.Blocks.DIRT.contains(state.getBlock());
+        return super.isValidGround(state, worldIn, pos) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(state.getBlock());
     }
 }

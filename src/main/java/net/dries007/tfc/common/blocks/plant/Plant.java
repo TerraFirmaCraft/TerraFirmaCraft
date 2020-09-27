@@ -141,81 +141,189 @@ public enum Plant
                     return new PlantBlock(properties.tickRandomly().doesNotBlockMovement())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
                 case SHORT_GRASS:
                     return new ShortGrassBlock(properties.tickRandomly().doesNotBlockMovement())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
                 case TALL_GRASS:
                     return new TFCTallGrassBlock(properties.tickRandomly().doesNotBlockMovement())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
                 case TALL_PLANT:
                     return new TFCTallGrassBlock(properties.tickRandomly())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
                 case CACTUS:
                     return new TFCCactusBlock(properties.tickRandomly())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
                 case CREEPING:
                     return new CreepingPlantBlock(properties.tickRandomly().doesNotBlockMovement())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
                 case EPIPHYTE:
                     return new EpiphytePlantBlock(properties.tickRandomly().doesNotBlockMovement())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
                 case HANGING:
                     return new HangingPlantBlock(properties.tickRandomly().doesNotBlockMovement())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
                 case FLOATING:
                     return new FloatingWaterPlantBlock(properties.tickRandomly())
                     {
                         @Override
-                        public Plant getPlant()
+                        public int getMaxStage()
                         {
-                            return plant;
+                            return plant.getMaxStage();
+                        }
+
+                        @Override
+                        public int getMonthStage(Month month)
+                        {
+                            return plant.getStage(month);
+                        }
+
+                        @Override
+                        public float getSpeedFactor()
+                        {
+                            return plant.getSpeedFactor();
                         }
                     };
             }
