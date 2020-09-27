@@ -7,8 +7,6 @@ from mcresources import ResourceManager
 
 from constants import *
 
-import mcresources.loot_tables as loot_tables
-
 
 def generate(rm: ResourceManager):
     # Rock block variants

@@ -100,8 +100,6 @@ public final class ClientEventHandler
         blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
         blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().stream().map(RegistryObject::get).toArray(Block[]::new));
         blockColors.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.PEAT_GRASS.get());
-        blockColors.register(grassColor, TFCBlocks.PLANTS.values().stream().map(RegistryObject::get).toArray(Block[]::new));
-
 
         TFCBlocks.WOODS.forEach((key, value) -> {
             Block block = value.get(Wood.BlockType.LEAVES).get();

@@ -20,6 +20,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCItemGroup;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.TFCOreBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -107,6 +108,10 @@ public final class TFCBlocks
         )
     );
 
+    public static final Map<Plant, RegistryObject<Block>> PLANTS = Helpers.mapOfKeys(Plant.class, plant ->
+        register(("plant/" + plant.name()).toLowerCase(), plant::create, FLORA)
+    );
+
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, ItemGroup group)
     {
         return register(name, blockSupplier, new Item.Properties().group(group));
@@ -115,7 +120,14 @@ public final class TFCBlocks
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, Item.Properties blockItemProperties)
     {
         RegistryObject<T> block = BLOCKS.register(name, blockSupplier);
-        TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), blockItemProperties));
+        TFCItems.ITEMS.register(name, () -> {
+            Block instance = block.get();
+            if (instance instanceof IBlockItemSupplier)
+            {
+                return ((IBlockItemSupplier) instance).apply(blockItemProperties);
+            }
+            return new BlockItem(instance, blockItemProperties);
+        });
         return block;
     }
 }

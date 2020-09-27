@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.plant;
+package net.dries007.tfc.common.blocks.plant;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

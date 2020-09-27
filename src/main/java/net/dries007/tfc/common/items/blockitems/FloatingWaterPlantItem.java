@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.items.blockitems;
+package net.dries007.tfc.common.items.blockitems;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
@@ -24,6 +24,7 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class FloatingWaterPlantItem extends BlockItem
 {
@@ -41,6 +42,7 @@ public class FloatingWaterPlantItem extends BlockItem
     /**
      * Copy paste from {@link net.minecraft.item.LilyPadItem}
      */
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
@@ -70,7 +72,7 @@ public class FloatingWaterPlantItem extends BlockItem
                     // special case for handling block placement with water lilies
                     BlockSnapshot snapshot = BlockSnapshot.getBlockSnapshot(world, blockpos1);
                     world.setBlockState(blockpos1, getBlock().getDefaultState(), 11);
-                    if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player, snapshot, net.minecraft.util.Direction.UP))
+                    if (ForgeEventFactory.onBlockPlace(player, snapshot, Direction.UP))
                     {
                         snapshot.restore(true, false);
                         return ActionResult.resultFail(stack);

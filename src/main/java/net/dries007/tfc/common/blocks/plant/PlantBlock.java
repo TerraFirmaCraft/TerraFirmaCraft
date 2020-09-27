@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.plant;
+package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
 
@@ -18,9 +18,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 
-import net.dries007.tfc.api.calendar.Calendar;
-import net.dries007.tfc.api.calendar.ICalendar;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public abstract class PlantBlock extends TFCBushBlock
 {
@@ -80,11 +80,11 @@ public abstract class PlantBlock extends TFCBushBlock
 
     protected int getMonthStage()
     {
-        return getPlant().getStage(Calendar.CALENDAR_TIME.getMonthOfYear());
+        return getPlant().getStage(Calendars.SERVER.getCalendarMonthOfYear());
     }
 
     protected int getDayTime()
     {
-        return Calendar.CALENDAR_TIME.getHourOfDay() / (ICalendar.HOURS_IN_DAY / 4);
+        return ICalendar.getHourOfDay(Calendars.SERVER.getCalendarTicks()) / (ICalendar.HOURS_IN_DAY / 4);
     }
 }

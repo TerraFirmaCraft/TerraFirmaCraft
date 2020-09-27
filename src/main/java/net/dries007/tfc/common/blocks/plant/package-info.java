@@ -5,7 +5,7 @@
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package net.dries007.tfc.objects.items.blockitems;
+package net.dries007.tfc.common.blocks.plant;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
