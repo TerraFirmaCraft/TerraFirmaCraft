@@ -22,7 +22,6 @@ public class TFCBlockStateProperties
     public static final EnumProperty<Season> SEASON = EnumProperty.create("season", Season.class);
     public static final EnumProperty<Season> SEASON_NO_SPRING = EnumProperty.create("season", Season.class, Season.SUMMER, Season.FALL, Season.WINTER);
 
-    public static final IntegerProperty DISTANCE_1_6 = IntegerProperty.create("distance", 1, 6);
-    public static final IntegerProperty DISTANCE_1_7 = BlockStateProperties.DISTANCE_1_7;
+    public static final IntegerProperty DISTANCE_1_7 = BlockStateProperties.DISTANCE;
     public static final IntegerProperty DISTANCE_1_8 = IntegerProperty.create("distance", 1, 6);
 }

@@ -24,12 +24,11 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Unit;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -43,9 +42,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.dries007.tfc.mixin.world.gen.feature.template.TemplateAccessor;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
+import static net.dries007.tfc.TerraFirmaCraft.LOGGER;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class Helpers
@@ -98,11 +99,11 @@ public final class Helpers
         if (obj.has(path))
         {
             Map<K, V> objects = new HashMap<>();
-            JsonObject objectsJson = JSONUtils.getJsonObject(obj, path);
+            JsonObject objectsJson = JSONUtils.getAsJsonObject(obj, path);
             for (K expectedKey : keyValues)
             {
                 String jsonKey = keyStringMapper.apply(expectedKey);
-                ResourceLocation id = new ResourceLocation(JSONUtils.getString(objectsJson, jsonKey));
+                ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
                 V registryObject = registry.getValue(id);
                 if (registryObject == null)
                 {
@@ -115,7 +116,7 @@ public final class Helpers
                 String jsonKey = keyStringMapper.apply(optionalKey);
                 if (objectsJson.has(jsonKey))
                 {
-                    ResourceLocation id = new ResourceLocation(JSONUtils.getString(objectsJson, jsonKey));
+                    ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(objectsJson, jsonKey));
                     V registryObject = registry.getValue(id);
                     if (registryObject == null)
                     {
@@ -246,39 +247,17 @@ public final class Helpers
     }
 
     /**
-     * Normally, one would just call {@link IWorld#isRemote()}
+     * Normally, one would just call {@link IWorld#isClientSide()}
      * HOWEVER
      * There exists a BIG HUGE PROBLEM in very specific scenarios with this
-     * Since World's isRemote() actually returns the isRemote boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
-     * At this point, THE CLIENT WORLD WILL RETURN {@code true} to {@link IWorld#isRemote()}
+     * Since World's isClientSide() actually returns the isClientSide boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
+     * At this point, THE CLIENT WORLD WILL RETURN {@code false} to {@link IWorld#isClientSide()}
      *
      * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
      */
     public static boolean isRemote(IWorldReader world)
     {
-        return world instanceof World ? !(world instanceof ServerWorld) : world.isRemote();
+        return world instanceof World ? !(world instanceof ServerWorld) : world.isClientSide();
     }
 
-    /**
-     * A variant of {@link Template#addBlocksToWorld(IWorld, BlockPos, PlacementSettings)} that is much simpler and faster for use in tree generation
-     * Allows replacing leaves and air blocks
-     */
-    public static void addTemplateToWorldForTreeGen(Template template, PlacementSettings placementIn, IWorld worldIn, BlockPos pos)
-    {
-        List<Template.BlockInfo> transformedBlockInfos = placementIn.func_227459_a_(template.blocks, pos); // Gets a single list of block infos
-        MutableBoundingBox boundingBox = placementIn.getBoundingBox();
-        for (Template.BlockInfo blockInfo : Template.processBlockInfos(template, worldIn, pos, placementIn, transformedBlockInfos))
-        {
-            BlockPos posAt = blockInfo.pos;
-            if (boundingBox == null || boundingBox.isVecInside(posAt))
-            {
-                BlockState stateAt = worldIn.getBlockState(posAt);
-                if (stateAt.isAir(worldIn, posAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
-                {
-                    BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
-                    worldIn.setBlockState(posAt, stateReplace, 2);
-                }
-            }
-        }
-    }
 }

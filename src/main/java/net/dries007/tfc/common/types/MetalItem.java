@@ -51,14 +51,14 @@ public class MetalItem
     public MetalItem(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        ingredient = CraftingHelper.getIngredient(JSONUtils.getJsonObject(json, "ingredient"));
-        ResourceLocation metalId = new ResourceLocation(JSONUtils.getString(json, "metal"));
+        ingredient = CraftingHelper.getIngredient(JSONUtils.getAsJsonObject(json, "ingredient"));
+        ResourceLocation metalId = new ResourceLocation(JSONUtils.getAsString(json, "metal"));
         metal = MetalManager.INSTANCE.get(metalId);
         if (metal == null)
         {
             throw new JsonSyntaxException("Invalid metal specified: " + metalId.toString());
         }
-        amount = JSONUtils.getInt(json, "amount");
+        amount = JSONUtils.getAsInt(json, "amount");
     }
 
     public ResourceLocation getId()
@@ -78,7 +78,7 @@ public class MetalItem
 
     public Collection<Item> getValidItems()
     {
-        return Arrays.stream(this.ingredient.getMatchingStacks()).map(ItemStack::getItem).collect(Collectors.toSet());
+        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
     private boolean isValid(ItemStack stack)

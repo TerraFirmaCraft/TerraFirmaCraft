@@ -25,7 +25,7 @@ public class ItemStackRecipeWrapper implements IInventoryNoop
     }
 
     @Override
-    public int getSizeInventory()
+    public int getContainerSize()
     {
         return 1;
     }
@@ -37,31 +37,31 @@ public class ItemStackRecipeWrapper implements IInventoryNoop
     }
 
     @Override
-    public ItemStack getStackInSlot(int index)
+    public ItemStack getItem(int index)
     {
         return stack;
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count)
+    public ItemStack removeItem(int index, int count)
     {
         return stack.split(count);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index)
+    public ItemStack removeItemNoUpdate(int index)
     {
         return stack.split(stack.getCount());
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
+    public void setItem(int index, ItemStack stack)
     {
         this.stack = stack;
     }
 
     @Override
-    public void clear()
+    public void clearContent()
     {
         stack = ItemStack.EMPTY;
     }

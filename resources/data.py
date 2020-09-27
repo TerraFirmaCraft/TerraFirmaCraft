@@ -46,3 +46,6 @@ def generate(rm: ResourceManager):
             'desert_sand_color': rock_data.desert_sand_color,
             'beach_sand_color': rock_data.beach_sand_color
         })
+
+    rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
+    rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')

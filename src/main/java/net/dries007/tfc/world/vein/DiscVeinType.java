@@ -23,7 +23,7 @@ public class DiscVeinType extends VeinType<DiscVeinType.DiscVein>
     {
         super(id, json);
 
-        height = JSONUtils.getInt(json, "height", 4);
+        height = JSONUtils.getAsInt(json, "height", 4);
     }
 
     @Override

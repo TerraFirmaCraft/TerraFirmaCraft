@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:overlay_tree",
+  "config": {
+    "base": "tfc:blackwood/base",
+    "overlay": "tfc:blackwood/overlay",
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/blackwood/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 1,
+      "max_height": 3,
+      "width": 1
+    },
+    "radius": 1
+  }
+}

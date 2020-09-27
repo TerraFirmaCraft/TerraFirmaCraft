@@ -60,14 +60,14 @@ public class BlockRecipeWrapper extends ItemStackRecipeWrapper
 
         private Mutable(World world, BlockPos.Mutable pos)
         {
-            super(world, pos, Blocks.AIR.getDefaultState()); // Since the position is not expected to be initialized, we set a default null block state
+            super(world, pos, Blocks.AIR.defaultBlockState()); // Since the position is not expected to be initialized, we set a default null block state
 
             this.mutablePos = pos;
         }
 
         public void setPos(int x, int y, int z, BlockState state)
         {
-            this.mutablePos.setPos(x, y, z);
+            this.mutablePos.set(x, y, z);
             this.state = state;
         }
     }

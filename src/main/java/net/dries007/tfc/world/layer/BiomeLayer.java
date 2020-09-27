@@ -27,15 +27,15 @@ public enum BiomeLayer implements IC0Transformer
         }
         else if (value == PLAINS)
         {
-            return LOW_BIOMES[context.random(LOW_BIOMES.length)];
+            return LOW_BIOMES[context.nextRandom(LOW_BIOMES.length)];
         }
         else if (value == TFCLayerUtil.HILLS)
         {
-            return MID_BIOMES[context.random(MID_BIOMES.length)];
+            return MID_BIOMES[context.nextRandom(MID_BIOMES.length)];
         }
         else if (value == TFCLayerUtil.MOUNTAINS)
         {
-            return HIGH_BIOMES[context.random(HIGH_BIOMES.length)];
+            return HIGH_BIOMES[context.nextRandom(HIGH_BIOMES.length)];
         }
         return 0;
     }

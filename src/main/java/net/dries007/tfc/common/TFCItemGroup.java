@@ -44,7 +44,7 @@ public final class TFCItemGroup extends ItemGroup
     }
 
     @Override
-    public ItemStack createIcon()
+    public ItemStack makeIcon()
     {
         return iconStack.get();
     }

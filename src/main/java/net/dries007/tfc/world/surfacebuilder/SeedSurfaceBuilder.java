@@ -10,20 +10,20 @@ import java.util.function.Function;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 
 public abstract class SeedSurfaceBuilder<C extends SurfaceBuilderConfig> extends SurfaceBuilder<C>
 {
     private long lastSeed;
     private boolean initialized;
 
-    protected SeedSurfaceBuilder(Function<Dynamic<?>, ? extends C> configFactory)
+    protected SeedSurfaceBuilder(Codec<C> codec)
     {
-        super(configFactory);
+        super(codec);
     }
 
     @Override
-    public void setSeed(long seed)
+    public void initNoise(long seed)
     {
         if (lastSeed != seed || !initialized)
         {

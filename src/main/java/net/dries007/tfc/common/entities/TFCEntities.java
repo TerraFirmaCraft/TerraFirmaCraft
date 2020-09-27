@@ -17,7 +17,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class TFCEntities
 {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MOD_ID);
-    public static final RegistryObject<EntityType<TFCFallingBlockEntity>> FALLING_BLOCK = register("falling_block", EntityType.Builder.<TFCFallingBlockEntity>create(TFCFallingBlockEntity::new, EntityClassification.MISC).size(0.98F, 0.98F));
+    public static final RegistryObject<EntityType<TFCFallingBlockEntity>> FALLING_BLOCK = register("falling_block", EntityType.Builder.<TFCFallingBlockEntity>of(TFCFallingBlockEntity::new, EntityClassification.MISC).sized(0.98F, 0.98F));
 
     /**
      * Convenience method to handle entity builders and duplicate entity keys.

@@ -11,8 +11,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.dries007.tfc.client.ClientHelpers;
 
 public abstract class TFCContainerScreen<C extends Container> extends ContainerScreen<C>
 {
@@ -25,24 +25,24 @@ public abstract class TFCContainerScreen<C extends Container> extends ContainerS
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks)
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
-        renderBackground();
-        super.render(mouseX, mouseY, partialTicks);
-        renderHoveredToolTip(mouseX, mouseY);
+        renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
-        drawDefaultBackground();
+        drawDefaultBackground(matrixStack);
     }
 
     @SuppressWarnings("ConstantConditions")
-    protected void drawDefaultBackground()
+    protected void drawDefaultBackground(MatrixStack matrixStack)
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(texture);
-        ClientHelpers.drawTexturedRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        minecraft.getTextureManager().bind(texture);
+        blit(matrixStack, leftPos, topPos, 0, (float) 0, (float) 0, imageWidth, imageHeight, 256, 256);
     }
 }

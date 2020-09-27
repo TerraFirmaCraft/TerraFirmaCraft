@@ -6,10 +6,12 @@
 from mcresources import ResourceManager, clean_generated_resources
 
 import assets
-import collapse_recipes
 import data
-import ore_veins
+import world_gen
 import recipes
+import ore_veins
+import collapse_recipes
+
 from constants import *
 
 
@@ -23,6 +25,7 @@ def main():
     # generic assets / data
     assets.generate(rm)
     data.generate(rm)
+    world_gen.generate(rm)
     recipes.generate(rm)
 
     # more complex stuff n things

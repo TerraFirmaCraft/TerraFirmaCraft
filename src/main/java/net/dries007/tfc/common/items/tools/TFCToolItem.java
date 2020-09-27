@@ -6,14 +6,20 @@
 package net.dries007.tfc.common.items.tools;
 
 import java.util.Collections;
+import java.util.Map;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
+
+import net.minecraft.item.Item.Properties;
 
 /**
  * Generic class for tools that shouldn't override vanilla's {@link ToolItem}
@@ -27,12 +33,17 @@ public class TFCToolItem extends ToolItem
 {
     protected final float attackDamage;
     protected final float attackSpeed;
+    protected final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public TFCToolItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {
         super(0, attackSpeed, tier, Collections.emptySet(), builder);
-        this.attackDamage = attackDamageMultiplier * tier.getAttackDamage();
+        this.attackDamage = attackDamageMultiplier * tier.getAttackDamageBonus();
         this.attackSpeed = attackSpeed;
+        this.attributeModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
+            .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION))
+            .put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION))
+            .build();
     }
 
     public float getAttackDamage()
@@ -46,14 +57,8 @@ public class TFCToolItem extends ToolItem
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot)
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack)
     {
-        Multimap<String, AttributeModifier> multimap = HashMultimap.create();
-        if (equipmentSlot == EquipmentSlotType.MAINHAND)
-        {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
-        }
-        return multimap;
+        return attributeModifiers;
     }
 }

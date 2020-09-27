@@ -20,11 +20,11 @@ public class RawRockBlock extends Block
     {
         super(properties);
 
-        setDefaultState(stateContainer.getBaseState().with(SUPPORTED, false));
+        registerDefaultState(stateDefinition.any().setValue(SUPPORTED, false));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(SUPPORTED);
     }

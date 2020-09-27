@@ -17,16 +17,15 @@ import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
 import net.dries007.tfc.ImageUtil;
-import net.dries007.tfc.world.biome.IBiomeFactory;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.layer.*;
 import org.junit.jupiter.api.Test;
 
 public class TFCLayerUtilTests
 {
-    public static final ImageUtil<IAreaFactory<LazyArea>> IMAGES = ImageUtil.noise(lazyAreaIAreaFactory -> {
-        LazyArea area = lazyAreaIAreaFactory.make();
-        return (left, right) -> area.getValue((int) left, (int) right);
+    public static final ImageUtil<IAreaFactory<LazyArea>> IMAGES = ImageUtil.noise(factory -> {
+        LazyArea area = factory.make();
+        return (left, right) -> area.get((int) left, (int) right);
     }, b -> b.scale(ImageUtil.Scales.NEAREST_INT).size(1000));
 
     @Test
@@ -42,116 +41,118 @@ public class TFCLayerUtilTests
 
         IMAGES.color(this::landColor).dimensions(200);
 
-        mainLayer = new IslandLayer(6).apply(contextFactory.get());
+        mainLayer = new IslandLayer(6).run(contextFactory.get());
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = ZoomLayer.FUZZY.apply(contextFactory.get(), mainLayer);
+        mainLayer = ZoomLayer.FUZZY.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
         for (int i = 0; i < 2; i++)
         {
-            mainLayer = AddIslandLayer.HEAVY.apply(contextFactory.get(), mainLayer);
+            mainLayer = AddIslandLayer.HEAVY.run(contextFactory.get(), mainLayer);
             IMAGES.draw("layer_" + ++layer, mainLayer);
 
-            mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.get(), mainLayer);
+            mainLayer = SmoothLayer.INSTANCE.run(contextFactory.get(), mainLayer);
             IMAGES.draw("layer_" + ++layer, mainLayer);
         }
 
         // Oceans and Continents => Elevation Mapping
         IMAGES.color(this::elevationColor).dimensions(400);
 
-        mainLayer = ElevationLayer.INSTANCE.apply(contextFactory.get(), mainLayer);
+        mainLayer = ElevationLayer.INSTANCE.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
         // Elevation Mapping => Rivers
-        riverLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+        riverLayer = ZoomLayer.NORMAL.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
         for (int i = 0; i < 6; i++)
         {
-            riverLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), riverLayer);
+            riverLayer = ZoomLayer.NORMAL.run(contextFactory.get(), riverLayer);
             IMAGES.draw("layer_" + ++layer, mainLayer);
         }
 
-        riverLayer = RiverLayer.INSTANCE.apply(contextFactory.get(), riverLayer);
+        riverLayer = RiverLayer.INSTANCE.run(contextFactory.get(), riverLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        riverLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), riverLayer);
+        riverLayer = ZoomLayer.NORMAL.run(contextFactory.get(), riverLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
         IMAGES.color(this::biomeColor).dimensions(1000);
 
         // Elevation Mapping => Biomes
-        mainLayer = BiomeLayer.INSTANCE.apply(contextFactory.get(), mainLayer);
+        mainLayer = BiomeLayer.INSTANCE.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = AddIslandLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = RemoveOceanLayer.INSTANCE.apply(contextFactory.get(), mainLayer);
+        mainLayer = RemoveOceanLayer.INSTANCE.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = OceanLayer.INSTANCE.apply(contextFactory.get(), mainLayer);
+        mainLayer = OceanLayer.INSTANCE.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = EdgeBiomeLayer.INSTANCE.apply(contextFactory.get(), mainLayer);
+        mainLayer = EdgeBiomeLayer.INSTANCE.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = AddLakeLayer.INSTANCE.apply(contextFactory.get(), mainLayer);
+        mainLayer = AddLakeLayer.INSTANCE.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
         for (int i = 0; i < 2; i++)
         {
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+            mainLayer = ZoomLayer.NORMAL.run(contextFactory.get(), mainLayer);
             IMAGES.draw("layer_" + ++layer, mainLayer);
         }
 
-        mainLayer = ShoreLayer.CASTLE.apply(contextFactory.get(), mainLayer);
+        mainLayer = ShoreLayer.CASTLE.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
         for (int i = 0; i < 4; i++)
         {
-            mainLayer = ZoomLayer.NORMAL.apply(contextFactory.get(), mainLayer);
+            mainLayer = ZoomLayer.NORMAL.run(contextFactory.get(), mainLayer);
             IMAGES.draw("layer_" + ++layer, mainLayer);
         }
 
         IMAGES.dimensions(10000);
 
-        mainLayer = SmoothLayer.INSTANCE.apply(contextFactory.get(), mainLayer);
+        mainLayer = SmoothLayer.INSTANCE.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = MixRiverLayer.INSTANCE.apply(contextFactory.get(), mainLayer, riverLayer);
+        mainLayer = MixRiverLayer.INSTANCE.run(contextFactory.get(), mainLayer, riverLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = BiomeRiverWidenLayer.MEDIUM.apply(contextFactory.get(), mainLayer);
+        mainLayer = BiomeRiverWidenLayer.MEDIUM.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
 
-        mainLayer = BiomeRiverWidenLayer.LOW.apply(contextFactory.get(), mainLayer);
+        mainLayer = BiomeRiverWidenLayer.LOW.run(contextFactory.get(), mainLayer);
         IMAGES.draw("layer_" + ++layer, mainLayer);
     }
 
     private Color landColor(double value)
     {
-        Biome biome = IBiomeFactory.getBiome((int) value);
-        return biome == TFCBiomes.DEEP_OCEAN.get() ? Color.BLUE : Color.GREEN;
+        int id = (int) value;
+        if (id == TFCLayerUtil.DEEP_OCEAN) return Color.BLUE;
+        if (id == TFCLayerUtil.PLAINS) return Color.GREEN;
+        return Color.BLACK;
     }
 
     private Color elevationColor(double value)

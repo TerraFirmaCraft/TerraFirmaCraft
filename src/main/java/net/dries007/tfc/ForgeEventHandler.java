@@ -5,34 +5,29 @@
 
 package net.dries007.tfc;
 
-import java.util.Random;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings;
-import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.IServerWorldInfo;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -52,7 +47,6 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.TFCServerTracker;
 import net.dries007.tfc.util.support.SupportManager;
-import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
@@ -69,20 +63,22 @@ public final class ForgeEventHandler
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * Duplicates logic from {@link ServerWorld#createSpawnPosition(WorldSettings)} as that version only asks the dimension for the sea level...
+     * Duplicates logic from {@link net.minecraft.server.MinecraftServer#setInitialSpawn(ServerWorld, IServerWorldInfo, boolean, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
     @SubscribeEvent
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
         // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
-        if (event.getWorld() instanceof ServerWorld && ((World) event.getWorld()).getWorldType() == TFCWorldType.INSTANCE)
+        // todo: fix this, it was broken anyway, vanilla changed it
+        /*
+        if (event.getWorld() instanceof ServerWorld)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
             event.setCanceled(true);
 
-            BiomeProvider biomeProvider = world.getChunkProvider().getChunkGenerator().getBiomeProvider();
+            BiomeProvider biomeProvider = world.getChunkSource().getGenerator().getBiomeSource();
             Random random = new Random(world.getSeed());
-            BlockPos pos = biomeProvider.func_225531_a_(0, world.getChunkProvider().getChunkGenerator().getSeaLevel(), 0, 256, biomeProvider.getBiomesToSpawnIn(), random);
+            BlockPos pos = biomeProvider.findBiomeHorizontal(0, world.getChunkSource().getGenerator().getSeaLevel(), 0, 256, biomeProvider.spawb(), random);
             ChunkPos chunkPos = pos == null ? new ChunkPos(0, 0) : new ChunkPos(pos);
             if (pos == null)
             {
@@ -90,16 +86,16 @@ public final class ForgeEventHandler
             }
 
             boolean flag = false;
-            for (Block block : BlockTags.VALID_SPAWN.getAllElements())
+            for (Block block : BlockTags.VALID_SPAWN.getValues())
             {
-                if (biomeProvider.getSurfaceBlocks().contains(block.getDefaultState()))
+                if (biomeProvider.getSurfaceBlocks().contains(block.defaultBlockState()))
                 {
                     flag = true;
                     break;
                 }
             }
             // Initial guess at spawn position
-            world.getWorldInfo().setSpawn(chunkPos.asBlockPos().add(8, world.getChunkProvider().getChunkGenerator().getGroundHeight(), 8));
+            world.getLevelData().setSpawn(chunkPos.getWorldPosition().offset(8, world.getChunkSource().getGenerator().getSpawnHeight(), 8));
             int x = 0;
             int z = 0;
             int xStep = 0;
@@ -109,10 +105,10 @@ public final class ForgeEventHandler
             {
                 if (x > -16 && x <= 16 && z > -16 && z <= 16)
                 {
-                    BlockPos spawnPos = world.dimension.findSpawn(new ChunkPos(chunkPos.x + x, chunkPos.z + z), flag);
+                    BlockPos spawnPos = world.dimension.getSpawnPosInChunk(new ChunkPos(chunkPos.x + x, chunkPos.z + z), flag);
                     if (spawnPos != null)
                     {
-                        world.getWorldInfo().setSpawn(spawnPos);
+                        world.getLevelData().setSpawn(spawnPos);
                         break;
                     }
                 }
@@ -130,6 +126,7 @@ public final class ForgeEventHandler
 
             // Don't create bonus chest
         }
+         */
     }
 
     @SubscribeEvent
@@ -137,7 +134,7 @@ public final class ForgeEventHandler
     {
         if (!event.getObject().isEmpty())
         {
-            World world = event.getObject().getWorld();
+            World world = event.getObject().getLevel();
             ChunkPos chunkPos = event.getObject().getPos();
             ChunkData data;
             if (!Helpers.isRemote(world))
@@ -217,32 +214,35 @@ public final class ForgeEventHandler
     }
 
     @SubscribeEvent
-    public static void beforeServerStart(FMLServerAboutToStartEvent event)
+    public static void addReloadListeners(AddReloadListenerEvent event)
     {
         LOGGER.debug("Before Server Start");
 
         // Initializes json data listeners
-        IReloadableResourceManager resourceManager = event.getServer().getResourceManager();
-        resourceManager.addReloadListener(RockManager.INSTANCE);
-        resourceManager.addReloadListener(MetalManager.INSTANCE);
-        resourceManager.addReloadListener(MetalItemManager.INSTANCE);
-        resourceManager.addReloadListener(VeinTypeManager.INSTANCE);
-        resourceManager.addReloadListener(FloraTypeManager.INSTANCE);
-        resourceManager.addReloadListener(SupportManager.INSTANCE);
+        IReloadableResourceManager resourceManager = (IReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
+        resourceManager.registerReloadListener(RockManager.INSTANCE);
+        resourceManager.registerReloadListener(MetalManager.INSTANCE);
+        resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
+        resourceManager.registerReloadListener(VeinTypeManager.INSTANCE);
+        resourceManager.registerReloadListener(SupportManager.INSTANCE);
+        resourceManager.registerReloadListener(FloraTypeManager.INSTANCE);
 
         // Capability json data loader
-        resourceManager.addReloadListener(HeatCapability.HeatManager.INSTANCE);
+        resourceManager.registerReloadListener(HeatCapability.HeatManager.INSTANCE);
+    }
 
+    @SubscribeEvent
+    public static void beforeServerStart(FMLServerAboutToStartEvent event)
+    {
         // Server tracker
         TFCServerTracker.INSTANCE.onServerStart(event.getServer());
     }
 
     @SubscribeEvent
-    public static void onServerStarting(FMLServerStartingEvent event)
+    public static void onRegisterCommands(RegisterCommandsEvent event)
     {
-        // todo: move this to the dedicated command register event on forge update
         LOGGER.debug("Registering TFC Commands");
-        TFCCommands.register(event.getCommandDispatcher());
+        TFCCommands.register(event.getDispatcher());
     }
 
     @SubscribeEvent
@@ -272,7 +272,7 @@ public final class ForgeEventHandler
         for (Direction direction : event.getNotifiedSides())
         {
             // Check each notified block for a potential gravity block
-            BlockPos pos = event.getPos().offset(direction);
+            BlockPos pos = event.getPos().relative(direction);
             BlockState state = world.getBlockState(pos);
             if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()) && world instanceof World)
             {
@@ -304,7 +304,7 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
-        if (!event.getWorld().isRemote)
+        if (!event.getWorld().isClientSide)
         {
             event.getWorld().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
         }
@@ -332,13 +332,14 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld() instanceof ServerWorld && event.getWorld().getDimension().getType() == DimensionType.OVERWORLD)
+        // todo: overworld check
+        if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).dimension() == World.OVERWORLD)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
             if (TFCConfig.SERVER.enableVanillaNaturalRegeneration.get())
             {
                 // Natural regeneration should be disabled, allows TFC to have custom regeneration
-                world.getGameRules().get(GameRules.NATURAL_REGENERATION).set(false, world.getServer());
+                world.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, world.getServer());
                 LOGGER.info("Updating gamerule naturalRegeneration to false!");
             }
         }

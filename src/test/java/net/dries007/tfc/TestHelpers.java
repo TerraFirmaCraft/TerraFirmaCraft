@@ -6,9 +6,7 @@
 package net.dries007.tfc;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
@@ -33,27 +31,16 @@ public class TestHelpers
     public static void onServerStarting(FMLServerStartingEvent event)
     {
         server = event.getServer();
-    }
-
-    @SubscribeEvent
-    public static void onWorldLoad(WorldEvent.Load event)
-    {
-        if (event.getWorld().getDimension().getType() == DimensionType.OVERWORLD)
-        {
-            world = (ServerWorld) event.getWorld();
-        }
+        world = event.getServer().overworld();
     }
 
     @Test
-    void testGotServer()
+    void testHelpersInitialized()
     {
         Assertions.assertNotNull(server);
-        Assertions.assertTrue(server instanceof DedicatedTestServer);
-    }
-
-    @Test
-    void testGotWorld()
-    {
         Assertions.assertNotNull(world);
+
+        Assertions.assertTrue(server instanceof DedicatedTestServer);
+
     }
 }

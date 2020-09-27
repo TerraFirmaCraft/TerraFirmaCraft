@@ -24,6 +24,7 @@ import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.TFCTags;
 
+
 public class TFCGrassBlock extends Block
 {
     // Used for connected textures only.
@@ -57,7 +58,7 @@ public class TFCGrassBlock extends Block
         super(properties);
         this.dirt = dirt;
 
-        setDefaultState(stateContainer.getBaseState().with(SOUTH, false).with(EAST, false).with(NORTH, false).with(WEST, false));
+        registerDefaultState(stateDefinition.any().setValue(SOUTH, false).setValue(EAST, false).setValue(NORTH, false).setValue(WEST, false));
     }
 
     public Block getDirt()
@@ -69,7 +70,7 @@ public class TFCGrassBlock extends Block
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state));
+        worldIn.setBlockAndUpdate(pos, updateStateFromNeighbors(worldIn, pos, state));
     }
 
     @Override
@@ -77,36 +78,36 @@ public class TFCGrassBlock extends Block
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
-        worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state));
+        worldIn.setBlockAndUpdate(pos, updateStateFromNeighbors(worldIn, pos, state));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
-        worldIn.setBlockState(pos, updateStateFromNeighbors(worldIn, pos, state), 2); // Update this block
+        worldIn.setBlock(pos, updateStateFromNeighbors(worldIn, pos, state), 2); // Update this block
         updateSurroundingGrassConnections(worldIn, pos); // And any possible surrounding connections
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (newState.getBlock() != state.getBlock())
         {
             updateSurroundingGrassConnections(worldIn, pos);
         }
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return updateStateFromNeighbors(context.getWorld(), context.getPos(), getDefaultState());
+        return updateStateFromNeighbors(context.getLevel(), context.getClickedPos(), defaultBlockState());
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(NORTH, EAST, SOUTH, WEST);
     }
@@ -115,11 +116,11 @@ public class TFCGrassBlock extends Block
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            BlockPos targetPos = pos.up().offset(direction);
+            BlockPos targetPos = pos.above().relative(direction);
             BlockState targetState = world.getBlockState(targetPos);
             if (targetState.getBlock() instanceof TFCGrassBlock)
             {
-                world.setBlockState(targetPos, updateStateFromDirection(world, targetPos, targetState, direction.getOpposite()), 2);
+                world.setBlock(targetPos, updateStateFromDirection(world, targetPos, targetState, direction.getOpposite()), 2);
             }
         }
     }
@@ -144,7 +145,7 @@ public class TFCGrassBlock extends Block
         BooleanProperty property = getPropertyForFace(direction);
         if (property != null)
         {
-            return stateIn.with(property, TFCTags.Blocks.GRASS.contains(worldIn.getBlockState(pos.offset(direction).down()).getBlock()));
+            return stateIn.setValue(property, TFCTags.Blocks.GRASS.contains(worldIn.getBlockState(pos.relative(direction).below()).getBlock()));
         }
         return stateIn;
     }

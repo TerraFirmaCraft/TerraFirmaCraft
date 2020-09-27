@@ -5,13 +5,13 @@
 
 package net.dries007.tfc.common.types;
 
-import java.util.function.Function;
+import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -19,13 +19,11 @@ import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.feature.TFCFeatures;
-import net.dries007.tfc.world.feature.trees.OverlayTreeConfig;
-import net.dries007.tfc.world.feature.trees.RandomTreeConfig;
 import net.dries007.tfc.world.feature.trees.TFCTree;
 
 public class Wood
 {
+    private static final Random rng = new Random();
     /**
      * Default wood types used for block registration calls
      * Not extensible
@@ -36,89 +34,44 @@ public class Wood
      */
     public enum Default
     {
-        ACACIA(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("acacia", 35)),
-            wood -> TFCFeatures.DOUBLE_RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("acacia_large", 6, 2, 2, 2))
-        ),
-        ASH(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("ash/base"), Helpers.identifier("ash/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("ash_large", 5))
-        ),
-        ASPEN(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("aspen", 16))
-        ),
-        BIRCH(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("birch", 16))
-        ),
-        BLACKWOOD(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("blackwood/base"), Helpers.identifier("blackwood/overlay"), 2, 2, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
-        ),
-        CHESTNUT(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("chestnut/base"), Helpers.identifier("chestnut/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
-        ),
-        DOUGLAS_FIR(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("douglas_fir", 9)),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("douglas_fir_large", 5))
-        ),
-        HICKORY(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("hickory", 9)),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("hickory_large", 5))
-        ),
-        KAPOK(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("kapok", 7))
-        ),
-        MAPLE(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("maple/base"), Helpers.identifier("maple/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.DOUBLE_RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("maple_large", 5))
-        ),
-        OAK(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("oak/base"), Helpers.identifier("oak/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
-        ),
-        PALM(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("palm", 7)) // todo: random height variation
-        ),
-        PINE(true,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("pine", 9)),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("pine_large", 5))
-        ),
-        ROSEWOOD(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("rosewood/base"), Helpers.identifier("rosewood/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
-        ),
-        SEQUOIA(true,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("sequoia", 7))
-            // todo: large conifer generator
-        ),
-        SPRUCE(true,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("spruce", 7))
-            // todo: large conifer generator
-        ),
-        SYCAMORE(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("sycamore/base"), Helpers.identifier("sycamore/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState())),
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("sycamore_large", 5))
-        ),
-        WHITE_CEDAR(false,
-            wood -> TFCFeatures.OVERLAY_TREE.get().withConfiguration(new OverlayTreeConfig(Helpers.identifier("white_cedar/base"), Helpers.identifier("white_cedar/overlay"), 1, 3, TFCBlocks.WOODS.get(wood).get(BlockType.LOG).get().getDefaultState()))
-        ),
-        WILLOW(false,
-            wood -> TFCFeatures.RANDOM_TREE.get().withConfiguration(RandomTreeConfig.forVariants("willow", 7))
-        );
+        // todo: actual values for the three material colors, and fall foliage coords by wood type
+        ACACIA(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        ASH(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        ASPEN(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        BIRCH(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        BLACKWOOD(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        CHESTNUT(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        DOUGLAS_FIR(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        HICKORY(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        KAPOK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        MAPLE(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        OAK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        PALM(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        PINE(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        ROSEWOOD(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        SEQUOIA(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        SPRUCE(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        SYCAMORE(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        WHITE_CEDAR(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        WILLOW(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7);
 
         private final boolean conifer;
+        private final MaterialColor mainColor;
+        private final MaterialColor topColor;
+        private final MaterialColor barkColor;
         private final TFCTree tree;
         private final int fallFoliageCoords;
+        private final int maxDecayDistance;
 
-        Default(boolean conifer, Function<Default, ConfiguredFeature<?, ?>> feature)
+        Default(boolean conifer, MaterialColor mainColor, MaterialColor topColor, MaterialColor barkColor, int fallFoliageCoords, int maxDecayDistance)
         {
             this.conifer = conifer;
-            this.tree = new TFCTree(() -> feature.apply(this)); // Allow the possibility to use a "this" reference in the initializer
-            this.fallFoliageCoords = 100 | (100 << 8); // todo: random locations for each non-conifer tree
-        }
-
-        Default(boolean conifer, Function<Default, ConfiguredFeature<?, ?>> feature, Function<Default, ConfiguredFeature<?, ?>> oldGrowthFeature)
-        {
-            this.conifer = conifer;
-            this.tree = new TFCTree(() -> feature.apply(this), () -> oldGrowthFeature.apply(this)); // Allow the possibility to use a "this" reference in the initializer
-            this.fallFoliageCoords = 100 | (100 << 8); // todo: random locations for each non-conifer tree
+            this.mainColor = mainColor;
+            this.topColor = topColor;
+            this.barkColor = barkColor;
+            this.tree = new TFCTree(Helpers.identifier("tree/" + name().toLowerCase()), Helpers.identifier("tree/" + name().toLowerCase() + "_large"));
+            this.fallFoliageCoords = rng.nextInt(256 * 256);
+            this.maxDecayDistance = maxDecayDistance;
         }
 
         public boolean isConifer()
@@ -136,32 +89,48 @@ public class Wood
             return fallFoliageCoords;
         }
 
-        public MaterialColor getMaterialColor()
+        public int getMaxDecayDistance()
         {
-            return MaterialColor.ADOBE; // todo: in 1.16 there are two material colors, one for the top, one for bark. We need to figure out which materials match our logs.
+            return maxDecayDistance;
+        }
+
+        public MaterialColor getMainColor()
+        {
+            return mainColor;
+        }
+
+        public MaterialColor getTopColor()
+        {
+            return topColor;
+        }
+
+        public MaterialColor getBarkColor()
+        {
+            return barkColor;
         }
     }
 
     public enum BlockType
     {
-        LOG(wood -> new LogBlock(MaterialColor.SAND, Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(0.5F).sound(SoundType.WOOD)), false),
-        STRIPPED_LOG(wood -> new LogBlock(MaterialColor.WOOD, Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F).sound(SoundType.WOOD)), false),
-        WOOD(wood -> new RotatedPillarBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F).sound(SoundType.WOOD)), false),
-        STRIPPED_WOOD(wood -> new RotatedPillarBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F).sound(SoundType.WOOD)), false),
-        LEAVES(wood -> TFCLeavesBlock.create(Block.Properties.create(Material.LEAVES, wood.getMaterialColor()).hardnessAndResistance(0.5F).sound(SoundType.PLANT).tickRandomly().notSolid(), 6), false),
-        PLANKS(wood -> new Block(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), false),
-        SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0).sound(SoundType.PLANT)), false),
-        BOOKSHELF(wood -> new Block(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        DOOR(wood -> new DoorBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()) {}, true),
-        TRAPDOOR(wood -> new TrapDoorBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()) {}, true),
-        FENCE(wood -> new FenceBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        LOG_FENCE(wood -> new FenceBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        FENCE_GATE(wood -> new FenceGateBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        BUTTON(wood -> new WoodButtonBlock(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)) {}, true),
-        PRESSURE_PLATE(wood -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.create(Material.WOOD, wood.getMaterialColor()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)) {}, true),
-        SLAB(wood -> new SlabBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        STAIRS(wood -> new StairsBlock(() -> TFCBlocks.WOODS.get(wood).get(PLANKS).get().getDefaultState(), Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.create(Material.WOOD, wood.getMaterialColor()).hardnessAndResistance(2.0F).sound(SoundType.WOOD).notSolid()) {}, true);
+        // These two constructors were lifted from Blocks#log
+        LOG(wood -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD)), false),
+        STRIPPED_LOG(wood -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD)), false),
+        WOOD(wood -> new RotatedPillarBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD)), false),
+        STRIPPED_WOOD(wood -> new RotatedPillarBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD)), false),
+        LEAVES(wood -> TFCLeavesBlock.create(Block.Properties.of(Material.LEAVES, wood.getMainColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion(), wood.getMaxDecayDistance()), false),
+        PLANKS(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), false),
+        SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)), false),
+        BOOKSHELF(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
+        DOOR(wood -> new DoorBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
+        TRAPDOOR(wood -> new TrapDoorBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
+        FENCE(wood -> new FenceBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
+        LOG_FENCE(wood -> new FenceBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
+        FENCE_GATE(wood -> new FenceGateBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
+        BUTTON(wood -> new WoodButtonBlock(Block.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD)) {}, true),
+        PRESSURE_PLATE(wood -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, wood.getMainColor()).noCollission().strength(0.5F).sound(SoundType.WOOD)) {}, true),
+        SLAB(wood -> new SlabBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
+        STAIRS(wood -> new StairsBlock(() -> TFCBlocks.WOODS.get(wood).get(PLANKS).get().defaultBlockState(), Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
+        TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true);
 
         public static final BlockType[] VALUES = values();
 

@@ -11,6 +11,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Climate;
@@ -18,9 +20,13 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.calendar.Season;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCache;
+import net.dries007.tfc.world.noise.NoiseUtil;
 
 public final class TFCColors
 {
+    public static final ResourceLocation SKY_COLORS_LOCATION = Helpers.identifier("textures/colormap/sky.png");
     public static final ResourceLocation WATER_COLORS_LOCATION = Helpers.identifier("textures/colormap/water.png");
     public static final ResourceLocation WATER_FOG_COLORS_LOCATION = Helpers.identifier("textures/colormap/water_fog.png");
     public static final ResourceLocation FOLIAGE_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage.png");
@@ -28,15 +34,29 @@ public final class TFCColors
     public static final ResourceLocation FOLIAGE_WINTER_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_winter.png");
     public static final ResourceLocation GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/grass.png");
 
-    private static int[] WATER_COLORS_CACHE = new int[256 * 256];
-    private static int[] FOLIAGE_COLORS_CACHE = new int[256 * 256];
-    private static int[] FOLIAGE_FALL_COLORS_CACHE = new int[256 * 256];
-    private static int[] FOLIAGE_WINTER_COLORS_CACHE = new int[256 * 256];
-    private static int[] GRASS_COLORS_CACHE = new int[256 * 256];
+    private static final int COLORMAP_SIZE = 256 * 256;
+
+    private static int[] SKY_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] WATER_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] WATER_FOG_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] FOLIAGE_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] FOLIAGE_FALL_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] FOLIAGE_WINTER_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] GRASS_COLORS_CACHE = new int[COLORMAP_SIZE];
+
+    public static void setSkyColors(int[] skyColors)
+    {
+        SKY_COLORS_CACHE = skyColors;
+    }
 
     public static void setWaterColors(int[] waterColors)
     {
-        TFCColors.WATER_COLORS_CACHE = waterColors;
+        WATER_COLORS_CACHE = waterColors;
+    }
+
+    public static void setWaterFogColors(int[] waterFogColors)
+    {
+        WATER_FOG_COLORS_CACHE = waterFogColors;
     }
 
     public static void setFoliageColors(int[] foliageColorsCache)
@@ -59,18 +79,26 @@ public final class TFCColors
         GRASS_COLORS_CACHE = grassColorsCache;
     }
 
-    public static int getWaterColor(float temperature, float rainfall)
+    public static int getSkyColor(BlockPos pos)
     {
-        int temperatureIndex = MathHelper.clamp((int) ((temperature + 30f) * 255f / 60f), 0, 255);
-        int rainfallIndex = 255 - MathHelper.clamp((int) (rainfall * 255f / 500f), 0, 255);
-        return WATER_COLORS_CACHE[temperatureIndex | (rainfallIndex << 8)];
+        return getClimateColor(SKY_COLORS_CACHE, pos);
+    }
+
+    public static int getWaterColor(BlockPos pos)
+    {
+        return getClimateColor(WATER_COLORS_CACHE, pos);
+    }
+
+    public static int getWaterFogColor(BlockPos pos)
+    {
+        return getClimateColor(WATER_FOG_COLORS_CACHE, pos);
     }
 
     public static int getSeasonalFoliageColor(BlockState state, @Nullable BlockPos pos, int tintIndex, int fallColorBaseIndex)
     {
         if (pos != null && tintIndex == 0)
         {
-            final Season season = state.get(TFCBlockStateProperties.SEASON_NO_SPRING);
+            final Season season = state.getValue(TFCBlockStateProperties.SEASON_NO_SPRING);
             final Month month = Calendars.CLIENT.getCalendarMonthOfYear();
             switch (adjustSeason(season, month))
             {
@@ -79,9 +107,10 @@ public final class TFCColors
                     return getClimateColor(FOLIAGE_COLORS_CACHE, pos);
                 case FALL:
                 {
-                    // todo: slightly vary the location chosen based on position
-                    // int index = NoiseUtil.hash(pos.getY(), pos.getX(), pos.getZ()) & 0xFFFF;
-                    return FOLIAGE_FALL_COLORS_CACHE[fallColorBaseIndex];
+                    int index = NoiseUtil.hash(pos.getY(), pos.getX(), pos.getZ()) & 0xFF;
+                    int xPos = MathHelper.clamp((fallColorBaseIndex & 0xFF) + (index & 0xF) - 8, 0, 255);
+                    int yPos = MathHelper.clamp((fallColorBaseIndex >> 8) + (index >> 4) - 8, 0, 255);
+                    return FOLIAGE_FALL_COLORS_CACHE[xPos | (yPos << 8)];
                 }
                 case WINTER:
                     return getClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos);
@@ -121,7 +150,10 @@ public final class TFCColors
      */
     private static int getClimateColor(int[] colorCache, BlockPos pos)
     {
-        return getClimateColor(colorCache, Climate.getTemperature(pos), Climate.getRainfall(pos));
+        ChunkData data = ChunkDataCache.CLIENT.getOrEmpty(pos);
+        float temperature = Climate.calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.CLIENT.getCalendarTicks(), Calendars.CLIENT.getCalendarDaysInMonth());
+        float rainfall = data.getRainfall(pos);
+        return getClimateColor(colorCache, temperature, rainfall);
     }
 
     /**

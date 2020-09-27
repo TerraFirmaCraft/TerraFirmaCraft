@@ -16,8 +16,8 @@ public class RandomLayer extends CallbackLimitLayer implements IAreaTransformer0
     }
 
     @Override
-    public int apply(INoiseRandom context, int x, int z)
+    public int applyPixel(INoiseRandom context, int x, int z)
     {
-        return context.random(limit);
+        return context.nextRandom(limit);
     }
 }

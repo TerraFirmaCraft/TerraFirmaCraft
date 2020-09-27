@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.mixin.entity.item.FallingBlockEntityAccessor;
 import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 /**
@@ -40,7 +41,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
 
     public static boolean canFallThrough(IBlockReader world, BlockPos pos, BlockState state)
     {
-        return !state.isSolidSide(world, pos, Direction.UP);
+        return !state.isFaceSturdy(world, pos, Direction.UP);
     }
 
     private final boolean dontSetBlock;
@@ -66,46 +67,47 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     @Override
     public void tick()
     {
-        if (fallTile.isAir())
+        final BlockState fallingBlockState = getBlockState();
+        if (fallingBlockState.isAir())
         {
             remove();
         }
         else
         {
-            Block block = fallTile.getBlock();
-            if (fallTime++ == 0)
+            Block block = fallingBlockState.getBlock();
+            if (time++ == 0)
             {
                 // First tick, replace the existing block
-                BlockPos blockpos = new BlockPos(this);
-                if (world.getBlockState(blockpos).getBlock() == block)
+                BlockPos blockpos = blockPosition();
+                if (level.getBlockState(blockpos).getBlock().is(block))
                 {
-                    world.removeBlock(blockpos, false);
+                    level.removeBlock(blockpos, false);
                 }
-                else if (!world.isRemote)
+                else if (!level.isClientSide)
                 {
                     remove();
                     return;
                 }
             }
 
-            if (!hasNoGravity())
+            if (!isNoGravity())
             {
-                setMotion(getMotion().add(0.0D, -0.04D, 0.0D));
+                setDeltaMovement(getDeltaMovement().add(0.0D, -0.04D, 0.0D));
             }
 
-            move(MoverType.SELF, getMotion());
+            move(MoverType.SELF, getDeltaMovement());
 
-            if (!world.isRemote)
+            if (!level.isClientSide)
             {
-                BlockPos posAt = new BlockPos(this);
+                BlockPos posAt = blockPosition();
                 if (!onGround)
                 {
                     failedBreakCheck = false;
-                    if (fallTime > 100 && (posAt.getY() < 1 || posAt.getY() > 256) || fallTime > 600)
+                    if (time > 100 && (posAt.getY() < 1 || posAt.getY() > 256) || time > 600)
                     {
-                        if (shouldDropItem && world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS))
+                        if (dropItem && level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
                         {
-                            entityDropItem(block);
+                            spawnAtLocation(block);
                         }
                         remove();
                     }
@@ -115,55 +117,55 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                     // On ground
                     if (!failedBreakCheck)
                     {
-                        if (!world.isAirBlock(posAt) && canFallThrough(world, posAt, world.getBlockState(posAt)))
+                        if (!level.isEmptyBlock(posAt) && canFallThrough(level, posAt, level.getBlockState(posAt)))
                         {
-                            world.destroyBlock(posAt, true);
+                            level.destroyBlock(posAt, true);
                             failedBreakCheck = true;
                             return;
                         }
-                        else if (!world.isAirBlock(posAt.down()) && canFallThrough(world, posAt.down(), world.getBlockState(posAt.down())))
+                        else if (!level.isEmptyBlock(posAt.below()) && canFallThrough(level, posAt.below(), level.getBlockState(posAt.below())))
                         {
-                            world.destroyBlock(posAt.down(), true);
+                            level.destroyBlock(posAt.below(), true);
                             failedBreakCheck = true;
                             return;
                         }
                     }
 
-                    BlockState blockstate = world.getBlockState(posAt);
-                    setMotion(getMotion().mul(0.7D, -0.5D, 0.7D));
+                    BlockState hitBlockState = level.getBlockState(posAt);
+                    setDeltaMovement(getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
 
-                    if (blockstate.getBlock() != Blocks.MOVING_PISTON)
+                    if (hitBlockState.getBlock() != Blocks.MOVING_PISTON)
                     {
                         remove();
                         if (!dontSetBlock)
                         {
-                            if (blockstate.isReplaceable(new DirectionalPlaceContext(this.world, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallTile.isValidPosition(this.world, posAt) && !FallingBlock.canFallThrough(this.world.getBlockState(posAt.down())))
+                            if (hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.canSurvive(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.below())))
                             {
-                                if (fallTile.has(BlockStateProperties.WATERLOGGED) && this.world.getFluidState(posAt).getFluid() == Fluids.WATER)
+                                if (fallingBlockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(posAt).getType() == Fluids.WATER)
                                 {
-                                    fallTile = fallTile.with(BlockStateProperties.WATERLOGGED, Boolean.TRUE);
+                                    ((FallingBlockEntityAccessor)this).accessor$setBlockState(fallingBlockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
                                 }
 
-                                if (world.setBlockState(posAt, fallTile))
+                                if (level.setBlockAndUpdate(posAt, fallingBlockState))
                                 {
                                     if (block instanceof FallingBlock)
                                     {
-                                        ((FallingBlock) block).onEndFalling(this.world, posAt, fallTile, blockstate);
+                                        ((FallingBlock) block).onLand(this.level, posAt, fallingBlockState, hitBlockState, this);
                                     }
 
-                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(fallTile.getBlock()))
+                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(fallingBlockState.getBlock()))
                                     {
-                                        world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
+                                        level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
                                     }
 
                                     // Sets the tile entity if it exists
-                                    if (tileEntityData != null && fallTile.hasTileEntity())
+                                    if (blockData != null && fallingBlockState.hasTileEntity())
                                     {
-                                        TileEntity tileEntity = world.getTileEntity(posAt);
+                                        TileEntity tileEntity = level.getBlockEntity(posAt);
                                         if (tileEntity != null)
                                         {
-                                            CompoundNBT tileEntityData = tileEntity.write(new CompoundNBT());
-                                            for (String dataKey : tileEntityData.keySet())
+                                            CompoundNBT tileEntityData = tileEntity.save(new CompoundNBT());
+                                            for (String dataKey : tileEntityData.getAllKeys())
                                             {
                                                 INBT dataElement = tileEntityData.get(dataKey);
                                                 if (!"x".equals(dataKey) && !"y".equals(dataKey) && !"z".equals(dataKey) && dataElement != null)
@@ -171,30 +173,30 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                                     tileEntityData.put(dataKey, dataElement.copy());
                                                 }
                                             }
-                                            tileEntity.read(tileEntityData);
-                                            tileEntity.markDirty();
+                                            tileEntity.load(fallingBlockState, tileEntityData);
+                                            tileEntity.setChanged();
                                         }
                                     }
                                 }
-                                else if (shouldDropItem && world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS))
+                                else if (dropItem && level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
                                 {
-                                    entityDropItem(block);
+                                    spawnAtLocation(block);
                                 }
                             }
-                            else if (shouldDropItem && this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS))
+                            else if (dropItem && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
                             {
-                                entityDropItem(block);
+                                spawnAtLocation(block);
                             }
                         }
                         else if (block instanceof FallingBlock)
                         {
-                            ((FallingBlock) block).onBroken(this.world, posAt);
+                            ((FallingBlock) block).onBroken(this.level, posAt, this);
                         }
                     }
                 }
             }
 
-            setMotion(getMotion().scale(0.98D));
+            setDeltaMovement(getDeltaMovement().scale(0.98D));
         }
     }
 }

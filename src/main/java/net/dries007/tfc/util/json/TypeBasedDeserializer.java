@@ -51,11 +51,11 @@ public abstract class TypeBasedDeserializer<T> implements JsonDeserializer<T>
 
     public T read(JsonElement element)
     {
-        JsonObject json = JSONUtils.getJsonObject(element, typeName);
+        JsonObject json = JSONUtils.convertToJsonObject(element, typeName);
         ResourceLocation type;
         if (json.has("type"))
         {
-            type = new ResourceLocation(JSONUtils.getString(json, "type"));
+            type = new ResourceLocation(JSONUtils.getAsString(json, "type"));
         }
         else
         {

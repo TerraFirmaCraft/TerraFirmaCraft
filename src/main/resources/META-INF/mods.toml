@@ -1,7 +1,8 @@
 # Loader metadata
 modLoader="javafml" # mandatory
-loaderVersion="[31.2.0,)" # mandatory
-#issueTrackerURL="http://my.issue.tracker/"
+loaderVersion="[34,)" # mandatory
+license="EUPL-1.2"
+issueTrackerURL="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
 # TFC
 [[mods]]
@@ -15,16 +16,23 @@ loaderVersion="[31.2.0,)" # mandatory
     # A file name (in the root of the mod JAR) containing a logo for display
     #logoFile="examplemod.png" #optional
     # A text field displayed in the mod UI
-    credits="Made by AlcatrazEscapee" #optional
+    credits="By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianGuy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty." #optional
     # A text field displayed in the mod UI
-    #authors="Love, Cheese and small house plants" #optional
+    authors="AlcatrazEscapee" #optional
     # The description text for the mod (multi line!) (#mandatory)
     description='''TerraFirmaCraft - The Next Generation'''
 
-# Dependencies
-[[dependencies.tfc]] #optional
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="[31.2.0,)" #mandatory
-    ordering="NONE"
+# dependencies
+[[dependencies.tfc]]
+    modId="forge"
+    mandatory=true
+    versionRange="[34.0.9,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.tfc]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.3,)"
+    ordering="AFTER"
     side="BOTH"

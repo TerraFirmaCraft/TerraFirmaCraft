@@ -77,42 +77,42 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         }
 
         @Override
-        public R read(ResourceLocation recipeId, JsonObject json)
+        public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
             IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(json.get("ingredient"));
-            boolean copyInputState = JSONUtils.getBoolean(json, "copy_input", false);
+            boolean copyInputState = JSONUtils.getAsBoolean(json, "copy_input", false);
             BlockState state;
             if (!copyInputState)
             {
-                state = Helpers.readBlockState(JSONUtils.getString(json, "result"));
+                state = Helpers.readBlockState(JSONUtils.getAsString(json, "result"));
             }
             else
             {
-                state = Blocks.AIR.getDefaultState();
+                state = Blocks.AIR.defaultBlockState();
             }
             return factory.create(recipeId, ingredient, state, copyInputState);
         }
 
         @Nullable
         @Override
-        public R read(ResourceLocation recipeId, PacketBuffer buffer)
+        public R fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
         {
             IBlockIngredient ingredient = IBlockIngredient.Serializer.INSTANCE.read(buffer);
             boolean copyInputState = buffer.readBoolean();
             BlockState state;
             if (!copyInputState)
             {
-                state = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).getDefaultState();
+                state = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).defaultBlockState();
             }
             else
             {
-                state = Blocks.AIR.getDefaultState();
+                state = Blocks.AIR.defaultBlockState();
             }
             return factory.create(recipeId, ingredient, state, copyInputState);
         }
 
         @Override
-        public void write(PacketBuffer buffer, R recipe)
+        public void toNetwork(PacketBuffer buffer, R recipe)
         {
             IBlockIngredient.Serializer.INSTANCE.write(buffer, recipe.ingredient);
             buffer.writeBoolean(recipe.copyInputState);

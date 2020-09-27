@@ -7,6 +7,7 @@ package net.dries007.tfc.common.blocks.soil;
 
 import net.minecraft.block.SandBlock;
 
+
 public class TFCSandBlock extends SandBlock
 {
     public TFCSandBlock(int dustColorIn, Properties properties)

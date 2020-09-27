@@ -10,6 +10,7 @@ import net.minecraft.command.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -28,7 +29,7 @@ public final class TimeCommand
     public static LiteralArgumentBuilder<CommandSource> create()
     {
         return Commands.literal("time")
-            .requires(source -> source.hasPermissionLevel(2))
+            .requires(source -> source.hasPermission(2))
             .then(Commands.literal("set")
                 .then(Commands.literal("monthlength")
                     .then(Commands.argument("value", IntegerArgumentType.integer(1))
@@ -75,7 +76,7 @@ public final class TimeCommand
                     .executes(context -> sendQueryResults(context.getSource(), DAYTIME, Calendars.SERVER.getCalendarDayTime()))
                 )
                 .then(Commands.literal("gametime")
-                    .executes(context -> sendQueryResults(context.getSource(), GAME_TIME, context.getSource().getWorld().getGameTime()))
+                    .executes(context -> sendQueryResults(context.getSource(), GAME_TIME, context.getSource().getLevel().getGameTime()))
                 )
                 .then(Commands.literal("day")
                     .executes(context -> sendQueryResults(context.getSource(), DAY, Calendars.SERVER.getTotalDays()))
@@ -97,7 +98,7 @@ public final class TimeCommand
 
     private static int setTime(MinecraftServer server, int dayTime)
     {
-        for (World world : server.getWorlds())
+        for (ServerWorld world : server.getAllLevels())
         {
             long dayTimeJump = dayTime - (world.getDayTime() % ICalendar.TICKS_IN_DAY);
             if (dayTimeJump < 0)
@@ -118,7 +119,7 @@ public final class TimeCommand
 
     private static int sendQueryResults(CommandSource source, String translationKey, long value)
     {
-        source.sendFeedback(new TranslationTextComponent(translationKey, (int) value), false);
+        source.sendSuccess(new TranslationTextComponent(translationKey, (int) value), false);
         return Command.SINGLE_SUCCESS;
     }
 }

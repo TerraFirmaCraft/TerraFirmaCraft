@@ -26,13 +26,13 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
     }
 
     @Override
-    default ItemStack getRecipeOutput()
+    default ItemStack getResultItem()
     {
         return new ItemStack(getBlockRecipeOutput());
     }
 
     @Override
-    default ItemStack getCraftingResult(BlockRecipeWrapper inv)
+    default ItemStack assemble(BlockRecipeWrapper inv)
     {
         return new ItemStack(getBlockCraftingResult(inv).getBlock());
     }
@@ -50,7 +50,7 @@ public interface IBlockRecipe extends ISimpleRecipe<BlockRecipeWrapper>
      */
     default BlockState getBlockCraftingResult(BlockRecipeWrapper wrapper)
     {
-        return getBlockRecipeOutput().getDefaultState();
+        return getBlockRecipeOutput().defaultBlockState();
     }
 
     /**

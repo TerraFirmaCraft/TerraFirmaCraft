@@ -50,8 +50,8 @@ public final class TFCFluids
             final Lazy<FlowingFluid> flowing = Lazy.of(() -> map.get(metal).get(Type.FLOWING).get());
             ForgeFlowingFluid.Properties properties = new ForgeFlowingFluid.Properties(source, flowing,
                 FluidAttributes.builder(LAVA_STILL, LAVA_FLOW).color(metal.getColor()))
-                .block(TFCBlocks.BLOCKS.register(blockName, () -> new FlowingFluidBlock(source, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops())))
-                .bucket(TFCItems.ITEMS.register(bucketName, () -> new BucketItem(source, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(ItemGroup.MISC))));
+                .block(TFCBlocks.BLOCKS.register(blockName, () -> new FlowingFluidBlock(source, Block.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops())))
+                .bucket(TFCItems.ITEMS.register(bucketName, () -> new BucketItem(source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ItemGroup.TAB_MISC))));
 
             Map<Type, RegistryObject<FlowingFluid>> inner = new EnumMap<>(Type.class);
             inner.put(Type.SOURCE, FLUIDS.register(sourceName, () -> new ForgeFlowingFluid.Source(properties)));

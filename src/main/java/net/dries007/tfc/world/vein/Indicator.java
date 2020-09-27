@@ -65,18 +65,18 @@ public class Indicator
 
         public Indicator read(JsonElement element)
         {
-            JsonObject obj = JSONUtils.getJsonObject(element, "indicator");
-            int maxDepth = JSONUtils.getInt(obj, "max_depth", 32);
+            JsonObject obj = JSONUtils.convertToJsonObject(element, "indicator");
+            int maxDepth = JSONUtils.getAsInt(obj, "max_depth", 32);
             if (maxDepth <= 0)
             {
                 throw new JsonParseException("Max depth must be > 0");
             }
-            int rarity = JSONUtils.getInt(obj, "rarity", 10);
+            int rarity = JSONUtils.getAsInt(obj, "rarity", 10);
             if (rarity <= 0)
             {
                 throw new JsonParseException("Rarity must be > 0");
             }
-            boolean ignoreLiquids = JSONUtils.getBoolean(obj, "ignore_liquids", false);
+            boolean ignoreLiquids = JSONUtils.getAsBoolean(obj, "ignore_liquids", false);
             IWeighted<BlockState> states = TFCJSONUtils.getWeighted(obj.get("blocks"), TFCJSONUtils::getBlockState);
             if (states.isEmpty())
             {
