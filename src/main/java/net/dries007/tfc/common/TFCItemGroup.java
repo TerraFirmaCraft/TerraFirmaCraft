@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.Lazy;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.common.types.Rock;
@@ -32,7 +33,7 @@ public final class TFCItemGroup extends ItemGroup
     //public static final ItemGroup POTTERY = new TFCItemGroup("pottery", "tfc:ceramics/fired/mold/ingot");
     //public static final ItemGroup FOOD = new TFCItemGroup("food", "tfc:food/green_apple");
     public static final ItemGroup MISC = new TFCItemGroup(TerraFirmaCraft.MOD_ID + ".misc", () -> new ItemStack(TFCItems.ROCK_ITEMS.get(Rock.Default.CHERT).get(Rock.ItemType.BRICK).get()));
-    //public static final ItemGroup FLORA = new TFCItemGroup("flora", "tfc:plants/goldenrod");
+    public static final ItemGroup FLORA = new TFCItemGroup(TerraFirmaCraft.MOD_ID + ".flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()));
 
     private final Lazy<ItemStack> iconStack;
 

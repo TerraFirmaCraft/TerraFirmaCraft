@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.plant;
+package net.dries007.tfc.common.blocks.plant;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BushBlock;
@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.Tags;
 
-import net.dries007.tfc.objects.TFCTags;
+import net.dries007.tfc.common.TFCTags;
 
 public class TFCBushBlock extends BushBlock
 {

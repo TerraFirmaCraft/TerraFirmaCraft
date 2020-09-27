@@ -3,13 +3,13 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.plant;
+package net.dries007.tfc.common.blocks.plant;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
-import net.dries007.tfc.api.calendar.Month;
+import net.dries007.tfc.util.calendar.Month;
 
 public enum Plant
 {

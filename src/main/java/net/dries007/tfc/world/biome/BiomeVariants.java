@@ -25,6 +25,7 @@ public class BiomeVariants implements Supplier<TFCBiome>
 {
     private final Map<BiomeTemperature, Map<BiomeRainfall, RegistryObject<TFCBiome>>> biomeVariants;
     private final List<RegistryObject<TFCBiome>> allVariants;
+    private final String baseName;
     private final IFactory factory;
     private boolean spawnBiome;
 
@@ -35,6 +36,7 @@ public class BiomeVariants implements Supplier<TFCBiome>
 
     public BiomeVariants(DeferredRegister<Biome> registry, String baseName, IFactory factory)
     {
+        this.baseName = baseName;
         this.factory = factory;
         this.biomeVariants = new EnumMap<>(BiomeTemperature.class);
         this.allVariants = new ArrayList<>();
@@ -85,6 +87,11 @@ public class BiomeVariants implements Supplier<TFCBiome>
     public List<RegistryObject<TFCBiome>> getAll()
     {
         return allVariants;
+    }
+
+    public String getBaseName()
+    {
+        return baseName;
     }
 
     public boolean isSpawnBiome()

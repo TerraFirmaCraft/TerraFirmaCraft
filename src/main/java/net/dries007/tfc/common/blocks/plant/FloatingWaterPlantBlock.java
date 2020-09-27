@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.objects.blocks.plant;
+package net.dries007.tfc.common.blocks.plant;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,8 +16,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
-import net.dries007.tfc.objects.blocks.IBlockItemSupplier;
-import net.dries007.tfc.objects.items.blockitems.FloatingWaterPlantItem;
+import net.dries007.tfc.common.blocks.IBlockItemSupplier;
+import net.dries007.tfc.common.items.blockitems.FloatingWaterPlantItem;
 
 public abstract class FloatingWaterPlantBlock extends PlantBlock implements IBlockItemSupplier
 {
