@@ -6,7 +6,7 @@
     "overlay": "tfc:white_cedar/overlay",
     "trunk": {
       "state": {
-        "Name": "tfc:wood/white_cedar/maple",
+        "Name": "tfc:wood/log/white_cedar",
         "Properties": {
           "axis": "y"
         }

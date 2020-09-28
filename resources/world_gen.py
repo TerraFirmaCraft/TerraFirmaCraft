@@ -112,7 +112,7 @@ def generate(rm: ResourceManager):
     rm.feature(('tree', 'douglas_fir_large'), wg.configure('tfc:random_tree', random_config('douglas_fir', 5, 2, True)))
     rm.feature(('tree', 'hickory'), wg.configure('tfc:random_tree', random_config('hickory', 9)))
     rm.feature(('tree', 'hickory_large'), wg.configure('tfc:random_tree', random_config('hickory', 5, 2, True)))
-    rm.feature(('tree', 'kapok'), wg.configure('tfc:random_tree', random_config('kapok', 10)))
+    rm.feature(('tree', 'kapok'), wg.configure('tfc:random_tree', random_config('kapok', 11)))
     rm.feature(('tree', 'maple'), wg.configure('tfc:overlay_tree', overlay_config('maple', 2, 4)))
     rm.feature(('tree', 'maple_large'), wg.configure('tfc:random_tree', random_config('maple', 5, 2, True)))
     rm.feature(('tree', 'oak'), wg.configure('tfc:overlay_tree', overlay_config('oak', 3, 5)))
@@ -121,9 +121,9 @@ def generate(rm: ResourceManager):
     rm.feature(('tree', 'pine_large'), wg.configure('tfc:random_tree', random_config('pine', 5, 2, True)))
     rm.feature(('tree', 'rosewood'), wg.configure('tfc:overlay_tree', overlay_config('rosewood', 1, 3)))
     rm.feature(('tree', 'sequoia'), wg.configure('tfc:random_tree', random_config('sequoia', 7)))
-    rm.feature(('tree', 'sequoia_large'), wg.configure('tfc:stacked_tree', stacked_config('sequoia', 3, 7, 2, [(2, 4, 3), (1, 2, 3), (1, 1, 3)], 2, True)))
+    rm.feature(('tree', 'sequoia_large'), wg.configure('tfc:stacked_tree', stacked_config('sequoia', 5, 9, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True)))
     rm.feature(('tree', 'spruce'), wg.configure('tfc:random_tree', random_config('sequoia', 7)))
-    rm.feature(('tree', 'spruce_large'), wg.configure('tfc:stacked_tree', stacked_config('spruce', 3, 5, 2, [(1, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True)))
+    rm.feature(('tree', 'spruce_large'), wg.configure('tfc:stacked_tree', stacked_config('spruce', 5, 9, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True)))
     rm.feature(('tree', 'sycamore'), wg.configure('tfc:overlay_tree', overlay_config('sycamore', 2, 5)))
     rm.feature(('tree', 'sycamore_large'), wg.configure('tfc:random_tree', random_config('sycamore', 5, 2, True)))
     rm.feature(('tree', 'white_cedar'), wg.configure('tfc:overlay_tree', overlay_config('white_cedar', 1, 5)))
@@ -168,7 +168,7 @@ def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: f
 
 
 def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, large: bool = False):
-    block = 'tfc:wood/%s/maple[axis=y]' % tree
+    block = 'tfc:wood/log/%s[axis=y]' % tree
     if large:
         tree += '_large'
     return {
@@ -180,7 +180,7 @@ def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, 
 
 
 def random_config(tree: str, structure_count: int, radius: int = 1, large: bool = False, trunk: List = None):
-    block = 'tfc:wood/%s/maple[axis=y]' % tree
+    block = 'tfc:wood/log/%s[axis=y]' % tree
     if large:
         tree += '_large'
     cfg = {
@@ -194,7 +194,7 @@ def random_config(tree: str, structure_count: int, radius: int = 1, large: bool 
 
 def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, large: bool = False):
     # layers consists of each layer, which is a (min_count, max_count, total_templates)
-    block = 'tfc:wood/%s/maple[axis=y]' % tree
+    block = 'tfc:wood/log/%s[axis=y]' % tree
     if large:
         tree += '_large'
     return {

@@ -75,7 +75,7 @@ def make_tree_variant(wood: str, variant: str):
         for i in range(1, 1 + 7):
             make_tree_structure('willow%d' % i, wood, str(i))
     elif variant == 'jungle':
-        for i in range(1, 1 + 10):
+        for i in range(1, 1 + 11):
             make_tree_structure('jungle%d' % i, wood, str(i))
     elif variant == 'conifer':
         for i in range(1, 1 + 9):

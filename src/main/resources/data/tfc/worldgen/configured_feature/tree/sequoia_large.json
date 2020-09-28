@@ -4,13 +4,13 @@
   "config": {
     "trunk": {
       "state": {
-        "Name": "tfc:wood/sequoia/maple",
+        "Name": "tfc:wood/log/sequoia",
         "Properties": {
           "axis": "y"
         }
       },
-      "min_height": 3,
-      "max_height": 7,
+      "min_height": 5,
+      "max_height": 9,
       "width": 2
     },
     "layers": [
@@ -21,7 +21,7 @@
           "tfc:sequoia_large/layer1_3"
         ],
         "min_count": 2,
-        "max_count": 4
+        "max_count": 3
       },
       {
         "templates": [

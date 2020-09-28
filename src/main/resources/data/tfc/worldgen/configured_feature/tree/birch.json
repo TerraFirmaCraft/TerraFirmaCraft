@@ -23,7 +23,7 @@
     "radius": 1,
     "trunk": {
       "state": {
-        "Name": "tfc:wood/birch/maple",
+        "Name": "tfc:wood/log/birch",
         "Properties": {
           "axis": "y"
         }

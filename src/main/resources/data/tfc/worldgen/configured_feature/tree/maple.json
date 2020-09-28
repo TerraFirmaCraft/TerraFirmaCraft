@@ -6,7 +6,7 @@
     "overlay": "tfc:maple/overlay",
     "trunk": {
       "state": {
-        "Name": "tfc:wood/maple/maple",
+        "Name": "tfc:wood/log/maple",
         "Properties": {
           "axis": "y"
         }
