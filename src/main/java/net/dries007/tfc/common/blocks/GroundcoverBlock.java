@@ -38,33 +38,34 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     protected static final VoxelShape SMALL = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
     protected static final VoxelShape MEDIUM = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
     protected static final VoxelShape LARGE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
+    protected static final VoxelShape PIXEL_HIGH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     public VoxelShape shape;
 
     public GroundcoverBlock(MiscCoverTypes cover)
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART));
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion());
         shape = cover.getShape();
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
     public GroundcoverBlock(RockCoverTypes cover)
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.STONE));
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.STONE).noOcclusion());
         shape = cover.getShape();
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
     public GroundcoverBlock(WoodCoverTypes cover)
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.SCAFFOLDING));
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.SCAFFOLDING).noOcclusion());
         shape = cover.getShape();
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
     public GroundcoverBlock() // used for nuggets
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE));
+        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noOcclusion());
         shape = SMALL;
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
@@ -156,7 +157,7 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
         BONES(MEDIUM, false), // drops bones
         BRANCH(FLAT, false), // drops sticks
         CLAM(SMALL, true), // flux
-        DEAD_GRASS(FLAT, false), // drops straw
+        DEAD_GRASS(PIXEL_HIGH, false), // drops straw
         DRIFTWOOD(FLAT, false), // drops sticks
         FEATHER(FLAT, false),
         FLINT(SMALL, false),
@@ -164,9 +165,9 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
         MOLLUSK(SMALL, true), // flux
         MUSSEL(SMALL, true), // flux
         PINECONE(SMALL, false), // drops something useful for compost?
-        PODZOL(FLAT, false), // drops something useful for compost?
+        PODZOL(PIXEL_HIGH, false), // drops something useful for compost?
         ROTTEN_FLESH(FLAT, false),
-        SALT_LICK(FLAT, false), // drops salt
+        SALT_LICK(PIXEL_HIGH, false), // drops salt
         SEAWEED(FLAT, false), // drops seaweed (tbd)
         STICK(FLAT, false);
 
