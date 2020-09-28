@@ -13,7 +13,6 @@ import net.minecraft.util.text.ITextComponent;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.dries007.tfc.client.ClientHelpers;
 
 public abstract class TFCContainerScreen<C extends Container> extends ContainerScreen<C>
 {
@@ -44,6 +43,6 @@ public abstract class TFCContainerScreen<C extends Container> extends ContainerS
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.getTextureManager().bind(texture);
-        ClientHelpers.drawTexturedRect(matrixStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        blit(matrixStack, leftPos, topPos, 0, (float) 0, (float) 0, imageWidth, imageHeight, 256, 256);
     }
 }

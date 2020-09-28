@@ -20,6 +20,17 @@
       "tfc:birch/15",
       "tfc:birch/16"
     ],
-    "radius": 1
+    "radius": 1,
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/birch/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 2,
+      "max_height": 3,
+      "width": 1
+    }
   }
 }

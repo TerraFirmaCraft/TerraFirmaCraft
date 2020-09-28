@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -24,15 +23,15 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
-public class ForestFeature extends Feature<ForestFeatureConfig>
+public class ForestFeature extends Feature<ForestConfig>
 {
-    public ForestFeature(Codec<ForestFeatureConfig> codec)
+    public ForestFeature(Codec<ForestConfig> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestFeatureConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestConfig config)
     {
         final ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.FLORA)).orElseThrow(() -> new IllegalStateException("Missing flora data, cannot place forests."));
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
@@ -74,7 +73,7 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
         return placedTrees;
     }
 
-    private boolean placeTree(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestFeatureConfig config, ChunkData data, BlockPos.Mutable mutablePos, boolean allowOldGrowth)
+    private boolean placeTree(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.Mutable mutablePos, boolean allowOldGrowth)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
@@ -82,7 +81,7 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
-        final ForestFeatureConfig.Entry entry = getTree(data, random, config, mutablePos);
+        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)
         {
             ConfiguredFeature<?, ?> feature;
@@ -100,12 +99,12 @@ public class ForestFeature extends Feature<ForestFeatureConfig>
     }
 
     @Nullable
-    private ForestFeatureConfig.Entry getTree(ChunkData chunkData, Random random, ForestFeatureConfig config, BlockPos pos)
+    private ForestConfig.Entry getTree(ChunkData chunkData, Random random, ForestConfig config, BlockPos pos)
     {
-        List<ForestFeatureConfig.Entry> entries = new ArrayList<>(4);
+        List<ForestConfig.Entry> entries = new ArrayList<>(4);
         float rainfall = chunkData.getRainfall(pos);
         float averageTemperature = chunkData.getAverageTemp(pos);
-        for (ForestFeatureConfig.Entry entry : config.getEntries())
+        for (ForestConfig.Entry entry : config.getEntries())
         {
             if (entry.isValid(rainfall, averageTemperature))
             {

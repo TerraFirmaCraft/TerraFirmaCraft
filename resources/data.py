@@ -45,4 +45,11 @@ def generate(rm: ResourceManager):
             'category': rock_data.category,
             'desert_sand_color': rock_data.desert_sand_color,
             'beach_sand_color': rock_data.beach_sand_color
+<<<<<<< HEAD
         })
+=======
+        })
+
+    rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
+    rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
+>>>>>>> upstream/1.16.x
