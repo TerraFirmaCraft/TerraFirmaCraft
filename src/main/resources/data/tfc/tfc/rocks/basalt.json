@@ -11,9 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/basalt",
     "chiseled": "tfc:rock/chiseled/basalt",
     "spike": "tfc:rock/spike/basalt",
-    "pebble": "tfc:rock/pebble/basalt",
-    "rubble": "tfc:rock/rubble/basalt",
-    "boulder": "tfc:rock/boulder/basalt"
+    "pebble": "tfc:rock/pebble/basalt"
   },
   "category": "igneous_extrusive",
   "desert_sand_color": "red",

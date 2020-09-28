@@ -31,7 +31,7 @@ public final class TFCItemGroup extends ItemGroup
     //public static final ItemGroup GEMS = new TFCItemGroup("gems", "tfc:gem/diamond");
     //public static final ItemGroup POTTERY = new TFCItemGroup("pottery", "tfc:ceramics/fired/mold/ingot");
     //public static final ItemGroup FOOD = new TFCItemGroup("food", "tfc:food/green_apple");
-    public static final ItemGroup MISC = new TFCItemGroup(TerraFirmaCraft.MOD_ID + ".misc", () -> new ItemStack(TFCItems.ROCK_ITEMS.get(Rock.Default.CHERT).get(Rock.ItemType.BRICK).get()));
+    public static final ItemGroup MISC = new TFCItemGroup(TerraFirmaCraft.MOD_ID + ".misc", () -> new ItemStack(TFCItems.LOOSE_ROCKS.get(Rock.Default.CHERT).get()));
     //public static final ItemGroup FLORA = new TFCItemGroup("flora", "tfc:plants/goldenrod");
 
     private final Lazy<ItemStack> iconStack;

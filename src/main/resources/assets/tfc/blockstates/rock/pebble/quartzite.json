@@ -1,19 +1,94 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
+    "facing=east,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/quartzite",
       "y": 90
     },
-    "facing=north": {
+    "facing=north,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/quartzite"
     },
-    "facing=south": {
+    "facing=south,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/quartzite",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/quartzite",
+      "y": 270
+    },
+    "facing=east,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/quartzite",
+      "y": 90
+    },
+    "facing=north,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/quartzite"
+    },
+    "facing=south,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/quartzite",
+      "y": 180
+    },
+    "facing=west,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/quartzite",
+      "y": 270
+    },
+    "facing=east,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/quartzite",
+      "y": 90
+    },
+    "facing=north,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/quartzite"
+    },
+    "facing=south,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/quartzite",
+      "y": 180
+    },
+    "facing=west,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/quartzite",
+      "y": 270
+    },
+    "facing=east,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/quartzite",
+      "y": 90
+    },
+    "facing=north,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/quartzite"
+    },
+    "facing=south,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/quartzite",
+      "y": 180
+    },
+    "facing=west,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/quartzite",
+      "y": 270
+    },
+    "facing=east,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/quartzite",
+      "y": 90
+    },
+    "facing=north,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/quartzite"
+    },
+    "facing=south,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/quartzite",
+      "y": 180
+    },
+    "facing=west,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/quartzite",
+      "y": 270
+    },
+    "facing=east,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/quartzite",
+      "y": 90
+    },
+    "facing=north,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/quartzite"
+    },
+    "facing=south,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/quartzite",
+      "y": 180
+    },
+    "facing=west,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/quartzite",
       "y": 270
     }
   }

@@ -11,9 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/schist",
     "chiseled": "tfc:rock/chiseled/schist",
     "spike": "tfc:rock/spike/schist",
-    "pebble": "tfc:rock/pebble/schist",
-    "rubble": "tfc:rock/rubble/schist",
-    "boulder": "tfc:rock/boulder/schist"
+    "pebble": "tfc:rock/pebble/schist"
   },
   "category": "metamorphic",
   "desert_sand_color": "yellow",

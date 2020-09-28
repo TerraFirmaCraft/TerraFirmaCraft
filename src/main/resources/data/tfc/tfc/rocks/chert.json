@@ -11,9 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/chert",
     "chiseled": "tfc:rock/chiseled/chert",
     "spike": "tfc:rock/spike/chert",
-    "pebble": "tfc:rock/pebble/chert",
-    "rubble": "tfc:rock/rubble/chert",
-    "boulder": "tfc:rock/boulder/chert"
+    "pebble": "tfc:rock/pebble/chert"
   },
   "category": "sedimentary",
   "desert_sand_color": "brown",
