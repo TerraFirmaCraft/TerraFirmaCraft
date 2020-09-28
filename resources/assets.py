@@ -194,21 +194,38 @@ def generate(rm: ResourceManager):
     # Plants
     # This is special cased since it is too much overdatailed in 1.12
     # Block and item models are hand made
-    for plant in PLANTS:
-        rm.lang('block.tfc.plant.%s' % plant, lang('%s' % plant))
-        # rm.block_loot(('plant', '%s' % plant), 'tfc:plant/%s' % plant) # todo: thatch on knife harvest, block stack on shears
-        rm.block_loot(('plant', '%s' % plant), [{'entries': {
+    for plant_name, plant in PLANTS.items():
+        rm.lang('block.tfc.plant.%s' % plant_name, lang('%s' % plant_name))
+        # rm.block_loot(('plant', '%s' % plant_name), 'tfc:plant/%s' % plant_name) # todo: thatch on knife harvest, block stack on shears
+        rm.block_loot(('plant', '%s' % plant_name), [{'entries': {
                 'type': 'minecraft:alternatives',
                 'children': ([{
                     'type': 'minecraft:item',
                     'conditions': [loot_tables.match_tool('minecraft:shears')],
-                    'name': 'tfc:plant/%s' % plant
+                    'name': 'tfc:plant/%s' % plant_name
                 }, {
                     'type': 'minecraft:item',
                     'conditions': [loot_tables.match_tool('minecraft:stone_axe')], # todo: change to knife
                     'name': 'minecraft:grass'  # todo: change to thatch
                 }])
             }, 'conditions': None}])
+        rm.data(('tfc', 'flora', plant_name), {
+            'type': 'tfc:plant',
+            'rules': [
+            {
+                'type': 'tfc:temperature',
+                'minimum': plant.min_temp,
+                'maximum': plant.max_temp
+            }, 
+            {
+                'type': 'tfc:rainfall',
+                'minimum': plant.min_rain,
+                'maximum': plant.max_rain
+            }],
+            'rarity': 1,
+            'density': 30,
+            'blocks': 'tfc:plant/' + plant_name
+        })
 
     # Rock Tools
     for rock in ROCK_CATEGORIES:

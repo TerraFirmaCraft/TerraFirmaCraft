@@ -22,7 +22,6 @@ import net.dries007.tfc.util.json.TFCJSONUtils;
 
 public class PlantFloraType extends FloraType
 {
-    protected final int size;
     protected final float density;
     private final IWeighted<BlockState> blocks;
 
@@ -39,41 +38,25 @@ public class PlantFloraType extends FloraType
         {
             throw new JsonParseException("Block states cannot be empty.");
         }
-        size = JSONUtils.getInt(json, "size", 8);
-        if (size <= 0 || size > 16)
+        density = JSONUtils.getAsInt(json, "density", 20);
+        if (density <= 0)
         {
-            throw new JsonParseException("Size must be in [1, 16].");
-        }
-        density = JSONUtils.getInt(json, "density", 20) / 100f;
-        if (density <= 0 || density > 1)
-        {
-            throw new JsonParseException("Density must be in [1, 100]");
+            throw new JsonParseException("Density must be higher than 0.");
         }
     }
 
     @Override
     public void generate(IWorld world, BlockPos chunkStart, Random random)
     {
-        int minX = chunkStart.getX();
-        int maxX = chunkStart.getX() + 15;
-        int minZ = chunkStart.getZ();
-        int maxZ = chunkStart.getZ() + 15;
-        // Larger sizes are kept more to the center, so it will fully generate
-        int centerX = minX + 8 - random.nextInt(8 - (size - 1) / 2) + random.nextInt(8 - (size - 1) / 2);
-        int centerZ = minZ + 8 - random.nextInt(8 - (size - 1) / 2) + random.nextInt(8 - (size - 1) / 2);
-        for (int x = Math.max(minX, centerX - size / 2); x < Math.min(maxX, centerX + size / 2); x++)
+        for (int i = 0; i < density; i++)
         {
-            for (int z = Math.max(minZ, centerZ - size / 2); z < Math.min(maxZ, centerZ + size / 2); z++)
+            int x = chunkStart.getX() + random.nextInt(16);
+            int z = chunkStart.getZ() + random.nextInt(16);
+            BlockState state = blocks.get(random);
+            BlockPos aboveGround = world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, new BlockPos(x, 0, z));
+            if (world.getBlockState(aboveGround).getMaterial().isReplaceable() && state.canSurvive(world, aboveGround))
             {
-                if (random.nextDouble() < density)
-                {
-                    BlockState state = blocks.get(random);
-                    BlockPos aboveGround = world.getHeight(Heightmap.Type.WORLD_SURFACE, new BlockPos(x, 0, z));
-                    if (world.getBlockState(aboveGround).getMaterial().isReplaceable() && state.isValidPosition(world, aboveGround))
-                    {
-                        world.setBlockState(aboveGround, state, 3);
-                    }
-                }
+                world.setBlock(aboveGround, state, 3);
             }
         }
     }

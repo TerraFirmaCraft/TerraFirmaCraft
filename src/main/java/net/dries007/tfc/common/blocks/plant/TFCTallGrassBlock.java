@@ -32,38 +32,39 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public TFCTallGrassBlock(Properties properties)
     {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(PART, EnumBlockPart.LOWER));
+
+        registerDefaultState(stateDefinition.any().setValue(PART, EnumBlockPart.LOWER));
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        EnumBlockPart part = stateIn.get(PART);
-        if (facing.getAxis() != Direction.Axis.Y || part == EnumBlockPart.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.get(PART) != part)
+        EnumBlockPart part = stateIn.getValue(PART);
+        if (facing.getAxis() != Direction.Axis.Y || part == EnumBlockPart.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.getValue(PART) != part)
         {
-            return part == EnumBlockPart.LOWER && facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return part == EnumBlockPart.LOWER && facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
         else
         {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        if (state.get(PART) == EnumBlockPart.LOWER)
+        if (state.getValue(PART) == EnumBlockPart.LOWER)
         {
-            return super.isValidPosition(state, worldIn, pos);
+            return super.canSurvive(state, worldIn, pos);
         }
         else
         {
-            BlockState blockstate = worldIn.getBlockState(pos.down());
+            BlockState blockstate = worldIn.getBlockState(pos.below());
             if (state.getBlock() != this)
             {
-                return super.isValidPosition(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+                return super.canSurvive(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             }
-            return blockstate.getBlock() == this && blockstate.get(PART) == EnumBlockPart.LOWER;
+            return blockstate.getBlock() == this && blockstate.getValue(PART) == EnumBlockPart.LOWER;
         }
     }
 
@@ -71,40 +72,45 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockPos pos = context.getPos();
-        return pos.getY() < context.getWorld().getDimension().getHeight() - 1 && context.getWorld().getBlockState(pos.up()).isReplaceable(context) ? super.getStateForPlacement(context) : null;
+        BlockPos pos = context.getClickedPos();
+        return pos.getY() < 255 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context) ? super.getStateForPlacement(context) : null;
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockState(pos.up(), this.getDefaultState().with(PART, EnumBlockPart.UPPER));
+        worldIn.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, EnumBlockPart.UPPER));
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
+    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player)
     {
-        EnumBlockPart part = state.get(PART);
-        BlockPos blockpos = part == EnumBlockPart.LOWER ? pos.up() : pos.down();
-        BlockState blockstate = worldIn.getBlockState(blockpos);
-        if (blockstate.getBlock() == this && blockstate.get(PART) != part)
+        if (!worldIn.isClientSide)
         {
-            worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
-            worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
-            if (!worldIn.isRemote && !player.isCreative())
+            if (player.isCreative())
             {
-                spawnDrops(state, worldIn, pos, null, player, player.getHeldItemMainhand());
-                spawnDrops(blockstate, worldIn, blockpos, null, player, player.getHeldItemMainhand());
+                if (state.getValue(PART) == EnumBlockPart.UPPER)
+                {
+                    BlockPos blockpos = pos.below();
+                    BlockState blockstate = worldIn.getBlockState(blockpos);
+                    if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == EnumBlockPart.LOWER)
+                    {
+                        worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+                        worldIn.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
+                    }
+                }
+            }
+            else
+            {
+                dropResources(state, worldIn, pos, null, player, player.getMainHandItem());
             }
         }
-
-        super.onBlockHarvested(worldIn, pos, state, player);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
-        return getTallShape(state.get(AGE), world, pos);
+        return getTallShape(state.getValue(AGE), world, pos);
     }
 
     @Override
@@ -114,9 +120,9 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.fillStateContainer(builder);
+        super.createBlockStateDefinition(builder);
         builder.add(PART);
     }
 }

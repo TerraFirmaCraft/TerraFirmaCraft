@@ -28,7 +28,7 @@ public abstract class FloraType
     public FloraType(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        rarity = JSONUtils.getInt(json, "rarity");
+        rarity = JSONUtils.getAsInt(json, "rarity");
         if (rarity <= 0)
         {
             throw new JsonParseException("Rarity must be higher than 0.");

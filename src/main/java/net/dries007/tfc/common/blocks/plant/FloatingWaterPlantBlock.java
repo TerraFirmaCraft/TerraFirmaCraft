@@ -10,6 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.LilyPadItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -17,11 +18,10 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
 import net.dries007.tfc.common.blocks.IBlockItemSupplier;
-import net.dries007.tfc.common.items.blockitems.FloatingWaterPlantItem;
 
 public abstract class FloatingWaterPlantBlock extends PlantBlock implements IBlockItemSupplier
 {
-    protected static final VoxelShape SHAPE = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 1.5D, 15.0D);
+    protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 1.5D, 15.0D);
 
     public FloatingWaterPlantBlock(Properties properties)
     {
@@ -29,9 +29,9 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock implements IBlo
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getMaterial() == Material.WATER;
+        return worldIn.getBlockState(pos.below()).getMaterial() == Material.WATER;
     }
 
     @Override
@@ -43,6 +43,6 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock implements IBlo
     @Override
     public BlockItem apply(Item.Properties properties)
     {
-        return new FloatingWaterPlantItem(this, properties);
+        return new LilyPadItem(this, properties);
     }
 }

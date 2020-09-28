@@ -13,8 +13,8 @@ import net.minecraft.world.IBlockReader;
 
 public interface ITallPlant
 {
-    VoxelShape PLANT_SHAPE = Block.makeCuboidShape(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
-    VoxelShape SHORTER_PLANT_SHAPE = Block.makeCuboidShape(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
+    VoxelShape PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    VoxelShape SHORTER_PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
 
     default VoxelShape getTallShape(int age, IBlockReader world, BlockPos pos)
     {
@@ -34,15 +34,15 @@ public interface ITallPlant
 
     default EnumBlockPart getPlantPart(IBlockReader world, BlockPos pos)
     {
-        if (world.getBlockState(pos.down()).getBlock() != this && world.getBlockState(pos.up()).getBlock() == this)
+        if (world.getBlockState(pos.below()).getBlock() != this && world.getBlockState(pos.above()).getBlock() == this)
         {
             return EnumBlockPart.LOWER;
         }
-        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() == this)
+        if (world.getBlockState(pos.below()).getBlock() == this && world.getBlockState(pos.above()).getBlock() == this)
         {
             return EnumBlockPart.MIDDLE;
         }
-        if (world.getBlockState(pos.down()).getBlock() == this && world.getBlockState(pos.up()).getBlock() != this)
+        if (world.getBlockState(pos.below()).getBlock() == this && world.getBlockState(pos.above()).getBlock() != this)
         {
             return EnumBlockPart.UPPER;
         }
@@ -56,12 +56,14 @@ public interface ITallPlant
         LOWER,
         SINGLE;
 
+        @Override
         public String toString()
         {
-            return this.getName();
+            return this.getSerializedName();
         }
 
-        public String getName()
+        @Override
+        public String getSerializedName()
         {
             return name().toLowerCase();
         }

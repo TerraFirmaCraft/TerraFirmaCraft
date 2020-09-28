@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:plant",
+  "rules": [
+    {
+      "type": "tfc:temperature",
+      "minimum": -40,
+      "maximum": 33
+    },
+    {
+      "type": "tfc:rainfall",
+      "minimum": 300,
+      "maximum": 500
+    }
+  ],
+  "rarity": 1,
+  "density": 30,
+  "blocks": "tfc:plant/ostrich_fern"
+}

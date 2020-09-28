@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:plant",
+  "rules": [
+    {
+      "type": "tfc:temperature",
+      "minimum": -12,
+      "maximum": 40
+    },
+    {
+      "type": "tfc:rainfall",
+      "minimum": 75,
+      "maximum": 150
+    }
+  ],
+  "rarity": 1,
+  "density": 30,
+  "blocks": "tfc:plant/fountain_grass"
+}

@@ -7,7 +7,7 @@ package net.dries007.tfc.common.blocks.plant;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LogBlock;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -23,20 +23,20 @@ import net.minecraft.world.IWorldReader;
 public abstract class EpiphytePlantBlock extends PlantBlock
 {
     protected static final DirectionProperty FACING = BlockStateProperties.FACING;
-    protected static final VoxelShape PLANT_UP_SHAPE = makeCuboidShape(4.0, 0.0, 4.0, 12.0, 12.0, 12.0);
-    protected static final VoxelShape PLANT_DOWN_SHAPE = makeCuboidShape(4.0, 4.0, 4.0, 12.0, 16.0, 12.0);
-    protected static final VoxelShape PLANT_NORTH_SHAPE = makeCuboidShape(0.0, 0.0, 4.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape PLANT_SOUTH_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, 12.0);
-    protected static final VoxelShape PLANT_WEST_SHAPE = makeCuboidShape(4.0, 0.0, 0.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape PLANT_EAST_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 12.0, 16.0, 16.0);
+    protected static final VoxelShape PLANT_UP_SHAPE = box(4.0, 0.0, 4.0, 12.0, 12.0, 12.0);
+    protected static final VoxelShape PLANT_DOWN_SHAPE = box(4.0, 4.0, 4.0, 12.0, 16.0, 12.0);
+    protected static final VoxelShape PLANT_NORTH_SHAPE = box(0.0, 0.0, 4.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape PLANT_SOUTH_SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 12.0);
+    protected static final VoxelShape PLANT_WEST_SHAPE = box(4.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape PLANT_EAST_SHAPE = box(0.0, 0.0, 0.0, 12.0, 16.0, 16.0);
 
     protected static final VoxelShape[] SHAPES = Util.make(new VoxelShape[6], shape -> {
-        shape[Direction.UP.getIndex()] = PLANT_UP_SHAPE;
-        shape[Direction.DOWN.getIndex()] = PLANT_DOWN_SHAPE;
-        shape[Direction.NORTH.getIndex()] = PLANT_NORTH_SHAPE;
-        shape[Direction.SOUTH.getIndex()] = PLANT_SOUTH_SHAPE;
-        shape[Direction.WEST.getIndex()] = PLANT_WEST_SHAPE;
-        shape[Direction.EAST.getIndex()] = PLANT_EAST_SHAPE;
+        shape[Direction.UP.ordinal()] = PLANT_UP_SHAPE;
+        shape[Direction.DOWN.ordinal()] = PLANT_DOWN_SHAPE;
+        shape[Direction.NORTH.ordinal()] = PLANT_NORTH_SHAPE;
+        shape[Direction.SOUTH.ordinal()] = PLANT_SOUTH_SHAPE;
+        shape[Direction.WEST.ordinal()] = PLANT_WEST_SHAPE;
+        shape[Direction.EAST.ordinal()] = PLANT_EAST_SHAPE;
     });
 
 
@@ -48,27 +48,27 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().with(FACING, context.getFace());
+        return defaultBlockState().setValue(FACING, context.getClickedFace());
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos)
+    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos)
     {
-        Direction direction = state.get(FACING);
-        return hasEnoughSolidSide(world, pos.offset(direction.getOpposite()), direction)
-            && world.getBlockState(pos.offset(direction.getOpposite())).getBlock() instanceof LogBlock;
+        Direction direction = state.getValue(FACING);
+        return canSupportCenter(world, pos.relative(direction.getOpposite()), direction)
+            && world.getBlockState(pos.relative(direction.getOpposite())).getBlock() instanceof RotatedPillarBlock;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return SHAPES[state.get(FACING).getIndex()];
+        return SHAPES[state.getValue(FACING).ordinal()];
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.fillStateContainer(builder);
+        super.createBlockStateDefinition(builder);
         builder.add(FACING);
     }
 }

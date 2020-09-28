@@ -134,11 +134,11 @@ public enum Plant
         public Block create(Plant plant)
         {
             // Common plant properties
-            Block.Properties properties = Block.Properties.create(Material.TALL_PLANTS).notSolid().speedFactor(plant.getSpeedFactor()).hardnessAndResistance(0).sound(SoundType.PLANT);
+            Block.Properties properties = Block.Properties.of(Material.PLANT).noOcclusion().speedFactor(plant.getSpeedFactor()).strength(0).sound(SoundType.GRASS);
             switch (this)
             {
                 case STANDARD:
-                    return new PlantBlock(properties.tickRandomly().doesNotBlockMovement())
+                    return new PlantBlock(properties.randomTicks().noCollission())
                     {
                         @Override
                         public int getMaxStage()
@@ -159,7 +159,7 @@ public enum Plant
                         }
                     };
                 case SHORT_GRASS:
-                    return new ShortGrassBlock(properties.tickRandomly().doesNotBlockMovement())
+                    return new ShortGrassBlock(properties.randomTicks().noCollission())
                     {
                         @Override
                         public int getMaxStage()
@@ -180,7 +180,7 @@ public enum Plant
                         }
                     };
                 case TALL_GRASS:
-                    return new TFCTallGrassBlock(properties.tickRandomly().doesNotBlockMovement())
+                    return new TFCTallGrassBlock(properties.randomTicks().noCollission())
                     {
                         @Override
                         public int getMaxStage()
@@ -201,7 +201,7 @@ public enum Plant
                         }
                     };
                 case TALL_PLANT:
-                    return new TFCTallGrassBlock(properties.tickRandomly())
+                    return new TFCTallGrassBlock(properties.randomTicks())
                     {
                         @Override
                         public int getMaxStage()
@@ -222,7 +222,7 @@ public enum Plant
                         }
                     };
                 case CACTUS:
-                    return new TFCCactusBlock(properties.tickRandomly())
+                    return new TFCCactusBlock(properties.randomTicks())
                     {
                         @Override
                         public int getMaxStage()
@@ -243,7 +243,7 @@ public enum Plant
                         }
                     };
                 case CREEPING:
-                    return new CreepingPlantBlock(properties.tickRandomly().doesNotBlockMovement())
+                    return new CreepingPlantBlock(properties.randomTicks().noCollission())
                     {
                         @Override
                         public int getMaxStage()
@@ -264,7 +264,7 @@ public enum Plant
                         }
                     };
                 case EPIPHYTE:
-                    return new EpiphytePlantBlock(properties.tickRandomly().doesNotBlockMovement())
+                    return new EpiphytePlantBlock(properties.randomTicks().noCollission())
                     {
                         @Override
                         public int getMaxStage()
@@ -285,7 +285,7 @@ public enum Plant
                         }
                     };
                 case HANGING:
-                    return new HangingPlantBlock(properties.tickRandomly().doesNotBlockMovement())
+                    return new HangingPlantBlock(properties.randomTicks().noCollission())
                     {
                         @Override
                         public int getMaxStage()
@@ -306,7 +306,7 @@ public enum Plant
                         }
                     };
                 case FLOATING:
-                    return new FloatingWaterPlantBlock(properties.tickRandomly())
+                    return new FloatingWaterPlantBlock(properties.randomTicks())
                     {
                         @Override
                         public int getMaxStage()
@@ -327,7 +327,7 @@ public enum Plant
                         }
                     };
             }
-            return new TFCBushBlock(properties.doesNotBlockMovement());
+            return new TFCBushBlock(properties.noCollission());
         }
     }
 }

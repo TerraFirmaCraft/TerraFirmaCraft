@@ -7,7 +7,9 @@ package net.dries007.tfc.world.feature;
 
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -35,7 +37,7 @@ public class TFCFeatures
 
     public static final RegistryObject<ForestFeature> FOREST = FEATURES.register("forest", () -> new ForestFeature(ForestConfig.CODEC));
 
-    public static final RegistryObject<FloraFeature> FLORA = FEATURES.register("flora", FloraFeature::new);
+    public static final RegistryObject<FloraFeature> FLORA = FEATURES.register("flora", () -> new FloraFeature(NoFeatureConfig.CODEC));
 
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = FEATURES.register("overlay_tree", () -> new OverlayTreeFeature(OverlayTreeConfig.CODEC));
     public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = FEATURES.register("random_tree", () -> new RandomTreeFeature(RandomTreeConfig.CODEC));
@@ -55,6 +57,7 @@ public class TFCFeatures
         register("forest");
         register("ore_veins");
         register("erosion");
+        register("flora");
     }
 
     private static void register(String name)

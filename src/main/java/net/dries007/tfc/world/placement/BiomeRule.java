@@ -7,6 +7,7 @@ package net.dries007.tfc.world.placement;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -17,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -25,13 +26,11 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 public class BiomeRule implements IPlacementRule
 {
     private final Set<Biome> biomes;
-    private final Set<BiomeDictionary.Type> types;
 
     public BiomeRule(JsonObject json)
     {
         biomes = new HashSet<>();
-        types = new HashSet<>();
-        JsonArray array = JSONUtils.getJsonArray(json, "list");
+        JsonArray array = JSONUtils.getAsJsonArray(json, "list");
         for (JsonElement element : array)
         {
             if (element.isJsonObject())
@@ -39,7 +38,8 @@ public class BiomeRule implements IPlacementRule
                 JsonObject obj = element.getAsJsonObject();
                 if (obj.has("tag"))
                 {
-                    types.add(BiomeDictionary.Type.getType(obj.get("tag").getAsString()));
+                    // todo BiomeDictionary was removed
+                    //types.add(BiomeDictionary.Type.getType(obj.get("tag").getAsString()));
                 }
                 else if (obj.has("biome"))
                 {
@@ -48,9 +48,12 @@ public class BiomeRule implements IPlacementRule
                 }
                 else if (obj.has("terrain"))
                 {
-                    ResourceLocation id = new ResourceLocation(obj.get("terrain").getAsString());
+                    String baseName = obj.get("terrain").getAsString();
                     // Search for TFC variants
-                    biomes.addAll(TFCBiomes.getBiomeVariants(id.getPath()));
+                    biomes.addAll(TFCBiomes.BIOMES.getEntries().stream()
+                        .filter(biome -> biome.getId().getPath().startsWith(baseName))
+                        .map(RegistryObject::get)
+                        .collect(Collectors.toList()));
                 }
             }
             else if (element.isJsonPrimitive())
@@ -64,8 +67,7 @@ public class BiomeRule implements IPlacementRule
     @Override
     public boolean test(IWorld world, BlockPos pos)
     {
-        Biome biome = world.getBiome(pos);
-        return biomes.contains(biome) || BiomeDictionary.getTypes(biome).stream().anyMatch(types::contains);
+        return biomes.contains(world.getBiome(pos));
     }
 
     private void addBiome(ResourceLocation id)
