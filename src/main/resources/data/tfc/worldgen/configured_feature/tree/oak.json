@@ -4,14 +4,17 @@
   "config": {
     "base": "tfc:oak/base",
     "overlay": "tfc:oak/overlay",
-    "height_min": 3,
-    "height_range": 3,
-    "trunk_state": {
-      "Name": "tfc:wood/log/oak",
-      "Properties": {
-        "axis": "y"
-      }
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/oak/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 3,
+      "max_height": 5,
+      "width": 1
     },
-    "radius": 2
+    "radius": 1
   }
 }

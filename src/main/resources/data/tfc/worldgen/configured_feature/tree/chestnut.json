@@ -2,15 +2,18 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:overlay_tree",
   "config": {
-    "base": "tfc:blackwood/base",
-    "overlay": "tfc:blackwood/overlay",
-    "height_min": 2,
-    "height_range": 3,
-    "trunk_state": {
-      "Name": "tfc:wood/log/chestnut",
-      "Properties": {
-        "axis": "y"
-      }
+    "base": "tfc:chestnut/base",
+    "overlay": "tfc:chestnut/overlay",
+    "trunk": {
+      "state": {
+        "Name": "tfc:wood/chestnut/maple",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "min_height": 2,
+      "max_height": 4,
+      "width": 1
     },
     "radius": 1
   }

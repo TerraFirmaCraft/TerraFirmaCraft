@@ -8,27 +8,32 @@ package net.dries007.tfc.world.biome;
 import java.util.*;
 import java.util.function.LongFunction;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.IBiomeReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeMaker;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.mixin.world.biome.BiomeMixin;
+import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
 import net.dries007.tfc.world.noise.INoise2D;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class TFCBiomes
+public final class TFCBiomes
 {
     public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, MOD_ID);
 
-    static final List<RegistryKey<Biome>> DEFAULT_BIOME_KEYS = new ArrayList<>();
+    private static final List<RegistryKey<Biome>> DEFAULT_BIOME_KEYS = new ArrayList<>();
     private static final List<BiomeVariants> VARIANTS = new ArrayList<>();
-    private static final Map<ResourceLocation, BiomeExtension> EXTENSIONS = new HashMap<>();
-    private static final Map<RegistryKey<Biome>, BiomeExtension> EXTENSIONS_BY_KEY = new HashMap<>();
+    private static final Map<RegistryKey<Biome>, BiomeExtension> EXTENSIONS = new HashMap<>(); // All extensions, indexed by registry key for quick access
+    private static final Map<Biome, BiomeExtension> CACHED_EXTENSIONS = new FiniteLinkedHashMap<>(128); // Faster route from biome -> extension
 
     // Aquatic biomes
     public static final BiomeVariants OCEAN = register("ocean", seed -> BiomeNoise.ocean(seed, -24, -6), BiomeVariants.LargeGroup.OCEAN); // Ocean biome found near continents.
@@ -58,9 +63,53 @@ public class TFCBiomes
     public static final BiomeVariants LAKE = register("lake", BiomeNoise::lake, BiomeVariants.LargeGroup.LAKE); // Biome for freshwater ocean areas / landlocked oceans
     public static final BiomeVariants RIVER = register("river", seed -> BiomeNoise.simple(seed, -6, -1), BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER); // Biome for river channels
 
-    public static BiomeExtension getExtension(Registry<Biome> registry, Biome biome)
+    public static BiomeExtension getExtensionOrThrow(IWorld world, Biome biome)
     {
-        return EXTENSIONS.get(registry.getKey(biome));
+        BiomeExtension extension = getExtension(world, biome);
+        if (extension == null)
+        {
+            throw new IllegalStateException("Biome missing a required extension!");
+        }
+        return extension;
+    }
+
+    @Nullable
+    public static BiomeExtension getExtension(IBiomeReader world, Biome biome)
+    {
+        // First query the cache, it is fast
+        BiomeExtension extension = CACHED_EXTENSIONS.get(biome);
+        if (extension == BiomeExtension.EMPTY)
+        {
+            // No match for this biome - this exists as a cache miss marker
+            return null;
+        }
+        else if (extension != null)
+        {
+            // Cache hit
+            return extension;
+        }
+        else
+        {
+            Registry<Biome> registry = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+            BiomeExtension lookupExtension = registry.getResourceKey(biome).map(EXTENSIONS::get).orElse(null);
+            if (lookupExtension != null)
+            {
+                // Save the extension and biome to the cache
+                CACHED_EXTENSIONS.put(biome, lookupExtension);
+                return lookupExtension;
+            }
+            else
+            {
+                // Mark this as a cache miss with the empty extension
+                CACHED_EXTENSIONS.put(biome, BiomeExtension.EMPTY);
+                return null;
+            }
+        }
+    }
+
+    public static List<RegistryKey<Biome>> getAllKeys()
+    {
+        return DEFAULT_BIOME_KEYS;
     }
 
     public static List<BiomeVariants> getVariants()
@@ -94,8 +143,7 @@ public class TFCBiomes
                 RegistryKey<Biome> key = RegistryKey.create(Registry.BIOME_REGISTRY, id);
                 BiomeExtension extension = new BiomeExtension(key, temp, rain, variants);
 
-                EXTENSIONS.put(id, extension);
-                EXTENSIONS_BY_KEY.put(key, extension);
+                EXTENSIONS.put(key, extension);
                 DEFAULT_BIOME_KEYS.add(key);
                 TFCBiomes.BIOMES.register(name, BiomeMaker::theVoidBiome);
 

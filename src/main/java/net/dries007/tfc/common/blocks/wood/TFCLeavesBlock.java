@@ -51,8 +51,6 @@ public abstract class TFCLeavesBlock extends Block
     {
         switch (maxDecayDistance)
         {
-            case 6:
-                return TFCBlockStateProperties.DISTANCE_1_6;
             case 7:
                 return TFCBlockStateProperties.DISTANCE_1_7;
             case 8:

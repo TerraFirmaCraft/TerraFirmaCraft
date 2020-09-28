@@ -13,14 +13,11 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-import net.minecraft.client.gui.widget.button.Button.IPressable;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 public class PlayerInventoryTabButton extends Button
@@ -86,8 +83,8 @@ public class PlayerInventoryTabButton extends Button
 
         tickCallback.run();
 
-        ClientHelpers.drawTexturedRect(matrixStack, x, y, textureU, textureV, width, height);
-        ClientHelpers.drawTexturedScaledRect(matrixStack, iconX, iconY, 16, 16, iconU, iconV, 32, 32, 256, 256);
+        blit(matrixStack, x, y, 0, (float) textureU, (float) textureV, width, height, 256, 256);
+        blit(matrixStack, iconX, iconY, 16, 16, (float) iconU, (float) iconV, 32, 32, 256, 256);
         RenderSystem.enableDepthTest();
     }
 

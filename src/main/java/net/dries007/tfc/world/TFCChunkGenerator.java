@@ -49,7 +49,6 @@ import net.dries007.tfc.world.noise.INoise2D;
 
 public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvidingChunkGenerator
 {
-    // todo: codec for chunk gen settings
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         BiomeProvider.CODEC.fieldOf("biome_source").forGetter(c -> c.biomeSource),
         DimensionSettings.CODEC.fieldOf("settings").forGetter(c -> () -> c.settings),
@@ -207,8 +206,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
         final Biome[] sampledBiomes4 = ChunkArraySampler.fillSampledArray(new Biome[13 * 13], biomeAccessor, 2);
         final Biome[] sampledBiomes1 = ChunkArraySampler.fillSampledArray(new Biome[24 * 24], biomeAccessor);
 
-        Registry<Biome> biomeRegistry = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
-        Function<Biome, BiomeVariants> variantAccessor = biome -> TFCBiomes.getExtension(biomeRegistry, biome).getVariants();
+        Function<Biome, BiomeVariants> variantAccessor = biome -> TFCBiomes.getExtensionOrThrow(world, biome).getVariants();
 
         for (int x = 0; x < 16; x++)
         {
@@ -227,7 +225,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
                 ChunkArraySampler.reduceGroupedWeightMap(weightMap1, weightMap4, variantAccessor.andThen(BiomeVariants::getSmallGroup), BiomeVariants.SmallGroup.SIZE);
 
                 // Based on total weight of all biomes included, calculate heights of a couple important groups
-                // Rivers and shores are seperated in order to force cliff generation
+                // Rivers and shores are separated in order to force cliff generation
                 double totalHeight = 0, riverHeight = 0, shoreHeight = 0;
                 double riverWeight = 0, shoreWeight = 0;
                 Biome biomeAt = null, normalBiomeAt = null, riverBiomeAt = null, shoreBiomeAt = null;

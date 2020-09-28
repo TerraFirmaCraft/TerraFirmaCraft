@@ -5,7 +5,11 @@
 
 package net.dries007.tfc.config;
 
+import java.util.function.Function;
+
 import net.minecraftforge.common.ForgeConfigSpec;
+
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Client Config
@@ -14,8 +18,15 @@ import net.minecraftforge.common.ForgeConfigSpec;
  */
 public class ClientConfig
 {
-    ClientConfig(ForgeConfigSpec.Builder builder)
-    {
+    public final ForgeConfigSpec.BooleanValue setTFCWorldPresetAsDefault;
+    public final ForgeConfigSpec.BooleanValue ignoreExperimentalWorldGenWarning;
 
+    ClientConfig(ForgeConfigSpec.Builder innerBuilder)
+    {
+        // Standardization for translation keys
+        Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.general." + name);
+
+        setTFCWorldPresetAsDefault = builder.apply("setTFCWorldPresetAsDefault").define("setTFCWorldPresetAsDefault", true);
+        ignoreExperimentalWorldGenWarning = builder.apply("ignoreExperimentalWorldGenWarning").define("ignoreExperimentalWorldGenWarning", true);
     }
 }

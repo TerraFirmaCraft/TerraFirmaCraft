@@ -9,13 +9,17 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBiomeReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.world.biome.BiomeExtension;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.noise.NoiseUtil;
@@ -37,71 +41,41 @@ public final class Climate
     private static final Random RANDOM = new Random(); // Used for daily temperature variations
     private static final float PI = (float) Math.PI;
 
-    public static float getAverageTemperature(IWorld world, BlockPos pos)
+    public static float getTemperature(IWorld world, BlockPos pos, Biome biome)
     {
-        ChunkData data = ChunkData.get(world, pos);
-        return data.getAverageTemp(pos);
+        BiomeExtension extension = TFCBiomes.getExtension(world, biome);
+        if (extension != null)
+        {
+            // Only query advanced temperature for biomes of which we have registered an extension
+            ChunkData data = ChunkData.get(world, pos);
+            ICalendar calendar = Calendars.get(world);
+            return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
+        }
+        // Fallback to default temperature
+        return biome.getTemperature(pos);
     }
 
-    public static float getTemperature(IWorld world, BlockPos pos)
+    public static Biome.RainType getPrecipitation(IWorld world, BlockPos pos, Biome biome)
     {
-        ChunkData data = ChunkData.get(world, pos);
-        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
+        BiomeExtension extension = TFCBiomes.getExtension(world, biome);
+        if (extension != null)
+        {
+            // Only query advanced rain type for biomes of which we have registered an extension
+            ChunkData data = ChunkData.get(world, pos);
+            ICalendar calendar = Calendars.get(world);
+            float rainfall = data.getRainfall(pos);
+            if (rainfall < 100)
+            {
+                return Biome.RainType.NONE;
+            }
+            float temperature = calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
+            return temperature < 0 ? Biome.RainType.SNOW : Biome.RainType.RAIN;
+        }
+        // Fallback to default rain type
+        return biome.getPrecipitation();
     }
 
-    public static float getRainfall(IWorld world, BlockPos pos)
-    {
-        ChunkData data = ChunkData.get(world, pos);
-        return data.getRainfall(pos);
-    }
-
-    public static float getAverageTemperature(BlockPos pos)
-    {
-        ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
-        return data.getAverageTemp(pos);
-    }
-
-    public static float getTemperature(BlockPos pos)
-    {
-        ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
-        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
-    }
-
-    /**
-     * For when the logical side is known
-     */
-    public static float getTemperature(BlockPos pos, boolean isClient)
-    {
-        ChunkData data = (isClient ? ChunkDataCache.CLIENT : ChunkDataCache.SERVER).getOrEmpty(pos);
-        Calendar calendar = isClient ? Calendars.CLIENT : Calendars.SERVER;
-        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
-    }
-
-    public static float getRainfall(BlockPos pos, boolean isClient)
-    {
-        ChunkData data = (isClient ? ChunkDataCache.CLIENT : ChunkDataCache.SERVER).getOrEmpty(pos);
-        return data.getRainfall(pos);
-    }
-
-    public static float getRainfall(BlockPos pos)
-    {
-        ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
-        return data.getRainfall(pos);
-    }
-
-    public static float getRainfall(BlockPos pos, ChunkDataCache cache)
-    {
-        ChunkData data = ChunkDataCache.getUnsided().getOrEmpty(pos);
-        return data.getRainfall(pos);
-    }
-
-    private static float getTemperature(BlockPos pos, ChunkDataCache cache)
-    {
-        ChunkData data = cache.getOrEmpty(pos);
-        return calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
-    }
-
-    private static float calculateTemperature(int z, int y, float averageTemperature, long calendarTime, long daysInMonth)
+    public static float calculateTemperature(int z, int y, float averageTemperature, long calendarTime, long daysInMonth)
     {
         // Start by checking the monthly / seasonal temperature
         Month currentMonth = ICalendar.getMonthOfYear(calendarTime, daysInMonth);

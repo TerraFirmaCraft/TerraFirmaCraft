@@ -27,7 +27,6 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 /**
  * Event handler for calendar related ticking
  *
- * @see net.dries007.tfc.client.ClientCalendarEventHandler
  * @see Calendar
  */
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)

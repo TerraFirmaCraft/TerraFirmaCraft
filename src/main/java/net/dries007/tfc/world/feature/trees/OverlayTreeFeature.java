@@ -11,7 +11,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.IntegrityProcessor;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
@@ -19,7 +18,6 @@ import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.util.Helpers;
 
 public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
 {
@@ -29,34 +27,28 @@ public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
     }
 
     @Override
-    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, OverlayTreeConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, OverlayTreeConfig config)
     {
         if (!isValidLocation(worldIn, pos) || !isAreaClear(worldIn, pos, config.radius, 3))
         {
             return false;
         }
 
-        final ChunkPos chunkPos = new ChunkPos(pos);
         final TemplateManager manager = getTemplateManager(worldIn);
         final Template structureBase = manager.getOrCreate(config.base);
         final Template structureOverlay = manager.getOrCreate(config.overlay);
-        final int height = config.heightMin + (config.heightRange > 0 ? rand.nextInt(config.heightRange) : 0);
+        final BlockPos centerVariation = getCenterVariation(structureBase.getSize(), random);
+        final PlacementSettings settings = getPlacementSettings(new ChunkPos(pos), random);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
 
-        final BlockPos baseStructurePos = pos.offset(-structureBase.getSize().getX() / 2, height, -structureBase.getSize().getZ() / 2);
-        final BlockPos overlayStructurePos = pos.offset(-structureOverlay.getSize().getX() / 2, height, -structureOverlay.getSize().getZ() / 2);
+        config.trunk.ifPresent(trunk -> {
+            final int height = placeTrunk(worldIn, pos, centerVariation, random, trunk);
+            mutablePos.move(0, height, 0);
+        });
 
-        final PlacementSettings settings = getPlacementSettings(chunkPos, structureBase.getSize(), rand);
-
-        Helpers.addTemplateToWorldForTreeGen(structureBase, settings, worldIn, baseStructurePos);
-        settings.addProcessor(new IntegrityProcessor(0.5f))
-            .setRotationPivot(new BlockPos(structureOverlay.getSize().getX() / 2, 0, structureOverlay.getSize().getZ() / 2));
-        Helpers.addTemplateToWorldForTreeGen(structureOverlay, settings, worldIn, overlayStructurePos);
-
-        final BlockState log = config.trunkState;
-        for (int i = 0; i < height; i++)
-        {
-            worldIn.setBlock(pos.offset(0, i, 0), log, 2);
-        }
+        placeTemplateInWorld(structureBase, settings, worldIn, mutablePos.subtract(getCenteredOffset(structureBase.getSize(), centerVariation, settings)));
+        settings.addProcessor(new IntegrityProcessor(config.overlayIntegrity));
+        placeTemplateInWorld(structureOverlay, settings, worldIn, mutablePos.subtract(getCenteredOffset(structureOverlay.getSize(), centerVariation, settings)));
         return true;
     }
 }

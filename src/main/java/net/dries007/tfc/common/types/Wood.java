@@ -5,7 +5,7 @@
 
 package net.dries007.tfc.common.types;
 
-import java.util.function.Function;
+import java.util.Random;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
@@ -14,8 +14,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -23,13 +21,11 @@ import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.feature.TFCFeatures;
-import net.dries007.tfc.world.feature.trees.OverlayTreeConfig;
-import net.dries007.tfc.world.feature.trees.RandomTreeConfig;
 import net.dries007.tfc.world.feature.trees.TFCTree;
 
 public class Wood
 {
+    private static final Random rng = new Random();
     /**
      * Default wood types used for block registration calls
      * Not extensible
@@ -40,6 +36,7 @@ public class Wood
      */
     public enum Default
     {
+<<<<<<< HEAD
         ACACIA(false, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0),
         ASH(false, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_ORANGE, 0),
         ASPEN(false, MaterialColor.TERRACOTTA_GREEN, MaterialColor.TERRACOTTA_GREEN, MaterialColor.TERRACOTTA_WHITE, 0),
@@ -59,6 +56,28 @@ public class Wood
         SYCAMORE(false, MaterialColor.COLOR_YELLOW, MaterialColor.COLOR_YELLOW, MaterialColor.TERRACOTTA_LIGHT_GREEN, 0),
         WHITE_CEDAR(false, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0),
         WILLOW(false, MaterialColor.COLOR_GREEN, MaterialColor.COLOR_GREEN, MaterialColor.TERRACOTTA_BROWN, 0);
+=======
+        // todo: actual values for the three material colors, and fall foliage coords by wood type
+        ACACIA(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        ASH(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        ASPEN(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        BIRCH(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        BLACKWOOD(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        CHESTNUT(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        DOUGLAS_FIR(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        HICKORY(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        KAPOK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        MAPLE(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        OAK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        PALM(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        PINE(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        ROSEWOOD(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        SEQUOIA(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        SPRUCE(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        SYCAMORE(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        WHITE_CEDAR(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
+        WILLOW(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7);
+>>>>>>> upstream/1.16.x
 
         private final boolean conifer;
         private final MaterialColor mainColor;
@@ -66,15 +85,17 @@ public class Wood
         private final MaterialColor barkColor;
         private final TFCTree tree;
         private final int fallFoliageCoords;
+        private final int maxDecayDistance;
 
-        Default(boolean conifer, MaterialColor mainColor, MaterialColor topColor, MaterialColor barkColor, int fallFoliageCoords)
+        Default(boolean conifer, MaterialColor mainColor, MaterialColor topColor, MaterialColor barkColor, int fallFoliageCoords, int maxDecayDistance)
         {
             this.conifer = conifer;
             this.mainColor = mainColor;
             this.topColor = topColor;
             this.barkColor = barkColor;
             this.tree = new TFCTree(Helpers.identifier("tree/" + name().toLowerCase()), Helpers.identifier("tree/" + name().toLowerCase() + "_large"));
-            this.fallFoliageCoords = fallFoliageCoords;
+            this.fallFoliageCoords = rng.nextInt(256 * 256);
+            this.maxDecayDistance = maxDecayDistance;
         }
 
         public boolean isConifer()
@@ -90,6 +111,11 @@ public class Wood
         public int getFallFoliageCoords()
         {
             return fallFoliageCoords;
+        }
+
+        public int getMaxDecayDistance()
+        {
+            return maxDecayDistance;
         }
 
         public MaterialColor getMainColor()
@@ -115,7 +141,7 @@ public class Wood
         STRIPPED_LOG(wood -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, stateIn -> stateIn.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD)), false),
         WOOD(wood -> new RotatedPillarBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD)), false),
         STRIPPED_WOOD(wood -> new RotatedPillarBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD)), false),
-        LEAVES(wood -> TFCLeavesBlock.create(Block.Properties.of(Material.LEAVES, wood.getMainColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion(), 6), false),
+        LEAVES(wood -> TFCLeavesBlock.create(Block.Properties.of(Material.LEAVES, wood.getMainColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion(), wood.getMaxDecayDistance()), false),
         PLANKS(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), false),
         SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)), false),
         BOOKSHELF(wood -> new Block(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),

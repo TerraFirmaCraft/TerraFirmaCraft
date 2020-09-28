@@ -8,6 +8,11 @@ import net.minecraft.world.GameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
+/**
+ * Used to modify the doDaylightCycle game rule callback
+ *
+ * @see GameRulesAccessor
+ */
 @Mixin(GameRules.RuleType.class)
 public interface GameRulesRuleTypeAccessor
 {
