@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
@@ -27,6 +28,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
+
+import javax.annotation.Nonnull;
 
 
 public abstract class TFCLeavesBlock extends Block
@@ -131,16 +134,19 @@ public abstract class TFCLeavesBlock extends Block
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        int distance = updateDistance(worldIn, pos);
-        if (distance > maxDecayDistance)
+        if (!state.getValue(PERSISTENT))
         {
-            // Send a message, help the dev's figure out which trees need larger leaf decay radii:
-            LOGGER.info("Block: {} decayed at distance {}", state.getBlock().getRegistryName(), distance);
-            worldIn.removeBlock(pos, false);
-        }
-        else
-        {
-            worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+            int distance = updateDistance(worldIn, pos);
+            if (distance > maxDecayDistance)
+            {
+                // Send a message, help the dev's figure out which trees need larger leaf decay radii:
+                LOGGER.info("Block: {} decayed at distance {}", state.getBlock().getRegistryName(), distance);
+                worldIn.removeBlock(pos, false);
+            }
+            else
+            {
+                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+            }
         }
     }
 
@@ -148,6 +154,15 @@ public abstract class TFCLeavesBlock extends Block
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(PERSISTENT, SEASON_NO_SPRING, getDistanceProperty());
+    }
+
+    @Nonnull
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        Season season = Calendars.SERVER.getCalendarMonthOfYear().getSeason();
+        Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
+        return super.getStateForPlacement(context).setValue(SEASON_NO_SPRING, newSeason).setValue(PERSISTENT, context.getPlayer() != null);
     }
 
     /**

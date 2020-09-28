@@ -44,17 +44,7 @@ public class PebbleBlock extends GroundcoverBlock
         this.rock = rock;
     }
 
-    public Rock.Default getRock() { return rock; }
-
-    @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
-    {
-        if (player.getMainHandItem() == ItemStack.EMPTY)
-        {
-            worldIn.destroyBlock(pos, (!player.isCreative()));
-        }
-        return ActionResultType.PASS;
-    }
+    public Rock.Default getRock() { return rock; } // this is used by ItemRock to check for matching types
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
