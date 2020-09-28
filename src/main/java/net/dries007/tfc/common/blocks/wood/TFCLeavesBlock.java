@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
@@ -21,8 +22,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -148,6 +151,12 @@ public abstract class TFCLeavesBlock extends Block
                 worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
             }
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        entityIn.makeStuckInBlock(state, new Vector3d(0.5D, (double)0.4F, 0.5D));
     }
 
     @Override
