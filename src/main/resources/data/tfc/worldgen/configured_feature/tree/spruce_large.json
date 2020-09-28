@@ -4,13 +4,13 @@
   "config": {
     "trunk": {
       "state": {
-        "Name": "tfc:wood/spruce/maple",
+        "Name": "tfc:wood/log/spruce",
         "Properties": {
           "axis": "y"
         }
       },
-      "min_height": 3,
-      "max_height": 5,
+      "min_height": 5,
+      "max_height": 9,
       "width": 2
     },
     "layers": [
@@ -20,7 +20,7 @@
           "tfc:spruce_large/layer1_2",
           "tfc:spruce_large/layer1_3"
         ],
-        "min_count": 1,
+        "min_count": 2,
         "max_count": 3
       },
       {

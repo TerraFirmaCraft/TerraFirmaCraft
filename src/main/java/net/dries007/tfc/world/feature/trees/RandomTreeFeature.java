@@ -28,24 +28,24 @@ public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random random, BlockPos pos, RandomTreeConfig config)
     {
-        if (!isValidLocation(worldIn, pos) || !isAreaClear(worldIn, pos, config.radius, 2))
+        final ChunkPos chunkPos = new ChunkPos(pos);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
+        final TemplateManager manager = TreeHelpers.getTemplateManager(worldIn);
+        final PlacementSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
+        final ResourceLocation structureId = config.structureNames.get(random.nextInt(config.structureNames.size()));
+        final Template structure = manager.getOrCreate(structureId);
+
+        if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius, 2))
         {
             return false;
         }
 
-        final TemplateManager manager = getTemplateManager(worldIn);
-        final ResourceLocation structureId = config.structureNames.get(random.nextInt(config.structureNames.size()));
-        final Template structure = manager.getOrCreate(structureId);
-        final BlockPos centerVariation = getCenterVariation(structure.getSize(), random);
-        final PlacementSettings settings = getRandomPlacementSettings(new ChunkPos(pos), random);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
-
         config.trunk.ifPresent(trunk -> {
-            final int height = placeTrunk(worldIn, pos, centerVariation, random, trunk);
+            final int height = TreeHelpers.placeTrunk(worldIn, mutablePos, random, settings, trunk);
             mutablePos.move(0, height, 0);
         });
 
-        placeTemplateInWorld(structure, settings, worldIn, mutablePos.subtract(getCenteredOffset(structure.getSize(), centerVariation, settings)));
+        TreeHelpers.placeTemplate(structure, settings, worldIn, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
         return true;
     }
 }

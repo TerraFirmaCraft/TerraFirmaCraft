@@ -6,7 +6,7 @@
     "overlay": "tfc:blackwood/overlay",
     "trunk": {
       "state": {
-        "Name": "tfc:wood/blackwood/maple",
+        "Name": "tfc:wood/log/blackwood",
         "Properties": {
           "axis": "y"
         }

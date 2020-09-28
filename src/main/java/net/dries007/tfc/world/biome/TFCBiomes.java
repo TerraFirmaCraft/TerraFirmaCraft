@@ -32,7 +32,7 @@ public final class TFCBiomes
 
     private static final List<RegistryKey<Biome>> DEFAULT_BIOME_KEYS = new ArrayList<>();
     private static final List<BiomeVariants> VARIANTS = new ArrayList<>();
-    private static final Map<RegistryKey<Biome>, BiomeExtension> EXTENSIONS = new HashMap<>(); // All extensions, indexed by registry key for quick access
+    private static final Map<RegistryKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>(); // All extensions, indexed by registry key for quick access
     private static final Map<Biome, BiomeExtension> CACHED_EXTENSIONS = new FiniteLinkedHashMap<>(128); // Faster route from biome -> extension
 
     // Aquatic biomes

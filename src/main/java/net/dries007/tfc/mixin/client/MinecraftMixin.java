@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 /**
  * This is a hack to remove the "Experimental Settings" screen which will pop up every time you generate or load a TFC world.
+ *
+ * Fixed by https://github.com/MinecraftForge/MinecraftForge/pull/7275
  */
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin extends RecursiveEventLoop<Runnable>
