@@ -96,7 +96,7 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        if (player.getMainHandItem() == ItemStack.EMPTY)
+        if (player.getMainHandItem().isEmpty())
         {
             worldIn.destroyBlock(pos, (!player.isCreative()));
         }
