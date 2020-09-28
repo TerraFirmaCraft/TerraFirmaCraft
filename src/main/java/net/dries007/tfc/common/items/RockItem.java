@@ -6,6 +6,8 @@ import net.dries007.tfc.common.blocks.rock.PebbleBlock;
 import net.dries007.tfc.common.types.Rock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
@@ -56,7 +58,8 @@ public class RockItem extends Item
                     }
                     else if (clickedBlockState.isFaceSturdy(world, pos, Direction.UP))
                     {
-                        world.setBlock(pos.above(), TFCBlocks.ROCKS.get(rock).get(Rock.BlockType.PEBBLE).get().defaultBlockState().setValue(PebbleBlock.FACING, direction), 1);
+                        FluidState fluidstate = world.getFluidState(pos);
+                        world.setBlock(pos.above(), TFCBlocks.ROCKS.get(rock).get(Rock.BlockType.PEBBLE).get().defaultBlockState().setValue(PebbleBlock.FACING, direction).setValue(PebbleBlock.WATERLOGGED, fluidstate.getType() == Fluids.WATER), 1);
                         player.getMainHandItem().shrink(1);
                         return ActionResultType.CONSUME;
                     }
