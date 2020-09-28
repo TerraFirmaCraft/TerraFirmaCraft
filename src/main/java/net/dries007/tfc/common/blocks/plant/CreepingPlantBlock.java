@@ -33,12 +33,12 @@ public abstract class CreepingPlantBlock extends PlantBlock
     protected static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     protected static final BooleanProperty WEST = BlockStateProperties.WEST;
 
-    protected static final VoxelShape UP_SHAPE = makeCuboidShape(0.0, 14.0, 0.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape DOWN_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
-    protected static final VoxelShape NORTH_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, 2.0);
-    protected static final VoxelShape EAST_SHAPE = makeCuboidShape(14.0, 0.0, 0.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape SOUTH_SHAPE = makeCuboidShape(0.0, 0.0, 14.0, 16.0, 16.0, 16.0);
-    protected static final VoxelShape WEST_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 2.0, 16.0, 16.0);
+    protected static final VoxelShape UP_SHAPE = box(0.0, 14.0, 0.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape DOWN_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
+    protected static final VoxelShape NORTH_SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 2.0);
+    protected static final VoxelShape EAST_SHAPE = box(14.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape SOUTH_SHAPE = box(0.0, 0.0, 14.0, 16.0, 16.0, 16.0);
+    protected static final VoxelShape WEST_SHAPE = box(0.0, 0.0, 0.0, 2.0, 16.0, 16.0);
 
     protected static final BooleanProperty[] ALL_FACES = new BooleanProperty[] {UP, DOWN, NORTH, EAST, SOUTH, WEST};
     protected static final VoxelShape[] ALL_SHAPES = new VoxelShape[] {UP_SHAPE, DOWN_SHAPE, NORTH_SHAPE, EAST_SHAPE, SOUTH_SHAPE, WEST_SHAPE};
@@ -49,11 +49,11 @@ public abstract class CreepingPlantBlock extends PlantBlock
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         for (Direction direction : Direction.values())
         {
-            if (hasEnoughSolidSide(worldIn, pos.offset(direction), direction.getOpposite()) || worldIn.getBlockState(pos.offset(direction)).getMaterial() == Material.LEAVES)
+            if (canSupportCenter(worldIn, pos.relative(direction), direction.getOpposite()) || worldIn.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
             {
                 return true;
             }
@@ -65,9 +65,9 @@ public abstract class CreepingPlantBlock extends PlantBlock
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (isValidPosition(state, worldIn, pos))
+        if (canSurvive(state, worldIn, pos))
         {
-            worldIn.setBlockState(pos, getActualState(state, worldIn, pos));
+            worldIn.setBlockAndUpdate(pos, getActualState(state, worldIn, pos));
         }
         else
         {
@@ -79,9 +79,9 @@ public abstract class CreepingPlantBlock extends PlantBlock
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        BlockPos pos = context.getPos();
-        World world = context.getWorld();
-        return getActualState(getDefaultState(), world, pos);
+        BlockPos pos = context.getClickedPos();
+        World world = context.getLevel();
+        return getActualState(defaultBlockState(), world, pos);
     }
 
     @Override
@@ -91,7 +91,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
         for (int i = 0; i < ALL_FACES.length; i++)
         {
             BooleanProperty face = ALL_FACES[i];
-            if (state.get(face))
+            if (state.getValue(face))
             {
                 shape = VoxelShapes.or(shape, ALL_SHAPES[i]);
             }
@@ -100,9 +100,9 @@ public abstract class CreepingPlantBlock extends PlantBlock
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.fillStateContainer(builder);
+        super.createBlockStateDefinition(builder);
         builder.add(ALL_FACES);
     }
 
@@ -110,13 +110,13 @@ public abstract class CreepingPlantBlock extends PlantBlock
     {
         for (Direction direction : Direction.values())
         {
-            if (hasEnoughSolidSide(world, pos.offset(direction), direction.getOpposite()) || world.getBlockState(pos.offset(direction)).getMaterial() == Material.LEAVES)
+            if (canSupportCenter(world, pos.relative(direction), direction.getOpposite()) || world.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
             {
-                state = state.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(direction), true);
+                state = state.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), true);
             }
             else
             {
-                state = state.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(direction), false);
+                state = state.setValue(SixWayBlock.PROPERTY_BY_DIRECTION.get(direction), false);
             }
         }
         return state;

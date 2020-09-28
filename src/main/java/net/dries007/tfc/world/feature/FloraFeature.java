@@ -8,16 +8,15 @@ package net.dries007.tfc.world.feature;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.flora.FloraType;
 import net.dries007.tfc.world.flora.FloraTypeManager;
 
@@ -36,24 +35,18 @@ public class FloraFeature extends Feature<NoFeatureConfig>
         return list;
     }
 
-    @SuppressWarnings("unused")
-    public FloraFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory)
+    public FloraFeature(Codec<NoFeatureConfig> codec)
     {
-        super(configFactory);
-    }
-
-    public FloraFeature()
-    {
-        super(NoFeatureConfig::deserialize);
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config)
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
-        List<FloraType> list = getFloraAtChunk(world, pos, random);
+        List<FloraType> list = getFloraAtChunk(worldIn, pos, rand);
         for (FloraType floraType : list)
         {
-            floraType.generate(world, pos, random);
+            floraType.generate(worldIn, pos, rand);
         }
         return !list.isEmpty();
     }

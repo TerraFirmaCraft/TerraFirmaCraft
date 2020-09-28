@@ -20,20 +20,20 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
 {
     public TFCCactusBlock(Properties properties)
     {
-        super(properties.hardnessAndResistance(0.25F).sound(SoundType.GROUND));
+        super(properties.strength(0.25F).sound(SoundType.WOOL));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F);
+        entityIn.hurt(DamageSource.CACTUS, 1.0F);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
-        return VoxelShapes.fullCube();
+        return VoxelShapes.block();
     }
 
     @Override

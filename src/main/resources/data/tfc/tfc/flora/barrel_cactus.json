@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:plant",
+  "rules": [
+    {
+      "type": "tfc:temperature",
+      "minimum": -6,
+      "maximum": 50
+    },
+    {
+      "type": "tfc:rainfall",
+      "minimum": 0,
+      "maximum": 75
+    }
+  ],
+  "rarity": 1,
+  "density": 30,
+  "blocks": "tfc:plant/barrel_cactus"
+}

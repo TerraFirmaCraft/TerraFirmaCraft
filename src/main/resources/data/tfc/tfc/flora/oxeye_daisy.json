@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:plant",
+  "rules": [
+    {
+      "type": "tfc:temperature",
+      "minimum": -40,
+      "maximum": 33
+    },
+    {
+      "type": "tfc:rainfall",
+      "minimum": 120,
+      "maximum": 300
+    }
+  ],
+  "rarity": 1,
+  "density": 30,
+  "blocks": "tfc:plant/oxeye_daisy"
+}

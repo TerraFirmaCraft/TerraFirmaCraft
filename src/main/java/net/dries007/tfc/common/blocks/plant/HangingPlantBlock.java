@@ -24,7 +24,7 @@ import net.minecraft.world.IWorldReader;
 public abstract class HangingPlantBlock extends PlantBlock
 {
     protected static final BooleanProperty HANGING = BlockStateProperties.HANGING;
-    protected static final VoxelShape NOT_HANGING_SHAPE = makeCuboidShape(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
+    protected static final VoxelShape NOT_HANGING_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
 
     public HangingPlantBlock(Properties properties)
     {
@@ -32,11 +32,11 @@ public abstract class HangingPlantBlock extends PlantBlock
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
         for (Direction direction : new Direction[] {Direction.UP, Direction.DOWN})
         {
-            if (worldIn.getBlockState(pos.offset(direction)).getMaterial() == Material.LEAVES)
+            if (worldIn.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
             {
                 return true;
             }
@@ -48,28 +48,21 @@ public abstract class HangingPlantBlock extends PlantBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        if (context.getWorld().getBlockState(context.getPos().offset(Direction.UP)).getMaterial() == Material.LEAVES)
+        if (context.getLevel().getBlockState(context.getClickedPos().relative(Direction.UP)).getMaterial() == Material.LEAVES)
         {
-            return this.getDefaultState().with(HANGING, true);
+            return defaultBlockState().setValue(HANGING, true);
         }
-        if (context.getWorld().getBlockState(context.getPos().offset(Direction.DOWN)).getMaterial() == Material.LEAVES)
+        if (context.getLevel().getBlockState(context.getClickedPos().relative(Direction.DOWN)).getMaterial() == Material.LEAVES)
         {
-            return this.getDefaultState().with(HANGING, false);
+            return defaultBlockState().setValue(HANGING, false);
         }
         return null;
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        super.fillStateContainer(builder);
-        builder.add(HANGING);
-    }
-
-    @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        if (state.get(HANGING))
+        if (state.getValue(HANGING))
         {
             return super.getShape(state, worldIn, pos, context);
         }
@@ -77,5 +70,12 @@ public abstract class HangingPlantBlock extends PlantBlock
         {
             return NOT_HANGING_SHAPE;
         }
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder);
+        builder.add(HANGING);
     }
 }

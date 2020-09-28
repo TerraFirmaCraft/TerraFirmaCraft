@@ -45,6 +45,7 @@ def generate(rm: ResourceManager):
 
     # Configured Features
     rm.feature('ore_veins', wg.configure('tfc:ore_veins'))
+    rm.feature('flora', wg.configure('tfc:flora'))
     rm.feature('erosion', wg.configure('tfc:erosion'))
 
     rm.feature('water_fissure',
@@ -249,5 +250,6 @@ def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: 
             ['tfc:ore_veins'],  # underground ores
             [],  # underground decoration
             ['tfc:forest'],  # vegetal decoration
+            ['tfc:flora'],  # plants, flowers
             []   # top layer modification
         ])
