@@ -11,9 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/limestone",
     "chiseled": "tfc:rock/chiseled/limestone",
     "spike": "tfc:rock/spike/limestone",
-    "pebble": "tfc:rock/pebble/limestone",
-    "rubble": "tfc:rock/rubble/limestone",
-    "boulder": "tfc:rock/boulder/limestone"
+    "pebble": "tfc:rock/pebble/limestone"
   },
   "category": "sedimentary",
   "desert_sand_color": "yellow",

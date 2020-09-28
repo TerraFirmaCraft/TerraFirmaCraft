@@ -49,13 +49,6 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
 
-    public GroundcoverBlock(RockCoverTypes cover)
-    {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.STONE).noOcclusion());
-        shape = cover.getShape();
-        this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
-    }
-
     public GroundcoverBlock(WoodCoverTypes cover)
     {
         super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.SCAFFOLDING).noOcclusion());
@@ -101,7 +94,8 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    {
         if (player.getMainHandItem() == ItemStack.EMPTY)
         {
             worldIn.destroyBlock(pos, (!player.isCreative()));
@@ -182,19 +176,6 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
 
         public VoxelShape getShape() { return shape; }
         public boolean isHasItem() { return hasItem; }
-    }
-
-    public enum RockCoverTypes
-    {
-        PEBBLE(SMALL),
-        RUBBLE(FLAT),
-        BOULDER(MEDIUM);
-
-        private final VoxelShape shape;
-
-        RockCoverTypes(VoxelShape shape) { this.shape = shape; }
-
-        public VoxelShape getShape() { return shape; }
     }
 
     public enum WoodCoverTypes

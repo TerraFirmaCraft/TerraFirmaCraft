@@ -64,10 +64,12 @@ public final class TFCItems
         )
     );
 
-    public static final Map<Rock.Default, Map<Rock.ItemType, RegistryObject<Item>>> ROCK_ITEMS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.ItemType.class, type ->
-            register(("rock/" + type.name().toLowerCase() + "/" + rock.name()).toLowerCase(), TFCItemGroup.MISC)
-        )
+    public static final Map<Rock.Default, RegistryObject<RockItem>> LOOSE_ROCKS = Helpers.mapOfKeys(Rock.Default.class, type ->
+        register( "rock/rock/" + type.name().toLowerCase(), () -> new RockItem(type))
+    );
+
+    public static final Map<Rock.Default, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.Default.class, type ->
+        register( "rock/brick/" + type.name().toLowerCase(), TFCItemGroup.MISC)
     );
 
     public static final Map<GroundcoverBlock.MiscCoverTypes, RegistryObject<Item>> GROUND_ITEMS = Helpers.mapOfKeys(GroundcoverBlock.MiscCoverTypes.class, GroundcoverBlock.MiscCoverTypes::isHasItem, type ->

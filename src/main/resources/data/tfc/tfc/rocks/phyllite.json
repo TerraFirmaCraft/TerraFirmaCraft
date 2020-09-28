@@ -11,9 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/phyllite",
     "chiseled": "tfc:rock/chiseled/phyllite",
     "spike": "tfc:rock/spike/phyllite",
-    "pebble": "tfc:rock/pebble/phyllite",
-    "rubble": "tfc:rock/rubble/phyllite",
-    "boulder": "tfc:rock/boulder/phyllite"
+    "pebble": "tfc:rock/pebble/phyllite"
   },
   "category": "metamorphic",
   "desert_sand_color": "brown",

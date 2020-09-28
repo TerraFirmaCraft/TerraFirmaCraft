@@ -11,9 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/gneiss",
     "chiseled": "tfc:rock/chiseled/gneiss",
     "spike": "tfc:rock/spike/gneiss",
-    "pebble": "tfc:rock/pebble/gneiss",
-    "rubble": "tfc:rock/rubble/gneiss",
-    "boulder": "tfc:rock/boulder/gneiss"
+    "pebble": "tfc:rock/pebble/gneiss"
   },
   "category": "metamorphic",
   "desert_sand_color": "brown",

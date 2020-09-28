@@ -1,19 +1,94 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
+    "facing=east,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/diorite",
       "y": 90
     },
-    "facing=north": {
+    "facing=north,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/diorite"
     },
-    "facing=south": {
+    "facing=south,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/diorite",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/diorite",
+      "y": 270
+    },
+    "facing=east,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/diorite",
+      "y": 90
+    },
+    "facing=north,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/diorite"
+    },
+    "facing=south,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/diorite",
+      "y": 180
+    },
+    "facing=west,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/diorite",
+      "y": 270
+    },
+    "facing=east,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/diorite",
+      "y": 90
+    },
+    "facing=north,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/diorite"
+    },
+    "facing=south,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/diorite",
+      "y": 180
+    },
+    "facing=west,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/diorite",
+      "y": 270
+    },
+    "facing=east,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/diorite",
+      "y": 90
+    },
+    "facing=north,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/diorite"
+    },
+    "facing=south,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/diorite",
+      "y": 180
+    },
+    "facing=west,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/diorite",
+      "y": 270
+    },
+    "facing=east,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/diorite",
+      "y": 90
+    },
+    "facing=north,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/diorite"
+    },
+    "facing=south,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/diorite",
+      "y": 180
+    },
+    "facing=west,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/diorite",
+      "y": 270
+    },
+    "facing=east,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/diorite",
+      "y": 90
+    },
+    "facing=north,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/diorite"
+    },
+    "facing=south,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/diorite",
+      "y": 180
+    },
+    "facing=west,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/diorite",
       "y": 270
     }
   }

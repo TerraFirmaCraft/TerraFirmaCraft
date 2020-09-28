@@ -11,9 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/dacite",
     "chiseled": "tfc:rock/chiseled/dacite",
     "spike": "tfc:rock/spike/dacite",
-    "pebble": "tfc:rock/pebble/dacite",
-    "rubble": "tfc:rock/rubble/dacite",
-    "boulder": "tfc:rock/boulder/dacite"
+    "pebble": "tfc:rock/pebble/dacite"
   },
   "category": "igneous_extrusive",
   "desert_sand_color": "red",

@@ -11,9 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/shale",
     "chiseled": "tfc:rock/chiseled/shale",
     "spike": "tfc:rock/spike/shale",
-    "pebble": "tfc:rock/pebble/shale",
-    "rubble": "tfc:rock/rubble/shale",
-    "boulder": "tfc:rock/boulder/shale"
+    "pebble": "tfc:rock/pebble/shale"
   },
   "category": "sedimentary",
   "desert_sand_color": "black",

@@ -25,12 +25,33 @@ def generate(rm: ResourceManager):
                         'texture': 'tfc:block/rock/raw/%s' % rock,
                         'particle': 'tfc:block/rock/raw/%s' % rock
                     }, parent='tfc:block/rock/spike_%s' % part)
-            elif block_type in {'pebble', 'rubble', 'boulder'}:
-                block = rm.blockstate('rock/%s/%s' % (block_type, rock), variants ={
-                    "facing=east": {"model": "tfc:block/rock/%s/%s" % (block_type, rock),"y": 90},
-                    "facing=north": {"model": "tfc:block/rock/%s/%s" % (block_type, rock)},
-                    "facing=south": {"model": "tfc:block/rock/%s/%s" % (block_type, rock),"y": 180},
-                    "facing=west": {"model": "tfc:block/rock/%s/%s" % (block_type, rock),"y": 270}}) \
+            elif block_type == 'pebble':
+                block = rm.blockstate('rock/pebble/%s' % rock, variants ={
+                    "facing=east,rocks=1,waterlogged=false": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 90},
+                    "facing=north,rocks=1,waterlogged=false": {"model": "tfc:block/rock/pebble/%s" % rock},
+                    "facing=south,rocks=1,waterlogged=false": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 180},
+                    "facing=west,rocks=1,waterlogged=false": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 270},
+                    "facing=east,rocks=2,waterlogged=false": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 90},
+                    "facing=north,rocks=2,waterlogged=false": {"model": "tfc:block/rock/rubble/%s" % rock},
+                    "facing=south,rocks=2,waterlogged=false": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 180},
+                    "facing=west,rocks=2,waterlogged=false": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 270},
+                    "facing=east,rocks=3,waterlogged=false": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 90},
+                    "facing=north,rocks=3,waterlogged=false": {"model": "tfc:block/rock/boulder/%s" % rock},
+                    "facing=south,rocks=3,waterlogged=false": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 180},
+                    "facing=west,rocks=3,waterlogged=false": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 270},
+                    "facing=east,rocks=1,waterlogged=true": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 90},
+                    "facing=north,rocks=1,waterlogged=true": {"model": "tfc:block/rock/pebble/%s" % rock},
+                    "facing=south,rocks=1,waterlogged=true": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 180},
+                    "facing=west,rocks=1,waterlogged=true": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 270},
+                    "facing=east,rocks=2,waterlogged=true": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 90},
+                    "facing=north,rocks=2,waterlogged=true": {"model": "tfc:block/rock/rubble/%s" % rock},
+                    "facing=south,rocks=2,waterlogged=true": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 180},
+                    "facing=west,rocks=2,waterlogged=true": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 270},
+                    "facing=east,rocks=3,waterlogged=true": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 90},
+                    "facing=north,rocks=3,waterlogged=true": {"model": "tfc:block/rock/boulder/%s" % rock},
+                    "facing=south,rocks=3,waterlogged=true": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 180},
+                    "facing=west,rocks=3,waterlogged=true": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 270}
+                    }) \
                     .with_item_model() \
                     .with_lang(lang('%s %s', rock, block_type)) \
                     .with_block_model('tfc:item/rock/rock/%s' % rock, parent = 'tfc:block/groundcover/%s' % block_type)
@@ -76,6 +97,8 @@ def generate(rm: ResourceManager):
                 else:
                     block.with_lang(lang('%s %s', rock, block_type))
 
+        for block_type in {'rubble', 'boulder'}:
+            rm.block_model('tfc:rock/%s/%s' % (block_type, rock), textures={'all': 'tfc:item/rock/rock/%s' % rock}, parent='tfc:block/groundcover/%s' % block_type)
         # Ores
         # todo: fix / add loot tables
         for ore, ore_data in ORES.items():
@@ -163,21 +186,6 @@ def generate(rm: ResourceManager):
     rm.block('tfc:calcite') \
     .with_item_model() \
     .with_lang(lang('Calcite'))
-
-    for rock in ROCKS.keys():
-        rm.block_loot('tfc:rock/boulder/%s' % rock,{
-            'entries': 'tfc:rock/rock/%s' % rock,
-            'functions': [
-                loot_tables.set_count(1, 3)
-            ]
-        })
-        rm.block_loot('tfc:rock/rubble/%s' % rock,{
-            'entries': 'tfc:rock/rock/%s' % rock,
-            'functions': [
-                loot_tables.set_count(1, 2)
-            ]
-        })
-        rm.block_loot('tfc:rock/pebble/%s' % rock,'tfc:rock/rock/%s' % rock)
 
     # Peat
     rm.blockstate('peat') \

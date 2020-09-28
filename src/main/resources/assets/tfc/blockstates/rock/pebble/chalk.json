@@ -1,19 +1,94 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east": {
+    "facing=east,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/chalk",
       "y": 90
     },
-    "facing=north": {
+    "facing=north,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/chalk"
     },
-    "facing=south": {
+    "facing=south,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/chalk",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,rocks=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/chalk",
+      "y": 270
+    },
+    "facing=east,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/chalk",
+      "y": 90
+    },
+    "facing=north,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/chalk"
+    },
+    "facing=south,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/chalk",
+      "y": 180
+    },
+    "facing=west,rocks=2,waterlogged=false": {
+      "model": "tfc:block/rock/rubble/chalk",
+      "y": 270
+    },
+    "facing=east,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/chalk",
+      "y": 90
+    },
+    "facing=north,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/chalk"
+    },
+    "facing=south,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/chalk",
+      "y": 180
+    },
+    "facing=west,rocks=3,waterlogged=false": {
+      "model": "tfc:block/rock/boulder/chalk",
+      "y": 270
+    },
+    "facing=east,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/chalk",
+      "y": 90
+    },
+    "facing=north,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/chalk"
+    },
+    "facing=south,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/chalk",
+      "y": 180
+    },
+    "facing=west,rocks=1,waterlogged=true": {
+      "model": "tfc:block/rock/pebble/chalk",
+      "y": 270
+    },
+    "facing=east,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/chalk",
+      "y": 90
+    },
+    "facing=north,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/chalk"
+    },
+    "facing=south,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/chalk",
+      "y": 180
+    },
+    "facing=west,rocks=2,waterlogged=true": {
+      "model": "tfc:block/rock/rubble/chalk",
+      "y": 270
+    },
+    "facing=east,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/chalk",
+      "y": 90
+    },
+    "facing=north,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/chalk"
+    },
+    "facing=south,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/chalk",
+      "y": 180
+    },
+    "facing=west,rocks=3,waterlogged=true": {
+      "model": "tfc:block/rock/boulder/chalk",
       "y": 270
     }
   }
