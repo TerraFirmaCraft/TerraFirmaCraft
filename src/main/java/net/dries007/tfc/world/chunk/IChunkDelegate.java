@@ -57,16 +57,19 @@ public interface IChunkDelegate extends IChunk
     default LongSet getReferencesForFeature(Structure<?> structureIn)
     {
         return getDelegate().getReferencesForFeature(structureIn);
-    }    @Override
-    default ChunkStatus getStatus()
-    {
-        return getDelegate().getStatus();
     }
 
     @Override
     default void addReferenceForFeature(Structure<?> structureIn, long referenceIn)
     {
         getDelegate().addReferenceForFeature(structureIn, referenceIn);
+    }
+
+    @Nullable
+    @Override
+    default BlockRayTraceResult clipWithInteractionOverride(Vector3d startVec, Vector3d endVec, BlockPos pos, VoxelShape shape, BlockState state)
+    {
+        return getDelegate().clipWithInteractionOverride(startVec, endVec, pos, shape, state);
     }
 
     @Override
@@ -235,37 +238,34 @@ public interface IChunkDelegate extends IChunk
         return getDelegate().clip(context);
     }
 
-    @Nullable
-    @Override
-    default BlockRayTraceResult clipWithInteractionOverride(Vector3d startVec, Vector3d endVec, BlockPos pos, VoxelShape shape, BlockState state)
-    {
-        return null;
-    }    default void setUnsaved(boolean modified)
-    {
-        getDelegate().setUnsaved(modified);
-    }
-
     @Override
     default double getBlockFloorHeight(VoxelShape voxelShape_, Supplier<VoxelShape> supplier_)
     {
-        return 0;
+        return getDelegate().getBlockFloorHeight(voxelShape_, supplier_);
     }
 
     @Override
     default double getBlockFloorHeight(BlockPos blockPos_)
     {
-        return 0;
+        return getDelegate().getBlockFloorHeight(blockPos_);
     }
 
+    default void setUnsaved(boolean modified)
+    {
+        getDelegate().setUnsaved(modified);
+    }
 
+    @Override
+    default ChunkStatus getStatus()
+    {
+        return getDelegate().getStatus();
+    }
 
     @Override
     default boolean isUnsaved()
     {
         return getDelegate().isUnsaved();
     }
-
-
 
     default void removeBlockEntity(BlockPos pos)
     {
