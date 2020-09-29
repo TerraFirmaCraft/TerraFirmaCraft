@@ -89,6 +89,8 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Block.Properties.of(Material.DIRT)), ROCK_BLOCKS);
     public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new TFCGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), PEAT), ROCK_BLOCKS);
+    public static final RegistryObject<Block> THATCH = register("thatch", ThatchBlock::new, DECORATIONS);
+    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", ThatchBedBlock::new, DECORATIONS);
 
     public static final Map<GroundcoverBlock.MiscCoverTypes, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlock.MiscCoverTypes.class, type ->
         register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), TFCItemGroup.DECORATIONS)

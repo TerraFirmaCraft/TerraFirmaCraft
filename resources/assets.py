@@ -194,6 +194,12 @@ def generate(rm: ResourceManager):
         .with_block_loot('tfc:peat') \
         .with_lang(lang('Peat'))
 
+    rm.blockstate('thatch') \
+        .with_block_model('tfc:block/thatch') \
+        .with_item_model() \
+        .with_block_loot('tfc:thatch') \
+        .with_lang(lang('Thatch'))
+
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
         rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False) \
@@ -280,6 +286,12 @@ def generate(rm: ResourceManager):
                 'texture': dirt,
                 'particle': dirt
             }, parent='block/block', elements=[north_face])
+
+    # Hides
+    for size in {'small', 'medium', 'large'}:
+        for stage in {'prepared', 'raw', 'scraped', 'sheepskin', 'soaked'}:
+            rm.item_model(('hide', size, stage)) \
+                .with_lang(lang('%s %s Hide' % (size, stage)))
 
     # Rock Tools
     for rock in ROCK_CATEGORIES:

@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/thatch_bed/foot_end",
+		"1": "tfc:block/thatch_bed/foot_side",
+		"2": "tfc:block/thatch",
+		"3": "tfc:block/thatch_bed/foot_top",
+		"particle": "tfc:block/thatch_bed/foot_end"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 9, 16],
+			"faces": {
+				"east": {"uv": [0, 7, 16, 16], "texture": "#1"},
+				"south": {"uv": [0, 7, 16, 16], "texture": "#0"},
+				"west": {"uv": [16, 7, 0, 16], "texture": "#1"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
+			}
+		}
+	]
+}

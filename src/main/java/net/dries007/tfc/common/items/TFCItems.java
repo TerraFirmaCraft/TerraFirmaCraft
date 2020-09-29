@@ -58,6 +58,12 @@ public final class TFCItems
         )
     );
 
+    public static final Map<HideItem.Size, Map<HideItem.Stage, RegistryObject<Item>>> HIDES = Helpers.mapOfKeys(HideItem.Size.class, size ->
+        Helpers.mapOfKeys(HideItem.Stage.class, stage ->
+            register(("hide/" + size.name().toLowerCase() + '/' + stage.name().toLowerCase()), () -> new HideItem(size, stage))
+        )
+    );
+
     public static final Map<RockCategory, Map<RockCategory.ItemType, RegistryObject<Item>>> ROCK_TOOLS = Helpers.mapOfKeys(RockCategory.class, category ->
         Helpers.mapOfKeys(RockCategory.ItemType.class, type ->
             register(("stone/" + type.name() + "/" + category.name()).toLowerCase(), () -> type.create(category))

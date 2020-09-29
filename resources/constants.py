@@ -304,6 +304,8 @@ DEFAULT_LANG = {
     'tfc.enum.season.october': 'Autumn',
     'tfc.enum.season.november': 'Late Autumn',
     'tfc.enum.season.december': 'Early Winter',
+    'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
+    'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
 
     **dict(('metal.tfc.%s' % metal, lang('%s' % metal)) for metal in METALS.keys())
 }
