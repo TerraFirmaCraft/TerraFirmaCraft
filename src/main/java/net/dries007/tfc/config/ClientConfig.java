@@ -26,7 +26,7 @@ public class ClientConfig
         // Standardization for translation keys
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.general." + name);
 
-        setTFCWorldPresetAsDefault = builder.apply("setTFCWorldPresetAsDefault").define("setTFCWorldPresetAsDefault", true);
-        ignoreExperimentalWorldGenWarning = builder.apply("ignoreExperimentalWorldGenWarning").define("ignoreExperimentalWorldGenWarning", true);
+        setTFCWorldPresetAsDefault = builder.apply("setTFCWorldPresetAsDefault").comment("If the TFC world preset will default to selected when creating a new world.").define("setTFCWorldPresetAsDefault", true);
+        ignoreExperimentalWorldGenWarning = builder.apply("ignoreExperimentalWorldGenWarning").comment("Should TFC forcefully skip the 'Experimental World Generation' warning screen when creating or loading a world?").define("ignoreExperimentalWorldGenWarning", true);
     }
 }

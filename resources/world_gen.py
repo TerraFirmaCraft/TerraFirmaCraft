@@ -1,7 +1,8 @@
 # Handles generation of all world gen objects
 
-from mcresources import ResourceManager, world_gen as wg
 from typing import NamedTuple, Tuple, List
+
+from mcresources import ResourceManager, world_gen as wg
 
 BiomeTemperature = NamedTuple('BiomeTemperature', id=str, temperature=float, water_color=float, water_fog_color=float)
 BiomeRainfall = NamedTuple('BiomeRainfall', id=str, downfall=float)
@@ -50,13 +51,17 @@ def generate(rm: ResourceManager):
     rm.feature('water_fissure',
         wg.decorated(
             wg.decorated(
-                wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:water[level=0]')}),
+                wg.decorated(
+                    wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:water[level=0]')}),
+                    'tfc:flat_enough'),
                 'minecraft:chance', {'chance': 60}),
             'minecraft:heightmap_world_surface'))
     rm.feature('lava_fissure',
         wg.decorated(
             wg.decorated(
-                wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:lava[level=0]')}),
+                wg.decorated(
+                    wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:lava[level=0]')}),
+                    'tfc:flat_enough'),
                 'minecraft:chance', {'chance': 60}),
             'minecraft:heightmap_world_surface'))
 
@@ -73,7 +78,10 @@ def generate(rm: ResourceManager):
         rm.feature(boulder_cfg[0],
             wg.decorated(
                 wg.decorated(
-                    wg.configure('tfc:boulder', {'base_type': boulder_cfg[1], 'decoration_type': boulder_cfg[2]}),
+                    wg.decorated(
+                        wg.configure('tfc:boulder', {'base_type': boulder_cfg[1], 'decoration_type': boulder_cfg[2]}),
+                        'tfc:flat_enough'
+                    ),
                     'minecraft:chance', {'chance': 60}),
                 'minecraft:heightmap_world_surface'))
 
