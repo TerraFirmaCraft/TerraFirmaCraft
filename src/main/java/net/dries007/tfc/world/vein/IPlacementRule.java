@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.world.placement;
+package net.dries007.tfc.world.vein;
 
 import java.util.function.BiPredicate;
 

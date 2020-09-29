@@ -24,7 +24,6 @@ import net.dries007.tfc.common.recipes.IBlockIngredient;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.json.TFCJSONUtils;
-import net.dries007.tfc.world.placement.IPlacementRule;
 
 public abstract class VeinType<V extends Vein<?>>
 {

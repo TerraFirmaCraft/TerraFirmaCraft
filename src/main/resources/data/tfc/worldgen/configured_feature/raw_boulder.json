@@ -6,10 +6,19 @@
       "type": "minecraft:decorated",
       "config": {
         "feature": {
-          "type": "tfc:boulder",
+          "type": "minecraft:decorated",
           "config": {
-            "base_type": "raw",
-            "decoration_type": "raw"
+            "feature": {
+              "type": "tfc:boulder",
+              "config": {
+                "base_type": "raw",
+                "decoration_type": "raw"
+              }
+            },
+            "decorator": {
+              "type": "tfc:flat_enough",
+              "config": {}
+            }
           }
         },
         "decorator": {

@@ -6,13 +6,22 @@
       "type": "minecraft:decorated",
       "config": {
         "feature": {
-          "type": "tfc:fissure",
+          "type": "minecraft:decorated",
           "config": {
-            "state": {
-              "Name": "minecraft:water",
-              "Properties": {
-                "level": "0"
+            "feature": {
+              "type": "tfc:fissure",
+              "config": {
+                "state": {
+                  "Name": "minecraft:water",
+                  "Properties": {
+                    "level": "0"
+                  }
+                }
               }
+            },
+            "decorator": {
+              "type": "tfc:flat_enough",
+              "config": {}
             }
           }
         },
