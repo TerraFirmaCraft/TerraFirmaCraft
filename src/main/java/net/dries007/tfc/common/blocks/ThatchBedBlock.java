@@ -1,9 +1,6 @@
 package net.dries007.tfc.common.blocks;
 
-import net.minecraft.block.BedBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -26,7 +23,8 @@ public class ThatchBedBlock extends BedBlock
 {
     private static final VoxelShape BED_SHAPE = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 9.0F, 16.0F);
 
-    public ThatchBedBlock() {
+    public ThatchBedBlock()
+    {
         super(DyeColor.YELLOW, Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F));
     }
 
