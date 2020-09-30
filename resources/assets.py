@@ -200,6 +200,11 @@ def generate(rm: ResourceManager):
         .with_block_loot('tfc:thatch') \
         .with_lang(lang('Thatch'))
 
+
+    rm.block_model('tfc:thatch_bed') \
+        .with_item_model() \
+        .with_lang(lang('Thatch Bed'))
+
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
         rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False) \

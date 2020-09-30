@@ -45,11 +45,16 @@ public class HideItem extends Item
                     BlockPos headPos = basePos.relative(d, 1);
                     if (world.getBlockState(basePos).is(thatch) && world.getBlockState(headPos).is(thatch))
                     {
-                        world.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, d), 16);
-                        world.destroyBlock(headPos, false);
-                        world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, d.getOpposite()), 16);
-                        context.getItemInHand().shrink(1);
-                        return ActionResultType.SUCCESS;
+                        BlockPos playerPos = player.blockPosition();
+                        if (playerPos != headPos && playerPos != basePos)
+                        {
+                            world.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, d), 16);
+                            world.destroyBlock(headPos, false);
+                            world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, d.getOpposite()), 16);
+                            context.getItemInHand().shrink(1);
+                            return ActionResultType.SUCCESS;
+                        }
+
                     }
                 }
             }
