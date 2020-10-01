@@ -10,8 +10,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.properties.BedPart;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Dimension;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.ExplosionContext;
 import net.minecraft.world.World;
 
 public class HideItem extends Item
@@ -52,6 +56,11 @@ public class HideItem extends Item
                             world.destroyBlock(headPos, false);
                             world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, d.getOpposite()), 16);
                             context.getItemInHand().shrink(1);
+                            if(!world.dimensionType().bedWorks())
+                            {
+                                world.explode(null, DamageSource.badRespawnPointExplosion(), null, headPos.getX() + 0.5D, headPos.getY() + 0.5D, (double)headPos.getZ() + 0.5D, 10.0F, true, Explosion.Mode.DESTROY);
+                                return ActionResultType.FAIL;
+                            }
                             return ActionResultType.SUCCESS;
                         }
 
