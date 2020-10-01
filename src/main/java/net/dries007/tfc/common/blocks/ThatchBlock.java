@@ -1,9 +1,16 @@
 package net.dries007.tfc.common.blocks;
 
+import net.dries007.tfc.client.ClimateRenderCache;
+import net.dries007.tfc.util.Climate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FireBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -11,6 +18,8 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class ThatchBlock extends Block
 {
@@ -32,4 +41,28 @@ public class ThatchBlock extends Block
     {
         return VoxelShapes.empty();
     }
+
+    @Override
+    public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    {
+        return 100 + RANDOM.nextInt(50);
+    }
+
+    @Override
+    public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    {
+        return true;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    {
+        int speed = 60;
+        speed += ClimateRenderCache.INSTANCE.getTemperature() * 3;
+        speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
+        return speed;
+    }
+
+    @Override
+    public void catchFire(BlockState state, World world, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {}
 }
