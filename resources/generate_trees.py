@@ -119,6 +119,13 @@ def make_tree_structure(template: str, wood: str, dest: Optional[str] = None, wo
     result_dir = '../src/main/resources/data/tfc/structures/%s/' % wood_dir
     if not os.path.exists(result_dir):
         os.makedirs(result_dir)
+
+    file_name = result_dir + dest + '.nbt'
+    if os.path.isfile(file_name):
+        # Load and diff the original file - do not overwrite if source identical to avoid unnecessary git diffs due to gzip inconsistencies.
+        original = nbt.load(file_name)
+        if original == f:
+            return
     f.save(result_dir + dest + '.nbt')
 
 
