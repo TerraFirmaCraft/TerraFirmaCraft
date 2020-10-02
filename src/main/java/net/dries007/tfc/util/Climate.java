@@ -9,9 +9,7 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBiomeReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -21,7 +19,6 @@ import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.noise.NoiseUtil;
 
 /**
@@ -33,10 +30,14 @@ public final class Climate
     /**
      * Constants for temperature calculation. Do not reference these directly, they do not have much meaning outside the context they are used in
      */
+    public static final float MINIMUM_TEMPERATURE_SCALE = -24f;
     public static final float MAXIMUM_TEMPERATURE_SCALE = 30f;
-    public static final float MINIMUM_TEMPERATURE_SCALE = -28f;
     public static final float LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE = 6.5f;
     public static final float LATITUDE_TEMPERATURE_VARIANCE_MEAN = 13.5f;
+    public static final float REGIONAL_TEMPERATURE_SCALE = 2f;
+    public static final float MINIMUM_RAINFALL = 0f;
+    public static final float MAXIMUM_RAINFALL = 500f;
+    public static final float REGIONAL_RAINFALL_SCALE = 50f;
 
     private static final Random RANDOM = new Random(); // Used for daily temperature variations
     private static final float PI = (float) Math.PI;
@@ -82,7 +83,7 @@ public final class Climate
         Month nextMonth = currentMonth.next();
         float delta = ICalendar.getFractionOfMonth(calendarTime, daysInMonth);
         float monthFactor = NoiseUtil.lerp(currentMonth.getTemperatureModifier(), nextMonth.getTemperatureModifier(), delta);
-        float monthTemperature = monthFactor * (LATITUDE_TEMPERATURE_VARIANCE_MEAN + LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE * MathHelper.sin(PI * z / TFCConfig.COMMON.temperatureLayerScale.get()));
+        float monthTemperature = monthFactor * (LATITUDE_TEMPERATURE_VARIANCE_MEAN + LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE * MathHelper.sin(PI * z / TFCConfig.SERVER.temperatureScale.get()));
 
         // Next, add hourly and daily variations
         // Hottest part of the day at 12, coldest at 0

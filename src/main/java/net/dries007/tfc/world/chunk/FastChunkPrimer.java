@@ -45,7 +45,6 @@ public class FastChunkPrimer implements IChunkDelegate
     private final ChunkPrimer chunk;
     private final int chunkX, chunkZ;
     private final HeightmapAccessor oceanFloorHeightMap, worldSurfaceHeightMap;
-    private final BlockPos.Mutable mutablePos;
 
     public FastChunkPrimer(ChunkPrimer chunk)
     {
@@ -57,8 +56,6 @@ public class FastChunkPrimer implements IChunkDelegate
         // We also just store the interface with the method we need to call back to
         this.oceanFloorHeightMap = (HeightmapAccessor) chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
         this.worldSurfaceHeightMap = (HeightmapAccessor) chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
-
-        this.mutablePos = new BlockPos.Mutable();
     }
 
     @Override
@@ -82,8 +79,7 @@ public class FastChunkPrimer implements IChunkDelegate
 
             if (state.getLightValue(chunk, pos) > 0)
             {
-                mutablePos.set(chunkX | localX, pos.getY(), chunkZ | localZ);
-                chunk.addLight(mutablePos);
+                chunk.addLight(new BlockPos(chunkX | localX, pos.getY(), chunkZ | localZ));
             }
 
             BlockState prevState = chunkSection.setBlockState(localX, localY, localZ, state, false);
@@ -98,7 +94,8 @@ public class FastChunkPrimer implements IChunkDelegate
 
     public void updateHeightMaps()
     {
-        int maxY = chunk.getHighestSectionPosition() + 16;
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final int maxY = chunk.getHighestSectionPosition() + 16;
         for (int localX = 0; localX < 16; ++localX)
         {
             for (int localZ = 0; localZ < 16; ++localZ)

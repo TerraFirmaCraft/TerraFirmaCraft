@@ -63,7 +63,7 @@ public class ForestConfig implements IFeatureConfig
 
         public boolean isValid(float rainfall, float temperature)
         {
-            return rainfall > minRainfall && rainfall < maxRainfall && temperature > minAverageTemp && temperature < maxAverageTemp;
+            return rainfall >= minRainfall && rainfall <= maxRainfall && temperature >= minAverageTemp && temperature <= maxAverageTemp;
         }
 
         public ConfiguredFeature<?, ?> getFeature()

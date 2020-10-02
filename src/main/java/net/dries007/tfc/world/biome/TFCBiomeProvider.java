@@ -39,6 +39,11 @@ public class TFCBiomeProvider extends BiomeProvider
     private final LazyArea biomeArea;
     private ChunkDataProvider chunkDataProvider;
 
+    public TFCBiomeProvider(long seed, Registry<Biome> biomeRegistry)
+    {
+        this(seed, 6, 4, biomeRegistry);
+    }
+
     public TFCBiomeProvider(long seed, int landFrequency, int biomeSize, Registry<Biome> biomeRegistry)
     {
         super(TFCBiomes.getAllKeys().stream().map(biomeRegistry::getOrThrow).collect(Collectors.toList()));
