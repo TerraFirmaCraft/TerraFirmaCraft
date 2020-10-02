@@ -33,6 +33,9 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue leavesDecayVanilla;
     public final ForgeConfigSpec.BooleanValue leavesSolidBlocks;
     public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
+    // Climate
+    public final ForgeConfigSpec.IntValue temperatureScale;
+    public final ForgeConfigSpec.IntValue rainfallScale;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -59,5 +62,10 @@ public class ServerConfig
         leavesDecayVanilla = builder.apply("leavesDecayVanilla").comment("Should leaves decay over time like vanilla?").define("leavesDecayVanilla", false);
         leavesSolidBlocks = builder.apply("leavesSolidBlocks").comment("Are leaves solid blocks and non-passable?").define("leavesSolidBlocks", false);
         leavesMovementModifier = builder.apply("leavesMovementModifier").comment("How much to leaves slow entities passing through them?").defineInRange("leavesMovementModifier", 0.8, 0, 1);
+
+        innerBuilder.pop().push("climate");
+
+        temperatureScale = builder.apply("temperatureScale").comment("This is the distance in blocks to the first peak (Either cold or hot) temperature zone, in the north-south direction.").defineInRange("temperatureScale", 20_000, 1_000, 1_000_000);
+        rainfallScale = builder.apply("rainfallScale").comment("This is the distance in blocks to the first peak (Either wet or dry) rainfall zone, in the east-west direction").defineInRange("rainfallScale", 20_000, 1_000, 1_000_000);
     }
 }
