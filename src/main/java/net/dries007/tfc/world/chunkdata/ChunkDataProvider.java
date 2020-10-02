@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -23,6 +23,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
+import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -69,8 +70,21 @@ public class ChunkDataProvider
         this.layerHeightNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
 
         // Climate
-        this.temperatureNoise = TFCConfig.COMMON.temperatureLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.temperatureLayerScale.get()).scaled(Climate.MINIMUM_TEMPERATURE_SCALE, Climate.MAXIMUM_TEMPERATURE_SCALE);
-        this.rainfallNoise = TFCConfig.COMMON.rainfallLayerType.get().create(seedGenerator.nextLong(), TFCConfig.COMMON.rainfallLayerScale.get()).scaled(0, 500).flattened(0, 500);
+        temperatureNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.temperatureScale.get()), 0)
+            .extendX()
+            .scaled(Climate.MINIMUM_TEMPERATURE_SCALE, Climate.MAXIMUM_TEMPERATURE_SCALE)
+            .add(new SimplexNoise2D(seedGenerator.nextLong())
+                .octaves(2)
+                .spread(12f / TFCConfig.SERVER.temperatureScale.get())
+                .scaled(-Climate.REGIONAL_TEMPERATURE_SCALE, Climate.REGIONAL_TEMPERATURE_SCALE));
+        rainfallNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.rainfallScale.get()), 0)
+            .extendY()
+            .scaled(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL)
+            .add(new SimplexNoise2D(seedGenerator.nextLong())
+                .octaves(2)
+                .spread(12f / TFCConfig.SERVER.rainfallScale.get())
+                .scaled(-Climate.REGIONAL_RAINFALL_SCALE, Climate.REGIONAL_RAINFALL_SCALE))
+            .flattened(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL);
 
         // Flora
         forestBaseNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.002f).abs();
@@ -97,6 +111,24 @@ public class ChunkDataProvider
             data.setStatus(requiredStatus);
         }
         return data;
+    }
+
+    @VisibleForTesting
+    public INoise2D getTemperatureNoise()
+    {
+        return temperatureNoise;
+    }
+
+    @VisibleForTesting
+    public INoise2D getRainfallNoise()
+    {
+        return rainfallNoise;
+    }
+
+    @VisibleForTesting
+    public INoise2D getForestDensityNoise()
+    {
+        return forestDensityNoise;
     }
 
     private void generateToStatus(ChunkPos pos, ChunkData data, ChunkData.Status status)

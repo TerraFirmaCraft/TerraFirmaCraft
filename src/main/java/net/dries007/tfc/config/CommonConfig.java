@@ -28,10 +28,6 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue rockLayerHeight;
     public final ForgeConfigSpec.IntValue rockLayerSpread;
     public final ForgeConfigSpec.IntValue seaLevel;
-    public final ForgeConfigSpec.EnumValue<NoiseLayerType> temperatureLayerType;
-    public final ForgeConfigSpec.IntValue temperatureLayerScale;
-    public final ForgeConfigSpec.EnumValue<NoiseLayerType> rainfallLayerType;
-    public final ForgeConfigSpec.IntValue rainfallLayerScale;
     public final ForgeConfigSpec.IntValue defaultMonthLength;
     // World Generation - Caves
     public final ForgeConfigSpec.IntValue worleyCaveHeightFade;
@@ -70,12 +66,6 @@ public class CommonConfig
         rockLayerSpread = builder.apply("rockLayerSpread").defineInRange("rockLayerSpread", 10, 0, 256);
 
         seaLevel = builder.apply("seaLevel").defineInRange("seaLevel", 96, 0, 256);
-
-        temperatureLayerType = builder.apply("temperatureLayerType").comment("This controls how temperature is generated.").defineEnum("temperatureLayerType", NoiseLayerType.PERIODIC_Z, NoiseLayerType.values());
-        temperatureLayerScale = builder.apply("temperatureLayerScale").comment("This is how spread out the temperature layer is, in blocks.").defineInRange("temperatureLayerScale", 20_000, 1000, 1_000_000);
-
-        rainfallLayerType = builder.apply("rainfallLayerType").comment("This controls how rainfall is generated.").defineEnum("rainfallLayerType", NoiseLayerType.PERIODIC_X, NoiseLayerType.values());
-        rainfallLayerScale = builder.apply("rainfallLayerScale").comment("This is how spread out the temperature layer is, in blocks.").defineInRange("rainfallLayerScale", 20_000, 1000, 1_000_000);
 
         defaultMonthLength = builder.apply("defaultMonthLength").defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
 
