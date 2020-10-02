@@ -48,6 +48,9 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue normalRainfallCutoff;
     public final ForgeConfigSpec.IntValue dampRainfallCutoff;
 
+    // General
+    public final ForgeConfigSpec.BooleanValue logDFUFUs;
+
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         // Standardization for translation keys
@@ -95,6 +98,8 @@ public class CommonConfig
         normalRainfallCutoff = builder.apply("normalRainfallCutoff").defineInRange("normalRainfallCutoff", 300, 0, 500);
         dampRainfallCutoff = builder.apply("dampRainfallCutoff").defineInRange("dampRainfallCutoff", 375, 0, 500);
 
-        innerBuilder.pop().pop();
+        innerBuilder.pop().pop().push("general");
+
+        logDFUFUs = builder.apply("logDFUFUs").comment("Should TFC try and identify potential issues with world generation data loading and log informational warnings? This does produce false positives!").define("logDFUFUs", true);
     }
 }

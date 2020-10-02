@@ -21,7 +21,7 @@ public abstract class FogRendererMixin
      * Replace the call to {@link Biome#getWaterFogColor()} with one that has a position context, if we have a biome extension for this biome. Otherwise call to the default fog color
      */
     @Redirect(method = "setupColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getWaterFogColor()I"))
-    private static int redirect$getFogColor(Biome biome, ActiveRenderInfo activeRenderInfoIn)
+    private static int redirect$getWaterFogColor(Biome biome, ActiveRenderInfo activeRenderInfoIn)
     {
         IWorld world = Minecraft.getInstance().level;
         if (world != null && TFCBiomes.getExtension(world, biome) != null)
