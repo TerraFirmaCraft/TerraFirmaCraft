@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleFunction;
@@ -193,15 +194,24 @@ public abstract class ImageUtil<T>
     {
         protected final Function<T, DoubleBinaryOperator> noiseTransformer;
         private DoubleTernaryOperator scaleTransformer = Scales.DYNAMIC_RANGE;
+        private boolean makeHistogram = false;
+        private int bins = 1;
 
         private Noise(Function<T, DoubleBinaryOperator> noiseTransformer)
         {
             this.noiseTransformer = noiseTransformer;
         }
 
-        public ImageUtil<T> scale(DoubleTernaryOperator scale)
+        public ImageUtil.Noise<T> scale(DoubleTernaryOperator scale)
         {
             this.scaleTransformer = scale;
+            return this;
+        }
+
+        public ImageUtil.Noise<T> histogram(int bins)
+        {
+            this.makeHistogram = true;
+            this.bins = bins;
             return this;
         }
 
@@ -209,6 +219,7 @@ public abstract class ImageUtil<T>
         protected void draw(String name, T instance, Graphics graphics)
         {
             final double[] sourceMinMax = new double[] {Double.MAX_VALUE, Double.MIN_VALUE};
+            final int[] histogram = new int[bins];
             DoubleBinaryOperator source = noiseTransformer.apply(instance);
             IntStream.range(0, size * size)
                 .mapToObj(i -> {
@@ -217,6 +228,8 @@ public abstract class ImageUtil<T>
                     double x = minX + (posX + 0.5) * (double) (maxX - minX) / size;
                     double y = minY + (posY + 0.5) * (double) (maxY - minY) / size;
                     double value = source.applyAsDouble(x, y);
+
+                    // Calculate min / max
                     sourceMinMax[0] = Math.min(sourceMinMax[0], value);
                     sourceMinMax[1] = Math.max(sourceMinMax[1], value);
                     return new Local<>(posX, posY, value);
@@ -224,13 +237,21 @@ public abstract class ImageUtil<T>
                 // Stop the stream here, as we need the entire previous step to run before this (as it needs proper min/max values for scaling)
                 .collect(Collectors.toList())
                 .stream()
-                .map(Local.map(value -> scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1])))
-                .map(Local.map(value -> color.apply(value)))
+                .map(Local.map(value -> {
+                    double scaledValue = scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]);
+                    histogram[MathHelper.clamp((int) (bins * scaledValue), 0, bins - 1)] += 1; // Record histogram values after scaling to [0, 1)
+                    return color.apply(scaledValue);
+                }))
                 .forEach(loc -> {
                     graphics.setColor(loc.value);
                     graphics.fillRect(loc.x, loc.y, 1, 1);
                 });
             System.out.println("Drawing: " + name + " Min: " + sourceMinMax[0] + " Max: " + sourceMinMax[1]);
+
+            if (makeHistogram)
+            {
+                System.out.println("Histogram: " + name + "\n" + Arrays.stream(histogram).mapToObj(String::valueOf).collect(Collectors.joining("\n")));
+            }
         }
     }
 

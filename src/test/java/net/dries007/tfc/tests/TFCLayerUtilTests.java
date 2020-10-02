@@ -9,7 +9,6 @@ import java.awt.*;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.LazyAreaLayerContext;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
@@ -17,11 +16,12 @@ import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
 import net.dries007.tfc.ImageUtil;
-import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.layer.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class TFCLayerUtilTests
+@Disabled
+class TFCLayerUtilTests
 {
     public static final ImageUtil<IAreaFactory<LazyArea>> IMAGES = ImageUtil.noise(factory -> {
         LazyArea area = factory.make();
