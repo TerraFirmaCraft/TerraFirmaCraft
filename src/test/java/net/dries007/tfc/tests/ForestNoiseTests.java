@@ -15,7 +15,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
-import net.dries007.tfc.ImageUtil;
+import net.dries007.tfc.Artist;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.feature.TFCFeatures;
@@ -28,9 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ForestNoiseTests
 {
-    static final ImageUtil<INoise2D> NOISE = ImageUtil.noise(target -> (x, y) -> target.noise((float) x, (float) y), builder -> builder.scale(ImageUtil.Scales.DYNAMIC_RANGE).histogram(40).color(ImageUtil.Colors.LINEAR_BLUE_RED).size(1000).dimensions(-20_000, -20_000, 20_000, 20_000));
-
-    static final ImageUtil<ImageUtil.Double2ObjectBiFunction<Color>> COLOR = ImageUtil.colored(v -> v, builder -> builder.size(1000).dimensions(-20_000, -20_000, 20_000, 20_000));
+    static final Artist.Noise<INoise2D> NOISE = Artist.<INoise2D>mapNoise(target -> (x, y) -> target.noise((float) x, (float) y)).scale(Artist.Scales.DYNAMIC_RANGE).color(Artist.Colors.LINEAR_BLUE_RED).center(20_000);
+    static final Artist.Raw COLOR = Artist.empty().center(20_000);
 
     @Test
     void testTreeDistributions()
