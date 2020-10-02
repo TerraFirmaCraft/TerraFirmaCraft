@@ -39,7 +39,14 @@ public class TFCTree extends Tree
 
     public ConfiguredFeature<?, ?> getOldGrowthFeature(Registry<ConfiguredFeature<?, ?>> registry)
     {
-        return registry.getOptional(oldGrowthTree).orElseThrow(() -> new IllegalStateException("Missing old growth tree feature: " + oldGrowthTree));
+        return registry.getOptional(oldGrowthTree).orElseGet(() -> getNormalFeature(registry));
+    }
+
+    @Nullable
+    @Override
+    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random randomIn, boolean largeHive)
+    {
+        return null; // Not using vanilla's feature config
     }
 
     @Override
@@ -56,12 +63,5 @@ public class TFCTree extends Tree
             worldIn.setBlock(blockPosIn, blockStateIn, 4);
             return false;
         }
-    }
-
-    @Nullable
-    @Override
-    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random randomIn, boolean largeHive)
-    {
-        return null; // Not using vanilla's feature config
     }
 }

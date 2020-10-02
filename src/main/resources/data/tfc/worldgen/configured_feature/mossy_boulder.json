@@ -6,10 +6,19 @@
       "type": "minecraft:decorated",
       "config": {
         "feature": {
-          "type": "tfc:boulder",
+          "type": "minecraft:decorated",
           "config": {
-            "base_type": "cobble",
-            "decoration_type": "mossy_cobble"
+            "feature": {
+              "type": "tfc:boulder",
+              "config": {
+                "base_type": "cobble",
+                "decoration_type": "mossy_cobble"
+              }
+            },
+            "decorator": {
+              "type": "tfc:flat_enough",
+              "config": {}
+            }
           }
         },
         "decorator": {

@@ -33,6 +33,7 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.feature.TFCFeatures;
+import net.dries007.tfc.world.placement.TFCDecorators;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
@@ -63,6 +64,7 @@ public final class TerraFirmaCraft
 
         TFCBiomes.BIOMES.register(modEventBus);
         TFCFeatures.FEATURES.register(modEventBus);
+        TFCDecorators.DECORATORS.register(modEventBus);
         TFCSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
         TFCCarvers.CARVERS.register(modEventBus);
 
