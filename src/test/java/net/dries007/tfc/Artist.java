@@ -93,7 +93,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
         return (A) this;
     }
 
-    public void drawInternal(String name, T instance)
+    public void draw(String name, T instance)
     {
         try
         {

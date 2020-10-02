@@ -15,7 +15,7 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
-import net.dries007.tfc.ImageUtil;
+import net.dries007.tfc.Artist;
 import net.dries007.tfc.world.layer.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -23,10 +23,10 @@ import org.junit.jupiter.api.Test;
 @Disabled
 class TFCLayerUtilTests
 {
-    public static final ImageUtil<IAreaFactory<LazyArea>> IMAGES = ImageUtil.noise(factory -> {
+    public static final Artist.Typed<Integer, IAreaFactory<LazyArea>> IMAGES = Artist.map(factory -> {
         LazyArea area = factory.make();
         return (left, right) -> area.get((int) left, (int) right);
-    }, b -> b.scale(ImageUtil.Scales.NEAREST_INT).size(1000));
+    });
 
     @Test
     void testBiomeLayers()
