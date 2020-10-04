@@ -79,7 +79,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
     {
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         boolean flag = fluidstate.is(FluidTags.WATER) && fluidstate.isSource();
-        Season season = Calendars.SERVER.getCalendarMonthOfYear().getSeason();
+        Season season = Calendars.get(context.getLevel()).getCalendarMonthOfYear().getSeason();
         Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
         return super.getStateForPlacement(context).setValue(WATERLOGGED, flag).setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(SEASON_NO_SPRING, newSeason);
     }
