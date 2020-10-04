@@ -34,7 +34,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
     public static final EnumProperty<Season> SEASON_NO_SPRING = TFCBlockStateProperties.SEASON_NO_SPRING;
 
-    protected static final VoxelShape VERY_FLAT = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+    private static final VoxelShape VERY_FLAT = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     public FallenLeavesBlock()
     {
@@ -87,20 +87,5 @@ public class FallenLeavesBlock extends GroundcoverBlock
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return VERY_FLAT;
-    }
-
-    @Override
-    public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-    {
-        return true;
-    }
-
-    @Override
-    public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-    {
-        int speed = 100;
-        speed += ClimateRenderCache.INSTANCE.getTemperature() * 3;
-        speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
-        return Math.max(speed, 10);
     }
 }

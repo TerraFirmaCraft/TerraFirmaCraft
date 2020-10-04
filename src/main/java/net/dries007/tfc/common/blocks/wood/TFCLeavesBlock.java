@@ -157,7 +157,7 @@ public abstract class TFCLeavesBlock extends Block
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        entityIn.makeStuckInBlock(state, new Vector3d(0.5D, (double)0.4F, 0.5D));
+        entityIn.makeStuckInBlock(state, new Vector3d(0.5D, 0.4F, 0.5D));
     }
 
     @Override

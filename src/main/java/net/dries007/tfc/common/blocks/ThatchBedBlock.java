@@ -73,23 +73,14 @@ public class ThatchBedBlock extends BedBlock
     public TileEntity newBlockEntity(IBlockReader worldIn) { return null; }
 
     @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return false;
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-    {
-        return true;
-    }
-
-    @Override
-    public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-    {
-        int speed = 200;
-        speed += ClimateRenderCache.INSTANCE.getTemperature() * 3;
-        speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
-        return Math.max(speed, 10);
     }
 }

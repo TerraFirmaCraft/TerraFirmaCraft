@@ -32,7 +32,7 @@ public class ThatchBlock extends Block
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        entityIn.makeStuckInBlock(state, new Vector3d(0.3D, (double)0.24F, 0.3D));
+        entityIn.makeStuckInBlock(state, new Vector3d(0.3D, 0.24F, 0.3D));
     }
 
     @Override
@@ -46,20 +46,5 @@ public class ThatchBlock extends Block
     public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face)
     {
         return 100 + RANDOM.nextInt(50);
-    }
-
-    @Override
-    public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-    {
-        return true;
-    }
-
-    @Override
-    public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-    {
-        int speed = 60;
-        speed += ClimateRenderCache.INSTANCE.getTemperature() * 3;
-        speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
-        return speed;
     }
 }

@@ -22,7 +22,7 @@ public class TwigBlock extends GroundcoverBlock
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
-    protected static final VoxelShape TWIG = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+    private static final VoxelShape TWIG = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
 
     public TwigBlock()
     {
@@ -40,20 +40,5 @@ public class TwigBlock extends GroundcoverBlock
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return TWIG;
-    }
-
-    @Override
-    public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-    {
-        return true;
-    }
-
-    @Override
-    public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-    {
-        int speed = 100;
-        speed += ClimateRenderCache.INSTANCE.getTemperature() * 3;
-        speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
-        return Math.max(speed, 10);
     }
 }
