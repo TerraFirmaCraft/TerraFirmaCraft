@@ -78,10 +78,6 @@ public final class TFCItems
         register( "rock/brick/" + type.name().toLowerCase(), TFCItemGroup.MISC)
     );
 
-    public static final Map<GroundcoverBlock.MiscCoverTypes, RegistryObject<Item>> GROUND_ITEMS = Helpers.mapOfKeys(GroundcoverBlock.MiscCoverTypes.class, GroundcoverBlock.MiscCoverTypes::isHasItem, type ->
-        register(("grounditem/" + type.name().toLowerCase()), TFCItemGroup.MISC)
-    );
-
     private static RegistryObject<Item> register(String name, ItemGroup group)
     {
         return register(name, () -> new Item(new Item.Properties().tab(group)));

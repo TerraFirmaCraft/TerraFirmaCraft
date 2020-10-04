@@ -8,22 +8,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:stick"
+          "name": "tfc:groundcover/driftwood"
         }
       ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
-        }
-      ],
-      "functions": [
-        {
-          "function": "minecraft:set_count",
-          "count": {
-            "min": 2,
-            "max": 4,
-            "type": "minecraft:uniform"
-          }
         }
       ]
     }
