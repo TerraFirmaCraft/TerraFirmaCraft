@@ -83,13 +83,13 @@ public class Ore
 
     public enum ItemGrade
     {
-        SMALL, POOR, RICH;
+        POOR, RICH; // we register normal and small items elsewhere
 
         private static final ItemGrade[] VALUES = values();
 
         public static ItemGrade valueOf(int i)
         {
-            return i < 0 || i >= VALUES.length ? SMALL : VALUES[i];
+            return i < 0 || i >= VALUES.length ? POOR : VALUES[i];
         }
     }
 }

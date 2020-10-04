@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/groundcover/stump",
-  "textures": {
-    "side": "tfc:block/wood/log/white_cedar",
-    "top": "tfc:block/wood/log_top/white_cedar"
-  }
-}

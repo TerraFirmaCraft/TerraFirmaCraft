@@ -96,8 +96,8 @@ public final class TFCBlocks
         register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), TFCItemGroup.DECORATIONS)
     );
 
-    public static final Map<Ore.Default, RegistryObject<Block>> NUGGETS = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded,type ->
-        register(("groundcover/" + type.name()).toLowerCase(), GroundcoverBlock::new, TFCItemGroup.DECORATIONS)
+    public static final Map<Ore.Default, RegistryObject<Block>> NUGGETS = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, type ->
+        register(("ore/small/" + type.name()).toLowerCase(), GroundcoverBlock::new, TFCItemGroup.MISC)
     );
 
     public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
@@ -117,8 +117,6 @@ public final class TFCBlocks
             register(type.id(wood), type.create(wood), WOOD)
         )
     );
-
-    //public static final RegistryObject<Block> CALCITE = register("calcite", CalciteBlock::new, TFCItemGroup.DECORATIONS);
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, ItemGroup group)
     {

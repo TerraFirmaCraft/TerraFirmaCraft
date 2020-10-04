@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:grounditem/mussel"
+          "name": "tfc:groundcover/mussel"
         }
       ],
       "conditions": [

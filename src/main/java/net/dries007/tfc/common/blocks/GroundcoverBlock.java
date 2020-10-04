@@ -34,7 +34,6 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
     protected static final VoxelShape FLAT = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
-    protected static final VoxelShape FLAT_TALL = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 5.0D, 14.0D);
     protected static final VoxelShape SMALL = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
     protected static final VoxelShape MEDIUM = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
     protected static final VoxelShape LARGE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
@@ -45,13 +44,6 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     public GroundcoverBlock(MiscCoverTypes cover)
     {
         super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion());
-        shape = cover.getShape();
-        this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
-    }
-
-    public GroundcoverBlock(WoodCoverTypes cover)
-    {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.SCAFFOLDING).noOcclusion());
         shape = cover.getShape();
         this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
     }
@@ -146,47 +138,27 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    public enum MiscCoverTypes //todo: finish these loot tables as items get added
+    public enum MiscCoverTypes
     {
-        BONES(MEDIUM, false), // drops bones
-        BRANCH(FLAT, false), // drops sticks
-        CLAM(SMALL, true), // flux
-        DEAD_GRASS(PIXEL_HIGH, false), // drops straw
-        DRIFTWOOD(FLAT, false), // drops sticks
-        FEATHER(FLAT, false),
-        FLINT(SMALL, false),
-        GUANO(SMALL, true), // guano is traditionally a fertilizer
-        MOLLUSK(SMALL, true), // flux
-        MUSSEL(SMALL, true), // flux
-        PINECONE(SMALL, false), // drops something useful for compost?
-        PODZOL(PIXEL_HIGH, false), // drops something useful for compost?
-        ROTTEN_FLESH(FLAT, false),
-        SALT_LICK(PIXEL_HIGH, false), // drops salt
-        SEAWEED(FLAT, false), // drops seaweed (tbd)
-        STICK(FLAT, false);
-
-        private final VoxelShape shape;
-        private final boolean hasItem;
-
-        MiscCoverTypes(VoxelShape shape, boolean hasItem)
-        {
-            this.shape = shape;
-            this.hasItem = hasItem;
-        }
-
-        public VoxelShape getShape() { return shape; }
-        public boolean isHasItem() { return hasItem; }
-    }
-
-    public enum WoodCoverTypes
-    {
-        FALLEN_LOG(FLAT_TALL),
-        FALLEN_TWIG(FLAT),
-        STUMP(LARGE);
+        BONE(MEDIUM),
+        CLAM(SMALL),
+        DEAD_GRASS(PIXEL_HIGH),
+        DRIFTWOOD(FLAT),
+        FEATHER(FLAT),
+        FLINT(SMALL),
+        GUANO(SMALL),
+        MOLLUSK(SMALL),
+        MUSSEL(SMALL),
+        PINECONE(SMALL),
+        PODZOL(PIXEL_HIGH),
+        ROTTEN_FLESH(FLAT),
+        SALT_LICK(PIXEL_HIGH),
+        SEAWEED(FLAT),
+        STICK(FLAT);
 
         private final VoxelShape shape;
 
-        WoodCoverTypes(VoxelShape shape)
+        MiscCoverTypes(VoxelShape shape)
         {
             this.shape = shape;
         }
