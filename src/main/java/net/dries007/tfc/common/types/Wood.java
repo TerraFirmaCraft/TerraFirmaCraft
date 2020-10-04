@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.wood.*;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -23,6 +24,7 @@ import net.dries007.tfc.world.feature.trees.TFCTree;
 public class Wood
 {
     private static final Random rng = new Random();
+
     /**
      * Default wood types used for block registration calls
      * Not extensible

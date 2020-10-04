@@ -103,7 +103,7 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     @Override
     public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        if(!world.isClientSide())
+        if (!world.isClientSide())
         {
             FluidState fluidstate = world.getFluidState(pos);
             world.setBlock(pos, state.setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER), 1);
@@ -133,7 +133,8 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public FluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state)
+    {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 

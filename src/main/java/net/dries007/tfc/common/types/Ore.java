@@ -65,7 +65,9 @@ public class Ore
         {
             return graded;
         }
+
         public boolean isGem() { return gem; }
+
         public boolean isNotGem() { return !gem; }
     }
 

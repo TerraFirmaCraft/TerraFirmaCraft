@@ -3,6 +3,7 @@ package net.dries007.tfc.common.items;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThatchBedBlock;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -56,9 +57,9 @@ public class HideItem extends Item
                             world.destroyBlock(headPos, false);
                             world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, d.getOpposite()), 16);
                             context.getItemInHand().shrink(1);
-                            if(!world.dimensionType().bedWorks())
+                            if (!world.dimensionType().bedWorks())
                             {
-                                world.explode(null, DamageSource.badRespawnPointExplosion(), null, headPos.getX() + 0.5D, headPos.getY() + 0.5D, (double)headPos.getZ() + 0.5D, 10.0F, true, Explosion.Mode.DESTROY);
+                                world.explode(null, DamageSource.badRespawnPointExplosion(), null, headPos.getX() + 0.5D, headPos.getY() + 0.5D, (double) headPos.getZ() + 0.5D, 10.0F, true, Explosion.Mode.DESTROY);
                                 return ActionResultType.FAIL;
                             }
                             return ActionResultType.SUCCESS;
