@@ -1,5 +1,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -86,5 +87,20 @@ public class FallenLeavesBlock extends GroundcoverBlock
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return VERY_FLAT;
+    }
+
+    @Override
+    public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    {
+        return true;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    {
+        int speed = 100;
+        speed += ClimateRenderCache.INSTANCE.getTemperature() * 3;
+        speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
+        return Math.max(speed, 10);
     }
 }

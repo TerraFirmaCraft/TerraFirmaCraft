@@ -62,7 +62,4 @@ public class ThatchBlock extends Block
         speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
         return speed;
     }
-
-    @Override
-    public void catchFire(BlockState state, World world, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {}
 }

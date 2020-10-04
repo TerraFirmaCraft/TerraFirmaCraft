@@ -1,5 +1,6 @@
 package net.dries007.tfc.common.blocks;
 
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -75,5 +76,20 @@ public class ThatchBedBlock extends BedBlock
     @SuppressWarnings("deprecation")
     public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
+    }
+
+    @Override
+    public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    {
+        return true;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+    {
+        int speed = 200;
+        speed += ClimateRenderCache.INSTANCE.getTemperature() * 3;
+        speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
+        return Math.max(speed, 10);
     }
 }
