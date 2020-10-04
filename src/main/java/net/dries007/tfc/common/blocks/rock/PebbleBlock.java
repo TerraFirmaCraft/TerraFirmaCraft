@@ -31,9 +31,9 @@ public class PebbleBlock extends GroundcoverBlock
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
     public static final IntegerProperty ROCKS = IntegerProperty.create("rocks", 1, 3);
 
-    protected static final VoxelShape ONE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
-    protected static final VoxelShape TWO = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
-    protected static final VoxelShape THREE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
+    private static final VoxelShape ONE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
+    private static final VoxelShape TWO = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+    private static final VoxelShape THREE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
 
     private final Rock.Default rock;
 
