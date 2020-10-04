@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.PebbleBlock;
 
 import net.minecraft.block.Block;
@@ -119,7 +120,7 @@ public class Rock
         MOSSY_BRICKS(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         MOSSY_COBBLE(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         CHISELED(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
-        PEBBLE(rock -> new PebbleBlock(rock), false);
+        PEBBLE(rock -> new PebbleBlock(), false);
 
         public static final BlockType[] VALUES = values();
         public static final Codec<BlockType> CODEC = IStringSerializable.fromEnum(BlockType::values, BlockType::byName);

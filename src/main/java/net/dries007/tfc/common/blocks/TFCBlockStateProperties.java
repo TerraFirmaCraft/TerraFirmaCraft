@@ -24,4 +24,6 @@ public class TFCBlockStateProperties
 
     public static final IntegerProperty DISTANCE_1_7 = BlockStateProperties.DISTANCE;
     public static final IntegerProperty DISTANCE_1_8 = IntegerProperty.create("distance", 1, 6);
+
+    public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
 }

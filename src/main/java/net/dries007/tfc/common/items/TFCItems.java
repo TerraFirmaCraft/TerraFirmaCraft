@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.PebbleBlock;
 import net.dries007.tfc.common.types.Ore;
 
 import net.minecraft.block.Block;
@@ -71,8 +73,8 @@ public final class TFCItems
         )
     );
 
-    public static final Map<Rock.Default, RegistryObject<RockItem>> LOOSE_ROCKS = Helpers.mapOfKeys(Rock.Default.class, type ->
-        register("rock/rock/" + type.name().toLowerCase(), () -> new RockItem(type))
+    public static final Map<Rock.Default, RegistryObject<RockItem>> LOOSE_ROCKS = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        register("rock/rock/" + rock.name().toLowerCase(), () -> new RockItem(TFCBlocks.ROCKS.get(rock).get(Rock.BlockType.PEBBLE)))
     );
 
     public static final Map<Rock.Default, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.Default.class, type ->

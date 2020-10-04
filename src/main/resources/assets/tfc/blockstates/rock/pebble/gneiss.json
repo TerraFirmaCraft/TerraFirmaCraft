@@ -1,93 +1,93 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "facing=east,rocks=1,waterlogged=false": {
+    "facing=east,count=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/gneiss",
       "y": 90
     },
-    "facing=north,rocks=1,waterlogged=false": {
+    "facing=north,count=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/gneiss"
     },
-    "facing=south,rocks=1,waterlogged=false": {
+    "facing=south,count=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/gneiss",
       "y": 180
     },
-    "facing=west,rocks=1,waterlogged=false": {
+    "facing=west,count=1,waterlogged=false": {
       "model": "tfc:block/rock/pebble/gneiss",
       "y": 270
     },
-    "facing=east,rocks=2,waterlogged=false": {
+    "facing=east,count=2,waterlogged=false": {
       "model": "tfc:block/rock/rubble/gneiss",
       "y": 90
     },
-    "facing=north,rocks=2,waterlogged=false": {
+    "facing=north,count=2,waterlogged=false": {
       "model": "tfc:block/rock/rubble/gneiss"
     },
-    "facing=south,rocks=2,waterlogged=false": {
+    "facing=south,count=2,waterlogged=false": {
       "model": "tfc:block/rock/rubble/gneiss",
       "y": 180
     },
-    "facing=west,rocks=2,waterlogged=false": {
+    "facing=west,count=2,waterlogged=false": {
       "model": "tfc:block/rock/rubble/gneiss",
       "y": 270
     },
-    "facing=east,rocks=3,waterlogged=false": {
+    "facing=east,count=3,waterlogged=false": {
       "model": "tfc:block/rock/boulder/gneiss",
       "y": 90
     },
-    "facing=north,rocks=3,waterlogged=false": {
+    "facing=north,count=3,waterlogged=false": {
       "model": "tfc:block/rock/boulder/gneiss"
     },
-    "facing=south,rocks=3,waterlogged=false": {
+    "facing=south,count=3,waterlogged=false": {
       "model": "tfc:block/rock/boulder/gneiss",
       "y": 180
     },
-    "facing=west,rocks=3,waterlogged=false": {
+    "facing=west,count=3,waterlogged=false": {
       "model": "tfc:block/rock/boulder/gneiss",
       "y": 270
     },
-    "facing=east,rocks=1,waterlogged=true": {
+    "facing=east,count=1,waterlogged=true": {
       "model": "tfc:block/rock/pebble/gneiss",
       "y": 90
     },
-    "facing=north,rocks=1,waterlogged=true": {
+    "facing=north,count=1,waterlogged=true": {
       "model": "tfc:block/rock/pebble/gneiss"
     },
-    "facing=south,rocks=1,waterlogged=true": {
+    "facing=south,count=1,waterlogged=true": {
       "model": "tfc:block/rock/pebble/gneiss",
       "y": 180
     },
-    "facing=west,rocks=1,waterlogged=true": {
+    "facing=west,count=1,waterlogged=true": {
       "model": "tfc:block/rock/pebble/gneiss",
       "y": 270
     },
-    "facing=east,rocks=2,waterlogged=true": {
+    "facing=east,count=2,waterlogged=true": {
       "model": "tfc:block/rock/rubble/gneiss",
       "y": 90
     },
-    "facing=north,rocks=2,waterlogged=true": {
+    "facing=north,count=2,waterlogged=true": {
       "model": "tfc:block/rock/rubble/gneiss"
     },
-    "facing=south,rocks=2,waterlogged=true": {
+    "facing=south,count=2,waterlogged=true": {
       "model": "tfc:block/rock/rubble/gneiss",
       "y": 180
     },
-    "facing=west,rocks=2,waterlogged=true": {
+    "facing=west,count=2,waterlogged=true": {
       "model": "tfc:block/rock/rubble/gneiss",
       "y": 270
     },
-    "facing=east,rocks=3,waterlogged=true": {
+    "facing=east,count=3,waterlogged=true": {
       "model": "tfc:block/rock/boulder/gneiss",
       "y": 90
     },
-    "facing=north,rocks=3,waterlogged=true": {
+    "facing=north,count=3,waterlogged=true": {
       "model": "tfc:block/rock/boulder/gneiss"
     },
-    "facing=south,rocks=3,waterlogged=true": {
+    "facing=south,count=3,waterlogged=true": {
       "model": "tfc:block/rock/boulder/gneiss",
       "y": 180
     },
-    "facing=west,rocks=3,waterlogged=true": {
+    "facing=west,count=3,waterlogged=true": {
       "model": "tfc:block/rock/boulder/gneiss",
       "y": 270
     }

@@ -1,10 +1,13 @@
 package net.dries007.tfc.common.items;
 
+import java.util.function.Supplier;
+
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.PebbleBlock;
 import net.dries007.tfc.common.types.Rock;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -19,12 +22,17 @@ import net.minecraft.world.World;
 
 public class RockItem extends Item
 {
-    private final Rock.Default rock;
+    private final Supplier<Block> pebble;
 
-    public RockItem(Rock.Default rock)
+    public RockItem(Supplier<Block> pebble)
     {
         super((new Properties()).tab(TFCItemGroup.MISC));
-        this.rock = rock;
+        this.pebble = pebble;
+    }
+
+    public PebbleBlock getPebble()
+    {
+        return (PebbleBlock) pebble.get();
     }
 
     @Override
@@ -41,23 +49,23 @@ public class RockItem extends Item
                     BlockPos pos = context.getClickedPos();
                     BlockState clickedBlockState = world.getBlockState(pos);
                     Direction direction = context.getHorizontalDirection();
-                    if (clickedBlockState.is(TFCBlocks.ROCKS.get(rock).get(Rock.BlockType.PEBBLE).get())) // if we're clicking on a matching pebble block
+                    if (clickedBlockState.getBlock() instanceof PebbleBlock)
                     {
-                        switch (clickedBlockState.getValue(PebbleBlock.ROCKS)) // try to add one to the total (up to 3)
+                        PebbleBlock clickedPebble = (PebbleBlock) clickedBlockState.getBlock();
+                        if (getPebble().is(clickedPebble))
                         {
-                            case 1:
-                                world.setBlock(pos, clickedBlockState.setValue(PebbleBlock.ROCKS, 2).setValue(PebbleBlock.FACING, direction), 1);
+                            int rocks = clickedBlockState.getValue(PebbleBlock.ROCKS);
+                            if (rocks < 3)
+                            {
+                                world.setBlock(pos, clickedBlockState.setValue(PebbleBlock.ROCKS, rocks + 1).setValue(PebbleBlock.FACING, direction), 1);
                                 player.getMainHandItem().shrink(1);
                                 return ActionResultType.CONSUME; // the same thing as PASS but it doesn't swing the player's arm
-                            case 2:
-                                world.setBlock(pos, clickedBlockState.setValue(PebbleBlock.ROCKS, 3).setValue(PebbleBlock.FACING, direction), 1);
-                                player.getMainHandItem().shrink(1);
-                                return ActionResultType.CONSUME;
+                            }
                         }
                     }
                     else if (clickedBlockState.isFaceSturdy(world, pos, Direction.UP) && world.getBlockState(pos.above()).isAir(world, pos.above())) // if there's an open block, we'll just place the thing
                     {
-                        world.setBlock(pos.above(), TFCBlocks.ROCKS.get(rock).get(Rock.BlockType.PEBBLE).get().defaultBlockState().setValue(PebbleBlock.FACING, direction), 1);
+                        world.setBlock(pos.above(), getPebble().defaultBlockState().setValue(PebbleBlock.FACING, direction), 1);
                         player.getMainHandItem().shrink(1);
                         return ActionResultType.CONSUME;
                     }

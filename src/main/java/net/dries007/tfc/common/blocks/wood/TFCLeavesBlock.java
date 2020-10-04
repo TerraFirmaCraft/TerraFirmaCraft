@@ -170,7 +170,7 @@ public abstract class TFCLeavesBlock extends Block
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        Season season = Calendars.SERVER.getCalendarMonthOfYear().getSeason();
+        Season season = Calendars.get(context.getLevel()).getCalendarMonthOfYear().getSeason();
         Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
         return super.getStateForPlacement(context).setValue(SEASON_NO_SPRING, newSeason).setValue(PERSISTENT, context.getPlayer() != null);
     }
