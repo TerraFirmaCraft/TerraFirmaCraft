@@ -51,7 +51,7 @@ public class TwigBlock extends GroundcoverBlock
     @Override
     public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face)
     {
-        int speed = 10;
+        int speed = 100;
         speed += ClimateRenderCache.INSTANCE.getTemperature() * 3;
         speed -= ClimateRenderCache.INSTANCE.getRainfall() / 20;
         return Math.max(speed, 10);
