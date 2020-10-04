@@ -111,7 +111,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     {
         return chunkDataProvider;
     }
-    
+
     public ChunkBlockReplacer getBlockReplacer()
     {
         return blockReplacer;
@@ -144,7 +144,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
         {
             // First, run worley cave carver
             // todo: this should use a vanilla world carver for ease of use (despite the worse efficiency)
-            worleyCaveCarver.carve(chunkIn, chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), ((ChunkPrimer)chunkIn).getOrCreateCarvingMask(stage));
+            worleyCaveCarver.carve(chunkIn, chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), ((ChunkPrimer) chunkIn).getOrCreateCarvingMask(stage));
         }
 
         // Fire other world carvers

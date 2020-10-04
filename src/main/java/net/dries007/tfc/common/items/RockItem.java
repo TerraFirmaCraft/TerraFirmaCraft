@@ -4,6 +4,7 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.PebbleBlock;
 import net.dries007.tfc.common.types.Rock;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -42,7 +43,7 @@ public class RockItem extends Item
                     Direction direction = context.getHorizontalDirection();
                     if (clickedBlockState.is(TFCBlocks.ROCKS.get(rock).get(Rock.BlockType.PEBBLE).get())) // if we're clicking on a matching pebble block
                     {
-                        switch(clickedBlockState.getValue(PebbleBlock.ROCKS)) // try to add one to the total (up to 3)
+                        switch (clickedBlockState.getValue(PebbleBlock.ROCKS)) // try to add one to the total (up to 3)
                         {
                             case 1:
                                 world.setBlock(pos, clickedBlockState.setValue(PebbleBlock.ROCKS, 2).setValue(PebbleBlock.FACING, direction), 1);

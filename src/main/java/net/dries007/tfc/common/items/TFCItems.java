@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.types.Ore;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -49,7 +50,7 @@ public final class TFCItems
     );
 
     public static final Map<Ore.Default, RegistryObject<Item>> ORE = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isNotGem, type ->
-        register( "ore/" + type.name().toLowerCase(), TFCItemGroup.MISC)
+        register("ore/" + type.name().toLowerCase(), TFCItemGroup.MISC)
     );
 
     public static final Map<Ore.Default, Map<Ore.ItemGrade, RegistryObject<Item>>> ORE_GRADES = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, ore ->
@@ -71,11 +72,11 @@ public final class TFCItems
     );
 
     public static final Map<Rock.Default, RegistryObject<RockItem>> LOOSE_ROCKS = Helpers.mapOfKeys(Rock.Default.class, type ->
-        register( "rock/rock/" + type.name().toLowerCase(), () -> new RockItem(type))
+        register("rock/rock/" + type.name().toLowerCase(), () -> new RockItem(type))
     );
 
     public static final Map<Rock.Default, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.Default.class, type ->
-        register( "rock/brick/" + type.name().toLowerCase(), TFCItemGroup.MISC)
+        register("rock/brick/" + type.name().toLowerCase(), TFCItemGroup.MISC)
     );
 
     private static RegistryObject<Item> register(String name, ItemGroup group)

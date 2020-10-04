@@ -2,6 +2,7 @@ package net.dries007.tfc.common.blocks;
 
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.util.Climate;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

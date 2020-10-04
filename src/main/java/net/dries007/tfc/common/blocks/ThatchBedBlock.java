@@ -1,6 +1,7 @@
 package net.dries007.tfc.common.blocks;
 
 import net.dries007.tfc.client.ClimateRenderCache;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,7 +38,7 @@ public class ThatchBedBlock extends BedBlock
         {
             if (canSetSpawn(worldIn) && !worldIn.isThundering()) //todo: figure out how spawning works
             {
-                ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player; // lifted from RespawnAnchorBlock
+                ServerPlayerEntity serverplayerentity = (ServerPlayerEntity) player; // lifted from RespawnAnchorBlock
                 serverplayerentity.setRespawnPosition(worldIn.dimension(), player.blockPosition(), 0.0F, false, true);
                 player.displayClientMessage(new TranslationTextComponent("tfc.thatch_bed.use"), true);
                 return ActionResultType.SUCCESS;
@@ -80,7 +81,8 @@ public class ThatchBedBlock extends BedBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockRenderType getRenderShape(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state)
+    {
         return BlockRenderType.MODEL;
     }
 }

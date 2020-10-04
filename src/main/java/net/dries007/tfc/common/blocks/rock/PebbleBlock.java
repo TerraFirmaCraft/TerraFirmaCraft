@@ -3,6 +3,7 @@ package net.dries007.tfc.common.blocks.rock;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.types.Rock;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
@@ -55,7 +56,7 @@ public class PebbleBlock extends GroundcoverBlock
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch(state.getValue(ROCKS))
+        switch (state.getValue(ROCKS))
         {
             case 1:
             default:
