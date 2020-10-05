@@ -193,9 +193,9 @@ public final class CommonEventHandler
         {
             event.getDrops().add(new ItemStack(Blocks.ICE));
         }
-
         // Drop shards from glass
-        if (state.getMaterial() == Material.GLASS && Constants.RNG.nextInt(2) == 0)
+        ItemStack stackAt = new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, state.getBlock().damageDropped(state));
+        if (OreDictionaryHelper.doesStackMatchOre(stackAt,"blockGlass"))
         {
             event.getDrops().add(new ItemStack(ItemsTFC.GLASS_SHARD));
         }

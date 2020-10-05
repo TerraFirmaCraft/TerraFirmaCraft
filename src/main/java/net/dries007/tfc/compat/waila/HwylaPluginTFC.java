@@ -24,6 +24,7 @@ public class HwylaPluginTFC implements IWailaPlugin
         new HwylaBlockInterface(new BerryBushProvider()),
         new HwylaBlockInterface(new BlastFurnaceProvider()),
         new HwylaBlockInterface(new BloomeryProvider()),
+        new HwylaBlockInterface(new LampProvider()),
         new HwylaBlockInterface(new CropProvider()),
         new HwylaBlockInterface(new CrucibleProvider()),
         new HwylaBlockInterface(new FruitTreeProvider()),
