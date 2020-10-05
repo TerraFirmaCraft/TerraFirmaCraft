@@ -25,6 +25,7 @@ import net.dries007.tfc.objects.fluids.capability.FluidHandlerSided;
 import net.dries007.tfc.objects.fluids.capability.FluidTankCallback;
 import net.dries007.tfc.objects.fluids.capability.IFluidHandlerSidedCallback;
 import net.dries007.tfc.objects.fluids.capability.IFluidTankCallback;
+import net.dries007.tfc.objects.fluids.capability.FluidWhitelistHandlerComplex;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockMetalLamp;
 
 @ParametersAreNonnullByDefault
@@ -37,6 +38,7 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
     public TELamp()
     {
         CAPACITY = ConfigTFC.Devices.LAMP.tank;
+        this.tank.setCapacity(CAPACITY);
         this.tank.setTileEntity(this);
     }
 
@@ -111,6 +113,7 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
             }
             tank.setFluid(fluidStack);
         }
+        markForSync();
         powered = nbt.getBoolean("powered");
     }
 
@@ -121,6 +124,25 @@ public class TELamp extends TETickCounter implements IFluidTankCallback, IFluidH
         nbt.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
         nbt.setBoolean("powered", powered);
         return super.writeToNBT(nbt);
+    }
+
+    /**
+     * Load up fluid handler contents from a lamps's ItemStack (after TEBarrel#loadFromItemStack)
+     *
+     * @param stack the lamp's stack to load contents from
+     */
+    public void loadFromItemStack(ItemStack stack)
+    {
+        IFluidHandler lampCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (lampCap instanceof FluidWhitelistHandlerComplex)
+        {
+            NBTTagCompound contents = stack.getTagCompound();
+            if (contents != null)
+            {
+                tank.fill(((FluidWhitelistHandlerComplex)lampCap).getFluid(), true);
+                markForSync();
+            }
+        }
     }
 
     public boolean isPowered()

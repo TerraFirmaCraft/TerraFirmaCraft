@@ -134,13 +134,13 @@ dependencies {
     // Mod dependencies go here.
     // Do not add dependencies without prior approval from the dev team. You can update existing ones.
     deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
-    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
+    deobfProvided "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
 
     // For now, since maven is no show, use the curse maven plugin to resolve the exact file name
     deobfProvided "curse.maven:hwyla:2568751"
     //compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
     deobfProvided "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
-    deobfCompile "vazkii.patchouli:Patchouli:${config.patchouli.version}"
+    deobfProvided "vazkii.patchouli:Patchouli:${config.patchouli.version}"
 }
 
 processResources {

@@ -179,12 +179,12 @@ tfc.tooltip.animal.product.no_egg=这只%s没做好下蛋的准备。
 
 
 ## Prospecting Result Messages
-tfc.propick.found=发现%s
-tfc.propick.found_traces=发现痕量%s
-tfc.propick.found_small=发现少量%s
-tfc.propick.found_medium=发现中量%s
-tfc.propick.found_large=发现大量%s
-tfc.propick.found_very_large=发现巨量%s
+tfc.propick.found=发现
+tfc.propick.found_traces=发现痕量
+tfc.propick.found_small=发现少量
+tfc.propick.found_medium=发现中量
+tfc.propick.found_large=发现大量
+tfc.propick.found_very_large=发现巨量
 tfc.propick.found_nothing=没发现什么有意思的。
 
 ## Thatch Bed

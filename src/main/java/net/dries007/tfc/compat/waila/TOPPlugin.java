@@ -22,6 +22,7 @@ public class TOPPlugin implements Function<ITheOneProbe, Void>
         new TOPBlockInterface(new BerryBushProvider()),
         new TOPBlockInterface(new BlastFurnaceProvider()),
         new TOPBlockInterface(new BloomeryProvider()),
+        new TOPBlockInterface(new LampProvider()),
         new TOPBlockInterface(new CropProvider()),
         new TOPBlockInterface(new CrucibleProvider()),
         new TOPBlockInterface(new FruitTreeProvider()),

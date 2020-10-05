@@ -17,7 +17,15 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": ["tfc:beartfc","tfc:polarbeartfc","tfc:blackbeartfc"]
+          "type": "tfc:grizzlybeartfc"
+        }
+      }
+    },
+    "kill_black_bear": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "tfc:blackbeartfc"
         }
       }
     },
@@ -36,6 +44,7 @@
   "requirements": [
     [
       "kill_bear",
+      "kill_black_bear",
       "kill_polar_bear"
     ]
   ]

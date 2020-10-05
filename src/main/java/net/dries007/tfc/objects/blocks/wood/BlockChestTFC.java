@@ -72,6 +72,7 @@ public class BlockChestTFC extends BlockChest implements IItemSize
         {
             if (MAP_BASIC.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
             OreDictionaryHelper.register(this, "chest");
+            OreDictionaryHelper.register(this, "chest", "wood");
             //noinspection ConstantConditions
             OreDictionaryHelper.register(this, "chest", wood.getRegistryName().getPath());
         }
@@ -79,6 +80,7 @@ public class BlockChestTFC extends BlockChest implements IItemSize
         {
             if (MAP_TRAP.put(wood, this) != null) throw new IllegalStateException("There can only be one.");
             OreDictionaryHelper.register(this, "chest", "trapped");
+            OreDictionaryHelper.register(this, "chest", "wood");
             //noinspection ConstantConditions
             OreDictionaryHelper.register(this, "chest", "trapped", wood.getRegistryName().getPath());
         }

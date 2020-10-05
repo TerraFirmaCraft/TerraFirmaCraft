@@ -423,8 +423,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        for (int i = 3; i <= 3 + RNG.nextInt(5); i++)
-            drops.add(ItemsTFC.WOOD_ASH.getDefaultInstance());
+        drops.add(new ItemStack(ItemsTFC.WOOD_ASH,3 + RNG.nextInt(5)));
     }
 
     @Nullable
