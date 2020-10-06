@@ -17,7 +17,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
-import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.world.TFCChunkGenerator;
 
 import static net.dries007.tfc.common.blocks.rock.RawRockBlock.SUPPORTED;
 
@@ -50,7 +50,7 @@ public class CaveBlockReplacer
             BlockState stateAt = chunk.getBlockState(pos);
             BlockState stateAbove = chunk.getBlockState(posUp);
 
-            Set<Block> carvableBlockChecks = pos.getY() > TFCConfig.COMMON.seaLevel.get() ? carvableBlocksAboveSeaLevel : carvableBlocks;
+            Set<Block> carvableBlockChecks = pos.getY() > TFCChunkGenerator.SEA_LEVEL ? carvableBlocksAboveSeaLevel : carvableBlocks;
             if (carvableBlockChecks.contains(stateAt.getBlock()) && (carvableBlockChecks.contains(stateAbove.getBlock()) || stateAbove.isAir(chunk, posUp)))
             {
                 if (pos.getY() < 11)

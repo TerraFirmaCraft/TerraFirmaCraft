@@ -66,9 +66,7 @@ public class ChunkDataProvider
         this.middleRockLayer = new RockFactory(rockLayers.get(1));
         this.topRockLayer = new RockFactory(rockLayers.get(2));
 
-        int baseHeight = TFCConfig.COMMON.rockLayerHeight.get();
-        int range = TFCConfig.COMMON.rockLayerSpread.get();
-        this.layerHeightNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(2).scaled(baseHeight - range, baseHeight + range).spread(0.1f);
+        this.layerHeightNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(2).scaled(40, 60).spread(0.1f);
 
         // Climate
         temperatureNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.temperatureScale.get()), 0)

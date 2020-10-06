@@ -18,31 +18,15 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class CommonConfig
 {
-    // World Generation - General
-    public final ForgeConfigSpec.BooleanValue flatBedrock;
-    public final ForgeConfigSpec.IntValue islandFrequency;
-    public final ForgeConfigSpec.IntValue biomeZoomLevel;
-    public final ForgeConfigSpec.IntValue rockBottomZoomLevel;
-    public final ForgeConfigSpec.IntValue rockMiddleZoomLevel;
-    public final ForgeConfigSpec.IntValue rockTopZoomLevel;
-    public final ForgeConfigSpec.IntValue rockLayerHeight;
-    public final ForgeConfigSpec.IntValue rockLayerSpread;
-    public final ForgeConfigSpec.IntValue seaLevel;
+    // Defaults
     public final ForgeConfigSpec.IntValue defaultMonthLength;
     // World Generation - Caves
+    // todo: move to config for worley caves when we replace it with a json world carver
     public final ForgeConfigSpec.IntValue worleyCaveHeightFade;
     public final ForgeConfigSpec.DoubleValue worleyCaveBaseNoiseCutoff;
     public final ForgeConfigSpec.DoubleValue worleyCaveWorleyNoiseCutoff;
+    // todo: move to decorator for "exclusive y range"
     public final ForgeConfigSpec.IntValue caveSpikeMaxY;
-    // World Generation - Biomes
-    public final ForgeConfigSpec.IntValue frozenTemperatureCutoff;
-    public final ForgeConfigSpec.IntValue coldTemperatureCutoff;
-    public final ForgeConfigSpec.IntValue normalTemperatureCutoff;
-    public final ForgeConfigSpec.IntValue lukewarmTemperatureCutoff;
-    public final ForgeConfigSpec.IntValue aridRainfallCutoff;
-    public final ForgeConfigSpec.IntValue dryRainfallCutoff;
-    public final ForgeConfigSpec.IntValue normalRainfallCutoff;
-    public final ForgeConfigSpec.IntValue dampRainfallCutoff;
 
     // General
     public final ForgeConfigSpec.BooleanValue logDFUFUs;
@@ -54,19 +38,6 @@ public class CommonConfig
 
         innerBuilder.push("worldGeneration").push("general");
 
-        flatBedrock = builder.apply("flatBedrock").define("flatBedrock", false);
-
-        islandFrequency = builder.apply("islandFrequency").defineInRange("islandFrequency", 6, 1, 100);
-        biomeZoomLevel = builder.apply("biomeZoomLevel").defineInRange("biomeZoomLevel", 4, 1, 20);
-
-        rockBottomZoomLevel = builder.apply("rockBottomZoomLevel").comment("This controls how large the bottom rock layer is. The formula is on average, a layer is 2^(4 + rockBottomZoomLevel) blocks wide.").defineInRange("rockBottomZoomLevel", 7, 1, 20);
-        rockMiddleZoomLevel = builder.apply("rockMiddleZoomLevel").comment("This controls how large the middle rock layer is. The formula is on average, a layer is 2^(4 + rockMiddleZoomLevel) blocks wide.").defineInRange("rockMiddleZoomLevel", 7, 1, 20);
-        rockTopZoomLevel = builder.apply("rockTopZoomLevel").comment("This controls how large the top rock layer is. The formula is on average, a layer is 2^(4 + rockZoomLevel) blocks wide.").defineInRange("rockTopZoomLevel", 5, 1, 20);
-        rockLayerHeight = builder.apply("rockLayerHeight").defineInRange("rockLayerHeight", 50, 0, 256);
-        rockLayerSpread = builder.apply("rockLayerSpread").defineInRange("rockLayerSpread", 10, 0, 256);
-
-        seaLevel = builder.apply("seaLevel").defineInRange("seaLevel", 96, 0, 256);
-
         defaultMonthLength = builder.apply("defaultMonthLength").defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("caves");
@@ -75,18 +46,6 @@ public class CommonConfig
         worleyCaveBaseNoiseCutoff = builder.apply("worleyCaveBaseNoiseCutoff").defineInRange("worleyCaveBaseNoiseCutoff", 0.3, 0, 1);
         worleyCaveWorleyNoiseCutoff = builder.apply("worleyCaveWorleyNoiseCutoff").defineInRange("worleyCaveWorleyNoiseCutoff", 0.38, 0, 1);
         caveSpikeMaxY = builder.apply("caveSpikeMaxY").defineInRange("caveSpikeMaxY", 60, 0, 255);
-
-        innerBuilder.pop().push("biomes");
-
-        frozenTemperatureCutoff = builder.apply("frozenTemperatureCutoff").defineInRange("frozenTemperatureCutoff", -2, -20, 50);
-        coldTemperatureCutoff = builder.apply("coldTemperatureCutoff").defineInRange("coldTemperatureCutoff", 6, -20, 50);
-        normalTemperatureCutoff = builder.apply("normalTemperatureCutoff").defineInRange("normalTemperatureCutoff", 14, -20, 50);
-        lukewarmTemperatureCutoff = builder.apply("lukewarmTemperatureCutoff").defineInRange("lukewarmTemperatureCutoff", 22, -20, 50);
-
-        aridRainfallCutoff = builder.apply("aridRainfallCutoff").defineInRange("aridRainfallCutoff", 125, 0, 500);
-        dryRainfallCutoff = builder.apply("dryRainfallCutoff").defineInRange("dryRainfallCutoff", 200, 0, 500);
-        normalRainfallCutoff = builder.apply("normalRainfallCutoff").defineInRange("normalRainfallCutoff", 300, 0, 500);
-        dampRainfallCutoff = builder.apply("dampRainfallCutoff").defineInRange("dampRainfallCutoff", 375, 0, 500);
 
         innerBuilder.pop().pop().push("general");
 

@@ -4,12 +4,10 @@ import java.util.Properties;
 
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.settings.DimensionGeneratorSettings;
 
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,9 +28,7 @@ public class DimensionGeneratorSettingsMixin
         if (levelType != null && "tfc".equalsIgnoreCase(levelType.toString()))
         {
             DimensionGeneratorSettings old = cir.getReturnValue();
-            TFCBiomeProvider biomeProvider = new TFCBiomeProvider(old.seed(), new TFCBiomeProvider.LayerSettings(), registries.registryOrThrow(Registry.BIOME_REGISTRY));
-            ChunkGenerator chunkGenerator = new TFCChunkGenerator(biomeProvider, () -> registries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).get(DimensionSettings.OVERWORLD), false, old.seed());
-            cir.setReturnValue(new DimensionGeneratorSettings(old.seed(), old.generateFeatures(), false, DimensionGeneratorSettings.withOverworld(registries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), old.dimensions(), chunkGenerator)));
+            cir.setReturnValue(new DimensionGeneratorSettings(old.seed(), old.generateFeatures(), false, DimensionGeneratorSettings.withOverworld(registries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), old.dimensions(), TFCChunkGenerator.createDefaultPreset(() -> registries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).get(DimensionSettings.OVERWORLD), registries.registryOrThrow(Registry.BIOME_REGISTRY), old.seed()))));
         }
     }
 }

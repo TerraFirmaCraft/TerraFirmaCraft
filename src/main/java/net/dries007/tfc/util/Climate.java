@@ -16,6 +16,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -103,7 +104,7 @@ public final class Climate
 
         // Finally, add elevation based temperature
         // Internationally accepted average lapse time is 6.49 K / 1000 m, for the first 11 km of the atmosphere. Our temperature is scales the 110 m against 2750 m, so that gives us a change of 1.6225 / 10 blocks.
-        float elevationTemperature = MathHelper.clamp((y - TFCConfig.COMMON.seaLevel.get()) * 0.16225f, 0, 17.822f);
+        float elevationTemperature = MathHelper.clamp((y - TFCChunkGenerator.SEA_LEVEL) * 0.16225f, 0, 17.822f);
 
         // Sum all different temperature values.
         return averageTemperature + monthTemperature + dailyTemperature + elevationTemperature;
