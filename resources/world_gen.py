@@ -140,6 +140,7 @@ def generate(rm: ResourceManager):
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
     rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
+    rm.carver('worley_cave', wg.configure('tfc:worley_cave'))
 
     # Biomes
     for temp in TEMPERATURES:
@@ -245,7 +246,7 @@ def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: 
             'water_fog_color': temp.water_fog_color
         },
         surface_builder=surface_builder,
-        air_carvers=['tfc:cave', 'tfc:canyon'],
+        air_carvers=['tfc:worley_cave', 'tfc:cave', 'tfc:canyon'],
         water_carvers=[],
         features=[
             ['tfc:erosion'],  # raw generation

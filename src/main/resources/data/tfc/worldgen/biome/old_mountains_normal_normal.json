@@ -15,6 +15,7 @@
   },
   "carvers": {
     "air": [
+      "tfc:worley_cave",
       "tfc:cave",
       "tfc:canyon"
     ],
