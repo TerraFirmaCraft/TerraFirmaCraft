@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.Dimension;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
@@ -20,14 +19,13 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Event handler for calendar related ticking
  *
- * @see Calendar
+ * @see ServerCalendar
  */
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CalendarEventHandler
@@ -38,12 +36,6 @@ public class CalendarEventHandler
     public static void onServerStart(FMLServerStartingEvent event)
     {
         Calendars.SERVER.onServerStart(event.getServer());
-    }
-
-    @SubscribeEvent
-    public static void onServerStop(FMLServerStoppedEvent event)
-    {
-        Calendars.SERVER.onServerStop();
     }
 
     /**

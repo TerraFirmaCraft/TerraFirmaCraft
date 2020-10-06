@@ -38,7 +38,7 @@ public abstract class TFCContainerScreen<C extends Container> extends ContainerS
         drawDefaultBackground(matrixStack);
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
     protected void drawDefaultBackground(MatrixStack matrixStack)
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

@@ -3,7 +3,19 @@
   "minVersion": "0.8",
   "package": "net.dries007.tfc.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": ["entity.item.FallingBlockEntityAccessor", "item.crafting.RecipeManagerAccessor", "util.registry.WorldSettingsImportMixin", "world.GameRulesAccessor", "world.GameRulesRuleTypeAccessor", "world.biome.BiomeMixin", "world.gen.HeightmapAccessor", "world.gen.carver.CanyonWorldCarverAccessor", "world.gen.feature.template.TemplateAccessor", "world.gen.settings.DimensionGeneratorSettingsMixin"],
+  "mixins": [
+    "entity.item.FallingBlockEntityAccessor",
+    "item.crafting.RecipeManagerAccessor",
+    "util.registry.WorldSettingsImportMixin",
+    "world.GameRulesAccessor",
+    "world.GameRulesRuleTypeAccessor",
+    "world.biome.BiomeMixin",
+    "world.gen.HeightmapAccessor",
+    "world.gen.carver.CanyonWorldCarverAccessor",
+    "world.gen.carver.ConfiguredCarverAccessor",
+    "world.gen.feature.template.TemplateAccessor",
+    "world.gen.settings.DimensionGeneratorSettingsMixin"
+  ],
   "client": [
     "client.MinecraftMixin",
     "client.gui.screen.CreateWorldScreenMixin",
