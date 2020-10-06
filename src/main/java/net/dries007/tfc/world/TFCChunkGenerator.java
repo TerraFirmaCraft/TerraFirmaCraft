@@ -59,6 +59,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     public static final BlockState STONE = Blocks.STONE.defaultBlockState();
     public static final BlockState WATER = Blocks.WATER.defaultBlockState();
 
+    /**
+     * This is the default instance used in the TFC preset, both on client and server
+     */
+    public static TFCChunkGenerator createDefaultPreset(Supplier<DimensionSettings> dimensionSettings, Registry<Biome> biomeRegistry, long seed)
+    {
+        return new TFCChunkGenerator(new TFCBiomeProvider(seed, new TFCBiomeProvider.LayerSettings(), new TFCBiomeProvider.ClimateSettings(), biomeRegistry), dimensionSettings, false, seed);
+    }
+
     // Noise
     private final Map<BiomeVariants, INoise2D> biomeNoiseMap;
     private final INoiseGenerator surfaceDepthNoise;
