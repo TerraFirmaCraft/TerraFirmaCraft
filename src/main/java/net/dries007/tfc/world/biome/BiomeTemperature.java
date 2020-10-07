@@ -5,8 +5,6 @@
 
 package net.dries007.tfc.world.biome;
 
-import net.dries007.tfc.config.TFCConfig;
-
 /**
  * These are biome temperatures. They mimic the vanilla ocean variants, except we apply them to all biomes, based on our temperature layer generation.
  */
@@ -17,30 +15,6 @@ public enum BiomeTemperature
     NORMAL(0.5f, 4159204, 329011),
     LUKEWARM(0.75f, 4566514, 267827),
     WARM(1.0f, 4445678, 270131);
-
-    public static BiomeTemperature get(float avgTemperature)
-    {
-        if (avgTemperature < TFCConfig.COMMON.frozenTemperatureCutoff.get())
-        {
-            return FROZEN;
-        }
-        else if (avgTemperature < TFCConfig.COMMON.coldTemperatureCutoff.get())
-        {
-            return COLD;
-        }
-        else if (avgTemperature < TFCConfig.COMMON.normalTemperatureCutoff.get())
-        {
-            return NORMAL;
-        }
-        else if (avgTemperature < TFCConfig.COMMON.lukewarmTemperatureCutoff.get())
-        {
-            return LUKEWARM;
-        }
-        else
-        {
-            return WARM;
-        }
-    }
 
     private final float temperature;
     private final int waterColor;

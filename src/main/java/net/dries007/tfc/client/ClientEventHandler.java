@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -39,7 +38,6 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.TFCChunkGenerator;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -55,11 +53,9 @@ public final class ClientEventHandler
         LOGGER.debug("Client Setup");
 
         // Generator Preset
-
         TFCGeneratorTypePreset.setup();
 
         // Screens
-
         ScreenManager.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
         ScreenManager.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
         ScreenManager.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);

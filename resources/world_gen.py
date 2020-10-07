@@ -87,25 +87,25 @@ def generate(rm: ResourceManager):
 
     # Trees / Forests
     rm.feature('forest', wg.configure('tfc:forest', {'entries': [
-        forest_config(30, 210, 21, 31, 'acacia', True),
-        forest_config(60, 140, -6, 12, 'ash', True),
-        forest_config(10, 180, -10, 16, 'aspen', False),
-        forest_config(20, 180, -15, 7, 'birch', False),
-        forest_config(0, 120, 15, 35, 'blackwood', False),
-        forest_config(160, 320, 11, 35, 'chestnut', False),
-        forest_config(290, 500, -4, 15, 'douglas_fir', True),
-        forest_config(90, 250, 7, 27, 'hickory', True),
-        forest_config(240, 500, 15, 35, 'kapok', False),
-        forest_config(140, 410, -5, 20, 'maple', True),
-        forest_config(180, 430, -10, 12, 'oak', False),
-        forest_config(280, 500, 20, 35, 'palm', False),
-        forest_config(60, 250, -15, 7, 'pine', True),
-        forest_config(10, 190, 5, 20, 'rosewood', False),
-        forest_config(250, 420, -5, 12, 'sequoia', True),
-        forest_config(120, 430, -14, 7, 'spruce', True),
-        forest_config(120, 290, 17, 33, 'sycamore', True),
-        forest_config(10, 240, -8, 17, 'white_cedar', False),
-        forest_config(260, 480, 15, 32, 'willow', False),
+        forest_config(30, 210, 17, 32, 'acacia', True),
+        forest_config(60, 240, 1, 15, 'ash', True),
+        forest_config(350, 500, -18, 5, 'aspen', False),
+        forest_config(125, 310, -11, 7, 'birch', False),
+        forest_config(0, 180, 12, 32, 'blackwood', False),
+        forest_config(180, 370, -4, 17, 'chestnut', False),
+        forest_config(290, 500, -16, -1, 'douglas_fir', True),
+        forest_config(210, 400, 9, 24, 'hickory', True),
+        forest_config(270, 500, 17, 32, 'kapok', False),
+        forest_config(270, 500, -1, 15, 'maple', True),
+        forest_config(240, 450, -9, 11, 'oak', False),
+        forest_config(180, 470, 20, 32, 'palm', False),
+        forest_config(60, 270, -18, -4, 'pine', True),
+        forest_config(140, 310, 8, 31, 'rosewood', False),
+        forest_config(250, 420, -14, 2, 'sequoia', True),
+        forest_config(110, 320, -17, 1, 'spruce', True),
+        forest_config(230, 480, 15, 29, 'sycamore', True),
+        forest_config(10, 220, -13, 9, 'white_cedar', False),
+        forest_config(330, 500, 11, 32, 'willow', False),
     ]}))
 
     rm.feature(('tree', 'acacia'), wg.configure('tfc:random_tree', random_config('acacia', 35)))
@@ -140,6 +140,7 @@ def generate(rm: ResourceManager):
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
     rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
+    rm.carver('worley_cave', wg.configure('tfc:worley_cave'))
 
     # Biomes
     for temp in TEMPERATURES:
@@ -245,7 +246,7 @@ def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: 
             'water_fog_color': temp.water_fog_color
         },
         surface_builder=surface_builder,
-        air_carvers=['tfc:cave', 'tfc:canyon'],
+        air_carvers=['tfc:worley_cave', 'tfc:cave', 'tfc:canyon'],
         water_carvers=[],
         features=[
             ['tfc:erosion'],  # raw generation

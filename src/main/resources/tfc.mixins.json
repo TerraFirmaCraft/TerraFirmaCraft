@@ -7,12 +7,14 @@
     "entity.item.FallingBlockEntityAccessor",
     "item.crafting.RecipeManagerAccessor",
     "util.registry.WorldSettingsImportMixin",
-    "world.biome.BiomeMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
+    "world.biome.BiomeMixin",
     "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor",
-    "world.gen.feature.template.TemplateAccessor"
+    "world.gen.carver.ConfiguredCarverAccessor",
+    "world.gen.feature.template.TemplateAccessor",
+    "world.gen.settings.DimensionGeneratorSettingsMixin"
   ],
   "client": [
     "client.MinecraftMixin",

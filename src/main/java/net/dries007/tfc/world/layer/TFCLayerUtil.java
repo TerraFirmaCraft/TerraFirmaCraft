@@ -7,30 +7,44 @@ package net.dries007.tfc.world.layer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.LongFunction;
 import java.util.function.Supplier;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.LazyAreaLayerContext;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
+import net.dries007.tfc.world.layer.traits.LazyTypedAreaLayerContext;
+import net.dries007.tfc.world.noise.VoronoiNoise2D;
 
 public class TFCLayerUtil
 {
-    static final Int2ObjectMap<BiomeVariants> REGISTRY = new Int2ObjectOpenHashMap<>();
-    private static int ID = -1;
+    /**
+     * These IDs are used during plate tectonic layer generation
+     * They're declared here as compile time constants so they can be used optimally in switch statements later
+     */
+    public static final int OCEANIC = 0;
+    public static final int CONTINENTAL_LOW = 1;
+    public static final int CONTINENTAL_MID = 2;
+    public static final int CONTINENTAL_HIGH = 3;
+    public static final int OCEAN_OCEAN_DIVERGING = 4;
+    public static final int OCEAN_OCEAN_CONVERGING = 5;
+    public static final int OCEAN_CONTINENT_DIVERGING = 6;
+    public static final int OCEAN_CONTINENT_CONVERGING = 7;
+    public static final int CONTINENT_CONTINENT_DIVERGING = 8;
+    public static final int CONTINENT_CONTINENT_CONVERGING = 9;
+    private static final Int2ObjectMap<BiomeVariants> ID_TO_BIOME_VARIANTS = new Int2ObjectOpenHashMap<>();
+    private static int LAYER_ID = -1;
 
     /**
      * These are the int IDs that are used for layer generation
@@ -53,76 +67,78 @@ public class TFCLayerUtil
     public static final int SHORE = makeLayerId(TFCBiomes.SHORE);
     public static final int LAKE = makeLayerId(TFCBiomes.LAKE);
     public static final int RIVER = makeLayerId(TFCBiomes.RIVER);
+    /**
+     * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
+     */
+    public static final int LARGE_LAKE_MARKER = ++LAYER_ID;
+    public static final int OCEAN_OCEAN_CONVERGING_MARKER = ++LAYER_ID;
+    public static final int RIVER_MARKER = ++LAYER_ID;
+    public static final int NULL_MARKER = ++LAYER_ID;
 
     public static BiomeVariants getFromLayerId(int id)
     {
-        return REGISTRY.get(id);
+        return ID_TO_BIOME_VARIANTS.get(id);
     }
 
-    public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, int landFrequency, int biomeSize)
+    public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings)
     {
-        LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
+        final Random random = new Random(seed);
+        final Supplier<LazyTypedAreaLayerContext<Plate>> plateContext = () -> new LazyTypedAreaLayerContext<>(25, seed, random.nextLong());
+        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
+
+        ITypedAreaFactory<Plate> plateLayer;
         IAreaFactory<LazyArea> mainLayer, riverLayer;
 
-        // Ocean / Continents
+        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
+        plateLayer = new PlateGenerationLayer(new VoronoiNoise2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
+        plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
+        mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
 
-        mainLayer = new IslandLayer(landFrequency).run(contextFactory.apply(1000L));
-        mainLayer = ZoomLayer.FUZZY.run(contextFactory.apply(1001L), mainLayer);
-        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.apply(1002L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1003L), mainLayer);
-        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.apply(1004L), mainLayer);
+        // Rivers
+        riverLayer = new FloatNoiseLayer(new VoronoiNoise2D(random.nextLong()).spread(0.12f)).run(layerContext.get());
+        riverLayer = ZoomLayer.FUZZY.run(layerContext.get(), riverLayer);
+        riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
+        riverLayer = ZoomLayer.FUZZY.run(layerContext.get(), riverLayer);
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
-            mainLayer = AddIslandLayer.HEAVY.run(contextFactory.apply(1005L + 2 * i), mainLayer);
-            mainLayer = SmoothLayer.INSTANCE.run(contextFactory.apply(1006L + 2 * i), mainLayer);
+            riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
         }
 
-        // Oceans and Continents => Elevation Mapping
-        mainLayer = ElevationLayer.INSTANCE.run(contextFactory.apply(1009L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1010L), mainLayer);
+        riverLayer = RiverLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
 
-        // Elevation Mapping => Rivers
-        riverLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1011L), mainLayer);
+        // Biomes
+        mainLayer = PlateBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = OceanBorderLayer.INSTANCE.run(layerContext.get(), mainLayer);
 
-        for (int i = 0; i < biomeSize; i++)
-        {
-            riverLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1012L + i), riverLayer);
-        }
-
-        riverLayer = RiverLayer.INSTANCE.run(contextFactory.apply(1018L), riverLayer);
-        riverLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1019L), riverLayer);
-
-        // Elevation Mapping => Biomes
-        mainLayer = BiomeLayer.INSTANCE.run(contextFactory.apply(1011L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1012L), mainLayer);
-        mainLayer = AddIslandLayer.NORMAL.run(contextFactory.apply(1013L), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1014L), mainLayer);
-        mainLayer = RemoveOceanLayer.INSTANCE.run(contextFactory.apply(1015L), mainLayer);
-        mainLayer = OceanLayer.INSTANCE.run(contextFactory.apply(1016L), mainLayer);
-        mainLayer = EdgeBiomeLayer.INSTANCE.run(contextFactory.apply(1017L), mainLayer);
-        mainLayer = AddLakeLayer.INSTANCE.run(contextFactory.apply(1018L), mainLayer);
-
-        for (int i = 0; i < 2; i++)
-        {
-            mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1019L), mainLayer);
-        }
-
-        mainLayer = ShoreLayer.CASTLE.run(contextFactory.apply(1023L), mainLayer);
+        // Add biome level features - large + small lakes, island chains, shores
+        mainLayer = AddLakeLayer.LARGE.run(layerContext.get(), mainLayer);
+        mainLayer = LargeLakeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        mainLayer = ArchipelagoLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        mainLayer = EdgeBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        mainLayer = AddLakeLayer.SMALL.run(layerContext.get(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        mainLayer = ShoreLayer.INSTANCE.run(layerContext.get(), mainLayer);
 
         for (int i = 0; i < 4; i++)
         {
-            mainLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1024L), mainLayer);
+            mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
         }
 
-        mainLayer = SmoothLayer.INSTANCE.run(contextFactory.apply(1025L), mainLayer);
-        mainLayer = MixRiverLayer.INSTANCE.run(contextFactory.apply(1026L), mainLayer, riverLayer);
-        mainLayer = BiomeRiverWidenLayer.MEDIUM.run(contextFactory.apply(1027L), mainLayer);
-        mainLayer = BiomeRiverWidenLayer.LOW.run(contextFactory.apply(1028L), mainLayer);
+        mainLayer = SmoothLayer.INSTANCE.run(layerContext.get(), mainLayer);
+
+        // Mix rivers and expand them in low biomes
+        mainLayer = MixRiverLayer.INSTANCE.run(layerContext.get(), mainLayer, riverLayer);
+        mainLayer = BiomeRiverWidenLayer.MEDIUM.run(layerContext.get(), mainLayer);
+        mainLayer = BiomeRiverWidenLayer.LOW.run(layerContext.get(), mainLayer);
+
         return mainLayer;
     }
 
-    public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed)
+    public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed, TFCBiomeProvider.LayerSettings layerSettings)
     {
         LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
 
@@ -156,8 +172,7 @@ public class TFCLayerUtil
                 seedLayer = SmoothLayer.INSTANCE.run(contextFactory.apply(1001L), seedLayer);
             }
 
-            // todo: config option through biome provider codec?
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < layerSettings.getRockLayerScale(); i++)
             {
                 seedLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1001L), seedLayer);
             }
@@ -169,7 +184,7 @@ public class TFCLayerUtil
 
     static boolean isShoreCompatible(int value)
     {
-        return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS;
+        return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS && value != FLOODED_MOUNTAINS && value != LAKE;
     }
 
     static boolean isLakeCompatible(int value)
@@ -194,8 +209,8 @@ public class TFCLayerUtil
 
     private static int makeLayerId(BiomeVariants variants)
     {
-        ID++;
-        REGISTRY.put(ID, variants);
-        return ID;
+        LAYER_ID++;
+        ID_TO_BIOME_VARIANTS.put(LAYER_ID, variants);
+        return LAYER_ID;
     }
 }

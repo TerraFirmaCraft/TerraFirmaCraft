@@ -8,54 +8,80 @@ package net.dries007.tfc.world.carver;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Random;
+import java.util.function.Function;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.carver.WorldCarver;
 
-import net.dries007.tfc.config.TFCConfig;
+import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.*;
 
-public class WorleyCaveCarver
+public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements IContextCarver
 {
-    private final INoise3D caveNoise;
-    private final double heightFadeThreshold;
-    private final int heightSampleRange;
-    private final double baseNoiseCutoff;
-    private final double worleyNoiseCutoff;
     private final CaveBlockReplacer blockCarver;
 
-    public WorleyCaveCarver(Random seedGenerator)
+    private long cachedSeed;
+    private boolean initialized;
+
+    private INoise2D caveNoiseBase;
+    private INoise3D caveNoiseWorley;
+
+    public WorleyCaveCarver(Codec<WorleyCaveConfig> codec)
     {
-        INoise2D caveNoiseBase = new SimplexNoise2D(seedGenerator.nextLong()).spread(0.01f).scaled(0, 1);
-        INoise3D caveNoiseWorley = new WorleyNoise3D(seedGenerator.nextLong()).spread(0.012f).warped(
-            new SimplexNoise3D(seedGenerator.nextLong()).octaves(4).spread(0.08f).scaled(-18, 18),
-            new SimplexNoise3D(seedGenerator.nextLong()).octaves(4).spread(0.08f).scaled(-18, 18),
-            new SimplexNoise3D(seedGenerator.nextLong()).octaves(4).spread(0.08f).scaled(-18, 18)
-        ).scaled(0, 1);
+        super(codec, 255);
 
-        // The y level to start slowly fading out worley caves, to not rip up the surface too much
-        this.heightFadeThreshold = TFCConfig.COMMON.worleyCaveHeightFade.get();
-        // The number of vertical samples to take. Noise is sampled every 4 blocks, then interpolated
-        // +8 is to sample above the height fade, so it's actually a fade and not a cutoff
-        this.heightSampleRange = (int) (heightFadeThreshold / 4) + 8;
-        this.baseNoiseCutoff = TFCConfig.COMMON.worleyCaveBaseNoiseCutoff.get();
-        this.worleyNoiseCutoff = TFCConfig.COMMON.worleyCaveWorleyNoiseCutoff.get();
+        blockCarver = new CaveBlockReplacer();
+        cachedSeed = 0;
+        initialized = false;
+    }
 
-        this.caveNoise = (x, y, z) -> {
-            float baseNoise = caveNoiseBase.noise(x, z);
-            if (baseNoise > this.baseNoiseCutoff)
-            {
-                return caveNoiseWorley.noise(x, y, z);
-            }
-            return 0;
-        };
+    @Override
+    public void setSeed(long seed)
+    {
+        if (cachedSeed != seed || !initialized)
+        {
+            caveNoiseBase = new SimplexNoise2D(seed + 1).spread(0.01f).scaled(0, 1);
+            caveNoiseWorley = new WorleyNoise3D(seed + 2).spread(0.012f).warped(
+                new SimplexNoise3D(seed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
+                new SimplexNoise3D(seed + 4).octaves(4).spread(0.08f).scaled(-18, 18),
+                new SimplexNoise3D(seed + 5).octaves(4).spread(0.08f).scaled(-18, 18)
+            ).scaled(0, 1);
 
-        this.blockCarver = new CaveBlockReplacer();
+            cachedSeed = seed;
+            initialized = true;
+        }
+    }
+
+    @Override
+    public boolean carve(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, WorleyCaveConfig config)
+    {
+        // This carver is entirely noise based, so we need to only carve chunks when we're at the start chunk
+        if (chunkX == chunkXOffset && chunkZ == chunkZOffset)
+        {
+            carve(chunkIn, chunkX << 4, chunkZ << 4, carvingMask, config);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isStartChunk(Random rand, int chunkX, int chunkZ, WorleyCaveConfig config)
+    {
+        return true;
+    }
+
+    @Override
+    protected boolean skip(double distX, double distY, double distZ, int posY)
+    {
+        return false; // Unused
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    public void carve(IChunk chunkIn, int chunkX, int chunkZ, BitSet carvingMask)
+    private void carve(IChunk chunkIn, int chunkX, int chunkZ, BitSet carvingMask, WorleyCaveConfig config)
     {
+        int heightSampleRange = (config.heightFadeThreshold / 4) + 8;
         float[] noiseValues = new float[5 * 5 * heightSampleRange];
 
         // Sample initial noise values
@@ -65,7 +91,7 @@ public class WorleyCaveCarver
             {
                 for (int y = 0; y < heightSampleRange; y++)
                 {
-                    noiseValues[x + (z * 5) + (y * 25)] = caveNoise.noise(chunkX + x * 4, y * 7.3f, chunkZ + z * 4);
+                    noiseValues[x + (z * 5) + (y * 25)] = sampleNoise(chunkX + x * 4, y * 7f, chunkZ + z * 4, config);
                 }
             }
         }
@@ -109,7 +135,7 @@ public class WorleyCaveCarver
                         for (int y0 = 4 - 1; y0 >= 0; y0--)
                         {
                             int yPos = y * 4 + y0;
-                            float heightFadeValue = yPos > heightFadeThreshold ? 1 - 0.03f * (float) (yPos - heightFadeThreshold) : 1;
+                            float heightFadeValue = yPos > config.heightFadeThreshold ? 1 - 0.03f * (float) (yPos - config.heightFadeThreshold) : 1;
                             for (int x0 = x * 4; x0 < (x + 1) * 4; x0++)
                             {
                                 for (int z0 = z * 4; z0 < (z + 1) * 4; z0++)
@@ -120,7 +146,7 @@ public class WorleyCaveCarver
                                     float finalNoise = NoiseUtil.lerp(section[x0 + 16 * z0], prevSection[x0 + 16 * z0], 0.25f * y0);
                                     finalNoise *= heightFadeValue;
 
-                                    if (finalNoise > worleyNoiseCutoff)
+                                    if (finalNoise > config.worleyNoiseCutoff)
                                     {
                                         blockCarver.carveBlock(chunkIn, pos, carvingMask);
                                     }
@@ -134,5 +160,15 @@ public class WorleyCaveCarver
             // End of x/z loop, so move section to previous
             prevSection = Arrays.copyOf(section, section.length);
         }
+    }
+
+    private float sampleNoise(float x, float y, float z, WorleyCaveConfig config)
+    {
+        float baseNoise = caveNoiseBase.noise(x, z);
+        if (baseNoise > config.baseNoiseCutoff)
+        {
+            return caveNoiseWorley.noise(x, y, z);
+        }
+        return 0;
     }
 }
