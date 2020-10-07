@@ -44,8 +44,8 @@ import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.util.CacheInvalidationListener;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.TFCServerTracker;
 import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
@@ -215,25 +215,22 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void addReloadListeners(AddReloadListenerEvent event)
     {
-        LOGGER.debug("Before Server Start");
-
-        // Initializes json data listeners
+        // Resource reload listeners
         IReloadableResourceManager resourceManager = (IReloadableResourceManager) event.getDataPackRegistries().getResourceManager();
         resourceManager.registerReloadListener(RockManager.INSTANCE);
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
         resourceManager.registerReloadListener(VeinTypeManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
-
-        // Capability json data loader
         resourceManager.registerReloadListener(HeatCapability.HeatManager.INSTANCE);
+
+        resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }
 
     @SubscribeEvent
     public static void beforeServerStart(FMLServerAboutToStartEvent event)
     {
-        // Server tracker
-        TFCServerTracker.INSTANCE.onServerStart(event.getServer());
+        CacheInvalidationListener.INSTANCE.invalidateAll();
     }
 
     @SubscribeEvent
@@ -246,7 +243,7 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onServerStopped(FMLServerStoppedEvent event)
     {
-        TFCServerTracker.INSTANCE.onServerStop();
+        CacheInvalidationListener.INSTANCE.invalidateAll();
     }
 
     @SubscribeEvent
