@@ -43,6 +43,7 @@ public class TFCLayerUtil
     public static final int OCEAN_CONTINENT_CONVERGING = 7;
     public static final int CONTINENT_CONTINENT_DIVERGING = 8;
     public static final int CONTINENT_CONTINENT_CONVERGING = 9;
+
     private static final Int2ObjectMap<BiomeVariants> ID_TO_BIOME_VARIANTS = new Int2ObjectOpenHashMap<>();
     private static int LAYER_ID = -1;
 
