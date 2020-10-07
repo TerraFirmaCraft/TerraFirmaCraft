@@ -11,6 +11,7 @@ import net.minecraft.world.gen.layer.traits.IAreaTransformer2;
 import net.minecraft.world.gen.layer.traits.IDimOffset0Transformer;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER;
+import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER_MARKER;
 
 public enum MixRiverLayer implements IAreaTransformer2, IDimOffset0Transformer
 {
@@ -24,9 +25,9 @@ public enum MixRiverLayer implements IAreaTransformer2, IDimOffset0Transformer
         {
             return mainValue;
         }
-        else if (riverValue == RIVER)
+        else if (riverValue == RIVER_MARKER)
         {
-            return riverValue;
+            return RIVER;
         }
         else
         {

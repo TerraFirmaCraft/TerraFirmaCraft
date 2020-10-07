@@ -19,28 +19,29 @@ import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.Blockreader;
 import net.minecraft.world.EmptyBlockReader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.carver.ConfiguredCarver;
+import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.world.gen.HeightmapAccessor;
+import net.dries007.tfc.mixin.world.gen.carver.ConfiguredCarverAccessor;
 import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.world.biome.*;
-import net.dries007.tfc.world.carver.WorleyCaveCarver;
+import net.dries007.tfc.world.carver.IContextCarver;
 import net.dries007.tfc.world.chunk.FastChunkPrimer;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -62,11 +63,18 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     public static final BlockState STONE = Blocks.STONE.defaultBlockState();
     public static final BlockState WATER = Blocks.WATER.defaultBlockState();
 
+    /**
+     * This is the default instance used in the TFC preset, both on client and server
+     */
+    public static TFCChunkGenerator createDefaultPreset(Supplier<DimensionSettings> dimensionSettings, Registry<Biome> biomeRegistry, long seed)
+    {
+        return new TFCChunkGenerator(new TFCBiomeProvider(seed, new TFCBiomeProvider.LayerSettings(), new TFCBiomeProvider.ClimateSettings(), biomeRegistry), dimensionSettings, false, seed);
+    }
+
     // Noise
     private final Map<BiomeVariants, INoise2D> biomeNoiseMap;
     private final INoiseGenerator surfaceDepthNoise;
 
-    private final WorleyCaveCarver worleyCaveCarver;
     private final ChunkDataProvider chunkDataProvider;
     private final ChunkBlockReplacer blockReplacer;
 
@@ -85,7 +93,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
         this.flatBedrock = flatBedrock;
         this.seed = seed;
 
-        // Noise
         this.biomeNoiseMap = new HashMap<>();
 
         final SharedSeedRandom seedGenerator = new SharedSeedRandom(seed);
@@ -99,8 +106,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
             throw new IllegalArgumentException("biome provider must extend TFCBiomeProvider");
         }
         // Generators / Providers
-        this.worleyCaveCarver = new WorleyCaveCarver(seedGenerator); // Worley cave carver, separate from vanilla ones
-        this.chunkDataProvider = new ChunkDataProvider(seedGenerator); // Chunk data
+        this.chunkDataProvider = new ChunkDataProvider(seedGenerator, ((TFCBiomeProvider) biomeProvider).getLayerSettings()); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(seedGenerator.nextLong()); // Replaces default world gen blocks with TFC variants, after surface generation
 
         ((TFCBiomeProvider) biomeProvider).setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
@@ -140,14 +146,17 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     public void applyCarvers(long worldSeed, BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
     {
         ChunkPos chunkPos = chunkIn.getPos();
-        if (stage == GenerationStage.Carving.AIR)
+        BiomeGenerationSettings biomeGenerationSettings = biomeSource.getNoiseBiome(chunkPos.x << 2, 0, chunkPos.z << 2).getGenerationSettings();
+
+        for (Supplier<ConfiguredCarver<?>> lazyCarver : biomeGenerationSettings.getCarvers(stage))
         {
-            // First, run worley cave carver
-            // todo: this should use a vanilla world carver for ease of use (despite the worse efficiency)
-            worleyCaveCarver.carve(chunkIn, chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), ((ChunkPrimer) chunkIn).getOrCreateCarvingMask(stage));
+            WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getCarver();
+            if (carver instanceof IContextCarver)
+            {
+                ((IContextCarver) carver).setSeed(worldSeed);
+            }
         }
 
-        // Fire other world carvers
         super.applyCarvers(worldSeed, biomeManager, chunkIn, stage);
     }
 

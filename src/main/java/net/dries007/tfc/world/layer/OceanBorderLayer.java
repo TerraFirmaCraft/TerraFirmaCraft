@@ -11,7 +11,7 @@ import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 /**
  * Creates oceans on borders between land and deep ocean
  */
-public enum OceanLayer implements ICastleTransformer
+public enum OceanBorderLayer implements ICastleTransformer
 {
     INSTANCE;
 

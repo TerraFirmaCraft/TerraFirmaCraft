@@ -8,20 +8,15 @@ package net.dries007.tfc.world.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
+/**
+ * Removes small landlocked / isolated oceans
+ */
 public enum RemoveOceanLayer implements ICastleTransformer
 {
     INSTANCE;
 
     public int apply(INoiseRandom context, int top, int right, int bottom, int left, int center)
     {
-        if (TFCLayerUtil.isOcean(top) && TFCLayerUtil.isOcean(right) && TFCLayerUtil.isOcean(bottom) && TFCLayerUtil.isOcean(left) && context.nextRandom(32) == 0)
-        {
-            if (context.nextRandom(3) == 0)
-            {
-                return TFCLayerUtil.HILLS;
-            }
-            return TFCLayerUtil.PLAINS;
-        }
         if (TFCLayerUtil.isOcean(center))
         {
             int replacement = center, count = 0;
