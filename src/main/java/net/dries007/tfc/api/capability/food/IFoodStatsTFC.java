@@ -18,7 +18,7 @@ public interface IFoodStatsTFC
      * A copy of {@link FoodStatsTFC#addStats(ItemFood, ItemStack)} but without an ItemFood argument.
      * This is for when an item isn't an ItemFood or an extension of it.
      *
-     * @param stack an ItemStack that must have an IFood capability attached
+     * @param stack to obtain the attached IFood capability
      */
     void addStats(ItemStack stack);
 
