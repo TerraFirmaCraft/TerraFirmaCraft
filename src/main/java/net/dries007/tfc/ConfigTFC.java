@@ -117,7 +117,7 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableThatchBed")
             public boolean enableThatchBed = true;
 
-            @Config.Comment("Enable the creation of TFC's grass paths using shovels.")
+            @Config.Comment("Enable the creation of grass paths using TFC's shovels.")
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableGrassPath")
             public boolean enableGrassPath = true;
 

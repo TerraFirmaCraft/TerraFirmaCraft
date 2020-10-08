@@ -12,20 +12,16 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.dries007.tfc.ConfigTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockGrassPath;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -211,28 +207,6 @@ public class BlockRockVariant extends Block implements IItemSize
         if (world.isRemote) return;
         if (type.isGrass) BlockRockVariantConnected.spreadGrass(world, pos, state, rand);
         super.randomTick(world, pos, state, rand);
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        switch (this.type)
-        {
-            case GRASS:
-            case DRY_GRASS:
-            case DIRT:
-                ItemStack stack = player.getHeldItem(hand);
-                if (ConfigTFC.General.OVERRIDES.enableGrassPath && facing != EnumFacing.DOWN && stack.getItem().getToolClasses(stack).contains("shovel") && player.canPlayerEdit(pos, facing, stack) && world.isAirBlock(pos.up()))
-                {
-                    world.playSound(player, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    if (!world.isRemote)
-                    {
-                        world.setBlockState(pos, get(rock, Rock.Type.PATH).getDefaultState(), 11);
-                        stack.damageItem(1, player);
-                    }
-                }
-            default:
-                return false;
-        }
     }
 
     @Override
