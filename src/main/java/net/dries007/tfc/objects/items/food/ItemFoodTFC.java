@@ -16,10 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.FoodHandler;
-import net.dries007.tfc.api.capability.food.FoodHeatHandler;
-import net.dries007.tfc.api.capability.food.IFood;
+import net.dries007.tfc.api.capability.food.*;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -27,7 +24,7 @@ import net.dries007.tfc.util.OreDictionaryHelper;
 import net.dries007.tfc.util.agriculture.Food;
 
 @ParametersAreNonnullByDefault
-public class ItemFoodTFC extends ItemFood implements IItemSize
+public class ItemFoodTFC extends ItemFood implements IItemSize, IItemFoodTFC
 {
     private static final Map<Food, ItemFoodTFC> MAP = new HashMap<>();
 
@@ -99,6 +96,7 @@ public class ItemFoodTFC extends ItemFood implements IItemSize
         return Weight.VERY_LIGHT;
     }
 
+    @Override
     public ICapabilityProvider getCustomFoodHandler()
     {
         return food.isHeatable() ? new FoodHeatHandler(null, food) : new FoodHandler(null, food);
