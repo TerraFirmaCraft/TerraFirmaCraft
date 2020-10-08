@@ -398,9 +398,9 @@ public final class CommonEventHandler
             ICapabilityProvider foodHandler = CapabilityFood.getCustomFood(stack);
             if (foodHandler != null || stack.getItem() instanceof ItemFood)
             {
-                if (stack.getItem() instanceof ItemFoodTFC)
+                if (stack.getItem() instanceof IItemFoodTFC)
                 {
-                    foodHandler = ((ItemFoodTFC) stack.getItem()).getCustomFoodHandler();
+                    foodHandler = ((IItemFoodTFC) stack.getItem()).getCustomFoodHandler();
                 }
                 if (foodHandler == null)
                 {
