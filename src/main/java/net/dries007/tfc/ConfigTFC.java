@@ -129,11 +129,11 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableStoneAnvil")
             public boolean enableStoneAnvil = true;
 
-            @Config.Comment("Turn this off if you have conflicts with other mods")
+            @Config.Comment("Turn this off to disable TFC's registry replacement of Torches. This will disable them extihguishing over time.")
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableTorchOverride")
             public boolean enableTorchOverride = true;
 
-            @Config.Comment("Turn this off if you want snow and ice to not listen to the TFC system")
+            @Config.Comment("Turn this off to disable TFC's registry replacement of Ice and Snow blocks. This will remove their temperature based behavior.")
             @Config.LangKey("config." + MOD_ID + ".general.overrides.enableFrozenOverrides")
             public boolean enableFrozenOverrides = true;
 

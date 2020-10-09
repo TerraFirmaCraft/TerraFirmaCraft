@@ -269,10 +269,10 @@ config.tfc.general.overrides.enableStoneAnvil=Enable Stone Anvil
 config.tfc.general.overrides.enableStoneAnvil.tooltip=Enable the creation of stone anvils.
 
 config.tfc.general.overrides.enableTorchOverride=Enable Torch Override
-config.tfc.general.overrides.enableTorchOverride.tooltip=Turn this off if you have conflicts with other mods.
+config.tfc.general.overrides.enableTorchOverride.tooltip=Turn this off to disable TFC's registry replacement of Torches. This will disable them extihguishing over time.
 
 config.tfc.general.overrides.enableFrozenOverrides=Enable Frozen Override
-config.tfc.general.overrides.enableFrozenOverrides.tooltip=Turn this off if you want snow and ice to not listen to the TFC system.
+config.tfc.general.overrides.enableFrozenOverrides.tooltip=Turn this off to disable TFC's registry replacement of Ice and Snow blocks. This will remove their temperature based behavior.
 
 config.tfc.general.overrides.torchTime=Torch Burnout Time
 config.tfc.general.overrides.torchTime.tooltip=Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.
