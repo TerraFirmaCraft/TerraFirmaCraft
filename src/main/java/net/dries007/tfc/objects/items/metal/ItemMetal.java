@@ -208,6 +208,7 @@ public class ItemMetal extends ItemTFC implements IMetalItem
     {
         switch (type)
         {
+            case ROD:
             case DUST:
             case LAMP:
             case ANVIL:
