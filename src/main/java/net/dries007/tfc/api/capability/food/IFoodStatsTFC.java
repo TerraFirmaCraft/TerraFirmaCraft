@@ -7,9 +7,20 @@ package net.dries007.tfc.api.capability.food;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+
 public interface IFoodStatsTFC
 {
     float MAX_PLAYER_THIRST = 100f;
+
+    /**
+     * A copy of {@link FoodStatsTFC#addStats(ItemFood, ItemStack)} but without an ItemFood argument.
+     * This is for when an item isn't an ItemFood or an extension of it.
+     *
+     * @param stack to obtain the attached IFood capability
+     */
+    void addStats(ItemStack stack);
 
     float getHealthModifier();
 
