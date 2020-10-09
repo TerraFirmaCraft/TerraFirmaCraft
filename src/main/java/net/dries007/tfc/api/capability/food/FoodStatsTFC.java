@@ -82,25 +82,12 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
         }
         else
         {
-            TerraFirmaCraft.getLog().info("Player ate a weird food: {} / {} that we don't know what to do with.", foodItem, stack);
+            TerraFirmaCraft.getLog().info("Player ate a weird food: {} / {} that was not a food capability but was an ItemFood...", foodItem, stack);
         }
     }
 
     @Override
-    public void addStats(ItemStack stack)
-    {
-        IFood foodCap = stack.getCapability(CapabilityFood.CAPABILITY, null);
-        if (foodCap != null)
-        {
-            addStats(foodCap);
-        }
-        else
-        {
-            TerraFirmaCraft.getLog().info("Player ate a weird food: {} / {} that we don't know what to do with.", stack.getItem(), stack);
-        }
-    }
-
-    private void addStats(IFood foodCap)
+    public void addStats(IFood foodCap)
     {
         // Eating items has nutritional benefits
         FoodData data = foodCap.getData();
