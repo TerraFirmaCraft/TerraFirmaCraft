@@ -75,35 +75,54 @@ public class FoodStatsTFC extends FoodStats implements IFoodStatsTFC
     @Override
     public void addStats(ItemFood foodItem, ItemStack stack)
     {
-        // Eating items has nutritional benefits
         IFood foodCap = stack.getCapability(CapabilityFood.CAPABILITY, null);
         if (foodCap != null)
         {
-            FoodData data = foodCap.getData();
-            if (!foodCap.isRotten())
-            {
-                addThirst(data.getWater());
-                nutritionStats.addNutrients(data);
-
-                // In order to get the exact saturation we want, apply this scaling factor here
-                originalStats.addStats(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
-            }
-            else if (this.sourcePlayer instanceof EntityPlayerMP) // Check for server side first
-            {
-                // Minor effects from eating rotten food
-                if (Constants.RNG.nextFloat() < 0.6)
-                {
-                    sourcePlayer.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 1800, 1));
-                    if (Constants.RNG.nextFloat() < 0.15)
-                    {
-                        sourcePlayer.addPotionEffect(new PotionEffect(PotionEffectsTFC.FOOD_POISON, 1800, 0));
-                    }
-                }
-            }
+            addStats(foodCap);
         }
         else
         {
             TerraFirmaCraft.getLog().info("Player ate a weird food: {} / {} that we don't know what to do with.", foodItem, stack);
+        }
+    }
+
+    @Override
+    public void addStats(ItemStack stack)
+    {
+        IFood foodCap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (foodCap != null)
+        {
+            addStats(foodCap);
+        }
+        else
+        {
+            TerraFirmaCraft.getLog().info("Player ate a weird food: {} / {} that we don't know what to do with.", stack.getItem(), stack);
+        }
+    }
+
+    private void addStats(IFood foodCap)
+    {
+        // Eating items has nutritional benefits
+        FoodData data = foodCap.getData();
+        if (!foodCap.isRotten())
+        {
+            addThirst(data.getWater());
+            nutritionStats.addNutrients(data);
+
+            // In order to get the exact saturation we want, apply this scaling factor here
+            originalStats.addStats(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
+        }
+        else if (this.sourcePlayer instanceof EntityPlayerMP) // Check for server side first
+        {
+            // Minor effects from eating rotten food
+            if (Constants.RNG.nextFloat() < 0.6)
+            {
+                sourcePlayer.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 1800, 1));
+                if (Constants.RNG.nextFloat() < 0.15)
+                {
+                    sourcePlayer.addPotionEffect(new PotionEffect(PotionEffectsTFC.FOOD_POISON, 1800, 0));
+                }
+            }
         }
     }
 
