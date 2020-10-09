@@ -238,7 +238,7 @@ public class BlockBerryBush extends Block
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        if ((!(entityIn instanceof EntityPlayer) || !((EntityPlayer) entityIn).isCreative()))
+        if (!(entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).isCreative()))
         {
             // Entity motion is reduced (like leaves).
             entityIn.motionX *= ConfigTFC.General.MISC.berryBushMovementModifier;
