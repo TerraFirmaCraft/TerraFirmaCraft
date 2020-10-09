@@ -10,17 +10,40 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 
+import net.dries007.tfc.TerraFirmaCraft;
+
 public interface IFoodStatsTFC
 {
     float MAX_PLAYER_THIRST = 100f;
 
     /**
-     * A copy of {@link FoodStatsTFC#addStats(ItemFood, ItemStack)} but without an ItemFood argument.
-     * This is for when an item isn't an ItemFood or an extension of it.
+     * Add food stats directly from an {@link ItemStack} without requiring it be an instance of {@link ItemFood}
+     *
+     * DO NOT call {@link net.minecraft.util.FoodStats#addStats(int, float)} directly as TFC will completely ignore it!
      *
      * @param stack to obtain the attached IFood capability
      */
-    void addStats(ItemStack stack);
+    default void addStats(ItemStack stack)
+    {
+        IFood foodCap = stack.getCapability(CapabilityFood.CAPABILITY, null);
+        if (foodCap != null)
+        {
+            addStats(foodCap);
+        }
+        else
+        {
+            TerraFirmaCraft.getLog().info("Player ate a weird food: {} / {} that was missing a food capability! This is likely the error of an addon!", stack.getItem(), stack);
+        }
+    }
+
+    /**
+     * Add food stats directly from a food capability instance
+     *
+     * Use this for when passing in a stack is undesirable.
+     *
+     * @param foodCap The food capability to add to the current state
+     */
+    void addStats(IFood foodCap);
 
     float getHealthModifier();
 
