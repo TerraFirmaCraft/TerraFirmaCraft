@@ -12,8 +12,9 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
 
+// todo: remove
 public class RainfallRule implements IPlacementRule
 {
     private final float minimum, maximum;
@@ -27,7 +28,8 @@ public class RainfallRule implements IPlacementRule
     @Override
     public boolean test(IWorld world, BlockPos pos)
     {
-        ChunkData chunkData = ChunkDataProvider.get(world).map(provider -> provider.get(new ChunkPos(pos), ChunkData.Status.CLIMATE)).orElseThrow(() -> new IllegalStateException("Invalid chunk data"));
+        IChunkDataProvider provider = IChunkDataProvider.getOrThrow(world);
+        ChunkData chunkData = provider.get(new ChunkPos(pos), ChunkData.Status.CLIMATE);
         float rainfall = chunkData.getRainfall(pos);
         return rainfall >= minimum && rainfall <= maximum;
     }

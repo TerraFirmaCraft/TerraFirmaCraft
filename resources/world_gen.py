@@ -1,8 +1,10 @@
 # Handles generation of all world gen objects
 
-from typing import NamedTuple, Tuple, List
+from typing import Tuple
 
 from mcresources import ResourceManager, world_gen as wg
+
+from constants import *
 
 BiomeTemperature = NamedTuple('BiomeTemperature', id=str, temperature=float, water_color=float, water_fog_color=float)
 BiomeRainfall = NamedTuple('BiomeRainfall', id=str, downfall=float)
@@ -47,50 +49,34 @@ def generate(rm: ResourceManager):
     # Configured Features
     rm.feature('ore_veins', wg.configure('tfc:ore_veins'))
     rm.feature('erosion', wg.configure('tfc:erosion'))
+    rm.feature('ice_and_snow', wg.configure('tfc:ice_and_snow'))
+    rm.feature('glacier', wg.configure('tfc:glacier'))
 
-    rm.feature('water_fissure',
-        wg.decorated(
-            wg.decorated(
-                wg.decorated(
-                    wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:water[level=0]')}),
-                    'tfc:flat_enough'),
-                'minecraft:chance', {'chance': 60}),
-            'minecraft:heightmap_world_surface'))
-    rm.feature('lava_fissure',
-        wg.decorated(
-            wg.decorated(
-                wg.decorated(
-                    wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:lava[level=0]')}),
-                    'tfc:flat_enough'),
-                'minecraft:chance', {'chance': 60}),
-            'minecraft:heightmap_world_surface'))
+    rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), ('minecraft:chance', {'chance': 15}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
+    rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), 'minecraft:heightmap_world_surface', 'minecraft:square'))
 
-    rm.feature('cave_spike',
-        wg.decorated(
-            wg.configure('tfc:cave_spike'),
-            'minecraft:carving_mask', {'step': 'air', 'probability': 0.09}))
-    rm.feature('large_cave_spike',
-        wg.decorated(
-            wg.configure('tfc:large_cave_spike'),
-            'minecraft:carving_mask', {'step': 'air', 'probability': 0.02}))
+    rm.feature('spring_water', wg.configure_decorated(wg.configure('minecraft:spring_feature', {
+        'state': wg.block_state('minecraft:water[falling=true]'),
+        'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
+    }), ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 256}), 'minecraft:square', ('minecraft:count', {'count': 50})))
+
+    # todo: rework, they look like crap and are causing problems
+    # rm.feature('water_fissure', wg.configure_decorated(wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:water[level=0]')}), ('minecraft:chance', {'chance': 60}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
+    # rm.feature('lava_fissure', wg.configure_decorated(wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:lava[level=0]')}), ('minecraft:chance', {'chance': 60}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
+
+    rm.feature('cave_spike', wg.configure_decorated(wg.configure('tfc:cave_spike'), ('minecraft:carving_mask', {'step': 'air', 'probability': 0.09})))
+    rm.feature('large_cave_spike', wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('minecraft:carving_mask', {'step': 'air', 'probability': 0.02})))
 
     for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
-        rm.feature(boulder_cfg[0],
-            wg.decorated(
-                wg.decorated(
-                    wg.decorated(
-                        wg.configure('tfc:boulder', {'base_type': boulder_cfg[1], 'decoration_type': boulder_cfg[2]}),
-                        'tfc:flat_enough'
-                    ),
-                    'minecraft:chance', {'chance': 60}),
-                'minecraft:heightmap_world_surface'))
+        rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {'base_type': boulder_cfg[1], 'decoration_type': boulder_cfg[2]}), ('minecraft:chance', {'chance': 40}), 'minecraft:heightmap_world_surface', 'minecraft:square', 'tfc:flat_enough'))
 
     # Trees / Forests
-    rm.feature('forest', wg.configure('tfc:forest', {'entries': [
-        forest_config(30, 210, 17, 32, 'acacia', True),
-        forest_config(60, 240, 1, 15, 'ash', True),
-        forest_config(350, 500, -18, 5, 'aspen', False),
-        forest_config(125, 310, -11, 7, 'birch', False),
+    rm.feature('forest', wg.configure('tfc:forest', {
+        'entries': [
+            forest_config(30, 210, 17, 32, 'acacia', True),
+            forest_config(60, 240, 1, 15, 'ash', True),
+            forest_config(350, 500, -18, 5, 'aspen', False),
+            forest_config(125, 310, -11, 7, 'birch', False),
         forest_config(0, 180, 12, 32, 'blackwood', False),
         forest_config(180, 370, -4, 17, 'chestnut', False),
         forest_config(290, 500, -16, -1, 'douglas_fir', True),
@@ -249,14 +235,14 @@ def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: 
         air_carvers=['tfc:worley_cave', 'tfc:cave', 'tfc:canyon'],
         water_carvers=[],
         features=[
-            ['tfc:erosion'],  # raw generation
-            [],  # lakes
+            ['tfc:erosion', 'tfc:glacier'],  # raw generation
+            ['tfc:flood_fill_lake', 'tfc:lake'],  # lakes
             [],  # local modification
-            ['tfc:lava_fissure', 'tfc:water_fissure'],  # underground structure
+            [],  # underground structure
             ['tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder'],  # surface structure
             [],  # strongholds
             ['tfc:ore_veins'],  # underground ores
-            [],  # underground decoration
+            ['tfc:cave_spike', 'tfc:large_cave_spike'],  # underground decoration
             ['tfc:forest'],  # vegetal decoration
-            []   # top layer modification
+            ['tfc:ice_and_snow']  # top layer modification
         ])

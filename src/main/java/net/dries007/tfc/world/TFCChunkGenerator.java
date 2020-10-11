@@ -59,6 +59,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
 
     public static final int SEA_LEVEL = 96;
 
+    public static final BlockState AIR = Blocks.AIR.defaultBlockState();
     public static final BlockState BEDROCK = Blocks.BEDROCK.defaultBlockState();
     public static final BlockState STONE = Blocks.STONE.defaultBlockState();
     public static final BlockState WATER = Blocks.WATER.defaultBlockState();

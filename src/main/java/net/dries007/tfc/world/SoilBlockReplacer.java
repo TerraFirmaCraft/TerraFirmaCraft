@@ -10,8 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.blocks.soil.TFCGrassBlock;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
@@ -89,7 +89,7 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     public void updatePostPlacement(IWorld world, BlockPos pos, BlockState state)
     {
         super.updatePostPlacement(world, pos, state);
-        if (state.getBlock() instanceof TFCGrassBlock)
+        if (state.getBlock() instanceof IGrassBlock)
         {
             // Handle grass update ticks for adjacent blocks
             world.getBlockTicks().scheduleTick(pos, state.getBlock(), 0);

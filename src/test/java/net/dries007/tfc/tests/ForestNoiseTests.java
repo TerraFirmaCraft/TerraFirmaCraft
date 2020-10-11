@@ -6,8 +6,10 @@
 package net.dries007.tfc.tests;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +20,7 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.feature.trees.ForestConfig;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -38,11 +41,7 @@ class ForestNoiseTests
     {
         long seed = System.currentTimeMillis();
 
-        Optional<ChunkDataProvider> optionalProvider = ChunkDataProvider.get(ServerLifecycleHooks.getCurrentServer().overworld());
-        assertTrue(optionalProvider.isPresent());
-
-        ChunkDataProvider provider = optionalProvider.get();
-
+        ChunkDataProvider provider = (ChunkDataProvider) IChunkDataProvider.getOrThrow();
         ConfiguredFeature<?, ?> forestFeature = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY).get(new ResourceLocation(TerraFirmaCraft.MOD_ID, "forest"));
 
         assertNotNull(forestFeature);
@@ -101,10 +100,7 @@ class ForestNoiseTests
     @Test
     void testForestDensityNoise()
     {
-        Optional<ChunkDataProvider> optionalProvider = ChunkDataProvider.get(ServerLifecycleHooks.getCurrentServer().overworld());
-        assertTrue(optionalProvider.isPresent());
-
-        ChunkDataProvider provider = optionalProvider.get();
+        ChunkDataProvider provider = (ChunkDataProvider) IChunkDataProvider.getOrThrow();
 
         NOISE.draw("forest_density", provider.getForestDensityNoise());
     }

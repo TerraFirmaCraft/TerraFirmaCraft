@@ -11,11 +11,10 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
-
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.types.Metal;
@@ -34,9 +33,9 @@ public class TFCTags
     }
 
 
-    public static Tags.IOptionalNamedTag<Block> blockTag(String id)
+    public static ITag.INamedTag<Block> blockTag(String id)
     {
-        return BlockTags.createOptional(Helpers.identifier(id));
+        return BlockTags.bind(Helpers.identifier(id).toString());
     }
 
     public static Tags.IOptionalNamedTag<Item> forgeItemTag(String name)
@@ -46,16 +45,13 @@ public class TFCTags
 
     public static class Blocks
     {
-        public static final Tags.IOptionalNamedTag<Block> CAN_TRIGGER_COLLAPSE = blockTag("can_trigger_collapse");
-        public static final Tags.IOptionalNamedTag<Block> CAN_START_COLLAPSE = blockTag("can_start_collapse");
-        public static final Tags.IOptionalNamedTag<Block> CAN_COLLAPSE = blockTag("can_collapse");
-        public static final Tags.IOptionalNamedTag<Block> CAN_LANDSLIDE = blockTag("can_landslide");
-
-        public static final Tags.IOptionalNamedTag<Block> SUPPORTS_LANDSLIDE = blockTag("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
-
-        public static final Tags.IOptionalNamedTag<Block> GRASS = blockTag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
-
-        public static final Tags.IOptionalNamedTag<Block> TREE_GROWS_ON = blockTag("tree_grows_on"); // Used for tree growth
+        public static final ITag.INamedTag<Block> CAN_TRIGGER_COLLAPSE = blockTag("can_trigger_collapse");
+        public static final ITag.INamedTag<Block> CAN_START_COLLAPSE = blockTag("can_start_collapse");
+        public static final ITag.INamedTag<Block> CAN_COLLAPSE = blockTag("can_collapse");
+        public static final ITag.INamedTag<Block> CAN_LANDSLIDE = blockTag("can_landslide");
+        public static final ITag.INamedTag<Block> SUPPORTS_LANDSLIDE = blockTag("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
+        public static final ITag.INamedTag<Block> GRASS = blockTag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
+        public static final ITag.INamedTag<Block> TREE_GROWS_ON = blockTag("tree_grows_on"); // Used for tree growth
     }
 
     public static class Items

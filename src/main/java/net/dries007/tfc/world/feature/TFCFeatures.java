@@ -7,7 +7,9 @@ package net.dries007.tfc.world.feature;
 
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -31,13 +33,17 @@ public class TFCFeatures
     public static final RegistryObject<BouldersFeature> BOULDER = FEATURES.register("boulder", () -> new BouldersFeature(BoulderConfig.CODEC));
     public static final RegistryObject<FissureFeature> FISSURE = FEATURES.register("fissure", () -> new FissureFeature(BlockStateFeatureConfig.CODEC));
 
-    public static final RegistryObject<ErosionFeature> EROSION = FEATURES.register("erosion", () -> new ErosionFeature(NoFeatureConfig.CODEC));
-
     public static final RegistryObject<ForestFeature> FOREST = FEATURES.register("forest", () -> new ForestFeature(ForestConfig.CODEC));
-
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = FEATURES.register("overlay_tree", () -> new OverlayTreeFeature(OverlayTreeConfig.CODEC));
     public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = FEATURES.register("random_tree", () -> new RandomTreeFeature(RandomTreeConfig.CODEC));
     public static final RegistryObject<StackedTreeFeature> STACKED_TREE = FEATURES.register("stacked_tree", () -> new StackedTreeFeature(StackedTreeConfig.CODEC));
+
+    public static final RegistryObject<ErosionFeature> EROSION = FEATURES.register("erosion", () -> new ErosionFeature(NoFeatureConfig.CODEC));
+    public static final RegistryObject<GlacierFeature> GLACIER = FEATURES.register("glacier", () -> new GlacierFeature(NoFeatureConfig.CODEC));
+    public static final RegistryObject<IceAndSnowFeature> ICE_AND_SNOW = FEATURES.register("ice_and_snow", () -> new IceAndSnowFeature(NoFeatureConfig.CODEC));
+
+    public static final RegistryObject<LakeFeature> LAKE = FEATURES.register("lake", () -> new LakeFeature(NoFeatureConfig.CODEC));
+    public static final RegistryObject<FloodFillLakeFeature> FLOOD_FILL_LAKE = FEATURES.register("flood_fill_lake", () -> new FloodFillLakeFeature(NoFeatureConfig.CODEC));
 
     public static void setup()
     {
@@ -53,6 +59,10 @@ public class TFCFeatures
         register("forest");
         register("ore_veins");
         register("erosion");
+        register("glacier");
+        register("ice_and_snow");
+        register("lake");
+        register("flood_fill_lake");
     }
 
     private static void register(String name)

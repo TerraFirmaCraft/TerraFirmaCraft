@@ -17,14 +17,11 @@ public enum SandBlockType
     GREEN(new Color(106, 116, 81).getRGB()),
     PINK(new Color(150, 101, 97).getRGB());
 
-    public static final int TOTAL = values().length;
-
-
     private static final SandBlockType[] VALUES = values();
 
     public static SandBlockType valueOf(int i)
     {
-        return i >= 0 && i < TOTAL ? VALUES[i] : BROWN;
+        return i >= 0 && i < VALUES.length ? VALUES[i] : BROWN;
     }
 
     private final int dustColor;

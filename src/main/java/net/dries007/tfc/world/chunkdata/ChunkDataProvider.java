@@ -6,18 +6,12 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.chunk.AbstractChunkProvider;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
-import net.minecraft.world.server.ServerChunkProvider;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
@@ -28,27 +22,8 @@ import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-public class ChunkDataProvider
+public class ChunkDataProvider implements IChunkDataProvider
 {
-    /**
-     * This is our equivalent to world.getChunkProvider() for rock layers, soil variants, and other chunk data
-     * Only valid on logical server
-     * Data is synced to client via custom packets
-     */
-    public static Optional<ChunkDataProvider> get(IWorld world)
-    {
-        // Chunk provider can be null during the attach capabilities event
-        AbstractChunkProvider chunkProvider = world.getChunkSource();
-        if (chunkProvider instanceof ServerChunkProvider)
-        {
-            ChunkGenerator chunkGenerator = ((ServerChunkProvider) chunkProvider).getGenerator();
-            if (chunkGenerator instanceof IChunkDataProvidingChunkGenerator)
-            {
-                return Optional.of(((IChunkDataProvidingChunkGenerator) chunkGenerator).getChunkDataProvider());
-            }
-        }
-        return Optional.empty();
-    }
 
     private final RockFactory bottomRockLayer, middleRockLayer, topRockLayer;
 
@@ -91,16 +66,7 @@ public class ChunkDataProvider
         forestDensityNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0015f).scaled(0, 1);
     }
 
-    public ChunkData get(BlockPos pos, ChunkData.Status requiredStatus)
-    {
-        return get(new ChunkPos(pos), requiredStatus);
-    }
-
-    /**
-     * Get's the current chunk data during world generation
-     * This will use the current world generation cache, and generate the data up to the requested status
-     * Gets the chunk data from the cache, and generates it to the required status
-     */
+    @Override
     public ChunkData get(ChunkPos pos, ChunkData.Status requiredStatus)
     {
         ChunkData data = ChunkDataCache.WORLD_GEN.getOrCreate(pos);

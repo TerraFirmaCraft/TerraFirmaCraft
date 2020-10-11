@@ -5,16 +5,15 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import net.minecraft.world.IWorld;
-
 /**
- * Identifier interface for the TFC chunk generators
+ * Identifier interface for the TFC enabled chunk generators
+ *
+ * Any custom chunk generator wishing to use features from TFC MUST implement this and return a valid chunk data provider
  */
 public interface IChunkDataProvidingChunkGenerator
 {
     /**
      * @return The chunk data provider for this generator.
-     * @see ChunkDataProvider#get(IWorld)
      */
     ChunkDataProvider getChunkDataProvider();
 }

@@ -20,22 +20,22 @@
               }
             },
             "decorator": {
-              "type": "tfc:flat_enough",
+              "type": "minecraft:square",
               "config": {}
             }
           }
         },
         "decorator": {
-          "type": "minecraft:chance",
-          "config": {
-            "chance": 60
-          }
+          "type": "minecraft:heightmap_world_surface",
+          "config": {}
         }
       }
     },
     "decorator": {
-      "type": "minecraft:heightmap_world_surface",
-      "config": {}
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 60
+      }
     }
   }
 }
