@@ -24,14 +24,15 @@
   "surface_builder": "tfc:plateau",
   "features": [
     [
-      "tfc:erosion"
+      "tfc:erosion",
+      "tfc:glacier"
     ],
-    [],
-    [],
     [
-      "tfc:lava_fissure",
-      "tfc:water_fissure"
+      "tfc:flood_fill_lake",
+      "tfc:lake"
     ],
+    [],
+    [],
     [
       "tfc:raw_boulder",
       "tfc:cobble_boulder",
@@ -41,11 +42,16 @@
     [
       "tfc:ore_veins"
     ],
-    [],
+    [
+      "tfc:cave_spike",
+      "tfc:large_cave_spike"
+    ],
     [
       "tfc:forest"
     ],
-    []
+    [
+      "tfc:ice_and_snow"
+    ]
   ],
   "starts": [],
   "spawners": {},

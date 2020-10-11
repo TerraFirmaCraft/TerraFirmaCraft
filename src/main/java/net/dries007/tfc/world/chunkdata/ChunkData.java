@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.LogManager;
@@ -154,6 +155,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     public void setStatus(Status status)
     {
         this.status = status;
+    }
+
+    /**
+     * @return If the current chunk data is empty, then return other
+     */
+    public ChunkData ifEmptyGet(Supplier<ChunkData> other)
+    {
+        return status != Status.EMPTY ? this : other.get();
     }
 
     /**

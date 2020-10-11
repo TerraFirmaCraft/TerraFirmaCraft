@@ -20,8 +20,8 @@ import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
+import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
 
 public class ForestFeature extends Feature<ForestConfig>
 {
@@ -33,7 +33,8 @@ public class ForestFeature extends Feature<ForestConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestConfig config)
     {
-        final ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.FLORA)).orElseThrow(() -> new IllegalStateException("Missing flora data, cannot place forests."));
+        final IChunkDataProvider provider = IChunkDataProvider.getOrThrow(generator);
+        final ChunkData data = provider.get(pos, ChunkData.Status.FLORA);
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final ForestType forestType = data.getForestType();
 

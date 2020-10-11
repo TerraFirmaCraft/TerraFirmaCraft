@@ -9,29 +9,38 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "tfc:boulder",
+              "type": "minecraft:decorated",
               "config": {
-                "base_type": "raw",
-                "decoration_type": "cobble"
+                "feature": {
+                  "type": "tfc:boulder",
+                  "config": {
+                    "base_type": "raw",
+                    "decoration_type": "cobble"
+                  }
+                },
+                "decorator": {
+                  "type": "tfc:flat_enough",
+                  "config": {}
+                }
               }
             },
             "decorator": {
-              "type": "tfc:flat_enough",
+              "type": "minecraft:square",
               "config": {}
             }
           }
         },
         "decorator": {
-          "type": "minecraft:chance",
-          "config": {
-            "chance": 60
-          }
+          "type": "minecraft:heightmap_world_surface",
+          "config": {}
         }
       }
     },
     "decorator": {
-      "type": "minecraft:heightmap_world_surface",
-      "config": {}
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 40
+      }
     }
   }
 }

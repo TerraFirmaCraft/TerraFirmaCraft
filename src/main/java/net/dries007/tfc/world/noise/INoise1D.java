@@ -6,19 +6,17 @@ package net.dries007.tfc.world.noise;
 @FunctionalInterface
 public interface INoise1D
 {
-    static INoise1D sin(float amplitude, float midpoint, float frequency, float phaseShift)
-    {
-        final float pi = (float) Math.PI;
-        return q -> midpoint + amplitude * (float) Math.sin(pi * (phaseShift + frequency * q));
-    }
-
     static INoise1D triangle(float amplitude, float midpoint, float frequency, float phaseShift)
     {
-        return q -> {
-            float p = phaseShift + frequency * q;
-            return midpoint + amplitude * (Math.abs(2f * p + 1f - 4f * NoiseUtil.fastFloor(p / 2f + 0.75f)) - 1f);
-        };
+        return q -> triangle(amplitude, midpoint, frequency, phaseShift, q);
     }
+
+    static float triangle(float amplitude, float midpoint, float frequency, float phaseShift, float q)
+    {
+        float p = phaseShift + frequency * q;
+        return midpoint + amplitude * (Math.abs(2f * p + 1f - 4f * NoiseUtil.fastFloor(p / 2f + 0.75f)) - 1f);
+    }
+
 
     float noise(float in);
 

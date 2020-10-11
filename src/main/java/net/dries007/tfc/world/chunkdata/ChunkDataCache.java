@@ -32,13 +32,13 @@ public class ChunkDataCache
      * This is a cache of client side chunk data, used for when there is no world context available.
      * It is synced on chunk watch / unwatch
      */
-    public static final ChunkDataCache CLIENT = new ChunkDataCache();
+    public static final ChunkDataCache CLIENT = new ChunkDataCache("client");
 
     /**
      * This is a cache of server side chunk data.
      * It is not synced, it is updated on chunk load / unload
      */
-    public static final ChunkDataCache SERVER = new ChunkDataCache();
+    public static final ChunkDataCache SERVER = new ChunkDataCache("server");
 
     /**
      * This is a cache of incomplete chunk data used by world generation
@@ -47,10 +47,10 @@ public class ChunkDataCache
      * - {@link ChunkData.Status#ROCKS} during surface generation, later used for feature generation
      * When the chunk is finished generating on server, this cache is cleared and the data is saved to the chunk capability for long term storage
      */
-    public static final ChunkDataCache WORLD_GEN = new ChunkDataCache();
+    public static final ChunkDataCache WORLD_GEN = new ChunkDataCache("worldgen");
 
     /**
-     * This is a set of chunk positions which have been queue'd for chunk watch, but were not loaded or generated at the time.
+     * This is a set of chunk positions which have been queued for chunk watch, but were not loaded or generated at the time.
      * As a result, no data was able to be sent to the client cache. In these situations, we wait for chunk load on server, and if the chunk is present here, it is re-synchronized.
      */
     public static final WatchQueue WATCH_QUEUE = new WatchQueue();
@@ -60,7 +60,7 @@ public class ChunkDataCache
      */
     public static ChunkDataCache get(IWorldReader world)
     {
-        return Helpers.isRemote(world) ? CLIENT : SERVER;
+        return Helpers.isClientSide(world) ? CLIENT : SERVER;
     }
 
     /**
@@ -82,14 +82,16 @@ public class ChunkDataCache
         WATCH_QUEUE.queue.clear();
     }
 
+    private final String name;
     private final Map<ChunkPos, ChunkData> cache;
 
     /**
      * Creates an infinite size cache that must be managed to not create memory leaks
      */
-    private ChunkDataCache()
+    private ChunkDataCache(String name)
     {
-        cache = new HashMap<>();
+        this.name = name;
+        this.cache = new HashMap<>();
     }
 
     public ChunkData getOrEmpty(BlockPos pos)
@@ -128,6 +130,12 @@ public class ChunkDataCache
     public ChunkData getOrCreate(ChunkPos pos)
     {
         return cache.computeIfAbsent(pos, ChunkData::new);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ChunkDataCache[" + name + ']';
     }
 
     public static class WatchQueue

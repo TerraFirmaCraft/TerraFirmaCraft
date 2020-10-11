@@ -15,15 +15,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.blocks.soil.TFCDirtBlock;
-import net.dries007.tfc.common.blocks.soil.TFCGrassBlock;
+import net.dries007.tfc.common.blocks.soil.DirtBlock;
+import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.BlockRecipeWrapper;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
@@ -90,25 +89,25 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                     worldIn.setBlock(resultPos, recipe.getBlockCraftingResult(mutableWrapper), 2);
 
                     // Fix exposed and/or covered grass
-                    if (stateAt.getBlock() instanceof TFCGrassBlock)
+                    if (stateAt.getBlock() instanceof IGrassBlock)
                     {
                         mutablePos.set(landslidePos).move(Direction.DOWN, 1);
                         BlockState pastDirtState = worldIn.getBlockState(mutablePos);
-                        if (pastDirtState.getBlock() instanceof TFCDirtBlock)
+                        if (pastDirtState.getBlock() instanceof DirtBlock)
                         {
                             // Replace exposed dirt with grass
-                            TFCDirtBlock dirtBlock = (TFCDirtBlock) pastDirtState.getBlock();
-                            worldIn.setBlock(mutablePos, dirtBlock.getGrass().defaultBlockState(), 2);
+                            DirtBlock dirtBlock = (DirtBlock) pastDirtState.getBlock();
+                            worldIn.setBlock(mutablePos, dirtBlock.getGrass(), 2);
                             worldIn.getBlockTicks().scheduleTick(mutablePos, dirtBlock, 0);
                         }
 
                         mutablePos.set(resultPos).move(Direction.DOWN);
                         BlockState pastGrassState = worldIn.getBlockState(mutablePos);
-                        if (pastGrassState.getBlock() instanceof TFCGrassBlock)
+                        if (pastGrassState.getBlock() instanceof IGrassBlock)
                         {
                             // Replace covered grass with dirt
-                            TFCGrassBlock grassBlock = (TFCGrassBlock) pastGrassState.getBlock();
-                            worldIn.setBlock(mutablePos, grassBlock.getDirt().defaultBlockState(), 2);
+                            IGrassBlock grassBlock = (IGrassBlock) pastGrassState.getBlock();
+                            worldIn.setBlock(mutablePos, grassBlock.getDirt(worldIn, mutablePos, pastGrassState), 2);
                         }
                     }
                 }

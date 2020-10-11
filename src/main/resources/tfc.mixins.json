@@ -4,6 +4,8 @@
   "package": "net.dries007.tfc.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "block.AbstractBlockAccessor",
+    "block.SnowBlockMixin",
     "entity.item.FallingBlockEntityAccessor",
     "item.crafting.RecipeManagerAccessor",
     "util.registry.WorldSettingsImportMixin",
@@ -14,7 +16,7 @@
     "world.gen.carver.CanyonWorldCarverAccessor",
     "world.gen.carver.ConfiguredCarverAccessor",
     "world.gen.feature.template.TemplateAccessor",
-    "world.gen.settings.DimensionGeneratorSettingsMixin"
+    "world.gen.settings.DimensionGeneratorSettingsMixin", "world.server.ServerWorldMixin"
   ],
   "client": [
     "client.MinecraftMixin",

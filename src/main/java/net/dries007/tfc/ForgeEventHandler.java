@@ -136,7 +136,7 @@ public final class ForgeEventHandler
             World world = event.getObject().getLevel();
             ChunkPos chunkPos = event.getObject().getPos();
             ChunkData data;
-            if (!Helpers.isRemote(world))
+            if (!Helpers.isClientSide(world))
             {
                 // Chunk was created on server thread.
                 // 1. If this was due to world gen, it won't have any cap data. This is where we clear the world gen cache and attach it to the chunk
@@ -177,7 +177,7 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event)
     {
-        if (!Helpers.isRemote(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
+        if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
         {
             ChunkPos pos = event.getChunk().getPos();
             ChunkData.getCapability(event.getChunk()).ifPresent(data -> {
@@ -191,7 +191,7 @@ public final class ForgeEventHandler
     public static void onChunkUnload(ChunkEvent.Unload event)
     {
         // Clear server side chunk data cache
-        if (!Helpers.isRemote(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
+        if (!Helpers.isClientSide(event.getWorld()) && !(event.getChunk() instanceof EmptyChunk))
         {
             ChunkDataCache.SERVER.remove(event.getChunk().getPos());
         }

@@ -23,6 +23,7 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
+import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
@@ -61,6 +62,7 @@ public final class TerraFirmaCraft
         TFCFluids.FLUIDS.register(modEventBus);
         TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
         TFCSounds.SOUNDS.register(modEventBus);
+        TFCTileEntities.TILE_ENTITIES.register(modEventBus);
 
         TFCBiomes.BIOMES.register(modEventBus);
         TFCFeatures.FEATURES.register(modEventBus);

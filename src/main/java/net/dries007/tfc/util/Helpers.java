@@ -23,9 +23,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Unit;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -249,8 +251,40 @@ public final class Helpers
      *
      * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
      */
-    public static boolean isRemote(IWorldReader world)
+    public static boolean isClientSide(IWorldReader world)
     {
         return world instanceof World ? !(world instanceof ServerWorld) : world.isClientSide();
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T extends TileEntity> T getTileEntity(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
+    {
+        TileEntity te = world.getBlockEntity(pos);
+        if (tileEntityClass.isInstance(te))
+        {
+            return (T) te;
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends TileEntity> T getTileEntityOrThrow(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
+    {
+        TileEntity te = world.getBlockEntity(pos);
+        if (tileEntityClass.isInstance(te))
+        {
+            return (T) te;
+        }
+        throw new IllegalStateException("Expected a tile entity at " + pos + " of class " + tileEntityClass.getSimpleName());
+    }
+
+    /**
+     * This returns the previous result of {@link ServerWorld#getBlockRandomPos(int, int, int, int)}.
+     */
+    public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
+    {
+        int i = randValue >> 2;
+        return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
     }
 }

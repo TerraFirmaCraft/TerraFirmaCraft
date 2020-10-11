@@ -36,6 +36,13 @@ public class ServerConfig
     // Climate
     public final ForgeConfigSpec.IntValue temperatureScale;
     public final ForgeConfigSpec.IntValue rainfallScale;
+    // Blocks
+    public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
+    public final ForgeConfigSpec.BooleanValue enableGrassPathCreation;
+    // Blocks - Snow
+    public final ForgeConfigSpec.BooleanValue enableSnowAffectedByTemperature;
+    public final ForgeConfigSpec.BooleanValue enableSnowMovementModifier;
+
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -67,5 +74,17 @@ public class ServerConfig
 
         temperatureScale = builder.apply("temperatureScale").comment("This is the distance in blocks to the first peak (Either cold or hot) temperature zone, in the north-south direction.").defineInRange("temperatureScale", 20_000, 1_000, 1_000_000);
         rainfallScale = builder.apply("rainfallScale").comment("This is the distance in blocks to the first peak (Either wet or dry) rainfall zone, in the east-west direction").defineInRange("rainfallScale", 20_000, 1_000, 1_000_000);
+
+        innerBuilder.pop().push("blocks");
+
+        enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland").define("enableFarmlandCreation", true);
+        enableGrassPathCreation = builder.apply("enableGrassPathCreation").comment("If TFC soil blocks are able to be created into (grass) path blocks.").define("enableGrassPathCreation", true);
+
+        innerBuilder.push("snow");
+
+        enableSnowAffectedByTemperature = builder.apply("enableSnowAffectedByTemperature").comment("If snow will melt in warm temperatures on random ticks").define("enableSnowAffectedByTemperature", true);
+        enableSnowMovementModifier = builder.apply("enableSnowMovementModifier").comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey").define("enableSnowMovementModifier", true);
+
+        innerBuilder.pop();
     }
 }
