@@ -8,6 +8,7 @@
     "block.SnowBlockMixin",
     "entity.item.FallingBlockEntityAccessor",
     "item.crafting.RecipeManagerAccessor",
+    "util.SharedSeedRandomMixin",
     "util.registry.WorldSettingsImportMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
@@ -16,7 +17,8 @@
     "world.gen.carver.CanyonWorldCarverAccessor",
     "world.gen.carver.ConfiguredCarverAccessor",
     "world.gen.feature.template.TemplateAccessor",
-    "world.gen.settings.DimensionGeneratorSettingsMixin", "world.server.ServerWorldMixin"
+    "world.gen.settings.DimensionGeneratorSettingsMixin",
+    "world.server.ServerWorldMixin"
   ],
   "client": [
     "client.MinecraftMixin",
