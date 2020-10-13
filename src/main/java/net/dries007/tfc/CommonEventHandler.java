@@ -723,7 +723,7 @@ public final class CommonEventHandler
         if (event.getWorld().getWorldType() == TerraFirmaCraft.getWorldType() && event.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD)
         {
             // Fix chickens spawning in caves (which is caused by zombie jockeys)
-            if (entity instanceof EntityChicken && ((EntityChicken) entity).isChickenJockey())
+            if (entity instanceof EntityChicken)
             {
                 event.setCanceled(true); // NO!
             }
