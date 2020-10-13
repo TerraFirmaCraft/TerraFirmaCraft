@@ -275,10 +275,13 @@ config.tfc.general.overrides.enableStoneAnvil=启用石砧
 config.tfc.general.overrides.enableStoneAnvil.tooltip=允许用岩石造砧。
 
 config.tfc.general.overrides.enableTorchOverride=启用火把覆盖
-config.tfc.general.overrides.enableTorchOverride.tooltip=如果与其他模组有冲突，关掉此选项。
+config.tfc.general.overrides.enableTorchOverride.tooltip=关闭此选项可禁用群峦传说在注册物品时对原版火把的替换。会禁用火把燃尽。
 
-config.tfc.general.overrides.torchTime=火把烧尽时间
-config.tfc.general.overrides.torchTime.tooltip=火把燃烧殆尽所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 72 小时。设置为 -1 永不烧尽。
+config.tfc.general.overrides.enableFrozenOverrides=启用冰雪覆盖
+config.tfc.general.overrides.enableFrozenOverrides.tooltip=关闭此选项可禁用群峦传说在注册物品时对原版冰雪系列方块的替换。会移除它们基于温度的行为。
+
+config.tfc.general.overrides.torchTime=火把燃尽时间
+config.tfc.general.overrides.torchTime.tooltip=火把燃烧殆尽所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 72 小时。设置为 -1 永不燃尽。
 
 config.tfc.general.overrides.enableLavaWaterPlacesTFCBlocks=启用群峦传说熔岩/水混合
 config.tfc.general.overrides.enableLavaWaterPlacesTFCBlocks.tooltip=覆盖原版的熔岩和水混合，转而生成群峦传说的石头变种。
