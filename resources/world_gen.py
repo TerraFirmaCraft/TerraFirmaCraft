@@ -68,10 +68,11 @@ def generate(rm: ResourceManager):
     rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), ('minecraft:chance', {'chance': 15}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
     rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), 'minecraft:heightmap_world_surface', 'minecraft:square'))
 
-    rm.feature('spring_water', wg.configure_decorated(wg.configure('minecraft:spring_feature', {
-        'state': wg.block_state('minecraft:water[falling=true]'),
-        'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
-    }), ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 256}), 'minecraft:square', ('minecraft:count', {'count': 50})))
+    for spring_cfg in (('water', 80), ('lava', 35)):
+        rm.feature('%s_spring' % spring_cfg[0], wg.configure_decorated(wg.configure('tfc:spring', {
+            'state': wg.block_state('minecraft:%s[falling=true]' % spring_cfg[0]),
+            'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
+        }), ('minecraft:count', {'count': spring_cfg[1]}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 256})))
 
     # todo: rework, they look like crap and are causing problems
     # rm.feature('water_fissure', wg.configure_decorated(wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:water[level=0]')}), ('minecraft:chance', {'chance': 60}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
@@ -244,7 +245,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # surface structure
         [],  # strongholds
         ['tfc:ore_veins'],  # underground ores
-        ['tfc:cave_spike', 'tfc:large_cave_spike'],  # underground decoration
+        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring'],  # underground decoration
         ['tfc:forest'],  # vegetal decoration
         ['tfc:ice_and_snow']  # top layer modification
     ]
