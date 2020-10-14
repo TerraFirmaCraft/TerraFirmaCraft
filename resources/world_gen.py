@@ -1,5 +1,6 @@
 # Handles generation of all world gen objects
 
+from enum import IntEnum
 from typing import Tuple
 
 from mcresources import ResourceManager, world_gen as wg
@@ -29,8 +30,20 @@ DEFAULT_FOG_COLOR = 12638463
 DEFAULT_SKY_COLOR = 0x84E6FF
 
 
-def generate(rm: ResourceManager):
+class Decoration(IntEnum):
+    RAW_GENERATION = 0
+    LAKES = 1
+    LOCAL_MODIFICATIONS = 2
+    UNDERGROUND_STRUCTURES = 3
+    SURFACE_STRUCTURES = 4
+    STRONGHOLDS = 5
+    UNDERGROUND_ORES = 6
+    UNDERGROUND_DECORATION = 7
+    VEGETAL_DECORATION = 8
+    TOP_LAYER_MODIFICATION = 9
 
+
+def generate(rm: ResourceManager):
     # Surface Builder Configs
     grass_dirt_sand = wg.surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:sand')
     grass_dirt_gravel = wg.surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:gravel')
@@ -68,7 +81,10 @@ def generate(rm: ResourceManager):
     rm.feature('large_cave_spike', wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('minecraft:carving_mask', {'step': 'air', 'probability': 0.02})))
 
     for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
-        rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {'base_type': boulder_cfg[1], 'decoration_type': boulder_cfg[2]}), ('minecraft:chance', {'chance': 40}), 'minecraft:heightmap_world_surface', 'minecraft:square', 'tfc:flat_enough'))
+        rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
+            'base_type': boulder_cfg[1],
+            'decoration_type': boulder_cfg[2]
+        }), 'minecraft:heightmap_world_surface', 'minecraft:square', ('minecraft:chance', {'chance': 12}), 'tfc:flat_enough'))
 
     # Trees / Forests
     rm.feature('forest', wg.configure('tfc:forest', {
@@ -77,22 +93,23 @@ def generate(rm: ResourceManager):
             forest_config(60, 240, 1, 15, 'ash', True),
             forest_config(350, 500, -18, 5, 'aspen', False),
             forest_config(125, 310, -11, 7, 'birch', False),
-        forest_config(0, 180, 12, 32, 'blackwood', False),
-        forest_config(180, 370, -4, 17, 'chestnut', False),
-        forest_config(290, 500, -16, -1, 'douglas_fir', True),
-        forest_config(210, 400, 9, 24, 'hickory', True),
-        forest_config(270, 500, 17, 32, 'kapok', False),
-        forest_config(270, 500, -1, 15, 'maple', True),
-        forest_config(240, 450, -9, 11, 'oak', False),
-        forest_config(180, 470, 20, 32, 'palm', False),
-        forest_config(60, 270, -18, -4, 'pine', True),
-        forest_config(140, 310, 8, 31, 'rosewood', False),
-        forest_config(250, 420, -14, 2, 'sequoia', True),
-        forest_config(110, 320, -17, 1, 'spruce', True),
-        forest_config(230, 480, 15, 29, 'sycamore', True),
-        forest_config(10, 220, -13, 9, 'white_cedar', False),
-        forest_config(330, 500, 11, 32, 'willow', False),
-    ]}))
+            forest_config(0, 180, 12, 32, 'blackwood', False),
+            forest_config(180, 370, -4, 17, 'chestnut', False),
+            forest_config(290, 500, -16, -1, 'douglas_fir', True),
+            forest_config(210, 400, 9, 24, 'hickory', True),
+            forest_config(270, 500, 17, 32, 'kapok', False),
+            forest_config(270, 500, -1, 15, 'maple', True),
+            forest_config(240, 450, -9, 11, 'oak', False),
+            forest_config(180, 470, 20, 32, 'palm', False),
+            forest_config(60, 270, -18, -4, 'pine', True),
+            forest_config(140, 310, 8, 31, 'rosewood', False),
+            forest_config(250, 420, -14, 2, 'sequoia', True),
+            forest_config(110, 320, -17, 1, 'spruce', True),
+            forest_config(230, 480, 15, 29, 'sycamore', True),
+            forest_config(10, 220, -13, 9, 'white_cedar', False),
+            forest_config(330, 500, 11, 32, 'willow', False),
+        ]
+    }))
 
     rm.feature(('tree', 'acacia'), wg.configure('tfc:random_tree', random_config('acacia', 35)))
     rm.feature(('tree', 'acacia_large'), wg.configure('tfc:random_tree', random_config('acacia', 6, 2, True)))
@@ -131,22 +148,22 @@ def generate(rm: ResourceManager):
     # Biomes
     for temp in TEMPERATURES:
         for rain in RAINFALLS:
-            default_biome(rm, 'badlands', temp, rain, category='mesa', surface_builder='tfc:badlands')
-            default_biome(rm, 'canyons', temp, rain, category='plains', surface_builder='tfc:canyons')
-            default_biome(rm, 'low_canyons', temp, rain, category='swamp', surface_builder='tfc:canyons')
-            default_biome(rm, 'plains', temp, rain, category='plains', surface_builder='tfc:deep')
-            default_biome(rm, 'plateau', temp, rain, category='extreme_hills', surface_builder='tfc:plateau')
-            default_biome(rm, 'hills', temp, rain, category='plains', surface_builder='tfc:default')
-            default_biome(rm, 'rolling_hills', temp, rain, category='plains', surface_builder='tfc:default')
-            default_biome(rm, 'lake', temp, rain, category='river', surface_builder='tfc:underwater')
-            default_biome(rm, 'lowlands', temp, rain, category='swamp', surface_builder='tfc:deep')
-            default_biome(rm, 'mountains', temp, rain, category='extreme_hills', surface_builder='tfc:mountains')
-            default_biome(rm, 'old_mountains', temp, rain, category='extreme_hills', surface_builder='tfc:mountains')
-            default_biome(rm, 'flooded_mountains', temp, rain, category='extreme_hills', surface_builder='tfc:mountains')
-            default_biome(rm, 'ocean', temp, rain, category='ocean', surface_builder='tfc:underwater')
-            default_biome(rm, 'deep_ocean', temp, rain, category='ocean', surface_builder='tfc:underwater')
-            default_biome(rm, 'river', temp, rain, category='river', surface_builder='tfc:underwater')
-            default_biome(rm, 'shore', temp, rain, category='beach', surface_builder='tfc:shore')
+            biome(rm, 'badlands', temp, rain, 'mesa', 'tfc:badlands')
+            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:canyons', boulders=True)
+            biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:canyons', boulders=True)
+            biome(rm, 'plains', temp, rain, 'plains', 'tfc:deep')
+            biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:plateau', boulders=True)
+            biome(rm, 'hills', temp, rain, 'plains', 'tfc:default')
+            biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:default', boulders=True)
+            biome(rm, 'lake', temp, rain, 'river', 'tfc:underwater')
+            biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:deep')
+            biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
+            biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
+            biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
+            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater')
+            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater')
+            biome(rm, 'river', temp, rain, 'river', 'tfc:underwater')
+            biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore')
 
 
 def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):
@@ -212,13 +229,29 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int):
     }
 
 
-def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str):
+def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False):
     if rain.id == 'arid':
         rain_type = 'none'
     elif temp.id in ('cold', 'frozen'):
         rain_type = 'snow'
     else:
         rain_type = 'rain'
+    features = [
+        ['tfc:erosion', 'tfc:glacier'],  # raw generation
+        ['tfc:flood_fill_lake', 'tfc:lake'],  # lakes
+        [],  # local modification
+        [],  # underground structure
+        [],  # surface structure
+        [],  # strongholds
+        ['tfc:ore_veins'],  # underground ores
+        ['tfc:cave_spike', 'tfc:large_cave_spike'],  # underground decoration
+        ['tfc:forest'],  # vegetal decoration
+        ['tfc:ice_and_snow']  # top layer modification
+    ]
+    if boulders:
+        features[Decoration.SURFACE_STRUCTURES] += ['tfc:raw_boulder', 'tfc:cobble_boulder']
+        if rain.id in ('damp', 'wet'):
+            features[Decoration.SURFACE_STRUCTURES].append('tfc:mossy_boulder')
     rm.biome(
         name_parts='%s_%s_%s' % (name, temp.id, rain.id),
         precipitation=rain_type,
@@ -234,15 +267,5 @@ def default_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: 
         surface_builder=surface_builder,
         air_carvers=['tfc:worley_cave', 'tfc:cave', 'tfc:canyon'],
         water_carvers=[],
-        features=[
-            ['tfc:erosion', 'tfc:glacier'],  # raw generation
-            ['tfc:flood_fill_lake', 'tfc:lake'],  # lakes
-            [],  # local modification
-            [],  # underground structure
-            ['tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder'],  # surface structure
-            [],  # strongholds
-            ['tfc:ore_veins'],  # underground ores
-            ['tfc:cave_spike', 'tfc:large_cave_spike'],  # underground decoration
-            ['tfc:forest'],  # vegetal decoration
-            ['tfc:ice_and_snow']  # top layer modification
-        ])
+        features=features
+    )

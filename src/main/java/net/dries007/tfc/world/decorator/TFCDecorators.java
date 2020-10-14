@@ -1,4 +1,4 @@
-package net.dries007.tfc.world.placement;
+package net.dries007.tfc.world.decorator;
 
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.fml.RegistryObject;
