@@ -53,7 +53,7 @@
   ],
   "starts": [],
   "spawners": {},
-  "player_spawn_friendly": true,
+  "player_spawn_friendly": false,
   "creature_spawn_probability": 0.5,
   "spawn_costs": {}
 }

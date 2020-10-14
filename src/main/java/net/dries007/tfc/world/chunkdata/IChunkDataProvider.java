@@ -12,7 +12,7 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
  * Marker for chunk data generators and providers.
  * This is responsible for generating all of TFC custom world generation data which is not part of vanilla chunk generation
  *
- * Any addons, or compat mods wishing to use non-TFC world generation SHOULD provide an implementation of this on their chunk generator, via {@link IChunkDataProvidingChunkGenerator}
+ * Any addons, or compat mods wishing to use non-TFC world generation SHOULD provide an implementation of this on their chunk generator, via {@link ITFCChunkGenerator}
  */
 public interface IChunkDataProvider
 {
@@ -39,9 +39,9 @@ public interface IChunkDataProvider
      */
     static IChunkDataProvider getOrThrow(ChunkGenerator chunkGenerator)
     {
-        if (chunkGenerator instanceof IChunkDataProvidingChunkGenerator)
+        if (chunkGenerator instanceof ITFCChunkGenerator)
         {
-            return ((IChunkDataProvidingChunkGenerator) chunkGenerator).getChunkDataProvider();
+            return ((ITFCChunkGenerator) chunkGenerator).getChunkDataProvider();
         }
         throw new IllegalStateException("Tried to access ChunkDataProvider but none was present on " + chunkGenerator);
     }

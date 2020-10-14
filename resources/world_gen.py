@@ -156,14 +156,14 @@ def generate(rm: ResourceManager):
             biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:plateau', boulders=True)
             biome(rm, 'hills', temp, rain, 'plains', 'tfc:default')
             biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:default', boulders=True)
-            biome(rm, 'lake', temp, rain, 'river', 'tfc:underwater')
+            biome(rm, 'lake', temp, rain, 'river', 'tfc:underwater', spawnable=False)
             biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:deep')
             biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
-            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater')
-            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater')
-            biome(rm, 'river', temp, rain, 'river', 'tfc:underwater')
+            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False)
+            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False)
+            biome(rm, 'river', temp, rain, 'river', 'tfc:underwater', spawnable=False)
             biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore')
 
 
@@ -230,7 +230,7 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int):
     }
 
 
-def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False):
+def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True):
     if rain.id == 'arid':
         rain_type = 'none'
     elif temp.id in ('cold', 'frozen'):
@@ -268,5 +268,6 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         surface_builder=surface_builder,
         air_carvers=['tfc:worley_cave', 'tfc:cave', 'tfc:canyon'],
         water_carvers=[],
-        features=features
+        features=features,
+        player_spawn_friendly=spawnable
     )
