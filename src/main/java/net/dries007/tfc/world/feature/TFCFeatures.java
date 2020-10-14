@@ -9,6 +9,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.LiquidsConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -44,6 +45,7 @@ public class TFCFeatures
 
     public static final RegistryObject<LakeFeature> LAKE = FEATURES.register("lake", () -> new LakeFeature(NoFeatureConfig.CODEC));
     public static final RegistryObject<FloodFillLakeFeature> FLOOD_FILL_LAKE = FEATURES.register("flood_fill_lake", () -> new FloodFillLakeFeature(NoFeatureConfig.CODEC));
+    public static final RegistryObject<SpringFeature> SPRING = FEATURES.register("spring", () -> new SpringFeature(LiquidsConfig.CODEC));
 
     public static void setup()
     {
@@ -63,6 +65,7 @@ public class TFCFeatures
         register("ice_and_snow");
         register("lake");
         register("flood_fill_lake");
+        register("water_spring");
     }
 
     private static void register(String name)
