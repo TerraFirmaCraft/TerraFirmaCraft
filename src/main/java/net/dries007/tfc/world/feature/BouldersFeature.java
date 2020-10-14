@@ -40,19 +40,28 @@ public class BouldersFeature extends Feature<BoulderConfig>
 
     private void place(ISeedReader worldIn, BlockState baseState, BlockState decorationState, BlockPos pos, Random rand)
     {
-        float radius = 1 + rand.nextFloat() * 5;
-        int size = MathHelper.ceil(radius);
-        for (BlockPos posAt : BlockPos.betweenClosed(pos.getX() - size, pos.getY() - size, pos.getZ() - size, pos.getX() + size, pos.getY() + size, pos.getZ() + size))
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final float radius = 1 + rand.nextFloat() * rand.nextFloat() * 3.5f;
+        final float radiusSquared = radius * radius;
+        final int size = MathHelper.ceil(radius);
+        for (int x = -size; x <= size; x++)
         {
-            if (posAt.distSqr(pos) <= radius * radius)
+            for (int y = -size; y <= size; y++)
             {
-                if (rand.nextFloat() < 0.4f)
+                for (int z = -size; z <= size; z++)
                 {
-                    setBlock(worldIn, posAt, decorationState);
-                }
-                else
-                {
-                    setBlock(worldIn, posAt, baseState);
+                    if (x * x + y * y + z * z <= radiusSquared)
+                    {
+                        mutablePos.set(pos).move(x, y, z);
+                        if (rand.nextFloat() < 0.4f)
+                        {
+                            setBlock(worldIn, mutablePos, decorationState);
+                        }
+                        else
+                        {
+                            setBlock(worldIn, mutablePos, baseState);
+                        }
+                    }
                 }
             }
         }

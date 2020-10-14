@@ -5,7 +5,7 @@
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package net.dries007.tfc.world.placement;
+package net.dries007.tfc.world.decorator;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
