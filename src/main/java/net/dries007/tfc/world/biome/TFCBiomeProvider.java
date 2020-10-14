@@ -22,10 +22,11 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 
-public class TFCBiomeProvider extends BiomeProvider
+public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
 {
     public static final Codec<TFCBiomeProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),
+        Codec.INT.optionalFieldOf("spawn_distance", 8_000).forGetter(TFCBiomeProvider::getSpawnDistance),
         LayerSettings.CODEC.forGetter(TFCBiomeProvider::getLayerSettings),
         ClimateSettings.CODEC.forGetter(c -> c.climateSettings),
         RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
@@ -33,6 +34,7 @@ public class TFCBiomeProvider extends BiomeProvider
 
     // Set from codec
     private final long seed;
+    private final int spawnDistance;
     private final LayerSettings layerSettings;
     private final ClimateSettings climateSettings;
     private final Registry<Biome> biomeRegistry;
@@ -40,11 +42,12 @@ public class TFCBiomeProvider extends BiomeProvider
     private final LazyArea biomeArea;
     private ChunkDataProvider chunkDataProvider;
 
-    public TFCBiomeProvider(long seed, LayerSettings layerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
+    public TFCBiomeProvider(long seed, int spawnDistance, LayerSettings layerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
     {
         super(TFCBiomes.getAllKeys().stream().map(biomeRegistry::getOrThrow).collect(Collectors.toList()));
 
         this.seed = seed;
+        this.spawnDistance = spawnDistance;
         this.layerSettings = layerSettings;
         this.climateSettings = climateSettings;
         this.biomeRegistry = biomeRegistry;
@@ -68,10 +71,15 @@ public class TFCBiomeProvider extends BiomeProvider
         return CODEC;
     }
 
+    public int getSpawnDistance()
+    {
+        return spawnDistance;
+    }
+
     @Override
     public TFCBiomeProvider withSeed(long seedIn)
     {
-        return new TFCBiomeProvider(seedIn, layerSettings, climateSettings, biomeRegistry);
+        return new TFCBiomeProvider(seedIn, spawnDistance, layerSettings, climateSettings, biomeRegistry);
     }
 
     /**

@@ -5,9 +5,12 @@
 
 package net.dries007.tfc;
 
+import java.util.Random;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.SpawnLocationHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.Direction;
@@ -16,8 +19,10 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -50,6 +55,7 @@ import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
+import net.dries007.tfc.world.chunkdata.ITFCChunkGenerator;
 import net.dries007.tfc.world.tracker.WorldTracker;
 import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.vein.VeinTypeManager;
@@ -68,64 +74,79 @@ public final class ForgeEventHandler
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
         // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
-        // todo: fix this, it was broken anyway, vanilla changed it
-        /*
         if (event.getWorld() instanceof ServerWorld)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
-            event.setCanceled(true);
-
-            BiomeProvider biomeProvider = world.getChunkSource().getGenerator().getBiomeSource();
-            Random random = new Random(world.getSeed());
-            BlockPos pos = biomeProvider.findBiomeHorizontal(0, world.getChunkSource().getGenerator().getSeaLevel(), 0, 256, biomeProvider.spawb(), random);
-            ChunkPos chunkPos = pos == null ? new ChunkPos(0, 0) : new ChunkPos(pos);
-            if (pos == null)
+            IServerWorldInfo settings = event.getSettings();
+            ChunkGenerator generator = world.getChunkSource().getGenerator();
+            if (generator instanceof ITFCChunkGenerator)
             {
-                LOGGER.warn("Unable to find spawn biome");
-            }
-
-            boolean flag = false;
-            for (Block block : BlockTags.VALID_SPAWN.getValues())
-            {
-                if (biomeProvider.getSurfaceBlocks().contains(block.defaultBlockState()))
+                BiomeProvider biomeProvider = generator.getBiomeSource();
+                int spawnDistance = ((ITFCChunkGenerator) generator).getBiomeProvider().getSpawnDistance();
+                Random random = new Random(world.getSeed());
+                BlockPos pos = biomeProvider.findBiomeHorizontal(0, world.getSeaLevel(), 0, spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random, false);
+                ChunkPos chunkPos;
+                if (pos == null)
                 {
-                    flag = true;
-                    break;
+                    LOGGER.warn("Unable to find spawn biome!");
+                    pos = new BlockPos(0, world.getSeaLevel(), 0);
                 }
-            }
-            // Initial guess at spawn position
-            world.getLevelData().setSpawn(chunkPos.getWorldPosition().offset(8, world.getChunkSource().getGenerator().getSpawnHeight(), 8));
-            int x = 0;
-            int z = 0;
-            int xStep = 0;
-            int zStep = -1;
-            // Step around until we find a valid spawn position / chunk
-            for (int tries = 0; tries < 1024; ++tries)
-            {
-                if (x > -16 && x <= 16 && z > -16 && z <= 16)
+                chunkPos = new ChunkPos(pos);
+
+                // todo: is there a better way to adapt this check? At the very least we need to add all our surface blocks to valid spawns
+                /*boolean flag = false;
+                for (Block block : BlockTags.VALID_SPAWN.getValues())
                 {
-                    BlockPos spawnPos = world.dimension.getSpawnPosInChunk(new ChunkPos(chunkPos.x + x, chunkPos.z + z), flag);
-                    if (spawnPos != null)
+                    if (biomeProvider.getSurfaceBlocks().contains(block.defaultBlockState()))
                     {
-                        world.getLevelData().setSpawn(spawnPos);
+                        flag = true;
                         break;
                     }
-                }
+                }*/
 
-                if (x == z || x < 0 && x == -z || x > 0 && x == 1 - z)
+                settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(), 8), 0.0F);
+                boolean foundExactSpawn = false;
+                int x = 0, z = 0;
+                int xStep = 0;
+                int zStep = -1;
+
+                for (int tries = 0; tries < 1024; ++tries)
                 {
-                    int temp = xStep;
-                    xStep = -zStep;
-                    zStep = temp;
+                    if (x > -16 && x <= 16 && z > -16 && z <= 16)
+                    {
+                        BlockPos spawnPos = SpawnLocationHelper.getSpawnPosInChunk(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z), false);
+                        if (spawnPos != null)
+                        {
+                            settings.setSpawn(spawnPos, 0.0F);
+                            foundExactSpawn = true;
+                            break;
+                        }
+                    }
+
+                    if ((x == z) || (x < 0 && x == -z) || (x > 0 && x == 1 - z))
+                    {
+                        int temp = xStep;
+                        xStep = -zStep;
+                        zStep = temp;
+                    }
+
+                    x += xStep;
+                    z += zStep;
                 }
 
-                x += xStep;
-                z += zStep;
-            }
+                if (!foundExactSpawn)
+                {
+                    LOGGER.warn("Unable to find a suitable spawn location!");
+                }
 
-            // Don't create bonus chest
+                if (world.getServer().getWorldData().worldGenSettings().generateBonusChest())
+                {
+                    LOGGER.warn("No bonus chest for you, you cheaty cheater!");
+                }
+
+                event.setCanceled(true);
+            }
         }
-         */
     }
 
     @SubscribeEvent

@@ -45,10 +45,10 @@ import net.dries007.tfc.world.carver.IContextCarver;
 import net.dries007.tfc.world.chunk.FastChunkPrimer;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.chunkdata.IChunkDataProvidingChunkGenerator;
+import net.dries007.tfc.world.chunkdata.ITFCChunkGenerator;
 import net.dries007.tfc.world.noise.INoise2D;
 
-public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvidingChunkGenerator
+public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenerator
 {
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         BiomeProvider.CODEC.fieldOf("biome_source").forGetter(c -> c.biomeSource),
@@ -58,6 +58,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     ).apply(instance, TFCChunkGenerator::new));
 
     public static final int SEA_LEVEL = 96;
+    public static final int SPAWN_HEIGHT = SEA_LEVEL + 16;
 
     public static final BlockState AIR = Blocks.AIR.defaultBlockState();
     public static final BlockState BEDROCK = Blocks.BEDROCK.defaultBlockState();
@@ -69,7 +70,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
      */
     public static TFCChunkGenerator createDefaultPreset(Supplier<DimensionSettings> dimensionSettings, Registry<Biome> biomeRegistry, long seed)
     {
-        return new TFCChunkGenerator(new TFCBiomeProvider(seed, new TFCBiomeProvider.LayerSettings(), new TFCBiomeProvider.ClimateSettings(), biomeRegistry), dimensionSettings, false, seed);
+        return new TFCChunkGenerator(new TFCBiomeProvider(seed, 8_000, new TFCBiomeProvider.LayerSettings(), new TFCBiomeProvider.ClimateSettings(), biomeRegistry), dimensionSettings, false, seed);
     }
 
     // Noise
@@ -80,7 +81,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     private final ChunkBlockReplacer blockReplacer;
 
     // Properties set from codec
-    private final BiomeProvider biomeProvider;
+    private final TFCBiomeProvider biomeProvider;
     private final DimensionSettings settings;
     private final boolean flatBedrock;
     private final long seed;
@@ -89,7 +90,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     {
         super(biomeProvider, settings.get().structureSettings());
 
-        this.biomeProvider = biomeProvider;
+        if (!(biomeProvider instanceof TFCBiomeProvider))
+        {
+            throw new IllegalArgumentException("biome provider must extend TFCBiomeProvider");
+        }
+        this.biomeProvider = (TFCBiomeProvider) biomeProvider;
         this.settings = settings.get();
         this.flatBedrock = flatBedrock;
         this.seed = seed;
@@ -102,21 +107,22 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
         TFCBiomes.getVariants().forEach(variant -> biomeNoiseMap.put(variant, variant.createNoiseLayer(biomeNoiseSeed)));
         surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, IntStream.rangeClosed(-3, 0)); // From vanilla
 
-        if (!(biomeProvider instanceof TFCBiomeProvider))
-        {
-            throw new IllegalArgumentException("biome provider must extend TFCBiomeProvider");
-        }
         // Generators / Providers
-        this.chunkDataProvider = new ChunkDataProvider(seedGenerator, ((TFCBiomeProvider) biomeProvider).getLayerSettings()); // Chunk data
+        this.chunkDataProvider = new ChunkDataProvider(seedGenerator, this.biomeProvider.getLayerSettings()); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(seedGenerator.nextLong()); // Replaces default world gen blocks with TFC variants, after surface generation
-
-        ((TFCBiomeProvider) biomeProvider).setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
+        this.biomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
     }
 
     @Override
     public ChunkDataProvider getChunkDataProvider()
     {
         return chunkDataProvider;
+    }
+
+    @Override
+    public TFCBiomeProvider getBiomeProvider()
+    {
+        return biomeProvider;
     }
 
     public ChunkBlockReplacer getBlockReplacer()
@@ -183,7 +189,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements IChunkDataProvi
     @Override
     public int getSpawnHeight()
     {
-        return getSeaLevel() + 1;
+        return SPAWN_HEIGHT;
     }
 
     /**
