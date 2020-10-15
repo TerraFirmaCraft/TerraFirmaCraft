@@ -94,7 +94,7 @@ def generate(rm: ResourceManager):
             forest_config(60, 240, 1, 15, 'ash', True),
             forest_config(350, 500, -18, 5, 'aspen', False),
             forest_config(125, 310, -11, 7, 'birch', False),
-            forest_config(0, 180, 12, 32, 'blackwood', False),
+            forest_config(0, 180, 12, 32, 'blackwood', True),
             forest_config(180, 370, -4, 17, 'chestnut', False),
             forest_config(290, 500, -16, -1, 'douglas_fir', True),
             forest_config(210, 400, 9, 24, 'hickory', True),
@@ -107,8 +107,8 @@ def generate(rm: ResourceManager):
             forest_config(250, 420, -14, 2, 'sequoia', True),
             forest_config(110, 320, -17, 1, 'spruce', True),
             forest_config(230, 480, 15, 29, 'sycamore', True),
-            forest_config(10, 220, -13, 9, 'white_cedar', False),
-            forest_config(330, 500, 11, 32, 'willow', False),
+            forest_config(10, 220, -13, 9, 'white_cedar', True),
+            forest_config(330, 500, 11, 32, 'willow', True),
         ]
     }))
 
@@ -118,13 +118,14 @@ def generate(rm: ResourceManager):
     rm.feature(('tree', 'ash_large'), wg.configure('tfc:random_tree', random_config('ash', 5, 2, True)))
     rm.feature(('tree', 'aspen'), wg.configure('tfc:random_tree', random_config('aspen', 16, trunk=[3, 5, 1])))
     rm.feature(('tree', 'birch'), wg.configure('tfc:random_tree', random_config('birch', 16, trunk=[2, 3, 1])))
-    rm.feature(('tree', 'blackwood'), wg.configure('tfc:overlay_tree', overlay_config('blackwood', 1, 3)))
+    rm.feature(('tree', 'blackwood'), wg.configure('tfc:random_tree', random_config('blackwood', 10)))
+    rm.feature(('tree', 'blackwood_large'), wg.configure('tfc:random_tree', random_config('blackwood', 10, 1, True)))
     rm.feature(('tree', 'chestnut'), wg.configure('tfc:overlay_tree', overlay_config('chestnut', 2, 4)))
     rm.feature(('tree', 'douglas_fir'), wg.configure('tfc:random_tree', random_config('douglas_fir', 9)))
     rm.feature(('tree', 'douglas_fir_large'), wg.configure('tfc:random_tree', random_config('douglas_fir', 5, 2, True)))
     rm.feature(('tree', 'hickory'), wg.configure('tfc:random_tree', random_config('hickory', 9)))
     rm.feature(('tree', 'hickory_large'), wg.configure('tfc:random_tree', random_config('hickory', 5, 2, True)))
-    rm.feature(('tree', 'kapok'), wg.configure('tfc:random_tree', random_config('kapok', 11)))
+    rm.feature(('tree', 'kapok'), wg.configure('tfc:random_tree', random_config('kapok', 17)))
     rm.feature(('tree', 'maple'), wg.configure('tfc:overlay_tree', overlay_config('maple', 2, 4)))
     rm.feature(('tree', 'maple_large'), wg.configure('tfc:random_tree', random_config('maple', 5, 2, True)))
     rm.feature(('tree', 'oak'), wg.configure('tfc:overlay_tree', overlay_config('oak', 3, 5)))
@@ -138,8 +139,10 @@ def generate(rm: ResourceManager):
     rm.feature(('tree', 'spruce_large'), wg.configure('tfc:stacked_tree', stacked_config('spruce', 5, 9, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True)))
     rm.feature(('tree', 'sycamore'), wg.configure('tfc:overlay_tree', overlay_config('sycamore', 2, 5)))
     rm.feature(('tree', 'sycamore_large'), wg.configure('tfc:random_tree', random_config('sycamore', 5, 2, True)))
-    rm.feature(('tree', 'white_cedar'), wg.configure('tfc:overlay_tree', overlay_config('white_cedar', 1, 5)))
+    rm.feature(('tree', 'white_cedar'), wg.configure('tfc:overlay_tree', overlay_config('white_cedar', 2, 4)))
+    rm.feature(('tree', 'white_cedar_large'), wg.configure('tfc:overlay_tree', overlay_config('white_cedar', 2, 5, 1, 1, True)))
     rm.feature(('tree', 'willow'), wg.configure('tfc:random_tree', random_config('willow', 7)))
+    rm.feature(('tree', 'willow_large'), wg.configure('tfc:random_tree', random_config('willow', 14, 1, True)))
 
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
