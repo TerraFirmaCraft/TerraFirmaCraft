@@ -173,10 +173,10 @@ def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: f
         'max_rain': max_rain,
         'min_temp': min_temp,
         'max_temp': max_temp,
-        'tree_feature': 'tfc:tree/%s' % tree
+        'normal_tree': 'tfc:tree/%s' % tree
     }
     if old_growth:
-        cfg['old_growth_tree_feature'] = 'tfc:tree/%s_large' % tree
+        cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
     return cfg
 
 

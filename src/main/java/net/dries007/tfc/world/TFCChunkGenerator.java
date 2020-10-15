@@ -120,7 +120,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     }
 
     @Override
-    public TFCBiomeProvider getBiomeProvider()
+    public TFCBiomeProvider getBiomeSource()
     {
         return biomeProvider;
     }

@@ -50,7 +50,7 @@ public class TFCLayerUtil
     /**
      * These are the int IDs that are used for layer generation
      * They are mapped to registry keys here
-     * When the biome is requested, the json biome is requested
+     * When the biome is requested, the biome in the dynamic registry is requested via the variants object
      */
     public static final int OCEAN = makeLayerId(TFCBiomes.OCEAN);
     public static final int DEEP_OCEAN = makeLayerId(TFCBiomes.DEEP_OCEAN);

@@ -40,8 +40,8 @@ public class ForestConfig implements IFeatureConfig
             Codec.FLOAT.fieldOf("max_rain").forGetter(c -> c.maxRainfall),
             Codec.FLOAT.fieldOf("min_temp").forGetter(c -> c.minAverageTemp),
             Codec.FLOAT.fieldOf("max_temp").forGetter(c -> c.maxAverageTemp),
-            ConfiguredFeature.CODEC.fieldOf("tree_feature").forGetter(c -> c.treeFeature),
-            ConfiguredFeature.CODEC.optionalFieldOf("old_growth_feature").forGetter(c -> c.oldGrowthFeature)
+            ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
+            ConfiguredFeature.CODEC.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature)
         ).apply(instance, Entry::new));
 
         private final float minRainfall;

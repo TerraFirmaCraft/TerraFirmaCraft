@@ -7,6 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@SuppressWarnings("unused")
 public final class TFCDecorators
 {
     public static final DeferredRegister<Placement<?>> DECORATORS = DeferredRegister.create(ForgeRegistries.DECORATORS, MOD_ID);

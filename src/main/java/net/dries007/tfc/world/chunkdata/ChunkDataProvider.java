@@ -24,7 +24,6 @@ import net.dries007.tfc.world.noise.SimplexNoise2D;
 
 public class ChunkDataProvider implements IChunkDataProvider
 {
-
     private final RockFactory bottomRockLayer, middleRockLayer, topRockLayer;
 
     private final INoise2D temperatureNoise;
@@ -62,7 +61,7 @@ public class ChunkDataProvider implements IChunkDataProvider
 
         // Flora
         forestBaseNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.002f).abs();
-        forestWeirdnessNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0015f).scaled(0, 1);
+        forestWeirdnessNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0015f).map(x -> 0.5f * Math.abs(x));
         forestDensityNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0015f).scaled(0, 1);
     }
 
