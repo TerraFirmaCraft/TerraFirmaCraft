@@ -15,10 +15,12 @@ import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
 import net.dries007.tfc.world.feature.GlacierFeature;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.noise.INoise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Disabled
 class GlacierFeatureTests
 {
     static final Artist.Noise<INoise2D> NOISE = Artist.forNoise(noise -> Artist.NoisePixel.coerceFloat(noise::noise));

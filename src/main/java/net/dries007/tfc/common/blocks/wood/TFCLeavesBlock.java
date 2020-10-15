@@ -49,15 +49,11 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     private static IntegerProperty getDistanceProperty(int maxDecayDistance)
     {
-        switch (maxDecayDistance)
+        if (maxDecayDistance >= 7 && maxDecayDistance < 7 + TFCBlockStateProperties.DISTANCES.length)
         {
-            case 7:
-                return TFCBlockStateProperties.DISTANCE_1_7;
-            case 8:
-                return TFCBlockStateProperties.DISTANCE_1_8;
-            default:
-                throw new IllegalArgumentException("No property set for distance: " + maxDecayDistance);
+            return TFCBlockStateProperties.DISTANCES[maxDecayDistance - 7];
         }
+        throw new IllegalArgumentException("No property set for distance: " + maxDecayDistance);
     }
 
     /* The maximum value of the decay property. */
