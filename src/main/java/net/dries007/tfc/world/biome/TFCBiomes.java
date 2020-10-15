@@ -149,7 +149,7 @@ public final class TFCBiomes
                 String name = baseName + "_" + temp.name().toLowerCase() + "_" + rain.name().toLowerCase();
                 ResourceLocation id = new ResourceLocation(MOD_ID, name);
                 RegistryKey<Biome> key = RegistryKey.create(Registry.BIOME_REGISTRY, id);
-                BiomeExtension extension = new BiomeExtension(key, temp, rain, variants);
+                BiomeExtension extension = new BiomeExtension(key, variants);
 
                 EXTENSIONS.put(key, extension);
                 DEFAULT_BIOME_KEYS.add(key);

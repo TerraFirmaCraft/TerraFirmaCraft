@@ -8,142 +8,142 @@
         "max_rain": 210,
         "min_temp": 17,
         "max_temp": 32,
-        "tree_feature": "tfc:tree/acacia",
-        "old_growth_tree_feature": "tfc:tree/acacia_large"
+        "normal_tree": "tfc:tree/acacia",
+        "old_growth_tree": "tfc:tree/acacia_large"
       },
       {
         "min_rain": 60,
         "max_rain": 240,
         "min_temp": 1,
         "max_temp": 15,
-        "tree_feature": "tfc:tree/ash",
-        "old_growth_tree_feature": "tfc:tree/ash_large"
+        "normal_tree": "tfc:tree/ash",
+        "old_growth_tree": "tfc:tree/ash_large"
       },
       {
         "min_rain": 350,
         "max_rain": 500,
         "min_temp": -18,
         "max_temp": 5,
-        "tree_feature": "tfc:tree/aspen"
+        "normal_tree": "tfc:tree/aspen"
       },
       {
         "min_rain": 125,
         "max_rain": 310,
         "min_temp": -11,
         "max_temp": 7,
-        "tree_feature": "tfc:tree/birch"
+        "normal_tree": "tfc:tree/birch"
       },
       {
         "min_rain": 0,
         "max_rain": 180,
         "min_temp": 12,
         "max_temp": 32,
-        "tree_feature": "tfc:tree/blackwood"
+        "normal_tree": "tfc:tree/blackwood"
       },
       {
         "min_rain": 180,
         "max_rain": 370,
         "min_temp": -4,
         "max_temp": 17,
-        "tree_feature": "tfc:tree/chestnut"
+        "normal_tree": "tfc:tree/chestnut"
       },
       {
         "min_rain": 290,
         "max_rain": 500,
         "min_temp": -16,
         "max_temp": -1,
-        "tree_feature": "tfc:tree/douglas_fir",
-        "old_growth_tree_feature": "tfc:tree/douglas_fir_large"
+        "normal_tree": "tfc:tree/douglas_fir",
+        "old_growth_tree": "tfc:tree/douglas_fir_large"
       },
       {
         "min_rain": 210,
         "max_rain": 400,
         "min_temp": 9,
         "max_temp": 24,
-        "tree_feature": "tfc:tree/hickory",
-        "old_growth_tree_feature": "tfc:tree/hickory_large"
+        "normal_tree": "tfc:tree/hickory",
+        "old_growth_tree": "tfc:tree/hickory_large"
       },
       {
         "min_rain": 270,
         "max_rain": 500,
         "min_temp": 17,
         "max_temp": 32,
-        "tree_feature": "tfc:tree/kapok"
+        "normal_tree": "tfc:tree/kapok"
       },
       {
         "min_rain": 270,
         "max_rain": 500,
         "min_temp": -1,
         "max_temp": 15,
-        "tree_feature": "tfc:tree/maple",
-        "old_growth_tree_feature": "tfc:tree/maple_large"
+        "normal_tree": "tfc:tree/maple",
+        "old_growth_tree": "tfc:tree/maple_large"
       },
       {
         "min_rain": 240,
         "max_rain": 450,
         "min_temp": -9,
         "max_temp": 11,
-        "tree_feature": "tfc:tree/oak"
+        "normal_tree": "tfc:tree/oak"
       },
       {
         "min_rain": 180,
         "max_rain": 470,
         "min_temp": 20,
         "max_temp": 32,
-        "tree_feature": "tfc:tree/palm"
+        "normal_tree": "tfc:tree/palm"
       },
       {
         "min_rain": 60,
         "max_rain": 270,
         "min_temp": -18,
         "max_temp": -4,
-        "tree_feature": "tfc:tree/pine",
-        "old_growth_tree_feature": "tfc:tree/pine_large"
+        "normal_tree": "tfc:tree/pine",
+        "old_growth_tree": "tfc:tree/pine_large"
       },
       {
         "min_rain": 140,
         "max_rain": 310,
         "min_temp": 8,
         "max_temp": 31,
-        "tree_feature": "tfc:tree/rosewood"
+        "normal_tree": "tfc:tree/rosewood"
       },
       {
         "min_rain": 250,
         "max_rain": 420,
         "min_temp": -14,
         "max_temp": 2,
-        "tree_feature": "tfc:tree/sequoia",
-        "old_growth_tree_feature": "tfc:tree/sequoia_large"
+        "normal_tree": "tfc:tree/sequoia",
+        "old_growth_tree": "tfc:tree/sequoia_large"
       },
       {
         "min_rain": 110,
         "max_rain": 320,
         "min_temp": -17,
         "max_temp": 1,
-        "tree_feature": "tfc:tree/spruce",
-        "old_growth_tree_feature": "tfc:tree/spruce_large"
+        "normal_tree": "tfc:tree/spruce",
+        "old_growth_tree": "tfc:tree/spruce_large"
       },
       {
         "min_rain": 230,
         "max_rain": 480,
         "min_temp": 15,
         "max_temp": 29,
-        "tree_feature": "tfc:tree/sycamore",
-        "old_growth_tree_feature": "tfc:tree/sycamore_large"
+        "normal_tree": "tfc:tree/sycamore",
+        "old_growth_tree": "tfc:tree/sycamore_large"
       },
       {
         "min_rain": 10,
         "max_rain": 220,
         "min_temp": -13,
         "max_temp": 9,
-        "tree_feature": "tfc:tree/white_cedar"
+        "normal_tree": "tfc:tree/white_cedar"
       },
       {
         "min_rain": 330,
         "max_rain": 500,
         "min_temp": 11,
         "max_temp": 32,
-        "tree_feature": "tfc:tree/willow"
+        "normal_tree": "tfc:tree/willow"
       }
     ]
   }

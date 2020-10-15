@@ -19,7 +19,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -52,6 +51,7 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.CacheInvalidationListener;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.support.SupportManager;
+import net.dries007.tfc.world.biome.ITFCBiomeProvider;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
@@ -76,15 +76,16 @@ public final class ForgeEventHandler
         // Forge why you make everything `IWorld`, it's literally only called from `ServerWorld`...
         if (event.getWorld() instanceof ServerWorld)
         {
-            ServerWorld world = (ServerWorld) event.getWorld();
-            IServerWorldInfo settings = event.getSettings();
-            ChunkGenerator generator = world.getChunkSource().getGenerator();
+            final ServerWorld world = (ServerWorld) event.getWorld();
+            final IServerWorldInfo settings = event.getSettings();
+            final ChunkGenerator generator = world.getChunkSource().getGenerator();
             if (generator instanceof ITFCChunkGenerator)
             {
-                BiomeProvider biomeProvider = generator.getBiomeSource();
-                int spawnDistance = ((ITFCChunkGenerator) generator).getBiomeProvider().getSpawnDistance();
-                Random random = new Random(world.getSeed());
-                BlockPos pos = biomeProvider.findBiomeHorizontal(0, world.getSeaLevel(), 0, spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random, false);
+                final ITFCBiomeProvider biomeProvider = ((ITFCChunkGenerator) generator).getBiomeSource();
+                final Random random = new Random(world.getSeed());
+                final int spawnDistance = biomeProvider.getSpawnDistance();
+
+                BlockPos pos = biomeProvider.biomeSource().findBiomeHorizontal(0, world.getSeaLevel(), 0, spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random, false);
                 ChunkPos chunkPos;
                 if (pos == null)
                 {
