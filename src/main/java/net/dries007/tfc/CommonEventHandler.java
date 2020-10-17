@@ -810,7 +810,7 @@ public final class CommonEventHandler
                     {
                         heatCap.setTemperature(Math.max(0, Math.min(itemTemp, itemTemp - 350 + fluidTemp)));
                         entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f + rand * 0.4f);
-                        ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(), pos.getY(), pos.getZ(), 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                        ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entityItem.posX, entityItem.posY, entityItem.posZ, 42, 0.0D, 0.15D, 0.0D, 0.08D);
                         if (rand <= 0.001F)
                         {
                             entityItem.world.setBlockToAir(pos); // 1/1000 chance of the fluid being used up. Attempts to match the barrel recipe as it takes 1mb of water per operation.
@@ -826,7 +826,7 @@ public final class CommonEventHandler
                 {
                     heatCap.setTemperature(Math.max(0, itemTemp - 75));
                     entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.65f, 0.8f + rand * 0.4f);
-                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(), pos.getY(), pos.getZ(), 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entityItem.posX, entityItem.posY, entityItem.posZ, 42, 0.0D, 0.15D, 0.0D, 0.08D);
                     if (rand <= 0.01F)
                     {
                         entityItem.world.setBlockToAir(pos); // 1/100 chance of the snow evaporating.
@@ -836,7 +836,7 @@ public final class CommonEventHandler
                 {
                     heatCap.setTemperature(Math.max(0, itemTemp - 100));
                     entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.8f, 0.8f + rand * 0.4f);
-                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(), pos.getY(), pos.getZ(), 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entityItem.posX, entityItem.posY, entityItem.posZ, 42, 0.0D, 0.15D, 0.0D, 0.08D);
                     if (rand <= 0.01F)
                     {
                         entityItem.world.setBlockState(pos, FluidsTFC.FRESH_WATER.get().getBlock().getDefaultState(), 2); // 1/100 chance of the ice turning into water.
@@ -846,7 +846,7 @@ public final class CommonEventHandler
                 {
                     heatCap.setTemperature(Math.max(0, itemTemp - 125));
                     entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1f, 0.8f + rand * 0.4f);
-                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(), pos.getY(), pos.getZ(), 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entityItem.posX, entityItem.posY, entityItem.posZ, 42, 0.0D, 0.15D, 0.0D, 0.08D);
                     if (rand <= 0.005F)
                     {
                         entityItem.world.setBlockState(pos, FluidsTFC.FRESH_WATER.get().getBlock().getDefaultState(), 2); // 1/200 chance of the packed ice turning into water.
