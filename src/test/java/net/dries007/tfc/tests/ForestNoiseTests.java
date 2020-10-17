@@ -19,8 +19,8 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.feature.trees.ForestConfig;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -39,15 +39,15 @@ class ForestNoiseTests
     {
         long seed = System.currentTimeMillis();
 
-        ChunkDataProvider provider = (ChunkDataProvider) IChunkDataProvider.getOrThrow();
+        ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
         ConfiguredFeature<?, ?> forestFeature = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY).get(new ResourceLocation(TerraFirmaCraft.MOD_ID, "forest"));
 
         assertNotNull(forestFeature);
         assertSame(forestFeature.feature(), TFCFeatures.FOREST.get());
         assertTrue(forestFeature.config() instanceof ForestConfig);
 
-        INoise2D temperature = provider.getTemperatureNoise();
-        INoise2D rainfall = provider.getRainfallNoise();
+        INoise2D temperature = generator.getTemperatureNoise();
+        INoise2D rainfall = generator.getRainfallNoise();
 
         ForestConfig forestConfig = (ForestConfig) forestFeature.config();
         Random random = new Random(seed);
@@ -98,8 +98,8 @@ class ForestNoiseTests
     @Test
     void testForestDensityNoise()
     {
-        ChunkDataProvider provider = (ChunkDataProvider) IChunkDataProvider.getOrThrow();
+        ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
 
-        NOISE.draw("forest_density", provider.getForestDensityNoise());
+        NOISE.draw("forest_density", generator.getForestDensityNoise());
     }
 }

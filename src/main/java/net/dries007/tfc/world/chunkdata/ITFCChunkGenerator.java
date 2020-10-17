@@ -20,7 +20,7 @@ public interface ITFCChunkGenerator
     /**
      * @return The chunk data provider for this generator.
      */
-    IChunkDataProvider getChunkDataProvider();
+    ChunkDataProvider getChunkDataProvider();
 
     /**
      * Override in {@link net.minecraft.world.gen.ChunkGenerator} to return a narrower type

@@ -10,8 +10,7 @@ import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer2;
 import net.minecraft.world.gen.layer.traits.IDimOffset0Transformer;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER;
-import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER_MARKER;
+import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
 public enum MixRiverLayer implements IAreaTransformer2, IDimOffset0Transformer
 {
@@ -21,17 +20,14 @@ public enum MixRiverLayer implements IAreaTransformer2, IDimOffset0Transformer
     {
         int mainValue = mainArea.get(getParentX(x), getParentY(z));
         int riverValue = riverArea.get(getParentX(x), getParentY(z));
-        if (TFCLayerUtil.isOcean(mainValue) || mainValue == TFCLayerUtil.FLOODED_MOUNTAINS || mainValue == TFCLayerUtil.LAKE)
+        if (riverValue == RIVER_MARKER && TFCLayerUtil.isRiverCompatible(mainValue))
         {
-            return mainValue;
-        }
-        else if (riverValue == RIVER_MARKER)
-        {
+            if (TFCLayerUtil.isMountains(mainValue))
+            {
+                return MOUNTAIN_RIVER;
+            }
             return RIVER;
         }
-        else
-        {
-            return mainValue;
-        }
+        return mainValue;
     }
 }

@@ -17,7 +17,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class BouldersFeature extends Feature<BoulderConfig>
 {
@@ -29,7 +29,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BoulderConfig config)
     {
-        final IChunkDataProvider provider = IChunkDataProvider.getOrThrow(generator);
+        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
         final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
         final Rock rock = data.getRockData().getRock(pos.getX(), pos.getY(), pos.getZ());
         final BlockState baseState = rock.getBlock(config.getBaseType()).defaultBlockState();

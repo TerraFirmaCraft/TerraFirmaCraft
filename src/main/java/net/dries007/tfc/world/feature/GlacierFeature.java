@@ -20,7 +20,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -43,7 +43,7 @@ public class GlacierFeature extends Feature<NoFeatureConfig>
         initSeed(worldIn.getSeed());
 
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final IChunkDataProvider provider = IChunkDataProvider.getOrThrow(chunkGenerator);
+        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(chunkGenerator);
         final ChunkData data = provider.get(chunkPos, ChunkData.Status.CLIMATE);
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 

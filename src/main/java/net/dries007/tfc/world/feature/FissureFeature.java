@@ -20,7 +20,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 // todo: need to reduce the frequency with which fissures are able to spawn next to eachother.
 public class FissureFeature extends Feature<BlockStateFeatureConfig>
@@ -35,7 +35,7 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
     {
         final BlockPos pos = startPos.below(); // start slightly below the surface
-        final IChunkDataProvider provider = IChunkDataProvider.getOrThrow(generator);
+        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
         final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
         final Rock bottomRock = data.getRockData().getBottomRock(pos.getX(), pos.getZ());
         final BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).defaultBlockState();

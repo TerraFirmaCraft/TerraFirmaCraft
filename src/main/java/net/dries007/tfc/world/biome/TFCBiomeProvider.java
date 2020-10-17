@@ -5,7 +5,10 @@
 
 package net.dries007.tfc.world.biome;
 
+import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -98,6 +101,47 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(pos));
         final BiomeExtension extension = variants.get(temperature, rainfall);
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
+    }
+
+    public Biome getNoiseBiomeIgnoreClimate(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
+    {
+        final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
+        final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
+        return biomeRegistry.getOrThrow(extension.getRegistryKey());
+    }
+
+    /**
+     * A version of {@link BiomeProvider#findBiomeHorizontal(int, int, int, int, Predicate, Random)} with a few modifications
+     * - It does not query the climate layers - requiring less chunk data generation and is faster.
+     * - It's slightly optimized for finding a random biome, and using mutable positions.
+     */
+    @Nullable
+    public BlockPos findBiomeIgnoreClimate(int x, int y, int z, int radius, int increment, Predicate<Biome> biomesIn, Random rand)
+    {
+        final int centerBiomeX = x >> 2;
+        final int centerBiomeY = y >> 2;
+        final int centerBiomeZ = z >> 2;
+        final int biomeRadius = radius >> 2;
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        int found = 0;
+
+        for (int stepZ = -biomeRadius; stepZ <= biomeRadius; stepZ += increment)
+        {
+            for (int stepX = -biomeRadius; stepX <= biomeRadius; stepX += increment)
+            {
+                int biomeX = centerBiomeX + stepX;
+                int biomeZ = centerBiomeZ + stepZ;
+                if (biomesIn.test(getNoiseBiomeIgnoreClimate(biomeX, centerBiomeY, biomeZ)))
+                {
+                    if (found == 0 || rand.nextInt(found + 1) == 0)
+                    {
+                        mutablePos.set(biomeX << 2, y, biomeZ << 2);
+                    }
+                    found++;
+                }
+            }
+        }
+        return mutablePos.immutable();
     }
 
     public BiomeTemperature calculateTemperature(float averageTemperature)
