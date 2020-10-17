@@ -15,6 +15,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.common.capabilities.Capability;
@@ -77,12 +78,37 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     private float forestWeirdness;
     private float forestDensity;
 
+    // Not serialized, only used during world generation and discarded after
+    private Biome[] biomes;
+
     public ChunkData(ChunkPos pos)
     {
         this.pos = pos;
         this.capability = LazyOptional.of(() -> this);
 
         reset();
+    }
+
+    public ChunkPos getPos()
+    {
+        return pos;
+    }
+
+    /**
+     * A pixel accurate biome array for the chunk. Used for better precision when building surface builders using the TFCChunkGenerator
+     * Must be a 16x16 array indexed via [x + 16 * z]
+     *
+     * @return The chunk's biomes.
+     */
+    @Nullable
+    public Biome[] getBiomes()
+    {
+        return biomes;
+    }
+
+    public void setBiomes(Biome[] biomes)
+    {
+        this.biomes = biomes;
     }
 
     public RockData getRockData()
@@ -267,11 +293,13 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public enum Status
     {
-        EMPTY,
-        CLIENT,
-        CLIMATE,
-        ROCKS,
-        FLORA;
+        CLIENT, // Special status - indicates it is a client side shallow copy
+        EMPTY, // Empty - default. Should never be called to generate.
+        CLIMATE, // Climate data, rainfall and temperature
+        BIOMES, // A pixel-accurate version of the biome map. This is used during surface generation.
+        ROCKS, // Rock layer information, used for surface builder and rock block replacement
+        FLORA, // Flora and fauna information, used for features
+        FULL; // Final status - should also never be queried. Any complete chunk data should have this status.
 
         private static final Status[] VALUES = values();
 
@@ -280,14 +308,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
             return i >= 0 && i < VALUES.length ? VALUES[i] : EMPTY;
         }
 
+        public Status next()
+        {
+            return this == FULL ? FULL : VALUES[this.ordinal() + 1];
+        }
+
         public boolean isAtLeast(Status otherStatus)
         {
             return this.ordinal() >= otherStatus.ordinal();
-        }
-
-        public boolean isAtMost(Status otherStatus)
-        {
-            return this.ordinal() <= otherStatus.ordinal();
         }
     }
 
@@ -295,11 +323,17 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      * Only used for the empty instance, this will enforce that it never leaks data
      * New empty instances can be constructed via constructor, EMPTY instance is specifically for an immutable empty copy, representing invalid chunk data
      */
-    private static class Immutable extends ChunkData
+    private static final class Immutable extends ChunkData
     {
         private Immutable()
         {
             super(new ChunkPos(ChunkPos.INVALID_CHUNK_POS));
+        }
+
+        @Override
+        public void setBiomes(Biome[] biomes)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
 
         @Override

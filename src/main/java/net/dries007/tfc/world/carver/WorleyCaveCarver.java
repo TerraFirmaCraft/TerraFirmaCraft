@@ -60,6 +60,10 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
         // This carver is entirely noise based, so we need to only carve chunks when we're at the start chunk
         if (chunkX == chunkXOffset && chunkZ == chunkZOffset)
         {
+            if (!initialized)
+            {
+                throw new IllegalStateException("Not properly initialized! Cannot use WorleyCaveCarver with a chunk generator that does not respect IContextCarver");
+            }
             carve(chunkIn, chunkX << 4, chunkZ << 4, carvingMask, config);
             return true;
         }

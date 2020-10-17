@@ -19,7 +19,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
@@ -43,7 +43,7 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
 
         // Since this feature may be run *both* during world generation, and after during climate updates, we need to query both the existing data, and fallback to the world gen data if empty.
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final ChunkData chunkData = ChunkData.get(worldIn, chunkPos).ifEmptyGet(() -> IChunkDataProvider.getOrThrow(chunkGenerator).get(chunkPos, ChunkData.Status.CLIMATE));
+        final ChunkData chunkData = ChunkData.get(worldIn, chunkPos).ifEmptyGet(() -> ChunkDataProvider.getOrThrow(chunkGenerator).get(chunkPos, ChunkData.Status.CLIMATE));
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
         final BlockState snowState = Blocks.SNOW.defaultBlockState();

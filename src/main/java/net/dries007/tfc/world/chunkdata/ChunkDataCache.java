@@ -26,7 +26,7 @@ import net.dries007.tfc.util.Helpers;
  * {@link ChunkDataCache#CLIENT} and {@link ChunkDataCache#SERVER} are logical sided caches, used for when chunk data is needed without a world context. Care must be taken to choose the cache for the correct logical side
  * {@link ChunkDataCache#WORLD_GEN} is used for chunk data during world generation, as it's being generated. It is cleared once the chunk is completely generated
  */
-public class ChunkDataCache
+public final class ChunkDataCache
 {
     /**
      * This is a cache of client side chunk data, used for when there is no world context available.

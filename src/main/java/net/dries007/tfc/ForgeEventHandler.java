@@ -85,7 +85,7 @@ public final class ForgeEventHandler
                 final Random random = new Random(world.getSeed());
                 final int spawnDistance = biomeProvider.getSpawnDistance();
 
-                BlockPos pos = biomeProvider.biomeSource().findBiomeHorizontal(0, world.getSeaLevel(), 0, spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random, false);
+                BlockPos pos = biomeProvider.findBiomeIgnoreClimate(0, world.getSeaLevel(), 0, spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random);
                 ChunkPos chunkPos;
                 if (pos == null)
                 {
@@ -93,17 +93,6 @@ public final class ForgeEventHandler
                     pos = new BlockPos(0, world.getSeaLevel(), 0);
                 }
                 chunkPos = new ChunkPos(pos);
-
-                // todo: is there a better way to adapt this check? At the very least we need to add all our surface blocks to valid spawns
-                /*boolean flag = false;
-                for (Block block : BlockTags.VALID_SPAWN.getValues())
-                {
-                    if (biomeProvider.getSurfaceBlocks().contains(block.defaultBlockState()))
-                    {
-                        flag = true;
-                        break;
-                    }
-                }*/
 
                 settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(), 8), 0.0F);
                 boolean foundExactSpawn = false;
@@ -115,7 +104,7 @@ public final class ForgeEventHandler
                 {
                     if (x > -16 && x <= 16 && z > -16 && z <= 16)
                     {
-                        BlockPos spawnPos = SpawnLocationHelper.getSpawnPosInChunk(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z), false);
+                        BlockPos spawnPos = SpawnLocationHelper.getSpawnPosInChunk(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z), false); // Last param is "use valid_spawn tag"
                         if (spawnPos != null)
                         {
                             settings.setSpawn(spawnPos, 0.0F);

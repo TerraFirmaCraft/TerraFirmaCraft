@@ -64,6 +64,7 @@ public final class TFCBiomes
     // Technical biomes
     public static final BiomeVariants LAKE = register("lake", BiomeNoise::lake, BiomeVariants.LargeGroup.LAKE); // Biome for freshwater ocean areas / landlocked oceans
     public static final BiomeVariants RIVER = register("river", seed -> BiomeNoise.simple(seed, -6, -1), BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER); // Biome for river channels
+    public static final BiomeVariants MOUNTAIN_RIVER = register("mountain_river", seed -> BiomeNoise.simple(seed, -6, -1), BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER); // River channels that are specially handled to carve tunnels into mountains
 
     public static BiomeExtension getExtensionOrThrow(IWorld world, Biome biome)
     {

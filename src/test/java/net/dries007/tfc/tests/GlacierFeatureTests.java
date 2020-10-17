@@ -10,8 +10,8 @@ import net.minecraft.util.math.MathHelper;
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
 import net.dries007.tfc.world.feature.GlacierFeature;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -32,12 +32,12 @@ class GlacierFeatureTests
     @Test
     void testTemperatures()
     {
-        ChunkDataProvider provider = (ChunkDataProvider) IChunkDataProvider.getOrThrow();
+        ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
 
         LOGGER.log(UNIT_TEST, "Temperature From z=-20,000 to z=20,000");
         for (int i = -20_000; i <= 20_000; i += 1000)
         {
-            float averageTemp = provider.getTemperatureNoise().noise(0, i);
+            float averageTemp = generator.getTemperatureNoise().noise(0, i);
             float minTemp = Climate.calculateMonthlyTemperature(i, TFCChunkGenerator.SEA_LEVEL, averageTemp, -1);
             float maxTemp = Climate.calculateMonthlyTemperature(i, TFCChunkGenerator.SEA_LEVEL, averageTemp, 1);
             LOGGER.log(UNIT_TEST, String.format("%.1f\t%.4f\t%.4f\t%.4f", i / 1000f, averageTemp, minTemp, maxTemp));
@@ -49,9 +49,9 @@ class GlacierFeatureTests
     {
         long seed = System.currentTimeMillis();
 
-        ChunkDataProvider provider = (ChunkDataProvider) IChunkDataProvider.getOrThrow();
+        ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
         GlacierFeature glacier = TFCFeatures.GLACIER.get();
-        INoise2D temperatureNoise = provider.getTemperatureNoise();
+        INoise2D temperatureNoise = generator.getTemperatureNoise();
 
         Color tooWarmColor = new Color(200, 140, 0);
         Color noGlacierColor = new Color(120, 120, 250);

@@ -1,0 +1,59 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "precipitation": "snow",
+  "category": "extreme_hills",
+  "depth": 0,
+  "scale": 0,
+  "temperature": 0,
+  "temperature_modifier": "none",
+  "downfall": 0.45,
+  "effects": {
+    "fog_color": 12638463,
+    "sky_color": 8709887,
+    "water_color": 3750089,
+    "water_fog_color": 329011
+  },
+  "carvers": {
+    "air": [
+      "tfc:worley_cave",
+      "tfc:cave",
+      "tfc:canyon"
+    ],
+    "liquid": []
+  },
+  "surface_builder": "tfc:mountains",
+  "features": [
+    [
+      "tfc:erosion",
+      "tfc:glacier"
+    ],
+    [
+      "tfc:flood_fill_lake",
+      "tfc:lake"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "tfc:ore_veins"
+    ],
+    [
+      "tfc:cave_spike",
+      "tfc:large_cave_spike",
+      "tfc:water_spring",
+      "tfc:lava_spring"
+    ],
+    [
+      "tfc:forest"
+    ],
+    [
+      "tfc:ice_and_snow"
+    ]
+  ],
+  "starts": [],
+  "spawners": {},
+  "player_spawn_friendly": false,
+  "creature_spawn_probability": 0.5,
+  "spawn_costs": {}
+}

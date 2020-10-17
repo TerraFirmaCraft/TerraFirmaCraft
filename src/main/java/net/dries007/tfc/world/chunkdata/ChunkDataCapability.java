@@ -15,7 +15,7 @@ import net.dries007.tfc.util.NoopStorage;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class ChunkDataCapability
+public final class ChunkDataCapability
 {
     @CapabilityInject(ChunkData.class)
     public static final Capability<ChunkData> CAPABILITY = Helpers.notNull();

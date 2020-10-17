@@ -12,7 +12,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.IChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 // todo: remove
 public class TemperatureRule implements IPlacementRule
@@ -28,7 +28,7 @@ public class TemperatureRule implements IPlacementRule
     @Override
     public boolean test(IWorld world, BlockPos pos)
     {
-        IChunkDataProvider provider = IChunkDataProvider.getOrThrow(world);
+        ChunkDataProvider provider = ChunkDataProvider.getOrThrow(world);
         ChunkData chunkData = provider.get(new ChunkPos(pos), ChunkData.Status.CLIMATE);
         float temperature = chunkData.getAverageTemp(pos);
         return temperature >= minimum && temperature <= maximum;

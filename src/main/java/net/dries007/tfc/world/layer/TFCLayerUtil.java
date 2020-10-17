@@ -68,6 +68,8 @@ public class TFCLayerUtil
     public static final int SHORE = makeLayerId(TFCBiomes.SHORE);
     public static final int LAKE = makeLayerId(TFCBiomes.LAKE);
     public static final int RIVER = makeLayerId(TFCBiomes.RIVER);
+    public static final int MOUNTAIN_RIVER = makeLayerId(TFCBiomes.MOUNTAIN_RIVER);
+
     /**
      * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
      */
@@ -191,6 +193,11 @@ public class TFCLayerUtil
     static boolean isLakeCompatible(int value)
     {
         return isLow(value) || value == CANYONS || value == ROLLING_HILLS;
+    }
+
+    static boolean isRiverCompatible(int value)
+    {
+        return !isOcean(value) && value != LAKE;
     }
 
     static boolean isOcean(int value)
