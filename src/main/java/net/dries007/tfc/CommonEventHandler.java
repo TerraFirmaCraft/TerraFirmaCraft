@@ -852,7 +852,7 @@ public final class CommonEventHandler
                         entityItem.world.setBlockState(pos, FluidsTFC.FRESH_WATER.get().getBlock().getDefaultState(), 2); // 1/200 chance of the packed ice turning into water.
                     }
                 }
-                event.setExtraLife(ConfigTFC.Devices.TEMPERATURE.ticksBeforeAttemptToCool); // Set half a second onto the lifespan
+                event.setExtraLife(itemTemp == 0 ? lifespan : ConfigTFC.Devices.TEMPERATURE.ticksBeforeAttemptToCool); // Set lifespan accordingly
                 entityItem.setNoPickupDelay(); // For some reason when lifespan is added, pickup delay is reset, we disable this to make the experience seamless
             }
             else
