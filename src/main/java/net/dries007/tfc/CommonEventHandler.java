@@ -806,7 +806,7 @@ public final class CommonEventHandler
                 if ((state = entityItem.world.getBlockState(pos)).getBlock() instanceof BlockFluidBase)
                 {
                     int fluidTemp = ((BlockFluidBase) state.getBlock()).getFluid().getTemperature();
-                    if (fluidTemp <= 300 && fluidTemp < itemTemp)
+                    if (fluidTemp <= 300)
                     {
                         heatCap.setTemperature(Math.max(0, Math.min(itemTemp, itemTemp - 350 + fluidTemp)));
                         entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f + rand * 0.4f);
