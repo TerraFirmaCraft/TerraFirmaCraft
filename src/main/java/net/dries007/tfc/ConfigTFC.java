@@ -732,6 +732,15 @@ public final class ConfigTFC
             @Config.RangeDouble(min = 0, max = 10)
             @Config.LangKey("config." + MOD_ID + ".devices.temperature.heatingModifier")
             public double heatingModifier = 1;
+
+            @Config.Comment("Can heatable items be cooled down in a pool of water?")
+            @Config.LangKey("config." + MOD_ID + ".devices.temperature.coolHeatablesInWater")
+            public boolean coolHeatablesInWater = true;
+
+            @Config.Comment("If heatable items can be cooled down in a pool of water, after how many ticks should the item attempt to be cooled down?")
+            @Config.LangKey("config." + MOD_ID + ".devices.temperature.ticksBeforeAttemptToCool")
+            @Config.RangeInt(min = 1)
+            public int ticksBeforeAttemptToCool = 10;
         }
 
         public static final class BarrelCFG
