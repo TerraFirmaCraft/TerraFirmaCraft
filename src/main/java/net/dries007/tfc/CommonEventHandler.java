@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +43,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -49,6 +51,7 @@ import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -56,6 +59,7 @@ import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -103,7 +107,6 @@ import net.dries007.tfc.objects.entity.animal.EntityAnimalTFC;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ItemQuiver;
 import net.dries007.tfc.objects.items.ItemsTFC;
-import net.dries007.tfc.objects.items.food.ItemFoodTFC;
 import net.dries007.tfc.objects.potioneffects.PotionEffectsTFC;
 import net.dries007.tfc.util.DamageSourcesTFC;
 import net.dries007.tfc.util.Helpers;
@@ -751,6 +754,112 @@ public final class CommonEventHandler
                     }
                 }
             }
+        }
+        if (ConfigTFC.Devices.TEMPERATURE.coolHeatablesInWater && entity instanceof EntityItem)
+        {
+            EntityItem entityItem = (EntityItem) entity;
+            ItemStack stack = entityItem.getItem();
+            IItemHeat heatCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+            if (heatCap != null)
+            {
+                // Add a NBT tag here to make sure our ItemExpireEvent listener picks this entity up as valid (and as an extra check)
+                entityItem.addTag("TFCHeatableItem");
+                entityItem.lifespan = ConfigTFC.Devices.TEMPERATURE.ticksBeforeAttemptToCool;
+            }
+        }
+    }
+
+    /**
+     * This implementation utilizes EntityJoinWorldEvent and ItemExpireEvent, they go hand-in-hand with each other.
+     *
+     * By manually editing the tag of the EntityItem upon spawning, we can identify what EntityItems should be subjected to the cooling process.
+     * We also apply an extremely short lifespan to mimic the speed of the barrel recipe, albeit slightly longer (half a second, but modifiable via config).
+     * Then all the checks are done in ItemExpireEvent to set a new cooler temperature depending on if the conditions are met.
+     *
+     * First of all, if temperature is 0 or less, then nothing needs to be done and the original lifespan is restored/added on.
+     *
+     * If no conditions are met, the same, short length of lifespan is added on so a quick check can be done once again in case the condition will be met later.
+     *
+     * Now if, this has been repeated for a long time up until it meets the item's normal lifespan, it will despawn.
+     *
+     * Finally, if a condition is met, we extend its lifespan once again so more checks can be done to cool down even further.
+     */
+    @SubscribeEvent
+    public static void onItemEntityExpire(ItemExpireEvent event)
+    {
+        EntityItem entityItem = event.getEntityItem();
+        ItemStack stack = entityItem.getItem();
+        IItemHeat heatCap;
+        if (ConfigTFC.Devices.TEMPERATURE.coolHeatablesInWater && entityItem.getTags().contains("TFCHeatableItem") && (heatCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) != null)
+        {
+            int lifespan = stack.getItem().getEntityLifespan(stack, entityItem.world);
+            if (entityItem.lifespan >= lifespan)
+            {
+                return; // If the ItemEntity has been there for as long or if not longer than the original unmodified lifespan, we return and setDead
+            }
+            float itemTemp = heatCap.getTemperature();
+            if (itemTemp > 0)
+            {
+                float rand = Constants.RNG.nextFloat();
+                BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos((int) entityItem.posX, (int) entityItem.posY, (int) entityItem.posZ);
+                IBlockState state;
+                if ((state = entityItem.world.getBlockState(pos)).getBlock() instanceof BlockFluidBase)
+                {
+                    int fluidTemp = ((BlockFluidBase) state.getBlock()).getFluid().getTemperature();
+                    if (fluidTemp <= 300 && fluidTemp < itemTemp)
+                    {
+                        heatCap.setTemperature(Math.max(0, Math.min(itemTemp, itemTemp - 350 + fluidTemp)));
+                        entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f + rand * 0.4f);
+                        ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(), pos.getY(), pos.getZ(), 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                        if (rand <= 0.001F)
+                        {
+                            entityItem.world.setBlockToAir(pos); // 1/1000 chance of the fluid being used up. Attempts to match the barrel recipe as it takes 1mb of water per operation.
+                        }
+                    }
+                    event.setExtraLife(ConfigTFC.Devices.TEMPERATURE.ticksBeforeAttemptToCool); // Set half a second onto the lifespan
+                    event.setCanceled(true);
+                    entityItem.setNoPickupDelay(); // For some reason when lifespan is added, pickup delay is reset, we disable this to make the experience seamless
+                    return;
+                }
+                pos.setY(pos.getY() - 1);
+                if ((state = entityItem.world.getBlockState(pos)).getMaterial() == Material.SNOW || state.getMaterial() == Material.CRAFTED_SNOW)
+                {
+                    heatCap.setTemperature(Math.max(0, itemTemp - 75));
+                    entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.65f, 0.8f + rand * 0.4f);
+                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(), pos.getY(), pos.getZ(), 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                    if (rand <= 0.01F)
+                    {
+                        entityItem.world.setBlockToAir(pos); // 1/100 chance of the snow evaporating.
+                    }
+                }
+                else if (state.getMaterial() == Material.ICE)
+                {
+                    heatCap.setTemperature(Math.max(0, itemTemp - 100));
+                    entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.8f, 0.8f + rand * 0.4f);
+                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(), pos.getY(), pos.getZ(), 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                    if (rand <= 0.01F)
+                    {
+                        entityItem.world.setBlockState(pos, FluidsTFC.FRESH_WATER.get().getBlock().getDefaultState(), 2); // 1/100 chance of the ice turning into water.
+                    }
+                }
+                else if (state.getMaterial() == Material.PACKED_ICE)
+                {
+                    heatCap.setTemperature(Math.max(0, itemTemp - 125));
+                    entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1f, 0.8f + rand * 0.4f);
+                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(), pos.getY(), pos.getZ(), 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                    if (rand <= 0.005F)
+                    {
+                        entityItem.world.setBlockState(pos, FluidsTFC.FRESH_WATER.get().getBlock().getDefaultState(), 2); // 1/200 chance of the packed ice turning into water.
+                    }
+                }
+                event.setExtraLife(ConfigTFC.Devices.TEMPERATURE.ticksBeforeAttemptToCool); // Set half a second onto the lifespan
+                entityItem.setNoPickupDelay(); // For some reason when lifespan is added, pickup delay is reset, we disable this to make the experience seamless
+            }
+            else
+            {
+                event.setExtraLife(lifespan); // Sets the original lifespan, next time it expires it will be setDead
+            }
+            event.setCanceled(true);
         }
     }
 
