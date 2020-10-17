@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockSnow;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -813,13 +814,30 @@ public final class CommonEventHandler
                         ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entityItem.posX, entityItem.posY, entityItem.posZ, 42, 0.0D, 0.15D, 0.0D, 0.08D);
                         if (rand <= 0.001F)
                         {
-                            entityItem.world.setBlockToAir(pos); // 1/1000 chance of the fluid being used up. Attempts to match the barrel recipe as it takes 1mb of water per operation.
+                            entityItem.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2); // 1/1000 chance of the fluid being used up. Attempts to match the barrel recipe as it takes 1mb of water per operation.
                         }
                     }
                     event.setExtraLife(ConfigTFC.Devices.TEMPERATURE.ticksBeforeAttemptToCool); // Set half a second onto the lifespan
                     event.setCanceled(true);
                     entityItem.setNoPickupDelay(); // For some reason when lifespan is added, pickup delay is reset, we disable this to make the experience seamless
                     return;
+                }
+                else if (state.getPropertyKeys().contains(BlockSnow.LAYERS))
+                {
+                    heatCap.setTemperature(Math.max(0, itemTemp - 70));
+                    entityItem.world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.55f, 0.8f + rand * 0.4f);
+                    ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entityItem.posX, entityItem.posY, entityItem.posZ, 42, 0.0D, 0.15D, 0.0D, 0.08D);
+                    if (rand <= 0.1F)
+                    {
+                        if (state.getValue(BlockSnow.LAYERS) > 1)
+                        {
+                            entityItem.world.setBlockState(pos, state.withProperty(BlockSnow.LAYERS, state.getValue(BlockSnow.LAYERS) - 1), 2);
+                        }
+                        else
+                        {
+                            entityItem.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                        }
+                    }
                 }
                 pos.setY(pos.getY() - 1);
                 if ((state = entityItem.world.getBlockState(pos)).getMaterial() == Material.SNOW || state.getMaterial() == Material.CRAFTED_SNOW)
@@ -829,7 +847,7 @@ public final class CommonEventHandler
                     ((WorldServer) entityItem.world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entityItem.posX, entityItem.posY, entityItem.posZ, 42, 0.0D, 0.15D, 0.0D, 0.08D);
                     if (rand <= 0.01F)
                     {
-                        entityItem.world.setBlockToAir(pos); // 1/100 chance of the snow evaporating.
+                        entityItem.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2); // 1/100 chance of the snow block evaporating.
                     }
                 }
                 else if (state.getMaterial() == Material.ICE)
