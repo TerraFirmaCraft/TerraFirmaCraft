@@ -756,7 +756,7 @@ public final class CommonEventHandler
                 }
             }
         }
-        if (ConfigTFC.Devices.TEMPERATURE.coolHeatablesInWater && entity instanceof EntityItem)
+        if (ConfigTFC.Devices.TEMPERATURE.coolHeatablesInWorld && entity instanceof EntityItem)
         {
             EntityItem entityItem = (EntityItem) entity;
             ItemStack stack = entityItem.getItem();
@@ -791,7 +791,7 @@ public final class CommonEventHandler
         EntityItem entityItem = event.getEntityItem();
         ItemStack stack = entityItem.getItem();
         IItemHeat heatCap;
-        if (ConfigTFC.Devices.TEMPERATURE.coolHeatablesInWater && entityItem.getTags().contains("TFCHeatableItem") && (heatCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) != null)
+        if (ConfigTFC.Devices.TEMPERATURE.coolHeatablesInWorld && entityItem.getTags().contains("TFCHeatableItem") && (heatCap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) != null)
         {
             int lifespan = stack.getItem().getEntityLifespan(stack, entityItem.world);
             if (entityItem.lifespan >= lifespan)

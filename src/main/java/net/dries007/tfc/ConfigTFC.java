@@ -733,13 +733,13 @@ public final class ConfigTFC
             @Config.LangKey("config." + MOD_ID + ".devices.temperature.heatingModifier")
             public double heatingModifier = 1;
 
-            @Config.Comment("Can heatable items be cooled down in a pool of water?")
-            @Config.LangKey("config." + MOD_ID + ".devices.temperature.coolHeatablesInWater")
-            public boolean coolHeatablesInWater = true;
+            @Config.Comment("Can heatable items be cooled down in the world? Such as putting it in a pool of water or on top of some snow?")
+            @Config.LangKey("config." + MOD_ID + ".devices.temperature.coolHeatablesInWorld")
+            public boolean coolHeatablesInWorld = true;
 
-            @Config.Comment("If heatable items can be cooled down in a pool of water, after how many ticks should the item attempt to be cooled down?")
+            @Config.Comment("If heatable items can be cooled down in world, after how many ticks should the item attempt to be cooled down?")
             @Config.LangKey("config." + MOD_ID + ".devices.temperature.ticksBeforeAttemptToCool")
-            @Config.RangeInt(min = 1)
+            @Config.RangeInt(min = 1, max = 5999)
             public int ticksBeforeAttemptToCool = 10;
         }
 
