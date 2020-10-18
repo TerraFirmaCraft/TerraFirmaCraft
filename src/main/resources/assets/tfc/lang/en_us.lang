@@ -765,6 +765,10 @@ config.tfc.devices.sluice.diamondGemChance=Diamond Chance
 config.tfc.devices.sluice.diamondGemChance.tooltip=Chance that a diamond is dropped when sluice produce gems.
 
 
+## Jug
+config.tfc.devices.jug.dumpWaterOnShiftRightClick=Dump Water on Shift Right-Clicking
+config.tfc.devices.jug.dumpWaterOnShiftRightClick.tooltip=Enable Shift-Right clicking of Jars to dump water out. Enabling this will not pour an actual water block onto the ground.
+
 ## Clients
 config.tfc.client=Client Settings
 

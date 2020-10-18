@@ -33,6 +33,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -65,7 +66,7 @@ public class ItemJug extends ItemPottery
             {
                 if (jugCap.drain(CAPACITY, false) != null)
                 {
-                    if (!world.isRemote && player.isSneaking())
+                    if (!world.isRemote && ConfigTFC.Devices.JUG.dumpWaterOnShiftRightClick && player.isSneaking())
                     {
                         jugCap.drain(CAPACITY, true);
                         world.playSound(null, player.posX, player.posY + 0.5, player.posZ, TFCSounds.JUG_FILL, SoundCategory.BLOCKS, 1.0F, 0.5F);
