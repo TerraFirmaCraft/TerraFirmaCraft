@@ -6,7 +6,6 @@
 package net.dries007.tfc.world.surfacebuilder;
 
 import java.util.Random;
-import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.world.biome.Biome;
@@ -18,7 +17,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-public class UnderwaterSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderConfig>
+public class UnderwaterSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
     private INoise2D variantNoise;
 

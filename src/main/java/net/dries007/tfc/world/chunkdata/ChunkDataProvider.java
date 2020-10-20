@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
@@ -91,6 +92,7 @@ public final class ChunkDataProvider
         return data;
     }
 
+    @VisibleForTesting
     public IChunkDataGenerator getGenerator()
     {
         return generator;

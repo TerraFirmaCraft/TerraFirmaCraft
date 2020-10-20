@@ -79,8 +79,6 @@ public class ChunkDataGenerator implements IChunkDataGenerator
             case CLIMATE:
                 generateClimate(data, chunkX, chunkZ);
                 break;
-            case BIOMES:
-                throw new IllegalStateException("Cannot generate BIOMES status directly, that must be assigned via the chunk generator!");
             case ROCKS:
                 generateRocks(data, chunkX, chunkZ);
                 break;

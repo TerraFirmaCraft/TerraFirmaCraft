@@ -37,9 +37,15 @@ public class LerpFloatLayer implements INBTSerializable<CompoundNBT>
         this.valueSE = valueSE;
     }
 
+    /**
+     * Gets the floating point value approximated at the point within the grid.
+     *
+     * @param tNS A distance in the N-S direction. 0 = Full north, 1 = Full south.
+     * @param tEW A distance in the E-W direction. 0 = Full east, 1 = Full west.
+     */
     public float getValue(float tNS, float tEW)
     {
-        return NoiseUtil.lerpGrid(valueNW, valueNE, valueSW, valueSE, tNS, tEW);
+        return NoiseUtil.lerpGrid(valueNE, valueNW, valueSE, valueSW, tNS, tEW);
     }
 
     @Override

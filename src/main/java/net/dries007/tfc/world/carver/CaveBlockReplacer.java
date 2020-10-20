@@ -17,6 +17,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.TFCChunkGenerator;
 
 import static net.dries007.tfc.common.blocks.rock.RawRockBlock.SUPPORTED;
@@ -41,9 +42,10 @@ public class CaveBlockReplacer
         reload();
     }
 
+    @SuppressWarnings("deprecation")
     public boolean carveBlock(IChunk chunk, BlockPos pos, BitSet carvingMask)
     {
-        int maskIndex = (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
+        int maskIndex = Helpers.getCarvingMaskIndex(pos);
         if (!carvingMask.get(maskIndex))
         {
             BlockPos posUp = pos.above();
@@ -51,7 +53,7 @@ public class CaveBlockReplacer
             BlockState stateAbove = chunk.getBlockState(posUp);
 
             Set<Block> carvableBlockChecks = pos.getY() > TFCChunkGenerator.SEA_LEVEL ? carvableBlocksAboveSeaLevel : carvableBlocks;
-            if (carvableBlockChecks.contains(stateAt.getBlock()) && (carvableBlockChecks.contains(stateAbove.getBlock()) || stateAbove.isAir(chunk, posUp)))
+            if (carvableBlockChecks.contains(stateAt.getBlock()) && (carvableBlockChecks.contains(stateAbove.getBlock()) || stateAbove.isAir()))
             {
                 if (pos.getY() < 11)
                 {

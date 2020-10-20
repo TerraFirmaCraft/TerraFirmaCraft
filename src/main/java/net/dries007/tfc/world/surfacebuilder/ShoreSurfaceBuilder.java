@@ -16,7 +16,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-public class ShoreSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderConfig>
+public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
     private INoise2D variantNoise;
 

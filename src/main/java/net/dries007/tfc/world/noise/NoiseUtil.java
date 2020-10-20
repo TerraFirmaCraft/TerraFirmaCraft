@@ -18,10 +18,10 @@ public final class NoiseUtil
         return start * (1 - t) + end * t;
     }
 
-    public static float lerpGrid(float valueNW, float valueNE, float valueSW, float valueSE, float tNS, float tEW)
+    public static float lerpGrid(float valueNE, float valueNW, float valueSE, float valueSW, float tNS, float tEW)
     {
-        float valueN = lerp(valueNW, valueNE, tEW);
-        float valueS = lerp(valueSW, valueSE, tEW);
+        final float valueN = lerp(valueNE, valueNW, tEW);
+        final float valueS = lerp(valueSE, valueSW, tEW);
         return lerp(valueN, valueS, tNS);
     }
 

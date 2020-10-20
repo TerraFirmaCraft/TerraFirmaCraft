@@ -8,14 +8,11 @@ package net.dries007.tfc.world.chunkdata;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.common.capabilities.Capability;
@@ -28,8 +25,6 @@ import net.dries007.tfc.util.LerpFloatLayer;
 public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public static ChunkData get(IWorld world, BlockPos pos)
     {
@@ -78,9 +73,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     private float forestWeirdness;
     private float forestDensity;
 
-    // Not serialized, only used during world generation and discarded after
-    private Biome[] biomes;
-
     public ChunkData(ChunkPos pos)
     {
         this.pos = pos;
@@ -92,23 +84,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     public ChunkPos getPos()
     {
         return pos;
-    }
-
-    /**
-     * A pixel accurate biome array for the chunk. Used for better precision when building surface builders using the TFCChunkGenerator
-     * Must be a 16x16 array indexed via [x + 16 * z]
-     *
-     * @return The chunk's biomes.
-     */
-    @Nullable
-    public Biome[] getBiomes()
-    {
-        return biomes;
-    }
-
-    public void setBiomes(Biome[] biomes)
-    {
-        this.biomes = biomes;
     }
 
     public RockData getRockData()
@@ -128,7 +103,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer.getValue(-z / 16f, x / 16f);
+        return rainfallLayer.getValue(z / 16f, 1 - (x / 16f));
     }
 
     public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
@@ -143,7 +118,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer.getValue(-z / 16f, x / 16f);
+        return temperatureLayer.getValue(z / 16f, 1 - (x / 16f));
     }
 
     public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
@@ -216,7 +191,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
         else
         {
-            LOGGER.warn("Called client side update method on server side chunk data: {}. This should not happen.", this);
+            throw new IllegalStateException("ChunkData#onUpdatePacket was called on non client side chunk data: " + this);
         }
     }
 
@@ -296,10 +271,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         CLIENT, // Special status - indicates it is a client side shallow copy
         EMPTY, // Empty - default. Should never be called to generate.
         CLIMATE, // Climate data, rainfall and temperature
-        BIOMES, // A pixel-accurate version of the biome map. This is used during surface generation.
         ROCKS, // Rock layer information, used for surface builder and rock block replacement
-        FLORA, // Flora and fauna information, used for features
-        FULL; // Final status - should also never be queried. Any complete chunk data should have this status.
+        FLORA; // Flora and fauna information, used for features
 
         private static final Status[] VALUES = values();
 
@@ -310,7 +283,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
         public Status next()
         {
-            return this == FULL ? FULL : VALUES[this.ordinal() + 1];
+            return this == FLORA ? FLORA : VALUES[this.ordinal() + 1];
         }
 
         public boolean isAtLeast(Status otherStatus)
@@ -328,12 +301,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         private Immutable()
         {
             super(new ChunkPos(ChunkPos.INVALID_CHUNK_POS));
-        }
-
-        @Override
-        public void setBiomes(Biome[] biomes)
-        {
-            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
 
         @Override

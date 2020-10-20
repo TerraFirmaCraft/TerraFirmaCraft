@@ -59,7 +59,7 @@ public class FastChunkPrimer implements IChunkDelegate
     }
 
     @Override
-    public IChunk getDelegate()
+    public ChunkPrimer getDelegate()
     {
         return chunk;
     }
