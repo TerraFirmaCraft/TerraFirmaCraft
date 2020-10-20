@@ -21,11 +21,10 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:plateau",
+  "surface_builder": "tfc:mountains_with_glaciers",
   "features": [
     [
-      "tfc:erosion",
-      "tfc:glacier"
+      "tfc:erosion"
     ],
     [
       "tfc:flood_fill_lake",

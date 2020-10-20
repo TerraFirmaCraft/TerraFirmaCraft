@@ -40,7 +40,6 @@ public class TFCFeatures
     public static final RegistryObject<StackedTreeFeature> STACKED_TREE = FEATURES.register("stacked_tree", () -> new StackedTreeFeature(StackedTreeConfig.CODEC));
 
     public static final RegistryObject<ErosionFeature> EROSION = FEATURES.register("erosion", () -> new ErosionFeature(NoFeatureConfig.CODEC));
-    public static final RegistryObject<GlacierFeature> GLACIER = FEATURES.register("glacier", () -> new GlacierFeature(NoFeatureConfig.CODEC));
     public static final RegistryObject<IceAndSnowFeature> ICE_AND_SNOW = FEATURES.register("ice_and_snow", () -> new IceAndSnowFeature(NoFeatureConfig.CODEC));
 
     public static final RegistryObject<LakeFeature> LAKE = FEATURES.register("lake", () -> new LakeFeature(NoFeatureConfig.CODEC));

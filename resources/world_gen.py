@@ -50,14 +50,14 @@ def generate(rm: ResourceManager):
     air_air_air = wg.surface_builder_config('minecraft:air', 'minecraft:air', 'minecraft:air')
 
     # Surface Builders
-    rm.surface_builder('badlands', wg.configure('tfc:badlands', grass_dirt_sand))
-    rm.surface_builder('canyons', wg.configure('tfc:thin', grass_dirt_sand))
-    rm.surface_builder('deep', wg.configure('tfc:deep', grass_dirt_gravel))
-    rm.surface_builder('plateau', wg.configure('tfc:plateau', grass_dirt_sand))
-    rm.surface_builder('default', wg.configure('tfc:normal', grass_dirt_sand))
-    rm.surface_builder('underwater', wg.configure('tfc:underwater', air_air_air))
-    rm.surface_builder('mountains', wg.configure('tfc:mountains', grass_dirt_sand))
-    rm.surface_builder('shore', wg.configure('tfc:shore', air_air_air))
+    surface_builder(rm, 'badlands', wg.configure('tfc:badlands', grass_dirt_sand))
+    surface_builder(rm, 'canyons', wg.configure('tfc:thin', grass_dirt_sand))
+    surface_builder(rm, 'deep', wg.configure('tfc:deep', grass_dirt_gravel))
+    surface_builder(rm, 'plateau', wg.configure('tfc:plateau', grass_dirt_sand))
+    surface_builder(rm, 'default', wg.configure('tfc:normal', grass_dirt_sand))
+    surface_builder(rm, 'underwater', wg.configure('tfc:underwater', air_air_air))
+    surface_builder(rm, 'mountains', wg.configure('tfc:mountains', grass_dirt_sand))
+    surface_builder(rm, 'shore', wg.configure('tfc:shore', air_air_air))
 
     # Configured Features
     rm.feature('ore_veins', wg.configure('tfc:ore_veins'))
@@ -156,7 +156,7 @@ def generate(rm: ResourceManager):
             biome(rm, 'canyons', temp, rain, 'plains', 'tfc:canyons', boulders=True)
             biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:canyons', boulders=True)
             biome(rm, 'plains', temp, rain, 'plains', 'tfc:deep')
-            biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:plateau', boulders=True)
+            biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True)
             biome(rm, 'hills', temp, rain, 'plains', 'tfc:default')
             biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:default', boulders=True)
             biome(rm, 'lake', temp, rain, 'river', 'tfc:underwater', spawnable=False)
@@ -169,6 +169,13 @@ def generate(rm: ResourceManager):
             biome(rm, 'river', temp, rain, 'river', 'tfc:underwater', spawnable=False)
             biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
             biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore')
+
+
+def surface_builder(rm: ResourceManager, name: str, surface_builder):
+    rm.surface_builder(name, surface_builder)
+    rm.surface_builder(name + '_with_glaciers', wg.configure('tfc:with_glaciers', {
+        'parent': 'tfc:%s' % name
+    }))
 
 
 def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):
@@ -239,10 +246,11 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         rain_type = 'none'
     elif temp.id in ('cold', 'frozen'):
         rain_type = 'snow'
+        surface_builder += '_with_glaciers'
     else:
         rain_type = 'rain'
     features = [
-        ['tfc:erosion', 'tfc:glacier'],  # raw generation
+        ['tfc:erosion'],  # raw generation
         ['tfc:flood_fill_lake', 'tfc:lake'],  # lakes
         [],  # local modification
         [],  # underground structure

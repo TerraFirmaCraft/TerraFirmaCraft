@@ -17,9 +17,6 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IDirtBlock;
 
-import static net.dries007.tfc.world.TFCChunkGenerator.AIR;
-import static net.dries007.tfc.world.TFCChunkGenerator.WATER;
-
 /**
  * This is a big copy pasta from {@link net.minecraft.world.gen.feature.LakesFeature} with the following changes:
  * - It only works with water, since this is going to be used primarily for surface lakes
@@ -117,7 +114,7 @@ public class LakeFeature extends Feature<NoFeatureConfig>
                         {
                             if (noise[(x * 16 + z) * 8 + y])
                             {
-                                worldIn.setBlock(pos.offset(x, y, z), y >= 4 ? AIR : WATER, 2);
+                                worldIn.setBlock(pos.offset(x, y, z), y >= 4 ? Blocks.AIR.defaultBlockState() : Blocks.WATER.defaultBlockState(), 2);
                             }
                         }
                     }

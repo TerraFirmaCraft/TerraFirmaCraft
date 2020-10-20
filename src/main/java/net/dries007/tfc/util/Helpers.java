@@ -287,4 +287,12 @@ public final class Helpers
         int i = randValue >> 2;
         return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
     }
+
+    /**
+     * Computes an index into a carving mask bit set, uesd during world gen
+     */
+    public static int getCarvingMaskIndex(BlockPos pos)
+    {
+        return (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
+    }
 }

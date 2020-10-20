@@ -24,8 +24,7 @@
   "surface_builder": "tfc:underwater",
   "features": [
     [
-      "tfc:erosion",
-      "tfc:glacier"
+      "tfc:erosion"
     ],
     [
       "tfc:flood_fill_lake",

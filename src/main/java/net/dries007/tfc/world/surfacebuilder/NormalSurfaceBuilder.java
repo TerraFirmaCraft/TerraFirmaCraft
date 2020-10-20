@@ -28,6 +28,7 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void apply(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
         // Lazy because this queries a noise layer
@@ -45,7 +46,7 @@ public class NormalSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
         {
             pos.set(localX, y, localZ);
             BlockState stateAt = chunkIn.getBlockState(pos);
-            if (stateAt.isAir(chunkIn, pos))
+            if (stateAt.isAir())
             {
                 // Reached air, reset surface depth
                 surfaceDepth = -1;

@@ -5,9 +5,8 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -22,12 +21,8 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 
-import static net.dries007.tfc.world.TFCChunkGenerator.WATER;
-
 public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
 {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     public FloodFillLakeFeature(Codec<NoFeatureConfig> codec)
     {
         super(codec);
@@ -43,6 +38,7 @@ public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
         final Set<BlockPos> filled = new HashSet<>();
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final BlockPos startPos = pos.above();
+        final BlockState water = Blocks.WATER.defaultBlockState();
 
         // Initial placement is surface level, so start filling one block above
         boolean bounded = tryFloodFill(worldIn, startPos, box, filled, mutablePos);
@@ -67,10 +63,9 @@ public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
                 filled.addAll(lowestFilled);
             }
 
-            LOGGER.info("Flood Fill Lake at {} of {} blocks", pos, filled.size());
             for (BlockPos filledPos : filled)
             {
-                worldIn.setBlock(filledPos, WATER, 2);
+                worldIn.setBlock(filledPos, water, 2);
                 worldIn.getLiquidTicks().scheduleTick(filledPos, Fluids.WATER, 0);
 
                 // If we're at the bottom
@@ -149,6 +144,6 @@ public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
     @SuppressWarnings("deprecation")
     private boolean isFloodFillabe(BlockState state)
     {
-        return state.isAir() || state.getBlock() instanceof ILeavesBlock;
+        return state.isAir() || state.is(Blocks.SNOW) || state.getBlock() instanceof ILeavesBlock;
     }
 }
