@@ -11,11 +11,17 @@ import java.util.Set;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
  * <a href="https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/d064915183a4a3b803d779576f982279268b1ca3/src/main/java/choonster/testmod3/crafting/recipe/ShapelessCuttingRecipe.java">Source</a>
@@ -90,4 +96,43 @@ public class RecipeUtils
 
         return primer;
     }
+
+    public static void removeRecipeByName(IForgeRegistry<IRecipe> registry, String domain, String id)
+    {
+        registry.register(new DummyRecipe(domain, id));
+    }
+
+    private static class DummyRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
+    {
+
+        private DummyRecipe(String domain, String id)
+        {
+            setRegistryName(domain, id);
+        }
+
+        @Override
+        public boolean matches(InventoryCrafting inventoryCrafting, World world)
+        {
+            return false;
+        }
+
+        @Override
+        public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting)
+        {
+            return ItemStack.EMPTY;
+        }
+
+        @Override
+        public boolean canFit(int i, int i1)
+        {
+            return false;
+        }
+
+        @Override
+        public ItemStack getRecipeOutput()
+        {
+            return ItemStack.EMPTY;
+        }
+    }
+
 }
