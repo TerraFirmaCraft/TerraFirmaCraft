@@ -338,7 +338,6 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event)
     {
-        // todo: overworld check
         if (event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).dimension() == World.OVERWORLD)
         {
             ServerWorld world = (ServerWorld) event.getWorld();
@@ -348,6 +347,15 @@ public final class ForgeEventHandler
                 world.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, world.getServer());
                 LOGGER.info("Updating gamerule naturalRegeneration to false!");
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCreateNetherPortal(BlockEvent.PortalSpawnEvent event)
+    {
+        if (!TFCConfig.SERVER.enableNetherPortals.get())
+        {
+            event.setCanceled(true);
         }
     }
 }
