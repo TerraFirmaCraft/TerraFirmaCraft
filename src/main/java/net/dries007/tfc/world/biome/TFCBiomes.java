@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IBiomeReader;
 import net.minecraft.world.IWorld;
@@ -79,11 +80,17 @@ public final class TFCBiomes
     @Nullable
     public static BiomeExtension getExtension(Biome biome)
     {
-        return getExtension(ServerLifecycleHooks.getCurrentServer().overworld(), biome);
+        return getExtension(ServerLifecycleHooks.getCurrentServer().registryAccess(), biome);
     }
 
     @Nullable
     public static BiomeExtension getExtension(IBiomeReader world, Biome biome)
+    {
+        return getExtension(world.registryAccess(), biome);
+    }
+
+    @Nullable
+    public static BiomeExtension getExtension(DynamicRegistries registries, Biome biome)
     {
         // First query the cache, it is fast
         BiomeExtension extension = CACHED_EXTENSIONS.get(biome);
@@ -99,7 +106,7 @@ public final class TFCBiomes
         }
         else
         {
-            Registry<Biome> registry = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+            Registry<Biome> registry = registries.registryOrThrow(Registry.BIOME_REGISTRY);
             BiomeExtension lookupExtension = registry.getResourceKey(biome).map(EXTENSIONS::get).orElse(null);
             if (lookupExtension != null)
             {
