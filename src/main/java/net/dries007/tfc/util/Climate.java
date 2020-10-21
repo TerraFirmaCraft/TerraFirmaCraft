@@ -6,6 +6,7 @@
 package net.dries007.tfc.util;
 
 import java.util.Random;
+import javax.annotation.Nullable;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -18,6 +19,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.NoiseUtil;
@@ -47,6 +49,28 @@ public final class Climate
     public static final float SNOW_STACKING_TEMPERATURE = -4f;
 
     private static final Random RANDOM = new Random(); // Used for daily temperature variations
+
+    /**
+     * Gets the equivalent to {@link Biome#getTemperature(BlockPos)} for TFC biomes.
+     * Called from injected code.
+     */
+    public static float getVanillaBiomeTemperature(Biome biome, @Nullable IWorld world, BlockPos pos)
+    {
+        if (world != null && TFCBiomes.getExtension(biome) != null)
+        {
+            return toVanillaTemperature(getTemperature(world, pos));
+        }
+        return biome.getTemperature(pos);
+    }
+
+    public static Biome.RainType getVanillaBiomePrecipitation(Biome biome, @Nullable IWorld world, BlockPos pos)
+    {
+        if (world != null && TFCBiomes.getExtension(biome) != null)
+        {
+            return getPrecipitation(world, pos);
+        }
+        return biome.getPrecipitation();
+    }
 
     /**
      * Used to calculate the actual temperature at a world and position.
