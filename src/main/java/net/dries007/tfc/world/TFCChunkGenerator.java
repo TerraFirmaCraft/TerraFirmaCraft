@@ -38,7 +38,6 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.mixin.world.gen.HeightmapAccessor;
 import net.dries007.tfc.mixin.world.gen.carver.ConfiguredCarverAccessor;
-import net.dries007.tfc.util.ChunkArraySampler;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.carver.IContextCarver;

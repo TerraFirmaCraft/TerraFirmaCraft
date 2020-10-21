@@ -28,6 +28,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ServerCalendar;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -36,7 +37,6 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.decorator.TFCDecorators;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
-import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft

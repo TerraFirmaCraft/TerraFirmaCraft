@@ -144,6 +144,44 @@ def generate(rm: ResourceManager):
     rm.feature(('tree', 'willow'), wg.configure('tfc:random_tree', random_config('willow', 7)))
     rm.feature(('tree', 'willow_large'), wg.configure('tfc:random_tree', random_config('willow', 14, 1, True)))
 
+    # Ore Veins
+    for vein_name, vein in ORE_VEINS.items():
+        rocks = expand_rocks(vein.rocks, vein_name)
+        ore = ORES[vein.ore]  # standard ore
+        if ore.graded:  # graded ore vein
+            rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
+                'rarity': vein.rarity,
+                'min_y': vein.min_y,
+                'max_y': vein.max_y,
+                'size': vein.size,
+                'density': vein.density,
+                'blocks': [{
+                    'stone': ['tfc:rock/raw/%s' % rock],
+                    'ore': [{
+                        'weight': vein.poor,
+                        'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
+                    }, {
+                        'weight': vein.normal,
+                        'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
+                    }, {
+                        'weight': vein.rich,
+                        'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
+                    }]
+                } for rock in rocks]
+            }))
+        else:  # non-graded ore vein (mineral)
+            rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
+                'rarity': vein.rarity,
+                'min_y': vein.min_y,
+                'max_y': vein.max_y,
+                'size': vein.size,
+                'density': vein.density,
+                'blocks': [{
+                    'stone': ['tfc:rock/raw/%s' % rock],
+                    'ore': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
+                } for rock in rocks]
+            }))
+
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
     rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
@@ -283,3 +321,15 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         features=features,
         player_spawn_friendly=spawnable
     )
+
+
+def expand_rocks(rocks_list: List, path: str) -> List[str]:
+    rocks = []
+    for rock_spec in rocks_list:
+        if rock_spec in ROCKS:
+            rocks.append(rock_spec)
+        elif rock_spec in ROCK_CATEGORIES:
+            rocks += [r for r, d in ROCKS.items() if d.category == rock_spec]
+        else:
+            raise RuntimeError('Unknown rock or rock category specification: %s at %s' % (rock_spec, path))
+    return rocks

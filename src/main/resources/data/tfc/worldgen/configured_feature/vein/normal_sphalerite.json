@@ -1,0 +1,127 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 100,
+    "min_y": 30,
+    "max_y": 100,
+    "size": 20,
+    "density": 60,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/gneiss"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/gneiss"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/gneiss"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/gneiss"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/marble"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/marble"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/marble"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/marble"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/phyllite"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/phyllite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/phyllite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/quartzite"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/quartzite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/quartzite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/schist"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/schist"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/schist"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/schist"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/slate"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/slate"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/slate"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/slate"
+          }
+        ]
+      }
+    ]
+  }
+}

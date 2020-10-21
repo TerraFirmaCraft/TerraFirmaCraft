@@ -1,0 +1,83 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:disc_vein",
+  "config": {
+    "rarity": 120,
+    "min_y": 80,
+    "max_y": 100,
+    "size": 30,
+    "density": 80,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/chalk"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/halite/chalk"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/chert"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/halite/chert"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/claystone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/halite/claystone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/halite/conglomerate"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/halite/dolomite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/limestone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/halite/limestone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/shale"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/halite/shale"
+          }
+        ]
+      }
+    ]
+  }
+}

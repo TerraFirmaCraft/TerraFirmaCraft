@@ -1,0 +1,146 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 120,
+    "min_y": 5,
+    "max_y": 60,
+    "size": 30,
+    "density": 60,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/chalk"
+        ],
+        "ore": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_limonite/chalk"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_limonite/chalk"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_limonite/chalk"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/chert"
+        ],
+        "ore": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_limonite/chert"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_limonite/chert"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_limonite/chert"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/claystone"
+        ],
+        "ore": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_limonite/claystone"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_limonite/claystone"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_limonite/claystone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "ore": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_limonite/conglomerate"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_limonite/conglomerate"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_limonite/conglomerate"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "ore": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_limonite/dolomite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_limonite/dolomite"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_limonite/dolomite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/limestone"
+        ],
+        "ore": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_limonite/limestone"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_limonite/limestone"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_limonite/limestone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/shale"
+        ],
+        "ore": [
+          {
+            "weight": 10,
+            "block": "tfc:ore/poor_limonite/shale"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_limonite/shale"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_limonite/shale"
+          }
+        ]
+      }
+    ]
+  }
+}

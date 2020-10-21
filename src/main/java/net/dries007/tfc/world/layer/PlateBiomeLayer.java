@@ -23,11 +23,11 @@ public enum PlateBiomeLayer implements IC0Transformer
                 return DEEP_OCEAN;
             case OCEAN_OCEAN_CONVERGING:
                 // Volcanic Island chains or rifts
-                // Sample sparse flooded mountains for now until a proper archipelago biome exists
+                // Mark this for island chains to generate later after zooming
                 return OCEAN_OCEAN_CONVERGING_MARKER;
             case OCEAN_OCEAN_DIVERGING:
                 // Mid-ocean rift
-                // Return converging marker for now, will generate island chains
+                // todo: actual rift biomes. For now this is treated the same as a converging area
                 return OCEAN_OCEAN_CONVERGING_MARKER;
             case OCEAN_CONTINENT_CONVERGING:
                 // Mountains or high terrain

@@ -17,7 +17,7 @@ import net.minecraftforge.server.command.EnumArgument;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dries007.tfc.common.types.Wood;
-import net.dries007.tfc.world.feature.trees.TFCTree;
+import net.dries007.tfc.world.feature.tree.TFCTree;
 
 public final class TreeCommand
 {

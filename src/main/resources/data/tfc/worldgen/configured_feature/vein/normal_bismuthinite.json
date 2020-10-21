@@ -1,0 +1,203 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 100,
+    "min_y": 30,
+    "max_y": 100,
+    "size": 20,
+    "density": 60,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/diorite"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/diorite"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/diorite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/diorite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/gabbro"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/gabbro"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/granite"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/granite"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/granite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/granite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/chalk"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/chalk"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/chalk"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/chalk"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/chert"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/chert"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/chert"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/chert"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/claystone"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/claystone"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/claystone"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/claystone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/conglomerate"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/conglomerate"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/conglomerate"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/dolomite"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/dolomite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/dolomite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/limestone"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/limestone"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/limestone"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/limestone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/shale"
+        ],
+        "ore": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_bismuthinite/shale"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_bismuthinite/shale"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_bismuthinite/shale"
+          }
+        ]
+      }
+    ]
+  }
+}
