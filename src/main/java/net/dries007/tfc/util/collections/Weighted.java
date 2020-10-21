@@ -6,7 +6,10 @@
 package net.dries007.tfc.util.collections;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+
+import com.mojang.datafixers.util.Pair;
 
 /**
  * Modified from https://stackoverflow.com/questions/6409652/random-weighted-selection-in-java
@@ -19,6 +22,11 @@ public class Weighted<E> implements IWeighted<E>
     private double totalWeight = 0;
 
     public Weighted() {}
+
+    public Weighted(List<Pair<E, Double>> parallelWeightedList)
+    {
+        parallelWeightedList.forEach(pair -> add(pair.getSecond(), pair.getFirst()));
+    }
 
     public Weighted(Map<? extends E, Double> values)
     {
@@ -59,5 +67,11 @@ public class Weighted<E> implements IWeighted<E>
     public Iterator<E> iterator()
     {
         return backingMap.values().iterator();
+    }
+
+    @Override
+    public List<Pair<E, Double>> weightedValues()
+    {
+        return backingMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
     }
 }

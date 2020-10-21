@@ -8,7 +8,6 @@ from mcresources import ResourceManager
 import assets
 import collapse_recipes
 import data
-import ore_veins
 import recipes
 import world_gen
 from constants import *
@@ -28,7 +27,6 @@ def main():
     recipes.generate(rm)
 
     # more complex stuff n things
-    ore_veins.generate(rm)
     collapse_recipes.generate(rm)
 
     rm.flush()

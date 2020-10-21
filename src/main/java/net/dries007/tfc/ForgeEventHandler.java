@@ -51,14 +51,13 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.CacheInvalidationListener;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.support.SupportManager;
+import net.dries007.tfc.util.tracker.WorldTracker;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.biome.ITFCBiomeProvider;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ITFCChunkGenerator;
-import net.dries007.tfc.world.tracker.WorldTracker;
-import net.dries007.tfc.world.tracker.WorldTrackerCapability;
-import net.dries007.tfc.world.vein.VeinTypeManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -231,7 +230,6 @@ public final class ForgeEventHandler
         resourceManager.registerReloadListener(RockManager.INSTANCE);
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
-        resourceManager.registerReloadListener(VeinTypeManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
         resourceManager.registerReloadListener(HeatCapability.HeatManager.INSTANCE);
 

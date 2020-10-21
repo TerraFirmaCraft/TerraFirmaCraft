@@ -26,8 +26,8 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.support.SupportManager;
-import net.dries007.tfc.world.tracker.CollapseData;
-import net.dries007.tfc.world.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.CollapseData;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 /**
  * This handles logic relating to block collapses.

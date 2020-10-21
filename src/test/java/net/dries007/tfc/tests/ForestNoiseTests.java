@@ -22,7 +22,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.feature.TFCFeatures;
-import net.dries007.tfc.world.feature.trees.ForestConfig;
+import net.dries007.tfc.world.feature.tree.ForestConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 import org.junit.jupiter.api.Test;

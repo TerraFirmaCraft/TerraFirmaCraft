@@ -19,8 +19,6 @@ import net.minecraft.world.World;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.dries007.tfc.world.vein.VeinType;
-import net.dries007.tfc.world.vein.VeinTypeManager;
 
 public final class ClearWorldCommand
 {
@@ -31,7 +29,7 @@ public final class ClearWorldCommand
 
     public static void resetVeinStates()
     {
-        VeinTypeManager.INSTANCE.getValues().stream().map(VeinType::getOreStates).forEach(VEIN_STATES::addAll);
+        // todo: figure out what blocks to ignore
     }
 
     public static LiteralArgumentBuilder<CommandSource> create()

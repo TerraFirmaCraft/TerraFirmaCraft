@@ -16,6 +16,7 @@
     "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor",
     "world.gen.carver.ConfiguredCarverAccessor",
+    "world.gen.feature.WorldDecoratingHelperAccessor",
     "world.gen.feature.template.TemplateAccessor",
     "world.gen.settings.DimensionGeneratorSettingsMixin",
     "world.server.ServerWorldMixin"

@@ -19,7 +19,7 @@ import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.feature.trees.TFCTree;
+import net.dries007.tfc.world.feature.tree.TFCTree;
 
 public class Wood
 {

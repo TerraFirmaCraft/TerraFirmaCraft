@@ -1,0 +1,70 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 80,
+    "min_y": 60,
+    "max_y": 120,
+    "size": 15,
+    "density": 60,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/diorite"
+        ],
+        "ore": [
+          {
+            "weight": 60,
+            "block": "tfc:ore/poor_cassiterite/diorite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_cassiterite/diorite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/rich_cassiterite/diorite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "ore": [
+          {
+            "weight": 60,
+            "block": "tfc:ore/poor_cassiterite/gabbro"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_cassiterite/gabbro"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/rich_cassiterite/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/granite"
+        ],
+        "ore": [
+          {
+            "weight": 60,
+            "block": "tfc:ore/poor_cassiterite/granite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_cassiterite/granite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/rich_cassiterite/granite"
+          }
+        ]
+      }
+    ]
+  }
+}

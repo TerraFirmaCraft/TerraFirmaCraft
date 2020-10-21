@@ -7,7 +7,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 
-import net.dries007.tfc.world.feature.trees.TreeFeature;
+import net.dries007.tfc.world.feature.tree.TreeFeature;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 

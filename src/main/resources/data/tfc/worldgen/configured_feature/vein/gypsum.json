@@ -1,0 +1,73 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 120,
+    "min_y": 5,
+    "max_y": 100,
+    "size": 10,
+    "density": 60,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/gneiss"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/gypsum/gneiss"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/marble"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/gypsum/marble"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/gypsum/phyllite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/gypsum/quartzite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/schist"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/gypsum/schist"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/slate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:ore/gypsum/slate"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.mixin.entity.item.FallingBlockEntityAccessor;
-import net.dries007.tfc.world.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 /**
  * A falling block entity that has a bit more oomph - it destroys blocks underneath it rather than hovering or popping off.
