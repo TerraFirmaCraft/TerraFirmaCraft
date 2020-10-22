@@ -15,6 +15,7 @@ import net.minecraft.block.BlockPane;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,11 +51,7 @@ public class BlockLogPile extends Block implements ILightableBlock
 {
     private static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class, EnumFacing.Axis.X, EnumFacing.Axis.Z);
 
-    public static boolean isValidCoverBlock(World world, BlockPos pos)
-    {
-        return isValidCoverBlock(world.getBlockState(pos));
-    }
-
+    // A simplified check for display (Patchouli) purposes
     public static boolean isValidCoverBlock(IBlockState state)
     {
         if (state.getBlock() == BlocksTFC.LOG_PILE || state.getBlock() == BlocksTFC.CHARCOAL_PILE)
@@ -63,16 +60,22 @@ public class BlockLogPile extends Block implements ILightableBlock
         }
         else if (ConfigTFC.Devices.CHARCOAL_PIT.canAcceptGlass)
         {
-            if ((state.getMaterial() == Material.GLASS) && !(state.getBlock() instanceof BlockPane))
-            {
-                return true;
-            }
+            return state.getMaterial() == Material.GLASS && !(state.getBlock() instanceof BlockPane); // Not enough context to query IBlockProperties#getBlockFaceShape
         }
-        if (state.getMaterial().getCanBurn())
+        return !state.getMaterial().getCanBurn() && state.isNormalCube(); // Not enough context to query IBlockProperties#isSideSolid
+    }
+
+    private static boolean isValidCoverBlock(IBlockState offsetState, World world, BlockPos pos, EnumFacing side)
+    {
+        if (offsetState.getBlock() instanceof BlockLogPile || offsetState.getBlock() == BlocksTFC.CHARCOAL_PILE)
         {
-            return false;
+            return true;
         }
-        return state.isNormalCube();
+        else if (offsetState.getMaterial() == Material.GLASS && ConfigTFC.Devices.CHARCOAL_PIT.canAcceptGlass)
+        {
+            return offsetState.isSideSolid(world, pos, side) || offsetState.getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID;
+        }
+        return !offsetState.getMaterial().getCanBurn() && (offsetState.isSideSolid(world, pos, side) || offsetState.getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID);
     }
 
     public BlockLogPile()
@@ -106,17 +109,19 @@ public class BlockLogPile extends Block implements ILightableBlock
         {
             for (EnumFacing side : EnumFacing.values())
             {
-                if (!isValidCoverBlock(worldIn, pos.offset(side)))
+                final BlockPos offsetPos = pos.offset(side);
+                IBlockState offsetState = worldIn.getBlockState(offsetPos);
+                if (isValidCoverBlock(offsetState, worldIn, offsetPos, side.getOpposite()))
+                {
+                    if (offsetState.getBlock() instanceof BlockLogPile && !offsetState.getValue(LIT))
+                    {
+                        worldIn.setBlockState(offsetPos, offsetState.withProperty(LIT, true));
+                    }
+                }
+                else
                 {
                     worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState());
-                }
-                IBlockState state2 = worldIn.getBlockState(pos.offset(side));
-                if (state2.getBlock() instanceof BlockLogPile)
-                {
-                    if (!state2.getValue(LIT))
-                    {
-                        worldIn.setBlockState(pos.offset(side), state2.withProperty(LIT, true));
-                    }
+                    System.out.println(state.getBlock() + " direction: " + side);
                 }
             }
         }
