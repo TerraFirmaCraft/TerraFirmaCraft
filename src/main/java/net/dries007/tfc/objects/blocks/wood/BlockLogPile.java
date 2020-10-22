@@ -73,9 +73,9 @@ public class BlockLogPile extends Block implements ILightableBlock
         }
         else if (offsetState.getMaterial() == Material.GLASS && ConfigTFC.Devices.CHARCOAL_PIT.canAcceptGlass)
         {
-            return offsetState.isSideSolid(world, pos, side) || offsetState.getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID;
+            return offsetState.getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID || offsetState.isSideSolid(world, pos, side);
         }
-        return !offsetState.getMaterial().getCanBurn() && (offsetState.isSideSolid(world, pos, side) || offsetState.getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID);
+        return !offsetState.getMaterial().getCanBurn() && (offsetState.getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID) || offsetState.isSideSolid(world, pos, side);
     }
 
     public BlockLogPile()
