@@ -121,7 +121,6 @@ public class BlockLogPile extends Block implements ILightableBlock
                 else
                 {
                     worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState());
-                    System.out.println(state.getBlock() + " direction: " + side);
                 }
             }
         }
