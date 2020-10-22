@@ -60,9 +60,9 @@ public class BlockLogPile extends Block implements ILightableBlock
         }
         else if (ConfigTFC.Devices.CHARCOAL_PIT.canAcceptGlass)
         {
-            return state.getMaterial() == Material.GLASS && !(state.getBlock() instanceof BlockPane); // Not enough context to query IBlockProperties#getBlockFaceShape
+            return state.getMaterial() == Material.GLASS && !(state.getBlock() instanceof BlockPane); // Not enough context to query IBlockProperties#isSideSolid, IBlockProperties#getBlockFaceShape
         }
-        return !state.getMaterial().getCanBurn() && state.isNormalCube(); // Not enough context to query IBlockProperties#isSideSolid
+        return !state.getMaterial().getCanBurn() && state.isNormalCube(); // Not enough context to query IBlockProperties#isSideSolid, IBlockProperties#getBlockFaceShape
     }
 
     private static boolean isValidCoverBlock(IBlockState offsetState, World world, BlockPos pos, EnumFacing side)
