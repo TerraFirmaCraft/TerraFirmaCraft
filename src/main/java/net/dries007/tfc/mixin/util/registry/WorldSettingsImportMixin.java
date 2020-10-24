@@ -1,7 +1,6 @@
 package net.dries007.tfc.mixin.util.registry;
 
 import java.util.OptionalInt;
-import java.util.function.Supplier;
 
 import com.google.gson.JsonElement;
 import net.minecraft.util.RegistryKey;
@@ -17,13 +16,12 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Decoder;
 import com.mojang.serialization.DynamicOps;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.config.TFCConfig;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * This is a VERY ungodly hack, which is done only to log a pile of information when vanilla does it horrible error handling.
@@ -49,7 +47,7 @@ public abstract class WorldSettingsImportMixin<T> extends DelegatingDynamicOps<T
         DataResult<Pair<E, OptionalInt>> dataResult = resources.parseElement(dynamicOps, rootKey, elementKey, decoder);
 
         // At this point we can do a couple extra checks, and spit out some more useful error information
-        if (!dataResult.result().isPresent())
+        if (TFCConfig.COMMON.logDFUFUs.get() && !dataResult.result().isPresent())
         {
             // There was some form of error! We need to log this and not just silently eat it
             String error = dataResult.error().map(DataResult.PartialResult::message).orElse("No error :(");

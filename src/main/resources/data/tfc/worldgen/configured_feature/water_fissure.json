@@ -6,27 +6,36 @@
       "type": "minecraft:decorated",
       "config": {
         "feature": {
-          "type": "tfc:fissure",
+          "type": "minecraft:decorated",
           "config": {
-            "state": {
-              "Name": "minecraft:water",
-              "Properties": {
-                "level": "0"
+            "feature": {
+              "type": "tfc:fissure",
+              "config": {
+                "state": {
+                  "Name": "minecraft:water",
+                  "Properties": {
+                    "level": "0"
+                  }
+                }
               }
+            },
+            "decorator": {
+              "type": "minecraft:square",
+              "config": {}
             }
           }
         },
         "decorator": {
-          "type": "minecraft:chance",
-          "config": {
-            "chance": 60
-          }
+          "type": "minecraft:heightmap_world_surface",
+          "config": {}
         }
       }
     },
     "decorator": {
-      "type": "minecraft:heightmap_world_surface",
-      "config": {}
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 60
+      }
     }
   }
 }

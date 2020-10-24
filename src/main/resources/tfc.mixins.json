@@ -4,15 +4,21 @@
   "package": "net.dries007.tfc.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "block.AbstractBlockAccessor",
+    "block.SnowBlockMixin",
     "entity.item.FallingBlockEntityAccessor",
     "item.crafting.RecipeManagerAccessor",
+    "util.SharedSeedRandomMixin",
     "util.registry.WorldSettingsImportMixin",
-    "world.biome.BiomeMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
+    "world.biome.BiomeMixin",
     "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor",
-    "world.gen.feature.template.TemplateAccessor"
+    "world.gen.carver.ConfiguredCarverAccessor",
+    "world.gen.feature.template.TemplateAccessor",
+    "world.gen.settings.DimensionGeneratorSettingsMixin",
+    "world.server.ServerWorldMixin"
   ],
   "client": [
     "client.MinecraftMixin",

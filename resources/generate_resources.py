@@ -3,21 +3,20 @@
 
 # Script to run all resource generation
 
-from mcresources import ResourceManager, clean_generated_resources
+from mcresources import ResourceManager
 
 import assets
-import data
-import world_gen
-import recipes
-import ore_veins
 import collapse_recipes
-
+import data
+import ore_veins
+import recipes
+import world_gen
 from constants import *
 
 
 def main():
     rm = ResourceManager('tfc', resource_dir='../src/main/resources')
-    clean_generated_resources('/'.join(rm.resource_dir))
+    # clean_generated_resources('/'.join(rm.resource_dir))
 
     # do simple lang keys first, because it's ordered intentionally
     rm.lang(DEFAULT_LANG)
@@ -38,6 +37,8 @@ def main():
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
 
     rm.flush()
+
+    print('New = %d, Modified = %d, Unchanged = %d, Errors = %d' % (rm.new_files, rm.modified_files, rm.unchanged_files, rm.error_files))
 
 
 if __name__ == '__main__':

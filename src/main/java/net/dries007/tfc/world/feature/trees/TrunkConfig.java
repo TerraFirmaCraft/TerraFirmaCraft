@@ -17,9 +17,9 @@ public class TrunkConfig
     ).apply(instance, TrunkConfig::new));
 
     public final BlockState state;
+    public final int width;
     private final int minHeight;
     private final int maxHeight;
-    public final int width;
 
     public TrunkConfig(BlockState state, int minHeight, int maxHeight, int width)
     {

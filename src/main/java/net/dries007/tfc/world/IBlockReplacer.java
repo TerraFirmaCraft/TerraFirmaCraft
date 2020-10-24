@@ -9,13 +9,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
-import net.dries007.tfc.world.chunkdata.IChunkDataProvidingChunkGenerator;
+import net.dries007.tfc.world.chunkdata.ITFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 /**
  * Interface for block replacements.
  *
- * @see IChunkDataProvidingChunkGenerator for usage of how to get a block replacer and register instances
+ * @see ITFCChunkGenerator for usage of how to get a block replacer and register instances
  */
 @FunctionalInterface
 public interface IBlockReplacer

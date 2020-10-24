@@ -34,10 +34,11 @@ public class FissureFeature extends Feature<BlockStateFeatureConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos startPos, BlockStateFeatureConfig config)
     {
-        BlockPos pos = startPos.below(); // start slightly below the surface
-        ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.ROCKS)).orElseThrow(() -> new IllegalStateException("Missing rock data, cannot generate fissures."));
-        Rock bottomRock = data.getRockData().getBottomRock(pos.getX(), pos.getZ());
-        BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).defaultBlockState();
+        final BlockPos pos = startPos.below(); // start slightly below the surface
+        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
+        final ChunkData data = provider.get(pos, ChunkData.Status.ROCKS);
+        final Rock bottomRock = data.getRockData().getBottomRock(pos.getX(), pos.getZ());
+        final BlockState rockState = bottomRock.getBlock(Rock.BlockType.RAW).defaultBlockState();
 
         int depth = 2 + rand.nextInt(3);
         int radius = 1 + rand.nextInt(2);

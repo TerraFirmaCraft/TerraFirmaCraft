@@ -23,17 +23,15 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullFunction;
@@ -42,11 +40,9 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.dries007.tfc.mixin.world.gen.feature.template.TemplateAccessor;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
-import static net.dries007.tfc.TerraFirmaCraft.LOGGER;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class Helpers
@@ -255,9 +251,48 @@ public final class Helpers
      *
      * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
      */
-    public static boolean isRemote(IWorldReader world)
+    public static boolean isClientSide(IWorldReader world)
     {
         return world instanceof World ? !(world instanceof ServerWorld) : world.isClientSide();
     }
 
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T extends TileEntity> T getTileEntity(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
+    {
+        TileEntity te = world.getBlockEntity(pos);
+        if (tileEntityClass.isInstance(te))
+        {
+            return (T) te;
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends TileEntity> T getTileEntityOrThrow(IWorldReader world, BlockPos pos, Class<T> tileEntityClass)
+    {
+        TileEntity te = world.getBlockEntity(pos);
+        if (tileEntityClass.isInstance(te))
+        {
+            return (T) te;
+        }
+        throw new IllegalStateException("Expected a tile entity at " + pos + " of class " + tileEntityClass.getSimpleName());
+    }
+
+    /**
+     * This returns the previous result of {@link ServerWorld#getBlockRandomPos(int, int, int, int)}.
+     */
+    public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
+    {
+        int i = randValue >> 2;
+        return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
+    }
+
+    /**
+     * Computes an index into a carving mask bit set, uesd during world gen
+     */
+    public static int getCarvingMaskIndex(BlockPos pos)
+    {
+        return (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
+    }
 }

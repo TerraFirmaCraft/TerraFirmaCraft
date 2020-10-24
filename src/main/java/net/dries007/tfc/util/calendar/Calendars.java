@@ -32,7 +32,7 @@ public final class Calendars
      */
     public static ICalendar get(IWorldReader world)
     {
-        return Helpers.isRemote(world) ? CLIENT : SERVER;
+        return Helpers.isClientSide(world) ? CLIENT : SERVER;
     }
 
     private Calendars() {}

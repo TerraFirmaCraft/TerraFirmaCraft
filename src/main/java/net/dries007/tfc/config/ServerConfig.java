@@ -18,6 +18,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class ServerConfig
 {
+    // General
+    public final ForgeConfigSpec.BooleanValue enableNetherPortals;
     // Collapses
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
@@ -29,18 +31,33 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
     // Player
     public final ForgeConfigSpec.BooleanValue enableVanillaNaturalRegeneration;
-    // Misc
-    public final ForgeConfigSpec.DoubleValue plantGrowthRate;
+    // Climate
+    public final ForgeConfigSpec.IntValue temperatureScale;
+    public final ForgeConfigSpec.IntValue rainfallScale;
+    // Blocks
+    public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
+    public final ForgeConfigSpec.BooleanValue enableGrassPathCreation;
+    // Blocks - Snow
+    public final ForgeConfigSpec.BooleanValue enableSnowAffectedByTemperature;
+    public final ForgeConfigSpec.BooleanValue enableSnowMovementModifier;
+    // Blocks - Leaves
     // Leaves
     public final ForgeConfigSpec.BooleanValue leavesDecayVanilla;
     public final ForgeConfigSpec.BooleanValue leavesSolidBlocks;
     public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
+    // Misc
+    public final ForgeConfigSpec.DoubleValue plantGrowthRate;
+
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.server." + name);
 
-        innerBuilder.push("collapses");
+        innerBuilder.push("general");
+
+        enableNetherPortals = builder.apply("enableNetherPortals").comment("Enable nether portal creation").define("enableNetherPortals", false);
+
+        innerBuilder.pop().push("collapses");
 
         enableBlockCollapsing = builder.apply("enableBlockCollapsing").comment("Enable rock collapsing when mining raw stone blocks").define("enableBlockCollapsing", true);
         enableExplosionCollapsing = builder.apply("enableExplosionCollapsing").comment("Enable explosions causing immediate collapses.").define("enableExplosionCollapsing", true);
@@ -56,6 +73,21 @@ public class ServerConfig
 
         enableVanillaNaturalRegeneration = builder.apply("enableVanillaNaturalRegeneration").comment("Enables the vanilla `naturalRegeneration` gamerule, which regenerates your health much quicker than TFC does.").define("enableVanillaNaturalRegeneration", false);
 
+        innerBuilder.pop().push("climate");
+
+        temperatureScale = builder.apply("temperatureScale").comment("This is the distance in blocks to the first peak (Either cold or hot) temperature zone, in the north-south direction.").defineInRange("temperatureScale", 20_000, 1_000, 1_000_000);
+        rainfallScale = builder.apply("rainfallScale").comment("This is the distance in blocks to the first peak (Either wet or dry) rainfall zone, in the east-west direction").defineInRange("rainfallScale", 20_000, 1_000, 1_000_000);
+
+        innerBuilder.pop().push("blocks");
+
+        enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland").define("enableFarmlandCreation", true);
+        enableGrassPathCreation = builder.apply("enableGrassPathCreation").comment("If TFC soil blocks are able to be created into (grass) path blocks.").define("enableGrassPathCreation", true);
+
+        innerBuilder.push("snow");
+
+        enableSnowAffectedByTemperature = builder.apply("enableSnowAffectedByTemperature").comment("If snow will melt in warm temperatures on random ticks").define("enableSnowAffectedByTemperature", true);
+        enableSnowMovementModifier = builder.apply("enableSnowMovementModifier").comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey").define("enableSnowMovementModifier", true);
+
         innerBuilder.pop().push("misc");
 
         plantGrowthRate = builder.apply("plantGrowthRate").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth.").defineInRange("plantGrowthRate", 0.01, 0, 1);
@@ -65,5 +97,7 @@ public class ServerConfig
         leavesDecayVanilla = builder.apply("leavesDecayVanilla").comment("Should leaves decay over time like vanilla?").define("leavesDecayVanilla", false);
         leavesSolidBlocks = builder.apply("leavesSolidBlocks").comment("Are leaves solid blocks and non-passable?").define("leavesSolidBlocks", false);
         leavesMovementModifier = builder.apply("leavesMovementModifier").comment("How much to leaves slow entities passing through them?").defineInRange("leavesMovementModifier", 0.8, 0, 1);
+
+        innerBuilder.pop();
     }
 }

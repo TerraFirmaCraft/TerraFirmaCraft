@@ -53,11 +53,9 @@ public final class ClientEventHandler
         LOGGER.debug("Client Setup");
 
         // Generator Preset
-
         TFCGeneratorTypePreset.setup();
 
         // Screens
-
         ScreenManager.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
         ScreenManager.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
         ScreenManager.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);

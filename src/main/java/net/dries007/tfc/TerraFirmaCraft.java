@@ -23,6 +23,7 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
+import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
@@ -32,6 +33,7 @@ import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
+import net.dries007.tfc.world.decorator.TFCDecorators;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.surfacebuilder.TFCSurfaceBuilders;
 import net.dries007.tfc.world.tracker.WorldTrackerCapability;
@@ -60,9 +62,11 @@ public final class TerraFirmaCraft
         TFCFluids.FLUIDS.register(modEventBus);
         TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
         TFCSounds.SOUNDS.register(modEventBus);
+        TFCTileEntities.TILE_ENTITIES.register(modEventBus);
 
         TFCBiomes.BIOMES.register(modEventBus);
         TFCFeatures.FEATURES.register(modEventBus);
+        TFCDecorators.DECORATORS.register(modEventBus);
         TFCSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
         TFCCarvers.CARVERS.register(modEventBus);
 
@@ -86,9 +90,5 @@ public final class TerraFirmaCraft
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
         Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeProvider.CODEC);
-
-        TFCFeatures.setup();
-        TFCSurfaceBuilders.setup();
-        TFCCarvers.setup();
     }
 }

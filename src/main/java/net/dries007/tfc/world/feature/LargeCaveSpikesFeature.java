@@ -6,17 +6,14 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.Random;
-import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.config.TFCConfig;
 
 public class LargeCaveSpikesFeature extends CaveSpikesFeature
 {
@@ -30,10 +27,6 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
      */
     public void place(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
     {
-        if (pos.getY() > TFCConfig.COMMON.caveSpikeMaxY.get())
-        {
-            return;
-        }
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         int height = 6 + rand.nextInt(11);
         int radius = 2 + rand.nextInt(1);

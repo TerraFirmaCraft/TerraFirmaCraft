@@ -6,17 +6,35 @@
       "type": "minecraft:decorated",
       "config": {
         "feature": {
-          "type": "tfc:boulder",
+          "type": "minecraft:decorated",
           "config": {
-            "base_type": "raw",
-            "decoration_type": "raw"
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "tfc:boulder",
+                  "config": {
+                    "base_type": "raw",
+                    "decoration_type": "raw"
+                  }
+                },
+                "decorator": {
+                  "type": "tfc:flat_enough",
+                  "config": {}
+                }
+              }
+            },
+            "decorator": {
+              "type": "minecraft:chance",
+              "config": {
+                "chance": 12
+              }
+            }
           }
         },
         "decorator": {
-          "type": "minecraft:chance",
-          "config": {
-            "chance": 60
-          }
+          "type": "minecraft:square",
+          "config": {}
         }
       }
     },

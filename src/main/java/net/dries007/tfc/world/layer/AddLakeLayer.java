@@ -10,16 +10,26 @@ import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
 public enum AddLakeLayer implements ICastleTransformer
 {
-    INSTANCE;
+    SMALL(24, TFCLayerUtil.LAKE),
+    LARGE(180, TFCLayerUtil.LARGE_LAKE_MARKER);
+
+    private final int chance;
+    private final int lake;
+
+    AddLakeLayer(int chance, int lake)
+    {
+        this.chance = chance;
+        this.lake = lake;
+    }
 
     @Override
     public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
     {
         if (TFCLayerUtil.isLakeCompatible(north) && TFCLayerUtil.isLakeCompatible(west) && TFCLayerUtil.isLakeCompatible(south) && TFCLayerUtil.isLakeCompatible(east) && TFCLayerUtil.isLakeCompatible(center))
         {
-            if (context.nextRandom(15) == 0)
+            if (context.nextRandom(chance) == 0)
             {
-                return TFCLayerUtil.LAKE;
+                return lake;
             }
         }
         return center;

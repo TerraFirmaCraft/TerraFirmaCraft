@@ -6,13 +6,13 @@
     "overlay": "tfc:white_cedar/overlay",
     "trunk": {
       "state": {
-        "Name": "tfc:wood/white_cedar/maple",
+        "Name": "tfc:wood/log/white_cedar",
         "Properties": {
           "axis": "y"
         }
       },
-      "min_height": 1,
-      "max_height": 5,
+      "min_height": 2,
+      "max_height": 4,
       "width": 1
     },
     "radius": 1

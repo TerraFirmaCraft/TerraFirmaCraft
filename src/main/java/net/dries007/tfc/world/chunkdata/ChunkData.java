@@ -5,10 +5,9 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -26,8 +25,6 @@ import net.dries007.tfc.util.LerpFloatLayer;
 public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public static ChunkData get(IWorld world, BlockPos pos)
     {
@@ -84,6 +81,11 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         reset();
     }
 
+    public ChunkPos getPos()
+    {
+        return pos;
+    }
+
     public RockData getRockData()
     {
         return rockData;
@@ -101,7 +103,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getRainfall(int x, int z)
     {
-        return rainfallLayer.getValue(-z / 16f, x / 16f);
+        return rainfallLayer.getValue(z / 16f, 1 - (x / 16f));
     }
 
     public void setRainfall(float rainNW, float rainNE, float rainSW, float rainSE)
@@ -116,7 +118,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer.getValue(-z / 16f, x / 16f);
+        return temperatureLayer.getValue(z / 16f, 1 - (x / 16f));
     }
 
     public void setAverageTemp(float tempNW, float tempNE, float tempSW, float tempSE)
@@ -157,6 +159,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     }
 
     /**
+     * @return If the current chunk data is empty, then return other
+     */
+    public ChunkData ifEmptyGet(Supplier<ChunkData> other)
+    {
+        return status != Status.EMPTY ? this : other.get();
+    }
+
+    /**
      * Create an update packet to send to client with necessary information
      */
     public ChunkWatchPacket getUpdatePacket()
@@ -181,7 +191,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
         else
         {
-            LOGGER.warn("Called client side update method on server side chunk data: {}. This should not happen.", this);
+            throw new IllegalStateException("ChunkData#onUpdatePacket was called on non client side chunk data: " + this);
         }
     }
 
@@ -258,11 +268,11 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 
     public enum Status
     {
-        EMPTY,
-        CLIENT,
-        CLIMATE,
-        ROCKS,
-        FLORA;
+        CLIENT, // Special status - indicates it is a client side shallow copy
+        EMPTY, // Empty - default. Should never be called to generate.
+        CLIMATE, // Climate data, rainfall and temperature
+        ROCKS, // Rock layer information, used for surface builder and rock block replacement
+        FLORA; // Flora and fauna information, used for features
 
         private static final Status[] VALUES = values();
 
@@ -271,14 +281,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
             return i >= 0 && i < VALUES.length ? VALUES[i] : EMPTY;
         }
 
+        public Status next()
+        {
+            return this == FLORA ? FLORA : VALUES[this.ordinal() + 1];
+        }
+
         public boolean isAtLeast(Status otherStatus)
         {
             return this.ordinal() >= otherStatus.ordinal();
-        }
-
-        public boolean isAtMost(Status otherStatus)
-        {
-            return this.ordinal() <= otherStatus.ordinal();
         }
     }
 
@@ -286,7 +296,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      * Only used for the empty instance, this will enforce that it never leaks data
      * New empty instances can be constructed via constructor, EMPTY instance is specifically for an immutable empty copy, representing invalid chunk data
      */
-    private static class Immutable extends ChunkData
+    private static final class Immutable extends ChunkData
     {
         private Immutable()
         {

@@ -6,7 +6,7 @@
     "overlay": "tfc:rosewood/overlay",
     "trunk": {
       "state": {
-        "Name": "tfc:wood/rosewood/maple",
+        "Name": "tfc:wood/log/rosewood",
         "Properties": {
           "axis": "y"
         }
