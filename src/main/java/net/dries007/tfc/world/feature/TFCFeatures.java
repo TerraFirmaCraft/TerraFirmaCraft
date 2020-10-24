@@ -37,7 +37,7 @@ public class TFCFeatures
 
     public static final RegistryObject<ForestFeature> FOREST = FEATURES.register("forest", () -> new ForestFeature(ForestConfig.CODEC));
 
-    public static final RegistryObject<FloraFeature> FLORA = FEATURES.register("flora", () -> new FloraFeature(NoFeatureConfig.CODEC));
+    public static final RegistryObject<PlantsFeature> PLANT = FEATURES.register("plants", () -> new PlantsFeature(PlantsConfig.CODEC));
 
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = FEATURES.register("overlay_tree", () -> new OverlayTreeFeature(OverlayTreeConfig.CODEC));
     public static final RegistryObject<RandomTreeFeature> RANDOM_TREE = FEATURES.register("random_tree", () -> new RandomTreeFeature(RandomTreeConfig.CODEC));
@@ -57,7 +57,7 @@ public class TFCFeatures
         register("forest");
         register("ore_veins");
         register("erosion");
-        register("flora");
+        register("plants");
     }
 
     private static void register(String name)

@@ -50,7 +50,6 @@ import net.dries007.tfc.util.support.SupportManager;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
-import net.dries007.tfc.world.flora.FloraTypeManager;
 import net.dries007.tfc.world.tracker.WorldTracker;
 import net.dries007.tfc.world.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.vein.VeinTypeManager;
@@ -225,7 +224,6 @@ public final class ForgeEventHandler
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
         resourceManager.registerReloadListener(VeinTypeManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
-        resourceManager.registerReloadListener(FloraTypeManager.INSTANCE);
 
         // Capability json data loader
         resourceManager.registerReloadListener(HeatCapability.HeatManager.INSTANCE);

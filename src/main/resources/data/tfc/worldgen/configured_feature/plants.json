@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:plants",
+  "config": {
+    "entries": [
+      {
+        "min_rain": 0,
+        "max_rain": 750,
+        "min_temp": -40,
+        "max_temp": 60,
+        "feature": "tfc:plant/orchard_grass"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 750,
+        "min_temp": -40,
+        "max_temp": 60,
+        "feature": "tfc:plant/scutch_grass"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 750,
+        "min_temp": -40,
+        "max_temp": 60,
+        "feature": "tfc:plant/allium"
+      }
+    ]
+  }
+}

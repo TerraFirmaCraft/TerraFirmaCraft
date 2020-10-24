@@ -209,23 +209,6 @@ def generate(rm: ResourceManager):
                     'name': 'minecraft:grass'  # todo: change to thatch
                 }])
             }, 'conditions': None}])
-        rm.data(('tfc', 'flora', plant_name), {
-            'type': 'tfc:plant',
-            'rules': [
-            {
-                'type': 'tfc:temperature',
-                'minimum': plant.min_temp,
-                'maximum': plant.max_temp
-            }, 
-            {
-                'type': 'tfc:rainfall',
-                'minimum': plant.min_rain,
-                'maximum': plant.max_rain
-            }],
-            'rarity': 1,
-            'density': 30,
-            'blocks': 'tfc:plant/' + plant_name
-        })
 
     # Rock Tools
     for rock in ROCK_CATEGORIES:
