@@ -11,8 +11,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Climate;
@@ -161,7 +159,7 @@ public final class TFCColors
      */
     private static int getClimateColor(int[] colorCache, float temperature, float rainfall)
     {
-        final int temperatureIndex = MathHelper.clamp((int) ((temperature + 30f) * 255f / 60f), 0, 255);
+        final int temperatureIndex = 255 - MathHelper.clamp((int) ((temperature + 30f) * 255f / 60f), 0, 255);
         final int rainfallIndex = 255 - MathHelper.clamp((int) (rainfall * 255f / 500f), 0, 255);
         return colorCache[temperatureIndex | (rainfallIndex << 8)];
     }

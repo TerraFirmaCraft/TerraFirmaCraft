@@ -33,7 +33,8 @@ public class ForestFeature extends Feature<ForestConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, ForestConfig config)
     {
-        final ChunkData data = ChunkDataProvider.get(worldIn).map(provider -> provider.get(pos, ChunkData.Status.FLORA)).orElseThrow(() -> new IllegalStateException("Missing flora data, cannot place forests."));
+        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
+        final ChunkData data = provider.get(pos, ChunkData.Status.FLORA);
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final ForestType forestType = data.getForestType();
 

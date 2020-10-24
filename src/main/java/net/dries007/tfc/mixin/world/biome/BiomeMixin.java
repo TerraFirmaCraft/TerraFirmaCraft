@@ -4,7 +4,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.biome.Biome;
-
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import net.dries007.tfc.util.Climate;
@@ -26,7 +25,7 @@ public abstract class BiomeMixin extends ForgeRegistryEntry<Biome>
     {
         if (worldIn instanceof IWorld)
         {
-            return Climate.getTemperature((IWorld) worldIn, pos, biome);
+            return Climate.toVanillaTemperature(Climate.getTemperature((IWorld) worldIn, pos));
         }
         return biome.getTemperature(pos);
     }
@@ -42,7 +41,7 @@ public abstract class BiomeMixin extends ForgeRegistryEntry<Biome>
     {
         if (worldIn instanceof IWorld)
         {
-            return Climate.getTemperature((IWorld) worldIn, pos, biome);
+            return Climate.toVanillaTemperature(Climate.getTemperature((IWorld) worldIn, pos));
         }
         return biome.getTemperature(pos);
     }

@@ -10,14 +10,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.blocks.soil.TFCGrassBlock;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
 public class SoilBlockReplacer extends SeedBlockReplacer
 {
+    public static final float RAINFALL_SAND = 75;
+    public static final float RAINFALL_SAND_SANDY_MIX = 125;
+    public static final float RAINFALL_SANDY = 200; // Upper thresholds
+    public static final float RAINFALL_SILTY = 275; // Lower thresholds
+    public static final float RAINFALL_SILT_SILTY_MIX = 350;
+    public static final float RAINFALL_SILT = 400;
+
+    private static final float RAINFALL_SAND_SANDY_MEAN = (RAINFALL_SAND + RAINFALL_SAND_SANDY_MIX) / 2f;
+    private static final float RAINFALL_SAND_SANDY_RANGE = (RAINFALL_SAND_SANDY_MIX - RAINFALL_SAND) / 2f;
+
     private final SoilBlockType soil;
     private INoise2D patchNoise;
 
@@ -29,18 +39,18 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     @Override
     public BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature)
     {
-        if (rainfall < 225)
+        if (rainfall < RAINFALL_SANDY)
         {
-            if (rainfall > 150)
+            if (rainfall > RAINFALL_SAND_SANDY_MIX)
             {
                 // Sandy
                 return soil(SoilBlockType.Variant.SANDY_LOAM);
             }
-            else if (rainfall > 100)
+            else if (rainfall > RAINFALL_SAND)
             {
                 // Sandy - Sand Transition Zone
                 float noise = patchNoise.noise(x, z);
-                return noise > 0.2f * (rainfall - 125f) / 25f ? sand(rockData, x, z) : soil(SoilBlockType.Variant.SANDY_LOAM);
+                return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? sand(rockData, x, z) : soil(SoilBlockType.Variant.SANDY_LOAM);
             }
             else
             {
@@ -48,14 +58,14 @@ public class SoilBlockReplacer extends SeedBlockReplacer
                 return sand(rockData, x, z);
             }
         }
-        else if (rainfall > 275)
+        else if (rainfall > RAINFALL_SILTY)
         {
-            if (rainfall < 350)
+            if (rainfall < RAINFALL_SILT_SILTY_MIX)
             {
                 // Silty
                 return soil(SoilBlockType.Variant.SILTY_LOAM);
             }
-            else if (rainfall < 400)
+            else if (rainfall < RAINFALL_SILT)
             {
                 // Silty / Silt Transition Zone
                 float noise = patchNoise.noise(x, z);
@@ -79,7 +89,7 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     public void updatePostPlacement(IWorld world, BlockPos pos, BlockState state)
     {
         super.updatePostPlacement(world, pos, state);
-        if (state.getBlock() instanceof TFCGrassBlock)
+        if (state.getBlock() instanceof IGrassBlock)
         {
             // Handle grass update ticks for adjacent blocks
             world.getBlockTicks().scheduleTick(pos, state.getBlock(), 0);

@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:blackwood_large/1",
+      "tfc:blackwood_large/2",
+      "tfc:blackwood_large/3",
+      "tfc:blackwood_large/4",
+      "tfc:blackwood_large/5",
+      "tfc:blackwood_large/6",
+      "tfc:blackwood_large/7",
+      "tfc:blackwood_large/8",
+      "tfc:blackwood_large/9",
+      "tfc:blackwood_large/10"
+    ],
+    "radius": 1
+  }
+}

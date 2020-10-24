@@ -1,8 +1,5 @@
 package net.dries007.tfc.world.biome;
 
-import java.util.function.LongFunction;
-
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;

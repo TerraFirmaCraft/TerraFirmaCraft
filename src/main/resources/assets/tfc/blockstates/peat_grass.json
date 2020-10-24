@@ -3,83 +3,181 @@
   "multipart": [
     {
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_top",
-        "x": 270
-      }
-    },
-    {
-      "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_bottom",
+        "model": "tfc:block/peat_grass/bottom",
         "x": 90
       }
     },
     {
       "when": {
-        "north": true
+        "snowy": false
       },
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_top"
+        "model": "tfc:block/peat_grass/top",
+        "x": 270
       }
     },
     {
       "when": {
-        "east": true
+        "snowy": true
       },
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_top",
+        "model": "tfc:block/peat_grass/snowy_top",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "north": true,
+        "snowy": false
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/top"
+      }
+    },
+    {
+      "when": {
+        "east": true,
+        "snowy": false
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/top",
         "y": 90
       }
     },
     {
       "when": {
-        "south": true
+        "south": true,
+        "snowy": false
       },
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_top",
+        "model": "tfc:block/peat_grass/top",
         "y": 180
       }
     },
     {
       "when": {
-        "west": true
+        "west": true,
+        "snowy": false
       },
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_top",
+        "model": "tfc:block/peat_grass/top",
         "y": 270
       }
     },
     {
       "when": {
-        "north": false
+        "north": true,
+        "snowy": true
       },
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_side"
+        "model": "tfc:block/peat_grass/snowy_top"
       }
     },
     {
       "when": {
-        "east": false
+        "east": true,
+        "snowy": true
       },
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_side",
+        "model": "tfc:block/peat_grass/snowy_top",
         "y": 90
       }
     },
     {
       "when": {
-        "south": false
+        "south": true,
+        "snowy": true
       },
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_side",
+        "model": "tfc:block/peat_grass/snowy_top",
         "y": 180
       }
     },
     {
       "when": {
-        "west": false
+        "west": true,
+        "snowy": true
       },
       "apply": {
-        "model": "tfc:block/peat_grass/peat_grass_side",
+        "model": "tfc:block/peat_grass/snowy_top",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "north": false,
+        "snowy": false
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/side"
+      }
+    },
+    {
+      "when": {
+        "east": false,
+        "snowy": false
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": false,
+        "snowy": false
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": false,
+        "snowy": false
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "north": false,
+        "snowy": true
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/snowy_side"
+      }
+    },
+    {
+      "when": {
+        "east": false,
+        "snowy": true
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/snowy_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": false,
+        "snowy": true
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/snowy_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": false,
+        "snowy": true
+      },
+      "apply": {
+        "model": "tfc:block/peat_grass/snowy_side",
         "y": 270
       }
     }

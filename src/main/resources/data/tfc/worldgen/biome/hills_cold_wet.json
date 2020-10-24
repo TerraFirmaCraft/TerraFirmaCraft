@@ -15,37 +15,39 @@
   },
   "carvers": {
     "air": [
+      "tfc:worley_cave",
       "tfc:cave",
       "tfc:canyon"
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:default",
+  "surface_builder": "tfc:default_with_glaciers",
   "features": [
     [
       "tfc:erosion"
     ],
+    [
+      "tfc:flood_fill_lake",
+      "tfc:lake"
+    ],
     [],
     [],
-    [
-      "tfc:lava_fissure",
-      "tfc:water_fissure"
-    ],
-    [
-      "tfc:raw_boulder",
-      "tfc:cobble_boulder",
-      "tfc:mossy_boulder"
-    ],
+    [],
     [],
     [
       "tfc:ore_veins"
     ],
-    [],
+    [
+      "tfc:cave_spike",
+      "tfc:large_cave_spike",
+      "tfc:water_spring",
+      "tfc:lava_spring"
+    ],
     [
       "tfc:forest"
     ],
     [
-      "tfc:plants"
+      "tfc:ice_and_snow"
     ]
   ],
   "starts": [],

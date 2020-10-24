@@ -61,14 +61,6 @@ public class BiomeVariants
     /**
      * @return the biome instance of the specified temperature / rainfall
      */
-    public BiomeExtension get(float averageTemperature, float rainfall)
-    {
-        return get(BiomeTemperature.get(averageTemperature), BiomeRainfall.get(rainfall));
-    }
-
-    /**
-     * @return the biome instance of the specified temperature / rainfall
-     */
     public BiomeExtension get(BiomeTemperature temp, BiomeRainfall rain)
     {
         return extensions.get(temp).get(rain);

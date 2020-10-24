@@ -23,18 +23,18 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator chunkGenerator, Random random, BlockPos pos, StackedTreeConfig config)
     {
-        if (!isValidLocation(worldIn, pos) || !isAreaClear(worldIn, pos, config.radius, 2))
+        final ChunkPos chunkPos = new ChunkPos(pos);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
+        final TemplateManager manager = TreeHelpers.getTemplateManager(worldIn);
+        final PlacementSettings settings = TreeHelpers.getPlacementSettings(chunkPos, random);
+
+        if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius, 2))
         {
             return false;
         }
 
-        final TemplateManager manager = getTemplateManager(worldIn);
-        final PlacementSettings settings = getPlacementSettings(new ChunkPos(pos), random);
-        final BlockPos centerVariation = getCenterVariation(new BlockPos(config.trunk.width, 0, config.trunk.width), random);
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
-
         // Trunk first
-        int trunkHeight = placeTrunk(worldIn, pos, centerVariation, random, config.trunk);
+        int trunkHeight = TreeHelpers.placeTrunk(worldIn, mutablePos, random, settings, config.trunk);
         mutablePos.move(0, trunkHeight, 0);
 
         for (StackedTreeConfig.Layer layer : config.layers)
@@ -45,7 +45,7 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
             {
                 final ResourceLocation structureId = layer.templates.get(random.nextInt(layer.templates.size()));
                 final Template structure = manager.getOrCreate(structureId);
-                placeTemplateInWorld(structure, settings, worldIn, mutablePos.subtract(getCenteredOffset(structure.getSize(), centerVariation, settings)));
+                TreeHelpers.placeTemplate(structure, settings, worldIn, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
                 mutablePos.move(0, structure.getSize().getY(), 0);
             }
         }

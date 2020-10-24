@@ -8,8 +8,8 @@ package net.dries007.tfc.world.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
-import static net.dries007.tfc.world.layer.TFCLayerUtil.OCEAN;
-import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER;
+import static net.dries007.tfc.world.layer.TFCLayerUtil.NULL_MARKER;
+import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER_MARKER;
 
 public enum RiverLayer implements ICastleTransformer
 {
@@ -19,8 +19,8 @@ public enum RiverLayer implements ICastleTransformer
     {
         if (center != north || center != south || center != east || center != west)
         {
-            return RIVER;
+            return RIVER_MARKER;
         }
-        return OCEAN;
+        return NULL_MARKER;
     }
 }

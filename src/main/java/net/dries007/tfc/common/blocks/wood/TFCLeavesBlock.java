@@ -29,7 +29,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
 
-public abstract class TFCLeavesBlock extends Block
+public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final EnumProperty<Season> SEASON_NO_SPRING = TFCBlockStateProperties.SEASON_NO_SPRING;
@@ -49,15 +49,11 @@ public abstract class TFCLeavesBlock extends Block
 
     private static IntegerProperty getDistanceProperty(int maxDecayDistance)
     {
-        switch (maxDecayDistance)
+        if (maxDecayDistance >= 7 && maxDecayDistance < 7 + TFCBlockStateProperties.DISTANCES.length)
         {
-            case 7:
-                return TFCBlockStateProperties.DISTANCE_1_7;
-            case 8:
-                return TFCBlockStateProperties.DISTANCE_1_8;
-            default:
-                throw new IllegalArgumentException("No property set for distance: " + maxDecayDistance);
+            return TFCBlockStateProperties.DISTANCES[maxDecayDistance - 7];
         }
+        throw new IllegalArgumentException("No property set for distance: " + maxDecayDistance);
     }
 
     /* The maximum value of the decay property. */
@@ -134,9 +130,16 @@ public abstract class TFCLeavesBlock extends Block
         int distance = updateDistance(worldIn, pos);
         if (distance > maxDecayDistance)
         {
-            // Send a message, help the dev's figure out which trees need larger leaf decay radii:
-            LOGGER.info("Block: {} decayed at distance {}", state.getBlock().getRegistryName(), distance);
-            worldIn.removeBlock(pos, false);
+            if (state.getValue(PERSISTENT))
+            {
+                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
+            }
+            else
+            {
+                // Send a message, help the dev's figure out which trees need larger leaf decay radii:
+                LOGGER.info("Block: {} decayed at distance {}", state.getBlock().getRegistryName(), distance);
+                worldIn.removeBlock(pos, false);
+            }
         }
         else
         {

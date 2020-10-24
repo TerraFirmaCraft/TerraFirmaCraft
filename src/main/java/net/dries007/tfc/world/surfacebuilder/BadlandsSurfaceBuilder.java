@@ -19,7 +19,7 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
 
-public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderConfig>
+public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
     private BlockState[] sandLayers;
     private INoise2D heightVariationNoise;
@@ -65,6 +65,7 @@ public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderCon
         heightVariationNoise = new SimplexNoise2D(seed).octaves(2).scaled(110, 114).spread(0.5f);
     }
 
+    @SuppressWarnings("deprecation")
     private void buildSandySurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, int seaLevel, SurfaceBuilderConfig config)
     {
         BlockState underState = config.getUnderMaterial();
@@ -82,7 +83,7 @@ public class BadlandsSurfaceBuilder extends SeedSurfaceBuilder<SurfaceBuilderCon
         {
             pos.set(localX, y, localZ);
             BlockState stateAt = chunkIn.getBlockState(pos);
-            if (stateAt.isAir(chunkIn, pos))
+            if (stateAt.isAir())
             {
                 // Reached air, reset surface depth
                 surfaceDepth = -1;

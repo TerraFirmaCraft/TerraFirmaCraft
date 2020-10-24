@@ -7,8 +7,6 @@ package net.dries007.tfc.client;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.resources.I18n;
@@ -22,7 +20,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -42,27 +39,6 @@ import static net.minecraft.util.text.TextFormatting.*;
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientForgeEventHandler
 {
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onInitGuiPre(GuiScreenEvent.InitGuiEvent.Pre event)
-    {
-        // todo: stuff
-        /*
-        LOGGER.debug("Init Gui Pre Event");
-        if (event.getGui() instanceof CreateWorldScreen)
-        {
-            // Only change if default is selected, because coming back from customisation, this will be set already.
-            CreateWorldScreen gui = ((CreateWorldScreen) event.getGui());
-            Integer selectedIndex = ObfuscationReflectionHelper.getPrivateValue(CreateWorldScreen.class, gui, "levelTypeIndex");
-            if (selectedIndex != null && selectedIndex == WorldType.NORMAL.getId())
-            {
-                LOGGER.debug("Setting Selected World Type to TFC Default");
-                ObfuscationReflectionHelper.setPrivateValue(CreateWorldScreen.class, gui, TFCWorldType.INSTANCE.getId(), "levelTypeIndex");
-            }
-        }*/
-    }
-
     @SubscribeEvent
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
     {
