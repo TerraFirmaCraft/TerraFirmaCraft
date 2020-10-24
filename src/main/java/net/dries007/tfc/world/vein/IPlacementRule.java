@@ -30,7 +30,6 @@ public interface IPlacementRule extends BiPredicate<IWorld, BlockPos>
 
             register(Helpers.identifier("rainfall"), RainfallRule::new);
             register(Helpers.identifier("temperature"), TemperatureRule::new);
-            register(Helpers.identifier("biomes"), BiomeRule::new);
         }
     }
 }
