@@ -28,10 +28,9 @@ public class PlantsFeature extends Feature<PlantsConfig>
     @Override
     public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, PlantsConfig config)
     {
-        final ChunkData data = ChunkDataProvider.get(world).map(provider -> provider.get(pos, ChunkData.Status.FLORA)).orElseThrow(() -> new IllegalStateException("Missing flora data, cannot place plants."));
-        getPlants(data, random, config, pos).forEach(entry -> {
-            entry.getFeature().place(world, generator, random, pos);
-        });
+        final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(generator);
+        final ChunkData data = provider.get(pos, ChunkData.Status.FLORA);
+        getPlants(data, random, config, pos).forEach(entry -> entry.getFeature().place(world, generator, random, pos));
         return false;
     }
 
