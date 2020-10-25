@@ -14,15 +14,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_cassiterite/diorite"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_cassiterite/diorite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_cassiterite/diorite"
           }
         ]
@@ -33,15 +33,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_cassiterite/gabbro"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_cassiterite/gabbro"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_cassiterite/gabbro"
           }
         ]
@@ -52,19 +52,20 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_cassiterite/granite"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_cassiterite/granite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_cassiterite/granite"
           }
         ]
       }
-    ]
+    ],
+    "salt": 1250064505
   }
 }

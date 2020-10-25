@@ -14,15 +14,15 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/poor_garnierite/diorite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_garnierite/diorite"
           },
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/rich_garnierite/diorite"
           }
         ]
@@ -33,15 +33,15 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/poor_garnierite/gabbro"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_garnierite/gabbro"
           },
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/rich_garnierite/gabbro"
           }
         ]
@@ -52,19 +52,20 @@
         ],
         "ore": [
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/poor_garnierite/granite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_garnierite/granite"
           },
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/rich_garnierite/granite"
           }
         ]
       }
-    ]
+    ],
+    "salt": 371819321
   }
 }

@@ -14,15 +14,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_native_copper/andesite"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_native_copper/andesite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_native_copper/andesite"
           }
         ]
@@ -33,15 +33,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_native_copper/basalt"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_native_copper/basalt"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_native_copper/basalt"
           }
         ]
@@ -52,15 +52,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_native_copper/dacite"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_native_copper/dacite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_native_copper/dacite"
           }
         ]
@@ -71,19 +71,20 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_native_copper/rhyolite"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_native_copper/rhyolite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_native_copper/rhyolite"
           }
         ]
       }
-    ]
+    ],
+    "salt": 774465741
   }
 }

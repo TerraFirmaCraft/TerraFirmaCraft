@@ -8,10 +8,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 public class ClimateConfig implements IPlacementConfig
 {
     public static final Codec<ClimateConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.FLOAT.optionalFieldOf("min_average_temperature", Float.MIN_VALUE).forGetter(c -> c.minTemp),
-        Codec.FLOAT.optionalFieldOf("max_average_temperature", Float.MIN_VALUE).forGetter(c -> c.maxTemp),
+        Codec.FLOAT.optionalFieldOf("min_temperature", Float.MIN_VALUE).forGetter(c -> c.minTemp),
+        Codec.FLOAT.optionalFieldOf("max_temperature", Float.MAX_VALUE).forGetter(c -> c.maxTemp),
         Codec.FLOAT.optionalFieldOf("min_rainfall", Float.MIN_VALUE).forGetter(c -> c.minRainfall),
-        Codec.FLOAT.optionalFieldOf("max_rainfall", Float.MIN_VALUE).forGetter(c -> c.maxRainfall)
+        Codec.FLOAT.optionalFieldOf("max_rainfall", Float.MAX_VALUE).forGetter(c -> c.maxRainfall)
     ).apply(instance, ClimateConfig::new));
 
     private final float minTemp;

@@ -19,7 +19,10 @@ public interface IWeighted<E> extends Iterable<E>
     IWeighted<?> EMPTY = new IWeighted<Object>()
     {
         @Override
-        public void add(double weight, Object element) {}
+        public void add(double weight, Object element)
+        {
+            throw new UnsupportedOperationException("Cannot add to singleton EMPTY weighted list!");
+        }
 
         @Override
         public Object get(Random random)
@@ -92,7 +95,7 @@ public interface IWeighted<E> extends Iterable<E>
             @Override
             public void add(double weight, E element)
             {
-                throw new IllegalStateException("Tried to add an element to a singleton IWeighted<E>");
+                throw new UnsupportedOperationException("Cannot add an element to a singleton IWeighted<E>");
             }
 
             @Override
@@ -134,13 +137,37 @@ public interface IWeighted<E> extends Iterable<E>
         };
     }
 
+    /**
+     * Adds an element to the list
+     *
+     * @param weight  The weight of the element, must be positive
+     * @param element The element
+     */
     void add(double weight, E element);
 
+    /**
+     * Gets an element from the weighted list at random
+     *
+     * @param random A random to use in selection
+     * @return An element
+     */
     E get(Random random);
 
+    /**
+     * @return All possible values for the weighted list
+     */
     Collection<E> values();
 
+    /**
+     * Serialize the internal representation of the weighted list into a series of weighted pairs.
+     * This SHOULD NOT be called often as it may create the data structure on the fly.
+     *
+     * @return A serializable representation of the weighted list.
+     */
     List<Pair<E, Double>> weightedValues();
 
+    /**
+     * @return true if the weighted list has no elements.
+     */
     boolean isEmpty();
 }

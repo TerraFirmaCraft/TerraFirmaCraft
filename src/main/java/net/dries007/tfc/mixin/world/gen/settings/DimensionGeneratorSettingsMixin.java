@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DimensionGeneratorSettings.class)
-public class DimensionGeneratorSettingsMixin
+public abstract class DimensionGeneratorSettingsMixin
 {
     /**
      * This is done in order to catch the tfc world type upon parsing of the server properties

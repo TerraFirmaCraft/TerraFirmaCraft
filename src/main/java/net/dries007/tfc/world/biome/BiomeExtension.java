@@ -22,6 +22,13 @@ public class BiomeExtension
         this.variants = variants;
     }
 
+    /**
+     * Gets the variants object held by this extension.
+     * This is responsible for providing noise and grouping parameters, along with access to individual biomes for each climate.
+     * This is used ONLY within TFC's chunk generator.
+     *
+     * @return a variants object, used to get noise and smoothing parameters,
+     */
     public BiomeVariants getVariants()
     {
         return variants;

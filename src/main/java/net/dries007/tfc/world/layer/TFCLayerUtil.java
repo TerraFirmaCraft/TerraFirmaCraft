@@ -8,7 +8,6 @@ package net.dries007.tfc.world.layer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.LongFunction;
 import java.util.function.Supplier;
 
 import net.minecraft.world.gen.LazyAreaLayerContext;
@@ -44,7 +43,10 @@ public class TFCLayerUtil
     public static final int CONTINENT_CONTINENT_DIVERGING = 8;
     public static final int CONTINENT_CONTINENT_CONVERGING = 9;
 
-    private static final Int2ObjectMap<BiomeVariants> ID_TO_BIOME_VARIANTS = new Int2ObjectOpenHashMap<>();
+    /**
+     * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
+     */
+    public static final int LAKE_MARKER = ++LAYER_ID;
     private static int LAYER_ID = -1;
 
     /**
@@ -69,10 +71,13 @@ public class TFCLayerUtil
     public static final int LAKE = makeLayerId(TFCBiomes.LAKE);
     public static final int RIVER = makeLayerId(TFCBiomes.RIVER);
     public static final int MOUNTAIN_RIVER = makeLayerId(TFCBiomes.MOUNTAIN_RIVER);
-
-    /**
-     * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
-     */
+    private static final Int2ObjectMap<BiomeVariants> ID_TO_BIOME_VARIANTS = new Int2ObjectOpenHashMap<>(23);
+    public static final int OLD_MOUNTAIN_RIVER = makeLayerId(TFCBiomes.OLD_MOUNTAIN_RIVER);
+    public static final int FLOODED_MOUNTAIN_RIVER = makeLayerId(TFCBiomes.FLOODED_MOUNTAIN_RIVER);
+    public static final int MOUNTAIN_LAKE = makeLayerId(TFCBiomes.MOUNTAIN_LAKE);
+    public static final int OLD_MOUNTAIN_LAKE = makeLayerId(TFCBiomes.OLD_MOUNTAIN_LAKE);
+    public static final int FLOODED_MOUNTAIN_LAKE = makeLayerId(TFCBiomes.FLOODED_MOUNTAIN_LAKE);
+    public static final int PLATEAU_LAKE = makeLayerId(TFCBiomes.PLATEAU_LAKE);
     public static final int LARGE_LAKE_MARKER = ++LAYER_ID;
     public static final int OCEAN_OCEAN_CONVERGING_MARKER = ++LAYER_ID;
     public static final int RIVER_MARKER = ++LAYER_ID;
@@ -90,7 +95,7 @@ public class TFCLayerUtil
         final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
 
         ITypedAreaFactory<Plate> plateLayer;
-        IAreaFactory<LazyArea> mainLayer, riverLayer;
+        IAreaFactory<LazyArea> mainLayer, riverLayer, lakeLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
         plateLayer = new PlateGenerationLayer(new VoronoiNoise2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
@@ -99,31 +104,37 @@ public class TFCLayerUtil
 
         // Rivers
         riverLayer = new FloatNoiseLayer(new VoronoiNoise2D(random.nextLong()).spread(0.12f)).run(layerContext.get());
-        riverLayer = ZoomLayer.FUZZY.run(layerContext.get(), riverLayer);
-        riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
-        riverLayer = ZoomLayer.FUZZY.run(layerContext.get(), riverLayer);
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
         }
 
         riverLayer = RiverLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        riverLayer = RiverAcuteVertexLayer.INSTANCE.run(layerContext.get(), riverLayer);
         riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
 
         // Biomes
         mainLayer = PlateBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
         mainLayer = OceanBorderLayer.INSTANCE.run(layerContext.get(), mainLayer);
 
-        // Add biome level features - large + small lakes, island chains, shores
-        mainLayer = AddLakeLayer.LARGE.run(layerContext.get(), mainLayer);
-        mainLayer = LargeLakeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        // Lakes
+        lakeLayer = NullLayer.INSTANCE.run(layerContext.get());
+        lakeLayer = LakeLayer.LARGE.run(layerContext.get(), lakeLayer);
+        lakeLayer = LargeLakeLayer.INSTANCE.run(layerContext.get(), lakeLayer);
+        for (int i = 0; i < 2; i++)
+        {
+            lakeLayer = ZoomLayer.NORMAL.run(layerContext.get(), lakeLayer);
+        }
+        lakeLayer = LakeLayer.SMALL.run(layerContext.get(), lakeLayer);
+
+        // Add biome level features - lakes, island chains, edge biomes, shores
         mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
         mainLayer = ArchipelagoLayer.INSTANCE.run(layerContext.get(), mainLayer);
         mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
         mainLayer = EdgeBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
-        mainLayer = AddLakeLayer.SMALL.run(layerContext.get(), mainLayer);
         mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        mainLayer = MixLakeLayer.INSTANCE.run(layerContext.get(), mainLayer, lakeLayer);
         mainLayer = ShoreLayer.INSTANCE.run(layerContext.get(), mainLayer);
 
         for (int i = 0; i < 4; i++)
@@ -143,19 +154,19 @@ public class TFCLayerUtil
 
     public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed, TFCBiomeProvider.LayerSettings layerSettings)
     {
-        LongFunction<LazyAreaLayerContext> contextFactory = seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier);
+        final Random random = new Random(seed);
+        final Supplier<LazyAreaLayerContext> contextFactory = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
+        final List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
 
-        List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
         IAreaFactory<LazyArea> seedLayer;
-
         int numRocks = RockManager.INSTANCE.getKeys().size();
 
         // Seed Areas
         for (int j = 0; j < 3; j++)
         {
-            RandomLayer randomLayer = new RandomLayer(numRocks);
+            final RandomLayer randomLayer = new RandomLayer(numRocks);
             RockManager.INSTANCE.addCallback(() -> randomLayer.setLimit(RockManager.INSTANCE.getKeys().size()));
-            seedLayer = randomLayer.run(contextFactory.apply(1000L));
+            seedLayer = randomLayer.run(contextFactory.get());
 
             // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
             // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
@@ -166,18 +177,18 @@ public class TFCLayerUtil
             // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
             RandomizeNeighborsLayer randomNeighborLayer = new RandomizeNeighborsLayer(numRocks);
             RockManager.INSTANCE.addCallback(() -> randomNeighborLayer.setLimit(RockManager.INSTANCE.getKeys().size()));
-            seedLayer = randomNeighborLayer.run(contextFactory.apply(1001L), seedLayer);
+            seedLayer = randomNeighborLayer.run(contextFactory.get(), seedLayer);
 
             for (int i = 0; i < 2; i++)
             {
-                seedLayer = ExactZoomLayer.INSTANCE.run(contextFactory.apply(1001L), seedLayer);
-                seedLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1001L), seedLayer);
-                seedLayer = SmoothLayer.INSTANCE.run(contextFactory.apply(1001L), seedLayer);
+                seedLayer = ExactZoomLayer.INSTANCE.run(contextFactory.get(), seedLayer);
+                seedLayer = ZoomLayer.NORMAL.run(contextFactory.get(), seedLayer);
+                seedLayer = SmoothLayer.INSTANCE.run(contextFactory.get(), seedLayer);
             }
 
             for (int i = 0; i < layerSettings.getRockLayerScale(); i++)
             {
-                seedLayer = ZoomLayer.NORMAL.run(contextFactory.apply(1001L), seedLayer);
+                seedLayer = ZoomLayer.NORMAL.run(contextFactory.get(), seedLayer);
             }
 
             completedLayers.add(seedLayer);
@@ -185,37 +196,75 @@ public class TFCLayerUtil
         return completedLayers;
     }
 
-    static boolean isShoreCompatible(int value)
+    public static boolean hasShore(int value)
     {
         return value != LOWLANDS && value != LOW_CANYONS && value != CANYONS && value != FLOODED_MOUNTAINS && value != LAKE;
     }
 
-    static boolean isLakeCompatible(int value)
+    public static boolean hasLake(int value)
     {
-        return isLow(value) || value == CANYONS || value == ROLLING_HILLS;
+        return !isOcean(value) && value != BADLANDS;
     }
 
-    static boolean isRiverCompatible(int value)
+    public static int lakeFor(int value)
+    {
+        if (value == MOUNTAINS)
+        {
+            return MOUNTAIN_LAKE;
+        }
+        if (value == OLD_MOUNTAINS)
+        {
+            return OLD_MOUNTAIN_LAKE;
+        }
+        if (value == FLOODED_MOUNTAINS)
+        {
+            return FLOODED_MOUNTAIN_LAKE;
+        }
+        if (value == PLATEAU)
+        {
+            return PLATEAU_LAKE;
+        }
+        return LAKE;
+    }
+
+    public static boolean hasRiver(int value)
     {
         return !isOcean(value) && value != LAKE;
     }
 
-    static boolean isOcean(int value)
+    public static int riverFor(int value)
+    {
+        if (value == MOUNTAINS)
+        {
+            return MOUNTAIN_RIVER;
+        }
+        if (value == OLD_MOUNTAINS)
+        {
+            return OLD_MOUNTAIN_RIVER;
+        }
+        if (value == FLOODED_MOUNTAINS)
+        {
+            return FLOODED_MOUNTAIN_RIVER;
+        }
+        return RIVER;
+    }
+
+    public static boolean isOcean(int value)
     {
         return value == OCEAN || value == DEEP_OCEAN;
     }
 
-    static boolean isMountains(int value)
+    public static boolean isMountains(int value)
     {
         return value == MOUNTAINS || value == FLOODED_MOUNTAINS || value == OLD_MOUNTAINS;
     }
 
-    static boolean isLow(int value)
+    public static boolean isLow(int value)
     {
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
     }
 
-    private static int makeLayerId(BiomeVariants variants)
+    public static int makeLayerId(BiomeVariants variants)
     {
         LAYER_ID++;
         ID_TO_BIOME_VARIANTS.put(LAYER_ID, variants);

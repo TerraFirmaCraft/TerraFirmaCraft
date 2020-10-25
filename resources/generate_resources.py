@@ -3,7 +3,9 @@
 
 # Script to run all resource generation
 
-from mcresources import ResourceManager
+import argparse
+
+from mcresources import ResourceManager, clean_generated_resources
 
 import assets
 import collapse_recipes
@@ -14,8 +16,14 @@ from constants import *
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Generate resources for TFC')
+    parser.add_argument('--clean', action='store_true', dest='clean', help='Clean all auto generated resources')
+    args = parser.parse_args()
+
     rm = ResourceManager('tfc', resource_dir='../src/main/resources')
-    # clean_generated_resources('/'.join(rm.resource_dir))
+    if args.clean:
+        clean_generated_resources('/'.join(rm.resource_dir))
+        return
 
     # do simple lang keys first, because it's ordered intentionally
     rm.lang(DEFAULT_LANG)

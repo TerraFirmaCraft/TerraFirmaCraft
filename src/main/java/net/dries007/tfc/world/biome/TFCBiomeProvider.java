@@ -21,6 +21,7 @@ import net.minecraft.world.gen.area.LazyArea;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
@@ -195,8 +196,8 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     public static final class LayerSettings
     {
         private static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.intRange(0, 100).fieldOf("ocean_percent").forGetter(LayerSettings::getOceanPercent),
-            Codec.intRange(1, 10).fieldOf("rock_layer_scale").forGetter(LayerSettings::getRockLayerScale)
+            Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 45).forGetter(LayerSettings::getOceanPercent),
+            Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(LayerSettings::getRockLayerScale)
         ).apply(instance, LayerSettings::new));
 
         private final int oceanPercent;
@@ -227,14 +228,14 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     public static final class ClimateSettings
     {
         public static final MapCodec<ClimateSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.FLOAT.fieldOf("frozen_cold_cutoff").forGetter(c -> c.frozenColdCutoff),
-            Codec.FLOAT.fieldOf("cold_normal_cutoff").forGetter(c -> c.coldNormalCutoff),
-            Codec.FLOAT.fieldOf("normal_lukewarm_cutoff").forGetter(c -> c.normalLukewarmCutoff),
-            Codec.FLOAT.fieldOf("lukewarm_warm_cutoff").forGetter(c -> c.lukewarmWarmCutoff),
-            Codec.FLOAT.fieldOf("arid_dry_cutoff").forGetter(c -> c.aridDryCutoff),
-            Codec.FLOAT.fieldOf("dry_normal_cutoff").forGetter(c -> c.dryNormalCutoff),
-            Codec.FLOAT.fieldOf("normal_damp_cutoff").forGetter(c -> c.normalDampCutoff),
-            Codec.FLOAT.fieldOf("damp_wet_cutoff").forGetter(c -> c.dampWetCutoff)
+            Codec.FLOAT.optionalFieldOf("frozen_cold_cutoff", -17.25f).forGetter(c -> c.frozenColdCutoff),
+            Codec.FLOAT.optionalFieldOf("cold_normal_cutoff", -3.75f).forGetter(c -> c.coldNormalCutoff),
+            Codec.FLOAT.optionalFieldOf("normal_lukewarm_cutoff", 9.75f).forGetter(c -> c.normalLukewarmCutoff),
+            Codec.FLOAT.optionalFieldOf("lukewarm_warm_cutoff", 23.25f).forGetter(c -> c.lukewarmWarmCutoff),
+            Codec.FLOAT.optionalFieldOf("arid_dry_cutoff", 125f).forGetter(c -> c.aridDryCutoff),
+            Codec.FLOAT.optionalFieldOf("dry_normal_cutoff", 200f).forGetter(c -> c.dryNormalCutoff),
+            Codec.FLOAT.optionalFieldOf("normal_damp_cutoff", 300f).forGetter(c -> c.normalDampCutoff),
+            Codec.FLOAT.optionalFieldOf("damp_wet_cutoff", 375f).forGetter(c -> c.dampWetCutoff)
         ).apply(instance, ClimateSettings::new));
 
         private final float frozenColdCutoff;

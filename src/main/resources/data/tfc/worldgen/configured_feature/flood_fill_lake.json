@@ -10,13 +10,13 @@
           "config": {}
         },
         "decorator": {
-          "type": "minecraft:square",
+          "type": "minecraft:heightmap_world_surface",
           "config": {}
         }
       }
     },
     "decorator": {
-      "type": "minecraft:heightmap_world_surface",
+      "type": "minecraft:square",
       "config": {}
     }
   }

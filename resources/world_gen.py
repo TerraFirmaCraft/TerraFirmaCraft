@@ -1,5 +1,6 @@
 # Handles generation of all world gen objects
 
+import hashlib
 from enum import IntEnum
 from typing import Tuple
 
@@ -53,20 +54,17 @@ def generate(rm: ResourceManager):
     surface_builder(rm, 'badlands', wg.configure('tfc:badlands', grass_dirt_sand))
     surface_builder(rm, 'canyons', wg.configure('tfc:thin', grass_dirt_sand))
     surface_builder(rm, 'deep', wg.configure('tfc:deep', grass_dirt_gravel))
-    surface_builder(rm, 'plateau', wg.configure('tfc:plateau', grass_dirt_sand))
     surface_builder(rm, 'default', wg.configure('tfc:normal', grass_dirt_sand))
     surface_builder(rm, 'underwater', wg.configure('tfc:underwater', air_air_air))
     surface_builder(rm, 'mountains', wg.configure('tfc:mountains', grass_dirt_sand))
     surface_builder(rm, 'shore', wg.configure('tfc:shore', air_air_air))
 
     # Configured Features
-    rm.feature('ore_veins', wg.configure('tfc:ore_veins'))
     rm.feature('erosion', wg.configure('tfc:erosion'))
     rm.feature('ice_and_snow', wg.configure('tfc:ice_and_snow'))
-    rm.feature('glacier', wg.configure('tfc:glacier'))
 
     rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), ('minecraft:chance', {'chance': 15}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
-    rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), 'minecraft:heightmap_world_surface', 'minecraft:square'))
+    rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), 'minecraft:square', 'minecraft:heightmap_world_surface'))
 
     for spring_cfg in (('water', 80), ('lava', 35)):
         rm.feature('%s_spring' % spring_cfg[0], wg.configure_decorated(wg.configure('tfc:spring', {
@@ -74,9 +72,26 @@ def generate(rm: ResourceManager):
             'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
         }), ('minecraft:count', {'count': spring_cfg[1]}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 256})))
 
-    # todo: rework, they look like crap and are causing problems
-    # rm.feature('water_fissure', wg.configure_decorated(wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:water[level=0]')}), ('minecraft:chance', {'chance': 60}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
-    # rm.feature('lava_fissure', wg.configure_decorated(wg.configure('tfc:fissure', {'state': wg.block_state('minecraft:lava[level=0]')}), ('minecraft:chance', {'chance': 60}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
+    clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
+    rm.feature('clay_disc', wg.configure_decorated(wg.configure('tfc:soil_disc', {
+        'min_radius': 3,
+        'max_radius': 5,
+        'height': 3,
+        'states': clay
+    }), ('minecraft:chance', {'chance': 12}), 'minecraft:square', 'minecraft:heightmap_world_surface', ('tfc:climate', {'min_rainfall': 200})))
+    rm.feature('water_clay_disc', wg.configure_decorated(wg.configure('tfc:soil_disc', {
+        'min_radius': 2,
+        'max_radius': 3,
+        'height': 2,
+        'states': clay
+    }), ('minecraft:chance', {'chance': 1}), 'minecraft:square', 'minecraft:heightmap_world_surface', 'tfc:near_water'))
+    rm.feature('peat_disc', wg.configure_decorated(wg.configure('tfc:soil_disc', {
+        'min_radius': 5,
+        'max_radius': 9,
+        'height': 7,
+        'states': [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS] +
+                  [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:peat_grass'} for soil in SOIL_BLOCK_VARIANTS]
+    }), ('minecraft:chance', {'chance': 10}), 'minecraft:square', 'minecraft:heightmap_world_surface', ('tfc:climate', {'min_rainfall': 350, 'min_temperature': 12})))
 
     rm.feature('cave_spike', wg.configure_decorated(wg.configure('tfc:cave_spike'), ('minecraft:carving_mask', {'step': 'air', 'probability': 0.09})))
     rm.feature('large_cave_spike', wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('minecraft:carving_mask', {'step': 'air', 'probability': 0.02})))
@@ -85,7 +100,7 @@ def generate(rm: ResourceManager):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
             'base_type': boulder_cfg[1],
             'decoration_type': boulder_cfg[2]
-        }), 'minecraft:heightmap_world_surface', 'minecraft:square', ('minecraft:chance', {'chance': 12}), 'tfc:flat_enough'))
+        }), 'minecraft:square', 'minecraft:heightmap_world_surface', ('minecraft:chance', {'chance': 12}), 'tfc:flat_enough'))
 
     # Trees / Forests
     rm.feature('forest', wg.configure('tfc:forest', {
@@ -158,16 +173,17 @@ def generate(rm: ResourceManager):
                 'blocks': [{
                     'stone': ['tfc:rock/raw/%s' % rock],
                     'ore': [{
-                        'weight': vein.poor,
+                        'weight': vein.poor * 0.01,
                         'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
                     }, {
-                        'weight': vein.normal,
+                        'weight': vein.normal * 0.01,
                         'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
                     }, {
-                        'weight': vein.rich,
+                        'weight': vein.rich * 0.01,
                         'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
                     }]
-                } for rock in rocks]
+                } for rock in rocks],
+                'salt': int(hashlib.sha256(vein_name.encode('utf-8')).hexdigest(), 16) & 0xFFFFFFFF
             }))
         else:  # non-graded ore vein (mineral)
             rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
@@ -179,7 +195,8 @@ def generate(rm: ResourceManager):
                 'blocks': [{
                     'stone': ['tfc:rock/raw/%s' % rock],
                     'ore': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
-                } for rock in rocks]
+                } for rock in rocks],
+                'salt': int(hashlib.sha256(vein_name.encode('utf-8')).hexdigest(), 16) & 0xFFFFFFFF
             }))
 
     # Carvers
@@ -205,11 +222,19 @@ def generate(rm: ResourceManager):
             biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False)
             biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False)
             biome(rm, 'river', temp, rain, 'river', 'tfc:underwater', spawnable=False)
-            biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
             biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore')
+
+            biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'old_mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'flooded_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False)
+            biome(rm, 'mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'old_mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
+            biome(rm, 'flooded_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False)
+            biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
 
 
 def surface_builder(rm: ResourceManager, name: str, surface_builder):
+    # Add a surface builder, and also one with glaciers for cold biomes
     rm.surface_builder(name, surface_builder)
     rm.surface_builder(name + '_with_glaciers', wg.configure('tfc:with_glaciers', {
         'parent': 'tfc:%s' % name
@@ -290,11 +315,11 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     features = [
         ['tfc:erosion'],  # raw generation
         ['tfc:flood_fill_lake', 'tfc:lake'],  # lakes
-        [],  # local modification
+        ['tfc:clay_disc', 'tfc:water_clay_disc', 'tfc:peat_disc'],  # local modification
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
-        ['tfc:ore_veins'],  # underground ores
+        ['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()],  # underground ores
         ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring'],  # underground decoration
         ['tfc:forest'],  # vegetal decoration
         ['tfc:ice_and_snow']  # top layer modification

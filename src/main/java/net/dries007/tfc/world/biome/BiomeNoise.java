@@ -1,8 +1,11 @@
 package net.dries007.tfc.world.biome;
 
+import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.NoiseUtil;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.Vec2;
 
 /**
  * Collections of biome noise factories
@@ -54,6 +57,11 @@ public class BiomeNoise
     public static INoise2D lake(long seed)
     {
         return new SimplexNoise2D(seed).octaves(4).spread(0.15f).scaled(TFCChunkGenerator.SEA_LEVEL - 12, TFCChunkGenerator.SEA_LEVEL - 2);
+    }
+
+    public static INoise2D river(long seed)
+    {
+        return new SimplexNoise2D(seed).octaves(4).spread(0.2f).scaled(TFCChunkGenerator.SEA_LEVEL - 8, TFCChunkGenerator.SEA_LEVEL - 2);
     }
 
     /**
@@ -111,5 +119,79 @@ public class BiomeNoise
     public static INoise2D shore(long seed)
     {
         return new SimplexNoise2D(seed).octaves(4).spread(0.17f).scaled(TFCChunkGenerator.SEA_LEVEL, TFCChunkGenerator.SEA_LEVEL + 1.8f);
+    }
+
+    /**
+     * Simple pair of simplex noise which creates a somewhat noisy roof, and a smooth center line
+     *
+     * @return a pair of noise functions representing the center line, and height of the carving
+     */
+    public static Pair<INoise2D, INoise2D> riverCarving(long seed)
+    {
+        return Pair.of(
+            new SimplexNoise2D(seed).octaves(2).spread(0.02f).scaled(TFCChunkGenerator.SEA_LEVEL - 3, TFCChunkGenerator.SEA_LEVEL + 3),
+            new SimplexNoise2D(seed).octaves(4).spread(0.15f).scaled(8, 14)
+        );
+    }
+
+    /**
+     * Like {@link BiomeNoise#riverCarving(long)}, except also applies additional voronoi based noise to create "columns"
+     */
+    public static Pair<INoise2D, INoise2D> lakeCarving(long seed)
+    {
+        final float maxColumnThreshold = 0.5f;
+
+        final Pair<INoise2D, INoise2D> riverPair = riverCarving(seed);
+        final INoise2D baseNoise = riverPair.getSecond();
+        final INoise2D columnNoise = ((INoise2D) (x, z) -> {
+            // This was adapted from VoronoiNoise2D but modified to suit the purposes of finding both shortest distance, and not caring about distances over a specific threshold
+            // Target center
+            final int startX = NoiseUtil.fastFloor(x);
+            final int startZ = NoiseUtil.fastFloor(z);
+            float distance = maxColumnThreshold; // Distance is at most 0.5f - if nothing is found closer than the we don't care
+
+            for (int cellX = startX - 1; cellX <= startX + 1; cellX++)
+            {
+                for (int cellZ = startZ - 1; cellZ <= startZ + 1; cellZ++)
+                {
+                    long cellSeed = NoiseUtil.hash(seed, cellX, cellZ);
+                    if ((cellSeed & 0b111) == 0) // 1/4 chance for a cell at each location
+                    {
+                        cellSeed = NoiseUtil.hash(cellSeed >> 3, cellX, cellZ);
+                        final Vec2 center = NoiseUtil.CELL_2D[(int) cellSeed & 255];
+                        final float vecX = cellX - x + center.x;
+                        final float vecZ = cellZ - z + center.y;
+                        float newDistance = vecX * vecX + vecZ * vecZ;
+                        cellSeed = NoiseUtil.hash(cellSeed >> 8, cellX, cellZ);
+                        newDistance += 0.1f * NoiseUtil.random(cellSeed, cellX, cellZ);
+                        if (newDistance < distance)
+                        {
+                            distance = newDistance;
+                        }
+                    }
+                }
+            }
+            return distance;
+        }).spread(0.13f);
+
+        return Pair.of(
+            riverPair.getFirst(),
+            (x, z) -> {
+                float maxBaseValue = 14;
+                final float columnValue = columnNoise.noise(x, z);
+                if (columnValue < maxColumnThreshold)
+                {
+                    // Near a column, scale the base noise to quickly clamp off inside the column radius
+                    final float t = (columnValue - maxColumnThreshold) / (maxColumnThreshold - 0.1f);
+                    maxBaseValue = NoiseUtil.lerp(14, 0, t * t);
+                    if (maxBaseValue < 0)
+                    {
+                        return 0;
+                    }
+                }
+                float baseValue = baseNoise.noise(x, z);
+                return Math.min(maxBaseValue, baseValue);
+            }
+        );
     }
 }

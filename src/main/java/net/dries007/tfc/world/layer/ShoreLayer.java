@@ -19,7 +19,7 @@ public enum ShoreLayer implements ICastleTransformer
     public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
     {
         Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(west) || p.test(south) || p.test(east);
-        if (!TFCLayerUtil.isOcean(center) && TFCLayerUtil.isShoreCompatible(center))
+        if (!TFCLayerUtil.isOcean(center) && TFCLayerUtil.hasShore(center))
         {
             if (matcher.test(TFCLayerUtil::isOcean))
             {

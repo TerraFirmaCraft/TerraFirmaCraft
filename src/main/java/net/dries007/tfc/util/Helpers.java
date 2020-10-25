@@ -41,10 +41,6 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -155,7 +151,7 @@ public final class Helpers
     }
 
     /**
-     * Maps a {@link Supplier} to a supplier of {@link Optional} by swallowing any runtime exceptions.
+     * Maps a {@link Supplier} to an {@link Optional} by swallowing any runtime exceptions.
      */
     public static <T> Optional<T> mapSafeOptional(Supplier<T> unsafeSupplier)
     {
@@ -294,70 +290,11 @@ public final class Helpers
     }
 
     /**
-     * Computes an index into a carving mask bit set, uesd during world gen
+     * Computes an index into a carving mask bit set, used during world gen
      */
     public static int getCarvingMaskIndex(BlockPos pos)
     {
         return (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
-    }
-
-    /**
-     * Creates a codec for an optimized weighted list, using {@link IWeighted}. The representation is a list of elements with a weight and an element key.
-     */
-    public static <E> Codec<IWeighted<E>> weightedCodec(Codec<E> elementCodec, String elementKey)
-    {
-        return IWeighted.codec(RecordCodecBuilder.<Pair<E, Double>>create(instance -> instance.group(
-            elementCodec.fieldOf(elementKey).forGetter(Pair::getFirst),
-            Codec.DOUBLE.optionalFieldOf("weight", 1d).forGetter(Pair::getSecond)
-        ).apply(instance, Pair::of)).listOf());
-    }
-
-    /**
-     * Creates a codec for a optimized map from k -> v, from a representation of the inverse mapping as a v -> {k}, represented as a list of elements, each with a list of keys, and a singular value.
-     *
-     * @param codec A codec for each element with a list of keys and value.
-     */
-    public static <K, V> Codec<Map<K, V>> mapKeyListCodec(Codec<Pair<List<K>, V>> codec)
-    {
-        return codec.listOf().xmap(list -> {
-            Map<K, V> map = new HashMap<>();
-            for (Pair<List<K>, V> pair : list)
-            {
-                for (K key : pair.getFirst())
-                {
-                    map.put(key, pair.getSecond());
-                }
-            }
-            return map;
-        }, map -> {
-            Map<V, List<K>> inverseMap = new HashMap<>();
-            for (Map.Entry<K, V> entry : map.entrySet())
-            {
-                inverseMap.computeIfAbsent(entry.getValue(), v -> new ArrayList<>()).add(entry.getKey());
-            }
-            return inverseMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
-        });
-    }
-
-    /**
-     * Like {@link Helpers#mapKeyListCodec(Codec)} but for a injective map k -> v
-     *
-     * @param codec A codec for each key, value element.
-     */
-    public static <K, V> Codec<Map<K, V>> mapListCodec(Codec<Pair<K, V>> codec)
-    {
-        return codec.listOf().xmap(
-            list -> list.stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond)),
-            map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList())
-        );
-    }
-
-    /**
-     * Creates a codec for a set for fast block lookups
-     */
-    public static <E> Codec<Set<E>> setCodec(Codec<E> elementCodec)
-    {
-        return elementCodec.listOf().xmap(HashSet::new, ArrayList::new);
     }
 
     /**
