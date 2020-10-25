@@ -14,15 +14,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_limonite/chalk"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_limonite/chalk"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_limonite/chalk"
           }
         ]
@@ -33,15 +33,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_limonite/chert"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_limonite/chert"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_limonite/chert"
           }
         ]
@@ -52,15 +52,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_limonite/claystone"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_limonite/claystone"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_limonite/claystone"
           }
         ]
@@ -71,15 +71,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_limonite/conglomerate"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_limonite/conglomerate"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_limonite/conglomerate"
           }
         ]
@@ -90,15 +90,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_limonite/dolomite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_limonite/dolomite"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_limonite/dolomite"
           }
         ]
@@ -109,15 +109,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_limonite/limestone"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_limonite/limestone"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_limonite/limestone"
           }
         ]
@@ -128,19 +128,20 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_limonite/shale"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_limonite/shale"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_limonite/shale"
           }
         ]
       }
-    ]
+    ],
+    "salt": 1191203354
   }
 }

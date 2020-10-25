@@ -11,16 +11,15 @@ import net.minecraft.world.gen.feature.IFeatureConfig;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
 public class SoilDiscConfig implements IFeatureConfig
 {
     @SuppressWarnings("deprecation")
     public static final Codec<SoilDiscConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Helpers.mapListCodec(Codec.pair(
-            Registry.BLOCK,
-            Codecs.LENIENT_BLOCKSTATE
+        Codecs.mapListCodec(Codecs.recordPairCodec(
+            Registry.BLOCK, "replace",
+            Codecs.LENIENT_BLOCKSTATE, "with"
         )).fieldOf("states").forGetter(c -> c.states),
         Codecs.POSITIVE_INT.fieldOf("min_radius").forGetter(c -> c.minRadius),
         Codecs.POSITIVE_INT.fieldOf("max_radius").forGetter(c -> c.maxRadius),

@@ -23,11 +23,7 @@ public abstract class BiomeMixin extends ForgeRegistryEntry<Biome>
     @Redirect(method = "shouldSnow", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
     private float redirect$shouldSnow$getTemperature(Biome biome, BlockPos pos, IWorldReader worldIn)
     {
-        if (worldIn instanceof IWorld)
-        {
-            return Climate.toVanillaTemperature(Climate.getTemperature((IWorld) worldIn, pos));
-        }
-        return biome.getTemperature(pos);
+        return Climate.getVanillaBiomeTemperature(biome, worldIn instanceof IWorld ? (IWorld) worldIn : null, pos);
     }
 
     /**
@@ -39,10 +35,6 @@ public abstract class BiomeMixin extends ForgeRegistryEntry<Biome>
     @Redirect(method = "shouldFreeze(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;Z)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getTemperature(Lnet/minecraft/util/math/BlockPos;)F"))
     private float redirect$shouldFreeze$getTemperature(Biome biome, BlockPos pos, IWorldReader worldIn)
     {
-        if (worldIn instanceof IWorld)
-        {
-            return Climate.toVanillaTemperature(Climate.getTemperature((IWorld) worldIn, pos));
-        }
-        return biome.getTemperature(pos);
+        return Climate.getVanillaBiomeTemperature(biome, worldIn instanceof IWorld ? (IWorld) worldIn : null, pos);
     }
 }

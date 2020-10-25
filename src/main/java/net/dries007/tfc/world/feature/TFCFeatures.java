@@ -7,20 +7,12 @@ package net.dries007.tfc.world.feature;
 
 import java.util.function.Function;
 
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.LiquidsConfig;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.world.feature.trees.*;
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.tree.*;
 import net.dries007.tfc.world.feature.vein.*;
 
@@ -55,4 +47,9 @@ public class TFCFeatures
     public static final RegistryObject<SpringFeature> SPRING = register("spring", SpringFeature::new, LiquidsConfig.CODEC);
 
     public static final RegistryObject<SoilDiscFeature> SOIL_DISC = register("soil_disc", SoilDiscFeature::new, SoilDiscConfig.CODEC);
+
+    private static <C extends IFeatureConfig, F extends Feature<C>> RegistryObject<F> register(String name, Function<Codec<C>, F> factory, Codec<C> codec)
+    {
+        return FEATURES.register(name, () -> factory.apply(codec));
+    }
 }

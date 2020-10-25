@@ -33,15 +33,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * Which as you can see... isn't that far from 0
  */
 @Mixin(SharedSeedRandom.class)
-public class SharedSeedRandomMixin extends Random
+public abstract class SharedSeedRandomMixin extends Random
 {
     @Inject(method = "setFeatureSeed", at = @At("HEAD"), cancellable = true)
-    private void inject$setFeatureSeed(long baseSeed, int x, int z, CallbackInfoReturnable<Long> cir)
+    private void inject$setFeatureSeed(long baseSeed, int index, int decoration, CallbackInfoReturnable<Long> cir)
     {
         setSeed(baseSeed);
-        long x0 = nextLong() * 203704237L;
-        long z0 = nextLong() * 758031792L;
-        long seed = (x * x0) ^ (z * z0) ^ baseSeed;
+        final long seed = (index * nextLong() * 203704237L) ^ (decoration * nextLong() * 758031792L) ^ baseSeed;
         setSeed(seed);
         cir.setReturnValue(seed);
     }

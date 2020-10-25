@@ -24,6 +24,7 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.util.collections.FiniteLinkedHashMap;
 import net.dries007.tfc.world.noise.INoise2D;
 
@@ -62,10 +63,19 @@ public final class TFCBiomes
     // Shores
     public static final BiomeVariants SHORE = register("shore", BiomeNoise::shore, BiomeVariants.LargeGroup.OCEAN); // Standard shore biome with a sandy beach
 
-    // Technical biomes
-    public static final BiomeVariants LAKE = register("lake", BiomeNoise::lake, BiomeVariants.LargeGroup.LAKE); // Biome for freshwater ocean areas / landlocked oceans
-    public static final BiomeVariants RIVER = register("river", seed -> BiomeNoise.simple(seed, -6, -1), BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER); // Biome for river channels
-    public static final BiomeVariants MOUNTAIN_RIVER = register("mountain_river", seed -> BiomeNoise.simple(seed, -6, -1), BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER); // River channels that are specially handled to carve tunnels into mountains
+    // Water
+    public static final BiomeVariants LAKE = register("lake", BiomeNoise::lake, BiomeVariants.LargeGroup.LAKE);
+    public static final BiomeVariants RIVER = register("river", BiomeNoise::river, BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER);
+
+    // Water "Carver" Biomes
+    public static final CarvingBiomeVariants MOUNTAIN_RIVER = registerCarving("mountain_river", MOUNTAINS, BiomeNoise::riverCarving);
+    public static final CarvingBiomeVariants OLD_MOUNTAIN_RIVER = registerCarving("old_mountain_river", OLD_MOUNTAINS, BiomeNoise::riverCarving);
+    public static final CarvingBiomeVariants FLOODED_MOUNTAIN_RIVER = registerCarving("flooded_mountain_river", FLOODED_MOUNTAINS, BiomeNoise::riverCarving);
+
+    public static final CarvingBiomeVariants MOUNTAIN_LAKE = registerCarving("mountain_lake", MOUNTAINS, BiomeNoise::lakeCarving);
+    public static final CarvingBiomeVariants OLD_MOUNTAIN_LAKE = registerCarving("old_mountain_lake", OLD_MOUNTAINS, BiomeNoise::lakeCarving);
+    public static final CarvingBiomeVariants FLOODED_MOUNTAIN_LAKE = registerCarving("flooded_mountain_lake", FLOODED_MOUNTAINS, BiomeNoise::lakeCarving);
+    public static final CarvingBiomeVariants PLATEAU_LAKE = registerCarving("plateau_lake", PLATEAU, BiomeNoise::lakeCarving);
 
     public static BiomeExtension getExtensionOrThrow(IWorld world, Biome biome)
     {
@@ -133,6 +143,11 @@ public final class TFCBiomes
         return VARIANTS;
     }
 
+    private static CarvingBiomeVariants registerCarving(String baseName, BiomeVariants parent, LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory)
+    {
+        return createBiomes(new CarvingBiomeVariants(parent, carvingNoiseFactory), baseName);
+    }
+
     private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory)
     {
         return register(baseName, noiseFactory, BiomeVariants.LargeGroup.LAND, BiomeVariants.SmallGroup.BODY);
@@ -148,7 +163,11 @@ public final class TFCBiomes
      */
     private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeVariants.LargeGroup largeGroup, BiomeVariants.SmallGroup smallGroup)
     {
-        BiomeVariants variants = new BiomeVariants(noiseFactory, smallGroup, largeGroup);
+        return createBiomes(new BiomeVariants(noiseFactory, smallGroup, largeGroup), baseName);
+    }
+
+    private static <V extends BiomeVariants> V createBiomes(V variants, String baseName)
+    {
         VARIANTS.add(variants);
         for (BiomeTemperature temp : BiomeTemperature.values())
         {

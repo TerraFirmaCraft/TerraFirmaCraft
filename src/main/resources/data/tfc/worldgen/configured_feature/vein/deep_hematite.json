@@ -14,15 +14,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_hematite/andesite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_hematite/andesite"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_hematite/andesite"
           }
         ]
@@ -33,15 +33,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_hematite/basalt"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_hematite/basalt"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_hematite/basalt"
           }
         ]
@@ -52,15 +52,15 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_hematite/dacite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_hematite/dacite"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_hematite/dacite"
           }
         ]
@@ -71,19 +71,20 @@
         ],
         "ore": [
           {
-            "weight": 10,
+            "weight": 0.1,
             "block": "tfc:ore/poor_hematite/rhyolite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/normal_hematite/rhyolite"
           },
           {
-            "weight": 60,
+            "weight": 0.6,
             "block": "tfc:ore/rich_hematite/rhyolite"
           }
         ]
       }
-    ]
+    ],
+    "salt": 1432060591
   }
 }

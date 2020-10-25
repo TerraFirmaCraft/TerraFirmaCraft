@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ClientWorld.class)
-public class ClientWorldMixin
+public abstract class ClientWorldMixin
 {
     /**
      * Replace a call to {@link Biome#getSkyColor()} with one that has a position and world context

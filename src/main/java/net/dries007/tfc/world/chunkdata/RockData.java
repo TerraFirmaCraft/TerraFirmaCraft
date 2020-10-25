@@ -109,6 +109,8 @@ public class RockData implements INBTSerializable<CompoundNBT>
         nbt.putByteArray("middleLayer", Helpers.createByteArray(middleLayer, r -> (byte) uniqueRocks.indexOf(r)));
         nbt.putByteArray("topLayer", Helpers.createByteArray(bottomLayer, r -> (byte) uniqueRocks.indexOf(r)));
 
+        nbt.putIntArray("height", rockLayerHeight);
+
         return nbt;
     }
 
@@ -128,7 +130,8 @@ public class RockData implements INBTSerializable<CompoundNBT>
             Helpers.createArrayFromBytes(nbt.getByteArray("bottomLayer"), bottomLayer, uniqueRocks::get);
             Helpers.createArrayFromBytes(nbt.getByteArray("middleLayer"), middleLayer, uniqueRocks::get);
             Helpers.createArrayFromBytes(nbt.getByteArray("topLayer"), topLayer, uniqueRocks::get);
+
+            System.arraycopy(nbt.getIntArray("height"), 0, rockLayerHeight, 0, 256);
         }
     }
-
 }

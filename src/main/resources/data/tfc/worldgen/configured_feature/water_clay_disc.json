@@ -1,0 +1,81 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:decorated",
+              "config": {
+                "feature": {
+                  "type": "tfc:soil_disc",
+                  "config": {
+                    "min_radius": 2,
+                    "max_radius": 3,
+                    "height": 2,
+                    "states": [
+                      {
+                        "replace": "tfc:dirt/silt",
+                        "with": "tfc:clay/silt"
+                      },
+                      {
+                        "replace": "tfc:dirt/loam",
+                        "with": "tfc:clay/loam"
+                      },
+                      {
+                        "replace": "tfc:dirt/sandy_loam",
+                        "with": "tfc:clay/sandy_loam"
+                      },
+                      {
+                        "replace": "tfc:dirt/silty_loam",
+                        "with": "tfc:clay/silty_loam"
+                      },
+                      {
+                        "replace": "tfc:grass/silt",
+                        "with": "tfc:clay_grass/silt"
+                      },
+                      {
+                        "replace": "tfc:grass/loam",
+                        "with": "tfc:clay_grass/loam"
+                      },
+                      {
+                        "replace": "tfc:grass/sandy_loam",
+                        "with": "tfc:clay_grass/sandy_loam"
+                      },
+                      {
+                        "replace": "tfc:grass/silty_loam",
+                        "with": "tfc:clay_grass/silty_loam"
+                      }
+                    ]
+                  }
+                },
+                "decorator": {
+                  "type": "tfc:near_water",
+                  "config": {}
+                }
+              }
+            },
+            "decorator": {
+              "type": "minecraft:heightmap_world_surface",
+              "config": {}
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 1
+      }
+    }
+  }
+}

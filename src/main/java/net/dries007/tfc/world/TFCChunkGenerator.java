@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableObject;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -32,6 +33,7 @@ import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -70,7 +72,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     }
 
     // Noise
-    private final Map<BiomeVariants, INoise2D> biomeNoiseMap;
+    private final Map<BiomeVariants, INoise2D> biomeHeightNoise;
+    private final Map<BiomeVariants, INoise2D> biomeCarvingCenterNoise;
+    private final Map<BiomeVariants, INoise2D> biomeCarvingHeightNoise;
     private final INoiseGenerator surfaceDepthNoise;
 
     private final ChunkDataProvider chunkDataProvider;
@@ -95,12 +99,22 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         this.flatBedrock = flatBedrock;
         this.seed = seed;
 
-        this.biomeNoiseMap = new HashMap<>();
+        this.biomeHeightNoise = new HashMap<>();
+        this.biomeCarvingCenterNoise = new HashMap<>();
+        this.biomeCarvingHeightNoise = new HashMap<>();
 
         final SharedSeedRandom seedGenerator = new SharedSeedRandom(seed);
         final long biomeNoiseSeed = seedGenerator.nextLong();
 
-        TFCBiomes.getVariants().forEach(variant -> biomeNoiseMap.put(variant, variant.createNoiseLayer(biomeNoiseSeed)));
+        TFCBiomes.getVariants().forEach(variant -> {
+            biomeHeightNoise.put(variant, variant.createNoiseLayer(biomeNoiseSeed));
+            if (variant instanceof CarvingBiomeVariants)
+            {
+                Pair<INoise2D, INoise2D> carvingNoise = ((CarvingBiomeVariants) variant).createCarvingNoiseLayer(biomeNoiseSeed);
+                biomeCarvingCenterNoise.put(variant, carvingNoise.getFirst());
+                biomeCarvingHeightNoise.put(variant, carvingNoise.getSecond());
+            }
+        });
         surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, IntStream.rangeClosed(-3, 0)); // From vanilla
 
         // Generators / Providers
@@ -207,7 +221,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final Biome[] localBiomes = new Biome[16 * 16];
 
         // The biome weights at different distance intervals
-        final Object2DoubleMap<Biome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>(4);
+        final Object2DoubleMap<Biome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>(4), carvingWeightMap1 = new Object2DoubleOpenHashMap<>(4);
 
         // Faster than vanilla (only does 2d interpolation) and uses the already generated biomes by the chunk where possible
         final ChunkArraySampler.CoordinateAccessor<Biome> biomeAccessor = (x, z) -> (Biome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(seed, chunkX + x, 0, chunkZ + z, world);
@@ -238,52 +252,45 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 ChunkArraySampler.reduceGroupedWeightMap(weightMap4, weightMap16, variantAccessor.andThen(BiomeVariants::getLargeGroup), BiomeVariants.LargeGroup.SIZE);
                 ChunkArraySampler.reduceGroupedWeightMap(weightMap1, weightMap4, variantAccessor.andThen(BiomeVariants::getSmallGroup), BiomeVariants.SmallGroup.SIZE);
 
-                // Check for presence of mountain river biomes
-                boolean hasMountainRiver = false;
-                for (Object2DoubleMap.Entry<Biome> entry : weightMap1.object2DoubleEntrySet())
-                {
-                    BiomeVariants variants = variantAccessor.apply(entry.getKey());
-                    if (variants == TFCBiomes.MOUNTAIN_RIVER)
+                // First, always calculate the center height, by ignoring any possibility of carving biomes
+                // The variant accessor is called for each possible biome - if we detect a carving variant, then mark it as found
+                MutableBoolean hasCarvingBiomes = new MutableBoolean();
+                double actualHeight = calculateNoiseColumn(weightMap1, variantAccessor, v -> {
+                    if (v instanceof CarvingBiomeVariants)
                     {
-                        // Mountain river identified
-                        hasMountainRiver = true;
+                        hasCarvingBiomes.setTrue();
+                        return ((CarvingBiomeVariants) v).getParent();
+                    }
+                    return v;
+                }, chunkX + x, chunkZ + z, mutableBiome);
+
+                double carvingCenter = 0, carvingHeight = 0, carvingWeight = 0;
+                if (hasCarvingBiomes.booleanValue())
+                {
+                    // Calculate the carving weight map, only using local influences from carving biomes
+                    ChunkArraySampler.fillSampledWeightMap(sampledBiomes1, carvingWeightMap1, x, z);
+
+                    // Calculate the weighted carving height and center, using the modified weight map
+                    for (Object2DoubleMap.Entry<Biome> entry : carvingWeightMap1.object2DoubleEntrySet())
+                    {
+                        final BiomeVariants variants = variantAccessor.apply(entry.getKey());
+                        if (variants instanceof CarvingBiomeVariants)
+                        {
+                            final double weight = entry.getDoubleValue();
+                            carvingWeight += weight;
+                            carvingCenter += weight * biomeCarvingCenterNoise.get(variants).noise(chunkX + x, chunkZ + z);
+                            carvingHeight += weight * biomeCarvingHeightNoise.get(variants).noise(chunkX + x, chunkZ + z);
+                        }
                     }
                 }
 
-                double actualHeight, extraCarvingTopHeight = 0, extraCarvingBottomHeight = 0;
-                if (hasMountainRiver)
-                {
-                    // Mountain river. We need to calculate two independent height levels - one using the river, one using the mountains
-                    actualHeight = calculateNoiseColumn(weightMap1, variantAccessor, v -> {
-                        if (v == TFCBiomes.MOUNTAIN_RIVER)
-                        {
-                            return TFCBiomes.MOUNTAINS;
-                        }
-                        return v;
-                    }, chunkX + x, chunkZ + z, mutableBiome);
-
-                    double withRiverHeight = calculateNoiseColumn(weightMap1, variantAccessor, v -> {
-                        if (v == TFCBiomes.MOUNTAIN_RIVER)
-                        {
-                            return TFCBiomes.RIVER;
-                        }
-                        return v;
-                    }, chunkX + x, chunkZ + z, mutableBiome);
-
-                    // Calculate extra carving heights
-                    double withRiverDepth = SEA_LEVEL + 2 - withRiverHeight;
-                    extraCarvingTopHeight = SEA_LEVEL + 2 + withRiverDepth;
-                    extraCarvingBottomHeight = withRiverHeight;
-                }
-                else
-                {
-                    // No mountain river, calculate only the single noise weights
-                    actualHeight = calculateNoiseColumn(weightMap1, variantAccessor, Function.identity(), chunkX + x, chunkZ + z, mutableBiome);
-                }
+                // Adjust carving center towards sea level, to fill out the total weight (height defaults weight to zero so it does not need to change
+                carvingCenter += SEA_LEVEL * (1 - carvingWeight);
 
                 // Record the local (accurate) biome.
                 localBiomes[x + 16 * z] = mutableBiome.getValue();
 
+                // Set base terrain
                 final int landHeight = (int) actualHeight;
                 final int landOrSeaHeight = Math.max(landHeight, SEA_LEVEL);
                 for (int y = 0; y <= landHeight; y++)
@@ -298,11 +305,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                     fastChunk.setBlockState(pos, settings.getDefaultFluid(), false);
                 }
 
-                if (hasMountainRiver)
+                if (hasCarvingBiomes.booleanValue() && carvingHeight > 2f)
                 {
-                    // Carve mountain rivers
-                    final int bottomHeight = (int) extraCarvingBottomHeight;
-                    final int topHeight = (int) extraCarvingTopHeight;
+                    // Apply carving
+                    final int bottomHeight = (int) (carvingCenter - carvingHeight * 0.5f);
+                    final int topHeight = (int) (carvingCenter + carvingHeight * 0.5f);
                     for (int y = bottomHeight; y <= topHeight; y++)
                     {
                         pos.set(chunkX + x, y, chunkZ + z);
@@ -391,7 +398,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         {
             double weight = entry.getDoubleValue();
             BiomeVariants variants = variantsAccessor.apply(entry.getKey());
-            double height = weight * biomeNoiseMap.get(variantsFilter.apply(variants)).noise(x, z);
+            double height = weight * biomeHeightNoise.get(variantsFilter.apply(variants)).noise(x, z);
             totalHeight += height;
             if (variants == TFCBiomes.RIVER)
             {

@@ -165,7 +165,7 @@ ORE_GRADES: Dict[str, OreGrade] = {
 }
 ORE_VEINS: Dict[str, Vein] = {
     'normal_native_copper': Vein('native_copper', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
-    'surface_native_copper': Vein('native_copper', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['igneous_extrusive']),
+    'surface_native_copper': Vein('native_copper', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_extrusive']),
     'normal_native_gold': Vein('native_gold', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive', 'igneous_intrusive']),
     'deep_native_gold': Vein('native_gold', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['igneous_extrusive', 'igneous_intrusive']),
     'normal_native_silver': Vein('native_silver', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['granite', 'gneiss']),
@@ -173,9 +173,9 @@ ORE_VEINS: Dict[str, Vein] = {
     'normal_hematite': Vein('hematite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
     'deep_hematite': Vein('hematite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['igneous_extrusive']),
     'normal_cassiterite': Vein('cassiterite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_intrusive']),
-    'surface_cassiterite': Vein('cassiterite', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['igneous_intrusive']),
+    'surface_cassiterite': Vein('cassiterite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_intrusive']),
     'normal_bismuthinite': Vein('bismuthinite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_intrusive', 'sedimentary']),
-    'surface_bismuthinite': Vein('bismuthinite', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['igneous_intrusive', 'sedimentary']),
+    'surface_bismuthinite': Vein('bismuthinite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_intrusive', 'sedimentary']),
     'normal_garnierite': Vein('garnierite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['gabbro']),
     'poor_garnierite': Vein('garnierite', 'cluster', 140, 15, 5, 100, 60, 60, 30, 10, ['igneous_intrusive']),
     'normal_malachite': Vein('malachite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['marble', 'limestone']),
@@ -185,9 +185,9 @@ ORE_VEINS: Dict[str, Vein] = {
     'normal_limonite': Vein('limonite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['sedimentary']),
     'deep_limonite': Vein('limonite', 'cluster', 120, 30, 5, 60, 60, 10, 30, 60, ['sedimentary']),
     'normal_sphalerite': Vein('sphalerite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
-    'surface_sphalerite': Vein('sphalerite', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['metamorphic']),
+    'surface_sphalerite': Vein('sphalerite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['metamorphic']),
     'normal_tetrahedrite': Vein('tetrahedrite', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['metamorphic']),
-    'surface_tetrahedrite': Vein('tetrahedrite', 'cluster', 80, 15, 60, 120, 60, 60, 30, 10, ['metamorphic']),
+    'surface_tetrahedrite': Vein('tetrahedrite', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['metamorphic']),
 
     'bituminous_coal': Vein('bituminous_coal', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
     'lignite': Vein('lignite', 'cluster', 120, 10, 5, 100, 60, 0, 0, 0, ['sedimentary']),
@@ -273,7 +273,7 @@ DEFAULT_LANG = {
     'tfc.commands.time.query.calendar_ticks': 'The calendar ticks is %s',
     'tfc.commands.heat.set_heat': 'Held item heat set to %s',
     'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
-    'tfc.commands.clear_world.done': 'Cleared.',
+    'tfc.commands.clear_world.done': 'Cleared %d Block(s).',
     'tfc.commands.player.query_hunger': 'Hunger is %s',
     'tfc.commands.player.query_saturation': 'Saturation is %s',
 

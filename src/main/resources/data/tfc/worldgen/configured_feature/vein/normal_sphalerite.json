@@ -14,15 +14,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_sphalerite/gneiss"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_sphalerite/gneiss"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_sphalerite/gneiss"
           }
         ]
@@ -33,15 +33,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_sphalerite/marble"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_sphalerite/marble"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_sphalerite/marble"
           }
         ]
@@ -52,15 +52,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_sphalerite/phyllite"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_sphalerite/phyllite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_sphalerite/phyllite"
           }
         ]
@@ -71,15 +71,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_sphalerite/quartzite"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_sphalerite/quartzite"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_sphalerite/quartzite"
           }
         ]
@@ -90,15 +90,15 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_sphalerite/schist"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_sphalerite/schist"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_sphalerite/schist"
           }
         ]
@@ -109,19 +109,20 @@
         ],
         "ore": [
           {
-            "weight": 20,
+            "weight": 0.2,
             "block": "tfc:ore/poor_sphalerite/slate"
           },
           {
-            "weight": 50,
+            "weight": 0.5,
             "block": "tfc:ore/normal_sphalerite/slate"
           },
           {
-            "weight": 30,
+            "weight": 0.3,
             "block": "tfc:ore/rich_sphalerite/slate"
           }
         ]
       }
-    ]
+    ],
+    "salt": 1067807761
   }
 }

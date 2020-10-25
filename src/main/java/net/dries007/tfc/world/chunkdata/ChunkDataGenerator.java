@@ -41,7 +41,7 @@ public class ChunkDataGenerator implements IChunkDataGenerator
         this.middleRockLayer = new RockFactory(rockLayers.get(1));
         this.topRockLayer = new RockFactory(rockLayers.get(2));
 
-        this.layerHeightNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(2).scaled(40, 60).spread(0.1f);
+        this.layerHeightNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(2).scaled(40, 60).spread(0.015f);
 
         // Climate
         temperatureNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.temperatureScale.get()), 0)

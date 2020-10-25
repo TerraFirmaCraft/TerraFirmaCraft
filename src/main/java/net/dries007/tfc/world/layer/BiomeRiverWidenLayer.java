@@ -5,52 +5,47 @@
 
 package net.dries007.tfc.world.layer;
 
+import java.util.function.IntPredicate;
+
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
 public enum BiomeRiverWidenLayer implements ICastleTransformer
 {
-    MEDIUM
-        {
-            @Override
-            protected boolean isRiverCompatible(int value)
-            {
-                return LOW.isRiverCompatible(value) || value == TFCLayerUtil.ROLLING_HILLS || value == TFCLayerUtil.LOW_CANYONS;
-            }
-        },
-    LOW
-        {
-            @Override
-            protected boolean isRiverCompatible(int value)
-            {
-                return value == TFCLayerUtil.PLAINS || value == TFCLayerUtil.LOWLANDS || value == TFCLayerUtil.HILLS || value == TFCLayerUtil.RIVER;
-            }
-        };
+    MEDIUM(TFCLayerUtil.RIVER, value -> TFCLayerUtil.isLow(value) || value == TFCLayerUtil.ROLLING_HILLS || value == TFCLayerUtil.CANYONS),
+    LOW(TFCLayerUtil.RIVER, TFCLayerUtil::isLow);
+
+    private final int river;
+    private final IntPredicate expansion;
+
+    BiomeRiverWidenLayer(int river, IntPredicate expansion)
+    {
+        this.river = river;
+        this.expansion = expansion;
+    }
 
     @Override
     public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
     {
-        if (isRiverCompatible(center) && center != TFCLayerUtil.RIVER)
+        if (expansion.test(center) && center != river)
         {
-            if (north == TFCLayerUtil.RIVER && (isRiverCompatible(west) && isRiverCompatible(east) && isRiverCompatible(south)))
+            if (north == river && (expansion.test(west) && expansion.test(east) && expansion.test(south)))
             {
-                return TFCLayerUtil.RIVER;
+                return river;
             }
-            else if (east == TFCLayerUtil.RIVER && (isRiverCompatible(west) && isRiverCompatible(north) && isRiverCompatible(south)))
+            else if (east == river && (expansion.test(west) && expansion.test(north) && expansion.test(south)))
             {
-                return TFCLayerUtil.RIVER;
+                return river;
             }
-            else if (west == TFCLayerUtil.RIVER && (isRiverCompatible(north) && isRiverCompatible(east) && isRiverCompatible(south)))
+            else if (west == river && (expansion.test(north) && expansion.test(east) && expansion.test(south)))
             {
-                return TFCLayerUtil.RIVER;
+                return river;
             }
-            else if (south == TFCLayerUtil.RIVER && (isRiverCompatible(west) && isRiverCompatible(east) && isRiverCompatible(north)))
+            else if (south == river && (expansion.test(west) && expansion.test(east) && expansion.test(north)))
             {
-                return TFCLayerUtil.RIVER;
+                return river;
             }
         }
         return center;
     }
-
-    protected abstract boolean isRiverCompatible(int value);
 }

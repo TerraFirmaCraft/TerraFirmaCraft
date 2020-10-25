@@ -60,7 +60,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         {
                             if (random.nextFloat() < getChanceToGenerate(mutablePos, vein, config))
                             {
-                                setBlock(world, mutablePos, oreState);
+                                world.setBlock(mutablePos, oreState, 3);
                             }
                         }
                     }
@@ -97,7 +97,11 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
 
     protected void getVeinsAtChunk(ISeedReader world, int chunkPosX, int chunkPosZ, List<V> veins, C config)
     {
-        chunkRandom.setSeed(FastRandom.next(FastRandom.next(world.getSeed(), chunkPosX), chunkPosZ));
+        long seed = FastRandom.next(world.getSeed(), config.getSalt());
+        seed = FastRandom.next(seed, chunkPosX);
+        seed = FastRandom.next(seed, chunkPosZ);
+        seed = FastRandom.next(seed, config.getSalt());
+        chunkRandom.setSeed(seed);
         if (chunkRandom.nextInt(config.getRarity()) == 0)
         {
             veins.add(createVein(chunkPosX << 4, chunkPosZ << 4, chunkRandom, config));
