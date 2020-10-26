@@ -59,7 +59,10 @@ public final class Codecs
      */
     public static <E> Codec<IWeighted<E>> weightedCodec(Codec<E> elementCodec, String elementKey)
     {
-        return IWeighted.codec(Codec.mapPair(elementCodec.fieldOf(elementKey), Codec.DOUBLE.optionalFieldOf("weight", 1d)).codec().listOf());
+        return IWeighted.codec(Codec.mapPair(
+            elementCodec.fieldOf(elementKey),
+            Codec.DOUBLE.optionalFieldOf("weight", 1d)
+        ).codec().listOf());
     }
 
     /**
@@ -103,7 +106,8 @@ public final class Codecs
     }
 
     /**
-     * Creates a codec for a set for fast block lookups
+     * Creates a codec for a {@link Set}, for faster contains checks.
+     * Note: by necessity this does not preserve the original order and breaks the codec contract.
      */
     public static <E> Codec<Set<E>> setCodec(Codec<E> elementCodec)
     {

@@ -6,7 +6,7 @@
     "min_y": 30,
     "max_y": 100,
     "size": 20,
-    "density": 60,
+    "density": 0.6,
     "blocks": [
       {
         "stone": [
@@ -14,15 +14,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_magnetite/chalk"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_magnetite/chalk"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_magnetite/chalk"
           }
         ]
@@ -33,15 +33,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_magnetite/chert"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_magnetite/chert"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_magnetite/chert"
           }
         ]
@@ -52,15 +52,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_magnetite/claystone"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_magnetite/claystone"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_magnetite/claystone"
           }
         ]
@@ -71,15 +71,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_magnetite/conglomerate"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_magnetite/conglomerate"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_magnetite/conglomerate"
           }
         ]
@@ -90,15 +90,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_magnetite/dolomite"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_magnetite/dolomite"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_magnetite/dolomite"
           }
         ]
@@ -109,15 +109,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_magnetite/limestone"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_magnetite/limestone"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_magnetite/limestone"
           }
         ]
@@ -128,15 +128,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_magnetite/shale"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_magnetite/shale"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_magnetite/shale"
           }
         ]

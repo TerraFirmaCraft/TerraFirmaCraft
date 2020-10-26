@@ -6,7 +6,7 @@
     "min_y": 30,
     "max_y": 100,
     "size": 20,
-    "density": 60,
+    "density": 0.6,
     "blocks": [
       {
         "stone": [
@@ -14,15 +14,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_malachite/marble"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_malachite/marble"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_malachite/marble"
           }
         ]
@@ -33,15 +33,15 @@
         ],
         "ore": [
           {
-            "weight": 0.2,
+            "weight": 20,
             "block": "tfc:ore/poor_malachite/limestone"
           },
           {
-            "weight": 0.5,
+            "weight": 50,
             "block": "tfc:ore/normal_malachite/limestone"
           },
           {
-            "weight": 0.3,
+            "weight": 30,
             "block": "tfc:ore/rich_malachite/limestone"
           }
         ]

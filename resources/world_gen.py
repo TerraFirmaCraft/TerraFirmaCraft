@@ -169,17 +169,17 @@ def generate(rm: ResourceManager):
                 'min_y': vein.min_y,
                 'max_y': vein.max_y,
                 'size': vein.size,
-                'density': vein.density,
+                'density': vein.density * 0.01,
                 'blocks': [{
                     'stone': ['tfc:rock/raw/%s' % rock],
                     'ore': [{
-                        'weight': vein.poor * 0.01,
+                        'weight': vein.poor,
                         'block': 'tfc:ore/poor_%s/%s' % (vein.ore, rock)
                     }, {
-                        'weight': vein.normal * 0.01,
+                        'weight': vein.normal,
                         'block': 'tfc:ore/normal_%s/%s' % (vein.ore, rock)
                     }, {
-                        'weight': vein.rich * 0.01,
+                        'weight': vein.rich,
                         'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
                     }]
                 } for rock in rocks],
