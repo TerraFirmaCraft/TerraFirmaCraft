@@ -17,9 +17,12 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -30,6 +33,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.Constants;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
@@ -60,14 +64,23 @@ public class ItemJug extends ItemPottery
             IFluidHandler jugCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if (jugCap != null)
             {
-                RayTraceResult rayTrace = rayTrace(world, player, true);
-
                 if (jugCap.drain(CAPACITY, false) != null)
                 {
-                    player.setActiveHand(hand);
+                    if (!world.isRemote && ConfigTFC.Devices.JUG.dumpWaterOnShiftRightClick && player.isSneaking())
+                    {
+                        jugCap.drain(CAPACITY, true);
+                        world.playSound(null, player.posX, player.posY + 0.5, player.posZ, TFCSounds.JUG_FILL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+                        Vec3d look = player.getLookVec();
+                        ((WorldServer) world).spawnParticle(EnumParticleTypes.WATER_DROP, player.posX + look.x, player.posY + 0.3 + world.rand.nextDouble(), player.posZ + look.z, 42, 0.1D, 0.4D, 0.2D, 0.0D);
+                    }
+                    else
+                    {
+                        player.setActiveHand(hand);
+                    }
                     return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                 }
-                else if (!world.isRemote && jugCap.drain(CAPACITY, false) == null && rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK)
+                RayTraceResult rayTrace = rayTrace(world, player, true);
+                if (!world.isRemote && jugCap.drain(CAPACITY, false) == null && rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK)
                 {
                     ItemStack single = stack.copy();
                     single.setCount(1);
