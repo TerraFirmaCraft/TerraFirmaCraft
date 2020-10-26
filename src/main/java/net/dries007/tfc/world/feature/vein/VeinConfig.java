@@ -28,7 +28,7 @@ public class VeinConfig implements IFeatureConfig
             Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("ore")
         ).codec()).fieldOf("blocks").forGetter(c -> c.states),
         Indicator.CODEC.optionalFieldOf("indicator").forGetter(c -> c.indicator),
-        Codecs.POSITIVE_INT.fieldOf("rarity").forGetter(VeinConfig::getRarity),
+        Codecs.POSITIVE_INT.optionalFieldOf("rarity", 60).forGetter(VeinConfig::getRarity),
         Codecs.POSITIVE_INT.optionalFieldOf("size", 8).forGetter(VeinConfig::getSize),
         Codecs.NONNEGATIVE_FLOAT.optionalFieldOf("density", 0.2f).forGetter(VeinConfig::getDensity),
         Codec.intRange(0, 256).optionalFieldOf("min_y", 16).forGetter(VeinConfig::getMinY),

@@ -71,13 +71,16 @@ public class TFCLayerUtil
     public static final int LAKE = makeLayerId(TFCBiomes.LAKE);
     public static final int RIVER = makeLayerId(TFCBiomes.RIVER);
     public static final int MOUNTAIN_RIVER = makeLayerId(TFCBiomes.MOUNTAIN_RIVER);
-    private static final Int2ObjectMap<BiomeVariants> ID_TO_BIOME_VARIANTS = new Int2ObjectOpenHashMap<>(23);
     public static final int OLD_MOUNTAIN_RIVER = makeLayerId(TFCBiomes.OLD_MOUNTAIN_RIVER);
     public static final int FLOODED_MOUNTAIN_RIVER = makeLayerId(TFCBiomes.FLOODED_MOUNTAIN_RIVER);
     public static final int MOUNTAIN_LAKE = makeLayerId(TFCBiomes.MOUNTAIN_LAKE);
     public static final int OLD_MOUNTAIN_LAKE = makeLayerId(TFCBiomes.OLD_MOUNTAIN_LAKE);
     public static final int FLOODED_MOUNTAIN_LAKE = makeLayerId(TFCBiomes.FLOODED_MOUNTAIN_LAKE);
     public static final int PLATEAU_LAKE = makeLayerId(TFCBiomes.PLATEAU_LAKE);
+    /**
+     * Needs to be initialized before layer IDs
+     */
+    private static final Int2ObjectMap<BiomeVariants> ID_TO_BIOME_VARIANTS = new Int2ObjectOpenHashMap<>(23);
     public static final int LARGE_LAKE_MARKER = ++LAYER_ID;
     public static final int OCEAN_OCEAN_CONVERGING_MARKER = ++LAYER_ID;
     public static final int RIVER_MARKER = ++LAYER_ID;

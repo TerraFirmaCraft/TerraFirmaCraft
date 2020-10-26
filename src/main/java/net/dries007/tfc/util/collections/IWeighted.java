@@ -62,6 +62,9 @@ public interface IWeighted<E> extends Iterable<E>
         }
     };
 
+    /**
+     * Creates a codec for an {@link IWeighted} from a simpler representation
+     */
     static <E> Codec<IWeighted<E>> codec(Codec<List<Pair<E, Double>>> codec)
     {
         return codec.xmap((list -> {

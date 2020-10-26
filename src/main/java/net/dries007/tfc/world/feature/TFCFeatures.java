@@ -48,6 +48,8 @@ public class TFCFeatures
 
     public static final RegistryObject<SoilDiscFeature> SOIL_DISC = register("soil_disc", SoilDiscFeature::new, SoilDiscConfig.CODEC);
 
+    public static final RegistryObject<DebugMetaballsFeature> DEBUG_METABALLS = register("debug_metaballs", DebugMetaballsFeature::new, NoFeatureConfig.CODEC);
+
     private static <C extends IFeatureConfig, F extends Feature<C>> RegistryObject<F> register(String name, Function<Codec<C>, F> factory, Codec<C> codec)
     {
         return FEATURES.register(name, () -> factory.apply(codec));
