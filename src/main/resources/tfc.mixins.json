@@ -14,6 +14,7 @@
     "util.registry.WorldSettingsImportMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
+    "world.biome.BiomeContainerMixin",
     "world.biome.BiomeMixin",
     "world.gen.FlatGenerationSettingsMixin",
     "world.gen.HeightmapAccessor",
@@ -31,8 +32,7 @@
     "client.renderer.FogRendererMixin",
     "client.renderer.WorldRendererMixin",
     "client.world.ClientWorldMixin",
-    "world.biome.BiomeColorsAccessor",
-    "world.biome.BiomeContainerClientMixin"
+    "world.biome.BiomeColorsAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
