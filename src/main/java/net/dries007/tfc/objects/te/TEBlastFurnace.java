@@ -57,7 +57,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
     private int maxFuel = 0, maxOre = 0, delayTimer = 0, meltAmount = 0, chimney = 0;
     private long burnTicksLeft = 0, airTicks = 0;
     private int fuelCount = 0, oreCount = 0, oreUnits; // Used to show on client's GUI how much ore/fuel TE has
-    private int temperature = 0;
+    private float temperature = 0;
     private float burnTemperature = 0;
 
     public TEBlastFurnace()
@@ -104,7 +104,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
         burnTicksLeft = nbt.getLong("burnTicksLeft");
         airTicks = nbt.getLong("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
-        temperature = nbt.getInteger("temperature");
+        temperature = nbt.getFloat("temperature");
         alloy.deserializeNBT(nbt.getCompoundTag("alloy"));
         super.readFromNBT(nbt);
     }
@@ -128,7 +128,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
         nbt.setLong("burnTicksLeft", burnTicksLeft);
         nbt.setLong("airTicks", airTicks);
         nbt.setFloat("burnTemperature", burnTemperature);
-        nbt.setInteger("temperature", temperature);
+        nbt.setFloat("temperature", temperature);
         nbt.setTag("alloy", alloy.serializeNBT());
         return super.writeToNBT(nbt);
     }
@@ -213,7 +213,7 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
         switch (index)
         {
             case FIELD_TEMPERATURE:
-                return temperature;
+                return (int) temperature;
             case FIELD_ORE:
                 return oreCount;
             case FIELD_FUEL:
@@ -239,12 +239,13 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
             if (state.getValue(LIT))
             {
                 // Update bellows air
-                if (--airTicks <= 0)
+                if (burnTicksLeft > 0)
                 {
-                    airTicks = 0;
+                    // Double fuel consumption if using bellows
+                    burnTicksLeft -= airTicks > 0 ? 2 : 1;
                 }
 
-                if (--burnTicksLeft <= 0)
+                if (burnTicksLeft <= 0)
                 {
                     if (!fuelStacks.isEmpty())
                     {
@@ -264,15 +265,10 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
                 if (temperature > 0 || burnTemperature > 0)
                 {
                     float targetTemperature = burnTemperature + airTicks;
-                    if (temperature < targetTemperature)
+                    if (temperature != targetTemperature)
                     {
-                        // Modifier for heating = 2x for bellows
-                        temperature += (airTicks > 0 ? 2 : 1) * ConfigTFC.Devices.TEMPERATURE.heatingModifier;
-                    }
-                    else if (temperature > targetTemperature)
-                    {
-                        // Modifier for cooling = 0.5x for bellows
-                        temperature -= (airTicks > 0 ? 0.5 : 1) * ConfigTFC.Devices.TEMPERATURE.heatingModifier;
+                        float delta = (float) ConfigTFC.Devices.TEMPERATURE.heatingModifier;
+                        temperature = CapabilityItemHeat.adjustTempTowards(temperature, targetTemperature, delta * (airTicks > 0 ? 2 : 1), delta * (airTicks > 0 ? 0.5f : 1));
                     }
                     // Provide heat to blocks that are one block bellow AKA crucible
                     Block blockCrucible = world.getBlockState(pos.down()).getBlock();
@@ -313,6 +309,16 @@ public class TEBlastFurnace extends TETickableInventory implements ITickable, IT
                         world.setBlockState(pos, state.withProperty(LIT, false));
                     }
                 }
+            }
+
+            // Update air ticks
+            if (airTicks > 0)
+            {
+                airTicks--;
+            }
+            else
+            {
+                airTicks = 0;
             }
 
             meltAmount = alloy.getAmount(); //update for client GUI

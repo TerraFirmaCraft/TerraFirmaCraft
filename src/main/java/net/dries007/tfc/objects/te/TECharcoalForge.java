@@ -133,10 +133,14 @@ public class TECharcoalForge extends TETickableInventory implements ICalendarTic
                 burnTicks = 0;
             }
 
-            // Update bellows air
+            // Update air ticks
             if (airTicks > 0)
             {
                 airTicks--;
+            }
+            else
+            {
+                airTicks = 0;
             }
 
             // Always update temperature / cooking, until the fire pit is not hot anymore
