@@ -103,23 +103,23 @@ public class BlockFruitTreeLeaves extends BlockLeaves
                     long hours = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_HOUR;
                     if (hours > (tree.getGrowthTime() * ConfigTFC.General.FOOD.fruitTreeGrowthTimeModifier))
                     {
-                        world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.FRUIT));
+                        world.setBlockState(pos, state.withProperty(LEAF_STATE, EnumLeafState.FRUIT));
                         te.resetCounter();
                     }
                 }
             }
             else if (tree.isFlowerMonth(CalendarTFC.CALENDAR_TIME.getMonthOfYear()))
             {
-                if (world.getBlockState(pos).getValue(LEAF_STATE) != EnumLeafState.FLOWERING)
+                if (state.getValue(LEAF_STATE) != EnumLeafState.FLOWERING)
                 {
-                    world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.FLOWERING));
+                    world.setBlockState(pos, state.withProperty(LEAF_STATE, EnumLeafState.FLOWERING));
                 }
             }
             else
             {
-                if (world.getBlockState(pos).getValue(LEAF_STATE) != EnumLeafState.NORMAL)
+                if (state.getValue(LEAF_STATE) != EnumLeafState.NORMAL)
                 {
-                    world.setBlockState(pos, world.getBlockState(pos).withProperty(LEAF_STATE, EnumLeafState.NORMAL));
+                    world.setBlockState(pos, state.withProperty(LEAF_STATE, EnumLeafState.NORMAL));
                 }
             }
             doLeafDecay(world, pos, state);
