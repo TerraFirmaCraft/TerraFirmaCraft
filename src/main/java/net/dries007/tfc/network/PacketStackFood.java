@@ -13,6 +13,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -118,11 +119,13 @@ public class PacketStackFood implements IMessage
             List<Slot> stackableSlots = new ArrayList<>();
             for (Slot slot : inventorySlots)
             {
-                if (slot.getSlotIndex() == targetSlot.getSlotIndex()) continue;
-                ItemStack stack = slot.getStack();
-                if (CapabilityFood.areStacksStackableExceptCreationDate(targetSlot.getStack(), stack))
+                if (slot.getSlotIndex() != targetSlot.getSlotIndex() && !(slot instanceof SlotCrafting))
                 {
-                    stackableSlots.add(slot);
+                    ItemStack stack = slot.getStack();
+                    if (CapabilityFood.areStacksStackableExceptCreationDate(targetSlot.getStack(), stack))
+                    {
+                        stackableSlots.add(slot);
+                    }
                 }
             }
             stackableSlots.sort(Comparator.comparingInt(slot -> slot.getStack().getCount()));
