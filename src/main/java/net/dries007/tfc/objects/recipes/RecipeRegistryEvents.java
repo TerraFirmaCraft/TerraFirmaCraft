@@ -22,362 +22,359 @@ public class RecipeRegistryEvents
     @SubscribeEvent
     public static void onRecipeRegister(RegistryEvent.Register<IRecipe> event)
     {
-        // todo: in 1.13 move to json overrides
-        // This causes massive log spawm
-        // See https://github.com/MinecraftForge/MinecraftForge/pull/4541#issuecomment-354033516
         if (ConfigTFC.General.OVERRIDES.removeVanillaRecipes)
         {
-            IForgeRegistryModifiable<IRecipe> modRegistry = (IForgeRegistryModifiable<IRecipe>) event.getRegistry();
+            IForgeRegistryModifiable<IRecipe> registry = (IForgeRegistryModifiable<IRecipe>) event.getRegistry();
 
             //misc AKA too lazy to categorize somehow
-            modRegistry.remove(new ResourceLocation("minecraft:sugar"));
-            modRegistry.remove(new ResourceLocation("minecraft:speckled_melon"));
-            modRegistry.remove(new ResourceLocation("minecraft:sea_lantern"));
-            modRegistry.remove(new ResourceLocation("minecraft:rabbit_stew_from_red_mushroom"));
-            modRegistry.remove(new ResourceLocation("minecraft:rabbit_stew_from_brown_mushroom"));
-            modRegistry.remove(new ResourceLocation("minecraft:pumpkin_pie"));
-            modRegistry.remove(new ResourceLocation("minecraft:prismarine_bricks"));
-            modRegistry.remove(new ResourceLocation("minecraft:prismarine"));
-            modRegistry.remove(new ResourceLocation("minecraft:paper"));
-            modRegistry.remove(new ResourceLocation("minecraft:mushroom_stew"));
-            modRegistry.remove(new ResourceLocation("minecraft:melon_seeds"));
-            modRegistry.remove(new ResourceLocation("minecraft:melon_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:pumpkin_seeds"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_apple"));
-            modRegistry.remove(new ResourceLocation("minecraft:glowstone"));
-            modRegistry.remove(new ResourceLocation("minecraft:furnace"));
-            modRegistry.remove(new ResourceLocation("minecraft:flint_and_steel"));
-            modRegistry.remove(new ResourceLocation("minecraft:fishing_rod"));
-            modRegistry.remove(new ResourceLocation("minecraft:fire_charge"));
-            modRegistry.remove(new ResourceLocation("minecraft:fermented_spider_eye"));
-            modRegistry.remove(new ResourceLocation("minecraft:crafting_table"));
-            modRegistry.remove(new ResourceLocation("minecraft:cookie"));
-            modRegistry.remove(new ResourceLocation("minecraft:compass"));
-            modRegistry.remove(new ResourceLocation("minecraft:comparator"));
-            modRegistry.remove(new ResourceLocation("minecraft:repeater"));
-            modRegistry.remove(new ResourceLocation("minecraft:coarse_dirt"));
-            modRegistry.remove(new ResourceLocation("minecraft:chest"));
-            modRegistry.remove(new ResourceLocation("minecraft:cauldron"));
-            modRegistry.remove(new ResourceLocation("minecraft:carrot_on_a_stick"));
-            modRegistry.remove(new ResourceLocation("minecraft:cake"));
-            modRegistry.remove(new ResourceLocation("minecraft:bucket"));
-            modRegistry.remove(new ResourceLocation("minecraft:brewing_stand"));
-            modRegistry.remove(new ResourceLocation("minecraft:bread"));
-            modRegistry.remove(new ResourceLocation("minecraft:bookshelf"));
-            modRegistry.remove(new ResourceLocation("minecraft:boat"));
-            modRegistry.remove(new ResourceLocation("minecraft:beetroot_soup"));
-            modRegistry.remove(new ResourceLocation("minecraft:beacon"));
-            modRegistry.remove(new ResourceLocation("minecraft:armor_stand"));
-            modRegistry.remove(new ResourceLocation("minecraft:anvil"));
-            modRegistry.remove(new ResourceLocation("minecraft:painting"));
-            modRegistry.remove(new ResourceLocation("minecraft:torch"));
-            modRegistry.remove(new ResourceLocation("minecraft:shield"));
-            modRegistry.remove(new ResourceLocation("minecraft:shears"));
-            modRegistry.remove(new ResourceLocation("minecraft:lead"));
-            modRegistry.remove(new ResourceLocation("minecraft:glass_bottle"));
-            modRegistry.remove(new ResourceLocation("minecraft:flower_pot"));
-            modRegistry.remove(new ResourceLocation("minecraft:brick_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:enchanting_table"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "sugar");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "speckled_melon");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "sea_lantern");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "rabbit_stew_from_red_mushroom");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "rabbit_stew_from_brown_mushroom");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "pumpkin_pie");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "prismarine_bricks");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "prismarine");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "paper");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "mushroom_stew");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "melon_seeds");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "melon_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "pumpkin_seeds");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_apple");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "glowstone");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "furnace");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "flint_and_steel");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "fishing_rod");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "fire_charge");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "fermented_spider_eye");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "crafting_table");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "cookie");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "compass");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "comparator");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "repeater");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "coarse_dirt");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chest");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "cauldron");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "carrot_on_a_stick");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "cake");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "bucket");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "brewing_stand");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "bread");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "bookshelf");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "boat");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "beetroot_soup");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "beacon");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "armor_stand");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "anvil");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "painting");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "torch");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "shield");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "shears");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "lead");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "glass_bottle");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "flower_pot");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "brick_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "enchanting_table");
 
             //breakydowny, buildyupy things.
-            modRegistry.remove(new ResourceLocation("minecraft:wheat"));
-            modRegistry.remove(new ResourceLocation("minecraft:slime_ball"));
-            modRegistry.remove(new ResourceLocation("minecraft:slime"));
-            modRegistry.remove(new ResourceLocation("minecraft:lapis_lazuli"));
-            modRegistry.remove(new ResourceLocation("minecraft:lapis_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_ingot_from_nuggets"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_ingot_from_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_nugget"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_bars"));
-            modRegistry.remove(new ResourceLocation("minecraft:hay_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:gold_nugget"));
-            modRegistry.remove(new ResourceLocation("minecraft:gold_ingot_from_nuggets"));
-            modRegistry.remove(new ResourceLocation("minecraft:gold_ingot_from_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:gold_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond"));
-            modRegistry.remove(new ResourceLocation("minecraft:dark_prismarine"));
-            modRegistry.remove(new ResourceLocation("minecraft:emerald_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:emerald"));
-            modRegistry.remove(new ResourceLocation("minecraft:coal_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:coal"));
-            modRegistry.remove(new ResourceLocation("minecraft:bone_meal_from_bone"));
-            modRegistry.remove(new ResourceLocation("minecraft:bone_meal_from_block"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wheat");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "slime_ball");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "slime");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "lapis_lazuli");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "lapis_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_ingot_from_nuggets");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_ingot_from_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_nugget");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_bars");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "hay_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "gold_nugget");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "gold_ingot_from_nuggets");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "gold_ingot_from_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "gold_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "dark_prismarine");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "emerald_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "emerald");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "coal_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "coal");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "bone_meal_from_bone");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "bone_meal_from_block");
 
             //nether
-            modRegistry.remove(new ResourceLocation("minecraft:red_nether_brick"));
-            modRegistry.remove(new ResourceLocation("minecraft:quartz_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:quartz_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:quartz_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:pillar_quartz_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:nether_wart_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:nether_brick_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:nether_brick_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:nether_brick_fence"));
-            modRegistry.remove(new ResourceLocation("minecraft:nether_brick"));
-            modRegistry.remove(new ResourceLocation("minecraft:magma_cream"));
-            modRegistry.remove(new ResourceLocation("minecraft:magma"));
-            modRegistry.remove(new ResourceLocation("minecraft:chiseled_quartz_block"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_nether_brick");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "quartz_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "quartz_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "quartz_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "pillar_quartz_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "nether_wart_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "nether_brick_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "nether_brick_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "nether_brick_fence");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "nether_brick");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "magma_cream");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "magma");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chiseled_quartz_block");
 
             //end
-            modRegistry.remove(new ResourceLocation("minecraft:purpur_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:purpur_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:purpur_pillar"));
-            modRegistry.remove(new ResourceLocation("minecraft:purpur_block"));
-            modRegistry.remove(new ResourceLocation("minecraft:ender_eye"));
-            modRegistry.remove(new ResourceLocation("minecraft:end_rod"));
-            modRegistry.remove(new ResourceLocation("minecraft:end_crystal"));
-            modRegistry.remove(new ResourceLocation("minecraft:end_bricks"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "purpur_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "purpur_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "purpur_pillar");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "purpur_block");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "ender_eye");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "end_rod");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "end_crystal");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "end_bricks");
 
             //Fire Works
-            modRegistry.remove(new ResourceLocation("minecraft:fireworks"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "fireworks");
 
             //leather
-            modRegistry.remove(new ResourceLocation("minecraft:leather_helmet"));
-            modRegistry.remove(new ResourceLocation("minecraft:leather_chestplate"));
-            modRegistry.remove(new ResourceLocation("minecraft:leather_leggings"));
-            modRegistry.remove(new ResourceLocation("minecraft:leather_boots"));
-            modRegistry.remove(new ResourceLocation("minecraft:leather"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "leather_helmet");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "leather_chestplate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "leather_leggings");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "leather_boots");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "leather");
 
             //General wood
-            modRegistry.remove(new ResourceLocation("minecraft:wooden_hoe"));
-            modRegistry.remove(new ResourceLocation("minecraft:wooden_axe"));
-            modRegistry.remove(new ResourceLocation("minecraft:wooden_sword"));
-            modRegistry.remove(new ResourceLocation("minecraft:wooden_shovel"));
-            modRegistry.remove(new ResourceLocation("minecraft:wooden_pickaxe"));
-            modRegistry.remove(new ResourceLocation("minecraft:wooden_button"));
-            modRegistry.remove(new ResourceLocation("minecraft:wooden_pressure_plate"));
-            modRegistry.remove(new ResourceLocation("minecraft:wooden_door"));
-            modRegistry.remove(new ResourceLocation("minecraft:trapdoor"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wooden_hoe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wooden_axe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wooden_sword");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wooden_shovel");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wooden_pickaxe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wooden_button");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wooden_pressure_plate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "wooden_door");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "trapdoor");
             //birch
-            modRegistry.remove(new ResourceLocation("minecraft:birch_wooden_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:birch_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:birch_planks"));
-            modRegistry.remove(new ResourceLocation("minecraft:birch_fence_gate"));
-            modRegistry.remove(new ResourceLocation("minecraft:birch_fence"));
-            modRegistry.remove(new ResourceLocation("minecraft:birch_door"));
-            modRegistry.remove(new ResourceLocation("minecraft:birch_boat"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "birch_wooden_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "birch_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "birch_planks");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "birch_fence_gate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "birch_fence");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "birch_door");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "birch_boat");
             //acacia
-            modRegistry.remove(new ResourceLocation("minecraft:acacia_wooden_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:acacia_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:acacia_planks"));
-            modRegistry.remove(new ResourceLocation("minecraft:acacia_fence_gate"));
-            modRegistry.remove(new ResourceLocation("minecraft:acacia_fence"));
-            modRegistry.remove(new ResourceLocation("minecraft:acacia_door"));
-            modRegistry.remove(new ResourceLocation("minecraft:acacia_boat"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "acacia_wooden_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "acacia_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "acacia_planks");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "acacia_fence_gate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "acacia_fence");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "acacia_door");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "acacia_boat");
             //dark oak
-            modRegistry.remove(new ResourceLocation("minecraft:dark_oak_boat"));
-            modRegistry.remove(new ResourceLocation("minecraft:dark_oak_door"));
-            modRegistry.remove(new ResourceLocation("minecraft:dark_oak_fence"));
-            modRegistry.remove(new ResourceLocation("minecraft:dark_oak_fence_gate"));
-            modRegistry.remove(new ResourceLocation("minecraft:dark_oak_planks"));
-            modRegistry.remove(new ResourceLocation("minecraft:dark_oak_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:dark_oak_wooden_slab"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "dark_oak_boat");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "dark_oak_door");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "dark_oak_fence");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "dark_oak_fence_gate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "dark_oak_planks");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "dark_oak_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "dark_oak_wooden_slab");
             //jungle
-            modRegistry.remove(new ResourceLocation("minecraft:jungle_boat"));
-            modRegistry.remove(new ResourceLocation("minecraft:jungle_door"));
-            modRegistry.remove(new ResourceLocation("minecraft:jungle_fence"));
-            modRegistry.remove(new ResourceLocation("minecraft:jungle_fence_gate"));
-            modRegistry.remove(new ResourceLocation("minecraft:jungle_planks"));
-            modRegistry.remove(new ResourceLocation("minecraft:jungle_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:jungle_wooden_slab"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "jungle_boat");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "jungle_door");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "jungle_fence");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "jungle_fence_gate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "jungle_planks");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "jungle_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "jungle_wooden_slab");
             //oak
-            modRegistry.remove(new ResourceLocation("minecraft:oak_planks"));
-            modRegistry.remove(new ResourceLocation("minecraft:oak_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:oak_wooden_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:fence_gate"));
-            modRegistry.remove(new ResourceLocation("minecraft:fence"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "oak_planks");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "oak_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "oak_wooden_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "fence_gate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "fence");
             //spruce
-            modRegistry.remove(new ResourceLocation("minecraft:spruce_wooden_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:spruce_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:spruce_planks"));
-            modRegistry.remove(new ResourceLocation("minecraft:spruce_fence_gate"));
-            modRegistry.remove(new ResourceLocation("minecraft:spruce_fence"));
-            modRegistry.remove(new ResourceLocation("minecraft:spruce_door"));
-            modRegistry.remove(new ResourceLocation("minecraft:spruce_boat"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "spruce_wooden_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "spruce_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "spruce_planks");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "spruce_fence_gate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "spruce_fence");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "spruce_door");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "spruce_boat");
 
             //redstone
-            modRegistry.remove(new ResourceLocation("minecraft:trapped_chest"));
-            modRegistry.remove(new ResourceLocation("minecraft:redstone_lamp"));
-            modRegistry.remove(new ResourceLocation("minecraft:piston"));
-            modRegistry.remove(new ResourceLocation("minecraft:observer"));
-            modRegistry.remove(new ResourceLocation("minecraft:daylight_detector"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "trapped_chest");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "redstone_lamp");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "piston");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "observer");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "daylight_detector");
 
             //rail
-            modRegistry.remove(new ResourceLocation("minecraft:rail"));
-            modRegistry.remove(new ResourceLocation("minecraft:minecart"));
-            modRegistry.remove(new ResourceLocation("minecraft:furnace_minecart"));
-            modRegistry.remove(new ResourceLocation("minecraft:detector_rail"));
-            modRegistry.remove(new ResourceLocation("minecraft:chest_minecart"));
-            modRegistry.remove(new ResourceLocation("minecraft:activator_rail"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_rail"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "rail");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "minecart");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "furnace_minecart");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "detector_rail");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chest_minecart");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "activator_rail");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_rail");
 
             //Stone
-            modRegistry.remove(new ResourceLocation("minecraft:stone_hoe"));
-            modRegistry.remove(new ResourceLocation("minecraft:stone_axe"));
-            modRegistry.remove(new ResourceLocation("minecraft:stone_sword"));
-            modRegistry.remove(new ResourceLocation("minecraft:stone_shovel"));
-            modRegistry.remove(new ResourceLocation("minecraft:stone_pickaxe"));
-            modRegistry.remove(new ResourceLocation("minecraft:stonebrick"));
-            modRegistry.remove(new ResourceLocation("minecraft:stone_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:stone_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:stone_brick_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:stone_brick_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:polished_granite"));
-            modRegistry.remove(new ResourceLocation("minecraft:polished_diorite"));
-            modRegistry.remove(new ResourceLocation("minecraft:polished_andesite"));
-            modRegistry.remove(new ResourceLocation("minecraft:mossy_stonebrick"));
-            modRegistry.remove(new ResourceLocation("minecraft:mossy_cobblestone_wall"));
-            modRegistry.remove(new ResourceLocation("minecraft:mossy_cobblestone"));
-            modRegistry.remove(new ResourceLocation("minecraft:granite"));
-            modRegistry.remove(new ResourceLocation("minecraft:diorite"));
-            modRegistry.remove(new ResourceLocation("minecraft:cobblestone_wall"));
-            modRegistry.remove(new ResourceLocation("minecraft:cobblestone_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:chiseled_stonebrick"));
-            modRegistry.remove(new ResourceLocation("minecraft:andesite"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_hoe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_axe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_sword");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_shovel");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_pickaxe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stonebrick");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_brick_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "stone_brick_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "polished_granite");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "polished_diorite");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "polished_andesite");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "mossy_stonebrick");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "mossy_cobblestone_wall");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "mossy_cobblestone");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "granite");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diorite");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "cobblestone_wall");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "cobblestone_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chiseled_stonebrick");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "andesite");
 
             //sandstone
-            modRegistry.remove(new ResourceLocation("minecraft:smooth_sandstone"));
-            modRegistry.remove(new ResourceLocation("minecraft:smooth_red_sandstone"));
-            modRegistry.remove(new ResourceLocation("minecraft:sandstone_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:sandstone_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:sandstone"));
-            modRegistry.remove(new ResourceLocation("minecraft:red_sandstone_stairs"));
-            modRegistry.remove(new ResourceLocation("minecraft:red_sandstone_slab"));
-            modRegistry.remove(new ResourceLocation("minecraft:red_sandstone"));
-            modRegistry.remove(new ResourceLocation("minecraft:chiseled_sandstone"));
-            modRegistry.remove(new ResourceLocation("minecraft:chiseled_red_sandstone"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "smooth_sandstone");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "smooth_red_sandstone");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "sandstone_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "sandstone_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "sandstone");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_sandstone_stairs");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_sandstone_slab");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_sandstone");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chiseled_sandstone");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chiseled_red_sandstone");
 
             //iron
-            modRegistry.remove(new ResourceLocation("minecraft:iron_trapdoor"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_hoe"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_axe"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_sword"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_shovel"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_pickaxe"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_helmet"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_chestplate"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_leggings"));
-            modRegistry.remove(new ResourceLocation("minecraft:iron_boots"));
-            modRegistry.remove(new ResourceLocation("minecraft:hopper"));
-            modRegistry.remove(new ResourceLocation("minecraft:heavy_weighted_pressure_plate"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_trapdoor");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_hoe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_axe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_sword");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_shovel");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_pickaxe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_helmet");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_chestplate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_leggings");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "iron_boots");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "hopper");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "heavy_weighted_pressure_plate");
 
             //gold
-            modRegistry.remove(new ResourceLocation("minecraft:golden_helmet"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_chestplate"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_leggings"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_boots"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_hoe"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_axe"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_sword"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_shovel"));
-            modRegistry.remove(new ResourceLocation("minecraft:golden_pickaxe"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_helmet");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_chestplate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_leggings");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_boots");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_hoe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_axe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_sword");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_shovel");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "golden_pickaxe");
 
             //chainmail
-            modRegistry.remove(new ResourceLocation("minecraft:chainmail_helmet"));
-            modRegistry.remove(new ResourceLocation("minecraft:chainmail_chestplate"));
-            modRegistry.remove(new ResourceLocation("minecraft:chainmail_leggings"));
-            modRegistry.remove(new ResourceLocation("minecraft:chainmail_boots"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chainmail_helmet");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chainmail_chestplate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chainmail_leggings");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "chainmail_boots");
 
             //diamond
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_helmet"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_chestplate"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_leggings"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_boots"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_hoe"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_axe"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_sword"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_shovel"));
-            modRegistry.remove(new ResourceLocation("minecraft:diamond_pickaxe"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_helmet");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_chestplate");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_leggings");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_boots");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_hoe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_axe");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_sword");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_shovel");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "diamond_pickaxe");
 
             //arrows
-            modRegistry.remove(new ResourceLocation("minecraft:tippedarrow"));
-            modRegistry.remove(new ResourceLocation("minecraft:spectral_arrow"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "tippedarrow");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "spectral_arrow");
 
             //white
-            modRegistry.remove(new ResourceLocation("minecraft:string_to_wool"));
-            modRegistry.remove(new ResourceLocation("minecraft:white_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:white_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "string_to_wool");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "white_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "white_bed");
 
             //Yellow
-            modRegistry.remove(new ResourceLocation("minecraft:yellow_dye_from_sunflower"));
-            modRegistry.remove(new ResourceLocation("minecraft:yellow_dye_from_dandelion"));
-            modRegistry.remove(new ResourceLocation("minecraft:yellow_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:yellow_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "yellow_dye_from_sunflower");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "yellow_dye_from_dandelion");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "yellow_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "yellow_bed");
 
             //red
-            modRegistry.remove(new ResourceLocation("minecraft:red_dye_from_tulip"));
-            modRegistry.remove(new ResourceLocation("minecraft:red_dye_from_rose_bush"));
-            modRegistry.remove(new ResourceLocation("minecraft:red_dye_from_poppy"));
-            modRegistry.remove(new ResourceLocation("minecraft:red_dye_from_beetroot"));
-            modRegistry.remove(new ResourceLocation("minecraft:red_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:red_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_dye_from_tulip");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_dye_from_rose_bush");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_dye_from_poppy");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_dye_from_beetroot");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "red_bed");
 
             //purple
-            modRegistry.remove(new ResourceLocation("minecraft:purple_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:purple_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "purple_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "purple_bed");
 
             //pink
-            modRegistry.remove(new ResourceLocation("minecraft:pink_dye_from_pink_tulip"));
-            modRegistry.remove(new ResourceLocation("minecraft:pink_dye_from_peony"));
-            modRegistry.remove(new ResourceLocation("minecraft:pink_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:pink_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "pink_dye_from_pink_tulip");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "pink_dye_from_peony");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "pink_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "pink_bed");
 
             //orange
-            modRegistry.remove(new ResourceLocation("minecraft:orange_dye_from_orange_tulip"));
-            modRegistry.remove(new ResourceLocation("minecraft:orange_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:orange_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "orange_dye_from_orange_tulip");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "orange_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "orange_bed");
 
             //magenta
-            modRegistry.remove(new ResourceLocation("minecraft:magenta_dye_from_lilac"));
-            modRegistry.remove(new ResourceLocation("minecraft:magenta_dye_from_allium"));
-            modRegistry.remove(new ResourceLocation("minecraft:magenta_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:magenta_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "magenta_dye_from_lilac");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "magenta_dye_from_allium");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "magenta_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "magenta_bed");
 
             //lime
-            modRegistry.remove(new ResourceLocation("minecraft:lime_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:magenta_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:lime_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "lime_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "magenta_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "lime_bed");
 
             //gray
-            modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_white_tulip"));
-            modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_oxeye_daisy"));
-            modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_ink_bonemeal"));
-            modRegistry.remove(new ResourceLocation("minecraft:light_gray_dye_from_azure_bluet"));
-            modRegistry.remove(new ResourceLocation("minecraft:light_gray_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:light_gray_bed"));
-            modRegistry.remove(new ResourceLocation("minecraft:gray_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:gray_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_gray_dye_from_white_tulip");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_gray_dye_from_oxeye_daisy");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_gray_dye_from_ink_bonemeal");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_gray_dye_from_azure_bluet");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_gray_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_gray_bed");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "gray_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "gray_bed");
 
             //blue
-            modRegistry.remove(new ResourceLocation("minecraft:light_blue_dye_from_blue_orchid"));
-            modRegistry.remove(new ResourceLocation("minecraft:light_blue_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:light_blue_bed"));
-            modRegistry.remove(new ResourceLocation("minecraft:blue_stained_hardened_clay"));
-            modRegistry.remove(new ResourceLocation("minecraft:blue_stained_glass"));
-            modRegistry.remove(new ResourceLocation("minecraft:blue_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:blue_bed_from_white_bed"));
-            modRegistry.remove(new ResourceLocation("minecraft:blue_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_blue_dye_from_blue_orchid");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_blue_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "light_blue_bed");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "blue_stained_hardened_clay");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "blue_stained_glass");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "blue_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "blue_bed_from_white_bed");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "blue_bed");
 
             //green
-            modRegistry.remove(new ResourceLocation("minecraft:green_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:green_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "green_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "green_bed");
 
             //cyan
-            modRegistry.remove(new ResourceLocation("minecraft:cyan_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:cyan_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "cyan_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "cyan_bed");
 
             //brown
-            modRegistry.remove(new ResourceLocation("minecraft:brown_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:brown_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "brown_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "brown_bed");
 
             //black
-            modRegistry.remove(new ResourceLocation("minecraft:black_wool"));
-            modRegistry.remove(new ResourceLocation("minecraft:black_stained_hardened_clay"));
-            modRegistry.remove(new ResourceLocation("minecraft:black_stained_glass"));
-            modRegistry.remove(new ResourceLocation("minecraft:black_concrete_powder"));
-            modRegistry.remove(new ResourceLocation("minecraft:black_bed_from_white_bed"));
-            modRegistry.remove(new ResourceLocation("minecraft:black_bed"));
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "black_wool");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "black_stained_hardened_clay");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "black_stained_glass");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "black_concrete_powder");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "black_bed_from_white_bed");
+            RecipeUtils.removeRecipeByName(registry, "minecraft", "black_bed");
         }
 
     }
