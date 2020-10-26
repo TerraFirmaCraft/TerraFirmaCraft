@@ -4,7 +4,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import net.dries007.tfc.util.Climate;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Biome.class)
-public abstract class BiomeMixin extends ForgeRegistryEntry<Biome>
+public abstract class BiomeMixin
 {
     /**
      * Redirect a call to {@link Biome#getTemperature(BlockPos)} with one that has a world and position context
