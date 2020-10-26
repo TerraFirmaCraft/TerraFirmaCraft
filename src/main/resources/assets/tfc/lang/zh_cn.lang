@@ -648,6 +648,12 @@ config.tfc.devices.temperature.globalModifier.tooltip=物品热量交换的速�
 config.tfc.devices.temperature.heatingModifier=加热温度修正值
 config.tfc.devices.temperature.heatingModifier.tooltip=设施（例如：木炭炉，篝火）热量交换的速度修正值。较小的值 = 较慢的温度变化。
 
+config.tfc.devices.temperature.coolHeatablesInWorld=可加热物品环境冷却
+config.tfc.devices.temperature.coolHeatablesInWorld.tooltip=可加热的物品能在环境中冷却吗？比如放在水里或雪上？
+
+config.tfc.devices.temperature.ticksBeforeAttemptToCool=环境冷却延时
+config.tfc.devices.temperature.ticksBeforeAttemptToCool.tooltip=如果可加热物品能在环境中冷却，物品应当在多少刻后尝试冷却？
+
 
 ### Barrel
 config.tfc.devices.barrel=大桶
@@ -770,6 +776,10 @@ config.tfc.devices.sluice.gemChance.tooltip=洗矿槽作业产生宝石的几率
 config.tfc.devices.sluice.diamondGemChance=洗矿槽钻石几率
 config.tfc.devices.sluice.diamondGemChance.tooltip=当洗矿槽作业产生宝石时，掉落钻石的几率。
 
+
+## Jug
+config.tfc.devices.jug.dumpWaterOnShiftRightClick=Shift + 右键点击倒水
+config.tfc.devices.jug.dumpWaterOnShiftRightClick.tooltip=允许手持罐时 Shift + 右键点击在地上倒水。不会产生实际的水源方块。
 
 ## Clients
 config.tfc.client=客户端设置
