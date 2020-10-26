@@ -328,6 +328,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         features[Decoration.SURFACE_STRUCTURES] += ['tfc:raw_boulder', 'tfc:cobble_boulder']
         if rain.id in ('damp', 'wet'):
             features[Decoration.SURFACE_STRUCTURES].append('tfc:mossy_boulder')
+
+    rm.lang('biome.tfc.%s_%s_%s' % (name, temp.id, rain.id), '(%s / %s) %s' % (temp.id.title(), rain.id.title(), lang(name)))
     rm.biome(
         name_parts='%s_%s_%s' % (name, temp.id, rain.id),
         precipitation=rain_type,
