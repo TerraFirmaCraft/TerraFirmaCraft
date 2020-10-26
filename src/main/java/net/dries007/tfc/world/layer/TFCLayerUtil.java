@@ -7,17 +7,17 @@ package net.dries007.tfc.world.layer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraft.world.gen.LazyAreaLayerContext;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
@@ -44,51 +44,80 @@ public class TFCLayerUtil
     public static final int CONTINENT_CONTINENT_CONVERGING = 9;
 
     /**
-     * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
+     * These are the int IDs that are used for layer generation
+     * They are mapped to {@link BiomeVariants} through the internal registry
      */
-    public static final int LAKE_MARKER = ++LAYER_ID;
-    private static int LAYER_ID = -1;
+    public static final int OCEAN;
+    public static final int DEEP_OCEAN;
+    public static final int PLAINS;
+    public static final int HILLS;
+    public static final int LOWLANDS;
+    public static final int LOW_CANYONS;
+    public static final int ROLLING_HILLS;
+    public static final int BADLANDS;
+    public static final int PLATEAU;
+    public static final int OLD_MOUNTAINS;
+    public static final int MOUNTAINS;
+    public static final int FLOODED_MOUNTAINS;
+    public static final int CANYONS;
+    public static final int SHORE;
+    public static final int LAKE;
+    public static final int RIVER;
+    public static final int MOUNTAIN_RIVER;
+    public static final int OLD_MOUNTAIN_RIVER;
+    public static final int FLOODED_MOUNTAIN_RIVER;
+    public static final int MOUNTAIN_LAKE;
+    public static final int OLD_MOUNTAIN_LAKE;
+    public static final int FLOODED_MOUNTAIN_LAKE;
+    public static final int PLATEAU_LAKE;
 
     /**
-     * These are the int IDs that are used for layer generation
-     * They are mapped to registry keys here
-     * When the biome is requested, the biome in the dynamic registry is requested via the variants object
+     * These IDs are used as markers for biomes. They should all be removed by the time the biome layers are finished
      */
-    public static final int OCEAN = makeLayerId(TFCBiomes.OCEAN);
-    public static final int DEEP_OCEAN = makeLayerId(TFCBiomes.DEEP_OCEAN);
-    public static final int PLAINS = makeLayerId(TFCBiomes.PLAINS);
-    public static final int HILLS = makeLayerId(TFCBiomes.HILLS);
-    public static final int LOWLANDS = makeLayerId(TFCBiomes.LOWLANDS);
-    public static final int LOW_CANYONS = makeLayerId(TFCBiomes.LOW_CANYONS);
-    public static final int ROLLING_HILLS = makeLayerId(TFCBiomes.ROLLING_HILLS);
-    public static final int BADLANDS = makeLayerId(TFCBiomes.BADLANDS);
-    public static final int PLATEAU = makeLayerId(TFCBiomes.PLATEAU);
-    public static final int OLD_MOUNTAINS = makeLayerId(TFCBiomes.OLD_MOUNTAINS);
-    public static final int MOUNTAINS = makeLayerId(TFCBiomes.MOUNTAINS);
-    public static final int FLOODED_MOUNTAINS = makeLayerId(TFCBiomes.FLOODED_MOUNTAINS);
-    public static final int CANYONS = makeLayerId(TFCBiomes.CANYONS);
-    public static final int SHORE = makeLayerId(TFCBiomes.SHORE);
-    public static final int LAKE = makeLayerId(TFCBiomes.LAKE);
-    public static final int RIVER = makeLayerId(TFCBiomes.RIVER);
-    public static final int MOUNTAIN_RIVER = makeLayerId(TFCBiomes.MOUNTAIN_RIVER);
-    public static final int OLD_MOUNTAIN_RIVER = makeLayerId(TFCBiomes.OLD_MOUNTAIN_RIVER);
-    public static final int FLOODED_MOUNTAIN_RIVER = makeLayerId(TFCBiomes.FLOODED_MOUNTAIN_RIVER);
-    public static final int MOUNTAIN_LAKE = makeLayerId(TFCBiomes.MOUNTAIN_LAKE);
-    public static final int OLD_MOUNTAIN_LAKE = makeLayerId(TFCBiomes.OLD_MOUNTAIN_LAKE);
-    public static final int FLOODED_MOUNTAIN_LAKE = makeLayerId(TFCBiomes.FLOODED_MOUNTAIN_LAKE);
-    public static final int PLATEAU_LAKE = makeLayerId(TFCBiomes.PLATEAU_LAKE);
-    /**
-     * Needs to be initialized before layer IDs
-     */
-    private static final Int2ObjectMap<BiomeVariants> ID_TO_BIOME_VARIANTS = new Int2ObjectOpenHashMap<>(23);
-    public static final int LARGE_LAKE_MARKER = ++LAYER_ID;
-    public static final int OCEAN_OCEAN_CONVERGING_MARKER = ++LAYER_ID;
-    public static final int RIVER_MARKER = ++LAYER_ID;
-    public static final int NULL_MARKER = ++LAYER_ID;
+    public static final int LAKE_MARKER;
+    public static final int LARGE_LAKE_MARKER;
+    public static final int OCEAN_OCEAN_CONVERGING_MARKER;
+    public static final int RIVER_MARKER;
+    public static final int NULL_MARKER;
+
+    private static final IntIdentityHashBiMap<BiomeVariants> REGISTRY = new IntIdentityHashBiMap<>(32);
+
+    static
+    {
+        OCEAN = register(TFCBiomes.OCEAN);
+        DEEP_OCEAN = register(TFCBiomes.DEEP_OCEAN);
+        PLAINS = register(TFCBiomes.PLAINS);
+        HILLS = register(TFCBiomes.HILLS);
+        LOWLANDS = register(TFCBiomes.LOWLANDS);
+        LOW_CANYONS = register(TFCBiomes.LOW_CANYONS);
+        ROLLING_HILLS = register(TFCBiomes.ROLLING_HILLS);
+        BADLANDS = register(TFCBiomes.BADLANDS);
+        PLATEAU = register(TFCBiomes.PLATEAU);
+        OLD_MOUNTAINS = register(TFCBiomes.OLD_MOUNTAINS);
+        MOUNTAINS = register(TFCBiomes.MOUNTAINS);
+        FLOODED_MOUNTAINS = register(TFCBiomes.FLOODED_MOUNTAINS);
+        CANYONS = register(TFCBiomes.CANYONS);
+        SHORE = register(TFCBiomes.SHORE);
+        LAKE = register(TFCBiomes.LAKE);
+        RIVER = register(TFCBiomes.RIVER);
+        MOUNTAIN_RIVER = register(TFCBiomes.MOUNTAIN_RIVER);
+        OLD_MOUNTAIN_RIVER = register(TFCBiomes.OLD_MOUNTAIN_RIVER);
+        FLOODED_MOUNTAIN_RIVER = register(TFCBiomes.FLOODED_MOUNTAIN_RIVER);
+        MOUNTAIN_LAKE = register(TFCBiomes.MOUNTAIN_LAKE);
+        OLD_MOUNTAIN_LAKE = register(TFCBiomes.OLD_MOUNTAIN_LAKE);
+        FLOODED_MOUNTAIN_LAKE = register(TFCBiomes.FLOODED_MOUNTAIN_LAKE);
+        PLATEAU_LAKE = register(TFCBiomes.PLATEAU_LAKE);
+
+        LAKE_MARKER = registerDummy();
+        LARGE_LAKE_MARKER = registerDummy();
+        OCEAN_OCEAN_CONVERGING_MARKER = registerDummy();
+        RIVER_MARKER = registerDummy();
+        NULL_MARKER = registerDummy();
+    }
 
     public static BiomeVariants getFromLayerId(int id)
     {
-        return ID_TO_BIOME_VARIANTS.get(id);
+        return Objects.requireNonNull(REGISTRY.byId(id), "Layer ID = " + id + " was null!");
     }
 
     public static IAreaFactory<LazyArea> createOverworldBiomeLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings)
@@ -267,10 +296,14 @@ public class TFCLayerUtil
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS;
     }
 
-    public static int makeLayerId(BiomeVariants variants)
+    public static int register(BiomeVariants variants)
     {
-        LAYER_ID++;
-        ID_TO_BIOME_VARIANTS.put(LAYER_ID, variants);
-        return LAYER_ID;
+        return REGISTRY.add(variants);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static int registerDummy()
+    {
+        return REGISTRY.add(null);
     }
 }
