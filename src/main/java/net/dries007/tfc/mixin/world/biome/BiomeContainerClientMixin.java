@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+/**
+ * This "fixes" https://bugs.mojang.com/browse/MC-197616, by... not spamming the log with messages
+ * Client side data pack biomes in SingleBiomeProvider are still broken, but they will load and not lag completely now.
+ */
 @Mixin(BiomeContainer.class)
 public class BiomeContainerClientMixin
 {
