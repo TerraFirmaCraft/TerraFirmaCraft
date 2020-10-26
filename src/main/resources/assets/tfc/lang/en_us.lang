@@ -642,6 +642,12 @@ config.tfc.devices.temperature.globalModifier.tooltip=Modifier for how quickly i
 config.tfc.devices.temperature.heatingModifier=Heating Temperature Modifier
 config.tfc.devices.temperature.heatingModifier.tooltip=Modifier for how quickly devices (i.e. charcoal forge, fire pit) gain and lose heat. Smaller number = slower temperature changes.
 
+config.tfc.devices.temperature.coolHeatablesInWorld=Cool Heatable Items in the World
+config.tfc.devices.temperature.coolHeatablesInWorld.tooltip=Can heatable items be cooled down in the world? Such as putting it in a pool of water or on top of some snow?
+
+config.tfc.devices.temperature.ticksBeforeAttemptToCool=Ticks Before attempting to Cool
+config.tfc.devices.temperature.ticksBeforeAttemptToCool.tooltip=If heatable items can be cooled down in world, after how many ticks should the item attempt to be cooled down?
+
 
 ### Barrel
 config.tfc.devices.barrel=Barrel
