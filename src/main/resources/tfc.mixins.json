@@ -8,11 +8,14 @@
     "block.SnowBlockMixin",
     "entity.item.FallingBlockEntityAccessor",
     "item.crafting.RecipeManagerAccessor",
+    "minecraftforge.common.ForgeHooksMixin",
+    "minecraftforge.registries.ForgeRegistryEntryAccessor",
     "util.SharedSeedRandomMixin",
     "util.registry.WorldSettingsImportMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
     "world.biome.BiomeMixin",
+    "world.gen.FlatGenerationSettingsMixin",
     "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor",
     "world.gen.carver.ConfiguredCarverAccessor",
@@ -28,7 +31,8 @@
     "client.renderer.FogRendererMixin",
     "client.renderer.WorldRendererMixin",
     "client.world.ClientWorldMixin",
-    "world.biome.BiomeColorsAccessor"
+    "world.biome.BiomeColorsAccessor",
+    "world.biome.BiomeContainerClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
