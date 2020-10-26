@@ -1,4 +1,4 @@
-<code_scheme name="Project" version="173">
+<code_scheme name="TFC Style" version="173">
     <option name="AUTODETECT_INDENTS" value="false"/>
     <JSON>
         <option name="OBJECT_WRAPPING" value="0"/>
@@ -45,6 +45,7 @@
         <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true"/>
         <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true"/>
         <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true"/>
+        <option name="FIELD_ANNOTATION_WRAP" value="0"/>
         <indentOptions>
             <option name="CONTINUATION_INDENT_SIZE" value="4"/>
         </indentOptions>
