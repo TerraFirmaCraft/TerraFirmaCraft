@@ -720,6 +720,10 @@ public final class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".devices.sluice")
         public static final SluiceCFG SLUICE = new SluiceCFG();
 
+        @Config.Comment("Jug")
+        @Config.LangKey("config." + MOD_ID + ".devices.jug")
+        public static final JugCFG JUG = new JugCFG();
+
 
         public static final class TemperatureCFG
         {
@@ -890,6 +894,13 @@ public final class ConfigTFC
             @Config.RangeDouble(min = 0, max = 1)
             @Config.LangKey("config." + MOD_ID + ".devices.sluice.diamondGemChance")
             public double diamondGemChance = 0.01;
+        }
+
+        public static final class JugCFG
+        {
+            @Config.Comment("Enable Shift-Right clicking of Jars to dump water out. Enabling this will not pour an actual water block onto the ground.")
+            @Config.LangKey("config." + MOD_ID + "devices.jug.dumpWaterOut")
+            public boolean dumpWaterOnShiftRightClick = true;
         }
 
 
