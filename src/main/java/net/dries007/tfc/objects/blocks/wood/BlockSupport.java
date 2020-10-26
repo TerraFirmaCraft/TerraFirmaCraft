@@ -315,30 +315,26 @@ public class BlockSupport extends Block
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack heldStack = player.getHeldItem(hand);
-        if (player.isSneaking() && heldStack.getItem() instanceof ItemBlock && ((ItemBlock) heldStack.getItem()).getBlock() == this)
+        if (player.isSneaking() && heldStack.getItem() instanceof ItemBlock)
         {
-            // Try placing a support block
-            int maxSearch = 5;
-            BlockPos above = pos.up();
-            while (world.getBlockState(above).getBlock() instanceof BlockSupport)
+            Block itemBlock = ((ItemBlock) heldStack.getItem()).getBlock();
+            if (itemBlock instanceof BlockSupport)
             {
-                above = above.up();
-                if (--maxSearch <= 0)
+                for (BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(pos); mutablePos.getY() <= pos.getY() + 5; mutablePos.setY(mutablePos.getY() + 1))
                 {
-                    return false;
-                }
-            }
-            if (world.getBlockState(above).getMaterial().isReplaceable())
-            {
-                if (!world.isRemote)
-                {
-                    world.setBlockState(above, this.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
-                    if (!player.isCreative())
+                    if (world.getBlockState(mutablePos).getMaterial().isReplaceable())
                     {
-                        heldStack.shrink(1);
+                        if (!world.isRemote)
+                        {
+                            world.setBlockState(mutablePos, itemBlock.getDefaultState().withProperty(AXIS, EnumFacing.Axis.Y), 2);
+                        }
+                        if (!player.isCreative())
+                        {
+                            heldStack.shrink(1);
+                        }
+                        return true;
                     }
                 }
-                return true;
             }
         }
         return false;
