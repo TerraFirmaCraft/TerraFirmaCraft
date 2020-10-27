@@ -21,7 +21,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.heat.Heat;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.util.Helpers;
 
@@ -38,19 +40,43 @@ public final class TFCFluids
     public static final Map<Metal.Default, FluidPair<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
         "metal/" + metal.name().toLowerCase(),
         "metal/flowing_" + metal.name().toLowerCase(),
-        properties -> properties
-            .block(() -> null) // todo: block
-            .bucket(() -> null), // todo: item
-        FluidAttributes.builder(Helpers.identifier("block/lava_still"), Helpers.identifier("block/lava_flow"))
-            .color(metal.getColor())
+        properties -> properties.block(TFCBlocks.METAL_FLUIDS.get(metal)).bucket(TFCItems.METAL_FLUID_BUCKETS.get(metal)),
+        lavaAttributes("metal." + metal.name().toLowerCase()).color(metal.getColor()).rarity(metal.getRarity())
+    ));
+
+    public static final FluidPair<ForgeFlowingFluid> SALT_WATER = register(
+        "salt_water",
+        "flowing_salt_water",
+        properties -> properties.block(TFCBlocks.SALT_WATER).bucket(TFCItems.SALT_WATER_BUCKET).canMultiply(),
+        defaultAttributes("salt_water")
+    );
+
+    public static final FluidPair<ForgeFlowingFluid> SPRING_WATER = register(
+        "spring_water",
+        "flowing_spring_water",
+        properties -> properties.block(TFCBlocks.SPRING_WATER).bucket(TFCItems.SPRING_WATER_BUCKET),
+        defaultAttributes("spring_water")
+    );
+
+    private static FluidAttributes.Builder defaultAttributes(String fluidName)
+    {
+        return FluidAttributes.builder(Helpers.identifier("block/fluid_still"), Helpers.identifier("block/fluid_flow"))
+            .translationKey("fluid.tfc." + fluidName);
+    }
+
+    private static FluidAttributes.Builder lavaAttributes(String fluidName)
+    {
+        return FluidAttributes.builder(Helpers.identifier("block/lava_still"), Helpers.identifier("block/lava_flow"))
             .luminosity(15)
             .density(7000)
             .temperature((int) Heat.maxVisibleTemperature())
-            .rarity(metal.getRarity())
-            .translationKey("fluid.tfc.metal." + metal.name().toLowerCase()),
-        ForgeFlowingFluid.Source::new,
-        ForgeFlowingFluid.Flowing::new
-    ));
+            .translationKey("fluid.tfc" + fluidName);
+    }
+
+    private static FluidPair<ForgeFlowingFluid> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes)
+    {
+        return register(sourceName, flowingName, builder, attributes, ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new);
+    }
 
     private static <F extends FlowingFluid> FluidPair<F> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
     {

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.gen.LazyAreaLayerContext;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
@@ -94,6 +95,7 @@ class TFCLayerUtilTests
     }
 
     @Test
+    @Disabled
     void testPlateTectonicLayers()
     {
         // Only for imaging
@@ -205,14 +207,109 @@ class TFCLayerUtilTests
         mainLayer = BiomeRiverWidenLayer.MEDIUM.run(layerContext.get(), mainLayer);
         AREA.draw("biomes_" + ++count, mainLayer);
         mainLayer = BiomeRiverWidenLayer.LOW.run(layerContext.get(), mainLayer);
-        AREA.draw("biomes_" + ++count, mainLayer);
+        AREA.draw("biomes_" + ++count, mainLayer); // This last image is a 40km snapshot - 5000 radius -> 10_000 size -> 40km (biomes are 1/4 scale)
+    }
 
-        AREA.center(20_000).draw("biomes_40k", mainLayer);
+    @Test
+    void testLayerGenerationSlideshow()
+    {
+        // Only for imaging
+        final long seed = System.currentTimeMillis();
+        final TFCBiomeProvider.LayerSettings layerSettings = new TFCBiomeProvider.LayerSettings();
+        int count = 0;
+        int center = 8;
+
+        PLATES.size(1024).color(this::elevationPlateColor);
+        AREA.size(1024);
+
+        // Copy pasta from TFCLayerUtil with added draw calls
+        final Random random = new Random(seed);
+        final Supplier<LazyTypedAreaLayerContext<Plate>> plateContext = () -> new LazyTypedAreaLayerContext<>(25, seed, random.nextLong());
+        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
+
+        ITypedAreaFactory<Plate> plateLayer;
+        IAreaFactory<LazyArea> mainLayer, riverLayer, lakeLayer;
+
+        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
+        plateLayer = new PlateGenerationLayer(new VoronoiNoise2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
+        PLATES.center(center).draw("layer_" + ++count, plateLayer);
+        plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
+        PLATES.center(center *= 2).draw("layer_" + ++count, plateLayer);
+        mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
+        AREA.center(center).color(this::boundaryColor).draw("layer_" + ++count, mainLayer);
+
+        // Rivers
+        riverLayer = new FloatNoiseLayer(new VoronoiNoise2D(random.nextLong()).spread(0.12f)).run(layerContext.get());
+
+        for (int i = 0; i < 4; i++)
+        {
+            riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
+        }
+
+        riverLayer = RiverLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        riverLayer = RiverAcuteVertexLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
+
+        // Biomes
+        mainLayer = PlateBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        AREA.color(this::biomeColor).draw("layer_" + ++count, mainLayer);
+        mainLayer = OceanBorderLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
+
+        // Lakes
+        lakeLayer = NullLayer.INSTANCE.run(layerContext.get());
+        lakeLayer = LakeLayer.LARGE.run(layerContext.get(), lakeLayer);
+        lakeLayer = LargeLakeLayer.INSTANCE.run(layerContext.get(), lakeLayer);
+        for (int i = 0; i < 2; i++)
+        {
+            lakeLayer = ZoomLayer.NORMAL.run(layerContext.get(), lakeLayer);
+        }
+        lakeLayer = LakeLayer.SMALL.run(layerContext.get(), lakeLayer);
+
+        // Add biome level features - lakes, island chains, edge biomes, shores
+        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        AREA.center(center *= 2).draw("layer_" + ++count, mainLayer);
+        mainLayer = ArchipelagoLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        AREA.center(center *= 2).draw("layer_" + ++count, mainLayer);
+        mainLayer = EdgeBiomeLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
+        mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        AREA.center(center *= 2).draw("layer_" + ++count, mainLayer);
+        mainLayer = MixLakeLayer.INSTANCE.run(layerContext.get(), mainLayer, lakeLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
+        mainLayer = ShoreLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
+
+        for (int i = 0; i < 4; i++)
+        {
+            mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+            AREA.center(center *= 2).draw("layer_" + ++count, mainLayer);
+        }
+
+        mainLayer = SmoothLayer.INSTANCE.run(layerContext.get(), mainLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
+
+        // Mix rivers and expand them in low biomes
+        mainLayer = MixRiverLayer.INSTANCE.run(layerContext.get(), mainLayer, riverLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
+        mainLayer = BiomeRiverWidenLayer.MEDIUM.run(layerContext.get(), mainLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
+        mainLayer = BiomeRiverWidenLayer.LOW.run(layerContext.get(), mainLayer);
+        AREA.draw("layer_" + ++count, mainLayer);
     }
 
     private Color elevationPlateColor(Plate plate)
     {
-        return Artist.Colors.LINEAR_GRAY.apply(Artist.Scales.DYNAMIC_RANGE.apply(plate.getElevation(), -1, 1));
+        if (plate.isOceanic())
+        {
+            return new Color(0, MathHelper.clamp((int) (plate.getElevation() * 255), 0, 255), 255);
+        }
+        else
+        {
+            return new Color(0, MathHelper.clamp((int) (100 + 155 * plate.getElevation()), 100, 255), 0);
+        }
     }
 
     private Color boundaryColor(int value)
@@ -246,8 +343,10 @@ class TFCLayerUtilTests
         if (id == TFCLayerUtil.FLOODED_MOUNTAINS) return new Color(180, 180, 250);
         if (id == TFCLayerUtil.CANYONS) return new Color(200, 0, 150);
         if (id == TFCLayerUtil.SHORE) return new Color(255, 230, 160);
-        if (id == TFCLayerUtil.LAKE) return new Color(120, 200, 255);
-        if (id == TFCLayerUtil.RIVER) return new Color(80, 140, 255);
+        if (id == TFCLayerUtil.LAKE || id == OLD_MOUNTAIN_LAKE || id == FLOODED_MOUNTAIN_LAKE || id == PLATEAU_LAKE)
+            return new Color(120, 200, 255);
+        if (id == TFCLayerUtil.RIVER || id == OLD_MOUNTAIN_RIVER || id == FLOODED_MOUNTAIN_RIVER)
+            return new Color(80, 140, 255);
         return Color.BLACK;
     }
 

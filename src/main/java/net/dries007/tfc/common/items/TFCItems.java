@@ -64,6 +64,8 @@ public final class TFCItems
         register("bucket/" + metal.name().toLowerCase(), () -> new BucketItem(TFCFluids.METALS.get(metal).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ItemGroup.TAB_MISC)))
     );
 
+    public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ItemGroup.TAB_MISC)));
+
     private static RegistryObject<Item> register(String name, ItemGroup group)
     {
         return register(name, () -> new Item(new Item.Properties().tab(group)));
