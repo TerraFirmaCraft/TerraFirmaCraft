@@ -21,7 +21,7 @@
     ],
     "liquid": []
   },
-  "surface_builder": "tfc:deep_with_glaciers",
+  "surface_builder": "tfc:default_with_glaciers",
   "features": [
     [
       "tfc:erosion"
@@ -39,6 +39,7 @@
     [],
     [],
     [
+      "tfc:vein/gravel",
       "tfc:vein/normal_native_copper",
       "tfc:vein/surface_native_copper",
       "tfc:vein/normal_native_gold",

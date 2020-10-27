@@ -47,6 +47,9 @@ def generate(rm: ResourceManager):
             'beach_sand_color': rock_data.beach_sand_color
         })
 
+        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)
+
+    # Tags
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('supports_landslide', 'minecraft:grass_path')

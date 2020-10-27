@@ -25,7 +25,6 @@ public class TFCSurfaceBuilders
 
     public static final RegistryObject<NormalSurfaceBuilder> NORMAL = register("normal", () -> new NormalSurfaceBuilder(SurfaceBuilderConfig.CODEC));
     public static final RegistryObject<ThinSurfaceBuilder> THIN = register("thin", () -> new ThinSurfaceBuilder(SurfaceBuilderConfig.CODEC));
-    public static final RegistryObject<DeepSurfaceBuilder> DEEP = register("deep", () -> new DeepSurfaceBuilder(SurfaceBuilderConfig.CODEC));
 
     public static final RegistryObject<BadlandsSurfaceBuilder> BADLANDS = register("badlands", () -> new BadlandsSurfaceBuilder(SurfaceBuilderConfig.CODEC));
     public static final RegistryObject<MountainSurfaceBuilder> MOUNTAINS = register("mountains", () -> new MountainSurfaceBuilder(SurfaceBuilderConfig.CODEC));

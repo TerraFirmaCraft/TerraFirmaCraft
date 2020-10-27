@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
@@ -18,6 +19,9 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -27,6 +31,9 @@ import net.minecraft.util.math.MathHelper;
 @SuppressWarnings({"unchecked", "unused"})
 public abstract class Artist<T, A extends Artist<T, A>>
 {
+    private static final Level LEVEL = Level.forName("UNITTEST", 50);
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public static Artist.Raw raw()
     {
         return new Raw(); // An empty artist, for drawing direct pixel -> color objects
@@ -272,11 +279,14 @@ public abstract class Artist<T, A extends Artist<T, A>>
         }
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static final class Noise<T> extends Artist<T, Noise<T>>
     {
         private final Function<T, NoisePixel> noiseTransformer;
         private DoubleFunction<Color> color = Colors.LINEAR_GRAY;
         private ScaleTransformer scaleTransformer = Scales.DYNAMIC_RANGE;
+        private boolean histogram = false;
+        private int histogramBins = 0;
 
         private Noise(Function<T, NoisePixel> noiseTransformer)
         {
@@ -295,11 +305,19 @@ public abstract class Artist<T, A extends Artist<T, A>>
             return this;
         }
 
+        public Noise<T> distribution(int bins)
+        {
+            histogram = true;
+            histogramBins = Math.max(1, bins);
+            return this;
+        }
+
         @Override
         protected void drawInternal(String name, T instance, Graphics graphics)
         {
             final double[] sourceMinMax = new double[] {Double.MAX_VALUE, Double.MIN_VALUE};
-            NoisePixel source = noiseTransformer.apply(instance);
+            final int[] distribution = new int[histogramBins];
+            final NoisePixel source = noiseTransformer.apply(instance);
             drawStream(graphics, stream((x, y) -> {
                     double value = source.apply(x, y);
                     sourceMinMax[0] = Math.min(sourceMinMax[0], value);
@@ -307,8 +325,20 @@ public abstract class Artist<T, A extends Artist<T, A>>
                     return value;
                 })
                     .collect(Collectors.toList()).stream() // Block after min/max calculations
+                    .peek(loc -> {
+                        if (histogram)
+                        {
+                            final double scaled = Scales.DYNAMIC_RANGE.apply(loc.value, sourceMinMax[0], sourceMinMax[1]);
+                            distribution[MathHelper.clamp((int) (scaled * histogramBins), 0, histogramBins - 1)]++;
+                        }
+                    })
                     .map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]))))
             );
+            if (histogram)
+            {
+                LOGGER.log(LEVEL, "Histogram for {}", name);
+                LOGGER.log(LEVEL, "Min = {}, Max = {} Distribution =\n{}", sourceMinMax[0], sourceMinMax[1], Arrays.stream(distribution).mapToObj(i -> "" + i).collect(Collectors.joining("\n")));
+            }
         }
     }
 
