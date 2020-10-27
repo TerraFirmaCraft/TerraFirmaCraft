@@ -65,51 +65,59 @@ public class Metal
      */
     public enum Default
     {
-        BISMUTH(0xFF486B72, true, null, false, false),
-        BISMUTH_BRONZE(0xFF418E4F, true, TFCItemTier.BISMUTH_BRONZE, true, true),
-        BLACK_BRONZE(0xFF3B2636, true, TFCItemTier.BLACK_BRONZE, true, true),
-        BRONZE(0xFF96892E, true, TFCItemTier.BRONZE, true, true),
-        BRASS(0xFF7C5E33, true, null, false, false),
-        COPPER(0xFFB64027, true, TFCItemTier.COPPER, true, true),
-        GOLD(0xFFDCBF1B, true, null, false, false),
-        NICKEL(0xFF4E4E3C, true, null, false, false),
-        ROSE_GOLD(0xFFEB7137, true, null, false, false),
-        SILVER(0xFF949495, true, null, false, false),
-        TIN(0xFF90A4BB, true, null, false, false),
-        ZINC(0xFFBBB9C4, true, null, false, false),
-        STERLING_SILVER(0xFFAC927B, true, null, false, false),
-        WROUGHT_IRON(0xFF989897, true, TFCItemTier.WROUGHT_IRON, true, true),
-        CAST_IRON(0xFF989897, false, TFCItemTier.CAST_IRON, false, false), // todo color
-        PIG_IRON(0xFF6A595C, false, null, false, false),
-        STEEL(0xFF5F5F5F, true, TFCItemTier.STEEL, true, true),
-        BLACK_STEEL(0xFF111111, true, TFCItemTier.BLACK_STEEL, true, true),
-        BLUE_STEEL(0xFF2D5596, true, TFCItemTier.BLUE_STEEL, true, true),
-        RED_STEEL(0xFF700503, true, TFCItemTier.RED_STEEL, true, true),
-        WEAK_STEEL(0xFF111111, false, null, false, false),
-        WEAK_BLUE_STEEL(0xFF2D5596, false, null, false, false),
-        WEAK_RED_STEEL(0xFF700503, false, null, false, false),
-        HIGH_CARBON_STEEL(0xFF5F5F5F, false, null, false, false),
-        HIGH_CARBON_BLACK_STEEL(0xFF111111, false, null, false, false),
-        HIGH_CARBON_BLUE_STEEL(0xFF2D5596, false, null, false, false),
-        HIGH_CARBON_RED_STEEL(0xFF700503, false, null, false, false),
-        UNKNOWN(0xFF2F2B27, false, null, false, false);
+        BISMUTH(0xFF486B72, Rarity.COMMON, null, true, false, false),
+        BISMUTH_BRONZE(0xFF418E4F, Rarity.COMMON, TFCItemTier.BISMUTH_BRONZE, true, true, true),
+        BLACK_BRONZE(0xFF3B2636, Rarity.COMMON, TFCItemTier.BLACK_BRONZE, true, true, true),
+        BRONZE(0xFF96892E, Rarity.COMMON, TFCItemTier.BRONZE, true, true, true),
+        BRASS(0xFF7C5E33, Rarity.COMMON, null, true, false, false),
+        COPPER(0xFFB64027, Rarity.COMMON, TFCItemTier.COPPER, true, true, true),
+        GOLD(0xFFDCBF1B, Rarity.COMMON, null, true, false, false),
+        NICKEL(0xFF4E4E3C, Rarity.COMMON, null, true, false, false),
+        ROSE_GOLD(0xFFEB7137, Rarity.COMMON, null, true, false, false),
+        SILVER(0xFF949495, Rarity.COMMON, null, true, false, false),
+        TIN(0xFF90A4BB, Rarity.COMMON, null, true, false, false),
+        ZINC(0xFFBBB9C4, Rarity.COMMON, null, true, false, false),
+        STERLING_SILVER(0xFFAC927B, Rarity.COMMON, null, true, false, false),
+        WROUGHT_IRON(0xFF989897, Rarity.COMMON, TFCItemTier.WROUGHT_IRON, true, true, true),
+        CAST_IRON(0xFF989897, Rarity.COMMON, TFCItemTier.CAST_IRON, false, false, false), // todo color
+        PIG_IRON(0xFF6A595C, Rarity.COMMON, null, false, false, false),
+        STEEL(0xFF5F5F5F, Rarity.COMMON, TFCItemTier.STEEL, true, true, true),
+        BLACK_STEEL(0xFF111111, Rarity.COMMON, TFCItemTier.BLACK_STEEL, true, true, true),
+        BLUE_STEEL(0xFF2D5596, Rarity.COMMON, TFCItemTier.BLUE_STEEL, true, true, true),
+        RED_STEEL(0xFF700503, Rarity.COMMON, TFCItemTier.RED_STEEL, true, true, true),
+        WEAK_STEEL(0xFF111111, Rarity.COMMON, null, false, false, false),
+        WEAK_BLUE_STEEL(0xFF2D5596, Rarity.COMMON, null, false, false, false),
+        WEAK_RED_STEEL(0xFF700503, Rarity.COMMON, null, false, false, false),
+        HIGH_CARBON_STEEL(0xFF5F5F5F, Rarity.COMMON, null, false, false, false),
+        HIGH_CARBON_BLACK_STEEL(0xFF111111, Rarity.COMMON, null, false, false, false),
+        HIGH_CARBON_BLUE_STEEL(0xFF2D5596, Rarity.COMMON, null, false, false, false),
+        HIGH_CARBON_RED_STEEL(0xFF700503, Rarity.COMMON, null, false, false, false),
+        UNKNOWN(0xFF2F2B27, Rarity.COMMON, null, false, false, false);
 
         private final boolean parts, armor, utility;
         private final IItemTier itemTier;
+        private final Rarity rarity;
         private final int color;
 
-        Default(int color, boolean parts, @Nullable IItemTier itemTier, boolean armor, boolean utility)
+        Default(int color, Rarity rarity, @Nullable IItemTier itemTier, boolean parts, boolean armor, boolean utility)
         {
-            this.parts = parts;
             this.itemTier = itemTier;
+            this.rarity = rarity;
+            this.color = color;
+
+            this.parts = parts;
             this.armor = armor;
             this.utility = utility;
-            this.color = color;
         }
 
         public int getColor()
         {
             return color;
+        }
+
+        public Rarity getRarity()
+        {
+            return rarity;
         }
 
         public boolean hasParts()

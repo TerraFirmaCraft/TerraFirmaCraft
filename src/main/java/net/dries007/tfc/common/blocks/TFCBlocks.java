@@ -6,6 +6,7 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.block.AbstractBlock.Properties;
@@ -25,6 +26,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.rock.TFCOreBlock;
 import net.dries007.tfc.common.blocks.soil.*;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.FarmlandTileEntity;
 import net.dries007.tfc.common.types.Metal;
@@ -112,6 +114,10 @@ public final class TFCBlocks
         )
     );
 
+    public static final Map<Metal.Default, RegistryObject<FlowingFluidBlock>> METAL_FLUID_SOURCES = Helpers.mapOfKeys(Metal.Default.class, metal ->
+        register("fluid/metal/" + metal.name().toLowerCase(), () -> new FlowingFluidBlock(TFCFluids.METALS.get(metal).getSecond(), Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()))
+    );
+
     public static void setup()
     {
         // Edit other block properties
@@ -123,15 +129,28 @@ public final class TFCBlocks
         }
     }
 
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier)
+    {
+        return register(name, blockSupplier, block -> null, false);
+    }
+
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, ItemGroup group)
     {
-        return register(name, blockSupplier, new Item.Properties().tab(group));
+        return register(name, blockSupplier, block -> new BlockItem(block, new Item.Properties().tab(group)), true);
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, Item.Properties blockItemProperties)
     {
+        return register(name, blockSupplier, block -> new BlockItem(block, blockItemProperties), true);
+    }
+
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, Function<T, ? extends BlockItem> blockItemFactory, boolean hasItemBlock)
+    {
         RegistryObject<T> block = BLOCKS.register(name, blockSupplier);
-        TFCItems.ITEMS.register(name, () -> new BlockItem(block.get(), blockItemProperties));
+        if (hasItemBlock)
+        {
+            TFCItems.ITEMS.register(name, () -> blockItemFactory.apply(block.get()));
+        }
         return block;
     }
 

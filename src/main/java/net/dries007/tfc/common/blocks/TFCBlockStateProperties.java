@@ -5,11 +5,15 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.stream.Stream;
+
+import net.minecraft.fluid.Fluids;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 
+import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.util.calendar.Season;
 
 /**
@@ -28,4 +32,7 @@ public class TFCBlockStateProperties
     public static final IntegerProperty DISTANCE_10 = IntegerProperty.create("distance", 1, 10);
 
     public static final IntegerProperty[] DISTANCES = {DISTANCE_7, DISTANCE_8, DISTANCE_9, DISTANCE_10};
+
+    public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER));
+    public static final FluidProperty WATER_AND_LAVA = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, Fluids.LAVA));
 }
