@@ -8,14 +8,17 @@ package net.dries007.tfc.common.items;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Items;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.Gem;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockCategory;
@@ -55,6 +58,10 @@ public final class TFCItems
         Helpers.mapOfKeys(Rock.ItemType.class, type ->
             register(("rock/" + type.name().toLowerCase() + "/" + rock.name()).toLowerCase(), TFCItemGroup.MISC)
         )
+    );
+
+    public static final Map<Metal.Default, RegistryObject<BucketItem>> METAL_FLUID_BUCKETS = Helpers.mapOfKeys(Metal.Default.class, metal ->
+        register("bucket/" + metal.name().toLowerCase(), () -> new BucketItem(TFCFluids.METALS.get(metal).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ItemGroup.TAB_MISC)))
     );
 
     private static RegistryObject<Item> register(String name, ItemGroup group)

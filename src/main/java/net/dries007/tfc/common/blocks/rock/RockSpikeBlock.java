@@ -9,6 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
@@ -23,11 +25,14 @@ import net.minecraftforge.common.ToolType;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 
-
-public class RockSpikeBlock extends Block
+@SuppressWarnings("deprecation")
+public class RockSpikeBlock extends Block implements IFluidLoggable
 {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
 
@@ -44,11 +49,10 @@ public class RockSpikeBlock extends Block
     {
         super(properties);
 
-        registerDefaultState(stateDefinition.any().setValue(PART, Part.BASE));
+        registerDefaultState(stateDefinition.any().setValue(PART, Part.BASE).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         switch (state.getValue(PART))
@@ -63,7 +67,6 @@ public class RockSpikeBlock extends Block
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
@@ -95,9 +98,21 @@ public class RockSpikeBlock extends Block
     }
 
     @Override
+    public FluidProperty getFluidProperty()
+    {
+        return TFCBlockStateProperties.WATER_AND_LAVA;
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state)
+    {
+        return IFluidLoggable.super.getFluidState(state);
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(PART);
+        builder.add(PART, getFluidProperty());
     }
 
     private boolean isSupported(World world, BlockPos pos)
