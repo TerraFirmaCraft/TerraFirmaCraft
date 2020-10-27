@@ -62,8 +62,8 @@ public class ChunkDataGenerator implements IChunkDataGenerator
 
         // Flora
         forestBaseNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.002f).abs();
-        forestWeirdnessNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0015f).map(x -> 0.5f * Math.abs(x));
-        forestDensityNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0015f).scaled(0, 1);
+        forestWeirdnessNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
+        forestDensityNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
     }
 
     @Override
@@ -104,6 +104,12 @@ public class ChunkDataGenerator implements IChunkDataGenerator
     public INoise2D getForestDensityNoise()
     {
         return forestDensityNoise;
+    }
+
+    @VisibleForTesting
+    public INoise2D getForestWeirdnessNoise()
+    {
+        return forestWeirdnessNoise;
     }
 
     private void generateClimate(ChunkData data, int chunkX, int chunkZ)

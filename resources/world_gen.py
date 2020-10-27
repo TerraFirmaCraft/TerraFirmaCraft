@@ -53,7 +53,6 @@ def generate(rm: ResourceManager):
     # Surface Builders
     surface_builder(rm, 'badlands', wg.configure('tfc:badlands', grass_dirt_sand))
     surface_builder(rm, 'canyons', wg.configure('tfc:thin', grass_dirt_sand))
-    surface_builder(rm, 'deep', wg.configure('tfc:deep', grass_dirt_gravel))
     surface_builder(rm, 'default', wg.configure('tfc:normal', grass_dirt_sand))
     surface_builder(rm, 'underwater', wg.configure('tfc:underwater', air_air_air))
     surface_builder(rm, 'mountains', wg.configure('tfc:mountains', grass_dirt_sand))
@@ -78,7 +77,7 @@ def generate(rm: ResourceManager):
         'max_radius': 5,
         'height': 3,
         'states': clay
-    }), ('minecraft:chance', {'chance': 12}), 'minecraft:square', 'minecraft:heightmap_world_surface', ('tfc:climate', {'min_rainfall': 200})))
+    }), ('minecraft:chance', {'chance': 12}), 'minecraft:square', 'minecraft:heightmap_world_surface', ('tfc:climate', {'min_rainfall': 175})))
     rm.feature('water_clay_disc', wg.configure_decorated(wg.configure('tfc:soil_disc', {
         'min_radius': 2,
         'max_radius': 3,
@@ -183,7 +182,7 @@ def generate(rm: ResourceManager):
                         'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
                     }]
                 } for rock in rocks],
-                'salt': int(hashlib.sha256(vein_name.encode('utf-8')).hexdigest(), 16) & 0xFFFFFFFF
+                'salt': vein_salt(vein_name)
             }))
         else:  # non-graded ore vein (mineral)
             rm.feature(('vein', vein_name), wg.configure('tfc:%s_vein' % vein.type, {
@@ -196,8 +195,21 @@ def generate(rm: ResourceManager):
                     'stone': ['tfc:rock/raw/%s' % rock],
                     'ore': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
                 } for rock in rocks],
-                'salt': int(hashlib.sha256(vein_name.encode('utf-8')).hexdigest(), 16) & 0xFFFFFFFF
+                'salt': vein_salt(vein_name)
             }))
+
+    rm.feature(('vein', 'gravel'), wg.configure('tfc:cluster_vein', {
+        'rarity': 30,
+        'min_y': 0,
+        'max_y': 180,
+        'size': 20,
+        'density': 1,
+        'blocks': [{
+            'stone': ['tfc:rock/raw/%s' % rock],
+            'ore': [{'block': 'tfc:rock/gravel/%s' % rock}]
+        } for rock in ROCKS.keys()],
+        'salt': vein_salt('gravel')
+    }))
 
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
@@ -213,12 +225,12 @@ def generate(rm: ResourceManager):
             biome(rm, 'badlands', temp, rain, 'mesa', 'tfc:badlands')
             biome(rm, 'canyons', temp, rain, 'plains', 'tfc:canyons', boulders=True)
             biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:canyons', boulders=True)
-            biome(rm, 'plains', temp, rain, 'plains', 'tfc:deep')
+            biome(rm, 'plains', temp, rain, 'plains', 'tfc:default')
             biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True)
             biome(rm, 'hills', temp, rain, 'plains', 'tfc:default')
             biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:default', boulders=True)
             biome(rm, 'lake', temp, rain, 'river', 'tfc:underwater', spawnable=False)
-            biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:deep')
+            biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:default')
             biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_carvers=True)
@@ -307,6 +319,10 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int):
     }
 
 
+def vein_salt(vein_name: str) -> int:
+    return int(hashlib.sha256(vein_name.encode('utf-8')).hexdigest(), 16) & 0xFFFFFFFF
+
+
 def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False):
     if rain.id == 'arid':
         rain_type = 'none'
@@ -322,7 +338,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
-        ['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()],  # underground ores
+        ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
         ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring'],  # underground decoration
         ['tfc:forest'],  # vegetal decoration
         ['tfc:ice_and_snow']  # top layer modification

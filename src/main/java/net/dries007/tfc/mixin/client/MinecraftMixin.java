@@ -22,14 +22,14 @@ public abstract class MinecraftMixin extends RecursiveEventLoop<Runnable>
         super(name);
     }
 
-    @ModifyVariable(method = "doLoadLevel", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft$WorldSelectionType;NONE:Lnet/minecraft/client/Minecraft$WorldSelectionType;", ordinal = 0), ordinal = 2, index = 11, name = "flag2")
-    private boolean modify$doLoadLevel$flag2(boolean flag2)
+    @ModifyVariable(method = "doLoadLevel", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft$WorldSelectionType;NONE:Lnet/minecraft/client/Minecraft$WorldSelectionType;", ordinal = 0), ordinal = 2, index = 11, name = "flag1")
+    private boolean modify$doLoadLevel$flag1(boolean flag1)
     {
         if (TFCConfig.CLIENT.ignoreExperimentalWorldGenWarning.get())
         {
             TerraFirmaCraft.LOGGER.warn("Experimental world gen... dragons or some such.. blah blah.");
             return false;
         }
-        return flag2;
+        return flag1;
     }
 }

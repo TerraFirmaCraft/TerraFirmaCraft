@@ -25,12 +25,10 @@ import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.feature.tree.ForestConfig;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.noise.SimplexNoise2D;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 class ForestNoiseTests
 {
     static final Artist.Noise<INoise2D> NOISE = Artist.<INoise2D>forNoise(target -> (x, y) -> target.noise((float) x, (float) y)).scale(Artist.Scales.DYNAMIC_RANGE).color(Artist.Colors.LINEAR_BLUE_RED).center(20_000);
@@ -102,6 +100,8 @@ class ForestNoiseTests
     {
         ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
 
+        NOISE.distribution(20);
         NOISE.draw("forest_density", generator.getForestDensityNoise());
+        NOISE.draw("forest_weirdness", generator.getForestWeirdnessNoise());
     }
 }

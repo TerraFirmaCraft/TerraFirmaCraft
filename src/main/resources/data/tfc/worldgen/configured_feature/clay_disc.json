@@ -56,7 +56,7 @@
                 "decorator": {
                   "type": "tfc:climate",
                   "config": {
-                    "min_rainfall": 200
+                    "min_rainfall": 175
                   }
                 }
               }

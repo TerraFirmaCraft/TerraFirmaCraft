@@ -1,0 +1,214 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 30,
+    "min_y": 0,
+    "max_y": 180,
+    "size": 20,
+    "density": 1,
+    "blocks": [
+      {
+        "stone": [
+          "tfc:rock/raw/chalk"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/chalk"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/chert"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/chert"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/claystone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/claystone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/conglomerate"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/dolomite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/limestone"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/limestone"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/shale"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/shale"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gneiss"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/gneiss"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/marble"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/marble"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/phyllite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/quartzite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/schist"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/schist"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/slate"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/slate"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/diorite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/diorite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/gabbro"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/granite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/granite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/andesite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/andesite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/basalt"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/basalt"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/dacite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/dacite"
+          }
+        ]
+      },
+      {
+        "stone": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "ore": [
+          {
+            "block": "tfc:rock/gravel/rhyolite"
+          }
+        ]
+      }
+    ],
+    "salt": 2740813092
+  }
+}
