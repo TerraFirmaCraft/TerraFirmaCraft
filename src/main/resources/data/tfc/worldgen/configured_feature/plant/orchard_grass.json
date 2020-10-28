@@ -19,6 +19,8 @@
     },
     "whitelist": [],
     "blacklist": [],
-    "yspread": 1
+    "yspread": 1,
+    "xspread": 15,
+    "zspread": 15
   }
 }

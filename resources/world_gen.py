@@ -144,6 +144,40 @@ def generate(rm: ResourceManager):
     rm.feature(('tree', 'willow'), wg.configure('tfc:random_tree', random_config('willow', 7)))
     rm.feature(('tree', 'willow_large'), wg.configure('tfc:random_tree', random_config('willow', 14, 1, True)))
 
+    # Plants
+    plant_entries = []
+    for plant_name, plant_data in PLANTS.items():
+        # Add each config to the list
+        plant_entries.append(plant_config(plant_data.min_rain, plant_data.max_rain, plant_data.min_temp, plant_data.max_temp, plant_data.type, plant_data.clay, plant_name))
+        # Generate the corresponding placement feature
+        if plant_data.type == 'standard':
+            flower_feature(rm, plant_name)
+        elif plant_data.type == 'short_grass':
+            grass_feature(rm, plant_name)
+        elif plant_data.type == 'tall_grass':
+            tall_grass_feature(rm, plant_name)
+        elif plant_data.type == 'epiphyte':
+            epiphyte_plant_feature(rm, plant_name)
+        elif plant_data.type == 'creeping':
+            creeping_plant_feature(rm, plant_name)
+        elif plant_data.type == 'hanging':
+            hanging_plant_feature(rm, plant_name)
+        elif plant_data.type == 'floating':
+            water_plant_feature(rm, plant_name)
+        # Add lang
+        rm.lang('block.tfc.plant.' + plant_name, lang('%s', plant_name))
+    # Generate the collection feature
+    rm.feature('plants', wg.configure('tfc:plants', {
+        'standard': 2,
+        'floating': 3,
+        'short_grass': 5,
+        'tall_grass': 3,
+        'creeping': 3,
+        'hanging': 3,
+        'epiphyte': 3,
+        'entries': plant_entries
+    }))
+    
     # Carvers
     rm.carver('cave', wg.configure('tfc:cave', {'probability': 0.1}))
     rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
@@ -189,7 +223,18 @@ def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: f
     if old_growth:
         cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
     return cfg
-
+    
+    
+def plant_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, type: str, clay: bool, plant: str):
+    return {
+        'min_rain': min_rain,
+        'max_rain': max_rain,
+        'min_temp': min_temp,
+        'max_temp': max_temp,
+        'type': type,
+        'clay_indicator': clay,
+        'feature': 'tfc:plant/%s' % plant
+    }
 
 def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, large: bool = False):
     block = 'tfc:wood/log/%s[axis=y]' % tree
@@ -283,3 +328,187 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         features=features,
         player_spawn_friendly=spawnable
     )
+
+# Plants feature generation
+def flower_feature(rm: ResourceManager, plant_name: str):
+    rm.feature(('plant', plant_name), wg.configure('minecraft:random_patch', {
+        'state_provider': {
+            'type': 'minecraft:simple_state_provider',
+            'state': {
+                'Name': 'tfc:plant/%s' % plant_name,
+                'Properties': {
+                    'dayperiod': '1',
+                    'age': '1',
+                    'stage': '1'
+                }
+            },
+        },
+        'block_placer': {
+            'type': 'minecraft:simple_block_placer',
+            'config': {}
+        },
+        'whitelist': [],
+        'blacklist': [],
+        'yspread': 1,
+        'xspread': 15,
+        'zspread': 15,
+        'tries': 10
+    }))
+    
+def water_plant_feature(rm: ResourceManager, plant_name: str):
+    rm.feature(('plant', plant_name), wg.configure('minecraft:random_patch', {
+        'state_provider': {
+            'type': 'minecraft:simple_state_provider',
+            'state': {
+                'Name': 'tfc:plant/%s' % plant_name,
+                'Properties': {
+                    'dayperiod': '1',
+                    'age': '1',
+                    'stage': '1'
+                }
+            },
+        },
+        'block_placer': {
+            'type': 'minecraft:simple_block_placer',
+            'config': {}
+        },
+        'whitelist': [],
+        'blacklist': [],
+        'yspread': 1,
+        'xspread': 15,
+        'zspread': 15,
+        'tries': 10
+    }))
+
+def grass_feature(rm: ResourceManager, plant_name: str):
+    rm.feature(('plant', plant_name), wg.configure('minecraft:random_patch', {
+        'state_provider': {
+            'type': 'minecraft:simple_state_provider',
+            'state': {
+                'Name': 'tfc:plant/%s' % plant_name,
+                'Properties': {
+                    'dayperiod': '1',
+                    'age': '1',
+                    'stage': '1'
+                }
+            },
+        },
+        'block_placer': {
+            'type': 'minecraft:simple_block_placer',
+            'config': {}
+        },
+        'whitelist': [],
+        'blacklist': [],
+        'yspread': 1,
+        'xspread': 15,
+        'zspread': 15
+    }))
+    
+#todo tweak
+def tall_grass_feature(rm: ResourceManager, plant_name: str):
+    rm.feature(('plant', plant_name), wg.configure('minecraft:random_patch', {
+        'state_provider': {
+            'type': 'minecraft:simple_state_provider',
+            'state': {
+                'Name': 'tfc:plant/%s' % plant_name,
+                'Properties': {
+                    'dayperiod': '1',
+                    'age': '1',
+                    'stage': '1',
+                    'part': 'lower'
+                }
+            },
+        },
+        'block_placer': {
+            'type': 'minecraft:simple_block_placer',
+            'config': {}
+        },
+        'whitelist': [],
+        'blacklist': [],
+        'yspread': 1,
+        'xspread': 15,
+        'zspread': 15
+    }))
+    
+# todo tweak
+def hanging_plant_feature(rm: ResourceManager, plant_name: str):
+    rm.feature(('plant', plant_name), wg.configure('minecraft:random_patch', {
+        'state_provider': {
+            'type': 'minecraft:simple_state_provider',
+            'state': {
+                'Name': 'tfc:plant/%s' % plant_name,
+                'Properties': {
+                    'dayperiod': '1',
+                    'age': '1',
+                    'stage': '1',
+                    'hanging': 'false'
+                }
+            },
+        },
+        'block_placer': {
+            'type': 'minecraft:simple_block_placer',
+            'config': {}
+        },
+        'whitelist': [],
+        'blacklist': [],
+        'yspread': 9,
+        'xspread': 15,
+        'zspread': 15
+    }))
+    
+# todo tweak
+def epiphyte_plant_feature(rm: ResourceManager, plant_name: str):
+    rm.feature(('plant', plant_name), wg.configure('minecraft:random_patch', {
+        'state_provider': {
+            'type': 'minecraft:simple_state_provider',
+            'state': {
+                'Name': 'tfc:plant/%s' % plant_name,
+                'Properties': {
+                    'dayperiod': '1',
+                    'age': '1',
+                    'stage': '1',
+                    'facing': 'north'
+                }
+            },
+        },
+        'block_placer': {
+            'type': 'minecraft:simple_block_placer',
+            'config': {}
+        },
+        'whitelist': [],
+        'blacklist': [],
+        'yspread': 6,
+        'xspread': 15,
+        'zspread': 15
+    }))
+    
+# todo tweak
+def creeping_plant_feature(rm: ResourceManager, plant_name: str):
+    rm.feature(('plant', plant_name), wg.configure('minecraft:random_patch', {
+        'state_provider': {
+            'type': 'minecraft:simple_state_provider',
+            'state': {
+                'Name': 'tfc:plant/%s' % plant_name,
+                'Properties': {
+                    'dayperiod': '1',
+                    'age': '1',
+                    'stage': '1',
+                    'up': 'false',
+                    'down': 'true',
+                    'north': 'false',
+                    'east': 'false',
+                    'south': 'false',
+                    'west': 'false'
+                }
+            },
+        },
+        'block_placer': {
+            'type': 'minecraft:simple_block_placer',
+            'config': {}
+        },
+        'whitelist': [],
+        'blacklist': [],
+        'yspread': 9,
+        'xspread': 15,
+        'zspread': 15
+    }))

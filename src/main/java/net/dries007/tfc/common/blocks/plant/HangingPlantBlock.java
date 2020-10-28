@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
@@ -19,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 
 public abstract class HangingPlantBlock extends PlantBlock
@@ -28,13 +30,28 @@ public abstract class HangingPlantBlock extends PlantBlock
 
     public HangingPlantBlock(Properties properties)
     {
-        super(properties);
+        // Mark for post process so #updateShape is called after worldgen
+        super(properties.hasPostProcess((state, reader, pos) -> true));
+    }
+
+    @Override
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        for (Direction direction : Direction.Plane.VERTICAL)
+        {
+            BlockState attach = worldIn.getBlockState(currentPos.relative(direction));
+            if (attach.getMaterial() == Material.LEAVES)
+            {
+                return stateIn.setValue(HANGING, direction == Direction.UP);
+            }
+        }
+        return Blocks.AIR.defaultBlockState();
     }
 
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        for (Direction direction : new Direction[] {Direction.UP, Direction.DOWN})
+        for (Direction direction : Direction.Plane.VERTICAL)
         {
             if (worldIn.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
             {

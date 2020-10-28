@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SixWayBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
@@ -21,6 +22,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
@@ -45,7 +47,29 @@ public abstract class CreepingPlantBlock extends PlantBlock
 
     public CreepingPlantBlock(Properties properties)
     {
-        super(properties);
+        // Mark for post process so #updateShape is called after worldgen
+        super(properties.hasPostProcess((state, reader, pos) -> true));
+    }
+
+    @Override
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        boolean hasLeaves = false;
+        for (Direction direction : Direction.values())
+        {
+            BlockState attach = worldIn.getBlockState(currentPos.relative(direction));
+            BooleanProperty property = SixWayBlock.PROPERTY_BY_DIRECTION.get(direction);
+            if (attach.getMaterial() == Material.LEAVES)
+            {
+                hasLeaves = true;
+                stateIn = stateIn.setValue(property, true);
+            }
+            else
+            {
+                stateIn = stateIn.setValue(property, false);
+            }
+        }
+        return hasLeaves ? stateIn : Blocks.AIR.defaultBlockState();
     }
 
     @Override
@@ -53,7 +77,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
     {
         for (Direction direction : Direction.values())
         {
-            if (canSupportCenter(worldIn, pos.relative(direction), direction.getOpposite()) || worldIn.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
+            if (worldIn.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
             {
                 return true;
             }
