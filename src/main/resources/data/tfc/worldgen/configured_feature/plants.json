@@ -2,27 +2,598 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:plants",
   "config": {
+    "standard": 2,
+    "floating": 3,
+    "short_grass": 5,
+    "tall_grass": 3,
+    "creeping": 3,
+    "hanging": 3,
+    "epiphyte": 3,
     "entries": [
       {
-        "min_rain": 0,
-        "max_rain": 750,
+        "min_rain": 150,
+        "max_rain": 500,
         "min_temp": -40,
-        "max_temp": 60,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/allium"
+      },
+      {
+        "min_rain": 200,
+        "max_rain": 500,
+        "min_temp": -35,
+        "max_temp": 31,
+        "type": "short_grass",
+        "clay_indicator": true,
+        "feature": "tfc:plant/athyrium_fern"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 75,
+        "min_temp": -6,
+        "max_temp": 50,
+        "type": "tall_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/barrel_cactus"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": 10,
+        "max_temp": 50,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/black_orchid"
+      },
+      {
+        "min_rain": 200,
+        "max_rain": 500,
+        "min_temp": 10,
+        "max_temp": 50,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/blood_lily"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": 10,
+        "max_temp": 50,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/blue_orchid"
+      },
+      {
+        "min_rain": 75,
+        "max_rain": 300,
+        "min_temp": -40,
+        "max_temp": 32,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/butterfly_milkweed"
+      },
+      {
+        "min_rain": 130,
+        "max_rain": 300,
+        "min_temp": -46,
+        "max_temp": 30,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/calendula"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 500,
+        "min_temp": -12,
+        "max_temp": 36,
+        "type": "short_grass",
+        "clay_indicator": true,
+        "feature": "tfc:plant/canna"
+      },
+      {
+        "min_rain": 75,
+        "max_rain": 400,
+        "min_temp": -40,
+        "max_temp": 40,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/dandelion"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 500,
+        "min_temp": -34,
+        "max_temp": 38,
+        "type": "floating",
+        "clay_indicator": false,
+        "feature": "tfc:plant/duckweed"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": -40,
+        "max_temp": 33,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/field_horsetail"
+      },
+      {
+        "min_rain": 75,
+        "max_rain": 150,
+        "min_temp": -12,
+        "max_temp": 40,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/fountain_grass"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -34,
+        "max_temp": 34,
+        "type": "tall_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/foxglove"
+      },
+      {
+        "min_rain": 75,
+        "max_rain": 300,
+        "min_temp": -29,
+        "max_temp": 32,
+        "type": "short_grass",
+        "clay_indicator": true,
+        "feature": "tfc:plant/goldenrod"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 250,
+        "min_temp": -34,
+        "max_temp": 32,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/grape_hyacinth"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": 15,
+        "max_temp": 50,
+        "type": "epiphyte",
+        "clay_indicator": false,
+        "feature": "tfc:plant/guzmania"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 500,
+        "min_temp": -46,
+        "max_temp": 36,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/houstonia"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": -50,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/labrador_tea"
+      },
+      {
+        "min_rain": 200,
+        "max_rain": 500,
+        "min_temp": -34,
+        "max_temp": 32,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/lady_fern"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": -29,
+        "max_temp": 25,
+        "type": "epiphyte",
+        "clay_indicator": false,
+        "feature": "tfc:plant/licorice_fern"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 500,
+        "min_temp": 10,
+        "max_temp": 50,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/lotus"
+      },
+      {
+        "min_rain": 130,
+        "max_rain": 500,
+        "min_temp": -23,
+        "max_temp": 31,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/meads_milkweed"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 500,
+        "min_temp": -40,
+        "max_temp": 31,
+        "type": "creeping",
+        "clay_indicator": false,
+        "feature": "tfc:plant/morning_glory"
+      },
+      {
+        "min_rain": 250,
+        "max_rain": 500,
+        "min_temp": -7,
+        "max_temp": 36,
+        "type": "creeping",
+        "clay_indicator": false,
+        "feature": "tfc:plant/moss"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 500,
+        "min_temp": -46,
+        "max_temp": 38,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/nasturtium"
+      },
+      {
+        "min_rain": 75,
+        "max_rain": 300,
+        "min_temp": -29,
+        "max_temp": 30,
+        "type": "short_grass",
+        "clay_indicator": false,
         "feature": "tfc:plant/orchard_grass"
       },
       {
-        "min_rain": 0,
-        "max_rain": 750,
+        "min_rain": 300,
+        "max_rain": 500,
         "min_temp": -40,
-        "max_temp": 60,
-        "feature": "tfc:plant/scutch_grass"
+        "max_temp": 33,
+        "type": "tall_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/ostrich_fern"
+      },
+      {
+        "min_rain": 120,
+        "max_rain": 300,
+        "min_temp": -40,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/oxeye_daisy"
+      },
+      {
+        "min_rain": 75,
+        "max_rain": 200,
+        "min_temp": -12,
+        "max_temp": 36,
+        "type": "tall_grass",
+        "clay_indicator": true,
+        "feature": "tfc:plant/pampas_grass"
       },
       {
         "min_rain": 0,
-        "max_rain": 750,
+        "max_rain": 200,
+        "min_temp": -29,
+        "max_temp": 32,
+        "type": "short_grass",
+        "clay_indicator": true,
+        "feature": "tfc:plant/perovskia"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 500,
+        "min_temp": 10,
+        "max_temp": 50,
+        "type": "floating",
+        "clay_indicator": false,
+        "feature": "tfc:plant/pistia"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 250,
         "min_temp": -40,
-        "max_temp": 60,
-        "feature": "tfc:plant/allium"
+        "max_temp": 36,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/poppy"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -34,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/primrose"
+      },
+      {
+        "min_rain": 50,
+        "max_rain": 200,
+        "min_temp": -50,
+        "max_temp": 30,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/pulsatilla"
+      },
+      {
+        "min_rain": 50,
+        "max_rain": 500,
+        "min_temp": -50,
+        "max_temp": 33,
+        "type": "creeping",
+        "clay_indicator": false,
+        "feature": "tfc:plant/reindeer_lichen"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -29,
+        "max_temp": 34,
+        "type": "tall_grass",
+        "clay_indicator": true,
+        "feature": "tfc:plant/rose"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -46,
+        "max_temp": 32,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/ryegrass"
+      },
+      {
+        "min_rain": 75,
+        "max_rain": 150,
+        "min_temp": 5,
+        "max_temp": 33,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/sacred_datura"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 100,
+        "min_temp": -34,
+        "max_temp": 50,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/sagebrush"
+      },
+      {
+        "min_rain": 75,
+        "max_rain": 200,
+        "min_temp": -6,
+        "max_temp": 38,
+        "type": "tall_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/sapphire_tower"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 500,
+        "min_temp": 0,
+        "max_temp": 38,
+        "type": "floating",
+        "clay_indicator": false,
+        "feature": "tfc:plant/sargassum"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 500,
+        "min_temp": -17,
+        "max_temp": 50,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/scutch_grass"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -28,
+        "max_temp": 36,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/snapdragon_pink"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -28,
+        "max_temp": 36,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/snapdragon_red"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -28,
+        "max_temp": 36,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/snapdragon_white"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -28,
+        "max_temp": 36,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/snapdragon_yellow"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": 0,
+        "max_temp": 40,
+        "type": "hanging",
+        "clay_indicator": false,
+        "feature": "tfc:plant/spanish_moss"
+      },
+      {
+        "min_rain": 50,
+        "max_rain": 300,
+        "min_temp": 5,
+        "max_temp": 50,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/strelitzia"
+      },
+      {
+        "min_rain": 100,
+        "max_rain": 300,
+        "min_temp": -29,
+        "max_temp": 32,
+        "type": "tall_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/switchgrass"
+      },
+      {
+        "min_rain": 100,
+        "max_rain": 500,
+        "min_temp": -40,
+        "max_temp": 30,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/sword_fern"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": -29,
+        "max_temp": 30,
+        "type": "tall_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/tall_fescue_grass"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": -46,
+        "max_temp": 30,
+        "type": "short_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/timothy_grass"
+      },
+      {
+        "min_rain": 250,
+        "max_rain": 500,
+        "min_temp": 10,
+        "max_temp": 50,
+        "type": "tall_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/toquilla_palm"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": 10,
+        "max_temp": 50,
+        "type": "tall_grass",
+        "clay_indicator": false,
+        "feature": "tfc:plant/tree_fern"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 300,
+        "min_temp": -34,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/trillium"
+      },
+      {
+        "min_rain": 120,
+        "max_rain": 300,
+        "min_temp": -6,
+        "max_temp": 36,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/tropical_milkweed"
+      },
+      {
+        "min_rain": 100,
+        "max_rain": 200,
+        "min_temp": -34,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/tulip_orange"
+      },
+      {
+        "min_rain": 100,
+        "max_rain": 200,
+        "min_temp": -34,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/tulip_pink"
+      },
+      {
+        "min_rain": 100,
+        "max_rain": 200,
+        "min_temp": -34,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/tulip_red"
+      },
+      {
+        "min_rain": 100,
+        "max_rain": 200,
+        "min_temp": -34,
+        "max_temp": 33,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/tulip_white"
+      },
+      {
+        "min_rain": 300,
+        "max_rain": 500,
+        "min_temp": 15,
+        "max_temp": 50,
+        "type": "epiphyte",
+        "clay_indicator": false,
+        "feature": "tfc:plant/vriesea"
+      },
+      {
+        "min_rain": 150,
+        "max_rain": 500,
+        "min_temp": -12,
+        "max_temp": 36,
+        "type": "floating",
+        "clay_indicator": true,
+        "feature": "tfc:plant/water_canna"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 500,
+        "min_temp": -34,
+        "max_temp": 38,
+        "type": "floating",
+        "clay_indicator": false,
+        "feature": "tfc:plant/water_lily"
+      },
+      {
+        "min_rain": 0,
+        "max_rain": 75,
+        "min_temp": -34,
+        "max_temp": 36,
+        "type": "standard",
+        "clay_indicator": false,
+        "feature": "tfc:plant/yucca"
       }
     ]
   }

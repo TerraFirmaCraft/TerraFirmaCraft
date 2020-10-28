@@ -4,9 +4,9 @@
     "particle": "tfc:block/plant/morning_glory/morning_glory_layer0",
     "layer0": "tfc:block/plant/morning_glory/morning_glory_layer0",
     "layer1": "tfc:block/plant/morning_glory/morning_glory_layer1",
-    "bottom": "tfc:blocks/empty",
-    "middle": "tfc:blocks/empty",
-    "top": "tfc:blocks/empty"
+    "bottom": "tfc:block/empty",
+    "middle": "tfc:block/empty",
+    "top": "tfc:block/empty"
   },
   "elements": [
     {
