@@ -26,8 +26,9 @@ public class FoodTrait
     public static final FoodTrait PICKLED;
     public static final FoodTrait PRESERVED; // Large / Small vessels
     public static final FoodTrait VINEGAR; // Used for the state of being sealed in vinegar
-    public static final FoodTrait CHARCOAL_GRILLED;
-    public static final FoodTrait WOOD_GRILLED;
+    public static final FoodTrait CHARCOAL_GRILLED; // Slight debuff from cooking in a charcoal forge
+    public static final FoodTrait WOOD_GRILLED; // Slight bugg when cooking in a grill
+    public static final FoodTrait BURNT_TO_A_CRISP; // Cooking food in something that's WAY TOO HOT too cook food in you fool!
 
     private static final Map<String, FoodTrait> TRAITS = new HashMap<>();
 
@@ -40,8 +41,9 @@ public class FoodTrait
         PICKLED = new FoodTrait("pickled", 0.5f);
         PRESERVED = new FoodTrait("preserved", 0.5f);
         VINEGAR = new FoodTrait("vinegar", 0.1f);
-        CHARCOAL_GRILLED = new FoodTrait("charcoal_grilled", 1.2f);
+        CHARCOAL_GRILLED = new FoodTrait("charcoal_grilled", 1.25f);
         WOOD_GRILLED = new FoodTrait("wood_grilled", 0.8f);
+        BURNT_TO_A_CRISP = new FoodTrait("burnt_to_a_crisp", 2.5f); // This one is so high as it is meant to be > the existing gain from cooking meat.
     }
 
     public static Map<String, FoodTrait> getTraits()

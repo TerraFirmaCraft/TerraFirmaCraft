@@ -195,6 +195,7 @@ tfc.food_traits.preserved=Preserved
 tfc.food_traits.vinegar=Vinegar preserved
 tfc.food_traits.charcoal_grilled=Charcoal Grilled
 tfc.food_traits.wood_grilled=Wood Grilled
+tfc.food_traits.burnt_to_a_crisp=A Blackened Crusty Disgusting Pile of Ash
 tfc.tooltip.barrel_recipe_pickling=Pickling
 tfc.tooltip.barrel_recipe_brining=Brining
 tfc.tooltip.barrel_recipe_vinegar=Preserving in vinegar
