@@ -29,6 +29,8 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.ISmallVesselHandler;
+import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.recipes.heat.HeatRecipe;
@@ -127,7 +129,10 @@ public class TECrucible extends TETickableInventory implements ITickable, ITileF
                         if (cachedRecipes[i].isValidTemperature(cap.getTemperature()))
                         {
                             alloy.add(inputStack, cachedRecipes[i]);
-                            inventory.setStackInSlot(i, cachedRecipes[i].getOutputStack(inputStack));
+
+                            ItemStack outputStack = cachedRecipes[i].getOutputStack(inputStack);
+                            CapabilityFood.applyTrait(outputStack, FoodTrait.BURNT_TO_A_CRISP);
+                            inventory.setStackInSlot(i, outputStack);
                             // Update reference since it may have changed from recipe output
                             inputStack = inventory.getStackInSlot(i);
                             cap = inputStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
