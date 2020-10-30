@@ -87,6 +87,13 @@ public final class TFCColors
         return getClimateColor(WATER_COLORS_CACHE, pos);
     }
 
+    public static int getSpringWaterColor(BlockPos pos)
+    {
+        ChunkData data = ChunkDataCache.CLIENT.getOrEmpty(pos);
+        float temperature = Climate.calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.CLIENT.getCalendarTicks(), Calendars.CLIENT.getCalendarDaysInMonth());
+        return getClimateColor(WATER_COLORS_CACHE, temperature, 500);
+    }
+
     public static int getWaterFogColor(BlockPos pos)
     {
         return getClimateColor(WATER_FOG_COLORS_CACHE, pos);
