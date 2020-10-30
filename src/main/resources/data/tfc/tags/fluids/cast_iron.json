@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:metal/cast_iron",
+    "tfc:metal/flowing_cast_iron"
+  ]
+}

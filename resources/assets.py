@@ -206,6 +206,10 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang('%s %s' % (metal, metal_block)))
                 block.with_item_model()
 
+        # Fluid
+        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None)
+        rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
+
     # Gems
     for gem in GEMS:
         for grade in GEM_GRADES:
@@ -315,3 +319,11 @@ def generate(rm: ResourceManager):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
+
+    # Fluids
+    def water_based_fluid(name: str):
+        rm.blockstate(name).with_block_model({'particle': 'minecraft:water_still'}, parent=None)
+        rm.fluid_tag(name, 'tfc:fluids/%s' % name, 'tfc:fluids/flowing_%s' % name)
+
+    water_based_fluid('salt_water')
+    water_based_fluid('spring_water')
