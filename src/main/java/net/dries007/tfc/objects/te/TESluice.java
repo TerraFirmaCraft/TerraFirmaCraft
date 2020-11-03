@@ -104,17 +104,24 @@ public class TESluice extends TEBase implements ITickable
                     }
                     if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.gemChance)
                     {
-                        Gem dropGem;
-                        if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.diamondGemChance)
+                        Chunk chunk = world.getChunk(pos);
+                        ChunkDataTFC data = ChunkDataTFC.get(chunk);
+                        if (data.canWork(1))
                         {
-                            dropGem = Gem.DIAMOND;
+                            Gem dropGem;
+                            if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.diamondGemChance)
+                            {
+                                dropGem = Gem.DIAMOND;
+                            }
+                            else
+                            {
+                                dropGem = Gem.getRandomDropGem(Constants.RNG);
+                            }
+                            Gem.Grade grade = Gem.Grade.randomGrade(Constants.RNG);
+                            Helpers.spawnItemStack(world, getFrontWaterPos(), ItemGem.get(dropGem, grade, 1));
+                            data.addWork();
                         }
-                        else
-                        {
-                            dropGem = Gem.getRandomDropGem(Constants.RNG);
-                        }
-                        Gem.Grade grade = Gem.Grade.randomGrade(Constants.RNG);
-                        Helpers.spawnItemStack(world, getFrontWaterPos(), ItemGem.get(dropGem, grade, 1));
+
                     }
                     consumeSoil();
                 }

@@ -72,6 +72,11 @@ tfc.command.stripworld.usage=/stripworld <radiusInBlocks> -> [DANGER] Strips all
 tfc.command.stripworld.failed=Missing radius! /stripworld <radiusInBlocks>
 tfc.command.stripworld.done=Done!
 
+tfc.command.work.usage=/work [set|add] <amount> -> Modifies the amount of sluice work done to the chunk you're in.
+tfc.command.work.args=Arguments not recognized.
+tfc.command.work.string=First argument must be set or add.
+tfc.command.work.nonentity=Entity not found.
+
 # Gui
 
 ## Tooltips
