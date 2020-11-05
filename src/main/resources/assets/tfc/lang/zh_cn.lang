@@ -78,6 +78,11 @@ tfc.command.stripworld.usage=/stripworld <以方块为单位的半径> -> [危�
 tfc.command.stripworld.failed=缺少半径！/stripworld <以方块为单位的半径>
 tfc.command.stripworld.done=完成！
 
+tfc.command.work.usage=/work [set|add] <数量> -> 设置你所在的区块被洗矿槽或淘金盘开采的次数。
+tfc.command.work.args=参数无法识别。
+tfc.command.work.string=首个参数必须为 set 或 add。
+tfc.command.work.nonentity=实体未发现。
+
 # Gui
 
 ## Tooltips
@@ -780,6 +785,12 @@ config.tfc.devices.sluice.diamondGemChance.tooltip=当洗矿槽作业产生宝�
 ## Jug
 config.tfc.devices.jug.dumpWaterOnShiftRightClick=Shift + 右键点击倒水
 config.tfc.devices.jug.dumpWaterOnShiftRightClick.tooltip=允许手持罐时 Shift + 右键点击在地上倒水。不会产生实际的水源方块。
+
+
+## Gold Pan
+config.tfc.devices.gold_pan.cooldownTicks=冷却间隔
+config.tfc.devices.gold_pan.cooldownTicks.tooltip=使用淘金盘后冷却需要的刻数。
+
 
 ## Clients
 config.tfc.client=客户端设置
