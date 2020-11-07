@@ -12,7 +12,6 @@
     "util.registry.WorldSettingsImportMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
-    "world.biome.BiomeContainerMixin",
     "world.biome.BiomeMixin",
     "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor",
