@@ -1,14 +1,14 @@
 # Loader metadata
-modLoader="javafml" # mandatory
-loaderVersion="[34,)" # mandatory
-license="EUPL-1.2"
-issueTrackerURL="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
+modLoader = "javafml" # mandatory
+loaderVersion = "[35,)" # mandatory
+license = "EUPL-1.2"
+issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
 # TFC
 [[mods]]
-    modId="tfc" # mandatory
-    version="${file.jarVersion}" #mandatory
-    displayName="TerraFirmaCraft" #mandatory
+    modId = "tfc" # mandatory
+    version = "${file.jarVersion}" #mandatory
+    displayName = "TerraFirmaCraft" #mandatory
     # A URL to query for updates for this mod. See the JSON update specification <here>
     #updateJSONURL="http://myurl.me/" #optional
     # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -25,14 +25,14 @@ issueTrackerURL="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 # dependencies
 [[dependencies.tfc]]
     modId="forge"
-    mandatory=true
-    versionRange="[34.0.9,)"
-    ordering="AFTER"
+    mandatory = true
+    versionRange = "[35.0.3,)"
+    ordering = "AFTER"
     side="BOTH"
 
 [[dependencies.tfc]]
     modId="minecraft"
-    mandatory=true
-    versionRange="[1.16.3,)"
-    ordering="AFTER"
+    mandatory = true
+    versionRange = "[1.16.4,)"
+    ordering = "AFTER"
     side="BOTH"
