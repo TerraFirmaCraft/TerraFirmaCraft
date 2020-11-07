@@ -13,20 +13,24 @@ import java.util.function.Function;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.WorldCarver;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.world.noise.*;
+import net.dries007.tfc.world.noise.INoise3D;
+import net.dries007.tfc.world.noise.NoiseUtil;
+import net.dries007.tfc.world.noise.SimplexNoise3D;
+import net.dries007.tfc.world.noise.WorleyNoise3D;
 
 public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements IContextCarver
 {
     private final CaveBlockReplacer blockCarver;
 
     private long cachedSeed;
-    private boolean initialized;
-
-    private INoise2D caveNoiseBase;
+    private GenerationStage.Carving stage;
+    private BitSet liquidCarvingMask;
     private INoise3D caveNoiseWorley;
+    private boolean initialized;
 
     public WorleyCaveCarver(Codec<WorleyCaveConfig> codec)
     {
@@ -34,24 +38,26 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
 
         blockCarver = new CaveBlockReplacer();
         cachedSeed = 0;
+        stage = GenerationStage.Carving.AIR;
         initialized = false;
     }
 
     @Override
-    public void setSeed(long seed)
+    public void setContext(long worldSeed, GenerationStage.Carving stage, BitSet liquidCarvingMask)
     {
-        if (cachedSeed != seed || !initialized)
+        if (this.cachedSeed != worldSeed || !initialized)
         {
-            caveNoiseBase = new SimplexNoise2D(seed + 1).spread(0.01f).scaled(0, 1);
-            caveNoiseWorley = new WorleyNoise3D(seed + 2).spread(0.012f).warped(
-                new SimplexNoise3D(seed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
-                new SimplexNoise3D(seed + 4).octaves(4).spread(0.08f).scaled(-18, 18),
-                new SimplexNoise3D(seed + 5).octaves(4).spread(0.08f).scaled(-18, 18)
+            caveNoiseWorley = new WorleyNoise3D(worldSeed + 2).spread(0.012f).warped(
+                new SimplexNoise3D(worldSeed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
+                new SimplexNoise3D(worldSeed + 4).octaves(4).spread(0.08f).scaled(-18, 18),
+                new SimplexNoise3D(worldSeed + 5).octaves(4).spread(0.08f).scaled(-18, 18)
             ).scaled(0, 1);
 
-            cachedSeed = seed;
             initialized = true;
+            cachedSeed = worldSeed;
         }
+        this.stage = stage;
+        this.liquidCarvingMask = liquidCarvingMask;
     }
 
     @Override
@@ -85,8 +91,8 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     @SuppressWarnings("PointlessArithmeticExpression")
     private void carve(IChunk chunkIn, int chunkX, int chunkZ, BitSet carvingMask, WorleyCaveConfig config)
     {
-        int heightSampleRange = (config.heightFadeThreshold / 4) + 8;
-        float[] noiseValues = new float[5 * 5 * heightSampleRange];
+        final int heightSampleRange = (config.heightFadeThreshold / 4) + 8;
+        final float[] noiseValues = new float[5 * 5 * heightSampleRange];
 
         // Sample initial noise values
         for (int x = 0; x < 5; x++)
@@ -95,7 +101,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
             {
                 for (int y = 0; y < heightSampleRange; y++)
                 {
-                    noiseValues[x + (z * 5) + (y * 25)] = sampleNoise(chunkX + x * 4, y * 7f, chunkZ + z * 4, config);
+                    noiseValues[x + (z * 5) + (y * 25)] = caveNoiseWorley.noise((float) (chunkX + x * 4), y * 7f, (float) (chunkZ + z * 4));
                 }
             }
         }
@@ -152,7 +158,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
 
                                     if (finalNoise > config.worleyNoiseCutoff)
                                     {
-                                        blockCarver.carveBlock(chunkIn, pos, carvingMask);
+                                        blockCarver.carveBlock(chunkIn, pos, stage, carvingMask, liquidCarvingMask);
                                     }
                                 }
                             }
@@ -164,15 +170,5 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
             // End of x/z loop, so move section to previous
             prevSection = Arrays.copyOf(section, section.length);
         }
-    }
-
-    private float sampleNoise(float x, float y, float z, WorleyCaveConfig config)
-    {
-        float baseNoise = caveNoiseBase.noise(x, z);
-        if (baseNoise > config.baseNoiseCutoff)
-        {
-            return caveNoiseWorley.noise(x, y, z);
-        }
-        return 0;
     }
 }

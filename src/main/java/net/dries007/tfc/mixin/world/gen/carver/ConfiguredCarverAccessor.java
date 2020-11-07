@@ -9,6 +9,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(ConfiguredCarver.class)
 public interface ConfiguredCarverAccessor
 {
+    /**
+     * The accessor has been inline / removed and it is needed to provide additional carving context
+     */
     @Accessor("worldCarver")
-    WorldCarver<?> accessor$getCarver();
+    WorldCarver<?> accessor$getWorldCarver();
 }

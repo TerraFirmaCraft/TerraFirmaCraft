@@ -204,6 +204,9 @@ def generate(rm: ResourceManager):
     rm.carver('canyon', wg.configure('tfc:canyon', {'probability': 0.015}))
     rm.carver('worley_cave', wg.configure('tfc:worley_cave'))
 
+    rm.carver('underwater_cave', wg.configure('tfc:underwater_cave', {'probability': 0.03}))
+    rm.carver('underwater_canyon', wg.configure('tfc:underwater_canyon', {'probability': 0.02}))
+
     # Biomes
     for temp in TEMPERATURES:
         for rain in RAINFALLS:
@@ -218,18 +221,18 @@ def generate(rm: ResourceManager):
             biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:deep')
             biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
-            biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
-            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False)
-            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False)
+            biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_carvers=True)
+            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True)
+            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True)
             biome(rm, 'river', temp, rain, 'river', 'tfc:underwater', spawnable=False)
             biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore')
 
             biome(rm, 'mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
             biome(rm, 'old_mountain_river', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'flooded_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False)
+            biome(rm, 'flooded_mountain_river', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_carvers=True)
             biome(rm, 'mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
             biome(rm, 'old_mountain_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False)
-            biome(rm, 'flooded_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False)
+            biome(rm, 'flooded_mountain_lake', temp, rain, 'river', 'tfc:mountains', spawnable=False, ocean_carvers=True)
             biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', 'tfc:mountains', spawnable=False, boulders=True)
 
 
@@ -304,7 +307,7 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int):
     }
 
 
-def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True):
+def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False):
     if rain.id == 'arid':
         rain_type = 'none'
     elif temp.id in ('cold', 'frozen'):
@@ -328,6 +331,10 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         features[Decoration.SURFACE_STRUCTURES] += ['tfc:raw_boulder', 'tfc:cobble_boulder']
         if rain.id in ('damp', 'wet'):
             features[Decoration.SURFACE_STRUCTURES].append('tfc:mossy_boulder')
+    air_carvers = ['tfc:worley_cave', 'tfc:cave', 'tfc:canyon']
+    water_carvers = []
+    if ocean_carvers:
+        water_carvers += ['tfc:underwater_cave', 'tfc:underwater_canyon']
 
     rm.lang('biome.tfc.%s_%s_%s' % (name, temp.id, rain.id), '(%s / %s) %s' % (temp.id.title(), rain.id.title(), lang(name)))
     rm.biome(
@@ -343,8 +350,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
             'water_fog_color': temp.water_fog_color
         },
         surface_builder=surface_builder,
-        air_carvers=['tfc:worley_cave', 'tfc:cave', 'tfc:canyon'],
-        water_carvers=[],
+        air_carvers=air_carvers,
+        water_carvers=water_carvers,
         features=features,
         player_spawn_friendly=spawnable
     )

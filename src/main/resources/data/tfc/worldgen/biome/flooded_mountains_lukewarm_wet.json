@@ -19,7 +19,10 @@
       "tfc:cave",
       "tfc:canyon"
     ],
-    "liquid": []
+    "liquid": [
+      "tfc:underwater_cave",
+      "tfc:underwater_canyon"
+    ]
   },
   "surface_builder": "tfc:mountains",
   "features": [

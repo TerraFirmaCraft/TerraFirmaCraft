@@ -1,5 +1,9 @@
 package net.dries007.tfc.world.carver;
 
+import java.util.BitSet;
+
+import net.minecraft.world.gen.GenerationStage;
+
 /**
  * Marker interface for carvers which need to be given the world seed
  *
@@ -7,5 +11,5 @@ package net.dries007.tfc.world.carver;
  */
 public interface IContextCarver
 {
-    void setSeed(long seed);
+    void setContext(long worldSeed, GenerationStage.Carving stage, BitSet liquidCarvingMask);
 }
