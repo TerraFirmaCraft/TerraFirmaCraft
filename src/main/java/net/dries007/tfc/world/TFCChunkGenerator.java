@@ -162,19 +162,46 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     @Override
     public void applyCarvers(long worldSeed, BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
     {
-        ChunkPos chunkPos = chunkIn.getPos();
-        BiomeGenerationSettings biomeGenerationSettings = biomeSource.getNoiseBiome(chunkPos.x << 2, 0, chunkPos.z << 2).getGenerationSettings();
+        // Pull the ole' switcheroo
+        stage = stage == GenerationStage.Carving.AIR ? GenerationStage.Carving.LIQUID : GenerationStage.Carving.AIR;
+
+        final ChunkPos chunkPos = chunkIn.getPos();
+        final BiomeGenerationSettings biomeGenerationSettings = biomeSource.getNoiseBiome(chunkPos.x << 2, 0, chunkPos.z << 2).getGenerationSettings();
+        final BiomeManager delegateBiomeManager = biomeManager.withDifferentSource(this.biomeSource);
+        final SharedSeedRandom random = new SharedSeedRandom();
+        final List<Supplier<ConfiguredCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
+        final BitSet liquidCarvingMask = ((ChunkPrimer) chunkIn).getOrCreateCarvingMask(GenerationStage.Carving.LIQUID);
+        final BitSet currentCarvingMask = ((ChunkPrimer) chunkIn).getOrCreateCarvingMask(stage);
+        final int chunkX = chunkPos.x;
+        final int chunkZ = chunkPos.z;
 
         for (Supplier<ConfiguredCarver<?>> lazyCarver : biomeGenerationSettings.getCarvers(stage))
         {
-            WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getCarver();
+            final WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getWorldCarver();
             if (carver instanceof IContextCarver)
             {
-                ((IContextCarver) carver).setSeed(worldSeed);
+                ((IContextCarver) carver).setContext(worldSeed, stage, liquidCarvingMask);
             }
         }
 
-        super.applyCarvers(worldSeed, biomeManager, chunkIn, stage);
+        for (int x = chunkX - 8; x <= chunkX + 8; ++x)
+        {
+            for (int z = chunkZ - 8; z <= chunkZ + 8; ++z)
+            {
+                int index = 0;
+                for (Supplier<ConfiguredCarver<?>> lazyCarver : carvers)
+                {
+                    final ConfiguredCarver<?> carver = lazyCarver.get();
+
+                    random.setLargeFeatureSeed(worldSeed + index, x, z);
+                    if (carver.isStartChunk(random, x, z))
+                    {
+                        carver.carve(chunkIn, delegateBiomeManager::getBiome, random, getSeaLevel(), x, z, chunkX, chunkZ, currentCarvingMask);
+                    }
+                    index++;
+                }
+            }
+        }
     }
 
     /**

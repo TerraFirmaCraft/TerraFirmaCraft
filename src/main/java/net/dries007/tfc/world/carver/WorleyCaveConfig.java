@@ -8,9 +8,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 public class WorleyCaveConfig implements ICarverConfig
 {
     public static final Codec<WorleyCaveConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.INT.optionalFieldOf("height_fade_threshold", 94).forGetter(c -> c.heightFadeThreshold),
-        Codec.FLOAT.optionalFieldOf("base_noise_cutoff", 0.3f).forGetter(c -> c.baseNoiseCutoff),
-        Codec.FLOAT.optionalFieldOf("worley_noise_cutoff", 0.38f).forGetter(c -> c.worleyNoiseCutoff)
+        Codec.intRange(0, 256).optionalFieldOf("height_fade_threshold", 94).forGetter(c -> c.heightFadeThreshold),
+        Codec.floatRange(0, 1).optionalFieldOf("base_noise_cutoff", 0.3f).forGetter(c -> c.baseNoiseCutoff),
+        Codec.floatRange(0, 1).optionalFieldOf("worley_noise_cutoff", 0.38f).forGetter(c -> c.worleyNoiseCutoff)
     ).apply(instance, WorleyCaveConfig::new));
 
     public final int heightFadeThreshold;

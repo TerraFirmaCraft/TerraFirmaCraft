@@ -302,6 +302,11 @@ public final class Helpers
      */
     public static <E> E resolveEither(Either<E, E> either)
     {
-        return either.left().orElseGet(either.right()::get);
+        return either.map(e -> e, e -> e);
+    }
+
+    public static <E, R> R resolveEither(Either<E, E> either, Function<E, R> map)
+    {
+        return either.map(map, map);
     }
 }
