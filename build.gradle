@@ -40,7 +40,7 @@ minecraft {
     // Otherwise, we use official mappings in a build script version
     def officialVersion = System.getenv("OFFICIAL_MAPPINGS")
     if (officialVersion == null) {
-        mappings channel: 'snapshot', version: 'complete-20200912-1.16.3-v5'
+        mappings channel: 'snapshot', version: mappings_version
     } else {
         mappings channel: 'official', version: minecraft_version
     }
