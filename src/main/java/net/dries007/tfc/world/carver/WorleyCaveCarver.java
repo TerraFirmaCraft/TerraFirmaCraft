@@ -13,7 +13,7 @@ import java.util.function.Function;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.carver.WorldCarver;
 
 import com.mojang.serialization.Codec;
@@ -24,28 +24,28 @@ import net.dries007.tfc.world.noise.WorleyNoise3D;
 
 public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements IContextCarver
 {
-    private final CaveBlockReplacer blockCarver;
+    private final IBlockCarver blockCarver;
 
     private long cachedSeed;
-    private GenerationStage.Carving stage;
-    private BitSet liquidCarvingMask;
     private INoise3D caveNoiseWorley;
-    private boolean initialized;
+
+    private WorldGenRegion world;
+    private BitSet airCarvingMask;
+    private BitSet liquidCarvingMask;
 
     public WorleyCaveCarver(Codec<WorleyCaveConfig> codec)
     {
         super(codec, 255);
 
-        blockCarver = new CaveBlockReplacer();
+        blockCarver = new AirBlockCarver();
         cachedSeed = 0;
-        stage = GenerationStage.Carving.AIR;
-        initialized = false;
     }
 
     @Override
-    public void setContext(long worldSeed, GenerationStage.Carving stage, BitSet liquidCarvingMask)
+    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask)
     {
-        if (this.cachedSeed != worldSeed || !initialized)
+        long worldSeed = world.getSeed();
+        if (this.cachedSeed != worldSeed || this.world == null)
         {
             caveNoiseWorley = new WorleyNoise3D(worldSeed + 2).spread(0.012f).warped(
                 new SimplexNoise3D(worldSeed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
@@ -53,10 +53,11 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
                 new SimplexNoise3D(worldSeed + 5).octaves(4).spread(0.08f).scaled(-18, 18)
             ).scaled(0, 1);
 
-            initialized = true;
             cachedSeed = worldSeed;
         }
-        this.stage = stage;
+
+        this.world = world;
+        this.airCarvingMask = airCarvingMask;
         this.liquidCarvingMask = liquidCarvingMask;
     }
 
@@ -66,11 +67,11 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
         // This carver is entirely noise based, so we need to only carve chunks when we're at the start chunk
         if (chunkX == chunkXOffset && chunkZ == chunkZOffset)
         {
-            if (!initialized)
+            if (world == null)
             {
                 throw new IllegalStateException("Not properly initialized! Cannot use WorleyCaveCarver with a chunk generator that does not respect IContextCarver");
             }
-            carve(chunkIn, chunkX << 4, chunkZ << 4, carvingMask, config);
+            carve(chunkIn, chunkX << 4, chunkZ << 4, rand, seaLevel, config);
             return true;
         }
         return false;
@@ -89,7 +90,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    private void carve(IChunk chunkIn, int chunkX, int chunkZ, BitSet carvingMask, WorleyCaveConfig config)
+    private void carve(IChunk chunkIn, int chunkX, int chunkZ, Random random, int seaLevel, WorleyCaveConfig config)
     {
         final int heightSampleRange = (config.heightFadeThreshold / 4) + 8;
         final float[] noiseValues = new float[5 * 5 * heightSampleRange];
@@ -158,7 +159,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
 
                                     if (finalNoise > config.worleyNoiseCutoff)
                                     {
-                                        blockCarver.carveBlock(chunkIn, pos, stage, carvingMask, liquidCarvingMask);
+                                        blockCarver.carve(world, chunkIn, pos, random, seaLevel, airCarvingMask, liquidCarvingMask);
                                     }
                                 }
                             }

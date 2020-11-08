@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -40,6 +41,11 @@ public class RockData implements INBTSerializable<CompoundNBT>
         this.middleLayer = middleLayer;
         this.topLayer = topLayer;
         this.rockLayerHeight = rockLayerHeight;
+    }
+
+    public Rock getRock(BlockPos pos)
+    {
+        return getRock(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public Rock getRock(int x, int y, int z)

@@ -104,7 +104,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
 
-    public Biome getNoiseBiomeIgnoreClimate(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
+    public Biome getNoiseBiomeIgnoreClimate(int biomeCoordX, int biomeCoordZ)
     {
         final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
         final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
@@ -120,7 +120,6 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     public BlockPos findBiomeIgnoreClimate(int x, int y, int z, int radius, int increment, Predicate<Biome> biomesIn, Random rand)
     {
         final int centerBiomeX = x >> 2;
-        final int centerBiomeY = y >> 2;
         final int centerBiomeZ = z >> 2;
         final int biomeRadius = radius >> 2;
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
@@ -132,7 +131,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
             {
                 int biomeX = centerBiomeX + stepX;
                 int biomeZ = centerBiomeZ + stepZ;
-                if (biomesIn.test(getNoiseBiomeIgnoreClimate(biomeX, centerBiomeY, biomeZ)))
+                if (biomesIn.test(getNoiseBiomeIgnoreClimate(biomeX, biomeZ)))
                 {
                     if (found == 0 || rand.nextInt(found + 1) == 0)
                     {
