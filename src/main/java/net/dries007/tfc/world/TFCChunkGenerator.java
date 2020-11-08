@@ -26,6 +26,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
@@ -135,15 +136,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         return biomeProvider;
     }
 
-    public ChunkBlockReplacer getBlockReplacer()
-    {
-        return blockReplacer;
-    }
-
     @Override
     public void createBiomes(Registry<Biome> biomeIdRegistry, IChunk chunkIn)
     {
-        // Saves 98% of vanilla biome generation calls
         ((ChunkPrimer) chunkIn).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunkIn.getPos(), biomeProvider));
     }
 
@@ -159,53 +154,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         return new TFCChunkGenerator(biomeProvider, () -> settings, flatBedrock, seedIn);
     }
 
+    /**
+     * Noop - carvers are done at the beginning of feature stage, so the carver is free to check adjacent chunks for information
+     */
     @Override
-    public void applyCarvers(long worldSeed, BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage)
-    {
-        // Pull the ole' switcheroo
-        stage = stage == GenerationStage.Carving.AIR ? GenerationStage.Carving.LIQUID : GenerationStage.Carving.AIR;
-
-        final ChunkPos chunkPos = chunkIn.getPos();
-        final BiomeGenerationSettings biomeGenerationSettings = biomeSource.getNoiseBiome(chunkPos.x << 2, 0, chunkPos.z << 2).getGenerationSettings();
-        final BiomeManager delegateBiomeManager = biomeManager.withDifferentSource(this.biomeSource);
-        final SharedSeedRandom random = new SharedSeedRandom();
-        final List<Supplier<ConfiguredCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
-        final BitSet liquidCarvingMask = ((ChunkPrimer) chunkIn).getOrCreateCarvingMask(GenerationStage.Carving.LIQUID);
-        final BitSet currentCarvingMask = ((ChunkPrimer) chunkIn).getOrCreateCarvingMask(stage);
-        final int chunkX = chunkPos.x;
-        final int chunkZ = chunkPos.z;
-
-        for (Supplier<ConfiguredCarver<?>> lazyCarver : biomeGenerationSettings.getCarvers(stage))
-        {
-            final WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getWorldCarver();
-            if (carver instanceof IContextCarver)
-            {
-                ((IContextCarver) carver).setContext(worldSeed, stage, liquidCarvingMask);
-            }
-        }
-
-        for (int x = chunkX - 8; x <= chunkX + 8; ++x)
-        {
-            for (int z = chunkZ - 8; z <= chunkZ + 8; ++z)
-            {
-                int index = 0;
-                for (Supplier<ConfiguredCarver<?>> lazyCarver : carvers)
-                {
-                    final ConfiguredCarver<?> carver = lazyCarver.get();
-
-                    random.setLargeFeatureSeed(worldSeed + index, x, z);
-                    if (carver.isStartChunk(random, x, z))
-                    {
-                        carver.carve(chunkIn, delegateBiomeManager::getBiome, random, getSeaLevel(), x, z, chunkX, chunkZ, currentCarvingMask);
-                    }
-                    index++;
-                }
-            }
-        }
-    }
+    public void applyCarvers(long worldSeed, BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage) {}
 
     /**
-     * Since we build surface in {@link TFCChunkGenerator#makeBase(IWorld, IChunk)}, we just have to make bedrock and replace surface with TFC blocks here.
+     * Surface is done in make base, bedrock is added here then block replacements are ran.
      */
     @Override
     public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, IChunk chunk)
@@ -222,6 +178,28 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         FastChunkPrimer.updateChunkHeightMaps(fastChunk);
     }
 
+    /**
+     * Apply carvers, then features
+     */
+    @Override
+    public void applyBiomeDecoration(WorldGenRegion worldIn, StructureManager manager)
+    {
+        final ChunkPrimer chunk = (ChunkPrimer) worldIn.getChunk(worldIn.getCenterX(), worldIn.getCenterZ());
+        final BiomeGenerationSettings settings = biomeSource.getNoiseBiome(chunk.getPos().x << 2, 0, chunk.getPos().z << 2).getGenerationSettings();
+        final BiomeManager biomeManager = worldIn.getBiomeManager().withDifferentSource(this.biomeSource);
+        final SharedSeedRandom random = new SharedSeedRandom();
+
+        final BitSet liquidCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.LIQUID);
+        final BitSet airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.AIR);
+
+        // Apply carvers - liquid first, then air. Air carvers carve around liquid ones to avoid intersecting
+        applyCarvers(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.LIQUID, airCarvingMask, liquidCarvingMask);
+        applyCarvers(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.AIR, airCarvingMask, liquidCarvingMask);
+
+        // Apply features (vanilla biome decoration) normally
+        super.applyBiomeDecoration(worldIn, manager);
+    }
+
     @Override
     public int getSpawnHeight()
     {
@@ -229,7 +207,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     }
 
     /**
-     * This runs after biome generation. In order to do accurate surface placement, we don't use the already generated biome container, as the biome magnifier really sucks for definition on cliffs
+     * This runs after biome generation. In order to do accurate surface placement, we don't use the already generated biome container, as the biome magnifier really sucks for definition on cliffs.
      */
     @Override
     public void fillFromNoise(IWorld world, StructureManager structureManager, IChunk chunk)
@@ -379,40 +357,19 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     @Override
     public int getSeaLevel()
     {
-        return TFCChunkGenerator.SEA_LEVEL;
+        return SEA_LEVEL;
     }
 
     @Override
     public int getBaseHeight(int x, int z, Heightmap.Type heightMapType)
     {
-        return getSeaLevel();
+        return SEA_LEVEL;
     }
 
     @Override
     public IBlockReader getBaseColumn(int x, int z)
     {
-        return EmptyBlockReader.INSTANCE; // todo: is this important?
-    }
-
-    private void makeBedrock(IChunk chunk, Random random)
-    {
-        final BlockPos.Mutable posAt = new BlockPos.Mutable();
-        final BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
-        for (BlockPos pos : BlockPos.betweenClosed(chunk.getPos().getMinBlockX(), 0, chunk.getPos().getMinBlockZ(), chunk.getPos().getMinBlockX() + 15, 0, chunk.getPos().getMinBlockZ() + 15))
-        {
-            if (flatBedrock)
-            {
-                chunk.setBlockState(pos, bedrock, false);
-            }
-            else
-            {
-                int yMax = random.nextInt(5);
-                for (int y = 0; y <= yMax; y++)
-                {
-                    chunk.setBlockState(posAt.set(pos.getX(), y, pos.getZ()), bedrock, false);
-                }
-            }
-        }
+        return EmptyBlockReader.INSTANCE;
     }
 
     private double calculateNoiseColumn(Object2DoubleMap<Biome> weightMap, Function<Biome, BiomeVariants> variantsAccessor, Function<BiomeVariants, BiomeVariants> variantsFilter, int x, int z, Mutable<Biome> mutableBiome)
@@ -500,5 +457,60 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         mutableBiome.setValue(Objects.requireNonNull(biomeAt, "Biome should not be null!"));
         return actualHeight;
+    }
+
+    private void makeBedrock(IChunk chunk, Random random)
+    {
+        final BlockPos.Mutable posAt = new BlockPos.Mutable();
+        final BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
+        for (BlockPos pos : BlockPos.betweenClosed(chunk.getPos().getMinBlockX(), 0, chunk.getPos().getMinBlockZ(), chunk.getPos().getMinBlockX() + 15, 0, chunk.getPos().getMinBlockZ() + 15))
+        {
+            if (flatBedrock)
+            {
+                chunk.setBlockState(pos, bedrock, false);
+            }
+            else
+            {
+                int yMax = random.nextInt(5);
+                for (int y = 0; y <= yMax; y++)
+                {
+                    chunk.setBlockState(posAt.set(pos.getX(), y, pos.getZ()), bedrock, false);
+                }
+            }
+        }
+    }
+
+    private void applyCarvers(WorldGenRegion worldIn, IChunk chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, SharedSeedRandom random, GenerationStage.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask)
+    {
+        final ChunkPos chunkPos = chunk.getPos();
+        final List<Supplier<ConfiguredCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
+
+        for (Supplier<ConfiguredCarver<?>> lazyCarver : carvers)
+        {
+            final WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getWorldCarver();
+            if (carver instanceof IContextCarver)
+            {
+                ((IContextCarver) carver).setContext(worldIn, airCarvingMask, liquidCarvingMask);
+            }
+        }
+
+        for (int x = chunkPos.x - 8; x <= chunkPos.x + 8; ++x)
+        {
+            for (int z = chunkPos.z - 8; z <= chunkPos.z + 8; ++z)
+            {
+                int index = 0;
+                for (Supplier<ConfiguredCarver<?>> lazyCarver : carvers)
+                {
+                    final ConfiguredCarver<?> carver = lazyCarver.get();
+
+                    random.setLargeFeatureSeed(worldIn.getSeed() + index, x, z);
+                    if (carver.isStartChunk(random, x, z))
+                    {
+                        carver.carve(chunk, delegateBiomeManager::getBiome, random, getSeaLevel(), x, z, chunkPos.x, chunkPos.z, stage == GenerationStage.Carving.AIR ? airCarvingMask : liquidCarvingMask);
+                    }
+                    index++;
+                }
+            }
+        }
     }
 }

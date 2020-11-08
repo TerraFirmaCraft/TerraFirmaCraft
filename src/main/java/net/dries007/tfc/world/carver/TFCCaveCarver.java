@@ -14,8 +14,10 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.carver.CaveWorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 
@@ -25,16 +27,17 @@ import net.dries007.tfc.common.types.RockManager;
 public class TFCCaveCarver extends CaveWorldCarver implements IContextCarver
 {
     private final Set<Block> originalCarvableBlocks;
-    private final CaveBlockReplacer blockCarver;
+    private final IBlockCarver blockCarver;
 
-    private GenerationStage.Carving stage;
+    private WorldGenRegion world;
+    private BitSet airCarvingMask;
     private BitSet liquidCarvingMask;
 
     public TFCCaveCarver(Codec<ProbabilityConfig> codec, int maxHeight)
     {
         super(codec, maxHeight);
         originalCarvableBlocks = replaceableBlocks;
-        blockCarver = new CaveBlockReplacer();
+        blockCarver = new AirBlockCarver();
 
         // Need to run this every time the rock registry is reloaded
         RockManager.INSTANCE.addCallback(() -> replaceableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
@@ -48,16 +51,17 @@ public class TFCCaveCarver extends CaveWorldCarver implements IContextCarver
     }
 
     @Override
-    public void setContext(long worldSeed, GenerationStage.Carving stage, BitSet liquidCarvingMask)
+    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask)
     {
-        this.stage = stage;
+        this.world = world;
+        this.airCarvingMask = airCarvingMask;
         this.liquidCarvingMask = liquidCarvingMask;
     }
 
     @Override
     public boolean carve(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig config)
     {
-        if (stage == null)
+        if (world == null)
         {
             throw new IllegalStateException("Not properly initialized! Cannot use TFCCaveCarver with a chunk generator that does not respect IContextCarver");
         }
@@ -65,9 +69,9 @@ public class TFCCaveCarver extends CaveWorldCarver implements IContextCarver
     }
 
     @Override
-    protected boolean carveBlock(IChunk chunkIn, Function<BlockPos, Biome> lazyBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutablePos1, BlockPos.Mutable mutablePos2, BlockPos.Mutable mutablePos3, int p_225556_8_, int p_225556_9_, int p_225556_10_, int actualX, int actualZ, int localX, int y, int localZ, MutableBoolean reachedSurface)
+    protected boolean carveBlock(IChunk chunkIn, Function<BlockPos, Biome> lazyBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutablePos1, BlockPos.Mutable mutablePos2, BlockPos.Mutable mutablePos3, int seaLevel, int chunkX, int chunkZ, int actualX, int actualZ, int localX, int y, int localZ, MutableBoolean reachedSurface)
     {
         mutablePos1.set(actualX, y, actualZ);
-        return blockCarver.carveBlock(chunkIn, mutablePos1, stage, carvingMask, liquidCarvingMask);
+        return blockCarver.carve(world, chunkIn, mutablePos1, random, seaLevel, airCarvingMask, liquidCarvingMask);
     }
 }

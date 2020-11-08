@@ -24,7 +24,7 @@ import net.dries007.tfc.mixin.world.gen.feature.template.TemplateAccessor;
  * Helpers class for working with tree generation
  * Includes utilities for managing rotations, mirrors, and templates
  */
-public class TreeHelpers
+public final class TreeHelpers
 {
     private static final Rotation[] ROTATION_VALUES = Rotation.values();
     private static final Mirror[] MIRROR_VALUES = Mirror.values();
