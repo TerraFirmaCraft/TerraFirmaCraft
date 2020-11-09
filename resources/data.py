@@ -33,9 +33,9 @@ def generate(rm: ResourceManager):
                 # And the IHeat capability
                 rm.data(('tfc', 'item_heats', metal, item), {
                     'ingredient': ingredient,
-                    "heat_capacity": metal_data.heat_capacity,
-                    "forging_temperature": metal_data.melt_temperature * 0.6,
-                    "welding_temperature": metal_data.melt_temperature * 0.8
+                    'heat_capacity': metal_data.heat_capacity,
+                    'forging_temperature': metal_data.melt_temperature * 0.6,
+                    'welding_temperature': metal_data.melt_temperature * 0.8
                 })
 
     # Rocks

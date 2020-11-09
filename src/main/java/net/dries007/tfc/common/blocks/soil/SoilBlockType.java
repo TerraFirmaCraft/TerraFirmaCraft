@@ -7,10 +7,15 @@ package net.dries007.tfc.common.blocks.soil;
 
 import java.util.function.BiFunction;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+
+import net.dries007.tfc.common.blocks.ForgeBlockProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.tileentity.FarmlandTileEntity;
 
 public enum SoilBlockType
 {
@@ -19,7 +24,7 @@ public enum SoilBlockType
     GRASS_PATH((self, variant) -> new TFCGrassPathBlock(Block.Properties.of(Material.DIRT).strength(0.65F).sound(SoundType.GRASS), self.transform(), variant)),
     CLAY((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
     CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), self.transform(), variant)),
-    CLAY_GRASS_PATH((self, variant) -> new TFCGrassPathBlock(Block.Properties.of(Material.DIRT).strength(0.65F).sound(SoundType.GRASS), self.transform(), variant));
+    FARMLAND((self, variant) -> new TFCFarmlandBlock(new ForgeBlockProperties(AbstractBlock.Properties.of(Material.DIRT).strength(0.6f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always)).tileEntity(FarmlandTileEntity::new), variant));
 
     public static final SoilBlockType[] VALUES = values();
 
@@ -51,11 +56,11 @@ public enum SoilBlockType
                 return GRASS;
             case GRASS:
             case GRASS_PATH:
+            case FARMLAND:
                 return DIRT;
             case CLAY:
                 return CLAY_GRASS;
             case CLAY_GRASS:
-            case CLAY_GRASS_PATH:
                 return CLAY;
         }
         throw new IllegalStateException("SoilBlockType." + name() + " missing from switch in SoilBlockType#transform");

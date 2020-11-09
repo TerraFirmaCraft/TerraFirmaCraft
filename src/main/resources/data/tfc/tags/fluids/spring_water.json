@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:fluids/spring_water",
-    "tfc:fluids/flowing_spring_water"
+    "tfc:spring_water",
+    "tfc:flowing_spring_water"
   ]
 }

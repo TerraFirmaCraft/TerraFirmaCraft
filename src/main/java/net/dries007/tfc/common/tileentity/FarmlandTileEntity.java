@@ -1,48 +1,73 @@
 package net.dries007.tfc.common.tileentity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraft.tileentity.TileEntityType;
 
 public class FarmlandTileEntity extends TFCTileEntity
 {
-    private BlockState dirt;
-
     public FarmlandTileEntity()
     {
         this(TFCTileEntities.FARMLAND.get());
     }
 
+    // NPK Nutrients
+    private float nitrogen;
+    private float phosphorous;
+    private float potassium;
+
     protected FarmlandTileEntity(TileEntityType<?> type)
     {
         super(type);
 
-        dirt = Blocks.AIR.defaultBlockState();
-    }
-
-    public BlockState getDirt()
-    {
-        return dirt;
-    }
-
-    public void setDirt(BlockState dirt)
-    {
-        this.dirt = dirt;
+        nitrogen = phosphorous = potassium = 0;
     }
 
     @Override
     public void load(BlockState state, CompoundNBT nbt)
     {
+        nitrogen = nbt.getFloat("nitrogen");
+        phosphorous = nbt.getFloat("phosphorous");
+        potassium = nbt.getFloat("potassium");
         super.load(state, nbt);
-        dirt = BlockState.CODEC.decode(NBTDynamicOps.INSTANCE, nbt.get("dirt")).getOrThrow(false, LOGGER::error).getFirst();
     }
 
     @Override
     public CompoundNBT save(CompoundNBT nbt)
     {
-        nbt.put("dirt", NBTDynamicOps.INSTANCE.withEncoder(BlockState.CODEC).apply(dirt).getOrThrow(false, LOGGER::error));
+        nbt.putFloat("nitrogen", nitrogen);
+        nbt.putFloat("phosphorous", phosphorous);
+        nbt.putFloat("potassium", potassium);
         return super.save(nbt);
+    }
+
+    public float getNitrogen()
+    {
+        return nitrogen;
+    }
+
+    public void setNitrogen(float nitrogen)
+    {
+        this.nitrogen = nitrogen;
+    }
+
+    public float getPhosphorous()
+    {
+        return phosphorous;
+    }
+
+    public void setPhosphorous(float phosphorous)
+    {
+        this.phosphorous = phosphorous;
+    }
+
+    public float getPotassium()
+    {
+        return potassium;
+    }
+
+    public void setPotassium(float potassium)
+    {
+        this.potassium = potassium;
     }
 }

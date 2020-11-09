@@ -66,7 +66,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     public ConnectedGrassBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant soilType)
     {
-        this(properties, TFCBlocks.SOIL.get(dirtType).get(soilType), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(soilType), TFCBlocks.FARMLAND);
+        this(properties, TFCBlocks.SOIL.get(dirtType).get(soilType), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(soilType), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(soilType));
     }
 
     public ConnectedGrassBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> grassPath, @Nullable Supplier<? extends Block> farmland)
@@ -78,11 +78,6 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         this.farmland = farmland;
 
         registerDefaultState(stateDefinition.any().setValue(SOUTH, false).setValue(EAST, false).setValue(NORTH, false).setValue(WEST, false).setValue(SNOWY, false));
-    }
-
-    public Block getDirt()
-    {
-        return dirt.get();
     }
 
     @Override
@@ -126,7 +121,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
             if (worldIn.isAreaLoaded(pos, 3))
             {
                 // Turn to not-grass
-                worldIn.setBlockAndUpdate(pos, getDirt().defaultBlockState());
+                worldIn.setBlockAndUpdate(pos, getDirt());
                 updateSurroundingGrassConnections(worldIn, pos);
             }
         }
@@ -173,7 +168,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public BlockState getDirt(IWorld world, BlockPos pos, BlockState state)
+    public BlockState getDirt()
     {
         return dirt.get().defaultBlockState();
     }

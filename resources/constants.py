@@ -57,7 +57,7 @@ METALS: Dict[str, Metal] = {
     'zinc': Metal(1, {'part'}, 0.21, 420),
     'sterling_silver': Metal(1, {'part'}, 0.35, 950),
     'wrought_iron': Metal(3, {'part', 'tool', 'armor', 'utility'}, 0.35, 1535),
-    'cast_iron': Metal(1, set(), 0.35, 1535),  # todo: figure out what parts to give this
+    'cast_iron': Metal(1, {'part'}, 0.35, 1535),
     'pig_iron': Metal(3, set(), 0.35, 1535),
     'steel': Metal(4, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540),
     'black_steel': Metal(5, {'part', 'tool', 'armor', 'utility'}, 0.35, 1485),

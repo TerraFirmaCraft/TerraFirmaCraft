@@ -175,6 +175,16 @@ def generate(rm: ResourceManager):
             block.with_lang(lang('%s %s', soil, grass_var))
             grass_models((grass_var, soil), dirt)
 
+        # Farmland
+        block = rm.blockstate(('farmland', soil))
+        block.with_block_model({
+            'dirt': 'tfc:block/dirt/%s' % soil,
+            'top': 'tfc:block/farmland/%s' % soil
+        }, parent='block/template_farmland')
+        block.with_block_loot('tfc:dirt/%s' % soil)
+        block.with_tag('farmland')
+        block.with_lang(lang('%s farmland', soil))
+
     # Rock Tools
     for rock in ROCK_CATEGORIES:
         for rock_item in ROCK_ITEMS:
@@ -209,6 +219,9 @@ def generate(rm: ResourceManager):
         # Fluid
         rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None)
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
+
+        # Bucket
+        rm.item_model(('bucket', 'metal', metal)).with_lang(lang('molten %s bucket', metal))
 
     # Gems
     for gem in GEMS:
@@ -322,8 +335,13 @@ def generate(rm: ResourceManager):
 
     # Fluids
     def water_based_fluid(name: str):
-        rm.blockstate(name).with_block_model({'particle': 'minecraft:water_still'}, parent=None)
-        rm.fluid_tag(name, 'tfc:fluids/%s' % name, 'tfc:fluids/flowing_%s' % name)
+        rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:water_still'}, parent=None)
+        rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
+
+        # Bucket
+        rm.item_model(('bucket', name)).with_lang(lang('%s bucket', name))
 
     water_based_fluid('salt_water')
     water_based_fluid('spring_water')
+
+    # Buckets
