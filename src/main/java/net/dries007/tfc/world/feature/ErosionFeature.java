@@ -107,7 +107,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                         {
                             // Replace covered grass with dirt
                             IGrassBlock grassBlock = (IGrassBlock) pastGrassState.getBlock();
-                            worldIn.setBlock(mutablePos, grassBlock.getDirt(worldIn, mutablePos, pastGrassState), 2);
+                            worldIn.setBlock(mutablePos, grassBlock.getDirt(), 2);
                         }
                     }
                 }

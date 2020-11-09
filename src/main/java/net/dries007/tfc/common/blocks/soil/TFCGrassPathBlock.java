@@ -13,7 +13,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.GrassPathBlock;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -41,7 +40,7 @@ public class TFCGrassPathBlock extends GrassPathBlock implements ISoilBlock
         BlockState state = defaultBlockState();
         if (!state.canSurvive(context.getLevel(), context.getClickedPos()))
         {
-            return Block.pushEntitiesUp(state, getDirt(context.getLevel(), context.getClickedPos(), state), context.getLevel(), context.getClickedPos());
+            return Block.pushEntitiesUp(state, getDirt(), context.getLevel(), context.getClickedPos());
         }
         return super.getStateForPlacement(context);
     }
@@ -49,11 +48,11 @@ public class TFCGrassPathBlock extends GrassPathBlock implements ISoilBlock
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        worldIn.setBlockAndUpdate(pos, Block.pushEntitiesUp(state, getDirt(worldIn, pos, state), worldIn, pos));
+        worldIn.setBlockAndUpdate(pos, Block.pushEntitiesUp(state, getDirt(), worldIn, pos));
     }
 
     @Override
-    public BlockState getDirt(IWorld world, BlockPos pos, BlockState state)
+    public BlockState getDirt()
     {
         return dirtBlock.get().defaultBlockState();
     }

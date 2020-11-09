@@ -78,7 +78,7 @@ public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
                         BlockState stateDown = worldIn.getBlockState(mutablePos);
                         if (stateDown.getBlock() instanceof IGrassBlock)
                         {
-                            BlockState dirtState = ((IGrassBlock) stateDown.getBlock()).getDirt(worldIn, mutablePos, stateDown);
+                            BlockState dirtState = ((IGrassBlock) stateDown.getBlock()).getDirt();
                             worldIn.setBlock(mutablePos, dirtState, 2);
                         }
                     }

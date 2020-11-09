@@ -30,7 +30,7 @@ public class DirtBlock extends Block implements IDirtBlock
 
     public DirtBlock(Properties properties, SoilBlockType grassType, SoilBlockType.Variant variant)
     {
-        this(properties, TFCBlocks.SOIL.get(grassType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.FARMLAND);
+        this(properties, TFCBlocks.SOIL.get(grassType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant));
     }
 
     public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> grassPath, @Nullable Supplier<? extends Block> farmland)

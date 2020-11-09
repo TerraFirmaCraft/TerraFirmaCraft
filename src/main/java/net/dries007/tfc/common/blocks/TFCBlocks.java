@@ -25,10 +25,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.rock.TFCOreBlock;
-import net.dries007.tfc.common.blocks.soil.*;
+import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.blocks.soil.TFCSandBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.tileentity.FarmlandTileEntity;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.common.types.Ore;
 import net.dries007.tfc.common.types.Rock;
@@ -100,8 +102,6 @@ public final class TFCBlocks
         )
     );
 
-    public static final RegistryObject<TFCFarmlandBlock> FARMLAND = register("farmland", () -> new TFCFarmlandBlock(new ForgeBlockProperties(Properties.of(Material.DIRT).randomTicks().strength(0.6F).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always)).tileEntity(FarmlandTileEntity::new)), EARTH_BLOCKS);
-
     public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         Helpers.mapOfKeys(Metal.BlockType.class, type -> type.hasMetal(metal), type ->
             register(("metal/" + type.name() + "/" + metal.name()).toLowerCase(), type.create(metal), METAL)
@@ -159,12 +159,12 @@ public final class TFCBlocks
         return block;
     }
 
-    private static boolean always(BlockState state, IBlockReader reader, BlockPos pos)
+    public static boolean always(BlockState state, IBlockReader reader, BlockPos pos)
     {
         return true;
     }
 
-    private static boolean never(BlockState state, IBlockReader reader, BlockPos pos)
+    public static boolean never(BlockState state, IBlockReader reader, BlockPos pos)
     {
         return false;
     }

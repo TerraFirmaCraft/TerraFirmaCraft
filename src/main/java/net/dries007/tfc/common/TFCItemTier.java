@@ -16,7 +16,6 @@ public final class TFCItemTier implements IItemTier
     public static final IItemTier IGNEOUS_EXTRUSIVE = new TFCItemTier(0, 50, 2.0f, 2.0f, 5);
     public static final IItemTier METAMORPHIC = new TFCItemTier(0, 55, 2.5f, 2.0f, 5);
     // Tier 1
-    public static final IItemTier CAST_IRON = new TFCItemTier(1, 250, 3.5f, 2.5f, 5);
     public static final IItemTier COPPER = new TFCItemTier(1, 600, 5, 3.25f, 8);
     // Tier 2
     public static final IItemTier BRONZE = new TFCItemTier(2, 1300, 8, 4.0f, 13);
