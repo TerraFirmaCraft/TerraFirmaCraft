@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/rock/conglomerate"
+          "name": "tfc:rock/loose/conglomerate"
         }
       ],
       "conditions": [

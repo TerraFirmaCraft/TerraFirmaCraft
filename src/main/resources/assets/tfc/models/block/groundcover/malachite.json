@@ -1,74 +1,74 @@
 {
-	"credit": "Made with Blockbench",
-	"textures": {
-		"0": "tfc:item/ore/malachite",
-		"particle": "tfc:item/ore/malachite"
-	},
-	"elements": [
-		{
-			"from": [6, 0, 5],
-			"to": [8, 1, 9],
-			"faces": {
-				"north": {"uv": [7, 5, 9, 6], "texture": "#0"},
-				"south": {"uv": [9, 9, 11, 10], "texture": "#0"},
-				"west": {"uv": [9, 4, 13, 5], "texture": "#0"},
-				"up": {"uv": [7, 9, 9, 13], "texture": "#0"},
-				"down": {"uv": [7, 4, 9, 8], "texture": "#0"}
-			}
-		},
-		{
-			"from": [8, 0, 5],
-			"to": [9, 1, 11],
-			"faces": {
-				"north": {"uv": [7, 8, 8, 9], "texture": "#0"},
-				"east": {"uv": [7, 4, 13, 5], "texture": "#0"},
-				"south": {"uv": [9, 7, 10, 8], "texture": "#0"},
-				"west": {"uv": [8, 3, 14, 4], "texture": "#0"},
-				"up": {"uv": [7, 9, 8, 15], "texture": "#0"},
-				"down": {"uv": [7, 4, 8, 10], "texture": "#0"}
-			}
-		},
-		{
-			"from": [8, 1, 5],
-			"to": [9, 2, 10],
-			"faces": {
-				"north": {"uv": [7, 9, 8, 10], "texture": "#0"},
-				"east": {"uv": [9, 4, 14, 5], "texture": "#0"},
-				"south": {"uv": [9, 9, 10, 10], "texture": "#0"},
-				"west": {"uv": [9, 4, 14, 5], "texture": "#0"},
-				"up": {"uv": [9, 8, 10, 13], "texture": "#0"}
-			}
-		},
-		{
-			"from": [7, 1, 5],
-			"to": [8, 2, 8],
-			"faces": {
-				"north": {"uv": [7, 9, 8, 10], "texture": "#0"},
-				"south": {"uv": [9, 9, 10, 10], "texture": "#0"},
-				"west": {"uv": [9, 4, 12, 5], "texture": "#0"},
-				"up": {"uv": [7, 9, 8, 12], "texture": "#0"}
-			}
-		},
-		{
-			"from": [6, 1, 6],
-			"to": [7, 2, 8],
-			"faces": {
-				"north": {"uv": [7, 9, 8, 10], "texture": "#0"},
-				"south": {"uv": [9, 9, 10, 10], "texture": "#0"},
-				"west": {"uv": [9, 4, 11, 5], "texture": "#0"},
-				"up": {"uv": [7, 9, 8, 11], "texture": "#0"}
-			}
-		},
-		{
-			"from": [9, 0, 7],
-			"to": [10, 1, 10],
-			"faces": {
-				"north": {"uv": [7, 9, 8, 10], "texture": "#0"},
-				"east": {"uv": [9, 4, 12, 5], "texture": "#0"},
-				"south": {"uv": [9, 9, 10, 10], "texture": "#0"},
-				"up": {"uv": [7, 9, 8, 12], "texture": "#0"},
-				"down": {"uv": [7, 4, 8, 7], "texture": "#0"}
-			}
-		}
-	]
+  "credit": "Made with Blockbench",
+  "textures": {
+    "0": "tfc:item/ore/normal_malachite",
+    "particle": "tfc:item/ore/normal_malachite"
+  },
+  "elements": [
+    {
+      "from": [6, 0, 5],
+      "to": [8, 1, 9],
+      "faces": {
+        "north": {"uv": [7, 5, 9, 6], "texture": "#0"},
+        "south": {"uv": [9, 9, 11, 10], "texture": "#0"},
+        "west": {"uv": [9, 4, 13, 5], "texture": "#0"},
+        "up": {"uv": [7, 9, 9, 13], "texture": "#0"},
+        "down": {"uv": [7, 4, 9, 8], "texture": "#0"}
+      }
+    },
+    {
+      "from": [8, 0, 5],
+      "to": [9, 1, 11],
+      "faces": {
+        "north": {"uv": [7, 8, 8, 9], "texture": "#0"},
+        "east": {"uv": [7, 4, 13, 5], "texture": "#0"},
+        "south": {"uv": [9, 7, 10, 8], "texture": "#0"},
+        "west": {"uv": [8, 3, 14, 4], "texture": "#0"},
+        "up": {"uv": [7, 9, 8, 15], "texture": "#0"},
+        "down": {"uv": [7, 4, 8, 10], "texture": "#0"}
+      }
+    },
+    {
+      "from": [8, 1, 5],
+      "to": [9, 2, 10],
+      "faces": {
+        "north": {"uv": [7, 9, 8, 10], "texture": "#0"},
+        "east": {"uv": [9, 4, 14, 5], "texture": "#0"},
+        "south": {"uv": [9, 9, 10, 10], "texture": "#0"},
+        "west": {"uv": [9, 4, 14, 5], "texture": "#0"},
+        "up": {"uv": [9, 8, 10, 13], "texture": "#0"}
+      }
+    },
+    {
+      "from": [7, 1, 5],
+      "to": [8, 2, 8],
+      "faces": {
+        "north": {"uv": [7, 9, 8, 10], "texture": "#0"},
+        "south": {"uv": [9, 9, 10, 10], "texture": "#0"},
+        "west": {"uv": [9, 4, 12, 5], "texture": "#0"},
+        "up": {"uv": [7, 9, 8, 12], "texture": "#0"}
+      }
+    },
+    {
+      "from": [6, 1, 6],
+      "to": [7, 2, 8],
+      "faces": {
+        "north": {"uv": [7, 9, 8, 10], "texture": "#0"},
+        "south": {"uv": [9, 9, 10, 10], "texture": "#0"},
+        "west": {"uv": [9, 4, 11, 5], "texture": "#0"},
+        "up": {"uv": [7, 9, 8, 11], "texture": "#0"}
+      }
+    },
+    {
+      "from": [9, 0, 7],
+      "to": [10, 1, 10],
+      "faces": {
+        "north": {"uv": [7, 9, 8, 10], "texture": "#0"},
+        "east": {"uv": [9, 4, 12, 5], "texture": "#0"},
+        "south": {"uv": [9, 9, 10, 10], "texture": "#0"},
+        "up": {"uv": [7, 9, 8, 12], "texture": "#0"},
+        "down": {"uv": [7, 4, 8, 7], "texture": "#0"}
+      }
+    }
+  ]
 }

@@ -16,7 +16,7 @@ public class PacketHandler
     private static final String VERSION = Integer.toString(1);
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Helpers.identifier("network"), () -> VERSION, VERSION::equals, VERSION::equals);
 
-    public static <MSG> void send(PacketDistributor.PacketTarget target, MSG message)
+    public static void send(PacketDistributor.PacketTarget target, Object message)
     {
         CHANNEL.send(target, message);
     }

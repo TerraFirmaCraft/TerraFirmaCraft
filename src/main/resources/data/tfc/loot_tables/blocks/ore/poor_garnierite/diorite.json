@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/poor/garnierite"
+          "name": "tfc:ore/poor_garnierite"
         }
       ],
       "conditions": [

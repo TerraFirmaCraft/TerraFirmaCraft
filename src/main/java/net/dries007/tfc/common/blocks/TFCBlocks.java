@@ -53,64 +53,71 @@ public final class TFCBlocks
 {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
 
-    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCKS = Helpers.mapOfKeys(Rock.Default.class, rock ->
+    // Earth
+
+    public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
+        Helpers.mapOfKeys(SoilBlockType.Variant.class, variant ->
+            register((type.name() + "/" + variant.name()).toLowerCase(), () -> type.create(variant), EARTH)
+        )
+    );
+
+    public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of(Material.DIRT, MaterialColor.TERRACOTTA_BLACK).harvestTool(ToolType.SHOVEL).sound(SoundType.GRAVEL).harvestLevel(0)), EARTH);
+    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS).harvestTool(ToolType.SHOVEL).harvestLevel(0), PEAT, null, null), EARTH);
+
+    public static final Map<SandBlockType, RegistryObject<Block>> SAND = Helpers.mapOfKeys(SandBlockType.class, type ->
+        register(("sand/" + type.name()).toLowerCase(), () -> new TFCSandBlock(type.getDustColor(), Properties.of(Material.SAND, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).harvestLevel(0)), EARTH)
+    );
+
+    public static final Map<GroundcoverBlockType, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlockType.class, type ->
+        register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), EARTH)
+    );
+
+    // Ores
+
+    public static final Map<Rock.Default, Map<Ore.Default, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Ore.Default.class, ore -> !ore.isGraded(), ore ->
+            register(("ore/" + ore.name() + "/" + rock.name()).toLowerCase(), TFCOreBlock::new, TFCItemGroup.ORES)
+        )
+    );
+    public static final Map<Rock.Default, Map<Ore.Default, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, ore ->
+            Helpers.mapOfKeys(Ore.Grade.class, grade ->
+                register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()).toLowerCase(), TFCOreBlock::new, TFCItemGroup.ORES)
+            )
+        )
+    );
+    public static final Map<Ore.Default, RegistryObject<Block>> SMALL_ORES = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, type ->
+        register(("ore/small_" + type.name()).toLowerCase(), () -> GroundcoverBlock.looseOre(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noOcclusion()), TFCItemGroup.ORES)
+    );
+
+
+    // Rock Stuff
+
+    public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_BLOCKS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, type ->
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase(), () -> type.create(rock), EARTH_BLOCKS)
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase(), () -> type.create(rock), ROCK_STUFFS)
         )
     );
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_STAIRS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> new StairsBlock(Helpers.mapSupplier(ROCKS.get(rock).get(type), Block::defaultBlockState), Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_stairs", () -> new StairsBlock(Helpers.mapSupplier(ROCK_BLOCKS.get(rock).get(type), Block::defaultBlockState), Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), ROCK_STUFFS)
         )
     );
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_WALLS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_wall", () -> new WallBlock(Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_wall", () -> new WallBlock(Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), ROCK_STUFFS)
         )
     );
 
     public static final Map<Rock.Default, Map<Rock.BlockType, RegistryObject<Block>>> ROCK_SLABS = Helpers.mapOfKeys(Rock.Default.class, rock ->
         Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type ->
-            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_slab", () -> new SlabBlock(Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), TFCItemGroup.DECORATIONS)
+            register(("rock/" + type.name() + "/" + rock.name()).toLowerCase() + "_slab", () -> new SlabBlock(Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), ROCK_STUFFS)
         )
     );
 
-    public static final Map<Rock.Default, Map<Ore.Default, Map<Ore.Grade, RegistryObject<Block>>>> GRADED_ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, ore ->
-            Helpers.mapOfKeys(Ore.Grade.class, grade ->
-                register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()).toLowerCase(), TFCOreBlock::new, EARTH_BLOCKS)
-            )
-        )
-    );
-    public static final Map<Rock.Default, Map<Ore.Default, RegistryObject<Block>>> ORES = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Ore.Default.class, ore -> !ore.isGraded(), ore ->
-            register(("ore/" + ore.name() + "/" + rock.name()).toLowerCase(), TFCOreBlock::new, EARTH_BLOCKS)
-        )
-    );
-
-    public static final Map<SandBlockType, RegistryObject<Block>> SAND = Helpers.mapOfKeys(SandBlockType.class, type ->
-        register(("sand/" + type.name()).toLowerCase(), () -> new TFCSandBlock(type.getDustColor(), Properties.of(Material.SAND, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).harvestLevel(0)), EARTH_BLOCKS)
-    );
-
-    public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of(Material.DIRT, MaterialColor.TERRACOTTA_BLACK).harvestTool(ToolType.SHOVEL).sound(SoundType.GRAVEL).harvestLevel(0)), EARTH_BLOCKS);
-    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS).harvestTool(ToolType.SHOVEL).harvestLevel(0), PEAT, null, null), EARTH_BLOCKS);
-    public static final RegistryObject<Block> THATCH = register("thatch", ThatchBlock::new, DECORATIONS);
-    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", ThatchBedBlock::new, DECORATIONS);
-
-    public static final Map<GroundcoverBlock.MiscCoverTypes, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlock.MiscCoverTypes.class, type ->
-        register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), TFCItemGroup.DECORATIONS)
-    );
-
-    public static final Map<Ore.Default, RegistryObject<Block>> NUGGETS = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, type ->
-        register(("ore/small/" + type.name()).toLowerCase(), GroundcoverBlock::new, TFCItemGroup.MISC)
-    );
-    public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
-        Helpers.mapOfKeys(SoilBlockType.Variant.class, variant ->
-            register((type.name() + "/" + variant.name()).toLowerCase(), () -> type.create(variant), EARTH_BLOCKS)
-        )
-    );
+    // Metals
 
     public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         Helpers.mapOfKeys(Metal.BlockType.class, type -> type.hasMetal(metal), type ->
@@ -118,13 +125,25 @@ public final class TFCBlocks
         )
     );
 
+    // Wood
+
     public static final Map<Wood.Default, Map<Wood.BlockType, RegistryObject<Block>>> WOODS = Helpers.mapOfKeys(Wood.Default.class, wood ->
         Helpers.mapOfKeys(Wood.BlockType.class, type ->
             register(type.id(wood), type.create(wood), WOOD)
         )
     );
 
-    // Fluid Blocks
+    // Flora
+
+    // todo: flora
+
+    // Misc
+
+    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(new ForgeBlockProperties(Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F).noOcclusion()).flammable(50, 100)), MISC);
+    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F)), MISC);
+
+
+    // Fluids
 
     public static final Map<Metal.Default, RegistryObject<FlowingFluidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         register("fluid/metal/" + metal.name().toLowerCase(), () -> new FlowingFluidBlock(TFCFluids.METALS.get(metal).getSecond(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).noDrops()))
@@ -142,6 +161,16 @@ public final class TFCBlocks
             snowAccess.accessor$getProperties().speedFactor(0.8f);
             snowAccess.accessor$setSpeedFactor(0.8f);
         }
+    }
+
+    public static boolean always(BlockState state, IBlockReader reader, BlockPos pos)
+    {
+        return true;
+    }
+
+    public static boolean never(BlockState state, IBlockReader reader, BlockPos pos)
+    {
+        return false;
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier)
@@ -167,15 +196,5 @@ public final class TFCBlocks
             TFCItems.ITEMS.register(name, () -> blockItemFactory.apply(block.get()));
         }
         return block;
-    }
-
-    public static boolean always(BlockState state, IBlockReader reader, BlockPos pos)
-    {
-        return true;
-    }
-
-    public static boolean never(BlockState state, IBlockReader reader, BlockPos pos)
-    {
-        return false;
     }
 }

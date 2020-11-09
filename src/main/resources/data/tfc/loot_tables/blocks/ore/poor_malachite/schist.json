@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/poor/malachite"
+          "name": "tfc:ore/poor_malachite"
         }
       ],
       "conditions": [

@@ -10,8 +10,12 @@ from constants import *
 def generate(rm: ResourceManager):
     # Rock Things
     for rock in ROCKS.keys():
-        rm.crafting_shapeless('tfc:rock/%s/%s_rock' % (rock, rock), 'tfc:rock/cobble/%s' % rock, (4, 'tfc:rock/rock/%s' % rock))
-        rm.crafting_shaped('tfc:rock/%s/%s_cobble' % (rock, rock), ['XX', 'XX'], 'tfc:rock/rock/%s' % rock, 'tfc:rock/cobble/%s' % rock)
+
+        # Cobble <-> Loose Rocks
+        rm.crafting_shapeless('tfc:cobble_to_loose_rocks/%s' % rock, 'tfc:rock/cobble/%s' % rock, (4, 'tfc:rock/loose/%s' % rock))
+        rm.crafting_shaped('tfc:loose_rocks_to_cobble/%s' % rock, ['XX', 'XX'], 'tfc:rock/loose/%s' % rock, 'tfc:rock/cobble/%s' % rock)
+
+        # Stairs, Slabs and Walls
         for block_type in ROCK_BLOCK_TYPES:
             if block_type in CUTTABLE_ROCKS:
                 rm.crafting_shaped('tfc:rock/%s/%s_%s_slab' % (rock, rock, block_type), ['XXX'], 'tfc:rock/%s/%s' % (block_type, rock), (6, 'tfc:rock/%s/%s_slab' % (block_type, rock)))

@@ -65,13 +65,6 @@ public interface IChunkDelegate extends IChunk
         getDelegate().addReferenceForFeature(structureIn, referenceIn);
     }
 
-    @Nullable
-    @Override
-    default BlockRayTraceResult clipWithInteractionOverride(Vector3d startVec, Vector3d endVec, BlockPos pos, VoxelShape shape, BlockState state)
-    {
-        return getDelegate().clipWithInteractionOverride(startVec, endVec, pos, shape, state);
-    }
-
     @Override
     default Map<Structure<?>, LongSet> getAllReferences()
     {
@@ -236,6 +229,13 @@ public interface IChunkDelegate extends IChunk
     default BlockRayTraceResult clip(RayTraceContext context)
     {
         return getDelegate().clip(context);
+    }
+
+    @Nullable
+    @Override
+    default BlockRayTraceResult clipWithInteractionOverride(Vector3d startVec, Vector3d endVec, BlockPos pos, VoxelShape shape, BlockState state)
+    {
+        return getDelegate().clipWithInteractionOverride(startVec, endVec, pos, shape, state);
     }
 
     @Override

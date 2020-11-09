@@ -1,18 +1,16 @@
 package net.dries007.tfc.common.blocks;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -26,43 +24,66 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 
-public class GroundcoverBlock extends Block implements IWaterLoggable
+public class GroundcoverBlock extends Block implements IFluidLoggable
 {
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
     public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
-    private static final VoxelShape FLAT = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
-    private static final VoxelShape SMALL = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
-    private static final VoxelShape MEDIUM = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
-    private static final VoxelShape PIXEL_HIGH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+    public static final VoxelShape FLAT = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+    public static final VoxelShape SMALL = box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
+    public static final VoxelShape MEDIUM = box(5.0D, 0.0D, 5.0D, 11.0D, 4.0D, 11.0D);
+    public static final VoxelShape PIXEL_HIGH = box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+    public static final VoxelShape TWIG = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
 
-    public VoxelShape shape;
+    public static GroundcoverBlock twig(Properties properties)
+    {
+        return new GroundcoverBlock(properties, TWIG);
+    }
 
-    public GroundcoverBlock(MiscCoverTypes cover)
+    public static GroundcoverBlock looseOre(Properties properties)
+    {
+        return new GroundcoverBlock(properties, SMALL);
+    }
+
+    private final VoxelShape shape;
+
+    public GroundcoverBlock(GroundcoverBlockType cover)
     {
         super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion());
         shape = cover.getShape();
-        this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
+        this.registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, Direction.EAST));
     }
 
-    public GroundcoverBlock() // used for nuggets
+    protected GroundcoverBlock(Properties properties, VoxelShape shape)
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noOcclusion());
-        shape = SMALL;
-        this.registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.EAST));
-    }
+        super(properties);
 
-    public GroundcoverBlock(Properties properties) { super(properties); } // used for leaf constructor
+        this.shape = shape;
+
+        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, Direction.EAST));
+    }
 
     @Nonnull
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        boolean flag = fluidstate.is(FluidTags.WATER) && fluidstate.isSource();
-        return super.getStateForPlacement(context).setValue(WATERLOGGED, flag).setValue(FACING, context.getHorizontalDirection().getOpposite());
+        FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+        BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+
+        if (getFluidProperty().canContain(fluidState.getType()))
+        {
+            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+        }
+        return state;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING, getFluidProperty());
     }
 
     @Override
@@ -75,9 +96,10 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
         }
         else
         {
-            if (stateIn.getValue(WATERLOGGED))
+            final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
+            if (containedFluid != Fluids.EMPTY)
             {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+                worldIn.getLiquidTicks().scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
             }
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
@@ -95,33 +117,10 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(WATERLOGGED, FACING);
-    }
-
-    @Override
-    public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-    {
-        if (!world.isClientSide())
-        {
-            FluidState fluidstate = world.getFluidState(pos);
-            world.setBlock(pos, state.setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER), 1);
-        }
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public FluidState getFluidState(BlockState state)
     {
-        return VoxelShapes.empty();
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        return shape;
+        return IFluidLoggable.super.getFluidState(state);
     }
 
     @Override
@@ -133,36 +132,22 @@ public class GroundcoverBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public FluidState getFluidState(BlockState state)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return shape;
     }
 
-    public enum MiscCoverTypes
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        BONE(MEDIUM),
-        CLAM(SMALL),
-        DEAD_GRASS(PIXEL_HIGH),
-        DRIFTWOOD(FLAT),
-        FEATHER(FLAT),
-        FLINT(SMALL),
-        GUANO(SMALL),
-        MOLLUSK(SMALL),
-        MUSSEL(SMALL),
-        PINECONE(SMALL),
-        PODZOL(PIXEL_HIGH),
-        ROTTEN_FLESH(FLAT),
-        SALT_LICK(PIXEL_HIGH),
-        SEAWEED(FLAT),
-        STICK(FLAT);
-
-        private final VoxelShape shape;
-
-        MiscCoverTypes(VoxelShape shape)
-        {
-            this.shape = shape;
-        }
-
-        public VoxelShape getShape() { return shape; }
+        return VoxelShapes.empty();
     }
+
+    @Override
+    public FluidProperty getFluidProperty()
+    {
+        return FLUID;
+    }
+
 }

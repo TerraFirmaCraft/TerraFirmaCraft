@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/rock/marble"
+          "name": "tfc:rock/loose/marble"
         }
       ],
       "conditions": [

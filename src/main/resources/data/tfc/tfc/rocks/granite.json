@@ -11,7 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/granite",
     "chiseled": "tfc:rock/chiseled/granite",
     "spike": "tfc:rock/spike/granite",
-    "pebble": "tfc:rock/pebble/granite"
+    "loose": "tfc:rock/loose/granite"
   },
   "category": "igneous_intrusive",
   "desert_sand_color": "white",

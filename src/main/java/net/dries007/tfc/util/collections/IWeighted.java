@@ -114,6 +114,12 @@ public interface IWeighted<E> extends Iterable<E>
             }
 
             @Override
+            public List<Pair<E, Double>> weightedValues()
+            {
+                return Collections.singletonList(Pair.of(element, 1d));
+            }
+
+            @Override
             public boolean isEmpty()
             {
                 return false;
@@ -130,12 +136,6 @@ public interface IWeighted<E> extends Iterable<E>
             public String toString()
             {
                 return "[" + element + "]";
-            }
-
-            @Override
-            public List<Pair<E, Double>> weightedValues()
-            {
-                return Collections.singletonList(Pair.of(element, 1d));
             }
         };
     }

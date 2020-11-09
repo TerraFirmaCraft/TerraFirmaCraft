@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east,count=1": {
+      "model": "tfc:block/rock/pebble/gabbro",
+      "y": 90
+    },
+    "facing=north,count=1": {
+      "model": "tfc:block/rock/pebble/gabbro"
+    },
+    "facing=south,count=1": {
+      "model": "tfc:block/rock/pebble/gabbro",
+      "y": 180
+    },
+    "facing=west,count=1": {
+      "model": "tfc:block/rock/pebble/gabbro",
+      "y": 270
+    },
+    "facing=east,count=2": {
+      "model": "tfc:block/rock/rubble/gabbro",
+      "y": 90
+    },
+    "facing=north,count=2": {
+      "model": "tfc:block/rock/rubble/gabbro"
+    },
+    "facing=south,count=2": {
+      "model": "tfc:block/rock/rubble/gabbro",
+      "y": 180
+    },
+    "facing=west,count=2": {
+      "model": "tfc:block/rock/rubble/gabbro",
+      "y": 270
+    },
+    "facing=east,count=3": {
+      "model": "tfc:block/rock/boulder/gabbro",
+      "y": 90
+    },
+    "facing=north,count=3": {
+      "model": "tfc:block/rock/boulder/gabbro"
+    },
+    "facing=south,count=3": {
+      "model": "tfc:block/rock/boulder/gabbro",
+      "y": 180
+    },
+    "facing=west,count=3": {
+      "model": "tfc:block/rock/boulder/gabbro",
+      "y": 270
+    }
+  }
+}

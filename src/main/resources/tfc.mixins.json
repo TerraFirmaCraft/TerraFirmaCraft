@@ -6,8 +6,10 @@
   "mixins": [
     "block.AbstractBlockAccessor",
     "block.SnowBlockMixin",
+    "entity.EntityTypeAccessor",
     "entity.item.FallingBlockEntityAccessor",
     "item.crafting.RecipeManagerAccessor",
+    "server.management.PlayerInteractionManagerMixin",
     "util.SharedSeedRandomMixin",
     "util.registry.WorldSettingsImportMixin",
     "world.GameRulesAccessor",
@@ -22,15 +24,7 @@
     "world.gen.settings.DimensionGeneratorSettingsMixin",
     "world.server.ServerWorldMixin"
   ],
-  "client": [
-    "client.MinecraftMixin",
-    "client.gui.screen.CreateWorldScreenMixin",
-    "client.gui.screen.WorldOptionsScreenAccessor",
-    "client.renderer.FogRendererMixin",
-    "client.renderer.WorldRendererMixin",
-    "client.world.ClientWorldMixin",
-    "world.biome.BiomeColorsAccessor"
-  ],
+  "client": ["client.MinecraftMixin", "client.gui.screen.CreateWorldScreenMixin", "client.gui.screen.WorldOptionsScreenAccessor", "client.multiplayer.PlayerControllerMixin", "client.renderer.FogRendererMixin", "client.renderer.WorldRendererMixin", "client.world.ClientWorldMixin", "world.biome.BiomeColorsAccessor"],
   "injectors": {
     "defaultRequire": 1
   },

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import net.dries007.tfc.util.Helpers;

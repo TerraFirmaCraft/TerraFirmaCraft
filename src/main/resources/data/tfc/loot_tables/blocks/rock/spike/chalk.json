@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/rock/chalk"
+          "name": "tfc:rock/loose/chalk"
         }
       ],
       "conditions": [

@@ -9,11 +9,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-/**
- * This is a hack to remove the "Experimental Settings" screen which will pop up every time you generate or load a TFC world.
- *
- * Fixed by https://github.com/MinecraftForge/MinecraftForge/pull/7275
- */
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin extends RecursiveEventLoop<Runnable>
 {
@@ -22,6 +17,11 @@ public abstract class MinecraftMixin extends RecursiveEventLoop<Runnable>
         super(name);
     }
 
+    /**
+     * This is a hack to remove the "Experimental Settings" screen which will pop up every time you generate or load a TFC world.
+     *
+     * Fixed by https://github.com/MinecraftForge/MinecraftForge/pull/7275
+     */
     @ModifyVariable(method = "doLoadLevel", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft$WorldSelectionType;NONE:Lnet/minecraft/client/Minecraft$WorldSelectionType;", ordinal = 0), ordinal = 2, index = 11, name = "flag1")
     private boolean modify$doLoadLevel$flag1(boolean flag1)
     {

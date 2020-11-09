@@ -33,18 +33,6 @@ public abstract class BlockCarver implements IContextCarver
     protected RockData rockData;
     protected BitSet waterAdjacencyMask;
 
-    public abstract boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel);
-
-    @Override
-    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
-    {
-        this.world = world;
-        this.airCarvingMask = airCarvingMask;
-        this.liquidCarvingMask = liquidCarvingMask;
-        this.rockData = rockData;
-        this.waterAdjacencyMask = waterAdjacencyMask;
-    }
-
     public BlockCarver()
     {
         carvableBlocks = new HashSet<>();
@@ -55,6 +43,18 @@ public abstract class BlockCarver implements IContextCarver
         RockManager.INSTANCE.addCallback(this::reload);
 
         reload();
+    }
+
+    public abstract boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel);
+
+    @Override
+    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
+    {
+        this.world = world;
+        this.airCarvingMask = airCarvingMask;
+        this.liquidCarvingMask = liquidCarvingMask;
+        this.rockData = rockData;
+        this.waterAdjacencyMask = waterAdjacencyMask;
     }
 
     protected void reload()

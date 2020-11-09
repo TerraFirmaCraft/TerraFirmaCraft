@@ -29,9 +29,9 @@ import net.minecraft.world.World;
  */
 public class WeaponItem extends TieredItem
 {
+    protected final Multimap<Attribute, AttributeModifier> attributeModifiers;
     private final float attackDamage;
     private final float attackSpeed;
-    protected final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public WeaponItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Item.Properties builder)
     {

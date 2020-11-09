@@ -11,7 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/dolomite",
     "chiseled": "tfc:rock/chiseled/dolomite",
     "spike": "tfc:rock/spike/dolomite",
-    "pebble": "tfc:rock/pebble/dolomite"
+    "loose": "tfc:rock/loose/dolomite"
   },
   "category": "sedimentary",
   "desert_sand_color": "black",

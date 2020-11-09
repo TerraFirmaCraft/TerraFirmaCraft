@@ -2,8 +2,6 @@ package net.dries007.tfc.mixin.world;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.world.GameRules;
 
 import mcp.MethodsReturnNonnullByDefault;

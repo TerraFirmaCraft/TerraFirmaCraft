@@ -69,46 +69,9 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         this.chunkDataProvider = chunkDataProvider;
     }
 
-    @Override
-    protected Codec<TFCBiomeProvider> codec()
-    {
-        return CODEC;
-    }
-
     public int getSpawnDistance()
     {
         return spawnDistance;
-    }
-
-    @Override
-    public TFCBiomeProvider withSeed(long seedIn)
-    {
-        return new TFCBiomeProvider(seedIn, spawnDistance, layerSettings, climateSettings, biomeRegistry);
-    }
-
-    /**
-     * In {@link net.minecraft.world.biome.BiomeContainer}, we can see that the x, y, z positions are not absolute block coordinates.
-     * Rather, since MC now samples biomes once per 4x4x4 area basis, these are not accurate for our chunk data purposes
-     * So, we need to make them accurate.
-     */
-    @Override
-    public Biome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
-    {
-        final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
-        final BlockPos pos = chunkPos.getWorldPosition();
-        final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
-        final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
-        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(pos));
-        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(pos));
-        final BiomeExtension extension = variants.get(temperature, rainfall);
-        return biomeRegistry.getOrThrow(extension.getRegistryKey());
-    }
-
-    public Biome getNoiseBiomeIgnoreClimate(int biomeCoordX, int biomeCoordZ)
-    {
-        final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
-        final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
-        return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
 
     /**
@@ -142,6 +105,31 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
             }
         }
         return mutablePos.immutable();
+    }
+
+    /**
+     * In {@link net.minecraft.world.biome.BiomeContainer}, we can see that the x, y, z positions are not absolute block coordinates.
+     * Rather, since MC now samples biomes once per 4x4x4 area basis, these are not accurate for our chunk data purposes
+     * So, we need to make them accurate.
+     */
+    @Override
+    public Biome getNoiseBiome(int biomeCoordX, int biomeCoordY, int biomeCoordZ)
+    {
+        final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
+        final BlockPos pos = chunkPos.getWorldPosition();
+        final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
+        final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
+        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(pos));
+        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(pos));
+        final BiomeExtension extension = variants.get(temperature, rainfall);
+        return biomeRegistry.getOrThrow(extension.getRegistryKey());
+    }
+
+    public Biome getNoiseBiomeIgnoreClimate(int biomeCoordX, int biomeCoordZ)
+    {
+        final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
+        final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
+        return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
 
     public BiomeTemperature calculateTemperature(float averageTemperature)
@@ -190,6 +178,18 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         {
             return BiomeRainfall.WET;
         }
+    }
+
+    @Override
+    protected Codec<TFCBiomeProvider> codec()
+    {
+        return CODEC;
+    }
+
+    @Override
+    public TFCBiomeProvider withSeed(long seedIn)
+    {
+        return new TFCBiomeProvider(seedIn, spawnDistance, layerSettings, climateSettings, biomeRegistry);
     }
 
     public static final class LayerSettings

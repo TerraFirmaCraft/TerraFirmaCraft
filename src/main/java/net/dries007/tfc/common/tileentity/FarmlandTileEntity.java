@@ -6,15 +6,15 @@ import net.minecraft.tileentity.TileEntityType;
 
 public class FarmlandTileEntity extends TFCTileEntity
 {
-    public FarmlandTileEntity()
-    {
-        this(TFCTileEntities.FARMLAND.get());
-    }
-
     // NPK Nutrients
     private float nitrogen;
     private float phosphorous;
     private float potassium;
+
+    public FarmlandTileEntity()
+    {
+        this(TFCTileEntities.FARMLAND.get());
+    }
 
     protected FarmlandTileEntity(TileEntityType<?> type)
     {

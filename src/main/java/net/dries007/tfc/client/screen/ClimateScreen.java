@@ -10,10 +10,8 @@ import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -22,7 +20,6 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.SimpleContainer;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
-import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KoppenClimateClassification;
 

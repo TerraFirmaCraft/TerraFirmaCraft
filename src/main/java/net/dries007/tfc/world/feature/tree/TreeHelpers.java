@@ -56,6 +56,7 @@ public final class TreeHelpers
 
     /**
      * Place a trunk from a trunk config
+     *
      * @param pos The center position of the trunk
      * @return The height of the trunk placed
      */

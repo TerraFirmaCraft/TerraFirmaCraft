@@ -53,21 +53,6 @@ public class RockSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        switch (state.getValue(PART))
-        {
-            case BASE:
-                return BASE_SHAPE;
-            case MIDDLE:
-                return MIDDLE_SHAPE;
-            case TIP:
-            default:
-                return TIP_SHAPE;
-        }
-    }
-
-    @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (TFCTags.Blocks.CAN_COLLAPSE.contains(this))
@@ -98,15 +83,30 @@ public class RockSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    public FluidProperty getFluidProperty()
-    {
-        return TFCBlockStateProperties.WATER_AND_LAVA;
-    }
-
-    @Override
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        switch (state.getValue(PART))
+        {
+            case BASE:
+                return BASE_SHAPE;
+            case MIDDLE:
+                return MIDDLE_SHAPE;
+            case TIP:
+            default:
+                return TIP_SHAPE;
+        }
+    }
+
+    @Override
+    public FluidProperty getFluidProperty()
+    {
+        return TFCBlockStateProperties.WATER_AND_LAVA;
     }
 
     @Override

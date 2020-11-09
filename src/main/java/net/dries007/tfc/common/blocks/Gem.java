@@ -15,12 +15,5 @@ public enum Gem
     PYRITE,
     RUBY,
     SAPPHIRE,
-    TOPAZ;
-
-    public enum Grade
-    {
-        UNCUT,
-        CUT,
-        POWDER
-    }
+    TOPAZ
 }

@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/groundcover/rubble",
   "textures": {
-    "all": "tfc:item/rock/rock/quartzite"
+    "all": "tfc:item/loose_rock/quartzite"
   }
 }

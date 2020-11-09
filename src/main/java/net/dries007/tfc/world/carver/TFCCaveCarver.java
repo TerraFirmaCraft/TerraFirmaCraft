@@ -42,13 +42,6 @@ public class TFCCaveCarver extends CaveWorldCarver implements IContextCarver
     }
 
     @Override
-    protected int getCaveY(Random random)
-    {
-        // Lower level caves are composed mostly of worley caves, higher level caves are vanilla.
-        return 32 + random.nextInt(120);
-    }
-
-    @Override
     public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
     {
         this.blockCarver.setContext(world, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
@@ -63,6 +56,13 @@ public class TFCCaveCarver extends CaveWorldCarver implements IContextCarver
             throw new IllegalStateException("Not properly initialized! Cannot use TFCCaveCarver with a chunk generator that does not respect IContextCarver");
         }
         return super.carve(chunkIn, biomePos, rand, seaLevel, chunkXOffset, chunkZOffset, chunkX, chunkZ, carvingMask, config);
+    }
+
+    @Override
+    protected int getCaveY(Random random)
+    {
+        // Lower level caves are composed mostly of worley caves, higher level caves are vanilla.
+        return 32 + random.nextInt(120);
     }
 
     @Override
