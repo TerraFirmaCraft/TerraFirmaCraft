@@ -13,6 +13,7 @@ import net.minecraft.item.Items;
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.common.types.Rock;

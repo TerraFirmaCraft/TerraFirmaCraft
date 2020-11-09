@@ -1,0 +1,20 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "hanging": "false"
+      },
+      "apply": {
+        "model": "tfc:block/plant/spanish_moss_0"
+      }
+    },
+    {
+      "when": {
+        "hanging": "true"
+      },
+      "apply": {
+        "model": "tfc:block/plant/spanish_moss_1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/calendula/calendula_1",
+    "particle": "tfc:block/plant/calendula/calendula_1"
+  }
+}

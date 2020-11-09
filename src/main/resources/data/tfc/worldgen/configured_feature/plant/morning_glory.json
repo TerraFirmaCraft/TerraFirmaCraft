@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:random_patch",
+  "config": {
+    "state_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "tfc:plant/morning_glory",
+        "Properties": {
+          "dayperiod": "1",
+          "age": "1",
+          "stage": "1",
+          "up": "false",
+          "down": "true",
+          "north": "false",
+          "east": "false",
+          "south": "false",
+          "west": "false"
+        }
+      }
+    },
+    "block_placer": {
+      "type": "minecraft:simple_block_placer",
+      "config": {}
+    },
+    "whitelist": [],
+    "blacklist": [],
+    "yspread": 9,
+    "xspread": 15,
+    "zspread": 15
+  }
+}

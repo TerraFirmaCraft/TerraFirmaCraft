@@ -42,6 +42,11 @@ def main():
     # more complex stuff n things
     collapse_recipes.generate(rm)
 
+    # Random things
+    rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
+    rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
+    rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
+
     rm.flush()
 
     print('New = %d, Modified = %d, Unchanged = %d, Errors = %d' % (rm.new_files, rm.modified_files, rm.unchanged_files, rm.error_files))

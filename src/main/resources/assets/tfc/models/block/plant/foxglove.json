@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/foxglove/placeholder",
+    "particle": "tfc:block/plant/foxglove/placeholder"
+  }
+}
