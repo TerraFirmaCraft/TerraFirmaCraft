@@ -63,20 +63,24 @@ public class FloodFillLakeFeature extends Feature<NoFeatureConfig>
                 filled.addAll(lowestFilled);
             }
 
-            for (BlockPos filledPos : filled)
+            // Minimum size, don't fill awkward tiny lakes
+            if (filled.size() >= 20)
             {
-                worldIn.setBlock(filledPos, water, 2);
-                worldIn.getLiquidTicks().scheduleTick(filledPos, Fluids.WATER, 0);
-
-                // If we're at the bottom
-                mutablePos.set(filledPos).move(0, -1, 0);
-                if (!filled.contains(mutablePos))
+                for (BlockPos filledPos : filled)
                 {
-                    BlockState stateDown = worldIn.getBlockState(mutablePos);
-                    if (stateDown.getBlock() instanceof IGrassBlock)
+                    worldIn.setBlock(filledPos, water, 2);
+                    worldIn.getLiquidTicks().scheduleTick(filledPos, Fluids.WATER, 0);
+
+                    // If we're at the bottom
+                    mutablePos.set(filledPos).move(0, -1, 0);
+                    if (!filled.contains(mutablePos))
                     {
-                        BlockState dirtState = ((IGrassBlock) stateDown.getBlock()).getDirt(worldIn, mutablePos, stateDown);
-                        worldIn.setBlock(mutablePos, dirtState, 2);
+                        BlockState stateDown = worldIn.getBlockState(mutablePos);
+                        if (stateDown.getBlock() instanceof IGrassBlock)
+                        {
+                            BlockState dirtState = ((IGrassBlock) stateDown.getBlock()).getDirt(worldIn, mutablePos, stateDown);
+                            worldIn.setBlock(mutablePos, dirtState, 2);
+                        }
                     }
                 }
             }

@@ -17,6 +17,7 @@ import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.carver.WorldCarver;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.INoise3D;
 import net.dries007.tfc.world.noise.NoiseUtil;
 import net.dries007.tfc.world.noise.SimplexNoise3D;
@@ -24,14 +25,11 @@ import net.dries007.tfc.world.noise.WorleyNoise3D;
 
 public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements IContextCarver
 {
-    private final IBlockCarver blockCarver;
+    private final AirBlockCarver blockCarver;
 
     private long cachedSeed;
     private INoise3D caveNoiseWorley;
-
-    private WorldGenRegion world;
-    private BitSet airCarvingMask;
-    private BitSet liquidCarvingMask;
+    private boolean initialized;
 
     public WorleyCaveCarver(Codec<WorleyCaveConfig> codec)
     {
@@ -39,13 +37,14 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
 
         blockCarver = new AirBlockCarver();
         cachedSeed = 0;
+        initialized = false;
     }
 
     @Override
-    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask)
+    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
     {
         long worldSeed = world.getSeed();
-        if (this.cachedSeed != worldSeed || this.world == null)
+        if (this.cachedSeed != worldSeed || !initialized)
         {
             caveNoiseWorley = new WorleyNoise3D(worldSeed + 2).spread(0.012f).warped(
                 new SimplexNoise3D(worldSeed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
@@ -54,11 +53,10 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
             ).scaled(0, 1);
 
             cachedSeed = worldSeed;
+            initialized = true;
         }
 
-        this.world = world;
-        this.airCarvingMask = airCarvingMask;
-        this.liquidCarvingMask = liquidCarvingMask;
+        this.blockCarver.setContext(world, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
     }
 
     @Override
@@ -67,7 +65,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
         // This carver is entirely noise based, so we need to only carve chunks when we're at the start chunk
         if (chunkX == chunkXOffset && chunkZ == chunkZOffset)
         {
-            if (world == null)
+            if (!initialized)
             {
                 throw new IllegalStateException("Not properly initialized! Cannot use WorleyCaveCarver with a chunk generator that does not respect IContextCarver");
             }
@@ -159,7 +157,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
 
                                     if (finalNoise > config.worleyNoiseCutoff)
                                     {
-                                        blockCarver.carve(world, chunkIn, pos, random, seaLevel, airCarvingMask, liquidCarvingMask);
+                                        blockCarver.carve(chunkIn, pos, random, seaLevel);
                                     }
                                 }
                             }

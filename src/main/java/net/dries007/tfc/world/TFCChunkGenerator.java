@@ -26,12 +26,9 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
-import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import com.mojang.datafixers.util.Pair;
@@ -40,15 +37,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.mixin.world.gen.HeightmapAccessor;
-import net.dries007.tfc.mixin.world.gen.carver.ConfiguredCarverAccessor;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.*;
-import net.dries007.tfc.world.carver.IContextCarver;
+import net.dries007.tfc.world.carver.CarverHelpers;
 import net.dries007.tfc.world.chunk.FastChunkPrimer;
-import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.chunkdata.ITFCChunkGenerator;
+import net.dries007.tfc.world.chunkdata.*;
 import net.dries007.tfc.world.noise.INoise2D;
 import net.dries007.tfc.world.surfacebuilder.IContextSurfaceBuilder;
 
@@ -192,9 +184,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final BitSet liquidCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.LIQUID);
         final BitSet airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.AIR);
 
+        final RockData rockData = chunkDataProvider.get(chunk.getPos(), ChunkData.Status.ROCKS).getRockData();
+
+        final BitSet waterAdjacencyMask = CarverHelpers.createWaterAdjacencyMask(worldIn);
+
         // Apply carvers - liquid first, then air. Air carvers carve around liquid ones to avoid intersecting
-        applyCarvers(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.LIQUID, airCarvingMask, liquidCarvingMask);
-        applyCarvers(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.AIR, airCarvingMask, liquidCarvingMask);
+        CarverHelpers.runCarversWithContext(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.LIQUID, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
+        CarverHelpers.updateWaterAdjacencyMask(worldIn, chunk.getPos(), waterAdjacencyMask);
+        CarverHelpers.runCarversWithContext(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.AIR, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
 
         // Apply features (vanilla biome decoration) normally
         super.applyBiomeDecoration(worldIn, manager);
@@ -318,7 +315,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                     for (int y = bottomHeight; y <= topHeight; y++)
                     {
                         pos.set(chunkX + x, y, chunkZ + z);
-                        int carvingMaskIndex = Helpers.getCarvingMaskIndex(pos);
+                        int carvingMaskIndex = CarverHelpers.maskIndex(pos);
                         if (y <= SEA_LEVEL)
                         {
                             fastChunk.setBlockState(pos, settings.getDefaultFluid(), false);
@@ -475,40 +472,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 for (int y = 0; y <= yMax; y++)
                 {
                     chunk.setBlockState(posAt.set(pos.getX(), y, pos.getZ()), bedrock, false);
-                }
-            }
-        }
-    }
-
-    private void applyCarvers(WorldGenRegion worldIn, IChunk chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, SharedSeedRandom random, GenerationStage.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask)
-    {
-        final ChunkPos chunkPos = chunk.getPos();
-        final List<Supplier<ConfiguredCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
-
-        for (Supplier<ConfiguredCarver<?>> lazyCarver : carvers)
-        {
-            final WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getWorldCarver();
-            if (carver instanceof IContextCarver)
-            {
-                ((IContextCarver) carver).setContext(worldIn, airCarvingMask, liquidCarvingMask);
-            }
-        }
-
-        for (int x = chunkPos.x - 8; x <= chunkPos.x + 8; ++x)
-        {
-            for (int z = chunkPos.z - 8; z <= chunkPos.z + 8; ++z)
-            {
-                int index = 0;
-                for (Supplier<ConfiguredCarver<?>> lazyCarver : carvers)
-                {
-                    final ConfiguredCarver<?> carver = lazyCarver.get();
-
-                    random.setLargeFeatureSeed(worldIn.getSeed() + index, x, z);
-                    if (carver.isStartChunk(random, x, z))
-                    {
-                        carver.carve(chunk, delegateBiomeManager::getBiome, random, getSeaLevel(), x, z, chunkPos.x, chunkPos.z, stage == GenerationStage.Carving.AIR ? airCarvingMask : liquidCarvingMask);
-                    }
-                    index++;
                 }
             }
         }

@@ -290,14 +290,6 @@ public final class Helpers
     }
 
     /**
-     * Computes an index into a carving mask bit set, used during world gen
-     */
-    public static int getCarvingMaskIndex(BlockPos pos)
-    {
-        return (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
-    }
-
-    /**
      * You know this will work, and I know this will work, but this compiler looks pretty stupid.
      */
     public static <E> E resolveEither(Either<E, E> either)
