@@ -9,6 +9,12 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import net.minecraft.item.BucketItem;
+import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.PebbleBlock;
+import net.dries007.tfc.common.types.Ore;
+
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
@@ -48,16 +54,34 @@ public final class TFCItems
         )
     );
 
+    public static final Map<Ore.Default, RegistryObject<Item>> ORE = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isNotGem, type ->
+        register("ore/" + type.name().toLowerCase(), TFCItemGroup.MISC)
+    );
+
+    public static final Map<Ore.Default, Map<Ore.ItemGrade, RegistryObject<Item>>> ORE_GRADES = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, ore ->
+        Helpers.mapOfKeys(Ore.ItemGrade.class, grade ->
+            register(("ore/" + grade.name().toLowerCase() + '/' + ore.name().toLowerCase()), TFCItemGroup.MISC)
+        )
+    );
+
+    public static final Map<HideItem.Size, Map<HideItem.Stage, RegistryObject<Item>>> HIDES = Helpers.mapOfKeys(HideItem.Size.class, size ->
+        Helpers.mapOfKeys(HideItem.Stage.class, stage ->
+            register(("hide/" + size.name().toLowerCase() + '/' + stage.name().toLowerCase()), () -> new HideItem(size, stage))
+        )
+    );
+
     public static final Map<RockCategory, Map<RockCategory.ItemType, RegistryObject<Item>>> ROCK_TOOLS = Helpers.mapOfKeys(RockCategory.class, category ->
         Helpers.mapOfKeys(RockCategory.ItemType.class, type ->
             register(("stone/" + type.name() + "/" + category.name()).toLowerCase(), () -> type.create(category))
         )
     );
 
-    public static final Map<Rock.Default, Map<Rock.ItemType, RegistryObject<Item>>> ROCK_ITEMS = Helpers.mapOfKeys(Rock.Default.class, rock ->
-        Helpers.mapOfKeys(Rock.ItemType.class, type ->
-            register(("rock/" + type.name().toLowerCase() + "/" + rock.name()).toLowerCase(), TFCItemGroup.MISC)
-        )
+    public static final Map<Rock.Default, RegistryObject<RockItem>> LOOSE_ROCKS = Helpers.mapOfKeys(Rock.Default.class, rock ->
+        register("rock/rock/" + rock.name().toLowerCase(), () -> new RockItem(TFCBlocks.ROCKS.get(rock).get(Rock.BlockType.PEBBLE)))
+    );
+
+    public static final Map<Rock.Default, RegistryObject<Item>> BRICKS = Helpers.mapOfKeys(Rock.Default.class, type ->
+        register("rock/brick/" + type.name().toLowerCase(), TFCItemGroup.MISC)
     );
 
     public static final Map<Metal.Default, RegistryObject<BucketItem>> METAL_FLUID_BUCKETS = Helpers.mapOfKeys(Metal.Default.class, metal ->

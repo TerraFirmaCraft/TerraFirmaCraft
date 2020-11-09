@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/groundcover/cassiterite",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "tfc:block/groundcover/cassiterite"
+    },
+    "facing=south": {
+      "model": "tfc:block/groundcover/cassiterite",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tfc:block/groundcover/cassiterite",
+      "y": 270
+    }
+  }
+}

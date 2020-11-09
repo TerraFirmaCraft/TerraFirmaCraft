@@ -1,0 +1,64 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:item/ore/bismuthinite",
+		"particle": "tfc:item/ore/bismuthinite"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 6],
+			"to": [12, 1, 9],
+			"faces": {
+				"north": {"uv": [6, 12, 11, 13], "texture": "#0"},
+				"east": {"uv": [7, 6, 10, 7], "texture": "#0"},
+				"south": {"uv": [6, 7, 11, 8], "texture": "#0"},
+				"west": {"uv": [9, 5, 12, 6], "texture": "#0"},
+				"up": {"uv": [6, 6, 11, 9], "texture": "#0"},
+				"down": {"uv": [6, 9, 11, 12], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 1, 6],
+			"to": [11, 2, 8],
+			"faces": {
+				"north": {"uv": [6, 12, 10, 13], "texture": "#0"},
+				"east": {"uv": [7, 6, 9, 7], "texture": "#0"},
+				"south": {"uv": [6, 7, 10, 8], "texture": "#0"},
+				"west": {"uv": [9, 5, 11, 6], "texture": "#0"},
+				"up": {"uv": [8, 4, 12, 6], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, 0, 5],
+			"to": [7, 1, 8],
+			"faces": {
+				"north": {"uv": [6, 12, 7, 13], "texture": "#0"},
+				"south": {"uv": [6, 7, 7, 8], "texture": "#0"},
+				"west": {"uv": [9, 5, 12, 6], "texture": "#0"},
+				"up": {"uv": [7, 6, 8, 9], "texture": "#0"},
+				"down": {"uv": [6, 9, 7, 12], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 0, 5],
+			"to": [9, 1, 6],
+			"faces": {
+				"north": {"uv": [6, 12, 8, 13], "texture": "#0"},
+				"east": {"uv": [7, 6, 8, 7], "texture": "#0"},
+				"up": {"uv": [10, 5, 12, 6], "texture": "#0"},
+				"down": {"uv": [6, 9, 8, 10], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9, 0, 9],
+			"to": [11, 1, 10],
+			"faces": {
+				"east": {"uv": [7, 6, 8, 7], "texture": "#0"},
+				"south": {"uv": [6, 7, 8, 8], "texture": "#0"},
+				"west": {"uv": [9, 5, 10, 6], "texture": "#0"},
+				"up": {"uv": [6, 6, 8, 7], "texture": "#0"},
+				"down": {"uv": [6, 9, 8, 10], "texture": "#0"}
+			}
+		}
+	]
+}

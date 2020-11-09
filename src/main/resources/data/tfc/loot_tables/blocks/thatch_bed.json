@@ -1,0 +1,52 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:thatch",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 2
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:thatch_bed",
+              "properties": {
+                "part": "head"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:hide/large/raw",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:thatch_bed",
+              "properties": {
+                "part": "head"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "condition": "minecraft:survives_explosion"
+    }
+  ]
+}

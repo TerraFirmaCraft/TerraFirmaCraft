@@ -8,6 +8,9 @@ package net.dries007.tfc.common.types;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import net.dries007.tfc.common.blocks.wood.*;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -15,15 +18,13 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
-import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
-import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.tree.TFCTree;
 
 public class Wood
 {
     private static final Random rng = new Random();
+
     /**
      * Default wood types used for block registration calls
      * Not extensible
@@ -34,26 +35,25 @@ public class Wood
      */
     public enum Default
     {
-        // todo: actual values for the three material colors, and fall foliage coords by wood type
-        ACACIA(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        ASH(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 8),
-        ASPEN(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        BIRCH(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        BLACKWOOD(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        CHESTNUT(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 8),
-        DOUGLAS_FIR(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        HICKORY(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        KAPOK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        MAPLE(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 8),
+        ACACIA(false, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0, 7),
+        ASH(false, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_ORANGE, 0, 8),
+        ASPEN(false, MaterialColor.TERRACOTTA_GREEN, MaterialColor.TERRACOTTA_GREEN, MaterialColor.TERRACOTTA_WHITE, 0, 7),
+        BIRCH(false, MaterialColor.COLOR_BROWN, MaterialColor.COLOR_BROWN, MaterialColor.TERRACOTTA_WHITE, 0, 7),
+        BLACKWOOD(false, MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BROWN, 0, 7),
+        CHESTNUT(false, MaterialColor.TERRACOTTA_RED, MaterialColor.TERRACOTTA_RED, MaterialColor.COLOR_LIGHT_GREEN, 0, 8),
+        DOUGLAS_FIR(false, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_BROWN, 0, 7),
+        HICKORY(false, MaterialColor.TERRACOTTA_BROWN, MaterialColor.TERRACOTTA_BROWN, MaterialColor.COLOR_GRAY, 0, 7),
+        KAPOK(true, MaterialColor.COLOR_PINK, MaterialColor.COLOR_PINK, MaterialColor.COLOR_BROWN, 0, 7),
+        MAPLE(false, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_ORANGE, MaterialColor.TERRACOTTA_GRAY, 0, 8),
         OAK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 8),
-        PALM(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        PINE(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        ROSEWOOD(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 9),
-        SEQUOIA(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        SPRUCE(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        SYCAMORE(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        WHITE_CEDAR(true, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7),
-        WILLOW(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 0, 7);
+        PALM(true, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_BROWN, 0, 7),
+        PINE(true, MaterialColor.TERRACOTTA_GRAY, MaterialColor.TERRACOTTA_GRAY, MaterialColor.COLOR_GRAY, 0, 7),
+        ROSEWOOD(false, MaterialColor.COLOR_RED, MaterialColor.COLOR_RED, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0, 9),
+        SEQUOIA(true, MaterialColor.TERRACOTTA_RED, MaterialColor.TERRACOTTA_RED, MaterialColor.TERRACOTTA_RED, 0, 7),
+        SPRUCE(true, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_BLACK, 0, 7),
+        SYCAMORE(false, MaterialColor.COLOR_YELLOW, MaterialColor.COLOR_YELLOW, MaterialColor.TERRACOTTA_LIGHT_GREEN, 0, 7),
+        WHITE_CEDAR(true, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 0, 7),
+        WILLOW(false, MaterialColor.COLOR_GREEN, MaterialColor.COLOR_GREEN, MaterialColor.TERRACOTTA_BROWN, 0, 7);
 
         private final boolean conifer;
         private final MaterialColor mainColor;
@@ -130,7 +130,9 @@ public class Wood
         PRESSURE_PLATE(wood -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, wood.getMainColor()).noCollission().strength(0.5F).sound(SoundType.WOOD)) {}, true),
         SLAB(wood -> new SlabBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         STAIRS(wood -> new StairsBlock(() -> TFCBlocks.WOODS.get(wood).get(PLANKS).get().defaultBlockState(), Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true);
+        TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
+        TWIG(wood -> new TwigBlock(), false),
+        FALLEN_LEAVES(wood -> new FallenLeavesBlock(), false);
 
         public static final BlockType[] VALUES = values();
 

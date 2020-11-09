@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/chalk",
     "cracked_bricks": "tfc:rock/cracked_bricks/chalk",
     "chiseled": "tfc:rock/chiseled/chalk",
-    "spike": "tfc:rock/spike/chalk"
+    "spike": "tfc:rock/spike/chalk",
+    "pebble": "tfc:rock/pebble/chalk"
   },
   "category": "sedimentary",
   "desert_sand_color": "white",

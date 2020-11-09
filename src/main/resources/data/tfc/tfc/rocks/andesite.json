@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/andesite",
     "cracked_bricks": "tfc:rock/cracked_bricks/andesite",
     "chiseled": "tfc:rock/chiseled/andesite",
-    "spike": "tfc:rock/spike/andesite"
+    "spike": "tfc:rock/spike/andesite",
+    "pebble": "tfc:rock/pebble/andesite"
   },
   "category": "igneous_extrusive",
   "desert_sand_color": "red",

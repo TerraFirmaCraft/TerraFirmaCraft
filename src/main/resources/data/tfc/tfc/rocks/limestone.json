@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/limestone",
     "cracked_bricks": "tfc:rock/cracked_bricks/limestone",
     "chiseled": "tfc:rock/chiseled/limestone",
-    "spike": "tfc:rock/spike/limestone"
+    "spike": "tfc:rock/spike/limestone",
+    "pebble": "tfc:rock/pebble/limestone"
   },
   "category": "sedimentary",
   "desert_sand_color": "yellow",

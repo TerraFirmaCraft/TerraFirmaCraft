@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/marble",
     "cracked_bricks": "tfc:rock/cracked_bricks/marble",
     "chiseled": "tfc:rock/chiseled/marble",
-    "spike": "tfc:rock/spike/marble"
+    "spike": "tfc:rock/spike/marble",
+    "pebble": "tfc:rock/pebble/marble"
   },
   "category": "metamorphic",
   "desert_sand_color": "yellow",

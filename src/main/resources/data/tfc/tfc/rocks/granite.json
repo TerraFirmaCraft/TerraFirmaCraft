@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/granite",
     "cracked_bricks": "tfc:rock/cracked_bricks/granite",
     "chiseled": "tfc:rock/chiseled/granite",
-    "spike": "tfc:rock/spike/granite"
+    "spike": "tfc:rock/spike/granite",
+    "pebble": "tfc:rock/pebble/granite"
   },
   "category": "igneous_intrusive",
   "desert_sand_color": "white",

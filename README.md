@@ -27,7 +27,7 @@ You can find the mod on [Curseforge](https://www.curseforge.com/minecraft/mc-mod
 Hint: Setup IntelliJ to do this automatically with a copyright profile applied to a shared scope matching pattern `net.dries007.tfc..*`.
 
 - TFC uses a specialized mapping set by default which is based on the official mappings. See [Mappificator](https://github.com/alcatrazEscapee/Mappificator) in order to install that.
-- We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources` and `nbtlib`.
+- We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources`, `pillow`, and `nbtlib`.
 
 ## License / Copyright / Credit
 

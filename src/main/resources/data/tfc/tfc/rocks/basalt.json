@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/basalt",
     "cracked_bricks": "tfc:rock/cracked_bricks/basalt",
     "chiseled": "tfc:rock/chiseled/basalt",
-    "spike": "tfc:rock/spike/basalt"
+    "spike": "tfc:rock/spike/basalt",
+    "pebble": "tfc:rock/pebble/basalt"
   },
   "category": "igneous_extrusive",
   "desert_sand_color": "red",

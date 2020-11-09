@@ -35,4 +35,6 @@ public class TFCBlockStateProperties
 
     public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER));
     public static final FluidProperty WATER_AND_LAVA = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, Fluids.LAVA));
+
+    public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
 }

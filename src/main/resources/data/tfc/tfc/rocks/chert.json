@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/chert",
     "cracked_bricks": "tfc:rock/cracked_bricks/chert",
     "chiseled": "tfc:rock/chiseled/chert",
-    "spike": "tfc:rock/spike/chert"
+    "spike": "tfc:rock/spike/chert",
+    "pebble": "tfc:rock/pebble/chert"
   },
   "category": "sedimentary",
   "desert_sand_color": "brown",
