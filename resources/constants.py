@@ -11,6 +11,7 @@ MetalItem = namedtuple('MetalItem', ('type', 'smelt_amount', 'parent_model', 'ta
 Ore = namedtuple('Ore', ('metal', 'graded'))
 OreGrade = namedtuple('OreGrade', ('weight',))
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str])
+Plant = namedtuple('Plant', ('clay', 'min_temp', 'max_temp', 'min_rain', 'max_rain', 'type'))
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -222,6 +223,73 @@ COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 
 
 WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fir', 'hickory', 'kapok', 'maple', 'oak', 'palm', 'pine', 'rosewood', 'sequoia', 'spruce', 'sycamore', 'white_cedar', 'willow')
 
+PLANTS: Dict[str, Plant] = {
+    'allium': Plant(False, -40, 33, 150, 500, 'standard'),
+    'athyrium_fern': Plant(True, -35, 31, 200, 500, 'short_grass'),
+    'barrel_cactus': Plant(False, -6, 50, 0, 75, 'tall_grass'),
+    'black_orchid': Plant(False, 10, 50, 300, 500, 'standard'),
+    'blood_lily': Plant(False, 10, 50, 200, 500, 'standard'),
+    'blue_orchid': Plant(False, 10, 50, 300, 500, 'standard'),
+    'butterfly_milkweed': Plant(False, -40, 32, 75, 300, 'standard'),
+    'calendula': Plant(False, -46, 30, 130, 300, 'standard'),
+    'canna': Plant(True, -12, 36, 150, 500, 'short_grass'),
+    'dandelion': Plant(False, -40, 40, 75, 400, 'standard'),
+    'duckweed': Plant(False, -34, 38, 0, 500, 'floating'),
+    'field_horsetail': Plant(False, -40, 33, 300, 500, 'short_grass'),
+    'fountain_grass': Plant(False, -12, 40, 75, 150, 'short_grass'),
+    'foxglove': Plant(False, -34, 34, 150, 300, 'tall_grass'),
+    'goldenrod': Plant(True, -29, 32, 75, 300, 'short_grass'),
+    'grape_hyacinth': Plant(False, -34, 32, 150, 250, 'standard'),
+    'guzmania': Plant(False, 15, 50, 300, 500, 'epiphyte'),
+    'houstonia': Plant(False, -46, 36, 150, 500, 'standard'),
+    'labrador_tea': Plant(False, -50, 33, 300, 500, 'standard'),
+    'lady_fern': Plant(False, -34, 32, 200, 500, 'short_grass'),
+    'licorice_fern': Plant(False, -29, 25, 300, 500, 'epiphyte'),
+    'lotus': Plant(False, 10, 50, 0, 500, 'standard'),
+    'meads_milkweed': Plant(False, -23, 31, 130, 500, 'standard'),
+    'morning_glory': Plant(False, -40, 31, 150, 500, 'creeping'),
+    'moss': Plant(False, -7, 36, 250, 500, 'creeping'),
+    'nasturtium': Plant(False, -46, 38, 150, 500, 'standard'),
+    'orchard_grass': Plant(False, -29, 30, 75, 300, 'short_grass'),
+    'ostrich_fern': Plant(False, -40, 33, 300, 500, 'tall_grass'),
+    'oxeye_daisy': Plant(False, -40, 33, 120, 300, 'standard'),
+    'pampas_grass': Plant(True, -12, 36, 75, 200, 'tall_grass'),
+    'perovskia': Plant(True, -29, 32, 0, 200, 'short_grass'),
+    'pistia': Plant(False, 10, 50, 0, 500, 'floating'),
+    'poppy': Plant(False, -40, 36, 150, 250, 'standard'),
+    'primrose': Plant(False, -34, 33, 150, 300, 'standard'),
+    'pulsatilla': Plant(False, -50, 30, 50, 200, 'standard'),
+    'reindeer_lichen': Plant(False, -50, 33, 50, 500, 'creeping'),
+    'rose': Plant(True, -29, 34, 150, 300, 'tall_grass'),
+    'ryegrass': Plant(False, -46, 32, 150, 300, 'short_grass'),
+    'sacred_datura': Plant(False, 5, 33, 75, 150, 'short_grass'),
+    'sagebrush': Plant(False, -34, 50, 0, 100, 'short_grass'),
+    'sapphire_tower': Plant(False, -6, 38, 75, 200, 'tall_grass'),
+    'sargassum': Plant(False, 0, 38, 0, 500, 'floating'),
+    'scutch_grass': Plant(False, -17, 50, 150, 500, 'short_grass'),
+    'snapdragon_pink': Plant(False, -28, 36, 150, 300, 'standard'),
+    'snapdragon_red': Plant(False, -28, 36, 150, 300, 'standard'),
+    'snapdragon_white': Plant(False, -28, 36, 150, 300, 'standard'),
+    'snapdragon_yellow': Plant(False, -28, 36, 150, 300, 'standard'),
+    'spanish_moss': Plant(False, 0, 40, 300, 500, 'hanging'),
+    'strelitzia': Plant(False, 5, 50, 50, 300, 'standard'),
+    'switchgrass': Plant(False, -29, 32, 100, 300, 'tall_grass'),
+    'sword_fern': Plant(False, -40, 30, 100, 500, 'short_grass'),
+    'tall_fescue_grass': Plant(False, -29, 30, 300, 500, 'tall_grass'),
+    'timothy_grass': Plant(False, -46, 30, 300, 500, 'short_grass'),
+    'toquilla_palm': Plant(False, 10, 50, 250, 500, 'tall_grass'),
+    'tree_fern': Plant(False, 10, 50, 300, 500, 'tall_grass'),
+    'trillium': Plant(False, -34, 33, 150, 300, 'standard'),
+    'tropical_milkweed': Plant(False, -6, 36, 120, 300, 'standard'),
+    'tulip_orange': Plant(False, -34, 33, 100, 200, 'standard'),
+    'tulip_pink': Plant(False, -34, 33, 100, 200, 'standard'),
+    'tulip_red': Plant(False, -34, 33, 100, 200, 'standard'),
+    'tulip_white': Plant(False, -34, 33, 100, 200, 'standard'),
+    'vriesea': Plant(False, 15, 50, 300, 500, 'epiphyte'),
+    'water_canna': Plant(True, -12, 36, 150, 500, 'floating'),
+    'water_lily': Plant(False, -34, 38, 0, 500, 'floating'),
+    'yucca': Plant(False, -34, 36, 0, 75, 'standard')
+}
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -240,6 +308,7 @@ DEFAULT_LANG = {
     'itemGroup.tfc.rock': 'TFC Rock Stuffs',
     'itemGroup.tfc.metal': 'TFC Metal Stuffs',
     'itemGroup.tfc.wood': 'TFC Wooden Stuffs',
+    'itemGroup.tfc.flora': 'TFC Flora',
     'itemGroup.tfc.devices': 'TFC Devices',
     'itemGroup.tfc.food': 'TFC Food',
     'itemGroup.tfc.flora': 'TFC Flora',

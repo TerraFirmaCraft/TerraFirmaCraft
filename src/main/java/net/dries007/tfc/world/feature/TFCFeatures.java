@@ -41,6 +41,7 @@ public class TFCFeatures
 
     public static final RegistryObject<ErosionFeature> EROSION = register("erosion", ErosionFeature::new, NoFeatureConfig.CODEC);
     public static final RegistryObject<IceAndSnowFeature> ICE_AND_SNOW = register("ice_and_snow", IceAndSnowFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<PlantsFeature> PLANT = FEATURES.register("plants", () -> new PlantsFeature(PlantsConfig.CODEC));
 
     public static final RegistryObject<LakeFeature> LAKE = register("lake", LakeFeature::new, NoFeatureConfig.CODEC);
     public static final RegistryObject<FloodFillLakeFeature> FLOOD_FILL_LAKE = register("flood_fill_lake", FloodFillLakeFeature::new, NoFeatureConfig.CODEC);

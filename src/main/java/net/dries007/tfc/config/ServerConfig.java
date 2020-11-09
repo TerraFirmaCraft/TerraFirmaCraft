@@ -41,9 +41,12 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableSnowAffectedByTemperature;
     public final ForgeConfigSpec.BooleanValue enableSnowMovementModifier;
     // Blocks - Leaves
+    // Leaves
     public final ForgeConfigSpec.BooleanValue leavesDecayVanilla;
     public final ForgeConfigSpec.BooleanValue leavesSolidBlocks;
     public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
+    // Misc
+    public final ForgeConfigSpec.DoubleValue plantGrowthRate;
 
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
@@ -84,6 +87,10 @@ public class ServerConfig
 
         enableSnowAffectedByTemperature = builder.apply("enableSnowAffectedByTemperature").comment("If snow will melt in warm temperatures on random ticks").define("enableSnowAffectedByTemperature", true);
         enableSnowMovementModifier = builder.apply("enableSnowMovementModifier").comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey").define("enableSnowMovementModifier", true);
+
+        innerBuilder.pop().push("misc");
+
+        plantGrowthRate = builder.apply("plantGrowthRate").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth.").defineInRange("plantGrowthRate", 0.01, 0, 1);
 
         innerBuilder.pop().push("leaves");
 

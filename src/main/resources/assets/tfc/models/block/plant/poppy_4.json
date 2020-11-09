@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/poppy/poppy_4",
+    "particle": "tfc:block/plant/poppy/poppy_4"
+  }
+}

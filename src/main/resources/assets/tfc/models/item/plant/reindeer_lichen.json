@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer0"
+  }
+}

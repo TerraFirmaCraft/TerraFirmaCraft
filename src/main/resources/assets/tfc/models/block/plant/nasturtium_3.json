@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/nasturtium/nasturtium_3",
+    "particle": "tfc:block/plant/nasturtium/nasturtium_3"
+  }
+}

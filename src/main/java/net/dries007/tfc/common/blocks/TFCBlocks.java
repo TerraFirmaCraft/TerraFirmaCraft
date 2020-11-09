@@ -24,6 +24,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCItemGroup;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.TFCOreBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
@@ -135,7 +136,9 @@ public final class TFCBlocks
 
     // Flora
 
-    // todo: flora
+    public static final Map<Plant, RegistryObject<Block>> PLANTS = Helpers.mapOfKeys(Plant.class, plant ->
+        register(("plant/" + plant.name()).toLowerCase(), plant::create, FLORA)
+    );
 
     // Misc
 
@@ -193,6 +196,7 @@ public final class TFCBlocks
         RegistryObject<T> block = BLOCKS.register(name, blockSupplier);
         if (hasItemBlock)
         {
+            // todo: handle weird IBlockItemSupplier stuff
             TFCItems.ITEMS.register(name, () -> blockItemFactory.apply(block.get()));
         }
         return block;
