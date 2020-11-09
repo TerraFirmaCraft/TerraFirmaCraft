@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/conglomerate",
     "cracked_bricks": "tfc:rock/cracked_bricks/conglomerate",
     "chiseled": "tfc:rock/chiseled/conglomerate",
-    "spike": "tfc:rock/spike/conglomerate"
+    "spike": "tfc:rock/spike/conglomerate",
+    "pebble": "tfc:rock/pebble/conglomerate"
   },
   "category": "sedimentary",
   "desert_sand_color": "yellow",

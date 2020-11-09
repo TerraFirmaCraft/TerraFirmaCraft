@@ -41,14 +41,14 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
     public void init()
     {
         super.init();
-        addButton(new PlayerInventoryTabButton(leftPos, topPos, 176, 4, 20, 22, 96, 0, 1, 3, 0, 0, button -> {
+        addButton(new PlayerInventoryTabButton(leftPos, topPos, 176, 4, 20, 22, 128, 0, 1, 3, 0, 0, button -> {
             inventory.player.containerMenu = inventory.player.inventoryMenu;
             Minecraft.getInstance().setScreen(new InventoryScreen(inventory.player));
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new SwitchInventoryTabPacket(SwitchInventoryTabPacket.Type.INVENTORY));
         }));
-        addButton(new PlayerInventoryTabButton(leftPos, topPos, 176, 27, 20, 22, 96, 0, 1, 3, 32, 0, SwitchInventoryTabPacket.Type.CALENDAR));
-        addButton(new PlayerInventoryTabButton(leftPos, topPos, 176, 50, 20, 22, 96, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Type.NUTRITION));
-        addButton(new PlayerInventoryTabButton(leftPos, topPos, 176 - 3, 73, 20 + 3, 22, 96 + 20, 0, 1, 3, 96, 0, button -> {}));
+        addButton(new PlayerInventoryTabButton(leftPos, topPos, 176, 27, 20, 22, 128, 0, 1, 3, 32, 0, SwitchInventoryTabPacket.Type.CALENDAR));
+        addButton(new PlayerInventoryTabButton(leftPos, topPos, 176, 50, 20, 22, 128, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Type.NUTRITION));
+        addButton(new PlayerInventoryTabButton(leftPos, topPos, 176 - 3, 73, 20 + 3, 22, 128 + 20, 0, 1, 3, 96, 0, button -> {}));
     }
 
     @Override

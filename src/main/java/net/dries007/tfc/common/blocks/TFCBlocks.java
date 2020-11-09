@@ -96,6 +96,16 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of(Material.DIRT, MaterialColor.TERRACOTTA_BLACK).harvestTool(ToolType.SHOVEL).sound(SoundType.GRAVEL).harvestLevel(0)), EARTH_BLOCKS);
     public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS).harvestTool(ToolType.SHOVEL).harvestLevel(0), PEAT, null, null), EARTH_BLOCKS);
+    public static final RegistryObject<Block> THATCH = register("thatch", ThatchBlock::new, DECORATIONS);
+    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", ThatchBedBlock::new, DECORATIONS);
+
+    public static final Map<GroundcoverBlock.MiscCoverTypes, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlock.MiscCoverTypes.class, type ->
+        register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), TFCItemGroup.DECORATIONS)
+    );
+
+    public static final Map<Ore.Default, RegistryObject<Block>> NUGGETS = Helpers.mapOfKeys(Ore.Default.class, Ore.Default::isGraded, type ->
+        register(("ore/small/" + type.name()).toLowerCase(), GroundcoverBlock::new, TFCItemGroup.MISC)
+    );
     public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
         Helpers.mapOfKeys(SoilBlockType.Variant.class, variant ->
             register((type.name() + "/" + variant.name()).toLowerCase(), () -> type.create(variant), EARTH_BLOCKS)

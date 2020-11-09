@@ -24,6 +24,36 @@ def generate(rm: ResourceManager):
                         'texture': 'tfc:block/rock/raw/%s' % rock,
                         'particle': 'tfc:block/rock/raw/%s' % rock
                     }, parent='tfc:block/rock/spike_%s' % part)
+            elif block_type == 'pebble':
+                block = rm.blockstate('rock/pebble/%s' % rock, variants ={
+                    "facing=east,count=1,waterlogged=false": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 90},
+                    "facing=north,count=1,waterlogged=false": {"model": "tfc:block/rock/pebble/%s" % rock},
+                    "facing=south,count=1,waterlogged=false": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 180},
+                    "facing=west,count=1,waterlogged=false": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 270},
+                    "facing=east,count=2,waterlogged=false": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 90},
+                    "facing=north,count=2,waterlogged=false": {"model": "tfc:block/rock/rubble/%s" % rock},
+                    "facing=south,count=2,waterlogged=false": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 180},
+                    "facing=west,count=2,waterlogged=false": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 270},
+                    "facing=east,count=3,waterlogged=false": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 90},
+                    "facing=north,count=3,waterlogged=false": {"model": "tfc:block/rock/boulder/%s" % rock},
+                    "facing=south,count=3,waterlogged=false": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 180},
+                    "facing=west,count=3,waterlogged=false": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 270},
+                    "facing=east,count=1,waterlogged=true": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 90},
+                    "facing=north,count=1,waterlogged=true": {"model": "tfc:block/rock/pebble/%s" % rock},
+                    "facing=south,count=1,waterlogged=true": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 180},
+                    "facing=west,count=1,waterlogged=true": {"model": "tfc:block/rock/pebble/%s" % rock,"y": 270},
+                    "facing=east,count=2,waterlogged=true": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 90},
+                    "facing=north,count=2,waterlogged=true": {"model": "tfc:block/rock/rubble/%s" % rock},
+                    "facing=south,count=2,waterlogged=true": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 180},
+                    "facing=west,count=2,waterlogged=true": {"model": "tfc:block/rock/rubble/%s" % rock,"y": 270},
+                    "facing=east,count=3,waterlogged=true": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 90},
+                    "facing=north,count=3,waterlogged=true": {"model": "tfc:block/rock/boulder/%s" % rock},
+                    "facing=south,count=3,waterlogged=true": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 180},
+                    "facing=west,count=3,waterlogged=true": {"model": "tfc:block/rock/boulder/%s" % rock,"y": 270}
+                    }) \
+                    .with_item_model() \
+                    .with_lang(lang('%s %s', rock, block_type)) \
+                    .with_block_model('tfc:item/rock/rock/%s' % rock, parent = 'tfc:block/groundcover/%s' % block_type)
             else:
                 block = rm.blockstate(('rock', block_type, rock))
                 block.with_block_model('tfc:block/rock/%s/%s' % (block_type, rock))
@@ -66,10 +96,25 @@ def generate(rm: ResourceManager):
                 else:
                     block.with_lang(lang('%s %s', rock, block_type))
 
+        for block_type in {'rubble', 'boulder'}:
+            rm.block_model('tfc:rock/%s/%s' % (block_type, rock), textures={'all': 'tfc:item/rock/rock/%s' % rock}, parent='tfc:block/groundcover/%s' % block_type)
         # Ores
-        # todo: fix / add loot tables
         for ore, ore_data in ORES.items():
+            rm.item_model('tfc:ore/%s' % ore) \
+            .with_lang(lang('%s', ore))
             if ore_data.graded:
+                # Groundcover Nuggets
+                rm.blockstate('tfc:ore/small/%s' % ore, variants ={
+                    "facing=east": {"model": "tfc:block/groundcover/%s" % ore,"y": 90},
+                    "facing=north": {"model": "tfc:block/groundcover/%s" % ore},
+                    "facing=south": {"model": "tfc:block/groundcover/%s" % ore,"y": 180},
+                    "facing=west": {"model": "tfc:block/groundcover/%s" % ore,"y": 270}}) \
+                    .with_lang(lang('%s Nugget', ore)) \
+                    .with_block_loot('tfc:ore/small/%s' % ore)
+                rm.item_model('tfc:ore/small/%s' % ore, 'tfc:item/ore/small/%s' % ore)
+                rm.block_loot('tfc:ore/poor_%s/%s' % (ore, rock), 'tfc:ore/poor/%s' % ore)
+                rm.block_loot('tfc:ore/normal_%s/%s' % (ore, rock), 'tfc:ore/%s' % ore)
+                rm.block_loot('tfc:ore/rich_%s/%s' % (ore, rock), 'tfc:ore/rich/%s' % ore)
                 for grade in ORE_GRADES:
                     block = rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock))
                     block.with_block_model({
@@ -79,6 +124,9 @@ def generate(rm: ResourceManager):
                     }, parent='tfc:block/ore')
                     block.with_item_model()
                     block.with_lang(lang('%s %s %s', grade, rock, ore))
+                for grade in ORE_ITEM_GRADES:
+                    rm.item_model('tfc:ore/%s/%s' % (grade, ore)) \
+                    .with_lang(lang('%s %s', grade, ore))
             else:
                 block = rm.blockstate(('ore', ore, rock), 'tfc:block/ore/%s/%s' % (ore, rock))
                 block.with_block_model({
@@ -88,6 +136,7 @@ def generate(rm: ResourceManager):
                 }, parent='tfc:block/ore')
                 block.with_item_model()
                 block.with_lang(lang('%s %s', rock, ore))
+                rm.block_loot('tfc:ore/%s/%s' % (ore, rock), 'tfc:ore/%s' % ore)
     # Sand
     for sand in SAND_BLOCK_TYPES:
         block = rm.blockstate(('sand', sand))
@@ -96,12 +145,37 @@ def generate(rm: ResourceManager):
         block.with_block_loot('tfc:sand/%s' % sand)
         block.with_lang(lang('%s Sand', sand))
 
+    # Groundcover
+    for misc in MISC_GROUNDCOVER:
+        block = rm.blockstate(('groundcover', misc), variants ={
+            "facing=east": {"model": "tfc:block/groundcover/%s" % misc,"y": 90},
+            "facing=north": {"model": "tfc:block/groundcover/%s" % misc},
+            "facing=south": {"model": "tfc:block/groundcover/%s" % misc,"y": 180},
+            "facing=west": {"model": "tfc:block/groundcover/%s" % misc,"y": 270}}) \
+            .with_lang(lang('%s Block', misc))
+        rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
+        if misc in {'stick', 'flint', 'feather', 'rotten_flesh', 'bone'}:
+            block.with_block_loot('minecraft:%s'%misc)
+        else:
+            block.with_block_loot('tfc:groundcover/%s'%misc)
+
     # Peat
     block = rm.blockstate('peat')
     block.with_block_model('tfc:block/peat')
     block.with_item_model()
     block.with_block_loot('tfc:peat')
     block.with_lang(lang('Peat'))
+
+    rm.blockstate('thatch') \
+        .with_block_model('tfc:block/thatch') \
+        .with_item_model() \
+        .with_block_loot('tfc:thatch') \
+        .with_lang(lang('Thatch'))
+
+
+    rm.block_model('tfc:thatch_bed') \
+        .with_item_model() \
+        .with_lang(lang('Thatch Bed'))
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
@@ -185,6 +259,12 @@ def generate(rm: ResourceManager):
         block.with_tag('farmland')
         block.with_lang(lang('%s farmland', soil))
 
+    # Hides
+    for size in {'small', 'medium', 'large'}:
+        for stage in {'prepared', 'raw', 'scraped', 'sheepskin', 'soaked'}:
+            rm.item_model(('hide', size, stage)) \
+                .with_lang(lang('%s %s Hide' % (size, stage)))
+
     # Rock Tools
     for rock in ROCK_CATEGORIES:
         for rock_item in ROCK_ITEMS:
@@ -249,6 +329,32 @@ def generate(rm: ResourceManager):
             if variant == 'log':
                 block.with_tag('minecraft:logs')
 
+        # Groundcover
+        for variant in {'twig'}:
+            block = rm.blockstate('wood/%s/%s' % (variant, wood), variants ={
+                "facing=east": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 90},
+                "facing=north": {"model": "tfc:block/wood/%s/%s" % (variant, wood)},
+                "facing=south": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 180},
+                "facing=west": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 270}}) \
+                .with_item_model() \
+                .with_lang(lang('%s %s', wood, variant)) \
+                .with_block_model({'side': 'tfc:block/wood/log/%s'%wood, 'top': 'tfc:block/wood/log_top/%s'%wood}, parent = 'tfc:block/groundcover/%s' % variant) \
+                .with_block_loot('minecraft:stick')
+
+        # Groundcover
+        for variant in {'fallen_leaves'}:
+            block = rm.blockstate('wood/%s/%s' % (variant, wood), variants ={
+                "facing=east": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 90},
+                "facing=north": {"model": "tfc:block/wood/%s/%s" % (variant, wood)},
+                "facing=south": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 180},
+                "facing=west": {"model": "tfc:block/wood/%s/%s" % (variant, wood),"y": 270}}) \
+                .with_item_model() \
+                .with_lang(lang('%s %s', wood, variant)) \
+                .with_block_model('tfc:block/wood/leaves/%s' % wood, parent = 'tfc:block/groundcover/%s' % variant) \
+                .with_block_loot('tfc:block/wood/%s/%s' % (variant, wood))
+
+
+
         # Leaves
         block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood)
         block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
@@ -291,7 +397,7 @@ def generate(rm: ResourceManager):
 
         # Bookshelf
         block = rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood)
-        block.with_block_model({'planks': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/bookshelf')
+        block.with_block_model({'end': 'tfc:block/wood/planks/%s' % wood, 'side': 'tfc:block/wood/planks/%s_bookshelf' % wood}, parent='minecraft:block/bookshelf')
         block.with_item_model()
         block.with_lang(lang('%s Bookshelf', wood))
 

@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/quartzite",
     "cracked_bricks": "tfc:rock/cracked_bricks/quartzite",
     "chiseled": "tfc:rock/chiseled/quartzite",
-    "spike": "tfc:rock/spike/quartzite"
+    "spike": "tfc:rock/spike/quartzite",
+    "pebble": "tfc:rock/pebble/quartzite"
   },
   "category": "metamorphic",
   "desert_sand_color": "white",

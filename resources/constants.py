@@ -163,6 +163,7 @@ ORE_GRADES: Dict[str, OreGrade] = {
     'poor': OreGrade(30),
     'rich': OreGrade(20)
 }
+ORE_ITEM_GRADES = ['small', 'poor', 'rich']
 ORE_VEINS: Dict[str, Vein] = {
     'normal_native_copper': Vein('native_copper', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
     'surface_native_copper': Vein('native_copper', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_extrusive']),
@@ -207,7 +208,7 @@ ORE_VEINS: Dict[str, Vein] = {
     'emerald': Vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
 }
 
-ROCK_BLOCK_TYPES = ('raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike')
+ROCK_BLOCK_TYPES = ('raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'pebble')
 CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
@@ -217,10 +218,11 @@ SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 GEM_GRADES = ('cut', 'uncut', 'powder')
 
+MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'podzol', 'rotten_flesh', 'salt_lick']
+
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
 WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fir', 'hickory', 'kapok', 'maple', 'oak', 'palm', 'pine', 'rosewood', 'sequoia', 'spruce', 'sycamore', 'white_cedar', 'willow')
-
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -297,6 +299,8 @@ DEFAULT_LANG = {
     'tfc.enum.season.october': 'Autumn',
     'tfc.enum.season.november': 'Late Autumn',
     'tfc.enum.season.december': 'Early Winter',
+    'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
+    'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
 
     **dict(('metal.tfc.%s' % metal, lang('%s' % metal)) for metal in METALS.keys())
 }

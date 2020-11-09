@@ -9,6 +9,8 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
@@ -20,8 +22,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -127,30 +131,41 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        int distance = updateDistance(worldIn, pos);
-        if (distance > maxDecayDistance)
+        if (!state.getValue(PERSISTENT))
         {
-            if (state.getValue(PERSISTENT))
-            {
-                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
-            }
-            else
+            int distance = updateDistance(worldIn, pos);
+            if (distance > maxDecayDistance)
             {
                 // Send a message, help the dev's figure out which trees need larger leaf decay radii:
                 LOGGER.info("Block: {} decayed at distance {}", state.getBlock().getRegistryName(), distance);
                 worldIn.removeBlock(pos, false);
             }
+            else
+            {
+                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+            }
         }
-        else
-        {
-            worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
-        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
+    {
+        entityIn.makeStuckInBlock(state, new Vector3d(0.5D, 0.4F, 0.5D));
     }
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(PERSISTENT, SEASON_NO_SPRING, getDistanceProperty());
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        Season season = Calendars.get(context.getLevel()).getCalendarMonthOfYear().getSeason();
+        Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
+        return super.getStateForPlacement(context).setValue(SEASON_NO_SPRING, newSeason).setValue(PERSISTENT, context.getPlayer() != null);
     }
 
     /**

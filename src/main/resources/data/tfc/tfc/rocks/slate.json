@@ -10,7 +10,8 @@
     "mossy_bricks": "tfc:rock/mossy_bricks/slate",
     "cracked_bricks": "tfc:rock/cracked_bricks/slate",
     "chiseled": "tfc:rock/chiseled/slate",
-    "spike": "tfc:rock/spike/slate"
+    "spike": "tfc:rock/spike/slate",
+    "pebble": "tfc:rock/pebble/slate"
   },
   "category": "metamorphic",
   "desert_sand_color": "brown",

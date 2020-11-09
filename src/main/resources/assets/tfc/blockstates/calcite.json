@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "down=false": {
+      "model": "tfc:block/calcite_tip"
+    },
+    "down=true": {
+      "model": "tfc:block/calcite"
+    }
+  }
+}

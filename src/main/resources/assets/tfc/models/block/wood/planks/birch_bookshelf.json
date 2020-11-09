@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/bookshelf",
+  "parent": "minecraft:block/bookshelf",
   "textures": {
-    "planks": "tfc:block/wood/planks/birch"
+    "end": "tfc:block/wood/planks/birch",
+    "side": "tfc:block/wood/planks/birch_bookshelf"
   }
 }
