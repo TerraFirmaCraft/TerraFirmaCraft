@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/cassiterite"
+          "name": "tfc:ore/normal_cassiterite"
         }
       ],
       "conditions": [

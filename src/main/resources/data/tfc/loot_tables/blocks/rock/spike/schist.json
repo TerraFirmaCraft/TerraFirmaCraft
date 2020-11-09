@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/rock/schist"
+          "name": "tfc:rock/loose/schist"
         }
       ],
       "conditions": [

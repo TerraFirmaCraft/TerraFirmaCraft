@@ -11,7 +11,7 @@
     "cracked_bricks": "tfc:rock/cracked_bricks/rhyolite",
     "chiseled": "tfc:rock/chiseled/rhyolite",
     "spike": "tfc:rock/spike/rhyolite",
-    "pebble": "tfc:rock/pebble/rhyolite"
+    "loose": "tfc:rock/loose/rhyolite"
   },
   "category": "igneous_extrusive",
   "desert_sand_color": "red",

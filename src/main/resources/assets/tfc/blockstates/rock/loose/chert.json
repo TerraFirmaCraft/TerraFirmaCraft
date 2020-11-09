@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east,count=1": {
+      "model": "tfc:block/rock/pebble/chert",
+      "y": 90
+    },
+    "facing=north,count=1": {
+      "model": "tfc:block/rock/pebble/chert"
+    },
+    "facing=south,count=1": {
+      "model": "tfc:block/rock/pebble/chert",
+      "y": 180
+    },
+    "facing=west,count=1": {
+      "model": "tfc:block/rock/pebble/chert",
+      "y": 270
+    },
+    "facing=east,count=2": {
+      "model": "tfc:block/rock/rubble/chert",
+      "y": 90
+    },
+    "facing=north,count=2": {
+      "model": "tfc:block/rock/rubble/chert"
+    },
+    "facing=south,count=2": {
+      "model": "tfc:block/rock/rubble/chert",
+      "y": 180
+    },
+    "facing=west,count=2": {
+      "model": "tfc:block/rock/rubble/chert",
+      "y": 270
+    },
+    "facing=east,count=3": {
+      "model": "tfc:block/rock/boulder/chert",
+      "y": 90
+    },
+    "facing=north,count=3": {
+      "model": "tfc:block/rock/boulder/chert"
+    },
+    "facing=south,count=3": {
+      "model": "tfc:block/rock/boulder/chert",
+      "y": 180
+    },
+    "facing=west,count=3": {
+      "model": "tfc:block/rock/boulder/chert",
+      "y": 270
+    }
+  }
+}

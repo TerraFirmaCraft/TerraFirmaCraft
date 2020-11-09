@@ -15,7 +15,7 @@
       "model": "tfc:block/thatch_bed_foot",
       "y": 270
     },
-	"facing=east,part=head": {
+    "facing=east,part=head": {
       "model": "tfc:block/thatch_bed_head",
       "y": 90
     },

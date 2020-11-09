@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/groundcover/pebble",
   "textures": {
-    "all": "tfc:item/rock/rock/claystone"
+    "all": "tfc:item/loose_rock/claystone"
   }
 }

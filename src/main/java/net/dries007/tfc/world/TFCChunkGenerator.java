@@ -123,18 +123,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     }
 
     @Override
-    public TFCBiomeProvider getBiomeSource()
-    {
-        return biomeProvider;
-    }
-
-    @Override
-    public void createBiomes(Registry<Biome> biomeIdRegistry, IChunk chunkIn)
-    {
-        ((ChunkPrimer) chunkIn).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunkIn.getPos(), biomeProvider));
-    }
-
-    @Override
     protected Codec<TFCChunkGenerator> codec()
     {
         return CODEC;
@@ -146,29 +134,17 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         return new TFCChunkGenerator(biomeProvider, () -> settings, flatBedrock, seedIn);
     }
 
+    @Override
+    public void createBiomes(Registry<Biome> biomeIdRegistry, IChunk chunkIn)
+    {
+        ((ChunkPrimer) chunkIn).setBiomes(new ColumnBiomeContainer(biomeIdRegistry, chunkIn.getPos(), biomeProvider));
+    }
+
     /**
      * Noop - carvers are done at the beginning of feature stage, so the carver is free to check adjacent chunks for information
      */
     @Override
     public void applyCarvers(long worldSeed, BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage) {}
-
-    /**
-     * Surface is done in make base, bedrock is added here then block replacements are ran.
-     */
-    @Override
-    public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, IChunk chunk)
-    {
-        final ChunkPos chunkPos = chunk.getPos();
-        final SharedSeedRandom random = new SharedSeedRandom();
-        final IChunk fastChunk = FastChunkPrimer.deslowificate(chunk);
-
-        random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
-        makeBedrock(fastChunk, random);
-
-        final ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
-        blockReplacer.replace(worldGenRegion, fastChunk, chunkData);
-        FastChunkPrimer.updateChunkHeightMaps(fastChunk);
-    }
 
     /**
      * Apply carvers, then features
@@ -197,10 +173,34 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         super.applyBiomeDecoration(worldIn, manager);
     }
 
+    /**
+     * Surface is done in make base, bedrock is added here then block replacements are ran.
+     */
+    @Override
+    public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, IChunk chunk)
+    {
+        final ChunkPos chunkPos = chunk.getPos();
+        final SharedSeedRandom random = new SharedSeedRandom();
+        final IChunk fastChunk = FastChunkPrimer.deslowificate(chunk);
+
+        random.setBaseChunkSeed(chunkPos.x, chunkPos.z);
+        makeBedrock(fastChunk, random);
+
+        final ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
+        blockReplacer.replace(worldGenRegion, fastChunk, chunkData);
+        FastChunkPrimer.updateChunkHeightMaps(fastChunk);
+    }
+
     @Override
     public int getSpawnHeight()
     {
         return SPAWN_HEIGHT;
+    }
+
+    @Override
+    public TFCBiomeProvider getBiomeSource()
+    {
+        return biomeProvider;
     }
 
     /**

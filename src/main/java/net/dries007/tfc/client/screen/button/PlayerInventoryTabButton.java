@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -17,8 +18,6 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
-import net.minecraft.util.text.StringTextComponent;
 
 public class PlayerInventoryTabButton extends Button
 {

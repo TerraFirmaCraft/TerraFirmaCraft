@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:block/wood/fallen_leaves/sequoia"
+          "name": "tfc:wood/fallen_leaves/sequoia"
         }
       ],
       "conditions": [

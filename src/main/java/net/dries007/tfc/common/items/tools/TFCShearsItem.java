@@ -8,8 +8,6 @@ package net.dries007.tfc.common.items.tools;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ShearsItem;
 
-import net.minecraft.item.Item.Properties;
-
 /**
  * Extends vanilla shears to add durability
  */

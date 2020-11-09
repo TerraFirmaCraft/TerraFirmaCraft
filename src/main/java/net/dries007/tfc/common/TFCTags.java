@@ -52,10 +52,14 @@ public class TFCTags
         public static final ITag.INamedTag<Block> SUPPORTS_LANDSLIDE = blockTag("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
         public static final ITag.INamedTag<Block> GRASS = blockTag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final ITag.INamedTag<Block> TREE_GROWS_ON = blockTag("tree_grows_on"); // Used for tree growth
+
+        public static final ITag.INamedTag<Block> THATCH_BED_THATCH = blockTag("thatch_bed_thatch");
     }
 
     public static class Items
     {
+        public static final ITag.INamedTag<Item> THATCH_BED_HIDES = itemTag("thatch_bed_hides");
+
         public static final Map<Metal.BlockType, Tags.IOptionalNamedTag<Item>> METAL_ITEM_BLOCK_TYPES = Util.make(new EnumMap<>(Metal.BlockType.class), map ->
         {
             for (Metal.BlockType type : Metal.BlockType.values())

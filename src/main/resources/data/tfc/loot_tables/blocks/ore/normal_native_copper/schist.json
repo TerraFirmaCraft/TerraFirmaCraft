@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/native_copper"
+          "name": "tfc:ore/normal_native_copper"
         }
       ],
       "conditions": [

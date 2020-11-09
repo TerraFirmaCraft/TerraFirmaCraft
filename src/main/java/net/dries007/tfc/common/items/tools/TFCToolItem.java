@@ -6,9 +6,7 @@
 package net.dries007.tfc.common.items.tools;
 
 import java.util.Collections;
-import java.util.Map;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -18,8 +16,6 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
-
-import net.minecraft.item.Item.Properties;
 
 /**
  * Generic class for tools that shouldn't override vanilla's {@link ToolItem}

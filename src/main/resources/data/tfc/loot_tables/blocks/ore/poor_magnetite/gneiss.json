@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/poor/magnetite"
+          "name": "tfc:ore/poor_magnetite"
         }
       ],
       "conditions": [

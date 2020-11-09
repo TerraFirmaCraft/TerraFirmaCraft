@@ -96,13 +96,13 @@ public final class ClearWorldCommand
     {
         ALL(server -> state -> true),
         RAW_ROCK(server -> {
-            final Set<Block> blocks = TFCBlocks.ROCKS.values().stream().map(map -> map.get(Rock.BlockType.RAW).get()).collect(Collectors.toSet());
+            final Set<Block> blocks = TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.RAW).get()).collect(Collectors.toSet());
             return state -> blocks.contains(state.getBlock());
         }),
         EARTH(server -> {
             final Set<Block> blocks = Stream.of(
-                TFCBlocks.ROCKS.values().stream().map(map -> map.get(Rock.BlockType.RAW).get()),
-                TFCBlocks.ROCKS.values().stream().map(map -> map.get(Rock.BlockType.GRAVEL).get()),
+                TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.RAW).get()),
+                TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.GRAVEL).get()),
                 TFCBlocks.SOIL.get(SoilBlockType.DIRT).values().stream().map(RegistryObject::get),
                 TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get),
                 TFCBlocks.SAND.values().stream().map(RegistryObject::get)

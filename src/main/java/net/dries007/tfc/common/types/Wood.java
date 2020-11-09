@@ -8,16 +8,18 @@ package net.dries007.tfc.common.types;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import net.dries007.tfc.common.blocks.GroundcoverBlock;
-import net.dries007.tfc.common.blocks.wood.*;
-
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.NonNullFunction;
 
+import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.FallenLeavesBlock;
+import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
+import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
+import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.tree.TFCTree;
 
@@ -131,8 +133,8 @@ public class Wood
         SLAB(wood -> new SlabBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         STAIRS(wood -> new StairsBlock(() -> TFCBlocks.WOODS.get(wood).get(PLANKS).get().defaultBlockState(), Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
         TOOL_RACK(wood -> new ToolRackBlock(Block.Properties.of(Material.WOOD, wood.getMainColor()).strength(2.0F).sound(SoundType.WOOD).noOcclusion()) {}, true),
-        TWIG(wood -> new TwigBlock(), false),
-        FALLEN_LEAVES(wood -> new FallenLeavesBlock(), false);
+        TWIG(wood -> GroundcoverBlock.twig(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noOcclusion()), false),
+        FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false);
 
         public static final BlockType[] VALUES = values();
 

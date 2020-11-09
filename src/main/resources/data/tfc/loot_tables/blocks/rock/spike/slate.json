@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/rock/slate"
+          "name": "tfc:rock/loose/slate"
         }
       ],
       "conditions": [

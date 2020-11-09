@@ -5,7 +5,6 @@
 
 package net.dries007.tfc.common.items.tools;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -16,8 +15,6 @@ import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 
-import net.minecraft.item.Item.Properties;
-
 /**
  * This is needed so we override the damage math done by vanilla
  *
@@ -27,9 +24,9 @@ import net.minecraft.item.Item.Properties;
  */
 public class TFCSwordItem extends SwordItem
 {
+    protected final Multimap<Attribute, AttributeModifier> attributeModifiers;
     private final float attackDamage;
     private final float attackSpeed;
-    protected final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public TFCSwordItem(IItemTier tier, float attackDamageMultiplier, float attackSpeed, Properties builder)
     {

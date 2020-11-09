@@ -17,11 +17,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin
 {
-    @Shadow
-    private ClientWorld level;
-
     @Unique
     private final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+    @Shadow
+    private ClientWorld level;
 
     /**
      * Redirect the call to {@link Biome#getTemperature(BlockPos)} with one that has a position and world context

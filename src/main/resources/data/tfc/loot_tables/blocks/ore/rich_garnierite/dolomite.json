@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/rich/garnierite"
+          "name": "tfc:ore/rich_garnierite"
         }
       ],
       "conditions": [

@@ -63,7 +63,7 @@ public final class ClientEventHandler
         // Render Types
 
         // Rock blocks
-        TFCBlocks.ROCKS.values().stream().map(map -> map.get(Rock.BlockType.SPIKE)).forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
+        TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.SPIKE)).forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
         TFCBlocks.ORES.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout())));
         TFCBlocks.GRADED_ORES.values().forEach(map -> map.values().forEach(inner -> inner.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()))));
 
@@ -81,7 +81,7 @@ public final class ClientEventHandler
 
         // Groundcover
         TFCBlocks.GROUNDCOVER.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
-        TFCBlocks.NUGGETS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
+        TFCBlocks.SMALL_ORES.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
 
         // Entity Rendering
 
@@ -107,17 +107,15 @@ public final class ClientEventHandler
         registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex), TFCBlocks.PEAT_GRASS.get());
 
         TFCBlocks.WOODS.forEach((key, value) -> {
-            Block block = value.get(Wood.BlockType.LEAVES).get();
-            Block block2 = value.get(Wood.BlockType.FALLEN_LEAVES).get();
+            Block leaves = value.get(Wood.BlockType.LEAVES).get();
+            Block fallenLeaves = value.get(Wood.BlockType.FALLEN_LEAVES).get();
             if (key.isConifer())
             {
-                registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex), block);
-                registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex), block2);
+                registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex), leaves, fallenLeaves);
             }
             else
             {
-                registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, key.getFallFoliageCoords()), block);
-                registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, key.getFallFoliageCoords()), block2);
+                registry.register((state, worldIn, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(state, pos, tintIndex, key.getFallFoliageCoords()), leaves, fallenLeaves);
             }
         });
 

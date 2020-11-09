@@ -8,11 +8,7 @@ package net.dries007.tfc.client;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.World;
-
-import com.mojang.blaze3d.matrix.MatrixStack;
 
 /**
  * Client side methods for proxy use

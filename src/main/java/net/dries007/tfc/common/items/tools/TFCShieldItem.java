@@ -9,8 +9,6 @@ import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 
-import net.minecraft.item.Item.Properties;
-
 public class TFCShieldItem extends ShieldItem
 {
     private final IItemTier tier;

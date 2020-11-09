@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/rich/sphalerite"
+          "name": "tfc:ore/rich_sphalerite"
         }
       ],
       "conditions": [

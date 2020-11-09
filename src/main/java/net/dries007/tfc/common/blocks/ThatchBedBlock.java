@@ -1,11 +1,13 @@
 package net.dries007.tfc.common.blocks;
 
-import net.dries007.tfc.client.ClimateRenderCache;
+import javax.annotation.Nullable;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.BedBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -25,35 +27,50 @@ public class ThatchBedBlock extends BedBlock
 {
     private static final VoxelShape BED_SHAPE = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 9.0F, 16.0F);
 
-    public ThatchBedBlock()
+    public ThatchBedBlock(Properties properties)
     {
-        super(DyeColor.YELLOW, Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F));
+        super(DyeColor.YELLOW, properties);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
         if (!worldIn.isClientSide())
         {
-            if (canSetSpawn(worldIn) && !worldIn.isThundering()) //todo: figure out how spawning works
+            if (canSetSpawn(worldIn))
             {
-                ServerPlayerEntity serverplayerentity = (ServerPlayerEntity) player; // lifted from RespawnAnchorBlock
-                serverplayerentity.setRespawnPosition(worldIn.dimension(), player.blockPosition(), 0.0F, false, true);
-                player.displayClientMessage(new TranslationTextComponent("tfc.thatch_bed.use"), true);
+                if (!worldIn.isThundering())
+                {
+                    player.displayClientMessage(new TranslationTextComponent("tfc.thatch_bed.use"), true);
+                }
+                else
+                {
+                    player.displayClientMessage(new TranslationTextComponent("tfc.thatch_bed.thundering"), true);
+                }
                 return ActionResultType.SUCCESS;
             }
-            else if (canSetSpawn(worldIn) && worldIn.isThundering())
-            {
-                player.displayClientMessage(new TranslationTextComponent("tfc.thatch_bed.thundering"), true);
-                return ActionResultType.FAIL;
-            }
-            else if (!canSetSpawn(worldIn))
+            else
             {
                 worldIn.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.Mode.DESTROY);
             }
         }
         return ActionResultType.FAIL;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) { return BED_SHAPE; }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockRenderType getRenderShape(BlockState state)
+    {
+        return BlockRenderType.MODEL;
+    }
+
+    @Override
+    public TileEntity newBlockEntity(IBlockReader worldIn)
+    {
+        return null;
     }
 
     @SuppressWarnings("deprecation")
@@ -68,21 +85,14 @@ public class ThatchBedBlock extends BedBlock
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) { return BED_SHAPE; }
-
-    @Override
-    public TileEntity newBlockEntity(IBlockReader worldIn) { return null; }
-
-    @Override
     public boolean hasTileEntity(BlockState state)
     {
-        return false;
+        return false; // Need to override as the super class is a ITileEntityProvider
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockRenderType getRenderShape(BlockState state)
+    public boolean isBed(BlockState state, IBlockReader world, BlockPos pos, @Nullable Entity player)
     {
-        return BlockRenderType.MODEL;
+        return true;
     }
 }

@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/poor/native_silver"
+          "name": "tfc:ore/poor_native_silver"
         }
       ],
       "conditions": [

@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:ore/tetrahedrite"
+          "name": "tfc:ore/normal_tetrahedrite"
         }
       ],
       "conditions": [

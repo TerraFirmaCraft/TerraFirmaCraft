@@ -91,9 +91,10 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState state)
+    @SuppressWarnings("deprecation")
+    public int getLightBlock(BlockState state, IBlockReader worldIn, BlockPos pos)
     {
-        return true; // Not for the purposes of leaf decay, but for the purposes of seasonal updates
+        return 1;
     }
 
     @Override
@@ -101,13 +102,6 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return VoxelShapes.empty();
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, IBlockReader worldIn, BlockPos pos)
-    {
-        return 1;
     }
 
     @Override
@@ -131,10 +125,10 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        if (!state.getValue(PERSISTENT))
+        int distance = updateDistance(worldIn, pos);
+        if (distance > maxDecayDistance)
         {
-            int distance = updateDistance(worldIn, pos);
-            if (distance > maxDecayDistance)
+            if (!state.getValue(PERSISTENT))
             {
                 // Send a message, help the dev's figure out which trees need larger leaf decay radii:
                 LOGGER.info("Block: {} decayed at distance {}", state.getBlock().getRegistryName(), distance);
@@ -142,8 +136,12 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
             }
             else
             {
-                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
             }
+        }
+        else
+        {
+            worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
         }
     }
 
@@ -155,9 +153,9 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    public boolean isRandomlyTicking(BlockState state)
     {
-        builder.add(PERSISTENT, SEASON_NO_SPRING, getDistanceProperty());
+        return true; // Not for the purposes of leaf decay, but for the purposes of seasonal updates
     }
 
     @Override
@@ -166,6 +164,12 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
         Season season = Calendars.get(context.getLevel()).getCalendarMonthOfYear().getSeason();
         Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
         return super.getStateForPlacement(context).setValue(SEASON_NO_SPRING, newSeason).setValue(PERSISTENT, context.getPlayer() != null);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(PERSISTENT, SEASON_NO_SPRING, getDistanceProperty());
     }
 
     /**

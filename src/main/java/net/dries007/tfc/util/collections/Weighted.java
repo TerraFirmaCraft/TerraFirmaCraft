@@ -57,6 +57,12 @@ public class Weighted<E> implements IWeighted<E>
     }
 
     @Override
+    public List<Pair<E, Double>> weightedValues()
+    {
+        return backingMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
+    }
+
+    @Override
     public boolean isEmpty()
     {
         return backingMap.isEmpty();
@@ -67,11 +73,5 @@ public class Weighted<E> implements IWeighted<E>
     public Iterator<E> iterator()
     {
         return backingMap.values().iterator();
-    }
-
-    @Override
-    public List<Pair<E, Double>> weightedValues()
-    {
-        return backingMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
     }
 }

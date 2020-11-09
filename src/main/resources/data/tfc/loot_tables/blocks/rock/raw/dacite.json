@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/rock/dacite"
+          "name": "tfc:rock/loose/dacite"
         }
       ],
       "conditions": [

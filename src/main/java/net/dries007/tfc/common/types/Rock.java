@@ -11,10 +11,6 @@ import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.rock.PebbleBlock;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -27,6 +23,7 @@ import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.common.blocks.rock.LooseRockBlock;
 import net.dries007.tfc.common.blocks.rock.RawRockBlock;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
@@ -120,11 +117,11 @@ public class Rock
         MOSSY_BRICKS(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         MOSSY_COBBLE(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), true),
         CHISELED(rock -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE)), false),
-        PEBBLE(rock -> new PebbleBlock(), false);
+        LOOSE(rock -> new LooseRockBlock(Block.Properties.of(Material.GRASS).strength(0.05f, 0.0f).sound(SoundType.STONE).noOcclusion()), false);
 
         public static final BlockType[] VALUES = values();
-        public static final Codec<BlockType> CODEC = IStringSerializable.fromEnum(BlockType::values, BlockType::byName);
         public static final Map<String, BlockType> BY_NAME = Arrays.stream(values()).collect(Collectors.toMap(k -> k.name().toLowerCase(), v -> v));
+        public static final Codec<BlockType> CODEC = IStringSerializable.fromEnum(BlockType::values, BlockType::byName);
 
         public static BlockType valueOf(int i)
         {

@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/rock/phyllite"
+          "name": "tfc:rock/loose/phyllite"
         }
       ],
       "conditions": [

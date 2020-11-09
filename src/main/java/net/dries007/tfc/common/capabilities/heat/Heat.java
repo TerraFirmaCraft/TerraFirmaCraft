@@ -8,7 +8,6 @@ package net.dries007.tfc.common.capabilities.heat;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 

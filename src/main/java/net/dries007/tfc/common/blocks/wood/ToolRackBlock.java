@@ -55,6 +55,21 @@ public class ToolRackBlock extends Block implements IWaterLoggable
 
     @Override
     @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state)
+    {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    {
+        Direction direction = state.getValue(FACING);
+        return canAttachTo(worldIn, pos.relative(direction.getOpposite()), direction);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         switch (state.getValue(FACING))
@@ -69,14 +84,6 @@ public class ToolRackBlock extends Block implements IWaterLoggable
             default:
                 return RACK_EAST_AABB;
         }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
-    {
-        Direction direction = state.getValue(FACING);
-        return canAttachTo(worldIn, pos.relative(direction.getOpposite()), direction);
     }
 
     @Nullable
@@ -111,13 +118,6 @@ public class ToolRackBlock extends Block implements IWaterLoggable
         }
 
         return null;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public FluidState getFluidState(BlockState state)
-    {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override

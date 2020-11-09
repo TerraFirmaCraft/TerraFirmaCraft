@@ -50,6 +50,11 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         this.fluids = Lazy.of(() -> this.values.stream().map(FluidKey::getFluid).collect(Collectors.toSet()));
     }
 
+    public boolean canContain(Fluid fluid)
+    {
+        return fluids.get().contains(fluid);
+    }
+
     public Collection<Fluid> getPossibleFluids()
     {
         return fluids.get();

@@ -16,7 +16,6 @@ HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
 ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
 ROCK_ITEMS: List[str] = ['axe', 'axe_head', 'hammer', 'hammer_head', 'hoe', 'hoe_head', 'javelin', 'javelin_head', 'knife', 'knife_head', 'shovel', 'shovel_head']
-MISC_ROCK_ITEMS: List[str] = ['brick', 'rock']
 
 ROCKS: Dict[str, Rock] = {
     # Desert sand color is either white, brown, black, or yellow based on rock color. red is an indicator of hematite rocks
@@ -163,7 +162,7 @@ ORE_GRADES: Dict[str, OreGrade] = {
     'poor': OreGrade(30),
     'rich': OreGrade(20)
 }
-ORE_ITEM_GRADES = ['small', 'poor', 'rich']
+
 ORE_VEINS: Dict[str, Vein] = {
     'normal_native_copper': Vein('native_copper', 'cluster', 100, 20, 30, 100, 60, 20, 50, 30, ['igneous_extrusive']),
     'surface_native_copper': Vein('native_copper', 'cluster', 40, 15, 60, 160, 60, 60, 30, 10, ['igneous_extrusive']),
@@ -208,7 +207,7 @@ ORE_VEINS: Dict[str, Vein] = {
     'emerald': Vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
 }
 
-ROCK_BLOCK_TYPES = ('raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'pebble')
+ROCK_BLOCK_TYPES = ('raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
 CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
@@ -216,13 +215,13 @@ SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
 
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
-GEM_GRADES = ('cut', 'uncut', 'powder')
 
 MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'podzol', 'rotten_flesh', 'salt_lick']
 
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
 WOODS = ('acacia', 'ash', 'aspen', 'birch', 'blackwood', 'chestnut', 'douglas_fir', 'hickory', 'kapok', 'maple', 'oak', 'palm', 'pine', 'rosewood', 'sequoia', 'spruce', 'sycamore', 'white_cedar', 'willow')
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -236,12 +235,15 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
 # This is here as it's used only once in a generic lang call by generate_resources.py
 DEFAULT_LANG = {
     # Item groups
-    'itemGroup.tfc.rock.blocks': 'TFC Rock Blocks',
-    'itemGroup.tfc.metals': 'TFC Metals',
-    'itemGroup.tfc.gems': 'TFC Gems',
+    'itemGroup.tfc.earth': 'TFC Earth',
+    'itemGroup.tfc.ores': 'TFC Ores',
+    'itemGroup.tfc.rock': 'TFC Rock Stuffs',
+    'itemGroup.tfc.metal': 'TFC Metal Stuffs',
+    'itemGroup.tfc.wood': 'TFC Wooden Stuffs',
+    'itemGroup.tfc.devices': 'TFC Devices',
+    'itemGroup.tfc.food': 'TFC Food',
+    'itemGroup.tfc.flora': 'TFC Flora',
     'itemGroup.tfc.misc': 'TFC Misc',
-    'itemGroup.tfc.decorations': 'TFC Decorations',
-    'itemGroup.tfc.wood.blocks': 'TFC Wood Blocks',
     # Containers
     'tfc.screen.calendar': 'Calendar',
     'tfc.screen.nutrition': 'Nutrition',

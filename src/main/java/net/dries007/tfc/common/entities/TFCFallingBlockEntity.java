@@ -143,7 +143,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                             {
                                 if (fallingBlockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(posAt).getType() == Fluids.WATER)
                                 {
-                                    ((FallingBlockEntityAccessor)this).accessor$setBlockState(fallingBlockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
+                                    ((FallingBlockEntityAccessor) this).accessor$setBlockState(fallingBlockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
                                 }
 
                                 if (level.setBlockAndUpdate(posAt, fallingBlockState))
