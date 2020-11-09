@@ -7,10 +7,11 @@
       "config": {}
     },
     "decorator": {
-      "type": "minecraft:carving_mask",
+      "type": "tfc:bounded_carving_mask",
       "config": {
         "step": "air",
-        "probability": 0.02
+        "probability": 0.006,
+        "max_y": 45
       }
     }
   }

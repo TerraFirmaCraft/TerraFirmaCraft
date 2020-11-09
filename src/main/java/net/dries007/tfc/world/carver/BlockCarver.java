@@ -19,14 +19,31 @@ import net.dries007.tfc.world.chunkdata.RockData;
 import static net.dries007.tfc.common.blocks.TFCBlockStateProperties.SUPPORTED;
 
 /**
- * The default TFC implementation of {@link IBlockCarver}
+ * A common class for single block carving logic
+ * Holds context not provided by vanilla methods for carving
  */
-public abstract class BlockCarver implements IBlockCarver
+public abstract class BlockCarver implements IContextCarver
 {
     protected final Set<Block> carvableBlocks, supportableBlocks;
     protected final Map<Block, Block> exposedBlockReplacements;
 
     protected WorldGenRegion world;
+    protected BitSet airCarvingMask;
+    protected BitSet liquidCarvingMask;
+    protected RockData rockData;
+    protected BitSet waterAdjacencyMask;
+
+    public abstract boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel);
+
+    @Override
+    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
+    {
+        this.world = world;
+        this.airCarvingMask = airCarvingMask;
+        this.liquidCarvingMask = liquidCarvingMask;
+        this.rockData = rockData;
+        this.waterAdjacencyMask = waterAdjacencyMask;
+    }
 
     public BlockCarver()
     {
@@ -66,7 +83,15 @@ public abstract class BlockCarver implements IBlockCarver
     }
 
     /**
-     * If the state can be supported. Any block carved must implicitly support the above block
+     * If the state can be carved.
+     */
+    protected boolean isCarvable(BlockState state)
+    {
+        return carvableBlocks.contains(state.getBlock());
+    }
+
+    /**
+     * If the state can be supported. Any block carved must ensure that exposed blocks (all but down) are supported
      */
     @SuppressWarnings("deprecation")
     protected boolean isSupportable(BlockState state)
@@ -81,17 +106,13 @@ public abstract class BlockCarver implements IBlockCarver
     @SuppressWarnings("deprecation")
     protected void setSupported(IChunk chunk, BlockPos pos, BlockState state, RockData rockData)
     {
-        // Don't try and support air blocks
-        if (!state.isAir())
+        if (state.hasProperty(SUPPORTED))
         {
-            if (state.hasProperty(SUPPORTED))
-            {
-                chunk.setBlockState(pos, state.setValue(SUPPORTED, true), false);
-            }
-            else
-            {
-                chunk.setBlockState(pos, rockData.getRock(pos).getBlock(Rock.BlockType.RAW).defaultBlockState().setValue(SUPPORTED, true), false);
-            }
+            chunk.setBlockState(pos, state.setValue(SUPPORTED, true), false);
+        }
+        else if (!state.isAir() && state.getFluidState().isEmpty())
+        {
+            chunk.setBlockState(pos, rockData.getRock(pos).getBlock(Rock.BlockType.RAW).defaultBlockState().setValue(SUPPORTED, true), false);
         }
     }
 }

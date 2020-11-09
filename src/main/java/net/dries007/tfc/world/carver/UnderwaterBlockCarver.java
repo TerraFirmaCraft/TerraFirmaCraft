@@ -1,6 +1,5 @@
 package net.dries007.tfc.world.carver;
 
-import java.util.BitSet;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
@@ -9,30 +8,29 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.WorldGenRegion;
 
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.chunkdata.RockData;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
 
 /**
  * Common logic for liquid carvers.
  */
-public class LiquidBlockCarver extends BlockCarver
+public class UnderwaterBlockCarver extends BlockCarver
 {
     @Override
     @SuppressWarnings("deprecation")
-    public boolean carve(WorldGenRegion world, IChunk chunk, BlockPos pos, Random random, int seaLevel, BitSet airMask, BitSet liquidMask, RockData rockData)
+    public boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel)
     {
-        final int maskIndex = Helpers.getCarvingMaskIndex(pos);
-        if (!liquidMask.get(maskIndex) && !airMask.get(maskIndex))
+        final int maskIndex = CarverHelpers.maskIndex(pos);
+        if (!liquidCarvingMask.get(maskIndex) && !airCarvingMask.get(maskIndex))
         {
-            liquidMask.set(maskIndex);
+            liquidCarvingMask.set(maskIndex);
 
             final BlockPos posUp = pos.above();
             final BlockState state = chunk.getBlockState(pos);
             final BlockState stateAbove = chunk.getBlockState(posUp);
 
-            if (carvableBlocks.contains(state.getBlock()) && isSupportable(stateAbove))
+            if (isCarvable(state) && isSupportable(stateAbove))
             {
                 if (pos.getY() == 10)
                 {
@@ -69,7 +67,7 @@ public class LiquidBlockCarver extends BlockCarver
                 {
                     // Above sea level, replace with air (however unlikely)
                     // Mark as carved in the air mask as well
-                    airMask.set(maskIndex);
+                    airCarvingMask.set(maskIndex);
                     chunk.setBlockState(pos, Blocks.CAVE_AIR.defaultBlockState(), false);
 
                     // Check below state for replacements
@@ -86,5 +84,23 @@ public class LiquidBlockCarver extends BlockCarver
             }
         }
         return false;
+    }
+
+    @Override
+    protected void reload()
+    {
+        super.reload();
+
+        // Sand can be carved for underwater carvers
+        for (SandBlockType sand : SandBlockType.values())
+        {
+            carvableBlocks.add(TFCBlocks.SAND.get(sand).get());
+        }
+    }
+
+    @Override
+    protected boolean isSupportable(BlockState state)
+    {
+        return !state.getFluidState().isEmpty() || super.isSupportable(state);
     }
 }

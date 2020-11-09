@@ -15,7 +15,6 @@ import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.carver.CanyonWorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
@@ -23,21 +22,21 @@ import net.minecraft.world.gen.feature.ProbabilityConfig;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.mixin.world.gen.carver.CanyonWorldCarverAccessor;
+import net.dries007.tfc.world.chunkdata.RockData;
 
 public class TFCRavineCarver extends CanyonWorldCarver implements IContextCarver
 {
     private final Set<Block> originalCarvableBlocks;
     private final AirBlockCarver blockCarver;
 
-    private WorldGenRegion world;
-    private BitSet airCarvingMask;
-    private BitSet liquidCarvingMask;
+    private boolean initialized;
 
     public TFCRavineCarver(Codec<ProbabilityConfig> codec)
     {
         super(codec);
         originalCarvableBlocks = replaceableBlocks;
         blockCarver = new AirBlockCarver();
+        initialized = false;
 
         // Need to run this every time the rock registry is reloaded
         RockManager.INSTANCE.addCallback(() -> replaceableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
@@ -46,7 +45,7 @@ public class TFCRavineCarver extends CanyonWorldCarver implements IContextCarver
     @Override
     public boolean carve(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig configIn)
     {
-        if (world == null)
+        if (!initialized)
         {
             throw new IllegalStateException("Not properly initialized! Cannot use TFCRavineCarver with a chunk generator that does not respect IContextCarver");
         }
@@ -62,17 +61,16 @@ public class TFCRavineCarver extends CanyonWorldCarver implements IContextCarver
     }
 
     @Override
-    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask)
+    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
     {
-        this.world = world;
-        this.airCarvingMask = airCarvingMask;
-        this.liquidCarvingMask = liquidCarvingMask;
+        this.blockCarver.setContext(world, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
+        this.initialized = true;
     }
 
     @Override
     protected boolean carveBlock(IChunk chunkIn, Function<BlockPos, Biome> lazyBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutablePos1, BlockPos.Mutable mutablePos2, BlockPos.Mutable mutablePos3, int seaLevel, int chunkX, int chunkZ, int actualX, int actualZ, int localX, int y, int localZ, MutableBoolean reachedSurface)
     {
         mutablePos1.set(actualX, y, actualZ);
-        return blockCarver.carve(world, chunkIn, mutablePos1, random, seaLevel, airCarvingMask, liquidCarvingMask);
+        return blockCarver.carve(chunkIn, mutablePos1, random, seaLevel);
     }
 }

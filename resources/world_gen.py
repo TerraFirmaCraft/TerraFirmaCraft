@@ -47,7 +47,6 @@ class Decoration(IntEnum):
 def generate(rm: ResourceManager):
     # Surface Builder Configs
     grass_dirt_sand = wg.surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:sand')
-    grass_dirt_gravel = wg.surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:gravel')
     air_air_air = wg.surface_builder_config('minecraft:air', 'minecraft:air', 'minecraft:air')
 
     # Surface Builders
@@ -62,7 +61,7 @@ def generate(rm: ResourceManager):
     rm.feature('erosion', wg.configure('tfc:erosion'))
     rm.feature('ice_and_snow', wg.configure('tfc:ice_and_snow'))
 
-    rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), ('minecraft:chance', {'chance': 15}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
+    rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), ('minecraft:chance', {'chance': 25}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
     rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), 'minecraft:square', 'minecraft:heightmap_world_surface'))
 
     for spring_cfg in (('water', 80), ('lava', 35)):
@@ -77,13 +76,13 @@ def generate(rm: ResourceManager):
         'max_radius': 5,
         'height': 3,
         'states': clay
-    }), ('minecraft:chance', {'chance': 12}), 'minecraft:square', 'minecraft:heightmap_world_surface', ('tfc:climate', {'min_rainfall': 175})))
+    }), ('minecraft:chance', {'chance': 20}), 'minecraft:square', 'minecraft:heightmap_world_surface', ('tfc:climate', {'min_rainfall': 175})))
     rm.feature('water_clay_disc', wg.configure_decorated(wg.configure('tfc:soil_disc', {
         'min_radius': 2,
         'max_radius': 3,
         'height': 2,
         'states': clay
-    }), ('minecraft:chance', {'chance': 1}), 'minecraft:square', 'minecraft:heightmap_world_surface', 'tfc:near_water'))
+    }), ('minecraft:chance', {'chance': 10}), 'minecraft:square', 'minecraft:heightmap_world_surface', 'tfc:near_water'))
     rm.feature('peat_disc', wg.configure_decorated(wg.configure('tfc:soil_disc', {
         'min_radius': 5,
         'max_radius': 9,
@@ -93,7 +92,7 @@ def generate(rm: ResourceManager):
     }), ('minecraft:chance', {'chance': 10}), 'minecraft:square', 'minecraft:heightmap_world_surface', ('tfc:climate', {'min_rainfall': 350, 'min_temperature': 12})))
 
     rm.feature('cave_spike', wg.configure_decorated(wg.configure('tfc:cave_spike'), ('minecraft:carving_mask', {'step': 'air', 'probability': 0.09})))
-    rm.feature('large_cave_spike', wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('minecraft:carving_mask', {'step': 'air', 'probability': 0.02})))
+    rm.feature('large_cave_spike', wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('tfc:bounded_carving_mask', {'step': 'air', 'probability': 0.006, 'max_y': 45})))
 
     for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {

@@ -12,6 +12,7 @@
     "util.registry.WorldSettingsImportMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
+    "world.ServerWorldMixin",
     "world.biome.BiomeMixin",
     "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor",

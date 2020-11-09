@@ -2,16 +2,15 @@ package net.dries007.tfc.world.carver;
 
 import java.util.BitSet;
 
-import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.WorldGenRegion;
 
+import net.dries007.tfc.world.chunkdata.RockData;
+
 /**
- * Marker interface for carvers which need to be given the world seed
- *
- * This is dumb but vanilla's carver nonsense is absolute trash, and given the reworks coming in 1.17 let's just stick with trash for now as long we make it base line configurable.
+ * Marker interface for carvers which need additional context
+ * Carvers may require this to be called (and thus require TFC-compatible chunk generators) or throw errors upon generation.
  */
 public interface IContextCarver
 {
-    void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask);
+    void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask);
 }

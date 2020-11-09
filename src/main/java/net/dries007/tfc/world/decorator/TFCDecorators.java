@@ -20,6 +20,7 @@ public final class TFCDecorators
     public static final RegistryObject<FlatEnoughDecorator> FLAT_ENOUGH = register("flat_enough", FlatEnoughDecorator::new, FlatEnoughConfig.CODEC);
     public static final RegistryObject<ClimateDecorator> CLIMATE = register("climate", ClimateDecorator::new, ClimateConfig.CODEC);
     public static final RegistryObject<NearWaterDecorator> NEAR_WATER = register("near_water", NearWaterDecorator::new, NearWaterConfig.CODEC);
+    public static final RegistryObject<BoundedCarvingMaskDecorator> BOUNDED_CARVING_MASK = register("bounded_carving_mask", BoundedCarvingMaskDecorator::new, BoundedCarvingMaskConfig.CODEC);
 
     private static <C extends IPlacementConfig, D extends Placement<C>> RegistryObject<D> register(String name, Function<Codec<C>, D> factory, Codec<C> codec)
     {
