@@ -13,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 
@@ -87,7 +86,7 @@ public class ChunkBlockReplacer
         });
     }
 
-    public void replace(IWorld worldGenRegion, IChunk chunk, ChunkData data)
+    public void replace(IChunk chunk, ChunkData data)
     {
         final int xStart = chunk.getPos().getMinBlockX();
         final int zStart = chunk.getPos().getMinBlockZ();
@@ -111,7 +110,12 @@ public class ChunkBlockReplacer
                     {
                         stateAt = replacer.getReplacement(rockData, xStart + x, y, zStart + z, rainfall, temperature);
                         chunk.setBlockState(mutablePos, stateAt, false);
-                        replacer.updatePostPlacement(worldGenRegion, mutablePos, stateAt);
+
+                        // Since we operate on the chunk primer directly, in order to trigger post processing (i.e. for grass) we need to mark it manually
+                        if (stateAt.hasPostProcess(chunk, mutablePos))
+                        {
+                            chunk.markPosForPostprocessing(mutablePos);
+                        }
                     }
                 }
             }
