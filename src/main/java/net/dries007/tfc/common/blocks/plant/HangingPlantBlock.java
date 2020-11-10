@@ -28,10 +28,21 @@ public abstract class HangingPlantBlock extends PlantBlock
     protected static final BooleanProperty HANGING = BlockStateProperties.HANGING;
     protected static final VoxelShape NOT_HANGING_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
 
-    public HangingPlantBlock(Properties properties)
+    public static HangingPlantBlock create(IPlantProperties plant, Properties properties)
     {
-        // Mark for post process so #updateShape is called after worldgen
-        super(properties.hasPostProcess((state, reader, pos) -> true));
+        return new HangingPlantBlock(properties)
+        {
+            @Override
+            public IPlantProperties getPlant()
+            {
+                return plant;
+            }
+        };
+    }
+
+    protected HangingPlantBlock(Properties properties)
+    {
+        super(properties);
     }
 
     @Override

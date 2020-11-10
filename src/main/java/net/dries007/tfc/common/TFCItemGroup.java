@@ -32,7 +32,7 @@ public final class TFCItemGroup extends ItemGroup
     public static final ItemGroup METAL = new TFCItemGroup("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()));
     public static final ItemGroup WOOD = new TFCItemGroup("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.Default.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()));
     public static final ItemGroup FOOD = new TFCItemGroup("food", MISSING_ITEM);
-    public static final ItemGroup FLORA = new TFCItemGroup("flora", MISSING_ITEM);
+    public static final ItemGroup FLORA = new TFCItemGroup("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()));
     public static final ItemGroup MISC = new TFCItemGroup("misc", MISSING_ITEM);
 
     private final Lazy<ItemStack> iconStack;

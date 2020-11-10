@@ -4,9 +4,6 @@
   "values": [
     "minecraft:grass_block",
     "#forge:dirt",
-    "#tfc:grass",
-    "minecraft:grass_block",
-    "#forge:dirt",
     "#tfc:grass"
   ]
 }

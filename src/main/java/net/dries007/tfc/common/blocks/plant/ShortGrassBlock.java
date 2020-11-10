@@ -18,7 +18,19 @@ public abstract class ShortGrassBlock extends PlantBlock
     protected static final VoxelShape SHORT_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
     protected static final VoxelShape SHORTEST_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 4.0, 14.0);
 
-    public ShortGrassBlock(Properties properties)
+    public static ShortGrassBlock create(IPlantProperties plant, Properties properties)
+    {
+        return new ShortGrassBlock(properties)
+        {
+            @Override
+            public IPlantProperties getPlant()
+            {
+                return plant;
+            }
+        };
+    }
+
+    protected ShortGrassBlock(Properties properties)
     {
         super(properties);
     }

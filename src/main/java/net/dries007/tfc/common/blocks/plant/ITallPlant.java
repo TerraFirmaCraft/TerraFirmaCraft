@@ -18,8 +18,8 @@ public interface ITallPlant
 
     default VoxelShape getTallShape(int age, IBlockReader world, BlockPos pos)
     {
-        EnumBlockPart part = getPlantPart(world, pos);
-        if (part == EnumBlockPart.LOWER || part == EnumBlockPart.MIDDLE)
+        Part part = getPlantPart(world, pos);
+        if (part == Part.LOWER || part == Part.MIDDLE)
             return PLANT_SHAPE;
         switch (age)
         {
@@ -32,24 +32,24 @@ public interface ITallPlant
 
     }
 
-    default EnumBlockPart getPlantPart(IBlockReader world, BlockPos pos)
+    default Part getPlantPart(IBlockReader world, BlockPos pos)
     {
         if (world.getBlockState(pos.below()).getBlock() != this && world.getBlockState(pos.above()).getBlock() == this)
         {
-            return EnumBlockPart.LOWER;
+            return Part.LOWER;
         }
         if (world.getBlockState(pos.below()).getBlock() == this && world.getBlockState(pos.above()).getBlock() == this)
         {
-            return EnumBlockPart.MIDDLE;
+            return Part.MIDDLE;
         }
         if (world.getBlockState(pos.below()).getBlock() == this && world.getBlockState(pos.above()).getBlock() != this)
         {
-            return EnumBlockPart.UPPER;
+            return Part.UPPER;
         }
-        return EnumBlockPart.SINGLE;
+        return Part.SINGLE;
     }
 
-    enum EnumBlockPart implements IStringSerializable
+    enum Part implements IStringSerializable
     {
         UPPER,
         MIDDLE,

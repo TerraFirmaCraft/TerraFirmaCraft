@@ -5,13 +5,22 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import java.util.Arrays;
+import java.util.function.BiFunction;
+
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.state.IntegerProperty;
 
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.calendar.Month;
 
-public enum Plant
+public enum Plant implements IPlantProperties
 {
     ALLIUM(PlantType.STANDARD, 0.8F, new int[] {6, 6, 7, 0, 1, 1, 2, 2, 3, 4, 5, 6}),
     ATHYRIUM_FERN(PlantType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
@@ -79,9 +88,8 @@ public enum Plant
     WATER_LILY(PlantType.FLOATING, 0.8F, new int[] {5, 5, 6, 0, 1, 2, 2, 2, 2, 3, 4, 5}),
     YUCCA(PlantType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3});
 
-
     private final float speedFactor;
-    private final int maxStage;
+    private final IntegerProperty property;
     private final int[] monthStage;
     private final PlantType plantType;
 
@@ -91,243 +99,79 @@ public enum Plant
         this.speedFactor = speedFactor;
         this.monthStage = monthStage;
 
-        int max = 0;
-        for (int i : monthStage)
+        int maxStage = Arrays.stream(monthStage).max().orElse(1);
+        if (maxStage > TFCBlockStateProperties.STAGES.length)
         {
-            max = Math.max(max, i);
+            throw new IllegalStateException("Max stage = " + maxStage + " is larger than the max stage of any provided property!");
         }
-        this.maxStage = max;
+        this.property = TFCBlockStateProperties.STAGES[maxStage];
     }
 
     public Block create()
     {
-        return this.plantType.create(this);
+        return plantType.factory.apply(this, plantType);
     }
 
-    public float getSpeedFactor()
+    public BlockItem createBlockItem(Block block, Item.Properties properties)
     {
-        return speedFactor;
+        return plantType.blockItemFactory.apply(block, properties);
     }
 
-    public int getMaxStage()
-    {
-        return maxStage;
-    }
-
-    public int getStage(Month month)
+    @Override
+    public int getMonthStage(Month month)
     {
         return monthStage.length < month.ordinal() ? 0 : monthStage[month.ordinal()];
     }
 
+    @Override
+    public IntegerProperty getStageProperty()
+    {
+        return property;
+    }
+
+    @Override
+    public float getEntitySpeedModifier()
+    {
+        return speedFactor;
+    }
+
     public enum PlantType
     {
-        STANDARD,
-        CACTUS,
-        CREEPING,
-        HANGING,
-        FLOATING,
-        EPIPHYTE,
-        SHORT_GRASS,
-        TALL_GRASS,
-        TALL_PLANT; // Tall grass that blocks movement
+        STANDARD((plant, type) -> PlantBlock.create(plant, nonSolid(plant))),
+        CACTUS((plant, type) -> TFCCactusBlock.create(plant, solid().strength(0.25F).sound(SoundType.WOOL))),
+        CREEPING((plant, type) -> CreepingPlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))), // Post process ensures shape is updated after world gen
+        HANGING((plant, type) -> HangingPlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
+        FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, solid())),
+        EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant))),
+        SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, nonSolid(plant))),
+        TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
+        TALL_PLANT((plant, type) -> TFCTallGrassBlock.create(plant, solid()));
 
-        public Block create(Plant plant)
+        /**
+         * Default properties to avoid rewriting them out every time
+         */
+        private static AbstractBlock.Properties solid()
         {
-            // Common plant properties
-            Block.Properties properties = Block.Properties.of(Material.PLANT).noOcclusion().speedFactor(plant.getSpeedFactor()).strength(0).sound(SoundType.GRASS);
-            switch (this)
-            {
-                case STANDARD:
-                    return new PlantBlock(properties.randomTicks().noCollission())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
+            return Block.Properties.of(Material.PLANT).noOcclusion().strength(0).sound(SoundType.GRASS).randomTicks();
+        }
 
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
+        private static AbstractBlock.Properties nonSolid(Plant plant)
+        {
+            return solid().speedFactor(plant.speedFactor).noCollission();
+        }
 
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-                case SHORT_GRASS:
-                    return new ShortGrassBlock(properties.randomTicks().noCollission())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
+        private final BiFunction<Plant, PlantType, ? extends PlantBlock> factory;
+        private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
 
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
+        PlantType(BiFunction<Plant, PlantType, ? extends PlantBlock> factory)
+        {
+            this(factory, BlockItem::new);
+        }
 
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-                case TALL_GRASS:
-                    return new TFCTallGrassBlock(properties.randomTicks().noCollission())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
-
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
-
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-                case TALL_PLANT:
-                    return new TFCTallGrassBlock(properties.randomTicks())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
-
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
-
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-                case CACTUS:
-                    return new TFCCactusBlock(properties.randomTicks())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
-
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
-
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-                case CREEPING:
-                    return new CreepingPlantBlock(properties.randomTicks().noCollission())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
-
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
-
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-                case EPIPHYTE:
-                    return new EpiphytePlantBlock(properties.randomTicks().noCollission())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
-
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
-
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-                case HANGING:
-                    return new HangingPlantBlock(properties.randomTicks().noCollission())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
-
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
-
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-                case FLOATING:
-                    return new FloatingWaterPlantBlock(properties.randomTicks())
-                    {
-                        @Override
-                        public int getMaxStage()
-                        {
-                            return plant.getMaxStage();
-                        }
-
-                        @Override
-                        public int getMonthStage(Month month)
-                        {
-                            return plant.getStage(month);
-                        }
-
-                        @Override
-                        public float getSpeedFactor()
-                        {
-                            return plant.getSpeedFactor();
-                        }
-                    };
-            }
-            return new TFCBushBlock(properties.noCollission());
+        PlantType(BiFunction<Plant, PlantType, ? extends PlantBlock> factory, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
+        {
+            this.factory = factory;
+            this.blockItemFactory = blockItemFactory;
         }
     }
 }

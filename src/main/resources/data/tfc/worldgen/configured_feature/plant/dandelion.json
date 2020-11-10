@@ -1,27 +1,60 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:random_patch",
+  "type": "minecraft:decorated",
   "config": {
-    "state_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "tfc:plant/dandelion",
-        "Properties": {
-          "dayperiod": "1",
-          "age": "1",
-          "stage": "1"
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:random_patch",
+              "config": {
+                "state_provider": {
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:plant/dandelion",
+                    "Properties": {
+                      "age": "1",
+                      "stage": "1"
+                    }
+                  }
+                },
+                "block_placer": {
+                  "type": "minecraft:simple_block_placer",
+                  "config": {}
+                },
+                "whitelist": [],
+                "blacklist": [],
+                "yspread": 1,
+                "xspread": 15,
+                "zspread": 15,
+                "tries": 10
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": -40,
+                "max_temperature": 40,
+                "min_rainfall": 75,
+                "max_rainfall": 400
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
         }
       }
     },
-    "block_placer": {
-      "type": "minecraft:simple_block_placer",
-      "config": {}
-    },
-    "whitelist": [],
-    "blacklist": [],
-    "yspread": 1,
-    "xspread": 15,
-    "zspread": 15,
-    "tries": 10
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 5
+      }
+    }
   }
 }

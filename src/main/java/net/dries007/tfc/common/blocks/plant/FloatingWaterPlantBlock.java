@@ -8,22 +8,29 @@ package net.dries007.tfc.common.blocks.plant;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.LilyPadItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
-import net.dries007.tfc.common.blocks.IBlockItemSupplier;
-
-public abstract class FloatingWaterPlantBlock extends PlantBlock implements IBlockItemSupplier
+public abstract class FloatingWaterPlantBlock extends PlantBlock
 {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 1.5D, 15.0D);
 
-    public FloatingWaterPlantBlock(Properties properties)
+    public static FloatingWaterPlantBlock create(IPlantProperties plant, Properties properties)
+    {
+        return new FloatingWaterPlantBlock(properties)
+        {
+            @Override
+            public IPlantProperties getPlant()
+            {
+                return plant;
+            }
+        };
+    }
+
+    protected FloatingWaterPlantBlock(Properties properties)
     {
         super(properties);
     }
@@ -38,11 +45,5 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock implements IBlo
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return SHAPE;
-    }
-
-    @Override
-    public BlockItem apply(Item.Properties properties)
-    {
-        return new LilyPadItem(this, properties);
     }
 }

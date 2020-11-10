@@ -53,6 +53,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('supports_landslide', 'minecraft:grass_path')
+    rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')

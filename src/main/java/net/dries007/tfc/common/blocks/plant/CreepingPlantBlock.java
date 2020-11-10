@@ -28,12 +28,12 @@ import net.minecraft.world.World;
 
 public abstract class CreepingPlantBlock extends PlantBlock
 {
-    protected static final BooleanProperty UP = BlockStateProperties.UP;
-    protected static final BooleanProperty DOWN = BlockStateProperties.DOWN;
-    protected static final BooleanProperty NORTH = BlockStateProperties.NORTH;
-    protected static final BooleanProperty EAST = BlockStateProperties.EAST;
-    protected static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
-    protected static final BooleanProperty WEST = BlockStateProperties.WEST;
+    public static final BooleanProperty UP = BlockStateProperties.UP;
+    public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
+    public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
+    public static final BooleanProperty EAST = BlockStateProperties.EAST;
+    public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
+    public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
     protected static final VoxelShape UP_SHAPE = box(0.0, 14.0, 0.0, 16.0, 16.0, 16.0);
     protected static final VoxelShape DOWN_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
@@ -45,9 +45,20 @@ public abstract class CreepingPlantBlock extends PlantBlock
     protected static final BooleanProperty[] ALL_FACES = new BooleanProperty[] {UP, DOWN, NORTH, EAST, SOUTH, WEST};
     protected static final VoxelShape[] ALL_SHAPES = new VoxelShape[] {UP_SHAPE, DOWN_SHAPE, NORTH_SHAPE, EAST_SHAPE, SOUTH_SHAPE, WEST_SHAPE};
 
-    public CreepingPlantBlock(Properties properties)
+    public static CreepingPlantBlock create(IPlantProperties plant, Properties properties)
     {
-        // Mark for post process so #updateShape is called after worldgen
+        return new CreepingPlantBlock(properties)
+        {
+            @Override
+            public IPlantProperties getPlant()
+            {
+                return plant;
+            }
+        };
+    }
+
+    protected CreepingPlantBlock(Properties properties)
+    {
         super(properties.hasPostProcess((state, reader, pos) -> true));
     }
 
