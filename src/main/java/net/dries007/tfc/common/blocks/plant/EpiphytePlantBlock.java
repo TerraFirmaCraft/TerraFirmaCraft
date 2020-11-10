@@ -35,12 +35,12 @@ public abstract class EpiphytePlantBlock extends PlantBlock
 
     protected static final VoxelShape[] SHAPES = new VoxelShape[] {PLANT_DOWN_SHAPE, PLANT_UP_SHAPE, PLANT_NORTH_SHAPE, PLANT_SOUTH_SHAPE, PLANT_WEST_SHAPE, PLANT_EAST_SHAPE};
 
-    public static EpiphytePlantBlock create(IPlantProperties plant, Properties properties)
+    public static EpiphytePlantBlock create(IPlant plant, Properties properties)
     {
         return new EpiphytePlantBlock(properties)
         {
             @Override
-            public IPlantProperties getPlant()
+            public IPlant getPlant()
             {
                 return plant;
             }
@@ -49,8 +49,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
 
     protected EpiphytePlantBlock(Properties properties)
     {
-        // Mark for post process so #updateShape is called after worldgen
-        super(properties.hasPostProcess((state, reader, pos) -> true));
+        super(properties);
     }
 
     @Override

@@ -28,13 +28,13 @@ public abstract class PlantBlock extends TFCBushBlock
 
     protected static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
-    public static PlantBlock create(IPlantProperties plant, Properties properties)
+    public static PlantBlock create(IPlant plant, Properties properties)
     {
         return new PlantBlock(properties)
         {
 
             @Override
-            public IPlantProperties getPlant()
+            public IPlant getPlant()
             {
                 return plant;
             }
@@ -67,10 +67,10 @@ public abstract class PlantBlock extends TFCBushBlock
         {
             state = state.setValue(AGE, Math.min(state.getValue(AGE) + 1, 3));
         }
-        world.setBlockAndUpdate(pos, state.setValue(getPlant().getStageProperty(), getPlant().getMonthStage(Calendars.SERVER.getCalendarMonthOfYear())));
+        world.setBlockAndUpdate(pos, state.setValue(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear())));
     }
 
-    public abstract IPlantProperties getPlant();
+    public abstract IPlant getPlant();
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)

@@ -28,12 +28,12 @@ public abstract class HangingPlantBlock extends PlantBlock
     protected static final BooleanProperty HANGING = BlockStateProperties.HANGING;
     protected static final VoxelShape NOT_HANGING_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
 
-    public static HangingPlantBlock create(IPlantProperties plant, Properties properties)
+    public static HangingPlantBlock create(IPlant plant, Properties properties)
     {
         return new HangingPlantBlock(properties)
         {
             @Override
-            public IPlantProperties getPlant()
+            public IPlant getPlant()
             {
                 return plant;
             }

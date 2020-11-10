@@ -18,12 +18,12 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
 {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 1.5D, 15.0D);
 
-    public static FloatingWaterPlantBlock create(IPlantProperties plant, Properties properties)
+    public static FloatingWaterPlantBlock create(IPlant plant, Properties properties)
     {
         return new FloatingWaterPlantBlock(properties)
         {
             @Override
-            public IPlantProperties getPlant()
+            public IPlant getPlant()
             {
                 return plant;
             }

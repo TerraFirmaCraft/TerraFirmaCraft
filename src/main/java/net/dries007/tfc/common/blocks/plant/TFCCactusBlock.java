@@ -17,12 +17,12 @@ import net.minecraft.world.World;
 
 public abstract class TFCCactusBlock extends TFCTallGrassBlock
 {
-    public static TFCCactusBlock create(IPlantProperties plant, Properties properties)
+    public static TFCCactusBlock create(IPlant plant, Properties properties)
     {
         return new TFCCactusBlock(properties)
         {
             @Override
-            public IPlantProperties getPlant()
+            public IPlant getPlant()
             {
                 return plant;
             }
