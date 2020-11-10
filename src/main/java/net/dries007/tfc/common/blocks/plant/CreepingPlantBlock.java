@@ -45,12 +45,12 @@ public abstract class CreepingPlantBlock extends PlantBlock
     protected static final BooleanProperty[] ALL_FACES = new BooleanProperty[] {UP, DOWN, NORTH, EAST, SOUTH, WEST};
     protected static final VoxelShape[] ALL_SHAPES = new VoxelShape[] {UP_SHAPE, DOWN_SHAPE, NORTH_SHAPE, EAST_SHAPE, SOUTH_SHAPE, WEST_SHAPE};
 
-    public static CreepingPlantBlock create(IPlantProperties plant, Properties properties)
+    public static CreepingPlantBlock create(IPlant plant, Properties properties)
     {
         return new CreepingPlantBlock(properties)
         {
             @Override
-            public IPlantProperties getPlant()
+            public IPlant getPlant()
             {
                 return plant;
             }
@@ -59,7 +59,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
 
     protected CreepingPlantBlock(Properties properties)
     {
-        super(properties.hasPostProcess((state, reader, pos) -> true));
+        super(properties);
     }
 
     @Override

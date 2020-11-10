@@ -31,12 +31,12 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
 {
     protected static final EnumProperty<Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
 
-    public static TFCTallGrassBlock create(IPlantProperties plant, Properties properties)
+    public static TFCTallGrassBlock create(IPlant plant, Properties properties)
     {
         return new TFCTallGrassBlock(properties)
         {
             @Override
-            public IPlantProperties getPlant()
+            public IPlant getPlant()
             {
                 return plant;
             }
