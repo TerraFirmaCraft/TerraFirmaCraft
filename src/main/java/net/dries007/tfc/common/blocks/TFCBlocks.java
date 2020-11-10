@@ -137,7 +137,7 @@ public final class TFCBlocks
     // Flora
 
     public static final Map<Plant, RegistryObject<Block>> PLANTS = Helpers.mapOfKeys(Plant.class, plant ->
-        register(("plant/" + plant.name()).toLowerCase(), plant::create, FLORA)
+        register(("plant/" + plant.name()).toLowerCase(), plant::create, block -> plant.createBlockItem(block, new Item.Properties().tab(FLORA)), true)
     );
 
     // Misc
@@ -196,7 +196,6 @@ public final class TFCBlocks
         RegistryObject<T> block = BLOCKS.register(name, blockSupplier);
         if (hasItemBlock)
         {
-            // todo: handle weird IBlockItemSupplier stuff
             TFCItems.ITEMS.register(name, () -> blockItemFactory.apply(block.get()));
         }
         return block;

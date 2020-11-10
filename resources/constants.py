@@ -1,17 +1,15 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from collections import namedtuple
-from typing import Dict, List, NamedTuple, Sequence
+from typing import Dict, List, NamedTuple, Sequence, Optional
 
 Rock = NamedTuple('Rock', category=str, desert_sand_color=str, beach_sand_color=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float)
-# todo: convert to typed NamedTuple
-MetalItem = namedtuple('MetalItem', ('type', 'smelt_amount', 'parent_model', 'tag'))
-Ore = namedtuple('Ore', ('metal', 'graded'))
-OreGrade = namedtuple('OreGrade', ('weight',))
+MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str])
+Ore = NamedTuple('Ore', metal=Optional[str], graded=bool)
+OreGrade = NamedTuple('OreGrade', weight=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str])
-Plant = namedtuple('Plant', ('clay', 'min_temp', 'max_temp', 'min_rain', 'max_rain', 'type'))
+Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
@@ -311,7 +309,6 @@ DEFAULT_LANG = {
     'itemGroup.tfc.flora': 'TFC Flora',
     'itemGroup.tfc.devices': 'TFC Devices',
     'itemGroup.tfc.food': 'TFC Food',
-    'itemGroup.tfc.flora': 'TFC Flora',
     'itemGroup.tfc.misc': 'TFC Misc',
     # Containers
     'tfc.screen.calendar': 'Calendar',

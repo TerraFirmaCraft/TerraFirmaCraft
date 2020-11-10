@@ -13,6 +13,7 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 
+import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.util.calendar.Season;
 
@@ -37,4 +38,23 @@ public class TFCBlockStateProperties
     public static final FluidProperty WATER_AND_LAVA = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, Fluids.LAVA));
 
     public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
+
+    public static final IntegerProperty STAGE_1 = BlockStateProperties.STAGE;
+    public static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 2);
+    public static final IntegerProperty STAGE_3 = IntegerProperty.create("stage", 0, 3);
+    public static final IntegerProperty STAGE_4 = IntegerProperty.create("stage", 0, 4);
+    public static final IntegerProperty STAGE_5 = IntegerProperty.create("stage", 0, 5);
+    public static final IntegerProperty STAGE_6 = IntegerProperty.create("stage", 0, 6);
+    public static final IntegerProperty STAGE_7 = IntegerProperty.create("stage", 0, 7);
+    public static final IntegerProperty STAGE_8 = IntegerProperty.create("stage", 0, 8);
+    public static final IntegerProperty STAGE_9 = IntegerProperty.create("stage", 0, 9);
+    public static final IntegerProperty STAGE_10 = IntegerProperty.create("stage", 0, 10);
+    public static final IntegerProperty STAGE_11 = IntegerProperty.create("stage", 0, 11);
+    public static final IntegerProperty STAGE_12 = IntegerProperty.create("stage", 0, 12);
+
+    public static final IntegerProperty[] STAGES = {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5, STAGE_6, STAGE_7, STAGE_8, STAGE_9, STAGE_10, STAGE_11, STAGE_12};
+
+    public static final IntegerProperty AGE_3 = IntegerProperty.create("age", 0, 3);
+
+    public static final EnumProperty<ITallPlant.Part> TALL_PLANT_PART = EnumProperty.create("part", ITallPlant.Part.class);
 }

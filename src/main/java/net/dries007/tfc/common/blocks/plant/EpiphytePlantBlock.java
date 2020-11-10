@@ -15,36 +15,39 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 
 public abstract class EpiphytePlantBlock extends PlantBlock
 {
-    protected static final DirectionProperty FACING = BlockStateProperties.FACING;
-    protected static final VoxelShape PLANT_UP_SHAPE = box(4.0, 0.0, 4.0, 12.0, 12.0, 12.0);
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+
     protected static final VoxelShape PLANT_DOWN_SHAPE = box(4.0, 4.0, 4.0, 12.0, 16.0, 12.0);
+    protected static final VoxelShape PLANT_UP_SHAPE = box(4.0, 0.0, 4.0, 12.0, 12.0, 12.0);
     protected static final VoxelShape PLANT_NORTH_SHAPE = box(0.0, 0.0, 4.0, 16.0, 16.0, 16.0);
     protected static final VoxelShape PLANT_SOUTH_SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 12.0);
     protected static final VoxelShape PLANT_WEST_SHAPE = box(4.0, 0.0, 0.0, 16.0, 16.0, 16.0);
     protected static final VoxelShape PLANT_EAST_SHAPE = box(0.0, 0.0, 0.0, 12.0, 16.0, 16.0);
 
-    protected static final VoxelShape[] SHAPES = Util.make(new VoxelShape[6], shape -> {
-        shape[Direction.UP.ordinal()] = PLANT_UP_SHAPE;
-        shape[Direction.DOWN.ordinal()] = PLANT_DOWN_SHAPE;
-        shape[Direction.NORTH.ordinal()] = PLANT_NORTH_SHAPE;
-        shape[Direction.SOUTH.ordinal()] = PLANT_SOUTH_SHAPE;
-        shape[Direction.WEST.ordinal()] = PLANT_WEST_SHAPE;
-        shape[Direction.EAST.ordinal()] = PLANT_EAST_SHAPE;
-    });
+    protected static final VoxelShape[] SHAPES = new VoxelShape[] {PLANT_DOWN_SHAPE, PLANT_UP_SHAPE, PLANT_NORTH_SHAPE, PLANT_SOUTH_SHAPE, PLANT_WEST_SHAPE, PLANT_EAST_SHAPE};
 
+    public static EpiphytePlantBlock create(IPlantProperties plant, Properties properties)
+    {
+        return new EpiphytePlantBlock(properties)
+        {
+            @Override
+            public IPlantProperties getPlant()
+            {
+                return plant;
+            }
+        };
+    }
 
-    public EpiphytePlantBlock(Properties properties)
+    protected EpiphytePlantBlock(Properties properties)
     {
         // Mark for post process so #updateShape is called after worldgen
         super(properties.hasPostProcess((state, reader, pos) -> true));
@@ -83,12 +86,6 @@ public abstract class EpiphytePlantBlock extends PlantBlock
             attached.getBlock() instanceof RotatedPillarBlock
             && attached.getMaterial() == Material.WOOD
             && canSupportCenter(world, pos.relative(direction.getOpposite()), direction);
-    }
-
-    @Override
-    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
-    {
-        super.onPlace(state, worldIn, pos, oldState, isMoving);
     }
 
     @Override

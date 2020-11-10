@@ -25,24 +25,38 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
 {
-    protected static final EnumProperty<ITallPlant.EnumBlockPart> PART = EnumProperty.create("part", ITallPlant.EnumBlockPart.class);
+    protected static final EnumProperty<Part> PART = TFCBlockStateProperties.TALL_PLANT_PART;
 
-    public TFCTallGrassBlock(Properties properties)
+    public static TFCTallGrassBlock create(IPlantProperties plant, Properties properties)
+    {
+        return new TFCTallGrassBlock(properties)
+        {
+            @Override
+            public IPlantProperties getPlant()
+            {
+                return plant;
+            }
+        };
+    }
+
+    protected TFCTallGrassBlock(Properties properties)
     {
         super(properties);
 
-        registerDefaultState(stateDefinition.any().setValue(PART, EnumBlockPart.LOWER));
+        registerDefaultState(stateDefinition.any().setValue(PART, Part.LOWER));
     }
 
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        EnumBlockPart part = stateIn.getValue(PART);
-        if (facing.getAxis() != Direction.Axis.Y || part == EnumBlockPart.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.getValue(PART) != part)
+        Part part = stateIn.getValue(PART);
+        if (facing.getAxis() != Direction.Axis.Y || part == Part.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.getValue(PART) != part)
         {
-            return part == EnumBlockPart.LOWER && facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return part == Part.LOWER && facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
         else
         {
@@ -53,7 +67,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        if (state.getValue(PART) == EnumBlockPart.LOWER)
+        if (state.getValue(PART) == Part.LOWER)
         {
             return super.canSurvive(state, worldIn, pos);
         }
@@ -64,7 +78,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
             {
                 return super.canSurvive(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             }
-            return blockstate.getBlock() == this && blockstate.getValue(PART) == EnumBlockPart.LOWER;
+            return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
         }
     }
 
@@ -79,7 +93,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, EnumBlockPart.UPPER));
+        worldIn.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, Part.UPPER));
     }
 
     @Override
@@ -89,11 +103,11 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         {
             if (player.isCreative())
             {
-                if (state.getValue(PART) == EnumBlockPart.UPPER)
+                if (state.getValue(PART) == Part.UPPER)
                 {
                     BlockPos blockpos = pos.below();
                     BlockState blockstate = worldIn.getBlockState(blockpos);
-                    if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == EnumBlockPart.LOWER)
+                    if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == Part.LOWER)
                     {
                         worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
                         worldIn.levelEvent(player, 2001, blockpos, Block.getId(blockstate));

@@ -18,26 +18,30 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.calendar.Month;
 
 public abstract class PlantBlock extends TFCBushBlock
 {
-    protected static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
-    /*
-     * Time of day, used for rendering plants that bloom at different times
-     * 0 = midnight-dawn
-     * 1 = dawn-noon
-     * 2 = noon-dusk
-     * 3 = dusk-midnight
-     */
-    protected final static IntegerProperty DAYPERIOD = IntegerProperty.create("dayperiod", 0, 3);
-    protected static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
-    protected IntegerProperty stage;
+    public static final IntegerProperty AGE = TFCBlockStateProperties.AGE_3;
 
-    public PlantBlock(Properties properties)
+    protected static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+
+    public static PlantBlock create(IPlantProperties plant, Properties properties)
+    {
+        return new PlantBlock(properties)
+        {
+
+            @Override
+            public IPlantProperties getPlant()
+            {
+                return plant;
+            }
+        };
+    }
+
+    protected PlantBlock(Properties properties)
     {
         super(properties);
     }
@@ -63,24 +67,14 @@ public abstract class PlantBlock extends TFCBushBlock
         {
             state = state.setValue(AGE, Math.min(state.getValue(AGE) + 1, 3));
         }
-        world.setBlockAndUpdate(pos, state.setValue(stage, getMonthStage(Calendars.SERVER.getCalendarMonthOfYear())).setValue(DAYPERIOD, getDayTime()));
+        world.setBlockAndUpdate(pos, state.setValue(getPlant().getStageProperty(), getPlant().getMonthStage(Calendars.SERVER.getCalendarMonthOfYear())));
     }
 
-    public abstract float getSpeedFactor();
+    public abstract IPlantProperties getPlant();
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        stage = IntegerProperty.create("stage", 0, Math.max(1, getMaxStage()));
-        builder.add(stage, DAYPERIOD, AGE);
-    }
-
-    public abstract int getMaxStage();
-
-    public abstract int getMonthStage(Month month);
-
-    protected int getDayTime()
-    {
-        return ICalendar.getHourOfDay(Calendars.SERVER.getCalendarTicks()) / (ICalendar.HOURS_IN_DAY / 4);
+        builder.add(getPlant().getStageProperty(), AGE);
     }
 }
