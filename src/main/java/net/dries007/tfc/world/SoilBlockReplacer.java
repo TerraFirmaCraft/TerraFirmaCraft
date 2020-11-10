@@ -6,11 +6,8 @@
 package net.dries007.tfc.world;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -86,20 +83,9 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     }
 
     @Override
-    public void updatePostPlacement(IWorld world, BlockPos pos, BlockState state)
-    {
-        super.updatePostPlacement(world, pos, state);
-        if (state.getBlock() instanceof IGrassBlock)
-        {
-            // Handle grass update ticks for adjacent blocks
-            world.getBlockTicks().scheduleTick(pos, state.getBlock(), 0);
-        }
-    }
-
-    @Override
     protected void initSeed(long seed)
     {
-        patchNoise = new SimplexNoise2D(seed).octaves(2).spread(0.06f);
+        patchNoise = new SimplexNoise2D(seed).octaves(2).spread(0.04f);
     }
 
     private BlockState sand(RockData rockData, int x, int z)

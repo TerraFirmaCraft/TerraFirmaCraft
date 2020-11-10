@@ -187,7 +187,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         makeBedrock(fastChunk, random);
 
         final ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
-        blockReplacer.replace(worldGenRegion, fastChunk, chunkData);
+        blockReplacer.replace(fastChunk, chunkData);
         FastChunkPrimer.updateChunkHeightMaps(fastChunk);
     }
 

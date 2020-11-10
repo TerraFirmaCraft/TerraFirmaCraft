@@ -59,10 +59,8 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     private final Supplier<? extends Block> dirt;
-    @Nullable
-    private final Supplier<? extends Block> grassPath;
-    @Nullable
-    private final Supplier<? extends Block> farmland;
+    @Nullable private final Supplier<? extends Block> grassPath;
+    @Nullable private final Supplier<? extends Block> farmland;
 
     public ConnectedGrassBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant soilType)
     {
@@ -71,7 +69,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     public ConnectedGrassBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> grassPath, @Nullable Supplier<? extends Block> farmland)
     {
-        super(properties);
+        super(properties.hasPostProcess(TFCBlocks::always));
 
         this.dirt = dirt;
         this.grassPath = grassPath;
