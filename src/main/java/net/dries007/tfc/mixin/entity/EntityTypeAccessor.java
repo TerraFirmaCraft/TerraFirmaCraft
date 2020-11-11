@@ -8,6 +8,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(EntityType.class)
 public interface EntityTypeAccessor
 {
+    /**
+     * This is used to avoid a stupid log message during entity type registration
+     */
     @Accessor("serialize")
     void accessor$setSerialize(boolean serialize);
 }
