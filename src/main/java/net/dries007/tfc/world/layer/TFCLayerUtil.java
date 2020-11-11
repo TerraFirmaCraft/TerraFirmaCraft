@@ -49,6 +49,7 @@ public class TFCLayerUtil
      */
     public static final int OCEAN;
     public static final int DEEP_OCEAN;
+    public static final int DEEP_OCEAN_RIDGE;
     public static final int PLAINS;
     public static final int HILLS;
     public static final int LOWLANDS;
@@ -86,6 +87,7 @@ public class TFCLayerUtil
     {
         OCEAN = register(TFCBiomes.OCEAN);
         DEEP_OCEAN = register(TFCBiomes.DEEP_OCEAN);
+        DEEP_OCEAN_RIDGE = register(TFCBiomes.DEEP_OCEAN_RIDGE);
         PLAINS = register(TFCBiomes.PLAINS);
         HILLS = register(TFCBiomes.HILLS);
         LOWLANDS = register(TFCBiomes.LOWLANDS);

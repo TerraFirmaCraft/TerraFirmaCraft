@@ -304,6 +304,7 @@ def generate(rm: ResourceManager):
             biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_carvers=True)
             biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
+            biome(rm, 'deep_ocean_ridge', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'river', temp, rain, 'river', 'tfc:underwater', spawnable=False)
             biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore', spawnable=False)
 
