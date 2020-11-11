@@ -38,7 +38,7 @@ public final class CarverHelpers
             {
                 for (int y = 0; y <= seaLevel; y++)
                 {
-                    mutablePos.set(originPos).move(x, y, z);
+                    mutablePos.setWithOffset(originPos, x, y, z);
 
                     if (world.getBlockState(mutablePos).getBlock() == Blocks.WATER)
                     {
@@ -70,6 +70,11 @@ public final class CarverHelpers
     public static int maskIndex(BlockPos pos)
     {
         return (pos.getX() & 15) | ((pos.getZ() & 15) << 4) | (pos.getY() << 8);
+    }
+
+    public static int maskIndex(int x, int y, int z)
+    {
+        return (x & 15) | ((z & 15) << 4) | (y << 8);
     }
 
     public static void runCarversWithContext(WorldGenRegion worldIn, IChunk chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, SharedSeedRandom random, GenerationStage.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
