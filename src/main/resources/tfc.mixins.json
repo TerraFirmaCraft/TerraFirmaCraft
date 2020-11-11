@@ -14,7 +14,6 @@
     "util.registry.WorldSettingsImportMixin",
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
-    "world.ServerWorldMixin",
     "world.biome.BiomeMixin",
     "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor",
@@ -24,7 +23,16 @@
     "world.gen.settings.DimensionGeneratorSettingsMixin",
     "world.server.ServerWorldMixin"
   ],
-  "client": ["client.MinecraftMixin", "client.gui.screen.CreateWorldScreenMixin", "client.gui.screen.WorldOptionsScreenAccessor", "client.multiplayer.PlayerControllerMixin", "client.renderer.FogRendererMixin", "client.renderer.WorldRendererMixin", "client.world.ClientWorldMixin", "world.biome.BiomeColorsAccessor"],
+  "client": [
+    "client.MinecraftMixin",
+    "client.gui.screen.CreateWorldScreenMixin",
+    "client.gui.screen.WorldOptionsScreenAccessor",
+    "client.multiplayer.PlayerControllerMixin",
+    "client.renderer.FogRendererMixin",
+    "client.renderer.WorldRendererMixin",
+    "client.world.ClientWorldMixin",
+    "world.biome.BiomeColorsAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
