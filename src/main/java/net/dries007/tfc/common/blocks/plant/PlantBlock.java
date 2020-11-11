@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +17,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.ForgeHooks;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
@@ -44,37 +44,59 @@ public abstract class PlantBlock extends TFCBushBlock
     protected PlantBlock(Properties properties)
     {
         super(properties);
+
+        createDefaultBlockState(getStateDefinition().any());
     }
 
-    @SuppressWarnings("deprecation")
     @Override
+    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return PLANT_SHAPE;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
+    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
     {
-        // Update state
-        double growthChance = TFCConfig.SERVER.plantGrowthRate.get();
-        if (world.isRainingAt(pos))
-        {
-            growthChance *= 5;
-        }
-        if (RANDOM.nextDouble() < growthChance && ForgeHooks.onCropsGrowPre(world, pos.above(), state, true))
+        if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get())
         {
             state = state.setValue(AGE, Math.min(state.getValue(AGE) + 1, 3));
         }
-        world.setBlockAndUpdate(pos, state.setValue(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear())));
+        world.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
     }
 
+    /**
+     * Gets the plant metadata for this block.
+     *
+     * The stage property is isolated and referenced via this as it is needed in the {@link net.minecraft.block.Block} constructor - which builds the state container, and requires all property references to be computed in {@link Block#createBlockStateDefinition(StateContainer.Builder)}.
+     *
+     * See the various {@link PlantBlock#create(IPlant, Properties)} methods and subclass versions for how to use.
+     */
     public abstract IPlant getPlant();
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(getPlant().getStageProperty(), AGE);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return updateStateWithCurrentMonth(defaultBlockState());
+    }
+
+    /**
+     * Sets the default block state properties. Override and call super.
+     */
+    protected void createDefaultBlockState(BlockState state)
+    {
+        state.setValue(getPlant().getStageProperty(), 0).setValue(AGE, 0);
+    }
+
+    protected BlockState updateStateWithCurrentMonth(BlockState stateIn)
+    {
+        return stateIn.setValue(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear()));
     }
 }
