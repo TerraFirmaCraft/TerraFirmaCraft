@@ -302,8 +302,8 @@ def generate(rm: ResourceManager):
             biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_carvers=True)
-            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True)
-            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True)
+            biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
+            biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'river', temp, rain, 'river', 'tfc:underwater', spawnable=False)
             biome(rm, 'shore', temp, rain, 'beach', 'tfc:shore', spawnable=False)
 
@@ -434,10 +434,11 @@ def decorate_climate(min_temp: float, max_temp: float, min_rain: float, max_rain
 
 
 def decorate_chance(chance: int) -> Tuple[str, Dict[str, Any]]:
-    return ('minecraft:chance', {'chance': chance})
+    return 'minecraft:chance', {'chance': chance}
 
 
-def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False):
+def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: bool = False):
+    # Temperature properties
     if rain.id == 'arid':
         rain_type = 'none'
     elif temp.id in ('cold', 'frozen'):
@@ -445,27 +446,40 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         surface_builder += '_with_glaciers'
     else:
         rain_type = 'rain'
+    # Features
     features = [
         ['tfc:erosion'],  # raw generation
-        ['tfc:flood_fill_lake', 'tfc:lake'],  # lakes
-        ['tfc:clay_disc', 'tfc:water_clay_disc', 'tfc:peat_disc'],  # local modification
+        [],  # lakes
+        [],  # local modification
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
         ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
         ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring'],  # underground decoration
-        ['tfc:forest', *['tfc:plant/%s' % plant for plant, data in PLANTS.items() if not data.clay]],  # vegetal decoration
+        [],  # vegetal decoration
         ['tfc:ice_and_snow']  # top layer modification
     ]
     if boulders:
         features[Decoration.SURFACE_STRUCTURES] += ['tfc:raw_boulder', 'tfc:cobble_boulder']
         if rain.id in ('damp', 'wet'):
             features[Decoration.SURFACE_STRUCTURES].append('tfc:mossy_boulder')
+    if ocean_features:
+        pass  # todo: ocean plants
+    else:
+        # Non-ocean biome, add all land based features
+        features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
+        features[Decoration.LOCAL_MODIFICATIONS] += ['tfc:clay_disc', 'tfc:water_clay_disc', 'tfc:peat_disc']
+        features[Decoration.VEGETAL_DECORATION].append('tfc:forest')
+
+        # todo: separate plants out better
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if not data.clay]
+    # Carvers
     air_carvers = ['tfc:worley_cave', 'tfc:cave', 'tfc:canyon']
     water_carvers = []
     if ocean_carvers:
         water_carvers += ['tfc:underwater_cave', 'tfc:underwater_canyon']
 
+    # Generate based on properties
     rm.lang('biome.tfc.%s_%s_%s' % (name, temp.id, rain.id), '(%s / %s) %s' % (temp.id.title(), rain.id.title(), lang(name)))
     rm.biome(
         name_parts='%s_%s_%s' % (name, temp.id, rain.id),
