@@ -115,10 +115,9 @@ public interface INoise2D
      */
     default INoise2D scaled(float oldMin, float oldMax, float min, float max)
     {
-        return (x, y) -> {
-            float value = INoise2D.this.noise(x, y);
-            return (value - oldMin) / (oldMax - oldMin) * (max - min) + min;
-        };
+        final float scale = (max - min) / (oldMax - oldMin);
+        final float shift = min - oldMin * scale;
+        return (x, y) -> INoise2D.this.noise(x, y) * scale + shift;
     }
 
     /**

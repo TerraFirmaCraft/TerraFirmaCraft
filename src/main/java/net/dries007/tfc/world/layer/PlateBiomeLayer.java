@@ -9,7 +9,7 @@ public enum PlateBiomeLayer implements IC0Transformer
 {
     INSTANCE;
 
-    private static final int[] OCEAN_CONTINENT_CONVERGING_BIOMES = new int[] {FLOODED_MOUNTAINS, FLOODED_MOUNTAINS, OLD_MOUNTAINS, PLATEAU, CANYONS, CANYONS};
+    private static final int[] SUBDUCTION_BIOMES = new int[] {FLOODED_MOUNTAINS, FLOODED_MOUNTAINS, OLD_MOUNTAINS, PLATEAU, CANYONS, CANYONS};
     private static final int[] CONTINENT_LOW_BIOMES = new int[] {PLAINS, HILLS, LOW_CANYONS, LOWLANDS, HILLS};
     private static final int[] CONTINENT_MID_BIOMES = new int[] {ROLLING_HILLS, CANYONS, BADLANDS, HILLS, PLAINS};
     private static final int[] CONTINENT_HIGH_BIOMES = new int[] {PLATEAU, BADLANDS, OLD_MOUNTAINS, ROLLING_HILLS};
@@ -27,11 +27,10 @@ public enum PlateBiomeLayer implements IC0Transformer
                 return OCEAN_OCEAN_CONVERGING_MARKER;
             case OCEAN_OCEAN_DIVERGING:
                 // Mid-ocean rift
-                // todo: actual rift biomes. For now this is treated the same as a converging area
-                return OCEAN_OCEAN_CONVERGING_MARKER;
+                return DEEP_OCEAN_RIDGE;
             case OCEAN_CONTINENT_CONVERGING:
-                // Mountains or high terrain
-                return OCEAN_CONTINENT_CONVERGING_BIOMES[context.nextRandom(OCEAN_CONTINENT_CONVERGING_BIOMES.length)];
+                // Ocean plate subduction zone. Mountains or other volcanic-like terrain
+                return SUBDUCTION_BIOMES[context.nextRandom(SUBDUCTION_BIOMES.length)];
             case OCEAN_CONTINENT_DIVERGING:
             case CONTINENTAL_LOW:
                 // Normal biomes
