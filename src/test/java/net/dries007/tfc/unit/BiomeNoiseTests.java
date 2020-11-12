@@ -1,4 +1,4 @@
-package net.dries007.tfc.tests;
+package net.dries007.tfc.unit;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.Artist;
