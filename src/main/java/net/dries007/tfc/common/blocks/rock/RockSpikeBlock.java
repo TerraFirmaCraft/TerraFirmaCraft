@@ -5,10 +5,11 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.state.EnumProperty;
@@ -21,29 +22,23 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 
 @SuppressWarnings("deprecation")
-public class RockSpikeBlock extends Block implements IFluidLoggable
+public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBlock
 {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
 
     public static final VoxelShape BASE_SHAPE = box(2, 0, 2, 14, 16, 14);
     public static final VoxelShape MIDDLE_SHAPE = box(4, 0, 4, 12, 16, 12);
     public static final VoxelShape TIP_SHAPE = box(6, 0, 6, 10, 16, 10);
-
-    public RockSpikeBlock()
-    {
-        this(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.4f, 10).harvestLevel(0).harvestTool(ToolType.PICKAXE));
-    }
 
     public RockSpikeBlock(Properties properties)
     {
@@ -55,37 +50,66 @@ public class RockSpikeBlock extends Block implements IFluidLoggable
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (TFCTags.Blocks.CAN_COLLAPSE.contains(this))
-        {
-            BlockPos downPos = pos.below();
-            if (TFCFallingBlockEntity.canFallThrough(world, downPos))
-            {
-                // Potential to collapse from the top
-                if (!world.isClientSide && !isSupported(world, pos))
-                {
-                    // Spike is unsupported
-                    boolean collapsed = false;
-                    BlockState stateAt = state;
-                    // Mark all blocks below for also collapsing
-                    while (stateAt.getBlock() == this)
-                    {
-                        collapsed |= CollapseRecipe.collapseBlock(world, pos, stateAt);
-                        pos = pos.below();
-                        stateAt = world.getBlockState(pos);
-                    }
-                    if (collapsed)
-                    {
-                        world.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.8f, 1.0f);
-                    }
-                }
-            }
-        }
+        world.getBlockTicks().scheduleTick(pos, this, 1);
     }
 
     @Override
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+    {
+        // Check support from above or below
+        BlockPos belowPos = pos.below();
+        BlockState belowState = worldIn.getBlockState(belowPos);
+        if (belowState.getBlock() == this && belowState.getValue(PART).isLargerThan(state.getValue(PART)))
+        {
+            // Larger spike below. Tick that to ensure it is supported
+            worldIn.getBlockTicks().scheduleTick(belowPos, this, 1);
+            return;
+        }
+        else if (belowState.isFaceSturdy(worldIn, belowPos, Direction.UP))
+        {
+            // Full block below, this is supported
+            return;
+        }
+
+        // No support below, try above
+        BlockPos abovePos = pos.above();
+        BlockState aboveState = worldIn.getBlockState(abovePos);
+        if (aboveState.getBlock() == this && aboveState.getValue(PART).isLargerThan(state.getValue(PART)))
+        {
+            // Larger spike above. Tick to ensure that it is supported
+            worldIn.getBlockTicks().scheduleTick(abovePos, this, 1);
+            return;
+        }
+        else if (aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN))
+        {
+            // Full block above, this is supported
+            return;
+        }
+
+        // No support, so either collapse, or break
+        if (TFCTags.Blocks.CAN_COLLAPSE.contains(this) && CollapseRecipe.collapseBlock(worldIn, pos, state))
+        {
+            worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.8f, 1.0f);
+        }
+        else
+        {
+            worldIn.destroyBlock(pos, true);
+        }
+    }
+
+    @Override
+    public void onceFinishedFalling(World worldIn, BlockPos pos, FallingBlockEntity fallingBlock)
+    {
+        // todo: better shatter sound
+        worldIn.destroyBlock(pos, false);
+        worldIn.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.8f, 2.0f);
     }
 
     @Override
@@ -115,24 +139,6 @@ public class RockSpikeBlock extends Block implements IFluidLoggable
         builder.add(PART, getFluidProperty());
     }
 
-    private boolean isSupported(World world, BlockPos pos)
-    {
-        BlockState state = world.getBlockState(pos);
-        BlockState stateDown = world.getBlockState(pos.below());
-        // It can be directly supported below, by either a flat surface, *or* a spike that's larger than this one
-        if (stateDown.isFaceSturdy(world, pos.below(), Direction.UP) || (stateDown.getBlock() == this && stateDown.getValue(PART).ordinal() > state.getValue(PART).ordinal()))
-        {
-            return true;
-        }
-        // Otherwise, we need to walk upwards and find the roof
-        while (state.getBlock() == this)
-        {
-            pos = pos.above();
-            state = world.getBlockState(pos);
-        }
-        return state.isFaceSturdy(world, pos.above(), Direction.DOWN);
-    }
-
     public enum Part implements IStringSerializable
     {
         BASE, MIDDLE, TIP;
@@ -141,6 +147,11 @@ public class RockSpikeBlock extends Block implements IFluidLoggable
         public String getSerializedName()
         {
             return name().toLowerCase();
+        }
+
+        public boolean isLargerThan(Part other)
+        {
+            return this.ordinal() <= other.ordinal();
         }
     }
 }
