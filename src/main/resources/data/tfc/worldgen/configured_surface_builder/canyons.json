@@ -2,19 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:thin",
   "config": {
-    "top_material": {
-      "Name": "minecraft:grass_block",
-      "Properties": {
-        "snowy": "false"
-      }
-    },
-    "under_material": {
-      "Name": "minecraft:dirt",
-      "Properties": {}
-    },
-    "underwater_material": {
-      "Name": "minecraft:sand",
-      "Properties": {}
-    }
+    "top_material": "minecraft:grass_block",
+    "under_material": "minecraft:dirt"
   }
 }
