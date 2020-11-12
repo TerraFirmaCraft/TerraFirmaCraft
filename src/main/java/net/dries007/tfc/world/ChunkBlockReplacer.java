@@ -75,7 +75,7 @@ public class ChunkBlockReplacer
             {
                 return TFCBlocks.SAND.get(SandBlockType.PINK).get().defaultBlockState();
             }
-            else if (rainfall < 300f)
+            else if (rainfall > 300f)
             {
                 return TFCBlocks.SAND.get(SandBlockType.BLACK).get().defaultBlockState();
             }

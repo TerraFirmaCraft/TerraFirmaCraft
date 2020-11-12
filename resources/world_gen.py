@@ -46,16 +46,18 @@ class Decoration(IntEnum):
 
 def generate(rm: ResourceManager):
     # Surface Builder Configs
-    grass_dirt_sand = wg.surface_builder_config('minecraft:grass_block[snowy=false]', 'minecraft:dirt', 'minecraft:sand')
-    air_air_air = wg.surface_builder_config('minecraft:air', 'minecraft:air', 'minecraft:air')
+    grass_dirt_config = {
+        'top_material': 'minecraft:grass_block',
+        'under_material': 'minecraft:dirt'
+    }
 
     # Surface Builders
-    surface_builder(rm, 'badlands', wg.configure('tfc:badlands', grass_dirt_sand))
-    surface_builder(rm, 'canyons', wg.configure('tfc:thin', grass_dirt_sand))
-    surface_builder(rm, 'default', wg.configure('tfc:normal', grass_dirt_sand))
-    surface_builder(rm, 'underwater', wg.configure('tfc:underwater', air_air_air))
-    surface_builder(rm, 'mountains', wg.configure('tfc:mountains', grass_dirt_sand))
-    surface_builder(rm, 'shore', wg.configure('tfc:shore', air_air_air))
+    surface_builder(rm, 'badlands', wg.configure('tfc:badlands', grass_dirt_config))
+    surface_builder(rm, 'canyons', wg.configure('tfc:thin', grass_dirt_config))
+    surface_builder(rm, 'default', wg.configure('tfc:normal', grass_dirt_config))
+    surface_builder(rm, 'underwater', wg.configure('tfc:underwater'))
+    surface_builder(rm, 'mountains', wg.configure('tfc:mountains'))
+    surface_builder(rm, 'shore', wg.configure('tfc:shore'))
 
     # Configured Features
     rm.feature('erosion', wg.configure('tfc:erosion'))
