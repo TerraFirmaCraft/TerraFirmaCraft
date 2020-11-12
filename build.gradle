@@ -46,6 +46,8 @@ minecraft {
     }
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
+    def testClasses = String.join(File.pathSeparator, "${mod_id}%%${sourceSets.main.output.resourcesDir}", "${mod_id}%%${sourceSets.main.output.classesDir}", "${mod_id}%%${sourceSets.test.output.resourcesDir}", "${mod_id}%%${sourceSets.test.output.classesDir}")
+
     runs {
         client {
             workingDirectory project.file('run')
@@ -72,18 +74,26 @@ minecraft {
             }
         }
 
-        serverTest {
-            parent server // This run config inherits settings from the server config
+        integrationTest {
+            parent runs.client
+            workingDirectory project.file('run')
+            ideaModule "${project.name}.test"
+            property 'forge.logging.console.level', 'debug' // This logging level prevents any other server information messages and leaves only the unit test output
+            environment 'MOD_CLASSES', testClasses // Forge will ignore all test sources unless we explicitly tell it to include them as mod sources
+            mods {
+                tfc {
+                    sources sourceSets.main, sourceSets.test
+                }
+            }
+        }
+
+        unitTest {
+            parent runs.server // This run config inherits settings from the server config
             workingDirectory project.file('run')
             main 'com.alcatrazescapee.mcjunitlib.DedicatedTestServerLauncher' // The main class which launches a customized server which then runs JUnit tests
             ideaModule "${project.name}.test" // Tell IDEA to use the classpath of the test module
             property 'forge.logging.console.level', 'unittest' // This logging level prevents any other server information messages and leaves only the unit test output
-            environment 'MOD_CLASSES', String.join(File.pathSeparator,
-                    "tfc%%${sourceSets.main.output.resourcesDir}",
-                    "tfc%%${sourceSets.main.output.classesDir}",
-                    "tfc%%${sourceSets.test.output.resourcesDir}",
-                    "tfc%%${sourceSets.test.output.classesDir}",
-            ) // Forge will ignore all test sources unless we explicitly tell it to include them as mod sources
+            environment 'MOD_CLASSES', testClasses // Forge will ignore all test sources unless we explicitly tell it to include them as mod sources
             environment 'target', 'fmltestserver' // This is a custom service used to launch with ModLauncher's transforming class loader
             mods {
                 tfc {
@@ -97,9 +107,7 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}") {
-        transitive = false
-    }
+    testImplementation fg.deobf("com.github.alcatrazEscapee:mcjunitlib:${mcjunitlib_version}-${minecraft_version}")
 }
 
 processResources {
