@@ -219,6 +219,7 @@ tfc.key.stack=Stack food
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
 createWorld.customize.custom.flatbedrock=Flat Bedrock
+createWorld.customize.custom.smallrocklayer=Smaller Rock Layers
 createWorld.customize.custom.ravineRarity=Ravine Rarity
 createWorld.customize.custom.ravineHeight=Ravine Height
 createWorld.customize.custom.ravineVariability=Ravine Variability
