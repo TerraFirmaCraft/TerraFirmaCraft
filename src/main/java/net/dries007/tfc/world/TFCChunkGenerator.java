@@ -426,7 +426,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         for (int sectionY = 0; sectionY < 16; sectionY++)
         {
-            for (int localY = 0; localY < 15; localY++)
+            for (int localY = 0; localY < 16; localY++)
             {
                 final ChunkSection section = chunk.getOrCreateSection(sectionY);
                 final int y = (sectionY << 4) | localY;
