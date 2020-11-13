@@ -20,7 +20,7 @@ public class WorldGenSettings
 
     public final int spawnFuzz; //todo: remove, vanilla does it with a gamerule
     public final boolean flatBedrock;
-    public final boolean enableSmallRockLayerSize;
+    public final int rockLayerSize;
     public final int ravineRarity;
     public final int ravineHeight;
     public final int ravineVariability;
@@ -38,7 +38,7 @@ public class WorldGenSettings
     {
         spawnFuzz = b.spawnFuzz;
         flatBedrock = b.flatBedrock;
-        enableSmallRockLayerSize = b.enableSmallRocklayerSize;
+        rockLayerSize = b.rockLayerSize;
         ravineRarity = b.ravineRarity;
         ravineHeight = b.ravineHeight;
         ravineVariability = b.ravineVariability;
@@ -58,7 +58,8 @@ public class WorldGenSettings
     {
         public int spawnFuzz = 250;
         public boolean flatBedrock = false;
-        public boolean enableSmallRocklayerSize = false;
+
+        public int rockLayerSize = 5;
 
         public int ravineRarity = 100;
         public int ravineHeight = 20;
@@ -74,7 +75,7 @@ public class WorldGenSettings
         {
             return spawnFuzz == 250 &&
                 !flatBedrock &&
-                !enableSmallRocklayerSize &&
+                rockLayerSize == 5 &&
                 ravineRarity == 100 &&
                 ravineHeight == 20 &&
                 ravineVariability == 50 &&
