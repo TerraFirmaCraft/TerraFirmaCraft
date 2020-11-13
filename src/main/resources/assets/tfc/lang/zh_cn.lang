@@ -78,6 +78,11 @@ tfc.command.stripworld.usage=/stripworld <以方块为单位的半径> -> [危�
 tfc.command.stripworld.failed=缺少半径！/stripworld <以方块为单位的半径>
 tfc.command.stripworld.done=完成！
 
+tfc.command.work.usage=/work [set|add] <数量> -> 设置你所在的区块被洗矿槽或淘金盘开采的次数。
+tfc.command.work.args=参数无法识别。
+tfc.command.work.string=首个参数必须为 set 或 add。
+tfc.command.work.nonentity=实体未发现。
+
 # Gui
 
 ## Tooltips
@@ -275,10 +280,13 @@ config.tfc.general.overrides.enableStoneAnvil=启用石砧
 config.tfc.general.overrides.enableStoneAnvil.tooltip=允许用岩石造砧。
 
 config.tfc.general.overrides.enableTorchOverride=启用火把覆盖
-config.tfc.general.overrides.enableTorchOverride.tooltip=如果与其他模组有冲突，关掉此选项。
+config.tfc.general.overrides.enableTorchOverride.tooltip=关闭此选项可禁用群峦传说在注册物品时对原版火把的替换。会禁用火把燃尽。
 
-config.tfc.general.overrides.torchTime=火把烧尽时间
-config.tfc.general.overrides.torchTime.tooltip=火把燃烧殆尽所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 72 小时。设置为 -1 永不烧尽。
+config.tfc.general.overrides.enableFrozenOverrides=启用冰雪覆盖
+config.tfc.general.overrides.enableFrozenOverrides.tooltip=关闭此选项可禁用群峦传说在注册物品时对原版冰雪系列方块的替换。会移除它们基于温度的行为。
+
+config.tfc.general.overrides.torchTime=火把燃尽时间
+config.tfc.general.overrides.torchTime.tooltip=火把燃烧殆尽所需要的刻数（1000 = 游戏内 1 小时 = 50 秒），默认为 72 小时。设置为 -1 永不燃尽。
 
 config.tfc.general.overrides.enableLavaWaterPlacesTFCBlocks=启用群峦传说熔岩/水混合
 config.tfc.general.overrides.enableLavaWaterPlacesTFCBlocks.tooltip=覆盖原版的熔岩和水混合，转而生成群峦传说的石头变种。
@@ -645,6 +653,12 @@ config.tfc.devices.temperature.globalModifier.tooltip=物品热量交换的速�
 config.tfc.devices.temperature.heatingModifier=加热温度修正值
 config.tfc.devices.temperature.heatingModifier.tooltip=设施（例如：木炭炉，篝火）热量交换的速度修正值。较小的值 = 较慢的温度变化。
 
+config.tfc.devices.temperature.coolHeatablesInWorld=可加热物品环境冷却
+config.tfc.devices.temperature.coolHeatablesInWorld.tooltip=可加热的物品能在环境中冷却吗？比如放在水里或雪上？
+
+config.tfc.devices.temperature.ticksBeforeAttemptToCool=环境冷却延时
+config.tfc.devices.temperature.ticksBeforeAttemptToCool.tooltip=如果可加热物品能在环境中冷却，物品应当在多少刻后尝试冷却？
+
 
 ### Barrel
 config.tfc.devices.barrel=大桶
@@ -766,6 +780,16 @@ config.tfc.devices.sluice.gemChance.tooltip=洗矿槽作业产生宝石的几率
 
 config.tfc.devices.sluice.diamondGemChance=洗矿槽钻石几率
 config.tfc.devices.sluice.diamondGemChance.tooltip=当洗矿槽作业产生宝石时，掉落钻石的几率。
+
+
+## Jug
+config.tfc.devices.jug.dumpWaterOnShiftRightClick=Shift + 右键点击倒水
+config.tfc.devices.jug.dumpWaterOnShiftRightClick.tooltip=允许手持罐时 Shift + 右键点击在地上倒水。不会产生实际的水源方块。
+
+
+## Gold Pan
+config.tfc.devices.gold_pan.cooldownTicks=冷却间隔
+config.tfc.devices.gold_pan.cooldownTicks.tooltip=使用淘金盘后冷却需要的刻数。
 
 
 ## Clients
