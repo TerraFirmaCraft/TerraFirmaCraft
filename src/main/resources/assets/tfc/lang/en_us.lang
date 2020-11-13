@@ -780,6 +780,12 @@ config.tfc.devices.sluice.diamondGemChance.tooltip=Chance that a diamond is drop
 config.tfc.devices.jug.dumpWaterOnShiftRightClick=Dump Water on Shift Right-Clicking
 config.tfc.devices.jug.dumpWaterOnShiftRightClick.tooltip=Enable Shift-Right clicking of Jars to dump water out. Enabling this will not pour an actual water block onto the ground.
 
+
+## Gold Pan
+config.tfc.devices.gold_pan.cooldownTicks=Cooldown Ticks
+config.tfc.devices.gold_pan.cooldownTicks.tooltip=Cooldown ticks after panning.
+
+
 ## Clients
 config.tfc.client=Client Settings
 
