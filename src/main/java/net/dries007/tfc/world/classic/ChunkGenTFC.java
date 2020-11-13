@@ -168,9 +168,9 @@ public class ChunkGenTFC implements IChunkGenerator
         noiseGen6 = new NoiseGeneratorOctaves(rand, 1);
         mobSpawnerNoise = new NoiseGeneratorOctaves(rand, 8);
 
-        rocksGenLayer1 = GenLayerTFC.initializeRock(seed + 1, RockCategory.Layer.TOP);
-        rocksGenLayer2 = GenLayerTFC.initializeRock(seed + 2, RockCategory.Layer.MIDDLE);
-        rocksGenLayer3 = GenLayerTFC.initializeRock(seed + 3, RockCategory.Layer.BOTTOM);
+        rocksGenLayer1 = GenLayerTFC.initializeRock(seed + 1, RockCategory.Layer.TOP, s.rockLayerSize);
+        rocksGenLayer2 = GenLayerTFC.initializeRock(seed + 2, RockCategory.Layer.MIDDLE, s.rockLayerSize);
+        rocksGenLayer3 = GenLayerTFC.initializeRock(seed + 3, RockCategory.Layer.BOTTOM, s.rockLayerSize);
 
         noiseGen7 = new NoiseGeneratorPerlin(new Random(seed + 4), 4);
         noiseGen8 = new NoiseGeneratorPerlin(new Random(seed + 5), 4);
