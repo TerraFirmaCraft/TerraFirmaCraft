@@ -1036,7 +1036,7 @@ for wood_type in WOOD_TYPES:
         'inventory': {'model': 'tfc:support/inventory'},
         'axis': {
             'y': {'model': 'tfc:support/vertical'}, 'x': {'model': 'tfc:support/horizontal'},
-            'z': {'model': 'tfc:support/horizontal', 'y': 90}
+            'z': {'model': 'tfc:support/horizontal'}
         },
         'north': {'true': {'submodel': 'tfc:support/connection', 'y': 270}, 'false': {}},
         'east': {'true': {'submodel': 'tfc:support/connection'}, 'false': {}},
