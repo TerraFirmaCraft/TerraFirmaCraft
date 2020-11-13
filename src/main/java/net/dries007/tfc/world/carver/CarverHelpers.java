@@ -21,16 +21,15 @@ import net.dries007.tfc.world.chunkdata.RockData;
 
 public final class CarverHelpers
 {
-    public static BitSet createWaterAdjacencyMask(WorldGenRegion world)
+    public static BitSet createWaterAdjacencyMask(int seaLevel)
     {
-        return new BitSet(16 * 16 * (1 + world.getSeaLevel()));
+        return new BitSet(16 * 16 * (1 + seaLevel));
     }
 
-    public static void updateWaterAdjacencyMask(WorldGenRegion world, ChunkPos chunkPos, BitSet waterAdjacencyMask)
+    public static void updateWaterAdjacencyMask(WorldGenRegion world, int seaLevel, ChunkPos chunkPos, BitSet waterAdjacencyMask)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         final BlockPos originPos = chunkPos.getWorldPosition();
-        final int seaLevel = world.getSeaLevel();
 
         for (int x = -2; x < 18; x++)
         {
@@ -77,7 +76,8 @@ public final class CarverHelpers
         return (x & 15) | ((z & 15) << 4) | (y << 8);
     }
 
-    public static void runCarversWithContext(WorldGenRegion worldIn, IChunk chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, SharedSeedRandom random, GenerationStage.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
+
+    public static void runCarversWithContext(WorldGenRegion worldIn, IChunk chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, SharedSeedRandom random, GenerationStage.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask, int seaLevel)
     {
         final ChunkPos chunkPos = chunk.getPos();
         final List<Supplier<ConfiguredCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
@@ -105,7 +105,7 @@ public final class CarverHelpers
                     random.setLargeFeatureSeed(worldIn.getSeed() + index, x, z);
                     if (carver.isStartChunk(random, x, z))
                     {
-                        carver.carve(chunk, delegateBiomeManager::getBiome, random, worldIn.getSeaLevel(), x, z, chunkPos.x, chunkPos.z, stage == GenerationStage.Carving.AIR ? airCarvingMask : liquidCarvingMask);
+                        carver.carve(chunk, delegateBiomeManager::getBiome, random, seaLevel, x, z, chunkPos.x, chunkPos.z, stage == GenerationStage.Carving.AIR ? airCarvingMask : liquidCarvingMask);
                     }
                     index++;
                 }

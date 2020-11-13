@@ -76,7 +76,7 @@ public final class TFCBiomes
     public static final CarvingBiomeVariants OLD_MOUNTAIN_LAKE = registerCarving("old_mountain_lake", OLD_MOUNTAINS, BiomeNoise::lakeCarving, BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER);
     public static final CarvingBiomeVariants FLOODED_MOUNTAIN_LAKE = registerCarving("flooded_mountain_lake", FLOODED_MOUNTAINS, BiomeNoise::lakeCarving, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RIVER);
     public static final CarvingBiomeVariants PLATEAU_LAKE = registerCarving("plateau_lake", PLATEAU, BiomeNoise::lakeCarving, BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.RIVER);
-    private static final Map<Biome, BiomeExtension> CACHED_EXTENSIONS = new FiniteLinkedHashMap<>(128); // Faster route from biome -> extension
+    private static final Map<Biome, BiomeExtension> CACHED_EXTENSIONS = new FiniteLinkedHashMap<>(16); // Faster route from biome -> extension
 
     public static BiomeExtension getExtensionOrThrow(IWorld world, Biome biome)
     {
