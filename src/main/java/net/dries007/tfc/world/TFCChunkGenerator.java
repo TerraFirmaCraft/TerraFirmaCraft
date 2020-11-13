@@ -18,6 +18,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.EmptyBlockReader;
 import net.minecraft.world.IBlockReader;
@@ -30,13 +31,16 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import net.dries007.tfc.mixin.world.gen.ChunkGeneratorAccessor;
 import net.dries007.tfc.world.biome.*;
 import net.dries007.tfc.world.carver.CarverHelpers;
 import net.dries007.tfc.world.chunkdata.*;
@@ -161,15 +165,30 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         final RockData rockData = chunkDataProvider.get(chunk.getPos(), ChunkData.Status.ROCKS).getRockData();
 
-        final BitSet waterAdjacencyMask = CarverHelpers.createWaterAdjacencyMask(worldIn);
+        final BitSet waterAdjacencyMask = CarverHelpers.createWaterAdjacencyMask(getSeaLevel());
 
         // Apply carvers - liquid first, then air. Air carvers carve around liquid ones to avoid intersecting
-        CarverHelpers.runCarversWithContext(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.LIQUID, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
-        CarverHelpers.updateWaterAdjacencyMask(worldIn, chunk.getPos(), waterAdjacencyMask);
-        CarverHelpers.runCarversWithContext(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.AIR, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
+        CarverHelpers.runCarversWithContext(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.LIQUID, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask, getSeaLevel());
+        CarverHelpers.updateWaterAdjacencyMask(worldIn, getSeaLevel(), chunk.getPos(), waterAdjacencyMask);
+        CarverHelpers.runCarversWithContext(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.AIR, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask, getSeaLevel());
 
         // Apply features (vanilla biome decoration) normally
         super.applyBiomeDecoration(worldIn, manager);
+    }
+
+    /**
+     * This override just ignores strongholds conditionally as by default TFC does not generate them, but  {@link ChunkGenerator} hard codes them to generate.
+     */
+    @Override
+    public void createStructures(DynamicRegistries dynamicRegistry, StructureManager structureManager, IChunk chunk, TemplateManager templateManager, long seed)
+    {
+        final ChunkPos chunkPos = chunk.getPos();
+        final Biome biome = this.biomeSource.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
+        // todo: do we care about strongholds?
+        for (Supplier<StructureFeature<?, ?>> supplier : biome.getGenerationSettings().structures())
+        {
+            ((ChunkGeneratorAccessor) this).invoke$createStructure(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, chunkPos, biome);
+        }
     }
 
     /**
@@ -187,7 +206,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         final ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
         blockReplacer.replace(chunk, chunkData);
-        ChunkGeneratorHelpers.updateChunkHeightMaps(chunk);
     }
 
     @Override
@@ -304,10 +322,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         }
 
         fillInitialChunkBlocks(chunk, surfaceHeightMap);
+        updateInitialChunkHeightmaps(chunk, surfaceHeightMap);
         carveInitialChunkBlocks(chunk, carvingCenterMap, carvingHeightMap, airCarvingMask, liquidCarvingMask);
         buildAccurateSurface(chunk, localBiomes, random);
-
-        ChunkGeneratorHelpers.updateChunkHeightMaps(chunk);
     }
 
     @Override
@@ -458,10 +475,44 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     }
 
     /**
+     * Updates chunk height maps based on the initial surface height.
+     * This is split off of {@link TFCChunkGenerator#fillInitialChunkBlocks(ChunkPrimer, int[])} as that method exits early whenever it reaches the top layer.
+     */
+    protected void updateInitialChunkHeightmaps(ChunkPrimer chunk, int[] surfaceHeightMap)
+    {
+        final Heightmap oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
+        final Heightmap worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
+
+        final BlockState fillerBlock = settings.getDefaultBlock();
+        final BlockState fillerFluid = settings.getDefaultFluid();
+
+        for (int x = 0; x < 16; x++)
+        {
+            for (int z = 0; z < 16; z++)
+            {
+                final int landHeight = surfaceHeightMap[x + 16 * z];
+                if (landHeight >= SEA_LEVEL)
+                {
+                    worldSurface.update(x, landHeight, z, fillerBlock);
+                    oceanFloor.update(x, landHeight, z, fillerBlock);
+                }
+                else
+                {
+                    worldSurface.update(x, landHeight, z, fillerBlock);
+                    oceanFloor.update(x, SEA_LEVEL, z, fillerFluid);
+                }
+            }
+        }
+    }
+
+    /**
      * Applies noise level carvers to the initial chunk blocks.
      */
     protected void carveInitialChunkBlocks(ChunkPrimer chunk, double[] carvingCenterMap, double[] carvingHeightMap, BitSet airCarvingMask, BitSet liquidCarvingMask)
     {
+        final Heightmap oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
+        final Heightmap worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
+
         final BlockState caveFluid = settings.getDefaultFluid();
         final BlockState caveAir = Blocks.CAVE_AIR.defaultBlockState();
 
@@ -479,16 +530,23 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                     for (int y = bottomHeight; y <= topHeight; y++)
                     {
                         final int carvingMaskIndex = CarverHelpers.maskIndex(x, y, z);
+
+                        BlockState stateAt;
                         if (y <= SEA_LEVEL)
                         {
-                            ChunkGeneratorHelpers.setEarlyBlockState(chunk, x, y, z, caveFluid);
+                            stateAt = caveFluid;
                             liquidCarvingMask.set(carvingMaskIndex, true);
                         }
                         else
                         {
-                            ChunkGeneratorHelpers.setEarlyBlockState(chunk, x, y, z, caveAir);
+                            stateAt = caveAir;
                             airCarvingMask.set(carvingMaskIndex, true);
                         }
+
+                        // Set block and update heightmaps
+                        ChunkGeneratorHelpers.setEarlyBlockState(chunk, x, y, z, stateAt);
+                        worldSurface.update(x, y, z, stateAt);
+                        oceanFloor.update(x, y, z, stateAt);
                     }
                 }
             }
