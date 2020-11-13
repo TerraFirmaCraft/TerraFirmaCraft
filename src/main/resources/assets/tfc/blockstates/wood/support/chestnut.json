@@ -23,8 +23,7 @@
         "model": "tfc:support/horizontal"
       },
       "z": {
-        "model": "tfc:support/horizontal",
-        "y": 90
+        "model": "tfc:support/horizontal"
       }
     },
     "north": {
