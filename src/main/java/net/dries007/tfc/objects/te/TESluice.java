@@ -69,27 +69,9 @@ public class TESluice extends TEBase implements ITickable
                 {
                     if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.oreChance)
                     {
-                        ChunkPos myPos = world.getChunk(pos).getPos();
-                        int radius = ConfigTFC.Devices.SLUICE.radius;
-                        //Copy from Helper method, but only look for workable chunks
-                        List<Chunk> chunks = new ArrayList<>();
-                        for (int x = myPos.x - radius; x <= myPos.x + radius; x++)
+                        ChunkDataTFC chunkData = getChunkData(true);
+                        if (chunkData != null)
                         {
-                            for (int z = myPos.z - radius; z <= myPos.z + radius; z++)
-                            {
-                                Chunk chunk = world.getChunk(x, z);
-                                ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
-                                if (chunkData.canWork(1) && chunkData.getGeneratedVeins().stream().anyMatch(vein -> vein.getType() != null && vein.getType().getOre() != null))
-                                {
-                                    chunks.add(chunk);
-                                }
-                            }
-                        }
-                        if (chunks.size() > 0)
-                        {
-                            Chunk workingChunk = chunks.get(Constants.RNG.nextInt(chunks.size()));
-                            ChunkDataTFC chunkData = ChunkDataTFC.get(workingChunk);
-
                             // Only check for not null veins
                             List<Vein> veinList = chunkData.getGeneratedVeins()
                                 .stream().filter(vein -> vein.getType() != null && vein.getType().getOre() != null)
@@ -102,11 +84,10 @@ public class TESluice extends TEBase implements ITickable
                             chunkData.addWork();
                         }
                     }
-                    if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.gemChance)
+                    else if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.gemChance)
                     {
-                        Chunk chunk = world.getChunk(pos);
-                        ChunkDataTFC data = ChunkDataTFC.get(chunk);
-                        if (data.canWork(1))
+                        ChunkDataTFC chunkData = getChunkData(false);
+                        if (chunkData != null)
                         {
                             Gem dropGem;
                             if (Constants.RNG.nextDouble() < ConfigTFC.Devices.SLUICE.diamondGemChance)
@@ -119,9 +100,8 @@ public class TESluice extends TEBase implements ITickable
                             }
                             Gem.Grade grade = Gem.Grade.randomGrade(Constants.RNG);
                             Helpers.spawnItemStack(world, getFrontWaterPos(), ItemGem.get(dropGem, grade, 1));
-                            data.addWork();
+                            chunkData.addWork();
                         }
-
                     }
                     consumeSoil();
                 }
@@ -280,5 +260,38 @@ public class TESluice extends TEBase implements ITickable
                 markForBlockUpdate();
             }
         }
+    }
+
+    private ChunkDataTFC getChunkData(boolean checkVeins)
+    {
+        ChunkPos myPos = world.getChunk(pos).getPos();
+        int radius = ConfigTFC.Devices.SLUICE.radius;
+        //Copy from Helper method, but only look for workable chunks
+        List<Chunk> chunks = new ArrayList<>();
+        for (int x = myPos.x - radius; x <= myPos.x + radius; x++)
+        {
+            for (int z = myPos.z - radius; z <= myPos.z + radius; z++)
+            {
+                Chunk chunk = world.getChunk(x, z);
+                ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
+                if (chunkData.canWork(1))
+                {
+                    if (checkVeins && chunkData.getGeneratedVeins().stream().anyMatch(vein -> vein.getType() != null && vein.getType().getOre() != null))
+                    {
+                        chunks.add(chunk);
+                    }
+                    else if (!checkVeins)
+                    {
+                        chunks.add(chunk);
+                    }
+                }
+            }
+        }
+        if (chunks.size() > 0)
+        {
+            Chunk workingChunk = chunks.get(Constants.RNG.nextInt(chunks.size()));
+            return ChunkDataTFC.get(workingChunk);
+        }
+        return null;
     }
 }
