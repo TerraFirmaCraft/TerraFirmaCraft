@@ -276,11 +276,7 @@ public class TESluice extends TEBase implements ITickable
                 ChunkDataTFC chunkData = ChunkDataTFC.get(chunk);
                 if (chunkData.canWork(1))
                 {
-                    if (checkVeins && chunkData.getGeneratedVeins().stream().anyMatch(vein -> vein.getType() != null && vein.getType().getOre() != null))
-                    {
-                        chunks.add(chunk);
-                    }
-                    else if (!checkVeins)
+                    if (!checkVeins || chunkData.getGeneratedVeins().stream().anyMatch(vein -> vein.getType() != null && vein.getType().getOre() != null))
                     {
                         chunks.add(chunk);
                     }
