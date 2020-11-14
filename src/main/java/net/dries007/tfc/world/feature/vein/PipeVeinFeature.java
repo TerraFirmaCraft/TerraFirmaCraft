@@ -2,6 +2,8 @@ package net.dries007.tfc.world.feature.vein;
 
 import java.util.Random;
 
+import net.minecraft.util.math.MutableBoundingBox;
+
 import com.mojang.serialization.Codec;
 
 public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, Vein>
@@ -12,15 +14,19 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, Vein>
     }
 
     @Override
-    protected boolean inRange(int x, int z, PipeVeinConfig config)
+    protected MutableBoundingBox getBoundingBox(PipeVeinConfig config)
     {
-        return (x * x) + (z * z) < config.getRadius() * config.getRadius();
+        return new MutableBoundingBox(-config.getRadius(), -config.getSize(), -config.getRadius(), config.getRadius(), config.getSize(), config.getRadius());
     }
 
     @Override
     protected float getChanceToGenerate(int x, int y, int z, Vein vein, PipeVeinConfig config)
     {
-        return Math.abs(y) < config.getSize() ? config.getDensity() : 0;
+        if (Math.abs(y) < config.getSize() && (x * x) + (z * z) < config.getRadius() * config.getRadius())
+        {
+            return config.getDensity();
+        }
+        return 0;
     }
 
     @Override

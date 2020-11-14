@@ -3,6 +3,7 @@ package net.dries007.tfc.world.feature.vein;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -26,6 +27,12 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     }
 
     @Override
+    protected MutableBoundingBox getBoundingBox(DiscVeinConfig config)
+    {
+        return new MutableBoundingBox(-config.getSize(), -config.getHeight(), -config.getSize(), config.getSize(), config.getHeight(), config.getSize());
+    }
+
+    @Override
     protected DiscVein createVein(int chunkX, int chunkZ, Random random, DiscVeinConfig config)
     {
         return new DiscVein(defaultPos(chunkX, chunkZ, random, config), random, config.getSize());
@@ -34,11 +41,13 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
     static class DiscVein extends Vein
     {
         final INoise2D metaballs;
+        final int width;
 
         DiscVein(BlockPos pos, Random rand, int size)
         {
             super(pos);
             metaballs = new Metaballs2D(size, rand);
+            width = size;
         }
     }
 }
