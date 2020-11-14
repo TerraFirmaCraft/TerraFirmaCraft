@@ -28,6 +28,10 @@ public class Metaballs3D implements INoise3D
         for (Vec4 ball : balls)
         {
             f += ball.w * Math.abs(ball.w) / ((x - ball.x) * (x - ball.x) + (y - ball.y) * (y - ball.y) + (z - ball.z) * (z - ball.z));
+            if (f > 1)
+            {
+                return 1; // Shortcut out of the loop if possible
+            }
         }
         return f > 1 ? 1 : 0;
     }

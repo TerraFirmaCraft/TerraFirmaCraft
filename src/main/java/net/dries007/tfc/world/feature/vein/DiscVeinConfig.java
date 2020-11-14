@@ -8,7 +8,7 @@ public class DiscVeinConfig extends VeinConfig
 {
     public static final Codec<DiscVeinConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         VeinConfig.MAP_CODEC.forGetter(c -> c),
-        Codecs.POSITIVE_INT.optionalFieldOf("height", 4).forGetter(DiscVeinConfig::getHeight)
+        Codecs.POSITIVE_INT.optionalFieldOf("height", 2).forGetter(DiscVeinConfig::getHeight)
     ).apply(instance, DiscVeinConfig::new));
 
     private final int height;

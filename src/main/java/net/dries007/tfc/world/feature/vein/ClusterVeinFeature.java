@@ -3,6 +3,7 @@ package net.dries007.tfc.world.feature.vein;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.INoise3D;
@@ -19,6 +20,12 @@ public class ClusterVeinFeature extends VeinFeature<VeinConfig, ClusterVeinFeatu
     protected float getChanceToGenerate(int x, int y, int z, ClusterVein vein, VeinConfig config)
     {
         return vein.metaballs.noise(x, y, z) * config.getDensity();
+    }
+
+    @Override
+    protected MutableBoundingBox getBoundingBox(VeinConfig config)
+    {
+        return new MutableBoundingBox(-config.getSize(), -config.getSize(), -config.getSize(), config.getSize(), config.getSize(), config.getSize());
     }
 
     @Override
