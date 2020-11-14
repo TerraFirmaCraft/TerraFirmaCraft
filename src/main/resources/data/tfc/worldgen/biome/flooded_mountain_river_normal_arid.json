@@ -36,7 +36,8 @@
     [
       "tfc:clay_disc",
       "tfc:water_clay_disc",
-      "tfc:peat_disc"
+      "tfc:peat_disc",
+      "tfc:loam_disc"
     ],
     [],
     [],
@@ -92,17 +93,20 @@
     [
       "tfc:forest",
       "tfc:plant/allium",
+      "tfc:plant/athyrium_fern",
       "tfc:plant/barrel_cactus",
       "tfc:plant/black_orchid",
       "tfc:plant/blood_lily",
       "tfc:plant/blue_orchid",
       "tfc:plant/butterfly_milkweed",
       "tfc:plant/calendula",
+      "tfc:plant/canna",
       "tfc:plant/dandelion",
       "tfc:plant/duckweed",
       "tfc:plant/field_horsetail",
       "tfc:plant/fountain_grass",
       "tfc:plant/foxglove",
+      "tfc:plant/goldenrod",
       "tfc:plant/grape_hyacinth",
       "tfc:plant/guzmania",
       "tfc:plant/houstonia",
@@ -117,11 +121,14 @@
       "tfc:plant/orchard_grass",
       "tfc:plant/ostrich_fern",
       "tfc:plant/oxeye_daisy",
+      "tfc:plant/pampas_grass",
+      "tfc:plant/perovskia",
       "tfc:plant/pistia",
       "tfc:plant/poppy",
       "tfc:plant/primrose",
       "tfc:plant/pulsatilla",
       "tfc:plant/reindeer_lichen",
+      "tfc:plant/rose",
       "tfc:plant/ryegrass",
       "tfc:plant/sacred_datura",
       "tfc:plant/sagebrush",
@@ -147,11 +154,15 @@
       "tfc:plant/tulip_red",
       "tfc:plant/tulip_white",
       "tfc:plant/vriesea",
+      "tfc:plant/water_canna",
       "tfc:plant/water_lily",
       "tfc:plant/yucca"
     ],
     [
-      "tfc:ice_and_snow"
+      "tfc:ice_and_snow",
+      "tfc:groundcover/loose_rocks",
+      "tfc:groundcover/feather",
+      "tfc:groundcover/flint"
     ]
   ],
   "starts": [],
