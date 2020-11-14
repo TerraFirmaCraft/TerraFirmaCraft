@@ -1,0 +1,34 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:loose_rocks",
+              "config": {}
+            },
+            "decorator": {
+              "type": "minecraft:top_solid_heightmap",
+              "config": {}
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 1
+      }
+    }
+  }
+}

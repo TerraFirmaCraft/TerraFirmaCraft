@@ -53,6 +53,7 @@ public class TFCTags
         public static final ITag.INamedTag<Block> GRASS = blockTag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final ITag.INamedTag<Block> TREE_GROWS_ON = blockTag("tree_grows_on"); // Used for tree growth
         public static final ITag.INamedTag<Block> BUSH_PLANTABLE_ON = blockTag("bush_plantable_on"); // Used for plant placement
+        public static final ITag.INamedTag<Block> PLANT = blockTag("plant"); // for some decoration placement
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = blockTag("thatch_bed_thatch");
     }

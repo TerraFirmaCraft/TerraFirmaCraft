@@ -24,7 +24,7 @@ public class ClimateDecorator extends Placement<ClimateConfig>
     {
         final ChunkDataProvider provider = ChunkDataProvider.getOrThrow(((WorldDecoratingHelperAccessor) helper).accessor$getGenerator());
         final ChunkData data = provider.get(pos, ChunkData.Status.CLIMATE);
-        if (config.isValid(data.getAverageTemp(pos), data.getRainfall(pos)))
+        if (config.isValid(data.getAverageTemp(pos), data.getRainfall(pos), data.getForestType()))
         {
             return Stream.of(pos);
         }

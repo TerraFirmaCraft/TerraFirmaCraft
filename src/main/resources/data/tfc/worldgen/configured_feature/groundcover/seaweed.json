@@ -1,0 +1,164 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:water_land_patch",
+              "config": {
+                "state_provider": {
+                  "type": "tfc:facing_random",
+                  "state": "tfc:groundcover/seaweed"
+                },
+                "block_placer": {
+                  "type": "minecraft:simple_block_placer",
+                  "config": {}
+                },
+                "whitelist": [
+                  {
+                    "Name": "tfc:sand/brown",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:sand/white",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:sand/black",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:sand/red",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:sand/yellow",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:sand/green",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:sand/pink",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/chalk",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/chert",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/claystone",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/conglomerate",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/dolomite",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/limestone",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/shale",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/gneiss",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/marble",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/phyllite",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/quartzite",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/schist",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/slate",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/diorite",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/gabbro",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/granite",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/andesite",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/basalt",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/dacite",
+                    "Properties": {}
+                  },
+                  {
+                    "Name": "tfc:rock/gravel/rhyolite",
+                    "Properties": {}
+                  }
+                ],
+                "blacklist": [],
+                "yspread": 1,
+                "xspread": 15,
+                "zspread": 15,
+                "tries": 10
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": -20,
+                "max_temperature": 50,
+                "min_rainfall": 150,
+                "max_rainfall": 500,
+                "needs_forest": false
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 5
+      }
+    }
+  }
+}

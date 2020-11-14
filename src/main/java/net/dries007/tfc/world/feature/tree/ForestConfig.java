@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.world.Codecs;
 
 public class ForestConfig implements IFeatureConfig
 {
@@ -40,6 +43,8 @@ public class ForestConfig implements IFeatureConfig
             Codec.FLOAT.fieldOf("max_rain").forGetter(c -> c.maxRainfall),
             Codec.FLOAT.fieldOf("min_temp").forGetter(c -> c.minAverageTemp),
             Codec.FLOAT.fieldOf("max_temp").forGetter(c -> c.maxAverageTemp),
+            Codecs.LENIENT_BLOCKSTATE.fieldOf("log").forGetter(c -> c.log),
+            Codecs.LENIENT_BLOCKSTATE.fieldOf("leaves").forGetter(c -> c.leaves),
             ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
             ConfiguredFeature.CODEC.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature)
         ).apply(instance, Entry::new));
@@ -48,15 +53,19 @@ public class ForestConfig implements IFeatureConfig
         private final float maxRainfall;
         private final float minAverageTemp;
         private final float maxAverageTemp;
+        private final BlockState log;
+        private final BlockState leaves;
         private final Supplier<ConfiguredFeature<?, ?>> treeFeature;
         private final Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature;
 
-        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
+        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, BlockState log, BlockState leaves, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
         {
             this.minRainfall = minRainfall;
             this.maxRainfall = maxRainfall;
             this.minAverageTemp = minAverageTemp;
             this.maxAverageTemp = maxAverageTemp;
+            this.log = log;
+            this.leaves = leaves;
             this.treeFeature = treeFeature;
             this.oldGrowthFeature = oldGrowthFeature;
         }
@@ -64,6 +73,21 @@ public class ForestConfig implements IFeatureConfig
         public boolean isValid(float rainfall, float temperature)
         {
             return rainfall >= minRainfall && rainfall <= maxRainfall && temperature >= minAverageTemp && temperature <= maxAverageTemp;
+        }
+
+        public float distanceFromMean(float rainfall, float temperature)
+        {
+            return (rainfall + temperature - getAverageTemp() - getAverageRain()) / 2;
+        }
+
+        public float getAverageTemp()
+        {
+            return (maxAverageTemp - minAverageTemp) / 2;
+        }
+
+        public float getAverageRain()
+        {
+            return (maxRainfall - minRainfall) / 2;
         }
 
         public ConfiguredFeature<?, ?> getFeature()
@@ -74,6 +98,16 @@ public class ForestConfig implements IFeatureConfig
         public ConfiguredFeature<?, ?> getOldGrowthFeature()
         {
             return oldGrowthFeature.orElse(treeFeature).get();
+        }
+
+        public BlockState getLog()
+        {
+            return log;
+        }
+
+        public BlockState getLeaves()
+        {
+            return leaves;
         }
     }
 }

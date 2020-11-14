@@ -1,0 +1,26 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:rock/gravel/chalk",
+    "tfc:rock/gravel/chert",
+    "tfc:rock/gravel/claystone",
+    "tfc:rock/gravel/conglomerate",
+    "tfc:rock/gravel/dolomite",
+    "tfc:rock/gravel/limestone",
+    "tfc:rock/gravel/shale",
+    "tfc:rock/gravel/gneiss",
+    "tfc:rock/gravel/marble",
+    "tfc:rock/gravel/phyllite",
+    "tfc:rock/gravel/quartzite",
+    "tfc:rock/gravel/schist",
+    "tfc:rock/gravel/slate",
+    "tfc:rock/gravel/diorite",
+    "tfc:rock/gravel/gabbro",
+    "tfc:rock/gravel/granite",
+    "tfc:rock/gravel/andesite",
+    "tfc:rock/gravel/basalt",
+    "tfc:rock/gravel/dacite",
+    "tfc:rock/gravel/rhyolite"
+  ]
+}

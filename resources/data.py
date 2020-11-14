@@ -48,6 +48,13 @@ def generate(rm: ResourceManager):
         })
 
         rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)
+        rm.block_tag('minecraft:gravel', 'tfc:rock/gravel/%s' % rock)
+        rm.block_tag('minecraft:stone', 'tfc:rock/raw/%s' % rock)
+        rm.block_tag('minecraft:cobblestone', 'tfc:rock/cobble/%s' % rock)
+
+    # Plants
+    for plant, plant_data in PLANTS.items():
+        rm.block_tag('plant', 'tfc:plant/%s' % plant)
 
     # Tags
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')

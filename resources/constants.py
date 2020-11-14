@@ -289,6 +289,11 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -34, 36, 0, 75, 'standard')
 }
 
+SHORE_DECORATORS = ['driftwood', 'clam', 'mollusk', 'mussel', 'sticks_shore', 'seaweed']
+FOREST_DECORATORS = ['sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'podzol']
+WATER_BIOMES = ['mountain_river', 'old_mountain_river', 'flooded_mountain_river', 'mountain_lake', 'old_mountain_lake', 'flooded_mountain_lake', 'plateau_lake']
+GENERAL_DECORATORS = ['feather', 'flint']
+
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
     return ((key % args) if len(args) > 0 else key).replace('_', ' ').replace('/', ' ').title()

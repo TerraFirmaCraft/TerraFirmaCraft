@@ -1,0 +1,55 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "minecraft:random_patch",
+              "config": {
+                "state_provider": {
+                  "type": "tfc:facing_random",
+                  "state": "tfc:groundcover/pinecone"
+                },
+                "block_placer": {
+                  "type": "minecraft:simple_block_placer",
+                  "config": {}
+                },
+                "whitelist": [],
+                "blacklist": [],
+                "yspread": 1,
+                "xspread": 15,
+                "zspread": 15,
+                "tries": 10
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": -5,
+                "max_temperature": 33,
+                "min_rainfall": 200,
+                "max_rainfall": 500,
+                "needs_forest": true
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 5
+      }
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "type": "minecraft:decorated",
+      "config": {
+        "feature": {
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:random_patch_density",
+              "config": {
+                "state_provider": {
+                  "type": "minecraft:simple_state_provider",
+                  "state": {
+                    "Name": "tfc:plant/canna",
+                    "Properties": {
+                      "age": "1",
+                      "stage": "1"
+                    }
+                  }
+                },
+                "block_placer": {
+                  "type": "minecraft:simple_block_placer",
+                  "config": {}
+                },
+                "whitelist": [
+                  {
+                    "Name": "tfc:clay_grass/silt",
+                    "Properties": {
+                      "north": "false",
+                      "east": "false",
+                      "west": "false",
+                      "south": "false",
+                      "snowy": "false"
+                    }
+                  },
+                  {
+                    "Name": "tfc:clay_grass/loam",
+                    "Properties": {
+                      "north": "false",
+                      "east": "false",
+                      "west": "false",
+                      "south": "false",
+                      "snowy": "false"
+                    }
+                  },
+                  {
+                    "Name": "tfc:clay_grass/sandy_loam",
+                    "Properties": {
+                      "north": "false",
+                      "east": "false",
+                      "west": "false",
+                      "south": "false",
+                      "snowy": "false"
+                    }
+                  },
+                  {
+                    "Name": "tfc:clay_grass/silty_loam",
+                    "Properties": {
+                      "north": "false",
+                      "east": "false",
+                      "west": "false",
+                      "south": "false",
+                      "snowy": "false"
+                    }
+                  }
+                ],
+                "blacklist": [],
+                "yspread": 1,
+                "xspread": 10,
+                "zspread": 10,
+                "tries": 128
+              }
+            },
+            "decorator": {
+              "type": "tfc:climate",
+              "config": {
+                "min_temperature": 30,
+                "max_temperature": 50,
+                "min_rainfall": 280,
+                "max_rainfall": 500,
+                "needs_forest": false
+              }
+            }
+          }
+        },
+        "decorator": {
+          "type": "minecraft:square",
+          "config": {}
+        }
+      }
+    },
+    "decorator": {
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 1
+      }
+    }
+  }
+}

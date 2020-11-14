@@ -9,7 +9,7 @@
           "type": "minecraft:decorated",
           "config": {
             "feature": {
-              "type": "minecraft:random_patch",
+              "type": "tfc:random_patch_density",
               "config": {
                 "state_provider": {
                   "type": "minecraft:simple_state_provider",
@@ -29,8 +29,8 @@
                 "whitelist": [],
                 "blacklist": [],
                 "yspread": 9,
-                "xspread": 15,
-                "zspread": 15
+                "xspread": 5,
+                "zspread": 5
               }
             },
             "decorator": {
@@ -39,7 +39,8 @@
                 "min_temperature": 0,
                 "max_temperature": 40,
                 "min_rainfall": 300,
-                "max_rainfall": 500
+                "max_rainfall": 500,
+                "needs_forest": false
               }
             }
           }

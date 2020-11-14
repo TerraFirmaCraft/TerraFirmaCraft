@@ -29,6 +29,7 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.world.TFCBlockStateProviderTypes;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -69,6 +70,7 @@ public final class TerraFirmaCraft
         TFCDecorators.DECORATORS.register(modEventBus);
         TFCSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
         TFCCarvers.CARVERS.register(modEventBus);
+        TFCBlockStateProviderTypes.BLOCK_STATE_PROVIDER_TYPES.register(modEventBus);
 
         // Init methods
         TFCConfig.init();

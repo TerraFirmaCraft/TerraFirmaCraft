@@ -9,8 +9,8 @@
           "axis": "y"
         }
       },
-      "min_height": 5,
-      "max_height": 9,
+      "min_height": 8,
+      "max_height": 16,
       "width": 2
     },
     "layers": [
