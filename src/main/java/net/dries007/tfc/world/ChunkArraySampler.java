@@ -24,8 +24,9 @@ public class ChunkArraySampler
     public static final int SAMPLE_WIDTH = 4;
     public static final int CHUNK_SQUARE = CHUNK_SIZE + 2 * SAMPLE_WIDTH;
     public static final int SAMPLE_SQUARE = SAMPLE_WIDTH * 2 + 1;
+    public static final int FULL_SAMPLE_SQUARE = SAMPLE_SQUARE + 1;
 
-    public static final double[] WEIGHT_FIELD = Util.make(new double[9 * 9], array ->
+    public static final double[] WEIGHT_FIELD = Util.make(new double[SAMPLE_SQUARE * SAMPLE_SQUARE], array ->
     {
         // Parabolic field with total summed area equal to 1
         for (int x = 0; x < 9; x++)
@@ -108,15 +109,32 @@ public class ChunkArraySampler
             throw new IllegalArgumentException("Array was of size " + sampledArray.length + " but expected the side length to be " + arrayWidth);
         }
         weightMap.clear();
-        for (int i = 0; i < SAMPLE_SQUARE; i++)
+        for (int i = 0; i < FULL_SAMPLE_SQUARE; i++)
         {
-            for (int j = 0; j < SAMPLE_SQUARE; j++)
+            for (int j = 0; j < FULL_SAMPLE_SQUARE; j++)
             {
-                double weight = WEIGHT_FIELD[i + SAMPLE_SQUARE * j];
-                weightMap.mergeDouble(sampledArray[(i + (coordX + 1)) + arrayWidth * (j + (coordZ + 1))], weight * deltaX * deltaZ, Double::sum);
-                weightMap.mergeDouble(sampledArray[(i + coordX) + arrayWidth * (j + (coordZ + 1))], weight * (1 - deltaX) * deltaZ, Double::sum);
-                weightMap.mergeDouble(sampledArray[(i + (coordX + 1)) + arrayWidth * (j + coordZ)], weight * deltaX * (1 - deltaZ), Double::sum);
-                weightMap.mergeDouble(sampledArray[(i + coordX) + arrayWidth * (j + coordZ)], weight * (1 - deltaX) * (1 - deltaZ), Double::sum);
+                // Sample contributions from all four corners, where applicable
+                // This saves repeated 224 mergeDouble() calls per iteration as opposed to iterating over the 9x9 area and summing contributions with offsets.
+                // Profiling showed this method contributed ~3.4% of overall world gen time, benchmarking this improvement with JMH showed a consistent ~51% speed gain using this method.
+                double value = 0;
+                if (i < SAMPLE_SQUARE && j < SAMPLE_SQUARE)
+                {
+                    value += WEIGHT_FIELD[i + SAMPLE_SQUARE * j] * (1 - deltaX) * (1 - deltaZ);
+                }
+                if (i > 0 && j < SAMPLE_SQUARE)
+                {
+                    value += WEIGHT_FIELD[(i - 1) + SAMPLE_SQUARE * j] * deltaX * (1 - deltaZ);
+                }
+                if (i < SAMPLE_SQUARE && j > 0)
+                {
+                    value += WEIGHT_FIELD[i + SAMPLE_SQUARE * (j - 1)] * (1 - deltaX) * deltaZ;
+                }
+                if (i > 0 && j > 0)
+                {
+                    value += WEIGHT_FIELD[(i - 1) + SAMPLE_SQUARE * (j - 1)] * deltaX * deltaZ;
+                }
+
+                weightMap.mergeDouble(sampledArray[(i + coordX) + arrayWidth * (j + coordZ)], value, Double::sum);
             }
         }
     }

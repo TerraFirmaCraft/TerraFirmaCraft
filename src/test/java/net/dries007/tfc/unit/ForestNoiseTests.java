@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.tests;
+package net.dries007.tfc.unit;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,19 +31,20 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Disabled
-class ForestNoiseTests
+public class ForestNoiseTests
 {
     static final Artist.Noise<INoise2D> NOISE = Artist.<INoise2D>forNoise(target -> (x, y) -> target.noise((float) x, (float) y)).scale(Artist.Scales.DYNAMIC_RANGE).color(Artist.Colors.LINEAR_BLUE_RED).center(20_000);
     static final Artist.Raw COLOR = Artist.raw().center(20_000);
 
     @Test
-    void testTreeDistributions()
+    public void testTreeDistributions()
     {
         long seed = System.currentTimeMillis();
 
         ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
         ConfiguredFeature<?, ?> forestFeature = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY).get(new ResourceLocation(TerraFirmaCraft.MOD_ID, "forest"));
 
+        assertNotNull(generator);
         assertNotNull(forestFeature);
         assertSame(forestFeature.feature(), TFCFeatures.FOREST.get());
         assertTrue(forestFeature.config() instanceof ForestConfig);
@@ -62,7 +63,7 @@ class ForestNoiseTests
             List<ForestConfig.Entry> possibleTrees = new ArrayList<>();
             for (ForestConfig.Entry t : forestConfig.getEntries())
             {
-                if (t.isValid(rain, temp))
+                if (t.isValid(temp, rain))
                 {
                     possibleTrees.add(t);
                 }
@@ -78,7 +79,7 @@ class ForestNoiseTests
     }
 
     @Test
-    void testForestBaseNoise()
+    public void testForestBaseNoise()
     {
         long seed = System.currentTimeMillis();
         INoise2D forestBase = new SimplexNoise2D(seed).octaves(4).spread(0.002f).abs();
@@ -98,7 +99,7 @@ class ForestNoiseTests
     }
 
     @Test
-    void testForestDensityNoise()
+    public void testForestDensityNoise()
     {
         ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
 

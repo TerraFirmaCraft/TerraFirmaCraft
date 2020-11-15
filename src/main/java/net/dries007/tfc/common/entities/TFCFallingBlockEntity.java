@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.rock.IFallableBlock;
 import net.dries007.tfc.mixin.entity.item.FallingBlockEntityAccessor;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
@@ -188,9 +189,10 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                 spawnAtLocation(block);
                             }
                         }
-                        else if (block instanceof FallingBlock)
+
+                        if (block instanceof IFallableBlock)
                         {
-                            ((FallingBlock) block).onBroken(this.level, posAt, this);
+                            ((IFallableBlock) block).onceFinishedFalling(this.level, posAt, this);
                         }
                     }
                 }

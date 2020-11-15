@@ -1,4 +1,4 @@
-package net.dries007.tfc.tests;
+package net.dries007.tfc.unit;
 
 import java.awt.*;
 import java.util.Random;
@@ -23,13 +23,13 @@ import org.junit.jupiter.api.Test;
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
 @Disabled
-class TFCLayerUtilTests
+public class TFCLayerUtilTests
 {
     static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
     static final Artist.Typed<IAreaFactory<LazyArea>, Integer> AREA = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
 
     @Test
-    void testLakeLayers()
+    public void testLakeLayers()
     {
         // Only for imaging
         final long seed = System.currentTimeMillis();
@@ -96,7 +96,7 @@ class TFCLayerUtilTests
 
     @Test
     @Disabled
-    void testPlateTectonicLayers()
+    public void testPlateTectonicLayers()
     {
         // Only for imaging
         final long seed = System.currentTimeMillis();
@@ -124,7 +124,7 @@ class TFCLayerUtilTests
     }
 
     @Test
-    void testBiomeLayers()
+    public void testBiomeLayers()
     {
         // Only for imaging
         final long seed = System.currentTimeMillis();
@@ -211,7 +211,7 @@ class TFCLayerUtilTests
     }
 
     @Test
-    void testLayerGenerationSlideshow()
+    public void testLayerGenerationSlideshow()
     {
         // Only for imaging
         final long seed = System.currentTimeMillis();

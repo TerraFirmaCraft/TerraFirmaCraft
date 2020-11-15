@@ -70,7 +70,7 @@ public class ForestConfig implements IFeatureConfig
             this.oldGrowthFeature = oldGrowthFeature;
         }
 
-        public boolean isValid(float rainfall, float temperature)
+        public boolean isValid(float temperature, float rainfall)
         {
             return rainfall >= minRainfall && rainfall <= maxRainfall && temperature >= minAverageTemp && temperature <= maxAverageTemp;
         }

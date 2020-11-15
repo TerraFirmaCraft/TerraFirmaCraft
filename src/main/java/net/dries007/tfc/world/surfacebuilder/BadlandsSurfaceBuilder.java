@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.common.util.Lazy;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -39,7 +40,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
         }
         else
         {
-            buildSandySurface(random, chunkIn, x, z, startHeight, noise, defaultBlock, seaLevel, config);
+            buildSandySurface(random, chunkIn, x, z, startHeight, noise, defaultBlock, seaLevel, seed, config);
         }
     }
 
@@ -66,8 +67,11 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
     }
 
     @SuppressWarnings("deprecation")
-    private void buildSandySurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, int seaLevel, SurfaceBuilderConfig config)
+    private void buildSandySurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, int seaLevel, long seed, SurfaceBuilderConfig config)
     {
+        // Lazy because this queries a noise layer
+        Lazy<SurfaceBuilderConfig> underWaterConfig = Lazy.of(() -> TFCSurfaceBuilders.UNDERWATER.get().getUnderwaterConfig(x, z, seed));
+
         BlockState underState = config.getUnderMaterial();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         int surfaceDepth = -1;
@@ -100,7 +104,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
                     }
                     else
                     {
-                        underState = config.getUnderwaterMaterial();
+                        underState = underWaterConfig.get().getUnderwaterMaterial();
                     }
 
                     chunkIn.setBlockState(pos, underState, false);

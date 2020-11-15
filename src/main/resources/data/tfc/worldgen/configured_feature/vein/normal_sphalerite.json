@@ -123,6 +123,14 @@
         ]
       }
     ],
+    "indicator": {
+      "rarity": 12,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_sphalerite"
+        }
+      ]
+    },
     "salt": 1067807761
   }
 }
