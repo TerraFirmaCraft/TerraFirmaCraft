@@ -314,6 +314,10 @@ def generate(rm: ResourceManager):
         rm.item_model(('gem', gem)).with_lang(lang('cut %s', gem))
         rm.item_model(('powder', gem)).with_lang(lang('%s powder', gem))
 
+    # Plants
+    for plant, plant_data in PLANTS.items():
+        rm.lang('block.tfc.plant.%s' % plant, lang(plant))
+
     # Wood Blocks
     for wood in WOODS:
         # Logs

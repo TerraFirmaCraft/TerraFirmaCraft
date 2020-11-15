@@ -15,6 +15,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
+//only use this with TFC plants (it sets the AGE property)
 public class RandomPatchDensityFeature extends Feature<BlockClusterFeatureConfig>
 {
     public RandomPatchDensityFeature(Codec<BlockClusterFeatureConfig> codec)
@@ -31,7 +32,7 @@ public class RandomPatchDensityFeature extends Feature<BlockClusterFeatureConfig
         int i = 0;
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         ChunkData data = ChunkData.get(world, mutablePos);
-        float density = 0.7f * (data.getForestDensity() + 0.5f);
+        float density = (data.getForestDensity() + 0.5f);
         ForestType type = data.getForestType();
         if (type != ForestType.NORMAL && type != ForestType.SPARSE)
             density += 0.3f;
@@ -43,7 +44,7 @@ public class RandomPatchDensityFeature extends Feature<BlockClusterFeatureConfig
             BlockState state = world.getBlockState(below);
             if ((world.isEmptyBlock(mutablePos) && blockstate.canSurvive(world, mutablePos) && (config.whitelist.isEmpty() || config.whitelist.contains(state.getBlock())) && !config.blacklist.contains(state)))
             {
-                config.blockPlacer.place(world, mutablePos, blockstate.setValue(TFCBlockStateProperties.AGE_3, rand.nextInt(3) + 1), rand); //randomize age
+                config.blockPlacer.place(world, mutablePos, blockstate.setValue(TFCBlockStateProperties.AGE_3, rand.nextInt(4)), rand); //randomize age
                 ++i;
             }
         }

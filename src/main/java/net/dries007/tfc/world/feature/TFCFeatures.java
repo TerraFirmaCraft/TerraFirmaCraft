@@ -36,6 +36,8 @@ public class TFCFeatures
     public static final RegistryObject<LooseRocksFeature> LOOSE_ROCKS = register("loose_rocks", LooseRocksFeature::new, NoFeatureConfig.CODEC);
     public static final RegistryObject<RandomPatchWaterLandFeature> WATER_LAND_PATCH = register("water_land_patch", RandomPatchWaterLandFeature::new, BlockClusterFeatureConfig.CODEC);
     public static final RegistryObject<RandomPatchDensityFeature> RANDOM_PATCH_DENSITY = register("random_patch_density", RandomPatchDensityFeature::new, BlockClusterFeatureConfig.CODEC);
+    public static final RegistryObject<EmergentPatchFeature> EMERGENT_PATCH = register("emergent_patch", EmergentPatchFeature::new, BlockClusterFeatureConfig.CODEC);
+    public static final RegistryObject<RandomPatchWaterFeature> WATER_PATCH = register("water_patch", RandomPatchWaterFeature::new, BlockClusterFeatureConfig.CODEC);
 
     public static final RegistryObject<ForestFeature> FOREST = register("forest", ForestFeature::new, ForestConfig.CODEC);
     public static final RegistryObject<OverlayTreeFeature> OVERLAY_TREE = register("overlay_tree", OverlayTreeFeature::new, OverlayTreeConfig.CODEC);

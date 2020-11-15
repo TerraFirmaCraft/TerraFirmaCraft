@@ -54,6 +54,8 @@ public class TFCTags
         public static final ITag.INamedTag<Block> TREE_GROWS_ON = blockTag("tree_grows_on"); // Used for tree growth
         public static final ITag.INamedTag<Block> BUSH_PLANTABLE_ON = blockTag("bush_plantable_on"); // Used for plant placement
         public static final ITag.INamedTag<Block> PLANT = blockTag("plant"); // for some decoration placement
+        public static final ITag.INamedTag<Block> SEA_BUSH_PLANTABLE_ON = blockTag("sea_bush_plantable_on"); // Used for sea plant placement
+        public static final ITag.INamedTag<Block> CREEPING_PLANTABLE_ON = blockTag("creeping_plantable_on");
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = blockTag("thatch_bed_thatch");
     }
