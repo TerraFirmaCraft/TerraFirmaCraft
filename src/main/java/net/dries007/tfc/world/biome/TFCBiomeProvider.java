@@ -5,25 +5,30 @@
 
 package net.dries007.tfc.world.biome;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.area.LazyArea;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 
 public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
@@ -46,7 +51,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     private final ClimateSettings climateSettings;
     private final Registry<Biome> biomeRegistry;
 
-    private final LazyArea biomeArea;
+    private final LayerFactory<BiomeVariants> biomeLayer;
     private ChunkDataProvider chunkDataProvider;
 
     public TFCBiomeProvider(long seed, int spawnDistance, int spawnCenterX, int spawnCenterZ, LayerSettings layerSettings, ClimateSettings climateSettings, Registry<Biome> biomeRegistry)
@@ -61,7 +66,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         this.climateSettings = climateSettings;
         this.biomeRegistry = biomeRegistry;
 
-        this.biomeArea = TFCLayerUtil.createOverworldBiomeLayer(seed, layerSettings).make();
+        this.biomeLayer = LayerFactory.biomes(TFCLayerUtil.createOverworldBiomeLayer(seed, layerSettings));
     }
 
     public LayerSettings getLayerSettings()
@@ -136,7 +141,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         final ChunkPos chunkPos = new ChunkPos(biomeCoordX >> 2, biomeCoordZ >> 2);
         final BlockPos pos = chunkPos.getWorldPosition();
         final ChunkData data = chunkDataProvider.get(chunkPos, ChunkData.Status.CLIMATE);
-        final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
+        final BiomeVariants variants = biomeLayer.get(biomeCoordX, biomeCoordZ);
         final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(pos));
         final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(pos));
         final BiomeExtension extension = variants.get(temperature, rainfall);
@@ -145,7 +150,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
 
     public Biome getNoiseBiomeIgnoreClimate(int biomeCoordX, int biomeCoordZ)
     {
-        final BiomeVariants variants = TFCLayerUtil.getFromLayerId(biomeArea.get(biomeCoordX, biomeCoordZ));
+        final BiomeVariants variants = biomeLayer.get(biomeCoordX, biomeCoordZ);
         final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
         return biomeRegistry.getOrThrow(extension.getRegistryKey());
     }
@@ -214,21 +219,24 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
     {
         private static final MapCodec<LayerSettings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.intRange(0, 100).optionalFieldOf("ocean_percent", 45).forGetter(LayerSettings::getOceanPercent),
-            Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(LayerSettings::getRockLayerScale)
+            Codecs.POSITIVE_INT.optionalFieldOf("rock_layer_scale", 7).forGetter(LayerSettings::getRockLayerScale),
+            ResourceLocation.CODEC.listOf().fieldOf("rocks").forGetter(LayerSettings::getRocks)
         ).apply(instance, LayerSettings::new));
 
         private final int oceanPercent;
         private final int rockLayerScale;
+        private final List<ResourceLocation> rocks;
 
         public LayerSettings()
         {
-            this(45, 7);
+            this(45, 7, Arrays.stream(Rock.Default.values()).map(rock -> Helpers.identifier(rock.name().toLowerCase())).collect(Collectors.toList()));
         }
 
-        public LayerSettings(int oceanPercent, int rockLayerScale)
+        public LayerSettings(int oceanPercent, int rockLayerScale, List<ResourceLocation> rocks)
         {
             this.oceanPercent = oceanPercent;
             this.rockLayerScale = rockLayerScale;
+            this.rocks = rocks;
         }
 
         public int getOceanPercent()
@@ -239,6 +247,11 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         public int getRockLayerScale()
         {
             return rockLayerScale;
+        }
+
+        public List<ResourceLocation> getRocks()
+        {
+            return rocks;
         }
     }
 

@@ -38,6 +38,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -324,5 +325,12 @@ public final class Helpers
             entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f);
         }
         entity.fallDistance = 0;
+    }
+
+    public static void registerSimpleCapability(Class<?> clazz)
+    {
+        CapabilityManager.INSTANCE.register(clazz, new NoopStorage<>(), () -> {
+            throw new UnsupportedOperationException("Creating default instances is not supported. Why would you ever do this");
+        });
     }
 }

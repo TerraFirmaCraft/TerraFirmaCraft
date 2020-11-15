@@ -18,10 +18,10 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
-import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
 import net.dries007.tfc.world.layer.traits.LazyTypedAreaLayerContext;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -33,6 +33,8 @@ public class TFCLayerUtil
     /**
      * These IDs are used during plate tectonic layer generation
      * They're declared here as compile time constants so they can be used optimally in switch statements later
+     *
+     * @see PlateTectonicsClassification
      */
     public static final int OCEANIC = 0;
     public static final int CONTINENTAL_LOW = 1;
@@ -192,6 +194,28 @@ public class TFCLayerUtil
         return mainLayer;
     }
 
+    public static IAreaFactory<LazyArea> createOverworldPlateTectonicInfoLayer(long seed, TFCBiomeProvider.LayerSettings layerSettings)
+    {
+        final Random random = new Random(seed);
+        final Supplier<LazyTypedAreaLayerContext<Plate>> plateContext = () -> new LazyTypedAreaLayerContext<>(25, seed, random.nextLong());
+        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
+
+        ITypedAreaFactory<Plate> plateLayer;
+        IAreaFactory<LazyArea> mainLayer;
+
+        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
+        plateLayer = new PlateGenerationLayer(new VoronoiNoise2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
+        plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
+        mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
+
+        for (int i = 0; i < 5; i++)
+        {
+            mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
+        }
+
+        return mainLayer;
+    }
+
     public static List<IAreaFactory<LazyArea>> createOverworldRockLayers(long seed, TFCBiomeProvider.LayerSettings layerSettings)
     {
         final Random random = new Random(seed);
@@ -199,14 +223,12 @@ public class TFCLayerUtil
         final List<IAreaFactory<LazyArea>> completedLayers = new ArrayList<>(3);
 
         IAreaFactory<LazyArea> seedLayer;
-        int numRocks = RockManager.INSTANCE.getKeys().size();
+        int numRocks = layerSettings.getRocks().size();
 
         // Seed Areas
         for (int j = 0; j < 3; j++)
         {
-            final RandomLayer randomLayer = new RandomLayer(numRocks);
-            RockManager.INSTANCE.addCallback(() -> randomLayer.setLimit(RockManager.INSTANCE.getKeys().size()));
-            seedLayer = randomLayer.run(contextFactory.get());
+            seedLayer = new RockLayer(numRocks).run(contextFactory.get());
 
             // The following results were obtained about the number of applications of this layer. (over 10 M samples each time)
             // None => 95.01% of adjacent pairs were equal (which lines up pretty good with theoretical predictions)
@@ -215,9 +237,7 @@ public class TFCLayerUtil
             // 3x => 99.54%
             // 4x => 99.55%
             // And thus we only apply once, as it's the best result to reduce adjacent pairs without too much effort / performance cost
-            RandomizeNeighborsLayer randomNeighborLayer = new RandomizeNeighborsLayer(numRocks);
-            RockManager.INSTANCE.addCallback(() -> randomNeighborLayer.setLimit(RockManager.INSTANCE.getKeys().size()));
-            seedLayer = randomNeighborLayer.run(contextFactory.get(), seedLayer);
+            seedLayer = new RandomizeNeighborsLayer(numRocks).run(contextFactory.get(), seedLayer);
 
             for (int i = 0; i < 2; i++)
             {

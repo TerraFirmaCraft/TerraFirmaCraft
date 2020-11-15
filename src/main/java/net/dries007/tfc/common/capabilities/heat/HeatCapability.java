@@ -19,11 +19,9 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.NoopStorage;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
 
@@ -37,7 +35,7 @@ public class HeatCapability
 
     public static void setup()
     {
-        CapabilityManager.INSTANCE.register(IHeat.class, new NoopStorage<>(), HeatHandler::new);
+        Helpers.registerSimpleCapability(IHeat.class);
     }
 
     /**

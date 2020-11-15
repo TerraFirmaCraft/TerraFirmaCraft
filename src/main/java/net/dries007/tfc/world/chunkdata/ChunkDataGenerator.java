@@ -12,6 +12,7 @@ import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.biome.TFCBiomeProvider;
+import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.INoise2D;
@@ -25,7 +26,7 @@ import net.dries007.tfc.world.noise.SimplexNoise2D;
  */
 public class ChunkDataGenerator implements IChunkDataGenerator
 {
-    private final RockFactory bottomRockLayer, middleRockLayer, topRockLayer;
+    private final LayerFactory<Rock> bottomRockLayer, middleRockLayer, topRockLayer;
 
     private final INoise2D temperatureNoise;
     private final INoise2D rainfallNoise;
@@ -34,12 +35,14 @@ public class ChunkDataGenerator implements IChunkDataGenerator
     private final INoise2D forestWeirdnessNoise;
     private final INoise2D forestDensityNoise;
 
-    public ChunkDataGenerator(Random seedGenerator, TFCBiomeProvider.LayerSettings layerSettings)
+    private final LayerFactory<PlateTectonicsClassification> plateTectonicsInfo;
+
+    public ChunkDataGenerator(long worldSeed, Random seedGenerator, TFCBiomeProvider.LayerSettings layerSettings)
     {
         List<IAreaFactory<LazyArea>> rockLayers = TFCLayerUtil.createOverworldRockLayers(seedGenerator.nextLong(), layerSettings);
-        this.bottomRockLayer = new RockFactory(rockLayers.get(0));
-        this.middleRockLayer = new RockFactory(rockLayers.get(1));
-        this.topRockLayer = new RockFactory(rockLayers.get(2));
+        this.bottomRockLayer = LayerFactory.rocks(rockLayers.get(0), layerSettings);
+        this.middleRockLayer = LayerFactory.rocks(rockLayers.get(1), layerSettings);
+        this.topRockLayer = LayerFactory.rocks(rockLayers.get(2), layerSettings);
 
         this.layerHeightNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(2).scaled(40, 60).spread(0.015f);
 
@@ -64,6 +67,8 @@ public class ChunkDataGenerator implements IChunkDataGenerator
         forestBaseNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.002f).abs();
         forestWeirdnessNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
         forestDensityNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
+
+        plateTectonicsInfo = LayerFactory.plateTectonics(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed, layerSettings));
     }
 
     @Override
@@ -76,6 +81,9 @@ public class ChunkDataGenerator implements IChunkDataGenerator
             case EMPTY:
             case CLIENT:
                 throw new IllegalStateException("Should not ever generate EMPTY or CLIENT status!");
+            case PLATE_TECTONICS:
+                generatePlateTectonics(data);
+                break;
             case CLIMATE:
                 generateClimate(data, chunkX, chunkZ);
                 break;
@@ -110,6 +118,11 @@ public class ChunkDataGenerator implements IChunkDataGenerator
     public INoise2D getForestWeirdnessNoise()
     {
         return forestWeirdnessNoise;
+    }
+
+    private void generatePlateTectonics(ChunkData data)
+    {
+        data.setPlateTectonicsInfo(plateTectonicsInfo.get(data.getPos().x, data.getPos().z));
     }
 
     private void generateClimate(ChunkData data, int chunkX, int chunkZ)
