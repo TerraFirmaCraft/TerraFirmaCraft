@@ -85,6 +85,14 @@
         ]
       }
     ],
+    "indicator": {
+      "rarity": 12,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_hematite"
+        }
+      ]
+    },
     "salt": 2095419736
   }
 }

@@ -107,7 +107,7 @@ public class ForestFeature extends Feature<ForestConfig>
         float averageTemperature = chunkData.getAverageTemp(pos);
         for (ForestConfig.Entry entry : config.getEntries())
         {
-            if (entry.isValid(rainfall, averageTemperature))
+            if (entry.isValid(averageTemperature, rainfall))
             {
                 entries.add(entry);
             }

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.plant;
 import java.util.Arrays;
 import java.util.function.BiFunction;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -130,6 +131,12 @@ public enum Plant implements IPlant
         return property;
     }
 
+    @VisibleForTesting
+    public BlockType getType()
+    {
+        return type;
+    }
+
     public enum BlockType
     {
         STANDARD((plant, type) -> PlantBlock.create(plant, nonSolid(plant))),
@@ -147,7 +154,7 @@ public enum Plant implements IPlant
          */
         private static AbstractBlock.Properties solid()
         {
-            return Block.Properties.of(Material.PLANT).noOcclusion().strength(0).sound(SoundType.GRASS).randomTicks();
+            return Block.Properties.of(Material.REPLACEABLE_PLANT).noOcclusion().strength(0).sound(SoundType.GRASS).randomTicks();
         }
 
         private static AbstractBlock.Properties nonSolid(Plant plant)

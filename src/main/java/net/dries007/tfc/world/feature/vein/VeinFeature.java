@@ -6,15 +6,18 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.FastRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends Feature<C>
 {
@@ -43,6 +46,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     protected void place(ISeedReader world, Random random, int blockX, int blockZ, V vein, C config)
     {
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
@@ -58,6 +62,8 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         {
             for (int z = minZ; z <= maxZ; z++)
             {
+                int maxVeinY = -1; // -1 means no veins placed
+
                 for (int y = minY; y <= maxY; y++)
                 {
                     mutablePos.set(x, y, z);
@@ -68,14 +74,33 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         if (oreState != null)
                         {
                             world.setBlock(mutablePos, oreState, 3);
+                            maxVeinY = y;
+                        }
+                    }
+                }
+
+                final Indicator indicator = config.getIndicator();
+                if (indicator != null && maxVeinY != -1 && random.nextInt(indicator.getRarity()) == 0)
+                {
+                    // Pick a random position
+                    final int indicatorX = x + random.nextInt(indicator.getSpread()) - random.nextInt(indicator.getSpread());
+                    final int indicatorZ = z + random.nextInt(indicator.getSpread()) - random.nextInt(indicator.getSpread());
+                    final int indicatorY = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, indicatorX, indicatorZ);
+                    if (Math.abs(indicatorY - maxVeinY) < indicator.getDepth())
+                    {
+                        mutablePos.set(indicatorX, indicatorY, indicatorZ);
+                        final BlockState stateAt = world.getBlockState(mutablePos);
+                        final BlockState state = indicator.getStateToGenerate(random);
+                        if (stateAt.isAir() && state.canSurvive(world, mutablePos))
+                        {
+                            world.setBlock(mutablePos, Helpers.getStateForPlacementWithFluid(world, mutablePos, state), 3);
+                            world.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
                         }
                     }
                 }
             }
         }
     }
-
-    protected abstract MutableBoundingBox getBoundingBox(C config);
 
     @Nullable
     protected BlockState getStateToGenerate(BlockState stoneState, Random random, C config)
@@ -136,4 +161,9 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
      * Creates a vein at a given location.
      */
     protected abstract V createVein(int chunkX, int chunkZ, Random random, C config);
+
+    /**
+     * Gets the total bounding box around where the vein can spawn, using relative position to the center of the vein
+     */
+    protected abstract MutableBoundingBox getBoundingBox(C config);
 }

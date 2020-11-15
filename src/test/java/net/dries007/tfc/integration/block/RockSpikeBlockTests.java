@@ -1,4 +1,4 @@
-package net.dries007.tfc.integration;
+package net.dries007.tfc.integration.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -8,8 +8,8 @@ import com.alcatrazescapee.mcjunitlib.framework.IntegrationTestClass;
 import com.alcatrazescapee.mcjunitlib.framework.IntegrationTestHelper;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 
-@IntegrationTestClass("rock_spike_tests")
-public class RockSpikeTests
+@IntegrationTestClass("block/rock_spike")
+public class RockSpikeBlockTests
 {
     @IntegrationTest("top")
     public void topBreakAbove(IntegrationTestHelper helper)

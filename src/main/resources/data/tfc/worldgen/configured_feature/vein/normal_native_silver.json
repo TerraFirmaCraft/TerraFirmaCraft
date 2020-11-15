@@ -47,6 +47,14 @@
         ]
       }
     ],
+    "indicator": {
+      "rarity": 12,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_native_silver"
+        }
+      ]
+    },
     "salt": 871561641
   }
 }

@@ -183,6 +183,12 @@ def generate(rm: ResourceManager):
                         'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
                     }]
                 } for rock in rocks],
+                'indicator': {
+                    'rarity': 12,
+                    'blocks': [{
+                        'block': 'tfc:ore/small_%s' % vein.ore
+                    }]
+                },
                 'salt': vein_salt(vein_name)
             }))
         else:  # non-graded ore vein (mineral)

@@ -52,12 +52,10 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {
-        super(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion());
-        shape = cover.getShape();
-        this.registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, Direction.EAST));
+        this(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion(), cover.getShape());
     }
 
-    protected GroundcoverBlock(Properties properties, VoxelShape shape)
+    public GroundcoverBlock(Properties properties, VoxelShape shape)
     {
         super(properties);
 
@@ -70,9 +68,9 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
-        BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        final FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
 
+        BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
         if (getFluidProperty().canContain(fluidState.getType()))
         {
             return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
@@ -149,5 +147,4 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     {
         return FLUID;
     }
-
 }

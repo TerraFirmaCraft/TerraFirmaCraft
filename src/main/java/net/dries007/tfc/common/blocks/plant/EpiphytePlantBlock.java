@@ -52,6 +52,8 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     protected EpiphytePlantBlock(Properties properties)
     {
         super(properties);
+
+        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -68,7 +70,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     public BlockState updateShape(BlockState stateIn, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         // Must be attached to a log
-        if (direction == stateIn.getValue(FACING) && !facingState.is(BlockTags.LOGS))
+        if (direction.getOpposite() == stateIn.getValue(FACING) && !facingState.is(BlockTags.LOGS))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -92,12 +94,6 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(FACING));
-    }
-
-    @Override
-    protected void createDefaultBlockState(BlockState state)
-    {
-        super.createDefaultBlockState(state.setValue(FACING, Direction.NORTH));
     }
 
     @Nullable
