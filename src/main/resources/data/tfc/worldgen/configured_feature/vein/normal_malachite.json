@@ -47,6 +47,14 @@
         ]
       }
     ],
+    "indicator": {
+      "rarity": 12,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_malachite"
+        }
+      ]
+    },
     "salt": 348104697
   }
 }

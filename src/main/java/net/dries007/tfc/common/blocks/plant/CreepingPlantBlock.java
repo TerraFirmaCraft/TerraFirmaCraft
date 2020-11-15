@@ -66,6 +66,8 @@ public abstract class CreepingPlantBlock extends PlantBlock
         super(properties);
 
         shapeCache = getStateDefinition().getPossibleStates().stream().collect(Collectors.toMap(state -> state, state -> SHAPES_BY_PROPERTY.entrySet().stream().filter(entry -> state.getValue(entry.getKey())).map(Map.Entry::getValue).reduce(VoxelShapes::or).orElseGet(VoxelShapes::empty)));
+
+        registerDefaultState(defaultBlockState().setValue(UP, false).setValue(DOWN, false).setValue(EAST, false).setValue(WEST, false).setValue(NORTH, false).setValue(SOUTH, false));
     }
 
     @Override
@@ -109,12 +111,6 @@ public abstract class CreepingPlantBlock extends PlantBlock
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST));
-    }
-
-    @Override
-    protected void createDefaultBlockState(BlockState state)
-    {
-        super.createDefaultBlockState(state.setValue(UP, false).setValue(DOWN, false).setValue(EAST, false).setValue(WEST, false).setValue(NORTH, false).setValue(SOUTH, false));
     }
 
     @Nonnull

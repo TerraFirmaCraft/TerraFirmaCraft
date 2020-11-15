@@ -44,6 +44,7 @@ public class ForestNoiseTests
         ChunkDataGenerator generator = (ChunkDataGenerator) ChunkDataProvider.getOrThrow().getGenerator();
         ConfiguredFeature<?, ?> forestFeature = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY).get(new ResourceLocation(TerraFirmaCraft.MOD_ID, "forest"));
 
+        assertNotNull(generator);
         assertNotNull(forestFeature);
         assertSame(forestFeature.feature(), TFCFeatures.FOREST.get());
         assertTrue(forestFeature.config() instanceof ForestConfig);
@@ -62,7 +63,7 @@ public class ForestNoiseTests
             List<ForestConfig.Entry> possibleTrees = new ArrayList<>();
             for (ForestConfig.Entry t : forestConfig.getEntries())
             {
-                if (t.isValid(rain, temp))
+                if (t.isValid(temp, rain))
                 {
                     possibleTrees.add(t);
                 }

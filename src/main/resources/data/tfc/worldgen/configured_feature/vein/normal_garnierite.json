@@ -28,6 +28,14 @@
         ]
       }
     ],
+    "indicator": {
+      "rarity": 12,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_garnierite"
+        }
+      ]
+    },
     "salt": 2413005843
   }
 }

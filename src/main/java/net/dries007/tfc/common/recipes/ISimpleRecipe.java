@@ -25,4 +25,15 @@ public interface ISimpleRecipe<C extends IInventory> extends IRecipe<C>
     {
         return true;
     }
+
+    /**
+     * This is overridden by default for our recipes as vanilla only supports it's own recipe types in the recipe book anyway.
+     * There have been forge PRs to try and add support to this, but frankly, nobody cares.
+     * This then prevents "Unknown recipe category" log spam for every recipe in {@link net.minecraft.client.util.ClientRecipeBook#categorizeAndGroupRecipes(Iterable)}
+     */
+    @Override
+    default boolean isSpecial()
+    {
+        return true;
+    }
 }

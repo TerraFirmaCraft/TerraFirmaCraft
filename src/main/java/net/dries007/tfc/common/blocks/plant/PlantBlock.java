@@ -45,7 +45,7 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         super(properties);
 
-        createDefaultBlockState(getStateDefinition().any());
+        registerDefaultState(getStateDefinition().any().setValue(getPlant().getStageProperty(), 0).setValue(AGE, 0));
     }
 
     @Override
@@ -85,14 +85,6 @@ public abstract class PlantBlock extends TFCBushBlock
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return updateStateWithCurrentMonth(defaultBlockState());
-    }
-
-    /**
-     * Sets the default block state properties. Override and call super.
-     */
-    protected void createDefaultBlockState(BlockState state)
-    {
-        state.setValue(getPlant().getStageProperty(), 0).setValue(AGE, 0);
     }
 
     protected BlockState updateStateWithCurrentMonth(BlockState stateIn)

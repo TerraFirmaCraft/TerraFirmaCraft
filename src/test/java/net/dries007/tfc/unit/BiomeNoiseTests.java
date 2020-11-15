@@ -4,8 +4,10 @@ import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.noise.INoise2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 public class BiomeNoiseTests
 {
     static final Artist.Noise<INoise2D> NOISE = Artist.<INoise2D>forNoise(target -> Artist.NoisePixel.coerceFloat(target::noise)).scale(Artist.Scales.DYNAMIC_RANGE).color(Artist.Colors.LINEAR_GRAY);
