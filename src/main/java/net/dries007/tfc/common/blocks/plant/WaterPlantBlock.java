@@ -37,7 +37,7 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     {
         super(properties);
 
-        createDefaultBlockState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.WATER)));
+        registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.WATER)));
     }
 
     @Override

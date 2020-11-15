@@ -532,28 +532,15 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     # Features
     features = [
         ['tfc:erosion'],  # raw generation
-<<<<<<< HEAD
-        ['tfc:flood_fill_lake', 'tfc:lake'],  # lakes
-        ['tfc:clay_disc', 'tfc:water_clay_disc', 'tfc:peat_disc', 'tfc:loam_disc'],  # local modification
-=======
         [],  # lakes
         [],  # local modification
->>>>>>> upstream/1.16.x
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
         ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
         ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring'],  # underground decoration
-<<<<<<< HEAD
-        ['tfc:forest', *['tfc:plant/%s' % plant for plant, data in PLANTS.items()]],  # vegetal decoration
-        ['tfc:ice_and_snow', 'tfc:groundcover/loose_rocks',  # top layer modification
-         *['tfc:groundcover/%s' % beach_item for beach_item in SHORE_DECORATORS if name == 'shore'],
-         *['tfc:groundcover/%s' % vegetal for vegetal in FOREST_DECORATORS if name not in WATER_BIOMES],
-         *['tfc:groundcover/%s' % general_item for general_item in GENERAL_DECORATORS]]
-=======
         [],  # vegetal decoration
-        ['tfc:ice_and_snow']  # top layer modification
->>>>>>> upstream/1.16.x
+        ['tfc:ice_and_snow', 'tfc:groundcover/loose_rocks', *['tfc:groundcover/%s' % general_item for general_item in GENERAL_DECORATORS]]  # top layer modification
     ]
     if boulders:
         features[Decoration.SURFACE_STRUCTURES] += ['tfc:raw_boulder', 'tfc:cobble_boulder']
@@ -566,9 +553,11 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
         features[Decoration.LOCAL_MODIFICATIONS] += ['tfc:clay_disc', 'tfc:water_clay_disc', 'tfc:peat_disc']
         features[Decoration.VEGETAL_DECORATION].append('tfc:forest')
+        features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:groundcover/%s' % vegetal for vegetal in FOREST_DECORATORS if not ocean_features]
+        features[Decoration.TOP_LAYER_MODIFICATION] += ['tfc:groundcover/%s' % beach_item for beach_item in SHORE_DECORATORS if name == 'shore']
 
         # todo: separate plants out better
-        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items() if not data.clay]
+        features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items()]
     # Carvers
     air_carvers = ['tfc:worley_cave', 'tfc:cave', 'tfc:canyon']
     water_carvers = []

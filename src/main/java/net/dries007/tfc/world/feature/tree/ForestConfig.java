@@ -75,7 +75,7 @@ public class ForestConfig implements IFeatureConfig
             return rainfall >= minRainfall && rainfall <= maxRainfall && temperature >= minAverageTemp && temperature <= maxAverageTemp;
         }
 
-        public float distanceFromMean(float rainfall, float temperature)
+        public float distanceFromMean(float temperature, float rainfall)
         {
             return (rainfall + temperature - getAverageTemp() - getAverageRain()) / 2;
         }
