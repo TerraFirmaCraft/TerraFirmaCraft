@@ -33,6 +33,7 @@ public class Rock
 {
     private final SandBlockType desertSandColor, beachSandColor;
     private final RockCategory category;
+    private final boolean naturallyGenerating;
     private final Map<BlockType, Block> blockVariants;
     private final ResourceLocation id;
 
@@ -40,12 +41,12 @@ public class Rock
     {
         this.id = id;
         String rockCategoryName = JSONUtils.getAsString(json, "category");
-        this.category = Helpers.mapSafeOptional(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown rock category for rock: " + rockCategoryName));
+        this.category = Helpers.mapSafeOptional(() -> RockCategory.valueOf(rockCategoryName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown rock category: " + rockCategoryName));
         String desertSandColorName = JSONUtils.getAsString(json, "desert_sand_color");
-        this.desertSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(desertSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown sand color for rock: " + desertSandColorName));
-
+        this.desertSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(desertSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown sand color: " + desertSandColorName));
         String beachSandColorName = JSONUtils.getAsString(json, "beach_sand_color");
-        this.beachSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(beachSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown beach sand color for rock: " + beachSandColorName));
+        this.beachSandColor = Helpers.mapSafeOptional(() -> SandBlockType.valueOf(beachSandColorName.toUpperCase())).orElseThrow(() -> new JsonParseException("Unknown beach sand color: " + beachSandColorName));
+        this.naturallyGenerating = JSONUtils.getAsBoolean(json, "naturally_generated", true);
 
         this.blockVariants = Helpers.findRegistryObjects(json, "blocks", ForgeRegistries.BLOCKS, Arrays.asList(Rock.BlockType.values()), type -> type.name().toLowerCase());
     }
@@ -73,6 +74,11 @@ public class Rock
     public SandBlockType getBeachSandColor()
     {
         return beachSandColor;
+    }
+
+    public boolean isNaturallyGenerating()
+    {
+        return naturallyGenerating;
     }
 
     /**

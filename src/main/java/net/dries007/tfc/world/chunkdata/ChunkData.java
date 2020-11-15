@@ -20,7 +20,6 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
-import net.dries007.tfc.util.LerpFloatLayer;
 
 public class ChunkData implements ICapabilitySerializable<CompoundNBT>
 {
@@ -65,13 +64,15 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
     private final LazyOptional<ChunkData> capability;
     private final ChunkPos pos;
 
-    private RockData rockData;
     private Status status;
+
+    private RockData rockData;
     private LerpFloatLayer rainfallLayer;
     private LerpFloatLayer temperatureLayer;
     private ForestType forestType;
     private float forestWeirdness;
     private float forestDensity;
+    private PlateTectonicsClassification plateTectonicsInfo;
 
     public ChunkData(ChunkPos pos)
     {
@@ -148,6 +149,16 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         return forestDensity;
     }
 
+    public PlateTectonicsClassification getPlateTectonicsInfo()
+    {
+        return plateTectonicsInfo;
+    }
+
+    public void setPlateTectonicsInfo(PlateTectonicsClassification plateTectonicsInfo)
+    {
+        this.plateTectonicsInfo = plateTectonicsInfo;
+    }
+
     public Status getStatus()
     {
         return status;
@@ -171,19 +182,20 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
      */
     public ChunkWatchPacket getUpdatePacket()
     {
-        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
+        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness, plateTectonicsInfo);
     }
 
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
+    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
     {
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
         this.forestType = forestType;
         this.forestDensity = forestDensity;
         this.forestWeirdness = forestWeirdness;
+        this.plateTectonicsInfo = plateTectonicsInfo;
 
         if (status == Status.CLIENT || status == Status.EMPTY)
         {
@@ -207,6 +219,10 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         CompoundNBT nbt = new CompoundNBT();
 
         nbt.putByte("status", (byte) status.ordinal());
+        if (status.isAtLeast(Status.PLATE_TECTONICS))
+        {
+            nbt.putByte("plateTectonicsInfo", (byte) plateTectonicsInfo.ordinal());
+        }
         if (status.isAtLeast(Status.CLIMATE))
         {
             nbt.put("rainfall", rainfallLayer.serializeNBT());
@@ -231,6 +247,10 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         if (nbt != null)
         {
             status = Status.valueOf(nbt.getByte("status"));
+            if (status.isAtLeast(Status.PLATE_TECTONICS))
+            {
+                plateTectonicsInfo = PlateTectonicsClassification.valueOf(nbt.getByte("plateTectonicsInfo"));
+            }
             if (status.isAtLeast(Status.CLIMATE))
             {
                 rainfallLayer.deserializeNBT(nbt.getCompound("rainfall"));
@@ -264,12 +284,14 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         forestDensity = 0.5f;
         forestType = ForestType.NONE;
         status = Status.EMPTY;
+        plateTectonicsInfo = PlateTectonicsClassification.OCEANIC;
     }
 
     public enum Status
     {
         CLIENT, // Special status - indicates it is a client side shallow copy
         EMPTY, // Empty - default. Should never be called to generate.
+        PLATE_TECTONICS, // Metadata about the plate tectonics layer
         CLIMATE, // Climate data, rainfall and temperature
         ROCKS, // Rock layer information, used for surface builder and rock block replacement
         FLORA; // Flora and fauna information, used for features
@@ -334,7 +356,13 @@ public class ChunkData implements ICapabilitySerializable<CompoundNBT>
         }
 
         @Override
-        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
+        public void setPlateTectonicsInfo(PlateTectonicsClassification plateTectonicsInfo)
+        {
+            throw new UnsupportedOperationException("Tried to modify immutable chunk data");
+        }
+
+        @Override
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
         {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }

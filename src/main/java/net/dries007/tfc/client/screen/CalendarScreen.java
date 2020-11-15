@@ -11,7 +11,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -51,9 +50,6 @@ public class CalendarScreen extends TFCContainerScreen<SimpleContainer>
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY)
     {
         super.renderLabels(matrixStack, mouseX, mouseY);
-
-        String tooltip = TextFormatting.WHITE + "" + TextFormatting.UNDERLINE + title.getString();
-        font.draw(matrixStack, tooltip, (imageWidth - font.width(tooltip)) / 2f, 7, 0x404040);
 
         String season = I18n.get("tfc.tooltip.calendar_season") + I18n.get(Calendars.CLIENT.getCalendarMonthOfYear().getTranslationKey(Month.Style.SEASON));
         String day = I18n.get("tfc.tooltip.calendar_day") + Calendars.CLIENT.getCalendarDayOfYear().getString();

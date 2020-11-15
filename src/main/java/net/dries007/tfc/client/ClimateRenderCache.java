@@ -9,6 +9,7 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
+import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 
 /**
  * This stores the climate parameters at the current client player location, for quick lookup in rendering purposes
@@ -21,6 +22,7 @@ public enum ClimateRenderCache
     private float averageTemperature;
     private float temperature;
     private float rainfall;
+    private PlateTectonicsClassification plateTectonicsInfo = PlateTectonicsClassification.OCEANIC;
 
     /**
      * Called on client tick, updates the client parameters for the current client player location
@@ -38,6 +40,7 @@ public enum ClimateRenderCache
             averageTemperature = data.getAverageTemp(pos);
             temperature = Climate.calculateTemperature(pos.getZ(), pos.getY(), data.getAverageTemp(pos), Calendars.CLIENT.getCalendarTicks(), Calendars.CLIENT.getCalendarDaysInMonth());
             rainfall = data.getRainfall(pos);
+            plateTectonicsInfo = data.getPlateTectonicsInfo();
         }
     }
 
@@ -59,5 +62,10 @@ public enum ClimateRenderCache
     public float getRainfall()
     {
         return rainfall;
+    }
+
+    public PlateTectonicsClassification getPlateTectonicsInfo()
+    {
+        return plateTectonicsInfo;
     }
 }

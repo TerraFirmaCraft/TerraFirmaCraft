@@ -119,6 +119,7 @@ public final class InteractionManager
         CACHE.reload(ACTIONS);
     }
 
+    @FunctionalInterface
     public interface OnItemUseAction
     {
         ActionResultType onItemUse(ItemStack stack, ItemUseContext context);
