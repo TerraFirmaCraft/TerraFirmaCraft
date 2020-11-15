@@ -643,7 +643,7 @@ public final class ConfigTFC
 
             @Config.Comment("Entities that can be plucked for feathers.")
             @Config.LangKey("config." + MOD_ID + ".general.misc.pluckableEntities")
-            public String[] pluckableEntities = new String[] {"tfc:chickentfc", "tfc:pheasanttfc", "tfc:parrottfc", "tfc:ducktfc"};
+            public String[] pluckableEntities = new String[] {"tfc:chickentfc", "tfc:pheasanttfc", "tfc:parrottfc", "tfc:ducktfc", "tfc:grousetfc", "tfc:pheasanttfc", "tfc:quailtfc", "tfc:turkeytfc"};
 
             @Config.Comment("Damage dealt to an entity when a feather is harvested.")
             @Config.RangeDouble(min = 0)
