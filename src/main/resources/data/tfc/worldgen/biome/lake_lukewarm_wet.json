@@ -33,8 +33,7 @@
     [
       "tfc:clay_disc",
       "tfc:water_clay_disc",
-      "tfc:peat_disc",
-      "tfc:loam_disc"
+      "tfc:peat_disc"
     ],
     [],
     [],
@@ -161,13 +160,13 @@
     [
       "tfc:ice_and_snow",
       "tfc:groundcover/loose_rocks",
+      "tfc:groundcover/feather",
+      "tfc:groundcover/flint",
       "tfc:groundcover/sticks_forest",
       "tfc:groundcover/pinecone",
       "tfc:groundcover/salt_lick",
       "tfc:groundcover/dead_grass",
-      "tfc:groundcover/podzol",
-      "tfc:groundcover/feather",
-      "tfc:groundcover/flint"
+      "tfc:groundcover/podzol"
     ]
   ],
   "starts": [],
