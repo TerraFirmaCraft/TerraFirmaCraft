@@ -491,8 +491,7 @@ public final class ConfigTFC
                 "You must specify by following the pattern 'modid:entity <rarity> <minGroupSpawn> <maxGroupSpawn>'",
                 "Invalid entries will be ignored."})
             @Config.LangKey("config." + MOD_ID + ".general.world.respawnableCreatures")
-            public String[] respawnableCreatures = {"tfc:beartfc 30 1 2", "tfc:polarbeartfc 30 1 2", "tfc:panthertfc 30 1 2", "tfc:sabertoothtfc 30 1 2", "tfc:liontfc 30 1 2", "tfc:hyenatfc 30 3 6", "tfc:pheasanttfc 70 2 3", "tfc:deertfc 70 2 4", "tfc:wolftfc 70 2 4", "tfc:parrottfc 70 2 3", "tfc:ocelottfc 70 2 4"};
-        }
+            public String[] respawnableCreatures = {"tfc:blackbeartfc 30 1 2", "tfc:boartfc 30 1 2", "tfc:cougartfc 30 1 2", "tfc:coyotetfc 30 3 6", "tfc:deertfc 70 2 4", "tfc:direwolftfc 30 1 2", "tfc:gazelletfc 70 2 4", "tfc:grizzlybeartfc 30 1 2", "tfc:grousetfc 70 2 3", "tfc:haretfc 70 2 3", "tfc:hyenatfc 30 3 6", "tfc:jackaltfc 30 3 6", "tfc:liontfc 30 1 2", "tfc:mongoosetfc 30 1 2", "tfc:muskoxtfc 70 2 4", "tfc:ocelottfc 70 2 4", "tfc:panthertfc 30 1 2", "tfc:pheasanttfc 70 2 3", "tfc:polarbeartfc 30 1 2", "tfc:quailtfc 70 2 3", "tfc:rabbittfc 70 2 3", "tfc:sabertoothtfc 30 1 2", "tfc:turkeytfc 70 2 3", "tfc:wildebeesttfc 70 2 4", "tfc:wolftfc 70 2 4", "tfc:yaktfc 70 2 4", "tfc:zebutfc 70 2 4"};        }
 
         public static final class WorldRegenCFG
         {
