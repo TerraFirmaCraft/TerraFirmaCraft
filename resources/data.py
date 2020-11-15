@@ -48,7 +48,9 @@ def generate(rm: ResourceManager):
         })
 
         rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)
+        rm.block_tag('creeping_plantable_on', 'tfc:rock/raw/%s' % rock)
         rm.block_tag('minecraft:gravel', 'tfc:rock/gravel/%s' % rock)
+        rm.block_tag('sea_bush_plantable_on', 'tfc:rock/gravel/%s' % rock)
         rm.block_tag('minecraft:stone', 'tfc:rock/raw/%s' % rock)
         rm.block_tag('minecraft:cobblestone', 'tfc:rock/cobble/%s' % rock)
 
@@ -56,11 +58,17 @@ def generate(rm: ResourceManager):
     for plant, plant_data in PLANTS.items():
         rm.block_tag('plant', 'tfc:plant/%s' % plant)
 
+    # Sand
+    for color in SAND_BLOCK_TYPES:
+        rm.block_tag('sea_bush_plantable_on', 'tfc:sand/%s' % color)
+
     # Tags
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('supports_landslide', 'minecraft:grass_path')
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
+    rm.block_tag('sea_bush_plantable_on', '#forge:dirt')
+    rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')

@@ -5,6 +5,7 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -138,5 +139,12 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     {
         super.createBlockStateDefinition(builder);
         builder.add(PART);
+    }
+
+    public void placeTwoHalves(IWorld world, BlockPos pos, int flags, Random random)
+    {
+        int age = random.nextInt(3) + 1;
+        world.setBlock(pos, defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age), flags);
+        world.setBlock(pos.above(), defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age), flags);
     }
 }
