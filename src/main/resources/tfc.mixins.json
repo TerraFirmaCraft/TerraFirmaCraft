@@ -15,6 +15,7 @@
     "world.GameRulesAccessor",
     "world.GameRulesRuleTypeAccessor",
     "world.biome.BiomeMixin",
+    "world.gen.ChunkGeneratorAccessor",
     "world.gen.HeightmapAccessor",
     "world.gen.blockplacer.BlockPlacerTypeAccessor",
     "world.gen.blockstateprovider.BlockStateProviderTypeAccessor",

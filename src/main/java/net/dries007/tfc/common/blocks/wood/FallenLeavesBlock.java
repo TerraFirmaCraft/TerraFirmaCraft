@@ -5,12 +5,9 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -32,7 +29,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
     {
         super(properties, VERY_FLAT);
 
-        registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.EAST).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(SEASON, Season.SUMMER));
+        registerDefaultState(defaultBlockState().setValue(SEASON, Season.SUMMER));
     }
 
     @Override
@@ -47,11 +44,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
     {
         // Adjust the season based on the current time
         Season oldSeason = state.getValue(SEASON);
-        Season newSeason = Calendars.SERVER.getCalendarMonthOfYear().getSeason();
-        if (newSeason == Season.SPRING)
-        {
-            newSeason = Season.SUMMER; // Skip spring
-        }
+        Season newSeason = getSeasonForState();
         if (oldSeason != newSeason)
         {
             worldIn.setBlockAndUpdate(pos, state.setValue(SEASON, newSeason));
@@ -62,26 +55,24 @@ public class FallenLeavesBlock extends GroundcoverBlock
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        final FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
-        final Season season = Calendars.get(context.getLevel()).getCalendarMonthOfYear().getSeason();
-        final BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(SEASON, season == Season.SPRING ? Season.SUMMER : season);
-
-        if (getFluidProperty().canContain(fluidState.getType()))
-        {
-            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
-        }
-        return state;
+        return super.getStateForPlacement(context).setValue(SEASON, getSeasonForState());
     }
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(FACING, getFluidProperty(), SEASON);
+        super.createBlockStateDefinition(builder.add(SEASON));
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return VERY_FLAT;
+    }
+
+    private Season getSeasonForState()
+    {
+        Season season = Calendars.SERVER.getCalendarMonthOfYear().getSeason();
+        return season == Season.SPRING ? Season.SUMMER : season;
     }
 }

@@ -29,6 +29,7 @@
     [
       "tfc:erosion"
     ],
+<<<<<<< HEAD
     [
       "tfc:flood_fill_lake",
       "tfc:lake"
@@ -39,6 +40,10 @@
       "tfc:peat_disc",
       "tfc:loam_disc"
     ],
+=======
+    [],
+    [],
+>>>>>>> upstream/1.16.x
     [],
     [],
     [],
@@ -90,6 +95,7 @@
       "tfc:water_spring",
       "tfc:lava_spring"
     ],
+<<<<<<< HEAD
     [
       "tfc:forest",
       "tfc:plant/allium",
@@ -161,6 +167,9 @@
       "tfc:plant/water_lily",
       "tfc:plant/yucca"
     ],
+=======
+    [],
+>>>>>>> upstream/1.16.x
     [
       "tfc:ice_and_snow",
       "tfc:groundcover/loose_rocks",

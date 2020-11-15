@@ -199,6 +199,14 @@
         ]
       }
     ],
+    "indicator": {
+      "rarity": 12,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_bismuthinite"
+        }
+      ]
+    },
     "salt": 39492754
   }
 }

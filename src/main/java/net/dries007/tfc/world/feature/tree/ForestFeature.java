@@ -143,10 +143,14 @@ public class ForestFeature extends Feature<ForestConfig>
         float averageTemperature = chunkData.getAverageTemp(pos);
         for (ForestConfig.Entry entry : config.getEntries())
         {
+<<<<<<< HEAD
             // silly way to halfway guarantee that stuff is in general order of dominance
             float lastRain = entry.getAverageRain();
             float lastTemp = entry.getAverageTemp();
             if (entry.isValid(rainfall, averageTemperature))
+=======
+            if (entry.isValid(averageTemperature, rainfall))
+>>>>>>> upstream/1.16.x
             {
                 if (entry.distanceFromMean(lastRain, lastTemp) < entry.distanceFromMean(rainfall, averageTemperature))
                 {

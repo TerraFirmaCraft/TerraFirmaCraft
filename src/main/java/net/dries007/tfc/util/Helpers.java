@@ -20,6 +20,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -41,6 +42,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.util.Either;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.function.FromByteFunction;
 import net.dries007.tfc.util.function.ToByteFunction;
 
@@ -289,16 +291,21 @@ public final class Helpers
         return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
     }
 
+    public static BlockState getStateForPlacementWithFluid(IWorldReader world, BlockPos pos, BlockState state)
+    {
+        FluidState fluid = world.getFluidState(pos);
+        if (state.getBlock() instanceof IFluidLoggable)
+        {
+            return ((IFluidLoggable) state.getBlock()).getStateWithFluid(state, fluid.getType());
+        }
+        return state;
+    }
+
     /**
      * You know this will work, and I know this will work, but this compiler looks pretty stupid.
      */
     public static <E> E resolveEither(Either<E, E> either)
     {
         return either.map(e -> e, e -> e);
-    }
-
-    public static <E, R> R resolveEither(Either<E, E> either, Function<E, R> map)
-    {
-        return either.map(map, map);
     }
 }

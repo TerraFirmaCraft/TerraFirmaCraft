@@ -84,12 +84,12 @@ public final class ForgeEventHandler
                 final Random random = new Random(world.getSeed());
                 final int spawnDistance = biomeProvider.getSpawnDistance();
 
-                BlockPos pos = biomeProvider.findBiomeIgnoreClimate(0, world.getSeaLevel(), 0, spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random);
+                BlockPos pos = biomeProvider.findBiomeIgnoreClimate(0, generator.getSeaLevel(), 0, spawnDistance, spawnDistance / 256, biome -> biome.getMobSettings().playerSpawnFriendly(), random);
                 ChunkPos chunkPos;
                 if (pos == null)
                 {
                     LOGGER.warn("Unable to find spawn biome!");
-                    pos = new BlockPos(0, world.getSeaLevel(), 0);
+                    pos = new BlockPos(0, generator.getSeaLevel(), 0);
                 }
                 chunkPos = new ChunkPos(pos);
 

@@ -65,5 +65,22 @@ public interface IFluidLoggable extends IWaterLoggable, ILiquidContainer, IBucke
         return containedFluid.defaultFluidState();
     }
 
+    /**
+     * Modifies a state with a fluid.
+     * Used to place automatic fluid logged blocks during world generation.
+     *
+     * @param state The original state
+     * @param fluid The fluid to try and insert
+     * @return The state with the fluid, if allowed, otherwise the input state.
+     */
+    default BlockState getStateWithFluid(BlockState state, Fluid fluid)
+    {
+        if (getFluidProperty().getPossibleFluids().contains(fluid))
+        {
+            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluid));
+        }
+        return state;
+    }
+
     FluidProperty getFluidProperty();
 }

@@ -5,7 +5,7 @@
 
 package net.dries007.tfc.world.surfacebuilder;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -16,6 +16,10 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.world.Codecs;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 @SuppressWarnings("unused")
@@ -23,24 +27,31 @@ public class TFCSurfaceBuilders
 {
     public static final DeferredRegister<SurfaceBuilder<?>> SURFACE_BUILDERS = DeferredRegister.create(ForgeRegistries.SURFACE_BUILDERS, MOD_ID);
 
-    public static final RegistryObject<NormalSurfaceBuilder> NORMAL = register("normal", () -> new NormalSurfaceBuilder(SurfaceBuilderConfig.CODEC));
-    public static final RegistryObject<ThinSurfaceBuilder> THIN = register("thin", () -> new ThinSurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    // Alternate codecs for surface builder configs
+    public static final Codec<SurfaceBuilderConfig> NOOP_CODEC = Codec.unit(SurfaceBuilder.CONFIG_STONE);
+    public static final Codec<SurfaceBuilderConfig> LENIENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codecs.LENIENT_BLOCKSTATE.fieldOf("top_material").forGetter(SurfaceBuilderConfig::getTopMaterial),
+        Codecs.LENIENT_BLOCKSTATE.fieldOf("under_material").forGetter(SurfaceBuilderConfig::getUnderMaterial)
+    ).apply(instance, (topMaterial, underMaterial) -> new SurfaceBuilderConfig(topMaterial, underMaterial, Blocks.AIR.defaultBlockState())));
 
-    public static final RegistryObject<BadlandsSurfaceBuilder> BADLANDS = register("badlands", () -> new BadlandsSurfaceBuilder(SurfaceBuilderConfig.CODEC));
-    public static final RegistryObject<MountainSurfaceBuilder> MOUNTAINS = register("mountains", () -> new MountainSurfaceBuilder(SurfaceBuilderConfig.CODEC));
-    public static final RegistryObject<ShoreSurfaceBuilder> SHORE = register("shore", () -> new ShoreSurfaceBuilder(SurfaceBuilderConfig.CODEC));
-    public static final RegistryObject<UnderwaterSurfaceBuilder> UNDERWATER = register("underwater", () -> new UnderwaterSurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<NormalSurfaceBuilder> NORMAL = register("normal", NormalSurfaceBuilder::new, LENIENT_CODEC);
+    public static final RegistryObject<ThinSurfaceBuilder> THIN = register("thin", ThinSurfaceBuilder::new, LENIENT_CODEC);
 
-    public static final RegistryObject<GlacierSurfaceBuilder> WITH_GLACIERS = register("with_glaciers", () -> new GlacierSurfaceBuilder(ParentedSurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<BadlandsSurfaceBuilder> BADLANDS = register("badlands", BadlandsSurfaceBuilder::new, LENIENT_CODEC);
+    public static final RegistryObject<MountainSurfaceBuilder> MOUNTAINS = register("mountains", MountainSurfaceBuilder::new, NOOP_CODEC);
+    public static final RegistryObject<ShoreSurfaceBuilder> SHORE = register("shore", ShoreSurfaceBuilder::new, NOOP_CODEC);
+    public static final RegistryObject<UnderwaterSurfaceBuilder> UNDERWATER = register("underwater", UnderwaterSurfaceBuilder::new, NOOP_CODEC);
+
+    public static final RegistryObject<GlacierSurfaceBuilder> WITH_GLACIERS = register("with_glaciers", GlacierSurfaceBuilder::new, ParentedSurfaceBuilderConfig.CODEC);
 
     // Used for shores - red sand = normal beach sand, sandstone = variant beach sand (pink / black)
     public static final SurfaceBuilderConfig RED_SAND_CONFIG = config(Blocks.RED_SAND);
     public static final SurfaceBuilderConfig RED_SANDSTONE_CONFIG = config(Blocks.RED_SANDSTONE);
     public static final SurfaceBuilderConfig COBBLE_COBBLE_RED_SAND_CONFIG = config(Blocks.COBBLESTONE, Blocks.COBBLESTONE, Blocks.RED_SAND);
 
-    private static <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> RegistryObject<S> register(String name, Supplier<S> factory)
+    private static <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> RegistryObject<S> register(String name, Function<Codec<C>, S> factory, Codec<C> codec)
     {
-        return SURFACE_BUILDERS.register(name, factory);
+        return SURFACE_BUILDERS.register(name, () -> factory.apply(codec));
     }
 
     private static SurfaceBuilderConfig config(Block all)

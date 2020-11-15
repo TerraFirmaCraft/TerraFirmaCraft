@@ -1,18 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:underwater",
-  "config": {
-    "top_material": {
-      "Name": "minecraft:air",
-      "Properties": {}
-    },
-    "under_material": {
-      "Name": "minecraft:air",
-      "Properties": {}
-    },
-    "underwater_material": {
-      "Name": "minecraft:air",
-      "Properties": {}
-    }
-  }
+  "config": {}
 }

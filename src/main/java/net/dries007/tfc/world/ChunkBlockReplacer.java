@@ -13,7 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.gen.Heightmap;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -75,7 +76,7 @@ public class ChunkBlockReplacer
             {
                 return TFCBlocks.SAND.get(SandBlockType.PINK).get().defaultBlockState();
             }
-            else if (rainfall < 300f)
+            else if (rainfall > 300f)
             {
                 return TFCBlocks.SAND.get(SandBlockType.BLACK).get().defaultBlockState();
             }
@@ -86,7 +87,8 @@ public class ChunkBlockReplacer
         });
     }
 
-    public void replace(IChunk chunk, ChunkData data)
+    @SuppressWarnings("deprecation")
+    public void replace(ChunkPrimer chunk, ChunkData data)
     {
         final int xStart = chunk.getPos().getMinBlockX();
         final int zStart = chunk.getPos().getMinBlockZ();
@@ -99,22 +101,32 @@ public class ChunkBlockReplacer
                 float temperature = data.getAverageTemp(x, z);
                 float rainfall = data.getRainfall(x, z);
 
-                for (int y = 0; y <= chunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z); y++)
+                final int maxY = chunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z);
+                int y = 0;
+                for (int sectionY = 0; sectionY < 16 && y < maxY; sectionY++)
                 {
-                    mutablePos.set(xStart + x, y, zStart + z);
-
-                    // Base replacement
-                    BlockState stateAt = chunk.getBlockState(mutablePos);
-                    IBlockReplacer replacer = replacements.get(stateAt.getBlock());
-                    if (replacer != null)
+                    final ChunkSection section = chunk.getOrCreateSection(sectionY);
+                    for (int localY = 0; localY < 16 && y < maxY; localY++)
                     {
-                        stateAt = replacer.getReplacement(rockData, xStart + x, y, zStart + z, rainfall, temperature);
-                        chunk.setBlockState(mutablePos, stateAt, false);
+                        y = (sectionY << 4) | localY;
 
-                        // Since we operate on the chunk primer directly, in order to trigger post processing (i.e. for grass) we need to mark it manually
-                        if (stateAt.hasPostProcess(chunk, mutablePos))
+                        // Base replacement
+                        BlockState stateAt = section.getBlockState(x, localY, z);
+                        if (!stateAt.isAir())
                         {
-                            chunk.markPosForPostprocessing(mutablePos);
+                            IBlockReplacer replacer = replacements.get(stateAt.getBlock());
+                            if (replacer != null)
+                            {
+                                stateAt = replacer.getReplacement(rockData, xStart + x, y, zStart + z, rainfall, temperature);
+                                section.setBlockState(x, localY, z, stateAt, false);
+
+                                // Since we operate on the chunk section directly, in order to trigger post processing (i.e. for grass) we need to mark it manually
+                                mutablePos.set(xStart + x, y, zStart + z);
+                                if (stateAt.hasPostProcess(chunk, mutablePos))
+                                {
+                                    chunk.markPosForPostprocessing(mutablePos);
+                                }
+                            }
                         }
                     }
                 }

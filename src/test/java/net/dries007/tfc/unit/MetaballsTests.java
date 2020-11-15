@@ -3,7 +3,7 @@
  * See the project README.md and LICENSE.txt for more information.
  */
 
-package net.dries007.tfc.tests;
+package net.dries007.tfc.unit;
 
 import java.awt.*;
 import java.util.Random;
@@ -16,19 +16,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-class MetaballsTests
+public class MetaballsTests
 {
     static final Artist.Noise<INoise2D> IMAGES = Artist.<INoise2D>forNoise(target -> (x, y) -> target.noise((float) x, (float) y)).color(value -> value > 0.5 ? Color.BLACK : Color.WHITE).size(40).center(20);
     static final Artist.Noise<BiIntFunction<INoise2D>> TILED_IMAGES = Artist.<BiIntFunction<INoise2D>>forNoise(target -> (x, y) -> target.get((int) (x / 40), (int) (y / 40)).noise((float) x % 40 - 20, (float) y % 40 - 20)).scale(Artist.Scales.fixedRange(0, 1)).color(value -> value > 0.5 ? Color.BLACK : Color.WHITE).size(40 * 20).dimensions(40 * 20);
 
     @Test
-    void testMetaballs()
+    public void testMetaballs()
     {
         IMAGES.draw("metaballs", new Metaballs2D(20, new Random()));
     }
 
     @Test
-    void testTiledMetaballs()
+    public void testTiledMetaballs()
     {
         INoise2D[][] noises = IntStream.range(0, 20)
             .mapToObj(i -> IntStream.range(0, 20)

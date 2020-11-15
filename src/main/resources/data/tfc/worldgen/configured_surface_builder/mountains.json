@@ -1,20 +1,5 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:mountains",
-  "config": {
-    "top_material": {
-      "Name": "minecraft:grass_block",
-      "Properties": {
-        "snowy": "false"
-      }
-    },
-    "under_material": {
-      "Name": "minecraft:dirt",
-      "Properties": {}
-    },
-    "underwater_material": {
-      "Name": "minecraft:sand",
-      "Properties": {}
-    }
-  }
+  "config": {}
 }

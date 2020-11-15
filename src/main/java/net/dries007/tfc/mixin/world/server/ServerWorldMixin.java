@@ -34,17 +34,6 @@ public abstract class ServerWorldMixin extends World
     }
 
     /**
-     * The default value is hardcoded to 63. This should query the generator's value (which we can override).
-     *
-     * Would be fixed upstream by https://github.com/MinecraftForge/MinecraftForge/pull/7479
-     */
-    @Override
-    public int getSeaLevel()
-    {
-        return ((ServerWorld) (Object) this).getChunkSource().getGenerator().getSeaLevel();
-    }
-
-    /**
      * Hook into chunk random ticks, allow for snow placement modification.
      * Could be replaced by https://github.com/MinecraftForge/MinecraftForge/pull/7235
      */

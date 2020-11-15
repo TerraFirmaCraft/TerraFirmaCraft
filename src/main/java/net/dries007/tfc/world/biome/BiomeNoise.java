@@ -21,8 +21,8 @@ public class BiomeNoise
     {
         final int seaLevel = TFCChunkGenerator.SEA_LEVEL;
         return new SimplexNoise2D(seed)
-            .octaves(6)
-            .spread(0.08f)
+            .octaves(4)
+            .spread(0.025f)
             .scaled(seaLevel + 22, seaLevel + 32)
             .add(new SimplexNoise2D(seed + 1)
                 .octaves(4)
@@ -111,9 +111,29 @@ public class BiomeNoise
      */
     public static INoise2D ocean(long seed, int depthMin, int depthMax)
     {
-        final INoise2D warpX = new SimplexNoise2D(seed).octaves(4).spread(0.1f).scaled(-30, 30);
-        final INoise2D warpZ = new SimplexNoise2D(seed + 1).octaves(4).spread(0.1f).scaled(-30, 30);
-        return new SimplexNoise2D(seed).octaves(4).spread(0.04f).warped(warpX, warpZ).map(x -> x > 0.4 ? x - 0.8f : -x).scaled(-0.4f, 0.8f, TFCChunkGenerator.SEA_LEVEL + depthMin, TFCChunkGenerator.SEA_LEVEL + depthMax);
+        final INoise2D warpX = new SimplexNoise2D(seed).octaves(2).spread(0.015f).scaled(-30, 30);
+        final INoise2D warpZ = new SimplexNoise2D(seed + 1).octaves(2).spread(0.015f).scaled(-30, 30);
+        return new SimplexNoise2D(seed + 2).octaves(4).spread(0.11f).warped(warpX, warpZ).scaled(TFCChunkGenerator.SEA_LEVEL + depthMin, TFCChunkGenerator.SEA_LEVEL + depthMax);
+    }
+
+    /**
+     * Applies elements from deep ocean and badlands.
+     * Inverse power scaled ridge noise (cubic) is used to create ridges, inside the domain warped ocean noise
+     */
+    public static INoise2D oceanRidge(long seed, int depthMin, int depthMax)
+    {
+        final INoise2D warpX = new SimplexNoise2D(seed).octaves(2).spread(0.015f).scaled(-30, 30);
+        final INoise2D warpZ = new SimplexNoise2D(seed + 1).octaves(2).spread(0.015f).scaled(-30, 30);
+        final INoise2D ridgeNoise = new SimplexNoise2D(seed + 1).octaves(4).ridged().spread(0.015f).map(x -> { // In [-1, 1]
+            if (x > -0.3f)
+            {
+                x = (x + 0.3f) / 1.3f;  // In [0, 1]
+                x = x * x * x; // Power scaled
+                return -35f * x; // In [0, -35]
+            }
+            return 0; // No modifications outside of ridge area
+        });
+        return new SimplexNoise2D(seed + 2).octaves(4).spread(0.11f).scaled(TFCChunkGenerator.SEA_LEVEL + depthMin, TFCChunkGenerator.SEA_LEVEL + depthMax).add(ridgeNoise).warped(warpX, warpZ);
     }
 
     public static INoise2D shore(long seed)

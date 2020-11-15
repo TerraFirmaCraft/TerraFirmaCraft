@@ -27,7 +27,7 @@ public class VeinConfig implements IFeatureConfig
             Registry.BLOCK.listOf().fieldOf("stone"),
             Codecs.weightedCodec(Codecs.LENIENT_BLOCKSTATE, "block").fieldOf("ore")
         ).codec()).fieldOf("blocks").forGetter(c -> c.states),
-        Indicator.CODEC.optionalFieldOf("indicator").forGetter(c -> c.indicator),
+        Indicator.CODEC.optionalFieldOf("indicator").forGetter(c -> Optional.ofNullable(c.indicator)),
         Codecs.POSITIVE_INT.optionalFieldOf("rarity", 60).forGetter(VeinConfig::getRarity),
         Codecs.POSITIVE_INT.optionalFieldOf("size", 8).forGetter(VeinConfig::getSize),
         Codecs.NONNEGATIVE_FLOAT.optionalFieldOf("density", 0.2f).forGetter(VeinConfig::getDensity),
@@ -38,7 +38,7 @@ public class VeinConfig implements IFeatureConfig
     public static final Codec<VeinConfig> CODEC = MAP_CODEC.codec();
 
     private final Map<Block, IWeighted<BlockState>> states;
-    private final Optional<Indicator> indicator;
+    @Nullable private final Indicator indicator;
     private final int rarity;
     private final int size;
     private final float density;
@@ -48,13 +48,13 @@ public class VeinConfig implements IFeatureConfig
 
     protected VeinConfig(VeinConfig other)
     {
-        this(other.states, other.indicator, other.rarity, other.size, other.density, other.minY, other.maxY, Optional.of(other.salt));
+        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, Optional.of(other.salt));
     }
 
     protected VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, int minY, int maxY, Optional<Long> salt)
     {
         this.states = states;
-        this.indicator = indicator;
+        this.indicator = indicator.orElse(null);
         this.rarity = rarity;
         this.size = size;
         this.density = density;
@@ -96,7 +96,8 @@ public class VeinConfig implements IFeatureConfig
         return salt;
     }
 
-    public Optional<Indicator> getIndicator()
+    @Nullable
+    public Indicator getIndicator()
     {
         return indicator;
     }
