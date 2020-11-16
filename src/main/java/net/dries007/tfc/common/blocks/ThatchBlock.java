@@ -7,9 +7,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+
+import net.dries007.tfc.util.Helpers;
 
 public class ThatchBlock extends Block implements IForgeBlockProperties
 {
@@ -33,7 +34,7 @@ public class ThatchBlock extends Block implements IForgeBlockProperties
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        entityIn.makeStuckInBlock(state, new Vector3d(0.3D, 0.24F, 0.3D));
+        Helpers.slowEntityInBlock(entityIn, 0.3f, 5);
     }
 
     @Override

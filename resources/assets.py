@@ -1,6 +1,8 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
+from typing import Any
+
 import mcresources.block_states as block_states
 import mcresources.loot_tables as loot_tables
 import mcresources.utils as utils
@@ -44,6 +46,7 @@ def generate(rm: ResourceManager):
                     rm.block_model('tfc:rock/%s/%s' % (loose_type, rock), 'tfc:item/loose_rock/%s' % rock, parent='tfc:block/groundcover/%s' % loose_type)
 
                 block.with_lang(lang('%s %s', rock, block_type))
+                block.with_tag('can_be_snow_piled')
                 # todo: loot table - drop rocks depending on the 'count' property
                 # Model for the item
                 rm.item_model(('rock', 'loose', rock), 'tfc:item/loose_rock/%s' % rock)
@@ -102,6 +105,7 @@ def generate(rm: ResourceManager):
                 })
                 block.with_lang(lang('small %s', ore))
                 block.with_block_loot('tfc:ore/small_%s' % ore)
+                block.with_tag('can_be_snow_piled')
 
                 rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore))
 
@@ -150,13 +154,15 @@ def generate(rm: ResourceManager):
             'facing=north': {'model': 'tfc:block/groundcover/%s' % misc},
             'facing=south': {'model': 'tfc:block/groundcover/%s' % misc, 'y': 180},
             'facing=west': {'model': 'tfc:block/groundcover/%s' % misc, 'y': 270}
-        }).with_lang(lang('%s Block', misc))
+        })
+        block.with_lang(lang('%s Block', misc))
+        block.with_tag('can_be_snow_piled')
 
-        rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
-        if misc in {'stick', 'flint', 'feather', 'rotten_flesh', 'bone'}:
+        if misc in {'stick', 'flint', 'feather', 'rotten_flesh', 'bone'}:  # Vanilla ground cover
             block.with_block_loot('minecraft:%s' % misc)
         else:
             block.with_block_loot('tfc:groundcover/%s' % misc)
+            rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
 
     # Peat
     block = rm.blockstate('peat')
@@ -264,6 +270,26 @@ def generate(rm: ResourceManager):
         block.with_tag('farmland')
         block.with_lang(lang('%s farmland', soil))
 
+    # Snow Piles
+    block = rm.blockstate('snow_pile', variants=dict((('layers=%d' % i), {'model': 'minecraft:block/snow_height%d' % (i * 2) if i != 8 else 'minecraft:block/snow_block'}) for i in range(1, 1 + 8)))
+    block.with_lang(lang('Snow Pile'))
+    rm.item_model('snow_pile', parent='minecraft:block/snow_height2', no_textures=True)
+
+    # Loot table for snow blocks and snow piles - override the vanilla one to only return one snowball per layer
+    def snow_block_loot_table(block: str):
+        rm.block_loot(block, {
+            'entries': [{
+                'type': 'minecraft:alternatives',
+                'children': utils.loot_entry_list([{
+                    'conditions': [silk_touch()],
+                    'name': 'minecraft:snow'
+                }, 'minecraft:snowball'])
+            }]
+        })
+
+    snow_block_loot_table('snow_pile')
+    snow_block_loot_table('minecraft:snow')
+
     # Hides
     for size in ('small', 'medium', 'large'):
         for hide in ('prepared', 'raw', 'scraped', 'sheepskin', 'soaked'):
@@ -355,6 +381,8 @@ def generate(rm: ResourceManager):
             elif variant == 'fallen_leaves':
                 block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='tfc:block/groundcover/%s' % variant)
                 block.with_block_loot('tfc:wood/%s/%s' % (variant, wood))
+
+            block.with_tag('can_be_snow_piled')
 
         # Leaves
         block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood)
@@ -457,4 +485,16 @@ def block_state_property(block: str, properties: Dict[str, str]):
         'condition': 'minecraft:block_state_property',
         'block': block,
         'properties': properties
+    }
+
+
+def silk_touch() -> Dict[str, Any]:
+    return {
+        'condition': 'minecraft:match_tool',
+        'predicate': {
+            'enchantments': [{
+                'enchantment': 'minecraft:silk_touch',
+                'levels': {'min': 1}
+            }]
+        }
     }

@@ -27,7 +27,7 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
 
     public LooseRockBlock(Properties properties)
     {
-        super(properties, VoxelShapes.empty());
+        super(properties, VoxelShapes.empty(), null);
 
         registerDefaultState(defaultBlockState().setValue(ROCKS, 1));
     }

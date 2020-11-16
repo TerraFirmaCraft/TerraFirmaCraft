@@ -58,7 +58,10 @@ public class ThatchBedBlock extends BedBlock
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) { return BED_SHAPE; }
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        return BED_SHAPE;
+    }
 
     @Override
     @SuppressWarnings("deprecation")

@@ -16,8 +16,11 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
@@ -29,6 +32,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -50,6 +54,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public final class Helpers
 {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     /**
      * Default {@link ResourceLocation}, except with a TFC namespace
      */
@@ -307,5 +313,16 @@ public final class Helpers
     public static <E> E resolveEither(Either<E, E> either)
     {
         return either.map(e -> e, e -> e);
+    }
+
+    public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
+    {
+        Vector3d motion = entity.getDeltaMovement();
+        entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? factor : 1, factor));
+        if (entity.fallDistance > fallDamageReduction)
+        {
+            entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f);
+        }
+        entity.fallDistance = 0;
     }
 }

@@ -6,10 +6,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
@@ -22,9 +25,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * This adds additional log to snow blocks to make them
- * 1. responsive to temperature, and
+ * A series of modifications to snow blocks:
+ * 1. they can melt based on the TFC climate
  * 2. allow placement on top of TFC leaves (which are non solid)
+ * 3. Slow entities passing through them
+ * 4. When broken, only break one layer of snow
  */
 @Mixin(SnowBlock.class)
 public abstract class SnowBlockMixin extends Block
@@ -89,5 +94,30 @@ public abstract class SnowBlockMixin extends Block
                 }
             }
         }
+    }
+
+    @Override
+    public float getSpeedFactor()
+    {
+        if (TFCConfig.SERVER.enableSnowSlowEntities.get())
+        {
+            return 0.6f;
+        }
+        return 0;
+    }
+
+    /**
+     * Add behavior to snow blocks - when they are destroyed, they should only destroy one layer.
+     */
+    @Override
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
+    {
+        playerWillDestroy(world, pos, state, player);
+        final int prevLayers = state.getValue(SnowBlock.LAYERS);
+        if (prevLayers > 1)
+        {
+            return world.setBlock(pos, state.setValue(SnowBlock.LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
+        }
+        return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
     }
 }

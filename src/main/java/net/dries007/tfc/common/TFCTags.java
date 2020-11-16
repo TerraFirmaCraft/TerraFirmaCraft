@@ -58,6 +58,9 @@ public class TFCTags
         public static final ITag.INamedTag<Block> CREEPING_PLANTABLE_ON = blockTag("creeping_plantable_on");
 
         public static final ITag.INamedTag<Block> THATCH_BED_THATCH = blockTag("thatch_bed_thatch");
+
+        public static final ITag.INamedTag<Block> SNOW = blockTag("snow"); // Blocks that cover grass with snow.
+        public static final ITag.INamedTag<Block> CAN_BE_SNOW_PILED = blockTag("can_be_snow_piled"); // Blocks that can be replaced with snow piles
     }
 
     public static class Items
