@@ -27,7 +27,7 @@ public class FallenLeavesBlock extends GroundcoverBlock
 
     public FallenLeavesBlock(Properties properties)
     {
-        super(properties, VERY_FLAT);
+        super(properties, VERY_FLAT, null);
 
         registerDefaultState(defaultBlockState().setValue(SEASON, Season.SUMMER));
     }

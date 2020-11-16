@@ -32,12 +32,11 @@ import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.soil.TFCSandBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.tileentity.SnowPileTileEntity;
 import net.dries007.tfc.common.types.Metal;
 import net.dries007.tfc.common.types.Ore;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.block.AbstractBlockAccessor;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -70,8 +69,10 @@ public final class TFCBlocks
     );
 
     public static final Map<GroundcoverBlockType, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlockType.class, type ->
-        register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), EARTH)
+        register(("groundcover/" + type.name()).toLowerCase(), () -> new GroundcoverBlock(type), block -> new BlockItem(block, new Item.Properties().tab(EARTH)), type.shouldCreateBlockItem())
     );
+
+    public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(new ForgeBlockProperties(Properties.copy(Blocks.SNOW)).tileEntity(SnowPileTileEntity::new)), EARTH);
 
     // Ores
 
@@ -142,7 +143,7 @@ public final class TFCBlocks
 
     // Misc
 
-    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(new ForgeBlockProperties(Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F).noOcclusion()).flammable(50, 100)), MISC);
+    public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(new ForgeBlockProperties(Properties.of(Material.PLANT).strength(0.6F, 0.4F).noOcclusion().sound(SoundType.GRASS)).flammable(50, 100)), MISC);
     public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F, 0.4F)), MISC);
 
 
@@ -154,17 +155,6 @@ public final class TFCBlocks
 
     public static final RegistryObject<FlowingFluidBlock> SALT_WATER = register("fluid/salt_water", () -> new FlowingFluidBlock(TFCFluids.SALT_WATER.getSecond(), Properties.of(TFCMaterials.SALT_WATER).noCollission().strength(100f).noDrops()));
     public static final RegistryObject<FlowingFluidBlock> SPRING_WATER = register("fluid/spring_water", () -> new FlowingFluidBlock(TFCFluids.SPRING_WATER.getSecond(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
-
-    public static void setup()
-    {
-        // Edit other block properties
-        if (TFCConfig.SERVER.enableSnowMovementModifier.get())
-        {
-            AbstractBlockAccessor snowAccess = (AbstractBlockAccessor) Blocks.SNOW;
-            snowAccess.accessor$getProperties().speedFactor(0.8f);
-            snowAccess.accessor$setSpeedFactor(0.8f);
-        }
-    }
 
     public static boolean always(BlockState state, IBlockReader reader, BlockPos pos)
     {

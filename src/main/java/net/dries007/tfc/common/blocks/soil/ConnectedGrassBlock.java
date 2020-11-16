@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 
@@ -83,7 +84,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         if (facing == Direction.UP)
         {
-            return stateIn.setValue(SNOWY, facingState.is(Blocks.SNOW_BLOCK) || facingState.is(Blocks.SNOW));
+            return stateIn.setValue(SNOWY, facingState.is(TFCTags.Blocks.SNOW));
         }
         else if (facing != Direction.DOWN)
         {
