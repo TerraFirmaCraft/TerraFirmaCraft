@@ -27,6 +27,7 @@ import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.TFCChunkGenerator;
@@ -86,6 +87,7 @@ public final class TerraFirmaCraft
         ChunkDataCapability.setup();
         WorldTrackerCapability.setup();
         ServerCalendar.setup();
+        InteractionManager.setup();
 
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);

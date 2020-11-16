@@ -1,6 +1,8 @@
 package net.dries007.tfc.common.blocks;
 
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -9,13 +11,17 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -23,6 +29,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -40,26 +48,28 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
 
     public static GroundcoverBlock twig(Properties properties)
     {
-        return new GroundcoverBlock(properties, TWIG);
+        return new GroundcoverBlock(properties, TWIG, null);
     }
 
     public static GroundcoverBlock looseOre(Properties properties)
     {
-        return new GroundcoverBlock(properties, SMALL);
+        return new GroundcoverBlock(properties, SMALL, null);
     }
 
     private final VoxelShape shape;
+    @Nullable private final Supplier<? extends Item> pickBlock;
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {
-        this(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion(), cover.getShape());
+        this(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noOcclusion(), cover.getShape(), cover.getVanillaItem());
     }
 
-    public GroundcoverBlock(Properties properties, VoxelShape shape)
+    public GroundcoverBlock(Properties properties, VoxelShape shape, @Nullable Supplier<? extends Item> pickBlock)
     {
         super(properties);
 
         this.shape = shape;
+        this.pickBlock = pickBlock;
 
         registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, Direction.EAST));
     }
@@ -107,11 +117,13 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        if (player.getMainHandItem().isEmpty())
+        worldIn.destroyBlock(pos, false);
+        if (!player.isCreative() && worldIn instanceof ServerWorld)
         {
-            worldIn.destroyBlock(pos, (!player.isCreative()));
+            TileEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+            getDrops(state, (ServerWorld) worldIn, pos, tileEntity, null, ItemStack.EMPTY).forEach(stackToSpawn -> ItemHandlerHelper.giveItemToPlayer(player, stackToSpawn));
         }
-        return ActionResultType.PASS;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
@@ -146,5 +158,11 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     public FluidProperty getFluidProperty()
     {
         return FLUID;
+    }
+
+    @Override
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    {
+        return pickBlock != null ? new ItemStack(pickBlock.get()) : super.getPickBlock(state, target, world, pos, player);
     }
 }

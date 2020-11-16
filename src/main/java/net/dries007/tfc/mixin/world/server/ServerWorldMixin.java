@@ -2,9 +2,6 @@ package net.dries007.tfc.mixin.world.server;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SnowBlock;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
@@ -13,11 +10,11 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ISpawnWorldInfo;
 
 import net.dries007.tfc.util.Climate;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,19 +37,7 @@ public abstract class ServerWorldMixin extends World
     @Inject(method = "tickChunk", at = @At("RETURN"))
     private void inject$tickChunk(Chunk chunkIn, int randomTickSpeed, CallbackInfo ci)
     {
-        ChunkPos chunkPos = chunkIn.getPos();
-        if (random.nextInt(16) == 0)
-        {
-            BlockPos pos = getHeightmapPos(Heightmap.Type.MOTION_BLOCKING, getBlockRandomPos(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ(), 15));
-            if (isAreaLoaded(pos, 1) && isRaining())
-            {
-                BlockState state = getBlockState(pos);
-                if (state.is(Blocks.SNOW) && state.getValue(SnowBlock.LAYERS) < 7 && Climate.getTemperature(this, pos) < Climate.SNOW_STACKING_TEMPERATURE)
-                {
-                    setBlockAndUpdate(pos, state.setValue(SnowBlock.LAYERS, state.getValue(SnowBlock.LAYERS) + 1));
-                }
-            }
-        }
+        EnvironmentHelpers.onEnvironmentTick((ServerWorld) (Object) this, chunkIn, random);
     }
 
     /**
