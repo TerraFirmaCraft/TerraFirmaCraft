@@ -79,7 +79,7 @@
               "config": {
                 "min_temperature": 30,
                 "max_temperature": 50,
-                "min_rainfall": 280,
+                "min_rainfall": 270,
                 "max_rainfall": 500,
                 "needs_forest": false
               }
