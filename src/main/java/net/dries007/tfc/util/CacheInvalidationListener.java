@@ -49,6 +49,8 @@ public enum CacheInvalidationListener implements IFutureReloadListener
 
             HeatCapability.HeatManager.CACHE.reload(HeatCapability.HeatManager.INSTANCE.getValues());
             MetalItemManager.CACHE.reload(MetalItemManager.INSTANCE.getValues());
+
+            InteractionManager.reload();
         }
 
         ChunkDataCache.clearAll();

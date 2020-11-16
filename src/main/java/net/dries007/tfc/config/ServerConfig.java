@@ -34,16 +34,15 @@ public class ServerConfig
     // Climate
     public final ForgeConfigSpec.IntValue temperatureScale;
     public final ForgeConfigSpec.IntValue rainfallScale;
-    // Blocks
+    // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
+    // Blocks - Grass Path
     public final ForgeConfigSpec.BooleanValue enableGrassPathCreation;
     // Blocks - Snow
     public final ForgeConfigSpec.BooleanValue enableSnowAffectedByTemperature;
-    public final ForgeConfigSpec.BooleanValue enableSnowMovementModifier;
+    public final ForgeConfigSpec.BooleanValue enableSnowSlowEntities;
     // Blocks - Leaves
-    public final ForgeConfigSpec.BooleanValue leavesDecayVanilla;
-    public final ForgeConfigSpec.BooleanValue leavesSolidBlocks;
-    public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
+    public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
 
@@ -77,15 +76,18 @@ public class ServerConfig
         temperatureScale = builder.apply("temperatureScale").comment("This is the distance in blocks to the first peak (Either cold or hot) temperature zone, in the north-south direction.").defineInRange("temperatureScale", 20_000, 1_000, 1_000_000);
         rainfallScale = builder.apply("rainfallScale").comment("This is the distance in blocks to the first peak (Either wet or dry) rainfall zone, in the east-west direction").defineInRange("rainfallScale", 20_000, 1_000, 1_000_000);
 
-        innerBuilder.pop().push("blocks");
+        innerBuilder.pop().push("blocks").push("farmland");
 
         enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland").define("enableFarmlandCreation", true);
+
+        innerBuilder.pop().push("grassPath");
+
         enableGrassPathCreation = builder.apply("enableGrassPathCreation").comment("If TFC soil blocks are able to be created into (grass) path blocks.").define("enableGrassPathCreation", true);
 
-        innerBuilder.push("snow");
+        innerBuilder.pop().push("snow");
 
         enableSnowAffectedByTemperature = builder.apply("enableSnowAffectedByTemperature").comment("If snow will melt in warm temperatures on random ticks").define("enableSnowAffectedByTemperature", true);
-        enableSnowMovementModifier = builder.apply("enableSnowMovementModifier").comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey").define("enableSnowMovementModifier", true);
+        enableSnowSlowEntities = builder.apply("enableSnowSlowEntities").comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey.").define("enableSnowSlowEntities", true);
 
         innerBuilder.pop().push("plants");
 
@@ -93,10 +95,8 @@ public class ServerConfig
 
         innerBuilder.pop().push("leaves");
 
-        leavesDecayVanilla = builder.apply("leavesDecayVanilla").comment("Should leaves decay over time like vanilla?").define("leavesDecayVanilla", false);
-        leavesSolidBlocks = builder.apply("leavesSolidBlocks").comment("Are leaves solid blocks and non-passable?").define("leavesSolidBlocks", false);
-        leavesMovementModifier = builder.apply("leavesMovementModifier").comment("How much to leaves slow entities passing through them?").defineInRange("leavesMovementModifier", 0.8, 0, 1);
+        enableLeavesSlowEntities = builder.apply("enableLeavesSlowEntities").comment("If leaves will slow entities passing through them and reduce fall damage.").define("enableLeavesSlowEntities", true);
 
-        innerBuilder.pop();
+        innerBuilder.pop().pop();
     }
 }

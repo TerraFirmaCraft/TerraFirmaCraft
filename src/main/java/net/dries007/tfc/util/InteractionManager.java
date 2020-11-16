@@ -1,16 +1,20 @@
 package net.dries007.tfc.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.properties.BedPart;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -19,8 +23,10 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThatchBedBlock;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 /**
  * This exists due to problems in handling right click events
@@ -32,11 +38,12 @@ import net.dries007.tfc.common.blocks.ThatchBedBlock;
 public final class InteractionManager
 {
     private static final ThreadLocal<Boolean> ACTIVE = ThreadLocal.withInitial(() -> false);
-    private static final Map<Predicate<ItemStack>, Action> ACTIONS = new HashMap<>();
+    private static final List<Entry> ACTIONS = new ArrayList<>();
+    private static final IndirectHashCollection<Item, Entry> CACHE = new IndirectHashCollection<>(wrapper -> wrapper.keyExtractor.get());
 
-    static
+    public static void setup()
     {
-        register(stack -> TFCTags.Items.THATCH_BED_HIDES.contains(stack.getItem()), (stack, context) -> {
+        register(TFCTags.Items.THATCH_BED_HIDES, (stack, context) -> {
             final World world = context.getLevel();
             final PlayerEntity player = context.getPlayer();
             if (!world.isClientSide() && player != null)
@@ -52,8 +59,8 @@ public final class InteractionManager
                         final BlockPos playerPos = player.blockPosition();
                         if (playerPos != headPos && playerPos != basePos)
                         {
-                            world.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, direction), 16);
-                            world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, direction.getOpposite()), 16);
+                            world.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, direction), 18);
+                            world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, direction.getOpposite()), 18);
                             stack.shrink(1);
                             return ActionResultType.SUCCESS;
                         }
@@ -64,36 +71,70 @@ public final class InteractionManager
             return ActionResultType.FAIL;
         });
 
+        // BlockItem mechanics for vanilla items that match groundcover types
+        for (GroundcoverBlockType type : GroundcoverBlockType.values())
+        {
+            if (type.getVanillaItem() != null)
+            {
+                register(new BlockItemPlacement(type.getVanillaItem(), TFCBlocks.GROUNDCOVER.get(type)));
+            }
+        }
+
         // todo: hide tag right click -> generic scraping recipe
         // todo: knapping tags
         // todo: log piles
         // todo: charcoal piles
     }
 
-    public static void register(Predicate<ItemStack> predicate, Action action)
+    public static void register(BlockItemPlacement wrapper)
     {
-        ACTIONS.put(predicate, action);
+        ACTIONS.add(new Entry(wrapper, stack -> stack.getItem() == wrapper.getItem(), () -> Collections.singleton(wrapper.getItem())));
+    }
+
+    public static void register(ITag<Item> tag, OnItemUseAction action)
+    {
+        ACTIONS.add(new Entry(action, stack -> stack.getItem().is(tag), tag::getValues));
     }
 
     public static Optional<ActionResultType> onItemUse(ItemStack stack, ItemUseContext context)
     {
         if (!ACTIVE.get())
         {
-            ACTIVE.set(true);
-            for (Map.Entry<Predicate<ItemStack>, Action> entry : ACTIONS.entrySet())
+            for (Entry wrapper : CACHE.getAll(stack.getItem()))
             {
-                if (entry.getKey().test(stack))
+                if (wrapper.test.test(stack))
                 {
-                    return Optional.of(entry.getValue().onItemUse(stack, context));
+                    ACTIVE.set(true);
+                    ActionResultType result = wrapper.action.onItemUse(stack, context);
+                    ACTIVE.set(false);
+                    return Optional.of(result);
                 }
             }
-            ACTIVE.set(false);
         }
         return Optional.empty();
     }
 
-    public interface Action
+    public static void reload()
+    {
+        CACHE.reload(ACTIONS);
+    }
+
+    public interface OnItemUseAction
     {
         ActionResultType onItemUse(ItemStack stack, ItemUseContext context);
+    }
+
+    private static class Entry
+    {
+        private final OnItemUseAction action;
+        private final Predicate<ItemStack> test;
+        private final Supplier<Iterable<Item>> keyExtractor;
+
+        private Entry(OnItemUseAction action, Predicate<ItemStack> test, Supplier<Iterable<Item>> keyExtractor)
+        {
+            this.action = action;
+            this.test = test;
+            this.keyExtractor = keyExtractor;
+        }
     }
 }

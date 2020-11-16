@@ -58,3 +58,9 @@ def generate(rm: ResourceManager):
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
+
+    # Plants
+    for plant in PLANTS.keys():
+        rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
+
+    rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')

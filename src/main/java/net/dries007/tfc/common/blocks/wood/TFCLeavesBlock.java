@@ -22,13 +22,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
 
@@ -82,8 +83,8 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        int i = getDistance(facingState) + 1;
-        if (i != 1 || stateIn.getValue(getDistanceProperty()) != i)
+        int distance = getDistance(facingState) + 1;
+        if (distance != 1 || stateIn.getValue(getDistanceProperty()) != distance)
         {
             worldIn.getBlockTicks().scheduleTick(currentPos, this, 1);
         }
@@ -149,7 +150,10 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
-        entityIn.makeStuckInBlock(state, new Vector3d(0.5D, 0.4F, 0.5D));
+        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
+        {
+            Helpers.slowEntityInBlock(entityIn, 0.3f, 5);
+        }
     }
 
     @Override
@@ -163,7 +167,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
     {
         Season season = Calendars.get(context.getLevel()).getCalendarMonthOfYear().getSeason();
         Season newSeason = season == Season.SPRING ? Season.SUMMER : season;
-        return super.getStateForPlacement(context).setValue(SEASON_NO_SPRING, newSeason).setValue(PERSISTENT, context.getPlayer() != null);
+        return defaultBlockState().setValue(SEASON_NO_SPRING, newSeason).setValue(PERSISTENT, context.getPlayer() != null);
     }
 
     @Override
