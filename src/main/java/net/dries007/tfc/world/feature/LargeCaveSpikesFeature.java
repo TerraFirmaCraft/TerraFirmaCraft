@@ -48,7 +48,7 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
                     if (actualRadius < 0.7)
                     {
                         // Fill in actual blocks
-                        replaceBlock(worldIn, mutablePos, raw);
+                        replaceBlockWithoutFluid(worldIn, mutablePos, raw);
                         if (x == 0 && z == 0)
                         {
                             maxHeightReached = y;
@@ -59,7 +59,7 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
                         // Only fill in if continuing downwards
                         if (worldIn.getBlockState(mutablePos.offset(0, -direction.getStepY(), 0)) == raw)
                         {
-                            replaceBlock(worldIn, mutablePos, raw);
+                            replaceBlockWithoutFluid(worldIn, mutablePos, raw);
                         }
                     }
                     else if (actualRadius < 1 && rand.nextInt(3) == 0 && y > 0)

@@ -10,6 +10,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -32,36 +33,26 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
     @Override
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
-        // Must start at an air state
-        BlockState stateAt = worldIn.getBlockState(pos);
-        if (stateAt.getBlock() == Blocks.CAVE_AIR)
+        // The direction that the spike is pointed
+        Direction direction = rand.nextBoolean() ? Direction.UP : Direction.DOWN;
+        BlockState wallState = worldIn.getBlockState(pos.relative(direction.getOpposite()));
+        Rock wallRock = RockManager.INSTANCE.getRock(wallState.getBlock());
+        if (wallRock != null && wallRock.getBlock(Rock.BlockType.RAW) == wallState.getBlock())
         {
-            // The direction that the spike is pointed
-            Direction direction = rand.nextBoolean() ? Direction.UP : Direction.DOWN;
-            BlockState wallState = worldIn.getBlockState(pos.relative(direction.getOpposite()));
-            Rock wallRock = RockManager.INSTANCE.getRock(wallState.getBlock());
+            place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).defaultBlockState(), wallRock.getBlock(Rock.BlockType.RAW).defaultBlockState(), direction, rand);
+        }
+        else
+        {
+            // Switch directions and try again
+            direction = direction.getOpposite();
+            wallState = worldIn.getBlockState(pos.relative(direction));
+            wallRock = RockManager.INSTANCE.getRock(wallState.getBlock());
             if (wallRock != null && wallRock.getBlock(Rock.BlockType.RAW) == wallState.getBlock())
             {
                 place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).defaultBlockState(), wallRock.getBlock(Rock.BlockType.RAW).defaultBlockState(), direction, rand);
             }
-            else
-            {
-                // Switch directions and try again
-                direction = direction.getOpposite();
-                wallState = worldIn.getBlockState(pos.relative(direction));
-                wallRock = RockManager.INSTANCE.getRock(wallState.getBlock());
-                if (wallRock != null && wallRock.getBlock(Rock.BlockType.RAW) == wallState.getBlock())
-                {
-                    place(worldIn, pos, wallRock.getBlock(Rock.BlockType.SPIKE).defaultBlockState(), wallRock.getBlock(Rock.BlockType.RAW).defaultBlockState(), direction, rand);
-                }
-            }
-            return true;
         }
-        else
-        {
-            return false;
-        }
-
+        return true;
     }
 
     protected void place(ISeedReader worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
@@ -90,7 +81,7 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
         }
         else
         {
-            replaceBlock(worldIn, pos, raw);
+            replaceBlockWithoutFluid(worldIn, pos, raw);
             replaceBlock(worldIn, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
             replaceBlock(worldIn, pos.relative(direction, 2), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
             replaceBlock(worldIn, pos.relative(direction, 3), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
@@ -100,8 +91,26 @@ public class CaveSpikesFeature extends Feature<NoFeatureConfig>
     protected void replaceBlock(ISeedReader world, BlockPos pos, BlockState state)
     {
         // We check explicitly for cave air here, because spikes shouldn't generate not in caves
+        // Otherwise, try and fill in all possible fluids this allows
         Block block = world.getBlockState(pos).getBlock();
         if (block == Blocks.CAVE_AIR)
+        {
+            setBlock(world, pos, state);
+        }
+        else if (block == Blocks.WATER)
+        {
+            setBlock(world, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.WATER)));
+        }
+        else if (block == Blocks.LAVA)
+        {
+            setBlock(world, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.LAVA)));
+        }
+    }
+
+    protected void replaceBlockWithoutFluid(ISeedReader world, BlockPos pos, BlockState state)
+    {
+        Block block = world.getBlockState(pos).getBlock();
+        if (block == Blocks.CAVE_AIR || block == Blocks.WATER || block == Blocks.LAVA)
         {
             setBlock(world, pos, state);
         }
