@@ -1,12 +1,12 @@
 package net.dries007.tfc.world.carver;
 
 import java.util.*;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.WorldGenRegion;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -27,11 +27,9 @@ public abstract class BlockCarver implements IContextCarver
     protected final Set<Block> carvableBlocks, supportableBlocks;
     protected final Map<Block, Block> exposedBlockReplacements;
 
-    protected WorldGenRegion world;
     protected BitSet airCarvingMask;
     protected BitSet liquidCarvingMask;
     protected RockData rockData;
-    protected BitSet waterAdjacencyMask;
 
     public BlockCarver()
     {
@@ -48,13 +46,11 @@ public abstract class BlockCarver implements IContextCarver
     public abstract boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel);
 
     @Override
-    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
+    public void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask)
     {
-        this.world = world;
         this.airCarvingMask = airCarvingMask;
         this.liquidCarvingMask = liquidCarvingMask;
         this.rockData = rockData;
-        this.waterAdjacencyMask = waterAdjacencyMask;
     }
 
     protected void reload()
@@ -110,7 +106,7 @@ public abstract class BlockCarver implements IContextCarver
         {
             chunk.setBlockState(pos, state.setValue(SUPPORTED, true), false);
         }
-        else if (!state.isAir() && state.getFluidState().isEmpty() && !world.getBlockState(pos.above()).isAir())
+        else if (!state.isAir() && state.getFluidState().isEmpty() && !chunk.getBlockState(pos.above()).isAir())
         {
             chunk.setBlockState(pos, rockData.getRock(pos).getBlock(Rock.BlockType.RAW).defaultBlockState().setValue(SUPPORTED, true), false);
         }
