@@ -15,6 +15,10 @@ public interface ITFCBiomeProvider
 {
     int getSpawnDistance();
 
+    int getSpawnCenterX();
+
+    int getSpawnCenterZ();
+
     /**
      * An optional implementation, see {@link TFCBiomeProvider}
      */
