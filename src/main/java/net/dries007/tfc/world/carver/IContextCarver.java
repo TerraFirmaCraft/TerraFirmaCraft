@@ -1,8 +1,7 @@
 package net.dries007.tfc.world.carver;
 
 import java.util.BitSet;
-
-import net.minecraft.world.gen.WorldGenRegion;
+import javax.annotation.Nullable;
 
 import net.dries007.tfc.world.chunkdata.RockData;
 
@@ -12,5 +11,8 @@ import net.dries007.tfc.world.chunkdata.RockData;
  */
 public interface IContextCarver
 {
-    void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask);
+    /**
+     * @param waterAdjacencyMask The adjacency mask for nearby water. This should be null during air carving, and non-null during liquid carving.
+     */
+    void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask);
 }

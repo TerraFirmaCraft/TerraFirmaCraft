@@ -15,7 +15,6 @@
     "world.GameRulesRuleTypeAccessor",
     "world.biome.BiomeMixin",
     "world.gen.ChunkGeneratorAccessor",
-    "world.gen.HeightmapAccessor",
     "world.gen.carver.CanyonWorldCarverAccessor",
     "world.gen.carver.ConfiguredCarverAccessor",
     "world.gen.feature.WorldDecoratingHelperAccessor",

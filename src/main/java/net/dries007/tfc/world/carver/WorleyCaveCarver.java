@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Random;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.carver.WorldCarver;
 
 import com.mojang.serialization.Codec;
@@ -41,9 +41,8 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     }
 
     @Override
-    public void setContext(WorldGenRegion world, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask)
+    public void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask)
     {
-        long worldSeed = world.getSeed();
         if (this.cachedSeed != worldSeed || !initialized)
         {
             caveNoiseWorley = new WorleyNoise3D(worldSeed + 2).spread(0.012f).warped(
@@ -56,7 +55,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
             initialized = true;
         }
 
-        this.blockCarver.setContext(world, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
+        this.blockCarver.setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
     }
 
     @Override
