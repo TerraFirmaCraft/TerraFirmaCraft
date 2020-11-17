@@ -261,9 +261,9 @@ public class EntityChickenTFC extends EntityAnimalTFC implements ILivestock
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        if (this.getClass() == EntityChickenTFC.class && this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && CalendarTFC.CALENDAR_TIME.getMinuteOfHour() == 0)
+        if (this.getClass() == EntityChickenTFC.class && this.getGender() == Gender.MALE && !this.world.isRemote && !this.isChild() && CalendarTFC.CALENDAR_TIME.getHourOfDay() == 6 && rand.nextInt(600) == 0)
         {
-            this.world.playSound(null, this.getPosition(), TFCSounds.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            this.world.playSound(null, this.getPosition(), TFCSounds.ANIMAL_ROOSTER_CRY, SoundCategory.AMBIENT, 0.8f, 1.0f);
         }
         this.oFlap = this.wingRotation;
         this.oFlapSpeed = this.destPos;
