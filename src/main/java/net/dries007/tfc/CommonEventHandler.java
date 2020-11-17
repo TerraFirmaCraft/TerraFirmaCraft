@@ -193,11 +193,7 @@ public final class CommonEventHandler
                 event.getDrops().add(new ItemStack(Items.STICK));
             }
         }
-        // Harvest ice from saws
-        if (OreDictionaryHelper.doesStackMatchOre(heldItem, "saw") && block == Blocks.ICE)
-        {
-            event.getDrops().add(new ItemStack(Blocks.ICE));
-        }
+
         // Drop shards from glass
         ItemStack stackAt = new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, state.getBlock().damageDropped(state));
         if (OreDictionaryHelper.doesStackMatchOre(stackAt,"blockGlass"))
