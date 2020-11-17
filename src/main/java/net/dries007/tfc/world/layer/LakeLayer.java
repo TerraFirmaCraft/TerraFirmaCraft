@@ -13,8 +13,8 @@ import net.minecraft.world.gen.layer.traits.IC1Transformer;
  */
 public enum LakeLayer implements IC1Transformer
 {
-    SMALL(24, TFCLayerUtil.LAKE_MARKER),
-    LARGE(180, TFCLayerUtil.LARGE_LAKE_MARKER);
+    SMALL(40, TFCLayerUtil.LAKE_MARKER),
+    LARGE(210, TFCLayerUtil.LARGE_LAKE_MARKER);
 
     private final int chance;
     private final int lake;
