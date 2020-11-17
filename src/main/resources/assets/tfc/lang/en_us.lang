@@ -153,6 +153,11 @@ tfc.tooltip.firepit_cooking_pot_servings=Servings: %d
 tfc.tooltip.fertilized=Fertilized
 tfc.tooltip.egg_hatch=Will hatch in %d days
 tfc.tooltip.egg_hatch_today=Will hatch today!
+tfc.tooltip.hold_shift_for_climate_info=Hold (Shift) for Climate Information
+tfc.tooltip.climate_info=Climate Information:
+tfc.tooltip.climate_info_rainfall=Rainfall: %s - %s
+tfc.tooltip.climate_info_temperature=Temperature: %sºC - %sºC
+
 
 ## Animal Tooltips / Messages
 tfc.tooltip.animal.mating.old=This %s is too old to mate.

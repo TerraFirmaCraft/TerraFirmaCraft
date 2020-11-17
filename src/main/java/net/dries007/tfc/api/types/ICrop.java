@@ -5,7 +5,14 @@
 
 package net.dries007.tfc.api.types;
 
+import java.util.List;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This is the "model" that is used by BlockCropTFC
@@ -47,4 +54,10 @@ public interface ICrop
      * @param growthStage the current growth stage
      */
     ItemStack getFoodDrop(int growthStage);
+
+    /**
+     * Add tooltip info
+     */
+    @SideOnly(Side.CLIENT)
+    default void addInfo(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {}
 }

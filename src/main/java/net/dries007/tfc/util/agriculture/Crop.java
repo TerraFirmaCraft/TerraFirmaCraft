@@ -5,11 +5,20 @@
 
 package net.dries007.tfc.util.agriculture;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.ICrop;
 import net.dries007.tfc.objects.blocks.agriculture.BlockCropDead;
@@ -181,6 +190,22 @@ public enum Crop implements ICrop
     public BlockCropDead createDeadBlock()
     {
         return new BlockCropDead(this);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInfo(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        if (GuiScreen.isShiftKeyDown())
+        {
+            tooltip.add(TextFormatting.GRAY + I18n.format("tfc.tooltip.climate_info"));
+            tooltip.add(TextFormatting.BLUE + I18n.format("tfc.tooltip.climate_info_rainfall", (int) rainMinGrow, (int) rainMaxGrow));
+            tooltip.add(TextFormatting.GOLD + I18n.format("tfc.tooltip.climate_info_temperature", String.format("%.1f", tempMinGrow), String.format("%.1f", tempMaxGrow)));
+        }
+        else
+        {
+            tooltip.add(TextFormatting.GRAY + I18n.format("tfc.tooltip.hold_shift_for_climate_info"));
+        }
     }
 
     enum CropType
