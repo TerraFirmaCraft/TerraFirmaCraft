@@ -111,7 +111,9 @@
       "tfc:plant/labrador_tea",
       "tfc:plant/lady_fern",
       "tfc:plant/licorice_fern",
+      "tfc:plant/laminaria",
       "tfc:plant/lotus",
+      "tfc:plant/manatee_grass",
       "tfc:plant/meads_milkweed",
       "tfc:plant/morning_glory",
       "tfc:plant/moss",
@@ -158,7 +160,6 @@
       "tfc:plant/yucca"
     ],
     [
-      "tfc:ice_and_snow",
       "tfc:groundcover/loose_rocks",
       "tfc:groundcover/feather",
       "tfc:groundcover/flint",
@@ -172,7 +173,8 @@
       "tfc:groundcover/mollusk",
       "tfc:groundcover/mussel",
       "tfc:groundcover/sticks_shore",
-      "tfc:groundcover/seaweed"
+      "tfc:groundcover/seaweed",
+      "tfc:ice_and_snow"
     ]
   ],
   "starts": [],

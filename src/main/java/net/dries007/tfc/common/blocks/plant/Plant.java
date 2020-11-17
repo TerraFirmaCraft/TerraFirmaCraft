@@ -44,8 +44,10 @@ public enum Plant implements IPlant
     GUTWEED(BlockType.WATER, 0.9F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     GUZMANIA(BlockType.EPIPHYTE, 0.9F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     HOUSTONIA(BlockType.STANDARD, 0.9F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
+    MANATEE_GRASS(BlockType.SEAGRASS, 0.9F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     LABRADOR_TEA(BlockType.STANDARD, 0.8F, new int[] {0, 0, 1, 2, 3, 4, 4, 5, 6, 0, 0, 0}),
     LADY_FERN(BlockType.STANDARD, 0.6F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    LAMINARIA(BlockType.WATER, 0.6f, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     LICORICE_FERN(BlockType.EPIPHYTE, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     LOTUS(BlockType.FLOATING, 0.9F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0}),
     MEADS_MILKWEED(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
@@ -152,7 +154,8 @@ public enum Plant implements IPlant
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
         TALL_PLANT((plant, type) -> TFCTallGrassBlock.create(plant, solid())),
         EMERGENT((plant, type) -> TallSeaPlantBlock.create(plant, nonSolid(plant))),
-        WATER((plant, type) -> WaterPlantBlock.create(plant, nonSolid(plant)));
+        WATER((plant, type) -> WaterPlantBlock.create(plant, nonSolid(plant))),
+        SEAGRASS((plant, type) -> TFCSeagrassBlock.create(plant, nonSolid(plant)));
 
         /**
          * Default properties to avoid rewriting them out every time
