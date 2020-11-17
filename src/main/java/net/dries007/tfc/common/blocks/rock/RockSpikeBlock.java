@@ -34,7 +34,8 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 @SuppressWarnings("deprecation")
 public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBlock
 {
-    public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
+    public static final EnumProperty<Part> PART = TFCBlockStateProperties.ROCK_SPIKE_PART;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER_AND_LAVA;
 
     public static final VoxelShape BASE_SHAPE = box(2, 0, 2, 14, 16, 14);
     public static final VoxelShape MIDDLE_SHAPE = box(4, 0, 4, 12, 16, 12);
@@ -130,7 +131,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     @Override
     public FluidProperty getFluidProperty()
     {
-        return TFCBlockStateProperties.WATER_AND_LAVA;
+        return FLUID;
     }
 
     @Override
