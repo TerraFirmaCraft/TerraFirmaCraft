@@ -3,16 +3,19 @@ package net.dries007.tfc.world.carver;
 import java.util.BitSet;
 import java.util.List;
 import java.util.function.Supplier;
+import javax.annotation.Nullable;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.biome.BiomeManager;
+import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.carver.WorldCarver;
 
@@ -21,38 +24,45 @@ import net.dries007.tfc.world.chunkdata.RockData;
 
 public final class CarverHelpers
 {
-    public static BitSet createWaterAdjacencyMask(int seaLevel)
+    public static BitSet createWaterAdjacencyMask(ChunkPrimer chunk, int seaLevel)
     {
-        return new BitSet(16 * 16 * (1 + seaLevel));
-    }
+        final BitSet waterAdjacencyMask = new BitSet(16 * 16 * (1 + seaLevel));
 
-    public static void updateWaterAdjacencyMask(WorldGenRegion world, int seaLevel, ChunkPos chunkPos, BitSet waterAdjacencyMask)
-    {
-        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        final BlockPos originPos = chunkPos.getWorldPosition();
-
-        for (int x = -2; x < 18; x++)
+        // Sections
+        for (int sectionY = 0; sectionY < 16; sectionY++)
         {
-            for (int z = -2; z < 18; z++)
+            final ChunkSection section = chunk.getOrCreateSection(sectionY);
+            for (int localY = 0; localY < 16; localY++)
             {
-                for (int y = 0; y <= seaLevel; y++)
+                final int y = (sectionY << 4) | localY;
+                if (y > seaLevel)
                 {
-                    mutablePos.setWithOffset(originPos, x, y, z);
+                    // Exit condition
+                    return waterAdjacencyMask;
+                }
 
-                    if (world.getBlockState(mutablePos).getBlock() == Blocks.WATER)
+                // Positions within the section
+                for (int x = 0; x < 16; x++)
+                {
+                    for (int z = 0; z < 16; z++)
                     {
-                        for (int xi = -2; xi <= 2; xi++)
+                        final BlockState state = section.getBlockState(x, localY, z);
+                        if (state.getFluidState().is(FluidTags.WATER))
                         {
-                            for (int yi = -2; yi <= 0; yi++)
+                            // Update a region around the water block in the mask
+                            for (int xi = -2; xi <= 2; xi++)
                             {
-                                for (int zi = -2; zi <= 2; zi++)
+                                for (int yi = -2; yi <= 0; yi++)
                                 {
-                                    final int posX = x + xi;
-                                    final int posY = y + yi;
-                                    final int posZ = z + zi;
-                                    if (posX >> 4 == 0 && posZ >> 4 == 0 && y >= 0 && y <= seaLevel)
+                                    for (int zi = -2; zi <= 2; zi++)
                                     {
-                                        waterAdjacencyMask.set(posX | (posZ << 4) | (posY << 8));
+                                        final int posX = x + xi;
+                                        final int posY = y + yi;
+                                        final int posZ = z + zi;
+                                        if (posX >> 4 == 0 && posZ >> 4 == 0 && posY >= 0 && posY <= seaLevel)
+                                        {
+                                            waterAdjacencyMask.set(posX | (posZ << 4) | (posY << 8));
+                                        }
                                     }
                                 }
                             }
@@ -61,6 +71,7 @@ public final class CarverHelpers
                 }
             }
         }
+        throw new IllegalStateException("We should have exited earlier!");
     }
 
     /**
@@ -76,8 +87,7 @@ public final class CarverHelpers
         return (x & 15) | ((z & 15) << 4) | (y << 8);
     }
 
-
-    public static void runCarversWithContext(WorldGenRegion worldIn, IChunk chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, SharedSeedRandom random, GenerationStage.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, BitSet waterAdjacencyMask, int seaLevel)
+    public static void runCarversWithContext(long worldSeed, IChunk chunk, BiomeManager delegateBiomeManager, BiomeGenerationSettings biomeGenerationSettings, SharedSeedRandom random, GenerationStage.Carving stage, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask, int seaLevel)
     {
         final ChunkPos chunkPos = chunk.getPos();
         final List<Supplier<ConfiguredCarver<?>>> carvers = biomeGenerationSettings.getCarvers(stage);
@@ -88,7 +98,7 @@ public final class CarverHelpers
             final WorldCarver<?> carver = ((ConfiguredCarverAccessor) lazyCarver.get()).accessor$getWorldCarver();
             if (carver instanceof IContextCarver)
             {
-                ((IContextCarver) carver).setContext(worldIn, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
+                ((IContextCarver) carver).setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
             }
         }
 
@@ -102,7 +112,7 @@ public final class CarverHelpers
                 {
                     final ConfiguredCarver<?> carver = lazyCarver.get();
 
-                    random.setLargeFeatureSeed(worldIn.getSeed() + index, x, z);
+                    random.setLargeFeatureSeed(worldSeed + index, x, z);
                     if (carver.isStartChunk(random, x, z))
                     {
                         carver.carve(chunk, delegateBiomeManager::getBiome, random, seaLevel, x, z, chunkPos.x, chunkPos.z, stage == GenerationStage.Carving.AIR ? airCarvingMask : liquidCarvingMask);

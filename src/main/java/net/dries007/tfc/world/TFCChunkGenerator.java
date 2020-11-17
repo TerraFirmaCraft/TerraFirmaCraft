@@ -64,7 +64,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
      */
     public static TFCChunkGenerator createDefaultPreset(Supplier<DimensionSettings> dimensionSettings, Registry<Biome> biomeRegistry, long seed)
     {
-        return new TFCChunkGenerator(new TFCBiomeProvider(seed, 8_000, new TFCBiomeProvider.LayerSettings(), new TFCBiomeProvider.ClimateSettings(), biomeRegistry), dimensionSettings, false, seed);
+        return new TFCChunkGenerator(new TFCBiomeProvider(seed, 8_000, 0, 0, new TFCBiomeProvider.LayerSettings(), new TFCBiomeProvider.ClimateSettings(), biomeRegistry), dimensionSettings, false, seed);
     }
 
     // Noise
@@ -147,33 +147,30 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
      * Noop - carvers are done at the beginning of feature stage, so the carver is free to check adjacent chunks for information
      */
     @Override
-    public void applyCarvers(long worldSeed, BiomeManager biomeManager, IChunk chunkIn, GenerationStage.Carving stage) {}
-
-    /**
-     * Apply carvers, then features
-     */
-    @Override
-    public void applyBiomeDecoration(WorldGenRegion worldIn, StructureManager manager)
+    public void applyCarvers(long worldSeed, BiomeManager biomeManagerIn, IChunk chunkIn, GenerationStage.Carving stage)
     {
-        final ChunkPrimer chunk = (ChunkPrimer) worldIn.getChunk(worldIn.getCenterX(), worldIn.getCenterZ());
+        final ChunkPrimer chunk = (ChunkPrimer) chunkIn;
         final BiomeGenerationSettings settings = biomeSource.getNoiseBiome(chunk.getPos().x << 2, 0, chunk.getPos().z << 2).getGenerationSettings();
-        final BiomeManager biomeManager = worldIn.getBiomeManager().withDifferentSource(this.biomeSource);
+        final BiomeManager biomeManager = biomeManagerIn.withDifferentSource(this.biomeSource);
         final SharedSeedRandom random = new SharedSeedRandom();
 
         final BitSet liquidCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.LIQUID);
         final BitSet airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStage.Carving.AIR);
-
         final RockData rockData = chunkDataProvider.get(chunk.getPos(), ChunkData.Status.ROCKS).getRockData();
 
-        final BitSet waterAdjacencyMask = CarverHelpers.createWaterAdjacencyMask(getSeaLevel());
-
-        // Apply carvers - liquid first, then air. Air carvers carve around liquid ones to avoid intersecting
-        CarverHelpers.runCarversWithContext(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.LIQUID, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask, getSeaLevel());
-        CarverHelpers.updateWaterAdjacencyMask(worldIn, getSeaLevel(), chunk.getPos(), waterAdjacencyMask);
-        CarverHelpers.runCarversWithContext(worldIn, chunk, biomeManager, settings, random, GenerationStage.Carving.AIR, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask, getSeaLevel());
-
-        // Apply features (vanilla biome decoration) normally
-        super.applyBiomeDecoration(worldIn, manager);
+        if (stage == GenerationStage.Carving.AIR)
+        {
+            // In vanilla, air carvers fire first. We do water carvers first instead, to catch them with the water adjacency mask later
+            // Pass in a null adjacency mask as liquid carvers do not need it
+            CarverHelpers.runCarversWithContext(worldSeed, chunk, biomeManager, settings, random, GenerationStage.Carving.LIQUID, airCarvingMask, liquidCarvingMask, rockData, null, getSeaLevel());
+        }
+        else
+        {
+            // During liquid carvers, we run air carvers instead.
+            // Compute the adjacency mask here
+            final BitSet waterAdjacencyMask = CarverHelpers.createWaterAdjacencyMask(chunk, getSeaLevel());
+            CarverHelpers.runCarversWithContext(worldSeed, chunk, biomeManager, settings, random, GenerationStage.Carving.AIR, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask, getSeaLevel());
+        }
     }
 
     /**
@@ -184,7 +181,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
     {
         final ChunkPos chunkPos = chunk.getPos();
         final Biome biome = this.biomeSource.getNoiseBiome((chunkPos.x << 2) + 2, 0, (chunkPos.z << 2) + 2);
-        // todo: do we care about strongholds?
         for (Supplier<StructureFeature<?, ?>> supplier : biome.getGenerationSettings().structures())
         {
             ((ChunkGeneratorAccessor) this).invoke$createStructure(supplier.get(), dynamicRegistry, structureManager, chunk, templateManager, seed, chunkPos, biome);
@@ -443,9 +439,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
 
         for (int sectionY = 0; sectionY < 16; sectionY++)
         {
+            final ChunkSection section = chunk.getOrCreateSection(sectionY);
             for (int localY = 0; localY < 16; localY++)
             {
-                final ChunkSection section = chunk.getOrCreateSection(sectionY);
                 final int y = (sectionY << 4) | localY;
                 boolean filledAny = false;
                 for (int x = 0; x < 16; x++)
@@ -527,6 +523,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                     // Apply carving
                     final int bottomHeight = (int) (carvingCenter - carvingHeight * 0.5f);
                     final int topHeight = (int) (carvingCenter + carvingHeight * 0.5f);
+
+                    ChunkSection section = chunk.getOrCreateSection(bottomHeight >> 4);
+                    int sectionY = bottomHeight >> 4;
+
                     for (int y = bottomHeight; y <= topHeight; y++)
                     {
                         final int carvingMaskIndex = CarverHelpers.maskIndex(x, y, z);
@@ -543,8 +543,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                             airCarvingMask.set(carvingMaskIndex, true);
                         }
 
-                        // Set block and update heightmaps
-                        ChunkGeneratorHelpers.setEarlyBlockState(chunk, x, y, z, stateAt);
+                        // More optimizations for early chunk generation - directly access the chunk section's set block state and skip locks
+                        final int currentSectionY = y >> 4;
+                        if (currentSectionY != sectionY)
+                        {
+                            section = chunk.getOrCreateSection(currentSectionY);
+                            sectionY = currentSectionY;
+                        }
+                        section.setBlockState(x, y & 15, z, stateAt, false);
                         worldSurface.update(x, y, z, stateAt);
                         oceanFloor.update(x, y, z, stateAt);
                     }

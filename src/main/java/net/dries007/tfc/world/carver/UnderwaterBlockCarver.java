@@ -56,7 +56,10 @@ public class UnderwaterBlockCarver extends BlockCarver
                     chunk.setBlockState(pos, Fluids.WATER.defaultFluidState().createLegacyBlock(), false);
                     for (Direction direction : Direction.Plane.HORIZONTAL)
                     {
-                        if (world.getBlockState(pos.relative(direction, 1)).isAir())
+                        // Always schedule update ticks if we're on a chunk edge as we cannot check if it's necessary
+                        int neighborX = pos.getX() + direction.getStepX();
+                        int neighborZ = pos.getZ() + direction.getStepZ();
+                        if ((neighborX >> 4) != pos.getX() >> 4 || (neighborZ >> 4) != pos.getZ() >> 4 || chunk.getBlockState(pos.relative(direction, 1)).isAir())
                         {
                             chunk.getLiquidTicks().scheduleTick(pos, Fluids.WATER, 0);
                             break;

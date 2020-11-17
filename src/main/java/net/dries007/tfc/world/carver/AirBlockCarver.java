@@ -5,7 +5,10 @@
 
 package net.dries007.tfc.world.carver;
 
+import java.util.BitSet;
+import java.util.Objects;
 import java.util.Random;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,11 +16,22 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
+import net.dries007.tfc.world.chunkdata.RockData;
+
 /**
  * Common logic for air block carvers
  */
 public class AirBlockCarver extends BlockCarver
 {
+    private BitSet waterAdjacencyMask;
+
+    @Override
+    public void setContext(long worldSeed, BitSet airCarvingMask, BitSet liquidCarvingMask, RockData rockData, @Nullable BitSet waterAdjacencyMask)
+    {
+        this.waterAdjacencyMask = Objects.requireNonNull(waterAdjacencyMask, "Air block carver was supplied with a null waterAdjacencyMask - this is not allowed!");
+        super.setContext(worldSeed, airCarvingMask, liquidCarvingMask, rockData, waterAdjacencyMask);
+    }
+
     @Override
     public boolean carve(IChunk chunk, BlockPos pos, Random random, int seaLevel)
     {
