@@ -8,6 +8,7 @@ package net.dries007.tfc.objects.recipes;
 import javax.annotation.Nonnull;
 
 import com.google.gson.JsonObject;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -73,8 +74,11 @@ public class ShapelessDamageRecipe extends ShapelessOreRecipe
     private ItemStack damageStack(ItemStack stack)
     {
         ItemStack damagedStack = stack.copy();
-        damagedStack.damageItem(damage, ForgeHooks.getCraftingPlayer());
-
+        EntityPlayer player = ForgeHooks.getCraftingPlayer();
+        if (player != null)
+        {
+            damagedStack.damageItem(damage, player);
+        }
         return damagedStack;
     }
 

@@ -173,7 +173,7 @@ public class UnmoldRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
                 {
                     // No need to check for the mold, as it has already been checked earlier
                     EntityPlayer player = ForgeHooks.getCraftingPlayer();
-                    if (!player.world.isRemote)
+                    if (player != null && !player.world.isRemote)
                     {
                         stack = getMoldResult(stack);
                         if (!stack.isEmpty())
