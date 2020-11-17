@@ -195,6 +195,11 @@ public final class ChunkDataTFC
         addWork(1);
     }
 
+    public void setWork(int amount)
+    {
+        chunkWorkage = amount;
+    }
+
     public boolean isInitialized()
     {
         return initialized;

@@ -724,6 +724,10 @@ public final class ConfigTFC
         @Config.LangKey("config." + MOD_ID + ".devices.jug")
         public static final JugCFG JUG = new JugCFG();
 
+        @Config.Comment("GoldPan")
+        @Config.LangKey("config." + MOD_ID + ".devices.goldpan")
+        public static final GoldPanCFG GOLD_PAN = new GoldPanCFG();
+
 
         public static final class TemperatureCFG
         {
@@ -912,6 +916,12 @@ public final class ConfigTFC
             public boolean dumpWaterOnShiftRightClick = true;
         }
 
+        public static final class GoldPanCFG
+        {
+            @Config.Comment("Cooldown ticks after panning.")
+            @Config.LangKey("config." + MOD_ID + "devices.gold_pan.cooldownTicks")
+            public int cooldownTicks = 20;
+        }
 
     }
 

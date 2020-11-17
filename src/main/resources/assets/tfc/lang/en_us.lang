@@ -72,6 +72,11 @@ tfc.command.stripworld.usage=/stripworld <radiusInBlocks> -> [DANGER] Strips all
 tfc.command.stripworld.failed=Missing radius! /stripworld <radiusInBlocks>
 tfc.command.stripworld.done=Done!
 
+tfc.command.work.usage=/work [set|add] <amount> -> Modifies the amount of sluice work done to the chunk you're in.
+tfc.command.work.args=Arguments not recognized.
+tfc.command.work.string=First argument must be set or add.
+tfc.command.work.nonentity=Entity not found.
+
 # Gui
 
 ## Tooltips
@@ -225,6 +230,7 @@ tfc.key.stack=Stack food
 ## Gui.World
 createWorld.customize.custom.spawnfuzz=Spawn Fuzzing Radius
 createWorld.customize.custom.flatbedrock=Flat Bedrock
+createWorld.customize.custom.smallrocklayer=Rock Layer Size
 createWorld.customize.custom.ravineRarity=Ravine Rarity
 createWorld.customize.custom.ravineHeight=Ravine Height
 createWorld.customize.custom.ravineVariability=Ravine Variability
@@ -780,6 +786,12 @@ config.tfc.devices.sluice.diamondGemChance.tooltip=Chance that a diamond is drop
 ## Jug
 config.tfc.devices.jug.dumpWaterOnShiftRightClick=Dump Water on Shift Right-Clicking
 config.tfc.devices.jug.dumpWaterOnShiftRightClick.tooltip=Enable Shift-Right clicking of Jars to dump water out. Enabling this will not pour an actual water block onto the ground.
+
+
+## Gold Pan
+config.tfc.devices.gold_pan.cooldownTicks=Cooldown Ticks
+config.tfc.devices.gold_pan.cooldownTicks.tooltip=Cooldown ticks after panning.
+
 
 ## Clients
 config.tfc.client=Client Settings

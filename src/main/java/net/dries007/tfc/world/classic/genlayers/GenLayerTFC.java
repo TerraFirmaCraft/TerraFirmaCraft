@@ -107,7 +107,7 @@ public abstract class GenLayerTFC extends GenLayer
         return new GenLayerTFC[] {riverMix, zoomed};
     }
 
-    public static GenLayerTFC initializeRock(long seed, RockCategory.Layer level)
+    public static GenLayerTFC initializeRock(long seed, RockCategory.Layer level, int rockLayerSize)
     {
         GenLayerTFC layer = new GenLayerRockInit(1L, level);
         layer = new GenLayerFuzzyZoomTFC(2000L, layer);
@@ -115,11 +115,11 @@ public abstract class GenLayerTFC extends GenLayer
         layer = new GenLayerZoomTFC(2002L, layer);
         layer = new GenLayerZoomTFC(2003L, layer);
         layer = new GenLayerSmoothTFC(1000L, layer);
-        layer = new GenLayerZoomTFC(1000, layer);
-        layer = new GenLayerZoomTFC(1001, layer);
-        layer = new GenLayerZoomTFC(1002, layer);
-        layer = new GenLayerZoomTFC(1003, layer);
-        layer = new GenLayerZoomTFC(1004, layer);
+
+        for (int zoomLevel = 0; zoomLevel < rockLayerSize; ++zoomLevel)
+        {
+            layer = new GenLayerZoomTFC(1000 + zoomLevel, layer);
+        }
         layer = new GenLayerSmoothTFC(1000L, layer);
         layer = new GenLayerVoronoiZoomTFC(10L, layer);
         layer.initWorldGenSeed(seed);
