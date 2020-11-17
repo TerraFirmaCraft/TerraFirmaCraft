@@ -5,7 +5,17 @@
 
 package net.dries007.tfc.util.agriculture;
 
+import java.util.List;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.dries007.tfc.api.types.IFruitTree;
 import net.dries007.tfc.objects.items.food.ItemFoodTFC;
@@ -117,5 +127,21 @@ public enum FruitTree implements IFruitTree
     public String getName()
     {
         return this.name();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInfo(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        if (GuiScreen.isShiftKeyDown())
+        {
+            tooltip.add(TextFormatting.GRAY + I18n.format("tfc.tooltip.climate_info"));
+            tooltip.add(TextFormatting.BLUE + I18n.format("tfc.tooltip.climate_info_rainfall", (int) minRain, (int) maxRain));
+            tooltip.add(TextFormatting.GOLD + I18n.format("tfc.tooltip.climate_info_temperature", String.format("%.1f", minTemp), String.format("%.1f", maxTemp)));
+        }
+        else
+        {
+            tooltip.add(TextFormatting.GRAY + I18n.format("tfc.tooltip.hold_shift_for_climate_info"));
+        }
     }
 }
