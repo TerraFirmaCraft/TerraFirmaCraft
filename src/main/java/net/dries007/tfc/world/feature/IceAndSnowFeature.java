@@ -16,6 +16,8 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -72,6 +74,12 @@ public class IceAndSnowFeature extends Feature<NoFeatureConfig>
                         }
                     }
                 }
+                if (stateAt.is(TFCTags.Blocks.CAN_BE_SNOW_PILED))
+                {
+                    if (temperature < 0)
+                        SnowPileBlock.convertToPile(worldIn, mutablePos, stateAt);
+                }
+
                 // todo: avoid calling biome.shouldFreeze
                 // todo: handle not completely freezing oceans
                 //else if (biome.shouldFreeze(worldIn, mutablePos, true))
