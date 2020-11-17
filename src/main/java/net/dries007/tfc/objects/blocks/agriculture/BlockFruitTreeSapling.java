@@ -6,6 +6,7 @@
 package net.dries007.tfc.objects.blocks.agriculture;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nonnull;
@@ -17,12 +18,16 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.ConfigTFC;
@@ -150,5 +155,13 @@ public class BlockFruitTreeSapling extends BlockBush implements IGrowable
     public IFruitTree getTree()
     {
         return tree;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        tree.addInfo(stack, worldIn, tooltip, flagIn);
     }
 }
