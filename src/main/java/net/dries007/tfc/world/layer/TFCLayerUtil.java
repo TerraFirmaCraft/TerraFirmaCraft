@@ -24,6 +24,8 @@ import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
 import net.dries007.tfc.world.layer.traits.LazyTypedAreaLayerContext;
+import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.noise.VoronoiNoise2D;
 
 public class TFCLayerUtil
@@ -137,7 +139,13 @@ public class TFCLayerUtil
         mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
 
         // Rivers
-        riverLayer = new FloatNoiseLayer(new VoronoiNoise2D(random.nextLong()).spread(0.12f)).run(layerContext.get());
+        final float riverScale = 1.7f;
+        final float riverSpread = 0.15f;
+        final INoise2D riverNoise = new VoronoiNoise2D(random.nextLong()).spread(0.072f).warped(
+            new SimplexNoise2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale),
+            new SimplexNoise2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale)
+        ).terraces(5);
+        riverLayer = new FloatNoiseLayer(riverNoise).run(layerContext.get());
 
         for (int i = 0; i < 4; i++)
         {
@@ -156,11 +164,9 @@ public class TFCLayerUtil
         lakeLayer = NullLayer.INSTANCE.run(layerContext.get());
         lakeLayer = LakeLayer.LARGE.run(layerContext.get(), lakeLayer);
         lakeLayer = LargeLakeLayer.INSTANCE.run(layerContext.get(), lakeLayer);
-        for (int i = 0; i < 2; i++)
-        {
-            lakeLayer = ZoomLayer.NORMAL.run(layerContext.get(), lakeLayer);
-        }
+        lakeLayer = ZoomLayer.NORMAL.run(layerContext.get(), lakeLayer);
         lakeLayer = LakeLayer.SMALL.run(layerContext.get(), lakeLayer);
+        lakeLayer = ZoomLayer.NORMAL.run(layerContext.get(), lakeLayer);
 
         // Add biome level features - lakes, island chains, edge biomes, shores
         mainLayer = ZoomLayer.NORMAL.run(layerContext.get(), mainLayer);
@@ -285,7 +291,7 @@ public class TFCLayerUtil
 
     public static boolean isOcean(int value)
     {
-        return value == OCEAN || value == DEEP_OCEAN;
+        return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_RIDGE;
     }
 
     public static boolean isMountains(int value)

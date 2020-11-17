@@ -16,13 +16,14 @@ import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.layer.*;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
 import net.dries007.tfc.world.layer.traits.LazyTypedAreaLayerContext;
+import net.dries007.tfc.world.noise.INoise2D;
+import net.dries007.tfc.world.noise.SimplexNoise2D;
 import net.dries007.tfc.world.noise.VoronoiNoise2D;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
-@Disabled
 public class TFCLayerUtilTests
 {
     static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));
@@ -51,76 +52,13 @@ public class TFCLayerUtilTests
         AREA.draw("lakes_" + ++count, lakeLayer);
         lakeLayer = LargeLakeLayer.INSTANCE.run(layerContext.get(), lakeLayer);
         AREA.draw("lakes_" + ++count, lakeLayer);
-        for (int i = 0; i < 2; i++)
-        {
-            lakeLayer = ZoomLayer.NORMAL.run(layerContext.get(), lakeLayer);
-            AREA.draw("lakes_" + ++count, lakeLayer);
-        }
+        lakeLayer = ZoomLayer.NORMAL.run(layerContext.get(), lakeLayer);
+        AREA.draw("lakes_" + ++count, lakeLayer);
         AREA.center(4_000);
         lakeLayer = LakeLayer.SMALL.run(layerContext.get(), lakeLayer);
         AREA.draw("lakes_" + ++count, lakeLayer);
-    }
-
-    @Test
-    void testRiverLayers()
-    {
-        // Only for imaging
-        final long seed = System.currentTimeMillis();
-        int count = 0;
-
-        AREA.center(100).color(this::riverColor);
-
-        // Copy pasta from TFCLayerUtil with added draw calls
-        final Random random = new Random(seed);
-        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
-
-        IAreaFactory<LazyArea> riverLayer;
-
-        // Rivers
-        riverLayer = new FloatNoiseLayer(new VoronoiNoise2D(random.nextLong()).spread(0.12f)).run(layerContext.get());
-        AREA.draw("rivers_" + ++count, riverLayer);
-
-        for (int i = 0; i < 4; i++)
-        {
-            riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
-            AREA.draw("rivers_" + ++count, riverLayer);
-        }
-
-        riverLayer = RiverLayer.INSTANCE.run(layerContext.get(), riverLayer);
-        AREA.draw("rivers_" + ++count, riverLayer);
-        riverLayer = RiverAcuteVertexLayer.INSTANCE.run(layerContext.get(), riverLayer);
-        AREA.draw("rivers_" + ++count, riverLayer);
-        riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
-        AREA.draw("rivers_" + ++count, riverLayer);
-    }
-
-    @Test
-    @Disabled
-    public void testPlateTectonicLayers()
-    {
-        // Only for imaging
-        final long seed = System.currentTimeMillis();
-        final TFCBiomeProvider.LayerSettings layerSettings = new TFCBiomeProvider.LayerSettings();
-        int count = 0;
-
-        PLATES.center(100);
-
-        // Copy pasta from TFCLayerUtil with added draw calls
-        final Random random = new Random(seed);
-        final Supplier<LazyTypedAreaLayerContext<Plate>> plateContext = () -> new LazyTypedAreaLayerContext<>(25, seed, random.nextLong());
-        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
-
-        ITypedAreaFactory<Plate> plateLayer;
-        IAreaFactory<LazyArea> mainLayer;
-
-
-        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new VoronoiNoise2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
-        PLATES.color(this::elevationPlateColor).draw("plates_" + ++count, plateLayer);
-        plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
-        PLATES.draw("plates_" + ++count, plateLayer);
-        mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
-        AREA.color(this::boundaryColor).draw("plates_" + ++count, mainLayer);
+        lakeLayer = ZoomLayer.NORMAL.run(layerContext.get(), lakeLayer);
+        AREA.draw("lakes_" + ++count, lakeLayer);
     }
 
     @Test
@@ -147,7 +85,13 @@ public class TFCLayerUtilTests
         mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
 
         // Rivers
-        riverLayer = new FloatNoiseLayer(new VoronoiNoise2D(random.nextLong()).spread(0.12f)).run(layerContext.get());
+        final float riverScale = 1.7f;
+        final float riverSpread = 0.15f;
+        final INoise2D riverNoise = new VoronoiNoise2D(random.nextLong()).spread(0.072f).warped(
+            new SimplexNoise2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale),
+            new SimplexNoise2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale)
+        ).terraces(5);
+        riverLayer = new FloatNoiseLayer(riverNoise).run(layerContext.get());
 
         for (int i = 0; i < 4; i++)
         {
@@ -207,10 +151,39 @@ public class TFCLayerUtilTests
         mainLayer = BiomeRiverWidenLayer.MEDIUM.run(layerContext.get(), mainLayer);
         AREA.draw("biomes_" + ++count, mainLayer);
         mainLayer = BiomeRiverWidenLayer.LOW.run(layerContext.get(), mainLayer);
-        AREA.draw("biomes_" + ++count, mainLayer); // This last image is a 40km snapshot - 5000 radius -> 10_000 size -> 40km (biomes are 1/4 scale)
+        AREA.draw("biomes_" + ++count, mainLayer); // This last image is a 40km snapshot - 5000 radius -> 10_000 size -> 40km (biomes are 1/4 riverScale)
     }
 
     @Test
+    public void testPlateTectonicLayers()
+    {
+        // Only for imaging
+        final long seed = System.currentTimeMillis();
+        final TFCBiomeProvider.LayerSettings layerSettings = new TFCBiomeProvider.LayerSettings();
+        int count = 0;
+
+        PLATES.center(100);
+
+        // Copy pasta from TFCLayerUtil with added draw calls
+        final Random random = new Random(seed);
+        final Supplier<LazyTypedAreaLayerContext<Plate>> plateContext = () -> new LazyTypedAreaLayerContext<>(25, seed, random.nextLong());
+        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
+
+        ITypedAreaFactory<Plate> plateLayer;
+        IAreaFactory<LazyArea> mainLayer;
+
+
+        // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
+        plateLayer = new PlateGenerationLayer(new VoronoiNoise2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
+        PLATES.color(this::elevationPlateColor).draw("plates_" + ++count, plateLayer);
+        plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
+        PLATES.draw("plates_" + ++count, plateLayer);
+        mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
+        AREA.color(this::boundaryColor).draw("plates_" + ++count, mainLayer);
+    }
+
+    @Test
+    @Disabled
     public void testLayerGenerationSlideshow()
     {
         // Only for imaging
@@ -300,6 +273,45 @@ public class TFCLayerUtilTests
         AREA.draw("layer_" + ++count, mainLayer);
     }
 
+    @Test
+    void testRiverLayers()
+    {
+        // Only for imaging
+        final long seed = System.currentTimeMillis();
+        int count = 0;
+
+        AREA.center(100).color(this::riverColor);
+
+        // Copy pasta from TFCLayerUtil with added draw calls
+        final Random random = new Random(seed);
+        final Supplier<LazyAreaLayerContext> layerContext = () -> new LazyAreaLayerContext(25, seed, random.nextLong());
+
+        IAreaFactory<LazyArea> riverLayer;
+
+        // Rivers
+        final float riverScale = 1.7f;
+        final float riverSpread = 0.15f;
+        final INoise2D riverNoise = new VoronoiNoise2D(random.nextLong()).spread(0.072f).warped(
+            new SimplexNoise2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale),
+            new SimplexNoise2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale)
+        ).terraces(5);
+        riverLayer = new FloatNoiseLayer(riverNoise).run(layerContext.get());
+        AREA.draw("rivers_" + ++count, riverLayer);
+
+        for (int i = 0; i < 4; i++)
+        {
+            riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
+            AREA.draw("rivers_" + ++count, riverLayer);
+        }
+
+        riverLayer = RiverLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        AREA.draw("rivers_" + ++count, riverLayer);
+        riverLayer = RiverAcuteVertexLayer.INSTANCE.run(layerContext.get(), riverLayer);
+        AREA.draw("rivers_" + ++count, riverLayer);
+        riverLayer = ZoomLayer.NORMAL.run(layerContext.get(), riverLayer);
+        AREA.draw("rivers_" + ++count, riverLayer);
+    }
+
     private Color elevationPlateColor(Plate plate)
     {
         if (plate.isOceanic())
@@ -347,6 +359,7 @@ public class TFCLayerUtilTests
             return new Color(120, 200, 255);
         if (id == TFCLayerUtil.RIVER || id == OLD_MOUNTAIN_RIVER || id == FLOODED_MOUNTAIN_RIVER)
             return new Color(80, 140, 255);
+        if (id == TFCLayerUtil.DEEP_OCEAN_RIDGE) return new Color(15, 40, 170);
         return Color.BLACK;
     }
 
