@@ -40,6 +40,7 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
     private static final int ID_SURFACE_RAVINE_VARIABILITY = 107;
 
     private static final int ID_RIVER_RAVINE_RARITY = 108;
+    private static final int ID_ROCK_LAYERS = 109;
 
     private final GuiCreateWorld parent;
 
@@ -126,6 +127,7 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
         GuiPageButtonList.GuiListEntry[] page1 = new GuiPageButtonList.GuiListEntry[] {
             new GuiPageButtonList.GuiSlideEntry(ID_SPAWN_FUZZ, I18n.format("createWorld.customize.custom.spawnfuzz"), true, this, 0, 2500, settings.spawnFuzz),
             new GuiPageButtonList.GuiButtonEntry(ID_FLAT_BEDROCK, I18n.format("createWorld.customize.custom.flatbedrock"), true, settings.flatBedrock),
+            new GuiPageButtonList.GuiSlideEntry(ID_ROCK_LAYERS, I18n.format("createWorld.customize.custom.smallrocklayer"), true,  this, 1, 11,settings.rockLayerSize),
 
             new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_RARITY, I18n.format("createWorld.customize.custom.ravineRarity"), true, this, 0, 250, settings.ravineRarity),
             new GuiPageButtonList.GuiSlideEntry(ID_RAVINE_HEIGHT, I18n.format("createWorld.customize.custom.ravineHeight"), true, this, 0, 50, settings.ravineHeight),
@@ -194,6 +196,9 @@ public class GuiCustomizeWorld extends GuiScreen implements GuiSlider.FormatHelp
 
             case ID_RIVER_RAVINE_RARITY:
                 settings.riverRavineRarity = Math.round(value);
+                break;
+            case ID_ROCK_LAYERS:
+                settings.rockLayerSize = Math.round(value);
                 break;
         }
         update();
