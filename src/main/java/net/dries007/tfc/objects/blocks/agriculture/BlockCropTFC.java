@@ -104,7 +104,7 @@ public abstract class BlockCropTFC extends BlockBush
 
     private final ICrop crop;
 
-    BlockCropTFC(ICrop crop)
+    public BlockCropTFC(ICrop crop)
     {
         super(Material.PLANTS);
 
