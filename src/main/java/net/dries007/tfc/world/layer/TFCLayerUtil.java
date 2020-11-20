@@ -289,7 +289,7 @@ public class TFCLayerUtil
 
     public static boolean hasRiver(int value)
     {
-        return !isOcean(value) && value != LAKE;
+        return !isOcean(value) && !isLake(value);
     }
 
     public static int riverFor(int value)
@@ -312,6 +312,11 @@ public class TFCLayerUtil
     public static boolean isOcean(int value)
     {
         return value == OCEAN || value == DEEP_OCEAN || value == DEEP_OCEAN_RIDGE;
+    }
+
+    public static boolean isLake(int value)
+    {
+        return value == LAKE || value == FLOODED_MOUNTAIN_LAKE || value == OLD_MOUNTAIN_LAKE || value == MOUNTAIN_LAKE || value == PLATEAU_LAKE;
     }
 
     public static boolean isMountains(int value)
