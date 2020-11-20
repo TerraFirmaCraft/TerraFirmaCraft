@@ -26,7 +26,7 @@ public class GenLayerRockInit extends GenLayerTFC
     public GenLayerRockInit(long par1, final RockCategory.Layer rocks)
     {
         super(par1);
-        layerRocks = TFCRegistries.ROCKS.getValuesCollection().stream().filter(rocks).mapToInt(((ForgeRegistry<Rock>) TFCRegistries.ROCKS)::getID).sorted().toArray();
+        layerRocks = TFCRegistries.ROCKS.getValuesCollection().stream().filter(rocks).filter(Rock::isNaturallyGenerating).mapToInt(((ForgeRegistry<Rock>) TFCRegistries.ROCKS)::getID).sorted().toArray();
         if (ConfigTFC.General.DEBUG.debugWorldGenSafe)
         {
             TerraFirmaCraft.getLog().info("Worldgen rock list (ints): {}", layerRocks);
