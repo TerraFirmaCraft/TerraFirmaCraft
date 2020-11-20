@@ -36,8 +36,9 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
     private final RockCategory rockCategory;
     private final ResourceLocation textureLocation;
     private final boolean isFluxStone;
+    private final boolean isNaturallyGenerating;
 
-    public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory, boolean isFluxStone)
+    public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory, boolean isFluxStone, boolean isNaturallyGenerating)
     {
         //noinspection ConstantConditions
         if (rockCategory == null)
@@ -47,12 +48,18 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
         this.rockCategory = rockCategory;
         this.textureLocation = new ResourceLocation(MOD_ID, "textures/blocks/stonetypes/raw/" + name.getPath() + ".png");
         this.isFluxStone = isFluxStone;
+        this.isNaturallyGenerating = isNaturallyGenerating;
+    }
+
+    public Rock(@Nonnull ResourceLocation name, @Nonnull RockCategory rockCategory, boolean isFluxStone)
+    {
+        this(name, rockCategory, isFluxStone, true);
     }
 
     public Rock(@Nonnull ResourceLocation name, @Nonnull ResourceLocation categoryName, boolean isFluxStone)
     {
         //noinspection ConstantConditions
-        this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName), isFluxStone);
+        this(name, TFCRegistries.ROCK_CATEGORIES.getValue(categoryName), isFluxStone, true);
     }
 
     /**
@@ -73,6 +80,11 @@ public class Rock extends IForgeRegistryEntry.Impl<Rock>
     public boolean isFluxStone()
     {
         return isFluxStone;
+    }
+
+    public boolean isNaturallyGenerating()
+    {
+        return isNaturallyGenerating;
     }
 
     @SuppressWarnings("ConstantConditions")
