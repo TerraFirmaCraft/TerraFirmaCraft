@@ -45,6 +45,8 @@ public class ForestConfig implements IFeatureConfig
             Codec.FLOAT.fieldOf("max_temp").forGetter(c -> c.maxAverageTemp),
             Codecs.LENIENT_BLOCKSTATE.fieldOf("log").forGetter(c -> c.log),
             Codecs.LENIENT_BLOCKSTATE.fieldOf("leaves").forGetter(c -> c.leaves),
+            Codecs.LENIENT_BLOCKSTATE.fieldOf("twig").forGetter(c -> c.twig),
+            Codecs.LENIENT_BLOCKSTATE.fieldOf("fallen_leaves").forGetter(c -> c.fallen_leaves),
             ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
             ConfiguredFeature.CODEC.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature)
         ).apply(instance, Entry::new));
@@ -55,10 +57,12 @@ public class ForestConfig implements IFeatureConfig
         private final float maxAverageTemp;
         private final BlockState log;
         private final BlockState leaves;
+        private final BlockState twig;
+        private final BlockState fallen_leaves;
         private final Supplier<ConfiguredFeature<?, ?>> treeFeature;
         private final Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature;
 
-        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, BlockState log, BlockState leaves, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
+        public Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, BlockState log, BlockState leaves, BlockState twig, BlockState fallen_leaves, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
         {
             this.minRainfall = minRainfall;
             this.maxRainfall = maxRainfall;
@@ -66,6 +70,8 @@ public class ForestConfig implements IFeatureConfig
             this.maxAverageTemp = maxAverageTemp;
             this.log = log;
             this.leaves = leaves;
+            this.twig = twig;
+            this.fallen_leaves = fallen_leaves;
             this.treeFeature = treeFeature;
             this.oldGrowthFeature = oldGrowthFeature;
         }
@@ -108,6 +114,16 @@ public class ForestConfig implements IFeatureConfig
         public BlockState getLeaves()
         {
             return leaves;
+        }
+
+        public BlockState getTwig()
+        {
+            return twig;
+        }
+
+        public BlockState getFallenLeaves()
+        {
+            return fallen_leaves;
         }
     }
 }
