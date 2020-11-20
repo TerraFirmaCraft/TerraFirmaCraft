@@ -71,6 +71,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#forge:dirt', '#tfc:grass')
     rm.block_tag('sea_bush_plantable_on', '#forge:dirt')
     rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass')
+    rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
 
     # Thatch Bed
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')

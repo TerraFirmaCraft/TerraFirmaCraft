@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -23,6 +25,7 @@ import net.minecraftforge.common.Tags;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -43,7 +46,9 @@ public class ForestFeature extends Feature<ForestConfig>
         final ForestType forestType = data.getForestType();
 
         int treeCount;
+        int groundCount;
         boolean placedTrees = false;
+        boolean placedBushes = false;
         if (forestType == ForestType.SPARSE)
         {
             if (rand.nextFloat() < 0.08f)
@@ -53,16 +58,19 @@ public class ForestFeature extends Feature<ForestConfig>
                 {
                     placedTrees |= placeTree(worldIn, generator, rand, pos, config, data, mutablePos, false);
                 }
+                placeGroundcover(worldIn, rand, pos, config, data, mutablePos, 10);
             }
             return true;
         }
         else if (forestType == ForestType.NORMAL)
         {
             treeCount = 5;
+            groundCount = 35;
         }
         else if (forestType == ForestType.OLD_GROWTH)
         {
             treeCount = 7;
+            groundCount = 48;
         }
         else
         {
@@ -76,10 +84,13 @@ public class ForestFeature extends Feature<ForestConfig>
             placedTrees |= placeTree(worldIn, generator, rand, pos, config, data, mutablePos, forestType == ForestType.OLD_GROWTH);
         }
         int bushCount = (int) (treeCount * 2 * density);
-        boolean placedBushes = false;
         for (int j = 0; j < bushCount; j++)
         {
             placedBushes |= placeBush(worldIn, generator, rand, pos, config, data, mutablePos);
+        }
+        if (placedTrees)
+        {
+            placeGroundcover(worldIn, rand, pos, config, data, mutablePos, groundCount);
         }
         return placedTrees || placedBushes;
     }
@@ -133,6 +144,33 @@ public class ForestFeature extends Feature<ForestConfig>
             return true;
         }
         return false;
+    }
+
+    private void placeGroundcover(ISeedReader worldIn, Random random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.Mutable mutablePos, int tries)
+    {
+        final int chunkX = chunkBlockPos.getX();
+        final int chunkZ = chunkBlockPos.getZ();
+
+        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        mutablePos.setY(worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+
+        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
+        if (entry != null)
+        {
+            BlockState leafState = entry.getFallenLeaves();
+            BlockState twigState = entry.getTwig();
+            for (int j = 0; j < tries; ++j)
+            {
+                BlockState setState = random.nextInt(2) == 1 ? leafState : twigState;
+                mutablePos.setWithOffset(mutablePos, random.nextInt(11) - random.nextInt(11), random.nextInt(2) - random.nextInt(2), random.nextInt(11) - random.nextInt(11));
+                if ((worldIn.isEmptyBlock(mutablePos) || worldIn.isWaterAt(mutablePos)) && worldIn.getBlockState(mutablePos.below()).isFaceSturdy(worldIn, mutablePos, Direction.UP))
+                {
+                    setBlock(worldIn, mutablePos, setState
+                        .setValue(TFCBlockStateProperties.WATER, TFCBlockStateProperties.WATER.keyFor(worldIn.getFluidState(mutablePos).getType()))
+                        .setValue(HorizontalBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random)));
+                }
+            }
+        }
     }
 
     @Nullable

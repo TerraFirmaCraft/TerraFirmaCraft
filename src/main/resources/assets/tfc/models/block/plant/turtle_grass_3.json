@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_seagrass",
+  "textures": {
+    "texture": "tfc:block/plant/turtle_grass/3"
+  }
+}
