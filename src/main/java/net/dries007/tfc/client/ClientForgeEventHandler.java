@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.types.MetalItem;
+import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -83,7 +83,7 @@ public class ClientForgeEventHandler
         List<ITextComponent> text = event.getToolTip();
         if (!stack.isEmpty() && player != null)
         {
-            MetalItem.addTooltipInfo(stack, text);
+            MetalItemManager.addTooltipInfo(stack, text);
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addHeatInfo(stack, text));
         }
     }

@@ -39,6 +39,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
+import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
@@ -231,7 +233,7 @@ public final class ForgeEventHandler
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
-        resourceManager.registerReloadListener(HeatCapability.HeatManager.INSTANCE);
+        resourceManager.registerReloadListener(HeatManager.INSTANCE);
 
         resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }
@@ -324,12 +326,11 @@ public final class ForgeEventHandler
             event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
 
             // Attach heat capability to the ones defined by data packs
-            HeatCapability.HeatManager.CACHE.getAll(stack.getItem())
-                .stream()
-                .filter(heatWrapper -> heatWrapper.isValid(stack))
-                .findFirst()
-                .map(HeatCapability.HeatWrapper::getCapability)
-                .ifPresent(heat -> event.addCapability(HeatCapability.KEY, heat));
+            HeatDefinition def = HeatManager.get(stack);
+            if (def != null)
+            {
+                event.addCapability(HeatCapability.KEY, def.create());
+            }
         }
     }
 

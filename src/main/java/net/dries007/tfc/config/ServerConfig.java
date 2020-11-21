@@ -45,6 +45,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
+    // Mechanics - Heat
+    public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
 
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
@@ -97,6 +99,8 @@ public class ServerConfig
 
         enableLeavesSlowEntities = builder.apply("enableLeavesSlowEntities").comment("If leaves will slow entities passing through them and reduce fall damage.").define("enableLeavesSlowEntities", true);
 
-        innerBuilder.pop().pop();
+        innerBuilder.pop().pop().push("mechanics").push("heat");
+
+        itemHeatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
     }
 }

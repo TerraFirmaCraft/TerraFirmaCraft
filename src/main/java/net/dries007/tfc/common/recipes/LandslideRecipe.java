@@ -7,7 +7,6 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import javax.annotation.Nullable;
 
@@ -41,9 +40,17 @@ public class LandslideRecipe extends SimpleBlockRecipe
     public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = new IndirectHashCollection<>(recipe -> recipe.getBlockIngredient().getValidBlocks());
     private static final Random RANDOM = new Random();
 
-    public static Optional<LandslideRecipe> getRecipe(World world, BlockRecipeWrapper wrapper)
+    @Nullable
+    public static LandslideRecipe getRecipe(World world, BlockRecipeWrapper wrapper)
     {
-        return CACHE.getAll(wrapper.getState().getBlock()).stream().filter(recipe -> recipe.matches(wrapper, world)).findFirst();
+        for (LandslideRecipe recipe : CACHE.getAll(wrapper.getState().getBlock()))
+        {
+            if (recipe.matches(wrapper, world))
+            {
+                return recipe;
+            }
+        }
+        return null;
     }
 
     /**
@@ -60,7 +67,9 @@ public class LandslideRecipe extends SimpleBlockRecipe
             if (fallPos != null)
             {
                 BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
-                getRecipe(world, wrapper).ifPresent(recipe -> {
+                LandslideRecipe recipe = getRecipe(world, wrapper);
+                if (recipe != null)
+                {
                     BlockState fallingState = recipe.getBlockCraftingResult(wrapper);
                     if (!fallPos.equals(pos))
                     {
@@ -69,7 +78,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
                     world.setBlockAndUpdate(fallPos, fallingState);
                     world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.4f, 1.0f);
                     world.addFreshEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY() + 0.5, fallPos.getZ() + 0.5, fallingState));
-                });
+                }
                 return true;
             }
         }
