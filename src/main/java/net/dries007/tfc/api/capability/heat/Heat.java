@@ -10,7 +10,9 @@ import javax.annotation.Nullable;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
 
+import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.config.OreTooltipMode;
 
 public enum Heat
 {
@@ -81,6 +83,11 @@ public enum Heat
         if (tooltip != null && heat != null)
         {
             tooltip = heat.format + tooltip;
+            if (ConfigTFC.Client.TOOLTIP.oreTooltipMode == OreTooltipMode.ADVANCED)
+            {
+                tooltip = tooltip + " : " + I18n.format("tfc.tooltip.melttemp", temperature);
+            }
+
         }
         return tooltip;
     }
@@ -93,6 +100,10 @@ public enum Heat
         if (tooltip != null && heat != null)
         {
             tooltip = heat.alternate + tooltip;
+            if (ConfigTFC.Client.TOOLTIP.oreTooltipMode == OreTooltipMode.ADVANCED)
+            {
+                tooltip = tooltip + " : " + I18n.format("tfc.tooltip.melttemp", temperature);
+            }
         }
         return tooltip;
     }
