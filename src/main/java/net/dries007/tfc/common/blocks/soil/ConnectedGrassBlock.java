@@ -5,10 +5,12 @@
 
 package net.dries007.tfc.common.blocks.soil;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -41,23 +43,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     public static final BooleanProperty SNOWY = BlockStateProperties.SNOWY;
 
-    @Nullable
-    private static BooleanProperty getPropertyForFace(Direction direction)
-    {
-        switch (direction)
-        {
-            case NORTH:
-                return NORTH;
-            case EAST:
-                return EAST;
-            case WEST:
-                return WEST;
-            case SOUTH:
-                return SOUTH;
-            default:
-                return null;
-        }
-    }
+    private static final Map<Direction, BooleanProperty> PROPERTIES = ImmutableMap.of(Direction.NORTH, NORTH, Direction.EAST, EAST, Direction.WEST, WEST, Direction.SOUTH, SOUTH);
 
     private final Supplier<? extends Block> dirt;
     @Nullable private final Supplier<? extends Block> grassPath;
@@ -96,19 +82,25 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        updateSelfGrassConnections(worldIn, pos, state); // When a neighbor changed, update this block only
+        worldIn.getBlockTicks().scheduleTick(pos, this, 0);
     }
 
     @Override
     public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
-        updateSurroundingGrassConnections(worldIn, pos);// When placed, update adjacent blocks
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            worldIn.getBlockTicks().scheduleTick(pos.relative(direction).above(), this, 0);
+        }
     }
 
     @Override
     public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        updateSurroundingGrassConnections(worldIn, pos); // When removed, update adjacent blocks
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            worldIn.getBlockTicks().scheduleTick(pos.relative(direction).above(), this, 0);
+        }
         super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
@@ -121,7 +113,6 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
             {
                 // Turn to not-grass
                 worldIn.setBlockAndUpdate(pos, getDirt());
-                updateSurroundingGrassConnections(worldIn, pos);
             }
         }
         else
@@ -139,7 +130,6 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
                         if (canPropagate(grassState, worldIn, posAt))
                         {
                             worldIn.setBlockAndUpdate(posAt, updateStateFromNeighbors(worldIn, posAt, grassState));
-                            updateSurroundingGrassConnections(worldIn, posAt);
                         }
                     }
                 }
@@ -150,7 +140,10 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
     {
-        updateSelfGrassConnections(worldIn, pos, state);
+        if (worldIn.isAreaLoaded(pos, 2))
+        {
+            worldIn.setBlock(pos, updateStateFromNeighbors(worldIn, pos, state), 2);
+        }
     }
 
     @Override
@@ -188,37 +181,23 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     /**
-     * Updates the state of a grass block from connections.
-     * This modifies the block in question.
-     *
-     * @param worldIn The world
-     * @param pos     The position of the grass block to update
-     * @param state   The initial state
-     */
-    private void updateSelfGrassConnections(IWorld worldIn, BlockPos pos, BlockState state)
-    {
-        BlockState newState = updateStateFromNeighbors(worldIn, pos, state);
-        if (newState != state)
-        {
-            worldIn.setBlock(pos, newState, 2);
-        }
-    }
-
-    /**
      * When a grass block changes (is placed or added), this is called to send updates to all diagonal neighbors to update their state from this one
      *
      * @param world The world
      * @param pos   The position of the changing grass block
      */
-    private void updateSurroundingGrassConnections(IWorld world, BlockPos pos)
+    protected void updateSurroundingGrassConnections(IWorld world, BlockPos pos)
     {
-        for (Direction direction : Direction.Plane.HORIZONTAL)
+        if (world.isAreaLoaded(pos, 2))
         {
-            BlockPos targetPos = pos.above().relative(direction);
-            BlockState targetState = world.getBlockState(targetPos);
-            if (targetState.getBlock() instanceof IGrassBlock)
+            for (Direction direction : Direction.Plane.HORIZONTAL)
             {
-                world.setBlock(targetPos, updateStateFromDirection(world, targetPos, targetState, direction.getOpposite()), 2);
+                BlockPos targetPos = pos.above().relative(direction);
+                BlockState targetState = world.getBlockState(targetPos);
+                if (targetState.getBlock() instanceof IGrassBlock)
+                {
+                    world.setBlock(targetPos, updateStateFromDirection(world, targetPos, targetState, direction.getOpposite()), 2);
+                }
             }
         }
     }
@@ -231,7 +210,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
      * @param state   The initial state
      * @return The updated state
      */
-    private BlockState updateStateFromNeighbors(IBlockReader worldIn, BlockPos pos, BlockState state)
+    protected BlockState updateStateFromNeighbors(IBlockReader worldIn, BlockPos pos, BlockState state)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
@@ -249,13 +228,8 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
      * @param direction The direction in which to look for adjacent, diagonal grass blocks
      * @return The updated state
      */
-    private BlockState updateStateFromDirection(IBlockReader worldIn, BlockPos pos, BlockState stateIn, Direction direction)
+    protected BlockState updateStateFromDirection(IBlockReader worldIn, BlockPos pos, BlockState stateIn, Direction direction)
     {
-        BooleanProperty property = getPropertyForFace(direction);
-        if (property != null)
-        {
-            return stateIn.setValue(property, worldIn.getBlockState(pos.relative(direction).below()).getBlock() instanceof IGrassBlock);
-        }
-        return stateIn;
+        return stateIn.setValue(PROPERTIES.get(direction), worldIn.getBlockState(pos.relative(direction).below()).getBlock() instanceof IGrassBlock);
     }
 }
