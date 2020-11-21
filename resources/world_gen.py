@@ -97,6 +97,19 @@ def generate(rm: ResourceManager):
         rm.feature('%scave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:cave_spike'), ('minecraft:carving_mask', {'step': step, 'probability': 0.09})))
         rm.feature('%slarge_cave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('tfc:bounded_carving_mask', {'step': step, 'probability': 0.006, 'max_y': 45})))
 
+    rm.feature('calcite', wg.configure_decorated(wg.configure('tfc:calcite', {
+        'radius': 5,
+        'tries': 20,
+        'min_height': 2,
+        'max_height': 5
+    }), ('minecraft:count', {'count': 4}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128})))
+    rm.feature('mega_calcite', wg.configure_decorated(wg.configure('tfc:calcite', {
+        'radius': 12,
+        'tries': 70,
+        'min_height': 3,
+        'max_height': 9
+    }), decorate_chance(20), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 60})))
+
     for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
             'base_type': boulder_cfg[1],
@@ -465,7 +478,7 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         [],  # surface structure
         [],  # strongholds
         ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
-        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring'],  # underground decoration
+        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring', 'tfc:calcite', 'tfc:mega_calcite'],  # underground decoration
         [],  # vegetal decoration
         ['tfc:ice_and_snow']  # top layer modification
     ]

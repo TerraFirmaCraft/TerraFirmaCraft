@@ -1,10 +1,13 @@
 package net.dries007.tfc.world.layer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.IntFunction;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 
@@ -28,14 +31,20 @@ public class LayerFactory<T>
 
     public static LayerFactory<Rock> rocks(IAreaFactory<LazyArea> factory, TFCBiomeProvider.LayerSettings settings)
     {
+        final List<ResourceLocation> missingIds = new ArrayList<>();
         final Rock[] rockArray = settings.getRocks().stream().map(id -> {
             Rock rock = RockManager.INSTANCE.get(id);
             if (rock == null)
             {
-                LOGGER.warn("Ignoring unknown rock in layer: " + id);
+                missingIds.add(id);
             }
             return rock;
         }).filter(Objects::nonNull).toArray(Rock[]::new);
+        if (!missingIds.isEmpty())
+        {
+            LOGGER.warn("Rock layer factory was initialized with {} missing rocks. If this message was before world creation you can ignore it.", missingIds.size());
+            LOGGER.warn("Missing rock ids for the following values: {}", missingIds);
+        }
         return new LayerFactory<>(factory, i -> rockArray[i]);
     }
 

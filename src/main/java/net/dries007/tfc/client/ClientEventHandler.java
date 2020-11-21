@@ -80,11 +80,12 @@ public final class ClientEventHandler
         TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout())));
 
         // Groundcover
-        TFCBlocks.GROUNDCOVER.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
-        TFCBlocks.SMALL_ORES.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
+        TFCBlocks.GROUNDCOVER.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
+        TFCBlocks.SMALL_ORES.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
+        RenderTypeLookup.setRenderLayer(TFCBlocks.CALCITE.get(), RenderType.cutout());
 
         // Plants
-        TFCBlocks.PLANTS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
+        TFCBlocks.PLANTS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
 
         // Entity Rendering
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);

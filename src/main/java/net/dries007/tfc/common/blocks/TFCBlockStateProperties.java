@@ -59,4 +59,6 @@ public class TFCBlockStateProperties
 
     public static final EnumProperty<ITallPlant.Part> TALL_PLANT_PART = EnumProperty.create("part", ITallPlant.Part.class);
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
+
+    public static final BooleanProperty TIP = BooleanProperty.create("tip");
 }

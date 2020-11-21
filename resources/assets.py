@@ -475,6 +475,14 @@ def generate(rm: ResourceManager):
     water_based_fluid('salt_water')
     water_based_fluid('spring_water')
 
+    # Calcite
+    block = rm.blockstate('calcite', variants={
+        'tip=true': {'model': 'tfc:block/calcite_tip'},
+        'tip=false': {'model': 'tfc:block/calcite'}
+    })
+    block.with_item_model()
+    block.with_lang(lang('calcite'))
+
 
 def block_state_property(block: str, properties: Dict[str, str]):
     return {
