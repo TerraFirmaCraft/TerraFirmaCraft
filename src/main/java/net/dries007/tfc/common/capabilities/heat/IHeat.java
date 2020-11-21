@@ -18,6 +18,9 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+/**
+ * This is the capability interface for an instance of a heat applied to an item stack
+ */
 public interface IHeat extends ICapabilitySerializable<CompoundNBT>
 {
     /**

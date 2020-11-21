@@ -27,6 +27,7 @@
       "tfc:erosion"
     ],
     [
+      "tfc:underground_flood_fill_lake",
       "tfc:flood_fill_lake",
       "tfc:lake"
     ],

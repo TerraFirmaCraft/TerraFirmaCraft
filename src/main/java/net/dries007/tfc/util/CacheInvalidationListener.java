@@ -18,7 +18,7 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
@@ -47,8 +47,8 @@ public enum CacheInvalidationListener implements IFutureReloadListener
             CollapseRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.COLLAPSE));
             LandslideRecipe.CACHE.reload(getRecipes(server, TFCRecipeTypes.LANDSLIDE));
 
-            HeatCapability.HeatManager.CACHE.reload(HeatCapability.HeatManager.INSTANCE.getValues());
-            MetalItemManager.CACHE.reload(MetalItemManager.INSTANCE.getValues());
+            HeatManager.reload();
+            MetalItemManager.reload();
 
             InteractionManager.reload();
         }

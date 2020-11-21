@@ -31,21 +31,27 @@ public class LayerFactory<T>
 
     public static LayerFactory<Rock> rocks(IAreaFactory<LazyArea> factory, TFCBiomeProvider.LayerSettings settings)
     {
-        final List<ResourceLocation> missingIds = new ArrayList<>();
-        final Rock[] rockArray = settings.getRocks().stream().map(id -> {
-            Rock rock = RockManager.INSTANCE.get(id);
-            if (rock == null)
-            {
-                missingIds.add(id);
-            }
-            return rock;
-        }).filter(Objects::nonNull).toArray(Rock[]::new);
-        if (!missingIds.isEmpty())
+        if (RockManager.INSTANCE.isLoaded())
         {
-            LOGGER.warn("Rock layer factory was initialized with {} missing rocks. If this message was before world creation you can ignore it.", missingIds.size());
-            LOGGER.warn("Missing rock ids for the following values: {}", missingIds);
+            final List<ResourceLocation> missingIds = new ArrayList<>();
+            final Rock[] rockArray = settings.getRocks().stream().map(id -> {
+                Rock rock = RockManager.INSTANCE.get(id);
+                if (rock == null)
+                {
+                    missingIds.add(id);
+                }
+                return rock;
+            }).filter(Objects::nonNull).toArray(Rock[]::new);
+            if (!missingIds.isEmpty())
+            {
+                LOGGER.warn("Rock layer factory was initialized with {} missing rocks. If this message was before world creation you can ignore it.", missingIds.size());
+                LOGGER.warn("Missing rock ids for the following values: {}", missingIds);
+            }
+            return new LayerFactory<>(factory, i -> rockArray[i]);
         }
-        return new LayerFactory<>(factory, i -> rockArray[i]);
+        return new LayerFactory<>(factory, i -> {
+            throw new UnsupportedOperationException("Cannot query rocks before RockManager is loaded");
+        });
     }
 
     public static LayerFactory<PlateTectonicsClassification> plateTectonics(IAreaFactory<LazyArea> factory)

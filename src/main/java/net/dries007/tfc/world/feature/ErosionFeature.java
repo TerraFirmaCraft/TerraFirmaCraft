@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature;
 import java.util.*;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.mutable.MutableInt;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
@@ -35,6 +36,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config)
     {
         ChunkPos chunkPos = new ChunkPos(pos);
@@ -43,29 +45,39 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
 
         Map<BlockPos, LandslideRecipe> landslidePositions = new HashMap<>();
 
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable(worldIn.getLevel());
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        final BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable(worldIn.getLevel());
 
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
             {
-                for (int y = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, chunkX + x, chunkZ + z); y >= 0; y--)
+                final int baseHeight = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, chunkX + x, chunkZ + z);
+
+                // This is a heuristic to avoid both leaving a lot of blocks un-erroded, and also to check erosion down to y=0. After three non-air blocks that we can't errode, we assume we're in the weeds and will not find anything further down.
+                final MutableInt tries = new MutableInt();
+                for (int y = baseHeight; y >= 0; y--)
                 {
                     mutablePos.set(chunkX + x, y, chunkZ + z);
                     BlockState stateAt = worldIn.getBlockState(mutablePos);
-                    if (stateAt.isAir(worldIn, mutablePos))
+                    if (stateAt.isAir())
                     {
                         continue;
                     }
                     mutableWrapper.setPos(chunkX + x, y, chunkZ + z, stateAt);
 
-                    if (LandslideRecipe.getRecipe(worldIn.getLevel(), mutableWrapper).map(recipe -> {
-                        landslidePositions.put(mutablePos.immutable(), recipe);
-                        return false;
-                    }).orElse(true))
+                    final LandslideRecipe recipe = LandslideRecipe.getRecipe(worldIn.getLevel(), mutableWrapper);
+                    if (recipe != null)
                     {
-                        break; // No landslide-able surface material
+                        landslidePositions.put(mutablePos.immutable(), recipe);
+                    }
+                    else
+                    {
+                        tries.increment();
+                        if (tries.intValue() > 3)
+                        {
+                            break;
+                        }
                     }
                 }
             }
