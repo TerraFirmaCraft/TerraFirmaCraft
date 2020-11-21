@@ -14,6 +14,7 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
+import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.util.calendar.Season;
 
@@ -57,4 +58,5 @@ public class TFCBlockStateProperties
     public static final IntegerProperty AGE_3 = IntegerProperty.create("age", 0, 3);
 
     public static final EnumProperty<ITallPlant.Part> TALL_PLANT_PART = EnumProperty.create("part", ITallPlant.Part.class);
+    public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
 }
