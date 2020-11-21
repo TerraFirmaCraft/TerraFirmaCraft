@@ -73,6 +73,7 @@ public final class TFCBlocks
     );
 
     public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(new ForgeBlockProperties(Properties.copy(Blocks.SNOW)).tileEntity(SnowPileTileEntity::new)), EARTH);
+    public static final RegistryObject<CalciteBlock> CALCITE = register("calcite", () -> new CalciteBlock(Properties.of(Material.GLASS).noDrops().instabreak().sound(SoundType.GLASS)));
 
     // Ores
 

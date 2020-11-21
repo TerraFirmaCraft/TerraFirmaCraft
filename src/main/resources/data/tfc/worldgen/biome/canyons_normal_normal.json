@@ -89,7 +89,9 @@
       "tfc:underwater_cave_spike",
       "tfc:underwater_large_cave_spike",
       "tfc:water_spring",
-      "tfc:lava_spring"
+      "tfc:lava_spring",
+      "tfc:calcite",
+      "tfc:mega_calcite"
     ],
     [
       "tfc:forest",
