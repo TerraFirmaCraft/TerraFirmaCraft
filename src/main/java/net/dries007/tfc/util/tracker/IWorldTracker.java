@@ -25,7 +25,7 @@ public interface IWorldTracker
     /**
      * Starts a collapse, which will propagate / continue over the next several iterations until finished
      */
-    void addCollapseData(CollapseData collapse);
+    void addCollapseData(Collapse collapse);
 
     /**
      * Marks a series of positions for immediate collapse checks. Similar to starting a collapse but from specific positions.

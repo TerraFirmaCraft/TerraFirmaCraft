@@ -66,7 +66,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
             BlockPos fallPos = getLandSlidePos(world, pos);
             if (fallPos != null)
             {
-                BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
+                BlockRecipeWrapper wrapper = new BlockRecipeWrapper(pos, state);
                 LandslideRecipe recipe = getRecipe(world, wrapper);
                 if (recipe != null)
                 {
@@ -77,7 +77,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
                     }
                     world.setBlockAndUpdate(fallPos, fallingState);
                     world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundCategory.BLOCKS, 0.4f, 1.0f);
-                    world.addFreshEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY() + 0.5, fallPos.getZ() + 0.5, fallingState));
+                    world.addFreshEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
                 }
                 return true;
             }

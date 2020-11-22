@@ -9,26 +9,49 @@ from constants import *
 def generate(rm: ResourceManager):
     """ Handles all landslide and collapse recipes, including the relevant tags """
 
+    def collapse(name: str, ingredient, result=None, copy_input: Optional[bool] = None):
+        if result is None and not copy_input:
+            raise RuntimeError('This is probably wrong: %s has result = None and copy_input = False' % name)
+        rm.recipe(('collapse', name), 'tfc:collapse', {
+            'ingredient': ingredient,
+            'result': result,
+            'copy_input': copy_input
+        })
+
+    def landslide(name: str, ingredient, result):
+        rm.recipe(('landslide', name), 'tfc:landslide', {
+            'ingredient': ingredient,
+            'result': result
+        })
+
+    def support(name: str, ingredient, up: int, down: int, horizontal: int):
+        rm.data(('tfc', 'supports', name), {
+            'ingredient': ingredient,
+            'support_up': up,
+            'support_down': down,
+            'support_horizontal': horizontal
+        })
+
     for rock in ROCKS:
         raw = 'tfc:rock/raw/%s' % rock
         cobble = 'tfc:rock/cobble/%s' % rock
+        mossy_cobble = 'tfc:rock/mossy_cobble/%s' % rock
         gravel = 'tfc:rock/gravel/%s' % rock
+        spike = 'tfc:rock/spike/%s' % rock
 
         # Raw rock can TRIGGER and START, and FALL into cobble
         # Ores can FALL into cobble
         rm.block_tag('can_trigger_collapse', raw)
         rm.block_tag('can_start_collapse', raw)
         rm.block_tag('can_collapse', raw)
-        rm.recipe(('collapse', '%s_cobble' % rock), 'tfc:collapse', {
-            'ingredient': [
-                cobble, raw, 'tfc:rock/mossy_cobble/%s' % rock,
-                *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if not ore_data.graded],
-                *['tfc:ore/poor_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
-                *['tfc:ore/normal_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
-                *['tfc:ore/rich_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded]
-            ],
-            'result': cobble
-        })
+
+        collapse('%s_cobble' % rock, [
+            raw,
+            *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if not ore_data.graded],
+            *['tfc:ore/poor_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
+            *['tfc:ore/normal_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
+            *['tfc:ore/rich_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded]
+        ], cobble)
 
         for ore, ore_data in ORES.items():
             if ore_data.graded:
@@ -39,45 +62,46 @@ def generate(rm: ResourceManager):
                 rm.block_tag('can_start_collapse', 'tfc:ore/%s/%s' % (ore, rock))
                 rm.block_tag('can_collapse', 'tfc:ore/%s/%s' % (ore, rock))
 
-        # Gravel and cobblestone both have collapse, and landslide recipes
-        rm.block_tag('can_collapse', cobble)
-        rm.block_tag('can_landslide', cobble)
-        rm.recipe(('landslide', 'cobble_%s' % rock), 'tfc:landslide', {
-            'ingredient': cobble,
-            'result': cobble
-        })
+        # Gravel and cobblestone have landslide recipes
+        rm.block_tag('can_landslide', cobble, gravel, mossy_cobble)
 
-        rm.block_tag('can_collapse', 'tfc:rock/spike/%s' % rock)
-        rm.recipe(('collapse', '%s_spike' % rock), 'tfc:collapse', {
-            'ingredient': 'tfc:rock/spike/%s' % rock,
-            'copy_input': True
-        })
+        landslide('%s_cobble' % rock, cobble, cobble)
+        landslide('%s_mossy_cobble' % rock, mossy_cobble, mossy_cobble)
+        landslide('%s_gravel' % rock, gravel, gravel)
 
-        rm.block_tag('can_collapse', gravel)
-        rm.block_tag('can_landslide', gravel)
-        rm.recipe(('collapse', 'gravel_%s' % rock), 'tfc:collapse', {
-            'ingredient': gravel,
-            'result': gravel
-        })
-        rm.recipe(('landslide', 'gravel_%s' % rock), 'tfc:landslide', {
-            'ingredient': gravel,
-            'result': gravel
-        })
+        # Spikes can collapse, but produce nothing
+        rm.block_tag('can_collapse', spike)
+        collapse('%s_spike' % rock, spike, copy_input=True)
 
-    # todo: add proper support blocks.
-    # use below as template
-    rm.data(('tfc', 'supports', 'scaffolding'), {
-        'ingredient': 'minecraft:glass',
-        'support_up': 1,
-        'support_down': 1,
-        'support_horizontal': 4
-    })
-
-    # All soil block types can landslide
+    # Soil Blocks
     for variant in SOIL_BLOCK_VARIANTS:
         for block_type in SOIL_BLOCK_TYPES:
             rm.block_tag('can_landslide', 'tfc:%s/%s' % (block_type, variant))
-        rm.recipe(('landslide', 'dirt_%s' % variant), 'tfc:landslide', {
-            'ingredient': ['tfc:%s/%s' % (block_type, variant) for block_type in SOIL_BLOCK_TYPES],
-            'result': 'tfc:dirt/%s' % variant
-        })
+
+        # Blocks that create normal dirt
+        landslide('%s_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('dirt', 'grass', 'grass_path')], 'tfc:dirt/%s' % variant)
+        landslide('%s_clay_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('clay', 'clay_grass')], 'tfc:clay/%s' % variant)
+
+    # Sand
+    for variant in SAND_BLOCK_TYPES:
+        rm.block_tag('can_landslide', 'tfc:sand/%s' % variant)
+        landslide('%s_sand' % variant, 'tfc:sand/%s' % variant, 'tfc:sand/%s' % variant)
+
+    # Vanilla landslide blocks
+    for block in ('sand', 'red_sand', 'gravel', 'cobblestone', 'mossy_cobblestone'):
+        rm.block_tag('can_landslide', 'minecraft:%s' % block)
+        landslide('vanilla_%s' % block, 'minecraft:%s' % block, 'minecraft:%s' % block)
+
+    vanilla_dirt_landslides = ('grass_block', 'dirt', 'coarse_dirt', 'podzol')
+    for block in vanilla_dirt_landslides:
+        rm.block_tag('can_landslide', 'minecraft:%s' % block)
+    landslide('vanilla_dirt', ['minecraft:%s' % block for block in vanilla_dirt_landslides], 'minecraft:dirt')
+
+    # Vanilla collapsible blocks
+    for rock in ('stone', 'andesite', 'granite', 'diorite'):
+        block = 'minecraft:%s' % rock
+        rm.block_tag('can_trigger_collapse', block)
+        rm.block_tag('can_start_collapse', block)
+        rm.block_tag('can_collapse', block)
+
+        collapse('vanilla_%s' % rock, block, block if rock != 'stone' else 'minecraft:cobblestone')

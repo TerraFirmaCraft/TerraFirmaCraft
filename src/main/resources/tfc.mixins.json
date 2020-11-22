@@ -4,6 +4,7 @@
   "package": "net.dries007.tfc.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "block.FallingBlockMixin",
     "block.SnowBlockMixin",
     "entity.EntityTypeAccessor",
     "entity.item.FallingBlockEntityAccessor",

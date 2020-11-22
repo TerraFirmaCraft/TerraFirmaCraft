@@ -56,7 +56,7 @@ public class MetalItemManager extends DataManager<MetalItem>
 
     private MetalItemManager()
     {
-        super(new GsonBuilder().create(), "metal_items", "metal item");
+        super(new GsonBuilder().create(), "metal_items", "metal item", true);
     }
 
     @Override

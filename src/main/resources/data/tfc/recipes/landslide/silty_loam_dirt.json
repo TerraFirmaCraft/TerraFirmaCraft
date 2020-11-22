@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:landslide",
+  "ingredient": [
+    "tfc:dirt/silty_loam",
+    "tfc:grass/silty_loam",
+    "tfc:grass_path/silty_loam"
+  ],
+  "result": "tfc:dirt/silty_loam"
+}

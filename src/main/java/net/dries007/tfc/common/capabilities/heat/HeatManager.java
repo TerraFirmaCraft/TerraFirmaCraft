@@ -36,7 +36,7 @@ public class HeatManager extends DataManager<HeatDefinition>
 
     private HeatManager()
     {
-        super(new GsonBuilder().create(), "item_heats", "item heat");
+        super(new GsonBuilder().create(), "item_heats", "item heat", true);
     }
 
     @Override

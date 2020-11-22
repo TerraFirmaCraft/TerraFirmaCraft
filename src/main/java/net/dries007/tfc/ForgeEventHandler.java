@@ -43,7 +43,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
-import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.common.types.MetalManager;
 import net.dries007.tfc.common.types.RockManager;
@@ -274,16 +273,18 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
-        IWorld world = event.getWorld();
-        for (Direction direction : event.getNotifiedSides())
+        if (event.getWorld() instanceof ServerWorld)
         {
-            // Check each notified block for a potential gravity block
-            BlockPos pos = event.getPos().relative(direction);
-            BlockState state = world.getBlockState(pos);
-            if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()) && world instanceof World)
+            final ServerWorld world = (ServerWorld) event.getWorld();
+            for (Direction direction : event.getNotifiedSides())
             {
-                // Here, we just record the position rather than immediately updating as this is called from `setBlockState` so it's preferred to handle it with just a little latency
-                ((World) world).getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                // Check each notified block for a potential gravity block
+                final BlockPos pos = event.getPos().relative(direction);
+                final BlockState state = world.getBlockState(pos);
+                if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+                {
+                    world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                }
             }
         }
     }
@@ -292,9 +293,9 @@ public final class ForgeEventHandler
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
     {
         IWorld world = event.getWorld();
-        if (TFCTags.Blocks.CAN_LANDSLIDE.contains(event.getState().getBlock()) && world instanceof World)
+        if (world instanceof ServerWorld && TFCTags.Blocks.CAN_LANDSLIDE.contains(event.getState().getBlock()))
         {
-            LandslideRecipe.tryLandslide((World) event.getWorld(), event.getPos(), event.getState());
+            ((ServerWorld) world).getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(event.getPos()));
         }
     }
 

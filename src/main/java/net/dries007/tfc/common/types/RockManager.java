@@ -24,7 +24,7 @@ public class RockManager extends DataManager<Rock>
 
     private RockManager()
     {
-        super(new GsonBuilder().create(), "rocks", "rock");
+        super(new GsonBuilder().create(), "rocks", "rock", false);
 
         rockBlocks = new HashMap<>();
     }

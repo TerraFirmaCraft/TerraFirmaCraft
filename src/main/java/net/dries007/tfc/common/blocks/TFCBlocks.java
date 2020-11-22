@@ -29,7 +29,6 @@ import net.dries007.tfc.common.blocks.rock.TFCOreBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.blocks.soil.TFCSandBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.tileentity.SnowPileTileEntity;
@@ -65,7 +64,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS).harvestTool(ToolType.SHOVEL).harvestLevel(0), PEAT, null, null), EARTH);
 
     public static final Map<SandBlockType, RegistryObject<Block>> SAND = Helpers.mapOfKeys(SandBlockType.class, type ->
-        register(("sand/" + type.name()).toLowerCase(), () -> new TFCSandBlock(type.getDustColor(), Properties.of(Material.SAND, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).harvestLevel(0)), EARTH)
+        register(("sand/" + type.name()).toLowerCase(), type::create, EARTH)
     );
 
     public static final Map<GroundcoverBlockType, RegistryObject<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlockType.class, type ->
