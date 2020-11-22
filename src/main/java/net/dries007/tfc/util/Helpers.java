@@ -27,16 +27,21 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
@@ -332,5 +337,46 @@ public final class Helpers
         CapabilityManager.INSTANCE.register(clazz, new NoopStorage<>(), () -> {
             throw new UnsupportedOperationException("Creating default instances is not supported. Why would you ever do this");
         });
+    }
+
+    /**
+     * Copy pasta from {@link net.minecraft.entity.player.SpawnLocationHelper} except one that doesn't require the spawn block be equal to the surface builder config top block
+     */
+    @Nullable
+    public static BlockPos findValidSpawnLocation(ServerWorld world, ChunkPos chunkPos)
+    {
+        final Chunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); ++x)
+        {
+            for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); ++z)
+            {
+                mutablePos.set(x, 0, z);
+
+                final Biome biome = world.getBiome(mutablePos);
+                final int motionBlockingHeight = chunk.getHeight(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);
+                final int worldSurfaceHeight = chunk.getHeight(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
+                final int oceanFloorHeight = chunk.getHeight(Heightmap.Type.OCEAN_FLOOR, x & 15, z & 15);
+                if (worldSurfaceHeight >= oceanFloorHeight && biome.getMobSettings().playerSpawnFriendly())
+                {
+                    for (int y = 1 + motionBlockingHeight; y >= oceanFloorHeight; y--)
+                    {
+                        mutablePos.set(x, y, z);
+
+                        final BlockState state = world.getBlockState(mutablePos);
+                        if (!state.getFluidState().isEmpty())
+                        {
+                            break;
+                        }
+
+                        if (BlockTags.VALID_SPAWN.contains(state.getBlock()))
+                        {
+                            return mutablePos.above().immutable();
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

@@ -10,7 +10,6 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.SpawnLocationHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.Direction;
@@ -104,10 +103,10 @@ public final class ForgeEventHandler
                 {
                     if (x > -16 && x <= 16 && z > -16 && z <= 16)
                     {
-                        BlockPos spawnPos = SpawnLocationHelper.getSpawnPosInChunk(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z), false); // Last param is "use valid_spawn tag"
+                        BlockPos spawnPos = Helpers.findValidSpawnLocation(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
                         if (spawnPos != null)
                         {
-                            settings.setSpawn(spawnPos, 0.0F);
+                            settings.setSpawn(spawnPos, 0);
                             foundExactSpawn = true;
                             break;
                         }

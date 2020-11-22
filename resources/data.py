@@ -64,3 +64,6 @@ def generate(rm: ResourceManager):
         rm.block_tag('can_be_snow_piled', 'tfc:plant/%s' % plant)
 
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
+
+    # Valid spawn tag - grass, sand, or raw rock
+    rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])
