@@ -26,7 +26,7 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.support.SupportManager;
-import net.dries007.tfc.util.tracker.CollapseData;
+import net.dries007.tfc.util.tracker.Collapse;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 /**
@@ -133,7 +133,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
 
         if (!secondaryPositions.isEmpty())
         {
-            world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new CollapseData(centerPos, secondaryPositions, radiusSquared)));
+            world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new Collapse(centerPos, secondaryPositions, radiusSquared)));
         }
     }
 
@@ -144,13 +144,13 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean collapseBlock(World world, BlockPos pos, BlockState state)
     {
-        BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
+        BlockRecipeWrapper wrapper = new BlockRecipeWrapper(pos, state);
         CollapseRecipe recipe = getRecipe(world, wrapper);
         if (recipe != null)
         {
             BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
             world.setBlockAndUpdate(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
-            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, collapseState));
+            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState));
             return true;
         }
         return false;

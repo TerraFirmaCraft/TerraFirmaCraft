@@ -46,7 +46,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
         Map<BlockPos, LandslideRecipe> landslidePositions = new HashMap<>();
 
         final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        final BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable(worldIn.getLevel());
+        final BlockRecipeWrapper.Mutable mutableWrapper = new BlockRecipeWrapper.Mutable();
 
         for (int x = 0; x < 16; x++)
         {
@@ -64,7 +64,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
                     {
                         continue;
                     }
-                    mutableWrapper.setPos(chunkX + x, y, chunkZ + z, stateAt);
+                    mutableWrapper.update(chunkX + x, y, chunkZ + z, stateAt);
 
                     final LandslideRecipe recipe = LandslideRecipe.getRecipe(worldIn.getLevel(), mutableWrapper);
                     if (recipe != null)
@@ -91,7 +91,7 @@ public class ErosionFeature extends Feature<NoFeatureConfig>
         {
             LandslideRecipe recipe = landslidePositions.get(landslidePos);
             BlockState stateAt = worldIn.getBlockState(landslidePos);
-            mutableWrapper.setPos(landslidePos.getX(), landslidePos.getY(), landslidePos.getZ(), stateAt);
+            mutableWrapper.update(landslidePos.getX(), landslidePos.getY(), landslidePos.getZ(), stateAt);
             if (recipe.matches(mutableWrapper, worldIn.getLevel()))
             {
                 BlockPos resultPos = quickLandslideBlock(worldIn, landslidePos, rand, minX, maxX, minZ, maxZ);

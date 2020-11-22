@@ -21,6 +21,10 @@
     "tfc:rock/raw/andesite",
     "tfc:rock/raw/basalt",
     "tfc:rock/raw/dacite",
-    "tfc:rock/raw/rhyolite"
+    "tfc:rock/raw/rhyolite",
+    "minecraft:stone",
+    "minecraft:andesite",
+    "minecraft:granite",
+    "minecraft:diorite"
   ]
 }

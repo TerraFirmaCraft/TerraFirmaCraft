@@ -9,7 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
 
 /**
  * This is a version of {@link net.minecraftforge.items.wrapper.RecipeWrapper} that is intended to be used for {@link IBlockRecipe}.
@@ -17,26 +17,19 @@ import net.minecraft.world.World;
  */
 public class BlockRecipeWrapper extends ItemStackRecipeWrapper
 {
-    protected final World world;
     protected final BlockPos pos;
     protected BlockState state;
 
-    public BlockRecipeWrapper(World world, BlockPos pos)
+    public BlockRecipeWrapper(IBlockReader world, BlockPos pos)
     {
-        this(world, pos, world.getBlockState(pos));
+        this(pos, world.getBlockState(pos));
     }
 
-    public BlockRecipeWrapper(World world, BlockPos pos, BlockState state)
+    public BlockRecipeWrapper(BlockPos pos, BlockState state)
     {
         super(new ItemStack(state.getBlock()));
-        this.world = world;
         this.pos = pos;
         this.state = state;
-    }
-
-    public World getWorld()
-    {
-        return world;
     }
 
     public BlockPos getPos()
@@ -51,23 +44,22 @@ public class BlockRecipeWrapper extends ItemStackRecipeWrapper
 
     public static class Mutable extends BlockRecipeWrapper
     {
-        private final BlockPos.Mutable mutablePos;
+        private final BlockPos.Mutable cursor;
 
-        public Mutable(World world)
+        public Mutable()
         {
-            this(world, new BlockPos.Mutable());
+            this(new BlockPos.Mutable());
         }
 
-        private Mutable(World world, BlockPos.Mutable pos)
+        private Mutable(BlockPos.Mutable pos)
         {
-            super(world, pos, Blocks.AIR.defaultBlockState()); // Since the position is not expected to be initialized, we set a default null block state
-
-            this.mutablePos = pos;
+            super(pos, Blocks.AIR.defaultBlockState()); // Since the position is not expected to be initialized, we set a default null block state
+            this.cursor = pos;
         }
 
-        public void setPos(int x, int y, int z, BlockState state)
+        public void update(int x, int y, int z, BlockState state)
         {
-            this.mutablePos.set(x, y, z);
+            this.cursor.set(x, y, z);
             this.state = state;
         }
     }

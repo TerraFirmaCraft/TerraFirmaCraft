@@ -6,7 +6,6 @@
 package net.dries007.tfc.util.tracker;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -33,26 +32,26 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     private static final Random RANDOM = new Random();
 
     private final LazyOptional<IWorldTracker> capability;
-    private final List<BlockPos> landslidePositions;
-    private final List<BlockPos> landslidePositionsToAdd;
-    private final List<CollapseData> collapsesInProgress;
+    private final List<TickEntry> landslideTicks;
+    private final List<TickEntry> pendingLandslideTicks;
+    private final List<Collapse> collapsesInProgress;
 
     public WorldTracker()
     {
         this.capability = LazyOptional.of(() -> this);
-        this.landslidePositions = new ArrayList<>();
-        this.landslidePositionsToAdd = new ArrayList<>();
+        this.landslideTicks = new ArrayList<>();
+        this.pendingLandslideTicks = new ArrayList<>();
         this.collapsesInProgress = new ArrayList<>();
     }
 
     @Override
     public void addLandslidePos(BlockPos pos)
     {
-        landslidePositionsToAdd.add(pos);
+        pendingLandslideTicks.add(new TickEntry(pos, 2));
     }
 
     @Override
-    public void addCollapseData(CollapseData collapse)
+    public void addCollapseData(Collapse collapse)
     {
         collapsesInProgress.add(collapse);
     }
@@ -74,7 +73,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                 collapsePositions.add(pos.above()); // Check the above position
             }
         }
-        addCollapseData(new CollapseData(centerPos, collapsePositions, maxRadiusSquared));
+        addCollapseData(new Collapse(centerPos, collapsePositions, maxRadiusSquared));
     }
 
     public void tick(World world)
@@ -83,7 +82,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         {
             if (!collapsesInProgress.isEmpty() && RANDOM.nextInt(10) == 0)
             {
-                for (CollapseData collapse : collapsesInProgress)
+                for (Collapse collapse : collapsesInProgress)
                 {
                     Set<BlockPos> updatedPositions = new HashSet<>();
                     for (BlockPos posAt : collapse.nextPositions)
@@ -110,28 +109,44 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                 collapsesInProgress.removeIf(collapse -> collapse.nextPositions.isEmpty());
             }
 
-            updateLandslidePositions();
-            for (BlockPos pos : landslidePositions)
+            // Add all pending landslide ticks
+            landslideTicks.addAll(pendingLandslideTicks);
+            pendingLandslideTicks.clear();
+
+            Iterator<TickEntry> tickIterator = landslideTicks.listIterator();
+            while (tickIterator.hasNext())
             {
-                LandslideRecipe.tryLandslide(world, pos, world.getBlockState(pos));
+                TickEntry entry = tickIterator.next();
+                if (entry.tick())
+                {
+                    final BlockState currentState = world.getBlockState(entry.getPos());
+                    LandslideRecipe.tryLandslide(world, entry.getPos(), currentState);
+                    tickIterator.remove();
+                }
             }
-            landslidePositions.clear();
         }
     }
 
     @Override
     public CompoundNBT serializeNBT()
     {
-        updateLandslidePositions();
+        landslideTicks.addAll(pendingLandslideTicks);
+        pendingLandslideTicks.clear();
 
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putLongArray("landslidePositions", landslidePositions.stream().mapToLong(BlockPos::asLong).toArray());
-        ListNBT list = new ListNBT();
-        for (CollapseData collapse : collapsesInProgress)
+        ListNBT landslideNbt = new ListNBT();
+        for (TickEntry entry : landslideTicks)
         {
-            list.add(collapse.serializeNBT());
+            landslideNbt.add(entry.serializeNBT());
         }
-        nbt.put("collapsesInProgress", list);
+        nbt.put("landslideTicks", landslideNbt);
+
+        ListNBT collapseNbt = new ListNBT();
+        for (Collapse collapse : collapsesInProgress)
+        {
+            collapseNbt.add(collapse.serializeNBT());
+        }
+        nbt.put("collapsesInProgress", collapseNbt);
         return nbt;
     }
 
@@ -140,14 +155,20 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     {
         if (nbt != null)
         {
-            landslidePositions.clear();
+            landslideTicks.clear();
+            pendingLandslideTicks.clear();
             collapsesInProgress.clear();
 
-            landslidePositions.addAll(Arrays.stream(nbt.getLongArray("landslidePositions")).mapToObj(BlockPos::of).collect(Collectors.toList()));
-            ListNBT list = nbt.getList("collapsesInProgress", Constants.NBT.TAG_COMPOUND);
-            for (int i = 0; i < list.size(); i++)
+            ListNBT landslideNbt = nbt.getList("landslideTicks", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < landslideNbt.size(); i++)
             {
-                collapsesInProgress.add(new CollapseData(list.getCompound(i)));
+                landslideTicks.add(new TickEntry(landslideNbt.getCompound(i)));
+            }
+
+            ListNBT collapseNbt = nbt.getList("collapsesInProgress", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < collapseNbt.size(); i++)
+            {
+                collapsesInProgress.add(new Collapse(collapseNbt.getCompound(i)));
             }
         }
     }
@@ -156,12 +177,5 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
-    }
-
-    private void updateLandslidePositions()
-    {
-        // Use a buffered list because iterating over it can cause landslides
-        landslidePositions.addAll(landslidePositionsToAdd);
-        landslidePositionsToAdd.clear();
     }
 }

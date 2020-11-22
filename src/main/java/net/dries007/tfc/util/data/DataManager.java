@@ -5,10 +5,7 @@
 
 package net.dries007.tfc.util.data;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.BiMap;
@@ -38,10 +35,11 @@ public abstract class DataManager<T> extends JsonReloadListener
     protected final List<Runnable> callbacks;
     protected final String typeName;
 
+    protected final boolean allowNone;
     protected T defaultValue;
     protected boolean loaded;
 
-    public DataManager(Gson gson, String domain, String typeName)
+    protected DataManager(Gson gson, String domain, String typeName, boolean allowNone)
     {
         super(gson, TerraFirmaCraft.MOD_ID + "/" + domain);
 
@@ -49,6 +47,7 @@ public abstract class DataManager<T> extends JsonReloadListener
         this.types = HashBiMap.create();
         this.callbacks = new ArrayList<>();
         this.typeName = typeName;
+        this.allowNone = allowNone;
         this.defaultValue = null;
         this.loaded = false;
     }
@@ -66,7 +65,7 @@ public abstract class DataManager<T> extends JsonReloadListener
 
     public T getDefault()
     {
-        return defaultValue;
+        return Objects.requireNonNull(defaultValue, "Tried to get the default " + typeName + " but none existed! This DataManager has allowNone = " + allowNone);
     }
 
     @Nullable
@@ -124,7 +123,11 @@ public abstract class DataManager<T> extends JsonReloadListener
 
         LOGGER.info("Registered {} {}(s) Successfully.", types.size(), typeName);
         loaded = true;
-        defaultValue = types.values().stream().findFirst().orElseThrow(() -> new IllegalStateException("There must be at least one registered " + typeName + '!'));
+        defaultValue = types.values().stream().findFirst().orElse(null);
+        if (defaultValue == null && !allowNone)
+        {
+            throw new IllegalStateException("There must be at least one registered " + typeName + '!');
+        }
         postProcess();
     }
 
