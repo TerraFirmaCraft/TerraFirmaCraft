@@ -1,4 +1,4 @@
-package net.dries007.tfc.util;
+package net.dries007.tfc;
 
 import java.awt.*;
 
