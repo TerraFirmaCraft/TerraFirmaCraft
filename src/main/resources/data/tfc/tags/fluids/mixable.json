@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:salt_water",
+    "tfc:flowing_salt_water",
+    "tfc:spring_water",
+    "tfc:flowing_spring_water",
+    "#minecraft:water"
+  ]
+}
