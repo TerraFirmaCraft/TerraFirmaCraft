@@ -76,6 +76,16 @@ public interface IWailaBlock
     }
 
     /**
+     * Allows getTooltip to be queried and appended to the body of the Hwyla tooltip
+     *
+     * @return true if you wish to append to the Hwyla tooltip
+     */
+    default boolean appendBody()
+    {
+        return true;
+    }
+
+    /**
      * Overrides this to tell Hwyla and TOP to override the default stack (eg: The icon that is shown when you're looking at something).
      *
      * @return true if you wish to override the stack icon of the block you're looking at
