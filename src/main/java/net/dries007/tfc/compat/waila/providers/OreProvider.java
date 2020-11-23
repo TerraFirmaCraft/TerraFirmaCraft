@@ -24,13 +24,6 @@ public class OreProvider implements IWailaBlock
 
     @Nonnull
     @Override
-    public List<String> getTooltip(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
-    {
-        return Collections.emptyList();
-    }
-
-    @Nonnull
-    @Override
     public ItemStack getIcon(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull NBTTagCompound nbt)
     {
         IBlockState state = world.getBlockState(pos);
