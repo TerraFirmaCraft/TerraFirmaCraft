@@ -30,18 +30,20 @@ public class HwylaBlockInterface implements IWailaDataProvider, IWailaPlugin
         this.internal = internal;
     }
 
-
     @Override
     public void register(IWailaRegistrar registrar)
     {
         // Register providers accordingly to each implementation
         for (Class<?> clazz : internal.getLookupClass())
         {
-            registrar.registerBodyProvider(this, clazz);
             if (TileEntity.class.isAssignableFrom(clazz))
             {
                 // Register to update NBT data on all tile entities.
                 registrar.registerNBTProvider(this, clazz);
+            }
+            if (internal.appendBody())
+            {
+                registrar.registerBodyProvider(this, clazz);
             }
             if (internal.overrideTitle())
             {
