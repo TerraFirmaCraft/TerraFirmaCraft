@@ -328,13 +328,6 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang('%s %s' % (metal, metal_block)))
                 block.with_item_model()
 
-        # Fluid
-        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None)
-        rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
-
-        # Bucket
-        rm.item_model(('bucket', 'metal', metal)).with_lang(lang('molten %s bucket', metal))
-
     # Gems
     for gem in GEMS:
         rm.item_model(('gem', gem)).with_lang(lang('cut %s', gem))
@@ -464,16 +457,40 @@ def generate(rm: ResourceManager):
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
 
+    def bucket_item_model(name_parts, fluid):
+        res = utils.resource_location(rm.domain, name_parts)
+        rm.write((*rm.resource_dir, 'assets', res.domain, 'models', 'item', res.path), {
+            'parent': 'forge:item/bucket',
+            'loader': 'forge:bucket',
+            'fluid': fluid
+        })
+        return rm.item(name_parts)
+
     # Fluids
     def water_based_fluid(name: str):
         rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None)
         rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
+        rm.fluid_tag('minecraft:water', 'tfc:%s' % name, 'tfc:flowing_%s' % name)  # Need to use water fluid tag for behavior
+        rm.fluid_tag('mixable', 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
-        # Bucket
-        rm.item_model(('bucket', name)).with_lang(lang('%s bucket', name))
+        item = bucket_item_model(('bucket', name), 'tfc:%s' % name)
+        item.with_lang(lang('%s bucket', name))
+
+    def molten_fluid(name: str):
+        rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None)
+        rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
+
+        item = bucket_item_model(('bucket', 'metal', name), 'tfc:%s' % name)
+        item.with_lang(lang('molten %s bucket', name))
 
     water_based_fluid('salt_water')
     water_based_fluid('spring_water')
+
+    # Mixable tags for vanilla water
+    rm.fluid_tag('mixable', '#minecraft:water')
+
+    for metal in METALS.keys():
+        molten_fluid(metal)
 
     # Calcite
     block = rm.blockstate('calcite', variants={
