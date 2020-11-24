@@ -25,12 +25,15 @@ public class BiomeVariants
     private final LongFunction<INoise2D> noiseFactory;
     private final SmallGroup smallGroup;
     private final LargeGroup largeGroup;
+    private final boolean salty;
 
-    public BiomeVariants(LongFunction<INoise2D> noiseFactory, SmallGroup smallGroup, LargeGroup largeGroup)
+    public BiomeVariants(LongFunction<INoise2D> noiseFactory, SmallGroup smallGroup, LargeGroup largeGroup, boolean salty)
     {
         this.noiseFactory = noiseFactory;
         this.smallGroup = smallGroup;
         this.largeGroup = largeGroup;
+        this.salty = salty;
+
         extensions = new EnumMap<>(BiomeTemperature.class);
         for (BiomeTemperature temperature : BiomeTemperature.values())
         {
@@ -46,6 +49,11 @@ public class BiomeVariants
     public SmallGroup getSmallGroup()
     {
         return smallGroup;
+    }
+
+    public boolean isSalty()
+    {
+        return salty;
     }
 
     public INoise2D createNoiseLayer(long seed)

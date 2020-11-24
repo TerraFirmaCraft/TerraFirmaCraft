@@ -26,9 +26,11 @@ import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.tileentity.TFCTileEntities;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.calendar.ServerCalendar;
+import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.TFCBlockPlacerTypes;
 import net.dries007.tfc.world.TFCBlockStateProviderTypes;
@@ -63,7 +65,7 @@ public final class TerraFirmaCraft
         TFCContainerTypes.CONTAINERS.register(modEventBus);
         TFCEntities.ENTITIES.register(modEventBus);
         TFCFluids.FLUIDS.register(modEventBus);
-        TFCRecipeSerializers.SERIALIZERS.register(modEventBus);
+        TFCRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         TFCSounds.SOUNDS.register(modEventBus);
         TFCTileEntities.TILE_ENTITIES.register(modEventBus);
 
@@ -92,6 +94,8 @@ public final class TerraFirmaCraft
         WorldTrackerCapability.setup();
         ServerCalendar.setup();
         InteractionManager.setup();
+        DispenserBehaviors.setup();
+        TFCLoot.setup();
 
         // World gen registry objects
         Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);

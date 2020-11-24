@@ -16,10 +16,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.util.LerpFloatLayer;
-import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCache;
-import net.dries007.tfc.world.chunkdata.ForestType;
+import net.dries007.tfc.world.chunkdata.*;
 
 /**
  * Sent from server -> client on chunk watch, partially syncs chunk data and updates the client cache
@@ -33,8 +30,9 @@ public class ChunkWatchPacket
     private final ForestType forestType;
     private final float forestWeirdness;
     private final float forestDensity;
+    private final PlateTectonicsClassification plateTectonicsInfo;
 
-    public ChunkWatchPacket(int chunkX, int chunkZ, LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
+    public ChunkWatchPacket(int chunkX, int chunkZ, LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness, PlateTectonicsClassification plateTectonicsInfo)
     {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
@@ -43,6 +41,7 @@ public class ChunkWatchPacket
         this.forestType = forestType;
         this.forestDensity = forestDensity;
         this.forestWeirdness = forestWeirdness;
+        this.plateTectonicsInfo = plateTectonicsInfo;
     }
 
     ChunkWatchPacket(PacketBuffer buffer)
@@ -54,6 +53,7 @@ public class ChunkWatchPacket
         forestType = ForestType.valueOf(buffer.readByte());
         forestDensity = buffer.readFloat();
         forestWeirdness = buffer.readFloat();
+        plateTectonicsInfo = PlateTectonicsClassification.valueOf(buffer.readByte());
     }
 
     void encode(PacketBuffer buffer)
@@ -65,6 +65,7 @@ public class ChunkWatchPacket
         buffer.writeByte(forestType.ordinal());
         buffer.writeFloat(forestDensity);
         buffer.writeFloat(forestWeirdness);
+        buffer.writeByte(plateTectonicsInfo.ordinal());
     }
 
     void handle(Supplier<NetworkEvent.Context> context)
@@ -83,7 +84,7 @@ public class ChunkWatchPacket
                         ChunkDataCache.CLIENT.update(pos, dataIn);
                         return dataIn;
                     }).orElseGet(() -> ChunkDataCache.CLIENT.getOrCreate(pos));
-                data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
+                data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness, plateTectonicsInfo);
             }
         });
         context.get().setPacketHandled(true);

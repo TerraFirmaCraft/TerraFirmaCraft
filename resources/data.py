@@ -24,12 +24,14 @@ def generate(rm: ResourceManager):
                     ingredient = item_stack('tag!%s/%s' % (item_data.tag, metal))
                 else:
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
+
                 # The IMetal capability
                 rm.data(('tfc', 'metal_items', metal, item), {
                     'ingredient': ingredient,
                     'metal': 'tfc:%s' % metal,
                     'amount': item_data.smelt_amount
                 })
+
                 # And the IHeat capability
                 rm.data(('tfc', 'item_heats', metal, item), {
                     'ingredient': ingredient,
@@ -37,6 +39,11 @@ def generate(rm: ResourceManager):
                     'forging_temperature': metal_data.melt_temperature * 0.6,
                     'welding_temperature': metal_data.melt_temperature * 0.8
                 })
+
+        # Common metal crafting tools
+        if 'tool' in metal_data.types:
+            for tool in ('hammer', 'chisel', 'axe', 'pickaxe', 'shovel'):
+                rm.item_tag('tfc:%ss' % tool, 'tfc:metal/%s/%s' % (tool, metal))
 
     # Rocks
     for rock, rock_data in ROCKS.items():
@@ -47,12 +54,13 @@ def generate(rm: ResourceManager):
             'beach_sand_color': rock_data.beach_sand_color
         })
 
-        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)
         rm.block_tag('creeping_plantable_on', 'tfc:rock/raw/%s' % rock)
         rm.block_tag('minecraft:gravel', 'tfc:rock/gravel/%s' % rock)
         rm.block_tag('sea_bush_plantable_on', 'tfc:rock/gravel/%s' % rock)
         rm.block_tag('minecraft:stone', 'tfc:rock/raw/%s' % rock)
         rm.block_tag('minecraft:cobblestone', 'tfc:rock/cobble/%s' % rock)
+        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)  # used by vanilla, provided for consistiency
+        rm.block_tag('tfc:breaks_when_isolated', 'tfc:rock/raw/%s' % rock)  # only raw rock
 
     # Plants
     for plant, plant_data in PLANTS.items():
@@ -79,3 +87,6 @@ def generate(rm: ResourceManager):
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
 
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
+
+    # Valid spawn tag - grass, sand, or raw rock
+    rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])

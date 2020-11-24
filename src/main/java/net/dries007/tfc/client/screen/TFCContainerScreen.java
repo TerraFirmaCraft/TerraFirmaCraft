@@ -43,6 +43,6 @@ public abstract class TFCContainerScreen<C extends Container> extends ContainerS
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.getTextureManager().bind(texture);
-        blit(matrixStack, leftPos, topPos, 0, (float) 0, (float) 0, imageWidth, imageHeight, 256, 256);
+        blit(matrixStack, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
     }
 }

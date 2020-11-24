@@ -40,9 +40,9 @@ public final class TFCBiomes
     private static final Map<RegistryKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>(); // All extensions, indexed by registry key for quick access
 
     // Aquatic biomes
-    public static final BiomeVariants OCEAN = register("ocean", seed -> BiomeNoise.ocean(seed, -20, -12), BiomeVariants.LargeGroup.OCEAN, BiomeDictionary.Type.OCEAN); // Ocean biome found near continents.
-    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", seed -> BiomeNoise.ocean(seed, -38, -18), BiomeVariants.LargeGroup.OCEAN, BiomeDictionary.Type.OCEAN); // Deep ocean biome covering most all oceans.
-    public static final BiomeVariants DEEP_OCEAN_RIDGE = register("deep_ocean_ridge", seed -> BiomeNoise.oceanRidge(seed, -38, -18), BiomeVariants.LargeGroup.OCEAN, BiomeDictionary.Type.OCEAN);
+    public static final BiomeVariants OCEAN = register("ocean", seed -> BiomeNoise.ocean(seed, -20, -12), BiomeVariants.LargeGroup.OCEAN, true, BiomeDictionary.Type.OCEAN); // Ocean biome found near continents.
+    public static final BiomeVariants DEEP_OCEAN = register("deep_ocean", seed -> BiomeNoise.ocean(seed, -38, -18), BiomeVariants.LargeGroup.OCEAN, true, BiomeDictionary.Type.OCEAN); // Deep ocean biome covering most all oceans.
+    public static final BiomeVariants DEEP_OCEAN_RIDGE = register("deep_ocean_ridge", seed -> BiomeNoise.oceanRidge(seed, -38, -18), BiomeVariants.LargeGroup.OCEAN, true, BiomeDictionary.Type.OCEAN);
 
     // Low biomes
     public static final BiomeVariants PLAINS = register("plains", seed -> BiomeNoise.simple(seed, 4, 10), BiomeDictionary.Type.PLAINS); // Very flat, slightly above sea level.
@@ -58,15 +58,15 @@ public final class TFCBiomes
 
     // High biomes
     public static final BiomeVariants MOUNTAINS = register("mountains", seed -> BiomeNoise.mountains(seed, 10, 70), BiomeDictionary.Type.MOUNTAIN); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
-    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", seed -> BiomeNoise.mountains(seed, -16, 60), BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", seed -> BiomeNoise.mountains(seed, -16, 60), true, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
     public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", seed -> BiomeNoise.mountains(seed, 16, 40), BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN); // Rounded top mountains, very large hills.
 
     // Shores
-    public static final BiomeVariants SHORE = register("shore", BiomeNoise::shore, BiomeVariants.LargeGroup.OCEAN, BiomeDictionary.Type.BEACH); // Standard shore / beach. Material will vary based on location
+    public static final BiomeVariants SHORE = register("shore", BiomeNoise::shore, BiomeVariants.LargeGroup.OCEAN, true, BiomeDictionary.Type.BEACH); // Standard shore / beach. Material will vary based on location
 
     // Water
-    public static final BiomeVariants LAKE = register("lake", BiomeNoise::lake, BiomeVariants.LargeGroup.LAKE, BiomeDictionary.Type.RIVER);
-    public static final BiomeVariants RIVER = register("river", BiomeNoise::river, BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER, BiomeDictionary.Type.RIVER);
+    public static final BiomeVariants LAKE = register("lake", BiomeNoise::lake, BiomeVariants.LargeGroup.LAKE, false, BiomeDictionary.Type.RIVER);
+    public static final BiomeVariants RIVER = register("river", BiomeNoise::river, BiomeVariants.LargeGroup.RIVER, BiomeVariants.SmallGroup.RIVER, false, BiomeDictionary.Type.RIVER);
 
     // Water "Carver" Biomes
     public static final CarvingBiomeVariants MOUNTAIN_RIVER = registerCarving("mountain_river", MOUNTAINS, BiomeNoise::riverCarving, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.RIVER);
@@ -190,25 +190,30 @@ public final class TFCBiomes
 
     private static CarvingBiomeVariants registerCarving(String baseName, BiomeVariants parent, LongFunction<Pair<INoise2D, INoise2D>> carvingNoiseFactory, BiomeDictionary.Type... types)
     {
-        return createBiomes(new CarvingBiomeVariants(parent, carvingNoiseFactory), baseName);
+        return createBiomes(new CarvingBiomeVariants(parent, carvingNoiseFactory), baseName, types);
     }
 
     private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeDictionary.Type... types)
     {
-        return register(baseName, noiseFactory, BiomeVariants.LargeGroup.LAND, BiomeVariants.SmallGroup.BODY);
+        return register(baseName, noiseFactory, BiomeVariants.LargeGroup.LAND, BiomeVariants.SmallGroup.BODY, false, types);
     }
 
-    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeVariants.LargeGroup largeGroup, BiomeDictionary.Type... types)
+    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, boolean salty, BiomeDictionary.Type... types)
     {
-        return register(baseName, noiseFactory, largeGroup, BiomeVariants.SmallGroup.BODY);
+        return register(baseName, noiseFactory, BiomeVariants.LargeGroup.LAND, BiomeVariants.SmallGroup.BODY, salty, types);
+    }
+
+    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeVariants.LargeGroup largeGroup, boolean salty, BiomeDictionary.Type... types)
+    {
+        return register(baseName, noiseFactory, largeGroup, BiomeVariants.SmallGroup.BODY, salty, types);
     }
 
     /**
      * Registers all variants corresponding to a biome super type
      */
-    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeVariants.LargeGroup largeGroup, BiomeVariants.SmallGroup smallGroup, BiomeDictionary.Type... types)
+    private static BiomeVariants register(String baseName, LongFunction<INoise2D> noiseFactory, BiomeVariants.LargeGroup largeGroup, BiomeVariants.SmallGroup smallGroup, boolean salty, BiomeDictionary.Type... types)
     {
-        return createBiomes(new BiomeVariants(noiseFactory, smallGroup, largeGroup), baseName);
+        return createBiomes(new BiomeVariants(noiseFactory, smallGroup, largeGroup, salty), baseName, types);
     }
 
     private static <V extends BiomeVariants> V createBiomes(V variants, String baseName, BiomeDictionary.Type... types)

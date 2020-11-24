@@ -10,6 +10,8 @@ public class TFCMaterials
     public static final Material SALT_WATER = new Builder(MaterialColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
     public static final Material SPRING_WATER = new Builder(MaterialColor.WATER).noCollider().notSolidBlocking().nonSolid().destroyOnPush().replaceable().liquid().build();
 
+    public static final Material NON_SOLID_STONE = new Builder(MaterialColor.STONE).noCollider().notSolidBlocking().nonSolid().destroyOnPush().build();
+
     /**
      * This is an exact copy of {@link Material.Builder} except with all builder methods set to public
      */

@@ -73,7 +73,7 @@ public class ThatchBedBlock extends BedBlock
     @Override
     public TileEntity newBlockEntity(IBlockReader worldIn)
     {
-        return null;
+        return null; // Need to override as the super class is a ITileEntityProvider
     }
 
     @SuppressWarnings("deprecation")

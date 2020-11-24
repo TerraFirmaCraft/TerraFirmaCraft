@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/quartzite",
+    "hardened": "tfc:rock/hardened/quartzite",
     "bricks": "tfc:rock/bricks/quartzite",
     "cobble": "tfc:rock/cobble/quartzite",
     "gravel": "tfc:rock/gravel/quartzite",

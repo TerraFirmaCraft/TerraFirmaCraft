@@ -23,8 +23,6 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.dries007.tfc.TerraFirmaCraft;
 
 public abstract class DataManager<T> extends JsonReloadListener
@@ -33,22 +31,25 @@ public abstract class DataManager<T> extends JsonReloadListener
 
     protected final Gson gson;
     protected final BiMap<ResourceLocation, T> types;
-    protected final Object2IntMap<T> typeIds;
-    protected final List<T> orderedTypes;
 
     protected final List<Runnable> callbacks;
     protected final String typeName;
 
-    public DataManager(Gson gson, String domain, String typeName)
+    protected final boolean allowNone;
+    protected T defaultValue;
+    protected boolean loaded;
+
+    protected DataManager(Gson gson, String domain, String typeName, boolean allowNone)
     {
         super(gson, TerraFirmaCraft.MOD_ID + "/" + domain);
 
         this.gson = gson;
         this.types = HashBiMap.create();
-        this.typeIds = new Object2IntOpenHashMap<>();
-        this.orderedTypes = new ArrayList<>();
         this.callbacks = new ArrayList<>();
         this.typeName = typeName;
+        this.allowNone = allowNone;
+        this.defaultValue = null;
+        this.loaded = false;
     }
 
     @Nullable
@@ -64,27 +65,13 @@ public abstract class DataManager<T> extends JsonReloadListener
 
     public T getDefault()
     {
-        if (!orderedTypes.isEmpty())
-        {
-            return orderedTypes.get(0);
-        }
-        throw new IllegalStateException("Tried to get default but there were none!");
+        return Objects.requireNonNull(defaultValue, "Tried to get the default " + typeName + " but none existed! This DataManager has allowNone = " + allowNone);
     }
 
     @Nullable
-    public ResourceLocation getName(T type)
+    public ResourceLocation getId(T type)
     {
         return types.inverse().get(type);
-    }
-
-    public int getId(T type)
-    {
-        return typeIds.getInt(type);
-    }
-
-    public T get(int id)
-    {
-        return orderedTypes.get(id);
     }
 
     public Set<T> getValues()
@@ -97,22 +84,20 @@ public abstract class DataManager<T> extends JsonReloadListener
         return types.keySet();
     }
 
-    public List<T> getOrderedValues()
-    {
-        return orderedTypes;
-    }
-
     public void addCallback(Runnable callback)
     {
         callbacks.add(callback);
+    }
+
+    public boolean isLoaded()
+    {
+        return loaded;
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> objectIn, IResourceManager resourceManagerIn, IProfiler profilerIn)
     {
         types.clear();
-        typeIds.clear();
-        orderedTypes.clear();
         for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet())
         {
             ResourceLocation name = entry.getKey();
@@ -123,7 +108,6 @@ public abstract class DataManager<T> extends JsonReloadListener
                 {
                     T object = read(name, json);
                     types.put(name, object);
-                    orderedTypes.add(object);
                 }
                 else
                 {
@@ -138,14 +122,12 @@ public abstract class DataManager<T> extends JsonReloadListener
         }
 
         LOGGER.info("Registered {} {}(s) Successfully.", types.size(), typeName);
-
-        // Setup entry -> id map from sorted names
-        orderedTypes.sort(Comparator.comparing(types.inverse()::get));
-        for (int i = 0; i < orderedTypes.size(); i++)
+        loaded = true;
+        defaultValue = types.values().stream().findFirst().orElse(null);
+        if (defaultValue == null && !allowNone)
         {
-            typeIds.put(orderedTypes.get(i), i);
+            throw new IllegalStateException("There must be at least one registered " + typeName + '!');
         }
-
         postProcess();
     }
 

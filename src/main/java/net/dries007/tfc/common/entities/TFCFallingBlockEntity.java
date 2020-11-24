@@ -104,7 +104,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                 if (!onGround)
                 {
                     failedBreakCheck = false;
-                    if (time > 100 && (posAt.getY() < 1 || posAt.getY() > 256) || time > 600)
+                    if ((time > 100 && (posAt.getY() < 1 || posAt.getY() > 256)) || time > 600)
                     {
                         if (dropItem && level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
                         {

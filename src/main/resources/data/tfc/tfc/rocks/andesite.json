@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/andesite",
+    "hardened": "tfc:rock/hardened/andesite",
     "bricks": "tfc:rock/bricks/andesite",
     "cobble": "tfc:rock/cobble/andesite",
     "gravel": "tfc:rock/gravel/andesite",

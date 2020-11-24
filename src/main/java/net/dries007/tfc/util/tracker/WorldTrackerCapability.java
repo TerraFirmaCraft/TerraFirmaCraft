@@ -8,10 +8,8 @@ package net.dries007.tfc.util.tracker;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.NoopStorage;
 
 public class WorldTrackerCapability
 {
@@ -21,6 +19,6 @@ public class WorldTrackerCapability
 
     public static void setup()
     {
-        CapabilityManager.INSTANCE.register(IWorldTracker.class, new NoopStorage<>(), WorldTracker::new);
+        Helpers.registerSimpleCapability(IWorldTracker.class);
     }
 }

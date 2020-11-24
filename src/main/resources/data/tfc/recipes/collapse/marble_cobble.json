@@ -2,9 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:collapse",
   "ingredient": [
-    "tfc:rock/cobble/marble",
     "tfc:rock/raw/marble",
-    "tfc:rock/mossy_cobble/marble",
     "tfc:ore/bituminous_coal/marble",
     "tfc:ore/lignite/marble",
     "tfc:ore/kaolinite/marble",

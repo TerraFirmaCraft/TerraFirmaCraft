@@ -63,8 +63,9 @@ def generate(rm: ResourceManager):
     rm.feature('erosion', wg.configure('tfc:erosion'))
     rm.feature('ice_and_snow', wg.configure('tfc:ice_and_snow'))
 
-    rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), ('minecraft:chance', {'chance': 25}), 'minecraft:heightmap_world_surface', 'minecraft:square'))
-    rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), 'minecraft:square', 'minecraft:heightmap_world_surface'))
+    rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), decorate_chance(25), 'minecraft:heightmap_world_surface', 'minecraft:square'))
+    rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), decorate_chance(5), 'minecraft:square', 'minecraft:heightmap_world_surface'))
+    rm.feature('underground_flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), decorate_count(3), 'minecraft:square', ('minecraft:range', {'bottom_offset': 16, 'top_offset': 16, 'maximum': 100})))
 
     for spring_cfg in (('water', 80), ('lava', 35)):
         rm.feature('%s_spring' % spring_cfg[0], wg.configure_decorated(wg.configure('tfc:spring', {
@@ -105,6 +106,19 @@ def generate(rm: ResourceManager):
     for step, prefix in (('air', ''), ('liquid', 'underwater_')):
         rm.feature('%scave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:cave_spike'), ('minecraft:carving_mask', {'step': step, 'probability': 0.09})))
         rm.feature('%slarge_cave_spike' % prefix, wg.configure_decorated(wg.configure('tfc:large_cave_spike'), ('tfc:bounded_carving_mask', {'step': step, 'probability': 0.006, 'max_y': 45})))
+
+    rm.feature('calcite', wg.configure_decorated(wg.configure('tfc:calcite', {
+        'radius': 5,
+        'tries': 20,
+        'min_height': 2,
+        'max_height': 5
+    }), ('minecraft:count', {'count': 4}), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 128})))
+    rm.feature('mega_calcite', wg.configure_decorated(wg.configure('tfc:calcite', {
+        'radius': 12,
+        'tries': 70,
+        'min_height': 3,
+        'max_height': 9
+    }), decorate_chance(20), 'minecraft:square', ('minecraft:range_biased', {'bottom_offset': 8, 'top_offset': 8, 'maximum': 60})))
 
     for boulder_cfg in (('raw_boulder', 'raw', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.feature(boulder_cfg[0], wg.configure_decorated(wg.configure('tfc:boulder', {
@@ -344,15 +358,15 @@ def generate(rm: ResourceManager):
     # Biomes
     for temp in TEMPERATURES:
         for rain in RAINFALLS:
-            biome(rm, 'badlands', temp, rain, 'mesa', 'tfc:badlands')
-            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:canyons', boulders=True)
-            biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:canyons', boulders=True)
+            biome(rm, 'badlands', temp, rain, 'mesa', 'tfc:badlands', lake_features=False)
+            biome(rm, 'canyons', temp, rain, 'plains', 'tfc:canyons', boulders=True, lake_features=False)
+            biome(rm, 'low_canyons', temp, rain, 'swamp', 'tfc:canyons', boulders=True, lake_features=False)
             biome(rm, 'plains', temp, rain, 'plains', 'tfc:default')
             biome(rm, 'plateau', temp, rain, 'extreme_hills', 'tfc:mountains', boulders=True)
             biome(rm, 'hills', temp, rain, 'plains', 'tfc:default')
             biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:default', boulders=True)
             biome(rm, 'lake', temp, rain, 'river', 'tfc:underwater', spawnable=False)
-            biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:default')
+            biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:default', lake_features=False)
             biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
             biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_carvers=True)
@@ -528,7 +542,11 @@ def decorate_chance(chance: int) -> Tuple[str, Dict[str, Any]]:
     return 'minecraft:chance', {'chance': chance}
 
 
-def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: bool = False):
+def decorate_count(count: int) -> Tuple[str, Dict[str, Any]]:
+    return 'minecraft:count', {'count': count}
+
+
+def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: bool = False, lake_features: bool = True):
     # Temperature properties
     if rain.id == 'arid':
         rain_type = 'none'
@@ -540,13 +558,13 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
     # Features
     features = [
         ['tfc:erosion'],  # raw generation
-        [],  # lakes
+        ['tfc:underground_flood_fill_lake'],  # lakes
         [],  # local modification
         [],  # underground structure
         [],  # surface structure
         [],  # strongholds
         ['tfc:vein/gravel', *['tfc:vein/%s' % vein for vein in ORE_VEINS.keys()]],  # underground ores
-        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring'],  # underground decoration
+        ['tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:underwater_cave_spike', 'tfc:underwater_large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring', 'tfc:calcite', 'tfc:mega_calcite'],  # underground decoration
         [],  # vegetal decoration
         ['tfc:groundcover/loose_rocks', *['tfc:groundcover/%s' % general_item for general_item in GENERAL_DECORATORS]]  # top layer modification
     ]
@@ -558,6 +576,8 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
         pass  # todo: ocean plants
     else:
         # Non-ocean biome, add all land based features
+        if lake_features:
+            features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
         features[Decoration.LAKES] += ['tfc:flood_fill_lake', 'tfc:lake']
         features[Decoration.LOCAL_MODIFICATIONS] += ['tfc:clay_disc', 'tfc:water_clay_disc', 'tfc:peat_disc']
         features[Decoration.VEGETAL_DECORATION].append('tfc:forest')

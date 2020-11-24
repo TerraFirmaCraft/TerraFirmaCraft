@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "tfc:rock/raw/limestone"
+  },
+  "result": "tfc:rock/raw/limestone_wall",
+  "count": 1
+}

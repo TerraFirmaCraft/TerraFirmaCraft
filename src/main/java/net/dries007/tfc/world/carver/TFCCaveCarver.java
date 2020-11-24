@@ -7,12 +7,10 @@ package net.dries007.tfc.world.carver;
 
 import java.util.BitSet;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
-import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
@@ -20,25 +18,18 @@ import net.minecraft.world.gen.carver.CaveWorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 public class TFCCaveCarver extends CaveWorldCarver implements IContextCarver
 {
-    private final Set<Block> originalCarvableBlocks;
     private final AirBlockCarver blockCarver;
-
     private boolean initialized;
 
-    public TFCCaveCarver(Codec<ProbabilityConfig> codec, int maxHeight)
+    public TFCCaveCarver(Codec<ProbabilityConfig> codec)
     {
-        super(codec, maxHeight);
-        originalCarvableBlocks = replaceableBlocks;
+        super(codec, 256);
         blockCarver = new AirBlockCarver();
         initialized = false;
-
-        // Need to run this every time the rock registry is reloaded
-        RockManager.INSTANCE.addCallback(() -> replaceableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
     }
 
     @Override

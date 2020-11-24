@@ -5,12 +5,14 @@
 
 package net.dries007.tfc.client;
 
+import java.util.function.ToIntFunction;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.ColorResolver;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Climate;
@@ -18,6 +20,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.calendar.Season;
+import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.noise.NoiseUtil;
@@ -31,6 +34,9 @@ public final class TFCColors
     public static final ResourceLocation FOLIAGE_FALL_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_fall.png");
     public static final ResourceLocation FOLIAGE_WINTER_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_winter.png");
     public static final ResourceLocation GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/grass.png");
+
+    public static final ColorResolver FRESH_WATER = createColorResolver(TFCColors::getWaterColor);
+    public static final ColorResolver SALT_WATER = createColorResolver(TFCColors::getWaterFogColor); // todo: dedicated salt water color difference. This is different enough for now
 
     private static final int COLORMAP_SIZE = 256 * 256;
 
@@ -189,5 +195,14 @@ public final class TFCColors
             default:
                 return monthIn.getSeason();
         }
+    }
+
+    private static ColorResolver createColorResolver(ToIntFunction<BlockPos> colorAccessor)
+    {
+        final BlockPos.Mutable cursor = new BlockPos.Mutable();
+        return (biome, x, z) -> {
+            cursor.set(x, TFCChunkGenerator.SEA_LEVEL, z);
+            return colorAccessor.applyAsInt(cursor);
+        };
     }
 }
