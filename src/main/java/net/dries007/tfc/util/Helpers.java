@@ -18,26 +18,40 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.block.AbstractFireBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.state.Property;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -55,6 +69,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class Helpers
 {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final Random RANDOM = new Random();
 
     /**
      * Default {@link ResourceLocation}, except with a TFC namespace
@@ -324,5 +339,136 @@ public final class Helpers
             entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f);
         }
         entity.fallDistance = 0;
+    }
+
+    public static void registerSimpleCapability(Class<?> clazz)
+    {
+        CapabilityManager.INSTANCE.register(clazz, new NoopStorage<>(), () -> {
+            throw new UnsupportedOperationException("Creating default instances is not supported. Why would you ever do this");
+        });
+    }
+
+    /**
+     * Copy pasta from {@link net.minecraft.entity.player.SpawnLocationHelper} except one that doesn't require the spawn block be equal to the surface builder config top block
+     */
+    @Nullable
+    public static BlockPos findValidSpawnLocation(ServerWorld world, ChunkPos chunkPos)
+    {
+        final Chunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); ++x)
+        {
+            for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); ++z)
+            {
+                mutablePos.set(x, 0, z);
+
+                final Biome biome = world.getBiome(mutablePos);
+                final int motionBlockingHeight = chunk.getHeight(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);
+                final int worldSurfaceHeight = chunk.getHeight(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
+                final int oceanFloorHeight = chunk.getHeight(Heightmap.Type.OCEAN_FLOOR, x & 15, z & 15);
+                if (worldSurfaceHeight >= oceanFloorHeight && biome.getMobSettings().playerSpawnFriendly())
+                {
+                    for (int y = 1 + motionBlockingHeight; y >= oceanFloorHeight; y--)
+                    {
+                        mutablePos.set(x, y, z);
+
+                        final BlockState state = world.getBlockState(mutablePos);
+                        if (!state.getFluidState().isEmpty())
+                        {
+                            break;
+                        }
+
+                        if (BlockTags.VALID_SPAWN.contains(state.getBlock()))
+                        {
+                            return mutablePos.above().immutable();
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static BlockState copyProperties(BlockState copyTo, BlockState copyFrom)
+    {
+        for (Property<?> property : copyFrom.getProperties())
+        {
+            copyTo = copyProperty(copyTo, copyFrom, property);
+        }
+        return copyTo;
+    }
+
+    public static <T extends Comparable<T>> BlockState copyProperty(BlockState copyTo, BlockState copyFrom, Property<T> property)
+    {
+        if (copyTo.hasProperty(property))
+        {
+            return copyTo.setValue(property, copyFrom.getValue(property));
+        }
+        return copyTo;
+    }
+
+    public static void damageCraftingItem(ItemStack stack, int amount)
+    {
+        PlayerEntity player = ForgeHooks.getCraftingPlayer(); // Mods may not set this properly
+        if (player != null)
+        {
+            stack.hurtAndBreak(amount, player, entity -> {});
+        }
+        else
+        {
+            damageItem(stack, amount);
+        }
+    }
+
+    /**
+     * A replacement for {@link ItemStack#hurtAndBreak(int, LivingEntity, Consumer)} when an entity is not present
+     */
+    public static void damageItem(ItemStack stack, int amount)
+    {
+        if (stack.isDamageableItem())
+        {
+            // There's no player here so we can't safely do anything.
+            //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
+            if (stack.hurt(amount, RANDOM, null))
+            {
+                stack.shrink(1);
+                stack.setDamageValue(0);
+            }
+        }
+    }
+
+    /**
+     * Copied from {@link World#destroyBlock(BlockPos, boolean, Entity, int)}
+     * Allows the loot context to be modified
+     */
+    @SuppressWarnings("deprecation")
+    public static void destroyBlockAndDropBlocksManually(World worldIn, BlockPos pos, Consumer<LootContext.Builder> builder)
+    {
+        BlockState state = worldIn.getBlockState(pos);
+        if (!state.isAir())
+        {
+            FluidState fluidstate = worldIn.getFluidState(pos);
+            if (!(state.getBlock() instanceof AbstractFireBlock))
+            {
+                worldIn.levelEvent(2001, pos, Block.getId(state));
+            }
+
+            if (worldIn instanceof ServerWorld)
+            {
+                TileEntity tileEntity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+
+                // Copied from Block.getDrops()
+                LootContext.Builder lootContext = new LootContext.Builder((ServerWorld) worldIn)
+                    .withRandom(worldIn.random)
+                    .withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(pos))
+                    .withParameter(LootParameters.TOOL, ItemStack.EMPTY)
+                    .withOptionalParameter(LootParameters.THIS_ENTITY, null)
+                    .withOptionalParameter(LootParameters.BLOCK_ENTITY, tileEntity);
+                builder.accept(lootContext);
+                state.getDrops(lootContext).forEach(stackToSpawn -> Block.popResource(worldIn, pos, stackToSpawn));
+                state.spawnAfterBreak((ServerWorld) worldIn, pos, ItemStack.EMPTY);
+            }
+            worldIn.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
+        }
     }
 }

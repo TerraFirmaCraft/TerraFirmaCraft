@@ -30,8 +30,8 @@ public class BiomeNoise
                 .spread(0.04f)
                 .map(x -> 1.3f * -(x > 0 ? x * x * x : 0.5f * x))
                 .scaled(-1f, 0.3f, -1f, 1f)
-                .terraces(17)
-                .scaled(-22, 0)
+                .terraces(15)
+                .scaled(-19.5f, 0)
             )
             .map(x -> x < seaLevel ? seaLevel - 0.3f * (seaLevel - x) : x);
     }

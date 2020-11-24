@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/rhyolite",
+    "hardened": "tfc:rock/hardened/rhyolite",
     "bricks": "tfc:rock/bricks/rhyolite",
     "cobble": "tfc:rock/cobble/rhyolite",
     "gravel": "tfc:rock/gravel/rhyolite",

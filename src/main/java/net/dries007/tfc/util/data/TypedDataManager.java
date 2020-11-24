@@ -20,9 +20,9 @@ public class TypedDataManager<T> extends DataManager<T>
 {
     protected final Map<ResourceLocation, BiFunction<ResourceLocation, JsonObject, ? extends T>> deserializers;
 
-    public TypedDataManager(Gson gson, String domain, String typeName)
+    protected TypedDataManager(Gson gson, String domain, String typeName, boolean allowNone)
     {
-        super(gson, domain, typeName);
+        super(gson, domain, typeName, allowNone);
 
         this.deserializers = new HashMap<>();
     }

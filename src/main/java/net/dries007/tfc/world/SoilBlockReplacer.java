@@ -34,7 +34,7 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     }
 
     @Override
-    public BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature)
+    public BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature, boolean salty)
     {
         if (rainfall < RAINFALL_SANDY)
         {

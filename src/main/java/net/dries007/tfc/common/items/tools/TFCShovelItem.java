@@ -52,6 +52,6 @@ public class TFCShovelItem extends ShovelItem
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack)
     {
-        return attributeModifiers;
+        return slot == EquipmentSlotType.MAINHAND ? attributeModifiers : super.getAttributeModifiers(slot, stack);
     }
 }

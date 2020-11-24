@@ -100,13 +100,20 @@ public final class InteractionManager
     {
         if (!ACTIVE.get())
         {
-            for (Entry wrapper : CACHE.getAll(stack.getItem()))
+            for (Entry entry : CACHE.getAll(stack.getItem()))
             {
-                if (wrapper.test.test(stack))
+                if (entry.test.test(stack))
                 {
+                    ActionResultType result;
                     ACTIVE.set(true);
-                    ActionResultType result = wrapper.action.onItemUse(stack, context);
-                    ACTIVE.set(false);
+                    try
+                    {
+                        result = entry.action.onItemUse(stack, context);
+                    }
+                    finally
+                    {
+                        ACTIVE.set(false);
+                    }
                     return Optional.of(result);
                 }
             }
@@ -119,6 +126,7 @@ public final class InteractionManager
         CACHE.reload(ACTIONS);
     }
 
+    @FunctionalInterface
     public interface OnItemUseAction
     {
         ActionResultType onItemUse(ItemStack stack, ItemUseContext context);

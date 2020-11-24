@@ -73,7 +73,7 @@ public class SupportManager extends DataManager<Support>
 
     private SupportManager()
     {
-        super(new GsonBuilder().create(), "supports", "support");
+        super(new GsonBuilder().create(), "supports", "support", true);
     }
 
     public Optional<Support> get(BlockState state)

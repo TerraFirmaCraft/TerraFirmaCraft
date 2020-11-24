@@ -9,8 +9,9 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.SpawnLocationHelper;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.Direction;
@@ -36,14 +37,17 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
+import net.dries007.tfc.common.capabilities.heat.HeatManager;
 import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
-import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.common.types.MetalManager;
+import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
@@ -103,10 +107,10 @@ public final class ForgeEventHandler
                 {
                     if (x > -16 && x <= 16 && z > -16 && z <= 16)
                     {
-                        BlockPos spawnPos = SpawnLocationHelper.getSpawnPosInChunk(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z), false); // Last param is "use valid_spawn tag"
+                        BlockPos spawnPos = Helpers.findValidSpawnLocation(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
                         if (spawnPos != null)
                         {
-                            settings.setSpawn(spawnPos, 0.0F);
+                            settings.setSpawn(spawnPos, 0);
                             foundExactSpawn = true;
                             break;
                         }
@@ -231,7 +235,7 @@ public final class ForgeEventHandler
         resourceManager.registerReloadListener(MetalManager.INSTANCE);
         resourceManager.registerReloadListener(MetalItemManager.INSTANCE);
         resourceManager.registerReloadListener(SupportManager.INSTANCE);
-        resourceManager.registerReloadListener(HeatCapability.HeatManager.INSTANCE);
+        resourceManager.registerReloadListener(HeatManager.INSTANCE);
 
         resourceManager.registerReloadListener(CacheInvalidationListener.INSTANCE);
     }
@@ -272,16 +276,24 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
-        IWorld world = event.getWorld();
-        for (Direction direction : event.getNotifiedSides())
+        if (event.getWorld() instanceof ServerWorld)
         {
-            // Check each notified block for a potential gravity block
-            BlockPos pos = event.getPos().relative(direction);
-            BlockState state = world.getBlockState(pos);
-            if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()) && world instanceof World)
+            final ServerWorld world = (ServerWorld) event.getWorld();
+            for (Direction direction : event.getNotifiedSides())
             {
-                // Here, we just record the position rather than immediately updating as this is called from `setBlockState` so it's preferred to handle it with just a little latency
-                ((World) world).getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                // Check each notified block for a potential gravity block
+                final BlockPos pos = event.getPos().relative(direction);
+                final BlockState state = world.getBlockState(pos);
+
+                if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+                {
+                    world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                }
+
+                if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+                {
+                    world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+                }
             }
         }
     }
@@ -289,10 +301,21 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
     {
-        IWorld world = event.getWorld();
-        if (TFCTags.Blocks.CAN_LANDSLIDE.contains(event.getState().getBlock()) && world instanceof World)
+        if (event.getWorld() instanceof ServerWorld)
         {
-            LandslideRecipe.tryLandslide((World) event.getWorld(), event.getPos(), event.getState());
+            final ServerWorld world = (ServerWorld) event.getWorld();
+            final BlockPos pos = event.getPos();
+            final BlockState state = event.getState();
+
+            if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+            {
+                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+            }
+
+            if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+            {
+                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+            }
         }
     }
 
@@ -324,12 +347,11 @@ public final class ForgeEventHandler
             event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
 
             // Attach heat capability to the ones defined by data packs
-            HeatCapability.HeatManager.CACHE.getAll(stack.getItem())
-                .stream()
-                .filter(heatWrapper -> heatWrapper.isValid(stack))
-                .findFirst()
-                .map(HeatCapability.HeatWrapper::getCapability)
-                .ifPresent(heat -> event.addCapability(HeatCapability.KEY, heat));
+            HeatDefinition def = HeatManager.get(stack);
+            if (def != null)
+            {
+                event.addCapability(HeatCapability.KEY, def.create());
+            }
         }
     }
 
@@ -354,6 +376,24 @@ public final class ForgeEventHandler
         if (!TFCConfig.SERVER.enableNetherPortals.get())
         {
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
+    {
+        Block originalBlock = event.getOriginalState().getBlock();
+        if (originalBlock == Blocks.STONE)
+        {
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.GABBRO).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+        }
+        else if (originalBlock == Blocks.COBBLESTONE)
+        {
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.RHYOLITE).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+        }
+        else if (originalBlock == Blocks.BASALT)
+        {
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }
     }
 }

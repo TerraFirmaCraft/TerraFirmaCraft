@@ -6,18 +6,29 @@
       "type": "minecraft:decorated",
       "config": {
         "feature": {
-          "type": "tfc:flood_fill_lake",
-          "config": {}
+          "type": "minecraft:decorated",
+          "config": {
+            "feature": {
+              "type": "tfc:flood_fill_lake",
+              "config": {}
+            },
+            "decorator": {
+              "type": "minecraft:heightmap_world_surface",
+              "config": {}
+            }
+          }
         },
         "decorator": {
-          "type": "minecraft:heightmap_world_surface",
+          "type": "minecraft:square",
           "config": {}
         }
       }
     },
     "decorator": {
-      "type": "minecraft:square",
-      "config": {}
+      "type": "minecraft:chance",
+      "config": {
+        "chance": 5
+      }
     }
   }
 }

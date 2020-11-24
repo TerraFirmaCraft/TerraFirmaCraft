@@ -7,8 +7,6 @@ package net.dries007.tfc.common.types;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
@@ -18,31 +16,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.crafting.CraftingHelper;
-
-import net.dries007.tfc.TerraFirmaCraft;
 
 public class MetalItem
 {
-    public static Optional<MetalItem> get(ItemStack stack)
-    {
-        return MetalItemManager.CACHE.getAll(stack.getItem())
-            .stream()
-            .filter(metalItem -> metalItem.isValid(stack))
-            .findFirst();
-    }
-
-    public static void addTooltipInfo(ItemStack stack, List<ITextComponent> text)
-    {
-        get(stack).ifPresent(metalItem -> {
-            text.add(new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".tooltip.metal", metalItem.getMetal().getDisplayName()));
-            text.add(new TranslationTextComponent(TerraFirmaCraft.MOD_ID + ".tooltip.units", metalItem.getAmount()));
-            text.add(metalItem.getMetal().getTier().getDisplayName());
-        });
-    }
-
     private final ResourceLocation id;
     private final Ingredient ingredient;
     private final Metal metal;
@@ -81,7 +58,7 @@ public class MetalItem
         return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
-    private boolean isValid(ItemStack stack)
+    public boolean isValid(ItemStack stack)
     {
         return this.ingredient.test(stack);
     }

@@ -19,7 +19,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
 {
-    public static final IntegerProperty ROCKS = TFCBlockStateProperties.COUNT_1_3;
+    public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_3;
 
     private static final VoxelShape ONE = box(5.0D, 0.0D, 5.0D, 11.0D, 2.0D, 11.0D);
     private static final VoxelShape TWO = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
@@ -29,7 +29,7 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     {
         super(properties, VoxelShapes.empty(), null);
 
-        registerDefaultState(defaultBlockState().setValue(ROCKS, 1));
+        registerDefaultState(defaultBlockState().setValue(COUNT, 1));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
         BlockState stateAt = context.getLevel().getBlockState(context.getClickedPos());
         if (stateAt.is(this))
         {
-            return stateAt.setValue(ROCKS, Math.min(3, stateAt.getValue(ROCKS) + 1));
+            return stateAt.setValue(COUNT, Math.min(3, stateAt.getValue(COUNT) + 1));
         }
         return super.getStateForPlacement(context);
     }
@@ -47,13 +47,13 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(ROCKS));
+        super.createBlockStateDefinition(builder.add(COUNT));
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (state.getValue(ROCKS))
+        switch (state.getValue(COUNT))
         {
             case 1:
                 return ONE;
@@ -62,6 +62,6 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
             case 3:
                 return THREE;
         }
-        throw new IllegalStateException("Unknown value for property LooseRockBlock#ROCKS: " + state.getValue(ROCKS));
+        throw new IllegalStateException("Unknown value for property LooseRockBlock#ROCKS: " + state.getValue(COUNT));
     }
 }

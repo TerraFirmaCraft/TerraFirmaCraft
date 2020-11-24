@@ -7,11 +7,12 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
+          "type": "item",
           "name": "tfc:rock/cobble/quartzite_slab",
           "functions": [
             {
               "function": "minecraft:set_count",
+              "count": 2,
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -20,8 +21,7 @@
                     "type": "double"
                   }
                 }
-              ],
-              "count": 2
+              ]
             },
             {
               "function": "minecraft:explosion_decay"

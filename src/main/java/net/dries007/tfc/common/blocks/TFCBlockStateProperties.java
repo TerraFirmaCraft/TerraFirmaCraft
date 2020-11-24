@@ -16,6 +16,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.calendar.Season;
 
 /**
@@ -35,8 +36,8 @@ public class TFCBlockStateProperties
 
     public static final IntegerProperty[] DISTANCES = {DISTANCE_7, DISTANCE_8, DISTANCE_9, DISTANCE_10};
 
-    public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER));
-    public static final FluidProperty WATER_AND_LAVA = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, Fluids.LAVA));
+    public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER));
+    public static final FluidProperty WATER_AND_LAVA = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER, Fluids.LAVA));
 
     public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
 
@@ -59,4 +60,6 @@ public class TFCBlockStateProperties
 
     public static final EnumProperty<ITallPlant.Part> TALL_PLANT_PART = EnumProperty.create("part", ITallPlant.Part.class);
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
+
+    public static final BooleanProperty TIP = BooleanProperty.create("tip");
 }

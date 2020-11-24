@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:landslide",
+  "ingredient": [
+    "tfc:dirt/silt",
+    "tfc:grass/silt",
+    "tfc:grass_path/silt"
+  ],
+  "result": "tfc:dirt/silt"
+}

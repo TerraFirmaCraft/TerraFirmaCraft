@@ -1,7 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "tfc:item/bucket/metal/copper"
-  }
+  "parent": "forge:item/bucket",
+  "loader": "forge:bucket",
+  "fluid": "tfc:copper"
 }

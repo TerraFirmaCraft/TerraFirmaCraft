@@ -206,7 +206,7 @@ ORE_VEINS: Dict[str, Vein] = {
     'emerald': Vein('emerald', 'pipe', 80, 60, 5, 140, 40, 0, 0, 0, ['igneous_intrusive']),
 }
 
-ROCK_BLOCK_TYPES = ('raw', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
+ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose')
 CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
@@ -337,6 +337,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.calendar_day': 'Day : ',
     'tfc.tooltip.calendar_birthday': '%s\'s Birthday!',
     'tfc.tooltip.calendar_date': 'Date : ',
+    'tfc.tooltip.climate_plate_tectonics_classification': 'Region: ',
     'tfc.tooltip.climate_koppen_climate_classification': 'Climate: ',
     'tfc.tooltip.climate_average_temperature': 'Avg. Temp: %s\u00b0C',
     'tfc.tooltip.climate_annual_rainfall': 'Annual Rainfall: %smm',
@@ -367,7 +368,17 @@ DEFAULT_LANG = {
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'none')),
-    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
+    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
+    'tfc.enum.platetectonicsclassification.oceanic': 'Oceanic Plate',
+    'tfc.enum.platetectonicsclassification.continental_low': 'Low Altitude Continental',
+    'tfc.enum.platetectonicsclassification.continental_mid': 'Mid Altitude Continental',
+    'tfc.enum.platetectonicsclassification.continental_high': 'High Altitude Continental',
+    'tfc.enum.platetectonicsclassification.ocean_ocean_diverging': 'Oceanic Rift',
+    'tfc.enum.platetectonicsclassification.ocean_ocean_converging': 'Oceanic Orogeny',
+    'tfc.enum.platetectonicsclassification.ocean_continent_diverging': 'Coastal Rift',
+    'tfc.enum.platetectonicsclassification.ocean_continent_converging': 'Subduction Zone',
+    'tfc.enum.platetectonicsclassification.continent_continent_diverging': 'Continental Rift',
+    'tfc.enum.platetectonicsclassification.continent_continent_converging': 'Orogenic Belt',
     'tfc.enum.season.january': 'Winter',
     'tfc.enum.season.february': 'Late Winter',
     'tfc.enum.season.march': 'Early Spring',

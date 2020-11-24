@@ -20,7 +20,7 @@ public class CommonConfig
 {
     // General
     public final ForgeConfigSpec.IntValue defaultMonthLength;
-    public final ForgeConfigSpec.BooleanValue logDFUFUs;
+    public final ForgeConfigSpec.BooleanValue enableDevTweaks;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -30,7 +30,14 @@ public class CommonConfig
         innerBuilder.push("general");
 
         defaultMonthLength = builder.apply("defaultMonthLength").defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
-        logDFUFUs = builder.apply("logDFUFUs").comment("Should TFC try and identify potential issues with world generation data loading and log informational warnings? This does produce false positives!").define("logDFUFUs", true);
+        enableDevTweaks = builder.apply("enableDevTweaks").comment(
+            "This enables a series of quality of life logging improvements aimed at mod or pack development. It has no end user or gameplay effect.",
+            "This currently enables the following tweaks:",
+            " - Enables a [Possible DFU FU] log message, which attempts to catch errors due to incorrect world generation data packs. This does produce false errors!",
+            " - Improves and shortens the error message for invalid loot tables.",
+            " - Improves and shortens the error message for invalid recipes.",
+            " - Fixes MC-190122 (Makes the 'Loaded Recipes' log message accurate)"
+        ).define("enableDevTweaks", true);
 
         innerBuilder.pop();
     }

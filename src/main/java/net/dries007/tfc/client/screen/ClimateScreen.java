@@ -11,7 +11,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -53,22 +52,21 @@ public class ClimateScreen extends TFCContainerScreen<SimpleContainer>
     {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
-        String tooltip = TextFormatting.WHITE + "" + TextFormatting.UNDERLINE + title.getString();
-        font.draw(matrixStack, tooltip, (imageWidth - font.width(tooltip)) / 2f, 7, 0x404040);
-
         // Climate at the current player
         float averageTemp = ClimateRenderCache.INSTANCE.getAverageTemperature();
         float rainfall = ClimateRenderCache.INSTANCE.getRainfall();
         float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
 
         String climateType = I18n.get("tfc.tooltip.climate_koppen_climate_classification") + I18n.get(Helpers.getEnumTranslationKey(KoppenClimateClassification.classify(averageTemp, rainfall)));
+        String plateTectonics = I18n.get("tfc.tooltip.climate_plate_tectonics_classification") + I18n.get(Helpers.getEnumTranslationKey(ClimateRenderCache.INSTANCE.getPlateTectonicsInfo()));
         String averageTempTooltip = I18n.get("tfc.tooltip.climate_average_temperature", String.format("%.1f", averageTemp));
         String rainfallTooltip = I18n.get("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall));
         String currentTempTooltip = I18n.get("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp));
 
         font.draw(matrixStack, climateType, (imageWidth - font.width(climateType)) / 2f, 25, 0x404040);
-        font.draw(matrixStack, averageTempTooltip, (imageWidth - font.width(averageTempTooltip)) / 2f, 34, 0x404040);
-        font.draw(matrixStack, rainfallTooltip, (imageWidth - font.width(rainfallTooltip)) / 2f, 43, 0x404040);
-        font.draw(matrixStack, currentTempTooltip, (imageWidth - font.width(currentTempTooltip)) / 2f, 52, 0x404040);
+        font.draw(matrixStack, plateTectonics, (imageWidth - font.width(plateTectonics)) / 2f, 34, 0x404040);
+        font.draw(matrixStack, averageTempTooltip, (imageWidth - font.width(averageTempTooltip)) / 2f, 43, 0x404040);
+        font.draw(matrixStack, rainfallTooltip, (imageWidth - font.width(rainfallTooltip)) / 2f, 52, 0x404040);
+        font.draw(matrixStack, currentTempTooltip, (imageWidth - font.width(currentTempTooltip)) / 2f, 61, 0x404040);
     }
 }

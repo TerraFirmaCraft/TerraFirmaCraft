@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -35,10 +34,10 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.Wood;
 import net.dries007.tfc.mixin.world.biome.BiomeColorsAccessor;
-import net.dries007.tfc.world.TFCChunkGenerator;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -80,21 +79,24 @@ public final class ClientEventHandler
         TFCBlocks.METALS.values().forEach(map -> map.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout())));
 
         // Groundcover
-        TFCBlocks.GROUNDCOVER.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
-        TFCBlocks.SMALL_ORES.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
+        TFCBlocks.GROUNDCOVER.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
+        TFCBlocks.SMALL_ORES.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
+        RenderTypeLookup.setRenderLayer(TFCBlocks.CALCITE.get(), RenderType.cutout());
 
         // Plants
-        TFCBlocks.PLANTS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutoutMipped()));
+        TFCBlocks.PLANTS.values().forEach(reg -> RenderTypeLookup.setRenderLayer(reg.get(), RenderType.cutout()));
+
+        // Fluids
+        RenderTypeLookup.setRenderLayer(TFCFluids.SALT_WATER.getFlowing(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(TFCFluids.SALT_WATER.getSource(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(TFCFluids.SPRING_WATER.getFlowing(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(TFCFluids.SPRING_WATER.getSource(), RenderType.translucent());
 
         // Entity Rendering
         RenderingRegistry.registerEntityRenderingHandler(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
 
-        // Dynamic water color setup
-        final BlockPos.Mutable colorResolverPos = new BlockPos.Mutable();
-        BiomeColorsAccessor.accessor$setWaterColorResolver((biome, posX, posZ) -> {
-            colorResolverPos.set(posX, TFCChunkGenerator.SEA_LEVEL, posZ);
-            return TFCColors.getWaterColor(colorResolverPos);
-        });
+        // Redirect vanilla water color resolver
+        BiomeColorsAccessor.accessor$setWaterColorResolver(TFCColors.FRESH_WATER);
     }
 
     @SubscribeEvent

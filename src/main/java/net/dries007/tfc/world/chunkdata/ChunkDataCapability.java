@@ -8,10 +8,8 @@ package net.dries007.tfc.world.chunkdata;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.NoopStorage;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -23,8 +21,6 @@ public final class ChunkDataCapability
 
     public static void setup()
     {
-        CapabilityManager.INSTANCE.register(ChunkData.class, new NoopStorage<>(), () -> {
-            throw new UnsupportedOperationException("Creating default instances is not supported");
-        });
+        Helpers.registerSimpleCapability(ChunkData.class);
     }
 }

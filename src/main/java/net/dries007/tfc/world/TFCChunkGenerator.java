@@ -26,6 +26,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.biome.BiomeManager;
+import net.minecraft.world.biome.ColumnFuzzedBiomeMagnifier;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.ChunkSection;
@@ -114,7 +115,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         surfaceDepthNoise = new PerlinNoiseGenerator(seedGenerator, IntStream.rangeClosed(-3, 0)); // From vanilla
 
         // Generators / Providers
-        this.chunkDataProvider = new ChunkDataProvider(new ChunkDataGenerator(seedGenerator, this.biomeProvider.getLayerSettings())); // Chunk data
+        this.chunkDataProvider = new ChunkDataProvider(new ChunkDataGenerator(seed, seedGenerator, this.biomeProvider.getLayerSettings())); // Chunk data
         this.blockReplacer = new ChunkBlockReplacer(seedGenerator.nextLong()); // Replaces default world gen blocks with TFC variants, after surface generation
         this.biomeProvider.setChunkDataProvider(chunkDataProvider); // Allow biomes to use the chunk data temperature / rainfall variation
     }
@@ -191,7 +192,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
      * Surface is done in make base, bedrock is added here then block replacements are ran.
      */
     @Override
-    public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, IChunk chunkIn)
+    public void buildSurfaceAndBedrock(WorldGenRegion world, IChunk chunkIn)
     {
         final ChunkPrimer chunk = (ChunkPrimer) chunkIn;
         final ChunkPos chunkPos = chunk.getPos();
@@ -201,7 +202,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         makeBedrock(chunk, random);
 
         final ChunkData chunkData = chunkDataProvider.get(chunkPos, ChunkData.Status.ROCKS);
-        blockReplacer.replace(chunk, chunkData);
+        blockReplacer.replace(chunk, chunkData, world);
     }
 
     @Override
@@ -244,7 +245,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final Object2DoubleMap<Biome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>(4), carvingWeightMap1 = new Object2DoubleOpenHashMap<>(4);
 
         // Faster than vanilla (only does 2d interpolation) and uses the already generated biomes by the chunk where possible
-        final ChunkArraySampler.CoordinateAccessor<Biome> biomeAccessor = (x, z) -> (Biome) SmoothColumnBiomeMagnifier.SMOOTH.getBiome(seed, chunkX + x, 0, chunkZ + z, world);
+        final ChunkArraySampler.CoordinateAccessor<Biome> biomeAccessor = (x, z) -> (Biome) ColumnFuzzedBiomeMagnifier.INSTANCE.getBiome(seed, chunkX + x, 0, chunkZ + z, world);
         final Function<Biome, BiomeVariants> variantAccessor = biome -> TFCBiomes.getExtensionOrThrow(world, biome).getVariants();
 
         final Biome[] sampledBiomes16 = ChunkArraySampler.fillSampledArray(new Biome[10 * 10], biomeAccessor, 4);
@@ -494,8 +495,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
                 }
                 else
                 {
-                    worldSurface.update(x, landHeight, z, fillerBlock);
-                    oceanFloor.update(x, SEA_LEVEL, z, fillerFluid);
+                    worldSurface.update(x, SEA_LEVEL, z, fillerBlock);
+                    oceanFloor.update(x, landHeight, z, fillerFluid);
                 }
             }
         }
@@ -594,10 +595,19 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         {
             for (int z = 0; z < 16; z++)
             {
-                int yMax = flatBedrock ? 0 : random.nextInt(5);
-                for (int y = 0; y < yMax; y++)
+                if (flatBedrock)
                 {
-                    bottomSection.setBlockState(x, y, z, bedrock, false);
+                    bottomSection.setBlockState(x, 0, z, bedrock, false);
+                }
+                else
+                {
+                    for (int y = 0; y <= 5; y++)
+                    {
+                        if (random.nextInt(5) < y)
+                        {
+                            bottomSection.setBlockState(x, y, z, bedrock, false);
+                        }
+                    }
                 }
             }
         }

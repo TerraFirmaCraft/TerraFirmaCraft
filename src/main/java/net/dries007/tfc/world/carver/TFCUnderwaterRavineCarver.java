@@ -7,12 +7,10 @@ package net.dries007.tfc.world.carver;
 
 import java.util.BitSet;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
-import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
@@ -20,26 +18,20 @@ import net.minecraft.world.gen.carver.UnderwaterCanyonWorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.mixin.world.gen.carver.CanyonWorldCarverAccessor;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 public class TFCUnderwaterRavineCarver extends UnderwaterCanyonWorldCarver implements IContextCarver
 {
-    private final Set<Block> originalCarvableBlocks;
-    private final UnderwaterBlockCarver blockCarver;
+    private final SaltWaterBlockCarver blockCarver;
 
     private boolean initialized;
 
     public TFCUnderwaterRavineCarver(Codec<ProbabilityConfig> codec)
     {
         super(codec);
-        originalCarvableBlocks = replaceableBlocks;
-        blockCarver = new UnderwaterBlockCarver();
+        blockCarver = new SaltWaterBlockCarver();
         initialized = false;
-
-        // Need to run this every time the rock registry is reloaded
-        RockManager.INSTANCE.addCallback(() -> replaceableBlocks = TFCCarvers.fixCarvableBlocksList(originalCarvableBlocks));
     }
 
     @Override

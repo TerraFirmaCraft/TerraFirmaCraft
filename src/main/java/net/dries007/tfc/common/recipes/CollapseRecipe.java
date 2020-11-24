@@ -7,8 +7,8 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -26,7 +26,7 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.support.SupportManager;
-import net.dries007.tfc.util.tracker.CollapseData;
+import net.dries007.tfc.util.tracker.Collapse;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 /**
@@ -41,9 +41,17 @@ public class CollapseRecipe extends SimpleBlockRecipe
     public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = new IndirectHashCollection<>(recipe -> recipe.getBlockIngredient().getValidBlocks());
     private static final Random RANDOM = new Random();
 
-    public static Optional<CollapseRecipe> getRecipe(World world, BlockRecipeWrapper wrapper)
+    @Nullable
+    public static CollapseRecipe getRecipe(World world, BlockRecipeWrapper wrapper)
     {
-        return CACHE.getAll(wrapper.getState().getBlock()).stream().filter(recipe -> recipe.matches(wrapper, world)).findFirst();
+        for (CollapseRecipe recipe : CACHE.getAll(wrapper.getState().getBlock()))
+        {
+            if (recipe.matches(wrapper, world))
+            {
+                return recipe;
+            }
+        }
+        return null;
     }
 
     /**
@@ -125,7 +133,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
 
         if (!secondaryPositions.isEmpty())
         {
-            world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new CollapseData(centerPos, secondaryPositions, radiusSquared)));
+            world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new Collapse(centerPos, secondaryPositions, radiusSquared)));
         }
     }
 
@@ -136,13 +144,16 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean collapseBlock(World world, BlockPos pos, BlockState state)
     {
-        BlockRecipeWrapper wrapper = new BlockRecipeWrapper(world, pos, state);
-        return getRecipe(world, wrapper).map(recipe -> {
+        BlockRecipeWrapper wrapper = new BlockRecipeWrapper(pos, state);
+        CollapseRecipe recipe = getRecipe(world, wrapper);
+        if (recipe != null)
+        {
             BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
             world.setBlockAndUpdate(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
-            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, collapseState));
+            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState));
             return true;
-        }).orElse(false);
+        }
+        return false;
     }
 
     CollapseRecipe(ResourceLocation id, IBlockIngredient ingredient, BlockState outputState, boolean copyInputState)
