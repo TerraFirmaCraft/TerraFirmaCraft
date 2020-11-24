@@ -63,6 +63,7 @@ def generate(rm: ResourceManager):
     # Sand
     for color in SAND_BLOCK_TYPES:
         rm.block_tag('sea_bush_plantable_on', 'tfc:sand/%s' % color)
+        rm.block_tag('minecraft:sand', 'tfc:sand/%s' % color)
 
     # Tags
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')

@@ -278,7 +278,7 @@ PLANTS: Dict[str, Plant] = {
     'spanish_moss': Plant(False, 35, 41, 400, 500, 'hanging'),
     'star_grass': Plant(False, -50, 50, 50, 260, 'seagrass'),
     'strelitzia': Plant(False, 35, 50, 50, 300, 'standard'),
-    'switchgrass': Plant(False, -29, 8, 100, 310, 'tall_grass'),
+    'switchgrass': Plant(False, -29, 29, 110, 390, 'tall_grass'),
     'sword_fern': Plant(False, -40, 25, 100, 500, 'standard'),
     'tall_fescue_grass': Plant(False, -10, 15, 280, 430, 'tall_grass'),
     'timothy_grass': Plant(False, 15, 29, 289, 500, 'short_grass'),

@@ -7,12 +7,14 @@ package net.dries007.tfc.common.blocks.plant;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public abstract class TFCCactusBlock extends TFCTallGrassBlock
@@ -32,6 +34,24 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     protected TFCCactusBlock(Properties properties)
     {
         super(properties);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos)
+    {
+        BlockState blockstate = worldIn.getBlockState(pos.below());
+        if (state.getValue(PART) == Part.LOWER)
+        {
+            return blockstate.is(BlockTags.SAND);
+        }
+        else
+        {
+            if (state.getBlock() != this)
+            {
+                return blockstate.is(BlockTags.SAND); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+            }
+            return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
+        }
     }
 
     @SuppressWarnings("deprecation")
