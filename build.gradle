@@ -101,28 +101,28 @@ repositories {
     mavenCentral()
     maven {
         name = "CraftTweaker Maven"
-        url = "https://maven.blamejared.com/"
+        url "https://www.cursemaven.com"
     }
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
+        url "https://www.cursemaven.com"
     }
-    //maven {
-    //    name = "Hwyla maven"
-    //    url "http://tehnut.info/maven"
-    //}
+    maven {
+        name = "Hwyla maven"
+        url "https://www.cursemaven.com"
+    }
     maven { // TOP
         name 'tterrag maven'
-        url "https://maven.tterrag.com/"
+        url "https://www.cursemaven.com"
     }
     maven {
         name = "CoFH Maven"
-        url = "https://maven.covers1624.net/"
+        url "https://www.cursemaven.com"
     }
     maven {
         name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
+        url "https://www.cursemaven.com"
     }
 }
 
@@ -133,14 +133,17 @@ String strippedVersion = shortVersion.replace(".", "") + "0"
 dependencies {
     // Mod dependencies go here.
     // Do not add dependencies without prior approval from the dev team. You can update existing ones.
-    deobfProvided "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
-    deobfProvided "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
+    compile "curse.maven:crafttweaker:3110031"
+    compile "curse.maven:jei:3040523"
 
     // For now, since maven is no show, use the curse maven plugin to resolve the exact file name
-    deobfProvided "curse.maven:hwyla:2568751"
+    compile "curse.maven:hwyla:2568751"
+    compile "curse.maven:top:2667280"
+    compile "curse.maven:patchouli:3087124"
+    //deobfProvided "curse.maven:hwyla:2568751"
     //compileOnly "mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"
-    deobfProvided "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
-    deobfProvided "vazkii.patchouli:Patchouli:${config.patchouli.version}"
+    //deobfProvided "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"
+    //deobfProvided "vazkii.patchouli:Patchouli:${config.patchouli.version}"
 }
 
 processResources {
