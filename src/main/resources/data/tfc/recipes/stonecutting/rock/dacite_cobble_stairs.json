@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "tfc:rock/cobble/dacite"
+  },
+  "result": "tfc:rock/cobble/dacite_stairs",
+  "count": 1
+}

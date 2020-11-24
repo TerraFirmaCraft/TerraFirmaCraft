@@ -16,7 +16,7 @@ import net.dries007.tfc.world.chunkdata.RockData;
 @FunctionalInterface
 public interface IBlockReplacer
 {
-    BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature);
+    BlockState getReplacement(RockData rockData, int x, int y, int z, float rainfall, float temperature, boolean salty);
 
     /**
      * Set the seed for this replacer

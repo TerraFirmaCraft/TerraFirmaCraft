@@ -9,7 +9,9 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.Direction;
@@ -35,6 +37,7 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -44,6 +47,7 @@ import net.dries007.tfc.common.command.TFCCommands;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.types.MetalItemManager;
 import net.dries007.tfc.common.types.MetalManager;
+import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.ChunkUnwatchPacket;
@@ -280,9 +284,15 @@ public final class ForgeEventHandler
                 // Check each notified block for a potential gravity block
                 final BlockPos pos = event.getPos().relative(direction);
                 final BlockState state = world.getBlockState(pos);
+
                 if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
                 {
                     world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                }
+
+                if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+                {
+                    world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
                 }
             }
         }
@@ -291,10 +301,21 @@ public final class ForgeEventHandler
     @SubscribeEvent
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event)
     {
-        IWorld world = event.getWorld();
-        if (world instanceof ServerWorld && TFCTags.Blocks.CAN_LANDSLIDE.contains(event.getState().getBlock()))
+        if (event.getWorld() instanceof ServerWorld)
         {
-            ((ServerWorld) world).getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(event.getPos()));
+            final ServerWorld world = (ServerWorld) event.getWorld();
+            final BlockPos pos = event.getPos();
+            final BlockState state = event.getState();
+
+            if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+            {
+                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+            }
+
+            if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+            {
+                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+            }
         }
     }
 
@@ -355,6 +376,24 @@ public final class ForgeEventHandler
         if (!TFCConfig.SERVER.enableNetherPortals.get())
         {
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
+    {
+        Block originalBlock = event.getOriginalState().getBlock();
+        if (originalBlock == Blocks.STONE)
+        {
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.GABBRO).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+        }
+        else if (originalBlock == Blocks.COBBLESTONE)
+        {
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.RHYOLITE).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+        }
+        else if (originalBlock == Blocks.BASALT)
+        {
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.Default.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }
     }
 }

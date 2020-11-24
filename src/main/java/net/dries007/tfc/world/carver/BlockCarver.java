@@ -8,15 +8,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
 import net.dries007.tfc.world.chunkdata.RockData;
-
-import static net.dries007.tfc.common.blocks.TFCBlockStateProperties.SUPPORTED;
 
 /**
  * A common class for single block carving logic
@@ -61,6 +58,7 @@ public abstract class BlockCarver implements IContextCarver
         for (Rock rock : RockManager.INSTANCE.getValues())
         {
             carvableBlocks.add(rock.getBlock(Rock.BlockType.RAW));
+            carvableBlocks.add(rock.getBlock(Rock.BlockType.HARDENED));
             carvableBlocks.add(rock.getBlock(Rock.BlockType.GRAVEL));
             carvableBlocks.add(rock.getBlock(Rock.BlockType.COBBLE));
         }
@@ -92,7 +90,7 @@ public abstract class BlockCarver implements IContextCarver
     @SuppressWarnings("deprecation")
     protected boolean isSupportable(BlockState state)
     {
-        return state.isAir() || state.hasProperty(TFCBlockStateProperties.SUPPORTED) || supportableBlocks.contains(state.getBlock());
+        return state.isAir() || supportableBlocks.contains(state.getBlock());
     }
 
     /**
@@ -102,13 +100,9 @@ public abstract class BlockCarver implements IContextCarver
     @SuppressWarnings("deprecation")
     protected void setSupported(IChunk chunk, BlockPos pos, BlockState state, RockData rockData)
     {
-        if (state.hasProperty(SUPPORTED))
+        if (!state.isAir() && state.getFluidState().isEmpty() && !chunk.getBlockState(pos.above()).isAir())
         {
-            chunk.setBlockState(pos, state.setValue(SUPPORTED, true), false);
-        }
-        else if (!state.isAir() && state.getFluidState().isEmpty() && !chunk.getBlockState(pos.above()).isAir())
-        {
-            chunk.setBlockState(pos, rockData.getRock(pos).getBlock(Rock.BlockType.RAW).defaultBlockState().setValue(SUPPORTED, true), false);
+            chunk.setBlockState(pos, rockData.getRock(pos).getBlock(Rock.BlockType.HARDENED).defaultBlockState(), false);
         }
     }
 }

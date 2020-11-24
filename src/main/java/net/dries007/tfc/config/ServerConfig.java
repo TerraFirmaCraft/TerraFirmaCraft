@@ -20,15 +20,6 @@ public class ServerConfig
 {
     // General
     public final ForgeConfigSpec.BooleanValue enableNetherPortals;
-    // Collapses
-    public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
-    public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
-    public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
-    public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
-    public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
-    public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
-    public final ForgeConfigSpec.IntValue collapseMinRadius;
-    public final ForgeConfigSpec.IntValue collapseRadiusVariance;
     // Player
     public final ForgeConfigSpec.BooleanValue enableVanillaNaturalRegeneration;
     // Climate
@@ -45,8 +36,20 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
+    // Blocks - Cobblestone
+    public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
+    public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
+    // Mechanics - Collapses
+    public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
+    public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
+    public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
+    public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
+    public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
+    public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
+    public final ForgeConfigSpec.IntValue collapseMinRadius;
+    public final ForgeConfigSpec.IntValue collapseRadiusVariance;
 
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
@@ -56,18 +59,6 @@ public class ServerConfig
         innerBuilder.push("general");
 
         enableNetherPortals = builder.apply("enableNetherPortals").comment("Enable nether portal creation").define("enableNetherPortals", false);
-
-        innerBuilder.pop().push("collapses");
-
-        enableBlockCollapsing = builder.apply("enableBlockCollapsing").comment("Enable rock collapsing when mining raw stone blocks").define("enableBlockCollapsing", true);
-        enableExplosionCollapsing = builder.apply("enableExplosionCollapsing").comment("Enable explosions causing immediate collapses.").define("enableExplosionCollapsing", true);
-        enableBlockLandslides = builder.apply("enableBlockLandslides").comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").define("enableBlockLandslides", true);
-
-        collapseTriggerChance = builder.apply("collapseTriggerChance").comment("Chance for a collapse to be triggered by mining a block.").defineInRange("collapseTriggerChance", 0.1, 0, 1);
-        collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
-        collapseExplosionPropagateChance = builder.apply("collapseExplosionPropagateChance").comment("Chance for a block to fall from an explosion triggered collapse. Higher = mor likely.").defineInRange("collapseExplosionPropagateChance", 0.3, 0, 1);
-        collapseMinRadius = builder.apply("collapseMinRadius").comment("Minimum radius for a collapse").defineInRange("collapseMinRadius", 3, 1, 32);
-        collapseRadiusVariance = builder.apply("collapseRadiusVariance").comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").defineInRange("collapseRadiusVariance", 16, 1, 32);
 
         innerBuilder.pop().push("player");
 
@@ -99,8 +90,27 @@ public class ServerConfig
 
         enableLeavesSlowEntities = builder.apply("enableLeavesSlowEntities").comment("If leaves will slow entities passing through them and reduce fall damage.").define("enableLeavesSlowEntities", true);
 
+        innerBuilder.pop().push("cobblestone");
+
+        enableMossyRockSpreading = builder.apply("enableMossyRockSpreading").comment("If mossy rock blocks will spread their moss to nearby rock blocks (bricks and cobble; stairs, slabs and walls thereof).").define("enableMossyRockSpreading", true);
+        mossyRockSpreadRate = builder.apply("mossyRockSpreadRate").comment("The rate at which rock blocks will accumulate moss. Higher value = slower.").defineInRange("mossyRockSpreadRate", 20, 1, Integer.MAX_VALUE);
+
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
         itemHeatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+
+        innerBuilder.pop().push("collapses");
+
+        enableBlockCollapsing = builder.apply("enableBlockCollapsing").comment("Enable rock collapsing when mining raw stone blocks").define("enableBlockCollapsing", true);
+        enableExplosionCollapsing = builder.apply("enableExplosionCollapsing").comment("Enable explosions causing immediate collapses.").define("enableExplosionCollapsing", true);
+        enableBlockLandslides = builder.apply("enableBlockLandslides").comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").define("enableBlockLandslides", true);
+
+        collapseTriggerChance = builder.apply("collapseTriggerChance").comment("Chance for a collapse to be triggered by mining a block.").defineInRange("collapseTriggerChance", 0.1, 0, 1);
+        collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
+        collapseExplosionPropagateChance = builder.apply("collapseExplosionPropagateChance").comment("Chance for a block to fall from an explosion triggered collapse. Higher = mor likely.").defineInRange("collapseExplosionPropagateChance", 0.3, 0, 1);
+        collapseMinRadius = builder.apply("collapseMinRadius").comment("Minimum radius for a collapse").defineInRange("collapseMinRadius", 3, 1, 32);
+        collapseRadiusVariance = builder.apply("collapseRadiusVariance").comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").defineInRange("collapseRadiusVariance", 16, 1, 32);
+
+        innerBuilder.pop().pop();
     }
 }

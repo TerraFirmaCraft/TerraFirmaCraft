@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/schist",
+    "hardened": "tfc:rock/hardened/schist",
     "bricks": "tfc:rock/bricks/schist",
     "cobble": "tfc:rock/cobble/schist",
     "gravel": "tfc:rock/gravel/schist",

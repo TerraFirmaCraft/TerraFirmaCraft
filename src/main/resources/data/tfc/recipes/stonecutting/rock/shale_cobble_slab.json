@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "tfc:rock/cobble/shale"
+  },
+  "result": "tfc:rock/cobble/shale_slab",
+  "count": 2
+}

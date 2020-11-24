@@ -23,6 +23,11 @@ public interface IWorldTracker
     void addLandslidePos(BlockPos pos);
 
     /**
+     * Marks a position to be checked for an isolated block on the next world tick
+     */
+    void addIsolatedPos(BlockPos pos);
+
+    /**
      * Starts a collapse, which will propagate / continue over the next several iterations until finished
      */
     void addCollapseData(Collapse collapse);

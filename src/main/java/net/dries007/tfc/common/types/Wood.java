@@ -157,7 +157,7 @@ public class Wood
             return () -> blockFactory.apply(wood);
         }
 
-        public String id(Default wood)
+        public String nameFor(Default wood)
         {
             return (isPlanksVariant ? "wood/planks/" + wood.name() + "_" + name().toLowerCase() : "wood/" + name() + "/" + wood.name()).toLowerCase();
         }

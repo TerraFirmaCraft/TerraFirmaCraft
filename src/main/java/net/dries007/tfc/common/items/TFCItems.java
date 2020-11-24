@@ -83,6 +83,9 @@ public final class TFCItems
         register(("powder/" + gem.name()).toLowerCase(), MISC)
     );
 
+    public static final RegistryObject<Item> MORTAR = register("mortar", MISC);
+    public static final RegistryObject<Item> STRAW = register("straw", MISC);
+
     // Fluid Buckets
 
     public static final Map<Metal.Default, RegistryObject<BucketItem>> METAL_FLUID_BUCKETS = Helpers.mapOfKeys(Metal.Default.class, metal ->
