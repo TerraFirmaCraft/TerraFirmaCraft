@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "tfc:rock/cracked_bricks/dolomite"
+  },
+  "result": "tfc:rock/cracked_bricks/dolomite_slab",
+  "count": 2
+}

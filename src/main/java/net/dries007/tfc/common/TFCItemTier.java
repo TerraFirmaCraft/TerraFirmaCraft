@@ -7,9 +7,15 @@ package net.dries007.tfc.common;
 
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.common.ToolType;
 
 public final class TFCItemTier implements IItemTier
 {
+    // Tool Types
+    public static final ToolType HAMMER = ToolType.get("hammer");
+    public static final ToolType CHISEL = ToolType.get("chisel");
+    public static final ToolType KNIFE = ToolType.get("knife");
+
     // Tier 0
     public static final IItemTier IGNEOUS_INTRUSIVE = new TFCItemTier(0, 60, 3.0f, 2.0f, 5);
     public static final IItemTier SEDIMENTARY = new TFCItemTier(0, 70, 3.0f, 2.0f, 5);

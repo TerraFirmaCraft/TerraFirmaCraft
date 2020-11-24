@@ -24,12 +24,14 @@ def generate(rm: ResourceManager):
                     ingredient = item_stack('tag!%s/%s' % (item_data.tag, metal))
                 else:
                     ingredient = item_stack('tfc:metal/%s/%s' % (item, metal))
+
                 # The IMetal capability
                 rm.data(('tfc', 'metal_items', metal, item), {
                     'ingredient': ingredient,
                     'metal': 'tfc:%s' % metal,
                     'amount': item_data.smelt_amount
                 })
+
                 # And the IHeat capability
                 rm.data(('tfc', 'item_heats', metal, item), {
                     'ingredient': ingredient,
@@ -37,6 +39,11 @@ def generate(rm: ResourceManager):
                     'forging_temperature': metal_data.melt_temperature * 0.6,
                     'welding_temperature': metal_data.melt_temperature * 0.8
                 })
+
+        # Common metal crafting tools
+        if 'tool' in metal_data.types:
+            for tool in ('hammer', 'chisel', 'axe', 'pickaxe', 'shovel'):
+                rm.item_tag('tfc:%ss' % tool, 'tfc:metal/%s/%s' % (tool, metal))
 
     # Rocks
     for rock, rock_data in ROCKS.items():
@@ -47,7 +54,8 @@ def generate(rm: ResourceManager):
             'beach_sand_color': rock_data.beach_sand_color
         })
 
-        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)
+        rm.block_tag('minecraft:base_stone_overworld', 'tfc:rock/raw/%s' % rock)  # used by vanilla, provided for consistiency
+        rm.block_tag('tfc:breaks_when_isolated', 'tfc:rock/raw/%s' % rock)  # only raw rock
 
     # Tags
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')

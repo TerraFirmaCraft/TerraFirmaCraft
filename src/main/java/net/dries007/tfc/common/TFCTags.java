@@ -33,6 +33,8 @@ public class TFCTags
         public static final ITag.INamedTag<Block> SNOW = create("snow"); // Blocks that cover grass with snow.
         public static final ITag.INamedTag<Block> CAN_BE_SNOW_PILED = create("can_be_snow_piled"); // Blocks that can be replaced with snow piles
 
+        public static final ITag.INamedTag<Block> BREAKS_WHEN_ISOLATED = create("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
+
         private static ITag.INamedTag<Block> create(String id)
         {
             return BlockTags.bind(Helpers.identifier(id).toString());

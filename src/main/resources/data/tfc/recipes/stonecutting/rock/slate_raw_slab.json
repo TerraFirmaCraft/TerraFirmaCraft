@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "tfc:rock/raw/slate"
+  },
+  "result": "tfc:rock/raw/slate_slab",
+  "count": 2
+}

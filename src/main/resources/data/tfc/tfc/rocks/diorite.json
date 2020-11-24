@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/diorite",
+    "hardened": "tfc:rock/hardened/diorite",
     "bricks": "tfc:rock/bricks/diorite",
     "cobble": "tfc:rock/cobble/diorite",
     "gravel": "tfc:rock/gravel/diorite",

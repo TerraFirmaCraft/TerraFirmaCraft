@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/chert",
+    "hardened": "tfc:rock/hardened/chert",
     "bricks": "tfc:rock/bricks/chert",
     "cobble": "tfc:rock/cobble/chert",
     "gravel": "tfc:rock/gravel/chert",

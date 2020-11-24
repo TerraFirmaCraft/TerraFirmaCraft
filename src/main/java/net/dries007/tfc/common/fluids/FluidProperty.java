@@ -28,6 +28,10 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
             {
                 return ((RegistryObject<?>) obj).getId(); // Registry objects are allowed, we assume they're fluids
             }
+            else if (obj instanceof TFCFluids.FluidPair<?>)
+            {
+                return ((TFCFluids.FluidPair<?>) obj).getFirst().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
+            }
             else
             {
                 throw new IllegalArgumentException("FluidProperty#create called with a weird thing: " + obj);

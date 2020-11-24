@@ -13,10 +13,12 @@ import java.util.function.Supplier;
 
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
+import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.RegistryObject;
@@ -116,13 +118,19 @@ public final class TFCFluids
 
     private static <F extends FlowingFluid> FluidPair<F> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
     {
-        final Mutable<ForgeFlowingFluid.Properties> propertiesBox = new MutableObject<>();
-        final RegistryObject<F> source = register(sourceName, () -> sourceFactory.apply(propertiesBox.getValue()));
-        final RegistryObject<F> flowing = register(flowingName, () -> flowingFactory.apply(propertiesBox.getValue()));
-        final ForgeFlowingFluid.Properties properties = new ForgeFlowingFluid.Properties(source, flowing, attributes);
+        // The properties needs a reference to both source and flowing
+        // In addition, the properties builder cannot be invoked statically, as it has hard references to registry objects, which may not be populated based on class load order - it must be invoked at registration time.
+        // So, first we prepare the source and flowing registry objects, referring to the properties box (which will be opened during registration, which is ok)
+        // Then, we populate the properties box lazily, (since it's a mutable lazy), so the properties inside are only constructed when the box is opened (again, during registration)
+        final Mutable<Lazy<ForgeFlowingFluid.Properties>> propertiesBox = new MutableObject<>();
+        final RegistryObject<F> source = register(sourceName, () -> sourceFactory.apply(propertiesBox.getValue().get()));
+        final RegistryObject<F> flowing = register(flowingName, () -> flowingFactory.apply(propertiesBox.getValue().get()));
 
-        builder.accept(properties);
-        propertiesBox.setValue(properties);
+        propertiesBox.setValue(Lazy.of(() -> {
+            ForgeFlowingFluid.Properties lazyProperties = new ForgeFlowingFluid.Properties(source, flowing, attributes);
+            builder.accept(lazyProperties);
+            return lazyProperties;
+        }));
 
         return new FluidPair<>(flowing, source);
     }
@@ -160,10 +168,9 @@ public final class TFCFluids
             return getSecond().get();
         }
 
-        @Override
-        public FluidPair<F> swap()
+        public BlockState getSourceBlock()
         {
-            return new FluidPair<>(getSecond(), getFirst());
+            return getSource().defaultFluidState().createLegacyBlock();
         }
     }
 }

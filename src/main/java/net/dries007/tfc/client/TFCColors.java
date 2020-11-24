@@ -36,7 +36,7 @@ public final class TFCColors
     public static final ResourceLocation GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/grass.png");
 
     public static final ColorResolver FRESH_WATER = createColorResolver(TFCColors::getWaterColor);
-    public static final ColorResolver SALT_WATER = createColorResolver(TFCColors::getWaterColor); // Todo: dedicated salt water color differences?
+    public static final ColorResolver SALT_WATER = createColorResolver(TFCColors::getWaterFogColor); // todo: dedicated salt water color difference. This is different enough for now
 
     private static final int COLORMAP_SIZE = 256 * 256;
 

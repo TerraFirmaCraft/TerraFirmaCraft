@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "blocks": {
     "raw": "tfc:rock/raw/dacite",
+    "hardened": "tfc:rock/hardened/dacite",
     "bricks": "tfc:rock/bricks/dacite",
     "cobble": "tfc:rock/cobble/dacite",
     "gravel": "tfc:rock/gravel/dacite",
