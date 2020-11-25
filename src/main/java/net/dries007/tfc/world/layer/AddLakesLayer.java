@@ -8,29 +8,30 @@ package net.dries007.tfc.world.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IC1Transformer;
 
+import static net.dries007.tfc.world.layer.TFCLayerUtil.INLAND_MARKER;
+import static net.dries007.tfc.world.layer.TFCLayerUtil.LAKE_MARKER;
+
 /**
  * Adds instances of lake markers to a layer randomly
  */
-public enum LakeLayer implements IC1Transformer
+public enum AddLakesLayer implements IC1Transformer
 {
-    SMALL(40, TFCLayerUtil.LAKE_MARKER),
-    LARGE(210, TFCLayerUtil.LARGE_LAKE_MARKER);
+    SMALL(40),
+    LARGE(160);
 
     private final int chance;
-    private final int lake;
 
-    LakeLayer(int chance, int lake)
+    AddLakesLayer(int chance)
     {
         this.chance = chance;
-        this.lake = lake;
     }
 
     @Override
     public int apply(INoiseRandom context, int value)
     {
-        if (context.nextRandom(chance) == 0)
+        if (value == INLAND_MARKER && context.nextRandom(chance) == 0)
         {
-            return lake;
+            return LAKE_MARKER;
         }
         return value;
     }

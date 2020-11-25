@@ -65,6 +65,12 @@ public abstract class Artist<T, A extends Artist<T, A>>
         return (A) this;
     }
 
+    public A centerSized(int radius)
+    {
+        size(radius * 2);
+        return center(radius);
+    }
+
     public A center(int radius)
     {
         return center(0, 0, 2 * radius, 2 * radius);

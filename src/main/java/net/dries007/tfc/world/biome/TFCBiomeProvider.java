@@ -25,6 +25,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -66,7 +67,7 @@ public class TFCBiomeProvider extends BiomeProvider implements ITFCBiomeProvider
         this.climateSettings = climateSettings;
         this.biomeRegistry = biomeRegistry;
 
-        this.biomeLayer = LayerFactory.biomes(TFCLayerUtil.createOverworldBiomeLayer(seed, layerSettings));
+        this.biomeLayer = LayerFactory.biomes(TFCLayerUtil.createOverworldBiomeLayer(seed, layerSettings, IArtist.nope(), IArtist.nope()));
     }
 
     public LayerSettings getLayerSettings()
