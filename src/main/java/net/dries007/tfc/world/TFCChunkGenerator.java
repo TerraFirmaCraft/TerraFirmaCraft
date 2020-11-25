@@ -26,7 +26,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.biome.BiomeManager;
-import net.minecraft.world.biome.ColumnFuzzedBiomeMagnifier;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.ChunkSection;
@@ -245,7 +244,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ITFCChunkGenera
         final Object2DoubleMap<Biome> weightMap16 = new Object2DoubleOpenHashMap<>(4), weightMap4 = new Object2DoubleOpenHashMap<>(4), weightMap1 = new Object2DoubleOpenHashMap<>(4), carvingWeightMap1 = new Object2DoubleOpenHashMap<>(4);
 
         // Faster than vanilla (only does 2d interpolation) and uses the already generated biomes by the chunk where possible
-        final ChunkArraySampler.CoordinateAccessor<Biome> biomeAccessor = (x, z) -> (Biome) ColumnFuzzedBiomeMagnifier.INSTANCE.getBiome(seed, chunkX + x, 0, chunkZ + z, world);
+        final BlockPos.Mutable biomeCursor = new BlockPos.Mutable();
+        final ChunkArraySampler.CoordinateAccessor<Biome> biomeAccessor = (x, z) -> {
+            biomeCursor.set(chunkX + x, 0, chunkZ + z);
+            return world.getBiome(biomeCursor);
+        };
         final Function<Biome, BiomeVariants> variantAccessor = biome -> TFCBiomes.getExtensionOrThrow(world, biome).getVariants();
 
         final Biome[] sampledBiomes16 = ChunkArraySampler.fillSampledArray(new Biome[10 * 10], biomeAccessor, 4);

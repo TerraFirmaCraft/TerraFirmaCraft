@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
+import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.common.types.Rock;
 import net.dries007.tfc.common.types.RockManager;
@@ -31,27 +32,32 @@ public class LayerFactory<T>
 
     public static LayerFactory<Rock> rocks(IAreaFactory<LazyArea> factory, TFCBiomeProvider.LayerSettings settings)
     {
-        if (RockManager.INSTANCE.isLoaded())
-        {
-            final List<ResourceLocation> missingIds = new ArrayList<>();
-            final Rock[] rockArray = settings.getRocks().stream().map(id -> {
-                Rock rock = RockManager.INSTANCE.get(id);
-                if (rock == null)
-                {
-                    missingIds.add(id);
-                }
-                return rock;
-            }).filter(Objects::nonNull).toArray(Rock[]::new);
-            if (!missingIds.isEmpty())
+        // On servers, this is called earlier than resources (rocks) are loaded, for the purposes of initial / spawn chunk generation
+        // So, we lazily initialize this, including identifying errors, and return the correct mapping function only once we can gaurentee it's initialized.
+        Lazy<IntFunction<Rock>> verifier = Lazy.of(() -> {
+            if (RockManager.INSTANCE.isLoaded())
             {
-                LOGGER.warn("Rock layer factory was initialized with {} missing rocks. If this message was before world creation you can ignore it.", missingIds.size());
-                LOGGER.warn("Missing rock ids for the following values: {}", missingIds);
+                final List<ResourceLocation> missingIds = new ArrayList<>();
+                final Rock[] rockArray = settings.getRocks().stream().map(id -> {
+                    Rock rock = RockManager.INSTANCE.get(id);
+                    if (rock == null)
+                    {
+                        missingIds.add(id);
+                    }
+                    return rock;
+                }).filter(Objects::nonNull).toArray(Rock[]::new);
+                if (!missingIds.isEmpty())
+                {
+                    LOGGER.warn("Rock layer factory was initialized with {} missing rocks. If this message was before world creation you can ignore it.", missingIds.size());
+                    LOGGER.warn("Missing rock ids for the following values: {}", missingIds);
+                }
+                return i -> rockArray[i];
             }
-            return new LayerFactory<>(factory, i -> rockArray[i]);
-        }
-        return new LayerFactory<>(factory, i -> {
-            throw new UnsupportedOperationException("Cannot query rocks before RockManager is loaded");
+            return i -> {
+                throw new UnsupportedOperationException("Cannot query rocks before RockManager is loaded");
+            };
         });
+        return new LayerFactory<>(factory, i -> verifier.get().apply(i));
     }
 
     public static LayerFactory<PlateTectonicsClassification> plateTectonics(IAreaFactory<LazyArea> factory)
