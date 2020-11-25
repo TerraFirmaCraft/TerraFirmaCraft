@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableCollection;
@@ -47,7 +48,7 @@ public final class FluidsTFC
     private static final ResourceLocation STILL = new ResourceLocation(MOD_ID, "blocks/fluid_still");
     private static final ResourceLocation FLOW = new ResourceLocation(MOD_ID, "blocks/fluid_flow");
 
-    private static final HashBiMap<Fluid, FluidWrapper> WRAPPERS = HashBiMap.create();
+    private static final HashBiMap<String, FluidWrapper> WRAPPERS = HashBiMap.create();
     private static final ResourceLocation LAVA_STILL = new ResourceLocation(MOD_ID, "blocks/lava_still");
     private static final ResourceLocation LAVA_FLOW = new ResourceLocation(MOD_ID, "blocks/lava_flow");
     private static final Map<EnumDyeColor, FluidWrapper> DYE_FLUIDS = new EnumMap<>(EnumDyeColor.class);
@@ -98,12 +99,22 @@ public final class FluidsTFC
     @SuppressWarnings("ConstantConditions")
     public static FluidWrapper getWrapper(@Nonnull Fluid fluid)
     {
-        if (!WRAPPERS.containsKey(fluid))
+        return getWrapper(fluid.getName());
+    }
+
+    @Nullable
+    public static FluidWrapper getWrapper(@Nonnull String fluidName)
+    {
+        if (!FluidRegistry.isFluidRegistered(fluidName))
+        {
+            return null;
+        }
+        if (!WRAPPERS.containsKey(fluidName))
         {
             // Should only ever get called for non-tfc fluids, but in which case prevents a null wrapper getting returned
-            WRAPPERS.put(fluid, new FluidWrapper(fluid, false));
+            WRAPPERS.put(fluidName, new FluidWrapper(fluidName));
         }
-        return WRAPPERS.get(fluid);
+        return WRAPPERS.get(fluidName);
     }
 
     @Nonnull
@@ -221,21 +232,10 @@ public final class FluidsTFC
     @Nonnull
     private static FluidWrapper registerFluid(@Nonnull Fluid newFluid)
     {
-        boolean isDefault = !FluidRegistry.isFluidRegistered(newFluid.getName());
-
-        if (!isDefault)
-        {
-            // Fluid was already registered with this name, default to that fluid
-            newFluid = FluidRegistry.getFluid(newFluid.getName());
-        }
-        else
-        {
-            // No fluid found we are safe to register our default
-            FluidRegistry.registerFluid(newFluid);
-        }
+        FluidRegistry.registerFluid(newFluid);
+        FluidWrapper properties = new FluidWrapper(newFluid);
         FluidRegistry.addBucketForFluid(newFluid);
-        FluidWrapper properties = new FluidWrapper(newFluid, isDefault);
-        WRAPPERS.put(newFluid, properties);
+        WRAPPERS.put(newFluid.getName(), properties);
         return properties;
     }
 }

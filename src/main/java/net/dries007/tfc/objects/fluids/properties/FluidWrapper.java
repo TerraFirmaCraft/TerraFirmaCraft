@@ -10,6 +10,9 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+
+import net.dries007.tfc.TerraFirmaCraft;
 
 /**
  * This is a separate class from {@link Fluid} to avoid subclassing.
@@ -21,26 +24,41 @@ import net.minecraftforge.fluids.Fluid;
  */
 public class FluidWrapper
 {
-    private final Fluid fluid;
-    private final boolean isDefault;
+    private final String fluidName;
     private final Map<FluidProperty<?>, Object> properties;
 
-    public FluidWrapper(@Nonnull Fluid fluid, boolean isDefault)
+    public FluidWrapper(@Nonnull Fluid fluid, @Deprecated boolean isDefault)
     {
-        this.fluid = fluid;
-        this.isDefault = isDefault;
+        this.fluidName = fluid.getName();
+        this.properties = new HashMap<>();
+    }
+
+    public FluidWrapper(@Nonnull Fluid fluid)
+    {
+        this.fluidName = fluid.getName();
+        this.properties = new HashMap<>();
+    }
+
+    public FluidWrapper(@Nonnull String fluidName)
+    {
+        this.fluidName = fluidName;
         this.properties = new HashMap<>();
     }
 
     @Nonnull
     public Fluid get()
     {
-        return fluid;
+        Fluid fluid = FluidRegistry.getFluid(fluidName);
+        if (fluidName.equals("salt_water")) {
+            TerraFirmaCraft.getLog().info("Salt Water {} - {}, {} and has the colour {}", fluid, fluidName, fluid.getBlock() == null ? "doesn't have a block" : "has a block", fluid.getColor());
+        }
+        return FluidRegistry.getFluid(fluidName);
     }
 
+    @Deprecated
     public boolean isDefault()
     {
-        return isDefault;
+        return true;
     }
 
     /**
