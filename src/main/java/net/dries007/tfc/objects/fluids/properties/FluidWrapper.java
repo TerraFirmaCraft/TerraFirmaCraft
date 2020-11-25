@@ -48,10 +48,6 @@ public class FluidWrapper
     @Nonnull
     public Fluid get()
     {
-        Fluid fluid = FluidRegistry.getFluid(fluidName);
-        if (fluidName.equals("salt_water")) {
-            TerraFirmaCraft.getLog().info("Salt Water {} - {}, {} and has the colour {}", fluid, fluidName, fluid.getBlock() == null ? "doesn't have a block" : "has a block", fluid.getColor());
-        }
         return FluidRegistry.getFluid(fluidName);
     }
 
