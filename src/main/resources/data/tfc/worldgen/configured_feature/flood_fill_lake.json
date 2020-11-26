@@ -10,7 +10,9 @@
           "config": {
             "feature": {
               "type": "tfc:flood_fill_lake",
-              "config": {}
+              "config": {
+                "state": "minecraft:water"
+              }
             },
             "decorator": {
               "type": "minecraft:heightmap_world_surface",

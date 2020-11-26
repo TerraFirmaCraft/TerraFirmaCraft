@@ -121,12 +121,12 @@ public abstract class DataManager<T> extends JsonReloadListener
             }
         }
 
-        LOGGER.info("Registered {} {}(s) Successfully.", types.size(), typeName);
+        LOGGER.info("Loaded {} {}(s).", types.size(), typeName);
         loaded = true;
         defaultValue = types.values().stream().findFirst().orElse(null);
         if (defaultValue == null && !allowNone)
         {
-            throw new IllegalStateException("There must be at least one registered " + typeName + '!');
+            throw new IllegalStateException("There must be at least one loaded " + typeName + '!');
         }
         postProcess();
     }

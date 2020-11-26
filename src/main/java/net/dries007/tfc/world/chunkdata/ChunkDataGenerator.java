@@ -16,7 +16,7 @@ import net.dries007.tfc.world.layer.LayerFactory;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.noise.INoise1D;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 /**
  * This is TFC's default chunk data generator.
@@ -44,29 +44,29 @@ public class ChunkDataGenerator implements IChunkDataGenerator
         this.middleRockLayer = LayerFactory.rocks(rockLayers.get(1), layerSettings);
         this.topRockLayer = LayerFactory.rocks(rockLayers.get(2), layerSettings);
 
-        this.layerHeightNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(2).scaled(40, 60).spread(0.015f);
+        this.layerHeightNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(2).scaled(40, 60).spread(0.015f);
 
         // Climate
         temperatureNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.temperatureScale.get()), 0)
             .extendX()
             .scaled(Climate.MINIMUM_TEMPERATURE_SCALE, Climate.MAXIMUM_TEMPERATURE_SCALE)
-            .add(new SimplexNoise2D(seedGenerator.nextLong())
+            .add(new OpenSimplex2D(seedGenerator.nextLong())
                 .octaves(2)
                 .spread(12f / TFCConfig.SERVER.temperatureScale.get())
                 .scaled(-Climate.REGIONAL_TEMPERATURE_SCALE, Climate.REGIONAL_TEMPERATURE_SCALE));
         rainfallNoise = INoise1D.triangle(1, 0, 1f / (2f * TFCConfig.SERVER.rainfallScale.get()), 0)
             .extendY()
             .scaled(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL)
-            .add(new SimplexNoise2D(seedGenerator.nextLong())
+            .add(new OpenSimplex2D(seedGenerator.nextLong())
                 .octaves(2)
                 .spread(12f / TFCConfig.SERVER.rainfallScale.get())
                 .scaled(-Climate.REGIONAL_RAINFALL_SCALE, Climate.REGIONAL_RAINFALL_SCALE))
             .flattened(Climate.MINIMUM_RAINFALL, Climate.MAXIMUM_RAINFALL);
 
         // Flora
-        forestBaseNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.002f).abs();
-        forestWeirdnessNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
-        forestDensityNoise = new SimplexNoise2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
+        forestBaseNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(4).spread(0.002f).abs();
+        forestWeirdnessNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).flattened(0, 1);
+        forestDensityNoise = new OpenSimplex2D(seedGenerator.nextLong()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).flattened(0, 1);
 
         plateTectonicsInfo = LayerFactory.plateTectonics(TFCLayerUtil.createOverworldPlateTectonicInfoLayer(worldSeed, layerSettings));
     }

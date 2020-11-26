@@ -22,7 +22,7 @@ import net.dries007.tfc.util.Climate;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class GlacierFeature extends Feature<NoFeatureConfig>
 {
@@ -124,7 +124,7 @@ public class GlacierFeature extends Feature<NoFeatureConfig>
     {
         if (seed != cachedSeed || !initialized)
         {
-            glacierNoise = new SimplexNoise2D(seed + 1)
+            glacierNoise = new OpenSimplex2D(seed + 1)
                 .octaves(4)
                 .spread(0.02f)
                 .map(x -> {

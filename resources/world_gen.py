@@ -57,6 +57,7 @@ def generate(rm: ResourceManager):
     surface_builder(rm, 'default', wg.configure('tfc:normal', grass_dirt_config))
     surface_builder(rm, 'underwater', wg.configure('tfc:underwater'))
     surface_builder(rm, 'mountains', wg.configure('tfc:mountains'))
+    surface_builder(rm, 'mountains_and_volcanoes', wg.configure('tfc:mountains_and_volcanoes'))
     surface_builder(rm, 'shore', wg.configure('tfc:shore'))
 
     # Configured Features
@@ -64,8 +65,12 @@ def generate(rm: ResourceManager):
     rm.feature('ice_and_snow', wg.configure('tfc:ice_and_snow'))
 
     rm.feature('lake', wg.configure_decorated(wg.configure('tfc:lake'), decorate_chance(25), 'minecraft:heightmap_world_surface', 'minecraft:square'))
-    rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), decorate_chance(5), 'minecraft:square', 'minecraft:heightmap_world_surface'))
-    rm.feature('underground_flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake'), decorate_count(3), 'minecraft:square', ('minecraft:range', {'bottom_offset': 16, 'top_offset': 16, 'maximum': 100})))
+    rm.feature('flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
+        'state': 'minecraft:water'
+    }), decorate_chance(5), 'minecraft:square', 'minecraft:heightmap_world_surface'))
+    rm.feature('underground_flood_fill_lake', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
+        'state': 'minecraft:water'
+    }), decorate_count(3), 'minecraft:square', ('minecraft:range', {'bottom_offset': 16, 'top_offset': 16, 'maximum': 100})))
 
     for spring_cfg in (('water', 80), ('lava', 35)):
         rm.feature('%s_spring' % spring_cfg[0], wg.configure_decorated(wg.configure('tfc:spring', {
@@ -125,6 +130,20 @@ def generate(rm: ResourceManager):
             'base_type': boulder_cfg[1],
             'decoration_type': boulder_cfg[2]
         }), 'minecraft:square', 'minecraft:heightmap_world_surface', ('minecraft:chance', {'chance': 12}), 'tfc:flat_enough'))
+
+    rm.feature('volcano_rivulet', wg.configure_decorated(wg.configure('tfc:rivulet', {
+        'state': 'minecraft:magma_block'
+    }), decorate_count(2), 'minecraft:square', ('tfc:volcano', {'distance': 0.7})))
+
+    rm.feature('volcano_caldera', wg.configure_decorated(wg.configure('tfc:flood_fill_lake', {
+        'overfill': True,
+        'state': 'minecraft:lava'
+    }), ('tfc:volcano', {'center': True}), 'minecraft:heightmap_world_surface'))
+
+    # todo: this might be cool in cold mountain biomes, high altitude
+    rm.feature('ice_rivulet', wg.configure_decorated(wg.configure('tfc:rivulet', {
+        'state': 'minecraft:packed_ice'
+    }), decorate_chance(7), 'minecraft:square', 'minecraft:heightmap_world_surface'))
 
     # Trees / Forests
     rm.feature('forest', wg.configure('tfc:forest', {
@@ -367,9 +386,9 @@ def generate(rm: ResourceManager):
             biome(rm, 'rolling_hills', temp, rain, 'plains', 'tfc:default', boulders=True)
             biome(rm, 'lake', temp, rain, 'river', 'tfc:underwater', spawnable=False)
             biome(rm, 'lowlands', temp, rain, 'swamp', 'tfc:default', lake_features=False)
-            biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
+            biome(rm, 'mountains', temp, rain, 'extreme_hills', 'tfc:mountains_and_volcanoes', volcano_features=True)
             biome(rm, 'old_mountains', temp, rain, 'extreme_hills', 'tfc:mountains')
-            biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains', ocean_carvers=True)
+            biome(rm, 'flooded_mountains', temp, rain, 'extreme_hills', 'tfc:mountains_and_volcanoes', ocean_carvers=True, volcano_features=True)
             biome(rm, 'ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'deep_ocean', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
             biome(rm, 'deep_ocean_ridge', temp, rain, 'ocean', 'tfc:underwater', spawnable=False, ocean_carvers=True, ocean_features=True)
@@ -546,7 +565,7 @@ def decorate_count(count: int) -> Tuple[str, Dict[str, Any]]:
     return 'minecraft:count', {'count': count}
 
 
-def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: bool = False, lake_features: bool = True):
+def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, surface_builder: str, boulders: bool = False, spawnable: bool = True, ocean_carvers: bool = False, ocean_features: bool = False, lake_features: bool = True, volcano_features: bool = False):
     # Temperature properties
     if rain.id == 'arid':
         rain_type = 'none'
@@ -590,6 +609,9 @@ def biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRai
 
         # todo: separate plants out better
         features[Decoration.VEGETAL_DECORATION] += ['tfc:plant/%s' % plant for plant, data in PLANTS.items()]
+        if volcano_features:
+            features[Decoration.SURFACE_STRUCTURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera']
+
     # Carvers
     air_carvers = ['tfc:worley_cave', 'tfc:cave', 'tfc:canyon']
     water_carvers = []
