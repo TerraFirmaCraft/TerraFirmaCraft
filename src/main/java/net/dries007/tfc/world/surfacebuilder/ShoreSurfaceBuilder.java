@@ -14,7 +14,7 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
@@ -31,17 +31,17 @@ public class ShoreSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConf
         float variantNoiseValue = variantNoise.noise(x, z);
         if (variantNoiseValue > 0.6f)
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TFCSurfaceBuilders.RED_SAND_CONFIG);
+            TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TFCSurfaceBuilders.RED_SAND_CONFIG.get());
         }
         else
         {
-            TFCSurfaceBuilders.NORMAL.get().apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TFCSurfaceBuilders.RED_SANDSTONE_CONFIG);
+            TFCSurfaceBuilders.applySurfaceBuilder(TFCSurfaceBuilders.NORMAL.get(), random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TFCSurfaceBuilders.RED_SANDSTONE_CONFIG.get());
         }
     }
 
     @Override
     protected void initSeed(long seed)
     {
-        variantNoise = new SimplexNoise2D(seed).octaves(2).spread(0.003f).abs();
+        variantNoise = new OpenSimplex2D(seed).octaves(2).spread(0.003f).abs();
     }
 }

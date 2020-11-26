@@ -13,6 +13,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.feature.tree.*;
 import net.dries007.tfc.world.feature.vein.*;
 
@@ -27,6 +28,7 @@ public class TFCFeatures
     public static final RegistryObject<CaveSpikesFeature> CAVE_SPIKE = register("cave_spike", CaveSpikesFeature::new, NoFeatureConfig.CODEC);
     public static final RegistryObject<LargeCaveSpikesFeature> LARGE_CAVE_SPIKE = register("large_cave_spike", LargeCaveSpikesFeature::new, NoFeatureConfig.CODEC);
     public static final RegistryObject<CalciteFeature> CALCITE = register("calcite", CalciteFeature::new, CalciteConfig.CODEC);
+    public static final RegistryObject<RivuletFeature> RIVULET = register("rivulet", RivuletFeature::new, Codecs.LENIENT_BLOCK_STATE_FEATURE_CONFIG);
 
     public static final RegistryObject<ClusterVeinFeature> CLUSTER_VEIN = register("cluster_vein", ClusterVeinFeature::new, VeinConfig.CODEC);
     public static final RegistryObject<DiscVeinFeature> DISC_VEIN = register("disc_vein", DiscVeinFeature::new, DiscVeinConfig.CODEC);
@@ -44,7 +46,7 @@ public class TFCFeatures
     public static final RegistryObject<IceAndSnowFeature> ICE_AND_SNOW = register("ice_and_snow", IceAndSnowFeature::new, NoFeatureConfig.CODEC);
 
     public static final RegistryObject<LakeFeature> LAKE = register("lake", LakeFeature::new, NoFeatureConfig.CODEC);
-    public static final RegistryObject<FloodFillLakeFeature> FLOOD_FILL_LAKE = register("flood_fill_lake", FloodFillLakeFeature::new, NoFeatureConfig.CODEC);
+    public static final RegistryObject<FloodFillLakeFeature> FLOOD_FILL_LAKE = register("flood_fill_lake", FloodFillLakeFeature::new, FloodFillLakeConfig.CODEC);
     public static final RegistryObject<SpringFeature> SPRING = register("spring", SpringFeature::new, LiquidsConfig.CODEC);
 
     public static final RegistryObject<SoilDiscFeature> SOIL_DISC = register("soil_disc", SoilDiscFeature::new, SoilDiscConfig.CODEC);

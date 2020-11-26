@@ -18,10 +18,7 @@ import net.minecraft.world.gen.carver.WorldCarver;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.chunkdata.RockData;
-import net.dries007.tfc.world.noise.INoise3D;
-import net.dries007.tfc.world.noise.NoiseUtil;
-import net.dries007.tfc.world.noise.SimplexNoise3D;
-import net.dries007.tfc.world.noise.WorleyNoise3D;
+import net.dries007.tfc.world.noise.*;
 
 public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements IContextCarver
 {
@@ -45,10 +42,10 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
     {
         if (this.cachedSeed != worldSeed || !initialized)
         {
-            caveNoiseWorley = new WorleyNoise3D(worldSeed + 2).spread(0.012f).warped(
-                new SimplexNoise3D(worldSeed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
-                new SimplexNoise3D(worldSeed + 4).octaves(4).spread(0.08f).scaled(-18, 18),
-                new SimplexNoise3D(worldSeed + 5).octaves(4).spread(0.08f).scaled(-18, 18)
+            caveNoiseWorley = new Cellular3D(worldSeed + 2, 2.0f, CellularNoiseType.DISTANCE_PRODUCT).spread(0.04f).warped(
+                new OpenSimplex3D(worldSeed + 3).octaves(4).spread(0.08f).scaled(-18, 18),
+                new OpenSimplex3D(worldSeed + 4).octaves(4).spread(0.08f).scaled(-18, 18),
+                new OpenSimplex3D(worldSeed + 5).octaves(4).spread(0.08f).scaled(-18, 18)
             ).scaled(0, 1);
 
             cachedSeed = worldSeed;
@@ -154,7 +151,7 @@ public class WorleyCaveCarver extends WorldCarver<WorleyCaveConfig> implements I
                                     float finalNoise = NoiseUtil.lerp(section[x0 + 16 * z0], prevSection[x0 + 16 * z0], 0.25f * y0);
                                     finalNoise *= heightFadeValue;
 
-                                    if (finalNoise > config.worleyNoiseCutoff)
+                                    if (finalNoise > config.carvingThreshold)
                                     {
                                         blockCarver.carve(chunkIn, pos, random, seaLevel);
                                     }

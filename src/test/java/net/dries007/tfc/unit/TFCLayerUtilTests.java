@@ -12,10 +12,12 @@ import net.dries007.tfc.world.biome.TFCBiomeProvider;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayerUtil;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.layer.TFCLayerUtil.*;
 
+@Disabled
 public class TFCLayerUtilTests
 {
     static final Artist.Typed<ITypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> Artist.Pixel.coerceInt(factory.make()::get));

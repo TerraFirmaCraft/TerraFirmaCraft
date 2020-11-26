@@ -26,9 +26,10 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 import net.dries007.tfc.world.layer.traits.ITypedAreaFactory;
 import net.dries007.tfc.world.layer.traits.LazyTypedAreaLayerContext;
+import net.dries007.tfc.world.noise.Cellular2D;
+import net.dries007.tfc.world.noise.CellularNoiseType;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
-import net.dries007.tfc.world.noise.VoronoiNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class TFCLayerUtil
 {
@@ -149,7 +150,7 @@ public class TFCLayerUtil
         IAreaFactory<LazyArea> mainLayer, riverLayer, lakeLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new VoronoiNoise2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
         plateArtist.draw("plate_generation", 1, plateLayer);
         plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
         plateArtist.draw("plate_generation", 2, plateLayer);
@@ -207,9 +208,9 @@ public class TFCLayerUtil
         // River Setup
         final float riverScale = 1.7f;
         final float riverSpread = 0.15f;
-        final INoise2D riverNoise = new VoronoiNoise2D(random.nextLong()).spread(0.072f).warped(
-            new SimplexNoise2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale),
-            new SimplexNoise2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale)
+        final INoise2D riverNoise = new Cellular2D(random.nextLong()).spread(0.072f).warped(
+            new OpenSimplex2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale),
+            new OpenSimplex2D(random.nextLong()).spread(riverSpread).scaled(-riverScale, riverScale)
         ).terraces(5);
 
         // River Noise
@@ -253,7 +254,7 @@ public class TFCLayerUtil
         IAreaFactory<LazyArea> mainLayer;
 
         // Tectonic Plates - generate plates and annotate border regions with converging / diverging boundaries
-        plateLayer = new PlateGenerationLayer(new VoronoiNoise2D(random.nextLong()), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
+        plateLayer = new PlateGenerationLayer(new Cellular2D(random.nextInt(), 1.0f, CellularNoiseType.OTHER), 0.2f, layerSettings.getOceanPercent()).apply(plateContext.get());
         plateLayer = TypedZoomLayer.<Plate>fuzzy().run(plateContext.get(), plateLayer);
         mainLayer = PlateBoundaryLayer.INSTANCE.run(layerContext.get(), plateLayer);
 

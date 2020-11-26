@@ -11,7 +11,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class SoilBlockReplacer extends SeedBlockReplacer
 {
@@ -85,7 +85,7 @@ public class SoilBlockReplacer extends SeedBlockReplacer
     @Override
     protected void initSeed(long seed)
     {
-        patchNoise = new SimplexNoise2D(seed).octaves(2).spread(0.04f);
+        patchNoise = new OpenSimplex2D(seed).octaves(2).spread(0.04f);
     }
 
     private BlockState sand(RockData rockData, int x, int z)
