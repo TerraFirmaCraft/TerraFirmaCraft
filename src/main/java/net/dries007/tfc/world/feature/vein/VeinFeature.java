@@ -6,7 +6,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.FastRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -94,7 +93,7 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                         if (stateAt.isAir() && state.canSurvive(world, mutablePos))
                         {
                             world.setBlock(mutablePos, Helpers.getStateForPlacementWithFluid(world, mutablePos, state), 3);
-                            world.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                            //world.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
                         }
                     }
                 }

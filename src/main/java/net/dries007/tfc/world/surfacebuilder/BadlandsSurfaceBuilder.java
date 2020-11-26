@@ -18,7 +18,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.world.noise.INoise2D;
-import net.dries007.tfc.world.noise.SimplexNoise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderConfig>
 {
@@ -63,7 +63,7 @@ public class BadlandsSurfaceBuilder extends SeededSurfaceBuilder<SurfaceBuilderC
             sandLayers[i] = state ? redSand : brownSand;
         }
 
-        heightVariationNoise = new SimplexNoise2D(seed).octaves(2).scaled(110, 114).spread(0.5f);
+        heightVariationNoise = new OpenSimplex2D(seed).octaves(2).scaled(110, 114).spread(0.5f);
     }
 
     @SuppressWarnings("deprecation")

@@ -57,8 +57,8 @@ public final class TFCBiomes
     public static final BiomeVariants CANYONS = register("canyons", seed -> BiomeNoise.canyons(seed, -7, 26), BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.HILLS); // Medium height with snake like ridges, often slightly below sea level
 
     // High biomes
-    public static final BiomeVariants MOUNTAINS = register("mountains", seed -> BiomeNoise.mountains(seed, 10, 70), BiomeDictionary.Type.MOUNTAIN); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
-    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", seed -> BiomeNoise.mountains(seed, -16, 60), true, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
+    public static final BiomeVariants MOUNTAINS = register("mountains", seed -> BiomeNoise.mountainsWithVolcanoes(seed, 10, 70), BiomeDictionary.Type.MOUNTAIN); // High, picturesque mountains. Pointed peaks, low valleys well above sea level.
+    public static final BiomeVariants FLOODED_MOUNTAINS = register("flooded_mountains", seed -> BiomeNoise.mountainsWithVolcanoes(seed, -16, 60), true, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.MOUNTAIN); // Mountains with high areas, and low, below sea level valleys. Water is salt water here.
     public static final BiomeVariants OLD_MOUNTAINS = register("old_mountains", seed -> BiomeNoise.mountains(seed, 16, 40), BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.MOUNTAIN); // Rounded top mountains, very large hills.
 
     // Shores

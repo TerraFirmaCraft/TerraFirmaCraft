@@ -30,7 +30,7 @@ public abstract class RecipeManagerMixin extends JsonReloadListener
     /**
      * Log a more useful message. Full stack trace is not useful. Concise, readable errors are useful.
      */
-    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), require = 0)
+    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
     private void redirect$apply$error(Logger logger, String message, Object p0, Object p1)
     {
         if (TFCConfig.COMMON.enableDevTweaks.get())

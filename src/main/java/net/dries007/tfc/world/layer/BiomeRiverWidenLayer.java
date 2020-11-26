@@ -10,40 +10,34 @@ import java.util.function.IntPredicate;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 
+import static net.dries007.tfc.world.layer.TFCLayerUtil.RIVER;
+
 public enum BiomeRiverWidenLayer implements ICastleTransformer
 {
-    MEDIUM(TFCLayerUtil.RIVER, value -> TFCLayerUtil.isLow(value) || value == TFCLayerUtil.ROLLING_HILLS || value == TFCLayerUtil.CANYONS),
-    LOW(TFCLayerUtil.RIVER, TFCLayerUtil::isLow);
+    MEDIUM(value -> TFCLayerUtil.isLow(value) || value == TFCLayerUtil.ROLLING_HILLS || value == TFCLayerUtil.CANYONS),
+    LOW(TFCLayerUtil::isLow);
 
-    private final int river;
     private final IntPredicate expansion;
 
-    BiomeRiverWidenLayer(int river, IntPredicate expansion)
+    BiomeRiverWidenLayer(IntPredicate expansion)
     {
-        this.river = river;
         this.expansion = expansion;
     }
 
     @Override
     public int apply(INoiseRandom context, int north, int west, int south, int east, int center)
     {
-        if (expansion.test(center) && center != river)
+        // The center must be non-river and expandable
+        if (center != RIVER && expansion.test(center))
         {
-            if (north == river && (expansion.test(west) && expansion.test(east) && expansion.test(south)))
+            // Check if adjacent to at least one river
+            if (north == RIVER || east == RIVER || west == RIVER || south == RIVER)
             {
-                return river;
-            }
-            else if (east == river && (expansion.test(west) && expansion.test(north) && expansion.test(south)))
-            {
-                return river;
-            }
-            else if (west == river && (expansion.test(north) && expansion.test(east) && expansion.test(south)))
-            {
-                return river;
-            }
-            else if (south == river && (expansion.test(west) && expansion.test(east) && expansion.test(north)))
-            {
-                return river;
+                // Check if all surrounding pixels are either river, or valid for expansion
+                if ((north == RIVER || expansion.test(north)) && (east == RIVER || expansion.test(east)) && (west == RIVER || expansion.test(west)) && (south == RIVER || expansion.test(south)))
+                {
+                    return RIVER;
+                }
             }
         }
         return center;
